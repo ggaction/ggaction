@@ -14,7 +14,7 @@
 - [x] E6: native Geo annotation의 명시 command 연결
 - [x] E7: source-owned item membership의 inline/named/all 편집과 scoped key 연결
 - [x] E8: 데이터 없는 screen anchor와 native Text/codec/hit 연결
-- [ ] pointer anchor drag 후행 인수
+- [x] E9: anchor를 보존하는 native dx/dy pointer drag
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -621,3 +621,33 @@ Axe0을 확인했다. 이 증거는 전체 normal/coverage·전체 installed swe
 [원본 실패·정확 artifact·명령](screen-annotation-evidence/qualification.json)에 분리 기록한다.
 
 후속 E9의 pointer anchor drag와 navigation/history/focus, 전체AT35/38/65/80 및 STEP074/077은 남아 있다.
+
+
+## E9 native offset drag 최소 계약
+
+전체 승인과 root의 offset 보존 확인을 재사용한다. `bindings:[{type:"annotate",target}]`는 명시된
+Text 또는 Geo annotation layer의 dx/dy를 local pointer delta로 편집한다. Layer가 편집 단위이므로
+source-owned labels가 여러 개이면 모두 같은 offset으로 이동한다. 개별 label만 이동하려면 기존
+item membership으로 별도 annotation owner를 만든다. 기존 data/plot/feature/item/screen anchor와
+lineage는 그대로 유지하며 임의 scale inverse나 projection inverse를 만들지 않는다. Encoded offsets와
+facet source는 명시 거부한다. Missing owner는 capture 없이 inert하다.
+
+기존 pointer capture와 preview/commit/cancel 경계를 재사용하며 annotation priority는 원 reducer의50이다.
+현재 public session의 한 editing pointer binding 제한은 유지한다. Node와 annotation이 공통
+movementFrame에서 committed scene 확인과 root/child inverse를 공유한다. Cancel은 trace/program을
+원상태로 유지하고 pointerup은 최종 위치로 한 번 commit한다. Preview hit는 같은 실제 preview frame을
+읽는다. Native edit/update/frame/unmount/destroy는 기존 취소 정책을 따른다. History/focus/navigation과
+복수 editing binding arbitration의 최종 소비자 의무는 남긴다.
+
+
+E9 source 검증은 Node/Annotation18/18, 관련 interaction/types/source boundary/discovery228/228이다.
+Annotation movement100/91.43/100, shared frame100/93.33/100, Node100/93.33/100, session100/95.95/100을
+통과했다. 실제5개 dataset×3개 recipe16/16, canonical browser3/3(mouse/touch/keyboard/Escape),
+실제 drag result와 독립 literal/codec의 Canvas/SVG/PNG/PDF exact equality를 확인했다.
+
+고정 tar4baf595d89923b6725facd6b1d89eba9c8345f585f47b0b71688c6bf2e9df102에서 세 Node의
+runtime13+strict TypeScript+5 bundle을 측정했다. Node20 기존 interaction cap 실패는 보존하고
+같은 archive의 cap-only 재검사로 닫았으며 Node22/24는 종료0이다. Docs207/207, built172/1531,
+4폭 containment/Axe0을 통과했다. 전체 normal/coverage·전체 installed sweep을 주장하지 않는다.
+[정확 명령·artifact·초기 실패](annotation-drag-evidence/qualification.json)를 보존한다.
+후속065~067의 history/reset/event/lifecycle와 camera/player 교차, 전체077 인수는 계속 남아 있다.

@@ -37,6 +37,9 @@ chart().editAnnotation({target:'note',source:'points'});
 session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'New'}});
 // @ts-expect-error Text annotation authoring is Full-only
 basic().editAnnotation({target:'note',text:'New'});
+createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
+// @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
+createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error node movement has no implicit key or position

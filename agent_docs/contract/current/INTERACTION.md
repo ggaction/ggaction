@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, or node-movement binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, node-movement, or annotation-offset binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -545,3 +545,23 @@ The host supplies capture, RAF and its touch-action policy. Keyboard controls ma
 with explicit typed key and layout coordinates. General keyboard focus, undo/redo, unpinning and
 automatic-origin dragging are separate capabilities. Evidence: `test/unit/interaction-node-move.test.js`,
 the canonical node-drag browser example and the installed interaction consumer.
+
+
+### Native annotation offset dragging
+
+`{type:"annotate",target}` is one explicit Full Text or geographic annotation editing pointer binding.
+It edits native dx/dy from the committed baseline using local pointer displacement and preserves all
+data/plot/feature/item/screen anchor intent, lineage and item keys. The target layer is the edit unit:
+all source-owned labels move together; use a separate annotation with membership for a single label.
+Encoded offsets and facet sources reject. Missing owners are inert; malformed/Basic/other mark targets reject.
+The existing one editing pointer binding limit remains. No new persisted schema or renderer is introduced.
+
+The host provides pointer capture, RAF and touch-action policy. Only an exact target hit begins capture,
+and the owner's graphics must match the committed frame. Root/child matrices convert CSS displacement
+without DPR inference. Preview uses the same native editor, reconciliation/link closure and actual current
+hit frame; immutable committed state changes only once on final release. Escape/cancel/lost capture/blur/
+update/frame/unmount/destroy restore the committed frame and discard preview. Under-threshold clicks are
+no-ops. Coordinate overflow cancels; native preflight errors release capture and publish error without commit.
+Keyboard hosts dispatch the same annotate command. General history/focus and multi-binding arbitration
+are separate remaining session capabilities. Evidence: `test/unit/interaction-annotation-drag.test.js`,
+`test/browser/interaction-session.browser.js`, and installed `interaction/annotation-drag`.

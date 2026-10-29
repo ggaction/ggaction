@@ -117,6 +117,9 @@ session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
 
 program.editLayout({target:'layout',node:{key:[1,'a'],x:10,y:20}});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:1,x:10,y:20}});
+createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
+// @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
+createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
 // @ts-expect-error node edits cannot simultaneously replace options
 program.editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});

@@ -3962,3 +3962,15 @@ cap729,300/384,500/113,000을 적용한다. Basic 증분은 screen Text의 공�
 Full annotation facade를 가져오지 않는다. Package1045entries/packed1,483,625/unpacked6,754,572에
 cap1045/1,484,000/6,755,000을 적용한다. 최초 archive의 runtime12와 strict TypeScript는 통과했고
 bundle ceiling 실패는 원본 그대로 보존한다. Runtime 변경 없이 같은 archive를 다음 Node에서도 검증한다.
+
+
+주석 offset drag는 기존 annotate native command와 pointer capture/preview closure에 연결한다.
+`interaction/movementFrame.js`가 Node/Annotation의 committed-frame 비교와 child/root inverse를
+단일 소유하고, `annotationMovement.js`가 정확 owner·기존 offset 읽기만 맡는다. 저장 anchor와
+renderer는 바뀌지 않는다. Preview와 current hit frame은 같은 native materialization을 읽으며
+commit/cancel은 기존 session transaction owner가 담당한다.
+
+E9의 Full/Basic renderer/authoring bundle은 E8과 동일하며 interaction만 Node20 113,413 gzip으로
+늘어 최소 cap113,500을 적용한다. 새 private frame/annotation owner2개로 package1047entries이며
+packed1,484,961/unpacked6,759,342를 최소 cap1,485,000/6,760,000으로 제한한다. 최초 Node20
+runtime13/strict TypeScript 통과 뒤 interaction ceiling 실패와 같은 archive의 cap 재검사를 분리 보존한다.

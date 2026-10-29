@@ -82,6 +82,8 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
 }
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
 export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+/** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
+export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -291,5 +293,5 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;

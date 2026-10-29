@@ -4,9 +4,8 @@ import { findLayer, requireLayer } from "../selectors/layers.js";
 import { resolveGraphLayerResources } from "../selectors/graphs.js";
 import { graphSourceKey } from "../grammar/graph/fields.js";
 import { graphItemKey } from "../grammar/graph/itemIdentity.js";
-import { resolveHitCoordinates } from "../grammar/hitCoordinates.js";
+import { prepareMovementFrame } from "./movementFrame.js";
 import { interactionOwner, scopeSelectionKeys } from "./selection.js";
-import { programHitOwnerPlacement } from "./hitProgram.js";
 import { interactionOptions as options } from "./input.js";
 
 export function resolveNodeMovement(program, binding, allowMissing = false) {
@@ -41,20 +40,9 @@ export function prepareNodeMovement(program, binding, base, scene, rootTransform
   if (!candidate) return null;
   const rank = ranks.get(candidate.itemKey), node = graph.result.model.nodes[rank], position = layout.result.nodes[rank];
   const relevant = new Set(base.entries.filter(entry => entry.metadata.itemKey === candidate.itemKey).map(entry => entry.nodeKey));
-  const initial = new Map(base.scene.nodes.filter(node => relevant.has(node.key)).map(node => [node.key, node]));
-  for (const current of scene.nodes) if (relevant.has(current.key)) {
-    const a = JSON.stringify(initial.get(current.key)), b = JSON.stringify(current); spend(a.length + b.length);
-    if (a !== b) throw new Error("Node dragging requires the node's committed concrete frame.");
-  }
-  const offset = programHitOwnerPlacement(base, target.childPath).offset;
-  const map = point => {
-    const mapped = resolveHitCoordinates({ point, rect: { left: 0, top: 0, width: scene.width, height: scene.height }, rootTransform,
-      childTransforms: [[1, 0, 0, 1, ...offset]] });
-    if (mapped.localPoint === null) throw new Error("Node dragging requires invertible current coordinates.");
-    return mapped.localPoint;
-  };
   return freezeOwned({ target: cloneAndFreeze({ ...target, id: layout.id }), position,
-    key: graphSourceKey(nodesData.values[node.sourceRows[0]], graph.options.definition.nodeKey), start: map(start), map });
+    key: graphSourceKey(nodesData.values[node.sourceRows[0]], graph.options.definition.nodeKey),
+    ...prepareMovementFrame(base, scene, rootTransform, target, start, relevant) });
 }
 
 export function nodeMovementCommand(context, points) {

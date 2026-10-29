@@ -10,6 +10,20 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/annotation-drag", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:0}).createAnnotation({id:'note',space:'screen',x:40,y:60,text:'Move',align:'center',baseline:'middle'});
+    const listeners=new Map(),frames=new Map(),captures=new Set();let id=0;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:300,height:200}),addEventListener:(key,fn)=>listeners.set(key,fn),removeEventListener:key=>listeners.delete(key),
+      setPointerCapture:key=>captures.add(key),releasePointerCapture:key=>captures.delete(key),hasPointerCapture:key=>captures.has(key),
+      requestAnimationFrame:fn=>{frames.set(++id,fn);return id},cancelAnimationFrame:key=>frames.delete(key)};
+    const s=createInteractionSession({program:p,bindings:[{type:'annotate',target:'note'}]}),phases=[];s.subscribe(e=>{if(e.phase)phases.push(e.phase)});s.mount(host);
+    const fire=(type,x,y)=>listeners.get(type)({pointerId:1,pointerType:'touch',clientX:x,clientY:y});
+    fire('pointerdown',40,60);fire('pointermove',60,90);for(const fn of frames.values())fn();frames.clear();
+    assert.equal(s.getState().program,p);assert.equal(s.getState().previewProgram.graphicSpec.objects.note.items[0].properties.x,60);
+    fire('pointerup',60,90);const next=deserializeProgram(serializeProgram(s.getState().program));
+    assert.deepEqual(next.graphicSpec,p.editAnnotation({dx:20,dy:30}).graphicSpec);assert.deepEqual(next.semanticSpec,p.semanticSpec);
+    assert.deepEqual(phases,['preview','preview','commit','settled']);s.destroy();assert.equal(listeners.size,0);assert.equal(captures.size,0);
+  } },
   { id: "interaction/screen-annotation", run() {
     const p=chart().createCanvas({width:300,height:200,margin:20}).createAnnotation({id:'screen',space:'screen',x:12,y:23,text:'Screen'});
     const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event.phase));

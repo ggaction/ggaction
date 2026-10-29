@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c6c276fffb761efd1b8cd23a39fd96486e6936a2b370cc5a6271d04d1f9f31cd. Status: development. Runtime source: 1e28f4bfb700faeba6295731ac225632ca62487a. Release baseline: v0.0.13.
+Contract: sha256:88da201b01747fcb395ec6508595d32c17d745fc4cf548288837ea48fc1e6de2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/1e28f4bfb700faeba6295731ac225632ca62487a/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/1e28f4bfb700faeba6295731ac225632ca62487a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11646,7 +11646,9 @@ const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
   .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
   .encodeY({ field: "y", scale: { domain: [0, 10] } })
   .createAnnotation({ id: "note", text: "Original", x: 2, y: 3, dx: 8, dy: -8 });
-const annotationSession = createInteractionSession({ program, bindings: [] });
+const annotationSession = createInteractionSession({ program, bindings: [{ type: "annotate", target: "note" }] });
+const previousTouchAction = canvas.style.touchAction;
+canvas.style.touchAction = "none";
 const draw = current => {
   render(current, canvas.getContext("2d"));
   controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
@@ -11655,16 +11657,25 @@ const revise = () => annotationSession.dispatch({ type: "annotate", target: "not
 const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
 controls.querySelector("#revise-note").addEventListener("click", revise);
 controls.querySelector("#offset-note").addEventListener("click", offset);
-const unsubscribe = annotationSession.subscribe(event => { if (event.phase === "commit") draw(event.current); });
+const unsubscribe = annotationSession.subscribe(event => { if (event.phase) draw(event.state.previewProgram ?? event.state.program); });
 draw(program);
+const unmountAnnotation = annotationSession.mount(canvas);
 const disposeAnnotationControls = () => {
   controls.querySelector("#revise-note").removeEventListener("click", revise);
   controls.querySelector("#offset-note").removeEventListener("click", offset);
-  unsubscribe(); annotationSession.destroy(); controls.remove();
+  unmountAnnotation(); unsubscribe(); annotationSession.destroy(); controls.remove();
+  canvas.style.touchAction = previousTouchAction;
 };
 ```
 
-Pointer, touch and keyboard activation use ordinary host buttons. Each command produces one commit and settled event;
+Drag the note with mouse, pen or touch to change its native pixel offsets while preserving its anchor.
+The target layer is the editing unit: attached labels all move by the same offset. Use a separate annotation
+with item membership to move one label. Encoded offsets and facet sources reject this binding.
+A drag previews at most once per animation frame, commits the final release position once, and restores the
+committed program on Escape, capture loss or interruption. It requires the owner’s committed frame.
+Nested charts convert root and child coordinates before updating offsets; no scale or projection is inverted.
+
+Keyboard activation uses ordinary host buttons. Each command produces one commit and settled event;
 an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
 performed by this command.
 
@@ -35645,6 +35656,8 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
 }
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
 export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+/** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
+export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -35854,7 +35867,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -49994,12 +50007,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e28f4bfb700faeba6295731ac225632ca62487a/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e28f4bfb700faeba6295731ac225632ca62487a/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53050,9 +53063,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c6c276fffb761efd1b8cd23a39fd96486e6936a2b370cc5a6271d04d1f9f31cd` |
+| Contract fingerprint | `sha256:88da201b01747fcb395ec6508595d32c17d745fc4cf548288837ea48fc1e6de2` |
 | Example and dataset source | `d665f6bbcdd97ed5e5d22ce63c73d5b3afdbfaa4` |
-| Runtime source commit | `1e28f4bfb700faeba6295731ac225632ca62487a` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 366 |
 | Declared actions in that release | 234 |

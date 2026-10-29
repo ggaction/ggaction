@@ -17,6 +17,7 @@ export function assertAnnotationInteraction(rows, recipe) {
   assert.deepEqual([fixedItem.geometry[0].properties.x,fixedItem.geometry[0].properties.y],[18+offsetFor(recipe),30]);
   assert.equal(fixedItem.geometry[0].properties.text,last.category);assert.deepEqual(fixedItem.rows,[]);
   assert.equal(fixedProgram.semanticSpec.datasets.length,p.semanticSpec.datasets.length);fixed.destroy();
+  assertOffsetDrag(fixedProgram.editAnnotation({target:"screen-note",align:"center",baseline:"middle"}),"screen-note",offsetFor(recipe));
   const saved = serializeProgram(p), session = createInteractionSession({ program: p, bindings: [] });
   const offset = recipe === "observations" ? [8,-4] : recipe === "categories" ? [-4,8] : [5,5];
   session.dispatch({ type: "annotate", target: "note", payload: { text: last.value, format: ".2f", x: last.order, y: last.value,
@@ -67,3 +68,21 @@ export function assertAnnotationInteraction(rows, recipe) {
 }
 
 function offsetFor(recipe) { return recipe === "observations" ? 2 : recipe === "categories" ? 4 : 6; }
+
+function assertOffsetDrag(program,target,delta) {
+  const handlers=new Map(),frames=new Map(),captures=new Set();let id=0;
+  const host={getBoundingClientRect:()=>({left:0,top:0,width:600,height:400}),addEventListener:(key,fn)=>handlers.set(key,fn),removeEventListener:key=>handlers.delete(key),
+    setPointerCapture:key=>captures.add(key),releasePointerCapture:key=>captures.delete(key),hasPointerCapture:key=>captures.has(key),
+    requestAnimationFrame:fn=>{frames.set(++id,fn);return id},cancelAnimationFrame:key=>frames.delete(key)};
+  const session=createInteractionSession({program,bindings:[{type:"annotate",target}]}),events=[];
+  session.subscribe(event=>{if(event.phase)events.push(event.phase)});session.mount(host);
+  const initial=getMarkItems(program,{target})[0],point=initial.geometry[0].properties;
+  const fire=(type,x,y)=>handlers.get(type)({pointerId:1,pointerType:"mouse",clientX:x,clientY:y});
+  fire("pointerdown",point.x,point.y);fire("pointermove",point.x+10+delta,point.y+delta);
+  for(const fn of frames.values())fn();frames.clear();assert.equal(session.getState().program,program);
+  fire("pointerup",point.x+10+delta,point.y+delta);
+  const final=getMarkItems(deserializeProgram(serializeProgram(session.getState().program)),{target})[0];
+  assert.deepEqual([final.geometry[0].properties.x,final.geometry[0].properties.y],[point.x+10+delta,point.y+delta]);
+  assert.equal(final.key,initial.key);assert.deepEqual(final.rows,initial.rows);assert.deepEqual(events,["preview","preview","commit","settled"]);
+  session.destroy();assert.equal(captures.size,0);assert.equal(handlers.size,0);
+}

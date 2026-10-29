@@ -770,3 +770,53 @@ test("screen annotation controls keep Canvas pixel anchors through resize and ke
     await page.evaluate(()=>window.__screenNote.destroy());assertNoBrowserErrors(errors,'screen annotation controls');await page.close();
   } catch(error) {await saveBrowserContextEvidence(context,error);throw error;} finally {await context.close();}
 });
+
+test("canonical annotation dragging preserves anchors across mouse touch keyboard and cancellation", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-annotation"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Draggable annotation"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__annotationDrag=annotationSession;window.__disposeAnnotationDrag=disposeAnnotationControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__annotationDragPhases = [];
+      const draw = p => { document.querySelector("#vector").innerHTML = renderToSVG(p); };
+      window.__annotationDrag.subscribe(event => { if (event.phase) { window.__annotationDragPhases.push(event.phase); draw(event.state.previewProgram ?? event.state.program); } });
+      draw(window.__annotationDrag.getState().program);
+    }, snippet.code);
+    const box = await page.locator("canvas").boundingBox();
+    const inspect = () => page.evaluate(() => {
+      const state = window.__annotationDrag.getState(), p = state.previewProgram ?? state.program;
+      const text = p.graphicSpec.objects.note.items[0].properties, vector = document.querySelector("#vector text");
+      const pixels = document.querySelector("canvas").getContext("2d").getImageData(text.x, text.y - 15, 65, 16).data;
+      const layer = p.semanticSpec.layers.find(layer => layer.id === "note");
+      return { xy: [text.x, text.y], vector: [Number(vector.getAttribute("x")), Number(vector.getAttribute("y"))],
+        anchor: [layer.encoding.x.datum, layer.encoding.y.datum], revision: state.revision,
+        ink: [...pixels].some((value, index) => index % 4 !== 3 && value < 150 && pixels[index - index % 4 + 3] > 0) };
+    });
+    await page.mouse.move(box.x + 104, box.y + 176); await page.mouse.down(); await page.mouse.move(box.x + 134, box.y + 196, { steps: 8 });
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    assert.deepEqual(await inspect(), { xy: [130, 200], vector: [130, 200], anchor: [2, 3], revision: 0, ink: true });
+    await page.mouse.up(); assert.equal((await inspect()).revision, 1);
+    await page.mouse.move(box.x + 134, box.y + 196); await page.mouse.down(); await page.mouse.move(box.x + 164, box.y + 206);
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    await page.keyboard.press("Escape"); await page.mouse.up(); assert.deepEqual((await inspect()).xy, [130, 200]);
+    await page.getByRole("button", { name: "Offset note" }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual((await inspect()).xy, [104, 172]);
+    const protocol = await context.newCDPSession(page);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 108, y: box.y + 168 }] });
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: box.x + 128, y: box.y + 178 }] });
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.deepEqual(await inspect(), { xy: [124, 182], vector: [124, 182], anchor: [2, 3], revision: 3, ink: true });
+    assert.deepEqual(await page.evaluate(() => ({ commits: window.__annotationDragPhases.filter(phase => phase === "commit").length,
+      cancels: window.__annotationDragPhases.filter(phase => phase === "cancel").length })), { commits: 3, cancels: 1 });
+    await page.evaluate(() => window.__disposeAnnotationDrag()); assertNoBrowserErrors(errors, "annotation dragging"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

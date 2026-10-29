@@ -1025,7 +1025,9 @@ const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
   .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
   .encodeY({ field: "y", scale: { domain: [0, 10] } })
   .createAnnotation({ id: "note", text: "Original", x: 2, y: 3, dx: 8, dy: -8 });
-const annotationSession = createInteractionSession({ program, bindings: [] });
+const annotationSession = createInteractionSession({ program, bindings: [{ type: "annotate", target: "note" }] });
+const previousTouchAction = canvas.style.touchAction;
+canvas.style.touchAction = "none";
 const draw = current => {
   render(current, canvas.getContext("2d"));
   controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
@@ -1034,15 +1036,24 @@ const revise = () => annotationSession.dispatch({ type: "annotate", target: "not
 const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
 controls.querySelector("#revise-note").addEventListener("click", revise);
 controls.querySelector("#offset-note").addEventListener("click", offset);
-const unsubscribe = annotationSession.subscribe(event => { if (event.phase === "commit") draw(event.current); });
+const unsubscribe = annotationSession.subscribe(event => { if (event.phase) draw(event.state.previewProgram ?? event.state.program); });
 draw(program);
+const unmountAnnotation = annotationSession.mount(canvas);
 const disposeAnnotationControls = () => {
   controls.querySelector("#revise-note").removeEventListener("click", revise);
   controls.querySelector("#offset-note").removeEventListener("click", offset);
-  unsubscribe(); annotationSession.destroy(); controls.remove();
+  unmountAnnotation(); unsubscribe(); annotationSession.destroy(); controls.remove();
+  canvas.style.touchAction = previousTouchAction;
 };
 ```
 
-Pointer, touch and keyboard activation use ordinary host buttons. Each command produces one commit and settled event;
+Drag the note with mouse, pen or touch to change its native pixel offsets while preserving its anchor.
+The target layer is the editing unit: attached labels all move by the same offset. Use a separate annotation
+with item membership to move one label. Encoded offsets and facet sources reject this binding.
+A drag previews at most once per animation frame, commits the final release position once, and restores the
+committed program on Escape, capture loss or interruption. It requires the owner’s committed frame.
+Nested charts convert root and child coordinates before updating offsets; no scale or projection is inverted.
+
+Keyboard activation uses ordinary host buttons. Each command produces one commit and settled event;
 an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
 performed by this command.
