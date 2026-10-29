@@ -77,6 +77,9 @@ anchor를 소비한다. `routes/spline.js`가 de Boor와 knot-span cubic 변환�
 `pathGeometry`의 convex-hull 분할에 호출별 point budget을 전달한다. Partial geometry는 완료
 결과로 반환하지 않는다. 이후 HEB 합산 package는929 entries/6,117,831 unpacked bytes,
 packed 최대1,334,664 bytes로 상한929/1,335,000/6,118,000을 적용한다.
+Force compatibility와 고정 double-buffer schedule은 같은 private route owner에 추가됐다.
+공개 entry import는 없으며 package만931 entries/6,126,103 unpacked/최대1,337,161 packed
+bytes로 증가해 상한931/1,338,000/6,127,000을 적용한다. Browser bundle 입력은 이전 HEB와 같다.
 
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를

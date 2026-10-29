@@ -6,7 +6,7 @@
 - [x] 전체 잔여 승인 재사용 및 public/state/consumer 경계 구체화
 - [x] 공통 입력·타입 순서·정규화·길이 재표본화·budget·완료 결과 private kernel
 - [x] Hierarchical LCA + clamped B-spline private kernel
-- [ ] Force-directed compatibility + double buffer
+- [x] Force-directed compatibility + double buffer
 - [ ] Density field + vector advection
 - [ ] Edge-path Dijkstra + skip/lock
 - [ ] Full public actions·exact resource revision closure·prepared entry
@@ -133,3 +133,27 @@ architecture/discovery/policy34/34, 기존 hit/compound path 소비자36/36, pac
 동일 tar의 네 entry를 세 Node/zlib에서 비교했으며 Full660,081/Basic369,582/SVG20,196/
 interaction82,859 gzip bytes로 기존 상한 안이다. Full coverage/전체 renderer suite 완료를
 뜻하지 않으며 public checkpoint에서 필요한 해당 검증을 계속한다.
+
+
+## Force-directed 계산 checkpoint
+
+`compatibility.js`는 원 endpoint의 angle/scale/position/양방향 visibility를 계산한다.
+`forceDirected.js`는 typed-key 순서의 compatibility graph, arc-length 재표본화, 고정
+6-cycle/165-iteration schedule 및 old/new buffer를 소유한다. 원안 K=.1, step=.1×.5^c,
+internal samples=2^c를 그대로 쓰며 사용자 tuning 값으로 늘리지 않는다. Authorable 옵션은
+`compatibilityThreshold`(기본.6, 0–1)와 `zeroLength:'point'`다. Threshold0에서도 실제
+compatibility0인 pair를 만들지 않는다. Directed 반대 방향을 제외하고 undirected 반대
+방향은 sample 대응만 역전한다. 정규화 길이≤1e-9는 계산에서 제외하되 원 endpoint를
+유지하며 exact0과 below-epsilon을 provenance reason으로 구분한다.
+
+고정 schedule의 전체 sample peak와 pair별 attraction 작업량을 mutable buffer 할당 전에
+계산한다. 매 iteration은 이전 buffer만 읽고 새 points를 만들며 displacement .1 cap 횟수를
+diagnostics에 기록한다. 정상 route를 임의 cubic으로 압축하지 않는다. Literal10/11 compatibility,
+9/100 first-step displacement, spring.198, same-point0 및 simultaneous 대칭성을 검증한다.
+
+[고정 검증 증거](edge-bundling-evidence/force-directed/status.json): canonical unit26/26,
+동일26개 coverage에서 route7owner 모두100/100/100, boundaries/discovery/policy34/34,
+package7/7 통과. 기존95/90/100 floor와 모든 global floor는 유지한다. 새2개 private module은
+어느 public entry에서도 import되지 않아 HEB의 동일 bundle 증거를 재사용한다. 실제 패키지
+staging은 세 Node에서 재측정했고 entries931/unpacked6,126,103/packed최대1,337,161bytes다.
+Public resource/worker/renderer/codec 연결은 아직 위 표의 열린 의무다.
