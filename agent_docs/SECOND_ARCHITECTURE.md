@@ -4380,3 +4380,8 @@ Node20 Full bundle is 732,895 gzip bytes (732,900 bound) and interaction is 126,
 The host example search payload is 1,039,320 bytes with a 1,039,400 bound.
 Original failed measurements are retained in the STEP068 evidence; combined integration
 remeasures its archive rather than reusing these branch-specific caps.
+
+합산 native keyboard 후보의 Node22 staging은1117entries/1,594,582packed/7,254,528unpacked bytes다.
+최소 한도1117/1,595,000/7,255,000을 적용한다. 동일 archive의 Full772,312와
+interaction127,988gzip에 각각772,400/128,000 한도를 적용하고 나머지 세 한도는 유지한다.
+문서 HTML host 실행의 실패는 별도 통합 의무이며 이 측정으로 통과 처리하지 않는다.

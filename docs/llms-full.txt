@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:fc155c2d9b1ebd1dcb8f5632588e89ad361060b1dc34b85454f88dc7b3162a72. Status: development. Runtime source: 7eb3ef71eee11bfa84a991b49f8d54454ce7d61d. Release baseline: v0.0.13.
+Contract: sha256:abf5377cb26714d2b84f652c7e1abcdc393de3d3a774ab869b25cbe04d5c2aeb. Status: development. Runtime source: e6a47675f6c1eb50785f8e8169788b15c65f8bb1. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/7eb3ef71eee11bfa84a991b49f8d54454ce7d61d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/7eb3ef71eee11bfa84a991b49f8d54454ce7d61d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12276,6 +12276,88 @@ There are at most256 editing bindings and259 total records. A click clear-on-mis
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
 bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
+
+## Keyboard item focus
+
+A keyboard binding navigates native logical items that are painted in the accepted current frame.
+It respects clipping, opacity, nested scopes and geographic representations. Focus alone changes no
+program or history. Enter or Space executes an explicitly configured native selection; partition
+activation can instead use `activation: { type: "focusHierarchy" }`.
+
+```html
+<div id="item-focus" role="listbox" aria-label="Measurements" tabindex="0"
+     style="position:relative;width:360px;height:240px">
+  <canvas id="item-canvas" aria-label="Measurements" aria-hidden="true"></canvas>
+  <span id="item-ring" aria-hidden="true" style="position:absolute;pointer-events:none;border:2px solid #111;border-radius:50%;width:16px;height:16px;display:none"></span>
+  <div id="item-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+</div>
+```
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+import { createInteractionSession } from "ggaction/interaction";
+import { renderTransitionScene } from "ggaction/scene";
+
+const program = chart().createCanvas({ width: 360, height: 240 })
+  .createData({ id: "rows", keyField: "name", values: [
+    { name: "A", x: 1, y: 2 }, { name: "B", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "#dc2626", dimOthers: false });
+const surface = document.querySelector("#item-focus");
+const canvas = document.querySelector("#item-canvas");
+const ring = document.querySelector("#item-ring");
+const descriptions = document.querySelector("#item-options");
+const keyboardSession = createInteractionSession({ program, bindings: [{
+  type: "keyboard", targets: [{ target: "points", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }]
+}] });
+const drawFocus = state => {
+  renderTransitionScene(state.scene, canvas.getContext("2d"));
+  const items = exportAccessibleData(state.program, { format: "items", target: "points" }).views[0].items;
+  descriptions.replaceChildren();
+  surface.removeAttribute("aria-activedescendant");
+  items.forEach((item, index) => {
+    const option = document.createElement("span");
+    option.id = `measurement-${index}`;
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = `${item.fields.name}: x ${item.fields.x}, y ${item.fields.y}`;
+    descriptions.append(option);
+    if (state.focus?.currentItemKey === item.key) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  const point = state.focus?.screenPoint;
+  ring.style.display = point ? "block" : "none";
+  if (point) { ring.style.left = `${point.x - 10}px`; ring.style.top = `${point.y - 10}px`; }
+};
+const unsubscribeKeyboard = keyboardSession.subscribe(event => drawFocus(event.state));
+const unmountKeyboard = keyboardSession.mount(surface);
+drawFocus(keyboardSession.getState());
+const disposeKeyboard = () => { unmountKeyboard(); unsubscribeKeyboard(); keyboardSession.destroy(); };
+```
+
+The controller keeps a stable authored key when exactly one current geographic item represents it.
+If the item becomes hidden, fully clipped, transparent, deleted or ambiguous, focus returns to its
+configured owner container; the host clears `aria-activedescendant`. The native program remains the
+source for descriptions, selected state and restored data. Use explicit `{childPath,id}` targets for
+nested charts and opaque scoped item keys from `exportAccessibleData` or inspection.
+
+Headless hosts can dispatch `{type:"focus",move:"first"}`, `{type:"focus",target:"points",itemKey}`
+or `{type:"activate"}`. Moves are next, previous, first, last, parent, firstChild, previousSibling,
+nextSibling and root. The hierarchy moves follow native navigation metadata. On a hierarchy item,
+Left/Right visit parent/first child, Up/Down visit siblings, Home visits root, and Escape invokes the
+configured partition parent's native focus. Unavailable neighbors are unchanged. Tab and modified
+keys stay with the host; nested text controls are never intercepted. A keyboard binding takes the
+surface's key navigation role when a camera navigation binding is also present; wheel and drag remain
+with that camera binding. For independent keyboard camera controls, use a separate focusable surface.
+
+Focus uses current paint and clip footprints. Text retains its metric-box hit policy. PNG and PDF
+exports are static; the same accessible item snapshot can accompany them without installing listeners.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -36822,6 +36904,26 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host supplies a focusable surface and safe accessible descriptions. Targets are leaf marks. */
+export interface KeyboardBinding {
+  readonly type: 'keyboard';
+  readonly targets: readonly {
+    readonly target: InteractionTarget;
+    readonly activation?: { readonly type: 'select'; readonly selection: string; readonly mode?: 'replace' | 'toggle' }
+      | { readonly type: 'focusHierarchy' };
+  }[];
+}
+/** Runtime-only focus. Null keys designate the configured owner container. */
+export interface InteractionFocus {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  /** Stable authored scoped key, preserved when one current item represents it. */
+  readonly itemKey: string | null;
+  readonly currentItemKey: string | null;
+  readonly screenPoint: InteractionPoint | null;
+  readonly role: string | null;
+}
+export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root'; readonly target?: never; readonly itemKey?: never };
 /** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
 export interface GestureBindingOptions {
   readonly priority?: number;
@@ -36949,6 +37051,7 @@ export interface InteractionState {
   /** Session-local committed program revision; inspection and frames do not increment it. */
   readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly focus: InteractionFocus | null;
   readonly linkedSelections: readonly LinkedSelectionState[];
   /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
@@ -36962,7 +37065,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -37098,7 +37201,7 @@ export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'typ
   readonly causeTransactionId?: string;
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
-export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -37135,7 +37238,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -51787,12 +51890,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7eb3ef71eee11bfa84a991b49f8d54454ce7d61d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7eb3ef71eee11bfa84a991b49f8d54454ce7d61d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -54919,9 +55022,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:fc155c2d9b1ebd1dcb8f5632588e89ad361060b1dc34b85454f88dc7b3162a72` |
+| Contract fingerprint | `sha256:abf5377cb26714d2b84f652c7e1abcdc393de3d3a774ab869b25cbe04d5c2aeb` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `7eb3ef71eee11bfa84a991b49f8d54454ce7d61d` |
+| Runtime source commit | `e6a47675f6c1eb50785f8e8169788b15c65f8bb1` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

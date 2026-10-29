@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:fc155c2d9b1ebd1dcb8f5632588e89ad361060b1dc34b85454f88dc7b3162a72",
-    "sourceCommit": "7eb3ef71eee11bfa84a991b49f8d54454ce7d61d",
+    "contractId": "sha256:abf5377cb26714d2b84f652c7e1abcdc393de3d3a774ab869b25cbe04d5c2aeb",
+    "sourceCommit": "e6a47675f6c1eb50785f8e8169788b15c65f8bb1",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -66,7 +66,7 @@
         "related"
       ],
       "bytes": 12058,
-      "sha256": "3e4e9cf148f9253223613580a7cdf840e133c44c3aa29ddfad01c256a6312398"
+      "sha256": "af78cbfe09c20411fe7993e5cde34d5d9a8a75469a051753ad6123d728d53490"
     },
     {
       "order": 4,
@@ -1310,10 +1310,11 @@
         "move-graph-nodes-with-pointer-or-keyboard",
         "edit-existing-annotations",
         "prepare-native-work-before-replacing-the-program",
-        "combine-editing-gestures"
+        "combine-editing-gestures",
+        "keyboard-item-focus"
       ],
-      "bytes": 75591,
-      "sha256": "4ebfc0fbe2c93a2b2671f814c852d551230729db81a1c7a6b3a37fbace8a980c"
+      "bytes": 80470,
+      "sha256": "fb6ebc63afc630755875fda6fc0baacdfb6a39709f733ce38f750afccc87b50a"
     },
     {
       "order": 77,
@@ -2617,8 +2618,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 73027,
-      "sha256": "ce035d6c9e6117a29d41e1cbd894538ed002487b1278325e22de51892d036444"
+      "bytes": 74364,
+      "sha256": "c6ac68ddb99276230c08911f06fa75ee9c828de124310aa8d46464fae0a1c57f"
     },
     {
       "order": 131,
@@ -3587,7 +3588,7 @@
         "blend-concrete-sources-for-one-item"
       ],
       "bytes": 23271,
-      "sha256": "04e4390d426378f18ab9e05043e5e36d6c6764886d4eee7252cacb665c17f091"
+      "sha256": "72c3e5487fda1c9469d18479f3d1655fd8290fbb0005b4534fbb5698443b2ea4"
     },
     {
       "order": 134,
@@ -3928,7 +3929,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "13a903452fb3fc820c290a6d0c6c78c21602b67bf9d61d2838e80e7c1d7d66c7"
+      "sha256": "3937840f28928f7ef0cfa9f96d0200ef55c0ad404a8aa6f55279254164ae332f"
     },
     {
       "order": 155,

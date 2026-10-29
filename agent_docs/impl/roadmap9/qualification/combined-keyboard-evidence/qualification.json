@@ -1,0 +1,105 @@
+{
+  "status": "runtime-focused-verified-doc-integration-pending",
+  "sourceRevision": "e6a47675f",
+  "mergedRevision": "666b7ba55ed4443144c1b570b7ce5599a35651f7",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "interactionUnit": 302,
+    "boundaries": 14,
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+        "cases": [
+          "keyboard-focus/current-paint-and-basic",
+          "keyboard-focus/nested-native-selection-and-offline-restore",
+          "keyboard-focus/native-hierarchy-paths"
+        ],
+        "types": "passed"
+      }
+    ],
+    "docsFirst": {
+      "total": 228,
+      "passed": 225,
+      "failed": 3
+    }
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1117,
+    "packedBytes": 1594582,
+    "unpackedBytes": 7254528,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "5449a586e4f1153a02bc71a37cb2f77e8030a030",
+    "sha256": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629"
+  },
+  "browserBundles": {
+    "node": "v22.23.1",
+    "archive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1024,
+        "minifiedBytes": 2701441,
+        "gzipBytes": 772312
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 608,
+        "minifiedBytes": 1440875,
+        "gzipBytes": 421106
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73895,
+        "gzipBytes": 24765
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 199,
+        "minifiedBytes": 400354,
+        "gzipBytes": 127988
+      }
+    }
+  },
+  "remaining": [
+    "Canonical paired HTML host snippet execution: Canvas-only documentation mock rejects #item-focus",
+    "Search payload1075243 exceeds previous1074700; remeasure after host repair",
+    "C1 tooltip host merge and browser verification",
+    "Animation/reduced motion and final STEP077 qualification"
+  ]
+}
