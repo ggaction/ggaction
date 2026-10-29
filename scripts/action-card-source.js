@@ -187,6 +187,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (/^(create|edit)(GeoShapeMark|GeoPointMark|GeoLineMark|Graticule)$/.test(action.name)) return {
+    prerequisites: ["Canvas", "Geo coordinate", ...(action.name.endsWith("Graticule") ? [] : ["compatible geometry source"])], owns: ["geographic mark"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate", ...(action.name.endsWith("Graticule") ? [] : ["geometry"])]
+  };
   if (["createProjection", "editProjection"].includes(action.name)) return {
     prerequisites: action.name === "editProjection" ? ["existing named projection"] : ["explicit native projection type"],
     owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]

@@ -1,4 +1,5 @@
 export type EditCoordinateOptions = EditCoordinateTarget & (
-  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
-  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions; projection?: never }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions; projection?: never }
+  | { projection: string; aspect?: never; polarFrame?: never }
 );

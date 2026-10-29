@@ -1,3 +1,4 @@
+import { rematerializeProjectionCoordinates } from "./closure.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -43,7 +44,8 @@ export const editProjection = /* @__PURE__ */ closedAction(
     const previous = resolveProjectionResource(this, args.target);
     if (Object.keys(args).every(key => key === "target") || Object.values(args).some(value => value === undefined)) throw new TypeError("Projection edits require a nonempty patch without undefined values.");
     const resource = createProjectionResource({ id: previous.id, revision: previous.revision + 1, ...intent(this, args, previous) });
-    return this.editSemantic({ property: `resource[projection:${resource.id}]`, value: resource });
+    const next = this.editSemantic({ property: `resource[projection:${resource.id}]`, value: resource });
+    return rematerializeProjectionCoordinates(next, [resource.id]);
   });
 
 export function registerProjectionActions(ProgramClass) {

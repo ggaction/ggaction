@@ -1471,8 +1471,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `type` | Optional / branch-dependent | `"cartesian" \| "parallel" \| "polar" \| undefined` |
+| `type` | Optional / branch-dependent | `"cartesian" \| "geo" \| "parallel" \| "polar" \| undefined` |
 | `layers` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -1503,6 +1504,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `aspect` | Optional / branch-dependent | `CoordinateAspect \| undefined` |
 | `polarFrame` | Optional / branch-dependent | `PolarFrameOptions \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
 

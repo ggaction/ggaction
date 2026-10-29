@@ -24,6 +24,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
@@ -587,7 +588,7 @@ export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./progra
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
   DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
   DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+import type { CreateNativeCoordinateOptions, ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
   CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
@@ -718,7 +719,8 @@ type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
 
 export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
-  { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
+  { readonly [Key in Exclude<BasicMethodKey, "createData" | "createCoordinate">]: RebindMethod<ChartProgram[Key]> } &
+  { createCoordinate(options?: CreateNativeCoordinateOptions): BasicChartProgram } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
   { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };

@@ -3577,6 +3577,70 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
 
+### `createGeoShapeMark`
+
+```javascript
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeoshapemark).
+
+### `editGeoShapeMark`
+
+```javascript
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeoshapemark).
+
+### `createGeoPointMark`
+
+```javascript
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeopointmark).
+
+### `editGeoPointMark`
+
+```javascript
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeopointmark).
+
+### `createGeoLineMark`
+
+```javascript
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeolinemark).
+
+### `editGeoLineMark`
+
+```javascript
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeolinemark).
+
+### `createGraticule`
+
+```javascript
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Create projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#creategraticule).
+
+### `editGraticule`
+
+```javascript
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#editgraticule).
+
 ### `createContourData`
 
 ```javascript

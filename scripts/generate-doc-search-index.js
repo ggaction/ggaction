@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 991000; // Projection and nested responsive documents: 990509 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1007000; // Geo mark consumers and examples: 1005067 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

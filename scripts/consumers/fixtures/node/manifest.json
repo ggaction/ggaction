@@ -1199,5 +1199,22 @@
         "statements": 7
       }
     ]
+  },
+  {
+    "file": "geographic-marks.mjs",
+    "cases": [
+      {
+        "id": "geographic-marks/full-basic-coordinates-and-consumers",
+        "statements": 9
+      },
+      {
+        "id": "geographic-marks/fresh-process-offline-edit",
+        "statements": 7
+      },
+      {
+        "id": "geographic-marks/four-renderers-scene-and-holes",
+        "statements": 17
+      }
+    ]
   }
 ]

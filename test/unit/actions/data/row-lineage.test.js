@@ -70,7 +70,8 @@ test("every registered transform emits unique row keys and exact resolvable line
           if (identity.lineage.kind === "resource") {
             const resource = resolveGraphicLineage(program, identity);
             const expected = layer.mark.type === "graph" && item.role === "edge" && layer.graphBinding.routes
-              ? layer.graphBinding.routes : layer.mark.type === "contour" ? layer.contourBinding.geometry : undefined;
+              ? layer.graphBinding.routes : layer.mark.type === "contour" ? layer.contourBinding.geometry : layer.mark.type === "geo"
+                ? layer.geoBinding.geometry ?? program.semanticSpec.coordinates.find(coordinate => coordinate.id === layer.coordinate).projection : undefined;
             assert.equal(resource.kind, expected?.kind ?? "layout");
             if (expected) assert.deepEqual(identity.lineage.resource, expected);
             assert.equal(resource.id, identity.lineage.resource.id);

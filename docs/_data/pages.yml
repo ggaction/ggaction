@@ -552,3 +552,7 @@
 - title: Arrange Nested Panels with Shared Guides
   url: /tutorials/nested-responsive/
   parent: /tutorials/
+
+- title: Draw Geometry on a Map
+  url: /tutorials/geographic-marks/
+  parent: /tutorials/

@@ -7,6 +7,7 @@ const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "geo-actions": { prefix: "actions/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry revisions must preserve immutable feature identity and preflight consumers before writes." },
   "geo-materialization": { prefix: "materialization/geo", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry source results and their closed dispatch must retain exact source and identity validation." },
+  "geo-mark-selection": { prefix: "materialization/selection/policies/geo.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic source and concrete items retain exact feature identity and every split highlight part." },
   "geo-selection": { prefix: "selectors/geometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic geometry selection must preserve eligible current and unique resource semantics." },
   "projection-selection": { prefix: "selectors/projections.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Named projections must preserve explicit, current and unique resource resolution." },
   "geo-grammar": { prefix: "grammar/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic geometry must preserve exact feature identity, bounded shared topology, finite projection and clipping semantics." },

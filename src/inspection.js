@@ -1,7 +1,8 @@
 import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
 import { getMarkMaterializationStep } from "./materialization/marks/index.js";
 import { appearanceContext, markAppearance, guideAppearance } from "./actions/theme/provenance.js";
-import { layerResourceBindings } from "./core/resourceReferences.js";
+import { geoMarkSource } from "./materialization/geo/source.js";
+import { coordinateResourceBindings, layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";
 import { resolveHierarchyPlot } from "./materialization/hierarchy/plot.js";
@@ -418,6 +419,7 @@ export function comparePrograms(before, after, { target } = {}) {
             if (source === undefined || canonical(source.ref.childPath ?? []) !== path) return false;
             if (STORED_RESOURCE_KINDS.includes(candidate.ref.kind) && candidate.value.inputs.some(ref => ref.kind === source.ref.kind && ref.id === source.ref.id)) return true;
             if (STORED_RESOURCE_KINDS.includes(source.ref.kind)) {
+              if (candidate.ref.kind === "coordinate") return coordinateResourceBindings(candidate.value).some(({ ref }) => ref.kind === source.ref.kind && ref.id === source.ref.id);
               return candidate.ref.kind === "mark" && layerResourceBindings(candidate.value.semantic)
                 .some(({ ref }) => ref.kind === source.ref.kind && ref.id === source.ref.id);
             }
@@ -493,6 +495,7 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
   const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
   const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
   const calendar = layer.calendarBinding === undefined ? undefined : resolveCalendarPlot(program, layer, program.markConfigs[layer.id].calendarPlot);
+  const geo = layer.geoBinding === undefined ? undefined : geoMarkSource(program, layer, program.markConfigs[layer.id].geo);
   const dataset = calendar?.dataset ?? hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
@@ -527,7 +530,7 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
     owner: resourceRef("mark", layer.id, childPath), grain,
     appearance: items.flatMap((item, index) => { const logical = itemByGraphic.get(item.id); return markAppearance(appearance, layer, logical, item, resourceRef("mark", layer.id, childPath), logical ? scopedKey(logical.key) : undefined, String(index)); }),
     rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
-    logicalDataItems: logicalSupported ? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? geo?.features.length ?? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -555,6 +558,7 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
     bounds: union,
     sourceRefs: [
       ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
+      ...(geo === undefined ? [] : [resourceRef("projection", geo.projection.id, childPath)]),
       ...(hierarchy === undefined ? [] : [resourceRef("hierarchy", hierarchy.hierarchy.id, childPath)]),
       ...(network === undefined ? [] : [resourceRef("graph", network.graph.id, childPath), ...[...new Set([network.nodesData.id, network.edgesData.id])].map(id => resourceRef("data", id, childPath))]),
       ...(flow === undefined ? [] : [resourceRef("graph", flow.graph.id, childPath)]),

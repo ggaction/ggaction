@@ -574,6 +574,15 @@ export function buildActionRelationshipPrograms() {
       .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas().createGeometryData({ id: "geoPoints", format: "geojson", coordinateKind: "planar", values: { type: "MultiPoint", coordinates: [[10, 10], [30, 20]] } })
+      .createProjection({ id: "geoPlane", type: "identity" }).createCoordinate({ id: "geo", type: "geo", projection: "geoPlane" })
+      .createGeoShapeMark({ id: "geoShape", coordinate: "geo", geometry: "geoPoints" }).editGeoShapeMark({ opacity: .8 })
+      .createGeoPointMark({ id: "geoCities", coordinate: "geo", geometry: "geoPoints" }).editGeoPointMark({ radiusPx: 5 })
+      .createGeometryData({ id: "geoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: [[10, 10], [30, 20]] } })
+      .createGeoLineMark({ id: "geoRoutes", coordinate: "geo", geometry: "geoLines" }).editGeoLineMark({ strokeWidth: 3 })
+      .createProjection({ id: "geoSphere", type: "equirectangular", translatePx: [200, 150] })
+      .createCoordinate({ id: "sphere", type: "geo", projection: "geoSphere" }).createGraticule({ id: "geoGrid", coordinate: "sphere" })
+      .editGraticule({ opacity: .3 }).editProjection({ target: "geoPlane", scalePx: 2 }).editCoordinate({ target: "geo", projection: "geoPlane" }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

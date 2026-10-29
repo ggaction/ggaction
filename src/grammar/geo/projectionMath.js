@@ -6,7 +6,7 @@ import {
   geoAzimuthalEquidistant, geoAzimuthalEquidistantRaw,
   geoConicEqualArea, geoConicEqualAreaRaw, geoConicConformal, geoConicConformalRaw,
   geoConicEquidistant, geoConicEquidistantRaw, geoTransverseMercator,
-  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate
+  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate, geoCircle
 } from "geographic-math";
 
 const FACTORIES = {
@@ -74,4 +74,12 @@ export function streamGeometryMath(geometry, projection, sink) {
 
 export function sphericalMidpoint(a, b) {
   return geoInterpolate(a, b)(0.5);
+}
+
+export function circleGeometryMath(center, radius, precision) {
+  const circle = geoCircle().center(center).radius(radius).precision(precision)();
+  // Generated circles use geographic source winding and exact ring closure.
+  const ring = circle.coordinates[0].reverse();
+  ring[ring.length - 1] = [...ring[0]];
+  return circle;
 }

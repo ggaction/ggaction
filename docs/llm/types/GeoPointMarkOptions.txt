@@ -1,0 +1,4 @@
+export type GeoPointMarkOptions = GeoSourceMarkOptions & (
+  | { readonly radiusPx?: number; readonly radiusDeg?: never }
+  | { readonly radiusDeg: number; readonly radiusPx?: never }
+);

@@ -46,7 +46,10 @@
     "contracts/realistic-contours.test.js": 3379,
     "contracts/realistic-calendar-plots.test.js": 9353,
     "contracts/realistic-logical-selection.test.js": 2181,
-    "contracts/realistic-edge-routes.test.js": 6263
+    "contracts/realistic-edge-routes.test.js": 6263,
+    "contracts/realistic-geographic-marks.test.js": 1752,
+    "contracts/realistic-projections.test.js": 1055,
+    "contracts/realistic-responsive-layout.test.js": 3484
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -140,6 +143,36 @@
     "contracts/realistic-edge-routes.test.js": {
       "source": "canonical scripts/run-tests.js realistic on macOS arm64, Node 22.23.1",
       "measurement": "Successful whole-file duration_ms 6262.479167, rounded upward; five pinned datasets with three observed-membership route recipes each; no coverage instrumentation."
+    },
+    "contracts/realistic-geographic-marks.test.js": {
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "source": "Canonical realistic runner; successful isolated test process elapsed time, no coverage instrumentation.",
+      "measuredDurationMs": 1751.343584
+    },
+    "contracts/realistic-projections.test.js": {
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "source": "Canonical realistic runner; successful isolated test process elapsed time, no coverage instrumentation.",
+      "measuredDurationMs": 1054.071916
+    },
+    "contracts/realistic-responsive-layout.test.js": {
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "source": "Canonical realistic runner; successful isolated test process elapsed time, no coverage instrumentation.",
+      "measuredDurationMs": 3483.3687919999998
     }
   },
   "measurementOverrides": {

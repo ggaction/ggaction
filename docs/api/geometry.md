@@ -181,3 +181,151 @@ coordinate kind rejects the whole edit and preserves the previous program.
 Remove authored fit projections explicitly before removing their geometry.
 Geometry cascade does not delete a reusable authored projection. Projection
 resources and their exact fit inputs survive offline serialization.
+
+## Draw through a Geo coordinate
+
+A Geo coordinate owns one projection. A geometry mark names that coordinate and
+its geometry source; it does not copy the projection settings. Projection pixels
+are Canvas-local CSS pixels. Fit explicitly with the intended viewport when needed.
+Canvas resizing preserves that transform; `clip: true` clips at the current plot.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Import the Full package and run this complete planar polygon-with-hole example.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const map = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: "regions", format: "geojson", coordinateKind: "planar",
+    values: { type: "Polygon", coordinates: [
+      [[20,20],[280,20],[280,220],[20,220],[20,20]],
+      [[80,80],[80,140],[160,140],[160,80],[80,80]]
+    ] } })
+  .createProjection({ id: "plane", type: "identity" })
+  .createCoordinate({ type: "geo" })
+  .createGeoShapeMark({ fill: "#93c5fd", stroke: "#1e40af", clip: true });
+```
+
+## `createGeoShapeMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+```
+
+Draw mixed points, lines, polygons or collections. `geometry` and `coordinate`
+resolve an explicit ID, the current eligible resource, or one unique eligible
+candidate. Default ID is `geo-shape`; another creation needs another ID. Planar
+sources require identity; geographic sources require a spherical projection.
+
+Each feature is one logical item, even when a seam or collection splits it into
+several primitives. Holes stay unfilled. Null, empty and hidden-backside features
+retain source identity and draw no placeholder. Selection and accessibility read
+feature properties and the actual materialized pieces.
+
+Style options are `fill` (including structured paints), `stroke`, `strokeWidth`,
+`opacity`, `clip`, `lineCap`, `lineJoin`, `miterLimit`, `outline`, `shadow` and
+`blend`. Defaults are blue fill, dark stroke of width 1, opacity 1, clip false,
+butt caps and miter joins with limit 10. Shape points use `radiusPx: 3`.
+Line pieces always have fill none. Outline and shadow accept false to reset;
+blend accepts normal, multiply, screen or difference.
+
+## `editGeoShapeMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+```
+
+Use a nonempty patch of the same options with `target` instead of `id`. The target
+resolves the explicit, current or unique shape mark. Omitted options remain.
+
+## `createGeoPointMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+```
+
+Draw Point/MultiPoint features or collections containing only points. Default ID
+is `geo-point`, stroke none and strokeWidth 0. `radiusPx` defaults to 3 and stays
+constant under projection scale changes. Explicit `radiusDeg` draws a geographic
+spherical disk and requires geographic source units. Do not combine both radius
+options. All other shape styling and source/coordinate inference rules apply.
+
+## `editGeoPointMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+```
+
+Patch a point mark. A later radiusPx edit removes a previous geographic radius.
+
+## `createGeoLineMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+```
+
+Draw LineString/MultiLineString features or collections containing only lines.
+Default ID is `geo-line`; fill must be none. Interpolation defaults to
+`source-segment`, following the source longitude/latitude path. `great-circle`
+uses the short spherical path. An exactly antipodal segment needs a non-antipodal
+`routeHint: [longitude, latitude]`. Both use the same seam/clip/projection stream.
+
+## `editGeoLineMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+```
+
+Patch a line mark. `routeHint: false` explicitly removes a hint, for example when
+switching to source-segment interpolation.
+
+## `createGraticule`
+
+**Chart authoring.**
+
+```typescript
+createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+```
+
+Draw longitude/latitude lines on the current or explicit spherical Geo coordinate.
+No geometry source is created. Default ID is `graticule`, `stepDeg: [10, 10]`,
+`extentDeg: [[-180, -80], [180, 80]]` and `precisionDeg: 2.5`. Steps are positive
+and at most 180 degrees; precision is positive and at most 10 degrees. Extent
+corners must increase within longitude ±180 and latitude ±90. Lines use integer
+step multiples, with no duplicate 180-degree meridian for a full world.
+The line style rules apply.
+
+## `editGraticule`
+
+**Chart authoring.**
+
+```typescript
+editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+```
+
+Patch grid parameters or style. Invalid geometry, incompatible projections, unsafe
+values and excessive generated work reject atomically. Geometry edits update all
+fitted projections and affected marks once. Projection or coordinate edits refresh
+their mark consumers; old programs and traces remain unchanged.
+
+All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
+scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
+`removeMark`; live marks/coordinates restrict resource removal, including cascade.
+Automatic row facet/repeat, field encodings, joins, geographic labels and camera
+controls are not accepted by these mark options. Generated output is bounded at
+10,000 points/items and 10,000,000 work units per materialization.

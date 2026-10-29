@@ -1,0 +1,5 @@
+export type GeoMarkBinding = {
+  readonly mode: "shape" | "point" | "line";
+  readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
+  readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;
+} | { readonly mode: "graticule"; readonly graticule: Required<Pick<GraticuleOptions, "stepDeg" | "extentDeg" | "precisionDeg">> };
