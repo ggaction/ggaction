@@ -841,6 +841,24 @@ Request a pointed last stage in width mode.
 
 Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
 
+### [Open, high, low and close](./ohlc/)
+
+Keep four prices in one source-owned observation.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit closing price labels](./ohlc-labels/)
+
+Label closing prices without changing body heights.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit flat-body policy](./ohlc-no-doji/)
+
+Keep the high-low stem while hiding the flat body.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

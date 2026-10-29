@@ -1000,6 +1000,40 @@
         "path": "charts/nested-responsive/"
       }
     ],
+    "ohlc": [
+      {
+        "type": "prefix",
+        "path": "charts/ohlc/"
+      },
+      {
+        "type": "file",
+        "path": "browser/ohlc.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/financial-roles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/ohlc-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-ohlc-plots.test.js"
+      }
+    ],
     "oracles": [
       {
         "type": "prefix",
@@ -1226,6 +1260,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-pyramid-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-ohlc-plots.test.js"
       }
     ],
     "rendering": [

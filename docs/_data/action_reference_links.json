@@ -349,5 +349,7 @@
   "createProjection": "/reference/actions/charts-data/#createprojection",
   "editProjection": "/reference/actions/charts-data/#editprojection",
   "createPyramidPlot": "/reference/actions/marks/#createpyramidplot",
-  "editPyramidPlot": "/reference/actions/marks/#editpyramidplot"
+  "editPyramidPlot": "/reference/actions/marks/#editpyramidplot",
+  "createOHLCPlot": "/reference/actions/marks/#createohlcplot",
+  "editOHLCPlot": "/reference/actions/marks/#editohlcplot"
 }

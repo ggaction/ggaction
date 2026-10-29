@@ -6356,6 +6356,42 @@
         "file": "agent_docs/contract/current/PYRAMID.md",
         "anchor": "editpyramidplot"
       }
+    },
+    {
+      "name": "createOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editOHLCPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OHLC.md",
+        "anchor": "createohlcplot"
+      }
+    },
+    {
+      "name": "editOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editOHLCPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OHLC.md",
+        "anchor": "editohlcplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6452,7 +6488,8 @@
       "materializeContourMark",
       "materializeSelectionPreview",
       "materializeCalendarPlot",
-      "materializePyramidPlot"
+      "materializePyramidPlot",
+      "materializeOHLCPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

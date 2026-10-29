@@ -1,3 +1,5 @@
+import { createOHLC } from "./ohlc/program.js";
+import { variants as ohlcVariants } from "./ohlc/fixture.js";
 import { createNestedResponsive } from "./nested-responsive/program.js";
 import { createPyramid } from "./pyramid/program.js";
 import { variants as pyramidVariants } from "./pyramid/fixture.js";
@@ -309,6 +311,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  ...ohlcVariants.map(variant => example({ id: variant.chart, programDirectory: "ohlc", testDirectory: "ohlc", data: {}, width: 420, height: 320, docsGroup: "tutorials",
+    createProgram: () => createOHLC(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 320 } } }
+  })),
   ...pyramidVariants.map(variant => example({ id: variant.chart, programDirectory: "pyramid", testDirectory: "pyramid", data: {}, width: 420, height: 360, docsGroup: "tutorials",
     createProgram: () => createPyramid(variant.id),
     browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart",

@@ -559,3 +559,10 @@
 - title: Compare Ordered Stages
   url: /tutorials/pyramid/
   parent: /tutorials/
+
+- title: OHLC Plots
+  url: /api/ohlc/
+  parent: /api/
+- title: Show open, high, low and close
+  url: /tutorials/ohlc/
+  parent: /tutorials/

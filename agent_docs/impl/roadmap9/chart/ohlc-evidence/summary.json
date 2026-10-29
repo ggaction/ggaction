@@ -1,0 +1,33 @@
+{
+  "status": "runtime-qualified; source-pinned docs verification pending",
+  "base": "c4fe0a70b14b897ef0916a445086b9fe543c8141",
+  "archiveSha256": "d13ec0f72b4f5e9d51db1ea5882dfb6b9c19593515f361bf111610f748712dea",
+  "cases": {
+    "publicLatest": 15,
+    "pure": 6,
+    "primitive": 3,
+    "critical": 20,
+    "render": 6,
+    "browserVariants": 3,
+    "browserDensities": [
+      1,
+      2
+    ],
+    "realFinancialSourceTables": 1,
+    "realFinancialSeries": 5,
+    "realistic": 16,
+    "generatedLifecycle": 3,
+    "inventoryPrevious": {
+      "pass": 6,
+      "fail": 1
+    },
+    "inventoryCorrectedOwner": 1,
+    "sharedPackageAndGuideContracts": 62
+  },
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "remaining": [
+    "STEP050 aggregate admission integration",
+    "Waterfall/Trail/Table vertical slices",
+    "STEP074 full qualification and independent-source distribution"
+  ]
+}

@@ -1615,6 +1615,10 @@ function buildDirectRangedMarks(factors) {
     })
     .encodeY({ target: "directBands", field: "position", scale: { id: "y" } })
     .encodeGroup({ target: "directBands", field: "group" })
+    .createOHLCPlot({ id: "directOHLC", data: "directRanges", x: { field: "lower", scale: { id: "x" } },
+      low: "position", open: "position", high: "positionEnd", close: "positionEnd", yScale: { id: "y" },
+      width: { pixels: 5 }, labels: false, guides: false })
+    .editOHLCPlot({ target: "directOHLC", body: { opacity: .3 }, doji: "none" })
     .createTitle({ text: lifecycleTitle(factors, "Ranged comparison") });
 }
 

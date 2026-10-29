@@ -70,6 +70,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
   createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
   editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
@@ -3595,6 +3597,25 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
 
 Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`LabelLayoutOptions`](#type-labellayoutoptions) · [`MarkLabelPlacement`](#type-marklabelplacement) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextFormat`](#type-textformat) · [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
+### `CreateOHLCPlotOptions` {#type-createohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateOHLCPlotOptions</summary>
+
+```typescript
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`OHLCX`](#type-ohlcx) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`OHLCWidth`](#type-ohlcwidth) · [`OHLCBodyPaint`](#type-ohlcbodypaint) · [`OHLCStemPaint`](#type-ohlcstempaint) · [`OHLCLabelPaint`](#type-ohlclabelpaint) · [`OHLCColor`](#type-ohlccolor) · [`ColorGuides`](#type-colorguides).
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
 <details markdown="1">
@@ -6879,6 +6900,19 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 </details>
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`NormalizedDataOptions`](#type-normalizeddataoptions).
+
+### `EditOHLCPlotOptions` {#type-editohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand EditOHLCPlotOptions</summary>
+
+```typescript
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateOHLCPlotOptions`](#type-createohlcplotoptions).
 
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
@@ -11243,6 +11277,92 @@ export type NumericFormatString =
 </details>
 
 Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
+
+### `OHLCBodyPaint` {#type-ohlcbodypaint}
+
+<details markdown="1">
+<summary>Expand OHLCBodyPaint</summary>
+
+```typescript
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `OHLCColor` {#type-ohlccolor}
+
+<details markdown="1">
+<summary>Expand OHLCColor</summary>
+
+```typescript
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+
+### `OHLCLabelPaint` {#type-ohlclabelpaint}
+
+<details markdown="1">
+<summary>Expand OHLCLabelPaint</summary>
+
+```typescript
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `OHLCStemPaint` {#type-ohlcstempaint}
+
+<details markdown="1">
+<summary>Expand OHLCStemPaint</summary>
+
+```typescript
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+```
+
+</details>
+
+Related types: [`OHLCBodyPaint`](#type-ohlcbodypaint).
+
+### `OHLCWidth` {#type-ohlcwidth}
+
+<details markdown="1">
+<summary>Expand OHLCWidth</summary>
+
+```typescript
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+```
+
+</details>
+
+Related types: [`BarWidthOptions`](#type-barwidthoptions).
+
+### `OHLCX` {#type-ohlcx}
+
+<details markdown="1">
+<summary>Expand OHLCX</summary>
+
+```typescript
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `ObservedGraphDefinition` {#type-observedgraphdefinition}
 

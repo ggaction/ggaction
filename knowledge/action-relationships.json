@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 351,
+  "actionCount": 353,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2379,6 +2379,21 @@
       "name": "editPyramidPlot",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "createOHLCPlot",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editOHLCPlot",
+      "wraps": [
+        "editSemantic",
+        "createScale"
       ]
     }
   ]

@@ -1089,6 +1089,11 @@
     "PyramidPlot": [
       "Pyramid plot",
       "ordered stage widths and areas"
+    ],
+    "OHLCPlot": [
+      "OHLC plot",
+      "open high low close prices",
+      "price stems and bodies"
     ]
   },
   "summaryOverrides": {
@@ -1111,7 +1116,9 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
+    "createOHLCPlot": "Create row-owned open, high, low and close prices with one shared price scale.",
+    "editOHLCPlot": "Edit OHLC fields and styles while preserving typed row identity."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -2203,6 +2210,17 @@
     "editPyramidPlot": {
       "target": "pyramid",
       "encoding": "area"
+    },
+    "createOHLCPlot": {
+      "x": "date",
+      "low": "low",
+      "high": "high",
+      "open": "open",
+      "close": "close"
+    },
+    "editOHLCPlot": {
+      "target": "ohlc",
+      "doji": "none"
     }
   },
   "callPatternOverrides": {

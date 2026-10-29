@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "ohlc-action": { prefix: "actions/charts/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Price edits must validate the final four-field item before writing and rematerialize every role." },
+  "ohlc-plot": { prefix: "grammar/ohlcPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored OHLC meaning and appearance must remain closed and canonical." },
+  "ohlc-materialization": { prefix: "materialization/ohlc/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One source row owns stem/body/label geometry and scale-domain eligibility." },
+  "ohlc-selection": { prefix: "materialization/selection/policies/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "All price glyph roles share one stable item key and highlight translation." },
   "pyramid-action": { prefix: "actions/charts/pyramid.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Pyramid edits must preflight final meaning and preserve explicit materialization." },
   "pyramid-materialization": { prefix: "materialization/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage and label geometry must share typed identity, paint and current viewport." },
   "pyramid-selection": { prefix: "materialization/selection/policies/pyramid.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One stage must remain one logical item across labels, highlights and revisions." },

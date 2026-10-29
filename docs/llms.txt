@@ -237,3 +237,5 @@ requirements after resolving each part.
 - Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/
 - Pyramid Plots: ./api/pyramid/
 - Compare Ordered Stages: ./tutorials/pyramid/
+- OHLC Plots: ./api/ohlc/
+- Show open, high, low and close: ./tutorials/ohlc/

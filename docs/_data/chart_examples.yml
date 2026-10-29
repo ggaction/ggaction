@@ -2285,3 +2285,52 @@
   actions: createPyramidPlot · editPyramidPlot
   tasks: ordered stages
   url: /tutorials/pyramid/
+
+- id: ohlc
+  example: /examples/ohlc/
+  title: Open, high, low and close
+  image: /assets/images/ohlc.png
+  alt: Keep four prices in one source-owned observation.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Keep four prices in one source-owned observation.
+  summary: Keep four prices in one source-owned observation.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/
+  tutorial_order: 290
+
+- id: ohlc-labels
+  example: /examples/ohlc-labels/
+  title: Explicit closing price labels
+  image: /assets/images/ohlc-labels.png
+  alt: Label closing prices without changing body heights.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Label closing prices without changing body heights.
+  summary: Label closing prices without changing body heights.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/
+
+- id: ohlc-no-doji
+  example: /examples/ohlc-no-doji/
+  title: Explicit flat-body policy
+  image: /assets/images/ohlc-no-doji.png
+  alt: Keep the high-low stem while hiding the flat body.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-no-doji-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Keep the high-low stem while hiding the flat body.
+  summary: Keep the high-low stem while hiding the flat body.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/

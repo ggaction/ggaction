@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 351,
+  "count": 353,
   "cards": [
     {
       "schemaVersion": 3,
@@ -43931,6 +43931,372 @@
       "snippet": "program.editPyramidPlot({ target: \"pyramid\", encoding: \"area\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editpyramidplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create row-owned open, high, low and close prices with one shared price scale.",
+      "signature": "createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;",
+      "intents": [
+        "create ohlc plot",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "OHLC plot",
+        "open high low close prices"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "owns": [
+          "OHLC price mark"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editOHLCPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "width",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "yScale",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "OHLCX"
+        },
+        {
+          "name": "low",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "high",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "open",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "close",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "yScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "invalid",
+          "required": false,
+          "type": "\"error\" | \"omit-row\" | undefined"
+        },
+        {
+          "name": "doji",
+          "required": false,
+          "type": "\"line\" | \"none\" | undefined"
+        },
+        {
+          "name": "width",
+          "required": false,
+          "type": "Omit<{ target?: string | undefined; } & { band?: number | undefined; pixels?: undefined; interval?: undefined; }, \"target\"> | Omit<{ target?: string | undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, \"target\"> | Omit<...> | undefined"
+        },
+        {
+          "name": "body",
+          "required": false,
+          "type": "OHLCBodyPaint | undefined"
+        },
+        {
+          "name": "stem",
+          "required": false,
+          "type": "OHLCStemPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | OHLCLabelPaint | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | OHLCColor | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | ColorGuides | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createOHLCPlot({ x, low, high, open, close, id?, data?, coordinate? })"
+      ],
+      "snippet": "program.createOHLCPlot({ x: \"date\", low: \"low\", high: \"high\", open: \"open\", close: \"close\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createohlcplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit OHLC fields and styles while preserving typed row identity.",
+      "signature": "editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit ohlc plot",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "OHLC plot",
+        "open high low close prices"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "owns": [
+          "OHLC price mark"
+        ],
+        "idOptions": [
+          "target",
+          "data",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editOHLCPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "width",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "yScale",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "OHLCX | undefined"
+        },
+        {
+          "name": "low",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "high",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "open",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "close",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "yScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "invalid",
+          "required": false,
+          "type": "\"error\" | \"omit-row\" | undefined"
+        },
+        {
+          "name": "doji",
+          "required": false,
+          "type": "\"line\" | \"none\" | undefined"
+        },
+        {
+          "name": "width",
+          "required": false,
+          "type": "Omit<{ target?: string | undefined; } & { band?: number | undefined; pixels?: undefined; interval?: undefined; }, \"target\"> | Omit<{ target?: string | undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, \"target\"> | Omit<...> | undefined"
+        },
+        {
+          "name": "body",
+          "required": false,
+          "type": "OHLCBodyPaint | undefined"
+        },
+        {
+          "name": "stem",
+          "required": false,
+          "type": "OHLCStemPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | OHLCLabelPaint | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | OHLCColor | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | ColorGuides | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editOHLCPlot({ target?, data?, coordinate?, yScale?, x?, low?, high?, open? })"
+      ],
+      "snippet": "program.editOHLCPlot({ target: \"ohlc\", doji: \"none\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editohlcplot"
     }
   ]
 }

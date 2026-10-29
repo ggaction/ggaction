@@ -94,7 +94,7 @@ function channelSource(context, layer, item, property, value) {
 function resourcePath(context, layer, item, role, property) {
   const owner = resourcePlotThemeOwner(layer);
   if (!owner) return undefined;
-  const component = role === "label" ? "labels" : owner.key === "pyramidPlot" ? "stages" : owner.key === "flowPlot" ? "body"
+  const component = role === "label" ? "labels" : owner.key === "ohlcPlot" ? (role === "stem" ? "stem" : "body") : owner.key === "pyramidPlot" ? "stages" : owner.key === "flowPlot" ? "body"
     : layer.mark.type === "graph" ? (item?.role === "edge" || role === "arrow" ? "edges" : "nodes")
       : layer.mark.type === "tree" ? (role === "link" ? "links" : "nodes") : "cells";
   return ["marks", layer.id, owner.key, component, layer.mark.type === "graph" && role === "arrow" && property === "fill" ? "stroke" : property];

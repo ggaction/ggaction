@@ -195,6 +195,7 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
     idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
   };
+  if (["createOHLCPlot", "editOHLCPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["OHLC price mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createPyramidPlot", "editPyramidPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Pyramid stage mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (action.name === "createCalendarLayout") return { prerequisites: ["materialized civil-day observations"], owns: ["calendar layout resource"], idOptions: ["id", "data"] };
   if (["createCalendarPlot", "editCalendarPlot"].includes(action.name)) return {

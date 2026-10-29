@@ -68,3 +68,7 @@ value, delta에 reset을 넣으면 거부한다. label 문자열로 역할을 �
 [수치·설치 증거](financial-role-evidence/summary.json)는 공개 소비자 및 최종074/077 검증을 대신하지 않는다.
 
 역할 source `07bf9c821`의 source pin 문서191·built170pages/1454LLM과 같은 archive 재생성을 확인했다. 이 private 값 계산 checkpoint에는 공개 UI·도형·예제 변경이 없으며 기존 browser 증거를 재사용한다.
+
+## OHLC public checkpoint — 2026-10-29
+
+The subsequent [OHLC vertical slice](../chart/ohlc.md) now implements create/edit, stored price roles, source lifecycle, compound row selection/hit, guides/color/theme/fonts, nested composition and Canvas/SVG/PNG/PDF/offline consumers. Waterfall public work and STEP050/051/052/074 integration obligations remain open; the foundation-only statement above describes its earlier checkpoint.

@@ -2095,6 +2095,97 @@ editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, enc
 
 Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](../../../../api/pyramid/).
 
+## `createOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateOHLCPlotOptions`](../../../../reference/types/#type-createohlcplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `OHLCX` |
+| `low` | Required | `string` |
+| `high` | Required | `string` |
+| `open` | Required | `string` |
+| `close` | Required | `string` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createOHLCPlot({ id?, data?, coordinate?, x, low, high, open, close, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Draw explicit open, high, low and close roles as one row-owned item. See [OHLC plots](../../../../api/ohlc/).
+
+## `editOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditOHLCPlotOptions`](../../../../reference/types/#type-editohlcplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `OHLCX \| undefined` |
+| `low` | Optional / branch-dependent | `string \| undefined` |
+| `high` | Optional / branch-dependent | `string \| undefined` |
+| `open` | Optional / branch-dependent | `string \| undefined` |
+| `close` | Optional / branch-dependent | `string \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Edit prices and styles while preserving typed row identities. See [OHLC plots](../../../../api/ohlc/).
+
 ## Related
 
 [Action Reference](../../../../reference/actions/) · [Chart API](../../../../api/) · [Supported Features](../../../../supported-features/)

@@ -570,5 +570,16 @@
       "exported": "createPyramid"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/ohlc.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "prices",
+    "prerequisites": "Import the Full ggaction package; this example declares four prices per source observation.",
+    "canonical": {
+      "file": "examples/ohlc/program.js",
+      "exported": "createOHLC"
+    },
+    "rendering": "authoring-only"
   }
 }

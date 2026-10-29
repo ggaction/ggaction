@@ -80,6 +80,7 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
+  if (layer.mark.type === "ohlc") return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
   if (layer.mark.type === "pyramid") return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
   if (["flow-node", "flow-link", "contour", "calendar"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: item.fields
@@ -103,7 +104,7 @@ function finalRows(program, layer) {
 
 function column(layer, key) {
   const dimension = layer.encoding?.parallel?.dimensions.find(item => item.field === key);
-  const encoding = (layer.pyramid && ["stage", "value"].includes(key) ? { field: layer.pyramid[key] } : undefined) ?? dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
+  const encoding = (layer.ohlc && ["open", "close"].includes(key) ? { field: layer.ohlc[key] } : layer.ohlc && ["low", "high"].includes(key) ? layer.encoding[key === "low" ? "y" : "y2"] : undefined) ?? (layer.pyramid && ["stage", "value"].includes(key) ? { field: layer.pyramid[key] } : undefined) ?? dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
   const temporal = encoding?.fieldType === "temporal";
   return {
     key,

@@ -1162,5 +1162,19 @@
     "editSource": "examples/pyramid/program.js",
     "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one.",
     "image": "/assets/images/pyramid.png"
+  },
+  "/api/ohlc/": {
+    "title": "OHLC Plots",
+    "source": "docs/api/ohlc.md",
+    "editSource": "docs/api/ohlc.md",
+    "description": "Show each observation's open, high, low and close as one selectable item. A thin line spans the low and high; a rectangle spans the open and close.",
+    "image": "/assets/images/ohlc.png"
+  },
+  "/tutorials/ohlc/": {
+    "title": "Show open, high, low and close",
+    "source": "docs/tutorials/ohlc.md",
+    "editSource": "examples/ohlc/program.js",
+    "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
+    "image": "/assets/images/ohlc.png"
   }
 }

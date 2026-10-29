@@ -4,6 +4,7 @@ import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
+import { validateOHLCBinding, readOHLCItems } from "../grammar/ohlcPlot.js";
 import { validatePyramidBinding, readPyramidStages } from "../grammar/pyramid/plot.js";
 import { validateImageBinding } from "../materialization/imageState.js";
 import { validateConcreteFontBindings } from "../materialization/fontState.js";
@@ -266,6 +267,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         validateSourceIdentity(resource);
       }
       if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource);
+        if (resource.mark?.type === "ohlc") {
+          validateOHLCBinding(resource, program.markConfigs[resource.id]?.ohlcPlot);
+          const dataset = semantic.datasets.find(entry => entry.id === resource.data);
+          if (dataset === undefined) throw new TypeError("OHLC requires an existing dataset.");
+          readOHLCItems(dataset, resource);
+        }
         if (resource.mark?.type === "pyramid") {
           validatePyramidBinding(resource, program.markConfigs[resource.id]?.pyramidPlot);
           const dataset = semantic.datasets.find(entry => entry.id === resource.data);

@@ -1,3 +1,4 @@
+import { ohlcSelectionPolicy } from "./ohlc.js";
 import { pyramidSelectionPolicy } from "./pyramid.js";
 import { calendarSelectionPolicy } from "./calendar.js";
 import { imageSelectionPolicy } from "./image.js";
@@ -28,6 +29,7 @@ const POLICIES = Object.freeze({
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,
   pyramid: pyramidSelectionPolicy,
+  ohlc: ohlcSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
   "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,
