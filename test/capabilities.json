@@ -1094,6 +1094,16 @@
         "path": "contracts/realistic-mark-shadows.test.js"
       }
     ],
+    "single-y": [
+      {
+        "type": "file",
+        "path": "unit/grammar/frame-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/frame-state.test.js"
+      }
+    ],
     "statistical-fixtures": [
       {
         "type": "file",

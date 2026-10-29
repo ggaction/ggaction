@@ -3461,3 +3461,11 @@ Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,0
 SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
 Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
 Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
+
+## Private Cartesian frame admission foundation
+
+`grammar/framePolicy.js`는 scope-qualified Y resource identity와 plot-region overlap의
+순수 정책 owner다. `materialization/frameState.js`는 기존 semantic bindings와 실제 namespaced
+child Canvas를 읽는 read-only adapter다. 기존 coordinateBounds/Canvas owner를 재사용하고
+새 frame 저장 상태나 자동 materializer를 추가하지 않는다. 현재 공개 진입 경계에는 연결하지
+않았으며 [구현 기록](impl/roadmap9/chart/single-y-policy.md)이 남은 연결을 추적한다.

@@ -1,0 +1,46 @@
+{
+  "state": "private-foundation-qualified",
+  "base": "2d92baea0",
+  "publicAdmissionConnected": false,
+  "focused": 12,
+  "coverage": {
+    "grammar/framePolicy.js": [
+      100,
+      100,
+      100
+    ],
+    "materialization/frameState.js": [
+      100,
+      97.33,
+      100
+    ]
+  },
+  "floorsEach": [
+    95,
+    90,
+    100
+  ],
+  "contractsInitial": {
+    "passed": 55,
+    "failed": 1,
+    "failure": "New capability key appended instead of sorted."
+  },
+  "discoveryFinal": {
+    "passed": 16,
+    "failed": 0
+  },
+  "docs": {
+    "passed": 18,
+    "failed": 0
+  },
+  "package": {
+    "entryCount": 909,
+    "size": 1310368,
+    "unpackedSize": 6004021
+  },
+  "notRun": [
+    "public admission tests (not connected)",
+    "new renderer pixels (no visual change)",
+    "installed runtime matrix (private unused helpers only)"
+  ]
+}
