@@ -1401,7 +1401,7 @@ activation can instead use `activation: { type: "focusHierarchy" }`.
 
 <!-- snippet-context:start -->
 
-> **Executable complete.** Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+> **Executable complete.** Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
 
 <!-- snippet-context:end -->
 

@@ -644,6 +644,6 @@
     "environment": "browser-module",
     "result": "program",
     "rendering": "renders-canvas",
-    "prerequisites": "Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text."
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text."
   }
 ]

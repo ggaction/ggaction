@@ -111,3 +111,9 @@ bundle의 actions/Node 금지와 실측검사는 별도로 유지한다.
 Node20/22/24 각3runtime+strict types+5bundle 검사를 통과했다. 최종 boundary/package/type/docs91,
 reader12회귀, 기존 interaction/hit344, Node20/24 각18, 실제16 및 browser2도 통과했다.
 Source pin/build/화면 evidence는 후속 qualification commit으로 연결한다.
+
+B source `d2441294413d13de40fc545f070489645c038276`를 고정했다.
+[최종 machine evidence](keyboard-focus-evidence/qualification.json)에 초기 실패, 수정 이유,
+고정 tar,3Node consumers,critical coverage와 실제 화면을 보존했다. source pin 후49 docs,
+172 built pages/1535 LLM hashes,320/390/768/1440 overflow0/Axe0을 확인했다. 320/1440 화면을
+직접 확인했고 두 코드 블록의 공통 host 안내를 명료화했다. C/D와 전체077은 계속 미완료다.

@@ -2736,7 +2736,7 @@
       "selection: \"chosen\"",
       "target: \"points\""
     ],
-    "prerequisites": "Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
     "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
     "executable": true
   },
