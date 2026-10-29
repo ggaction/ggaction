@@ -17,6 +17,10 @@
     "packageArtifact": {
       "tests": 7,
       "pass": 7
+    },
+    "sourceDocs": {
+      "tests": 197,
+      "pass": 197
     }
   },
   "package": {
@@ -74,6 +78,23 @@
     {
       "file": "package-size-24.json.gz",
       "sha256": "e4449dea773e2f295e6bc77d61a7437bbca732610968dcbbcb0c0377bf34b17d"
+    },
+    {
+      "file": "levels-docs.log.gz",
+      "sha256": "8734bf165c2334adbdf966364a8caa86f2b30a886576b9b77ac74e976c446a75"
+    },
+    {
+      "file": "levels-provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "levels-machine.log.gz",
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d"
+    },
+    {
+      "file": "levels-llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
     }
-  ]
+  ],
+  "sourceCommit": "4a9dac2e3"
 }
