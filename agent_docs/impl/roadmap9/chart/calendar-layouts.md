@@ -6,7 +6,7 @@
 - [x] 기존 전체 승인 범위와 순수 kernel 계약 기록
 - [x] civil-day 집계와 year/week/day cell kernel·독립 oracle
 - [x] 공개 Calendar action·원본 갱신·전체 소비자 계약과 구현
-- [ ] 타입·문서·실데이터·renderer·설치 및 최종 checkpoint
+- [x] 타입·문서·실데이터·renderer·설치 및 최종 checkpoint
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 사용자에게 남은
 설계·시각 Gate 승인을 다시 요청하지 않는다. Root는 Contour `2a7549a0b` 종료 후 독립 Calendar
@@ -125,3 +125,44 @@ Evidence: `calendar-evidence/public-source/`.
 
 공통 source revision의 최종 resource 후보·단일 materialization union과 Calendar theme/font 역할 연결을
 2d92baea0 통합 상태에서 검증했다. 타입·실제 고정 archive·전체 coverage·문서 검증은 다음 기록에 남긴다.
+
+
+## 최종 통합 qualification
+
+Runtime source는 `80b84bac1`, 실행 입력은 `83fffcfd8`, 합산 baseline은 `2d92baea0`이다.
+후속 수리는 시험·생성 catalog·architecture 목록에 한정하며 src/types/knowledge/README/CHANGELOG와
+고정 package payload는 변경하지 않았다. 원본 실패와 owning 재검증은
+[final/status.json](calendar-evidence/final/status.json)에 분리해 보존했다.
+
+- 전체 normal coverage 최초 7,965 중 7,957 통과, lines/branches/functions 96.66/94.59/99.02.
+  8개 실패는 catalog/internal 목록, primitive evidence/파일 누락, package 문서 항목·한도,
+  과거 point graphic ID 고정 기대, Calendar timing 등록이다. Owning normal 35/35로 회복했다.
+- 기존 graph source bridge가 새 final-source planner 이후 미실행된 부분은 exact source proof,
+  candidate graph edit→inference→layout 및 codec/immutable 회귀 83/83으로 검증했다.
+  layouts 100/100/100, resources 100/93.10/100이며 원본 full의 다른 owner들과 각각 대조해
+  critical 434개 기준을 충족한다. 두 실행을 합쳐 새 전체 coverage를 실행한 것처럼 주장하지 않는다.
+- Realistic 26 중 25 통과: 실제 날짜를 가진 5개 dataset×3개 recipe와 신규 action direct witness는
+  모두 통과했다. 단일 excluded option count 기대를 10,179로 맞춘 owning inventory 7/7로 회복했다.
+- Calendar renderer 6/6, browser 3/3(Canvas/SVG DPR1/2), 독립 primitive의 leap-year 366일,
+  관측 292일·month closed outlines·bounds 회귀 통과. 기존 Text shadow variant의 chart ID를
+  공개 registry와 맞춘 후 public pair와 4 backend/codec 회귀도 통과했다.
+- 동일 archive `bb5b531b1e990b337db9a3133d44a46f6d4987d9f198a4c72ac555f50d8e4ec2`를
+  Node20.20.2/22.23.1/24.22.1에 각각 설치했다. 최초 runtime 237/238의 실패는 inspect sourceRefs에서
+  layout뿐 아니라 원본 data도 제공하는 최신 계약을 fixture가 누락한 것이다. 이 fixture만 고친 뒤
+  동일 archive의 전체 Node runtime 238/238을 각 환경에서 재검증했다. Types/MCP/tutorial84 및
+  4 bundle qualification은 최초 세 환경 모두 통과했으므로 반복하지 않았다.
+- Docs source180/180, built166pages/1428artifacts, desktop search와 전체320/390/768px browser 통과.
+  첫 build는 system Ruby 선택으로 실패했으며 기존 Ruby3.3 경로를 지정한 retry가 통과했다.
+
+Package는 920entries, Node22 packed1,316,966/unpacked6,061,365bytes이며 Node20/24 packed최대
+1,319,887로 ceiling920/1,320,000/6,062,000을 적용했다. 동일 minified JS의 Node별 zlib gzip 최대는
+Full658,183, Basic367,366, SVG20,196, interaction82,474이며 ceiling659,000/368,000/25,000/83,000이다.
+기존 test/coverage 기준은 낮추지 않았다. Measurement tar와 실제 설치 tar의 hash는 구분해 기록했다.
+
+최종 합산에서 부모가 공통 recipe 영향 3파일 `realistic-lifecycle-factor-effects`,
+`realistic-scenario-generator`, `realistic-scenario-generation-isolation`을 한 번 실행한다.
+GraphPlot/Calendar 등 resource-backed 가족의 자동 facet 정책은 STEP035의 기존 통합 의무다.
+추가로 resource-only inferred graph와 ordinary point의 facet도 different-logical-source projection을
+기존 graph same-source proof에 넘겨 거부됨을 STEP035 소유자에게 전달했다. 이 경로를 지원한다고
+문서화하지 않았고 Calendar source revision 및 explicit composition 계약은 모두 검증했다.
+STEP024 checkpoint는 Roadmap9 전체 또는 STEP077 완료를 의미하지 않는다.

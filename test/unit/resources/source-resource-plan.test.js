@@ -7,6 +7,7 @@ import { getMarkItems } from "../../../src/inspection.js";
 import { planSourceResourceRevision } from "../../../src/actions/data/resourcePlan.js";
 import { withPreparedDataResourceResults, preparedResourceResults } from "../../../src/actions/primitives/preparedResourceContext.js";
 import { dataInputReference } from "../../../src/selectors/resources.js";
+import { reviseGraphInputs } from "../../../src/actions/graphs/resources.js";
 
 const rows = [{ id: "a", date: "2024-02-28", x: 1, y: 1, value: 1 },
   { id: "b", date: "2024-02-29", x: 2, y: 1, value: 2 }, { id: "c", date: "2024-02-29", x: 3, y: 1, value: 3 }];
@@ -24,6 +25,35 @@ const once = (p, entries) => {
   const trace = walk(p.trace.children.at(-1));
   for (const [op, id] of entries) assert.equal(trace.filter(node => node.op === op && (node.args.id ?? node.args.target) === id).length, 1, `${op}:${id}`);
 };
+
+test("the graph revision bridge retains exact source proofs and agrees with the final resource plan", () => {
+  const original = chart().createData({ id: "samples", keyField: "id", values: rows })
+    .createInferredGraphData({ id: "sequence", data: "samples", nodeKey: "id", ruleId: "sequence", rule: "sequence", options: { orderField: "x" } })
+    .layoutGraph({ id: "positions", method: "circular" });
+  const next = original.reviseData({ source: "samples", id: "next", values: rows.map(row => ({ ...row, x: -row.x })) });
+  const staged = next._clone({ semanticSpec: { ...next.semanticSpec, resources: original.semanticSpec.resources } });
+  const saved = serializeProgram(staged), repaired = reviseGraphInputs(staged, new Map([["samples", "next"]]));
+  assert.deepEqual(repaired.semanticSpec.resources, next.semanticSpec.resources);
+  assert.deepEqual(deserializeProgram(serializeProgram(repaired)).semanticSpec.resources, next.semanticSpec.resources);
+  assert.equal(serializeProgram(staged), saved);
+  const unrelated = staged.createData({ id: "unrelated", values: rows });
+  assert.throws(() => reviseGraphInputs(unrelated, new Map([["samples", "unrelated"]])), /same source/);
+  assert.equal(serializeProgram(staged), saved);
+});
+
+test("explicit graph edits still rebuild candidate inference and its stored layout", () => {
+  const original = chart().createData({ id: "nodes", keyField: "id", values: rows })
+    .createData({ id: "edges", values: [{ from: "a", to: "b", weight: 1, revised: 4 }, { from: "b", to: "c", weight: 2, revised: 6 }] })
+    .createGraphData({ id: "candidate", nodes: "nodes", edges: "edges", nodeKey: "id", source: "from", target: "to", weight: "weight" })
+    .createInferredGraphData({ id: "tree", data: "nodes", nodeKey: "id", ruleId: "backbone", rule: "mst", candidateGraph: "candidate" })
+    .layoutGraph({ id: "positions", graph: "tree", method: "circular" });
+  const saved = serializeProgram(original), next = original.editGraphData({ target: "candidate", definition: { weight: "revised" } });
+  assert.equal(resource(next, "tree").result.diagnostics.cost, 10);
+  assert.deepEqual(resource(next, "tree").inputs[1], { kind: "graph", id: "candidate", revision: 1 });
+  assert.deepEqual(resource(next, "positions").inputs[0], { kind: "graph", id: "tree", revision: 1 });
+  assert.deepEqual(deserializeProgram(serializeProgram(next)).semanticSpec.resources, next.semanticSpec.resources);
+  assert.equal(serializeProgram(original), saved);
+});
 
 test("source revisions materialize the final calendar, contour and native shared-scale union once", () => {
   const p = mixed().createPointMark({ id: "points", data: "samples" }).encodeX({ field: "x" }).encodeY({ field: "y" })

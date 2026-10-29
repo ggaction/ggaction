@@ -35,7 +35,7 @@ export const cases = [
       .editCalendarPlot({ cells: { opacity: 0 }, monthBoundary: false, labels: false });
     assert.equal(getMarkItems(q, { target: "calendar" }).length, 2);
     assert.equal(getMarkItems(q, { target: "calendar" }).at(-1).fields.value, 3.5);
-    assert.deepEqual(inspectProgram(q).views.find(view => view.owner.id === "calendar").sourceRefs.map(ref => ref.kind), ["layout"]);
+    assert.deepEqual(inspectProgram(q).views.find(view => view.owner.id === "calendar").sourceRefs.map(ref => ref.kind), ["layout", "data"]);
     assert.equal(exportAccessibleData(q, { target: "calendar" }).views[0].rows.length, 2);
     assert.throws(() => q.removeResource({ kind: "layout", id: "layout", cascade: true }), /mark|referenc|consum/i);
     const removed = q.removeMark({ target: "calendar" }).removeResource({ kind: "layout", id: "layout" });

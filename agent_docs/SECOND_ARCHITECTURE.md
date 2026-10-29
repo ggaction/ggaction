@@ -695,6 +695,10 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 `src/inspection.js`의 browser-safe read-only entry는 저장된 dataset schema, action의 정적 적용 가능성, 두 프로그램의 resource 변화, materialized graphic의 구조와 가시 후보를 조회한다. 조회는 action을 실행하거나 program, trace, context를 바꾸지 않는다. 계산이나 pixel 확인을 수행하지 않은 검사는 `not_run`, 알 수 없는 extension 의미는 `unverified`, 지원하지 않는 concrete owner는 partial coverage로 반환한다.
 
+### `ggaction/interaction`
+
+Browser-safe controller entry는 materialized scene의 hit geometry와 명시적인 host event binding을 사용한다. Full/Basic authoring을 import하거나 저장 의미를 변경하지 않는다. 정확한 공개 계약은 [Interaction](../docs/api/interaction.md)이 소유한다.
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -793,8 +797,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 650,000 bytes |
-| `ggaction/basic` | 365,000 bytes |
+| `ggaction` | 659,000 bytes |
+| `ggaction/basic` | 368,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 83,000 bytes |
 

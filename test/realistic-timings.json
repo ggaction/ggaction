@@ -43,7 +43,8 @@
     "contracts/realistic-mark-blends.test.js": 18646,
     "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-flow-layouts.test.js": 1611,
-    "contracts/realistic-contours.test.js": 3379
+    "contracts/realistic-contours.test.js": 3379,
+    "contracts/realistic-calendar-plots.test.js": 9353
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
