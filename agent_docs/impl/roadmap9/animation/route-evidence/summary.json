@@ -45,6 +45,12 @@
       "file": "animation-routes-package-contract.log.gz",
       "sha256": "92c5e903299a8ddc25e7bfc3b016f0bc09489c3add7c5074ee2dd629ffc1fbc8",
       "status": "passed"
+    },
+    {
+      "file": "animation-routes-final-docs.log.gz",
+      "sha256": "0caf8ec76296180a85a798055c3b964a7d6026cb85ea650e7ab5b2498dcca8f5",
+      "status": "passed"
     }
-  ]
+  ],
+  "sourceCommit": "f90191219"
 }
