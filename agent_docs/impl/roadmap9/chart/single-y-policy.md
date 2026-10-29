@@ -30,4 +30,4 @@ unit은 scale identity부터 검증한다. Polar/Parallel/Geo와 Y binding 없�
 검증: `node --test --experimental-test-coverage --test-coverage-include=src/grammar/framePolicy.js --test-coverage-include=src/materialization/frameState.js test/unit/grammar/frame-policy.test.js test/unit/frame-state.test.js`.
 순수 owner100/100/100, 상태 adapter100/97.33/100(lines/branches/functions).
 공통 architecture/visibility/package55개 통과, capability 정렬 수정 후 discovery16개 통과.
-문서 provenance14개 통과. [증거](single-y-foundation-evidence/summary.json)에 최초 실패와 수정 결과를 함께 보존한다.
+문서 provenance18개 통과. [증거](single-y-foundation-evidence/summary.json)에 최초 실패와 수정 결과를 함께 보존한다.
