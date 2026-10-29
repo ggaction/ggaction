@@ -249,3 +249,8 @@ E package archive c8d46732…를 고정해 source-free 설치 검증한다. Node
 통과했으며 interaction119,691gzip만 기존116,700cap을 초과했다. 동일 측정 bundle을119,700cap으로
 검사했고 다른 네 entry 한도는 유지했다. Node22/24는 같은 tar로 runtime19·타입·five-entry를
 독립 실행한다. 원본실패/최종실측/실제브라우저 및 문서4width 그림은 navigation-evidence에 보존한다.
+
+E source `68ac482dd` 고정 뒤 문서 source pin49/49, build172pages/1535LLM을 검증했다.
+320/390/768/1440의 overflow0/Axe0 및320/1440 직접확인 증거는 내용·CSS가 같은 pin 이전
+화면을 재사용한다. [정확 navigation qualification](navigation-evidence/qualification.json)은
+source/type fingerprint, 동일 tar, 3Node 결과, 최초실패와 원본로그를 구분해 보존한다.
