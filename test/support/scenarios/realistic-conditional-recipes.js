@@ -29,12 +29,12 @@ export function buildConditionalLifecycleWitness(dataset) {
   const program = chart().createCanvas({ width: 600, height: 400, margin: 60 })
     .createData({ id: "observations", values: rows, keyField: "id" })
     .createParameter({ id: "cutoff", value: cutoff })
-    .createScatterPlot({ id: "all", data: "observations", x: "order", y: "value", guides: false })
+    .createScatterPlot({ id: "all", data: "observations", x: { field: "order", scale: xScale }, y: { field: "value", scale: yScale }, guides: false })
     .selectMarks({ id: "tail", target: "all", field: "order", op: "gte", value: cutoff })
     .filterData({ id: "filtered", source: "observations", where: expression(
       binary("gte", field("order"), parameter("cutoff"))) })
     .editFilteredData({ target: "filtered", where: conditionalFilterPredicate })
-    .createScatterPlot({ id: "selected", data: "filtered", x: "order", y: "value", guides: false })
+    .createScatterPlot({ id: "selected", data: "filtered", x: { field: "order", scale: xScale }, y: { field: "value", scale: yScale }, guides: false })
     .encodeColor({ target: "selected", conditions: [
       { when: { selection: "tail" }, value: { value: "#dc2626" } }
     ], otherwise: { value: "#2563eb" } })
