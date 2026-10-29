@@ -5,8 +5,14 @@
 - [x] 원안 animation/STEP061–062와 기존 owner를 대조했다.
 - [x] remainingApproval를 재사용하고 첫 실행 범위를 기록했다.
 - [x] 실제 semantic point 준비와 concrete sample을 구현·검증했다.
-- [ ] 지원 Node·owner coverage·경계·패키지와 증거를 고정한다.
-- [ ] 검증 checkpoint를 push하고 다음 public·typed family 연결로 이어간다.
+- [x] 지원 Node·owner coverage·경계·패키지와 증거를 고정했다.
+- [x] source bd296d031를 push했다. 다음 public·typed family 연결은 진행 중이다.
+
+첫 private point checkpoint의 정확한 범위와 원 실패·회복 구분은
+[qualification.json](animation-planner-evidence/qualification.json)에 보존한다.
+canonical owning 118, 경계 40, 새 owner coverage 100/95.24/100,
+weighted 네 backend/browser 13, semantic point 네 backend/browser 2가 통과했다.
+Node20/24의 각87은 소스 실행이며 설치 패키지 검증으로 주장하지 않는다.
 
 ## 승인과 경계
 
