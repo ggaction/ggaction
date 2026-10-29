@@ -2903,5 +2903,19 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "Requires a rendered Full program and DOM element. The exact fragment is executed with a native browser ResizeObserver at DPR 2 in interaction-session.browser.js, including accepted Canvas/SVG parity and disconnect cleanup."
+  },
+  {
+    "id": "docs/api/animation.md#render-the-same-frame:1",
+    "sha256": "26a9f09fb97fb8488b209de42d800aa60d449631d334c1eeb6d207517fbbfaf3",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/animation.md",
+    "reason": "This Node continuation uses frames prepared by the first complete example and requires the optional native Canvas backend. The same renderer calls and frames are covered by the animation installed consumer and four-backend tests."
+  },
+  {
+    "id": "docs/api/animation.md#play-with-an-explicit-clock:1",
+    "sha256": "ca79a2c86c14397f823ca1702a66c95996d919157c7e5d3e9aabb0c9350f91bd",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/animation.md",
+    "reason": "This browser continuation uses restored from the first complete example and a host Canvas element. The host explicitly supplies requestAnimationFrame and performance.now; controller behavior is verified by the public player tests."
   }
 ]

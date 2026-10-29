@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480. Status: development. Runtime source: d86e49cd321e04003fdc9c49677f1348fcdb53dc. Release baseline: v0.0.13.
+Contract: sha256:c068b447a308b1874b0ef15ea3578f644f22dbc9688e3f99a9955a4c0ea57bf1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/d86e49cd321e04003fdc9c49677f1348fcdb53dc/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10252,6 +10252,9 @@ ordered font-family list. SVG uses the browser's font resolution.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+For time-based chart transitions and offline frame export, use [animation](./api/animation/).
+Sampled frames are accepted directly by these four rendering targets.
+
 For pointer inspection of the rendered Canvas or SVG, use an explicit
 [interaction session](./api/interaction/).
 
@@ -11011,6 +11014,155 @@ for the extension syntax.
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
 [Primitive extension API](./extension/primitives/)
+
+<!-- Source: /api/animation/ -->
+
+# Animate and Export Chart Frames
+
+Prepare a transition between two immutable charts, sample it at an explicit time,
+and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
+`ggaction/animation` entry is browser-safe. These functions are advanced chart
+authoring APIs; they leave both source programs and their action traces unchanged.
+
+## Prepare, save, and sample
+
+Run this complete ES module in Node.js 20+ after installing `ggaction`:
+
+> **Executable complete.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, serializeAnimation, deserializeAnimation,
+  exportAnimationFrames } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 50 }] })
+  .createPointMark({ id: 'points', fill: '#e11d48' })
+  .encodeX({ field: 'x', scale: { type: 'log', domain: [1, 1000], nice: false } })
+  .encodeY({ field: 'y', scale: { domain: [0, 100], nice: false } });
+const to = from.reviseData({ source: 'rows', id: 'next',
+  values: [{ id: 'a', x: 100, y: 50 }] });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const saved = serializeAnimation(plan, { rate: 1, repeat: 0, reducedMotion: false });
+const restored = deserializeAnimation(saved);
+const frames = exportAnimationFrames(restored.plan, { timesMs: [0, 500, 1000] });
+console.log(renderToSVG(frames[1]));
+```
+
+Item keys retain number/string distinctions and child composition namespaces.
+The current semantic kernel moves compatible Cartesian circle points by
+interpolating their data values and scale mappings. For example, a logarithmic
+axis maps the interpolated data value; it does not average endpoint pixels.
+Other geometry or incompatible appearance uses a bounded weighted crossfade,
+reported in the sample's `decisions`. Entering and exiting items retain explicit
+decisions. This surface does not promise semantic interpolation for every chart family.
+
+## Functions
+
+| Function | Result and behavior |
+| --- | --- |
+| `planTransition({from, to, options:{durationMs, easing?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
+| `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
+| `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
+| `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
+| `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
+
+When an authentic sample is reused as an endpoint, sampling that endpoint returns
+the original frame, including its original progress and decisions. Exported
+`timeMs` belongs to the new plan and does not rewrite the endpoint progress.
+
+A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
+exact endpoint is required. A zero-duration plan exports one frame at zero.
+Requests are limited to 10,000 frames and 10,000,000 cumulative endpoint-node
+visits before sampling. Returned arrays and frames are immutable.
+
+## Render the same frame
+
+This Node fragment follows the first example. Install the optional backend with
+`npm install @napi-rs/canvas`:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { createCanvas } from '@napi-rs/canvas';
+import { render } from 'ggaction';
+import { renderToPNGBuffer } from 'ggaction/png';
+import { renderToPDFBuffer } from 'ggaction/pdf';
+
+const frame = frames[1];
+const canvas = createCanvas(1, 1);
+render(frame, canvas.getContext('2d'));
+const png = await renderToPNGBuffer(frame);
+const pdf = await renderToPDFBuffer(frame);
+console.log(png.width, png.height, pdf.width, pdf.height);
+```
+
+In a browser, pass the frame to `render` with your Canvas context or insert the
+string from `renderToSVG`. Embedded images and fonts keep their actual bytes.
+Canvas uses the existing explicit [image and font preparation](./api/rendering/);
+PNG and PDF prepare their native bytes internally. The animation entry itself
+does not load a Node renderer, fetch assets, or write files.
+
+## Play with an explicit clock
+
+This browser fragment follows the first example and assumes a Canvas element
+whose id is `chart`. It uses the browser's animation clock explicitly:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { render } from 'ggaction';
+import { createAnimationPlayer } from 'ggaction/animation';
+
+const context = document.querySelector('#chart').getContext('2d');
+const player = createAnimationPlayer({
+  plan: restored.plan,
+  ...restored.playback,
+  clock: {
+    now: () => performance.now(),
+    requestFrame: callback => requestAnimationFrame(callback),
+    cancelFrame: handle => cancelAnimationFrame(handle)
+  },
+  render: frame => render(frame, context)
+});
+player.play();
+await player.finished;
+player.dispose();
+```
+
+The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
+`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`.
+`interrupt({to, options:{durationMs, easing?}, rate?, repeat?, reducedMotion?})`
+accepts a program or authentic sample and continues from the current frame.
+A negative rate puts the captured frame at the new plan's ending time and plays
+back toward the target. Invalid interruption targets leave
+the active run intact. An optional `commit(frame)` callback runs on completion.
+`finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
+`completed`, `cancelled`, `interrupted`, and `disposed`.
+
+Playback defaults are `rate:1`, `repeat:0`, and `reducedMotion:false`. Rate may be
+negative or zero. Repeat counts additional traversals; `Infinity` continues
+until cancellation. Reduced motion selects the endpoint in the playback direction
+and follows the same render and completion callbacks.
+
+## Offline replay and limits
+
+Saved animation contains the endpoint graphics, actual embedded image/font bytes,
+prepared semantic positions, and versioned kernels. It preserves playback
+preferences, including infinite repeat. It omits clocks, callbacks, DOM objects,
+runtime handles, promises, and the current playback position.
+
+Restoration performs no network requests or semantic data inference. Unknown
+schemas or kernels, missing asset bytes, invalid identities, inconsistent
+prepared positions, and corrupted payloads reject the entire restore. The JSON
+limit is 64 MiB, decoded nesting is at most 128 levels, and encoded/decoded values
+are each bounded to 1,000,000 occurrences. Plan preparation also has a 10,000-node
+endpoint limit and a 10,000,000-unit work limit.
+
+The same time and stored algorithm versions reproduce the same canonical scene.
+This does not assert identical font rasterization across operating systems.
 
 <!-- Source: /api/interaction/ -->
 
@@ -18797,6 +18949,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/accessibility` | Browser or Node.js 20+ | Read visual data for accessible tables and descriptions |
 | `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
+| `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 | `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker and cache ownership |
 | `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
@@ -37543,6 +37696,113 @@ export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal)
 export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
 ```
 
+#### `ggaction/animation`
+
+[Complete declaration and relative dependencies](./types/animation.d.ts)
+
+```typescript
+import type { ChartProgram } from './program.js';
+import type { BasicChartProgram } from './basic.js';
+import type { CanvasTransitionScene } from './scene.js';
+
+declare const transitionPlan: unique symbol;
+declare const transitionFrame: unique symbol;
+export type AnimationProgram = ChartProgram | BasicChartProgram;
+export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface TransitionOptions {
+  readonly durationMs: number;
+  readonly easing?: AnimationEasing;
+}
+/** Created only by planTransition or deserializeAnimation. */
+export interface TransitionPlan {
+  readonly [transitionPlan]: true;
+  readonly kind: 'transition-plan';
+  readonly version: 1;
+  readonly durationMs: number;
+  readonly easing: AnimationEasing;
+}
+export type TransitionDecision =
+  | { readonly kind: 'enter'; readonly targetIndex: number }
+  | { readonly kind: 'exit'; readonly sourceIndex: number }
+  | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
+      readonly targetIndex: number; readonly itemKey?: string; readonly owner?: string;
+      readonly role: string; readonly kernel?: string; readonly reason?: string };
+/** An authentic immutable sample, directly accepted by all four renderers. */
+export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
+  readonly [transitionFrame]: true;
+  readonly scene: CanvasTransitionScene;
+  readonly progress: number;
+  readonly decisions: readonly TransitionDecision[];
+}
+export interface ExportedAnimationFrame extends TransitionFrame { readonly timeMs: number; }
+export interface PlaybackOptions {
+  readonly rate?: number;
+  /** Additional repetitions; Infinity repeats until cancelled. */
+  readonly repeat?: number;
+  readonly reducedMotion?: boolean;
+}
+export interface AnimationPlayback {
+  readonly rate: number;
+  readonly repeat: number;
+  readonly reducedMotion: boolean;
+}
+export interface RestoredAnimation {
+  readonly plan: TransitionPlan;
+  readonly playback: AnimationPlayback;
+}
+export type AnimationFrameOptions =
+  | { readonly timesMs: readonly number[]; readonly fps?: never }
+  | { readonly fps: number; readonly timesMs?: never };
+export declare function planTransition(input: {
+  readonly from: AnimationProgram | TransitionFrame;
+  readonly to: AnimationProgram | TransitionFrame;
+  readonly options: TransitionOptions;
+}): TransitionPlan;
+export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
+export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
+export declare function deserializeAnimation(text: string): RestoredAnimation;
+export declare function exportAnimationFrames(plan: TransitionPlan, options: AnimationFrameOptions): readonly ExportedAnimationFrame[];
+
+export interface AnimationClock<Handle = number> {
+  now(): number;
+  requestFrame(callback: () => void): Handle;
+  cancelFrame(handle: Handle): void;
+}
+export interface AnimationPlayerState {
+  readonly status: 'idle' | 'playing' | 'paused' | 'finished' | 'cancelled' | 'disposed';
+  readonly timeMs: number;
+  readonly durationMs: number;
+  readonly rate: number;
+  readonly iteration: number;
+  readonly repeat: number;
+}
+export interface AnimationSettlement {
+  readonly reason: 'completed' | 'cancelled' | 'disposed' | 'interrupted';
+  readonly timeMs: number;
+  readonly iteration: number;
+}
+export interface AnimationPlayer {
+  play(): AnimationPlayer;
+  pause(): AnimationPlayer;
+  seek(timeMs: number): AnimationPlayer;
+  reverse(): AnimationPlayer;
+  setRate(rate: number): AnimationPlayer;
+  setRepeat(repeat: number): AnimationPlayer;
+  cancel(): AnimationPlayer;
+  interrupt(input: PlaybackOptions & { readonly to: AnimationProgram | TransitionFrame; readonly options: TransitionOptions }): AnimationPlayer;
+  dispose(): void;
+  getState(): AnimationPlayerState;
+  getFrame(): TransitionFrame | undefined;
+  readonly finished: Promise<AnimationSettlement>;
+}
+export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
+  readonly plan: TransitionPlan;
+  readonly clock: AnimationClock<Handle>;
+  readonly render: (frame: TransitionFrame) => void;
+  readonly commit?: (frame: TransitionFrame) => void;
+}): AnimationPlayer;
+```
+
 ## Rendering functions
 
 Use [Program composition](./api/composition/) for sizing, nesting, layout
@@ -52151,12 +52411,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55283,9 +55543,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480` |
+| Contract fingerprint | `sha256:c068b447a308b1874b0ef15ea3578f644f22dbc9688e3f99a9955a4c0ea57bf1` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `d86e49cd321e04003fdc9c49677f1348fcdb53dc` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

@@ -239,6 +239,9 @@
 - title: Rendering
   url: /api/rendering/
   parent: /api/
+- title: Animate and Export Chart Frames
+  url: /api/animation/
+  parent: /api/rendering/
 - title: Inspect Chart Items
   url: /api/interaction/
   parent: /api/rendering/

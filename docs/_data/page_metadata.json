@@ -505,6 +505,13 @@
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/animation/": {
+    "title": "Animate and Export Chart Frames",
+    "source": "docs/api/animation.md",
+    "editSource": "docs/api/animation.md",
+    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
   "/api/interaction/": {
     "title": "Inspect Chart Items",
     "source": "docs/api/interaction.md",
