@@ -1,0 +1,321 @@
+{
+  "status": "verified",
+  "parents": [
+    "88a55aac1b6ee7bba0127016df259106cf0baba6",
+    "487b9a434"
+  ],
+  "runtimeConflicts": [],
+  "resolution": "Retain both architecture owners and graph/interaction ceilings; regenerate docs from the combined canonical sources.",
+  "checks": {
+    "geoAndLinked": 72,
+    "routesAndBoundaries": 84,
+    "contracts": 14,
+    "docsSource": 186,
+    "builtPages": 169,
+    "machineArtifacts": 1463
+  },
+  "artifact": {
+    "sha256": "3e991c6888e02de916708f69c5c325ff17d257e39bc67153249e4accac3f6709",
+    "entryCount": 971,
+    "size": 1378093,
+    "unpackedSize": 6305110
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "3e991c6888e02de916708f69c5c325ff17d257e39bc67153249e4accac3f6709",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 685181
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92173
+        }
+      },
+      "types": "passed"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "3e991c6888e02de916708f69c5c325ff17d257e39bc67153249e4accac3f6709",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 683402
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 370704
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92104
+        }
+      },
+      "types": "passed"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "3e991c6888e02de916708f69c5c325ff17d257e39bc67153249e4accac3f6709",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 685181
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92173
+        }
+      },
+      "types": "passed"
+    }
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 971,
+      "packedBytes": 1381176,
+      "unpackedBytes": 6305110
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 971,
+      "packedBytes": 1378093,
+      "unpackedBytes": 6305110
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 971,
+      "packedBytes": 1381176,
+      "unpackedBytes": 6305110
+    }
+  },
+  "browserEvidence": "No UI assets changed. Reuse individual geographic source and linked-baseline browser evidence; repeat combined broad browser/renderer coverage at final Geo integration.",
+  "remaining": [
+    "Projection, stream, marks, join, LOD and camera",
+    "Final Geo combined whole coverage/render/browser/installed checks",
+    "Common realistic3 integration assigned to root"
+  ],
+  "logs": [
+    {
+      "file": "merge-bundle-ceilings.log.gz",
+      "sha256": "828d5c98d2c605b8fe6b666deec0e2a2e57ee56182db7c7427079f46aebf9547"
+    },
+    {
+      "file": "merge-contracts.log.gz",
+      "sha256": "1ff26babc27a56395119d542621c9cdf817d1355e1c55fcf90d7330f40418cf8"
+    },
+    {
+      "file": "merge-doc-build.log.gz",
+      "sha256": "9655e34b77ac86b0b9738fbd5d869298c957afcb03a654dca1e0bf9be625652c"
+    },
+    {
+      "file": "merge-doc-built.log.gz",
+      "sha256": "c8716095a666f8d2bccbd29be09be70917cbdf6fd6e70e14e949b2dc7f2a9e8a"
+    },
+    {
+      "file": "merge-doc-source.log.gz",
+      "sha256": "ff99db8fca47e6477830755916b30395163c4ffbea7943726b52b09cc12e5009"
+    },
+    {
+      "file": "merge-docs-generate.log.gz",
+      "sha256": "3e5418684bdf2ef907be88cf1d92c4a2304e9e7b1e9974f0f1ad90da0b6393f6"
+    },
+    {
+      "file": "merge-focused.log.gz",
+      "sha256": "9cd1ac92f53f68ecd3164223b07a4663bbb25a5ae3c1d8d4a17a3442d8678cd5"
+    },
+    {
+      "file": "merge-installed-20.exit.json.gz",
+      "sha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437"
+    },
+    {
+      "file": "merge-installed-20.json.gz",
+      "sha256": "c0941b8973a740c9dade495c52568ac8c73d01c130b7c2a4df6d37003909b648"
+    },
+    {
+      "file": "merge-installed-20.log.gz",
+      "sha256": "736976006e68c6a9edc21ab871b8fb04dc435ea52776627a086dc6c6fce236a6"
+    },
+    {
+      "file": "merge-installed-22.exit.json.gz",
+      "sha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e"
+    },
+    {
+      "file": "merge-installed-22.json.gz",
+      "sha256": "1897e64e8442bd46b10d5653c17e3094022b9dbea70462056f8244522528e6ad"
+    },
+    {
+      "file": "merge-installed-22.log.gz",
+      "sha256": "7b067147adff4dbeff3822937fb6638f1bf6faef8a9985c7a63536cc82205c5e"
+    },
+    {
+      "file": "merge-installed-24.exit.json.gz",
+      "sha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a"
+    },
+    {
+      "file": "merge-installed-24.json.gz",
+      "sha256": "fa604163caff0a478abdc9f6a000d6e988226dabb89f45d061366758758a27c0"
+    },
+    {
+      "file": "merge-installed-24.log.gz",
+      "sha256": "dde3c5d24736be287aa98fa1dd9898b8a786a0867ee9ac81a222fd21e93a1f77"
+    },
+    {
+      "file": "merge-installed-summary.log.gz",
+      "sha256": "1aaa2bdd34c782bbefd4432cc3ed9116ea561a636743ab668c9a9de2201e15d7"
+    },
+    {
+      "file": "merge-package-size-20.log.gz",
+      "sha256": "43734c0ea377b505874686821f1ad04ae36ff0ee6b91399f8cfe1ac94104aabc"
+    },
+    {
+      "file": "merge-package-size-22.log.gz",
+      "sha256": "f5281cb45a26a2114054cdd1104d37cdbe7d7fc8565e501801563fe8b3a81ef7"
+    },
+    {
+      "file": "merge-package-size-24.log.gz",
+      "sha256": "9737160ac1447bd649a9300471cba35d72f017ab47f0dcce1c35a3ddd8fa6d65"
+    },
+    {
+      "file": "merge-package-size-v20.20.2.json.gz",
+      "sha256": "0b5f70686abe0cce85919813eaddd853ba9a89b26d5f5bb770bd292ef4d74312"
+    },
+    {
+      "file": "merge-package-size-v22.23.1.json.gz",
+      "sha256": "dad68430fae806e79d86b7662795705424a37908c2b78f7dc1ca58b596fdb907"
+    },
+    {
+      "file": "merge-package-size-v24.22.1.json.gz",
+      "sha256": "da9a57c88fe0849009791cdb510306e597453e1cf9f128b501cc495d7a443be0"
+    },
+    {
+      "file": "merge-package.log.gz",
+      "sha256": "42cbd4b52647402c55c5bd6836b2832ddbbf2adad6c800ba1986fa67f010f070"
+    },
+    {
+      "file": "merge-routes.log.gz",
+      "sha256": "790c890905e735f866497bed35b32525aca18dff280fa76118314997b6483f2c"
+    }
+  ]
+}

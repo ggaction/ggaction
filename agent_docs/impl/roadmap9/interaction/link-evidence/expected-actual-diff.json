@@ -1,0 +1,106 @@
+{
+  "expected": {
+    "selected": {
+      "a": [
+        "a"
+      ],
+      "b": [
+        "b"
+      ],
+      "c": [
+        "a",
+        "b",
+        "c"
+      ],
+      "d": [
+        "a"
+      ]
+    },
+    "restored": {
+      "a": [
+        "a"
+      ],
+      "b": [
+        "b"
+      ],
+      "c": [
+        "a",
+        "b",
+        "c"
+      ],
+      "d": [
+        "a"
+      ]
+    },
+    "original": {
+      "a": [],
+      "b": [],
+      "c": [],
+      "d": []
+    },
+    "phases": [
+      "commit",
+      "settled",
+      "commit",
+      "settled"
+    ],
+    "revision": 2,
+    "projectedSourceCounts": [
+      2,
+      1
+    ]
+  },
+  "actual": {
+    "selected": {
+      "a": [
+        "a"
+      ],
+      "b": [
+        "b"
+      ],
+      "c": [
+        "a",
+        "b",
+        "c"
+      ],
+      "d": [
+        "a"
+      ]
+    },
+    "restored": {
+      "a": [
+        "a"
+      ],
+      "b": [
+        "b"
+      ],
+      "c": [
+        "a",
+        "b",
+        "c"
+      ],
+      "d": [
+        "a"
+      ]
+    },
+    "original": {
+      "a": [],
+      "b": [],
+      "c": [],
+      "d": []
+    },
+    "phases": [
+      "commit",
+      "settled",
+      "commit",
+      "settled",
+      null
+    ],
+    "revision": 2,
+    "projectedSourceCounts": [
+      2,
+      1
+    ]
+  },
+  "diff": []
+}

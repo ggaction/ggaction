@@ -25,7 +25,7 @@ export function selectionPredicate(program, definition) {
   return resolveSelectionPredicate(program, definition, { resolveMarkItems, resolveMarkSourceItems });
 }
 
-export function resolveStoredSelection(program, id) {
+export function resolveStoredSelection(program, id, { sourceOnly = false } = {}) {
   const selections = program.materializationConfigs.selections ?? {};
   const requested = id ?? program.context.currentSelection;
   const resolvedId = requested ?? (
@@ -42,10 +42,9 @@ export function resolveStoredSelection(program, id) {
   if (definition === undefined) {
     throw new Error(`Unknown selection "${resolvedId}".`);
   }
-  const resolved = resolveMarkSelection(
-    program,
-    definition.target,
-    selectionPredicate(program, definition)
-  );
+  const predicate = selectionPredicate(program, definition);
+  if (sourceOnly && predicate.property !== undefined) throw new Error("Facet source links cannot project a concrete-property selection; use fields or original rows.");
+  const resolved = sourceOnly ? resolveItemSelection(program, resolveMarkSourceItems(program, definition.target, definition.grain), predicate)
+    : resolveMarkSelection(program, definition.target, predicate);
   return Object.freeze({ id: resolvedId, definition, ...resolved });
 }

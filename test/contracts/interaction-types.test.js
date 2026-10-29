@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileTypeScript } from "../support/typescript.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
-test("interaction declarations separate inspection commands and sampled Canvas frames from authoring", async () => {
+test("interaction declarations separate immutable inspection, authoring commands and sampled frames", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-interaction-"));
   try {
     const file = path.join(directory, "interaction.mts");
@@ -17,12 +17,37 @@ import { createInteractionSession, type InteractionCommand } from ${JSON.stringi
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
 const program = chart(); const session = createInteractionSession({ program });
 createInteractionSession({program: basic(), bindings: [{type:'inspect',events:['click'],slop:0,hitInvisible:true}]});
+
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'intersection',sources:[
+ {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
+ {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
+]}]});
+const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+// @ts-expect-error runtime projection sets are immutable
+session.getState().linkedSelections[0].keys.push('change');
+// @ts-expect-error row and tuple options cannot be mixed
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:'points',selection:'picked',resolve:'global',sources:[{target:'other',selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows',sourceFields:['x']}}]}]});
 declare const element: HTMLCanvasElement;
 const unmount = session.mount(element,{rootTransform:[1,0,0,1,0,0]});
 session.dispatch({type:'inspect',point:{x:1,y:2},pointerType:'touch'});
 session.dispatch({type:'leave'});
 session.dispatch({type:'frame',scene:createTransitionScene(program,{format:'canvas'}),generation:0,version:1});
 session.updateProgram(program);session.subscribe(event=>{const key:string|undefined=event.state.hit?.target?.itemKey;});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
+session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{where:{version:2,registry:'standard@1',root:{type:'literal',value:true}}}}});
+session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
+session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});
+// @ts-expect-error one explicit owner is required
+session.dispatch({type:'select',payload:{id:'picked',select:{items:[]}}});
+// @ts-expect-error selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],field:'x',op:'eq',value:1}}});
+// @ts-expect-error a parameter is scalar
+session.dispatch({type:'setParameter',target:'threshold',payload:{value:[2]}});
+// @ts-expect-error clear retains the selection resource and does not accept arbitrary selectors
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked',select:{items:[]}}});
+
 unmount();session.destroy();
 // @ts-expect-error SVG fragments cannot become a concrete hit frame
 session.dispatch({type:'frame',scene:createTransitionScene(program),generation:0,version:1});

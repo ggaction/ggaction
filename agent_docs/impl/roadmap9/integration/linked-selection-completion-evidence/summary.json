@@ -1,0 +1,105 @@
+{
+  "status": "qualified",
+  "base": "afc4e34e6",
+  "merged": "5262c679c",
+  "scope": "STEP057 D1 explicit commands and C linked selection closure integration with Calendar/theme/AST",
+  "checks": {
+    "focused": 44,
+    "regression": 75,
+    "realistic": 16,
+    "browser": 5,
+    "docs": 184,
+    "builtPages": 166,
+    "selectiveLLMArtifacts": 1429,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "finalContracts": 37
+  },
+  "sourceHashes": {
+    "src/grammar/selectionProjection.js": "51ad8748f696d870104d29a0bdcccf4ad6194fee0cf16d98bae1ebc830006177",
+    "src/interaction/bindings.js": "c73aec071fe2eeebe72ea8cb6b4c233597ebcbccbf1716363d34b9f9af5921a1",
+    "src/interaction/input.js": "9d311526e9b4d596d18703ed630c1afc529ba39511aa5d130f03a97e59d9915f",
+    "src/interaction/selection.js": "febe2a2ee09664d305e2b52242568a07746fbd892fbdd5d86f5832de536514f2",
+    "src/interaction/session.js": "bc2f825f70e64c7b60928ed65e66cf37aef7d9ab697fde77778e13ad1a76d80d",
+    "src/interaction/sceneFrame.js": "81e6dfbffc9876c30ab0619a88099618f9d691b40acd83dc3230e010ed316ad6",
+    "src/materialization/selection/state.js": "8aa60b07d9b1227f1ce61f89d2c2de14a511f2904e8c1631bcff342e23c80933",
+    "src/materialization/selection/expression.js": "f11579d9235bd14763bf88bc16b3704d4ca32f1d9526af76fcf4f99eb0343204",
+    "types/interaction.d.ts": "64d1f29b88376377f61aea1e90320b8233028e1b9f0729968cc44e486193cb23"
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/linked-integration-final/ggaction-0.0.26.tgz",
+    "entries": 932,
+    "packedBytes": 1336296,
+    "unpackedBytes": 6139909,
+    "sha256": "9a4ce97212c424ecd84f200db6ecba36909291f0b273c9df3180534b39cc66d8"
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "runtimeCases": 14,
+      "themeTests": 90,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 662747,
+        "ggaction/basic": 370736,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 92100
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "runtimeCases": 14,
+      "themeTests": 90,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 661265,
+        "ggaction/basic": 369979,
+        "ggaction/svg": 20055,
+        "ggaction/interaction": 92028
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "runtimeCases": 14,
+      "themeTests": 90,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 662747,
+        "ggaction/basic": 370736,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 92100
+      }
+    }
+  ],
+  "caps": {
+    "entries": 932,
+    "packedBytes": 1337000,
+    "unpackedBytes": 6140000,
+    "gzip": {
+      "ggaction": 663000,
+      "ggaction/basic": 371000,
+      "ggaction/svg": 25000,
+      "ggaction/interaction": 93000
+    },
+    "search": 968000
+  },
+  "searchBytes": 967011,
+  "initialFailures": [
+    "conflict resolution script truncated five source and ten generated files before commit; restored exact three-way source with line-bounded markers and regenerated docs",
+    "932 package entries exceeded previous928; measured1336296 packed/6139909 unpacked",
+    "docs182/184 because967011 search bytes exceeded966000",
+    "same-tar interaction Node20/24 gzip92100 exceeded92000; minimal1000 rounding to93000"
+  ],
+  "notClaimed": [
+    "whole source coverage rerun",
+    "full realistic corpus rerun",
+    "STEP057 completion",
+    "Roadmap9 completion"
+  ]
+}

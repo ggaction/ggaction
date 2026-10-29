@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8155850485febd3f0551ffd63cc83e4e69a87d9530e19cf7449cf6aa529204fb. Status: development. Runtime source: 5a1912178969913399941f9eee38f0aaee474efc. Release baseline: v0.0.13.
+Contract: sha256:b442a37ec6b1be563ae2a03a97b496a385e2ccc79013166ea8f0acda73bff9a5. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/5a1912178969913399941f9eee38f0aaee474efc/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/5a1912178969913399941f9eee38f0aaee474efc/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10772,13 +10772,13 @@ hit targets in that frame.
 ## State and cleanup
 
 `getState()` returns an immutable snapshot with `program`, `scene`, `frameVersion`,
-`generation`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
+`generation`, `revision`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
 Subscribers receive `{ type, state }`; event types are `inspect`, `leave`, `frame`,
 `program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
-`{ status: "applied" | "queued" | "stale" }`. Reentrant operations run FIFO after
+`{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
 clear queued work; the already published state remains available.
 
@@ -10798,8 +10798,138 @@ other session methods reject further work.
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Editing
-gestures, selection transactions, keyboard navigation, history, and asset loading
+gestures, keyboard navigation, history, and asset loading
 are not supported commands. PNG/PDF exports remain static.
+
+## Commit selections and parameters
+
+Full programs also accept `select`, `clearSelection`, and `setParameter` commands.
+They call the same authoring actions used outside a session, prepare the new hit
+frame, and publish the immutable result together. Basic programs support inspection
+and reject these editors.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 360, height: 240 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false });
+const selectionSession = createInteractionSession({ program, bindings: [] });
+selectionSession.dispatch({
+  type: "select", target: "points",
+  payload: { id: "picked", select: { field: "x", op: "gte", value: 2 } }
+});
+const selectedProgram = selectionSession.getState().program;
+selectionSession.dispatch({
+  type: "clearSelection", target: "points", payload: { id: "picked" }
+});
+selectionSession.destroy();
+```
+
+Render `selectedProgram` with any supported renderer. Selection authoring remains
+immutable; `program` still has an empty selection. In a mounted application,
+subscribe to transaction events and render `event.current` when
+`event.phase === "commit"`. A host click handler can pass an inspected item's
+`itemKey` as `payload.select.items` and use `mode: "toggle"` to update a previously
+created selection. Inspecting or hovering alone never changes a selection.
+
+Every command identifies one owner. Use a mark ID for selection or a parameter ID
+for `setParameter` with `payload: {value}`. For a child chart, use
+`target: {childPath: ["left"], id: "points"}`. A facet source uses the same shape
+with `facetSource: true`; generated facet cells cannot be edited individually.
+
+`select` accepts the existing item, range, row or expression selector and defaults
+to `replace`. Creating a missing selection requires `replace`; existing selections
+also support `add`, `toggle`, `subtract`, and `intersect`. Its owner cannot change.
+`clearSelection` keeps the named resource and dependent labels/highlights, replacing
+its membership with an explicit empty set. It does not reset the chart.
+
+Transaction events include `type`, `phase`, `transactionId`, `origin`, `revision`,
+`previous`, `current`, `affectedOwners`, `diagnostics`, and `state`. The successful
+order is `commit` then `settled`. `settled` confirms synchronous program/frame
+preparation; the host still owns drawing and renderer asset preparation. The
+addressed owner is reported with its child path. A failed valid command emits one
+`error` and throws while retaining the prior program. Unsafe input is rejected
+before a transaction starts.
+
+`transactionId` is optional; supplied IDs contain 1–1,024 characters. Origin is
+`programmatic` by default, or `user`, `replay`, or `linked`. Optional
+`causeTransactionId` records a relationship without automatically forwarding edits.
+Repeated IDs within one reentrant FIFO drain are ignored as stale. An unchanged
+parameter value returns `unchanged` with no event or revision. Subscriber errors
+stop delivery and preserve a commit already made. Runtime bindings and transaction
+metadata are not serialized with the chart.
+
+## Link named selections
+
+Use an explicit `linkSelection` binding to project existing selections into another
+owner. Each source contributes its own set of target items. `union` includes any
+source, `intersection` requires every source, and `global` uses exactly one source.
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.
+
+```javascript
+import { chart, hconcat } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const child = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false });
+const program = hconcat({ programs: [
+  { id: "left", program: child }, { id: "right", program: child }
+] });
+const linked = createInteractionSession({ program, bindings: [{
+  type: "linkSelection", id: "sameRows", resolve: "global",
+  sources: [{
+    target: { childPath: ["left"], id: "points" }, selection: "picked",
+    projection: { type: "rows", sourceData: "rows", targetData: "rows" }
+  }],
+  target: { childPath: ["right"], id: "points" }, selection: "picked"
+}] });
+linked.dispatch({ type: "select", target: { childPath: ["left"], id: "points" },
+  payload: { id: "picked", select: { field: "id", op: "eq", value: "a" } }
+});
+const selected = linked.getState().program;
+const projectedKeys = linked.getState().linkedSelections[0].keys;
+linked.destroy();
+```
+
+Render `selected` with any supported renderer. The edit and its linked targets
+produce one commit/settled pair. A failure preserves the complete prior program.
+The original `program` and `child` remain unchanged. Add an explicit `inspect`
+binding to the array if mounted pointer inspection is also needed.
+
+Row projections require matching original data identities, including through
+supported derived-data lineage. Independently created datasets with the same name
+are different sources. To link independent tables, provide
+`projection: {type: "fields", sourceFields: ["category"], targetFields: ["group"]}`.
+Each tuple has 1–64 fields, equal source/target length, and a unique value per
+final item. Matching is typed: number `1` differs from string `"1"`. Missing,
+ambiguous, null or nonfinite values fail; duplicate tuples select all matching
+target items. Empty endpoints provide no inferred values.
+
+All endpoint selections must exist and match their owner. A target owner has one
+binding writer; cycles are rejected. Its target selection cannot be overwritten
+by a direct session selection command. Other named selections stay independent.
+Facet links address `facetSource: true` and use semantic source items; concrete
+property predicates are unavailable there. Generated cells remain read-only.
+
+Initialization and external `updateProgram` validate links without changing
+selection membership. Subsequent authoring changes update affected links in
+source-to-target order, once per target. `linkedSelections` exposes immutable
+source-specific projection sets and their resolved keys. Bindings allow at most
+256 links and 256 total source references, with bounded configuration and
+projection work. They remain runtime state: serialize the committed chart as
+usual and attach the bindings again after restoring it.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -33732,7 +33862,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef } from './program.js';
+import type { ChartProgram, InputRef, MarkSelectionSelector, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -33764,20 +33894,98 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export type SelectionProjection = {
+  readonly type: 'rows';
+  readonly sourceData: string;
+  readonly targetData: string;
+} | {
+  readonly type: 'fields';
+  readonly sourceFields: readonly string[];
+  readonly targetFields: readonly string[];
+};
+export interface LinkedSelectionSource {
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly projection: SelectionProjection;
+}
+export interface LinkedSelectionBinding {
+  readonly type: 'linkSelection';
+  readonly id: string;
+  readonly sources: readonly LinkedSelectionSource[];
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  /** global requires exactly one source owner. */
+  readonly resolve: 'union' | 'intersection' | 'global';
+}
+export interface LinkedSelectionState {
+  readonly id: string;
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly resolve: 'union' | 'intersection' | 'global';
+  readonly sources: readonly {
+    readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+    readonly selection: string;
+    /** Logical keys projected into the target owner, with its child namespace. */
+    readonly keys: readonly string[];
+  }[];
+  readonly keys: readonly string[];
+}
 export interface InteractionState {
   readonly program: InteractionProgram;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
+  /** Session-local committed program revision; inspection and frames do not increment it. */
+  readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly linkedSelections: readonly LinkedSelectionState[];
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
-export interface InteractionEvent {
+export interface InteractionLifecycleEvent {
   readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
-export type InteractionCommand = {
+/** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
+export type InteractionTarget = string | (Readonly<ScopedActionTarget> & { readonly id: string });
+export interface InteractionTransaction {
+  readonly transactionId?: string;
+  readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type InteractionEditCommand = InteractionTransaction & ({
+  readonly type: 'select';
+  readonly target: InteractionTarget;
+  readonly payload: {
+    readonly id: string;
+    readonly select: MarkSelectionSelector;
+    /** Creation requires replace; other modes require an existing selection. */
+    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+  };
+} | {
+  readonly type: 'clearSelection';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly id: string };
+} | {
+  readonly type: 'setParameter';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly value: number | string | boolean | null };
+});
+export interface InteractionTransactionEvent {
+  readonly type: 'select' | 'clearSelection' | 'setParameter';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+  readonly phase: 'commit' | 'settled' | 'error';
+  readonly revision: number;
+  readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
+  readonly previous: InteractionProgram;
+  readonly current: InteractionProgram;
+  readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly state: InteractionState;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionTransactionEvent;
+export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -33791,7 +33999,7 @@ export type InteractionCommand = {
   readonly version: number;
   readonly generation: number;
 };
-export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale'; }
+export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
   updateProgram(program: InteractionProgram): InteractionDispatchResult;
@@ -33803,7 +34011,7 @@ export interface InteractionSession {
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly InspectBinding[];
+  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
 }): InteractionSession;
 ```
 
@@ -47420,12 +47628,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5a1912178969913399941f9eee38f0aaee474efc/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5a1912178969913399941f9eee38f0aaee474efc/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50476,9 +50684,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8155850485febd3f0551ffd63cc83e4e69a87d9530e19cf7449cf6aa529204fb` |
+| Contract fingerprint | `sha256:b442a37ec6b1be563ae2a03a97b496a385e2ccc79013166ea8f0acda73bff9a5` |
 | Example and dataset source | `a491a8b8e421ace56be22a83296e163e2315be70` |
-| Runtime source commit | `5a1912178969913399941f9eee38f0aaee474efc` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 347 |
 | Declared actions in that release | 234 |

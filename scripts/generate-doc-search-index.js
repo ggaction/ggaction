@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 980000; // Geometry source API and two actions: 979106 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 981000; // Geometry source and linked selections: 980355 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

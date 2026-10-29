@@ -19,10 +19,16 @@ export function validateSelectionExpressionConsumers(program, resourceIds) {
   const changed = new Set(resourceIds);
   for (const [id, definition] of Object.entries(program.materializationConfigs.selections ?? {})) {
     if (!changed.has(definition.resource.id)) continue;
-    const resolver = resolvers.get(program.constructor);
-    if (resolver === undefined) throw new Error("Expression selections require the Full selection owner.");
-    resolver.resolveSelection(program, id);
+    resolveRegisteredSelection(program, id);
   }
+}
+
+// The same frozen Full resolver serves explicit runtime linking without pulling
+// mark policy imports into the browser-safe interaction entry.
+export function resolveRegisteredSelection(program, id, options) {
+  const resolver = resolvers.get(program.constructor);
+  if (resolver === undefined) throw new Error("Expression selections and linked selections require the Full selection owner.");
+  return resolver.resolveSelection(program, id, options);
 }
 
 export function validateSelectionExpressionTargets(program, targets) {

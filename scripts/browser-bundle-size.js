@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 372_000, // Shared typed reference/Canvas boundary: Node20/24 371,470 bytes.
   "ggaction/svg": 25_000,
   "ggaction/graph": 43_000, // Dedicated explicit route host: Node20/24 42,269 bytes.
-  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
+  "ggaction/interaction": 93_000 // Linked selections: Node20/24 measured 92,100 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

@@ -99,13 +99,13 @@ hit targets in that frame.
 ## State and cleanup
 
 `getState()` returns an immutable snapshot with `program`, `scene`, `frameVersion`,
-`generation`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
+`generation`, `revision`, `hit`, `mounted`, and `destroyed`. A hit contains `target`,
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
 Subscribers receive `{ type, state }`; event types are `inspect`, `leave`, `frame`,
 `program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
-`{ status: "applied" | "queued" | "stale" }`. Reentrant operations run FIFO after
+`{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
 clear queued work; the already published state remains available.
 
@@ -125,5 +125,135 @@ other session methods reject further work.
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Editing
-gestures, selection transactions, keyboard navigation, history, and asset loading
+gestures, keyboard navigation, history, and asset loading
 are not supported commands. PNG/PDF exports remain static.
+
+## Commit selections and parameters
+
+Full programs also accept `select`, `clearSelection`, and `setParameter` commands.
+They call the same authoring actions used outside a session, prepare the new hit
+frame, and publish the immutable result together. Basic programs support inspection
+and reject these editors.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 360, height: 240 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false });
+const selectionSession = createInteractionSession({ program, bindings: [] });
+selectionSession.dispatch({
+  type: "select", target: "points",
+  payload: { id: "picked", select: { field: "x", op: "gte", value: 2 } }
+});
+const selectedProgram = selectionSession.getState().program;
+selectionSession.dispatch({
+  type: "clearSelection", target: "points", payload: { id: "picked" }
+});
+selectionSession.destroy();
+```
+
+Render `selectedProgram` with any supported renderer. Selection authoring remains
+immutable; `program` still has an empty selection. In a mounted application,
+subscribe to transaction events and render `event.current` when
+`event.phase === "commit"`. A host click handler can pass an inspected item's
+`itemKey` as `payload.select.items` and use `mode: "toggle"` to update a previously
+created selection. Inspecting or hovering alone never changes a selection.
+
+Every command identifies one owner. Use a mark ID for selection or a parameter ID
+for `setParameter` with `payload: {value}`. For a child chart, use
+`target: {childPath: ["left"], id: "points"}`. A facet source uses the same shape
+with `facetSource: true`; generated facet cells cannot be edited individually.
+
+`select` accepts the existing item, range, row or expression selector and defaults
+to `replace`. Creating a missing selection requires `replace`; existing selections
+also support `add`, `toggle`, `subtract`, and `intersect`. Its owner cannot change.
+`clearSelection` keeps the named resource and dependent labels/highlights, replacing
+its membership with an explicit empty set. It does not reset the chart.
+
+Transaction events include `type`, `phase`, `transactionId`, `origin`, `revision`,
+`previous`, `current`, `affectedOwners`, `diagnostics`, and `state`. The successful
+order is `commit` then `settled`. `settled` confirms synchronous program/frame
+preparation; the host still owns drawing and renderer asset preparation. The
+addressed owner is reported with its child path. A failed valid command emits one
+`error` and throws while retaining the prior program. Unsafe input is rejected
+before a transaction starts.
+
+`transactionId` is optional; supplied IDs contain 1–1,024 characters. Origin is
+`programmatic` by default, or `user`, `replay`, or `linked`. Optional
+`causeTransactionId` records a relationship without automatically forwarding edits.
+Repeated IDs within one reentrant FIFO drain are ignored as stale. An unchanged
+parameter value returns `unchanged` with no event or revision. Subscriber errors
+stop delivery and preserve a commit already made. Runtime bindings and transaction
+metadata are not serialized with the chart.
+
+## Link named selections
+
+Use an explicit `linkSelection` binding to project existing selections into another
+owner. Each source contributes its own set of target items. `union` includes any
+source, `intersection` requires every source, and `global` uses exactly one source.
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.
+
+```javascript
+import { chart, hconcat } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const child = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false });
+const program = hconcat({ programs: [
+  { id: "left", program: child }, { id: "right", program: child }
+] });
+const linked = createInteractionSession({ program, bindings: [{
+  type: "linkSelection", id: "sameRows", resolve: "global",
+  sources: [{
+    target: { childPath: ["left"], id: "points" }, selection: "picked",
+    projection: { type: "rows", sourceData: "rows", targetData: "rows" }
+  }],
+  target: { childPath: ["right"], id: "points" }, selection: "picked"
+}] });
+linked.dispatch({ type: "select", target: { childPath: ["left"], id: "points" },
+  payload: { id: "picked", select: { field: "id", op: "eq", value: "a" } }
+});
+const selected = linked.getState().program;
+const projectedKeys = linked.getState().linkedSelections[0].keys;
+linked.destroy();
+```
+
+Render `selected` with any supported renderer. The edit and its linked targets
+produce one commit/settled pair. A failure preserves the complete prior program.
+The original `program` and `child` remain unchanged. Add an explicit `inspect`
+binding to the array if mounted pointer inspection is also needed.
+
+Row projections require matching original data identities, including through
+supported derived-data lineage. Independently created datasets with the same name
+are different sources. To link independent tables, provide
+`projection: {type: "fields", sourceFields: ["category"], targetFields: ["group"]}`.
+Each tuple has 1–64 fields, equal source/target length, and a unique value per
+final item. Matching is typed: number `1` differs from string `"1"`. Missing,
+ambiguous, null or nonfinite values fail; duplicate tuples select all matching
+target items. Empty endpoints provide no inferred values.
+
+All endpoint selections must exist and match their owner. A target owner has one
+binding writer; cycles are rejected. Its target selection cannot be overwritten
+by a direct session selection command. Other named selections stay independent.
+Facet links address `facetSource: true` and use semantic source items; concrete
+property predicates are unavailable there. Generated cells remain read-only.
+
+Initialization and external `updateProgram` validate links without changing
+selection membership. Subsequent authoring changes update affected links in
+source-to-target order, once per target. `linkedSelections` exposes immutable
+source-specific projection sets and their resolved keys. Bindings allow at most
+256 links and 256 total source references, with bounded configuration and
+projection work. They remain runtime state: serialize the committed chart as
+usual and attach the bindings again after restoring it.
