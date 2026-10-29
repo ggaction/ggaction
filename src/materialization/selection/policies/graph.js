@@ -17,7 +17,7 @@ function resolve(program, layer, sourceOnly) {
       fields: item.fields, channels: {}, properties: sourceOnly ? item.properties : concreteProperties(children[0].properties), members: item.members,
       rows: memberRowReferences(program, item.members, item.dataset.id, item.memberKeys), rowKeys: item.memberKeys,
       graphicRoles: item.graphicRoles, ...(sourceOnly ? {} : { graphicIds: children.map(child => child.id) }),
-      lineage: { kind: "resource", resource: layer.graphBinding.layout } });
+      lineage: item.lineage });
   });
 }
 

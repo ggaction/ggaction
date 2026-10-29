@@ -1,0 +1,1 @@
+export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }

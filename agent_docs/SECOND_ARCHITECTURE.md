@@ -32,6 +32,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
 `ggaction-mcp`는 별도의 Node stdio executable이며 chart code를 실행하지 않는다.
@@ -63,11 +64,22 @@ reference가 소유한다.
 
 ## Private builtin resource validation
 
-Edge route의 공통 private 계산은 `grammar/graph/routes/`에 있다. 기존 graph model과 원 typed
-key 순서, 명시 node anchor를 검증해 정규화된 독립 work buffer를 만들고, budget과 endpoint를
-검사한 완료 vector만 원 edge 순서로 반환한다. `polyline.js`는 arc-length 재표본화를 공유한다.
-현재 이 소유자는 public resource registry나 renderer에 연결되지 않았으며 공개 연결은
-[edge-bundling 구현 기록](impl/roadmap9/chart/edge-bundling.md)의 소비자 표에서 추적한다.
+Edge route의 공통 계산은 `grammar/graph/routes/`에 있다. 기존 graph model과 원 typed
+key 순서, 명시 node anchor를 검증해 독립 work buffer를 만들고 완료 vector만 원 edge 순서로
+반환한다. Full registry의 `edge-route` handler는 exact graph/layout/hierarchy refs와 완료
+hash/shape/provenance를 검증하며 restore에서 solver를 실행하지 않는다. GraphPlot는 선택한
+route의 원 edge identity를 유지하고 concrete path만 materialize한다. Renderer는 기존 path를
+그대로 읽는다. 공개 API·수치 정책의 정본은 [Edge Routes](contract/current/EDGE_ROUTES.md)다.
+
+`ggaction/graph`는 순수 job compute와 명시 executor/preparation을 제공한다. Executor 인스턴스만
+bounded cache/worker/abort 수명을 소유하고 exact receiver/token의 private prepared handle을
+동기 domain action이 소비한다. Callback이나 worker는 저장 상태·trace·renderer로 전달하지 않는다.
+Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한 뒤 소비 plot union을 한 번
+materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
+screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
+Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+
+아래 package 수치는 공개 연결 이전 private checkpoint의 보존 기록이다.
 Theme 통합 기준과 이 private kernel의 합산 package는 927 entries/6,105,931 unpacked bytes,
 Node20/22/24 packed 최대1,331,298 bytes다. 상한은927/1,332,000/6,106,000으로 최소 올림한다.
 동일 tar의 합산 theme baseline bundle은 Full660,081/Basic369,582 gzip bytes로, 상한을
@@ -96,8 +108,8 @@ Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact rev
 해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
 source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
 내린다. `routes/result.js`와 `resultProvenance.js`는 solver 재실행 없이 완료 vector, 원 edge
-순서, endpoint, bounds, method provenance/schedule을 검증한다. 아직 public entry에서
-도달하지 않으며 네 solver 자체의 숫자 정책은 각 기존 owner를 공유한다. 이 private 추가의
+순서, endpoint, bounds, method provenance/schedule을 검증한다. 이 private checkpoint 당시에는 public entry에서
+도달하지 않았으며 네 solver 자체의 숫자 정책은 각 기존 owner를 공유한다. 이 private 추가의
 package는944 entries,6,191,389 unpacked이며 Node20/24 packed1,354,281,
 Node22 packed1,351,738 bytes다. 기존 공개 번들은 영향이 없어 합산 기준 증거를 재사용한다.
 
@@ -835,9 +847,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 663,000 bytes |
-| `ggaction/basic` | 371,000 bytes |
+| `ggaction` | 681,000 bytes |
+| `ggaction/basic` | 372,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+| `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | 83,000 bytes |
 
 

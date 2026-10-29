@@ -569,7 +569,9 @@ export function buildActionRelationshipPrograms() {
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
       .layoutGraph({ id: "network-layout", method: "circular" })
-      .createGraphPlot({ labels: {} }).editGraphPlot({ nodes: { radius: 8 } })
+      .bundleGraphEdges({ id: "edge-routes", method: "edge-path", coordinateSpace: "screen" })
+      .createGraphPlot({ labels: {}, routes: "edge-routes" }).editGraphPlot({ nodes: { radius: 8 } })
+      .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
     chart().createCanvas().createData({ id: "features", values: [{ id: "a", x: 0 }, { id: "b", x: 1 }, { id: "c", x: 3 }] })

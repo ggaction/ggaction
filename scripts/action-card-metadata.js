@@ -33,6 +33,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
+  "editEdgeRoute",
   "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
@@ -70,6 +71,8 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  bundleGraphEdges: ["editEdgeRoute", "removeResource"],
+  editEdgeRoute: ["editEdgeRoute", "removeResource"],
   createCalendarLayout: ["editLayout", "removeResource"],
   createCalendarPlot: ["editCalendarPlot", "removeMark"],
   editCalendarPlot: ["editCalendarPlot", "removeMark"],
@@ -173,6 +176,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "bundleGraphEdges", "editEdgeRoute",
   "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",
   "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark",
   "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",

@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted } from "./preparedResourceContext.js";
+import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceScreenRooted } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -24,6 +24,10 @@ export function replaceStoredResource(program, parsed, value, args) {
     if (!same(ref, value)) resolveInputReference(program, ref);
   }
   const dataRooted = preparedResourceDataRooted(args, program);
+  const screenRooted = preparedResourceScreenRooted(args, program);
+  if (screenRooted && (previous === undefined || value.kind !== "edge-route" || value.options.coordinateSpace !== "screen" ||
+      dataSourceValueHash(previous.options) !== dataSourceValueHash(value.options) || dataSourceValueHash(previous.inputs) !== dataSourceValueHash(value.inputs) ||
+      dataSourceValueHash(previous.result.viewport) === dataSourceValueHash(value.result.viewport))) throw new TypeError("Prepared screen writes require an existing route and a changed viewport only.");
   const dataReplacements = new Map();
   for (const entry of preparedResourceDataReplacements(args, program)) {
     resolveInputReference(program, entry.previous); resolveInputReference(program, entry.next);
@@ -33,16 +37,23 @@ export function replaceStoredResource(program, parsed, value, args) {
   const affected = new Set(dataRooted ? [] : [JSON.stringify([value.kind, value.id])]);
   const allowed = new Set();
   for (const candidate of orderResourceDependencies(program.semanticSpec.resources)) {
-    const owns = dataRooted ? ["hierarchy", "graph", "geometry", "layout"].includes(candidate.kind)
+    if (screenRooted && candidate.kind === "edge-route" && candidate.options.coordinateSpace === "screen" &&
+        dataSourceValueHash(candidate.result.viewport) !== dataSourceValueHash(value.result.viewport)) {
+      allowed.add(JSON.stringify([candidate.kind, candidate.id]));
+      continue;
+    }
+    const owns = dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route"].includes(candidate.kind)
       : candidate.kind === "data-source" && value.kind === "parameter" ||
         candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
-        candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph";
+        candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph" ||
+        candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind);
     if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
         dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);
     }
   }
   const primaryKey = JSON.stringify([value.kind, value.id]);
+  if (screenRooted) allowed.delete(primaryKey);
   if (dataRooted && (!allowed.delete(primaryKey) || previous === undefined ||
       dataSourceValueHash(previous.options) !== dataSourceValueHash(value.options))) {
     throw annotateError(new Error("Prepared source resource is not rooted in its data revisions."), { code: "stale-result", resourceId: value.id });
@@ -55,6 +66,7 @@ export function replaceStoredResource(program, parsed, value, args) {
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
   }
+  if (screenRooted && allowed.size !== replacements.size) throw new TypeError("Prepared screen revision requires every invalidated route.");
   if (dataRooted) {
     if (allowed.size !== replacements.size) throw annotateError(new Error("Prepared source revision requires every affected resource result."), { code: "stale-result" });
     const expected = previous.inputs.map(ref => ref.kind === "data" && dataReplacements.has(ref.id) ? dataReplacements.get(ref.id).next : ref);
@@ -77,7 +89,8 @@ export function replaceStoredResource(program, parsed, value, args) {
     };
     const inputs = resource.inputs.map(rebind);
     const ownership = resource.ownership.mode === "generated" ? { ...resource.ownership, owner: rebind(resource.ownership.owner) } : resource.ownership;
-    const changed = inputs.some((ref, index) => ref !== resource.inputs[index]) || ownership.owner !== resource.ownership.owner;
+    const changed = inputs.some((ref, index) => ref !== resource.inputs[index]) || ownership.owner !== resource.ownership.owner ||
+      screenRooted && replacement !== undefined;
     let next = changed ? { ...resource, revision: resource.revision + (same(resource, value) ? 0 : 1), inputs, ownership } : resource;
     if (replacement !== undefined) {
       if (!changed || replacement.revision !== next.revision ||

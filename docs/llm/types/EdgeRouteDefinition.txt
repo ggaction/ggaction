@@ -1,0 +1,5 @@
+export type EdgeRouteDefinition =
+  { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
+  | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
+  | { readonly method: "density"; readonly options?: EdgeRouteCommonOptions }
+  | { readonly method: "edge-path"; readonly options?: EdgePathRouteOptions };

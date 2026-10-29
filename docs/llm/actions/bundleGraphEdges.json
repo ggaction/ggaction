@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 3,
+  "name": "bundleGraphEdges",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling.",
+  "signature": "bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;",
+  "intents": [
+    "bundle graph edges",
+    "layout",
+    "avoid overlap",
+    "chart setup",
+    "data and scales",
+    "graph edges",
+    "bundled connections"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing graph and compatible node layout"
+    ],
+    "owns": [
+      "edge-route resource"
+    ],
+    "idOptions": [
+      "id",
+      "graph",
+      "layout"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editEdgeRoute",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing graph and compatible node layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": false,
+      "type": "PreparedGraphEdgeRoutes"
+    },
+    {
+      "name": "requestToken",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "\"hierarchical\""
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "HierarchicalEdgeRouteOptions"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "graph",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinateSpace",
+      "required": false,
+      "type": "\"screen\" | \"world\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "bundleGraphEdges({ id?, target?, prepared?, requestToken?, method?, options?, graph?, layout? })"
+  ],
+  "snippet": "program.bundleGraphEdges({ id: \"routes\", method: \"edge-path\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#bundlegraphedges"
+}

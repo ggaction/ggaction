@@ -3,6 +3,9 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const routesFile = path.join(directory, "edge-routes.mts");
+  await writeFile(routesFile, await readFile(new URL("./fixtures/edge-routes.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", routesFile], directory);
   const logicalSelectionFile = path.join(directory, "logical-selection.mts");
   await writeFile(logicalSelectionFile, await readFile(new URL("./fixtures/logical-selection.ts", import.meta.url), "utf8"));
   run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", logicalSelectionFile], directory);

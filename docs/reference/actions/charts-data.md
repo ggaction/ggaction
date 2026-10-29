@@ -4885,6 +4885,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `layout` | Optional / branch-dependent | `string \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| false \| undefined` |
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
@@ -4920,6 +4921,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `layout` | Optional / branch-dependent | `string \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| false \| undefined` |
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
@@ -5379,6 +5381,85 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 ```
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../../api/calendar.md#createcalendarlayout).
+
+
+## `bundleGraphEdges`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`BundleGraphEdgesOptions`](./../types.md#type-bundlegraphedgesoptions) · [`ApplyGraphEdgeRoutesOptions`](./../types.md#type-applygraphedgeroutesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedGraphEdgeRoutes` |
+| `requestToken` | Optional / branch-dependent | `string` |
+| `method` | Optional / branch-dependent | `"hierarchical"` |
+| `options` | Optional / branch-dependent | `HierarchicalEdgeRouteOptions` |
+| `id` | Optional / branch-dependent | `string` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinateSpace` | Optional / branch-dependent | `"screen" \| "world" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+bundleGraphEdges({ id, graph?, layout?, method, options?, coordinateSpace? })
+```
+
+Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling. Graph topology and item identity remain unchanged. The [Edge routes API](../../api/edge-routes.md) owns method options, exact input binding, bounded computation and worker preparation. Bind the result with `createGraphPlot({routes:id})`. Prepared application accepts only `{prepared,requestToken}` on the exact original receiver.
+
+
+## `editEdgeRoute`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditEdgeRouteOptions`](./../types.md#type-editedgerouteoptions) · [`ApplyGraphEdgeRoutesOptions`](./../types.md#type-applygraphedgeroutesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedGraphEdgeRoutes` |
+| `requestToken` | Optional / branch-dependent | `string` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `method` | Optional / branch-dependent | `EdgeRouteMethod \| undefined` |
+| `coordinateSpace` | Optional / branch-dependent | `"screen" \| "world" \| undefined` |
+| `options` | Optional / branch-dependent | `EdgePathRouteOptions \| EdgeRouteCommonOptions \| ForceDirectedEdgeRouteOptions \| Partial<HierarchicalEdgeRouteOptions> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
+```
+
+Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
 
 
 ## Focused core data editing

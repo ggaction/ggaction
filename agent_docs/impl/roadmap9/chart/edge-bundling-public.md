@@ -6,9 +6,9 @@
 - [x] 현재 Graph/Layout/Plot/typed-binding/prepare 소유자 확인
 - [x] 최종 통합 기준 afc4e34e6 병합 및 126개 회귀·7개 패키지 계약 검증
 - [x] Private job/source adapter 및 solver 없는 완료 결과 검증
-- [ ] Public resource·수정·GraphPlot·source/layout/hierarchy closure
-- [ ] 저장 검증·Full/Basic·typed refs·removal·inspection
-- [ ] Worker/sync parity·token/abort/cache lifetime
+- [x] Public resource·수정·GraphPlot·source/layout/hierarchy closure
+- [x] 저장 검증·Full/Basic·typed refs·removal·inspection
+- [x] Worker/sync parity·token/abort/cache lifetime
 - [ ] 네 renderer·scene/hit/selection·실제 데이터·types/current/docs/installed
 
 승인은 [AUTHORIZATION](../AUTHORIZATION.json)의 잔여 STEP077 전체 승인을 재사용한다.
@@ -105,3 +105,64 @@ viewport와 signed zero를 입력 hash에 포함한다. 완료 결과는 기존 
 95% lines/90% branches/100% functions를 모두 유지했다. 결과 검증은 solver를 재실행하지
 않는다. 직접 공개 action과 executor가 아직 없으므로 이 checkpoint를 STEP036–041 완료로
 간주하지 않는다. 상세 로그는 `edge-bundling-evidence/job/`에 보존한다.
+
+## 실행·화면 수명 구체화
+
+`createGraphRouteExecutor({createWorker?})`는 명시 instance를 반환한다. `compute(job,{signal?})`,
+`evict(inputHash?)`, `dispose()`만 가지며 전역 cache는 없다. 완료 cache는 LRU 최대8개와
+총1,000,000 control/command samples를 동시에 지킨다. 큰 한 결과는 계산하지만 cache하지
+않는다. Worker 요청은 최대8개이며 요청마다 host가 만든 독립 worker를 소유한다. 요청은
+`{job}`이고 응답은 `computeGraphEdgeRoutes(job)`의 완료 envelope다. Sync와 worker는
+같은 job/result validator를 쓴다. 완료·오류·abort·dispose에서 listener를 떼고 worker를
+종료한다. Dispose는 cache와 모든 pending 참조를 해제하며 이후 compute를 거부한다.
+Cache hit는 새 prepare generation에 사용할 수 있으나 이전 handle의 receiver/token 권한을
+승계하지 않는다. Request token은 worker 메시지 내용 대신 해당 요청의 private closure와
+prepare handle에 결박하므로 같은 input hash의 이전 세대 응답도 새 세대를 적용할 수 없다.
+
+`prepareGraphEdgeRoutes(program,{kind:'create'|'edit',...authoringOptions},
+{requestToken,signal?,executor?})`는 정확한 Full unit receiver와 원 요청을 정규화한 뒤 await한다.
+Executor 생략은 같은 synchronous 계산 owner를 사용한다. 반환 handle은
+`bundleGraphEdges({prepared,requestToken})` 또는 `editEdgeRoute({prepared,requestToken})`에
+적용하며 다른 authoring options를 섞지 않는다. Forged/다른 receiver/ABA/operation/token 및
+abort를 apply에서 다시 검사한다. Handle에는 callback·worker·result 배열이 노출되지 않는다.
+
+Screen route의 viewport는 Canvas plot bounds다. GraphPlot은 현재 node layout을 translation만
+하므로 canonical route는 같은 layout 좌표로 저장하고, viewport는 화면 수명의 exact 입력으로
+묶는다. `editCanvas`가 바꾸려는 Canvas 후보에서 screen route를 모두 먼저 계산·검증한다.
+Full-only Canvas prepare/apply owner는 기존 data revision 등록 패턴을 따르며 Basic에 route
+solver를 import하지 않는다. Private final-resource context는 이 경우에만 여러 독립 screen
+route의 **기존 동일 options/inputs + 다음 revision + 변경된 viewport**를 원자적으로 적용한다.
+기존 Canvas materialization plan은 최종 후보 뒤 각 mark를 한 번만 그린다. World route는
+resize해도 revision을 올리지 않는다. Generic primitive가 임의의 다른 resource 결과를 이
+권한으로 교체할 수 없도록 exact receiver·args와 전체 invalidated screen 집합을 검증한다.
+
+
+## 공개 source 검증 후보
+
+네 방법 × observed/inferred × directed/undirected의 공개16셀과 hierarchy/source/layout
+갱신, exact restore, immutable 실패, Canvas screen union 및 실제 Worker parity를 구현했다.
+Canonical `all capability:edge-routes`는77/77 통과했고 집중73개 coverage에서 새 high-risk
+owner의 기존 family floor95/90/100을 유지했다. Browser DPR1/2에서 실제 Worker와
+Canvas/SVG primitive parity2/2, PNG/PDF primitive2/2, 설치용 별도 프로세스+네 renderer
+consumer3/3의 source smoke가 통과했다. 전체 coverage·문서·최종 tar 설치는 아직 검증 중이다.
+
+실제 TT5종은32개 source rows 전부를 범주별 observed membership 집계에 기여시키며,
+각3방법에서 weight 합계·기여수·source 수정·codec·selection을 확인했다(5/5).
+처음32개 개별 긴 edge를 density에 넣은 실행은 기존10M work guard에 걸렸다. 한도를
+높이거나 row witness를 생략하지 않고, 공개 summary provenance를 가진 범주 집계로 바꾸었다.
+Direct lifecycle recipe의 edgeKey는 기존 원본 id를 명시해 독립 authoring마다 새로 생기는
+allocation namespace가 수치 job hash를 달리하는 의도된 의미와 replay fixture를 분리한다.
+Occurrence-key 입력의 원자성·identity 회귀는 별도 unit에서 그대로 유지한다.
+
+고정 후보 package의 실측은957entries/6,240,953unpacked, Node22 packed1,363,181,
+Node20/24 packed1,365,952bytes다. 최소 상한957/1,366,000/6,241,000을 적용한다.
+동일 minified chunks를 각Node zlib로 압축한 최대는 Full680,570, Basic371,470,
+SVG20,196, interaction82,867, graph42,269bytes다. Full681,000/Basic372,000/graph43,000으로
+최소1000byte 올림하고 기존SVG25,000/interaction83,000을 유지한다. Basic 증가는 공통
+Canvas/typed-reference 경계이며 route solver/host import 제외 계약이 통과했다.
+Search index는973,565bytes여서974,000 상한으로 최소 올림한다.
+
+최종 통합에서 parent가 실행할 공통3파일은 `realistic-lifecycle-factor-effects.test.js`,
+`realistic-scenario-generator.test.js`, `realistic-scenario-generation-isolation.test.js`다.
+AT80 keyboard/temporary unbundle, AT81 animation interrupt/geo clip, AT82 단계별 SLO는
+각 후행 closure owner와 합산 검증이 필요하며 이 source 후보로 전체 인수 시험을 닫지 않는다.

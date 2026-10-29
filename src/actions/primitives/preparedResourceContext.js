@@ -27,7 +27,13 @@ export function withPreparedDataResourceResults(program, args, replacements, ope
   return bindPreparedResources(program, args, replacements, operation, dataReplacements, true);
 }
 
-function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted) {
+// Canvas revisions may invalidate several independent screen-space routes.
+// This private authority permits only their next viewport-bound results.
+export function withPreparedScreenRouteResults(program, args, replacements, operation) {
+  return bindPreparedResources(program, args, replacements, operation, [], false, true);
+}
+
+function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, screenRooted = false) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -38,7 +44,8 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     validateInputReference(replacement.previous);
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
-    if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout"] : ["data-source", "graph", "layout"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
+    if (screenRooted && (previous.kind !== "edge-route" || resource.options.coordinateSpace !== "screen")) throw new TypeError("Prepared screen replacements require screen edge routes.");
+    if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route"] : ["data-source", "graph", "layout", "edge-route"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");
     }
@@ -55,7 +62,7 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     dataIds.add(entry.previous.id);
   }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, screenRooted });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
 }
@@ -68,4 +75,9 @@ export function preparedResourceDataReplacements(args, enteredProgram) {
 export function preparedResourceDataRooted(args, enteredProgram) {
   preparedResourceResults(args, enteredProgram);
   return prepared.get(args)?.dataRooted === true;
+}
+
+export function preparedResourceScreenRooted(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.screenRooted === true;
 }

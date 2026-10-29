@@ -1059,6 +1059,20 @@
     "description": "Keep observed connections separate from the positions used to draw them.",
     "image": "/assets/images/graph-plots.png"
   },
+  "/api/edge-routes/": {
+    "title": "Edge Routes",
+    "source": "docs/api/edge-routes.md",
+    "editSource": "docs/api/edge-routes.md",
+    "description": "Bundle existing graph edges, retain their identities, and prepare bounded vector routes in a worker.",
+    "image": "/assets/images/edge-routes.png"
+  },
+  "/tutorials/edge-routes/": {
+    "title": "Edge Route Tutorial",
+    "source": "docs/tutorials/edge-routes.md",
+    "editSource": "examples/edge-routes/program.js",
+    "description": "Route A–C along existing A–B–C connections without adding a junction or changing graph identity.",
+    "image": "/assets/images/edge-routes.png"
+  },
   "/api/partition/": {
     "title": "Partition Plots",
     "source": "docs/api/partition.md",

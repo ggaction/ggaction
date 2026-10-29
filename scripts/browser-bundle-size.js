@@ -5,13 +5,15 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 663_000, // Calendar, selection and theme owners: Node20 662,620 bytes.
-  "ggaction/basic": 371_000, // Calendar source-resource closure: Node20 370,736 bytes.
+  ggaction: 681_000, // Stored routes and explicit host entry: Node20/24 680,570 bytes.
+  "ggaction/basic": 372_000, // Shared typed reference/Canvas boundary: Node20/24 371,470 bytes.
   "ggaction/svg": 25_000,
+  "ggaction/graph": 43_000, // Dedicated explicit route host: Node20/24 42,269 bytes.
   "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `

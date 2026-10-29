@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:11befb09be2ba348cd09f3035cb5669aa8a35914c5d93861d4f917f473edff67",
+  "contractId": "sha256:910f5b83362299cd159bddcc72f7a437c17360af75b871fbc9eedf70c8c57558",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "80b84bac1fae87eaa1a1eaf90cffb70ca86f4896",
+  "exampleSourceRef": "codex/roadmap9-routes",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 343,
+  "actionCount": 345,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -163,6 +163,14 @@
       "status": "development"
     },
     "editGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "bundleGraphEdges": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editEdgeRoute": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

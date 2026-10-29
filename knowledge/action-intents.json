@@ -1065,6 +1065,14 @@
     "CalendarPlot": [
       "calendar plot",
       "day cells and month boundaries"
+    ],
+    "GraphEdges": [
+      "graph edges",
+      "bundled connections"
+    ],
+    "EdgeRoute": [
+      "edge route",
+      "bundled connection geometry"
     ]
   },
   "summaryOverrides": {
@@ -2126,6 +2134,16 @@
       "target": "calendar",
       "cells": {
         "opacity": 0.5
+      }
+    },
+    "bundleGraphEdges": {
+      "id": "routes",
+      "method": "edge-path"
+    },
+    "editEdgeRoute": {
+      "target": "routes",
+      "options": {
+        "exponent": 3
       }
     }
   },

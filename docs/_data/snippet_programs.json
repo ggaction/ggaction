@@ -517,5 +517,16 @@
       "exported": "createCalendar"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/edge-routes.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Install ggaction and run this ES module in Node.js 20 or later.",
+    "canonical": {
+      "file": "examples/edge-routes/program.js",
+      "exported": "createEdgeRoutes"
+    },
+    "rendering": "authoring-only"
   }
 }

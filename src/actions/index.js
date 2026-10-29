@@ -4,6 +4,7 @@ import { registerCalendarPlotActions } from "./calendar/plots.js";
 import { registerImageResourceActions } from "./images/index.js";
 import { registerLayoutActions } from "./layouts/index.js";
 import { registerGraphPlotActions } from "./graphs/plots.js";
+import { registerEdgeRouteActions } from "./graphs/edgeRoutes.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
@@ -75,6 +76,7 @@ export function registerActions(ProgramClass) {
   registerResourceActions(ProgramClass);
   registerGraphActions(ProgramClass);
   registerGraphPlotActions(ProgramClass);
+  registerEdgeRouteActions(ProgramClass);
   registerFlowActions(ProgramClass);
   registerFlowPlotActions(ProgramClass);
   registerCalendarResourceActions(ProgramClass);
@@ -84,7 +86,7 @@ export function registerActions(ProgramClass) {
   registerHierarchyResourceActions(ProgramClass);
   registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
-  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout"],
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout", "edge-route"],
     revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
     reviseSource: reviseSourceResourceInputs });
   registerTextMetricActions(ProgramClass);

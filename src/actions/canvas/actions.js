@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import { hasPlotUnderlays } from "../../materialization/plotDrawOrder.js";
 import { findLayer } from "../../selectors/layers.js";
+import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "./resourceRevision.js";
 import {
   DEFAULT_CANVAS,
   DEFAULT_MARGIN,
@@ -78,9 +79,20 @@ function applyCanvasState(program, args, state) {
       next = next.editGraphics({ target: CANVAS_GRAPHIC_ID, property, value: state[property] });
     }
   }
-  return next._withCanvasConfig({ margin: state.margin, size: state.size,
+  return next._withCanvasConfig(canvasConfig(state));
+}
+
+function canvasConfig(state) {
+  return { margin: state.margin, size: state.size,
     ...(state.plot === undefined ? {} : { plot: state.plot, requestedMargin: state.requestedMargin }),
-    ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) });
+    ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) };
+}
+
+function previewCanvasState(program, state) {
+  const canvas = program.graphicSpec.objects[CANVAS_GRAPHIC_ID];
+  return { ...program, constructor: program.constructor, graphicSpec: { ...program.graphicSpec, objects: { ...program.graphicSpec.objects,
+    [CANVAS_GRAPHIC_ID]: { ...canvas, properties: { ...canvas.properties, width: state.width, height: state.height, background: state.background } } } },
+    materializationConfigs: { ...program.materializationConfigs, canvas: canvasConfig(state) } };
 }
 
 function assertBorderAvailable(program, state) {
@@ -109,16 +121,17 @@ export const editCanvas = /* @__PURE__ */ action(
     validateOptions(args, "editCanvas");
     const state = resolveCanvasState(requireCanvas(this).properties, args, this.materializationConfigs.canvas);
     assertBorderAvailable(this, state);
+    const changesLayout = ["width", "height", "margin", "plot"].some(key => Object.hasOwn(args, key));
+    const resources = changesLayout ? prepareCanvasResourceRevision(previewCanvasState(this, state)) : undefined;
     let next = this;
     if (state.plotBorder === false && this.materializationConfigs.canvas?.plotBorder !== undefined) {
       next = next.editGraphics({ target: "plotBorder", remove: true });
     }
     next = applyCanvasState(next, args, state);
+    next = applyCanvasResourceRevision(next, resources);
 
     if (
-      Object.hasOwn(args, "width") ||
-      Object.hasOwn(args, "height") ||
-      Object.hasOwn(args, "margin") || Object.hasOwn(args, "plot")
+      changesLayout
     ) {
       next = applyMaterializationPlan(
         next,

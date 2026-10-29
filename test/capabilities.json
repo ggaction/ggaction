@@ -274,6 +274,38 @@
       {
         "type": "prefix",
         "path": "unit/grammar/graph/routes/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/edge-routes/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-input.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-routes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-host.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/graph-route-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-edge-routes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/edge-routes.browser.js"
       }
     ],
     "expressions": [
@@ -1032,6 +1064,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-edge-routes.test.js"
       }
     ],
     "rendering": [

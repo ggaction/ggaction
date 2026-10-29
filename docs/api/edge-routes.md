@@ -1,0 +1,116 @@
+---
+layout: default
+title: Edge Routes
+description: Bundle existing graph edges, retain their identities, and prepare bounded vector routes in a worker.
+---
+
+# Edge routes
+
+Bundle connections from an existing [graph layout](graphs.md). The graph keeps
+its original nodes and edges. Stored routes are sampled vectors used by the same
+GraphPlot, selection, inspection, Canvas, SVG, PNG and PDF consumers.
+
+{% include chart-example.html id="edge-routes" %}
+
+The [edge route tutorial](../tutorials/edge-routes.md) uses this executable example.
+
+## `bundleGraphEdges`
+
+**Chart authoring, Full only.**
+
+```typescript
+bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Pass `{id, graph?, layout?, method, options?, coordinateSpace?}`. ID and method
+are required. An omitted layout uses the current eligible fixed/circular/force
+layout, then the unique eligible layout. Graph defaults to that layout's exact
+input. Missing, ambiguous or incompatible resources fail.
+
+| Method | Options | Behavior |
+| --- | --- | --- |
+| `hierarchical` | Required `mapping`; optional `hierarchy`, `hierarchyLayout`, `strength` (0.85), `tolerance` (0.001), `maxSubdivisions` (4096) | Follow a common ancestor path with a clamped spline |
+| `force-directed` | `compatibilityThreshold` (0.6) | Deterministic attraction between compatible edges |
+| `density` | No method-specific tuning | Fixed 256×256 field and 20 density-advection iterations |
+| `edge-path` | `exponent` (2), `maxStretch` (2) | Follow real graph edges with bounded detours |
+
+Hierarchical mapping entries contain an original typed `nodeKey` and scalar
+`hierarchyKey`. Cover every graph node once. A tree layout supplies x/y anchors;
+a treemap supplies rectangle centers. Mapped anchors must match graph node
+positions. Strength is in [0,1], tolerance is positive, and subdivisions are an
+integer from 1 to 4096. Force compatibility is in [0,1]; edge-path exponent is positive
+and maxStretch is at least one.
+
+All methods accept `zeroLength:"point"` and `limits`. Coincident endpoints retain
+a point route and a diagnostic, with no invented junctions. Empty graphs produce
+empty complete routes. Limits can lower the default maxima: 100,000 nodes,
+1,000,000 edges, 10,000,000 candidate pairs, and 10,000,000 active samples. A shared
+work budget and 30,000 commands per route also apply. Invalid values, overflow or
+exhausted budgets fail without storing partial results.
+
+`coordinateSpace` defaults to `"world"`. `"screen"` also binds the current plot
+bounds: resizing the Canvas recomputes each screen route once. World routes retain
+their result. GraphPlot currently translates stored layout coordinates in either
+case.
+
+## `editEdgeRoute`
+
+**Chart authoring, Full only.**
+
+```typescript
+editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Pass a nonempty patch with `target?`, `graph?`, `layout?`, `method?`, `options?`,
+or `coordinateSpace?`. Target uses the current/unique resource rule and supports
+explicit composition child paths. Same-method options patch stored values;
+changing method starts from that method's defaults. Mapping and other required
+inputs must be supplied for the new method. Even an explicit same-value edit
+produces the next revision.
+
+## Bind, revise and inspect
+
+Use `createGraphPlot({routes:'routesId'})` to bind routes from the same exact graph
+and layout. `editGraphPlot({routes:false})` restores native curves. Omitting routes
+preserves an existing plot's binding. Native `parallelGap` and `loopRadius` apply
+when the binding is removed. Node radius trims the visible path and arrows follow
+its final tangent; stored center anchors stay unchanged.
+
+Graph, source, layout and hierarchy edits preflight every dependent route and
+plot, then update their revisions and graphics once. Failures preserve the old
+program and trace. Remove consuming marks or detach routes before removing a
+route resource. Remove authored routes before their input resources. Serialization
+retains complete vectors and validates their input references and hashes without
+rerunning a solver. These hashes check consistency, not cryptographic trust.
+
+Edges retain original row membership and item identity, including when several
+routes overlap. Inspection and accessible export count original edges. Highlights
+and current sampled-frame hits use their concrete geometry. There is no synthetic
+bundle-junction node.
+
+## Prepare in a worker
+
+**Advanced host API.** Import `prepareGraphEdgeRoutes`, `createGraphRouteExecutor`
+and the worker-side `computeGraphEdgeRoutes` from `ggaction/graph`.
+
+`prepareGraphEdgeRoutes(program, request, host)` accepts a create or edit request
+(`kind:"create"` or `"edit"`) plus the action options. Host requires a nonempty
+`requestToken` and optionally a native `signal` and executor. Apply its opaque
+handle with only `{prepared, requestToken}` on the exact original program.
+Changed receivers, wrong operations/tokens, copied handles and aborted requests
+fail. Host options are captured before waiting.
+
+`createGraphRouteExecutor({createWorker?})` returns `compute(job,{signal?})`,
+`evict(inputHash?)` and `dispose()`. With no factory, it runs the same synchronous
+numeric owner. A factory returns a browser Worker or matching message-event host.
+The worker receives `{job}` and posts `computeGraphEdgeRoutes(job)`. Jobs and
+completions use structured-clone data only; callbacks and workers never enter a
+program or renderer.
+
+The instance permits eight pending workers and caches at most eight completed
+inputs with a total of one million control/command samples. Larger results are
+returned without caching. Eviction without a hash clears the cache. Completion,
+error, cancellation and disposal detach listeners and terminate each request's
+worker. Disposal rejects pending work and prevents reuse. Late replies cannot
+apply an older preparation. Keep the executor alive only for the host workflow
+that owns it, then call `dispose()`.

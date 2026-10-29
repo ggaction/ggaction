@@ -786,6 +786,12 @@ Place civil-day aggregates in stable week and weekday cells.
 
 Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
 
+### [Edge routes](./edge-routes/)
+
+Follow existing graph edges with a bounded detour and explicit stored route.
+
+Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
