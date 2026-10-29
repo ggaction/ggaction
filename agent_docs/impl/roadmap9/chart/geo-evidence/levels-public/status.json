@@ -68,6 +68,10 @@
         "tests": 31,
         "pass": 31,
         "searchCeiling": 1015000
+      },
+      "sourcePinnedFinal": {
+        "tests": 198,
+        "pass": 198
       }
     },
     "builtDocs": {
@@ -426,6 +430,20 @@
     {
       "file": "docs-browser-2.log.gz",
       "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85"
+    },
+    {
+      "file": "docs-source-final.log.gz",
+      "sha256": "60467ca020cafeadbd18ad43b9964170be908f209bda17e5c4fc8a2c6d847faa"
+    },
+    {
+      "file": "docs-source-final.receipt.json.gz",
+      "sha256": "87eab2ed7c30c99be2a2d72c96e8d71a1a5865cdaaf4895b916b9a9f8b30e36a"
+    },
+    {
+      "file": "package-final.log.gz",
+      "sha256": "fc15d448712d750d6c1d15462f6b4a8e7664f167d90628e42179a12847190bbf"
     }
-  ]
+  ],
+  "sourceCommit": "6ea274544",
+  "metadataFollowup": "Only generated provenance/LLM source pins and evidence records changed after source checkpoint; package bytes and runtime remain identical."
 }

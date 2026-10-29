@@ -542,3 +542,8 @@ Canvas pixels, SVG, PNG bytes, PDF content stream과 정확히 비교한다.
 normal/coverage corpus 통과로 주장하지 않는다. 공통 realistic 생성 3파일은 최종 통합에서
 한 번 실행하도록 parent에 인계했다. Annotation rebase, session availability reconciliation,
 field/label/guide 및 camera 소비자는 후행 구현이며 AT31/32 전체 완료가 아니다.
+
+
+공개 LOD source는 `6ea274544`로 고정했다. 이후 provenance/LLM source pin만 갱신하고
+문서 source 전체 198/198 및 package dry check(1026 entries, 1460317/6659038 bytes)를
+다시 확인했다. Runtime/declaration/packed entry bytes는 설치 검증 tar와 동일하다.
