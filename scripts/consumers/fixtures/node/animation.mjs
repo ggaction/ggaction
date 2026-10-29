@@ -9,6 +9,14 @@ import { renderToPNGBuffer } from 'ggaction/png';
 import { renderToPDFBuffer } from 'ggaction/pdf';
 import { createCanvas } from '@napi-rs/canvas';
 
+const offlineNetworkGuard=`
+import http from 'node:http';import https from 'node:https';import net from 'node:net';import tls from 'node:tls';
+import {syncBuiltinESMExports} from 'node:module';
+let network=0;const deny=()=>{network++;throw Error('offline');};globalThis.fetch=deny;
+for(const module of [http,https]){module.get=deny;module.request=deny;}
+net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;syncBuiltinESMExports();
+`;
+
 const points=()=>chart().createCanvas({width:300,height:200,margin:20})
   .createData({id:'rows',keyField:'id',values:[{id:'a',x:1,y:50}]})
   .createPointMark({id:'points',fill:'red'})
@@ -40,8 +48,8 @@ export const cases=[
     const plan=prepare(),saved=serializeAnimation(plan,{rate:-1,repeat:Infinity,reducedMotion:true});
     const expected=exportAnimationFrames(plan,{timesMs:[0,50,100]}).map(frame=>frame.scene);
     const child=spawnSync(process.execPath,['--input-type=module','-e',`
-      import {deserializeAnimation,exportAnimationFrames} from 'ggaction/animation';
-      let network=0;globalThis.fetch=()=>{network++;throw Error('offline');};
+      ${offlineNetworkGuard}
+      const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
       let text='';for await(const chunk of process.stdin)text+=chunk;
       const {plan,playback}=deserializeAnimation(text);
       console.log(JSON.stringify({scenes:exportAnimationFrames(plan,{timesMs:[0,50,100]}).map(f=>f.scene),network,
@@ -76,8 +84,9 @@ export const cases=[
     assert.ok(saved.includes(font.payload.data));assert.ok(saved.includes(image.payload.data));
     const expected=hash((await renderToPNGBuffer(sampleTransition(plan,0))).buffer);
     const child=spawnSync(process.execPath,['--input-type=module','-e',`
-      import {createHash} from 'node:crypto';import {deserializeAnimation,sampleTransition} from 'ggaction/animation';import {renderToPNGBuffer} from 'ggaction/png';
-      let text='';for await(const chunk of process.stdin)text+=chunk;let network=0;globalThis.fetch=()=>{network++;throw Error('offline');};
+      ${offlineNetworkGuard}
+      const {createHash}=await import('node:crypto');const {deserializeAnimation,sampleTransition}=await import('ggaction/animation');const {renderToPNGBuffer}=await import('ggaction/png');
+      let text='';for await(const chunk of process.stdin)text+=chunk;
       const {plan}=deserializeAnimation(text),png=await renderToPNGBuffer(sampleTransition(plan,0));
       console.log(JSON.stringify({hash:createHash('sha256').update(png.buffer).digest('hex'),network}));
     `],{input:saved,encoding:'utf8',timeout:30000});
