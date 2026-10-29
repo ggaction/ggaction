@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileTypeScript } from "../support/typescript.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
-test("interaction declarations separate inspection commands and sampled Canvas frames from authoring", async () => {
+test("interaction declarations separate immutable inspection, authoring commands and sampled frames", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-interaction-"));
   try {
     const file = path.join(directory, "interaction.mts");
@@ -23,6 +23,21 @@ session.dispatch({type:'inspect',point:{x:1,y:2},pointerType:'touch'});
 session.dispatch({type:'leave'});
 session.dispatch({type:'frame',scene:createTransitionScene(program,{format:'canvas'}),generation:0,version:1});
 session.updateProgram(program);session.subscribe(event=>{const key:string|undefined=event.state.hit?.target?.itemKey;});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
+session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{where:{version:2,registry:'standard@1',root:{type:'literal',value:true}}}}});
+session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
+session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});
+// @ts-expect-error one explicit owner is required
+session.dispatch({type:'select',payload:{id:'picked',select:{items:[]}}});
+// @ts-expect-error selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],field:'x',op:'eq',value:1}}});
+// @ts-expect-error a parameter is scalar
+session.dispatch({type:'setParameter',target:'threshold',payload:{value:[2]}});
+// @ts-expect-error clear retains the selection resource and does not accept arbitrary selectors
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked',select:{items:[]}}});
+
 unmount();session.destroy();
 // @ts-expect-error SVG fragments cannot become a concrete hit frame
 session.dispatch({type:'frame',scene:createTransitionScene(program),generation:0,version:1});

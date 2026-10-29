@@ -47,3 +47,53 @@ for (const ratio of [1, 2, 3]) test(`real Canvas and SVG pointer events share CS
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("host click commands commit and redraw the same logical selection in Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => document.querySelector("#status")?.textContent === "Canvas and SVG inspection ready" });
+    await page.evaluate(async () => {
+      const { render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      window.__selectionEvents = [[], []];
+      for (const [index, session] of window.__inspectionSessions.entries()) {
+        session.updateProgram(session.getState().program.selectMarks({ id: "picked", target: "observations", items: [] })
+          .highlightMarks({ selection: "picked", color: "red", bringToFront: false, dimOthers: false }));
+        const attach = element => element.addEventListener("click", () => {
+          const hit = session.getState().hit?.target;
+          if (hit?.ownerId === "observations") session.dispatch({ type: "select", target: hit.ownerId,
+            payload: { id: "picked", mode: "toggle", select: { items: [hit.itemKey] } }, origin: "user" });
+        });
+        session.subscribe(event => {
+          if (!event.phase) return;
+          window.__selectionEvents[index].push(event.phase);
+          if (event.phase !== "commit") return;
+          if (index === 0) render(event.current, document.querySelector("#chart").getContext("2d"), { pixelRatio: 2 });
+          else {
+            document.querySelector("#vector").innerHTML = renderToSVG(event.current);
+            const element = document.querySelector("#vector svg"); session.mount(element); attach(element);
+          }
+        });
+        attach(document.querySelector(index === 0 ? "#chart" : "#vector svg"));
+      }
+    });
+    for (const [index, selector] of ["#chart", "#vector svg"].entries()) {
+      const box = await page.locator(selector).boundingBox();
+      await page.mouse.click(box.x + 294, box.y + 118);
+      const selected = await page.evaluate(async index => {
+        const { getMarkItems } = await import("/src/inspection.js");
+        return getMarkItems(window.__inspectionSessions[index].getState().program, { target: "observations" })
+          .filter(item => item.properties.fill === "red").map(item => item.fields.id);
+      }, index);
+      assert.deepEqual(selected, ["b"]);
+      assert.deepEqual(await page.evaluate(index => window.__selectionEvents[index], index), ["commit", "settled"]);
+      await page.mouse.click(box.x + 294, box.y + 118);
+      assert.equal(await page.evaluate(async index => {
+        const { getMarkItems } = await import("/src/inspection.js");
+        return getMarkItems(window.__inspectionSessions[index].getState().program, { target: "observations" }).filter(item => item.properties.fill === "red").length;
+      }, index), 0);
+    }
+    assertNoBrowserErrors(errors, "interaction selection commands"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

@@ -790,10 +790,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 650,000 bytes |
-| `ggaction/basic` | 365,000 bytes |
+| `ggaction` | 652,000 bytes |
+| `ggaction/basic` | 367,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 83,000 bytes |
+| `ggaction/interaction` | 89,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3433,7 +3433,8 @@ unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,
 공개 `src/interaction.js`와 `types/interaction.d.ts`의
 `ggaction/interaction`은 Full/Basic authoring import와 분리된 browser-safe controller entry다.
 `interaction/session.js`가 DOM listener와 transient inspect/current-frame lifetime을 소유하며,
-program action/selection/history를 만들지 않는다. `sceneFrame.js`는 host가 전달한 concrete frame을
+inspection은 program action/selection/history를 만들지 않는다. 아래 원자 authoring command 경계가 편집을 소유한다.
+`sceneFrame.js`는 host가 전달한 concrete frame을
 bounded own-data snapshot으로 고정한 뒤 기존 renderer scene validation을 재사용한다.
 기존 scene/source identity로 metadata를 연결하고 version/generation 교체를 원자적으로 수행한다.
 
@@ -3496,3 +3497,16 @@ persistent-selection.inputs 한 곳에 저장된다. 일반 inline selector의 o
 필요하므로 Full assembly에서 constructor별 private resolver를 한 번 등록한다. Map의 handler는 frozen이고
 검증 중 교체·상속 fallback·외부 plugin API가 없다. Basic parameter entry가 Full mark policy를 import하지 않는다.
 정확한 값·제한·저장 형태와 지원은 [expression selection](contract/current/MARK_SELECTION.md#expression-selection)이 소유한다.
+
+
+### Interaction의 원자 authoring command 경계
+
+`interaction/selection.js`는 명시 owner/child scope의 select/clearSelection/setParameter를 receiver의
+기존 wrapped domain action에 위임한다. Full assembly를 controller에 import하거나 private primitive로
+state를 쓰지 않는다. `session.js`는 후보 program과 hit frame 모두 준비한 뒤 한 번에 교체하며
+transaction revision·event·FIFO·중복 transaction 억제는 runtime에만 둔다. Renderer는 여전히
+graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource만 저장한다.
+
+`interaction/input.js`는 queued command와 외부 concrete frame의 bounded own-data snapshot을 공유한다.
+기존 sceneFrame은 해당 snapshot 뒤 canonical scene/concrete validator를 호출한다. 구체 공개 명령,
+오류·동기 settled 의미와 지원 한도는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.

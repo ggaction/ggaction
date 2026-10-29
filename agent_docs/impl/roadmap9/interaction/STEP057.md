@@ -127,3 +127,28 @@ Node20/22/24에서 각각2개 실행·strict 타입·4 entry bundle이 통과했
 Full651,656/Basic366,102에652,000/367,000 bundle 한도를 적용했다. 최초 실패와 후보 tar는 최종 증거와 분리했다.
 최종 수정과 무관한 기존 source/renderer/UI 증거만 명시적으로 재사용했으며 전체 suite green으로 보고하지 않는다.
 C/D와 모든 후행 인수 조건은 계속 남아 있다.
+
+
+## D1 원자 session command 선행 연결
+
+C linked target이 같은 commit 경계를 사용해야 하므로 원안 승인 AUTHORIZATION 범위에서 D의 최소 공통
+경로를 먼저 구현한다. 공개 select(target,payload{id,select,mode}), setParameter(target,payload{value}),
+clearSelection(target,payload{id})를 기존 domain action에 위임한다. 기존 선택 resource 및 codec를 재사용하고
+선택 clear는 제거가 아니라 empty:none 집합으로 대체해 dependent label/highlight/conditional을 유지한다.
+
+하나의 immutable candidate와 hit frame을 모두 준비한 뒤 program/frame/revision을 교체한다.
+성공은 commit→settled, action 실패는 error만이며 이전 program/scene/revision을 보존한다.
+세션은 그림을 그리지 않고 host가 commit의 current를 renderer에 제공한다. 동기 settled는 host asset 준비를
+완료했다고 주장하지 않는다. 최초 검사는 fixture의 잘못된 hconcat 호출과 Basic editor 지원 추정을 찾았다.
+기존 hconcat public shape로 바로잡고 Basic은 createParameter만 가능하므로 세 편집명령을 모두 명시 거부한다.
+
+Focused20, 기존+신규 interaction owner4개100 lines/최저94.59 branches/100 functions 통과했다.
+추가 타입/discovery/browser/installed/docs qualification은 진행 중이다. C linked resolve와 D의 nearest,
+orphan/drop, 자동 selection binding·gesture·history는 이 선행 checkpoint에 포함하지 않으며 계속 남아 있다.
+
+
+D1 qualification 중 최초 metadata 검사는 신규 test capability 등록 누락과 stale provenance만 실패했다.
+각 소유 manifest/generator를 갱신했다. Package는 신규 input/selection owner2개 때문에913>911 entry로
+실패했다. 최초 실측 Node20 1,314,968packed/6,024,076unpacked에913/1,315,000/6,025,000 한도를 적용한다.
+Interaction bundle은 같은 archive에서 Node22 88,360, Node20 88,433으로83,000을 넘어89,000으로만 높인다.
+Full/Basic/SVG 한도와 모든 기존 critical coverage floor는 유지한다. 최종 고정 archive는 아래 evidence에서 구분한다.

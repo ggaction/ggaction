@@ -617,6 +617,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-selection.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

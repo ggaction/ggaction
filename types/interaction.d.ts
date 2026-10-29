@@ -1,4 +1,4 @@
-import type { ChartProgram, InputRef } from './program.js';
+import type { ChartProgram, InputRef, MarkSelectionSelector, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -35,15 +35,56 @@ export interface InteractionState {
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
+  /** Session-local committed program revision; inspection and frames do not increment it. */
+  readonly revision: number;
   readonly hit: InteractionHit | null;
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
-export interface InteractionEvent {
+export interface InteractionLifecycleEvent {
   readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
-export type InteractionCommand = {
+/** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
+export type InteractionTarget = string | (Readonly<ScopedActionTarget> & { readonly id: string });
+export interface InteractionTransaction {
+  readonly transactionId?: string;
+  readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type InteractionEditCommand = InteractionTransaction & ({
+  readonly type: 'select';
+  readonly target: InteractionTarget;
+  readonly payload: {
+    readonly id: string;
+    readonly select: MarkSelectionSelector;
+    /** Creation requires replace; other modes require an existing selection. */
+    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+  };
+} | {
+  readonly type: 'clearSelection';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly id: string };
+} | {
+  readonly type: 'setParameter';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly value: number | string | boolean | null };
+});
+export interface InteractionTransactionEvent {
+  readonly type: 'select' | 'clearSelection' | 'setParameter';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+  readonly phase: 'commit' | 'settled' | 'error';
+  readonly revision: number;
+  readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
+  readonly previous: InteractionProgram;
+  readonly current: InteractionProgram;
+  readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly state: InteractionState;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionTransactionEvent;
+export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -57,7 +98,7 @@ export type InteractionCommand = {
   readonly version: number;
   readonly generation: number;
 };
-export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale'; }
+export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
   updateProgram(program: InteractionProgram): InteractionDispatchResult;

@@ -11,6 +11,14 @@ session.dispatch({ type: "inspect", point: { x: 5, y: 6 }, pointerType: "touch",
 declare const element: HTMLCanvasElement;
 const unmount = session.mount(element, { rootTransform: [1, 0, 0, 1, 0, 0] });
 const unsubscribe = session.subscribe((event: InteractionEvent) => { const key: string | undefined = event.state.hit?.target?.itemKey; });
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}});
+session.dispatch({type:'setParameter',target:{childPath:['left'],id:'threshold'},payload:{value:2},origin:'user'});
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},transactionId:'clear'});
+session.subscribe(event=>{if ('phase' in event) {const previous=event.previous;const next=event.current;const revision:number=event.revision;}});
+// @ts-expect-error explicit owner required
+session.dispatch({type:'select',payload:{id:'picked',select:{items:[]}}});
+// @ts-expect-error invalid selection update mode
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},mode:'union'}});
 session.updateProgram(program); unsubscribe(); unmount(); session.destroy();
 // @ts-expect-error unsupported controller binding
 createInteractionSession({ program, bindings: [{ type: "drag" }] });

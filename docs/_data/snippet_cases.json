@@ -340,5 +340,15 @@
     "result": "program, liveSelection, changed",
     "prerequisites": "Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-selection-command",
+    "file": "api/interaction.md",
+    "contains": "const selectionSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, selectedProgram",
+    "prerequisites": "Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.",
+    "rendering": "authoring-only"
   }
 ]

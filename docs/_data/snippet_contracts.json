@@ -2305,6 +2305,21 @@
     "executable": false
   },
   {
+    "file": "api/interaction.md",
+    "block": 5,
+    "heading": "Commit selections and parameters",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.",
+    "sha256": "f479ec451a0665a29bcc24f695fdd3e92042d7eb923b7923aa1d478b6a0b7395",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",
