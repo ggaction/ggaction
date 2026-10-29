@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "brush-scale-inversion": { prefix: "grammar/scales/inversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Brush inverse values must preserve resolved scale geometry, typed keys and bounded immutable input." },
   "interaction-pointer-capture": { prefix: "interaction/pointerCapture", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Host capture must release listeners and pointers exactly once across cancellation, reentrancy and disposal." },
   "interaction-gestures": { prefix: "interaction/gestures", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Gesture arbitration and terminal transitions must retain pointer ownership, bounded work and one commit or cancellation." },
   "selection-nearest": { prefix: "grammar/nearestSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit nearest metrics require finite bounded final-grain tuples and stable identity." },

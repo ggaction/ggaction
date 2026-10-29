@@ -641,6 +641,10 @@
       },
       {
         "type": "file",
+        "path": "unit/brush-scale-inversion.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-pointer-capture.test.js"
       },
       {
