@@ -1,0 +1,22 @@
+{
+  "status": "focused-verified",
+  "sourceRevision": "757a4456e",
+  "runtimeRevision": "0d72f2c7001ad591df2b0f377221ed5afd53f194",
+  "recipeSourceRevision": "7830a16a6",
+  "recipeQualificationRevision": "c749a4f40",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning": 31,
+    "discovery": 16,
+    "renderers": 3,
+    "realisticSources": 5,
+    "docs": 226
+  },
+  "packageSha256": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2",
+  "packageDelta": 0,
+  "pending": [
+    "Gallery clean-source rebuild and live browser acceptance",
+    "Common corpus Trail and Table palette witness repairs",
+    "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
+  ]
+}

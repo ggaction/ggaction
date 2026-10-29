@@ -707,6 +707,24 @@
       },
       "sourceHash": "88fbd14425e656498cb5e6f5f718f86580525678ac5212781f622dead1adba27"
     },
+    "marginal": {
+      "width": 944,
+      "height": 800,
+      "thumbnail": {
+        "width": 640,
+        "height": 542
+      },
+      "sourceHash": "b0b1ceb4f51979ddbca24b2b2daba95674258d9e1f58fc4b7d26286bf957f3a5"
+    },
+    "bullet": {
+      "width": 720,
+      "height": 320,
+      "thumbnail": {
+        "width": 640,
+        "height": 284
+      },
+      "sourceHash": "4faac34490246624382c34f4593a36d77039ec492288d78507759856a352a6bf"
+    },
     "table": {
       "width": 720,
       "height": 440,

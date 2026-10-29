@@ -11,8 +11,8 @@ Use the [Getting Started browser module setup](../../../getting-started/) with a
 
 ## Complete program
 
-Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/bullet/)
-after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/bullet/program.js)
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/bullet/)
+after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/bullet/program.js)
 contains the public action chain and `fixture.js` supplies the observations and
 reference ranges. Replace that module's source import with
 `import { chart } from "ggaction"` in an installed application.

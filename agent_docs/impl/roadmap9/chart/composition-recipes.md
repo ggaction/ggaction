@@ -6,8 +6,8 @@
 - [x] API·시각 선택에 `../AUTHORIZATION.json` remainingApproval 재사용
 - [x] Marginal/Bullet 공개 action과 독립 primitive 작성
 - [x] 기존 linked-overlay를 Combo 정본으로 재사용
-- [ ] 사용자 문서·설치·실제데이터·4format·browser 증거 완료
-- [ ] 동기화·commit/push 및 root 인계
+- [x] 사용자 문서·설치·실제데이터·4format·browser 증거 완료
+- [x] 동기화·commit/push 및 root 인계
 
 새 ChartProgram method, 저장 schema, geometry kernel, renderer 경로는 없다. 새 전용 createMarginalPlot/createBulletPlot/createComboPlot를 만들지 않는다. examples의 createMarginal/createBullet는 문서용 함수이며 공개 라이브러리 export가 아니다.
 

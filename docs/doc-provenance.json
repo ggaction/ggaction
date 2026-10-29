@@ -5,7 +5,7 @@
   "contractId": "sha256:346c9a6fa023562a1fa7563d9342e298b954097b4e6fcd9bafe0c71930eda3df",
   "sourceCommit": "0d72f2c7001ad591df2b0f377221ed5afd53f194",
   "sourceRef": "0d72f2c7001ad591df2b0f377221ed5afd53f194",
-  "exampleSourceRef": "b93aadb6fa6386cda8806f39d8aa51ecede01276",
+  "exampleSourceRef": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

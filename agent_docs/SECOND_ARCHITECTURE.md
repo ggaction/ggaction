@@ -4329,3 +4329,7 @@ clean candidate qualification을 대신하지 않는다.
 
 Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 payload는1,066,690bytes다.
 이전1,066,100 한도 실패를 보존하고 최소100byte 단위1,066,700을 적용한다.
+
+Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합산 검색 payload는
+1,073,688bytes다. 독립 recipe 한도1,072,000을 넘으므로 최소100byte 단위1,073,700을
+적용한다. 새 authoring API·runtime 모듈·저장 구조는 추가하지 않고 기존 domain action을 조합한다.
