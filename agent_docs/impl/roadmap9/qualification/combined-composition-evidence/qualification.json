@@ -15,8 +15,23 @@
   "packageSha256": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2",
   "packageDelta": 0,
   "pending": [
-    "Gallery clean-source rebuild and live browser acceptance",
     "Common corpus Trail and Table palette witness repairs",
     "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
-  ]
+  ],
+  "gallery": {
+    "sourceRevision": "7b6e7ae9906c780fdd374a76073c9e1fb8a7d4eb",
+    "url": "https://hyeons-mac-mini.tailb43078.ts.net/ggaction-charts/",
+    "charts": 39,
+    "newRealData": 17,
+    "realData": 25,
+    "svgPreviews": 25,
+    "httpsVerifiedFiles": 65,
+    "widths": [
+      1440,
+      768,
+      390
+    ],
+    "axeViolations": 0,
+    "consoleErrors": 0
+  }
 }

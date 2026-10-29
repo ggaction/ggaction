@@ -10,7 +10,14 @@
     "privateNode20": 25,
     "privateNode24": 25,
     "docsPinned": 223,
-    "rowLineage": 6
+    "rowLineage": 6,
+    "globalUnitInitial": {
+      "tests": 7191,
+      "passed": 7190,
+      "failed": 1,
+      "failedOwner": "test/unit/actions/data/row-lineage.test.js",
+      "repairedOwnerPassed": 6
+    }
   },
   "package": {
     "name": "ggaction",
@@ -65,7 +72,6 @@
     }
   },
   "pending": [
-    "Global unit suite final result",
     "Common corpus Trail filled-path oracle taxonomy and 16 added Trail palette paths",
     "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
   ]
