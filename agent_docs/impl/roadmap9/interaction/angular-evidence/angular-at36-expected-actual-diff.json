@@ -1,0 +1,999 @@
+[
+  {
+    "input": {
+      "name": "x",
+      "rows": [
+        {
+          "id": "a",
+          "x": 50,
+          "y": 60
+        },
+        {
+          "id": "b",
+          "x": 200,
+          "y": 130
+        }
+      ],
+      "x": {
+        "field": "x",
+        "scale": {
+          "domain": [
+            0,
+            300
+          ],
+          "range": [
+            0,
+            300
+          ]
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "x"
+      },
+      "points": [
+        {
+          "x": 20,
+          "y": 100
+        },
+        {
+          "x": 100,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "a"
+      ]
+    },
+    "inputSha256": "c084bc86ffdebb7dc6fabdba68ce85b47821e3e49bf84c5352ff7ec435d70d56",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "y",
+      "rows": [
+        {
+          "id": "a",
+          "x": 50,
+          "y": 60
+        },
+        {
+          "id": "b",
+          "x": 200,
+          "y": 130
+        }
+      ],
+      "x": {
+        "field": "x",
+        "scale": {
+          "domain": [
+            0,
+            300
+          ],
+          "range": [
+            0,
+            300
+          ]
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "y"
+      },
+      "points": [
+        {
+          "x": 120,
+          "y": 30
+        },
+        {
+          "x": 120,
+          "y": 90
+        }
+      ],
+      "expected": [
+        "a"
+      ]
+    },
+    "inputSha256": "1a23b8a9e903057145101376b13bd2ade256d72955da14012f9f8c5702ba9643",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "xy",
+      "rows": [
+        {
+          "id": "a",
+          "x": 50,
+          "y": 60
+        },
+        {
+          "id": "b",
+          "x": 200,
+          "y": 130
+        }
+      ],
+      "x": {
+        "field": "x",
+        "scale": {
+          "domain": [
+            0,
+            300
+          ],
+          "range": [
+            0,
+            300
+          ]
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "xy"
+      },
+      "points": [
+        {
+          "x": 20,
+          "y": 20
+        },
+        {
+          "x": 100,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "a"
+      ]
+    },
+    "inputSha256": "97316de90936a51de8af8b69550820511333e8d36a6c717e3e907582e622099c",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "log",
+      "rows": [
+        {
+          "id": "0",
+          "x": 1,
+          "y": 60
+        },
+        {
+          "id": "1",
+          "x": 10,
+          "y": 60
+        },
+        {
+          "id": "2",
+          "x": 100,
+          "y": 60
+        }
+      ],
+      "x": {
+        "field": "x",
+        "scale": {
+          "type": "log",
+          "domain": [
+            1,
+            100
+          ],
+          "range": [
+            0,
+            200
+          ],
+          "reverse": true
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "x"
+      },
+      "points": [
+        {
+          "x": 50,
+          "y": 100
+        },
+        {
+          "x": 150,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "1"
+      ]
+    },
+    "inputSha256": "190a8caa86258642fd25a1c8edf0871723ecb59944792918228ab5869eb14af0",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "time",
+      "rows": [
+        {
+          "id": "0",
+          "x": 1709251200000,
+          "y": 60
+        },
+        {
+          "id": "1",
+          "x": 1709337600000,
+          "y": 60
+        },
+        {
+          "id": "2",
+          "x": 1709424000000,
+          "y": 60
+        }
+      ],
+      "x": {
+        "field": "x",
+        "fieldType": "temporal",
+        "temporalUnit": "timestamp",
+        "scale": {
+          "domain": [
+            1709251200000,
+            1709424000000
+          ],
+          "range": [
+            0,
+            200
+          ],
+          "nice": false
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "x"
+      },
+      "points": [
+        {
+          "x": 50,
+          "y": 100
+        },
+        {
+          "x": 150,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "1"
+      ]
+    },
+    "inputSha256": "ce8c6855bb42f292e6d7a16c935966e9baa8a1fc4a2d44af3851d3b6e955fd3b",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "category",
+      "rows": [
+        {
+          "id": "0",
+          "x": "A",
+          "y": 60
+        },
+        {
+          "id": "1",
+          "x": "B",
+          "y": 60
+        },
+        {
+          "id": "2",
+          "x": "C",
+          "y": 60
+        }
+      ],
+      "x": {
+        "field": "x",
+        "fieldType": "nominal",
+        "scale": {
+          "type": "band",
+          "domain": [
+            "A",
+            "B",
+            "C"
+          ],
+          "range": [
+            0,
+            300
+          ],
+          "padding": 0
+        }
+      },
+      "binding": {
+        "type": "brush",
+        "axis": "x"
+      },
+      "points": [
+        {
+          "x": 110,
+          "y": 100
+        },
+        {
+          "x": 190,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "1"
+      ]
+    },
+    "inputSha256": "35ebd13c230af8319bc0cb9c0abc9808740bcb0d1147f5520f7b55be3e3d9d8f",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "1"
+        ],
+        "restoredIds": [
+          "1"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "angular",
+      "rows": [
+        {
+          "id": "0",
+          "angle": 0,
+          "radius": 1
+        },
+        {
+          "id": "5",
+          "angle": 5,
+          "radius": 1
+        },
+        {
+          "id": "90",
+          "angle": 90,
+          "radius": 1
+        },
+        {
+          "id": "180",
+          "angle": 180,
+          "radius": 1
+        },
+        {
+          "id": "355",
+          "angle": 355,
+          "radius": 1
+        },
+        {
+          "id": "360",
+          "angle": 360,
+          "radius": 1
+        }
+      ],
+      "binding": {
+        "type": "brush",
+        "axis": "theta"
+      },
+      "points": [
+        {
+          "x": 86.1081457866455,
+          "y": 21.215379759023364
+        },
+        {
+          "x": 113.89185421335442,
+          "y": 21.215379759023364
+        }
+      ],
+      "expected": [
+        "0",
+        "5",
+        "355",
+        "360"
+      ]
+    },
+    "inputSha256": "0d6096842741cd276f2f68895d49e58f51d344870c96f05c77690ea2fffb84ba",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "0",
+          "5",
+          "355",
+          "360"
+        ],
+        "restoredIds": [
+          "0",
+          "5",
+          "355",
+          "360"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "0",
+          "5",
+          "355",
+          "360"
+        ],
+        "restoredIds": [
+          "0",
+          "5",
+          "355",
+          "360"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  },
+  {
+    "input": {
+      "name": "lasso",
+      "rows": [
+        {
+          "id": "a",
+          "x": 50,
+          "y": 60
+        },
+        {
+          "id": "b",
+          "x": 200,
+          "y": 130
+        }
+      ],
+      "x": {
+        "field": "x",
+        "scale": {
+          "domain": [
+            0,
+            300
+          ],
+          "range": [
+            0,
+            300
+          ]
+        }
+      },
+      "binding": {
+        "type": "lasso"
+      },
+      "points": [
+        {
+          "x": 20,
+          "y": 20
+        },
+        {
+          "x": 100,
+          "y": 20
+        },
+        {
+          "x": 100,
+          "y": 100
+        },
+        {
+          "x": 20,
+          "y": 100
+        }
+      ],
+      "expected": [
+        "a"
+      ]
+    },
+    "inputSha256": "a2a145711977da3208adb77cdce4fa7d7e8bc02216dc6b10304bfd29918473be",
+    "calls": [
+      "chart/createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[binding]}).mount(host)",
+      "down;move;RAF;cancel;late-up;down;move;RAF;up;codec;destroy"
+    ],
+    "expected": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "actual": {
+      "cancel": {
+        "sameProgram": true,
+        "sameSerialized": true,
+        "phases": [
+          "preview",
+          "cancel"
+        ],
+        "capture": 0,
+        "frames": 0,
+        "preview": null
+      },
+      "commit": {
+        "ids": [
+          "a"
+        ],
+        "restoredIds": [
+          "a"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "capture": 0,
+        "frames": 0,
+        "preview": null,
+        "baselineUnchanged": true
+      }
+    },
+    "diff": []
+  }
+]

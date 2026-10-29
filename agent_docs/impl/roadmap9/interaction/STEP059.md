@@ -10,7 +10,9 @@
 - [x] angular seam union 공개 pointer adapter 연결
 - [x] 실제 capture/RAF preview/final-up/cancel lifecycle 연결
 - [x] Cartesian/lasso types/Current/docs/codec/installed/browser 소비자 검증
-- [ ] AT36 closure와 후행 history/077 종료
+- [x] AT36 구현 인수 matrix와 source-fixed evidence
+- [ ] 최신 responsive/nested composition 통합 및 STEP074 qualification
+- [ ] 후행 history/077 종료
 
 [전체 승인](../AUTHORIZATION.json)을 재사용한다. 원 카드의 요구를 삭제하거나 private 계산을
 public 지원 또는 STEP059 완료로 표시하지 않는다.
@@ -169,3 +171,23 @@ BrowserCanvas/SVG×DPR1/2 6, 네backend+codec primitive pair2, vertical/baseline
 동일 archive634cd1db…(945/1,363,336/6,234,504)로 Node20/22/24 각각3 runtime+TS+4bundle 검사를
 통과했다. 문서 전체187중186은 통과했고 새예제함수의미커밋 source link1건은 sourcecommit뒤pin하여
 소유검사로닫는다. 이 단계는 source candidate이며 최종 AT36 증거·현재 main 통합·074/077 완료는 아니다.
+
+## Angular qualification와 AT36 구현 인수
+
+Source `573fe777f`를 고정했고 [qualification](angular-evidence/qualification.json),
+[독립 수치·공개 seam 결과](angular-evidence/angular-expected-actual-diff.json),
+[8종 공개 취소·확정 결과](angular-evidence/angular-at36-expected-actual-diff.json),
+[consumer matrix](STEP059_MATRIX.md)를 보존했다. x/y/xy/log/time/category/angular/lasso 각각
+preview→cancel→늦은up과 preview→up→codec→destroy를 실행했다. 모든 경우 baseline 불변,
+cancel1/commit0 또는 commit1/settled1, capture/RAF0과 독립 literal 선택 결과가 일치했다.
+각 입력 SHA와 실제 호출·expected/actual/diff 및 실행 로그가 포함된다.
+
+최종 source의 실제데이터16, angular browser2, renderer2를 재검증했다. 앞서 통과한 전체browser6과
+변경이 없는 Cartesian4 결과를 함께 보존한다. 최종 source pin 뒤 소유문서20/20, built166pages/1431LLM,
+변경2페이지×4폭의 responsive/Axe8cells도 통과했다. 동일 최종634cd1db archive는 앞의3Node 설치 결과와
+동일 byte hash이며 metadata pin으로 다시 포장하지 않았다. 전체 coverage를 다시 실행했다는 뜻은 아니다.
+
+이 checkpoint는 STEP059/AT36의 구현 요구를 검증한 상태다. 원 acceptance-cases의 후행 qualificationTask
+STEP074, 최신 main `de634f88e`의 responsive/nested 통합, 후행 history와 STEP077 전체 종료는 남아 있다.
+앞선 단락의 '후행/구현 중'은 해당 시점의 기록이며 현재 angular 공개 지원은 Current INTERACTION과
+MARK_SELECTION 계약이 소유한다. 새 요구를 삭제하거나 전체 로드맵 완료로 해석하지 않는다.

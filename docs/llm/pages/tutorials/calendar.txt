@@ -89,7 +89,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/573fe777fc5596cca2dbd3f4e8ba1051565071b4/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](../../../api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
