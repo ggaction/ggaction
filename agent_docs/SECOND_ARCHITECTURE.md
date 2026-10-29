@@ -16,6 +16,14 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+Partition의 비공개 animation 입력은 `materialization/animation/partition.js`가 기존
+partition owner에서 저장된 normalized interval·focus와 명시 coordinate frame을 투영한다.
+Child namespace별 group은 exact layout/hierarchy refs와 label offset을 한 번 보유하며,
+scene 순서의 item vector가 group·key·role을 참조한다. `grammar/animation/partitionState.js`는
+명시 frame을 기존 hierarchy bend kernel에 연결하고, 현재 curved state를 보존해 재기준화한다.
+Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 이 준비 owner는 아직
+공개 planner·offline transport에 연결되지 않았으며 현재 공개 지원은 Current 계약이 소유한다.
+
 ### Boolean filter 의존성
 
 AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
