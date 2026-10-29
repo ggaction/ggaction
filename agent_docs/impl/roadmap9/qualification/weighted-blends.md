@@ -6,7 +6,7 @@
 - [x] 사용자 전체 승인 재사용 및 source/API 소유 범위 기록
 - [x] 순수 수식·concrete shape·일반 extension primitive 연결
 - [x] 네 backend·asset·scene·hit 연결
-- [ ] numeric/pixel/browser/codec/한도/원자성/동일 tar 3 Node 증거
+- [x] numeric/pixel/browser/codec/한도/원자성/동일 tar 3 Node 증거
 
 이 기록은 [전체 승인](../AUTHORIZATION.json)의 remainingApproval를 재사용한다. 새 semantic mark나 action, clock/player는 만들지 않는다. 기존 `createGraphics`/`editGraphics`가 concrete type을 작성하고, 애니메이션 sampler는 이 결과를 소비하는 별도 owner다. 기존 Canvas isolated glyph는 한 primitive 내부의 fill/outline을 한 번 감쇠하지만 두 source의 가중합은 제공하지 않으므로 동등 owner가 아니다.
 
@@ -65,3 +65,29 @@ sampler가 native endpoint node와 weighted frame의 item 대응을 소유하고
 interaction session의 current-frame type admission도 그 proof와 함께 연결한다.
 여기서는 generic Canvas scene 및 prepareConcreteHitShape의 clip/paint union을
 지원하며 전체 clock/player 완료를 주장하지 않는다.
+
+## 최종 qualification
+
+구현 source는 `57e37c94e5683ab175f2cf5e0f03da93311e362f`로 고정했다.
+[기계 판독 증거](weighted-blend-evidence/qualification.json)에 입력 hash, 원본 실패와
+수리 후 결과, 압축 로그의 hash를 보존한다. 최종 변경은 문서 source pin과 실제
+설치 bundle 측정에 따른 cap 조정, 이 기록뿐이며 runtime/types는 바뀌지 않았다.
+
+동일 tar SHA-256 `d25f4f3ca3ca49ac50274a906fbb3ba202f6910d0e263340678cd1e8b2964a9b`는
+1,048 entries, packed 1,482,864 bytes, unpacked 6,755,280 bytes이다.
+Node 20/22/24 각각 공개 runtime 3개, strict declarations, 실행 문서 snippet 1개,
+optional peers, 브라우저 bundle 5개가 통과했다. Node20 최초 실행에서는 runtime,
+types, snippet, peers가 모두 통과한 뒤 interaction bundle의 기존 cap만 초과했다.
+이 최초 결과를 보존하고 같은 archive에서 bundle만 재실행했다. Node22/24는
+각각 전체 집중 소비자를 실행했다.
+
+실제 설치 gzip 최대는 Full 732,039 / Basic 387,595 / SVG 24,941 /
+interaction 110,455 / graph 44,047 bytes였다. Full 734,000 및 interaction
+112,000 cap으로 측정 오차 여유를 반영했고 Basic/SVG/graph의 기존 floor와
+경계는 유지했다. source-free 설치 검사는 내부 source를 복사하지 않는다.
+
+문서는 source pin 뒤 source 205/205, built 172 pages 및 1,531 selective
+artifacts, 전체 페이지 320/390/768px 및 desktop search browser 검사가 통과했다.
+이 결과는 weighted concrete 기반의 집중 qualification이며 전체 release,
+애니메이션 player/current-frame admission 및 원래부터 실패하던 Geo registry
+4개 항목의 해결을 대신하지 않는다.

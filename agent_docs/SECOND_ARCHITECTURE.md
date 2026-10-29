@@ -3932,10 +3932,11 @@ unpacked6,729,227bytes를 측정했다. 캡은1043/1,481,000/6,731,000으로 둔
 각각730,000/386,000/46,000으로 최소1,000bytes 여유를 둔다. SVG·interaction은
 기존 한도를 유지한다. Graph 입력 검증은 Full 등록 handler 분리 뒤 측정했다.
 
-Weighted concrete source qualification adds five runtime modules and retains the
-existing public entry boundaries. Node 20 measures Full 731,988, Basic 387,653 and
-SVG 24,946 gzip bytes. The corresponding ceilings are 733,000, 389,000 and 26,000;
-the graph and interaction ceilings remain unchanged. The package has 1,048
-entries, 1,486,571 packed bytes and 6,755,280 unpacked bytes before final metadata;
-ceilings are 1,048 / 1,488,000 / 6,757,000. The qualification record preserves the
-final same-archive Node 20/22/24 measurements separately.
+Weighted concrete qualification은 runtime 모듈 5개를 추가하며 기존 public entry
+경계를 유지한다. 설치된 package의 Node20 측정은 Full732,039 / Basic387,595 /
+SVG24,941 / interaction110,455 gzip bytes이다. 각 cap은734,000 / 389,000 /
+26,000 / 112,000이고 graph cap은 유지한다. 최초 interaction cap 실패와 같은
+archive의 집중 재검증을 별도 보존한다. Package는1,048entries,
+Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
+1,048 / 1,488,000 / 6,757,000이다. 최종 Node22 archive의 packed1,482,864bytes와
+동일 archive Node20/22/24 설치 증거는 qualification 기록이 소유한다.
