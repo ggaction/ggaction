@@ -89,7 +89,7 @@ test("automatic selection participates in linked closure and cannot overwrite a 
 
 test("initialization validates closed options and existing Full owners without retaining caller data",()=>{
   for(const extra of [{mode:"add"},{mode:null},{onMiss:"all"},{onMiss:null},{selection:"absent"},{events:["click"]},{slop:-1}])assert.throws(()=>createInteractionSession({program:program(),bindings:[binding(extra)]}));
-  assert.throws(()=>createInteractionSession({program:program(),bindings:[binding(),binding()]}),/at most one/);
+  assert.throws(()=>createInteractionSession({program:program(),bindings:[binding(),binding()]}),/ambiguous priority/);
   assert.throws(()=>createInteractionSession({program:base(basic),bindings:[binding()]}),/Full selection owner/);
   assert.throws(()=>createInteractionSession({program:program().editCanvas({margin:40}).facet({field:"id"}),bindings:[binding({target:{childPath:[],id:"points",facetSource:true}})]}),/facet source/);
   assert.throws(()=>normalizeClickSelection(program(),{...binding(),type:"wrong"},[]),/select type/);

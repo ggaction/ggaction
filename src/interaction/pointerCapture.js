@@ -6,7 +6,7 @@ const CLICK = Object.freeze({ id: "selection", kind: "select" });
 // surfaces retain click-only behavior; domain drags require capture support.
 export function prepareSelectionCapture(element, callbacks) {
   const methods = ["setPointerCapture", "releasePointerCapture"].map(key => typeof element[key] === "function");
-  if (!methods.some(Boolean) && callbacks.binding === undefined) return null;
+  if (!methods.some(Boolean) && callbacks.binding === undefined && !callbacks.requireCapture) return null;
   if (!methods.every(Boolean)) throw new TypeError("Pointer selection requires both capture and release methods.");
   let host = element, hooks = callbacks, current = idleGestureState(), active;
   const listeners = [];
@@ -56,8 +56,9 @@ export function prepareSelectionCapture(element, callbacks) {
     hooks.perform(() => {
       if (!valid()) return;
       if (current.phase !== "idle") {
-        if (!hooks.binding?.pinch) return;
-        const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding });
+        if (!current.binding.pinch) return;
+        if (hooks.acceptPointer?.(active, input.point, pointerType) === false) return;
+        const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: current.binding });
         if (!result.effects.some(effect => effect.type === "capture")) return;
         try {
           host.setPointerCapture(input.pointerId);
@@ -72,9 +73,10 @@ export function prepareSelectionCapture(element, callbacks) {
         }
         return;
       }
-      const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding ?? CLICK });
-      const token = hooks.begin(input.point, pointerType);
+      let result = hooks.bindingFor ? undefined : reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding ?? CLICK });
+      const token = hooks.begin(input.point, pointerType, { alt: !!event.altKey, ctrl: !!event.ctrlKey, meta: !!event.metaKey, shift: !!event.shiftKey });
       if (token === null) return;
+      result ??= reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.bindingFor(token) });
       current = result.state; active = token;
       try { host.setPointerCapture(input.pointerId); }
       catch (error) {
@@ -95,7 +97,7 @@ export function prepareSelectionCapture(element, callbacks) {
       try {
         if (current.pointers.some(pointer => pointer.id === input.pointerId)) hooks.sample?.(active, input.point);
         const result = reduceGesture(current, { type, ...input });
-        if (!hooks.drag && type === "move" && result.state.phase === "dragging") {
+        if ((!hooks.drag || hooks.canDrag?.(active) === false) && type === "move" && result.state.phase === "dragging") {
           current = result.state; cancel("movement");
         } else apply(result);
       } catch (error) { if (hooks.drag && active !== undefined) fail(error); throw error; }

@@ -1,0 +1,103 @@
+{
+  "runtimeSourceCommit": "d74d66a6a3266cc10ee81a1648af24777f60ba63",
+  "qualifiedRuntimeCommit": "6521836ebc7a27056623baeaaa33d85e28f2b9ec",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "runtimeAndTypesFingerprint": "48b9b1cb55e6d1966fa0331acb435ccbc4034de9d3706e9d77b7d759017521c7",
+  "scope": "Qualification-only lifecycle composition and literal acceptance evidence. No runtime, declarations, Current contract, package or public documentation behavior changes.",
+  "checks": {
+    "node22": {
+      "existingAndComposition": 14,
+      "additionalExactRevision": 1
+    },
+    "node20": 15,
+    "node24": 15,
+    "browser": 2,
+    "sourceAndDiscovery": 27,
+    "composition": {
+      "cycles": 100,
+      "committed": 50,
+      "discardedLeases": 150,
+      "workerListenersAfter": 0,
+      "leaseDisposalsEach": 1,
+      "observerDisconnectionsEach": 1
+    },
+    "literalOracles": 5
+  },
+  "testSourceHashes": {
+    "test/unit/interaction-update.test.js": "33f77431c792916753bc447e453c93e07fa6e04890e96bc7033966e2900c3fda",
+    "test/browser/interaction-session.browser.js": "1541228bf76cfbf5872837688129363b2680481c63f2fe0d3579675f4af13dd4"
+  },
+  "reused": [
+    {
+      "evidence": "../arbitration-evidence/qualification.json",
+      "reason": "Identical runtime/types fingerprint: four critical owner floors, same1a470b78 tar three Node consumers, docs and realistic inputs unchanged."
+    },
+    {
+      "evidence": "../update-evidence/qualification.json",
+      "reason": "Same native executor and preparation lifetime: real Node/browser workers plus 100 cancellation cases remain covered by current focused module."
+    },
+    {
+      "evidence": "../resize-evidence/qualification.json",
+      "reason": "Same ResizeObserver source and no editing binding: actual browser CSS resize/render/teardown."
+    },
+    {
+      "evidence": "../preview-evidence/qualification.json",
+      "reason": "Same renderer lease path: authentic image/font/shadow and actual browser bitmap cancellation."
+    }
+  ],
+  "preservedFailures": [
+    "First new fixture used an unsupported releases property on the closed asset lease shape. Moved counter into the host test record and asserted initial preparation success.",
+    "Second fixture repeated the exact route calculation and correctly hit executor cache. Varying its explicit exponent produces separate worker requests; no runtime change was needed."
+  ],
+  "oracleInterpretation": "Resource-vector literal uses parameter:n revisions1/2. Separate real browser Worker witness starts session publication revision1 and accepts exactly one result at revision2. The100-cycle transport, observer and lease are controlled host doubles; actual native numerical computation and independent real browser Worker/bitmap checks are identified separately.",
+  "remaining": [
+    "Public animation planner/player current-frame and asset preparation integration",
+    "Accessible semantic data/keyboard focus/tooltip",
+    "Resize/reorder gesture adapters",
+    "STEP074/077 final combined qualification"
+  ],
+  "commands": {
+    "node22": "node --test test/unit/interaction-update.test.js (14); node --test --test-name-pattern=\"late prepared results cannot replace\" test/unit/interaction-update.test.js (1)",
+    "node20and24": "node --test test/unit/interaction-update.test.js (15 each)",
+    "browser": "node --test --test-name-pattern=\"real mouse capture|canonical native update and real browser workers\" test/browser/interaction-session.browser.js",
+    "boundaries": "node --test test/contracts/test-discovery.test.js test/contracts/source-boundaries.test.js"
+  },
+  "evidenceFiles": [
+    {
+      "path": "session-lifecycle-boundaries.log.gz",
+      "sha256": "d15bd7627d0f8e1e83cccdc2ca7c9252adcf41592be2a270b2bcefad3eef7286"
+    },
+    {
+      "path": "session-lifecycle-composition-final.log.gz",
+      "sha256": "45ca1bafff9e06190491e35c4355723acf0230e17fa91b28a468c49b5b698db1"
+    },
+    {
+      "path": "session-lifecycle-composition-initial.log.gz",
+      "sha256": "f8d44c9300b129eed4f2e8461715e24a70748a460eb0f0eab6ad7aa7382fd5d9"
+    },
+    {
+      "path": "session-lifecycle-composition.log.gz",
+      "sha256": "f3f7a2cc3bae3d592d1d37f35c414d07a5f00a878f67055e7c6744f0b47a84c5"
+    },
+    {
+      "path": "session-lifecycle-node20.log.gz",
+      "sha256": "25bdb4c9aecd0dff996965ff01dc6e9760ff53fd4a13ae266ece64e22e4775df"
+    },
+    {
+      "path": "session-lifecycle-node24.log.gz",
+      "sha256": "47ab354d4385a59bbdac8f89d4334d735bba275c61d7bfd4942b29e5d8a3c6ed"
+    },
+    {
+      "path": "session-lifecycle-oracles-browser.log.gz",
+      "sha256": "8b5118b0dadf64ed777e7584d35f7de4cd6088de13d07f53fad0dde408695d00"
+    },
+    {
+      "path": "session-lifecycle-qualify.mjs.gz",
+      "sha256": "4409f5a487527b0f7c6d22000663fb51858b0baf37d8f5bdb03272248d60f9c8"
+    },
+    {
+      "path": "session-lifecycle-revision-oracle.log.gz",
+      "sha256": "9069aaaf7b842f82bf7cae51837cc63791d55577c6efed4220c8189840e7d025"
+    }
+  ]
+}

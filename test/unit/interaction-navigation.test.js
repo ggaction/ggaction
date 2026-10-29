@@ -145,5 +145,5 @@ test('navigation snapshots caller options and rejects competing pointer owners',
  const {s,h}=setup(p,{initial,scaleExtent:extent});initial.translatePx[0]=999;extent[1]=1;
  h.fire('wheel',80,90,{deltaY:-300,deltaMode:0});assert.equal(getProjectionView(s.getState().program,{target:'map'}).parameters.scalePx,2);
  h.fire('keydown',0,0,{key:'Home'});assert.deepEqual(s.getState().program.graphicSpec,p.graphicSpec);s.destroy();
- assert.throws(()=>createInteractionSession({program:p,bindings:[binding(p),binding(p)]}),/one editing pointer/);
+ assert.throws(()=>createInteractionSession({program:p,bindings:[binding(p),binding(p)]}),/ambiguous priority/);
 });

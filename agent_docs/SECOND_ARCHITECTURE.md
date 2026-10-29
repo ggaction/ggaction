@@ -866,7 +866,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 421,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 121,200 bytes |
+| `ggaction/interaction` | 122,100 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4274,3 +4274,28 @@ archive는 합산 한도 결정 근거이며 최종 clean candidate qualificatio
 의미 위치 private 커널을 합친 canonical package는1112entries/1,582,795packed/
 7,208,154unpacked bytes다. 내부 모듈1개와 동일 endpoint 수리만 추가되어
 최소 한도1112/1,583,000/7,209,000을 적용한다. 공개 entry/bundle 한도는 유지한다.
+### 편집 pointer 후보와 capture의 단일 수명
+
+`interaction/pointerBindings.js`는 기존 pure gestures의 명시 priority/modifier 정책과 domain의
+읽기전용 applicability probe를 연결한다. Domain normalizer·hit·geometry는 기존 owner가 유지하고,
+winner만 session transaction을 시작한다. 기존 pointerCapture는 모든 editing binding에 대해
+하나의 DOM listener/capture 집합을 소유하며 선택된 adapter와 baseline을 terminal까지 고정한다.
+별도 ChartProgram/cache/renderer 계산은 추가하지 않는다. Source/cancel/async preview 수명과
+native history는 기존 session/preparation owner에 남는다. 정확 공개 옵션과 오류는 Current
+INTERACTION이 소유하며, 새 critical adapter floor95/90/100을 기존 gesture/capture 수준으로 적용한다.
+
+Arbitration의 새 private adapter를 포함한 Node20 package 실측은1061entries/1,505,994packed/
+6,846,835unpacked이며 caps는1061/1,506,000/6,847,000으로 최소 조정했다. 기존1060entry
+검사 실패를 보존한다. 검색1,038,216bytes는 한도1,038,300으로 올린다. 새 source-free archive와
+interaction entry는 별도로 검증하며 기존 네 entry의 한도는 유지한다.
+
+동일 arbitration archive의 Node20 interaction은191modules/120,959gzip이다. 기존120,000 한도
+초과 원본과 이미 통과한21runtime/strict types를 보존하고 최소100단위121,000으로 조정했다.
+같은 bundle 측정값을 새 한도로 검증하며 Node22/24는 각 소비자를 독립 실행한다.
+
+단일 capture priority/modifier와100회 resize/worker/asset 수명 회귀를 합친 Node22
+package는1113entries/1,584,135packed/7,212,723unpacked bytes다. 최소 한도는
+1113/1,585,000/7,213,000이다. 설치된 같은archive의 Full770,912 / Basic421,163 /
+SVG24,765 / graph43,923은 기존 한도 안이며 interaction122,074는 이전121,200을
+초과하여 최소100byte 한도122,100으로 조정한다. private pointer arbitration만
+1모듈 추가하며 native action/renderer/package export 경계는 그대로다.

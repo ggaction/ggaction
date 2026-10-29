@@ -44,11 +44,13 @@ export function normalizeGestureBindings(values) {
   freezeOwned(result); BINDINGS.add(result); return result;
 }
 export function chooseGestureBinding(bindings, flags) {
+  return matchingGestureBindings(bindings, flags)[0] ?? null;
+}
+export function matchingGestureBindings(bindings, flags) {
   if (!BINDINGS.has(bindings)) throw new TypeError("Gesture candidates require normalized bindings.");
   const actual = modifiers(flags, true);
-  let selected;
-  for (const candidate of bindings) if (MODIFIERS.every(key => candidate.modifiers[key] === undefined || candidate.modifiers[key] === actual[key]) && (!selected || candidate.priority > selected.priority)) selected = candidate;
-  return selected ?? null;
+  return bindings.filter(candidate => MODIFIERS.every(key => candidate.modifiers[key] === undefined || candidate.modifiers[key] === actual[key]))
+    .sort((a, b) => b.priority - a.priority);
 }
 function state(value) { const result = freezeOwned(value); STATES.add(result); return result; }
 export function idleGestureState() { return state({ phase: "idle" }); }

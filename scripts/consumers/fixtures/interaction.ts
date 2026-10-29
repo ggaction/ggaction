@@ -137,6 +137,12 @@ createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:[
 // @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
 createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',priority:30,modifiers:{shift:false}},{type:'annotate',target:'note',modifiers:{shift:true}}]});
+// @ts-expect-error modifier flags are explicit booleans
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',modifiers:{shift:1}}]});
+// @ts-expect-error only editing bindings have priority
+createInteractionSession({program,bindings:[{type:'inspect',priority:10}]});
+
 // @ts-expect-error node edits cannot simultaneously replace options
 program.editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 // @ts-expect-error node dragging has no selection binding

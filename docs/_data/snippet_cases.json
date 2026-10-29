@@ -657,5 +657,15 @@
     "result": "program",
     "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-arbitration",
+    "file": "api/interaction.md",
+    "contains": "const gestureSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
   }
 ]
