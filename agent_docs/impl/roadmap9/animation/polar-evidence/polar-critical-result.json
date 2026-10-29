@@ -1,0 +1,166 @@
+{
+  "passed": true,
+  "files": 32,
+  "floors": {
+    "animation/cartesianTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/concrete.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/createPlayer.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/endpoints.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/envelope.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/envelopeCodec.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/frameEndpoint.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/frameProvenance.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/frames.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/graphTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/planner.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/player.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/polarTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/sample.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/cartesianPosition.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/cartesianState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/frameTimes.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/graphState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/matching.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/playbackOptions.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/pointState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/polarState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/positions.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/routes.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/timing.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/values.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/cartesian.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/cartesianRows.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/cartesianSeries.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/graph.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/point.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/polar.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}
