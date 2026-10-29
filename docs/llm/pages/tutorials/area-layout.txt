@@ -19,7 +19,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/68873baa2ed1b2c73db31124f8237df3b3cc428f/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -88,7 +88,7 @@ Wiggle moves the shared baseline to reduce thickness-weighted movement of the la
 It preserves every sample's thickness and series order. Each connected run begins at zero;
 an all-zero sample keeps the previous baseline. Numeric or temporal x positions must be aligned,
 with no custom path order. Use `missing:'break'` to break all layers together at a null measure.
-The [canonical rendered program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/streamgraph/program.js)
+The [canonical rendered program](https://github.com/ggaction/ggaction/blob/68873baa2ed1b2c73db31124f8237df3b3cc428f/examples/streamgraph/program.js)
 fixes a small two-series example, including a layer that ends at zero thickness.
 
 The wiggle value scale must support zero; logarithmic value scales are rejected.

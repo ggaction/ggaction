@@ -6,7 +6,7 @@
 - [x] 공개·저장·수학·시각 결정 기록과 기존 승인 재사용
 - [x] 순수 wiggle kernel: literal/최소화/보존/극단값/예산 검증
 - [x] 공개 Area·density·scale·source revision 연결 및 consumer 검증
-- [ ] 문서·설치·렌더러·실제 데이터 증거와 checkpoint
+- [x] 문서·설치·렌더러·실제 데이터 증거와 checkpoint
 
 ## 승인과 책임
 
@@ -30,4 +30,4 @@
 
 ## 공개 연결 증거
 
-Stable primitive/public pair는 `test/charts/streamgraph/`와 `examples/streamgraph/program.js`가 소유한다. 공유 Area 회귀 162건, 새 kernel 100/100/100 및 기존 critical floor, 실제 5개 source table의 stack/center/wiggle 15건, Canvas/SVG/PNG/PDF 독립 primitive 일치와 Chromium DPR1/2를 확인했다. 동일 tar의 Node20/22/24에서 source-free lifecycle/scene/offline/fresh process 3건, strict types, optional peers, 5 bundle 측정을 통과했다. 마지막 source-link pin과 option inventory 검증은 증거 checkpoint에 기록한다.
+Stable primitive/public pair는 `test/charts/streamgraph/`와 `examples/streamgraph/program.js`가 소유한다. 공유 Area 회귀 162건, 새 kernel 100/100/100 및 기존 critical floor, 실제 5개 source table의 stack/center/wiggle 15건, Canvas/SVG/PNG/PDF 독립 primitive 일치와 Chromium DPR1/2를 확인했다. 동일 tar의 Node20/22/24에서 source-free lifecycle/scene/offline/fresh process 3건, strict types, optional peers, 5 bundle 측정을 통과했다. source-link pin을 고정한 문서 199건, built 문서 179쪽/기계 파일 1,525개, option inventory 7건을 통과했다. 명령·원본 실패·최종 결과는 [증거 기록](streamgraph-evidence/COMMANDS.md)에 보존한다.

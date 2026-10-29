@@ -25,7 +25,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/68873baa2ed1b2c73db31124f8237df3b3cc428f/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](../../../assets/images/gapminder-horizon.png)
@@ -36,8 +36,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/68873baa2ed1b2c73db31124f8237df3b3cc428f/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/68873baa2ed1b2c73db31124f8237df3b3cc428f/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
