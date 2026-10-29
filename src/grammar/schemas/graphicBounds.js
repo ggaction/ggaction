@@ -289,6 +289,7 @@ function hasActiveStroke(properties) {
 }
 
 export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
+  if (type === "weighted-blend") return weightedBounds(properties, profile, false);
   const strokeExtent = properties.outline === undefined
     ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
     : properties.outline.width / 2;
@@ -355,6 +356,7 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
 // Layout occupancy includes the bounded visual effect. Selection and hit
 // geometry explicitly use the unchanged source primitive bounds below.
 export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
+  if (type === "weighted-blend") return weightedBounds(properties, profile, true);
   const bounds = resolvePrimitiveGraphicBounds(type, properties, profile), shadow = properties.shadow;
   if (bounds === undefined || shadow === undefined) return bounds;
   const { padding } = shadowBlurSupport(shadow.blurRadius);
@@ -362,6 +364,17 @@ export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
     right: Math.max(bounds.right, bounds.right + shadow.offsetX + padding),
     top: Math.min(bounds.top, bounds.top + shadow.offsetY - padding),
     bottom: Math.max(bounds.bottom, bounds.bottom + shadow.offsetY + padding) });
+}
+
+function weightedBounds(properties, profile, effects) {
+  if (!Array.isArray(properties.sources) || properties.opacity === 0) return undefined;
+  const resolve = effects ? resolvePrimitiveOccupiedBounds : resolvePrimitiveGraphicBounds;
+  return unionBounds(properties.sources.filter(source => source.weight > 0 && source.properties.opacity !== 0).map(source => {
+    let b = translateBounds(resolve(source.type, source.properties, profile), ...source.offset);
+    if (!b) return undefined;
+    for (const clip of [source.clip, ...source.clips]) b = intersectClipBounds(b, graphicClipBounds(clip));
+    return b.right > b.left && b.bottom > b.top ? b : undefined;
+  }));
 }
 
 function translateBounds(bounds, x, y) {

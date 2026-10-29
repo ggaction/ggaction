@@ -16,7 +16,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */

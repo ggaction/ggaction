@@ -137,7 +137,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 export type ImageMimeType = "image/png" | "image/jpeg" | "image/webp" | "image/svg+xml";
 export interface ConcreteImage {
   readonly contentHash: string;
@@ -2590,6 +2591,23 @@ export interface GraphicClipPath {
   readonly fillRule?: PathFillRule;
 }
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
+export interface GraphicBlendSource {
+  readonly weight: number;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend">;
+  readonly properties: Readonly<Record<string, unknown>>;
+  readonly offset: readonly [number, number];
+  /** Source viewport and further clips use the group's local coordinate frame. */
+  readonly clip: GraphicClipRect;
+  readonly clips: readonly GraphicClip[];
+}
+export interface GraphicWeightedBlendProperties {
+  /** Two through 64 sources; finite non-negative weights sum to one. */
+  readonly sources: readonly [GraphicBlendSource, GraphicBlendSource, ...GraphicBlendSource[]];
+  readonly opacity?: number;
+  readonly blend?: BlendMode;
+}
 
 export interface GraphicObject {
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */

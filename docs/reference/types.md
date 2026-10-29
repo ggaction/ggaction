@@ -9521,6 +9521,8 @@ Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`RowKey`](
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 </details>
@@ -9571,7 +9573,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 </details>

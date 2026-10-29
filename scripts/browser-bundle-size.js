@@ -5,9 +5,9 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 730_000, // Geographic source Text: Node20/24 728,161 gzip bytes.
-  "ggaction/basic": 386_000, // Shared source Text boundary: Node20/24 384,468 gzip bytes.
-  "ggaction/svg": 25_000,
+  ggaction: 733_000, // Weighted concrete sources: Node20 731,988 gzip bytes.
+  "ggaction/basic": 389_000, // Shared weighted rendering: Node20 387,653 gzip bytes.
+  "ggaction/svg": 26_000, // Native weighted arithmetic: Node20 24,946 gzip bytes.
   "ggaction/graph": 46_000, // Closed geographic Text source binding: Node20/24 44,044 gzip bytes.
   "ggaction/interaction": 109_200 // Linked filter plus routes baseline: Node20 109,145 gzip bytes.
 });

@@ -2,7 +2,7 @@ import { canvasSceneProgram } from "./canvasScene.js";
 import { ownRecord } from "../core/ownData.js";
 import { assetError, assertAssetActive, assetHostStage } from "../core/assetHost.js";
 import { imagePayloadBytes, validateImagePayload } from "../grammar/imagePayload.js";
-import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
+import { walkGraphicSources } from "../grammar/schemas/graphicSources.js";
 
 const MAX_BYTES = 64 * 1024 * 1024;
 const MAX_PIXELS = 64 * 1024 * 1024;
@@ -37,10 +37,7 @@ function imageValues(graphicSpec) {
     if (bytes > MAX_BYTES || pixels > MAX_PIXELS) throw assetError("render-budget", "Image rendering exceeds the unique byte or pixel budget.");
     values.set(image.contentHash, image);
   }
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ object }) { if (!Array.isArray(object.items)) add(object, object.type); },
-    item({ object, owner }) { add(object, object.type ?? owner.type); }
-  });
+  walkGraphicSources(graphicSpec, (_id, object, type) => add(object, type));
   return values;
 }
 

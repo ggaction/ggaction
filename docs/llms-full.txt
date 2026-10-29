@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:309bb7e92bde69e0e82053c769bf53660cfdac859a0c36eb859e23c555d6789e. Status: development. Runtime source: 369cc8ec66d295eaade171d0a32a3c7a3d985cc8. Release baseline: v0.0.13.
+Contract: sha256:ea5653abb03419d64f2fa73b1fa774e0ee5fe377d9a05b6e67d27662a918b5d3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10691,6 +10691,30 @@ fails before the destination is cleared or resized. The handle is ephemeral and 
 Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 MiB of numeric/RGBA output buffers.
 The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
 All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
+
+## Weighted concrete blends
+
+The extension `weighted-blend` primitive combines each item's complete source
+pixels in premultiplied linear-light sRGB. Canvas and PNG use bounded offscreen
+surfaces per item. SVG retains native source elements and applies a `linearRGB`
+arithmetic filter. PDF retains vector endpoints and embeds only each intermediate
+weighted item as a raster at one pixel per logical unit. No backend captures the
+whole chart to implement the blend.
+
+Canvas/PNG limits are 1,048,576 pixels per item, 16,777,216 retained result pixels
+per scene, and 67,108,864 source-pixel operations. Density counts toward these
+limits. SVG applies the same logical pixel budgets to its filter regions; native
+Text retains its explicit source viewport so glyph overhangs are not cut to an
+estimated text box. Oversized requests fail explicitly. Canvas checks and prepares
+all weighted results before resizing or clearing the destination.
+
+Prepare embedded images, fonts, and shadows through the existing preparation
+functions for the exact program or scene. Inactive sources are also validated.
+A single weight-one endpoint draws its original primitive directly; empty Text,
+zero-area shapes and fully clipped sources remain transparent. Current-frame hit
+geometry follows the visible source footprints while retaining one logical item.
+See [the concrete source contract](./extension/primitives/#blend-concrete-sources-for-one-item)
+for the extension syntax.
 
 ## Related
 
@@ -34299,6 +34323,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -34505,6 +34531,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -34686,7 +34713,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline, MarkShadow,
+  FillPaint, MarkOutline, MarkShadow, GraphicBlendSource, GraphicWeightedBlendProperties,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -35039,7 +35066,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -43375,6 +43402,8 @@ Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsour
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 Related types: [`GraphicClipRect`](./reference/types/#type-graphiccliprect) · [`GraphicClipPath`](./reference/types/#type-graphicclippath).
@@ -43416,7 +43445,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 ### `GraticuleOptions` {#type-graticuleoptions}
@@ -49406,12 +49436,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -49509,6 +49539,50 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](./api/rendering/#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -52494,9 +52568,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:309bb7e92bde69e0e82053c769bf53660cfdac859a0c36eb859e23c555d6789e` |
+| Contract fingerprint | `sha256:ea5653abb03419d64f2fa73b1fa774e0ee5fe377d9a05b6e67d27662a918b5d3` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 364 |
 | Declared actions in that release | 234 |

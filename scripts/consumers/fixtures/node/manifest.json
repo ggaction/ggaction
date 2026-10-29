@@ -1330,5 +1330,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "weighted-blends.mjs",
+    "cases": [
+      {
+        "id": "weighted-blend/linear-pixels-and-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "weighted-blend/fresh-process-codec-and-scene",
+        "statements": 7
+      },
+      {
+        "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+        "statements": 11
+      }
+    ]
   }
 ]

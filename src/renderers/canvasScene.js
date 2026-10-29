@@ -3,6 +3,7 @@ import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/gr
 import { isOwned, cloneAndFreeze } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { contentDigest } from "../core/contentDigest.js";
+import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
 
 const compiled = new WeakMap();
 // Translate only concrete position properties. Path/text child coordinates keep
@@ -10,6 +11,7 @@ const compiled = new WeakMap();
 function position(properties, dx, dy) {
   if (!dx && !dy) return properties;
   const result = { ...properties };
+  if (properties.sources) result.sources = translateWeightedBlendSources(properties.sources, dx, dy);
   if (properties.fill !== undefined) result.fill = translateFillPaint(properties.fill, dx, dy);
   if (properties.fillBounds) result.fillBounds = { left: properties.fillBounds.left + dx, right: properties.fillBounds.right + dx,
     top: properties.fillBounds.top + dy, bottom: properties.fillBounds.bottom + dy };
@@ -37,7 +39,7 @@ function compile(scene) {
   const sameClip = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
   for (const node of scene.nodes) {
     const clips = node.clips ?? [node.clip];
-    if (typeof node.key !== 'string' || keys.has(node.key) || !['circle','rect','line','path','text','image'].includes(node.type) ||
+    if (typeof node.key !== 'string' || keys.has(node.key) || !['circle','rect','line','path','text','image','weighted-blend'].includes(node.type) ||
         node.offset?.length !== 2 || !node.offset.every(Number.isFinite) || !validClip(node.clip) ||
         !Array.isArray(clips) || !clips.every(validFrame) || !node.properties || typeof node.properties !== 'object') {
       throw new TypeError('Canvas scene nodes require unique keys, concrete properties, offsets and clips.');

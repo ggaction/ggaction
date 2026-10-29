@@ -16,7 +16,13 @@ export function measureTextInkBounds(program, text, options) {
     throw new TypeError("Text ink measurement requires a compatible measuring Canvas surface.");
   }
   readPreparedFonts(graphicSpec, options.fonts);
-  configureTextContext(context, properties, { fontAliases });
+  const bounds = measureConcreteTextInkBounds(properties, context, { fontAliases });
+  readPreparedFonts(graphicSpec, options.fonts);
+  return bounds;
+}
+
+export function measureConcreteTextInkBounds(properties, context, options = {}) {
+  configureTextContext(context, properties, options);
   const angle = properties.rotation ?? 0, cos = Math.cos(angle), sin = Math.sin(angle);
   const outline = properties.outline?.width ?? 0;
   const padding = outline / 2 * ((properties.lineJoin ?? "miter") === "miter" ? properties.miterLimit ?? 10 : 1);
@@ -38,6 +44,5 @@ export function measureTextInkBounds(program, text, options) {
       }
     }
   }
-  readPreparedFonts(graphicSpec, options.fonts);
   return left === Infinity ? undefined : Object.freeze({ left, right, top, bottom });
 }

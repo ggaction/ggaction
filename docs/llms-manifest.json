@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:309bb7e92bde69e0e82053c769bf53660cfdac859a0c36eb859e23c555d6789e",
-    "sourceCommit": "369cc8ec66d295eaade171d0a32a3c7a3d985cc8",
+    "contractId": "sha256:ea5653abb03419d64f2fa73b1fa774e0ee5fe377d9a05b6e67d27662a918b5d3",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "43b030118efea1040f9c18730b2be961f1e0934ed9bedce76e1bad63d13510a6"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1224,10 +1224,11 @@
         "embedded-images",
         "embedded-fonts",
         "prepared-shadows",
+        "weighted-concrete-blends",
         "related"
       ],
-      "bytes": 38547,
-      "sha256": "9bb1d60561fc16648350abee645be3eec5e8d9bea23ed48ab0f5a332a540287e"
+      "bytes": 40007,
+      "sha256": "fe5ff164a965dc8ad4993718d71b4cb0bc5736e47e66ca8ece3e8320ad4c41b8"
     },
     {
       "order": 73,
@@ -2537,8 +2538,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 61714,
-      "sha256": "ce5bebf8452480c91f4c4487db65873a04169d44eb5e2e6caa692899f256c020"
+      "bytes": 61929,
+      "sha256": "73cf02a218c65a02d105635410154acabee3a229593a8c35340e712243a5467a"
     },
     {
       "order": 128,
@@ -3430,8 +3431,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 486802,
-      "sha256": "9dc1fa853993455c61f1fff2f490699fd34f9974be78d06b59892772281f8e12"
+      "bytes": 486903,
+      "sha256": "81a20530ad27c385b33f719f4eaa93e306c22a6472b4c1d72ef1df06db036e66"
     },
     {
       "order": 129,
@@ -3463,10 +3464,11 @@
         "editgraphics-target-property-value-remove",
         "clip-a-named-graphic-owner",
         "scale-materialization",
-        "stored-selection-resources-and-concrete-identity"
+        "stored-selection-resources-and-concrete-identity",
+        "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 20980,
-      "sha256": "1877802ca426e8225c7dd58c80c59b3066a9e24fbd392fcf14e70354d4dec45a"
+      "bytes": 23199,
+      "sha256": "361a912669bf0ffed5e866671387d399bd38aa7989a13a7429f11e6085e571fc"
     },
     {
       "order": 131,
@@ -3806,8 +3808,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "bda0632ae2e4b6ebeaacf7d7face8947b1ad24eedf68b2c79a491ca3a2d15c43"
+      "bytes": 3000,
+      "sha256": "0dde288ad97e7022ffff2233647fdb4a6fcdf90637033217ab924f1d4c011487"
     },
     {
       "order": 152,

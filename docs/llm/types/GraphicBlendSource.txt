@@ -1,0 +1,9 @@
+export interface GraphicBlendSource {
+  readonly weight: number;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend">;
+  readonly properties: Readonly<Record<string, unknown>>;
+  readonly offset: readonly [number, number];
+  /** Source viewport and further clips use the group's local coordinate frame. */
+  readonly clip: GraphicClipRect;
+  readonly clips: readonly GraphicClip[];
+}

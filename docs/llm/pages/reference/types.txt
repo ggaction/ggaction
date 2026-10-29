@@ -7995,6 +7995,8 @@ Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgr
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 Related types: [`GraphicClipRect`](../../../reference/types/#type-graphiccliprect) · [`GraphicClipPath`](../../../reference/types/#type-graphicclippath).
@@ -8036,7 +8038,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 ### `GraticuleOptions` {#type-graticuleoptions}

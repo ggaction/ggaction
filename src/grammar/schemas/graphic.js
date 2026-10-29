@@ -4,7 +4,8 @@ const PRIMITIVE_DRAWABLE_TYPES = new Set([
   "line",
   "text",
   "path",
-  "image"
+  "image",
+  "weighted-blend"
 ]);
 const DRAWABLE_TYPES = new Set([
   ...PRIMITIVE_DRAWABLE_TYPES,
@@ -12,6 +13,7 @@ const DRAWABLE_TYPES = new Set([
 ]);
 const STRUCTURAL_TYPES = new Set(["canvas"]);
 const GRAPHIC_PROPERTIES = Object.freeze({
+  "weighted-blend": new Set(["sources", "opacity", "blend", "length"]),
   canvas: new Set(["x", "y", "width", "height", "background"]),
   collection: new Set([
     "items",

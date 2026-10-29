@@ -45,7 +45,7 @@ for (const example of await documentationPrograms()) {
       }
       assert.ok(program?.graphicSpec?.objects?.canvas, `${name} must own a Canvas`);
       assert.ok(Object.values(program.graphicSpec.objects).some(object =>
-        (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text"].includes(object.type)
+        (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text", "weighted-blend"].includes(object.type)
       ), `${name} must materialize visible content`);
     }
     assertDocumentationRendering(example, result.__documentationEnvironment.canvas);

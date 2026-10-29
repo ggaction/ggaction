@@ -1223,6 +1223,16 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 [축 계약](contract/current/AXES.md#cartesian-axis-underlays), [Canvas 계약](contract/current/CORE.md),
 [primitive 계약](contract/current/PRIMITIVES.md#editgraphics)이 소유한다.
 
+### 항목별 weighted concrete 합성
+
+`weighted-blend`는 semantic mark가 아닌 concrete primitive다. 기존 primitive sources와 가중치를
+평탄하게 저장하고 하나의 item identity를 유지한다. `grammar/schemas/graphicSources.js`가 embedded
+source 방문을 소유하여 image/font/shadow 준비가 같은 byte identity와 immutable handle을 재사용한다.
+Canvas/PNG는 제한된 항목 surface에서 linear-light premultiplied RGBA를 합산하고, SVG는 native arithmetic
+filter, PDF는 해당 항목만 raster로 lowering한다. renderer는 여전히 graphicSpec만 읽으며 clock/player,
+semantic correspondence, interruption 선택을 추론하지 않는다. exact shape/한도는
+[primitive 계약](contract/current/PRIMITIVES.md#concrete-weighted-blend)이 소유한다.
+
 ### Graphic type
 
 현재 type은 다음과 같다.
@@ -1230,7 +1240,7 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 ```text
 root/container      canvas
 named container     collection
-homogeneous draw    circle, rect, line, text, path
+homogeneous draw    circle, rect, line, text, path, image, weighted-blend
 heterogeneous items collection
 ```
 
@@ -3921,3 +3931,11 @@ unpacked6,729,227bytes를 측정했다. 캡은1043/1,481,000/6,731,000으로 둔
 동일 minified bytes의 Node20·24 gzip은 Full728,161/Basic384,468/Graph44,044이며
 각각730,000/386,000/46,000으로 최소1,000bytes 여유를 둔다. SVG·interaction은
 기존 한도를 유지한다. Graph 입력 검증은 Full 등록 handler 분리 뒤 측정했다.
+
+Weighted concrete source qualification adds five runtime modules and retains the
+existing public entry boundaries. Node 20 measures Full 731,988, Basic 387,653 and
+SVG 24,946 gzip bytes. The corresponding ceilings are 733,000, 389,000 and 26,000;
+the graph and interaction ceilings remain unchanged. The package has 1,048
+entries, 1,486,571 packed bytes and 6,755,280 unpacked bytes before final metadata;
+ceilings are 1,048 / 1,488,000 / 6,757,000. The qualification record preserves the
+final same-archive Node 20/22/24 measurements separately.

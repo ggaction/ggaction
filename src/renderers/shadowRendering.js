@@ -72,7 +72,7 @@ export async function prepareShadowRendering(program, options) {
     validateGeneratedItemLimit(bytes, "Shadow scene RGBA bytes", MAX_BYTES);
   });
   const imageObjects = Object.fromEntries([...plans].filter(([id, plan]) => plan && items.get(id).type === "image")
-    .map(([id]) => [id, { type: "image", properties: items.get(id).object.properties }]));
+    .map(([id], index) => [String(index), { type: "image", properties: items.get(id).object.properties }]));
   const imageProgram = { graphicSpec: { objects: imageObjects, order: Object.keys(imageObjects) } };
   const sourceImages = imageProgram.graphicSpec.order.length === 0 ? new Map()
     : readPreparedImages(imageProgram.graphicSpec, await prepareImageRendering(imageProgram, { decode, signal }));
@@ -95,8 +95,9 @@ export async function prepareShadowRendering(program, options) {
     const glyph = { x: plan.left + composite.bounds.x, y: plan.top + composite.bounds.y,
       width: composite.bounds.width, height: composite.bounds.height, payload };
     glyphs.set(id, glyph);
-    objects[id] = { type: "image", properties: { image: payload, x: glyph.x, y: glyph.y, width: glyph.width, height: glyph.height } };
-    order.push(id);
+    const loweredId = String(order.length);
+    objects[loweredId] = { type: "image", properties: { image: payload, x: glyph.x, y: glyph.y, width: glyph.width, height: glyph.height } };
+    order.push(loweredId);
   }
   if (decode !== undefined && order.length) {
     const lowered = { graphicSpec: { objects, order } };

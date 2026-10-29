@@ -379,6 +379,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -585,6 +587,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
+export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -766,7 +769,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline, MarkShadow,
+  FillPaint, MarkOutline, MarkShadow, GraphicBlendSource, GraphicWeightedBlendProperties,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -1119,7 +1122,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
