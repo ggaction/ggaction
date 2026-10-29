@@ -38,7 +38,7 @@ export function evidenceSourceFile(root, commit, reference) {
   const bytes = evidenceFile(root, reference);
   requireValue(commitId(commit), "Source evidence requires an exact commit.");
   const committed = execFileSync("git", ["show", `${commit}:${reference.path}`], {
-    cwd: root, stdio: ["ignore", "pipe", "pipe"]
+    cwd: root, stdio: ["ignore", "pipe", "pipe"], maxBuffer: bytes.length + 1
   });
   requireValue(evidenceHash(committed) === reference.sha256, `Source evidence differs from execution commit: ${reference.path}`);
   return bytes;
