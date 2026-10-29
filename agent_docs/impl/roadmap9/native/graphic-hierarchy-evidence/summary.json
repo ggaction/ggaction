@@ -1,0 +1,28 @@
+{
+  "base": "c7ce141a1",
+  "status": "passed",
+  "command": "node scripts/run-tests.js contracts contracts/graphic-hierarchy-migration.test.js",
+  "exitCode": 0,
+  "tests": 1,
+  "passed": 1,
+  "durationMs": 5147.750333,
+  "file": "test/contracts/graphic-hierarchy-migration.test.js",
+  "sha256": "748b592a7d43ef92d6b0a1493351e4d3a71a85fadab09fc0c36e1995631ee941",
+  "runtimeDelta": [],
+  "addedRegistryEntries": [
+    "geographic-fields",
+    "geographic-annotations",
+    "streamgraph",
+    "table",
+    "trail",
+    "trail-constant-width"
+  ],
+  "tableChecks": [
+    "exact Canvas/plot/table/cell parent hierarchy",
+    "12 row-major cell collections with bounded literal clips",
+    "typed header/body/footer, row and column identity",
+    "dataset revision and exact source row lineage including footer aggregation",
+    "body, bar, sparkline, label item draw order",
+    "no private cell hash literal snapshot"
+  ]
+}
