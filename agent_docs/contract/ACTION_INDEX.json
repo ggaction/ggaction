@@ -4005,7 +4005,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Create, replace, or compose a final-item filter or induced graph view",
+      "update": "Create, replace, or compose a final-item filter, induced graph view, or explicit inferred-graph recomputation",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -6096,6 +6096,7 @@
       "materializeFoldData",
       "materializePivotData",
       "materializeMarkFilteredData",
+      "materializeGraphSubsetData",
       "materializeIntervalData",
       "materializeNormalizedData",
       "materializeRegressionData",
@@ -6195,7 +6196,9 @@
       "releaseDerivedData",
       "replayDerivedData",
       "setQuantitativeColorScale",
-      "useProgram"
+      "useProgram",
+      "filterGraphPlotView",
+      "restoreGraphPlotView"
     ],
     "aggregateComponents": [
       "createBoxMedian",

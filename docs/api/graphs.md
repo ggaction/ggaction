@@ -48,13 +48,16 @@ Highlight `color` or `stroke` changes node borders, edge paths and arrow fill; l
 
 Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat is not currently supported.
 
-`filterMarks` selects node items by field, source rows or pre-highlight body properties.
+By default, `filterMarks` selects node items by field, source rows or pre-highlight body properties.
 It retains the original edges whose two endpoints remain visible, including parallel
 edges, loops and arrows. Node positions, graph/layout resources, full-graph degree
 values and stable identities remain unchanged. Its ordered recipe follows source,
 layout, paint and Canvas edits. Use `mode: "replace"` to start from all nodes or
 `mode: "compose"` to narrow the current view. `removeMarkFilter` restores the full
-graph. The [filtering API](data/filtering.md#filter-marks) owns the shared selector rules.
+graph. On inferred graphs, add `recompute: true` to rebuild relationships and layouts
+from the selected node keys. All plots sharing the named graph update; replacing or
+composing the filter evaluates the original source recipe. Source revisions keep
+that exact key set, and removal restores the original source. The [filtering API](data/filtering.md#filter-marks) owns the shared selector rules.
 
 Remove a plot with `removeMark` before removing its bound layout or graph. Resource cascade does not silently remove live graph marks. Editable serialization validates stored data, layout and style without rerunning force simulation. Canvas, SVG, PNG and PDF consume the same concrete primitives. Inspection and accessible export count each node or edge once rather than counting its label or arrow again.
 

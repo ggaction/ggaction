@@ -28,7 +28,7 @@ test("graph node filters preserve full topology, position, identity and induced 
   assert.deepEqual(graphics(q).map(({ id: _id, ...item }) => item), graphics(p).filter(item => retained.has(item.identity.key)).map(({ id: _id, ...item }) => item));
   assert.deepEqual(getMarkItems(q).filter(item => item.fields.kind === "node").map(item => item.fields.degree), [4, 3]);
   assert.equal(serializeProgram(p), snapshot);
-  assert.deepEqual(q.trace.children.at(-1).children.map(item => item.op), ["materializeGraphPlot"]);
+  assert.deepEqual(q.trace.children.at(-1).children.map(item => item.op), ["filterGraphPlotView"]);
   assert.equal(exportAccessibleData(q).views[0].rows.length, 5);
   assert.equal(graphics(q).filter(item => item.identity.role === "arrow").length, 3);
   assert.equal(graphics(q).filter(item => item.identity.role === "label").length, 2);

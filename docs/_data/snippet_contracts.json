@@ -1259,7 +1259,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 5,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "complete",
     "environment": "node-esm",
     "receivers": [],
@@ -1271,7 +1271,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 6,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1287,7 +1287,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 7,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [

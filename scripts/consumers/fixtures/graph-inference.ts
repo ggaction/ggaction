@@ -6,7 +6,7 @@ p.createInferredGraphData({ id: "mst", nodeKey: "id", ruleId: "backbone", rule: 
 p.createInferredGraphData({ id: "groups", nodeKey: ["family", "id"], ruleId: "groups", rule: "group", options: { fields: ["group"], mode: "star", hubKey: ["a", 1] } });
 p.createInferredGraphData({ id: "sequence", nodeKey: "id", ruleId: "ordered", rule: "sequence", options: { orderField: "year", temporalUnit: "year", lag: 2 } });
 p.editInferredGraphData({ candidateGraph: null, definition: { rule: "mst", features: ["x"], metric: "manhattan" } });
-p.filterMarks({ target: "graphPlot", field: "key", op: "oneOf", values: ["a", "b"] })
+p.filterMarks({ recompute: true, target: "graphPlot", field: "key", op: "oneOf", values: ["a", "b"] })
   .filterMarks({ target: { childPath: ["left"], id: "graphPlot" }, mode: "replace", rows: { data: "nodes", indices: [0] } })
   .removeMarkFilter({ target: "graphPlot" });
 const r = p.semanticSpec.resources.find((value): value is InferredGraphResource => value.kind === "graph" && value.provenance.origin === "inferred");
@@ -37,3 +37,6 @@ chart().createInferredGraphData({ ...request, features: { set: "tags" } });
 // @ts-expect-error geographic coordinates cannot use numeric preprocessing
 chart().createInferredGraphData({ id: "g", nodeKey: "id", ruleId: "r", rule: "radius", metric: "great-circle", features: { longitude: "lon", latitude: "lat" }, preprocess: "minmax", options: { radius: 100 } });
 
+
+// @ts-expect-error Recompute is a boolean, not a truthy value.
+p.filterMarks({ field: "key", op: "eq", value: "a", recompute: "true" });

@@ -25,6 +25,15 @@ export const cases = [{ id: "data/inferred-graph-lifecycle", run() {
   assert.equal(exportAccessibleData(filtered).views[0].rows.length, 3);
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(filtered))), renderToSVG(filtered));
   assert.deepEqual(filtered.removeMarkFilter().graphicSpec, source.graphicSpec);
+  const recomputed = source.filterMarks({ recompute: true, field: "key", op: "oneOf", values: ["a", "c", "d"] });
+  assert.equal(graph(recomputed).revision, 1);
+  assert.deepEqual(graph(recomputed).result.model.edges.map(edge => edge.weight), [3, 7]);
+  const reloaded = deserializeProgram(serializeProgram(recomputed));
+  assert.equal(renderToSVG(reloaded), renderToSVG(recomputed));
+  assert.deepEqual(graph(reloaded.removeMarkFilter()).result.model, graph(source).result.model);
+  const reselected = reloaded.filterMarks({ mode: "replace", field: "key", op: "oneOf", values: ["a", "b"] });
+  assert.equal(graph(reselected).result.model.nodes.length, 2);
+  assert.equal(reselected.semanticSpec.datasets.length, 2);
   assert.ok(accessible.rows.every(row => row.values["graphPlot:origin"] === "inferred" && row.values["graphPlot:rule"] === "knn"));
   const changed = source.reviseData({ source: "points", id: "updated", values: values.map(row => ({ ...row, x: row.x * 2 })) });
   assert.equal(graph(changed).revision, 1); assert.deepEqual(graph(changed).result.model.edges.map(edge => edge.weight), [2, 4, 14]);

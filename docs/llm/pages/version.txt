@@ -9,8 +9,8 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4565a33eb9ef4c5aac2f25a9cd0d2aa5dcefc7f04340fcaa95a05137e303ecac` |
-| Example and dataset source | `525cf6276f108a52e430cc64540f22f2b2299113` |
+| Contract fingerprint | `sha256:668a6de2507673a87e552fddfbca800e967d674ac9df3dfbbf77199471de65ee` |
+| Example and dataset source | `codex/roadmap9-resource-integration` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 335 |

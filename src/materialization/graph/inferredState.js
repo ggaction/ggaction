@@ -1,3 +1,4 @@
+import { resolveGraphCandidateModel } from "./candidate.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
@@ -136,6 +137,7 @@ function validateStored(resource) {
 function validateBindings(program, resource) {
   const definition = resource.options.definition, data = resolveInputReference(program, resource.inputs[0]);
   const candidate = resource.inputs.length === 2 ? resolveInputReference(program, resource.inputs[1]) : undefined;
+  const candidateModel = resolveGraphCandidateModel(program, data, candidate, definition);
   const { metric, structural } = definitionPolicy(definition, candidate !== undefined);
   graphSourceRows(data.values, definition.maxNodes, "Graph source rows");
   const { model, diagnostics } = resource.result, keys = data.values.map(row => graphSourceKey(row, definition.nodeKey));
@@ -176,8 +178,8 @@ function validateBindings(program, resource) {
   });
   const prepared = preparation === undefined ? undefined : new Map(preparation.sourceIndices.map((index, offset) => [index, preparation.vectors[offset]]));
   const known = new Set(model.nodes.map(node => node.key)), tokenSet = new Set(tokens), includedSet = new Set(included);
-  if (candidate && (candidate.result.model.directed || candidate.result.model.nodes.some(node => !tokenSet.has(node.key)) || candidate.result.model.edges.some(edge => edge.weight < 0))) throw new TypeError("Invalid graph spanning candidate binding.");
-  const candidatePairs = new Set((candidate?.result.model.edges ?? []).flatMap(edge => [
+  if (candidate && (candidateModel.directed || candidateModel.nodes.some(node => !tokenSet.has(node.key)) || candidateModel.edges.some(edge => edge.weight < 0))) throw new TypeError("Invalid graph spanning candidate binding.");
+  const candidatePairs = new Set((candidateModel?.edges ?? []).flatMap(edge => [
     JSON.stringify([edge.sourceKey, edge.targetKey, edge.weight]), JSON.stringify([edge.targetKey, edge.sourceKey, edge.weight])
   ]));
   const sequencePositions = new Map(), sequenceValues = new Map(), groups = new Map(), groupKeys = [];
@@ -253,7 +255,7 @@ function validateBindings(program, resource) {
   });
   if (definition.rule === "mst") {
     equal(diagnostics.cost, stableFiniteSum(model.edges.map(edge => edge.weight), "Graph spanning cost"), "spanning cost");
-    equal(diagnostics.candidateCount, candidate?.result.model.edges.length ?? (included.length < 2 ? 0 : included.length * (included.length - 1) / 2), "candidate count");
+    equal(diagnostics.candidateCount, candidateModel?.edges.length ?? (included.length < 2 ? 0 : included.length * (included.length - 1) / 2), "candidate count");
     const memberships = new Map();
     for (const [component, indices] of diagnostics.componentNodes.entries()) {
       ownArray(indices, "Graph spanning component rows");

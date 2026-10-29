@@ -4,7 +4,7 @@ import { memberRowReferences } from "../selection/rows.js";
 import { validateWorkLimit } from "../../core/validation.js";
 
 export function applyGraphView(program, resolved, view) {
-  if (view === undefined) return resolved;
+  if (view === undefined || view.recompute !== undefined) return resolved;
   const { items, graphics, graph } = resolved;
   validateWorkLimit(items.length * view.selectors.length, "Graph view selection work");
   const needsRows = view.selectors.some(selector => selector.rows !== undefined);

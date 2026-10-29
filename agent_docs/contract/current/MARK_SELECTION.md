@@ -86,7 +86,7 @@ type MarkSelector =
 
 ## `filterMarks`
 
-- Signature: `filterMarks({ target?, mode?: "replace" | "compose", ...selector })`
+- Signature: `filterMarks({ target?, mode?: "replace" | "compose", recompute?: boolean, ...selector })`
 - Target and selection: `selectMarks`와 같은 target inference, selector normalization, native item/stack grain을
   사용한다. Point field selection은 position/size가 아직 없어도 row grain에서 동작하며 channel/property와
   non-point mark는 materialized final items를 요구한다.
@@ -102,7 +102,7 @@ type MarkSelector =
   selector algebra. The recipe is retained across appearance/component edits; explicit source
   replacement clears it. Parent filters require nonempty input for enabled statistics. Named
   child IDs retain display-only filtering, including empty views.
-- Graph plot: retain selected node items and every original edge whose two endpoints remain visible.
+- Graph plot, induced mode (default): retain selected node items and every original edge whose two endpoints remain visible.
   The node-only item grain accepts fields (including `attribute:<name>`), rows and pre-highlight concrete
   body properties. Encoding channels and stack grain are inapplicable. The view stores its ordered
   normalized recipe in `markConfigs[id].graphPlot.view.selectors`; it creates no dataset and changes no
@@ -112,6 +112,22 @@ type MarkSelector =
   Source/layout/paint/Canvas edits replay this recipe. Rebinding the plot to a different layout applies
   the same recipe to that layout's nodes. Invalid field or source lineage fails during preflight.
   Removal clears the recipe and rematerializes the full graph. Other plots remain unchanged.
+- Graph explicit recompute: `recompute: true` is available only on inferred graphs. Select nodes against
+  the original source graph recipe, retain their typed keys and source row order in an immutable subset,
+  then rebuild the same named graph and all dependent layouts/plots once. All six inference rules retain
+  their policies, limits and validation, including k, explicit hubs and MST connectivity. Candidate MST
+  validates candidates against the original source and projects only edges with both selected endpoints.
+  Degree and layout positions describe the recomputed graph. Surviving logical node/edge keys remain stable.
+  A graph may have one recompute filter owner; other plots sharing that graph observe its new revision.
+  Omission means false for a new filter and preserves the active filter mode. Explicit false restores the
+  original source topology before applying an induced view. Replace/compose reevaluate the canonical
+  unfiltered source recipe; identical selector plus mode is idempotent. Subsequent source revisions replay
+  the stored typed keys: absent keys remain dormant, returning keys return, and new unselected keys stay out.
+  Original nodeKey/source bindings cannot be edited while owned; remove the filter first. A plot may move
+  to another layout of the same graph. Removing the filter or owning mark restores its original source
+  and releases the subset only when no live consumer retains that snapshot. Empty results are supported.
+  Concrete selectors use the unhighlighted source recipe, avoiding feedback from recomputed degrees/positions.
+  Source data and earlier programs remain immutable. Inspection/accessibility/hit entries use current items.
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
@@ -138,13 +154,17 @@ type MarkSelector =
 
 ### Formal values — `filterMarks`
 
-- Implemented: `filterMarks({ target?: UserId; mode?: "replace" | "compose" } & MarkSelector)` for
+- Implemented: `filterMarks({ target?: UserId; mode?: "replace" | "compose"; recompute?: boolean } & MarkSelector)` for
   point/bar/rect/line/area/arc/rule/Tick item grain and stacked-bar grain using field, channel or concrete property with
   comparison, set, range and grouped/ungrouped rank modes; graph node item grain accepts fields,
-  rows and concrete properties and retains induced edges without recomputing inference.
+  rows and concrete properties; its default induced view preserves topology and `recompute: true` explicitly rebuilds inferred topology.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `filterMarks`
+
+- ✅ Graph recompute: all six rules, candidate MST, exact typed keys, source revisions, replace/compose/remove,
+  shared consumers, fixed positions, retained snapshots, codec, hit items and atomic errors are covered by
+  `test/unit/resources/graph-recompute.test.js` and the installed inferred-graph consumer.
 
 - ✅ Covered: omitted/explicit/invalid target, incomplete point field fallback, all shared selector families and value
   sources, deterministic revision IDs, repeated idempotence, replace/compose distinction, immutable source/earlier

@@ -14,7 +14,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/525cf6276f108a52e430cc64540f22f2b2299113/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program

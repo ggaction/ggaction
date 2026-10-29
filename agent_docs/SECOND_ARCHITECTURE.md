@@ -782,7 +782,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 639,000 bytes |
+| `ggaction` | 641,000 bytes |
 | `ggaction/basic` | 363,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -3390,3 +3390,18 @@ Public Full/Basic/SVG import graph에는 private hit owner가 없으며 CanvasSc
 통합 graph view·theme·actual hit adapter는876entries/5,868,706unpacked, Node20packed1,278,262bytes다.
 현재 cap은876/1,279,000/5,869,000이며 설치 bundle Node20Full637,955/Basic362,086gzip에
 638,000/363,000 cap을 적용한다. Private hit adapter는 공개 interaction API의 완료를 뜻하지 않는다.
+
+
+### Graph selection과 명시 재추론 경계
+
+Graph view의 filter/restore wrapped owner는 Full graph registration에 속한다. 공통
+`filterMarks`는 lightweight selector로 graph mark를 판별하고 이 owner에 dispatch한다.
+따라서 Basic은 graph inference/layout kernel을 filtering import로 끌어오지 않는다.
+재추론의 선택 intent는 기존 graphPlot.view에 단독 저장하고, private graphSubset transform은
+기존 immutable derived-data identity/lineage/revision owner를 재사용한다. 원본 topology를
+기준으로 선택한 typed key를 저장하며 graph→layout→consumer closure의 순수 prepared plan을
+검증한 뒤 명시 child action으로 commit한다. Renderer는 기존 concrete graphicSpec만 읽는다.
+Exact option과 source/replace/remove 의미는 MARK_SELECTION current contract가 소유한다.
+
+Graph recompute의6개 작은 owner로 package882entries/5,885,200unpacked/Node22packed1,279,959bytes를 측정했다.
+현재 packagecap은882/1,283,000/5,886,000, Fullbundle640,278gzip측정에641,000cap을 적용한다.

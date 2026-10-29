@@ -147,7 +147,7 @@ domain for the same binding. Otherwise the update fails and the original chart
 is unchanged. Comparisons with null or missing values follow the expression
 comparison rules and evaluate to false.
 
-## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
+## `filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}
 
 Filter existing final mark items without changing the source dataset.
 `filterMarks` uses the same selector grammar as `selectMarks`, infers the current
@@ -155,13 +155,25 @@ mark when possible, creates a namespaced immutable dataset such as
 `pointsFilteredData`, rebinds only that mark, and rematerializes its scales,
 graphics, and connected guides.
 
-Graph plots use an induced view: select node items and retain each original edge
+Graph plots default to an induced view: select node items and retain each original edge
 whose two endpoints are visible. The stored graph and layout remain unchanged,
 including full-graph degree values and node positions. Node fields, source rows
 and pre-highlight body properties are supported; encoding channels and stack grain
 do not apply. Replace and compose use the same recipe rules below. Source,
 layout, paint and Canvas edits replay the recipe. `removeMarkFilter` restores all
 nodes and edges. See [graph plots](../graphs.md) for node and edge fields.
+
+For inferred graphs, `recompute: true` rebuilds relationships and dependent layouts
+from the selected node keys. All plots sharing that graph update together; one plot
+owns the recompute filter. Replace and compose start from the original source
+recipe. Source revisions preserve the selected keys, including keys that disappear
+and return; new unselected keys stay excluded. Omission preserves an active filter's
+mode, and explicit `recompute: false` switches back to an induced view.
+`removeMarkFilter` or removal of the owning mark restores the original source graph.
+The source rows and surviving item identities are preserved. Existing inference
+constraints still apply, so a subset too small for k or a disconnected MST without
+`forest: true` is rejected. Remove the filter before changing its source or node key.
+Observed graphs and other mark families reject `recompute: true`.
 
 <!-- snippet-context:start -->
 

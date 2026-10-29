@@ -436,6 +436,10 @@
         "path": "unit/resources/graph-filter.test.js"
       },
       {
+        "type": "file",
+        "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
         "path": "unit/resources/graph-hit.test.js",
         "type": "file"
       },

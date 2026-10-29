@@ -1,3 +1,4 @@
+import { validateGraphRecomputeView } from "./filterState.js";
 import { materializeMarkEffectProperties } from "../markEffects.js";
 import { applyGraphView } from "./view.js";
 import { bindTextFontProperties } from "../textFont.js";
@@ -29,6 +30,7 @@ function overrideMap(entries) {
 
 export function resolveGraphPlot(program, layer, config) {
   const { layout, graph, nodesData, edgesData } = resolveGraphLayerResources(program, layer), model = graph.result.model;
+  validateGraphRecomputeView(program, layer, graph, config.view);
   const labels = layer.graphLabels, frame = resolveGraphicBounds(program), positions = layout.result.nodes;
   if (labels !== false && Object.hasOwn(labels, "field") && !graph.options.definition.attributes.includes(labels.field)) throw new TypeError("Graph labels require a retained node attribute.");
   validateGeneratedItemLimit(model.nodes.length * (labels === false ? 1 : 2) + model.edges.length * 2, "Graph plot graphic count");

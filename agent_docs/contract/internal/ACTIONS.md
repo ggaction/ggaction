@@ -44,6 +44,9 @@ domain action을 통해서만 실행한다.
 | `materializeFlattenData` | immutable aligned array expansion |
 | `materializeFoldData` | reusable wide-to-long data actions |
 | `materializePivotData` | grouped category-to-column data actions |
+| `filterGraphPlotView` | Full graph node selection and topology recomputation |
+| `restoreGraphPlotView` | Full graph filter source restoration and cleanup |
+| `materializeGraphSubsetData` | inferred graph filter typed-key source rows |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeEmptyMark` | active empty `filterMarks` view across mark, label, scale, and Canvas replay |
 | `materializeIntervalData` | interval data actions |

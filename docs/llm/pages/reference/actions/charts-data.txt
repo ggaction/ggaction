@@ -1935,6 +1935,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `recompute` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |

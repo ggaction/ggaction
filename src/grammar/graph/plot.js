@@ -1,5 +1,6 @@
 import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js";
 import { normalizeMarkSelector } from "../markSelection.js";
+import { validateUserId } from "../../core/identifiers.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
@@ -104,7 +105,12 @@ export function validateGraphPlotDefinition(config, labels) {
   };
   exact(config, ["origin", "clip", "nodes", "edges"], ["labels", "view"], "Stored graph plot");
   if (config.view !== undefined) {
-    exact(config.view, ["selectors"], [], "Stored graph view");
+    exact(config.view, ["selectors"], ["recompute"], "Stored graph view");
+    if (config.view.recompute !== undefined) {
+      exact(config.view.recompute, ["source", "dataset"], [], "Stored graph recompute view");
+      validateUserId(config.view.recompute.source, "Graph recompute source");
+      validateUserId(config.view.recompute.dataset, "Graph recompute dataset");
+    }
     ownArray(config.view.selectors, "Stored graph view selectors");
     validateGeneratedItemLimit(config.view.selectors.length, "Graph view selector count");
     if (!config.view.selectors.length) throw new TypeError("Graph view requires at least one selector.");

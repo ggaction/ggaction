@@ -29,6 +29,13 @@ variants.push({ ...variants[0], id: "induced", title: "Induced graph view",
   visiblePositions: variants[0].positions,
   filter: { target: "networkPlot", field: "key", op: "oneOf", values: ["A", "B"] }
 });
+variants.push({ ...variants[0], id: "recomputed", title: "Recomputed sequence after filtering",
+  nodes: [{ id: "A", order: 0 }, { id: "B", order: 1 }, { id: "C", order: 2 }],
+  positions: [{ key: "A", x: 60, y: 120 }, { key: "B", x: 150, y: 210 }, { key: "C", x: 240, y: 120 }],
+  visiblePositions: [{ key: "A", x: 60, y: 120 }, { key: "C", x: 240, y: 120 }],
+  inference: { nodeKey: "id", rule: "sequence", ruleId: "sequence", options: { orderField: "order" } },
+  filter: { target: "networkPlot", field: "key", op: "oneOf", values: ["A", "C"], recompute: true }
+});
 export function graphVariant(id) {
   const variant = variants.find(value => value.id === id);
   if (!variant) throw new Error(`Unknown graph variant ${id}.`);

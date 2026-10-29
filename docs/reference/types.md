@@ -7873,7 +7873,9 @@ Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFil
 
 ```typescript
 export type FilterMarksOptions = {
-  /** Graph plots retain matching nodes and their induced edges without recomputing the stored graph or layout. */
+  /** Inferred graphs only: rebuild topology and dependent layouts from selected source identities. Omission preserves an existing filter mode. */
+  recompute?: boolean;
+  /** Graph plots select node items; the default induced view preserves topology and layout. */
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;

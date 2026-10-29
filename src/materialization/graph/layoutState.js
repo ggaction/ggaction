@@ -1,3 +1,4 @@
+import { validateGraphRecomputeView } from "./filterState.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
@@ -76,6 +77,7 @@ function validateBindings(program, resource) {
     const config = program.materializationConfigs.marks?.[layer.id];
     exact(config, ["graphPlot"], "Graph mark configuration");
     validateGraphPlotDefinition(config.graphPlot, layer.graphLabels);
+    validateGraphRecomputeView(program, layer, graph, config.graphPlot.view);
     for (const selector of config.graphPlot.view?.selectors ?? []) {
       if (selector.rows !== undefined) validateRowSelectionDataset(selector.rows, findDataset(program, selector.rows.data));
     }

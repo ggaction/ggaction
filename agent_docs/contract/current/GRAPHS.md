@@ -147,7 +147,7 @@
 - target은 explicit/current eligible/unique inferred graph이며 observed graph를 수정하지 않는다. Scoped child target을 지원한다. data와 candidateGraph를 생략하면 exact 입력을 보존한다. candidateGraph:null은 후보 입력을 제거한다. definition은 source definition partial patch이며 options를 지정하면 rule options 전체를 교체한다. rule을 바꿀 때는 nodeKey/attributes/limits만 이어받고 새 ruleId와 applicable intent를 받는다. 빈 편집과 explicit undefined/null definition, unknown/inapplicable options는 오류다.
 - topology를 다시 계산하여 graph revision을1 올린다. 살아 있는 같은 ruleId/direction/endpoints의 edge key는 유지한다. Candidate graph를 소비하는 추론 graph chain과 각 layout/plot을 의존 순서대로 preflight하고 한 번씩 명시 갱신한다. Cyclic candidate refs와 실패하는 downstream geometry는 전체 편집을 거부한다.
 - DATA revision의 전체 source replacement map은 exact graph action receiver의 private context에만 존재한다. Prepared primitive는 unique exact next graph/layout revisions, 유지된 options, 동적 dataset의 동일 logicalId와 later revision을 검사한다. 이 authority는 public option이나 저장 state가 아니다.
-- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view는 원 topology를 보존한다. Explicit recompute는 아직 지원하지 않는다.
+- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view는 원 topology를 보존한다. `filterMarks({recompute:true})`는 inferred graph를 선택 source keys로 재추론하고 모든 dependent layout/plot을 새 revision으로 갱신한다. Exact lifecycle은 [MARK_SELECTION.md](./MARK_SELECTION.md)의 graph recompute 계약을 따른다.
 
 ### Formal values — `editInferredGraphData`
 

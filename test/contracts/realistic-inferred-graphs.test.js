@@ -40,6 +40,13 @@ for(const dataset of datasets) for(const rule of ["knn","mst","sequence"]) test(
     assert.equal(exportAccessibleData(filtered).views[0].rows.length, expected.length);
     assert.deepEqual(filtered.removeMarkFilter().graphicSpec, p.graphicSpec);
     assert.equal(renderToSVG(deserializeProgram(serializeProgram(filtered))), renderToSVG(filtered));
+    const recomputed = p.filterMarks({ recompute: true, field: "key", op: "oneOf", values: [...kept] });
+    assert.equal(resource(recomputed).revision, 1);
+    assert.deepEqual(getMarkItems(recomputed).filter(item => item.fields.kind === "node").map(item => item.fields.key), [...kept]);
+    const replay = deserializeProgram(serializeProgram(recomputed)).reviseData({ source: "records", id: "filtered-reordered", values: [...rows].reverse() });
+    assert.deepEqual(new Set(getMarkItems(replay).filter(item => item.fields.kind === "node").map(item => item.fields.key)), kept);
+    assert.deepEqual(resource(recomputed.removeMarkFilter()).result.model, model);
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(recomputed))), renderToSVG(recomputed));
     const selected=p.highlightMarks({id:"nodes",target:"graphPlot",select:{field:"kind",op:"eq",value:"node"},stroke:"red"});
     assert.equal(resource(selected),graph);
     const changed=p.reviseData({source:"records",id:"reordered",values:[...rows].reverse()});

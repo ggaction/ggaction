@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },
   "scene-snapshot": { prefix: "sceneSnapshot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact node associations must retain concrete scene cache identity without semantic materialization." },
