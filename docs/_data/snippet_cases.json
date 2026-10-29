@@ -667,5 +667,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
+  },
+  {
+    "id": "accessible-items",
+    "file": "api/rendering.md",
+    "contains": "const alternative = exportAccessibleData(program, { format: \"items\", target: \"bars\" });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "rendering": "authoring-only",
+    "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership."
   }
 ]

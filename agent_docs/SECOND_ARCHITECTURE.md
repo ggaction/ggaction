@@ -744,7 +744,7 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 ### `ggaction/accessibility`
 
-`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 항목 모드는 `accessibilityItems.js`가 같은 native policy 및 Full의 고정 selection resolver를 읽어 중첩 namespace·선택 membership·논리적 visibility를 투영한다. DOM/renderer/Full action import 없이 bounded read-only adapter를 유지한다. 결과의 정확한 schema와 제한은 [ACCESSIBILITY](contract/current/ACCESSIBILITY.md)가 소유하며 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 공개 사용 예를 제공한다.
 
 ### `ggaction/inspection`
 
@@ -4333,3 +4333,8 @@ Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 pay
 Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합산 검색 payload는
 1,073,688bytes다. 독립 recipe 한도1,072,000을 넘으므로 최소100byte 단위1,073,700을
 적용한다. 새 authoring API·runtime 모듈·저장 구조는 추가하지 않고 기존 domain action을 조합한다.
+
+논리적 native item 대체 값은 기존 selection/identity owner를 재사용하는 browser-safe
+accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한다. 합산 Node22 package는
+1114entries/1,587,160packed/7,225,523unpacked bytes다. 최소 한도
+1114/1,588,000/7,226,000을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, hconcat } from "../../src/index.js";
 import { createInteractionSession } from "../../src/interaction.js";
+import { exportAccessibleData } from "../../src/accessibility.js";
 import { getMarkItems } from "../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
@@ -28,6 +29,12 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assertRegionInteraction(p, recipe, rows);
    const q=p.selectMarks({id:"picked",target:"mark",items:[keys[0]]}).highlightMarks({selection:"picked",color:"#ef4444",bringToFront:false});
    const saved=serializeProgram(q);
+   const alternative=exportAccessibleData(q,{format:"items"}),nativeItems=alternative.views[0].items;
+   assert.equal(nativeItems.length,recipe==="observations"?rows.length:categories.length);
+   assert.deepEqual(nativeItems.map(item=>item.key),keys);
+   assert.deepEqual(nativeItems.map(item=>item.selectedBy),keys.map((key,index)=>index===0?["picked"]:[]));
+   assert.ok(nativeItems.every(item=>item.visible));
+   assert.deepEqual(exportAccessibleData(deserializeProgram(saved),{format:"items"}),alternative);
    const shape=items[0].geometry[0], properties=shape.properties;
    const probe=shape.type==='path'?properties.commands.find(command=>command.op==='M'):
     {x:properties.x+(shape.type==='rect'?properties.width/2:0),y:properties.y+(shape.type==='rect'?properties.height/2:0)};
