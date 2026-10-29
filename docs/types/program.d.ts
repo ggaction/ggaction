@@ -2058,6 +2058,23 @@ export interface CalendarLabelPaint {
   readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
 }
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+export type WaterfallColor = OHLCColor;
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
 export interface OHLCBodyPaint {
   readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
   readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
@@ -6555,6 +6572,8 @@ export class ChartProgram {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
   editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
   createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;

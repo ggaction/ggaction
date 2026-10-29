@@ -1,4 +1,4 @@
-import { chart, hconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
+import { chart, hconcat, vconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
 import { readFileSync } from "node:fs";
 
 import { loadZooDataset } from "../datasets/zoo.js";
@@ -1360,7 +1360,7 @@ function buildDirectDataResources(factors) {
     .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
     .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
-  return program
+  program = program
     .createDensityData({
       id: "directDensity",
       source: "directSource",
@@ -1456,6 +1456,13 @@ function buildDirectDataResources(factors) {
     })
     .editECDFPlot({ target: "directECDFPlot", groupBy: false })
     .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
+  // API trace witness only: preserve the existing source values and explicitly
+  // assign contribution roles in an independent cumulative-value panel.
+  const waterfall = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "waterfallSource", values: sourceRows.map(row => ({ ...row, stageRole: "delta" })) })
+    .createWaterfallPlot({ id: "directWaterfall", x: "category", value: "positive", role: "stageRole", guides: false })
+    .editWaterfallPlot({ target: "directWaterfall", connectors: false });
+  return vconcat({ programs: [{ id: "resources", program }, { id: "waterfall", program: waterfall }] });
 }
 
 function appendConditionalPoints(program) {

@@ -1233,5 +1233,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "waterfall-plots.mjs",
+    "cases": [
+      {
+        "id": "waterfall/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "waterfall/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "waterfall/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
   }
 ]

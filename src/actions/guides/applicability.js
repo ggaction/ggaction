@@ -65,7 +65,7 @@ export function hasInferableLegend(program, layers = program.semanticSpec.layers
         ["color", "stroke", "strokeDash"].some(
           channel => layer.encoding?.[channel]?.scale !== undefined
         )) ||
-      (["bar", "area", "arc", "rect", "ohlc"].includes(layer.mark?.type) &&
+      (["bar", "area", "arc", "rect", "ohlc", "waterfall"].includes(layer.mark?.type) &&
         ["color", "stroke"].some(
           channel => layer.encoding?.[channel]?.scale !== undefined
         )) ||

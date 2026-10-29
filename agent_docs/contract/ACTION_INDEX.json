@@ -6392,6 +6392,42 @@
         "file": "agent_docs/contract/current/OHLC.md",
         "anchor": "editohlcplot"
       }
+    },
+    {
+      "name": "createWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editWaterfallPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/WATERFALL.md",
+        "anchor": "createwaterfallplot"
+      }
+    },
+    {
+      "name": "editWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editWaterfallPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/WATERFALL.md",
+        "anchor": "editwaterfallplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6489,7 +6525,8 @@
       "materializeSelectionPreview",
       "materializeCalendarPlot",
       "materializePyramidPlot",
-      "materializeOHLCPlot"
+      "materializeOHLCPlot",
+      "materializeWaterfallPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

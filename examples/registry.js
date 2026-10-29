@@ -1,3 +1,5 @@
+import { createWaterfall } from "./waterfall/program.js";
+import { variants as waterfallVariants } from "./waterfall/fixture.js";
 import { createOHLC } from "./ohlc/program.js";
 import { variants as ohlcVariants } from "./ohlc/fixture.js";
 import { createNestedResponsive } from "./nested-responsive/program.js";
@@ -311,6 +313,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  ...waterfallVariants.map(variant => example({ id: variant.chart, programDirectory: "waterfall", testDirectory: "waterfall", data: {}, width: 500, height: 320, docsGroup: "tutorials",
+    createProgram: () => createWaterfall(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 500, height: 320 } } }
+  })),
   ...ohlcVariants.map(variant => example({ id: variant.chart, programDirectory: "ohlc", testDirectory: "ohlc", data: {}, width: 420, height: 320, docsGroup: "tutorials",
     createProgram: () => createOHLC(variant.id),
     browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 320 } } }

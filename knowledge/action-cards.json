@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 353,
+  "count": 355,
   "cards": [
     {
       "schemaVersion": 3,
@@ -9804,7 +9804,15 @@
       ],
       "wraps": [
         "editSemantic",
-        "editGraphics"
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ],
       "editableVia": [],
       "supports": {
@@ -32670,7 +32678,17 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -32826,7 +32844,11 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "removeTitle",
+        "filterData",
+        "editGraphics"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -32977,7 +32999,10 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "removeTitle",
+        "encodeX"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -33481,7 +33506,18 @@
       "authoringRoles": [
         "H3"
       ],
-      "wraps": [],
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "removeTitle"
+      ],
       "editableVia": [
         "editFacetGuides"
       ],
@@ -38646,6 +38682,8 @@
         "H0"
       ],
       "wraps": [
+        "createScatterPlot",
+        "editGraphics",
         "editScale",
         "createBoxPlot"
       ],
@@ -43967,9 +44005,9 @@
         "H2"
       ],
       "wraps": [
-        "createCoordinate",
         "editSemantic",
-        "createScale"
+        "createScale",
+        "createCoordinate"
       ],
       "editableVia": [
         "editOHLCPlot",
@@ -44297,6 +44335,332 @@
       "snippet": "program.editOHLCPlot({ target: \"ohlc\", doji: \"none\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editohlcplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create ordered contribution bars, subtotals and totals with explicit source roles.",
+      "signature": "createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;",
+      "intents": [
+        "create waterfall plot",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "Waterfall plot",
+        "ordered contributions and totals"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "owns": [
+          "Waterfall contribution mark"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editWaterfallPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "yScale",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "WaterfallX"
+        },
+        {
+          "name": "role",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "reset",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "yScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "width",
+          "required": false,
+          "type": "WaterfallWidth | undefined"
+        },
+        {
+          "name": "bars",
+          "required": false,
+          "type": "WaterfallBarPaint | undefined"
+        },
+        {
+          "name": "connectors",
+          "required": false,
+          "type": "false | WaterfallConnectorPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | WaterfallLabelPaint | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | OHLCColor | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | ColorGuides | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createWaterfallPlot({ x, role, value, id?, data?, coordinate?, yScale?, target? })"
+      ],
+      "snippet": "program.createWaterfallPlot({ x: \"stage\", role: \"role\", value: \"amount\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createwaterfallplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity.",
+      "signature": "editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit waterfall plot",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "Waterfall plot",
+        "ordered contributions and totals"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "owns": [
+          "Waterfall contribution mark"
+        ],
+        "idOptions": [
+          "target",
+          "data",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editWaterfallPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "yScale",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized dataset",
+          "Canvas"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "WaterfallX | undefined"
+        },
+        {
+          "name": "role",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "reset",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "yScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "width",
+          "required": false,
+          "type": "WaterfallWidth | undefined"
+        },
+        {
+          "name": "bars",
+          "required": false,
+          "type": "WaterfallBarPaint | undefined"
+        },
+        {
+          "name": "connectors",
+          "required": false,
+          "type": "false | WaterfallConnectorPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | WaterfallLabelPaint | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | OHLCColor | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | ColorGuides | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editWaterfallPlot({ target?, data?, coordinate?, yScale?, x?, role?, value?, reset? })"
+      ],
+      "snippet": "program.editWaterfallPlot({ target: \"waterfall\", connectors: false })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editwaterfallplot"
     }
   ]
 }

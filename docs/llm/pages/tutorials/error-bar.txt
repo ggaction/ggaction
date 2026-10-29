@@ -7,15 +7,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a657a9fe7f0bea5cde197d5f831ef023654eecb0/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a657a9fe7f0bea5cde197d5f831ef023654eecb0/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a657a9fe7f0bea5cde197d5f831ef023654eecb0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

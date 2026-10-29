@@ -29,7 +29,15 @@
   ],
   "wraps": [
     "editSemantic",
-    "editGraphics"
+    "editGraphics",
+    "editXAxisLine",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisLine",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle"
   ],
   "editableVia": [],
   "supports": {

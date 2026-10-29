@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createWaterfallPlot` and `editWaterfallPlot` for ordered contributions, explicit total/subtotal/reset roles, shared cumulative scales and compound stage selection. Preserve source rows, fonts, effects and offline Canvas/SVG/PNG/PDF output through edits and compositions.
+
 - Add Full-only `createOHLCPlot` and `editOHLCPlot` for explicit open/high/low/close rows, shared price scales, doji policy and compound row selection. Preserve identities, effects, font preparation and offline Canvas/SVG/PNG/PDF output through source, scale and composition edits.
 
 - Add Full-only `createPyramidPlot` and `editPyramidPlot` for ordered stages with explicit width or area meaning, four directions and named percent denominators. Preserve row identities through source revisions, selection, Canvas edits, nested composition, color legends and offline Canvas/SVG/PNG/PDF output.

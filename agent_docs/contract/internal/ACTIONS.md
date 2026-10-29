@@ -23,6 +23,7 @@ domain action을 통해서만 실행한다.
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializePyramidPlot` | ordered row-keyed stage paths and labels from the shared width/area kernel |
+| `materializeWaterfallPlot` | Ordered contribution bars, balance connectors and optional labels |
 | `materializeOHLCPlot` | OHLC row-owned stems, bodies and optional labels |
 | `materializeCalendarPlot` | stored civil-day cells, month boundaries, label roles and exact layout lineage |
 | `materializeContourMark` | stored contour geometry, scale mappings, holes and exact geometry lineage |

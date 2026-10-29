@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "waterfall-action": { prefix: "actions/charts/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contribution edits must preflight ordered values and all guide dependencies before writes." },
+  "waterfall-plot": { prefix: "grammar/waterfallPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored contribution roles and bounded source membership must remain canonical." },
+  "waterfall-materialization": { prefix: "materialization/waterfall/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage bodies, running connectors and labels share scale endpoints and stable row identity." },
+  "waterfall-selection": { prefix: "materialization/selection/policies/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Each compound stage retains one key and exact dependent source rows." },
   "ohlc-action": { prefix: "actions/charts/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Price edits must validate the final four-field item before writing and rematerialize every role." },
   "ohlc-plot": { prefix: "grammar/ohlcPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored OHLC meaning and appearance must remain closed and canonical." },
   "ohlc-materialization": { prefix: "materialization/ohlc/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One source row owns stem/body/label geometry and scale-domain eligibility." },

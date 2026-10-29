@@ -1,3 +1,4 @@
+import { waterfallScaleValues } from "../../waterfall/plot.js";
 import { ohlcScaleValues } from "../../ohlc/plot.js";
 import { findMarkFilterDataset } from "../../../selectors/datasets.js";
 import { readNominalField } from "../../../grammar/scales/fields.js";
@@ -26,6 +27,7 @@ export {
 } from "./seriesLayout.js";
 
 export function resolveConsumerValuesForDataset(program, consumer, dataset) {
+  if (consumer.layer.mark.type === "waterfall") return waterfallScaleValues(dataset, consumer.layer, consumer.encoding, consumer.channel);
   if (consumer.layer.mark.type === "ohlc") return ohlcScaleValues(dataset, consumer.layer, consumer.encoding);
   const arc = resolveConditionalArcConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
   if (arc !== undefined) return arc;

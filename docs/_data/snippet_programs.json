@@ -581,5 +581,16 @@
       "exported": "createOHLC"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/waterfall.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "contributions",
+    "prerequisites": "Import the Full ggaction package; this example declares each contribution and its explicit role.",
+    "canonical": {
+      "file": "examples/waterfall/program.js",
+      "exported": "createWaterfall"
+    },
+    "rendering": "authoring-only"
   }
 }

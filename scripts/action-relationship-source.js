@@ -1,3 +1,4 @@
+import { programTraceOwners } from "../test/support/program-traces.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -465,7 +466,7 @@ export async function buildActionRelationships() {
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
     .editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })];
-  for (const program of programs) {
+  for (const rootProgram of programs) for (const program of programTraceOwners(rootProgram)) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);
   }
   const missing = actionNames.filter(name => !observed.has(name));
@@ -538,6 +539,7 @@ export function buildActionRelationshipPrograms() {
       })),
     chart().createCanvas().createData({ values: [{ category: "A", amount: 3 }, { category: "B", amount: 8 }] })
       .createPiePlot({ category: "category", radius: { field: "amount", aggregate: "sum" }, guides: false }),
+    chart().createCanvas().createData({ values: [{ stage: "A", role: "delta", value: 3 }] }).createWaterfallPlot({ x: "stage", role: "role", value: "value", guides: false }).editWaterfallPlot({ connectors: false }),
     chart().createCanvas().createData({ values: [{ x: "A", low: 1, high: 8, open: 3, close: 6 }] }).createOHLCPlot({ x: "x", low: "low", high: "high", open: "open", close: "close", guides: false }).editOHLCPlot({ labels: {} }),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),

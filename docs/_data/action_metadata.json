@@ -2882,5 +2882,21 @@
     ],
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "createWaterfallPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editWaterfallPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 353,
+  "actionCount": 355,
   "relationships": [
     {
       "name": "createCanvas",
@@ -528,7 +528,15 @@
       "name": "removeMark",
       "wraps": [
         "editSemantic",
-        "editGraphics"
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ]
     },
     {
@@ -1742,15 +1750,32 @@
     },
     {
       "name": "facet",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ]
     },
     {
       "name": "facetGrid",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "filterData",
+        "editGraphics"
+      ]
     },
     {
       "name": "repeatCharts",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "encodeX"
+      ]
     },
     {
       "name": "editFacetSource",
@@ -1770,7 +1795,18 @@
     },
     {
       "name": "editFacetGuides",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "removeTitle"
+      ]
     },
     {
       "name": "createScatterPlot",
@@ -2098,6 +2134,8 @@
     {
       "name": "createLayerPlot",
       "wraps": [
+        "createScatterPlot",
+        "editGraphics",
         "editScale",
         "createBoxPlot"
       ]
@@ -2384,13 +2422,28 @@
     {
       "name": "createOHLCPlot",
       "wraps": [
+        "editSemantic",
+        "createScale",
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editOHLCPlot",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "createWaterfallPlot",
+      "wraps": [
         "createCoordinate",
         "editSemantic",
         "createScale"
       ]
     },
     {
-      "name": "editOHLCPlot",
+      "name": "editWaterfallPlot",
       "wraps": [
         "editSemantic",
         "createScale"

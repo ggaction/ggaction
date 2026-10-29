@@ -2334,3 +2334,52 @@
   actions: createOHLCPlot · editOHLCPlot
   tasks: price ranges
   url: /tutorials/ohlc/
+
+- id: waterfall
+  example: /examples/waterfall/
+  title: Ordered contributions and totals
+  image: /assets/images/waterfall.png
+  alt: Show explicit signed contributions, subtotals and totals.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Show explicit signed contributions, subtotals and totals.
+  summary: Show explicit signed contributions, subtotals and totals.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/
+  tutorial_order: 300
+
+- id: waterfall-labels
+  example: /examples/waterfall-labels/
+  title: Explicit stage labels
+  image: /assets/images/waterfall-labels.png
+  alt: Show each stage value above the bar.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Show each stage value above the bar.
+  summary: Show each stage value above the bar.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/
+
+- id: waterfall-no-connectors
+  example: /examples/waterfall-no-connectors/
+  title: Contribution bars without connectors
+  image: /assets/images/waterfall-no-connectors.png
+  alt: Omit incoming balance connectors explicitly.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-no-connectors-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Omit incoming balance connectors explicitly.
+  summary: Omit incoming balance connectors explicitly.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/

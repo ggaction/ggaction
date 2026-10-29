@@ -351,5 +351,7 @@
   "createPyramidPlot": "/reference/actions/marks/#createpyramidplot",
   "editPyramidPlot": "/reference/actions/marks/#editpyramidplot",
   "createOHLCPlot": "/reference/actions/marks/#createohlcplot",
-  "editOHLCPlot": "/reference/actions/marks/#editohlcplot"
+  "editOHLCPlot": "/reference/actions/marks/#editohlcplot",
+  "createWaterfallPlot": "/reference/actions/marks/#createwaterfallplot",
+  "editWaterfallPlot": "/reference/actions/marks/#editwaterfallplot"
 }

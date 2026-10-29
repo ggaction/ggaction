@@ -859,6 +859,24 @@ Keep the high-low stem while hiding the flat body.
 
 Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
 
+### [Ordered contributions and totals](./waterfall/)
+
+Show explicit signed contributions, subtotals and totals.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Explicit stage labels](./waterfall-labels/)
+
+Show each stage value above the bar.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Contribution bars without connectors](./waterfall-no-connectors/)
+
+Omit incoming balance connectors explicitly.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

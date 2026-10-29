@@ -1094,6 +1094,11 @@
       "OHLC plot",
       "open high low close prices",
       "price stems and bodies"
+    ],
+    "WaterfallPlot": [
+      "Waterfall plot",
+      "ordered contributions and totals",
+      "running balance"
     ]
   },
   "summaryOverrides": {
@@ -1118,7 +1123,9 @@
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
     "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
     "createOHLCPlot": "Create row-owned open, high, low and close prices with one shared price scale.",
-    "editOHLCPlot": "Edit OHLC fields and styles while preserving typed row identity."
+    "editOHLCPlot": "Edit OHLC fields and styles while preserving typed row identity.",
+    "createWaterfallPlot": "Create ordered contribution bars, subtotals and totals with explicit source roles.",
+    "editWaterfallPlot": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -2221,6 +2228,15 @@
     "editOHLCPlot": {
       "target": "ohlc",
       "doji": "none"
+    },
+    "createWaterfallPlot": {
+      "x": "stage",
+      "role": "role",
+      "value": "amount"
+    },
+    "editWaterfallPlot": {
+      "target": "waterfall",
+      "connectors": false
     }
   },
   "callPatternOverrides": {

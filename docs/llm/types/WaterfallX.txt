@@ -1,0 +1,1 @@
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };

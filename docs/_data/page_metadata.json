@@ -1176,5 +1176,19 @@
     "editSource": "examples/ohlc/program.js",
     "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
     "image": "/assets/images/ohlc.png"
+  },
+  "/api/waterfall/": {
+    "title": "Waterfall Plots",
+    "source": "docs/api/waterfall.md",
+    "editSource": "docs/api/waterfall.md",
+    "description": "Show ordered contributions, subtotals and totals as one bar per source row. Connectors show the running balance between stages.",
+    "image": "/assets/images/waterfall.png"
+  },
+  "/tutorials/waterfall/": {
+    "title": "Show Contributions and Totals",
+    "source": "docs/tutorials/waterfall.md",
+    "editSource": "examples/waterfall/program.js",
+    "description": "Declare each row's role so its effect on the running balance is explicit.",
+    "image": "/assets/images/waterfall.png"
   }
 }

@@ -1,3 +1,4 @@
+import { directProgramTrace } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -22,7 +23,7 @@ function edgeFactors(recipe, index) {
 }
 
 function directTraceOperations(program, operations = new Set()) {
-  for (const child of program.trace.children ?? []) operations.add(child.op);
+  for (const child of directProgramTrace(program)) operations.add(child.op);
   return operations;
 }
 
@@ -124,9 +125,9 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 346);
+  assert.equal(publicActions.length, 348);
   for (const operation of [
-    "createOHLCPlot", "editOHLCPlot",
+    "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot",
     "bundleGraphEdges", "editEdgeRoute",
     "createGeometryData", "editGeometryData", "createProjection", "editProjection",
     "removeData", "removeScale", "removeCoordinate",
@@ -149,7 +150,7 @@ test("calls every user-facing action directly from a generated scenario root", (
 });
 
 test("retains direct action effects in final semantic and graphic state", () => {
-  const resources = buildLifecycleRecipe("action-direct-data-resources");
+  const resources = buildLifecycleRecipe("action-direct-data-resources").children.resources;
   const preparedSource = semanticResource(resources, "datasets", "unusedPreparedLifecycleSource");
   assert.deepEqual(preparedSource.values, [{ fixture: "prepared-source", value: 1 }]);
   assert.equal(preparedSource.sourceReceipt.sourceId, preparedSource.id);

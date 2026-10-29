@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:11a7638d249e75c63405718d0392b22c77dbb29dbf16d117ba19073cd7574aa7",
+  "contractId": "sha256:7e1a7fcd42c90d3ee7871e592c3e72a3a1aa2c993b88efa641813e3de115bd26",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "7fe7ba35ba3ce4b1242da2534597d426ab3f96182d7489602f59286700383ea0",
-      "bytes": 1160457
+      "sha256": "8f14322de955a94a31ebf9203071c0b93250d4b3238e4a43e10f520e92507aa4",
+      "bytes": 1169730
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "17931555f1f49032b563557ab4c44b41d894ec27f49eb9440a461fa4431c405d",
-      "bytes": 300017
+      "sha256": "d096351c0f1ff35e0a12643a7f06a78d3cc46ef88b2c0a06dd3adec83e858e07",
+      "bytes": 301860
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 175,
+      "count": 177,
       "path": "llm/pages.json",
-      "bytes": 43442,
-      "sha256": "4d412a9a1a332658f0327c1db5423b912e767643d6b05e2b4166c1083fd3f6fc"
+      "bytes": 43916,
+      "sha256": "8b73053a43573d16a386b8134eb1f04172a2053ead87085004c4fc6c8401babc"
     },
     "actions": {
-      "count": 353,
+      "count": 355,
       "path": "llm/actions.json",
-      "bytes": 100546,
-      "sha256": "fe00b185a2d6848edd07b9e6828081db1e3da1302362a9ea9156e65fe44ba5fa"
+      "bytes": 101126,
+      "sha256": "e4c717198c2863ae5a8c5c376ea9ed77cec9d36eebad76926f0345a792638284"
     },
     "types": {
-      "count": 975,
+      "count": 983,
       "path": "llm/types.json",
-      "bytes": 218115,
-      "sha256": "b2932fdf97ff39299848f986aea96778f51bf6a453f23bd34fd2a5f88ad52253"
+      "bytes": 219872,
+      "sha256": "d7e62fa7721043c67c68b1e75e4443ba4579da0317fa4e7aff0828be1ad3481e"
     }
   },
   "paths": {
