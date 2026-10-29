@@ -1,6 +1,4 @@
-import { reviseDataResources } from "./resourceRevision.js";
-import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
-import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
+import { reviseSourceDataResources } from "./resourceRevision.js";
 import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
@@ -20,8 +18,6 @@ import {
   findDataset,
   hasDataset
 } from "../../selectors/datasets.js";
-import { applyLayerDataRematerialization } from
-  "../../materialization/dependencies.js";
 import { withLogicalDataReplacements } from
   "../../materialization/revisionIdentity.js";
 import { derivedIdentityBase } from "../../grammar/rowLineage.js";
@@ -346,7 +342,6 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
   }
 
   next = rebindMaterializationDataReferences(next, plan.replacements);
-  next = reviseDataResources(next, plan.replacements);
   for (const revision of plan.revisions) {
     if (revision.owner !== undefined) {
       next = next._withMaterializationConfig(
@@ -355,10 +350,7 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
       );
     }
   }
-  for (const target of orderConditionalMarkIds(next, consumers.map(consumer => consumer.id))) {
-    next = applyLayerDataRematerialization(next, target);
-  }
-  validateSelectionExpressionTargets(next, consumers.map(consumer => consumer.id));
+  next = reviseSourceDataResources(next, plan.replacements, consumers.map(consumer => consumer.id));
   for (const revision of [...plan.revisions].reverse()) {
     if (retain.has(revision.old)) continue;
     next = next.releaseDerivedData({ id: revision.old });

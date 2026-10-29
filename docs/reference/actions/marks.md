@@ -2122,6 +2122,85 @@ editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?,
 Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](../../api/contours.md#editcontourmark).
 
 
+## `createCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CalendarPlotOptions`](./../types.md#type-calendarplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarPlot({ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? } = {})
+```
+
+Draw a stored calendar layout with explicit day, month and label roles. See [Calendar plots](../../api/calendar.md#createcalendarplot).
+
+
+## `editCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditCalendarPlotOptions`](./../types.md#type-editcalendarplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? })
+```
+
+Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../../api/calendar.md#editcalendarplot).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

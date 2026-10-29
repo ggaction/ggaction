@@ -5,6 +5,13 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },
+  "calendar-materialization": { prefix: "materialization/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored calendar results and all cell, month boundary and label consumers require exact source identity and responsive geometry." },
+  "calendar-selection": { prefix: "materialization/selection/policies/calendar.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar final day items must preserve contributing rows and exclude decorative roles from selection." },
+  "calendar-grammar": { prefix: "grammar/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Civil-day aggregation, leap/DST mapping and month boundaries require independent date and topology evidence." },
+  "grid-boundary": { prefix: "grammar/gridBoundary.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contour and calendar cell unions share one bounded edge cancellation and ring topology owner." },
+  "calendar-day": { prefix: "grammar/calendarDay", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Civil-day domains must preserve strict parsing, explicit zones, DST boundaries and bounded output." },
+  "source-resource-plan": { prefix: "actions/data/resourcePlan.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Source revisions must preflight the complete typed resource closure and materialize a shared consumer union once." },
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },
@@ -97,7 +104,6 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "source-primitive-context": { prefix: "actions/primitives/preparedResourceContext", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared replacement authority must expire on every exit." },
   "complete-grammar": { prefix: "grammar/complete", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Completion must preserve observed rows and explicitly bound calendar expansion, grouping and work." },
   "pivot-actions": { prefix: "actions/data/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot inference, ownership and explicit materialization must remain exercised." },
-  "calendar-day": { prefix: "grammar/calendarDay", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Civil-day domains must preserve strict parsing, explicit zones, DST boundaries and bounded output." },
   "pivot-grammar": { prefix: "grammar/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot grouping, typed columns, numerical policies and work limits must remain exercised." },
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },
   "expression-kernel": { prefix: "grammar/expression", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Closed AST evaluation, explicit types, lazy diagnostics and resource budgets must remain exercised." },

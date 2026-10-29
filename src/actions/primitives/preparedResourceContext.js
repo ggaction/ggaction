@@ -18,6 +18,16 @@ export function preparedResourceResults(args, enteredProgram) {
 // Bind precomputed dependent results only to the exact resource primitive argument.
 // Nested callers restore their prior binding and every exit removes authority.
 export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = []) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false);
+}
+
+// Source revisions may update independent resources rooted in the same exact
+// dataset revision vector. This authority never escapes the primitive call.
+export function withPreparedDataResourceResults(program, args, replacements, operation, dataReplacements) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, true);
+}
+
+function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -28,7 +38,7 @@ export function withPreparedResourceResults(program, args, replacements, operati
     validateInputReference(replacement.previous);
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
-    if (!["data-source", "graph", "layout"].includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
+    if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout"] : ["data-source", "graph", "layout"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");
     }
@@ -45,7 +55,7 @@ export function withPreparedResourceResults(program, args, replacements, operati
     dataIds.add(entry.previous.id);
   }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements) });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
 }
@@ -53,4 +63,9 @@ export function withPreparedResourceResults(program, args, replacements, operati
 export function preparedResourceDataReplacements(args, enteredProgram) {
   preparedResourceResults(args, enteredProgram);
   return prepared.get(args)?.dataReplacements ?? [];
+}
+
+export function preparedResourceDataRooted(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.dataRooted === true;
 }

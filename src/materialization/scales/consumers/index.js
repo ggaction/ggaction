@@ -1,3 +1,4 @@
+import { calendarScaleValues } from "../../calendar/scaleValues.js";
 import { resolveConditionalAreaConsumer, resolveConditionalBarConsumer, resolveConditionalArcConsumer } from "../../conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
@@ -79,6 +80,7 @@ export function resolveConsumerValuesForDataset(program, consumer, dataset) {
 }
 
 export function resolveConsumerValues(program, consumer) {
+  if (consumer.layer.mark.type === "calendar") return calendarScaleValues(program, consumer);
   if (consumer.layer.mark.type === "contour") return contourScaleValues(program, consumer);
   return resolveConsumerValuesForDataset(
     program,

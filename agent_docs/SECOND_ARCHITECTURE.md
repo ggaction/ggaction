@@ -76,6 +76,9 @@ Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록�
 shared scale union과 mark/guide closure를 명시 실행한다. `materialization/contour/plot.js`의
 compound path는 기존 renderer의 유일한 입력이다. 정확한 값과 lifecycle은
 [등고선 계약](contract/current/CONTOURS.md)이 소유한다.
+Calendar의 civil-day cell 계산은 기존 날짜 파싱·시간대·day-domain owner를 재사용한다.
+`grammar/gridBoundary.js`는 Contour와 Calendar month cell union의 공통 directed-edge
+소거·ring 연결·hole 분류를 소유하며 pixel frame이나 프로그램 상태를 읽지 않는다.
 
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
@@ -691,6 +694,10 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 ### `ggaction/inspection`
 
 `src/inspection.js`의 browser-safe read-only entry는 저장된 dataset schema, action의 정적 적용 가능성, 두 프로그램의 resource 변화, materialized graphic의 구조와 가시 후보를 조회한다. 조회는 action을 실행하거나 program, trace, context를 바꾸지 않는다. 계산이나 pixel 확인을 수행하지 않은 검사는 `not_run`, 알 수 없는 extension 의미는 `unverified`, 지원하지 않는 concrete owner는 partial coverage로 반환한다.
+
+### `ggaction/interaction`
+
+Browser-safe controller entry는 materialized scene의 hit geometry와 명시적인 host event binding을 사용한다. Full/Basic authoring을 import하거나 저장 의미를 변경하지 않는다. 정확한 공개 계약은 [Interaction](../docs/api/interaction.md)이 소유한다.
 
 ### `ggaction/scene`
 
@@ -3500,3 +3507,21 @@ persistent-selection.inputs 한 곳에 저장된다. 일반 inline selector의 o
 필요하므로 Full assembly에서 constructor별 private resolver를 한 번 등록한다. Map의 handler는 frozen이고
 검증 중 교체·상속 fallback·외부 plugin API가 없다. Basic parameter entry가 Full mark policy를 import하지 않는다.
 정확한 값·제한·저장 형태와 지원은 [expression selection](contract/current/MARK_SELECTION.md#expression-selection)이 소유한다.
+
+### Calendar and source resource union
+
+`grammar/calendar/`가 명시 civil-date 집계와 grid cell/month boundary를 계산하고
+`materialization/calendar/`가 exact source 검산과 concrete day/label 출력을 소유한다.
+`actions/data/resourcePlan.js`는 Full source revision의 typed resource DAG를 기존 family factories로
+한 번 계산하고 모든 후보를 preflight한다. 기존 private primitive authority에 exact data revision vector를
+결박하여 독립 roots와 dependent layouts를 함께 교체한다. Native와 resource 소비자의 합집합은
+기존 materialization planner가 scale→mark→guide 순서로 한 번 실행한다. Facet projection의 별도
+logical dataset 경로 및 명시 graph edit/recompute의 prepared 계획은 그대로 유지한다. 새 pending
+state·저장 callback·renderer semantic 해석은 없다. Calendar theme는 기존 resource role owner를
+사용하며 정확 API와 defaults는 [CALENDAR](contract/current/CALENDAR.md)가 소유한다.
+
+Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 packed 최대1,319,887bytes다.
+한도는920/1,320,000/6,062,000으로 최소 올림한다. 동일 minified JS의 Node20/22/24 gzip에서
+Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
+interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
+coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.

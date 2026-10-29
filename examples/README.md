@@ -768,6 +768,24 @@ Inspect the same final chart items through Canvas, SVG, or headless CSS points.
 
 Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
 
+### [A leap year, one cell per civil day](./calendar/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Weeks begin on Monday](./calendar-monday/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Omit unobserved days](./calendar-omitted/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

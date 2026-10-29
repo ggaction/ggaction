@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: keeps source imports inside their architectural boundaries
+ok 1 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 181.688375
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 2 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 2.976916
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 3 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 39.09775
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 4 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.097833
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 5 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.185625
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 6 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 60.937792
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 7 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 154.511875
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 8 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 265.041
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 9 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.355375
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 10 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.304333
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 11 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.353459
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 12 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 58.2485
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 13 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 27.627084
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 14 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.493375
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 15 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 6.937958
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 16 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 319.642083
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 17 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.164959
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 18 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 71.895334
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 19 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 45.319875
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 20 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 55.877209
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 21 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.887708
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 22 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.373791
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 23 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 894.393167
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 24 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 12.542167
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 25 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.097458
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 26 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.584834
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 27 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 1.512
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1601.142792

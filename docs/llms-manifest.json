@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:dd4532a717b448f51ee550a6d95530587671458c2d09b5e633b8a67ae7e650b6",
+    "contractId": "sha256:66fa398d1adb91a595936de4022e506b262cd7289b7621e20e6779c2f254d9f6",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 164,
+  "sectionCount": 166,
   "sections": [
     {
       "order": 1,
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6213,
-      "sha256": "395e5cfa1ca2a95bb72fe951eb40a642e96de5821d0fd19f35b30afeedd6507e"
+      "bytes": 6203,
+      "sha256": "ab6d61196297fafcaf9c401b271774ac00ffa3f4df7a0749519c6e9f1428f434"
     },
     {
       "order": 3,
@@ -109,8 +109,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5473,
-      "sha256": "384702a86cacad425d29aeefba6cd1c40f7d1df1d8227d8c9faa51ec0cc4961f"
+      "bytes": 5453,
+      "sha256": "61d8c828b8095cead5d98132b2ebf7e5574df28a1ab9c3d329c69f3157c43589"
     },
     {
       "order": 7,
@@ -125,8 +125,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3562,
-      "sha256": "99980264185ae81228baa1c6b45c1a71e4027e1ede9431ce4ffba7978a3be326"
+      "bytes": 3557,
+      "sha256": "3d4015dc7b0dd2c10898d40951fd93f9d160d1da3612f783be3d813e533c7c94"
     },
     {
       "order": 8,
@@ -140,8 +140,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3449,
-      "sha256": "48066e35c1ef5db3f01a20629c156cf695f6ee26f232b589c6721f6dc6794468"
+      "bytes": 3444,
+      "sha256": "2cc2ff35a9e15e6a16d344d636bdae033fef6636afa0717cd345e3fafb2b37e6"
     },
     {
       "order": 9,
@@ -161,8 +161,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9986,
-      "sha256": "1bff5ce697f3b8bb6b4fdfbffd533fdb3b3057642adcb88e50e4b1dc3aed8704"
+      "bytes": 9981,
+      "sha256": "421ac391f8212375108ad1def869620b26075b54425435fbfa4ba18cc65249cd"
     },
     {
       "order": 10,
@@ -178,8 +178,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4781,
-      "sha256": "90d738e4a5edd13a3da84ec1a66ba0862db57234edd83f7f29fd336115225b3f"
+      "bytes": 4761,
+      "sha256": "9a93738fdbaf2c7d2a2e1b1638ee14d400db3def1ceb5403d867b97b99eaa68d"
     },
     {
       "order": 11,
@@ -193,8 +193,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4380,
-      "sha256": "1a3e825e86eeef6f55ee5e2e43bad9d1d4edf40def819e5aed7e68ba882ad218"
+      "bytes": 4360,
+      "sha256": "2211e8bf2acc5f7ab63ed8da46d7251f2e4680d71858425a277258cbc8825a6e"
     },
     {
       "order": 12,
@@ -209,8 +209,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4153,
-      "sha256": "a40cd04a2e00afc10e9d97c6f364b0883fa0b60351a69adf32bc838343ca8978"
+      "bytes": 4133,
+      "sha256": "ed5a6cecb814ebc5a7e4838fa74ef8914d26e6132653378db4196be45c51609c"
     },
     {
       "order": 13,
@@ -224,8 +224,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4216,
-      "sha256": "de08de7cfaf9454abbd4ddd5f22e9eb0f7e4efbf65a75ceed3c51e9647d6ac7f"
+      "bytes": 4201,
+      "sha256": "e46ddc923883c31aa5e2b4e4d9ca2932ccd0f1dfdc1a3fe06c13fb04593a998b"
     },
     {
       "order": 14,
@@ -239,8 +239,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3527,
-      "sha256": "a81d067c3a3a0d9741a549c6d6cf42b73df424aa3f58783d0753bdd2f01209df"
+      "bytes": 3522,
+      "sha256": "bfe6f0af0c65433750ce6f89aa09f93aeaf7f99833639f35eecade0f7791a640"
     },
     {
       "order": 15,
@@ -256,8 +256,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6267,
-      "sha256": "a6f76e2953c2cd7517065df84674ad86e40ad411bfe5b04b08e14870a3205ca0"
+      "bytes": 6242,
+      "sha256": "b3733589d8cb05de9114cee75a2a48e43b7d2064cb52518fb154ae6757b052f8"
     },
     {
       "order": 16,
@@ -272,8 +272,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4650,
-      "sha256": "806aca5dd7e4511988e319ff571d58b947c28f00c03cf4b8d8e6d9fa7683f67d"
+      "bytes": 4635,
+      "sha256": "e1b3a0d1eaf7452de97e2585f6c66509c4aa67c406a490c15a7672c0ff120b01"
     },
     {
       "order": 17,
@@ -288,8 +288,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3587,
-      "sha256": "b48508c8d8050959cb5407d0ec7b45ccec71545cb12b1f5237d5890149033ffb"
+      "bytes": 3572,
+      "sha256": "45e965766b38c9bfadb623525bcf48523a83513f3eede298f37dfa14a978ef0c"
     },
     {
       "order": 18,
@@ -304,8 +304,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3811,
-      "sha256": "f1ef1d1305085b98348d59c7d15aeed22ba48df9c48fc5c716c576d90728aaad"
+      "bytes": 3796,
+      "sha256": "ca5b9381bf115cd37f5cf877c9f1d8e3cf646bcdb4e0265056efdf4c6af9a510"
     },
     {
       "order": 19,
@@ -321,8 +321,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6372,
-      "sha256": "bc05b846500d4d556ac6d7cd695cfab00385d097399cdbed0ce2a176b81c7199"
+      "bytes": 6357,
+      "sha256": "7b507c533bcbdbfaf2de5696a33ac1b84e248522615c8f91ca621708a864d4b7"
     },
     {
       "order": 20,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3958,
-      "sha256": "4b91acae28eec59a3018c30e58e2353a5c6c75cf79017249ce43b7af1cf6da8e"
+      "bytes": 3953,
+      "sha256": "e8a9b066a0c1f04b32602e7b29d18524e4adbf8434c55ba4e7d94a42af54fa9e"
     },
     {
       "order": 22,
@@ -873,8 +873,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5887,
-      "sha256": "3515fa217ba273e93369c7f35d473346b99ccad3323807901a04e3d7c78e7b06"
+      "bytes": 5882,
+      "sha256": "0d4c05a5571f32bc723063865c90a9de2d12e20a61a8e0dbb682f243ecc2dfb9"
     },
     {
       "order": 55,
@@ -1279,8 +1279,8 @@
         "path-layer-color",
         "shared-color-legends"
       ],
-      "bytes": 8499,
-      "sha256": "8ca13a4453e03f44dd92d7a6915da42cd8dbb1d0803aede7ca22cbcc4156d965"
+      "bytes": 8489,
+      "sha256": "71e71b9b536868bbcd43aee73237cbb0aba4a3d4aeca2e95031c837c65c29366"
     },
     {
       "order": 76,
@@ -1331,8 +1331,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7299,
-      "sha256": "1d551790e4bc5323f1d01c850162e775c898a4d058de97d3ce2a137d696312ba"
+      "bytes": 7294,
+      "sha256": "cde13c1f71ff59c86ab0bb93ce6e667b80970bb996f9b6704fe4fda67822d28b"
     },
     {
       "order": 79,
@@ -1413,8 +1413,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5794,
-      "sha256": "f33a691ad2c6f5d94e5135c9d2622763b42565844ecc7adc0dd5e9358b48de4b"
+      "bytes": 5789,
+      "sha256": "24a8e7eb852a0e198ad24fb2192fbca6623b2025136098b07dde5d8d00d75bbc"
     },
     {
       "order": 84,
@@ -2023,8 +2023,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36315,
-      "sha256": "b6a5040e5788995791c5e73490d8d5ba2ae85f7e10d28c50351dfbba07b45f5b"
+      "bytes": 36623,
+      "sha256": "d968a053ee7040820dc7baeb4a4ce16d8cc55823f26579ecdc06f0b46d27f843"
     },
     {
       "order": 120,
@@ -2159,12 +2159,13 @@
         "createcontourdata",
         "createdensitycontourdata",
         "editcontourdata",
+        "createcalendarlayout",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 248083,
-      "sha256": "cfc07b034a8b15e743a2c06fd6a1aaf8ed9ad4a5e1261665f408ffa8e9ad8258"
+      "bytes": 249734,
+      "sha256": "92ae96a79d7f69d35e35aeb581b28c81d90e65633ee22ad391cdcba2ee449f5b"
     },
     {
       "order": 121,
@@ -2217,10 +2218,12 @@
         "editflowlinks",
         "createcontourmark",
         "editcontourmark",
+        "createcalendarplot",
+        "editcalendarplot",
         "related"
       ],
-      "bytes": 109208,
-      "sha256": "665347819c76d9013f238977e6c3cf01b57a1611024da1722a3964988eef8d26"
+      "bytes": 112801,
+      "sha256": "4925d246536d5bca60ec2b28ae8af488c4f8edb2d3166e57ca50959d7d2da022"
     },
     {
       "order": 122,
@@ -2499,8 +2502,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 47810,
-      "sha256": "87b14d441fcd0ed9338cdeb4d7ac6807329b367e3250d0b2ab48fe60ad04556f"
+      "bytes": 48123,
+      "sha256": "82d3695602919329bf3c0f24e080782bc65cef5f4fdf19f1c17b0d210d388501"
     },
     {
       "order": 128,
@@ -2581,7 +2584,15 @@
         "type-caxisticks",
         "type-ccategoricalguides",
         "type-cpathguides",
+        "type-calendarboundarypaint",
+        "type-calendarcellpaint",
         "type-calendardaydomain",
+        "type-calendardayoptions",
+        "type-calendardefinition",
+        "type-calendarlabelpaint",
+        "type-calendarlabelrole",
+        "type-calendarlayoutpatch",
+        "type-calendarplotoptions",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
         "type-cartesianaxislabelcolormap",
@@ -2649,6 +2660,7 @@
         "type-createaxesoptions",
         "type-createbarplotoptions",
         "type-createbeeswarmplotoptions",
+        "type-createcalendarlayoutoptions",
         "type-createcontourdataoptions",
         "type-createcoordinateoptions",
         "type-createdataoptions",
@@ -2781,6 +2793,7 @@
         "type-editbin2ddataoptions",
         "type-editbindataoptions",
         "type-editboxplotoptions",
+        "type-editcalendarplotoptions",
         "type-editcolorscaleoptions",
         "type-editcompletedataoptions",
         "type-editcompositionlayoutoptions",
@@ -3322,8 +3335,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 450741,
-      "sha256": "142c7436e61c20f24322d78c91f2ea4983a5e7049c05dd37ca97edc10ba39c9b"
+      "bytes": 455533,
+      "sha256": "02fd51319f4acd1b4e5b0cdfb2eb12c99bc338a6afa2006d7b629591c127533d"
     },
     {
       "order": 129,
@@ -3357,8 +3370,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20908,
-      "sha256": "9fb972c3b53d9300c77e192b9a9613bb5870a5e35a154f02ff38d86168b6a37b"
+      "bytes": 20898,
+      "sha256": "ebd93593783aec4de398c39a171d862bfc2c4c166e2336c32ddab6a3f6d6690b"
     },
     {
       "order": 131,
@@ -3441,8 +3454,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 30024,
-      "sha256": "5a5f85fbce59e77053e18992135b817a15e69c50b741f620282f118f8062b681"
+      "bytes": 30004,
+      "sha256": "2719a5c490ffe66d30bd58bba1a215b8c139456c50a6da37da15edd43e0ac3fa"
     },
     {
       "order": 136,
@@ -3488,8 +3501,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2614,
-      "sha256": "e02610ec4fa4f0085f4857f9069bb7714512f1f90eb1b7d426c8e068f495b1f6"
+      "bytes": 2609,
+      "sha256": "0c01dbe3302e8a4d45e86732a0464d2c391f4e1aa9ed21edd815f3f4012e67b5"
     },
     {
       "order": 139,
@@ -3697,8 +3710,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "6331adf1274f4f925a6a6772b6d86c3aad56a4d3c3f81e1170e7d12bf4e43031"
+      "bytes": 2995,
+      "sha256": "1c5aafdbc8658e4a68cfe9bd8e7c1238ddbf598c579aa0c6e234e81eb8952d0e"
     },
     {
       "order": 152,
@@ -3729,8 +3742,8 @@
         "complete-program",
         "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 6673,
-      "sha256": "7ad582ecee0c507d930f4c83eb63b84fa24ddb83854e31da08c8a92edd877b1a"
+      "bytes": 6663,
+      "sha256": "9de82abe9937b68dba72bf08c54f080a698ea01f0dcd47e8df11ec8e3295d0b6"
     },
     {
       "order": 154,
@@ -3743,8 +3756,8 @@
         "draw-the-prepared-text",
         "change-labels-or-fonts"
       ],
-      "bytes": 3387,
-      "sha256": "8f1c20c5eb4d30920a9c2970ea861ef9642d746d52232a15b2b8d71977778ce4"
+      "bytes": 3372,
+      "sha256": "e189287f55a91a32290ad11c45ee16a3bbbdba5326dede5ec2115b6ee21535a6"
     },
     {
       "order": 155,
@@ -3781,8 +3794,8 @@
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 5486,
-      "sha256": "7e1b31c97bd6b99c0b71c899df6818cee9a628d1dd4830a2ed5ecf41dcd3b2d9"
+      "bytes": 5476,
+      "sha256": "8e9216be5ee27e22e53f173504377a6fae37d8b11e4f2179d954966bcf54506a"
     },
     {
       "order": 157,
@@ -3840,8 +3853,8 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 4386,
-      "sha256": "76fa06a675e34251dee69a21afd6f92e37b5a7e1d20f215fe09010480b85a1ca"
+      "bytes": 4381,
+      "sha256": "fd714d6248e1d4a7452377880eda052003dd1f0f26e73ea46705e6849f916bc6"
     },
     {
       "order": 161,
@@ -3871,8 +3884,8 @@
       "headings": [
         "draw-conserved-flows"
       ],
-      "bytes": 3692,
-      "sha256": "805b07952eddc5bb6299b38e5f6419523e6914e4c252eda02b6d55ddffd99079"
+      "bytes": 3687,
+      "sha256": "93f90ac565823e234003f538ea20b23bb8821835376c3b81fccf98c4cf85be6b"
     },
     {
       "order": 163,
@@ -3898,8 +3911,34 @@
       "headings": [
         "draw-levels-bands-and-density"
       ],
-      "bytes": 2908,
-      "sha256": "688297f5bebeca02311f4ce7284ddf766b0d3a8ce86a9673c34bd8fe819ef2e3"
+      "bytes": 2903,
+      "sha256": "a087c63fac08fc6925965393030eef227c6e8c30efd11a3c7f1e7a800263f3ea"
+    },
+    {
+      "order": 165,
+      "title": "Calendar Plots",
+      "route": "/api/calendar/",
+      "source": "api/calendar.md",
+      "headings": [
+        "calendar-plots",
+        "createcalendarlayout",
+        "createcalendarplot",
+        "editcalendarplot",
+        "update-the-calendar-data-and-layout"
+      ],
+      "bytes": 6758,
+      "sha256": "5394529c61cb226787b7723aa56d3e2d17082957b8f7812c0daf1c6065a53078"
+    },
+    {
+      "order": 166,
+      "title": "Place Observations on a Calendar",
+      "route": "/tutorials/calendar/",
+      "source": "tutorials/calendar.md",
+      "headings": [
+        "place-observations-on-a-calendar"
+      ],
+      "bytes": 2874,
+      "sha256": "8d326044d6d56bd31cc81d8c6201f5eea9d7d16adc7e67da00d169417828baa0"
     }
   ]
 }

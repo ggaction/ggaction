@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: renders contours/line
+ok 1 - renders contours/line
+  ---
+  duration_ms: 327.825792
+  type: 'test'
+  ...
+# Subtest: renders contour-bands/filled
+ok 2 - renders contour-bands/filled
+  ---
+  duration_ms: 577.920625
+  type: 'test'
+  ...
+# Subtest: renders contour-holes/holes
+ok 3 - renders contour-holes/holes
+  ---
+  duration_ms: 497.048584
+  type: 'test'
+  ...
+# Subtest: renders contour-histogram/histogram
+ok 4 - renders contour-histogram/histogram
+  ---
+  duration_ms: 555.228167
+  type: 'test'
+  ...
+# Subtest: renders contour-density/kde
+ok 5 - renders contour-density/kde
+  ---
+  duration_ms: 550.676375
+  type: 'test'
+  ...
+# Subtest: contour line preserves primitive Canvas calls, SVG and exact PDF pixels
+ok 6 - contour line preserves primitive Canvas calls, SVG and exact PDF pixels
+  ---
+  duration_ms: 141.843209
+  type: 'test'
+  ...
+# Subtest: contour filled preserves primitive Canvas calls, SVG and exact PDF pixels
+ok 7 - contour filled preserves primitive Canvas calls, SVG and exact PDF pixels
+  ---
+  duration_ms: 86.21525
+  type: 'test'
+  ...
+# Subtest: contour holes preserves primitive Canvas calls, SVG and exact PDF pixels
+ok 8 - contour holes preserves primitive Canvas calls, SVG and exact PDF pixels
+  ---
+  duration_ms: 75.574583
+  type: 'test'
+  ...
+# Subtest: contour histogram preserves primitive Canvas calls, SVG and exact PDF pixels
+ok 9 - contour histogram preserves primitive Canvas calls, SVG and exact PDF pixels
+  ---
+  duration_ms: 90.575709
+  type: 'test'
+  ...
+# Subtest: contour kde preserves primitive Canvas calls, SVG and exact PDF pixels
+ok 10 - contour kde preserves primitive Canvas calls, SVG and exact PDF pixels
+  ---
+  duration_ms: 78.97425
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2964.125334

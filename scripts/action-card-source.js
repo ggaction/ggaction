@@ -186,6 +186,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (action.name === "createCalendarLayout") return { prerequisites: ["materialized civil-day observations"], owns: ["calendar layout resource"], idOptions: ["id", "data"] };
+  if (["createCalendarPlot", "editCalendarPlot"].includes(action.name)) return {
+    prerequisites: ["stored calendar layout", "Canvas"], owns: ["calendar mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
+  };
   if (["createContourData", "createDensityContourData", "editContourData"].includes(action.name)) return {
     prerequisites: action.name === "createDensityContourData" ? ["materialized point dataset"] : action.name === "editContourData" ? ["stored contour geometry"] : ["explicit scalar grid"],
     owns: ["geometry resource"], idOptions: (action.name.startsWith("create") ? ["id", "data"] : ["target", "data"]).filter(name => optionNames.includes(name))

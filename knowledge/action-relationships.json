@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 340,
+  "actionCount": 343,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2306,6 +2306,27 @@
     },
     {
       "name": "editContourMark",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "createCalendarLayout",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createCalendarPlot",
+      "wraps": [
+        "editSemantic",
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editCalendarPlot",
       "wraps": [
         "editSemantic",
         "createScale"

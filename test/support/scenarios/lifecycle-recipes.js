@@ -1275,6 +1275,7 @@ function buildDirectDataResources(factors) {
   );
   const rows = sourceRows.map(row => ({
     ...row,
+    calendarDate: "2024-02-29",
     endpointStart: row.positive - 1,
     intervalLower: row.x - intervalHalfSpan,
     intervalCenter: row.x,
@@ -1324,6 +1325,9 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createCalendarLayout({ id: "directCalendarLayout", data: "directSource", date: "calendarDate", value: "positive", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
+    .createCalendarPlot({ id: "directCalendar", layout: "directCalendarLayout", color: false, labels: false, cells: { opacity: .2 } })
+    .editCalendarPlot({ target: "directCalendar", cells: { gap: .1 }, monthBoundary: false })
     .createContourData({ id: "directContourGrid", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2,
       values: rows.slice(0, 4).map(row => row.positive) }, thresholds: [0, Math.max(...rows.map(row => row.positive)) + 1] })
     .createDensityContourData({ id: "directContourDensity", data: "directSource", x: "x", y: "positive", estimator: "kde", normalization: "unit",

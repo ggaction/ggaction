@@ -338,5 +338,8 @@
   "createDensityContourData": "/reference/actions/charts-data/#createdensitycontourdata",
   "editContourData": "/reference/actions/charts-data/#editcontourdata",
   "createContourMark": "/reference/actions/marks/#createcontourmark",
-  "editContourMark": "/reference/actions/marks/#editcontourmark"
+  "editContourMark": "/reference/actions/marks/#editcontourmark",
+  "createCalendarLayout": "/reference/actions/charts-data/#createcalendarlayout",
+  "createCalendarPlot": "/reference/actions/marks/#createcalendarplot",
+  "editCalendarPlot": "/reference/actions/marks/#editcalendarplot"
 }

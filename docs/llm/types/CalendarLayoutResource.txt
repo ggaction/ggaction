@@ -1,0 +1,7 @@
+export interface CalendarLayoutResource {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: "calendar"; readonly fields: { readonly date: string; readonly value?: string };
+    readonly options: CalendarDayOptions & { readonly aggregate: "count" | "sum" | "mean" | "median" | "min" | "max" } };
+  readonly result: CalendarLayoutResult; readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}

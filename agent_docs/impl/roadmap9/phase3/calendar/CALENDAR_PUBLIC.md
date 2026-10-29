@@ -88,3 +88,11 @@ Basic의 shared rowLineage→complete import 경로가 calendar owner를 포함�
 
 후속 비시각 수치·소비자 감사 결과는 [STATISTICS_AUDIT](../statistics/STATISTICS_AUDIT.md)에 기록했다.
 Main 통합·최종 qualification과 calendar 전용 시각화는 계속 남은 의무다.
+
+## 공통 source revision의 최종 후보 계획 수리
+
+Calendar와 Contour가 한 color scale을 공유할 때 기존 순차 family 갱신은 각 mark를 두 번 materialize했다. `AUTHORIZATION.json`의 남은 범위 전체 승인과 부모의 2026-10-29 공통 closure 수리 위임을 재사용한다.
+
+Full 전용 source-resource owner는 데이터 치환 map과 typed resource DAG를 한 번 순회하여 hierarchy, graph/flow/inference, contour, calendar 및 dependent layout의 결과를 기존 factory로 계산한다. 최종 resource와 typed layer refs, partition focus를 합친 preview에서 모든 소비자를 검증한다. 기존 exact-receiver/args prepared resource authority에 닫힌 data-rooted revision proof를 추가하고, 명시 old/new dataset refs와 전체 affected resource revision vector를 검증한 뒤 한 semantic primitive에서 반영한다. 전역 pending 상태나 저장 callback은 추가하지 않는다. Native 데이터 소비자와 resource 소비자의 mark ID 합집합을 기존 materialization planner에 넘겨 scales→marks→guides를 한 번 실행한다. GraphSubset/recompute와 명시 graph edit의 기존 prepared 경로, partition focus 복원/selection prune, Basic의 Full resource 비포함 경계를 유지한다.
+
+검증은 공유 Calendar/Contour/native scale, graph recompute와 동시에 갱신되는 source, candidate graph diamond, hierarchy/partition, 실패 입력의 이전 semantic/graphic/trace 불변, stale/forged/incomplete private proof를 포함한다.

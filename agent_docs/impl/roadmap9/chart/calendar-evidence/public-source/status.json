@@ -1,0 +1,29 @@
+{
+  "state": "source-checkpoint-final-qualification-pending",
+  "base": "5e7f612a6",
+  "focused": {
+    "kernelAndPublic": 28,
+    "types": 1,
+    "primitive": 3,
+    "nodeRender": 6,
+    "browserDPRPairs": 3,
+    "realistic": 16,
+    "sourceConsumerSmoke": 2
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 98.16,
+    "functions": 100,
+    "criticalFloorsUnchanged": true
+  },
+  "knownIssue": "Cross-family Calendar/Contour shared color causes duplicate materialization during source revision; parent authorized deferred final plan repair after main merge.",
+  "pending": [
+    "latest main integration",
+    "shared resource revision final union",
+    "theme roles",
+    "final installed Node20/22/24 and size measurement",
+    "canonical coverage",
+    "documentation build/browser",
+    "realistic shared inventories and recipe checks"
+  ]
+}

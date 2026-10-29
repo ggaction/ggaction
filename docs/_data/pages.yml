@@ -527,3 +527,10 @@
 - title: Draw Levels, Bands and Density
   url: /tutorials/contours/
   parent: /tutorials/
+
+- title: Calendar Plots
+  url: /api/calendar/
+  parent: /api/
+- title: Place Observations on a Calendar
+  url: /tutorials/calendar/
+  parent: /tutorials/

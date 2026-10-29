@@ -1,3 +1,4 @@
+import { editCalendarLayout } from "../calendar/resources.js";
 import { closedAction } from "../../core/action.js";
 import { resolveLayoutResource } from "../../selectors/layouts.js";
 import { editHierarchyLayout } from "../hierarchy/resources.js";
@@ -8,6 +9,7 @@ export const editLayout = /* @__PURE__ */ closedAction(
     const previous = resolveLayoutResource(this, args.target);
     if (Object.keys(args).every(key => key === "target")) throw new TypeError("Layout edits require a nonempty patch.");
     if (Object.values(args).some(value => value === undefined)) throw new TypeError("Layout edits cannot contain undefined; omission preserves intent.");
+    if (previous.options.method === "calendar") return editCalendarLayout(this, args, previous);
     return previous.inputs[0].kind === "hierarchy" ? editHierarchyLayout(this, args, previous) : editGraphLayout(this, args, previous);
   });
 

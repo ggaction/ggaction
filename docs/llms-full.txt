@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:dd4532a717b448f51ee550a6d95530587671458c2d09b5e633b8a67ae7e650b6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:66fa398d1adb91a595936de4022e506b262cd7289b7621e20e6779c2f254d9f6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/8e7582ff780415da5e7d7f553073b449fb637689/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-resource-integration/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6099,7 +6099,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10893,7 +10893,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10959,7 +10959,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -11361,7 +11361,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11959,7 +11959,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -18383,6 +18383,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) | H2 | user-facing | core |
 | [`createBinData`](./reference/actions/statistics/#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | H0, H1 | user-facing | statistics |
+| [`createCalendarLayout`](./reference/actions/charts-data/#createcalendarlayout) | H2 | user-facing | core |
+| [`createCalendarPlot`](./reference/actions/marks/#createcalendarplot) | H2 | user-facing | marks |
 | [`createCanvas`](./reference/actions/charts-data/#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](./reference/actions/statistics/#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./reference/actions/statistics/#createcomputeddata) | H1 | user-facing | statistics |
@@ -18505,6 +18507,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](./reference/actions/charts-data/#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./reference/actions/statistics/#editbindata) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | H1, H3 | user-facing | statistics |
+| [`editCalendarPlot`](./reference/actions/marks/#editcalendarplot) | H3 | user-facing | marks |
 | [`editCanvas`](./reference/actions/charts-data/#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](./reference/actions/charts-data/#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](./reference/actions/statistics/#editcompletedata) | H1, H3 | user-facing | statistics |
@@ -22905,7 +22908,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
-| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<GraphFixedOptions> \| ... 4 more ... \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -23515,6 +23518,44 @@ editContourData({ target?, grid?, thresholds?, data?, definition? })
 ```
 
 Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](./api/contours/#editcontourdata).
+
+## `createCalendarLayout`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateCalendarLayoutOptions`](./reference/types/#type-createcalendarlayoutoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `start` | Required | `string` |
+| `end` | Required | `string` |
+| `timeZone` | Required | `string` |
+| `weekStartsOn` | Required | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` |
+| `missing` | Required | `"empty" \| "omit"` |
+| `date` | Required | `string` |
+| `aggregate` | Required | `"count" \| "max" \| "mean" \| "median" \| "min" \| "sum"` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate, missing })
+```
+
+Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](./api/calendar/#createcalendarlayout).
 
 ## Focused core data editing
 
@@ -25529,6 +25570,77 @@ editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?,
 ```
 
 Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](./api/contours/#editcontourmark).
+
+## `createCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CalendarPlotOptions`](./reference/types/#type-calendarplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarPlot({ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? } = {})
+```
+
+Draw a stored calendar layout with explicit day, month and label roles. See [Calendar plots](./api/calendar/#createcalendarplot).
+
+## `editCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditCalendarPlotOptions`](./reference/types/#type-editcalendarplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? })
+```
+
+Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](./api/calendar/#editcalendarplot).
 
 ## Related
 
@@ -32398,6 +32510,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
@@ -33647,6 +33760,9 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+  editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -35023,6 +35139,31 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions) · [`CAxes`](./reference/types/#type-caxes).
 
+### `CalendarBoundaryPaint` {#type-calendarboundarypaint}
+
+ Expand CalendarBoundaryPaint
+
+```typescript
+export interface CalendarBoundaryPaint {
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `CalendarCellPaint` {#type-calendarcellpaint}
+
+ Expand CalendarCellPaint
+
+```typescript
+export interface CalendarCellPaint {
+  readonly fill?: FillPaint; readonly emptyFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly gap?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
 ### `CalendarDayDomain` {#type-calendardaydomain}
 
  Expand CalendarDayDomain
@@ -35037,6 +35178,76 @@ export interface CalendarDayDomain {
   readonly timeZone: string;
 }
 ```
+
+### `CalendarDayOptions` {#type-calendardayoptions}
+
+ Expand CalendarDayOptions
+
+```typescript
+export interface CalendarDayOptions {
+  readonly start: string; readonly end: string; readonly timeZone: string;
+  readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; readonly missing: "empty" | "omit";
+}
+```
+
+### `CalendarDefinition` {#type-calendardefinition}
+
+ Expand CalendarDefinition
+
+```typescript
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });
+```
+
+Related types: [`CalendarDayOptions`](./reference/types/#type-calendardayoptions).
+
+### `CalendarLabelPaint` {#type-calendarlabelpaint}
+
+ Expand CalendarLabelPaint
+
+```typescript
+export interface CalendarLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `CalendarLabelRole` {#type-calendarlabelrole}
+
+ Expand CalendarLabelRole
+
+```typescript
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+```
+
+### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
+
+ Expand CalendarLayoutPatch
+
+```typescript
+export type CalendarLayoutPatch = Partial<CalendarDayOptions> & { readonly date?: string; readonly value?: string;
+  readonly aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" };
+```
+
+Related types: [`CalendarDayOptions`](./reference/types/#type-calendardayoptions).
+
+### `CalendarPlotOptions` {#type-calendarplotoptions}
+
+ Expand CalendarPlotOptions
+
+```typescript
+export interface CalendarPlotOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly cells?: CalendarCellPaint; readonly monthBoundary?: false | CalendarBoundaryPaint;
+  readonly labels?: false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>>;
+}
+```
+
+Related types: [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions) · [`CalendarCellPaint`](./reference/types/#type-calendarcellpaint) · [`CalendarBoundaryPaint`](./reference/types/#type-calendarboundarypaint) · [`CalendarLabelRole`](./reference/types/#type-calendarlabelrole) · [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
 
 ### `CanvasOptions` {#type-canvasoptions}
 
@@ -36093,6 +36304,16 @@ export type CreateBeeswarmPlotOptions = {
 ```
 
 Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`BeeswarmPackingOptions`](./reference/types/#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](./reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel).
+
+### `CreateCalendarLayoutOptions` {#type-createcalendarlayoutoptions}
+
+ Expand CreateCalendarLayoutOptions
+
+```typescript
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };
+```
+
+Related types: [`CalendarDefinition`](./reference/types/#type-calendardefinition).
 
 ### `CreateContourDataOptions` {#type-createcontourdataoptions}
 
@@ -38372,6 +38593,16 @@ export interface EditBoxPlotOptions {
 
 Related types: [`BoxPlotSummaryFields`](./reference/types/#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel) · [`BoxPlotWhisker`](./reference/types/#type-boxplotwhisker) · [`BoxPlotWidth`](./reference/types/#type-boxplotwidth) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape).
 
+### `EditCalendarPlotOptions` {#type-editcalendarplotoptions}
+
+ Expand EditCalendarPlotOptions
+
+```typescript
+export interface EditCalendarPlotOptions extends Omit<CalendarPlotOptions, "id"> { readonly target?: string; }
+```
+
+Related types: [`CalendarPlotOptions`](./reference/types/#type-calendarplotoptions).
+
 ### `EditColorScaleOptions` {#type-editcolorscaleoptions}
 
  Expand EditColorScaleOptions
@@ -38928,10 +39159,10 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
 ```
 
-Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions).
+Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](./reference/types/#type-calendarlayoutpatch).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -46676,9 +46907,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -47861,7 +48092,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -47914,7 +48145,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -48160,7 +48391,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -48212,7 +48443,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/repeat-charts).
 
 ## Space between plots
 
@@ -48887,7 +49118,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -49800,11 +50031,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:dd4532a717b448f51ee550a6d95530587671458c2d09b5e633b8a67ae7e650b6` |
-| Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
+| Contract fingerprint | `sha256:66fa398d1adb91a595936de4022e506b262cd7289b7621e20e6779c2f254d9f6` |
+| Example and dataset source | `codex/roadmap9-resource-integration` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 340 |
+| Declared actions here | 343 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -50308,12 +50539,12 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -50418,13 +50649,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -50435,7 +50666,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -50602,7 +50833,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -51055,7 +51286,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/8e7582ff780415da5e7d7f553073b449fb637689/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-resource-integration/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -51585,7 +51816,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -51861,7 +52092,237 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
+
+<!-- Source: /api/calendar/ -->
+
+# Calendar plots
+
+Aggregate observations by civil day and place each date in a week/weekday cell.
+These chart-authoring actions require the Full `ggaction` entry point. The same
+cells, month boundaries and labels render with Canvas, SVG, PNG and PDF.
+
+The [calendar tutorial](./tutorials/calendar/) uses the shared executable example.
+
+## `createCalendarLayout`
+
+**Chart authoring.**
+
+```typescript
+createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+```
+
+Pass `{ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate,
+missing }`. `date` names the date column. `value` names a finite numeric column;
+it is required for `sum`, `mean`, `median`, `min` and `max`, and forbidden for
+`count`. Duplicate dates contribute to the same daily aggregate. Zero and
+negative observations are valid.
+
+Specify both inclusive `start` and `end` as strict `YYYY-MM-DD` strings, a UTC or
+IANA `timeZone`, and `weekStartsOn` from zero (Sunday) through six (Saturday).
+Dates may be integer epoch milliseconds or strict ISO strings. An ISO offset
+identifies an absolute instant. A string without an offset uses the explicit
+time zone. Ambiguous or nonexistent local times are errors. Invalid, missing
+or out-of-range source dates are rejected; rows never disappear silently.
+
+Choose `missing: "empty"` to create null-valued cells for unobserved civil days,
+or `"omit"` to leave them out. Empty cells differ from an observed zero.
+Calendar days advance in civil time across daylight-saving changes. Each year
+starts a fresh week frame; some leap years need 54 weeks. Dates are ordered
+chronologically, while contributing source rows keep their original order.
+Month boundaries follow the emitted cells, including separate islands and holes.
+
+The default ID is `calendarLayout`. Use another explicit ID for a second layout.
+An omitted `data` reference uses the current or unique eligible materialized
+dataset; ambiguous references are errors. At most 10,000 source observations and
+10,000 civil days are accepted, with a 10,000,000-unit cumulative work limit.
+Creating the layout stores its result without drawing a mark.
+
+## `createCalendarPlot`
+
+**Chart authoring.**
+
+```typescript
+createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+```
+
+Options are `{ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?,
+clip? }`. Create a Canvas first. Layout and Cartesian coordinate references use
+explicit, current, then unique eligible selection. If needed, the `main`
+coordinate is created. The default mark ID is `calendar`.
+
+Years stack vertically. Weeks run left to right and weekdays top to bottom.
+Square cells resize to fit the available frame. A day retains its logical identity
+when data is reordered or the Canvas changes size.
+
+`color` accepts continuous or discretized quantitative color-scale options. It
+defaults to a sequential scale named `<mark>-color`; its automatic domain uses
+observed daily aggregates and excludes null cells. With no observations, specify
+a domain or use `color: false`. Create a legend explicitly with
+`createLegend({ target: "calendar" })`.
+
+Use `color: false` for fixed cell paint. Cell defaults are `fill: "#2563eb"`,
+`emptyFill: "#f1f5f9"`, `stroke: "none"`, `strokeWidth: 0`, `opacity: 1` and
+`gap: 0.08`. The gap is a fraction of cell size, from zero up to but excluding
+one. Both fills accept [FillPaint](./api/appearance/mark-style/#pattern-and-gradient-fills).
+Zero opacity is valid.
+
+`monthBoundary` accepts `false` or a style with defaults `stroke: "#64748b"`,
+`strokeWidth: 1`, `opacity: 1`. `labels` accepts `false` or a record containing
+`month`, `weekday`, `week` and `year`. Each role accepts `false` or a text style.
+All roles are enabled by default, using `fill: "#0f172a"`, `fontFamily:
+"sans-serif"`, `fontSize: 10` and `fontWeight: "normal"`. Label fills also accept
+FillPaint. Explicit font resources use the shared font preparation contract.
+
+Cell, boundary and label styles share `outline` and `shadow`, including `false`
+to reset an effect. See [mark style](./api/appearance/mark-style/) for their values
+and Canvas/SVG shadow preparation. `clip` defaults to true.
+
+One civil day is one selectable item. Its fields include `date`, `instant`,
+`year`, `month`, `day`, `week`, `weekday`, `value` and `empty`. Source row keys
+identify the actual contributing observations; empty cells have no source rows.
+Month and date labels are decorations. Highlighting a day changes its cell body
+without changing those decorations. Accessible data exports one row per day.
+Ordinary row encodings do not replace calendar coordinates.
+
+## `editCalendarPlot`
+
+**Chart authoring.**
+
+```typescript
+editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+```
+
+Use the creation options with `target` instead of `id`. Provide a nonempty patch;
+omitted values remain unchanged and explicit `undefined` is rejected. After
+`labels: false`, supplying one role's style re-enables only that role. Supplying
+a boundary style also re-enables a disabled boundary.
+
+Scale identity is preserved unless a new ID is provided. A new color ID rebinds
+the legend; changing a customized legend family follows the existing explicit
+remove/recreate rules. `color: false` removes that mark's color legend.
+
+## Update the calendar data and layout
+
+Use `editLayout({ target?, options: { ... } })` to patch the date/value columns,
+range, time zone, week start, aggregate or missing-day policy. Its `options`
+record must be nonempty. Ordering is always chronological, so `order` is rejected.
+Switching to `count` removes the previous value-column binding.
+
+Raw, computed, parameter-driven and prepared source revisions update affected
+calendar layouts, shared scales, marks, legends and highlights together. All
+candidates are checked before the new state is materialized. Shared Calendar,
+Contour, graph and ordinary mark consumers refresh once from that final state. A failure preserves
+the original program. Saved programs verify their stored cells and boundaries
+against the exact source and calendar definition.
+
+Use `hconcat` or `vconcat` with explicit layouts for separate panels, and scoped
+targets for child edits. `facet` and `repeatCharts` do not partition calendar
+resources implicitly. Remove a calendar mark with `removeMark` before removing
+its layout with `removeResource({ kind: "layout", id })`.
+
+Themes apply the mark color to fixed-fill cells, the background color to empty
+cells, the muted text color to month boundaries, and text/font tokens to labels.
+Explicit role styles stay authored. Disabling and re-enabling a label or boundary
+resets its style to the active theme; removing the theme restores Calendar defaults.
+
+<!-- Source: /tutorials/calendar/ -->
+
+# Place observations on a calendar
+
+A calendar makes each civil day a stable location. This example uses the 366 days
+of 2024, then leaves every fifth observation absent. Blue cells have observations;
+pale cells have none. Fixed paint makes missing-day placement easy to compare.
+
+The complete Full program names its time zone, date range, aggregate, week start
+and missing-day policy before creating the plot.
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 366 }, (_, index) => ({
+  date: new Date(Date.UTC(2024, 0, index + 1)).toISOString().slice(0, 10),
+  value: index % 10
+})).filter((_, index) => index % 5 !== 0);
+
+const program = chart()
+  .createCanvas({
+    "width": 1080,
+    "height": 360,
+    "margin": {
+      "left": 40,
+      "right": 40,
+      "top": 80,
+      "bottom": 40
+    },
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "observations",
+    "keyField": "date",
+    "values": observations
+  })
+  .createCalendarLayout({
+    "id": "days",
+    "date": "date",
+    "value": "value",
+    "start": "2024-01-01",
+    "end": "2024-12-31",
+    "timeZone": "UTC",
+    "weekStartsOn": 0,
+    "aggregate": "sum",
+    "missing": "empty"
+  })
+  .createCalendarPlot({
+    "id": "calendar",
+    "color": false,
+    "cells": {
+      "fill": "#2563eb",
+      "emptyFill": "#e2e8f0"
+    },
+    "labels": {
+      "week": false
+    },
+    "monthBoundary": {}
+  })
+  .createTitle({
+    "text": "A leap year, one cell per civil day",
+    "subtitle": "2024 contains 366 days. Pale cells have no recorded observation.",
+    "align": "left",
+    "alongOffset": 0,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+```
+
+The layout is a stored resource. Creating it does not draw anything;
+createCalendarPlot materializes its cells, month boundaries and labels.
+Use color options instead of color: false when the daily aggregate should
+control fill, then add a legend explicitly.
+
+Change weekStartsOn to 1 to put Monday in the first row. Dates and values stay
+the same while their calendar positions change.
+
+With missing: "omit", unobserved dates have no cells. Their locations remain
+empty, so later dates never shift into those gaps. This variant hides month
+boundaries to emphasize the missing cells.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/calendar/program.js)
+contains all three variants. Its program is shared by browser examples, renderer
+pairs and generated images. See [Calendar plots](./api/calendar/) for exact
+options, selection, aggregation, edits and source revision behavior.

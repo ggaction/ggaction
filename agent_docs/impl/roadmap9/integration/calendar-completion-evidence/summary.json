@@ -1,0 +1,44 @@
+{
+  "status": "source-qualified-final-docs-and-common-realistic-pending",
+  "base": "e21e40cca",
+  "mergedCalendar": "c966374951afec293106d34bd0f9dd9ed0261976",
+  "focused": {
+    "initialPassed": 354,
+    "initialFailed": 1,
+    "repairedDiscovery": 16,
+    "resourceSelectionUnion": 20
+  },
+  "contracts": {
+    "passed": 41,
+    "failed": 0
+  },
+  "inventory": {
+    "passed": 7,
+    "failed": 0
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/calendar-integration-final/ggaction-0.0.26.tgz",
+    "entryCount": 928,
+    "size": 1329623,
+    "unpackedSize": 6112964,
+    "sha256": "9baa3f18c759074482f4cdb1063707adc17e7ae3ca9bbe9fab039f304f80ac86"
+  },
+  "installed": {
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "themeEach": 90,
+    "resourceSelectionCalendarEach": 14,
+    "types": "passed",
+    "optionalPeers": "passed",
+    "browserEntriesEach": 4
+  },
+  "notClaimed": [
+    "whole source coverage rerun",
+    "full realistic corpus rerun",
+    "STEP057 completion",
+    "Roadmap9 completion"
+  ]
+}

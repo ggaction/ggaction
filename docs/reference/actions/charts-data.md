@@ -4657,7 +4657,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
-| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<GraphFixedOptions> \| ... 4 more ... \| undefined` |
 
 </details>
 
@@ -5337,6 +5337,48 @@ editContourData({ target?, grid?, thresholds?, data?, definition? })
 ```
 
 Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](../../api/contours.md#editcontourdata).
+
+
+## `createCalendarLayout`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateCalendarLayoutOptions`](./../types.md#type-createcalendarlayoutoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `start` | Required | `string` |
+| `end` | Required | `string` |
+| `timeZone` | Required | `string` |
+| `weekStartsOn` | Required | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` |
+| `missing` | Required | `"empty" \| "omit"` |
+| `date` | Required | `string` |
+| `aggregate` | Required | `"count" \| "max" \| "mean" \| "median" \| "min" \| "sum"` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate, missing })
+```
+
+Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../../api/calendar.md#createcalendarlayout).
 
 
 ## Focused core data editing

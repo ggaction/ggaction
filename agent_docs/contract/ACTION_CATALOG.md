@@ -348,6 +348,9 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editContourData`](current/CONTOURS.md#editcontourdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createContourMark`](current/CONTOURS.md#createcontourmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editContourMark`](current/CONTOURS.md#editcontourmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createCalendarLayout`](current/CALENDAR.md#createcalendarlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createCalendarPlot`](current/CALENDAR.md#createcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editCalendarPlot`](current/CALENDAR.md#editcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
