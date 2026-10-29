@@ -1,0 +1,118 @@
+{
+  "status": "source-qualified",
+  "base": "b0682914b",
+  "fontFallbackSource": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
+  "passed": {
+    "sourceBoundariesTypesPackage": 44,
+    "shapePrimitivePublic": 6,
+    "textPrimitivePublic": 3,
+    "fontFallbackAndText": 17,
+    "markAndTextFocused": 30,
+    "textPatternFocusedAfterCorrection": 7,
+    "realisticPinnedDatasetRecipes": 15,
+    "realisticDataMarkInventory": 14,
+    "browserRegistry": 2,
+    "builtDocumentationPages": 154,
+    "selectiveLlmArtifacts": 1310,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "correctedOwningContracts": 7,
+    "boundaryTypesPackage": 34,
+    "shadowCharts": 12,
+    "sourceDocumentation": 172,
+    "criticalModuleFloors": 333,
+    "sourceDocsAfterCssFix": 47,
+    "finalBuiltDocsBrowser": {
+      "pages": 154,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopMobileAxeIncludesVersion": true,
+      "keyboardSearchNoJavaScript": true
+    },
+    "committedProvenanceContracts": 18
+  },
+  "firstUnit": {
+    "passed": 5666,
+    "total": 5667,
+    "failure": "new pattern literal wrongly assumed zero antialiasing at a narrow gap; wider explicit gap preserves exact zero assertion; focused 7/7 passes"
+  },
+  "docsBeforeSource": {
+    "passed": 170,
+    "total": 172,
+    "remaining": [
+      "new example source link requires source commit",
+      "browser snippet harness missing explicit Canvas factory/Blob decoder; corrected focused 2/2 passes"
+    ]
+  },
+  "pending": [],
+  "integrationOwner": "root retains Image/H/Partition/GraphPlot P2 consumer integration",
+  "completeRoadmap": false,
+  "sourceCandidate": "ad9825105b7d47d46c07cc322f3e59f451294ea1",
+  "installation": {
+    "archiveSha256": "d4ebe98b9e799164da277ea6c1a01a885622628a9e5a48df28ff7ac56c00572c",
+    "runtimePerNode": 219,
+    "tutorialsPerNode": 76,
+    "node22Qualification": 7,
+    "node24Qualification": 7,
+    "node20": "219 runtime and 76 tutorials passed; initial full/basic bundle cap failed; unchanged archive three-bundle-only recheck passed after measured cap update"
+  },
+  "budget": {
+    "entries": 815,
+    "packedMax": 1201262,
+    "unpackedMax": 5516118,
+    "bundleGzipMax": {
+      "full": 586754,
+      "basic": 347170,
+      "svg": 20191
+    }
+  },
+  "firstCanonicalCoverage": {
+    "passed": 7460,
+    "total": 7465,
+    "aggregate": {
+      "lines": 96.43,
+      "branches": 94.22,
+      "functions": 98.89
+    },
+    "failureCount": 5,
+    "failures": [
+      "public chart registry testDirectory and complete primitive slice",
+      "documented bundle ceilings",
+      "graphic hierarchy expected descendants",
+      "generic PDF shadow raster expectation",
+      "generic SVG explicit shadow preparation"
+    ],
+    "runtimeSourceUnchanged": true,
+    "criticalFloors": "passed by canonical policy over preserved complete coverage report",
+    "correctedChecks": "owning 7/7, chart 12/12, boundary/type/package 34/34, documentation 172/172; unchanged runtime sources; no second complete run claimed"
+  },
+  "sourceTrees": {
+    "src": "7cbd6107ae50b90701042fb2e80edcdcafe7ab59",
+    "types": "e70dcee1fb2301f259e27c4b46749e7bcb9d191c",
+    "knowledge": "efc5587da2deabd33141fb4e1416013d09f361e1"
+  },
+  "runtimeChangesAfterCoverage": [],
+  "finalMetadataArchive": {
+    "installedArchiveSha256": "d4ebe98b9e799164da277ea6c1a01a885622628a9e5a48df28ff7ac56c00572c",
+    "finalMetadataArchiveSha256": "e43b7d0f98b5648fe2e4a928368bb752861c6a933d2e14c7e7b4e17aafbc3aee",
+    "changedFiles": [
+      "package/README.md"
+    ],
+    "runtimeAndDeclarationsIdentical": true,
+    "finalArchiveBytes": 1198723
+  },
+  "integrationRemaining": [
+    "root combined full normal/coverage after source integration; original full run is not green",
+    "Image/H/Partition/GraphPlot P2 consumer integration",
+    "STEP017 completion and STEP047-049/STEP077 scope"
+  ],
+  "fullSuiteGreen": false,
+  "metadataQualification": "88322383e2816ecb3e8e078d4baad6585dd55fce",
+  "provenanceCloseout": "Regenerated example source references to committed 88322383e, then built 154 pages/1310 LLM artifacts. Runtime/CSS/JS/images unchanged from passing browser run."
+}

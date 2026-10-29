@@ -1,5 +1,5 @@
-export interface FlowResource extends Omit<GraphResource, "options" | "result"> {
-  readonly options: GraphResource["options"] & { readonly flow: { readonly balance: "allow" | "strict" } };
+export interface FlowResource extends Omit<ObservedGraphResource, "options" | "result"> {
+  readonly options: ObservedGraphResource["options"] & { readonly flow: { readonly balance: "allow" | "strict" } };
   readonly result: { readonly model: GraphModel; readonly diagnostics: { readonly flow: { readonly nodes: readonly FlowNodeTotals[] } } };
 }
 /** Layout dimensions are independent of Canvas size; marks fit the stored bounds uniformly. */

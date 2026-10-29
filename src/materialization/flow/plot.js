@@ -1,3 +1,5 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
+import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { graphFieldValue, graphSourceKey } from "../../grammar/graph/fields.js";
@@ -52,13 +54,13 @@ export function resolveFlowPlot(program, layer, config) {
       const text = labelText.get(record.key) ?? (content === "key" ? String(nodeKeys.get(record.key)) : content === "value" ? String(value.throughput)
         : String(graphFieldValue(members[0], content.field, true)));
       item.graphicIndices.push(graphics.length); item.graphicRoles.push("label");
-      graphics.push({ type: "text", properties: { ...point(value.x + value.width / 2, value.y + value.height / 2),
+      graphics.push({ type: "text", properties: bindTextFontProperties(program, { ...point(value.x + value.width / 2, value.y + value.height / 2),
         x: point(value.x + value.width / 2, value.y).x + offset[0], y: point(value.x, value.y + value.height / 2).y + offset[1], text,
-        ...labelStyle, ...labelOverrides.get(record.key), textAlign: "center", textBaseline: "middle" }, identity: { key, topology, role: "label", lineage } });
+        ...labelStyle, ...labelOverrides.get(record.key), textAlign: "center", textBaseline: "middle" }), identity: { key, topology, role: "label", lineage } });
     }
   });
   validateGeneratedItemLimit(graphics.length, "Flow plot graphic count");
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   const known = new Set(records.map(record => record.key)), targets = new Set([...overrides.keys(), ...labelOverrides.keys(), ...labelText.keys()]);
   return { graphics: concrete, items, frame, graph, layout, dataset,

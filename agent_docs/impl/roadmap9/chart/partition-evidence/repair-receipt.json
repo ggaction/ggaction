@@ -1,0 +1,64 @@
+{
+  "label": "suite-all",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/charts/partition-layouts/primitive.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/contracts/action-hierarchy-discovery.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/contracts/chart-variant-structure.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/contracts/chart-vertical-slices.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/contracts/test-discovery.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/unit/core/vocabulary.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/unit/renderers/structured-fill-contours.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/test/unit/support/test-sharding.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 15981,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T21:37:51.494Z",
+  "finishedAt": "2026-10-28T21:38:07.476Z",
+  "source": {
+    "available": true,
+    "commit": "a0b20aef792f3d5dff6ba120523f191db2050b55",
+    "clean": false,
+    "statusSha256": "b31c4abe372217b8ee85a415eed920fba7a75f06b7f0f7c996e8ce05e01da992"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "a0b20aef792f3d5dff6ba120523f191db2050b55",
+    "clean": false,
+    "statusSha256": "b31c4abe372217b8ee85a415eed920fba7a75f06b7f0f7c996e8ce05e01da992"
+  },
+  "logSha256": "1e5f1d03ee1e78d8fac824184e4e36624e1ca3553743bf5d55c9da9e6d9bc122",
+  "discovery": {
+    "suite": "all",
+    "selectors": [
+      "test/contracts/action-hierarchy-discovery.test.js",
+      "test/contracts/chart-variant-structure.test.js",
+      "test/contracts/chart-vertical-slices.test.js",
+      "test/contracts/test-discovery.test.js",
+      "test/unit/core/vocabulary.test.js",
+      "test/unit/support/test-sharding.test.js",
+      "test/charts/partition-layouts/primitive.test.js",
+      "test/unit/renderers/structured-fill-contours.test.js"
+    ],
+    "files": [
+      "test/charts/partition-layouts/primitive.test.js",
+      "test/contracts/action-hierarchy-discovery.test.js",
+      "test/contracts/chart-variant-structure.test.js",
+      "test/contracts/chart-vertical-slices.test.js",
+      "test/contracts/test-discovery.test.js",
+      "test/unit/core/vocabulary.test.js",
+      "test/unit/renderers/structured-fill-contours.test.js",
+      "test/unit/support/test-sharding.test.js"
+    ]
+  },
+  "bytes": 9234,
+  "retainedBytes": 9234,
+  "truncated": false
+}

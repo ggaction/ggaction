@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+not ok 1 - resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+  ---
+  duration_ms: 1417.05
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/charts/mark-shadows/resource-consumers.render.js:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Text metrics require one explicit font binding for the exact family, style and weight.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'FontAssetError'
+  stack: |-
+    assetError (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/assetHost.js:2:17)
+    fontMetricBinding (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/textMetrics.js:18:33)
+    measuredWidth (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/textMetrics.js:26:16)
+    measureTextWidth (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/textMetrics.js:78:20)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/layout/title.js:44:31
+    Array.map (<anonymous>)
+    buildTitleReadingBlock (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/layout/title.js:44:19)
+    resolveTitleLayout (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/titles/resolve.js:228:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/titles/actions.js:81:20)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/materialization/guides/layout.js:86:71
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2080.924

@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: tree role effects preserve identities, layout and exact removal through restore
+ok 1 - tree role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 54.050125
+  type: 'test'
+  ...
+# Subtest: treemap role effects preserve identities, layout and exact removal through restore
+ok 2 - treemap role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 28.603042
+  type: 'test'
+  ...
+# Subtest: icicle role effects preserve identities, layout and exact removal through restore
+ok 3 - icicle role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 38.324833
+  type: 'test'
+  ...
+# Subtest: sunburst role effects preserve identities, layout and exact removal through restore
+ok 4 - sunburst role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 43.0685
+  type: 'test'
+  ...
+# Subtest: graph role effects preserve identities, layout and exact removal through restore
+ok 5 - graph role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 24.133375
+  type: 'test'
+  ...
+# Subtest: flow-node role effects preserve identities, layout and exact removal through restore
+ok 6 - flow-node role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 39.016375
+  type: 'test'
+  ...
+# Subtest: flow-link role effects preserve identities, layout and exact removal through restore
+ok 7 - flow-link role effects preserve identities, layout and exact removal through restore
+  ---
+  duration_ms: 26.49125
+  type: 'test'
+  ...
+# Subtest: per-node false disables inherited effects while links reuse stroke-only shadow semantics
+ok 8 - per-node false disables inherited effects while links reuse stroke-only shadow semantics
+  ---
+  duration_ms: 6.225375
+  type: 'test'
+  ...
+# Subtest: graph role and node override paints keep normalized pattern defaults with effects
+ok 9 - graph role and node override paints keep normalized pattern defaults with effects
+  ---
+  duration_ms: 14.797625
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 766.217791

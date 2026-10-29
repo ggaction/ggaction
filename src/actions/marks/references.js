@@ -36,10 +36,10 @@ const DYNAMIC_OPTIONS = Object.freeze([
   "id", "source", "axis", "population", "field", "groupBy", "statistic", "statistics"
 ]);
 const LINE_STYLE = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
+  "blend", "shadow", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const BAND_STYLE = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
+  "blend", "shadow", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 

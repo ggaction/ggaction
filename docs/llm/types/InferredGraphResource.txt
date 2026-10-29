@@ -1,0 +1,9 @@
+export interface InferredGraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [Extract<InputRef, { readonly kind: "data" }>, ...Extract<InputRef, { readonly kind: "graph" }>[]];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 }; readonly definition: InferredGraphDefinition &
+    Required<Pick<InferredGraphSource, "attributes" | "maxNodes" | "maxEdges">> & { readonly options: Readonly<Record<string, unknown>> } };
+  readonly result: { readonly model: GraphModel<"inferred">; readonly diagnostics: GraphInferenceDiagnostics };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}

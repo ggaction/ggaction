@@ -136,9 +136,10 @@ PNG를 만들고 source identity/selection role은 mark owner가 유지한다. U
 paint 전용 image codec을 만들지 않는다. Browser Canvas의 `prepareImageRendering`은 root의 image 제안과 동일한 경계를 사용한다.
 SVG는 embedded payload, async PNG/PDF는 bytes decode preflight다. Renderer가 네트워크로 glyph를 준비하지 않는다.
 
-Text outline/halo의 vector stroke는 승인된 fixed font probe와 연결한다. **Text shadow는 font glyph mask provider가 아직 미정**이다.
-이를 미지원으로 영구 제외하거나 STEP017을 완료 처리하지 않는다. Root font preparation과 연결할 dependency로 남긴다.
-Glyph geometry를 단순 text bounds rectangle로 대신하지 않는다. Paint sublayer에 chart 전체 raster를 넣지 않는다.
+Text outline/halo의 vector stroke는 승인된 fixed font probe와 연결한다. Text shadow는 exact font resource·metrics와
+준비된 glyph mask owner에 연결됐으며, resource plot 라벨도 같은 경계를 사용한다. [현재 소비자 연결](RESOURCE_EFFECTS.md)이
+구체적인 구현·검증을 기록한다. Glyph geometry를 text bounds rectangle로 대신하지 않고, 효과가 필요한 glyph만 rasterize한다.
+STEP017 전체 완료에는 후행 scene/transition/hit 소비자 통합이 남는다.
 
 ## 소유 파일과 순서
 

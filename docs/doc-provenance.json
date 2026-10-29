@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd",
+  "contractId": "sha256:922cf9de255957581bcdbaf57d970f31ef096bf2b0b27829f9ac000f91705367",
   "sourceCommit": null,
   "sourceRef": "main",
   "exampleSourceRef": "codex/roadmap9-contour",
@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 332,
+  "actionCount": 340,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -122,6 +122,14 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createFontResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "replaceFontResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createImageMark": {
       "introducedAfter": "v0.0.13",
       "status": "development"
@@ -150,7 +158,23 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "editTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createPartitionPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPartitionPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -215,6 +239,14 @@
       "status": "development"
     },
     "createGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createInferredGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editInferredGraphData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

@@ -68,6 +68,9 @@ function refreshAncestors(original, revised) {
 // domains and all changed ancestor snapshots are materialized once from the
 // complete final state. This avoids intermediate mixed-palette/domain failures.
 export function dispatchActionTargets(program, wrappedAction, args) {
+  if (getWrappedActionMetadata(wrappedAction).op === "applyTextMetrics" && Object.hasOwn(args, "prepared")) {
+    throw new TypeError("Prepared text metrics cannot use a scoped target; apply them to their exact receiver.");
+  }
   const targets = normalizeActionTargets(args.target);
   for (const target of targets) {
     const selected = atPath(program, target.childPath);

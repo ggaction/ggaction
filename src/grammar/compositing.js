@@ -3,6 +3,7 @@ import {validateKeys,validateUnitInterval} from "../core/validation.js";
 
 const MODES=new Set(["normal","multiply","screen","difference"]);
 export function isBlendMode(value){return MODES.has(value);}
+export function readBlendMode(value){return value != null && Object.hasOwn(value,"blend") ? value.blend : undefined;}
 function rgba(value,label){
   ownArray(value,label);
   if(value.length!==4)throw new TypeError(`${label} requires four straight RGBA channels.`);
@@ -15,7 +16,7 @@ export function compositeRGBA(source,backdrop,options={}){
   rgba(source,"Composite source");rgba(backdrop,"Composite backdrop");
   ownRecord(options,"Composite options");validateKeys(options,["mode","opacity"],"Composite");
   if(Object.values(options).some(value=>value===undefined))throw new TypeError("Composite options cannot contain explicit undefined.");
-  const{mode="normal",opacity=1}=options;
+  const{mode="normal",opacity=1}={__proto__:null,...options};
   if(!isBlendMode(mode))throw new TypeError("Unsupported composite mode.");
   validateUnitInterval(opacity,"Composite opacity");
   const as=source[3],ab=backdrop[3],alpha=as+ab-as*ab;

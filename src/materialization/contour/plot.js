@@ -6,6 +6,7 @@ import { validateContourBinding } from "../../grammar/contour/plot.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { resolveCoordinateBounds } from "../coordinateBounds.js";
 import { materializeFillItems } from "../fillPaint.js";
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
 
 export function resolveContourPlot(program, layer, config, resolvedScales = program.resolvedScales) {
@@ -50,7 +51,8 @@ export function resolveContourPlot(program, layer, config, resolvedScales = prog
       properties, graphicRoles, members: dataset?.values ?? [], memberKeys: dataset?.rowKeys ?? [] });
   }
   validateGeneratedItemLimit(graphics.length, "Contour graphic count");
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic,
+    properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   return { graphics: concrete, items, frame, resource, dataset };
 }

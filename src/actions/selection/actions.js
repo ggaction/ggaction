@@ -28,6 +28,7 @@ import {
 } from "../../materialization/selection/policies/index.js";
 import {
   normalizeDimOthers,
+  highlightSourceProperties,
   validateUnitInterval
 } from "../../materialization/selection/styles.js";
 import {
@@ -221,7 +222,7 @@ function applyHighlight(program, config, keys) {
 }
 
 function highlightPaintProperty(markType) {
-  return ["line", "rule", "tick"].includes(markType) ? "stroke" : "fill";
+  return ["line", "rule", "tick", "graph"].includes(markType) ? "stroke" : "fill";
 }
 
 function requestedPaintSource(args, markType, style) {
@@ -399,6 +400,7 @@ export const applyPointHighlight = /* @__PURE__ */ closedAction(
 );
 
 function transformRectangularProperties(properties, style, offset = false) {
+  properties = highlightSourceProperties(properties, style);
   if (!offset || style.offset === undefined) {
     return { ...properties, ...style };
   }

@@ -1,0 +1,31 @@
+TAP version 13
+# Subtest: resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+not ok 1 - resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+  ---
+  duration_ms: 1349.509541
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/charts/mark-shadows/resource-consumers.render.js:23:1'
+  failureType: 'testCodeFailure'
+  error: 'Unknown collection item property "id".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateCollectionItem (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/primitives/editGraphics.js:30:36)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/primitives/editGraphics.js:53:44
+    Array.map (<anonymous>)
+    replaceCollectionItems (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/primitives/editGraphics.js:53:23)
+    editItems (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/primitives/editGraphics.js:116:43)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/actions/primitives/editGraphics.js:242:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/action.js:319:27)
+    ChartProgram.wrappedAction [as editGraphics] (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/action.js:283:89)
+    resourceEffectPair (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/support/resource-effect-programs.js:24:26)
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/charts/mark-shadows/resource-consumers.render.js:30:44)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1995.114958

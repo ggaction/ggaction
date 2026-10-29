@@ -7,7 +7,7 @@ function opaqueKey(value) {
   return (hash >>> 0).toString(36);
 }
 
-export function collectTransitionGraphics(graphicSpec, identities) {
+export function collectTransitionGraphics(graphicSpec, identities, { onNode } = {}) {
   const { id: root, object: canvas } = requireSingleOrderedGraphicByType(graphicSpec, "canvas");
   const { width, height } = canvas.properties ?? {};
   if (![width, height].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('Scene requires finite nonnegative Canvas dimensions.');
@@ -23,10 +23,12 @@ export function collectTransitionGraphics(graphicSpec, identities) {
     const identity = identities.get(id);
     const base = identity?.key ?? `graphic:${opaqueKey([id, suffix])}`;
     const count = used.get(base) ?? 0; used.set(base, count + 1);
-    nodes.push({ key: `${base}#${count}`, type: graphic.type,
+    const node = { key: `${base}#${count}`, type: graphic.type,
       topology: identity?.topology ?? "",
       properties: graphic.properties,
-      offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips });
+      offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips };
+    onNode?.(id, node);
+    nodes.push(node);
   };
   const background = (id, object) => {
     const p = object.properties;

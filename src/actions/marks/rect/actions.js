@@ -1,3 +1,7 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
@@ -37,7 +41,8 @@ import { applyItemMissingPolicy, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
-  "clip", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "blend",
+  "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
@@ -59,8 +64,11 @@ const createRectMark = /* @__PURE__ */ action(
   { op: "createRectMark", description: "Create a semantic rectangular cell layer." },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRectMark");
+    validateRequestedMarkBlend(args, "rect");
     requestedMarkClip(args);
     requestedRectStyleDetails(args, "createRectMark");
+    requestedMarkOutline(args);
+    requestedMarkShadow(args);
     const id = resolveMarkId(this, args.id, {
       defaultId: "rect",
       label: "Rect mark id",
@@ -84,6 +92,7 @@ const createRectMark = /* @__PURE__ */ action(
         value: validateItemMissing(args.missing, "Rect missing")
       });
     }
+    next = applyMarkBlend(next, id, args);
     next = applyLayeredMarkInheritance(next, id, inherited)
       .createGraphics({
         id,
@@ -162,6 +171,7 @@ const editRectMark = /* @__PURE__ */ action(
   { op: "editRectMark", description: "Edit rectangular cell appearance." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");
+    validateRequestedMarkBlend(args, "rect");
     requestedMarkClip(args);
     requestedRectStyleDetails(args, "editRectMark");
     if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
@@ -182,12 +192,13 @@ const editRectMark = /* @__PURE__ */ action(
         throw new Error(`editRectMark ${channel} conflicts with a field encoding; use ${channel === "opacity" ? "encodeOpacity" : "encodeStrokeWidth"} with value to replace it.`);
       }
     }
-    const semantic = Object.hasOwn(args, "missing")
+    let semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
           value: validateItemMissing(args.missing, "Rect missing")
         })
       : this;
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const next = semantic._withMarkConfig(
       layer.id,
       {

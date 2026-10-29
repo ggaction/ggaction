@@ -1,0 +1,10 @@
+export interface GraphInferenceDiagnostics {
+  readonly options: Readonly<Record<string, unknown>>;
+  readonly preparation?: { readonly metric: GraphMetric; readonly preprocess: "none" | "standardize" | "minmax";
+    readonly missing: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity";
+    readonly sourceIndices: readonly number[]; readonly omitted: readonly { readonly index: number; readonly feature: number; readonly reason: "missing-value" }[];
+    readonly statistics: readonly { readonly scale: number; readonly center: number; readonly spread: number }[] };
+  readonly sourceIndices?: readonly number[]; readonly omitted?: readonly { readonly index: number; readonly reason: "missing-group" | "missing-order" }[];
+  readonly search?: Readonly<Record<string, unknown>>; readonly effectiveK?: number; readonly pairCount?: number;
+  readonly cost?: number; readonly components?: number; readonly componentNodes?: readonly (readonly number[])[]; readonly candidateCount?: number;
+}

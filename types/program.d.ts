@@ -15,7 +15,74 @@ export interface TextMetricsProfile {
   readonly id: string;
   readonly measurements: readonly TextMeasurement[];
 }
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };
+export interface FontIdentity {
+  readonly contentHash: string; readonly family: string; readonly style: "normal" | "italic";
+  readonly weight: TextMetricFontWeight; readonly metricsProviderVersion: string;
+}
+export type FontMimeType = "font/ttf" | "font/otf" | "font/woff" | "font/woff2";
+export interface ConcreteFont extends FontIdentity {
+  readonly mimeType: FontMimeType; readonly byteLength: number;
+  readonly payload: { readonly encoding: "base64"; readonly data: string };
+}
+export interface FontRef { readonly kind: "font"; readonly id: string; readonly revision: number; }
+export interface FontMetricsProfile {
+  readonly schemaVersion: 2; readonly id: string;
+  readonly fonts: readonly Readonly<{ resource: FontRef; identity: FontIdentity }>[];
+  readonly measurements: readonly (TextMeasurement & { readonly fontStyle: "normal" | "italic" })[];
+}
+export interface FontResourceSource extends Omit<FontIdentity, "contentHash"> {
+  uri: string; expectedHash: string; mimeType: FontMimeType; maxBytes?: number; license?: string; attribution?: string;
+}
+export type CreateFontResourceRequest = FontResourceSource & { kind: "create"; id: string; target?: never };
+export type ReplaceFontResourceRequest = FontResourceSource & { kind: "replace"; target: string; id?: never };
+export type FontResourceRequest = CreateFontResourceRequest | ReplaceFontResourceRequest;
+export interface FontMeasurementHost {
+  measure(request: Readonly<{ asset: ConcreteFont; queries: readonly Readonly<{ text: string; fontSize: number }>[]; signal?: AbortSignal }>):
+    Readonly<{ contentHash: string; metricsProviderVersion: string; widths: readonly number[] }> |
+    Promise<Readonly<{ contentHash: string; metricsProviderVersion: string; widths: readonly number[] }>>;
+}
+export interface TextMetricsHost extends FontMeasurementHost {
+  requestToken: string; signal?: AbortSignal;
+  decode(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; signal?: AbortSignal }>): FontIdentity | Promise<FontIdentity>;
+}
+export interface FontResourceHost extends Omit<TextMetricsHost, "measure"> {
+  load(request: Readonly<FontResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }> | Promise<Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }>>;
+  /** Required when replacing a font referenced by an exact metric profile. */
+  measure?: FontMeasurementHost["measure"];
+}
+declare const preparedFontResourceBrand: unique symbol;
+export interface PreparedFontResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedFontResourceBrand]: Kind; readonly kind: "font-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
+}
+export interface TextMetricsRequest { id: string; fonts: readonly string[]; }
+export interface FontResource {
+  readonly kind: "font"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<FontResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteFont, "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}
+declare const preparedFontRenderingBrand: unique symbol;
+export interface PreparedFontRendering {
+  readonly [preparedFontRenderingBrand]: true; readonly kind: "font-rendering"; readonly fontCount: number;
+  /** Invalidates the handle and releases its host registrations. */
+  dispose(): void;
+}
+export interface FontRenderingHost {
+  register(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; sourceFamily: string; signal?: AbortSignal }>):
+    (FontIdentity & { dispose(): void }) | Promise<FontIdentity & { dispose(): void }>;
+  signal?: AbortSignal;
+}
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
@@ -82,7 +149,27 @@ export interface ImageRenderingHost {
     Readonly<{ image: object; width: number; height: number; originClean: true }>;
   signal?: AbortSignal;
 }
-export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }
+declare const preparedShadowRenderingBrand: unique symbol;
+export interface PreparedShadowRendering {
+  readonly [preparedShadowRenderingBrand]: true;
+  readonly kind: "shadow-rendering";
+  readonly glyphCount: number;
+  readonly pixelRatio: number;
+  dispose(): void;
+}
+export interface ShadowRenderingHost {
+  createCanvas(width: number, height: number): {
+    readonly width: number; readonly height: number;
+    getContext(type: "2d"): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
+  };
+  /** Required for Canvas output and image source masks; SVG embeds the prepared bytes directly. */
+  decode?: ImageRenderingHost["decode"];
+  /** Exact font preparation is required for Text shadows. */
+  fonts?: PreparedFontRendering;
+  pixelRatio?: number;
+  signal?: AbortSignal;
+}
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; fonts?: PreparedFontRendering; shadows?: PreparedShadowRendering; }
 export interface ImageResourceSource {
   uri: string; expectedHash: string; mimeType: ImageMimeType; maxBytes?: number; license?: string; attribution?: string;
 }
@@ -119,7 +206,7 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
 export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
@@ -171,6 +258,10 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
+export type BlendMode = "normal" | "multiply" | "screen" | "difference";
+export interface MarkOutline { color: string; width: number; }
+export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }
 export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
@@ -1641,32 +1732,97 @@ export interface EditGraphDataOptions {
   readonly target?: string; readonly nodes?: string; readonly edges?: string;
   readonly definition?: Partial<ObservedGraphDefinition>;
 }
+export type GraphMetric = "euclidean" | "manhattan" | "cosine" | "jaccard" | "great-circle";
+export type GraphFeatures = readonly string[] | { readonly set: string } | { readonly longitude: string; readonly latitude: string };
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+export interface GraphInferenceDiagnostics {
+  readonly options: Readonly<Record<string, unknown>>;
+  readonly preparation?: { readonly metric: GraphMetric; readonly preprocess: "none" | "standardize" | "minmax";
+    readonly missing: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity";
+    readonly sourceIndices: readonly number[]; readonly omitted: readonly { readonly index: number; readonly feature: number; readonly reason: "missing-value" }[];
+    readonly statistics: readonly { readonly scale: number; readonly center: number; readonly spread: number }[] };
+  readonly sourceIndices?: readonly number[]; readonly omitted?: readonly { readonly index: number; readonly reason: "missing-group" | "missing-order" }[];
+  readonly search?: Readonly<Record<string, unknown>>; readonly effectiveK?: number; readonly pairCount?: number;
+  readonly cost?: number; readonly components?: number; readonly componentNodes?: readonly (readonly number[])[]; readonly candidateCount?: number;
+}
 export interface GraphNode {
   readonly key: string;
   readonly sourceRows: readonly number[];
   readonly attributes: Readonly<Record<string, unknown>>;
 }
-export interface GraphEdge {
+export interface GraphEdge<Origin extends "observed" | "inferred" = "observed" | "inferred"> {
   readonly key: string; readonly sourceKey: string; readonly targetKey: string;
   readonly directed: boolean; readonly weight: number;
-  readonly origin: "observed"; readonly ruleId: null; readonly sourceRows: readonly number[];
+  readonly origin: Origin; readonly ruleId: Origin extends "observed" ? null : string; readonly sourceRows: readonly number[];
 }
-export interface GraphModel {
-  readonly nodes: readonly GraphNode[]; readonly edges: readonly GraphEdge[];
+export interface GraphModel<Origin extends "observed" | "inferred" = "observed" | "inferred"> {
+  readonly nodes: readonly GraphNode[]; readonly edges: readonly GraphEdge<Origin>[];
   readonly directed: boolean; readonly selfLoops: boolean;
   readonly adjacency: readonly { readonly key: string; readonly incoming: readonly string[];
     readonly outgoing: readonly string[]; readonly neighbors: readonly string[] }[];
 }
-export interface GraphResource {
+export interface ObservedGraphResource {
   readonly kind: "graph"; readonly id: string; readonly revision: number;
   readonly algorithmVersion: "1"; readonly ownership: { readonly mode: "authored" };
   readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
   readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 | 1 };
     readonly definition: ObservedGraphDefinition & Required<Pick<ObservedGraphDefinition, "attributes" | "directed" | "selfLoops" | "maxNodes" | "maxEdges">> };
-  readonly result: { readonly model: GraphModel; readonly diagnostics: null };
+  readonly result: { readonly model: GraphModel<"observed">; readonly diagnostics: null };
   readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
 }
+export interface InferredGraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [Extract<InputRef, { readonly kind: "data" }>, ...Extract<InputRef, { readonly kind: "graph" }>[]];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 }; readonly definition: InferredGraphDefinition &
+    Required<Pick<InferredGraphSource, "attributes" | "maxNodes" | "maxEdges">> & { readonly options: Readonly<Record<string, unknown>> } };
+  readonly result: { readonly model: GraphModel<"inferred">; readonly diagnostics: GraphInferenceDiagnostics };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+export type GraphResource = ObservedGraphResource | InferredGraphResource;
 export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
@@ -1713,8 +1869,8 @@ export interface FlowNodeTotals {
   readonly key: string; readonly incoming: number; readonly outgoing: number;
   readonly throughput: number; readonly imbalance: number;
 }
-export interface FlowResource extends Omit<GraphResource, "options" | "result"> {
-  readonly options: GraphResource["options"] & { readonly flow: { readonly balance: "allow" | "strict" } };
+export interface FlowResource extends Omit<ObservedGraphResource, "options" | "result"> {
+  readonly options: ObservedGraphResource["options"] & { readonly flow: { readonly balance: "allow" | "strict" } };
   readonly result: { readonly model: GraphModel; readonly diagnostics: { readonly flow: { readonly nodes: readonly FlowNodeTotals[] } } };
 }
 /** Layout dimensions are independent of Canvas size; marks fit the stored bounds uniformly. */
@@ -1747,8 +1903,8 @@ export interface FlowLayoutResource extends Omit<GraphLayoutResource, "options" 
     readonly bounds: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
   };
 }
-export interface FlowBodyPaint { readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
-export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
 export interface FlowLabelsOptions extends FlowLabelPaint {
   readonly content?: "key" | "value" | { readonly field: string }; readonly offset?: readonly [number, number];
   readonly overrides?: readonly (FlowLabelPaint & { readonly key: RowKey; readonly text?: string })[];
@@ -1800,13 +1956,14 @@ export interface ContourResource {
 }
 /** Scales map intrinsic x/y coordinates and level or band-lower values. */
 export interface ContourMarkOptions {
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
   readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
   readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
   readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
 }
 export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1871,16 +2028,16 @@ export type HierarchyLayoutResource = {
   | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
   | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });
 export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
   content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
 }
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
 export interface TreemapPlotOptions {
@@ -1888,6 +2045,22 @@ export interface TreemapPlotOptions {
   cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+export interface PartitionViewState {
+  readonly focusKey: string | null; readonly rootVisible: boolean; readonly prunedSelection: "keep-hidden" | "drop";
+  readonly recovery?: { readonly previousFocusKey: string | null; readonly reason: "ancestor" | "root" | "empty" };
+}
 
 export interface SemanticDataset {
   readonly id: string;
@@ -1949,10 +2122,13 @@ export interface SemanticLayer {
   readonly image?: ImageRef;
   readonly alt?: string;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
+  readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
+  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly graphLabels?: false | { readonly field?: string; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
@@ -2015,7 +2191,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FlowResource | FlowLayoutResource | ContourResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -4916,7 +5092,9 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type TextFormat = ValueFormat;
 
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -4931,6 +5109,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -4999,11 +5178,14 @@ export interface RemoveLabelLayoutOptions {
 }
 
 export interface RectMarkOptions extends RectStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -5315,6 +5497,8 @@ export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions e
   : never;
 
 export interface RuleStyleOptions extends StrokeStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;
@@ -6026,7 +6210,7 @@ export class ChartProgram {
   createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
   editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
   fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
-  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
   removeTextMetrics(): ChartProgram;
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
@@ -6055,6 +6239,8 @@ export class ChartProgram {
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+  replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
@@ -6062,7 +6248,11 @@ export class ChartProgram {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
@@ -6079,6 +6269,8 @@ export class ChartProgram {
   createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
   editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -6121,27 +6313,35 @@ export class ChartProgram {
 
   /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }>): ChartProgram;
   editPointMark(options: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
@@ -6152,6 +6352,8 @@ export class ChartProgram {
     opacity?: number;
   }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
@@ -6165,6 +6367,8 @@ export class ChartProgram {
   packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
   createLineMark(options?: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     missing?: "error" | "break";
     id?: string;
@@ -6177,6 +6381,8 @@ export class ChartProgram {
     closed?: boolean;
   }>): ChartProgram;
   editLineMark(options: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     missing?: "error" | "break";
     target?: string;
@@ -6188,31 +6394,39 @@ export class ChartProgram {
     closed?: boolean;
   }>): ChartProgram;
   createBarMark(options?: TargetedOptions<RectStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
     orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }>): ChartProgram;
   editBarMark(options: TargetedOptions<RectStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
-    blend?: "normal" | "multiply" | "screen" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -6220,20 +6434,26 @@ export class ChartProgram {
     missing?: "error" | "break";
   }>): ChartProgram;
   createArcMark(options?: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     id?: string;
     data?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
   }>): ChartProgram;
   editArcMark(options: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     target?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -6261,9 +6481,12 @@ export class ChartProgram {
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
   editAreaMark(options: TargetedOptions<StrokeStyleDetails & {
+    blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

@@ -28,8 +28,9 @@
     "H3"
   ],
   "wraps": [
-    "removeMark",
-    "editSemantic"
+    "removeTextMetrics",
+    "editSemantic",
+    "removeMark"
   ],
   "editableVia": [
     "removeResource"

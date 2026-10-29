@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+  "runtimeTypePackageDelta": [],
+  "allTrackedInputDeltaSinceSourceFreeze": [
+    "agent_docs/SECOND_ARCHITECTURE.md",
+    "docs/actions.json",
+    "docs/assets/images/manifest.json",
+    "docs/llm/actions.json",
+    "docs/llm/actions/removeResource.json",
+    "docs/llm/index.json",
+    "docs/search-index.json",
+    "knowledge/action-cards.json",
+    "test/capabilities.json",
+    "test/contracts/generated-scenario-feature-coverage.test.js"
+  ],
+  "installedArtifactSHA256": "33a8ed88e9392d05aa2ea2b4ac3349fef1bdb2c2b816f409d375827adfd8575b",
+  "artifactRegularFileCount": 803,
+  "artifactPayloadDifferencesFromCurrentTree": [],
+  "tarPayloadProof": "Every regular archive entry equals its current worktree input under the unchanged canonical compactPackageJavaScript / COMPACT_JSON_FILES staging policy."
+}

@@ -757,7 +757,7 @@
     "title": "Fonts and Text Rendering",
     "source": "docs/fonts.md",
     "editSource": "docs/fonts.md",
-    "description": "ggaction stores a CSS style fontFamily string in concrete text graphics and passes it to the selected rendering backend. The default family is sans serif."
+    "description": "Text uses sans serif and deterministic estimated bounds by default. You can also load explicit font bytes through prepareFontResource, retain them with createFontResource, and…"
   },
   "/typescript/": {
     "title": "TypeScript",
@@ -1010,6 +1010,13 @@
     "description": "Prepare image bytes explicitly, then use one image mark to control its fit, alignment, viewport and alternative text.",
     "image": "/assets/images/image-assets.png"
   },
+  "/tutorials/font-assets/": {
+    "title": "Prepared Fonts Tutorial",
+    "source": "docs/tutorials/font-assets.md",
+    "editSource": "examples/font-assets/program.js",
+    "description": "Keep font loading explicit, measure with the loaded bytes, and save the final text layout for offline output.",
+    "image": "/assets/images/font-assets.png"
+  },
   "/api/hierarchy/": {
     "title": "Hierarchy Resources and Plots",
     "source": "docs/api/hierarchy.md",
@@ -1023,6 +1030,34 @@
     "editSource": "examples/tree-layouts/program.js",
     "description": "Build one typed hierarchy and reuse it in tree and treemap layouts.",
     "image": "/assets/images/tree-layouts.png"
+  },
+  "/api/graphs/": {
+    "title": "Graph Plots",
+    "source": "docs/api/graphs.md",
+    "editSource": "docs/api/graphs.md",
+    "description": "Draw and revise nodes, directed edges, parallel edges and self-loops from an explicit graph layout.",
+    "image": "/assets/images/graph-plots.png"
+  },
+  "/tutorials/graphs/": {
+    "title": "Graph Tutorial",
+    "source": "docs/tutorials/graphs.md",
+    "editSource": "examples/graph-plots/program.js",
+    "description": "Keep observed connections separate from the positions used to draw them.",
+    "image": "/assets/images/graph-plots.png"
+  },
+  "/api/partition/": {
+    "title": "Partition Plots",
+    "source": "docs/api/partition.md",
+    "editSource": "docs/api/partition.md",
+    "description": "Draw, focus and revise icicles and sunbursts from one typed hierarchy.",
+    "image": "/assets/images/partition-layouts.png"
+  },
+  "/tutorials/partition/": {
+    "title": "Partition Tutorial",
+    "source": "docs/tutorials/partition.md",
+    "editSource": "examples/partition-layouts/program.js",
+    "description": "Reuse one partition layout as an icicle or sunburst and focus its subtrees.",
+    "image": "/assets/images/partition-layouts.png"
   },
   "/api/flows/": {
     "title": "Flow Data and Sankey Layouts",

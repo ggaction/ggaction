@@ -1,0 +1,4 @@
+export interface PartitionViewState {
+  readonly focusKey: string | null; readonly rootVisible: boolean; readonly prunedSelection: "keep-hidden" | "drop";
+  readonly recovery?: { readonly previousFocusKey: string | null; readonly reason: "ancestor" | "root" | "empty" };
+}

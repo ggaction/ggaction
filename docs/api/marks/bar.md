@@ -131,8 +131,9 @@ backdrop RGB channels, `"screen"` for their complementary product, or `"differen
 for their absolute difference. This changes paint, never data or sizes.
 
 Use `blend: "normal"` to return to ordinary source-over painting. Omission preserves
-the current mode. This refinement belongs to the Full bar editor; creation,
-facade appearance objects, and other mark families do not accept it.
+the current mode. Both Full and Basic bar creation accept the same option; the
+Full editor can change it later. See [per-item blend modes](../appearance/mark-style.md#blending-each-mark-item)
+for the other supported mark families and their facade style objects.
 
 SVG, browser Canvas, PNG, and PDF support the same concrete effect. PDF rasterizes
 only the opted-in bar source; other content remains vector. Isolated sources obey

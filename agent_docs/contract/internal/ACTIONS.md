@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 catalog action 332개와 internal undefined개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 NaN개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 catalog action 340개와 internal 136개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 476개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -25,6 +25,8 @@ domain action을 통해서만 실행한다.
 | `materializeFlowNodes` | stored flow rectangles, node labels, source rows and exact layout binding |
 | `materializeFlowLinks` | stored flow attachments and feedback lanes as closed ribbons |
 | `materializeTreePlot` | stored tree layout, plot style and hierarchy resource revisions |
+| `materializeGraphPlot` | stored graph layout, typed node/edge identity, plot style and exact source revisions |
+| `materializePartitionPlot` | stored partition intervals, focus view, coordinate mapping and styles |
 | `materializeTreemapPlot` | stored treemap layout, plot style and hierarchy resource revisions |
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeCompleteData` | typed key-domain completion data actions |

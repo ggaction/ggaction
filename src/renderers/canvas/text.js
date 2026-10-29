@@ -1,11 +1,23 @@
+import { drawCanvasOutline } from "./outline.js";
 import { applyCanvasFill } from "./fill.js";
 import { applyCanvasTextPattern } from "./textPaint.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
 import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
-import { normalizeRendererFontWeight } from "../text.js";
+import { normalizeRendererFontWeight, rendererFontFamily } from "../text.js";
+import { fontRenderKey } from "../fonts.js";
 
-function drawText(context, child, collectionId, { resolveFontFamily, textPaint } = {}) {
+// Measurement and painting share the same exact font, baseline and alignment.
+export function configureTextContext(context, properties, { resolveFontFamily, fontAliases } = {}) {
+  const alias = properties.font === undefined ? undefined : fontAliases?.get(fontRenderKey(properties.font));
+  if (properties.font !== undefined && alias === undefined) throw new Error("Font-bound text requires its prepared font alias.");
+  const family = alias === undefined ? (resolveFontFamily ?? rendererFontFamily)(properties.fontFamily) : `"${alias}"`;
+  context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${normalizeRendererFontWeight(properties.fontWeight ?? "normal")} ${properties.fontSize}px ${family}`;
+  context.textAlign = properties.textAlign;
+  context.textBaseline = properties.textBaseline;
+}
+
+function drawText(context, child, collectionId, { resolveFontFamily, fontAliases, textPaint } = {}) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
   validateConcreteGraphicProperties("text", properties);
@@ -33,6 +45,7 @@ function drawText(context, child, collectionId, { resolveFontFamily, textPaint }
     graphicId
   );
   const fontWeight = properties.fontWeight ?? "normal";
+
 
   if (fontSize <= 0) {
     throw new Error(`Graphic "${graphicId}" requires a positive fontSize.`);
@@ -76,16 +89,17 @@ function drawText(context, child, collectionId, { resolveFontFamily, textPaint }
 
   try {
     context.globalAlpha = opacity;
-    const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
-    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${resolveFontFamily?.(fontFamily) ?? fontFamily}`;
-    context.textAlign = textAlign;
-    context.textBaseline = textBaseline;
+    configureTextContext(context, properties, { resolveFontFamily, fontAliases });
     context.translate(x, y);
     context.rotate(rotation);
     const bounds = properties.fillBounds;
     const localBounds = bounds && { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y };
     if (fill?.type === "pattern" || fill?.type === "radial-gradient") applyCanvasTextPattern(context, fill, bounds, properties, graphicId, textPaint);
     else applyCanvasFill(context, fill, localBounds, graphicId);
+    drawCanvasOutline(context, properties, () => {
+      if (properties.lines === undefined) context.strokeText(text, 0, 0);
+      else for (const line of properties.lines) context.strokeText(line.text, line.x, line.y);
+    });
     if (properties.lines === undefined) context.fillText(text, 0, 0);
     else for (const line of properties.lines) context.fillText(line.text, line.x, line.y);
   } finally {

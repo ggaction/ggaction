@@ -89,3 +89,20 @@ test("rejects malformed custom theme definitions and token values", () => {
     { name: "TypeError" }
   );
 });
+
+test("rejects executable and hidden theme descriptors before reading them", () => {
+  let reads = 0;
+  const getter = () => { reads += 1; return "red"; };
+  const malformed = [
+    { base: "light", tokens: Object.defineProperty({}, "mark", { enumerable: true, get: getter }) },
+    Object.defineProperty({ tokens: {} }, "base", { enumerable: true, get: getter }),
+    { base: "light", tokens: Object.defineProperty({}, "mark", { value: "red" }) },
+    { base: "light", tokens: { [Symbol("mark")]: "red" } },
+    { base: "light", tokens: Object.create({ mark: "red" }) },
+    Object.assign(Object.create({ base: "light" }), { tokens: {} })
+  ];
+  for (const value of malformed) assert.throws(() => normalizeThemeDefinition(value), TypeError);
+  assert.equal(reads, 0);
+  const tokens = Object.assign(Object.create(null), { mark: "red" });
+  assert.equal(normalizeThemeDefinition({ base: "light", tokens }).tokens.mark, "red");
+});

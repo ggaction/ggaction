@@ -55,9 +55,7 @@ p.createTickMark(stroke).editTickMark(stroke);
 p.editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
 // @ts-expect-error blend is a closed vocabulary
 p.editBarMark({blend:"overlay"});
-// @ts-expect-error blend refines an existing bar, not mark creation
 p.createBarMark({blend:"difference"});
-// @ts-expect-error other families do not expose bar compositing
 p.editPointMark({blend:"difference"});
 // @ts-expect-error Basic has no public bar editor
 basic.editBarMark({blend:"difference"});
@@ -155,8 +153,10 @@ p.createArcMark({ cornerRadius: 2 });
 p.createRuleMark({ cornerRadius: 2 });
 // @ts-expect-error corner radius belongs only to Bar and Rect families
 p.createTickMark({ cornerRadius: 2 });
-// @ts-expect-error Text has no stroke-detail contract
-p.createTextMark({ lineJoin: "round" });
+// Text outline uses the same closed stroke-detail vocabulary.
+p.createTextMark({ outline: { color: "white", width: 3 }, lineJoin: "round" });
+// @ts-expect-error closed line-join vocabulary also applies to Text
+p.createTextMark({ lineJoin: "sharp" });
 // @ts-expect-error Text has no corner-radius contract
 p.editTextMark({ cornerRadius: 2 });
 // @ts-expect-error gradient center is a Rule family, not a Rect family

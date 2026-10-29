@@ -27,8 +27,8 @@ test('normal glyph opacity composites the independent complete fill-stroke sourc
 });
 test('unsupported concrete normal contexts reject before destination paint',()=>{
  const canvas=createCanvas(80,80),ctx=canvas.getContext('2d');ctx.fillStyle='lime';ctx.fillRect(0,0,80,80);const before=ctx.getImageData(0,0,80,80).data;
- for(const glyph of [normalGlyphScene('circle',.7,'red','blue').graphicSpec.objects.glyph,{type:'line',properties:{x1:0,y1:0,x2:20,y2:20,stroke:'blue',strokeWidth:2,blend:'normal'}}]){
-  if(glyph.type==='circle')glyph.properties.blend='difference';
+ for(const glyph of [normalGlyphScene('circle',.7,'red','blue').graphicSpec.objects.glyph,{type:'line',properties:{x1:0,y1:0,x2:20,y2:20,stroke:'blue',strokeWidth:2,blend:'overlay'}}]){
+  if(glyph.type==='circle')glyph.properties.blend='overlay';
   assert.throws(()=>render({graphicSpec:{objects:{canvas:{type:'canvas',properties:{width:80,height:80,background:'white'},children:['glyph']},glyph},order:['canvas']}},ctx));
   assert.deepEqual(ctx.getImageData(0,0,80,80).data,before);
  }

@@ -13,7 +13,7 @@ import { graphFields, graphKeyField, graphSourceRows, graphSourceKey, graphField
 export const OBSERVED_GRAPH_FIELDS = Object.freeze(["nodeKey", "source", "target", "edgeKey", "weight", "attributes", "directed", "selfLoops", "maxNodes", "maxEdges"]);
 export const INFERRED_GRAPH_FIELDS = Object.freeze(["nodeKey", "ruleId", "rule", "features", "metric", "preprocess", "attributes", "options", "maxNodes", "maxEdges"]);
 
-function sourceOptions(input, allowed) {
+export function normalizeGraphSourceOptions(input, allowed) {
   ownRecord(input, "Graph source options");
   rejectUnknownProperties(input, allowed, "graph source");
   if (Object.values(input).some(value => value === undefined)) throw new TypeError("Graph source options cannot be undefined.");
@@ -25,7 +25,7 @@ function sourceOptions(input, allowed) {
 // Dataset revisions supply their persisted row keys. Array offsets are lineage,
 // never observed parallel-edge identities.
 export function resolveObservedGraphInput(nodeRows, edgeRows, input, occurrenceKeys) {
-  const options = sourceOptions(input, OBSERVED_GRAPH_FIELDS);
+  const options = normalizeGraphSourceOptions(input, OBSERVED_GRAPH_FIELDS);
   for (const field of ["source", "target", "edgeKey"]) if (field !== "edgeKey" || Object.hasOwn(options, field)) options[field] = graphKeyField(options[field], `Graph ${field}`);
   if (Object.hasOwn(options, "weight")) options.weight = graphKeyField(options.weight, "Graph weight");
   if (Array.isArray(options.weight)) throw new TypeError("Graph weight requires one field.");
@@ -82,7 +82,7 @@ function candidateInput(keys, candidate) {
 // Pure field adapter: every topology is computed by its rule owner, then lowered
 // once into the common graph model. Resource identity and revision stay outside.
 export function resolveInferredGraphInput(rows, input, candidate) {
-  const options = sourceOptions(input, INFERRED_GRAPH_FIELDS);
+  const options = normalizeGraphSourceOptions(input, INFERRED_GRAPH_FIELDS);
   graphSourceRows(rows, options.maxNodes, "Graph source rows");
   ownRecord(Object.hasOwn(options, "options") ? options.options : {}, "Graph inference options");
   options.options = { ...options.options };

@@ -1,4 +1,5 @@
 export interface ContourMarkOptions {
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
   readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
   readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
   readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;

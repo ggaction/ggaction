@@ -98,7 +98,7 @@ Basic에는 이 actions와 geometry 복원이 없다. renderer는 concrete compo
 
 ## `createContourMark`
 
-- Signature: `createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })`.
+- Signature: `createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })`.
 - 기본 ID는 contour이며 이미 있으면 명시 ID를 요구한다. compatible Cartesian coordinate를
   explicit/current/unique로 선택하고 없으면 main을 생성한다. Canvas가 필요하다.
 - mode 기본 filled다. line은 각 superlevel의 closed boundary를 그리므로 domain/null-mask 경계도
@@ -111,6 +111,8 @@ Basic에는 이 actions와 geometry 복원이 없다. renderer는 concrete compo
 - color:false는 fixed paint다. 기본 fill:#2563eb, stroke:#1f2937, strokeWidth:1, opacity:1,
   clip:true다. filled fill은 FillPaint 전체를 받는다. line은 fill:none을 저장하며 다른 명시 fill은 오류다.
   opacity0은 유효하다. scale color는 filled fill 또는 line stroke에 적용한다.
+  outline/shadow는 기존 mark effects owner의 값과 false reset을 공유하며 각 concrete path에 적용한다.
+  Canvas/SVG shadow는 기존 명시 prepareShadowRendering 경계를 사용한다.
 - axes/grids/legends는 기존 action으로 명시 생성한다. axis는 namespace scale ID를 명시한다.
   일반 row encoding은 허용하지 않으며 editContourMark가 mapping을 소유한다.
 - final item은 nonempty level 또는 band 하나, child role은 island-N이다. identity는 resource ID와
@@ -133,7 +135,7 @@ Basic에는 이 actions와 geometry 복원이 없다. renderer는 concrete compo
 
 ## `editContourMark`
 
-- Signature: `editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })`.
+- Signature: `editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })`.
 - 기존 contour mark를 선택하며 생략 값은 유지한다. 비어 있거나 undefined인 patch는 오류다.
   scale options는 기존 owner로 patch하며 같은 ID의 type 변경은 기존 scale editor를 사용해야 한다.
   새 color ID는 legend를 rebind하고 다른 color family는 기존 legend transition 제약을 적용한다.

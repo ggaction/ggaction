@@ -1,0 +1,4 @@
+export interface FontIdentity {
+  readonly contentHash: string; readonly family: string; readonly style: "normal" | "italic";
+  readonly weight: TextMetricFontWeight; readonly metricsProviderVersion: string;
+}

@@ -1,0 +1,1 @@
+export interface FontRef { readonly kind: "font"; readonly id: string; readonly revision: number; }

@@ -7,7 +7,7 @@ import {
 } from "./shared.js";
 
 const OPTIONS = Object.freeze(["id", "data", "coordinate", "x", "y", "text", "color", "style", "guides"]);
-const STYLE_OPTIONS = Object.freeze(["clip", "missing", ...TEXT_MARK_STYLE_OPTIONS.filter(key => key !== "inheritColor")]);
+const STYLE_OPTIONS = Object.freeze(["blend", "clip", "missing", ...TEXT_MARK_STYLE_OPTIONS.filter(key => key !== "inheritColor")]);
 
 export const createTextPlot = /* @__PURE__ */ action({
   op: "createTextPlot", description: "Create a Cartesian text plot from existing chart data."

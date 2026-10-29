@@ -1,3 +1,4 @@
+import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds, hasPendingAxisTitleRematerialization } from "../../../materialization/guides/resources.js";
@@ -466,6 +467,7 @@ function makeEdit(channel) {
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: id, property, value });
     }
+    next = materializeTextFont(next, id);
     const titleConfig = next.guideConfigs.axis?.[axisId]?.title;
     if (axisTitleFollowsLabels(titleConfig) && next.context.pendingRelativeTitleAxis !== axisId) {
       const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";

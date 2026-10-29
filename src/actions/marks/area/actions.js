@@ -1,3 +1,7 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
@@ -43,7 +47,8 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const AREA_OPTIONS = Object.freeze([
-  "clip", "fill", "opacity", "stroke", "strokeWidth", "curve",
+  "blend",
+  "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
@@ -73,6 +78,7 @@ const createAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createAreaMark");
+    validateRequestedMarkBlend(args, "area");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createAreaMark");
     const id = resolveMarkId(this, args.id, {
@@ -100,6 +106,7 @@ const createAreaMark = /* @__PURE__ */ action(
       .editSemantic({ property: `layer[${id}].mark.type`, value: "area" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
     if (Object.hasOwn(args, "missing")) created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -114,7 +121,9 @@ const createAreaMark = /* @__PURE__ */ action(
         opacity,
         ...(Object.hasOwn(args, "curve") ? { curve } : {}),
         ...(stroke === undefined ? {} : { stroke, strokeWidth }),
-        ...strokeDetails
+        ...strokeDetails,
+        ...requestedMarkOutline(args),
+        ...requestedMarkShadow(args)
       });
     return materializeInheritedMark(created, id);
   }
@@ -244,10 +253,12 @@ const editAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
+    validateRequestedMarkBlend(args, "area");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
     const changes = [
-      "clip", "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
+      "blend",
+      "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", "curve", "missing",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -282,7 +293,7 @@ const editAreaMark = /* @__PURE__ */ action(
 
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     let config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails);
+    Object.assign(config, strokeDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateFillPaint(args.fill, "Area fill");
       if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };
@@ -326,7 +337,7 @@ const editAreaMark = /* @__PURE__ */ action(
     }
 
     validateAreaPaintConfig(config);
-    let next = this._withMarkConfig(layer.id, config);
+    let next = applyMarkBlend(this, layer.id, args)._withMarkConfig(layer.id, config);
     if (Object.hasOwn(args, "missing")) {
       const missing = validateAreaMissing(args.missing);
       if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, layer.data), type))) {

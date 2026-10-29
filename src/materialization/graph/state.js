@@ -1,3 +1,4 @@
+import { inferredGraphResourceHandler } from "./inferredState.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
@@ -60,4 +61,7 @@ function validateBindings(program, resource) {
   if (!same(resource.provenance.sourceRows, provenance)) throw new TypeError("Observed graph row provenance is stale.");
 }
 
-export const graphResourceHandler = Object.freeze({ validateStored, validateBindings });
+export const graphResourceHandler = Object.freeze({
+  validateStored: resource => resource.provenance.origin === "inferred" ? inferredGraphResourceHandler.validateStored(resource) : validateStored(resource),
+  validateBindings: (program, resource) => resource.provenance.origin === "inferred" ? inferredGraphResourceHandler.validateBindings(program, resource) : validateBindings(program, resource)
+});

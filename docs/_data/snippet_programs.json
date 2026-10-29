@@ -432,6 +432,48 @@
     },
     "rendering": "renders-canvas"
   },
+  "tutorials/font-assets.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Run inside the canonical font-assets example directory with program.js, host.js and a canvas element, using the Getting Started module setup.",
+    "canonical": {
+      "file": "examples/font-assets/program.js",
+      "exported": "createFontExample"
+    },
+    "rendering": "renders-canvas",
+    "supportFiles": {
+      "program.js": "examples/font-assets/program.js",
+      "host.js": "examples/font-assets/host.js",
+      "fonts/manifest.js": "examples/font-assets/fonts/manifest.js",
+      "fonts/korean.otf": "examples/font-assets/fonts/korean.otf",
+      "fonts/emoji.ttf": "examples/font-assets/fonts/emoji.ttf",
+      "fonts/KOREAN-OFL.txt": "examples/font-assets/fonts/KOREAN-OFL.txt",
+      "fonts/EMOJI-OFL.txt": "examples/font-assets/fonts/EMOJI-OFL.txt"
+    }
+  },
+  "tutorials/graphs.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/graph-plots/program.js",
+      "exported": "createGraph"
+    },
+    "rendering": "renders-canvas"
+  },
+  "tutorials/partition.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "icicle",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/partition-layouts/program.js",
+      "exported": "createPartition"
+    },
+    "rendering": "renders-canvas"
+  },
   "tutorials/flows.md": {
     "mode": "complete",
     "environment": "node-esm",

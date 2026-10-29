@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 3,
+  "name": "createPartitionPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity.",
+  "signature": "createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;",
+  "intents": [
+    "create partition plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "icicle chart",
+    "sunburst chart"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and partition layout resource"
+    ],
+    "owns": [
+      "icicle chart"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "coordinate",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createCoordinate"
+  ],
+  "editableVia": [
+    "editPartitionPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "innerRadius",
+      "unit": "ratio"
+    }
+  ],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "outerRadius",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and partition layout resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "focus",
+      "required": false,
+      "type": "HierarchyNodeTarget | null | undefined"
+    },
+    {
+      "name": "rootVisible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "prunedSelection",
+      "required": false,
+      "type": "\"drop\" | \"keep-hidden\" | undefined"
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "reverseU",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverseV",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | readonly [number, number] | undefined"
+    },
+    {
+      "name": "innerRadius",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "outerRadius",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "startAngle",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "sweep",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "direction",
+      "required": false,
+      "type": "\"clockwise\" | \"counterclockwise\" | undefined"
+    },
+    {
+      "name": "radiusPolicy",
+      "required": false,
+      "type": "\"equal-depth\" | \"equal-depth-area\" | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | (HierarchyLabelsOptions & { minWidth?: number | undefined; minArcLength?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createPartitionPlot({ id?, coordinate?, target?, layout?, focus?, rootVisible?, prunedSelection?, orientation? })"
+  ],
+  "snippet": "program.createPartitionPlot({ id: \"partition\", layout: \"partition-layout\", labels: {} })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createpartitionplot"
+}

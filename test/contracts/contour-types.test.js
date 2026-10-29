@@ -23,6 +23,7 @@ const density: ContourDensityDefinition = { x: "x", y: "y", weight: "weight", es
 p.createDensityContourData({ id: "density", data: "points", thresholds: [.1, .3], ...density });
 p.createDensityContourData({ id: "bins", x: "x", y: "y", grid, estimator: "histogram", normalization: "count", thresholds: [0, 1] });
 p.editContourData({ definition: { bandwidth: [1, 1] } });
+p.editContourMark({ outline: { color: "white", width: 3 }, shadow: { color: "#1238", blurRadius: 2 } }).editContourMark({ outline: false, shadow: false });
 p.createContourMark({ color: false, fill: { type: "pattern", style: "dots", foreground: "black", background: "white", pitch: 8 } });
 p.removeResource({ kind: "geometry", id: "surface" });
 const resource = p.semanticSpec.resources.find((value): value is ContourResource => value.kind === "geometry");

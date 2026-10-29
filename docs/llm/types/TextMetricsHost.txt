@@ -1,0 +1,4 @@
+export interface TextMetricsHost extends FontMeasurementHost {
+  requestToken: string; signal?: AbortSignal;
+  decode(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; signal?: AbortSignal }>): FontIdentity | Promise<FontIdentity>;
+}

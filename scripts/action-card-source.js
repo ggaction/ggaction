@@ -193,6 +193,11 @@ function actionResources(action, optionNames, intentSource) {
   if (["createContourMark", "editContourMark"].includes(action.name)) return {
     prerequisites: ["stored contour geometry", "Canvas"], owns: ["contour mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "coordinate"]
   };
+  if (action.name === "createInferredGraphData" || action.name === "editInferredGraphData") return {
+    prerequisites: action.name === "createInferredGraphData" ? ["materialized source dataset"] : ["existing inferred graph"],
+    owns: action.name === "createInferredGraphData" ? ["graph resource"] : [],
+    idOptions: action.name === "createInferredGraphData" ? ["id", "data", "candidateGraph"] : ["target", "data", "candidateGraph"]
+  };
   if (["layoutGraph", "layoutFlow"].includes(action.name)) return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
   if (["createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"].includes(action.name)) return {
     prerequisites: ["stored DAG or cyclic flow layout"], owns: ["flow mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
@@ -205,7 +210,7 @@ function actionResources(action, optionNames, intentSource) {
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
-  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action.name);
+  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap|Partition)Plot$/.test(action.name);
   const prerequisites = [];
   if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
     prerequisites.push("materialized linear regression dataset");
@@ -229,7 +234,7 @@ function actionResources(action, optionNames, intentSource) {
     if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
   if (action.domain === "charts") prerequisites.push(hierarchyPlot
-    ? `canvas and ${action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
+    ? `canvas and ${action.name.includes("Partition") ? "partition" : action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
     : "canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
@@ -635,9 +640,11 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 
 export function compactActionCardByteLimit(name) {
   // Full action cards now include the common explicit-target selector and typed wrapper.
+  // Shadow inheritance measures ReferenceBand 3807, MarkLabels 4063,
+  // Annotation 4057 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
-  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3420,
-    createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360);
+  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
+    createAnnotation: 3880, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
 }
 
 export async function buildActionCards() {

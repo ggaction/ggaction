@@ -1,3 +1,4 @@
+import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
@@ -5,15 +6,17 @@ import { validateFillPaint } from "../paint.js";
 import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFinite, validateUnitInterval,
   validatePositiveFinite, validateFontWeight, validateGeneratedItemLimit } from "../../core/validation.js";
 
-const BODY = ["fill", "stroke", "strokeWidth", "opacity"];
-const LABEL = ["fill", "fontFamily", "fontSize", "fontWeight"];
+const BODY = ["fill", "stroke", "strokeWidth", "opacity", ...MARK_EFFECT_PROPERTIES];
+const LABEL = ["fill", "fontFamily", "fontSize", "fontWeight", ...MARK_EFFECT_PROPERTIES];
 const NODE_DEFAULT = { fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] };
 const LINK_DEFAULT = { fill: "#64748b", stroke: "none", strokeWidth: 0, opacity: .45, overrides: [] };
 const LABEL_DEFAULT = { fill: "#0f172a", fontFamily: "sans-serif", fontSize: 12, fontWeight: "normal", offset: [0, 0], overrides: [] };
 
-function paint(input, allowed, label) {
+export const FLOW_PLOT_DEFAULTS = cloneAndFreeze({ nodes: NODE_DEFAULT, links: LINK_DEFAULT, labels: LABEL_DEFAULT });
+
+function paint(input, allowed, label, stored = false) {
   ownRecord(input, label); rejectUnknownProperties(input, allowed, label);
-  const result = { ...input };
+  const result = { ...input, ...normalizeMarkEffects(input, label, stored) };
   for (const [key, value] of Object.entries(input)) {
     if (key === "fill") result.fill = validateFillPaint(value, label);
     else if (key === "stroke" || key === "fontFamily") validateNonEmptyString(value, `${label} ${key}`);
@@ -100,21 +103,21 @@ export function validateFlowPlotDefinition(kind, config, labels) {
       seen.add(value.key);
       const { key: _key, text: label, ...style } = value;
       if (text && typeof label !== "string") throw new TypeError("Stored flow label text requires a string.");
-      paint(style, fields, "Stored flow override");
+      paint(style, fields, "Stored flow override", true);
     }
   };
   record(config, ["clip", "body"], ["labels"], "Stored flow plot");
   if (typeof config.clip !== "boolean") throw new TypeError("Stored flow clip must be boolean.");
-  record(config.body, [...BODY, "overrides"], [], "Stored flow body");
+  record(config.body, [...BODY.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "overrides"], MARK_EFFECT_PROPERTIES, "Stored flow body");
   const { overrides: bodyOverrides, ...style } = config.body;
-  paint(style, BODY, "Stored flow body"); storedOverrides(bodyOverrides, BODY);
+  paint(style, BODY, "Stored flow body", true); storedOverrides(bodyOverrides, BODY);
   if (labels === false) {
     if (Object.hasOwn(config, "labels")) throw new TypeError("Disabled flow labels cannot retain placement.");
   } else {
     if (kind !== "flow-node") throw new TypeError("Only flow nodes support labels.");
     record(labels, ["content", "overrides"], [], "Stored flow label meaning"); content(labels.content); storedOverrides(labels.overrides, [], true);
-    record(config.labels, [...LABEL, "offset", "overrides"], [], "Stored flow label paint");
+    record(config.labels, [...LABEL.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "offset", "overrides"], MARK_EFFECT_PROPERTIES, "Stored flow label paint");
     const { offset: requestedOffset, overrides: labelOverrides, ...labelStyle } = config.labels;
-    offset(requestedOffset); paint(labelStyle, LABEL, "Stored flow labels"); storedOverrides(labelOverrides, LABEL);
+    offset(requestedOffset); paint(labelStyle, LABEL, "Stored flow labels", true); storedOverrides(labelOverrides, LABEL);
   }
 }

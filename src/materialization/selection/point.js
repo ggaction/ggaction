@@ -1,3 +1,4 @@
+import { highlightSourceProperties } from "./styles.js";
 import { createPointShapeGraphic } from "../../grammar/pointShapes.js";
 import { finiteMidpoint } from "../../grammar/numeric.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
@@ -64,6 +65,7 @@ function transformCommand(command, geometry, center, scale) {
 }
 
 export function transformPointHighlightChild(child, style) {
+  child = { ...child, properties: highlightSourceProperties(child.properties, style) };
   const geometry = pointCenterAndArea(child);
   const center = {
     x: geometry.x + style.offset.x,
@@ -80,12 +82,15 @@ export function transformPointHighlightChild(child, style) {
     ...requestedStrokeDetails(child.properties, "Point highlight source")
   };
   if (style.shape !== undefined) {
-    return createPointShapeGraphic({
+    const shaped = createPointShapeGraphic({
       shape: style.shape,
       ...center,
       area,
       ...shared
     });
+    return { ...shaped, properties: { ...shaped.properties,
+      ...(child.properties.outline === undefined ? {} : { outline: child.properties.outline }),
+      ...(child.properties.shadow === undefined ? {} : { shadow: child.properties.shadow }) } };
   }
   const scale = Math.sqrt(style.size);
   if (child.type === "circle") {

@@ -1,5 +1,7 @@
 # Font asset와 측정 identity 준비
 
+> 이 문서의 수치와 준비 상태 설명은 당시 private checkpoint의 역사다. 공개 연결과 전체 AT-04/15 검증은 [PUBLIC.md](PUBLIC.md), [PUBLIC_EVIDENCE.md](PUBLIC_EVIDENCE.md)에서 완료했다.
+
 ## 진행 상태
 
 - [x] STEP-019의 원본 font identity/async cleanup 요구 확인
@@ -7,11 +9,11 @@
 - [x] 같은 font hash/provider만 허용하는 immutable 측정 batch
 - [x] 실제 고정 TTF decoder와 독립 literal advance 검증
 - [x] image 기존 회귀, source/package/discovery 및 문서 검증
-- [ ] public font resource·apply/load completion·stale revision·dependency closure
-- [ ] bundled font의 Canvas/SVG/PNG/PDF 연결과 export preflight
+- [x] public font resource·apply/load completion·stale revision·dependency closure
+- [x] bundled font의 Canvas/SVG/PNG/PDF 연결과 export preflight
 - [x] 결합 문자·한글 자모·emoji grapheme wrapping과 hard break line origins ([검증](GRAPHEME.md))
-- [ ] 한글/emoji/combining/긴 label 및 layout line origins 전체 AT-15
-- [ ] STEP-019 종료와 후속 bundle/qualification
+- [x] 한글/emoji/combining/긴 label 및 layout line origins 전체 AT-15
+- [x] STEP-019 종료와 후속 bundle/qualification
 
 이것은 **private preparation checkpoint**다. [전체 실행 승인](../../AUTHORIZATION.json) 안에서
 공개 action/schema와 독립적인 host preparation을 구현했다. 공개 font 지원 완료가 아니다.

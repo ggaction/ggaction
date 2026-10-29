@@ -1706,6 +1706,38 @@
   actions: createRectMark · editRectMark
   tasks: appearance
   url: /api/appearance/mark-style/
+- id: font-assets
+  example: /examples/font-assets/
+  title: Prepared Korean and emoji fonts
+  image: /assets/images/font-assets.png
+  alt: Wrapped Korean title, a combining accent and joined monochrome emoji
+  width: 880
+  height: 440
+  thumbnail: /assets/images/font-assets-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 320
+  caption: The same pinned font bytes determine measured line layout and every output.
+  summary: Prepare fonts and exact widths, then retain the text for offline rendering.
+  actions: createFontResource · applyTextMetrics · replaceFontResource
+  tasks: fonts text layout
+  url: /tutorials/font-assets/
+  tutorial_order: 171
+
+- id: mark-outlines
+  example: /examples/mark-outlines/
+  title: Outlines and text halos
+  image: /assets/images/mark-outlines.png
+  alt: A blue rectangle with a purple outline on a pale background
+  width: 560
+  height: 400
+  thumbnail: /assets/images/mark-outlines-thumb.png
+  thumbnail_width: 560
+  thumbnail_height: 400
+  caption: The outline is painted before the fill and preserves the original data item.
+  summary: Add pre-fill outlines and text halos to filled marks.
+  actions: createRectMark · createTextMark · editTextMark
+  tasks: appearance
+  url: /api/appearance/mark-style/
 - id: image-assets
   example: /examples/image-assets/
   title: Retained image placement
@@ -1798,6 +1830,113 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout
   url: /tutorials/hierarchy/
+- id: graph-plots
+  example: /examples/graph-plots/
+  title: Directed graph
+  image: /assets/images/graph-plots.png
+  alt: Two labeled nodes linked by a directed edge
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-plots-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+  tutorial_order: 220
+- id: graph-parallel
+  example: /examples/graph-parallel/
+  title: Parallel edges
+  image: /assets/images/graph-parallel.png
+  alt: Two separate directed curves between the same labeled nodes
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-parallel-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+- id: graph-self-loop
+  example: /examples/graph-self-loop/
+  title: Self-loop
+  image: /assets/images/graph-self-loop.png
+  alt: One labeled node with a retained loop
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-self-loop-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+- id: partition-layouts
+  tutorial_order: 250
+  example: /examples/partition-layouts/
+  title: Icicle partition
+  image: /assets/images/partition-layouts.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Normalized hierarchy intervals become rectangular value and depth bands.
+  summary: Normalized hierarchy intervals become rectangular value and depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: partition-sunburst
+  example: /examples/partition-sunburst/
+  title: Sunburst partition
+  image: /assets/images/partition-sunburst.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-sunburst-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: The same hierarchy intervals become angular value and radial depth bands.
+  summary: The same hierarchy intervals become angular value and radial depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: mark-shadows
+  example: /examples/mark-shadows/
+  title: Bounded mark shadows
+  image: /assets/images/mark-shadows.png
+  alt: A red rectangle with a soft blue-gray shadow and an unaffected yellow sibling
+  width: 520
+  height: 400
+  thumbnail: /assets/images/mark-shadows-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 400
+  caption: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  summary: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  actions: createRectMark · editRectMark
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows
+- id: text-shadows
+  example: /examples/text-shadows/
+  title: Exact text shadows
+  image: /assets/images/text-shadows.png
+  alt: Rotated multiline red text with a green outline and a blue glyph-shaped shadow
+  width: 440
+  height: 320
+  thumbnail: /assets/images/text-shadows-thumb.png
+  thumbnail_width: 440
+  thumbnail_height: 320
+  caption: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  summary: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  actions: createTextMark · createFontResource · applyTextMetrics
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows
 - id: flow-layouts
   tutorial_order: 200
   example: /examples/flow-layouts/

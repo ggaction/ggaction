@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: complete-chart discovery reaches semantic and primitive authoring layers
+ok 1 - complete-chart discovery reaches semantic and primitive authoring layers
+  ---
+  duration_ms: 28.921792
+  type: 'test'
+  ...
+# Subtest: discovery separates completion from resource validity
+ok 2 - discovery separates completion from resource validity
+  ---
+  duration_ms: 2.85925
+  type: 'test'
+  ...
+# Subtest: entry-point discovery matches declarations and runtime methods
+ok 3 - entry-point discovery matches declarations and runtime methods
+  ---
+  duration_ms: 2.850375
+  type: 'test'
+  ...
+# Subtest: keeps chart variants under one capability-oriented variants tree
+ok 4 - keeps chart variants under one capability-oriented variants tree
+  ---
+  duration_ms: 7.904583
+  type: 'test'
+  ...
+# Subtest: uses capability names instead of completed gate or phase names
+ok 5 - uses capability names instead of completed gate or phase names
+  ---
+  duration_ms: 6.547542
+  type: 'test'
+  ...
+# Subtest: baseline evidence declares shared production dependencies without claiming independent geometry
+ok 6 - baseline evidence declares shared production dependencies without claiming independent geometry
+  ---
+  duration_ms: 32.594917
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 7 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 54.313541
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 8 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 27.619208
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 9 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.315375
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 10 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 5.908709
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 11 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 274.886458
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 12 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.113875
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 13 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 61.851333
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 14 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 41.113875
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 15 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 50.437667
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 16 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.549833
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 17 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.295125
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 18 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 870.174916
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 19 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 10.676917
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 20 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.102709
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 21 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.954667
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 22 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 1.598625
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1501.436125

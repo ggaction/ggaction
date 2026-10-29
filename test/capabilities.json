@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "capabilities": {
     "accessibility": [
       {
@@ -102,11 +101,27 @@
       },
       {
         "type": "prefix",
-        "path": "gates/blend-paints/"
+        "path": "charts/bar-compositing/variants/native/"
       },
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-blend-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-blends.test.js"
       }
     ],
     "calendar": [
@@ -329,6 +344,56 @@
         "path": "unit/resources/flow-state.test.js"
       }
     ],
+    "font-assets": [
+      {
+        "type": "prefix",
+        "path": "charts/font-assets/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-public-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-layout-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-outline-integration.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/font-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/font-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-payload.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-metrics-profile.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-work-budget.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-labels.test.js"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",
@@ -355,6 +420,46 @@
       {
         "type": "prefix",
         "path": "unit/grammar/graph/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/graph-plots/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-plots.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/materialization/graph/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-observed-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graph-output.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inferred-graph-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "guides": [
@@ -652,7 +757,27 @@
     "outline-paints": [
       {
         "type": "prefix",
-        "path": "gates/outline-paints/"
+        "path": "charts/mark-outlines/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-outline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-outline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-outline-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-outline-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-outlines.test.js"
       }
     ],
     "package": [
@@ -671,6 +796,28 @@
       {
         "type": "file",
         "path": "unit/support/npm-command.test.js"
+      }
+    ],
+    "partition": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-view.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-mapping.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-bend.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/partition-layouts/"
       }
     ],
     "pattern-paints": [
@@ -781,6 +928,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-legend-option-witness.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "rendering": [
@@ -845,12 +996,40 @@
     ],
     "shadow-paints": [
       {
+        "type": "prefix",
+        "path": "charts/mark-shadows/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-shadow.test.js"
+      },
+      {
         "type": "file",
         "path": "unit/grammar/shadow.test.js"
       },
       {
-        "type": "prefix",
-        "path": "gates/shadow-paints/"
+        "type": "file",
+        "path": "unit/grammar/shadow-composite.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/shadow-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/text-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-shadow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-shadows.test.js"
       }
     ],
     "statistical-fixtures": [
@@ -1055,6 +1234,10 @@
     ],
     "structured-paints": [
       {
+        "type": "file",
+        "path": "unit/renderers/structured-fill-contours.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/structured-paints/"
       },
@@ -1105,6 +1288,10 @@
     ],
     "theme": [
       {
+        "type": "file",
+        "path": "unit/actions/theme-resource-plots.test.js"
+      },
+      {
         "type": "prefix",
         "path": "unit/theme/"
       },
@@ -1121,5 +1308,6 @@
         "path": "contracts/theme.test.js"
       }
     ]
-  }
+  },
+  "version": 2
 }

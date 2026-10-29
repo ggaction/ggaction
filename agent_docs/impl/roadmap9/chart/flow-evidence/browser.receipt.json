@@ -1,0 +1,43 @@
+{
+  "label": "suite-browser",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/browser/flow-layouts.browser.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 12135,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T22:58:50.979Z",
+  "finishedAt": "2026-10-28T22:59:03.115Z",
+  "source": {
+    "available": true,
+    "commit": "3a3ec85d834ccc0fb36079b52d0df879e1c20831",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "3a3ec85d834ccc0fb36079b52d0df879e1c20831",
+    "clean": false,
+    "statusSha256": "57edae12fbaccfae0fd7dea8de3d66c1e5b4cc4078d10b062efc98cb2429424c"
+  },
+  "logSha256": "e73aefae412fcd50d9129057ffcc2b7f937619020d156fd1ebf9d06403cdef20",
+  "discovery": {
+    "suite": "browser",
+    "selectors": [
+      "capability:flow"
+    ],
+    "files": [
+      "test/browser/flow-layouts.browser.js"
+    ]
+  },
+  "bytes": 985,
+  "retainedBytes": 985,
+  "truncated": false
+}

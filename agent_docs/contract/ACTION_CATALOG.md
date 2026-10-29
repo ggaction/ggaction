@@ -31,6 +31,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createPivotData`](current/CORE.md#createpivotdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGraphData`](current/GRAPHS.md#creategraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGraphData`](current/GRAPHS.md#editgraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editInferredGraphData`](current/GRAPHS.md#editinferredgraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createInferredGraphData`](current/GRAPHS.md#createinferredgraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createParameter`](current/CORE.md#createparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editParameter`](current/CORE.md#editparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeParameter`](current/CORE.md#removeparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -328,6 +330,12 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreemapPlot`](current/HIERARCHY.md#edittreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutGraph`](current/GRAPHS.md#layoutgraph) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGraphPlot`](current/GRAPHS.md#creategraphplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGraphPlot`](current/GRAPHS.md#editgraphplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFontResource`](current/CORE.md#createfontresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`replaceFontResource`](current/CORE.md#replacefontresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPartitionPlot`](current/PARTITION.md#createpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPartitionPlot`](current/PARTITION.md#editpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFlowData`](current/FLOWS.md#createflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFlowData`](current/FLOWS.md#editflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutFlow`](current/FLOWS.md#layoutflow) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

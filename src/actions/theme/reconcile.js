@@ -1,9 +1,12 @@
+import { resourcePlotThemeOwner, resourcePlotThemeProperty, addResourcePlotThemeOverrides, clearResourcePlotThemeOverrides } from "./resourcePlots.js";
+import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
 import { synchronizeFacetLegendAppearance } from "../../materialization/facetGuides/owner.js";
 import { rematerializeTypography } from "../../materialization/typography.js";
 import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, themeTokens } from "../../theme/defaults.js";
 import {
   normalizeThemeState,
   resolveEffectiveThemeTokens,
+  resolveEffectiveThemeFrame,
   setThemeStateOverrides
 } from "./state.js";
 import { isOwned } from "../../core/immutable.js";
@@ -286,6 +289,7 @@ function recolorGraphic(
   targetTokens,
   overrides
 ) {
+  if (resourcePlotThemeOwner(findLayer(program, id)) !== undefined) return program;
   if (id === `${program.compositionSpec?.id}-headers`) {
     const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
     if (headers?.column?.title !== undefined || headers?.row?.title !== undefined) {
@@ -392,6 +396,7 @@ function recolorConfig(
   sourceTokens,
   targetTokens,
   overrides,
+  themeActive,
   path = []
 ) {
   if (Array.isArray(value)) {
@@ -403,6 +408,7 @@ function recolorConfig(
         sourceTokens,
         targetTokens,
         overrides,
+        themeActive,
         [...path, index]
       );
       changed ||= mapped.changed;
@@ -421,6 +427,12 @@ function recolorConfig(
     }
     if (property === "background" && value === "transparent") {
       return { changed: false, value };
+    }
+    const resource = resourcePlotThemeProperty(path);
+    if (resource?.explicit) return { changed: false, value };
+    if (resource !== undefined) {
+      const target = themeActive ? targetTokens[resource.token] : resource.defaultValue;
+      return { changed: value !== target, value: target };
     }
     const role = configRole(program, path);
     return role === undefined
@@ -445,6 +457,7 @@ function recolorConfig(
       sourceTokens,
       targetTokens,
       overrides,
+      themeActive,
       [...path, key]
     );
     changed ||= mapped.changed;
@@ -1016,6 +1029,7 @@ function explicitOverrides(program, node) {
       Object.hasOwn(args, "background")) {
     overrides.add("g:canvas.background");
   }
+  addResourcePlotThemeOverrides(overrides, node);
   addMarkOverrides(overrides, program, op, args);
   addFacadeMarkOverrides(overrides, op, args);
   addTextFacadeOverrides(overrides, node);
@@ -1072,6 +1086,7 @@ function collectOverrides(program) {
     clearRecreatedOverrides(overrides, node.op, node.args);
     clearRemovedResources(overrides, node);
     clearLocalResets(overrides, program, node);
+    clearResourcePlotThemeOverrides(overrides, node);
     for (const key of explicitOverrides(program, node)) {
       overrides.add(key);
     }
@@ -1123,7 +1138,8 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     themed.materializationConfigs,
     sourceTokens,
     targetTokens,
-    overrides
+    overrides,
+    resolveEffectiveThemeFrame(contentState(state)) !== undefined
   );
   let next = configs.changed
     ? themed
@@ -1148,6 +1164,14 @@ export function reconcileProgramTheme(program, { source, metadata }) {
   } else if (typographyChanged) {
     next = rematerializeTypography(next);
   }
+
+  const resourceMarks = next.semanticSpec.layers.flatMap(layer => {
+    const owner = resourcePlotThemeOwner(layer);
+    if (owner === undefined || themed.markConfigs[layer.id]?.[owner.key] === next.markConfigs[layer.id]?.[owner.key]) return [];
+    const textHandled = typographyChanged && layer.hierarchyLabels !== false && layer.graphLabels !== false;
+    return textHandled ? [] : [{ op: owner.op, args: { id: layer.id } }];
+  });
+  if (resourceMarks.length > 0) next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: resourceMarks }));
 
   const parallelChanged = configs.value.guides.axis?.parallel !==
     themed.guideConfigs.axis?.parallel;

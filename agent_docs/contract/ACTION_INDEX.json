@@ -454,6 +454,42 @@
       }
     },
     {
+      "name": "editInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rebuilds inferred graph dependencies and refreshes each affected layout and plot",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editinferredgraphdata"
+      }
+    },
+    {
+      "name": "createInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise inferred graph rules and source inputs with `editInferredGraphData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "createinferredgraphdata"
+      }
+    },
+    {
       "name": "createParameter",
       "layer": "user-facing",
       "domain": "core",
@@ -1161,7 +1197,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor",
+      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1179,7 +1215,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTickMark`, position encodings, and generic `removeMark`",
+      "update": "`editTickMark`, position encodings, and generic `removeMark`; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1341,7 +1377,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor",
+      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1359,7 +1395,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits typography, alignment, rotation, and offsets",
+      "update": "Edits typography, alignment, rotation, and offsets; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1413,7 +1449,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape and appearance",
+      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1431,7 +1467,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits Tick length and constant appearance",
+      "update": "Edits Tick length and constant appearance; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1539,7 +1575,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLineMark`",
+      "update": "`editLineMark`; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1557,7 +1593,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits curve and stroke width",
+      "update": "Edits curve and stroke width; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1575,7 +1611,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1593,7 +1629,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing",
+      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1611,7 +1647,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1629,7 +1665,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners",
+      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1647,7 +1683,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant rule appearance through existing encoding actions",
+      "update": "Edits constant rule appearance through existing encoding actions; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1665,7 +1701,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant area appearance",
+      "update": "Edits constant area appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4149,7 +4185,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4167,7 +4203,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits arc geometry and appearance",
+      "update": "Edits arc geometry and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5301,7 +5337,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor",
+      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5319,7 +5355,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits rect appearance",
+      "update": "Edits rect appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5800,6 +5836,114 @@
       }
     },
     {
+      "name": "createGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGraphPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "creategraphplot"
+      }
+    },
+    {
+      "name": "editGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editgraphplot"
+      }
+    },
+    {
+      "name": "createFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Prepare and commit font bytes; replace with replaceFontResource and remove with removeResource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createfontresource"
+      }
+    },
+    {
+      "name": "replaceFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Prepare replacement bytes and atomically refresh the bound measured layout",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "replacefontresource"
+      }
+    },
+    {
+      "name": "createPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPartitionPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "createpartitionplot"
+      }
+    },
+    {
+      "name": "editPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "editpartitionplot"
+      }
+    },
+    {
       "name": "createFlowData",
       "layer": "user-facing",
       "domain": "core",
@@ -6020,46 +6164,40 @@
   "plannedCapabilities": [],
   "internal": {
     "materialization": [
-      "materializeBin2DData",
-      "materializeBinData",
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
-      "materializeCompleteData",
+      "materializeBinData",
+      "materializeBin2DData",
       "materializeComposition",
+      "materializeCompleteData",
       "materializeComputedData",
-      "materializeContourMark",
       "materializeDensityData",
       "materializeECDFData",
       "materializeEmptyMark",
-      "materializeFilteredData",
-      "materializeFlattenData",
-      "materializeFlowLinks",
-      "materializeFlowNodes",
-      "materializeFoldData",
-      "materializeGradientPlot",
-      "materializeGradientPlotFill",
       "materializeGradientProfileData",
       "materializeHorizonData",
       "materializeImputedData",
-      "materializeIntervalData",
-      "materializeLabelLayout",
+      "materializeGradientPlot",
+      "materializeGradientPlotFill",
+      "materializeFilteredData",
       "materializeLookupData",
-      "materializeMarkFilteredData",
-      "materializeMarkLabelPlacement",
-      "materializeNormalizedData",
+      "materializeFlattenData",
+      "materializeFoldData",
       "materializePivotData",
+      "materializeMarkFilteredData",
+      "materializeIntervalData",
+      "materializeNormalizedData",
       "materializeRegressionData",
       "materializeRegressionStatisticsData",
-      "materializeRuleSpan",
-      "materializeSortedData",
+      "materializeSummaryData",
       "materializeStackData",
       "materializeStatisticalReferenceData",
-      "materializeSummaryData",
       "materializeTimeUnitData",
-      "materializeTreePlot",
-      "materializeTreemapPlot",
       "materializeWindowData",
+      "materializeRuleSpan",
+      "materializeLabelLayout",
+      "materializeMarkLabelPlacement",
       "rematerializeArcMark",
       "rematerializeAreaMark",
       "rematerializeBarMark",
@@ -6067,15 +6205,14 @@
       "rematerializeErrorBar",
       "rematerializeGradientLegend",
       "rematerializeGradientPlotLegend",
+      "rematerializeIntervalLegend",
       "rematerializeGrid",
       "rematerializeHorizontalGrid",
       "rematerializeHorizontalLegendLane",
-      "rematerializeImageMark",
-      "rematerializeIntervalLegend",
       "rematerializeLegend",
       "rematerializeLegendBackground",
-      "rematerializeLegendGroups",
       "rematerializeLegendHighlights",
+      "rematerializeLegendGroups",
       "rematerializeLegendLabels",
       "rematerializeLegendSymbolLines",
       "rematerializeLegendSymbolPoints",
@@ -6085,7 +6222,6 @@
       "rematerializeLineMark",
       "rematerializeMarkHighlights",
       "rematerializeOpacityLegend",
-      "rematerializeOverlay",
       "rematerializeParallelAxes",
       "rematerializePlotBorder",
       "rematerializePlotDrawOrder",
@@ -6093,6 +6229,7 @@
       "rematerializeRadialGrid",
       "rematerializeRectMark",
       "rematerializeRuleMark",
+      "rematerializeTextMark",
       "rematerializeScale",
       "rematerializeSideLegendLane",
       "rematerializeSizeLegend",
@@ -6100,11 +6237,20 @@
       "rematerializeStrokeGradientLegend",
       "rematerializeStrokeIntervalLegend",
       "rematerializeStrokeWidthLegend",
-      "rematerializeTextMark",
       "rematerializeThetaGrid",
       "rematerializeTickMark",
       "rematerializeTitle",
-      "rematerializeVerticalGrid"
+      "rematerializeVerticalGrid",
+      "materializeSortedData",
+      "rematerializeOverlay",
+      "rematerializeImageMark",
+      "materializeTreePlot",
+      "materializeTreemapPlot",
+      "materializeGraphPlot",
+      "materializePartitionPlot",
+      "materializeFlowNodes",
+      "materializeFlowLinks",
+      "materializeContourMark"
     ],
     "guideComponents": [
       "createLegendBackground",

@@ -199,3 +199,7 @@ fill, opacity and offset while retaining their text appearance.
 
 Every action returns an immutable program. Unknown options, explicit
 `undefined`, invalid keys and ambiguous omitted references are rejected.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](appearance/mark-style.md). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.

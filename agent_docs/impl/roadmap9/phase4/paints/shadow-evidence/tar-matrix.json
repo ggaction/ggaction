@@ -1,0 +1,33 @@
+{
+  "installationArtifact": "d4ebe98b9e799164da277ea6c1a01a885622628a9e5a48df28ff7ac56c00572c",
+  "sameContents": true,
+  "records": [
+    {
+      "node": "node22",
+      "file": ".artifacts/shadow-final-tar/node22/ggaction-0.0.26.tgz",
+      "sha256": "d4ebe98b9e799164da277ea6c1a01a885622628a9e5a48df28ff7ac56c00572c",
+      "packedBytes": 1198723,
+      "unpackedBytes": 5516118,
+      "entries": 815,
+      "contentManifestSha256": "4c7295abf2a5f677c031bbf3f91a1e69442c3fd401827145e890195c66bffb2e"
+    },
+    {
+      "node": "node20",
+      "file": ".artifacts/shadow-size-tar/node20/ggaction-0.0.26.tgz",
+      "sha256": "17050fd588e6601f64e8819fe02427652b1cd87ab0ac80015ca18a3526253b69",
+      "packedBytes": 1201262,
+      "unpackedBytes": 5516118,
+      "entries": 815,
+      "contentManifestSha256": "4c7295abf2a5f677c031bbf3f91a1e69442c3fd401827145e890195c66bffb2e"
+    },
+    {
+      "node": "node24",
+      "file": ".artifacts/shadow-size-tar/node24/ggaction-0.0.26.tgz",
+      "sha256": "17050fd588e6601f64e8819fe02427652b1cd87ab0ac80015ca18a3526253b69",
+      "packedBytes": 1201262,
+      "unpackedBytes": 5516118,
+      "entries": 815,
+      "contentManifestSha256": "4c7295abf2a5f677c031bbf3f91a1e69442c3fd401827145e890195c66bffb2e"
+    }
+  ]
+}

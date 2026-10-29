@@ -119,3 +119,12 @@ identity에는 resource lineage와 exact source rows를 결박하고 source revi
 공개 자원·마크·원본 갱신·복원·선택 경계 17개, 수치/차트 통합 focused coverage 40개가 통과했다. 새 owner의 coverage는 lines 100 / branches 97.25 / functions 100이며 기존 family floor(95/90/100)는 변경하지 않았다. 동일 source의 모든 geometry 후보를 먼저 계산·preflight하고 공유 scales/marks/guides union을 최종 상태에서 한 번 materialize한다. 두 geometry 공유 scale과 두 번째 후보 실패의 원자성 회귀가 포함된다.
 
 Canvas/SVG DPR 1/2 다섯 variant 및 PNG/PDF 독립 primitive 10개 통과. holes와 filled band 실제 PNG를 확인했으며 빈 중심, 비겹침 band 경계와 제목/여백이 reference와 일치한다. 명시 hconcat/vconcat 및 scoped edit 지원; implicit facet/repeat partition은 현재 거부하며 STEP035에 geometry/source partition 의미를 결정·연결할 의무를 남긴다. 기존 승인 scope를 삭제하지 않는다.
+
+### Main 통합과 공통 소비자
+
+4171f4c0a 로컬 source checkpoint를 보존하고 f1800607d main을 병합했다. 이 기록은 아직 최종
+qualification 완료 주장이 아니다. Flow graph revision closure, font binders, resource effects 및
+Partition을 함께 유지한다. Contour는 기존 outline/shadow normalize 및 materialize owner를
+사용하고 false reset을 지원하며 각 graphic/scene의 exact prepared shadow handle을 사용한다.
+applyTheme의 새 resource role 연결은 STEP033 소비자 의무로, implicit facet/repeat는 STEP035
+geometry partition 정책 의무로 인계하며 현재 공개 지원 범위와 구분한다.

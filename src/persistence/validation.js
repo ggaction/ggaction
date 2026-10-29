@@ -1,6 +1,9 @@
+import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
+import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
 import { validateImageBinding } from "../materialization/imageState.js";
+import { validateConcreteFontBindings } from "../materialization/fontState.js";
 import { validateConditionalDependencies } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
@@ -51,7 +54,7 @@ import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
-import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
+import { normalizeTextMetricProfile, normalizeFontMetricProfile } from "../core/textMetricProfile.js";
 import { resolveTextOffsetDataset } from "../grammar/text.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -295,7 +298,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   validateGuideVisibilityState(program);
-  if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
+  if (program.materializationConfigs.textMetrics !== undefined) {
+    const profile = program.materializationConfigs.textMetrics;
+    (profile.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(profile);
+  }
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
     ...["horizontal", "vertical"].map(direction => program.guideConfigs.grid?.[direction])
@@ -620,7 +626,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     if (resources.get("mark").get(id)?.mark.type === "image") {
       const config = program.markConfigs[id];
-      exactKeys(config, IMAGE_MARK_CONFIG_KEYS, `${path}.materializationConfigs.marks.${id}`);
+      exactKeys(config, IMAGE_MARK_CONFIG_KEYS.filter(key => key !== "shadow" || Object.hasOwn(config, key)), `${path}.materializationConfigs.marks.${id}`);
       if (canonicalJSON(normalizeImageMarkConfig(config)) !== canonicalJSON(config)) throw invalidSnapshot("Image mark configuration must be normalized.", path);
     } else {
       requestedMarkClip(program.markConfigs[id]);
@@ -631,6 +637,23 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       validatePointShape(program.markConfigs[id].shape);
     }
     const markConfig = program.markConfigs[id];
+    const markType = resources.get("mark").get(id).mark.type;
+    if (markConfig.outline !== undefined && (!MARK_OUTLINE_TYPES.includes(markType) || markType === "bar") ||
+        markConfig.barAppearance?.outline !== undefined && markType !== "bar") {
+      throw invalidSnapshot(`Mark config "${id}" has an unsupported outline owner.`, path);
+    }
+    for (const outline of [markConfig.outline, markConfig.barAppearance?.outline]) {
+      if (outline !== undefined) normalizeMarkOutline(outline, "Stored mark outline");
+    }
+    if (markConfig.shadow !== undefined && (!MARK_SHADOW_TYPES.includes(markType) || markType === "bar") ||
+        markConfig.barAppearance?.shadow !== undefined && markType !== "bar") {
+      throw invalidSnapshot(`Mark config "${id}" has an unsupported shadow owner.`, path);
+    }
+    for (const shadow of [markConfig.shadow, markConfig.barAppearance?.shadow]) {
+      if (shadow !== undefined && canonicalJSON(normalizeMarkShadow(shadow, "Stored mark shadow")) !== canonicalJSON(shadow)) {
+        throw invalidSnapshot("Stored mark shadow must be normalized.", path);
+      }
+    }
     for (const fill of [markConfig.fill, markConfig.barAppearance?.fill]) {
       if (fill !== undefined) validateFillPaint(fill, "Stored mark fill");
     }
@@ -652,6 +675,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     if (!legacy) for (const item of graphic.items ?? []) {
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);

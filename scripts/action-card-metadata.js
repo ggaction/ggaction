@@ -14,6 +14,8 @@ const analysisChartNames = new Set([
   "createDensityPlot",
   "createHorizonPlot",
   "createTreePlot",
+  "createGraphPlot",
+  "createPartitionPlot",
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
@@ -22,12 +24,14 @@ const analysisChartEditorNames = new Set([
   "editRadarPlot",
   "editRaincloudPlot",
   "editTreePlot",
+  "editGraphPlot",
+  "editPartitionPlot",
   "editTreemapPlot"
 ]);
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editContourData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
+  "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -69,6 +73,8 @@ const explicitLifecycleEditors = Object.freeze({
   editContourData: ["editContourData", "removeResource"],
   createContourMark: ["editContourMark", "removeMark"],
   editContourMark: ["editContourMark", "removeMark"],
+  createInferredGraphData: ["editInferredGraphData", "removeResource"],
+  editInferredGraphData: ["editInferredGraphData", "removeResource"],
   createFlowData: ["editFlowData", "removeResource"],
   editFlowData: ["editFlowData", "removeResource"],
   layoutFlow: ["editLayout", "removeResource"],
@@ -84,12 +90,18 @@ const explicitLifecycleEditors = Object.freeze({
   editLayout: ["editLayout", "removeResource"],
   removeResource: ["removeResource"],
   createTreePlot: ["editTreePlot", "removeMark"],
+  createGraphPlot: ["editGraphPlot", "removeMark"],
+  editGraphPlot: ["editGraphPlot", "removeMark"],
   editTreePlot: ["editTreePlot", "removeMark"],
+  createPartitionPlot: ["editPartitionPlot", "removeMark"],
+  editPartitionPlot: ["editPartitionPlot", "removeMark"],
   createTreemapPlot: ["editTreemapPlot", "removeMark"],
   editTreemapPlot: ["editTreemapPlot", "removeMark"],
   applyDataUpdate: ["applyDataUpdate", "reviseData", "removeData"],
   createImageResource: ["replaceImageResource", "removeResource"],
   replaceImageResource: ["replaceImageResource"],
+  createFontResource: ["replaceFontResource", "removeResource"],
+  replaceFontResource: ["replaceFontResource"],
   createImageMark: ["editImageMark", "removeMark"],
   applyTheme: ["applyTheme", "removeTheme"],
   removeTheme: ["applyTheme"],
@@ -160,6 +172,7 @@ const emptyResultActions = new Set([
   "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",
   "layoutGraph",
   "createGraphData",
+  "createInferredGraphData",
   "editGraphData",
   "filterData",
   "filterMarks",

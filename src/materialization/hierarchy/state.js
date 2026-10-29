@@ -1,3 +1,5 @@
+import { validatePartitionPlotDefinition } from "../../grammar/hierarchy/partitionPlot.js";
+import { requireCoordinate } from "../../selectors/coordinates.js";
 import { polarToCartesian } from "../../grammar/polar.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { hierarchyInputSources } from "../../grammar/hierarchy/input.js";
@@ -6,7 +8,7 @@ import { validateHierarchyPlotDefinition } from "../../grammar/hierarchy/plot.js
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { validateWorkLimit, validateGeneratedItemLimit } from "../../core/validation.js";
-import { indexHierarchyModel } from "../../grammar/hierarchy/model.js";
+import { indexHierarchyModel, hierarchyLayoutModel } from "../../grammar/hierarchy/model.js";
 import { normalizeHierarchySource, normalizeHierarchyLayout } from "../../grammar/hierarchy/options.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { hierarchyRowReferences } from "./resources.js";
@@ -32,10 +34,6 @@ function contained(inner, outer) {
   if (inner.x0 < outer.x0 || inner.x1 > outer.x1 || inner.y0 < outer.y0 || inner.y1 > outer.y1) throw new TypeError("Hierarchy rectangle is outside its parent.");
 }
 const MODEL_KEYS = Object.freeze(["key", "parentKey", "childrenKeys", "depth", "ownValue", "totalValue", "residual", "sourceRows", "synthetic"]);
-function layoutModel(resource) {
-  return { ...resource.result, nodes: resource.result.nodes.map(node => Object.fromEntries(
-    MODEL_KEYS.filter(key => Object.hasOwn(node, key)).map(key => [key, node[key]]))) };
-}
 
 function validateHierarchyStored(resource) {
   envelope(resource, "hierarchy", "data", "observed");
@@ -88,7 +86,7 @@ function validateLayoutStored(resource) {
     }
     return;
   }
-  const model = layoutModel(resource), { indexes } = indexHierarchyModel(model, resource.options.options.maxNodes);
+  const model = hierarchyLayoutModel(resource.result), { indexes } = indexHierarchyModel(model, resource.options.options.maxNodes);
   for (const node of result.nodes) {
     const extra = method === "partition" ? ["u0", "u1", "residualStart"] : ["rect", "content", "residualRect", "childOrder", "area"];
     exact(node, [...MODEL_KEYS.filter(key => key !== "synthetic"), ...extra], ["synthetic"], "Hierarchy layout node");
@@ -121,13 +119,16 @@ function validateLayoutBindings(program, resource) {
   if (resource.result.nodes.length !== model.nodes.length) throw new TypeError("Hierarchy layout node count is stale.");
   for (const layer of program.semanticSpec.layers) {
     if (layer.hierarchyBinding?.layout.id !== resource.id) continue;
-    exact(layer, ["id", "mark", "hierarchyBinding", "hierarchyLabels"], [], "Hierarchy plot layer");
+    exact(layer, ["id", "mark", "hierarchyBinding", "hierarchyLabels", ...(layer.mark.type === "partition" ? ["coordinate", "partitionView"] : [])], [], "Hierarchy plot layer");
     exact(layer.mark, ["type"], [], "Hierarchy plot mark");
     exact(layer.hierarchyBinding, ["layout"], [], "Hierarchy plot binding");
-    if (!["tree", "treemap"].includes(layer.mark.type) || layer.mark.type !== resource.options.method) throw new TypeError("Hierarchy plot layout method is incompatible.");
+    if (!["tree", "treemap", "partition"].includes(layer.mark.type) || layer.mark.type !== resource.options.method) throw new TypeError("Hierarchy plot layout method is incompatible.");
     const config = program.materializationConfigs.marks?.[layer.id];
     exact(config, ["hierarchyPlot"], [], "Hierarchy mark configuration");
-    validateHierarchyPlotDefinition(layer.mark.type, config.hierarchyPlot, layer.hierarchyLabels);
+    if (layer.mark.type === "partition") {
+      if (!["cartesian", "polar"].includes(requireCoordinate(program, layer.coordinate).type)) throw new TypeError("Partition requires Cartesian or polar coordinates.");
+      validatePartitionPlotDefinition(config.hierarchyPlot, layer.hierarchyLabels, layer.partitionView, model);
+    } else validateHierarchyPlotDefinition(layer.mark.type, config.hierarchyPlot, layer.hierarchyLabels);
   }
   const maxDepth = model.nodes.reduce((maximum, node) => Math.max(maximum, node.depth), 0), options = resource.options.options;
   for (const node of resource.result.nodes) {

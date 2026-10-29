@@ -100,7 +100,7 @@ createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
 ```
 
 Options are `{ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?,
-strokeWidth?, opacity?, clip? }`. Create a Canvas first. The default mark ID is
+strokeWidth?, opacity?, clip?, outline?, shadow? }`. Create a Canvas first. The default mark ID is
 `contour`; use an explicit ID when creating another. Geometry and Cartesian
 coordinate references use explicit, current, then unique eligible inference.
 A missing coordinate is created as `main`; ambiguous choices are errors.
@@ -119,7 +119,9 @@ Default scale IDs are `<mark>-x`, `<mark>-y` and `<mark>-color`.
 Set `color: false` for fixed paint. Defaults are `fill: "#2563eb"`,
 `stroke: "#1f2937"`, `strokeWidth: 1`, `opacity: 1` and `clip: true`. Filled
 contours accept the shared [FillPaint options](appearance/mark-style.md#pattern-and-gradient-fills).
-Zero opacity is valid. Ordinary row encodings do not replace intrinsic contour
+The shared `outline` and `shadow` options apply to each contour path; pass `false`
+to reset either effect. See [mark style](appearance/mark-style.md) for their values
+and explicit shadow preparation in Canvas/SVG hosts. Zero opacity is valid. Ordinary row encodings do not replace intrinsic contour
 coordinates; change mappings with `editContourMark`.
 
 Create guides explicitly. For example, call

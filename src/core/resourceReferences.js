@@ -9,7 +9,8 @@ export const RESOURCE_KINDS = Object.freeze([
 
 const LAYER_RESOURCE_BINDINGS = Object.freeze([
   Object.freeze({ path: Object.freeze(["image"]), kind: "image", marks: Object.freeze(["image"]) }),
-  Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap"]) }),
+  Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap", "partition"]) }),
+  Object.freeze({ path: Object.freeze(["graphBinding", "layout"]), kind: "layout", marks: Object.freeze(["graph"]) }),
   Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) }),
   Object.freeze({ path: Object.freeze(["contourBinding", "geometry"]), kind: "geometry", marks: Object.freeze(["contour"]) })
 ]);
@@ -35,6 +36,13 @@ export function mapLayerResourceBindings(layers, mapReference) {
     return next;
   });
   return changed ? mapped : layers;
+}
+
+export function fontMetricResourceBindings(program) {
+  const profile = program.materializationConfigs?.textMetrics;
+  return profile?.schemaVersion === 2 ? profile.fonts.map((binding, index) => ({
+    ref: binding.resource, ownerId: profile.id, path: ["textMetrics", "fonts", index, "resource"]
+  })) : [];
 }
 
 const DATA_VALUE_KEYS = new Set([
@@ -394,6 +402,8 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...fontMetricResourceBindings(program).map(({ ref, ownerId, path }) =>
+      reference(ref.kind, ref.id, "materialization", ownerId, path)),
     ...program.semanticSpec.layers.flatMap(layer => layerResourceBindings(layer).map(({ ref, path }) =>
       reference(ref?.kind, ref?.id, "layer", layer.id, path))),
     ...(program.semanticSpec.resources ?? []).filter(resource => resource.kind === "data-source")

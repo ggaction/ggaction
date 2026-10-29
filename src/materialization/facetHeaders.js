@@ -1,3 +1,4 @@
+import { bindTextFontProperties } from "./textFont.js";
 import { resolveLegendTitleText } from "../layout/legendText.js";
 import { measureFacetContentChildren } from "./facetContentBounds.js";
 import { facetAxisMode, hasOuterFacetAxes } from "../core/facetAxisPolicy.js";
@@ -580,7 +581,7 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   const id = facetHeaderGraphicId(program.compositionSpec.id);
   return program
     .createGraphics({ id, type: "collection", parent: "canvas" })
-    .editGraphics({ target: id, property: "items", value: items });
+    .editGraphics({ target: id, property: "items", value: items.map(item => ({ ...item, properties: bindTextFontProperties(program, item.properties) })) });
 }
 
 // Semantic entries follow the same ordering as materialized header items.

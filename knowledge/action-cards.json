@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 332,
+  "count": 340,
   "cards": [
     {
       "schemaVersion": 3,
@@ -358,7 +358,7 @@
       "layer": "user-facing",
       "domain": "core",
       "summary": "Apply a host-measured width profile to title, axis, legend, label, and composition layout.",
-      "signature": "applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;",
+      "signature": "applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;",
       "intents": [
         "apply text metrics",
         "apply",
@@ -405,8 +405,18 @@
       "options": [
         {
           "name": "profile",
-          "required": true,
-          "type": "TextMetricsProfile"
+          "required": false,
+          "type": "TextMetricsProfile | undefined"
+        },
+        {
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedTextMetrics | undefined"
+        },
+        {
+          "name": "requestToken",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
@@ -415,7 +425,7 @@
         }
       ],
       "callPatterns": [
-        "applyTextMetrics({ profile, target? })"
+        "applyTextMetrics({ target?, profile?, prepared?, requestToken? })"
       ],
       "snippet": "program.applyTextMetrics({ profile: { schemaVersion: 1, id: \"host\", measurements: [] } })",
       "errors": [],
@@ -2220,6 +2230,233 @@
       "snippet": "program.editGraphData({ target: \"network\", definition: { directed: true } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editgraphdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise an inferred graph and its dependent layouts and plots.",
+      "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;",
+      "intents": [
+        "edit inferred graph data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "inferred graph data",
+        "nearest neighbor network"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing inferred graph"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data",
+          "candidateGraph"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editInferredGraphData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing inferred graph"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "candidateGraph",
+          "required": false,
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "definition",
+          "required": false,
+          "type": "Partial<GraphCandidateMstDefinition | (InferredGraphSource & { readonly metric: \"cosine\" | \"euclidean\" | \"manhattan\"; readonly features: readonly string[]; readonly preprocess?: \"minmax\" | ... 2 more ... | undefined; } & { ...; }) | ... 11 more ... | (InferredGraphSource & ... 1 more ... & { ...; })> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editInferredGraphData({ target?, data?, candidateGraph?, definition? })"
+      ],
+      "snippet": "program.editInferredGraphData({ target: \"neighbors\", definition: { options: { k: 2 } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editinferredgraphdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Infer a graph using nearest neighbors, radius, similarity, a spanning tree, groups, or ordered sequences.",
+      "signature": "createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;",
+      "intents": [
+        "create inferred graph data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "inferred graph data",
+        "nearest neighbor network"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized source dataset"
+        ],
+        "owns": [
+          "graph resource"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "candidateGraph"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editInferredGraphData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "nodeKey",
+          "required": true,
+          "type": "GraphKeyField"
+        },
+        {
+          "name": "ruleId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "attributes",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "maxEdges",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "rule",
+          "required": true,
+          "type": "\"group\" | \"knn\" | \"mst\" | \"radius\" | \"sequence\" | \"similarity\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "{ readonly forest?: boolean | undefined; } | { readonly fields: readonly string[]; readonly missing?: \"error\" | \"include\" | \"omit-node\" | undefined; readonly mode?: \"clique\" | \"star\" | undefined; readonly hubKey?: RowKey | undefined; readonly hubs?: readonly { ...; }[] | undefined; } | ... 5 more ... | undefined"
+        },
+        {
+          "name": "features",
+          "required": false,
+          "type": "readonly string[] | { readonly set: string; } | { readonly longitude: string; readonly latitude: string; } | undefined"
+        },
+        {
+          "name": "metric",
+          "required": false,
+          "type": "\"cosine\" | \"euclidean\" | \"great-circle\" | \"jaccard\" | \"manhattan\" | undefined"
+        },
+        {
+          "name": "preprocess",
+          "required": false,
+          "type": "\"minmax\" | \"none\" | \"standardize\" | undefined"
+        },
+        {
+          "name": "candidateGraph",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createInferredGraphData({ id, nodeKey, ruleId, rule, data?, attributes?, maxNodes?, maxEdges? })"
+      ],
+      "snippet": "program.createInferredGraphData({ id: \"neighbors\", data: \"points\", nodeKey: \"id\", ruleId: \"nearest\", rule: \"knn\", features: [\"x\"], metric: \"euclidean\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createinferredgraphdata"
     },
     {
       "schemaVersion": 3,
@@ -6524,7 +6761,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6613,6 +6850,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -6643,6 +6890,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -6664,7 +6916,7 @@
         }
       ],
       "callPatterns": [
-        "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
+        "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
       ],
       "snippet": "program.createPointMark({})",
       "errors": [],
@@ -6676,7 +6928,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-      "signature": "createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
+      "signature": "createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
       "intents": [
         "create tick mark",
         "create",
@@ -6769,6 +7021,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -6815,7 +7077,7 @@
         }
       ],
       "callPatterns": [
-        "createTickMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
+        "createTickMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
       ],
       "snippet": "program.createTickMark({})",
       "errors": [],
@@ -6943,6 +7205,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -7001,6 +7273,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "strokeDash",
@@ -7155,6 +7432,16 @@
           "name": "temporalUnit",
           "required": false,
           "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
         },
         {
           "name": "stroke",
@@ -7408,6 +7695,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -7416,6 +7713,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -7572,6 +7874,31 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -7610,6 +7937,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -8070,6 +8402,31 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8098,6 +8455,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -8306,6 +8668,16 @@
       },
       "options": [
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8356,6 +8728,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -8401,13 +8778,28 @@
           "type": "number | undefined"
         },
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "ActionTargetList | ScopedActionTarget"
         }
       ],
       "callPatterns": [
-        "createTextMark({ id?, data?, source?, target?, clip?, lineHeight?, blockAlign?, inheritColor? })"
+        "createTextMark({ id?, data?, source?, target?, blend?, shadow?, clip?, lineHeight? })"
       ],
       "snippet": "program.createTextMark({})",
       "errors": [],
@@ -8498,6 +8890,31 @@
           "type": "\"auto\" | readonly TextOverride[] | undefined"
         },
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8526,6 +8943,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -8574,7 +8996,7 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, textOverrides?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill? })"
+        "editTextMark({ target?, textOverrides?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip? })"
       ],
       "snippet": "program.editTextMark({ textOverrides: \"auto\" })",
       "errors": [],
@@ -8751,7 +9173,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -8823,6 +9245,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8848,6 +9280,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -8864,7 +9301,7 @@
         }
       ],
       "callPatterns": [
-        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, shape?, fill? })"
+        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
       ],
       "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -8876,7 +9313,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Partially edit Tick length or constant line appearance while preserving data, position, and other assignments.",
-      "signature": "editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
+      "signature": "editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
       "intents": [
         "edit tick mark",
         "edit",
@@ -8952,6 +9389,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8988,7 +9435,7 @@
         }
       ],
       "callPatterns": [
-        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, length?, stroke? })"
+        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
       ],
       "snippet": "program.editTickMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -9383,7 +9830,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic line mark and empty path collection.",
-      "signature": "createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
+      "signature": "createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
       "intents": [
         "create line mark",
         "create",
@@ -9472,6 +9919,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -9528,7 +9985,7 @@
         }
       ],
       "callPatterns": [
-        "createLineMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
+        "createLineMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
       ],
       "snippet": "program.createLineMark({})",
       "errors": [],
@@ -9540,7 +9997,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit line appearance or its explicit missing-coordinate policy and rematerialize concrete path commands without changing field encodings.",
-      "signature": "editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
+      "signature": "editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
       "intents": [
         "edit line mark",
         "edit",
@@ -9612,6 +10069,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -9658,7 +10125,7 @@
         }
       ],
       "callPatterns": [
-        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth?, curve? })"
+        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
       ],
       "snippet": "program.editLineMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -9670,7 +10137,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -9784,6 +10251,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -9812,6 +10289,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -9847,7 +10329,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"multiply\" | \"screen\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -9944,6 +10426,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -9954,11 +10446,6 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
-          "name": "blend",
-          "required": false,
-          "type": "\"difference\" | \"multiply\" | \"normal\" | \"screen\" | undefined"
-        },
-        {
           "name": "missing",
           "required": false,
           "type": "\"error\" | \"skip\" | undefined"
@@ -9967,6 +10454,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -9997,7 +10489,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+      "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -10084,6 +10576,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -10102,6 +10604,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -10135,7 +10642,7 @@
         }
       ],
       "callPatterns": [
-        "createAreaMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, fill? })"
+        "createAreaMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
       ],
       "snippet": "program.createAreaMark({})",
       "errors": [],
@@ -10242,6 +10749,16 @@
           "type": "\"error\" | \"skip\" | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -10283,7 +10800,7 @@
         }
       ],
       "callPatterns": [
-        "createRuleMark({ id?, data?, target?, clip?, missing?, stroke?, strokeWidth?, strokeDash? })"
+        "createRuleMark({ id?, data?, target?, clip?, missing?, blend?, shadow?, stroke? })"
       ],
       "snippet": "program.createRuleMark({})",
       "errors": [],
@@ -10370,6 +10887,16 @@
           "type": "\"error\" | \"skip\" | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -10406,7 +10933,7 @@
         }
       ],
       "callPatterns": [
-        "editRuleMark({ target?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap? })"
+        "editRuleMark({ target?, clip?, missing?, blend?, shadow?, stroke?, strokeWidth?, strokeDash? })"
       ],
       "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
       "errors": [],
@@ -10418,7 +10945,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+      "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -10490,6 +11017,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -10503,6 +11040,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -10531,7 +11073,7 @@
         }
       ],
       "callPatterns": [
-        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity?, stroke? })"
+        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, fill? })"
       ],
       "snippet": "program.editAreaMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -28108,7 +28650,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -28207,6 +28749,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -28232,6 +28784,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -28253,7 +28810,7 @@
         }
       ],
       "callPatterns": [
-        "createArcMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle? })"
+        "createArcMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
       ],
       "snippet": "program.createArcMark({})",
       "errors": [],
@@ -28265,7 +28822,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -28349,6 +28906,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
@@ -28369,6 +28936,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -28385,7 +28957,7 @@
         }
       ],
       "callPatterns": [
-        "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill?, opacity? })"
+        "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, innerRadius?, padAngle? })"
       ],
       "snippet": "program.editArcMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -36355,6 +36927,16 @@
       },
       "options": [
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -36378,6 +36960,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -36441,7 +37028,7 @@
         }
       ],
       "callPatterns": [
-        "createRectMark({ id?, data?, target?, clip?, missing?, fill?, opacity?, stroke? })"
+        "createRectMark({ id?, data?, target?, blend?, shadow?, clip?, missing?, fill? })"
       ],
       "snippet": "program.createRectMark({})",
       "errors": [],
@@ -36555,6 +37142,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -36568,6 +37165,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -38402,6 +39004,11 @@
           "type": "false | GraphicClip | undefined"
         },
         {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "ActionTargetList | ScopedActionTarget"
@@ -38517,6 +39124,11 @@
           "name": "clip",
           "required": false,
           "type": "false | GraphicClip | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
         }
       ],
       "callPatterns": [
@@ -38556,8 +39168,9 @@
         "H3"
       ],
       "wraps": [
-        "removeMark",
-        "editSemantic"
+        "removeTextMetrics",
+        "editSemantic",
+        "removeMark"
       ],
       "editableVia": [
         "removeResource"
@@ -39146,7 +39759,7 @@
         {
           "name": "links",
           "required": false,
-          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; shadow?: false | MarkShadow | undefined; } | undefined"
         },
         {
           "name": "labels",
@@ -39258,7 +39871,7 @@
         {
           "name": "links",
           "required": false,
-          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; shadow?: false | MarkShadow | undefined; } | undefined"
         },
         {
           "name": "labels",
@@ -39578,6 +40191,733 @@
       "snippet": "program.layoutGraph({ id: \"network-layout\", graph: \"network\", method: \"circular\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#layoutgraph"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Creates graph plot for network plot.",
+      "signature": "createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;",
+      "intents": [
+        "create graph plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "graph plot",
+        "network plot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "graph plot"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H0",
+        "H1"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraphPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "GraphEdgePaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | GraphLabelsOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGraphPlot({ id?, target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+      ],
+      "snippet": "program.createGraphPlot({ id: \"networkPlot\", layout: \"network-layout\", labels: {} })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategraphplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edits graph plot, including settings for network plot.",
+      "signature": "editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit graph plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "graph plot",
+        "network plot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraphPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph plot",
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "GraphEdgePaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | GraphLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+      ],
+      "snippet": "program.editGraphPlot({ target: \"networkPlot\", nodes: { radius: 8 } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgraphplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Commit an authentic create handle from prepareFontResource on its exact original Full receiver.",
+      "signature": "createFontResource(options: ApplyFontResourceOptions<\"create\">): ChartProgram;",
+      "intents": [
+        "create font resource",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "embedded font bytes",
+        "measured font identity"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "embedded font bytes"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceFontResource",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedFontResource<\"create\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createFontResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.createFontResource({ prepared: preparedFontCreate, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createfontresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "replaceFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Commit a prepared replacement and atomically refresh any exact measured layout that uses the font, including inherited composition children.",
+      "signature": "replaceFontResource(options: ApplyFontResourceOptions<\"replace\">): ChartProgram;",
+      "intents": [
+        "replace font resource",
+        "replace",
+        "swap child",
+        "chart setup",
+        "data and scales",
+        "embedded font bytes",
+        "measured font identity"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing embedded font bytes"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceFontResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing embedded font bytes"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedFontResource<\"replace\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "replaceFontResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.replaceFontResource({ prepared: preparedFontReplace, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#replacefontresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity.",
+      "signature": "createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;",
+      "intents": [
+        "create partition plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "icicle chart",
+        "sunburst chart"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and partition layout resource"
+        ],
+        "owns": [
+          "icicle chart"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "coordinate",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H0",
+        "H1"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createCoordinate"
+      ],
+      "editableVia": [
+        "editPartitionPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "innerRadius",
+          "unit": "ratio"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "outerRadius",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and partition layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "focus",
+          "required": false,
+          "type": "HierarchyNodeTarget | null | undefined"
+        },
+        {
+          "name": "rootVisible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "prunedSelection",
+          "required": false,
+          "type": "\"drop\" | \"keep-hidden\" | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "reverseU",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverseV",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | readonly [number, number] | undefined"
+        },
+        {
+          "name": "innerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outerRadius",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "startAngle",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "sweep",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "direction",
+          "required": false,
+          "type": "\"clockwise\" | \"counterclockwise\" | undefined"
+        },
+        {
+          "name": "radiusPolicy",
+          "required": false,
+          "type": "\"equal-depth\" | \"equal-depth-area\" | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | (HierarchyLabelsOptions & { minWidth?: number | undefined; minArcLength?: number | undefined; }) | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createPartitionPlot({ id?, coordinate?, target?, layout?, focus?, rootVisible?, prunedSelection?, orientation? })"
+      ],
+      "snippet": "program.createPartitionPlot({ id: \"partition\", layout: \"partition-layout\", labels: {} })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createpartitionplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity.",
+      "signature": "editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit partition plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "icicle chart",
+        "sunburst chart"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing icicle chart",
+          "canvas and partition layout resource"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "editMarkSelection"
+      ],
+      "editableVia": [
+        "editPartitionPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "innerRadius",
+          "unit": "ratio"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "outerRadius",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing icicle chart",
+          "canvas and partition layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "focus",
+          "required": false,
+          "type": "HierarchyNodeTarget | null | undefined"
+        },
+        {
+          "name": "rootVisible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "prunedSelection",
+          "required": false,
+          "type": "\"drop\" | \"keep-hidden\" | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "reverseU",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverseV",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | readonly [number, number] | undefined"
+        },
+        {
+          "name": "innerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outerRadius",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "startAngle",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "sweep",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "direction",
+          "required": false,
+          "type": "\"clockwise\" | \"counterclockwise\" | undefined"
+        },
+        {
+          "name": "radiusPolicy",
+          "required": false,
+          "type": "\"equal-depth\" | \"equal-depth-area\" | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | (HierarchyLabelsOptions & { minWidth?: number | undefined; minArcLength?: number | undefined; }) | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editPartitionPlot({ target?, coordinate?, layout?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU? })"
+      ],
+      "snippet": "program.editPartitionPlot({ target: \"partition\", focus: { key: \"a\" }, padding: [2, 3] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editpartitionplot"
     },
     {
       "schemaVersion": 3,
@@ -40719,6 +42059,16 @@
       },
       "options": [
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -40785,7 +42135,7 @@
         }
       ],
       "callPatterns": [
-        "createContourMark({ id?, coordinate?, target?, geometry?, mode?, x?, y?, color? })"
+        "createContourMark({ id?, coordinate?, target?, outline?, shadow?, geometry?, mode?, x? })"
       ],
       "snippet": "program.createContourMark({ geometry: \"surface\" })",
       "errors": [],
@@ -40873,6 +42223,16 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
           "name": "geometry",
           "required": false,
           "type": "string | undefined"
@@ -40929,7 +42289,7 @@
         }
       ],
       "callPatterns": [
-        "editContourMark({ target?, coordinate?, geometry?, mode?, x?, y?, color?, fill? })"
+        "editContourMark({ target?, coordinate?, outline?, shadow?, geometry?, mode?, x?, y? })"
       ],
       "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
       "errors": [],

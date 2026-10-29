@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 
-import { documentationPrograms } from "../../scripts/doc-snippets.js";
+import { documentationPrograms, copyDocumentationSupportFiles } from "../../scripts/doc-snippets.js";
 import { assertDocumentationRendering, documentationEnvironment } from "../support/docs-runtime.js";
 import { docInputs, datasetValues } from "../support/docs-inputs.js";
 
@@ -24,12 +24,15 @@ for (const example of await documentationPrograms()) {
     const prefix = [
       `import { documentationEnvironment } from ${JSON.stringify(new URL("../support/docs-runtime.js", import.meta.url).href)};`,
       `const __documentationEnvironment = documentationEnvironment(${JSON.stringify({ environment: example.environment, dataset: example.dataset })}, ${JSON.stringify(data)});`,
-      'const { document, fetch } = __documentationEnvironment;',
+      'const { document, fetch, createImageBitmap } = __documentationEnvironment;',
       ...Object.entries(fixture).map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`),
       ...(example.importChart ? ['import { chart } from "ggaction";'] : [])
     ].join("\n");
     const resultNames = example.result.split(",").map(value => value.trim());
-    const moduleFile = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "") + ".mjs");
+    const moduleDirectory = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? ""));
+    await mkdir(moduleDirectory, { recursive: true });
+    await copyDocumentationSupportFiles(example, moduleDirectory);
+    const moduleFile = path.join(moduleDirectory, "main.mjs");
     await writeFile(moduleFile, `${prefix}\n${example.code}\nexport { ${resultNames.join(", ")}, __documentationEnvironment };\n`);
     const result = await import(pathToFileURL(moduleFile));
     for (const name of resultNames) {
@@ -100,6 +103,9 @@ test("documentation mocks reject incorrect URLs/selectors and missing rendering"
   const example = { environment: "browser-module", dataset: "cars", rendering: "renders-canvas" };
   const environment = documentationEnvironment(example, []);
   assert.throws(() => environment.document.querySelector("#wrong"), /Undocumented Canvas selector/);
+  assert.throws(() => environment.document.createElement("div"), /Undocumented element/);
+  assert.notEqual(environment.document.createElement("canvas"), environment.canvas);
+  await assert.rejects(environment.createImageBitmap({}), /requires a Blob/);
   await assert.rejects(environment.fetch("/wrong.json"), /documented dataset URL/);
   assert.throws(() => assertDocumentationRendering(example, environment.canvas), /must render/);
   environment.canvas.width = environment.canvas.height = 10;

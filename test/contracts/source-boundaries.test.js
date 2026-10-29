@@ -93,7 +93,7 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
-          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "imageState.js")].includes(path.relative(root, dependency))) ||
+          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
             path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
           (path.relative(root, file) === path.join("resources", "dataUpdate.js") &&
@@ -101,10 +101,18 @@ test("keeps source imports inside their architectural boundaries", () => {
           (path.relative(root, file) === path.join("resources", "dataUpdateFull.js") &&
             path.relative(root, dependency) === path.join("actions", "data", "sourcePlan.js")) ||
           (path.relative(root, file) === path.join("actions", "images", "index.js") && path.relative(root, dependency) === path.join("resources", "imageResource.js")) ||
+          (path.relative(root, file) === path.join("actions", "fonts", "index.js") && path.relative(root, dependency) === path.join("resources", "fontResource.js")) ||
+          (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
+          (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
-          (["imageRendering.js", "canvasScene.js"].some(name => path.relative(root, file) === path.join("renderers", name)) &&
+          (path.relative(root, file) === path.join("selectors", "graphs.js") &&
+            path.relative(root, dependency) === path.join("core", "vocabulary.js")) ||
+          (["imageRendering.js", "canvasScene.js", "fontRendering.js", "fonts.js", "textGlyphMask.js", "textInkBounds.js"].some(name => path.relative(root, file) === path.join("renderers", name)) &&
             ["assetHost.js", "ownData.js", "contentDigest.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
+          (["imageRendering.js", "canvasScene.js", "shadowRendering.js", "shadowState.js"].some(name => path.relative(root, file) === path.join("renderers", name)) &&
+            ["assetHost.js", "ownData.js", "contentDigest.js", "pngEncoding.js", "validation.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
+          (owner === "theme" && path.relative(root, dependency) === path.join("core", "ownData.js")) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,
@@ -129,7 +137,8 @@ test("Basic source preparation excludes Full revision and facet orchestration", 
     pending.push(...localImports(file));
   }
   assert.ok(visited.has(path.join(root, "resources", "dataUpdate.js")));
-  for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js"]) {
+  for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js",
+    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js"]) {
     assert.equal(visited.has(path.join(root, file)), false, file);
   }
 });

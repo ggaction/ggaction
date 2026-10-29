@@ -1,26 +1,30 @@
 # Fonts and Text Rendering
 
-ggaction stores a CSS-style `fontFamily` string in concrete text graphics and
-passes it to the selected rendering backend. The default family is
-`sans-serif`. ggaction does not bundle a font or expose a font-loading or
-registration API, so the browser, operating system, and native renderer decide
-which installed face satisfies that family.
+Text uses `sans-serif` and deterministic estimated bounds by default. You can
+also load explicit font bytes through `prepareFontResource`, retain them with
+`createFontResource`, and prepare exact layout widths through `prepareTextMetrics`.
+The application supplies loading, decoding and measurement callbacks. The
+library verifies the font identity and commits the prepared result synchronously.
+
+See the [prepared-font tutorial](../../tutorials/font-assets/) for a complete
+Korean and emoji example, and [embedded-font rendering](../../api/rendering/#embedded-fonts)
+for host callbacks, limits, disposal and error behavior.
 
 ## Cross-platform contract
 
 | Concern | Behavior |
 | --- | --- |
-| Family | Must be a non-empty string; availability is controlled by the host/backend |
+| Family | A non-empty string; an exact profile binds one explicit family/style/weight tuple to retained font bytes |
 | Size | Must be a positive finite number in logical chart pixels |
 | Weight | A non-empty string or finite number; numeric renderer weights are rounded to the nearest hundred and clamped to 100–900 |
-| Authoring bounds | Deterministic estimates from text, size, and broad family/weight factors; no backend `measureText` call |
-| Painted glyphs | The host/backend resolves the actual face; its glyph widths can differ from the estimated bounds |
-| SVG | Emits `font-family`, `font-size`, and normalized `font-weight`; the consumer still resolves the font |
-| Canvas, PNG, PDF | Draw through the Canvas-compatible backend with the resolved host/native font |
+| Authoring bounds | Deterministic estimates by default; an applied exact profile uses prepared widths and rejects missing queries |
+| Painted glyphs | Ordinary text uses host fonts; font-bound text uses the retained bytes under a content-addressed alias |
+| SVG | Embeds font-bound bytes in `@font-face`; ordinary `fontFamily` text still uses the consumer's fonts |
+| Canvas, PNG, PDF | Canvas accepts a `prepareFontRendering` handle; PNG/PDF prepare retained fonts for the duration of output |
 
-SVG markup referencing a family is not proof that the font is embedded.
-Likewise, PDF metadata is not a font-embedding control. Qualify the final file
-in the deployment environment when exact typography is a product requirement.
+A family string alone does not embed a font. Font resources and concrete
+font-bound graphics retain validated bytes for offline restoration. Renderers
+use the stored lines and origins without fetching, measuring or wrapping again.
 
 ## Set text styles explicitly
 
@@ -49,7 +53,18 @@ global theme or rewrite every axis and legend.
 
 ## Loading in browsers
 
-Load required web fonts before rendering so the backend can use the intended
+For exact layout, prepare font resources on the intended immutable program,
+then call `prepareTextMetrics(program, {id, fonts}, host)` and apply its handle
+with `applyTextMetrics({prepared, requestToken})`. A new label that needs a
+missing width fails atomically. Remove the profile, edit the label, and prepare
+again; replacing a bound font prepares its new measurements before committing.
+
+Browser Canvas also requires `prepareFontRendering(program, {register})` and
+`render(program, context, {fonts})`. Release the handle with `fonts.dispose()`
+when drawing has finished. The host registers exactly the supplied alias and
+bytes and returns the matching identity and a disposer.
+
+For ordinary family-based text, load web fonts before rendering so the backend can use the intended
 face. Waiting for `document.fonts.ready` does not change ggaction's deterministic
 text estimates into browser measurements. Rebuilding the same program with the
 same styles retains those estimates. If a font arrives after drawing, rerender

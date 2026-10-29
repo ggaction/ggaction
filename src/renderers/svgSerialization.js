@@ -1,3 +1,5 @@
+import { readPreparedShadows } from "./shadowState.js";
+import { readBlendMode } from "../grammar/compositing.js";
 import { patternFillGeometry, validatePatternWork } from "../grammar/patterns.js";
 import { paintColorCSS } from "../grammar/color.js";
 import { collectTransitionGraphics } from "./transitionScene.js";
@@ -27,7 +29,7 @@ import { validateRendererOptions } from "./options.js";
 import { isBlendMode } from "../grammar/compositing.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace"]);
+const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace", "shadows"]);
 const RESOURCE_NAMESPACE = /^[A-Za-z][A-Za-z0-9_-]*$/;
 const TEXT_ANCHORS = Object.freeze({
   left: "start",
@@ -130,6 +132,21 @@ function requireStrokeDash(properties, graphicId) {
     );
   }
   return strokeDash;
+}
+
+function outlineAttributes(properties) {
+  const outline = properties.outline;
+  if (outline === undefined) return [];
+  return [["stroke", paintColorCSS(outline.color)], ["stroke-width", formatNumber(outline.width)],
+    ["paint-order", "stroke fill"],
+    ...strokeDetailAttributes({ ...properties, stroke: outline.color }, outline.width)];
+}
+
+function strokeAttributes(properties, strokeWidth) {
+  return properties.outline === undefined
+    ? [["stroke", properties.stroke], ["stroke-width", strokeWidth === undefined ? undefined : formatNumber(strokeWidth)],
+        ...strokeDetailAttributes(properties, strokeWidth)]
+    : outlineAttributes(properties);
 }
 
 function strokeDetailAttributes(properties, strokeWidth) {
@@ -277,12 +294,9 @@ function serializeCircle(state, graphicId, properties) {
     ["cy", formatNumber(y)],
     ["r", formatNumber(radius)],
     ["fill", serializeFill(state, properties.fill, { left: x - radius, right: x + radius, top: y - radius, bottom: y + radius }, graphicId)],
-    ["stroke", properties.stroke],
-    ["stroke-width", strokeWidth === undefined
-      ? undefined
-      : formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ...strokeAttributes(properties, strokeWidth),
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -320,11 +334,9 @@ function serializeRect(state, graphicId, properties) {
     ["width", formatNumber(width)],
     ["height", formatNumber(height)],
     ["fill", fill],
-    ["stroke", properties.stroke],
-    ["stroke-width", formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -350,13 +362,12 @@ function serializeLine(state, graphicId, properties) {
     ["x2", formatNumber(requireFiniteProperty(properties, "x2", graphicId))],
     ["y2", formatNumber(requireFiniteProperty(properties, "y2", graphicId))],
     ["fill", "none"],
-    ["stroke", properties.stroke],
-    ["stroke-width", formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -411,21 +422,25 @@ function serializePath(state, graphicId, properties) {
     ["d", serializePathData(commands)],
     ["fill-rule", properties.fillRule],
     ["fill", fill],
-    ["stroke", properties.stroke],
-    ["stroke-width", strokeWidth === undefined
-      ? undefined
-      : formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
 function serializeText(state, graphicId, properties) {
   validateConcreteGraphicProperties("text", properties);
+  if (properties.font !== undefined) {
+    const font = properties.font, alias = fontRenderAlias(font);
+    state.fonts ??= new Set();
+    if (!state.fonts.has(alias)) {
+      state.fonts.add(alias);
+      state.definitions.push(element("style", [], `@font-face{font-family:"${alias}";src:url("data:${font.mimeType};base64,${font.payload.data}");font-style:${font.style};font-weight:${font.weight};}`));
+    }
+  }
   const x = requireFiniteProperty(properties, "x", graphicId);
   const y = requireFiniteProperty(properties, "y", graphicId);
   const fontSize = requireFiniteProperty(properties, "fontSize", graphicId);
@@ -475,13 +490,15 @@ function serializeText(state, graphicId, properties) {
     ["x", formatNumber(x)],
     ["y", formatNumber(y)],
     ["fill", fill],
-    ["font-family", fontFamily],
+    ...outlineAttributes(properties),
+    ["font-family", properties.font === undefined ? fontFamily : fontRenderAlias(properties.font)],
     ["font-size", formatNumber(fontSize)],
     ["font-weight", normalizeRendererFontWeight(fontWeight)],
     ["font-style", properties.fontStyle],
     ["text-anchor", TEXT_ANCHORS[textAlign]],
     ["dominant-baseline", DOMINANT_BASELINES[textBaseline]],
     ["opacity", formatNumber(opacity)],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined],
     ["transform", rotation === 0
       ? undefined
       : `rotate(${formatNumber(rotationDegrees)} ${formatNumber(x)} ${formatNumber(y)})`]
@@ -491,6 +508,17 @@ function serializeText(state, graphicId, properties) {
 }
 
 function serializeConcreteGraphic(state, id, graphic) {
+  if (Object.hasOwn(graphic.properties ?? {}, "shadow")) {
+    const glyph = state.shadows?.get(id);
+    if (!glyph) throw new Error(`Graphic "${id}" requires a prepared shadow glyph.`);
+    if (glyph.empty) return "";
+    const blend = readBlendMode(graphic.properties);
+    return element("image", [["x", formatNumber(glyph.x)], ["y", formatNumber(glyph.y)],
+      ["width", formatNumber(glyph.width)], ["height", formatNumber(glyph.height)],
+      ["opacity", formatNumber(requireOpacity(graphic.properties, id))],
+      ["preserveAspectRatio", "none"], ["href", `data:image/png;base64,${glyph.payload.payload.data}`],
+      ["style", blend === undefined || blend === "normal" ? undefined : `mix-blend-mode:${blend}`]]);
+  }
   if (graphic.type === "collection") {
     const items = (graphic.items ?? []).map(item =>
       serializeConcreteGraphic(state, item.id ?? id, item)
@@ -604,7 +632,7 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
 
 function requireSVGOptions(options) {
   validateRendererOptions(options, SVG_OPTIONS, "renderToSVG options");
-  for (const key of SVG_OPTIONS) {
+  for (const key of ["title", "description", "resourceNamespace"]) {
     if (
       options[key] !== undefined &&
       (typeof options[key] !== "string" || options[key].length === 0)
@@ -643,7 +671,9 @@ export function renderToSVG(program, options = {}) {
     { nested: false }
   );
   let namespace = resolvedOptions.resourceNamespace;
+  concreteFonts(graphicSpec);
   const state = {
+    shadows: readPreparedShadows(graphicSpec, resolvedOptions.shadows),
     clipCount: 1,
     definitions: [],
     gradientCount: 1,
@@ -656,9 +686,9 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true;
+      if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true;
     },
-    item({object}) { if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true; }
+    item({object}) { if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(
     graphicSpec,
@@ -689,10 +719,15 @@ export function renderToSVG(program, options = {}) {
 }
 
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
-export function renderTransitionGraphics(graphicSpec, identities) {
-  const scene = collectTransitionGraphics(graphicSpec, identities);
+export function renderTransitionGraphics(graphicSpec, identities, options = {}) {
+  concreteFonts(graphicSpec);
+  const prepared = readPreparedShadows(graphicSpec, options.shadows), shadows = new Map();
+  const scene = collectTransitionGraphics(graphicSpec, identities, { onNode(id, node) {
+    if (prepared.has(id)) shadows.set(node.key, prepared.get(id));
+  } });
   let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
+    shadows,
     get resourceNamespace() { return namespace ??= `scene-${resourceNamespace(graphicSpec)}`; } };
   const nodes = scene.nodes.map(({ properties, clips, ...node }) => {
     let svg = serializeConcreteGraphic(state, node.key, { type: node.type, properties });
@@ -722,3 +757,4 @@ function serializeClip(clip) {
     ? element("path", [["d", serializePathData(clip.commands)], ["clip-rule", clip.fillRule ?? "nonzero"]])
     : element("rect", Object.entries(clip).map(([key, value]) => [key, formatNumber(value)]));
 }
+import { concreteFonts, fontRenderAlias } from "./fonts.js";

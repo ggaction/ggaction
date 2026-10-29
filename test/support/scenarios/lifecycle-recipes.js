@@ -1,4 +1,5 @@
-import { chart, hconcat, prepareDataUpdate, prepareImageResource } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
+import { readFileSync } from "node:fs";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -33,8 +34,22 @@ const imageMarked = imageBase.createImageResource({ prepared: imageCreate, reque
     fit: "cover", align: [0, 1], opacity: 0.5, alt: "Lifecycle fixture", clip: { x: 0, y: 0, width: 8, height: 8 } })
   .editImageMark({ target: "unusedImageMark", image: "unusedLifecycleImage", viewport: "auto", fit: "fill", align: [1, 0], opacity: 1, alt: "Updated fixture", clip: false });
 const imageReplacement = await prepareImageResource(imageMarked, { kind: "replace", target: "unusedLifecycleImage", ...imageSource }, imageHost);
-const preparedResourceBase = imageMarked.replaceImageResource({ prepared: imageReplacement, requestToken: imageHost.requestToken })
+const imageResourceBase = imageMarked.replaceImageResource({ prepared: imageReplacement, requestToken: imageHost.requestToken })
   .removeMark({ target: "unusedImageMark" }).removeResource({ kind: "image", id: "unusedLifecycleImage", cascade: false });
+
+const fontBytes = new Uint8Array(readFileSync(new URL("../../fixtures/fonts/metric-fixture.ttf", import.meta.url)));
+const fontSource = { uri: "fixture:lifecycle-font", expectedHash: "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+  mimeType: "font/ttf", family: "sans-serif", style: "normal", weight: 400, metricsProviderVersion: "lifecycle@1" };
+const fontHost = { requestToken: "lifecycle-font", load: () => ({ bytes: fontBytes, mimeType: "font/ttf" }),
+  decode: value => Object.fromEntries(["contentHash", "family", "style", "weight", "metricsProviderVersion"].map(key => [key, value[key]])),
+  measure: ({ asset, queries }) => ({ contentHash: asset.contentHash, metricsProviderVersion: asset.metricsProviderVersion, widths: queries.map(() => 0) }) };
+const fontCreated = imageResourceBase.createFontResource({ prepared: await prepareFontResource(imageResourceBase,
+  { kind: "create", id: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken });
+const fontMeasured = fontCreated.applyTextMetrics({ prepared: await prepareTextMetrics(fontCreated, { id: "lifecycle-exact-font", fonts: ["unusedLifecycleFont"] },
+  { requestToken: fontHost.requestToken, decode: fontHost.decode, measure: fontHost.measure }), requestToken: fontHost.requestToken });
+const preparedResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
+  { kind: "replace", target: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken })
+  .removeResource({ kind: "font", id: "unusedLifecycleFont", cascade: true });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1292,8 +1307,13 @@ function buildDirectDataResources(factors) {
     .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
       source: "category", target: "category", weight: "positive", selfLoops: true })
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
+    .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
+    .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
     .editGraphData({ target: "directGraph", definition: { directed: true } })
+    .createInferredGraphData({ id: "directInferredGraph", data: "directSource", nodeKey: "id", ruleId: "source-order",
+      rule: "sequence", options: { orderField: "x", groupBy: ["category"] } })
+    .editInferredGraphData({ target: "directInferredGraph", definition: { options: { orderField: "x", groupBy: ["category"], lag: 2 } } })
     .createData({ id: "directFlowEdges", values: [...new Set(rows.map(row => row.category))].map(category => ({
       category, value: rows.filter(row => row.category === category).reduce((sum, row) => sum + row.positive, 0)
     })) })
@@ -1309,8 +1329,8 @@ function buildDirectDataResources(factors) {
     .createDensityContourData({ id: "directContourDensity", data: "directSource", x: "x", y: "positive", estimator: "kde", normalization: "unit",
       grid: { origin: [xMinimum, 0], dx: stableSpan / 2, dy: Math.max(...rows.map(row => row.positive)) / 2, width: 3, height: 3 },
       bandwidth: [stableSpan, Math.max(...rows.map(row => row.positive))], kernel: "gaussian", thresholds: [0, 1] })
-    .createContourMark({ id: "directContours", geometry: "directContourDensity", mode: "filled", color: false, opacity: .2 })
-    .editContourMark({ target: "directContours", opacity: .3 })
+    .createContourMark({ id: "directContours", geometry: "directContourDensity", mode: "filled", color: false, opacity: .2, outline: { color: "white", width: 1 }, shadow: false })
+    .editContourMark({ target: "directContours", opacity: .3, outline: false, shadow: false })
     .editContourData({ target: "directContourGrid", thresholds: [0, Math.max(...rows.map(row => row.positive)) + 2] })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
     .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
@@ -1322,6 +1342,9 @@ function buildDirectDataResources(factors) {
     .createTreemapPlot({ id: "directMap", layout: "directMapLayout", labels: {} })
     .editTreemapPlot({ target: "directMap", cells: { opacity: .7 } })
     .layoutHierarchy({ id: "unusedHierarchyLayout", hierarchy: "directHierarchy", method: "partition" })
+    .createPartitionPlot({ id: "directPartition", layout: "unusedHierarchyLayout", padding: [2, 3], labels: {} })
+    .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
+    .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
   return program
     .createDensityData({
@@ -2233,7 +2256,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource",
+      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2492,7 +2515,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

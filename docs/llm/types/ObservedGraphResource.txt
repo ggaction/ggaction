@@ -1,0 +1,9 @@
+export interface ObservedGraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1"; readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 | 1 };
+    readonly definition: ObservedGraphDefinition & Required<Pick<ObservedGraphDefinition, "attributes" | "directed" | "selfLoops" | "maxNodes" | "maxEdges">> };
+  readonly result: { readonly model: GraphModel<"observed">; readonly diagnostics: null };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}

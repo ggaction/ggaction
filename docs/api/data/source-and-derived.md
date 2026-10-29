@@ -133,7 +133,7 @@ Creation is local to a unit because its `target` names an endpoint field. Create
 graphs in their child units before composing charts. Editing supports the
 standard [scoped targets](../composition/editing.md#target-one-view-one-mark-or-several-marks). Source data revisions
 rebuild each affected graph once, updating exact input references and row
-provenance. A referenced source cannot be removed. Editable snapshots retain
+provenance. Bound layouts and [graph plots](../graphs.md) update in the same explicit action. A referenced source cannot be removed. Editable snapshots retain
 the graph model and validate its structure and source bindings on restoration.
 These actions and graph snapshots require the Full entry.
 

@@ -1,0 +1,5 @@
+export interface FontMetricsProfile {
+  readonly schemaVersion: 2; readonly id: string;
+  readonly fonts: readonly Readonly<{ resource: FontRef; identity: FontIdentity }>[];
+  readonly measurements: readonly (TextMeasurement & { readonly fontStyle: "normal" | "italic" })[];
+}

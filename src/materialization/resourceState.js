@@ -13,7 +13,8 @@ import { validateParameterResource } from "../grammar/parameter.js";
 import { validateDataSourceResource } from "./dataSourceState.js";
 import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../core/resourceReference.js";
 import { getBuiltinResourceKindHandler } from "./resourceKinds.js";
-import { layerResourceBindings } from "../core/resourceReferences.js";
+import { layerResourceBindings, fontMetricResourceBindings } from "../core/resourceReferences.js";
+import { normalizeFontMetricProfile } from "../core/textMetricProfile.js";
 
 export { STORED_RESOURCE_KINDS, validateInputReference } from "../core/resourceReference.js";
 const identity = ref => JSON.stringify([ref.kind, ref.id]);
@@ -82,6 +83,7 @@ export function resourceDependencies(resource) {
 }
 
 export function validateResourceGraph(program, ProgramClass = program.constructor) {
+  if (program.materializationConfigs?.textMetrics?.schemaVersion === 2) normalizeFontMetricProfile(program.materializationConfigs?.textMetrics);
   const resources = program.semanticSpec.resources;
   if (!Array.isArray(resources)) throw error("Semantic resources must be an array.");
   validateWorkLimit(resources.length, "Resource count");
@@ -106,6 +108,7 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
     if (ref.kind !== kind) throw error("Layer binding has an incompatible resource kind.", "incompatible-resource", { ownerId: layer.id });
     resolveInputReference(program, ref);
   }
+  for (const { ref } of fontMetricResourceBindings(program)) resolveInputReference(program, ref);
   for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
 }
 
@@ -208,6 +211,9 @@ export function collectParameterInputReferences(program) {
 }
 
 export function planStoredResourceRemoval(program, requested, { cascade = false } = {}) {
+  if (fontMetricResourceBindings(program).some(({ ref }) => ref.kind === requested.kind && ref.id === requested.id)) {
+    throw error("Resource is referenced by an active font metric profile.", "resource-in-use", { resourceId: requested.id });
+  }
   if (requested.kind === "parameter") {
     const references = collectParameterInputReferences(program).filter(ref => ref.id === requested.id);
     if (references.length) throw error("Parameter is referenced by live expression datasets.", "resource-in-use", {

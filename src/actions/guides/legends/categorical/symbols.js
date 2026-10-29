@@ -37,6 +37,16 @@ function applyLayerOpacity(program,id,opacity,normal=false) {
   })});
 }
 
+function applyInheritedEffect(program, id, property, value) {
+  if (value !== undefined) return program.editGraphics({ target: id, property, value });
+  const owner = program.graphicSpec.objects[id];
+  if (!owner.items.some(item => item.properties[property] !== undefined)) return program;
+  return program.editGraphics({ target: id, property: "items", value: owner.items.map(item => {
+    const { [property]: removed, ...properties } = item.properties; void removed;
+    return { type: item.type ?? owner.type, properties };
+  }) });
+}
+
 function makeEditSymbol(type) {
   const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
   const op = `rematerializeLegendSymbol${suffix}`;
@@ -97,6 +107,7 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
+        next = applyInheritedEffect(next, id, "shadow", layer.shadow);
         return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity);
       }
       if (type === "point") {
@@ -117,7 +128,10 @@ function makeEditSymbol(type) {
               opacity: layer.opacity ?? appearance.opacity,
               ...requestedStrokeDetails(layer, "Legend point symbol")
             });
-            return !explicitRecipeOpacity?graphic:{...graphic,properties:{...graphic.properties,blend:"normal"}};
+            return { ...graphic, properties: { ...graphic.properties,
+              ...(layer.outline === undefined ? {} : { outline: layer.outline }),
+              ...(layer.shadow === undefined ? {} : { shadow: layer.shadow }),
+              ...(!explicitRecipeOpacity ? {} : { blend: "normal" }) } };
           });
           return next.editGraphics({
             target: id,
@@ -146,6 +160,8 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
+        next = applyInheritedEffect(next, id, "outline", layer.outline);
+        next = applyInheritedEffect(next, id, "shadow", layer.shadow);
         if (structuredFill) next = next.editGraphics({ target: id, property: "fill", value: materializeFillItems(next, findLayer(next, config.target),
           next.graphicSpec.objects[id].items.map((item, index) => ({ type: "circle", properties: { ...item.properties, fill: pointFills[index] } }))).map(item => item.properties.fill) });
         return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity, explicitRecipeOpacity);
@@ -172,6 +188,8 @@ function makeEditSymbol(type) {
           fill: fills[index],
           stroke: strokes[index],
           strokeWidth: layer.strokeWidth,
+          ...(layer.outline === undefined ? {} : { outline: layer.outline }),
+              ...(layer.shadow === undefined ? {} : { shadow: layer.shadow }),
           ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
           ...(!explicitRecipeOpacity?{}:{blend:"normal"}),
           ...requestedStrokeDetails(details, "Legend swatch symbol")

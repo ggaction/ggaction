@@ -1,0 +1,13 @@
+import { copyFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { preparePackageConsumer } from '../../scripts/package-consumer.js';
+import { run } from '../../scripts/consumers/runtime.js';
+import { testOptionalDependencies } from '../../scripts/consumers/optional-peers.js';
+const major=process.versions.node.split('.')[0];
+const c=await preparePackageConsumer({packageSpec:path.resolve('.artifacts/release/ggaction-0.0.26.tgz')});
+try {
+ await testOptionalDependencies(c);
+ for(const file of ['fonts.mjs','mark-outlines.mjs'])await copyFile('scripts/consumers/fixtures/node/'+file,path.join(c.directory,file));
+ const runner=`import {cases as fonts} from './fonts.mjs';import {cases as outlines}from './mark-outlines.mjs';import{writeFile}from'node:fs/promises';const target=outlines.find(c=>c.id==='paint/outline-image-hierarchy-composition');const records=[];for(const entry of [target,...fonts,target]){await entry.run();records.push({id:entry.id,status:'passed'});}await writeFile(${JSON.stringify(path.resolve('.artifacts/font-main-merge/focused'+major+'-cases.json'))},JSON.stringify({node:process.version,records},null,2));`;
+ await writeFile(path.join(c.directory,'focused.mjs'),runner);run(process.execPath,['focused.mjs'],c.directory);console.log('Four ordered installed font/outline checks passed');
+}finally{await c.cleanup();}

@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-implementation-checkpoint",
+  "scope": "P2 outlines only; blend expansion, shadow, STEP017 and Roadmap9 remain incomplete",
+  "date": "2026-10-28",
+  "integrationBase": "a561ae1c5",
+  "runtimeSourceCommit": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
+  "branch": "codex/roadmap9-paints",
+  "results": {
+    "unit": {
+      "firstRunPassed": 5412,
+      "firstRunFailed": 2,
+      "reason": "previous Text stroke-details unsupported expectations",
+      "relatedRepairPassed": 24,
+      "fullSuiteRepeated": false
+    },
+    "contracts": {
+      "firstRunPassed": 711,
+      "firstRunFailed": 5,
+      "reason": "chart promotion structure/ledger/primitive/inventory and previous Text lineJoin type expectation",
+      "relatedRepairPassed": 33,
+      "fullSuiteRepeated": false
+    },
+    "coverage": {
+      "focusedPassed": 136,
+      "canonicalOwnersPassed": 9,
+      "fullRepositoryCoverage": false,
+      "details": "coverage-floors.json"
+    },
+    "render": {
+      "publicPairVariants": 8,
+      "testsPassed": 9,
+      "nativeOutputsPerVariant": 8,
+      "independentOpacityMaximumByteDifference": 1,
+      "sameGgactionPairExact": true
+    },
+    "browser": {
+      "publicExamplePassed": 1,
+      "docsResponsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "docsSearchAndAxe": true
+    },
+    "realistic": {
+      "passed": 15,
+      "datasets": 5,
+      "recipes": 3,
+      "ownersPerRecipe": 2,
+      "outlineVariants": 3,
+      "directPaths": 126
+    },
+    "typesPassed": 1,
+    "docs": {
+      "sourcePassed": 167,
+      "builtPages": 150,
+      "selectiveArtifacts": 1224,
+      "finalBuildLog": "mark-outline-docs-build-final.log.gz",
+      "browserSweepReusedAfterProvenanceOnlyChange": true
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "casesPassed": 205,
+        "qualificationPassed": 7,
+        "browserBundles": {
+          "full": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 665,
+            "minifiedBytes": 1986327,
+            "gzipBytes": 556491
+          },
+          "basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 462,
+            "minifiedBytes": 1149895,
+            "gzipBytes": 333073
+          },
+          "svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 28,
+            "minifiedBytes": 43628,
+            "gzipBytes": 14301
+          }
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "casesPassed": 205,
+        "qualificationPassed": 7,
+        "browserBundles": {
+          "full": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 665,
+            "minifiedBytes": 1986327,
+            "gzipBytes": 555609
+          },
+          "basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 462,
+            "minifiedBytes": 1149895,
+            "gzipBytes": 332357
+          },
+          "svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 28,
+            "minifiedBytes": 43628,
+            "gzipBytes": 14227
+          }
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "casesPassed": 205,
+        "qualificationPassed": 7,
+        "browserBundles": {
+          "full": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 665,
+            "minifiedBytes": 1986327,
+            "gzipBytes": 556491
+          },
+          "basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 462,
+            "minifiedBytes": 1149895,
+            "gzipBytes": 333073
+          },
+          "svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 28,
+            "minifiedBytes": 43628,
+            "gzipBytes": 14301
+          }
+        }
+      }
+    ]
+  },
+  "artifact": {
+    "sha256": "56357b832921cd551dd4026795f3d7b05ef8998a67b81cfe1d390d3f4131fc26",
+    "sameArchiveConsumedOnAllNodes": true,
+    "entries": 763,
+    "packedBytesNode22": 1129103,
+    "packedBytesNode20And24": 1131929,
+    "unpackedBytes": 5212872,
+    "limits": {
+      "entries": 763,
+      "packedBytes": 1132000,
+      "unpackedBytes": 5213000,
+      "fullGzip": 557000,
+      "basicGzip": 334000,
+      "svgGzip": 25000
+    }
+  },
+  "sourceHashes": {
+    "knowledge/action-cards.json": "cf095f2cf999282453afe30831023b8917196d48afbb58461b051b95047dd08a",
+    "scripts/consumers/fixtures/node/manifest.json": "c01e7fa68ea43376dcd4c824e600993eeec7327c84ccbb33b8fe0de30bc1a778",
+    "scripts/consumers/fixtures/node/mark-outlines.mjs": "25fdd805a6bb1be4014e67352144a6bfedefb221cafba13eec9bd9e763a1e7c3",
+    "scripts/consumers/fixtures/types-2.ts": "7221774ce2e22e73d4fe9e22380e880a0c552b12a753d082c3cc784eb596da13",
+    "src/actions/guides/legends/categorical/index.js": "0b8aca1426652f452125ca924a13be664d9d21902031205a4a109a9628235573",
+    "src/actions/guides/legends/categorical/layout.js": "f1ba2c552041b7fce181cec008e2968b570642ecb849688c1ada72de6fc3108b",
+    "src/actions/guides/legends/categorical/recipes.js": "64f811e55ff5284f6a9659f52c3b5d03b2fa79920b2cd02e710e7a1ebcacabd4",
+    "src/actions/guides/legends/categorical/symbols.js": "e7f7f594fadf5a1aaac65b423175073ccd3de8a859351653d37657f604f4ea5d",
+    "src/actions/marks/arc/actions.js": "c0b99023ea599bfdfb1112bab3cc0c4cac453c77fdeec6390aa668c8d4466026",
+    "src/actions/marks/area/actions.js": "a0c3370e9693b7166c1e94ed00aa55796c9b1b816b1795845ed2081454571110",
+    "src/actions/marks/bar/create.js": "9423a6fbdbee90dfe8ca96144999a04678a9a0f4223492ccad3ed2b2158a180a",
+    "src/actions/marks/bar/edit.js": "0103094ceb44e8c7188f6efb55f9df408ddea4ffb607db22827657a1d49fe71d",
+    "src/actions/marks/point/create.js": "b8f152323d5843143b90c56fc8bb7f8de7b684c4cfc478ac2aaa956171cd6d98",
+    "src/actions/marks/point/edit.js": "ede5260a202106009fd4e3b90c59de15793de344929afefdeecb62f1bce38d79",
+    "src/actions/marks/point/materialize.js": "f677cce3ac5f3066169f74ee6699058a1c81ac68b94a748320bee8e0ea63e195",
+    "src/actions/marks/rect/actions.js": "ff96367a7ab14c15666da1b376822b61532bef952f48248e0c98abe0d8af7d63",
+    "src/actions/marks/references.js": "97a75eb6b5febe9e080fe2639765314f714db67cc7fe7781c6a98cc40300712c",
+    "src/actions/selection/actions.js": "edce10753e34084316f086668965ce1d59a3eda4f25b8443d18c07550d30d29c",
+    "src/grammar/markOutline.js": "1f9814287215416bfb4301c62697ea0f2cc716635f63db87fb9d8272026d4675",
+    "src/grammar/schemas/concreteGraphic.js": "fdeb554380c95483e54ad3ae64531a78c4fe5aceefdbe1a4f29d2c7717b8ee1a",
+    "src/grammar/schemas/graphic.js": "727b24e8c945c0b7520e08cd6e93e3f78ae1a6f212fa32e98635ab2b4f83a0f2",
+    "src/grammar/schemas/graphicBounds.js": "9ce340c18a68154f986e254951646ae7be5a9c63126cacd6fadf8fb9ddbffa56",
+    "src/grammar/text.js": "0aa7fd1c55303443735dd3d899d89f5a089c463e93d8ca34c1df290f1110145e",
+    "src/inspectionDescriptors.js": "04037e806e0f58d27dc7c40fb5421f38f5fcd2c5640d5e2bd47504b2e8f11418",
+    "src/materialization/markOutput.js": "122355e6e5ade28448f39d5c8a4e88ea374a34fcd37cd255e87993f42cb7d23a",
+    "src/materialization/rectConfig.js": "75c66cd6159ff4f03725936cf6248c1d25fab668bfaf847f5530ce1a149f64d9",
+    "src/materialization/selection/path.js": "789d2f31f7e5a71b6208f4bb13b26459c6632d0ba712cbd7f54183fd5da40b38",
+    "src/materialization/selection/point.js": "97dda1e16f6f57ac0fbd470e1b7fd9e3b72cdcf9ae1551687cbcb0c1390e2ff3",
+    "src/materialization/selection/styles.js": "dfd628c81c59416a9d8b959018e5ed29b17d47344f782f2e9532725d31702a07",
+    "src/materialization/textGeometry.js": "4ad89862cdca2c7d044092045656e691d5a1d63a926a0af3a4e1159425aee582",
+    "src/persistence/validation.js": "0fb3b1da01fe0a9f188ec22560461e57003808800c4642680aea40283ffd3c72",
+    "src/renderers/canvas/circle.js": "ca11b54d5f3d4339dfb7986537e9287694ded37c082278e3773735bc1e88c8a9",
+    "src/renderers/canvas/index.js": "521156fb2652091dd6dea312b04b37f403772a67910f61200998e66e9f7e7bc2",
+    "src/renderers/canvas/isolated.js": "e44fd0cde80a71e2c5211c84fa8797d725b9f76662ddcbdaaa74e97dced841ed",
+    "src/renderers/canvas/native.js": "2d55561983fd4e63da9e69a15bdef3c66821d6015d9a4f860d887e0190b3e4f8",
+    "src/renderers/canvas/outline.js": "a86f7eba0b910a767fecd41ca709dbd2fd3a083769572ea89abf40be4981f553",
+    "src/renderers/canvas/path.js": "6b2eaa0988eaa47db14f38a3a7827d752ba75b49012d9acba2c62240a1e966e4",
+    "src/renderers/canvas/rect.js": "5d956dc972b0ab630e2eb64c7819c21500cf21a98193f3c401abf9672a4347e2",
+    "src/renderers/canvas/text.js": "527e942e3ec073ffe2c6ea839291865e616c61719485d126df6fd6829be05378",
+    "src/renderers/svgSerialization.js": "238cbf3151286eff67bb33e5db6eeb5d11f9dc67b28878a91456c854616371e9",
+    "test/charts/mark-outlines/manifest.js": "09b867ee51f28dc0dbe9e825a2776b1e16c891dd0fe82b99d56330aa84d903a0",
+    "test/charts/mark-outlines/png.render.js": "98d5c55bc2237af5fa781aa8959b9cb10986ecc96d25b3e4f62be32417e099c8",
+    "test/charts/mark-outlines/primitive.program.js": "327004dd0620b39cbe6ddb5746557b7f9b08c04410d9853a36301d884aca9515",
+    "test/charts/mark-outlines/primitive.test.js": "b29ad78a8800290c2a0caca8080cf31b12192f49447372341471da0d5e6d6db8",
+    "test/charts/mark-outlines/public.test.js": "9f4184c511dd09fe2ef4aad2dde9aae4b6326d45600db684e7d83ad99526e6f8",
+    "test/charts/mark-outlines/variants/native/backends.render.js": "cc05fb85c84eb753cce4da5d27b7d961379c082ee152aabf81576e05168b8bd1",
+    "test/charts/mark-outlines/variants/native/browser.html": "78f257761382f02370f83fd3e7ca3c4509d96a9b7fe431f8c0ad29b6c029ac58",
+    "test/charts/mark-outlines/variants/native/fixture.js": "931842b16a755f49dec8ed30ea4f70f3072b91aaeb915fc4dc3c168abd1eadd6",
+    "test/charts/mark-outlines/variants/native/manifest.js": "e64a5579a7dc758a1eac7ba88c843c83ca649c5b1d2b9115f6fbcbdcb1bd2a5c",
+    "test/charts/mark-outlines/variants/native/primitive.program.js": "d29610ff1058653b3d139b8053f07879b6fff7480814d68fca9c9ceb4dca965a",
+    "test/charts/mark-outlines/variants/native/primitive.test.js": "c59eb47df4286e96b857802fd505def4ca48de98e0490b884970d74642dd02a7",
+    "test/charts/mark-outlines/variants/native/reference.js": "4a0748aa6d955ed40713071a9650e0a1045b76ba23c83c5b575e011f532cff9c",
+    "test/contracts/mark-outline-rendering.test.js": "3bb60ae66bf5ed585e3496e094f855fe109638f3fe6ff6a6fcdecbb3f1545d8b",
+    "test/contracts/mark-outline-types.test.js": "f864c5ac8ab2973647488b1171516bd8f835ba6fe36e6bee4c6a5537ba83374f",
+    "test/contracts/realistic-mark-outlines.test.js": "0d289a70ed5631332a64716b85ab0f6793593f6e2086893f3acc1fab94bc66b0",
+    "test/unit/actions/marks/mark-outline.test.js": "a5d154feca51165bbdfd934e909e68deeed3e81c0dcbf6265b1b34c647231503",
+    "test/unit/grammar/mark-outline.test.js": "0add25264b9058f5c26c1dbed670652c9f6ed5e08da1b0e2865dba4db50d0118",
+    "types/basic.d.ts": "5a1ec4f16b54ce5b76517b74116af244931d5105125c11348b5520ae0f12997a",
+    "types/extension.d.ts": "b65b3bb32459ea04c5a4b93b27c2565bb2aacd08fbc84433639fcfac765aebcc",
+    "types/index.d.ts": "e7369315977e11a8ff8d05bc6dab94b456475f1502f1bded30a143cb45d4c319",
+    "types/program.d.ts": "e919a1a15a664817c09ab3f6a99becee6e7b6eb6906c79afdbdb2034fa6c959c"
+  },
+  "logs": [
+    {
+      "file": "mark-outline-backends-browser-reference.log.gz",
+      "sha256": "f5fa63ffa9016e4ae541f45e7f394a0b7bc6c5478c86d0389dc9f09d9133532a",
+      "uncompressedBytes": 930
+    },
+    {
+      "file": "mark-outline-backends-final.log.gz",
+      "sha256": "65df33c290ab04996aa52be2a594767b2f611a7a4772d66e1d5086a00e2e94f1",
+      "uncompressedBytes": 1175
+    },
+    {
+      "file": "mark-outline-backends-pass.log.gz",
+      "sha256": "bb8eebca39734cddbe440a5841258a4c043f770aeab1f92a8e7148626b709cf2",
+      "uncompressedBytes": 342
+    },
+    {
+      "file": "mark-outline-backends-second.log.gz",
+      "sha256": "82a9625f54e4c91d9d12a334cdc5fe235da233b35197f35647b5327668847ee0",
+      "uncompressedBytes": 1083
+    },
+    {
+      "file": "mark-outline-boundaries-first.log.gz",
+      "sha256": "c3bef9cd182b220b3c1a76b4d0a34dbcbbd9583ab9e9dc676b7b8e198308c395",
+      "uncompressedBytes": 9178
+    },
+    {
+      "file": "mark-outline-browser-capability.log.gz",
+      "sha256": "d8e8e7ff873cd36ad22b0a90442c9e6b8a6c27201c9b6548abe30af9fab56532",
+      "uncompressedBytes": 513
+    },
+    {
+      "file": "mark-outline-bundle-first.log.gz",
+      "sha256": "b8911250a0b9978ff66d2146098b74cacf92925ce44e557e8480f64ab964ad11",
+      "uncompressedBytes": 559
+    },
+    {
+      "file": "mark-outline-bundle-node20.log.gz",
+      "sha256": "d8dd87ea6268e115d5b72d68dfda0916ecbf0ed9ca3ca11b948143b55477dad5",
+      "uncompressedBytes": 559
+    },
+    {
+      "file": "mark-outline-card-measurement.log.gz",
+      "sha256": "a7821143dc8da14f356949e271e2f2d6f90293afa7007b4e347b31d9371c0d81",
+      "uncompressedBytes": 154
+    },
+    {
+      "file": "mark-outline-cards-fixed.log.gz",
+      "sha256": "9577d0473184a299a005ba585d88816b028bd9869c1fc910b65dcade45756624",
+      "uncompressedBytes": 890
+    },
+    {
+      "file": "mark-outline-cards-pass.log.gz",
+      "sha256": "5903a13c362d11f93cdc2dae9829789180115418535dd49b4d0289c27de5440d",
+      "uncompressedBytes": 60
+    },
+    {
+      "file": "mark-outline-cards.log.gz",
+      "sha256": "114e741bc1b27c38bef0995abe623da5157ab9aba02fbbf80044dd45bbf6b2db",
+      "uncompressedBytes": 893
+    },
+    {
+      "file": "mark-outline-catalog.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressedBytes": 0
+    },
+    {
+      "file": "mark-outline-charts-normal.log.gz",
+      "sha256": "95212bb4c772fe5633521a38b6eb8c373f4f182703401f04d2e93425be9c99cd",
+      "uncompressedBytes": 2447
+    },
+    {
+      "file": "mark-outline-consumer-final.log.gz",
+      "sha256": "f28a233e93788fc457c77cb799d853f39af87ad53d2a8ad1117b3b931bd30d17",
+      "uncompressedBytes": 5776
+    },
+    {
+      "file": "mark-outline-consumers-final.log.gz",
+      "sha256": "052c5095103f9c0a1b9fc4f4ced9de982acfb4fb7546f36aebf8ecfb25cc574b",
+      "uncompressedBytes": 1096
+    },
+    {
+      "file": "mark-outline-consumers-fixed.log.gz",
+      "sha256": "95efaaaa804276c08cd276ce375664ec82851763c8f2951875bf747e93d70bd2",
+      "uncompressedBytes": 2662
+    },
+    {
+      "file": "mark-outline-consumers.log.gz",
+      "sha256": "d46034682e29dd10caac375cce1e57c03ffd4f924136fd26566eb0bec46734b0",
+      "uncompressedBytes": 2493
+    },
+    {
+      "file": "mark-outline-contract-repairs-final.log.gz",
+      "sha256": "2a3b2ba68a87bba72a63314f9476c27de6f425980fece94cbee7af86baca01e8",
+      "uncompressedBytes": 7096
+    },
+    {
+      "file": "mark-outline-contract-repairs.log.gz",
+      "sha256": "e09f47e6b6675a812b5c6c4522d997e79ba9815f6a97c55db757bab8938a6e21",
+      "uncompressedBytes": 7985
+    },
+    {
+      "file": "mark-outline-contracts-first.log.gz",
+      "sha256": "efe38317897cf2e36da698258e16332e2134d02aadc39b0cb66f86cf74ea5e22",
+      "uncompressedBytes": 244177
+    },
+    {
+      "file": "mark-outline-coverage-expanded.log.gz",
+      "sha256": "8403c71b8238061726ac8e841e6c41f63a203bc2c1dc21b29e5e74f01f381542",
+      "uncompressedBytes": 30056
+    },
+    {
+      "file": "mark-outline-coverage-final.log.gz",
+      "sha256": "0b0108c9da6f91925317d79a8b6e5b7c16faef76417ae8551b8a8efbc1eaa376",
+      "uncompressedBytes": 31351
+    },
+    {
+      "file": "mark-outline-coverage-first.log.gz",
+      "sha256": "84d2218bd11a4b5850ae7669d6d4c0f87d3b1bcbf36ac560b827898c3330b6c1",
+      "uncompressedBytes": 10416
+    },
+    {
+      "file": "mark-outline-coverage-pass.log.gz",
+      "sha256": "ca69e6ef13dc5c553ccbfe6814d58c6616b59c9f74173101fda1aa860b887535",
+      "uncompressedBytes": 30277
+    },
+    {
+      "file": "mark-outline-cross.log.gz",
+      "sha256": "170215c4c19cc71cb06e42590af72c26d705dee527567de08bd867a92662a290",
+      "uncompressedBytes": 3709
+    },
+    {
+      "file": "mark-outline-docs-browser.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "uncompressedBytes": 79
+    },
+    {
+      "file": "mark-outline-docs-build-final.log.gz",
+      "sha256": "6266c27060b4e36c2246153e3ab3c7d868c377a88350dfd2ca62b1989bbe2a03",
+      "uncompressedBytes": 419
+    },
+    {
+      "file": "mark-outline-docs-build.log.gz",
+      "sha256": "6e39e838056dfad2bb04c899ae416b99b70eacd4a16ebf5536ab2d582453112f",
+      "uncompressedBytes": 419
+    },
+    {
+      "file": "mark-outline-docs-built-links-final.log.gz",
+      "sha256": "08a08fb09b4d3d378a71a63be33608f804f1ca22f29aecb9f2275af1502751f5",
+      "uncompressedBytes": 179
+    },
+    {
+      "file": "mark-outline-docs-built-links.log.gz",
+      "sha256": "e7582de3a1002c86e76773ce7561529250d84784fe67724784001ba86de9707e",
+      "uncompressedBytes": 102
+    },
+    {
+      "file": "mark-outline-docs-final-sync.log.gz",
+      "sha256": "b0f41f419cb84eef9de34c52cde3fcee8ffaed2481c165e7288ebb43a36a37a6",
+      "uncompressedBytes": 118
+    },
+    {
+      "file": "mark-outline-docs-generate-first.log.gz",
+      "sha256": "f4772ed0eb4fe52bcd4016b604b8990c71db3677ac24914df2f8c1141f84c711",
+      "uncompressedBytes": 10205
+    },
+    {
+      "file": "mark-outline-docs-postcommit-sync.log.gz",
+      "sha256": "cb33ed1acfc5e97a820f8fbcb90bda0fe9c37c5155fa2656ad234dd93fe0d79c",
+      "uncompressedBytes": 335
+    },
+    {
+      "file": "mark-outline-docs-postcommit-tests.log.gz",
+      "sha256": "0aabf4664f905a4fc91107c4007fdacb45209e90e8b2298b7f93e17c44355646",
+      "uncompressedBytes": 38702
+    },
+    {
+      "file": "mark-outline-docs-preflight-fixed.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "uncompressedBytes": 257
+    },
+    {
+      "file": "mark-outline-docs-preflight.log.gz",
+      "sha256": "efea710c7eaa498073d44718c3e042aabc027d959865ae20209e8e39d2e1f29d",
+      "uncompressedBytes": 263
+    },
+    {
+      "file": "mark-outline-docs-tests-first.log.gz",
+      "sha256": "e906c757d9b9effe76d751c0f439db8981744c541dbabe8e44a0236478bb6685",
+      "uncompressedBytes": 39990
+    },
+    {
+      "file": "mark-outline-facades.log.gz",
+      "sha256": "4c3db74682f1ec2696772c9483eddf0294f814a1393cd639f704026b339cc664",
+      "uncompressedBytes": 2303
+    },
+    {
+      "file": "mark-outline-first.log.gz",
+      "sha256": "698cd5e1403abcfacd96a3efe36a667d5325157dd89236f90f3abc5dffe1e4ea",
+      "uncompressedBytes": 5426
+    },
+    {
+      "file": "mark-outline-focus.log.gz",
+      "sha256": "7dcc963c1cc10f79983faaf962ae0fa8168b1eb456761f04527ffeab2a52be65",
+      "uncompressedBytes": 1283
+    },
+    {
+      "file": "mark-outline-installed-node20.log.gz",
+      "sha256": "5ce6455e86a292837edd584abb1878ebbe281723facf7e941c6e8eb0c6d431cc",
+      "uncompressedBytes": 2876
+    },
+    {
+      "file": "mark-outline-installed-node22-fixed.log.gz",
+      "sha256": "80d8410d4b1bdfc880e43ccd99002992bd3d01630e48d833713dc7dd47c2a098",
+      "uncompressedBytes": 2876
+    },
+    {
+      "file": "mark-outline-installed-node22.log.gz",
+      "sha256": "b34b7d05aa2e1f120fb32af3058c0f57832dfcde6c1c872cd253474786456371",
+      "uncompressedBytes": 3934
+    },
+    {
+      "file": "mark-outline-installed-node24.log.gz",
+      "sha256": "85c7eb4fa3ee3664252cc495d7fbfdfa41dbc55a0abdebad9e5925b27baf4677",
+      "uncompressedBytes": 2876
+    },
+    {
+      "file": "mark-outline-pack-final.log.gz",
+      "sha256": "04f7cbac7fe403ff81a0a10a3cff735f1b2987563467d9183683cd06b4158274",
+      "uncompressedBytes": 621
+    },
+    {
+      "file": "mark-outline-package-first.log.gz",
+      "sha256": "6c3b4dafc80e7c50a024bca95e3fc3fa57580556acefe9636a8f30ce9e6df196",
+      "uncompressedBytes": 1127
+    },
+    {
+      "file": "mark-outline-placement.log.gz",
+      "sha256": "1afa86b1cb3f80bc383d37bcce60e049204420f1563ea40eca1f36aa12cd2443",
+      "uncompressedBytes": 1340
+    },
+    {
+      "file": "mark-outline-public-browser.log.gz",
+      "sha256": "2d367cc038d7ed7b069784f2711f1cfed2a469cb4cac0968b64dd247590326c1",
+      "uncompressedBytes": 290
+    },
+    {
+      "file": "mark-outline-public-final.log.gz",
+      "sha256": "4da3786c21bff1a0ed2df6e080a742db5bc50799fa11a2ccff2238c2ffc61de2",
+      "uncompressedBytes": 3330
+    },
+    {
+      "file": "mark-outline-public-first.log.gz",
+      "sha256": "fb5c3d5a67083015d1e590e93a9ee4fbb88c71565fa8d3c82a462c6ceaccc382",
+      "uncompressedBytes": 13620
+    },
+    {
+      "file": "mark-outline-public-fixed.log.gz",
+      "sha256": "b8fc85c634ba605dad3597fd72853f1ff5310900b375738f48335383b5c3c77a",
+      "uncompressedBytes": 14561
+    },
+    {
+      "file": "mark-outline-public-pass.log.gz",
+      "sha256": "b40eb8283104be0bc8a10865fb2d542a0aabcf093476825fb878bf78c5a793c1",
+      "uncompressedBytes": 1988
+    },
+    {
+      "file": "mark-outline-realistic-cache.log.gz",
+      "sha256": "768a319d2ac0afa25e46410708e8a037c6337d79e5d373d1f21a709aeaf00c82",
+      "uncompressedBytes": 3428
+    },
+    {
+      "file": "mark-outline-realistic-direct.log.gz",
+      "sha256": "bf31be8128a4de1a67456b580ce271f64163a8c89e2add902262a2a02b34bed4",
+      "uncompressedBytes": 344
+    },
+    {
+      "file": "mark-outline-realistic-first.log.gz",
+      "sha256": "ec3e2d49e9476cde2c2b278b9a085002fd69881bf45ba255bcf6b385d2b84c8e",
+      "uncompressedBytes": 23455
+    },
+    {
+      "file": "mark-outline-reference.log.gz",
+      "sha256": "cfceffb7c7f76260c6ac96e6bb4179bf5346376f26120adb145eadc1b281ce5d",
+      "uncompressedBytes": 33
+    },
+    {
+      "file": "mark-outline-render-first.log.gz",
+      "sha256": "6e1fabb51d1dbb96276c96cf6ca88ea60ae288071298e449bab7024cb521d252",
+      "uncompressedBytes": 4523
+    },
+    {
+      "file": "mark-outline-render-pairs-first.log.gz",
+      "sha256": "83dd43283e85c70bdc58cc0f8a6523cdafda53c6b25540a0279781e9b897c65b",
+      "uncompressedBytes": 7229193
+    },
+    {
+      "file": "mark-outline-render-promoted.log.gz",
+      "sha256": "5cafcc98217a89829544973e48f6b612103797a128968de10fec8584fcab2d83",
+      "uncompressedBytes": 1451
+    },
+    {
+      "file": "mark-outline-snippet-sync.log.gz",
+      "sha256": "b0f41f419cb84eef9de34c52cde3fcee8ffaed2481c165e7288ebb43a36a37a6",
+      "uncompressedBytes": 118
+    },
+    {
+      "file": "mark-outline-snippet-test.log.gz",
+      "sha256": "22e9344aa7ab8e6ecdc66ccfe159b72462ab492925a7e8bc9cd14e6e68611394",
+      "uncompressedBytes": 653
+    },
+    {
+      "file": "mark-outline-staged-measure-node20.log.gz",
+      "sha256": "2d4caf48cb3a3e4e7b9da8e8a637ded7104dbb254e0a85d305d1588861e111b6",
+      "uncompressedBytes": 273
+    },
+    {
+      "file": "mark-outline-staged-measure-node24.log.gz",
+      "sha256": "2d4caf48cb3a3e4e7b9da8e8a637ded7104dbb254e0a85d305d1588861e111b6",
+      "uncompressedBytes": 273
+    },
+    {
+      "file": "mark-outline-staged-measure.log.gz",
+      "sha256": "0d804d0222046f7f69dfc723b850da5941f59d6920d94e60e29c002a6943a1e8",
+      "uncompressedBytes": 273
+    },
+    {
+      "file": "mark-outline-types.log.gz",
+      "sha256": "e10fa978a2f07c1ae081b50a9dc941c3e5bc388b502533ec0249faeca491c9e0",
+      "uncompressedBytes": 352
+    },
+    {
+      "file": "mark-outline-unit-first.log.gz",
+      "sha256": "8a7dd34ef17980f1210e66a9c1a5281f4669f2eebdab84822a268507a9d6d55c",
+      "uncompressedBytes": 1164169
+    },
+    {
+      "file": "mark-outline-unit-repairs.log.gz",
+      "sha256": "b9c1d318e348924609434df1092b9b970ad579e091249405e6331412c5e5123d",
+      "uncompressedBytes": 5462
+    }
+  ],
+  "remaining": [
+    "blend capability expansion beyond existing Bar",
+    "shadow lowering through shared image payload",
+    "actual prepared Text glyph alpha for shadow",
+    "full combined integration verification"
+  ]
+}

@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-checkpoint",
+  "sourceCommit": "eb5fd61a0d250ced6f11ecaba725cfd0e0102a91",
+  "metadataCommit": "a0b20aef792f3d5dff6ba120523f191db2050b55",
+  "recordedAt": "2026-10-28T21:38:37.789376+00:00",
+  "repairInputs": {
+    "test/charts/baseline-evidence.json": "0fdeff8a9a0f34deb39519e44a69f94a1045166d285564b3acb9475300f0ba41",
+    "test/contracts/action-hierarchy-discovery.test.js": "56c5c3d11feeb3e8a76402c3427095926243065d91a9c5ab0006f956bb3746e2",
+    "test/realistic-timings.json": "a269f7333953c30784856d6e42ae49d74de8dda77b1d1de61babb3a3439c7371",
+    "test/unit/core/vocabulary.test.js": "5ffcb502e11fab2e7b0b0e30d1e53763146bce9f06d4e986217468bd4fd8901b",
+    "test/charts/partition-layouts/primitive.test.js": "5d481f11ba2f6502b3a8833c2fdcd0bfe7872a09b98f6237ba6ec41907094357",
+    "test/unit/renderers/structured-fill-contours.test.js": "430942f2a23ce12fa6f1eb6a553013c82e36bb9bb7ad8430bcf2911e8d3641fa"
+  },
+  "scope": "STEP025–028 public partition, shared H/Partition FillPaint and private frame preparation. AT65 public integration remains open.",
+  "checks": [
+    {
+      "id": "focused-coverage",
+      "role": "supplemental focused evidence; all cases rerun by canonical full coverage discovery",
+      "tests": 148,
+      "pass": 148,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 3338.887667,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/focused-coverage.log.gz"
+    },
+    {
+      "id": "boundaries-types",
+      "role": "supplemental focused evidence; all cases rerun by canonical full coverage discovery",
+      "tests": 59,
+      "pass": 59,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 1841.32925,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/boundaries-types.log.gz"
+    },
+    {
+      "id": "package-contracts",
+      "role": "supplemental focused evidence; all cases rerun by canonical full coverage discovery",
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 19767.299667,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/package-contracts.log.gz"
+    },
+    {
+      "id": "realistic",
+      "command": "node scripts/run-tests.js realistic test/contracts/generated-lifecycle-scenarios.test.js test/contracts/generated-scenario-feature-coverage.test.js test/contracts/realistic-partition-lifecycle.test.js",
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 201966.743708,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/realistic.log.gz"
+    },
+    {
+      "id": "render",
+      "command": "node scripts/run-render-tests.js",
+      "tests": 306,
+      "pass": 306,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 187770.353125,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/render.log.gz"
+    },
+    {
+      "id": "browser",
+      "command": "node scripts/run-tests.js browser",
+      "tests": 317,
+      "pass": 317,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 320370.316875,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/browser.log.gz"
+    },
+    {
+      "id": "docs",
+      "command": "node scripts/run-tests.js docs",
+      "tests": 169,
+      "pass": 169,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 51653.056625,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/docs.log.gz"
+    },
+    {
+      "id": "coverage-original",
+      "command": "node scripts/run-tests.js coverage",
+      "tests": 7334,
+      "pass": 7328,
+      "fail": 6,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 1697762.930125,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/coverage-original.log.gz"
+    },
+    {
+      "id": "repair",
+      "command": "node scripts/run-tests.js all test/contracts/action-hierarchy-discovery.test.js test/contracts/chart-variant-structure.test.js test/contracts/chart-vertical-slices.test.js test/contracts/test-discovery.test.js test/unit/core/vocabulary.test.js test/unit/support/test-sharding.test.js test/charts/partition-layouts/primitive.test.js test/unit/renderers/structured-fill-contours.test.js",
+      "tests": 43,
+      "pass": 43,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 15314.859208,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/repair.log.gz"
+    },
+    {
+      "id": "contour-coverage",
+      "command": "node --experimental-test-coverage --test-coverage-include='src/renderers/canvas/circle.js' --test-coverage-include='src/renderers/canvas/path.js' --test test/unit/renderers/canvas-renderer.test.js test/unit/renderers/canvas-path-renderer.test.js test/unit/renderers/canvas-stroke-details.test.js test/unit/renderers/structured-fill-contours.test.js",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 824.100375,
+      "log": "agent_docs/impl/roadmap9/chart/partition-evidence/contour-coverage.log.gz"
+    }
+  ],
+  "coverage": {
+    "global": {
+      "lines": 96.38,
+      "branches": 94.2,
+      "functions": 98.87
+    },
+    "originalCriticalFloorsPassed": 316,
+    "focusedCriticalOwners": {
+      "renderers/canvas/circle.js": {
+        "floor": {
+          "lines": 75,
+          "branches": 60,
+          "functions": 80
+        },
+        "metrics": {
+          "lines": 84.13,
+          "branches": 66.67,
+          "functions": 100
+        }
+      },
+      "renderers/canvas/path.js": {
+        "floor": {
+          "lines": 75,
+          "branches": 60,
+          "functions": 80
+        },
+        "metrics": {
+          "lines": 79.52,
+          "branches": 79.41,
+          "functions": 100
+        }
+      }
+    },
+    "criticalFloorsSatisfiedAcrossRuns": 318,
+    "hierarchyFloors": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "floorsLowered": false
+  },
+  "docsBuilt": {
+    "pages": 155,
+    "selectiveArtifacts": 1290,
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearch": true
+  },
+  "package": {
+    "sha256": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+    "sha1": "65c52704b4b57f5a47ca5189179e94c490dc0deb",
+    "entries": 801,
+    "packedBytes": 1190327,
+    "unpackedBytes": 5462716,
+    "installed": [
+      {
+        "node": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+        "version": "20",
+        "code": 0,
+        "startedAt": "2026-10-28T21:18:28.593Z",
+        "finishedAt": "2026-10-28T21:25:28.006Z",
+        "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+        "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "nodeCases": 208,
+        "qualificationCases": 7
+      },
+      {
+        "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "version": "22",
+        "code": 0,
+        "startedAt": "2026-10-28T21:25:28.015Z",
+        "finishedAt": "2026-10-28T21:28:04.873Z",
+        "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+        "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "nodeCases": 208,
+        "qualificationCases": 7
+      },
+      {
+        "node": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "version": "24",
+        "code": 0,
+        "startedAt": "2026-10-28T21:28:04.875Z",
+        "finishedAt": "2026-10-28T21:29:43.271Z",
+        "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+        "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+        "nodeCases": 208,
+        "qualificationCases": 7
+      }
+    ]
+  },
+  "visual": [
+    {
+      "path": ".artifacts/test/png/charts/partition-backends/partition-layouts/contact-sheet.png",
+      "sha256": "aecac7ba3c90bdc44ea8d0b07ce35e76a485c20b11370f2f9a20458b176cec3b",
+      "visuallyInspected": true
+    },
+    {
+      "path": ".artifacts/test/png/charts/partition-frames/partition-layouts/contact-sheet.png",
+      "sha256": "ffcc19fd46755a9a61af256eef4bec82b73356b569573afec50433f079872712",
+      "visuallyInspected": true
+    }
+  ],
+  "attemptNotes": [
+    "The original full run reported 7334 tests with six inventory/slice/ledger failures. The exact affected files and added primitive/contour assertions pass in a canonical focused repair run. Runtime, declarations, package and public docs are unchanged. Its 96.38/94.20/98.87 global metrics remain original-run metrics, not a synthetic rerun.",
+    "Two original Canvas contour owners missed only function floors. Meaningful native pattern-fill/stroke and zero/no-paint regressions satisfy their unchanged complete owner floors in focused instrumentation; all other owner floors are checked against the unchanged original full report.",
+    "The initial Node20 consumer attempt failed only conditional-encoding/position-text-lifecycle at its unchanged 30000 ms fresh-process timeout under concurrent host load; all final fixed-artifact attempts pass.",
+    "The first Node20/22/24 matrix used a shared release path that browser tests repacked. Its Node22/24 successes are retained as prior evidence, not used to claim one-byte-identical-artifact qualification. Final matrix uses an independent fixed path and verifies its SHA-256 before and after each execution.",
+    "The first full coverage run was intentionally stopped with SIGTERM before completion while generated docs were pinned to the committed source. The final coverage run uses the pinned metadata commit. No aborted run is counted as passing.",
+    "Source docs were regenerated to pin public examples and selective references to source eb5fd61a0. The 34 metadata files changed between source and pinned metadata commits; no runtime, tests, declarations, scripts or examples changed."
+  ],
+  "openIntegrationObligations": [
+    "AT65 public animation planner/controller/player, keyboard transactions, whole-scene current-frame hit routing and ancestor/canvas clip integration. Current private target-frame helper is not a public animation API.",
+    "H/Partition P2 outline/blend/shadow consumer integration after the common P2 checkpoint merges; P1 FillPaint body, labels and typed overrides are implemented and verified.",
+    "Root integrates with current observed graph and shared layout facade/dispatcher; rerun affected mixed-resource closure and generated inventory checks after the merge.",
+    "Root explicitly owns one merged-state run of realistic-lifecycle-factor-effects.test.js, realistic-scenario-generator.test.js and realistic-scenario-generation-isolation.test.js because both graph layout and partition extend buildDirectDataResources. Individual checkpoint reruns are not duplicated."
+  ],
+  "evidence": [
+    {
+      "source": ".artifacts/partition-focused-coverage-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/focused-coverage.log.gz",
+      "sha256": "dc0252adfd04cf5c597078bc278f4dbb70324183409dd41852637683e5f5e0f7",
+      "decodedSha256": "04124d91ebaeea8a794c0be003800103ac2263893359723ef4800c00596026cd"
+    },
+    {
+      "source": ".artifacts/partition-boundaries-fifth.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/boundaries-types.log.gz",
+      "sha256": "745fbd199f0389ea1e4cc5f820d6300fd5608b511c32dda79f26911e7cd889f9",
+      "decodedSha256": "4012285e02bb2a40e09c7b76a5d9c7c69aef267853968434a687d4f12e55c2bb"
+    },
+    {
+      "source": ".artifacts/partition-contracts-precommit.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/package-contracts.log.gz",
+      "sha256": "495ec45fe6cc4638c8b93bbfc3d395a886f8db7af5d25adcfc9f3adee2425bb5",
+      "decodedSha256": "fda4e5f7f18821ff64ce555dee11773748a8b62550d59922db91d1903722959a"
+    },
+    {
+      "source": ".artifacts/partition-realistic-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/realistic.log.gz",
+      "sha256": "d6254e72568dcdd3aa48d51839087292d025f963acf95f63a395b77b5895db70",
+      "decodedSha256": "a9c811fe2db98f3863f3638827420e1d390a14fb616d7bb36d54a3a1bd7b0f6a"
+    },
+    {
+      "source": ".artifacts/partition-render-all.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/render.log.gz",
+      "sha256": "9c5eeb1463458a5e87d06337184403040c7d265cef7f6d59228ec3c9345848b7",
+      "decodedSha256": "c6e19f73f0c8a0fb19097483b21da1056619d016cd0ea3f0e10854d58ff3c415"
+    },
+    {
+      "source": ".artifacts/partition-browser-all.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/browser.log.gz",
+      "sha256": "cfcef2d9f002d962ee51363f379d6182cf88c0f93cc663a03c0fb4909d025888",
+      "decodedSha256": "57a13ef1061bd366dfa920e45f5d7a04d507bfd72d41abdfbcf5d52385a797ce"
+    },
+    {
+      "source": ".artifacts/partition-docs-pinned-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/docs.log.gz",
+      "sha256": "44b4493753090aeeb6002226a581b7e4c0e131f099e1fbf702fbfcf90871be07",
+      "decodedSha256": "6c96ec046597628e14b3bf49d4554b3d26a9f674d3b96d0b009f26c834872578"
+    },
+    {
+      "source": ".artifacts/partition-full-original/partition-full-coverage-pinned.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/coverage-original.log.gz",
+      "sha256": "1173e0b423a67f6a13058e04583181932597c17518bc089c1cae23a44fc9f993",
+      "decodedSha256": "33d8535bc5c4db2d87a1ec55e5e8cc5a660e5e438b0edb41c5edc078c09defe5"
+    },
+    {
+      "source": ".artifacts/partition-full-repair-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/repair.log.gz",
+      "sha256": "9298d94a238aeabbb5067b722903b0b3de3774ea92769030f0ebb4005a13e9f2",
+      "decodedSha256": "1e5f1d03ee1e78d8fac824184e4e36624e1ca3553743bf5d55c9da9e6d9bc122"
+    },
+    {
+      "source": ".artifacts/partition-contour-coverage-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/contour-coverage.log.gz",
+      "sha256": "eb6fc2af2ce17f1e032ed9ce34aca28f1f9431aa3f518e880cced30a94c4a31e",
+      "decodedSha256": "a12c167e51f5c6fb1cba03a8c8db9e849270b61696e706748f95c6904d27d45f"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/suite-render.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/suite-render.json",
+      "sha256": "2ecad20fcba4110e45eaabd8641386a182f332a2c46dafead520173fb24a1919",
+      "decodedSha256": "2ecad20fcba4110e45eaabd8641386a182f332a2c46dafead520173fb24a1919"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/render-stage-0.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/render-stage-0.json",
+      "sha256": "e5fba71111a58f0f57652fc113f334a96b3f0432af5c7d9a49574f0ae03e25c0",
+      "decodedSha256": "e5fba71111a58f0f57652fc113f334a96b3f0432af5c7d9a49574f0ae03e25c0"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/render-stage-1.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/render-stage-1.json",
+      "sha256": "8f2d31b78cc4fe906b639dfbcf2f3f3ee25c484aa3f3ea62c8aa229cc4c15b11",
+      "decodedSha256": "8f2d31b78cc4fe906b639dfbcf2f3f3ee25c484aa3f3ea62c8aa229cc4c15b11"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/render-stage-2.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/render-stage-2.json",
+      "sha256": "c33d6fd71f9a8c96a8aa003597706c152f44ece5fea25d4614b41303a50a7e68",
+      "decodedSha256": "c33d6fd71f9a8c96a8aa003597706c152f44ece5fea25d4614b41303a50a7e68"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/suite-browser.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/suite-browser.json",
+      "sha256": "5883a011ac2ec4321831de48bda439b78c5a4313bad06cf1184654cd0edbe374",
+      "decodedSha256": "5883a011ac2ec4321831de48bda439b78c5a4313bad06cf1184654cd0edbe374"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/suite-docs.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/suite-docs.json",
+      "sha256": "6b831d5e0722e8f84835440f8983cd7c4c520f24891e80c1f3108ca73a792e9d",
+      "decodedSha256": "6b831d5e0722e8f84835440f8983cd7c4c520f24891e80c1f3108ca73a792e9d"
+    },
+    {
+      "source": ".artifacts/partition-realistic-final.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/suite-realistic.json",
+      "sha256": "ecdc891fb382124bf55c7db07242e85a14a646ee7015a51ea9275349a2266e18",
+      "decodedSha256": "ecdc891fb382124bf55c7db07242e85a14a646ee7015a51ea9275349a2266e18"
+    },
+    {
+      "source": ".artifacts/partition-full-original/suite-coverage.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/suite-coverage.json",
+      "sha256": "d34403d22e2c3c425d07f1b43abc979205e6d9210aa04b34ed563774bb031935",
+      "decodedSha256": "d34403d22e2c3c425d07f1b43abc979205e6d9210aa04b34ed563774bb031935"
+    },
+    {
+      "source": ".artifacts/partition-full-repair-final/suite-all.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/repair-receipt.json",
+      "sha256": "aa21e66dd8cf7bef8c4ec416a273c253d354722cb59bf97b148e1f21af6cb627",
+      "decodedSha256": "aa21e66dd8cf7bef8c4ec416a273c253d354722cb59bf97b148e1f21af6cb627"
+    },
+    {
+      "source": ".artifacts/partition-full-critical-policy.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/critical-policy.json",
+      "sha256": "9348d26386f177d85a9a158784783bfd398419373cc68648610897abaf692f7f",
+      "decodedSha256": "9348d26386f177d85a9a158784783bfd398419373cc68648610897abaf692f7f"
+    },
+    {
+      "source": ".artifacts/timings/1793220796588-59973.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/partition-realistic-file-timing.json",
+      "sha256": "d4cac7a5419989c96f8754b970ed32b5b13dd432ea1382f0c3f6a21f81e16990",
+      "decodedSha256": "d4cac7a5419989c96f8754b970ed32b5b13dd432ea1382f0c3f6a21f81e16990"
+    },
+    {
+      "source": ".artifacts/coverage/metrics.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/coverage-metrics.json",
+      "sha256": "8f69b1122b7a7d3d74ae7ea57bd0d2aaccb2795cd3d1920a94fea21c3b9958e4",
+      "decodedSha256": "8f69b1122b7a7d3d74ae7ea57bd0d2aaccb2795cd3d1920a94fea21c3b9958e4"
+    },
+    {
+      "source": ".artifacts/coverage/receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/coverage-receipt.json",
+      "sha256": "3adeb8a39e9e7f8361f9fd11d68549d83d2ff8c101107d65c3c570e1428b87d2",
+      "decodedSha256": "3adeb8a39e9e7f8361f9fd11d68549d83d2ff8c101107d65c3c570e1428b87d2"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/source-inputs.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/source-inputs.json",
+      "sha256": "5687dd49569518b81c4a1bd22a74cca27093372be7b98ac5883a6f2a765edba0",
+      "decodedSha256": "5687dd49569518b81c4a1bd22a74cca27093372be7b98ac5883a6f2a765edba0"
+    },
+    {
+      "source": ".artifacts/partition-checkpoint/metadata-only-delta.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/metadata-only-delta.json",
+      "sha256": "a11ddfce9cb5a7ffffc210e3826cac12fa47e9219b6db87d3777013a4683ce2b",
+      "decodedSha256": "a11ddfce9cb5a7ffffc210e3826cac12fa47e9219b6db87d3777013a4683ce2b"
+    },
+    {
+      "source": ".artifacts/partition-docs-build-pinned.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/docs-build.log.gz",
+      "sha256": "65feea30b90d1d3c6822e95e2e562ff75ebb51eb307c145d6cae972ca50b39ac",
+      "decodedSha256": "0b6946b29a34667fa49677ee00badff219b7f0a2a8af5aded6b30c6c7d2d26f5"
+    },
+    {
+      "source": ".artifacts/partition-docs-built-pinned.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/docs-built.log.gz",
+      "sha256": "061fdee941691258c9537cb2aedce6ebdc61973d434dc26af286b30fcaff3a46",
+      "decodedSha256": "9c2f350c2e446e873d1a832df90f4a892718649348a13657eaa40fc845ecd497"
+    },
+    {
+      "source": ".artifacts/partition-docs-browser-pinned.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/docs-browser.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85",
+      "decodedSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node20/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-node-cases.json",
+      "sha256": "0a5dfb81b1049d731128b2f083b572801172ab15c0d3b186dceb305300c6c383",
+      "decodedSha256": "0a5dfb81b1049d731128b2f083b572801172ab15c0d3b186dceb305300c6c383"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node20/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-qualification.json",
+      "sha256": "e25e80ce1ee1408e9a25ed20b98d2d5a5ca3d2944da69763b729dc2f32c3304d",
+      "decodedSha256": "e25e80ce1ee1408e9a25ed20b98d2d5a5ca3d2944da69763b729dc2f32c3304d"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node20/receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-receipt.json",
+      "sha256": "06c185a2f8c2110e27a81b2854ec117b25644d50fab357007934adbb1fe0b9d9",
+      "decodedSha256": "06c185a2f8c2110e27a81b2854ec117b25644d50fab357007934adbb1fe0b9d9"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node20/output.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-output.log.gz",
+      "sha256": "13536f7a3d7a4c7ada539033dbc40be1f7dba0a4399222b9faa45c09c228bfde",
+      "decodedSha256": "3507c378ed910d0059d92ad21cc53e57ca108a1f03244bf48ed35cf963b5ce2d"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node22/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-node-cases.json",
+      "sha256": "637cc17fd3b8a3dfdbf6ff6c6b9fc60f35dacdfd3a6383feaacb49bd4fd98520",
+      "decodedSha256": "637cc17fd3b8a3dfdbf6ff6c6b9fc60f35dacdfd3a6383feaacb49bd4fd98520"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node22/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-qualification.json",
+      "sha256": "7e4b6e37c61dbd73bfc1b57b9188f4913faae94ccc40532f7634af65c1d19f2a",
+      "decodedSha256": "7e4b6e37c61dbd73bfc1b57b9188f4913faae94ccc40532f7634af65c1d19f2a"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node22/receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-receipt.json",
+      "sha256": "aaab4c604cc87eb6b7dee8a65bc956ce23be6e5673c357a7c3a4dbc5a134b10f",
+      "decodedSha256": "aaab4c604cc87eb6b7dee8a65bc956ce23be6e5673c357a7c3a4dbc5a134b10f"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node22/output.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-output.log.gz",
+      "sha256": "91ce9bdb87765f9b882fca6369bb023e01fc7dd139ab080f7ccc4bb405cf6e3e",
+      "decodedSha256": "ba0c5515e05793ca36f3ccf83d54ec0bf5af2923d90983b06c871e65f2386c91"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node24/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-node-cases.json",
+      "sha256": "10eb58357e94fa323cb17071857f77fe8c0b62f91f10b2ca0bfdf9c94aac189c",
+      "decodedSha256": "10eb58357e94fa323cb17071857f77fe8c0b62f91f10b2ca0bfdf9c94aac189c"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node24/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-qualification.json",
+      "sha256": "89f224300ca78fe71745ee30812412ecc8a202dd271f3201ae405f37939dbb58",
+      "decodedSha256": "89f224300ca78fe71745ee30812412ecc8a202dd271f3201ae405f37939dbb58"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node24/receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-receipt.json",
+      "sha256": "8f61bde90f40f0ec4a7baa21a41d500963fc4abf817a47d44a98112f1ecaf419",
+      "decodedSha256": "8f61bde90f40f0ec4a7baa21a41d500963fc4abf817a47d44a98112f1ecaf419"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-node24/output.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-output.log.gz",
+      "sha256": "c3d6c0ac62adb05c4103f6bb0abd75ad2e099f3ce4143aa1f375be46d7d3402c",
+      "decodedSha256": "db19264bc7bc112d52bbe511b5ab83a82d257d6640d2e6b2f7fb09251973e9cb"
+    },
+    {
+      "source": ".artifacts/partition-installed-fixed-matrix.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/partition-installed-fixed-matrix.json",
+      "sha256": "8db250cc3a14ff0ad403fe47f5b2f86dfec354d58b926f26cb856e54c80b8b55",
+      "decodedSha256": "8db250cc3a14ff0ad403fe47f5b2f86dfec354d58b926f26cb856e54c80b8b55"
+    },
+    {
+      "source": ".artifacts/partition-fixed-package.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/package-manifest.json",
+      "sha256": "d4d3e4b5ed0b1908c588a70b7ad8c51f97805fd292d317fcc017e4a0274627e4",
+      "decodedSha256": "d4d3e4b5ed0b1908c588a70b7ad8c51f97805fd292d317fcc017e4a0274627e4"
+    },
+    {
+      "source": ".artifacts/partition-package-measure/gzip-matrix.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/gzip-matrix.json",
+      "sha256": "e642ad9064362dbb7264208cf9fb477023c862901ce45d10dde253f4fb507edb",
+      "decodedSha256": "e642ad9064362dbb7264208cf9fb477023c862901ce45d10dde253f4fb507edb"
+    },
+    {
+      "source": ".artifacts/partition-installed-node20/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-initial-node-cases.json",
+      "sha256": "452ace8fecc30b239aad9043908af5b82c066619f0034ee74cde7747f6a57adb",
+      "decodedSha256": "452ace8fecc30b239aad9043908af5b82c066619f0034ee74cde7747f6a57adb"
+    },
+    {
+      "source": ".artifacts/partition-installed-node20/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-initial-qualification.json",
+      "sha256": "dee12137db792fde133d89bcc0adc3d8f4234982024257ec16791bbc015d7359",
+      "decodedSha256": "dee12137db792fde133d89bcc0adc3d8f4234982024257ec16791bbc015d7359"
+    },
+    {
+      "source": ".artifacts/partition-installed-node20/output.log",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node20-initial-output.log.gz",
+      "sha256": "a0babc7ef85a158cdd3052e9acddae89a6120d8dcae6fca02682b99c492c2cab",
+      "decodedSha256": "3cca902ef3f6dc18f27093aad05819b5d495997ad2511acd11341c7d92588cb7"
+    },
+    {
+      "source": ".artifacts/partition-installed-node22/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-pre-fix-node-cases.json",
+      "sha256": "b8b8b2367ef63500d91f1781c537dc151cc892fc1142056d6f4a20097b868f2d",
+      "decodedSha256": "b8b8b2367ef63500d91f1781c537dc151cc892fc1142056d6f4a20097b868f2d"
+    },
+    {
+      "source": ".artifacts/partition-installed-node24/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-pre-fix-node-cases.json",
+      "sha256": "9ddf97d300bc0420f12110c8ce3d714c09f5e88193446f132198ff72fdaeef29",
+      "decodedSha256": "9ddf97d300bc0420f12110c8ce3d714c09f5e88193446f132198ff72fdaeef29"
+    },
+    {
+      "source": ".artifacts/partition-installed-node22/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node22-pre-fix-qualification.json",
+      "sha256": "bb76d309b1bf3897f2857e63ac832823861f9ffa6db3acf67990df5adb966862",
+      "decodedSha256": "bb76d309b1bf3897f2857e63ac832823861f9ffa6db3acf67990df5adb966862"
+    },
+    {
+      "source": ".artifacts/partition-installed-node24/qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/node24-pre-fix-qualification.json",
+      "sha256": "1f4513863f7f7422d249f2bcc320d906da7ba4d5fa75a5dce798dccc5d720054",
+      "decodedSha256": "1f4513863f7f7422d249f2bcc320d906da7ba4d5fa75a5dce798dccc5d720054"
+    },
+    {
+      "source": ".artifacts/partition-installed-matrix.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/initial-installed-matrix.json",
+      "sha256": "5268ab06273fa100f2d736d67f200185c09c278575f0d4b188e745ec4dd3bd22",
+      "decodedSha256": "5268ab06273fa100f2d736d67f200185c09c278575f0d4b188e745ec4dd3bd22"
+    },
+    {
+      "source": ".artifacts/partition-coverage-prepin-aborted/receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/partition-evidence/coverage-prepin-aborted-receipt.json",
+      "sha256": "1fa10b2359bf69df90641d70234bdf4fc4d6208d3da3a07e2be97dc319fd2088",
+      "decodedSha256": "1fa10b2359bf69df90641d70234bdf4fc4d6208d3da3a07e2be97dc319fd2088"
+    }
+  ]
+}

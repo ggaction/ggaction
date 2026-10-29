@@ -133,7 +133,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
   `test/contracts/graphic-hierarchy-migration.test.js`,
   `test/contracts/graphic-tree-equivalence.test.js`.
 
-`layer[id].mark.blend`는 bar에만 optional `"multiply" | "screen" | "difference"`를 저장하고
+`layer[id].mark.blend`는 Point/Bar/Rect/Area/Arc/Text/Line/Rule/Tick에 optional `"multiply" | "screen" | "difference"`를 저장하고
 leaf 제거로 normal로 돌아간다. Concrete blend의 허용 type과 normal 의미는 아래 concrete
 paint 규칙이 소유한다. 각 glyph의 fill+outline source를 한 번 합성한다. 저장/renderer는 같은
 closed grammar로 검증하며 backend state를 프로그램에 저장하지 않는다.
@@ -225,8 +225,8 @@ Measured radius의 양수 값이 수치 정밀도 때문에 inner radius와 구�
 Text의 optional `lines`는 `{text: string, x: finite, y: finite}` 배열이다. 각 좌표는 text anchor에 상대적이고 공통 rotation을 따른다. renderer는 줄을 재분할/측정하지 않고 이 좌표를 그린다. `text`는 전체 논리 문자열을 유지한다.
 
 
-Concrete rect/path blend is optional normal|multiply|screen|difference; circle blend is optional
-normal only. Other graphic types reject blend. Normal is an explicit source-over
+Concrete circle/rect/path/line/text blend is optional normal|multiply|screen|difference.
+Other graphic types reject blend. Normal is an explicit source-over
 whole-glyph paint instruction, with bounded source attenuation once; omitted
 legacy output and semantic bar normal reset remain unchanged. The approved normal
 path adds no numerical tolerance. Preflight checks source arc/transform/mask and
@@ -261,3 +261,9 @@ semantic origin이나 기본값을 추론하지 않는다. Text의 구조화된 
 finite ordered `{left,right,top,bottom}`이며 회전 전 text anchor와 동일 frame이다. Renderer는 이를
 소비하고 native glyph 자체를 그대로 그린다. 기존 string fill은 fillBounds가 필요 없다. 모든 새 값은
 editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 row lineage는 paint 때문에 바뀌지 않는다.
+
+### Concrete pre-fill outlines
+
+Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.
+
+Image concrete properties also accept the same fully resolved `shadow` object as other drawable primitives. Its source mask is decoded pixel alpha; synchronous output requires exact prepared shadow/image handles. Concrete `shadow:false` remains invalid.

@@ -24,19 +24,24 @@
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
+    "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
     "contracts/realistic-layer-plot.test.js": 23253,
     "contracts/realistic-legend-option-witness.test.js": 5886,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
+    "contracts/realistic-mark-outlines.test.js": 2594,
+    "contracts/realistic-observed-graphs.test.js": 197,
     "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
-    "contracts/realistic-observed-graphs.test.js": 197,
-    "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
     "contracts/realistic-structured-paints.test.js": 184876,
+    "contracts/realistic-partition-lifecycle.test.js": 5082,
+    "contracts/realistic-inferred-graphs.test.js": 933,
+    "contracts/realistic-mark-blends.test.js": 18646,
+    "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-flow-layouts.test.js": 1611
   },
   "localMeasurementNotes": {
@@ -67,6 +72,22 @@
     "contracts/realistic-hierarchy-lifecycle.test.js": {
       "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
       "measurement": "Sum of successful canonical realistic runner per-test durations 9911.902084 ms, rounded upward. Five pinned datasets with three hierarchy recipes each, plus all nine public lifecycle actions. Scheduling estimate only."
+    },
+    "contracts/realistic-partition-lifecycle.test.js": {
+      "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
+      "measurement": "Successful canonical realistic runner file duration 5081.181792 ms, rounded upward. Five pinned datasets with three partition recipes each plus direct option evidence, 16/16 passed. Scheduling estimate only."
+    },
+    "contracts/realistic-inferred-graphs.test.js": {
+      "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
+      "measurement": "Sum of successful canonical realistic runner per-test durations 932.717834 ms, rounded upward. Five pinned datasets with three inference recipes each. Scheduling estimate only; no source coverage instrumentation."
+    },
+    "contracts/realistic-mark-blends.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 15 successful canonical realistic runner test durations 18645.784710ms, rounded upward. Five pinned datasets, three recipes, nine public mark owners, five Text/Rule facades and four blend modes with create/edit/resize/fresh codec proof. Scheduling estimate only."
+    },
+    "contracts/realistic-mark-shadows.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 15 successful canonical realistic test durations 3051.175250ms, rounded upward. Five pinned sources, three recipes, all nine mark owners and five label/rule facades with actual create/edit/remove/resize/codec witnesses. Scheduling estimate only."
     },
     "contracts/realistic-flow-layouts.test.js": {
       "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",

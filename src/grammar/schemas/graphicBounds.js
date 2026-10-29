@@ -1,3 +1,4 @@
+import { shadowBlurSupport } from "../shadow.js";
 import {
   requireFiniteBounds,
   resolveTextBounds
@@ -288,9 +289,9 @@ function hasActiveStroke(properties) {
 }
 
 export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
-  const strokeExtent = hasActiveStroke(properties)
-    ? properties.strokeWidth / 2
-    : 0;
+  const strokeExtent = properties.outline === undefined
+    ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
+    : properties.outline.width / 2;
   if (type === "circle") {
     if (![properties.x, properties.y, properties.radius].every(Number.isFinite)) {
       return undefined;
@@ -331,7 +332,10 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
       !Number.isFinite(properties.fontSize) ||
       typeof properties.text !== "string"
     ) return undefined;
-    return resolveTextBounds(properties, profile);
+    const bounds = resolveTextBounds(properties, profile);
+    return strokeExtent > 0
+      ? box(bounds.left, bounds.right, bounds.top, bounds.bottom, strokeExtent)
+      : bounds;
   }
   if (type === "path") {
     const commands = properties.commands;
@@ -346,6 +350,18 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
     );
   }
   return undefined;
+}
+
+// Layout occupancy includes the bounded visual effect. Selection and hit
+// geometry explicitly use the unchanged source primitive bounds below.
+export function resolvePrimitiveOccupiedBounds(type, properties = {}, profile) {
+  const bounds = resolvePrimitiveGraphicBounds(type, properties, profile), shadow = properties.shadow;
+  if (bounds === undefined || shadow === undefined) return bounds;
+  const { padding } = shadowBlurSupport(shadow.blurRadius);
+  return requireFiniteBounds({ left: Math.min(bounds.left, bounds.left + shadow.offsetX - padding),
+    right: Math.max(bounds.right, bounds.right + shadow.offsetX + padding),
+    top: Math.min(bounds.top, bounds.top + shadow.offsetY - padding),
+    bottom: Math.max(bounds.bottom, bounds.bottom + shadow.offsetY + padding) });
 }
 
 function translateBounds(bounds, x, y) {
@@ -423,15 +439,16 @@ export function resolveGraphicClipBounds(graphicSpec, target, {rootViewport = fa
   return clip;
 }
 
-function objectBounds(graphicSpec, id, object, ancestors, x, y, profile, includeOwnerClips) {
+function objectBounds(graphicSpec, id, object, ancestors, x, y, profile, includeOwnerClips, includeEffects) {
   if (ancestors.has(id)) {
     throw new Error(`Graphic attachment cycle includes "${id}".`);
   }
   ancestors.add(id);
+  const primitiveBounds = includeEffects ? resolvePrimitiveOccupiedBounds : resolvePrimitiveGraphicBounds;
   let result = object.items === undefined
-    ? translateBounds(resolvePrimitiveGraphicBounds(object.type, object.properties, profile), x, y)
+    ? translateBounds(primitiveBounds(object.type, object.properties, profile), x, y)
     : unionBounds(object.items.map(item => translateBounds(
-        resolvePrimitiveGraphicBounds(item.type ?? object.type, item.properties, profile),
+        primitiveBounds(item.type ?? object.type, item.properties, profile),
         x,
         y
       )));
@@ -443,7 +460,7 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile, include
       throw new Error(`Unknown attached graphic "${childId}".`);
     }
     const bounds = objectBounds(
-      graphicSpec, childId, child.object, ancestors, childX, childY, profile, includeOwnerClips
+      graphicSpec, childId, child.object, ancestors, childX, childY, profile, includeOwnerClips, includeEffects
     );
     if (bounds !== undefined) {
       result = includeExtent(
@@ -460,19 +477,20 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile, include
   return result;
 }
 
-export function resolveConcreteGraphicBounds(graphicSpec, target, profile, {includeOwnerClips = true} = {}) {
+export function resolveConcreteGraphicBounds(graphicSpec, target, profile, {includeOwnerClips = true, includeEffects = true} = {}) {
+  const primitiveBounds = includeEffects ? resolvePrimitiveOccupiedBounds : resolvePrimitiveGraphicBounds;
   const found = requireGraphic(graphicSpec, target);
   const anchor=found.kind==="item"?found.ownerId:found.id;
   const [x, y] = resolveGraphicParentOffset(graphicSpec, anchor);
   return requireFiniteBounds(clipAncestorBounds(graphicSpec,anchor,found.kind === "item"
     ? (!includeOwnerClips || found.owner.clip === undefined ? translateBounds(
-      resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
+      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
       x,
       y
     ) : intersectVisibleBounds(translateBounds(
-      resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile), x, y
+      primitiveBounds(found.object.type ?? found.owner.type, found.object.properties, profile), x, y
     ), graphicClipBounds(found.owner.clip, x, y)))
-    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile, includeOwnerClips), includeOwnerClips));
+    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile, includeOwnerClips, includeEffects), includeOwnerClips));
 }
 
 export function unionConcreteGraphicBounds(graphicSpec, targets, profile, options) {

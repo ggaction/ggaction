@@ -2,6 +2,7 @@ import { layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";
 import { resolveHierarchyPlot } from "./materialization/hierarchy/plot.js";
+import { resolveGraphPlot } from "./materialization/graph/plot.js";
 import { resolveFlowPlot } from "./materialization/flow/plot.js";
 import { resolveContourPlot } from "./materialization/contour/plot.js";
 import { hierarchyFacetSource, resolveHierarchyLayerResources } from "./selectors/hierarchy.js";
@@ -472,14 +473,8 @@ function itemBounds(properties, type) {
       width: Math.abs(properties.width), height: Math.abs(properties.height) };
   }
   if (type === "path" && Array.isArray(properties.commands)) {
-    const points = properties.commands.flatMap(command =>
-      Number.isFinite(command.x) && Number.isFinite(command.y) ? [[command.x, command.y]] : []
-    );
-    if (points.length === 0) return null;
-    const xs = points.map(point => point[0]);
-    const ys = points.map(point => point[1]);
-    return { x: Math.min(...xs), y: Math.min(...ys),
-      width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+    const bounds = resolvePathCommandBounds(properties.commands);
+    return bounds === undefined ? null : { x: bounds.left, y: bounds.top, width: bounds.right - bounds.left, height: bounds.bottom - bounds.top };
   }
   if ([properties.x1, properties.y1, properties.x2, properties.y2].every(Number.isFinite)) {
     return { x: Math.min(properties.x1, properties.x2), y: Math.min(properties.y1, properties.y2),
@@ -491,6 +486,7 @@ function itemBounds(properties, type) {
 function inspectMark(program, layer, childPath) {
   const graphic = program.graphicSpec.objects[layer.id];
   const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
+  const network = layer.graphBinding === undefined ? undefined : resolveGraphPlot(program, layer, program.markConfigs[layer.id].graphPlot);
   const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
   const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
   const dataset = hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
@@ -521,8 +517,8 @@ function inspectMark(program, layer, childPath) {
   const grain = ["line", "area"].includes(layer.mark?.type) ? "series" : "item";
   return {
     owner: resourceRef("mark", layer.id, childPath), grain,
-    rawRows: dataset?.values?.length ?? null,
-    logicalDataItems: logicalSupported ? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
+    rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
+    logicalDataItems: logicalSupported ? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -530,6 +526,7 @@ function inspectMark(program, layer, childPath) {
       ...(outsideIndices ?? [])
     ].filter(index => index >= 0)).size) : null,
     flags: [
+      ...(network === undefined ? [] : [{ reason: "orphan-style", count: network.diagnostics.length }]),
       ...(hierarchy === undefined ? [] : [
         { reason: "synthetic-node", count: hierarchy.hierarchy.result.nodes.filter(node => node.synthetic).length },
         { reason: "zero-value", count: hierarchy.items.filter(item => item.node.totalValue === 0).length },
@@ -545,10 +542,12 @@ function inspectMark(program, layer, childPath) {
       { reason: "missing-skipped", count: layer.mark?.missing === "skip" && dataset?.values
         ? Math.max(0, dataset.values.length - items.length) : null }
     ],
+    ...(hierarchy?.view === undefined ? {} : { partition: { focusKey: hierarchy.view.focusKey, breadcrumbKeys: hierarchy.view.breadcrumbKeys, levels: hierarchy.view.levels, diagnostics: hierarchy.view.diagnostics, ...(hierarchy.view.recovery ? { recovery: hierarchy.view.recovery } : {}) } }),
     bounds: union,
     sourceRefs: [
       ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
       ...(hierarchy === undefined ? [] : [resourceRef("hierarchy", hierarchy.hierarchy.id, childPath)]),
+      ...(network === undefined ? [] : [resourceRef("graph", network.graph.id, childPath), ...[...new Set([network.nodesData.id, network.edgesData.id])].map(id => resourceRef("data", id, childPath))]),
       ...(flow === undefined ? [] : [resourceRef("graph", flow.graph.id, childPath)]),
       ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
       ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
@@ -706,10 +705,11 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'circle') return {left:p.x-p.radius,top:p.y-p.radius,right:p.x+p.radius,bottom:p.y+p.radius};
       if (g.type === 'line') return {left:Math.min(p.x1,p.x2),top:Math.min(p.y1,p.y2),right:Math.max(p.x1,p.x2),bottom:Math.max(p.y1,p.y2)};
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
-      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
+      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics, { includeEffects: false });
     }).filter(Boolean);
     const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
+      ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }),
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
       bounds:visible ?? (bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null) };
   })));

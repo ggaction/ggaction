@@ -1,0 +1,53 @@
+{
+  "fonts": [
+    {
+      "file": "korean.otf",
+      "sha256": "3fda8c15471ae61219a2d4a03546d4176fb039379d8e789de6818282649130f8"
+    },
+    {
+      "file": "emoji.ttf",
+      "sha256": "c4d3ae55960c6bb6d54b784b2619b4ed704649558c64fe26f8428486dcdf0fad"
+    }
+  ],
+  "outputs": {
+    "png": "022f9ecb8663e132612e729862cf777c59231426b43c97cbe1317a0f4fdea8cc",
+    "pdf": "1dac70477858c428f4ed87a50bd553f3797c001ebf253ff432ed03fdf50a701b",
+    "svg": "999fde1014d8e840d30db5b9539f0a67548a954ec6fdab671a0b479dba197994",
+    "browserCanvas": "5412f5220e826bf523d9ab4d8dbf842ea4a92de158fbd1db6e5bfc5c975ba42f",
+    "browserSVG": "7ebd292f2600334142e2fff58230e0fecf2677ad3458e87f5451238aad46e0e2"
+  },
+  "inkRows": {
+    "png": [
+      1176,
+      398,
+      392,
+      429
+    ],
+    "pdf": [
+      1383,
+      456,
+      440,
+      513
+    ],
+    "browserCanvas": [
+      1483,
+      539,
+      493,
+      627
+    ],
+    "browserSVG": [
+      1497,
+      537,
+      493,
+      627
+    ]
+  },
+  "exactPrimitivePublic": [
+    "graphicSpec",
+    "Node PNG pixels",
+    "Node PDF pixels",
+    "Browser Canvas pixels",
+    "SVG source"
+  ],
+  "crossBackendPolicy": "Fixed font identities and literal line origins; visible ink in every line. No identical antialiasing claim."
+}

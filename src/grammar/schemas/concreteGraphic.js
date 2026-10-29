@@ -1,7 +1,10 @@
+import { normalizeMarkShadow } from "../markShadow.js";
+import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateImagePayload } from "../imagePayload.js";
+import { validateFontPayload } from "../fontPayload.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { validateFontStyle } from "../../core/font.js";
+import { validateFontStyle, textMetricFontWeight } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands, validatePathFillRule } from "../pathCommands.js";
 import { validateConcreteFillPaint } from "../paint.js";
@@ -31,6 +34,17 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "shadow") {
+    if (value === false) throw new TypeError("Concrete shadow must be an object.");
+    const normalized = normalizeMarkShadow(value, `${type}.shadow`);
+    if (Object.keys(value).length !== 4 || Object.keys(normalized).some(key => !Object.hasOwn(value, key))) {
+      throw new TypeError("Concrete shadow requires resolved color, offsetX, offsetY and blurRadius.");
+    }
+  }
+  if (property === "outline") {
+    if (value === false) throw new TypeError("Concrete outline must be an object.");
+    normalizeMarkOutline(value, `${type}.outline`);
+  }
   if (property === "fillBounds") {
     ownRecord(value, "Text fillBounds");
     if (!isPlainObject(value) || Object.keys(value).length !== 4 ||
@@ -39,6 +53,7 @@ export function validateConcreteGraphicValue(type, property, value) {
       throw new TypeError("Text fillBounds require finite ordered left/right/top/bottom coordinates.");
     }
   }
+  if (property === "font") validateFontPayload(value);
   if (property === "image") validateImagePayload(value);
   if (property === "lines") {
     if (!Array.isArray(value) || value.length === 0 || value.some(line =>
@@ -67,8 +82,8 @@ export function validateConcreteGraphicValue(type, property, value) {
   if (type === "text" && property === "fontSize" && value === 0) {
     throw new RangeError("text.fontSize must be positive.");
   }
-  if (property === "blend" && !(isBlendMode(value) && (type !== "circle" || value === "normal"))) {
-    throw new Error(`${type}.blend must be ${type === "circle" ? "normal" : "normal, multiply, screen, or difference"}.`);
+  if (property === "blend" && !isBlendMode(value)) {
+    throw new Error(`${type}.blend must be normal, multiply, screen, or difference.`);
   }
   if (property === "opacity" && (value < 0 || value > 1)) {
     throw new RangeError(`${type}.opacity must be between 0 and 1.`);
@@ -126,6 +141,11 @@ export function validateConcreteGraphicProperties(type, properties) {
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
+  }
+  if (type === "text" && properties.font !== undefined &&
+      (properties.font.family !== properties.fontFamily || properties.font.style !== (properties.fontStyle ?? "normal") ||
+        properties.font.weight !== textMetricFontWeight(properties.fontWeight))) {
+    throw new TypeError("Concrete text font must match its exact family, style and weight.");
   }
   if (isOwned(properties)) {
     if (validatedTypes) validatedTypes.add(type);

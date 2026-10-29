@@ -994,7 +994,7 @@ test("every supported constraint and design-fixture authoring step type-checks",
       await copyFile(path.join(typesRoot, name), path.join(temporary, name));
     }
     const source = [
-      'import type { ChartProgram, PreparedDataUpdate, PreparedImageResource } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate, PreparedImageResource, PreparedFontResource } from "./program.js";',
       'import { chart, hconcat, render, vconcat } from "./index.js";',
       'import { renderToSVG } from "./svg.js";',
       'import { renderToPNG } from "./png.js";',
@@ -1003,6 +1003,8 @@ test("every supported constraint and design-fixture authoring step type-checks",
       "declare const prepared: PreparedDataUpdate;",
       'declare const preparedImageCreate: PreparedImageResource<"create">;',
       'declare const preparedImageReplace: PreparedImageResource<"replace">;',
+      'declare const preparedFontCreate: PreparedFontResource<"create">;',
+      'declare const preparedFontReplace: PreparedFontResource<"replace">;',
       "declare const currentToken: string;",
       "declare const context: CanvasRenderingContext2D;",
       "declare const values: readonly Record<string, unknown>[];",

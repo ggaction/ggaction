@@ -880,15 +880,6 @@
     ]
   },
   {
-    "file": "observed-graphs.mjs",
-    "cases": [
-      {
-        "id": "data/observed-graph-lifecycle",
-        "statements": 16
-      }
-    ]
-  },
-  {
     "file": "structured-paints.mjs",
     "cases": [
       {
@@ -923,15 +914,110 @@
     "cases": [
       {
         "id": "hierarchy/full-basic-lifecycle",
-        "statements": 17
+        "statements": 14
       },
       {
         "id": "hierarchy/fresh-process-edit-revise",
-        "statements": 9
+        "statements": 1
       },
       {
         "id": "hierarchy/renderers-and-scene",
         "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "fonts.mjs",
+    "cases": [
+      {
+        "id": "fonts/resource-metrics-offline",
+        "statements": 15
+      },
+      {
+        "id": "fonts/renderers-scene-handles",
+        "statements": 6
+      },
+      {
+        "id": "fonts/resource-backed-labels",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "observed-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/observed-graph-lifecycle",
+        "statements": 16
+      }
+    ]
+  },
+  {
+    "file": "mark-outlines.mjs",
+    "cases": [
+      {
+        "id": "paint/outline-basic-and-codec",
+        "statements": 8
+      },
+      {
+        "id": "paint/outline-text-and-fresh-edit",
+        "statements": 9
+      },
+      {
+        "id": "paint/outline-image-hierarchy-composition",
+        "statements": 20
+      }
+    ]
+  },
+  {
+    "file": "theme-resource-plots.mjs",
+    "cases": [
+      {
+        "id": "theme/resource-plot-renderer-lifecycle",
+        "statements": 2
+      }
+    ]
+  },
+  {
+    "file": "inferred-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/inferred-graph-lifecycle",
+        "statements": 22
+      }
+    ]
+  },
+  {
+    "file": "mark-blends.mjs",
+    "cases": [
+      {
+        "id": "paint/blend-facade-text-and-rule",
+        "statements": 2
+      },
+      {
+        "id": "paint/blend-nine-owners-and-basic",
+        "statements": 2
+      },
+      {
+        "id": "paint/blend-glyph-output-and-fresh-edit",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "mark-shadows.mjs",
+    "cases": [
+      {
+        "id": "paint/shadow-basic-codec-scene",
+        "statements": 1
+      },
+      {
+        "id": "paint/shadow-text-font-outline-native",
+        "statements": 7
+      },
+      {
+        "id": "paint/shadow-stale-density-fresh-process",
+        "statements": 3
       }
     ]
   },
@@ -949,6 +1035,19 @@
       {
         "id": "flow/renderers-scene-codec",
         "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "resource-effects.mjs",
+    "cases": [
+      {
+        "id": "paint/resource-role-effects",
+        "statements": 1
+      },
+      {
+        "id": "paint/image-alpha-shadow",
+        "statements": 7
       }
     ]
   },

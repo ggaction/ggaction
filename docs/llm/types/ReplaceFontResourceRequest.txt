@@ -1,0 +1,1 @@
+export type ReplaceFontResourceRequest = FontResourceSource & { kind: "replace"; target: string; id?: never };

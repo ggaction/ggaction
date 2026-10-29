@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:922cf9de255957581bcdbaf57d970f31ef096bf2b0b27829f9ac000f91705367. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5108,7 +5108,7 @@ Creation is local to a unit because its `target` names an endpoint field. Create
 graphs in their child units before composing charts. Editing supports the
 standard [scoped targets](./api/composition/editing/#target-one-view-one-mark-or-several-marks). Source data revisions
 rebuild each affected graph once, updating exact input references and row
-provenance. A referenced source cannot be removed. Editable snapshots retain
+provenance. Bound layouts and [graph plots](./api/graphs/) update in the same explicit action. A referenced source cannot be removed. Editable snapshots retain
 the graph model and validate its structure and source bindings on restoration.
 These actions and graph snapshots require the Full entry.
 
@@ -7073,8 +7073,9 @@ backdrop RGB channels, `"screen"` for their complementary product, or `"differen
 for their absolute difference. This changes paint, never data or sizes.
 
 Use `blend: "normal"` to return to ordinary source-over painting. Omission preserves
-the current mode. This refinement belongs to the Full bar editor; creation,
-facade appearance objects, and other mark families do not accept it.
+the current mode. Both Full and Basic bar creation accept the same option; the
+Full editor can change it later. See [per-item blend modes](./api/appearance/mark-style/#blending-each-mark-item)
+for the other supported mark families and their facade style objects.
 
 SVG, browser Canvas, PNG, and PDF support the same concrete effect. PDF rasterizes
 only the opted-in bar source; other content remains vector. Isolated sources obey
@@ -9943,11 +9944,12 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-Node PNG/PDF keep the requested font families first and append installed common
-CJK, Unicode, and emoji fallback families for missing glyphs. Text and layout
-remain unchanged; fonts are never downloaded. Install an appropriate font on the
-export host for the scripts you use, or specify your own ordered font-family list.
-Browser Canvas and SVG use the browser's font resolution.
+Canvas, PNG, and PDF keep the requested font families first and share one ordered
+list of common CJK, Unicode, and emoji fallback families. The drawing host skips
+unavailable families. Exact embedded font bindings use only their prepared alias.
+Text and layout remain unchanged; fonts are never downloaded. Install an
+appropriate font on the drawing host for the scripts you use, or specify your own
+ordered font-family list. SVG uses the browser's font resolution.
 
 ## At a glance
 
@@ -10058,9 +10060,9 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
-An explicit bar `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
-within its visible stroke bounds. It obeys the same per-surface limits, including
-pixel ratio and nested clips, and is reused while painting individual bars.
+An explicit mark `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
+within its visible fill and stroke bounds. It obeys the same per-surface limits, including
+pixel ratio and nested clips, and is reused while painting individual items.
 Unsupported custom Canvas contexts fail before resizing or clearing the chart;
 ordinary drawing does not require the extra surface/compositing capabilities.
 
@@ -10161,8 +10163,8 @@ absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
 Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
 
-Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
-opacity, dashes, and linear gradients remain vector output. An explicit bar
+Ordinary Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
+opacity, dashes, and linear gradients remain vector output. An explicit mark
 `blend: "multiply"`, `"screen"`, or `"difference"`, or explicit legend recipe-layer opacity rasterizes only
 that glyph's fill-and-outline source for native PDF compositing; the rest of the
 page stays vector. The adapter does not
@@ -10287,13 +10289,16 @@ program after an edit.
 
 ## Explicit whole-glyph opacity
 
-Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
-source-over instruction; circles accept only that normal marker. The renderer
-paints fill and outline together, attenuates the source once, and composites it.
-This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
-legacy painting unchanged; line/text/containers do not accept blend markers.
-The bar action's `blend:'normal'` remains a semantic reset which removes its
-optional concrete blend field. Normal does not enable circle difference blending.
+Concrete circle/rect/path/line/text nodes accept `blend:'normal'` as an explicit
+whole-glyph source-over instruction. The renderer paints the fill and stroke or
+outline together, attenuates the source once, and composites it. This marker is
+emitted for explicit legend recipe-layer opacity. Omission keeps ordinary painting
+unchanged. Containers and image nodes do not accept blend markers.
+
+The same five glyph types also accept multiply, screen, and difference. The public
+mark actions treat `blend:'normal'` as a semantic reset which removes the optional
+concrete blend field. See [per-item blend modes](./api/appearance/mark-style/#blending-each-mark-item)
+for the supported mark and facade options.
 
 ## Transition scenes
 
@@ -10507,6 +10512,134 @@ internally before output. They do not fetch the source URI, and other graphic no
 remain vector in SVG/PDF. Editable and graphic-only snapshots retain image payloads
 and validate them offline; decoder objects and preparation handles are never saved.
 Image selection and inspection use the clipped rectangle, not pixel alpha.
+
+## Embedded fonts
+
+Full authoring separates font loading, text measurement, and rendering. Use
+`prepareFontResource(program, request, host)`, then commit its authentic handle
+with `createFontResource({prepared,requestToken})` on that exact receiver.
+Replacement uses `kind:"replace"` with `target` and `replaceFontResource`.
+Request tokens are application identifiers for superseded work; the explicit
+action token appears in the action trace, so use a request identifier, not a secret.
+
+The request includes `uri`, lowercase SHA256 `expectedHash`, `mimeType`, `family`,
+`style:"normal"|"italic"`, numeric weight 100–900 in steps of 100, and
+`metricsProviderVersion`. Optional fields are `maxBytes`, `license`, and
+`attribution`. TTF, OTF, WOFF and WOFF2 use their `font/*` MIME values; the default
+and maximum byte limit is 16 MiB per font. The host explicitly supplies `load`
+and `decode`. Loading returns `{bytes:Uint8Array,mimeType}`. Decoding validates
+the complete font and returns its exact `contentHash`, `family`, `style`, `weight`
+and `metricsProviderVersion`. A decoder may not substitute a fallback font.
+
+Next, `prepareTextMetrics(program,{id,fonts},host)` takes explicit font resource
+IDs and `{requestToken,decode,measure,signal?}`. The measurement callback receives
+`{asset,queries,signal?}` and returns `{contentHash,metricsProviderVersion,widths}`.
+Each query has `text` and `fontSize`; `asset` supplies the exact bytes and font
+descriptor. Widths must be finite, nonnegative, in query order, and measured using
+that font. Apply the result with `applyTextMetrics({prepared,requestToken})`.
+The helper prepares the queries required by existing text layout, including
+bounded grapheme prefixes for wrapping. It never treats a missing width as zero
+or an estimate. Preparation allows 64 font bindings, 64 MiB of unique bytes,
+10,000 queries, 1,048,576 total UTF-16 units, and 256 layout passes.
+
+An exact profile requires a unique resource for each family/style/weight tuple.
+New labels or typography may require new measurements. Such edits fail atomically;
+use `removeTextMetrics()`, make the edit, then prepare and apply the new layout.
+Replacing a bound font prepares its new measurement closure before committing
+the resource and all affected text, including tree, treemap, and graph labels.
+These labels reuse their stored layout coordinates when typography changes. Existing schema 1 profiles retain their
+documented estimate behavior for unmatched queries.
+
+Canvas uses `prepareFontRendering(programOrCanvasScene,{register,signal?})` from
+Full or Basic. The explicit `register` callback receives bytes, MIME, content hash,
+a content-addressed `family` alias, original `sourceFamily`, style, weight and
+provider version. It registers **that alias**, then returns
+`{contentHash,family,style,weight,metricsProviderVersion,dispose}`. The identity
+fields must match the request; `dispose()` releases that exact host registration.
+Pass the result as `render(program,context,{fonts})` or
+`renderTransitionScene(scene,context,{fonts})`, and call `fonts.dispose()` when
+finished. Aborts and partial failures also release completed registrations.
+Callbacks sharing an external font registry must manage their own registration
+ownership; deleting another caller's face is not a valid disposal implementation.
+
+Missing, stale, copied, aborted or disposed handles fail before Canvas clear or
+resize. Any change to the prepared graphic content requires preparation again.
+The rendering budget is 64 distinct font identities and 64 MiB of unique bytes.
+No callbacks or handles enter a saved program. SVG embeds the bytes with the same
+aliases; PNG/PDF register the bytes during output and release their native leases
+after drawing. Renderers do not measure or rewrap text. Missing glyph coverage
+must be addressed by the application's chosen fonts; the library does not invent
+a replacement font or claim that one font covers every Unicode character.
+
+The [complete font example](./tutorials/font-assets/) includes explicit browser
+and Node host adapters, pinned Korean and monochrome emoji subsets, combining
+marks, wrapping, offline snapshots and the same primitive across four renderers.
+
+## Prepared shadows
+
+`prepareShadowRendering(programOrCanvasScene, {createCanvas, decode?, fonts?, pixelRatio?, signal?})` is available
+from `ggaction` and `ggaction/basic`. It prepares each affected glyph from actual source pixels, combines its
+shadow and retains the canonical PNG in an opaque handle. Canvas and SVG then consume those same bytes.
+This preparation does not change the immutable program.
+
+Complete browser module with a destination `<canvas id="chart">`:
+
+> **Executable complete.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
+
+```js
+import { chart, prepareShadowRendering, render } from "ggaction";
+import { renderToSVG } from "ggaction/svg";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 160, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ fill: "#d2462d", shadow: {
+    color: "rgba(30,60,90,.5)", offsetX: 8, offsetY: 6, blurRadius: 4
+  } })
+  .encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodePointRadius({ value: 18 });
+const context = document.querySelector("#chart").getContext("2d");
+const shadows = await prepareShadowRendering(program, {
+  createCanvas(width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    return canvas;
+  },
+  async decode({ bytes, mimeType }) {
+    const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
+    return { image, width: image.width, height: image.height, originClean: true };
+  }
+});
+try {
+  render(program, context, { shadows });
+  const svg = renderToSVG(program, { shadows });
+  // Use svg as an inline or saved SVG document.
+} finally {
+  shadows.dispose();
+}
+```
+
+For SVG-only output, omit `decode`. For high-density Canvas output, pass the same `pixelRatio` to preparation
+and `render`. Text shadows additionally require a `fonts` handle from [font preparation](./api/rendering/#embedded-fonts)
+for the exact same program or Canvas scene. Pass both `fonts` and `shadows` to Canvas rendering. The host must
+provide finite actual glyph ink metrics; missing fonts or metrics are errors. The original multiline positions,
+rotation, glyph holes, structured fill and outlines are preserved.
+
+`renderToPNG`/`renderToPNGBuffer` and `renderToPDF`/`renderToPDFBuffer` prepare fonts and shadows automatically
+with the installed native backend. They do not fetch resources. PDF keeps unaffected geometry vector and uses
+an image only for each affected glyph. A source outside an owner clip can still cast its shadow inside that clip.
+
+For Canvas scenes, prepare the exact scene returned by `createTransitionScene(program,{format:"canvas"})`, then
+pass the handle to `renderTransitionScene`. For SVG scenes, pass a program-bound handle to
+`createTransitionScene(program,{shadows})`. Scene output contains the prepared effect without adding semantic items.
+
+Handles belong to one exact graphic identity/content and output density. After editing or restoring either
+program codec, prepare again. Disposing twice is safe; missing, changed, stale, disposed or aborted preparation
+fails before the destination is cleared or resized. The handle is ephemeral and cannot be serialized.
+
+Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 MiB of numeric/RGBA output buffers.
+The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
+All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
 
 ## Related
 
@@ -12549,6 +12682,44 @@ native PDF vector shading. PNG `pixelRatio` controls texture resolution as well
 as output pixels. Excessively dense patterns or large cumulative texture work
 fail before drawing under the shared output limits.
 
+## Outlines and text halos
+
+Point, Bar, Rect, Area, Arc, and Text create/edit options accept
+`outline: { color, width }`. White produces a halo. The outline follows the shape
+or actual letters and is painted before the fill. Attached labels and annotations
+accept the same Text option.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 320, height: 200, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2, label: "North" }] })
+  .createTextMark({ outline: { color: "white", width: 8 }, fontSize: 24 })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .encodeText({ field: "label" });
+const withoutHalo = program.editTextMark({ outline: false });
+```
+
+Both color and width are required. Width is a finite non-negative number in logical
+pixels; zero keeps the option but draws no edge. Colors use the pattern/radial color
+syntax above. An outline object replaces the complete previous outline. Omitted edit
+options preserve it; `false` removes it. Null and partial objects are errors.
+
+An active outline controls the visible edge. Removing it restores any previously
+authored or encoded stroke. Supplying both an active outline and an explicit stroke
+color in one call is an error. `lineCap`, `lineJoin`, and `miterLimit` control the same
+contour, including Text outlines. Temporary selection stroke highlights override
+outlines until the highlight is removed. Automatic fill/shape legend samples follow
+the mark outline.
+
+Opacity applies once to the combined outline and fill. Canvas, PNG, and PDF may
+isolate a partly transparent glyph as an image; opaque outlines and SVG Text retain
+vector output. Text requires native `strokeText` support. Outline bounds participate
+in spacing and Point packing, while selection still addresses the original data item.
+
 ## Stroke caps, joins, and rounded rectangles
 
 Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:
@@ -12720,6 +12891,59 @@ Its lower `encodeBarWidth` override requires the Box's range to be complete.
 `semanticSpec`. The action stores immutable materialization config and writes
 fully concrete `x`, `y`, `width`, `height`, and `fill` values to `graphicSpec`.
 Canvas geometry changes explicitly rematerialize the scales and rectangles.
+
+## Blending each mark item
+
+Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick create/edit options accept
+`blend: "normal" | "multiply" | "screen" | "difference"`. Create omission means
+normal painting; edit omission preserves the mode. `blend: "normal"` restores it.
+The option also reaches attached labels, annotations, reference marks, Lollipop
+stems, and Dumbbell connectors through their existing style objects. Text plot
+styles and Dot, Lollipop, Dumbbell, and ECDF labels accept it as well.
+
+For each non-normal item, the renderer combines its fill and stroke or outline,
+applies opacity once, and blends that source over earlier content. Normal restores
+the existing ordinary paint behavior. A Line or Area path
+is one item; a Text item keeps its actual letters and multiline layout. Other
+items remain separate sources, so their drawing order matters. The mode survives
+data changes, layout changes, highlights, composition, and save/load.
+
+Canvas, SVG, PNG, and PDF support the same four modes. Canvas and native exports
+use bounded glyph surfaces; PDF may embed those glyphs as images. SVG keeps vector
+geometry and an isolated root. Native edge quantization can differ by one byte
+from an ideal straight-alpha calculation. Basic accepts blend on its existing
+Point, Bar, Rect, and Line creation methods.
+
+A complete runnable example:
+
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline rows supply both position fields.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 320, height: 240, background: "#336699" })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createPointMark({ blend: "screen", fill: "red", opacity: .6 })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" });
+```
+
+## Shadows
+
+Use `shadow` on Point, Bar, Rect, Area, Arc, Text, Line, Rule or Tick create/edit actions. The color is required;
+`offsetX`, `offsetY` and `blurRadius` default to zero. A supplied object replaces the complete effect.
+Offsets must be finite, and blur must be finite and non-negative. Remove it with `shadow: false`.
+
+For an existing Bar layer named `bars`, use
+`program.editBarMark({ target: "bars", shadow: { color: "rgba(30,60,90,.5)", offsetX: 8, offsetY: 6, blurRadius: 4 } })`.
+
+Shadow alpha comes from the actual fill, stroke or outline. Overall opacity applies once to the combined glyph,
+followed by clipping and blending. Source identity, row selection and hit geometry stay unchanged. Layout and
+automatic legend samples include the effect. Labels and annotations use the same Text option; Text shadows
+require embedded font preparation and actual glyph ink metrics.
+
+Canvas and SVG use an explicit prepared handle; PNG/PDF prepare it automatically with the native adapter.
+See [prepared shadows](./api/rendering/#prepared-shadows) for the complete output lifecycle and limits.
 
 ## Related
 
@@ -17240,27 +17464,31 @@ make different package behavior interchangeable.
 
 # Fonts and Text Rendering
 
-ggaction stores a CSS-style `fontFamily` string in concrete text graphics and
-passes it to the selected rendering backend. The default family is
-`sans-serif`. ggaction does not bundle a font or expose a font-loading or
-registration API, so the browser, operating system, and native renderer decide
-which installed face satisfies that family.
+Text uses `sans-serif` and deterministic estimated bounds by default. You can
+also load explicit font bytes through `prepareFontResource`, retain them with
+`createFontResource`, and prepare exact layout widths through `prepareTextMetrics`.
+The application supplies loading, decoding and measurement callbacks. The
+library verifies the font identity and commits the prepared result synchronously.
+
+See the [prepared-font tutorial](./tutorials/font-assets/) for a complete
+Korean and emoji example, and [embedded-font rendering](./api/rendering/#embedded-fonts)
+for host callbacks, limits, disposal and error behavior.
 
 ## Cross-platform contract
 
 | Concern | Behavior |
 | --- | --- |
-| Family | Must be a non-empty string; availability is controlled by the host/backend |
+| Family | A non-empty string; an exact profile binds one explicit family/style/weight tuple to retained font bytes |
 | Size | Must be a positive finite number in logical chart pixels |
 | Weight | A non-empty string or finite number; numeric renderer weights are rounded to the nearest hundred and clamped to 100–900 |
-| Authoring bounds | Deterministic estimates from text, size, and broad family/weight factors; no backend `measureText` call |
-| Painted glyphs | The host/backend resolves the actual face; its glyph widths can differ from the estimated bounds |
-| SVG | Emits `font-family`, `font-size`, and normalized `font-weight`; the consumer still resolves the font |
-| Canvas, PNG, PDF | Draw through the Canvas-compatible backend with the resolved host/native font |
+| Authoring bounds | Deterministic estimates by default; an applied exact profile uses prepared widths and rejects missing queries |
+| Painted glyphs | Ordinary text uses host fonts; font-bound text uses the retained bytes under a content-addressed alias |
+| SVG | Embeds font-bound bytes in `@font-face`; ordinary `fontFamily` text still uses the consumer's fonts |
+| Canvas, PNG, PDF | Canvas accepts a `prepareFontRendering` handle; PNG/PDF prepare retained fonts for the duration of output |
 
-SVG markup referencing a family is not proof that the font is embedded.
-Likewise, PDF metadata is not a font-embedding control. Qualify the final file
-in the deployment environment when exact typography is a product requirement.
+A family string alone does not embed a font. Font resources and concrete
+font-bound graphics retain validated bytes for offline restoration. Renderers
+use the stored lines and origins without fetching, measuring or wrapping again.
 
 ## Set text styles explicitly
 
@@ -17289,7 +17517,18 @@ global theme or rewrite every axis and legend.
 
 ## Loading in browsers
 
-Load required web fonts before rendering so the backend can use the intended
+For exact layout, prepare font resources on the intended immutable program,
+then call `prepareTextMetrics(program, {id, fonts}, host)` and apply its handle
+with `applyTextMetrics({prepared, requestToken})`. A new label that needs a
+missing width fails atomically. Remove the profile, edit the label, and prepare
+again; replacing a bound font prepares its new measurements before committing.
+
+Browser Canvas also requires `prepareFontRendering(program, {register})` and
+`render(program, context, {fonts})`. Release the handle with `fonts.dispose()`
+when drawing has finished. The host registers exactly the supplied alias and
+bytes and returns the matching identity and a disposer.
+
+For ordinary family-based text, load web fonts before rendering so the backend can use the intended
 face. Waiting for `document.fonts.ready` does not change ggaction's deterministic
 text estimates into browser measurements. Rebuilding the same program with the
 same styles retains those estimates. If a font arrives after drawing, rerender
@@ -17839,9 +18078,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowLinks`](./reference/actions/marks/#createflowlinks) | H2 | user-facing | marks |
 | [`createFlowNodes`](./reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
+| [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
+| [`createGraphPlot`](./reference/actions/charts-data/#creategraphplot) | H0, H1 | user-facing | charts |
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 | user-facing | charts |
@@ -17852,6 +18093,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImageMark`](./reference/actions/marks/#createimagemark) | H2 | user-facing | marks |
 | [`createImageResource`](./reference/actions/charts-data/#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](./reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
+| [`createInferredGraphData`](./reference/actions/charts-data/#createinferredgraphdata) | H2 | user-facing | core |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | H0 | user-facing | composition |
@@ -17867,6 +18109,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](./reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
+| [`createPartitionPlot`](./reference/actions/charts-data/#createpartitionplot) | H0, H1 | user-facing | charts |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
@@ -17966,12 +18209,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
+| [`editGraphPlot`](./reference/actions/charts-data/#editgraphplot) | H1, H3 | user-facing | charts |
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](./reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImageMark`](./reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
+| [`editInferredGraphData`](./reference/actions/charts-data/#editinferredgraphdata) | H3 | user-facing | core |
 | [`editIntervalData`](./reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLayout`](./reference/actions/charts-data/#editlayout) | H2 | user-facing | core |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
@@ -17992,6 +18237,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](./reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
+| [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
@@ -18130,6 +18376,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceFontResource`](./reference/actions/charts-data/#replacefontresource) | H3 | user-facing | core |
 | [`replaceImageResource`](./reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
@@ -18255,10 +18502,10 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 **Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ApplyTextMetricsOptions`](./reference/types/#type-applytextmetricsoptions).
+Named option contracts: [`ApplyTextMetricsOptions`](./reference/types/#type-applytextmetricsoptions).
 
  Declared options
 
@@ -18266,18 +18513,24 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `profile` | Required | `TextMetricsProfile` |
+| `profile` | Optional / branch-dependent | `TextMetricsProfile \| undefined` |
+| `prepared` | Optional / branch-dependent | `PreparedTextMetrics \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 applyTextMetrics({ profile })
+applyTextMetrics({ prepared, requestToken })
 ```
 
 Apply a host-measured width profile to title, axis, legend, label, and composition
 layout. See [Measured text layout](./api/rendering/#measured-text-layout) for the
 exact profile format, matching rules, propagation, and executable example.
+The prepared overload binds stored font bytes and measured widths to one exact
+receiver; missing font queries fail instead of using an estimate. See
+[embedded fonts](./api/rendering/#embedded-fonts).
 
 ## `removeTextMetrics`
 
@@ -18747,6 +19000,81 @@ editGraphData({ target?, nodes?, edges?, definition? })
 
 Revise an existing observed graph. The graph ID is `target`; the edge endpoint
 column belongs in `definition.target`. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
+
+## `editInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditInferredGraphDataOptions`](./reference/types/#type-editinferredgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| null \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<GraphCandidateMstDefinition \| (InferredGraphSource & { readonly metric: "cosine" \| "euclidean" \| "manhattan"; readonly features: readonly string[]; readonly preprocess?: "minmax" \| ... 2 more ... \| undefined; } & { ...; }) \| ... 11 more ... \| (InferredGraphSource & ... 1 more ... & { ...; })> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+```
+
+Revise an inferred graph and its dependent layouts and plots. Use
+`candidateGraph: null` to remove a spanning-tree candidate input.
+See [graph inference](./api/graphs/#graph-inference).
+
+## `createInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateInferredGraphDataOptions`](./reference/types/#type-createinferredgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `ruleId` | Required | `string` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
+| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
+| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
+| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
+| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+```
+
+Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
+groups, or ordered sequences. Metric and structural rules have distinct options.
+See [graph inference](./api/graphs/#graph-inference).
 
 ## `createParameter`
 
@@ -22275,7 +22603,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
-| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; shadow?: false \| MarkShadow \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -22311,7 +22639,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
-| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; shadow?: false \| MarkShadow \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -22424,6 +22752,225 @@ layoutGraph({ id, graph?, method, options? })
 
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](./api/data/source-and-derived/#layoutgraph)
+
+## `createGraphPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GraphPlotOptions`](./reference/types/#type-graphplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
+| `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Draw stored graph nodes, edge routes and optional labels. See [Graph plots](./api/graphs/#creategraphplot) for full defaults, typed overrides and supported consumers.
+
+## `editGraphPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGraphPlotOptions`](./reference/types/#type-editgraphplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
+| `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Apply a nonempty graph appearance or layout-binding patch and rebuild its logical items atomically. See [Graph plot edits](./api/graphs/#editgraphplot).
+
+## `createFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./reference/types/#type-applyfontresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"create">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFontResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareFontResource` on its exact original
+Full receiver. The explicit host loads and validates pinned font bytes. No text
+layout changes until prepared metrics are applied. See
+[embedded fonts](./api/rendering/#embedded-fonts).
+
+## `replaceFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./reference/types/#type-applyfontresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+replaceFontResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement and atomically refresh any exact measured layout
+that uses the font, including inherited composition children. The preparation
+host must measure the new font before this action can replace a bound resource.
+
+## `createPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PartitionPlotOptions`](./reference/types/#type-partitionplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPartitionPlot({ id?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](./api/partition/#createpartitionplot)
+
+## `editPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPartitionPlotOptions`](./reference/types/#type-editpartitionplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](./api/partition/#editpartitionplot)
 
 ## `createFlowData`
 
@@ -22717,10 +23264,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -22731,12 +23278,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -22745,7 +23295,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
@@ -22758,10 +23308,10 @@ Create a point mark using fourteen named shapes or polygons with area/radius nor
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow).
 
  Declared options
 
@@ -22772,6 +23322,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -22785,7 +23337,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ blend?, shadow?, clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -22818,6 +23370,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -22830,6 +23384,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -22888,6 +23443,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -22959,8 +23516,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23005,6 +23565,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -23013,6 +23578,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23182,12 +23748,18 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23258,6 +23830,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -23268,6 +23842,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `unknown` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23277,12 +23852,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `dx` | Optional / branch-dependent | `number \| undefined` |
 | `dy` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ blend?, shadow?, clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -23290,7 +23868,7 @@ or unique compatible point, bar, line, rect, rule, or arc layer. Line text ancho
 at each series' final path coordinate; Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
-Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
+Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ blend?, shadow?, dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
 Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
@@ -23324,12 +23902,18 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `textOverrides` | Optional / branch-dependent | `"auto" \| readonly TextOverride[] \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23343,7 +23927,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ blend?, shadow?, clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -23440,10 +24024,10 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23454,11 +24038,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23466,7 +24053,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -23479,10 +24066,10 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow).
 
  Declared options
 
@@ -23493,6 +24080,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -23504,7 +24093,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ blend?, shadow?, clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -23675,10 +24264,10 @@ and independently shared resources. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -23689,6 +24278,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
@@ -23704,7 +24295,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ blend?, shadow?, clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -23725,10 +24316,10 @@ strict. Each run is a path and selection item; curves restart at each gap.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -23739,6 +24330,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
@@ -23752,7 +24345,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ blend?, shadow?, clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance or its explicit missing-coordinate policy and rematerialize
@@ -23765,10 +24358,10 @@ concrete path commands without changing field encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23784,12 +24377,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23798,7 +24394,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ blend?, shadow?, clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -23816,10 +24412,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23835,11 +24431,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `blend` | Optional / branch-dependent | `"difference" \| "multiply" \| "normal" \| "screen" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23847,11 +24445,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, shadow?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
-Use `blend: "difference"` to composite each bar fill and outline once over earlier
+Use `blend: "multiply"`, `"screen"`, or `"difference"` to composite each bar fill and outline once over earlier
 content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](./api/marks/)
@@ -23870,10 +24468,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -23884,10 +24482,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23898,7 +24499,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -23930,6 +24531,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -23942,7 +24545,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ blend?, shadow?, clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -23969,6 +24572,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -23980,7 +24585,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ blend?, shadow?, clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -23994,10 +24599,10 @@ accepts the same styles. [Rule marks](./api/marks/rule/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -24008,9 +24613,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -24020,7 +24628,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -24033,10 +24641,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
  Declared options
 
@@ -24047,11 +24655,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -24060,7 +24671,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createArcMark({ blend?, shadow?, id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic arc mark and empty closed-path collection. Direct
@@ -24075,10 +24686,10 @@ radial sectors. [Marks](./api/marks/line-area/#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
  Declared options
 
@@ -24089,10 +24700,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -24100,7 +24714,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })
+editArcMark({ blend?, shadow?, target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
@@ -24125,11 +24739,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -24146,7 +24763,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -24186,9 +24803,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -24196,7 +24816,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -24304,12 +24924,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `alt` | Optional / branch-dependent | `string \| undefined` |
 | `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? } = {})
 ```
 
 Create one resource-backed image item. Unique source inference and the first `image`
@@ -24343,11 +24964,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `alt` | Optional / branch-dependent | `string \| undefined` |
 | `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })
 ```
 
 Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
@@ -24507,6 +25129,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -24524,7 +25148,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })
+createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
 ```
 
 Draw stored contour level boundaries or filled bands with shared position and color scales. See [Contours and two-dimensional density](./api/contours/#createcontourmark).
@@ -24548,6 +25172,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `geometry` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `mode` | Optional / branch-dependent | `"filled" \| "line" \| undefined` |
@@ -24563,7 +25189,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })
+editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
 ```
 
 Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](./api/contours/#editcontourmark).
@@ -31422,10 +32048,12 @@ import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageReso
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
 export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
+export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -31739,7 +32367,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint,
+  FillPaint, MarkOutline, MarkShadow, BlendMode,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -31933,6 +32561,24 @@ export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageR
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
 export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
+export type { FontIdentity, FontMimeType, ConcreteFont, FontRef, FontMetricsProfile, FontResourceSource, CreateFontResourceRequest,
+  ReplaceFontResourceRequest, FontResourceRequest, FontMeasurementHost, TextMetricsHost, FontResourceHost,
+  PreparedFontResource, ApplyFontResourceOptions, PreparedTextMetrics, TextMetricsRequest, FontResource,
+  PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { CreateFontResourceRequest, ReplaceFontResourceRequest, FontResourceRequest, FontResourceHost, PreparedFontResource,
+  PreparedTextMetrics, TextMetricsRequest, TextMetricsHost, PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontResource(program: ChartProgram, request: CreateFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"create">>;
+export function prepareFontResource(program: ChartProgram, request: ReplaceFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"replace">>;
+export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
+export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
+export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+
+export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 ```
 
 #### `ggaction/basic`
@@ -31940,7 +32586,7 @@ export function prepareImageResource(program: ChartProgram, request: ImageResour
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
-export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -32096,6 +32742,15 @@ export function render(
 
 export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 ```
 
 #### `ggaction/extension`
@@ -32109,7 +32764,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint,
+  FillPaint, MarkOutline, MarkShadow,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -32226,6 +32881,7 @@ export function renderToPDFBuffer(
 
 ```typescript
 export interface SVGRenderOptions {
+  readonly shadows?: PreparedShadowRendering;
   readonly title?: string;
   readonly description?: string;
   readonly resourceNamespace?: string;
@@ -32326,7 +32982,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind, PartitionViewState } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
@@ -32336,7 +32992,16 @@ export interface ParameterDefinition { readonly path: string; readonly kind: "fi
 export interface ActionDescription { readonly version: 1; readonly action: string; readonly applicability: "supported" | "needs-input" | "incompatible" | "unsupported" | "unverified"; readonly parameterDefinitions: readonly ParameterDefinition[]; readonly requirements: readonly { readonly reason: string; readonly optionPath?: string }[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; }
 export interface Change { readonly resource: ResourceRef; readonly operation: "add" | "remove" | "modify"; readonly effect: "data" | "binding" | "structure" | "scale" | "guide" | "style"; readonly roles: readonly string[]; }
 export interface ProgramComparison { readonly version: 1; readonly equivalence: "equal" | "different" | "unknown"; readonly completeProgramComparison: boolean; readonly changes: readonly Change[]; readonly affected: readonly ResourceRef[]; readonly findings: readonly Finding[]; }
-export interface OwnerInspection { readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export interface PartitionInspection {
+  readonly focusKey: string | null; readonly breadcrumbKeys: readonly string[]; readonly levels: number;
+  readonly diagnostics: Readonly<{emptyHierarchy:boolean;emptyValue:boolean;emptyChildrenView:boolean}>;
+  readonly recovery?: PartitionViewState["recovery"];
+}
+export interface PartitionNavigation {
+  readonly key: string; readonly parent: string | null; readonly firstChild: string | null;
+  readonly previousSibling: string | null; readonly nextSibling: string | null; readonly root: string | null;
+}
+export interface OwnerInspection { readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
 export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
@@ -32368,6 +33033,7 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;
@@ -32393,7 +33059,7 @@ export function getExpressionFunctions(options?: { readonly registry?: "standard
 [Complete declaration and relative dependencies](./types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -32425,7 +33091,7 @@ export interface CanvasTransitionScene {
   readonly height: number;
   readonly nodes: readonly CanvasTransitionNode[];
 }
-export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
+export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'; shadows?: PreparedShadowRendering}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
 export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
 ```
@@ -32437,6 +33103,17 @@ editing, and stable child replacement. Use [Rendering](./api/rendering/) for
 complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 Shared mark fill options follow [Pattern and gradient fills](./api/appearance/mark-style/#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.
+
+The `blend` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick mark
+creation/editing accepts normal, multiply, screen, or difference. It applies once
+per final glyph and is preserved through rematerialization. See
+[Mark Style](./api/appearance/mark-style/#blending-each-mark-item) for ordering and output behavior.
+
+The `shadow` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule and Tick create/edit actions adds
+`{color, offsetX?, offsetY?, blurRadius?}`; edit with `shadow: false` to remove it. Defaults are zero offsets
+and zero blur. [Mark Style](./api/appearance/mark-style/#shadows) explains source opacity and selection;
+[Rendering](./api/rendering/#prepared-shadows) specifies explicit Canvas/SVG preparation and automatic
+native PNG/PDF preparation. Text requires exact prepared embedded fonts.
 
 ## Internal trace operations
 
@@ -32473,7 +33150,7 @@ interface ChartProgramActions {
   createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
   editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
   fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
-  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
   removeTextMetrics(): ChartProgram;
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
@@ -32502,6 +33179,8 @@ interface ChartProgramActions {
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+  replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
@@ -32509,7 +33188,11 @@ interface ChartProgramActions {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
@@ -32526,6 +33209,8 @@ interface ChartProgramActions {
   createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
   editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -32565,21 +33250,21 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
-  editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
   removeJitter(options?: TargetedOptions<RemoveJitterOptions>): ChartProgram;
   packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
-  createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -32602,7 +33287,7 @@ interface ChartProgramActions {
   editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
-  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
   encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
@@ -32971,6 +33656,17 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
 
+### `ApplyFontResourceOptions` {#type-applyfontresourceoptions}
+
+ Expand ApplyFontResourceOptions
+
+```typescript
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;
+```
+
+Related types: [`PreparedFontResource`](./reference/types/#type-preparedfontresource).
+
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
  Expand ApplyImageResourceOptions
@@ -32988,10 +33684,11 @@ Related types: [`PreparedImageResource`](./reference/types/#type-preparedimagere
  Expand ApplyTextMetricsOptions
 
 ```typescript
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };
 ```
 
-Related types: [`TextMetricsProfile`](./reference/types/#type-textmetricsprofile).
+Related types: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextMetricsProfile`](./reference/types/#type-textmetricsprofile) · [`PreparedTextMetrics`](./reference/types/#type-preparedtextmetrics).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -33663,6 +34360,14 @@ export interface BinnedHeatmapPositionChannel {
 ```
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions).
+
+### `BlendMode` {#type-blendmode}
+
+ Expand BlendMode
+
+```typescript
+export type BlendMode = "normal" | "multiply" | "screen" | "difference";
+```
 
 ### `BootstrapMeanIntervalMethod` {#type-bootstrapmeanintervalmethod}
 
@@ -34772,6 +35477,7 @@ export interface ContourGridFrame {
 
 ```typescript
 export interface ContourMarkOptions {
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
   readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
   readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
   readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -34779,7 +35485,7 @@ export interface ContourMarkOptions {
 }
 ```
 
-Related types: [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions) · [`FillPaint`](./reference/types/#type-fillpaint).
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `CoordinateAspect` {#type-coordinateaspect}
 
@@ -35236,6 +35942,18 @@ export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; 
 ```
 
 Related types: [`ImageMarkOptions`](./reference/types/#type-imagemarkoptions).
+
+### `CreateInferredGraphDataOptions` {#type-createinferredgraphdataoptions}
+
+ Expand CreateInferredGraphDataOptions
+
+```typescript
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+```
+
+Related types: [`GraphNeighborDefinition`](./reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](./reference/types/#type-graphmetricmstdefinition) · [`GraphStructuralDefinition`](./reference/types/#type-graphstructuraldefinition) · [`GraphCandidateMstDefinition`](./reference/types/#type-graphcandidatemstdefinition).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -37627,6 +38345,16 @@ export interface EditGraphDataOptions {
 
 Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraphdefinition).
 
+### `EditGraphPlotOptions` {#type-editgraphplotoptions}
+
+ Expand EditGraphPlotOptions
+
+```typescript
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`GraphPlotOptions`](./reference/types/#type-graphplotoptions).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -37718,6 +38446,19 @@ export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 ```
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`ImputedDataOptions`](./reference/types/#type-imputeddataoptions).
+
+### `EditInferredGraphDataOptions` {#type-editinferredgraphdataoptions}
+
+ Expand EditInferredGraphDataOptions
+
+```typescript
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+```
+
+Related types: [`InferredGraphDefinition`](./reference/types/#type-inferredgraphdefinition).
 
 ### `EditIntervalDataOptions` {#type-editintervaldataoptions}
 
@@ -38028,6 +38769,16 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 ```
 
 Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
+### `EditPartitionPlotOptions` {#type-editpartitionplotoptions}
+
+ Expand EditPartitionPlotOptions
+
+```typescript
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`PartitionPlotOptions`](./reference/types/#type-partitionplotoptions).
 
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
@@ -39279,10 +40030,10 @@ export interface FlattenDataOptions {
  Expand FlowBodyPaint
 
 ```typescript
-export interface FlowBodyPaint { readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
 ```
 
-Related types: [`FillPaint`](./reference/types/#type-fillpaint).
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `FlowDefinition` {#type-flowdefinition}
 
@@ -39302,10 +40053,10 @@ Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraph
  Expand FlowLabelPaint
 
 ```typescript
-export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
 ```
 
-Related types: [`FillPaint`](./reference/types/#type-fillpaint).
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `FlowLabelsOptions` {#type-flowlabelsoptions}
 
@@ -39533,6 +40284,16 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel).
 
+### `GraphCandidateMstDefinition` {#type-graphcandidatemstdefinition}
+
+ Expand GraphCandidateMstDefinition
+
+```typescript
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource).
+
 ### `GraphCircularOptions` {#type-graphcircularoptions}
 
  Expand GraphCircularOptions
@@ -39542,6 +40303,24 @@ export interface GraphCircularOptions extends GraphLayoutLimits { readonly cente
 ```
 
 Related types: [`GraphLayoutLimits`](./reference/types/#type-graphlayoutlimits).
+
+### `GraphEdgePaint` {#type-graphedgepaint}
+
+ Expand GraphEdgePaint
+
+```typescript
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+Related types: [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `GraphFeaturePolicy` {#type-graphfeaturepolicy}
+
+ Expand GraphFeaturePolicy
+
+```typescript
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
+```
 
 ### `GraphFixedOptions` {#type-graphfixedoptions}
 
@@ -39575,6 +40354,28 @@ Related types: [`GraphLayoutLimits`](./reference/types/#type-graphlayoutlimits) 
 export type GraphKeyField = string | readonly string[];
 ```
 
+### `GraphLabelPaint` {#type-graphlabelpaint}
+
+ Expand GraphLabelPaint
+
+```typescript
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
+
+### `GraphLabelsOptions` {#type-graphlabelsoptions}
+
+ Expand GraphLabelsOptions
+
+```typescript
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+```
+
+Related types: [`GraphLabelPaint`](./reference/types/#type-graphlabelpaint) · [`RowKey`](./reference/types/#type-rowkey).
+
 ### `GraphLayoutLimits` {#type-graphlayoutlimits}
 
  Expand GraphLayoutLimits
@@ -39582,6 +40383,50 @@ export type GraphKeyField = string | readonly string[];
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 ```
+
+### `GraphMetricDefinition` {#type-graphmetricdefinition}
+
+ Expand GraphMetricDefinition
+
+```typescript
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+```
+
+### `GraphMetricMstDefinition` {#type-graphmetricmstdefinition}
+
+ Expand GraphMetricMstDefinition
+
+```typescript
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](./reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](./reference/types/#type-graphfeaturepolicy).
+
+### `GraphNeighborDefinition` {#type-graphneighbordefinition}
+
+ Expand GraphNeighborDefinition
+
+```typescript
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](./reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](./reference/types/#type-graphfeaturepolicy) · [`GraphSearchOptions`](./reference/types/#type-graphsearchoptions).
+
+### `GraphNodePaint` {#type-graphnodepaint}
+
+ Expand GraphNodePaint
+
+```typescript
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `GraphPin` {#type-graphpin}
 
@@ -39593,6 +40438,20 @@ export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly 
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
 
+### `GraphPlotOptions` {#type-graphplotoptions}
+
+ Expand GraphPlotOptions
+
+```typescript
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+```
+
+Related types: [`GraphNodePaint`](./reference/types/#type-graphnodepaint) · [`RowKey`](./reference/types/#type-rowkey) · [`GraphEdgePaint`](./reference/types/#type-graphedgepaint) · [`GraphLabelsOptions`](./reference/types/#type-graphlabelsoptions).
+
 ### `GraphPosition` {#type-graphposition}
 
  Expand GraphPosition
@@ -39602,6 +40461,30 @@ export interface GraphPosition { readonly key: RowKey; readonly x: number; reado
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
+
+### `GraphSearchOptions` {#type-graphsearchoptions}
+
+ Expand GraphSearchOptions
+
+```typescript
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+```
+
+### `GraphStructuralDefinition` {#type-graphstructuraldefinition}
+
+ Expand GraphStructuralDefinition
+
+```typescript
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`RowKey`](./reference/types/#type-rowkey) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit).
 
 ### `GraphicClip` {#type-graphicclip}
 
@@ -39754,16 +40637,20 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
  Expand HierarchyBodyPaint
 
 ```typescript
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
+
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
 
  Expand HierarchyLabelPaint
 
 ```typescript
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
+
+Related types: [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
 
@@ -40072,11 +40959,11 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 ```
 
-Related types: [`GraphicClip`](./reference/types/#type-graphicclip).
+Related types: [`GraphicClip`](./reference/types/#type-graphicclip) · [`MarkShadow`](./reference/types/#type-markshadow).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -40119,6 +41006,29 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 ```
 
 Related types: [`ImputedDataBaseOptions`](./reference/types/#type-imputeddatabaseoptions) · [`WindowSort`](./reference/types/#type-windowsort) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
+
+### `InferredGraphDefinition` {#type-inferredgraphdefinition}
+
+ Expand InferredGraphDefinition
+
+```typescript
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+```
+
+Related types: [`GraphNeighborDefinition`](./reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](./reference/types/#type-graphmetricmstdefinition) · [`GraphCandidateMstDefinition`](./reference/types/#type-graphcandidatemstdefinition) · [`GraphStructuralDefinition`](./reference/types/#type-graphstructuraldefinition).
+
+### `InferredGraphSource` {#type-inferredgraphsource}
+
+ Expand InferredGraphSource
+
+```typescript
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -40856,6 +41766,14 @@ export type MarkLabelSelectionOptions =
 
 Related types: [`MarkSelector`](./reference/types/#type-markselector).
 
+### `MarkOutline` {#type-markoutline}
+
+ Expand MarkOutline
+
+```typescript
+export interface MarkOutline { color: string; width: number; }
+```
+
 ### `MarkSelector` {#type-markselector}
 
  Expand MarkSelector
@@ -40886,6 +41804,14 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ```
 
 Related types: [`MarkGraphicProperty`](./reference/types/#type-markgraphicproperty).
+
+### `MarkShadow` {#type-markshadow}
+
+ Expand MarkShadow
+
+```typescript
+export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }
+```
 
 ### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
 
@@ -41654,6 +42580,25 @@ Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidencein
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
+### `PartitionPlotOptions` {#type-partitionplotoptions}
+
+ Expand PartitionPlotOptions
+
+```typescript
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+```
+
+Related types: [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`HierarchyBodyPaint`](./reference/types/#type-hierarchybodypaint) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
+
 ### `PathFillRule` {#type-pathfillrule}
 
  Expand PathFillRule
@@ -42226,6 +43171,17 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
 
+### `PreparedFontResource` {#type-preparedfontresource}
+
+ Expand PreparedFontResource
+
+```typescript
+export interface PreparedFontResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedFontResourceBrand]: Kind; readonly kind: "font-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
  Expand PreparedImageResource
@@ -42235,6 +43191,17 @@ export interface PreparedImageResource<Kind extends "create" | "replace" = "crea
   readonly [preparedImageResourceBrand]: Kind;
   readonly kind: "image-resource";
   readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+### `PreparedTextMetrics` {#type-preparedtextmetrics}
+
+ Expand PreparedTextMetrics
+
+```typescript
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
 }
 ```
 
@@ -42416,6 +43383,7 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
 ```
 
 Related types: [`LinearGradientPoint`](./reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](./reference/types/#type-lineargradientstop).
@@ -42645,18 +43613,21 @@ Related types: [`LineCategoricalColorChannel`](./reference/types/#type-linecateg
 
 ```typescript
 export interface RectMarkOptions extends RectStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
 }
 ```
 
-Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint).
+Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -43318,6 +44289,8 @@ type RulePositionValue =
 
 ```typescript
 export interface RuleStyleOptions extends StrokeStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;
@@ -43325,7 +44298,7 @@ export interface RuleStyleOptions extends StrokeStyleDetails {
 }
 ```
 
-Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
 
 ### `ScalarAggregateOperation` {#type-scalaraggregateoperation}
 
@@ -43769,7 +44742,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -44037,7 +45010,9 @@ Related types: [`ValueFormat`](./reference/types/#type-valueformat).
  Expand TextMarkOptions
 
 ```typescript
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
+  blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -44052,6 +45027,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -44064,7 +45040,7 @@ export interface TextMarkOptions {
 }
 ```
 
-Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`RotationInput`](./reference/types/#type-rotationinput).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`BlendMode`](./reference/types/#type-blendmode) · [`MarkShadow`](./reference/types/#type-markshadow) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`RotationInput`](./reference/types/#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 
@@ -44396,11 +45372,11 @@ export interface TitleTextStyleOptions {
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 ```
 
-Related types: [`HierarchyNodePaint`](./reference/types/#type-hierarchynodepaint) · [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
+Related types: [`HierarchyNodePaint`](./reference/types/#type-hierarchynodepaint) · [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`MarkShadow`](./reference/types/#type-markshadow) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
 
 ### `TreemapPlotOptions` {#type-treemapplotoptions}
 
@@ -47794,6 +48770,8 @@ The first panel uses a lavender background and purple default marks. The second 
 
 Theme defaults and explicit mark properties have separate precedence. Removing a theme does not undo the user's local override. On a composition, choose the documented `scope` deliberately; this example themes independent child programs before composition. Unknown token names fail without changing the input.
 
+Graph, tree, and treemap plots also follow theme defaults for their bodies, links, and labels. Explicit role styles and per-node overrides stay in place. Removing the final theme restores each plot family's defaults, while the stored layout and item identities remain unchanged.
+
 ## Related
 
 [Authoring conventions](./concepts/authoring-conventions/) · [Data policies](./api/data/policies/) ·
@@ -48279,12 +49257,14 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](./reference/actions/charts-data/#createadjacentplot) | default | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) · [`editCompositionScales`](./reference/actions/charts-data/#editcompositionscales) · [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) |
 | Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | default | [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeOpacity`](./reference/actions/encodings/#encodeopacity) · [`removeMark`](./reference/actions/marks/#removemark) |
 
-## Hierarchies
+## Hierarchies and networks
 
 | Task / input | Chart action | Package entry | Direct editor |
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | default | [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](./reference/actions/charts-data/#createtreemapplot) | default | [`editTreemapPlot`](./reference/actions/charts-data/#edittreemapplot) · [`removeMark`](./reference/actions/marks/#removemark) |
+| Explicit node and edge tables with a stored graph layout | [`createGraphPlot`](./reference/actions/charts-data/#creategraphplot) | default | [`editGraphPlot`](./reference/actions/charts-data/#editgraphplot) · [`removeMark`](./reference/actions/marks/#removemark) |
+| Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](./reference/actions/charts-data/#createpartitionplot) | default | [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 
 ## Compose or refine
 
@@ -48327,11 +49307,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd` |
+| Contract fingerprint | `sha256:922cf9de255957581bcdbaf57d970f31ef096bf2b0b27829f9ac000f91705367` |
 | Example and dataset source | `codex/roadmap9-contour` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 332 |
+| Declared actions here | 340 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -48936,6 +49916,75 @@ const images = await prepareImageRendering(program, {decode: decodeImage});
 render(program, document.querySelector("#chart").getContext("2d"), {images});
 ```
 
+## Add a pixel-alpha shadow
+
+Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blurRadius:6}})` after creating an image mark. Use `shadow:false` to remove it. The actual image transparency shapes the shadow, and the image viewport clips the result. PNG and PDF prepare it automatically. For Canvas or SVG, call `prepareShadowRendering` with a Canvas factory and the image decoder, then pass the returned `shadows` handle to the renderer. Canvas also needs `prepareImageRendering` as above. Dispose the shadow handle when done and prepare again after editing the chart. See [rendering](./api/rendering/) for the complete host contract.
+
+<!-- Source: /tutorials/font-assets/ -->
+
+# Prepare fonts before text layout
+
+Keep font loading explicit, measure with the loaded bytes, and save the final
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-contour/examples/font-assets/)
+uses licensed Korean and monochrome emoji subsets with fixed content hashes.
+It includes a combining accent and a wrapped Korean title.
+
+## Load, measure, apply
+
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-contour/examples/font-assets/program.js)
+first creates a title using the requested font families. Its initial estimated
+layout is a usable immutable program while loading runs. For each named font,
+`prepareFontResource` asks the application to load and decode bytes and verifies
+the expected SHA256. `createFontResource` commits the prepared result to the exact
+original receiver using the current request token.
+
+`prepareTextMetrics` takes the explicit font IDs and asks the application to
+measure every width needed by the existing layout. `applyTextMetrics` commits the
+exact profile and rematerializes the title. Widths that have not been measured
+cannot silently use an estimate. A late result for an edited receiver is stale.
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-contour/examples/font-assets/host.js)
+uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
+
+## Draw the prepared text
+
+The complete example entry below runs inside the linked example directory after
+the standard browser module setup. Its local `program.js` performs the font
+resource and metric preparation described above; `host.js` registers and releases
+the exact requested font alias.
+
+```js
+import { render, prepareFontRendering } from "ggaction";
+import { createFontExample } from "./program.js";
+import { registerFont } from "./host.js";
+
+const program = createFontExample();
+const canvas = document.querySelector("canvas");
+const fonts = await prepareFontRendering(program, { register: registerFont });
+try { render(program, canvas.getContext("2d"), { fonts }); }
+finally { fonts.dispose(); }
+```
+
+SVG embeds the same font bytes. PNG/PDF register them for the duration of output.
+They use the stored lines and origins rather than measuring or wrapping again.
+Editable snapshots retain the font resource and exact profile; graphic snapshots
+retain self-contained concrete fonts. Restore does not fetch the original URI.
+
+## Change labels or fonts
+
+Edits that need only already measured queries stay synchronous. New labels may
+need more queries: remove the exact profile with `removeTextMetrics()`, edit the
+text, and prepare/apply a new profile on that receiver. Replacing a bound font
+uses `prepareFontResource` with `kind:"replace"` and a measurement callback, then
+`replaceFontResource`; bytes, metrics and text update together.
+
+Restrictive `removeResource({kind:"font",id})` rejects an active metric binding.
+Explicit cascade first removes the metric profile and recomputes estimated text.
+See [embedded fonts](./api/rendering/#embedded-fonts) for the complete host
+contracts, budgets, error behavior and registration lifetime.
+
+The subsets only cover the example text. Choose fonts covering your own content;
+the library does not claim that one font covers every script or emoji sequence.
+
 <!-- Source: /api/hierarchy/ -->
 
 # Hierarchy resources and plots
@@ -49043,6 +50092,14 @@ Authoring rejects unknown or duplicate targets. When a source revision removes a
 Source and parameter revisions refresh dependent hierarchy resources, layouts and plots in order. Invalid topology, layout or concrete output leaves the original program unchanged. Concat children retain separate identities. Facets support complete subtree partitions; a partition that separates a child from its parent fails. Repeat positional field changes are not applicable.
 
 Editable serialization retains layout geometry and exact source refs. Restore validates that state without running a layout algorithm. Canvas, SVG, PNG and PDF read the same concrete graphics. Empty sources produce empty models; zero totals produce finite zero-area partitions and an inspection diagnostic.
+
+Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](./api/appearance/mark-style/). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
+
+Tree links accept shadow, while their ordinary stroke remains the link appearance.
 
 <!-- Source: /tutorials/hierarchy/ -->
 
@@ -49225,6 +50282,447 @@ Slice-dice alternates subdivision directions. Squarify chooses rows to reduce ex
 Use `reviseData` for source values or `editHierarchyData` for hierarchy input policy. Both update the full dependent layout and plot closure. Unknown parents or invalid values reject the revision, leaving the earlier program and trace intact.
 
 Removing a mark keeps its reusable layout. Remove the layout before its hierarchy, and remove the hierarchy before its source dataset. Shared or authored dependents are never silently discarded. See [Hierarchy resources and plots](./api/hierarchy/) for complete signatures, defaults, grouped and nested source forms, labels, sorting and removal rules.
+
+<!-- Source: /api/graphs/ -->
+
+# Graph plots
+
+Create [observed graph data and a layout](./api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](./tutorials/graphs/) uses the same program as the browser and renderer examples.
+
+## createGraphPlot
+
+```typescript
+createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram
+```
+
+Chart authoring. Draw circles, edge paths and optional labels from one graph layout. The first omitted ID is `graphPlot`; additional plots need explicit IDs. An omitted layout uses the current eligible graph layout, then the unique eligible layout. Missing or ambiguous inputs fail.
+
+`origin:"auto"` centers the stored node bounds in the plot frame without scaling coordinates. An explicit `[x,y]` translates by plot-local pixels. `clip:false` is the default; true clips to the plot frame. Resizing the Canvas updates placement while preserving the layout result.
+
+Nodes accept `radius`, `fill`, `stroke`, `strokeWidth`, `opacity`, and `overrides`. Defaults are radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Fill accepts the shared structured paint values. Each override combines the same optional style fields with a required original typed node `key`.
+
+Edges accept `stroke`, `strokeWidth`, `opacity`, `parallelGap`, `loopRadius`, `arrowSize`, and `arrows`. Defaults are #94a3b8, 1.5, 1, 16, 20, 8 and `"auto"`. Auto arrows follow graph direction; true forces arrows and false hides them. Dimensions are nonnegative finite pixel values. Opacity is in [0,1]. Parallel edges retain separate curved routes in source order; self-loops remain visible. A directed edge and its arrow share one logical identity.
+
+## editGraphPlot
+
+```typescript
+editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram
+```
+
+Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge appearance, or labels. Omitted target selects the current eligible mark, then a unique graph plot; ambiguity fails. Omitted fields preserve stored intent. Override arrays replace their previous array. Null, undefined, unknown fields and invalid values fail before changing the program.
+
+## Labels and identity
+
+Labels are disabled by default. `labels:{}` displays original node keys; `labels:false` removes them. Defaults are fill #0f172a, 12px sans-serif normal, and offset `[0,14]`. Set `field` to one retained node attribute. Scalar values become strings, null/undefined become empty strings, and object/array values fail. Label overrides accept a typed key, optional text, and optional fill/font style; offset is shared by the plot.
+
+Overrides must initially name existing distinct keys. A later source revision can make a stored override dormant. Inspection reports `orphan-style`, and only the same typed key can regain that style. Number `1` and string `"1"` remain different.
+
+Selection fields include `kind:"node"|"edge"`, `key`, and node attributes as `attribute:<name>`. Edges additionally expose sourceKey, targetKey, weight, origin, directed and ruleId. Node degree/incoming/outgoing fields describe retained adjacency. Exact source rows distinguish the node and edge tables. An edge selection includes its arrow; a node selection includes its label.
+
+Highlight `color` or `stroke` changes node borders, edge paths and arrow fill; label paint stays readable. Opacity and offset affect every component of the selected item. Fill, size, shape, fontSize and strokeDash highlights are unsupported. Use node style edits to change node fill or radius. Removing a highlight restores the current baseline.
+
+## Updates, removal and outputs
+
+Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat and induced filtering are not currently supported.
+
+Remove a plot with `removeMark` before removing its bound layout or graph. Resource cascade does not silently remove live graph marks. Editable serialization validates stored data, layout and style without rerunning force simulation. Canvas, SVG, PNG and PDF consume the same concrete primitives. Inspection and accessible export count each node or edge once rather than counting its label or arrow again.
+
+## Graph inference
+
+Use `createInferredGraphData` when relationships follow a rule. The resulting
+graph works with the same `layoutGraph` and `createGraphPlot` actions.
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from 'ggaction';
+
+const program = chart()
+  .createData({ id: 'points', keyField: 'id', values: [
+    { id: 'a', x: 0 }, { id: 'b', x: 1 },
+    { id: 'c', x: 3 }, { id: 'd', x: 10 }
+  ] })
+  .createInferredGraphData({
+    id: 'neighbors', nodeKey: 'id', ruleId: 'nearest',
+    rule: 'knn', features: ['x'], metric: 'euclidean',
+    options: { k: 1, symmetrize: 'union' }
+  })
+  .layoutGraph({ id: 'placement', method: 'circular' })
+  .createCanvas({ width: 400, height: 300 })
+  .createGraphPlot({ labels: {} });
+```
+
+The inferred edges are a–b, b–c, and c–d, with weights 1, 2, and 7. Their identities
+include `ruleId` and typed endpoint keys. Changing a threshold or source value
+preserves the identity of a surviving relationship. A new `ruleId` denotes a
+separate inference.
+
+| Rule | Required rule options | Meaning |
+| --- | --- | --- |
+| `knn` | None; `k` defaults to 1 | Nearest neighbors, with `directed`, `union`, or `mutual` symmetry |
+| `radius` | `radius` | Include distances at or below the radius |
+| `similarity` | `threshold` | Include cosine or Jaccard similarities at or above the threshold |
+| `mst` | None | Minimum spanning tree of metric distances or an explicit candidate graph |
+| `group` | `fields` | Connect equal typed groups as a clique or an explicit-hub star |
+| `sequence` | `orderField` | Connect each row to the row `lag` positions later within its group |
+
+Numeric metrics accept a field array. Jaccard also accepts `features: { set:
+'attributes' }` for an array-valued column. Great-circle accepts `features: {
+longitude: 'longitude', latitude: 'latitude' }` and returns distances in meters.
+Preprocessing defaults to `none`; numeric metrics also support `standardize` and
+`minmax`. Missing features fail unless `options.missing: 'omit-node'` is explicit.
+Cosine zero vectors fail unless `options.zeroVector: 'zero-similarity'` is explicit.
+
+Group and sequence rules do not accept metric features. A candidate MST uses
+`candidateGraph: 'existingGraph'` with an undirected weighted graph and omits
+metric features. Disconnected candidates require `options.forest: true`.
+
+Search defaults to exact brute force. Use `options.search: { algorithm:
+'kd-tree' }` for Euclidean or Manhattan neighbor/radius queries up to eight
+dimensions, or `{ algorithm: 'grid' }` for radius queries up to three dimensions.
+Approximate kNN requires `{ mode: 'approximate', seed: 42 }`; it records measured
+recall and fails below its `minRecall` threshold, which defaults to 0.95. It never
+silently substitutes approximate results for exact search.
+
+`editInferredGraphData({ target: 'neighbors', definition: { options: { k: 2 } } })`
+replaces the rule options and refreshes dependent layouts and plots. A different
+rule requires its new `ruleId` and applicable definition. Source revisions also
+refresh dependent inferred graphs; layout, canvas, and paint edits preserve the
+topology. `candidateGraph: null` removes a candidate input, so provide metric
+features in the same edit when switching to a complete metric MST.
+
+Inference supports the Full entry point. Resource-backed graph plots currently
+reject automatic facet partitioning and mark filtering. Create an explicitly
+filtered dataset and a separate inferred graph when you need recomputation.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](./api/appearance/mark-style/). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
+
+Graph edges accept shadow on both the path and its arrow. Edge outlines are unsupported; edit their ordinary stroke.
+
+<!-- Source: /tutorials/graphs/ -->
+
+# Draw an observed network
+
+Create two node rows and one observed directed edge. A fixed layout determines positions; the plot adds circles, an arrow and readable labels. This is the canonical graph example's action flow.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    "width": 300,
+    "height": 240,
+    "margin": 0,
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "nodes",
+    "values": [
+      {
+        "id": "A"
+      },
+      {
+        "id": "B"
+      }
+    ],
+    "keyField": "id"
+  })
+  .createData({
+    "id": "edges",
+    "values": [
+      {
+        "source": "A",
+        "target": "B"
+      }
+    ]
+  })
+  .createGraphData({
+    "id": "network",
+    "nodes": "nodes",
+    "edges": "edges",
+    "nodeKey": "id",
+    "source": "source",
+    "target": "target",
+    "directed": true,
+    "selfLoops": true
+  })
+  .layoutGraph({
+    "id": "positions",
+    "graph": "network",
+    "method": "fixed",
+    "options": {
+      "positions": [
+        {
+          "key": "A",
+          "x": 60,
+          "y": 120
+        },
+        {
+          "key": "B",
+          "x": 240,
+          "y": 120
+        }
+      ]
+    }
+  })
+  .createGraphPlot({
+    "id": "networkPlot",
+    "layout": "positions",
+    "origin": [
+      0,
+      0
+    ],
+    "nodes": {
+      "radius": 10
+    },
+    "edges": {
+      "stroke": "#64748b",
+      "strokeWidth": 2,
+      "parallelGap": 90,
+      "loopRadius": 32
+    },
+    "labels": {
+      "offset": [
+        0,
+        24
+      ],
+      "fontSize": 14
+    }
+  });
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+## Preserve separate connections
+
+The parallel example contains two observed edges with the same endpoints. Both survive as distinct paths and selections. The self-loop example retains an edge whose endpoints name the same node. Neither view infers new connections from position.
+
+## Revise the view
+
+Continue from `program` with `program.editGraphPlot({target:"networkPlot",nodes:{radius:14}})` to change node size. Use `editLayout` to change fixed positions, or create a separate circular/force layout and explicitly rebind the plot. Source revisions update dependent layouts and plots together. The original program remains available.
+
+See [Graph plots](./api/graphs/) for full defaults, typed overrides, label attributes, selection and output behavior.
+
+<!-- Source: /api/partition/ -->
+
+# Partition plots
+
+## Shared contract
+
+The Full entry point draws stored `layoutHierarchy({method:"partition"})` intervals as Cartesian rectangles or polar sectors. The hierarchy and layout contracts, typed key/path targets, label content, exact resource refs, source revision closure, facets and removal rules are owned by [Hierarchy resources and plots](./api/hierarchy/). These actions require the Full entry point. Renderers consume the same concrete rect/path/text output; restore validates stored intervals, view and mapping without running a layout algorithm.
+
+A view changes projection, never hierarchy values or layout order. Focus is `null` (the current root), `{key:scalar}` for flat/nested input or `{path:scalar[]}` for grouped input. Focus must exist. `rootVisible:true` and `prunedSelection:"keep-hidden"` are defaults. A hidden root consumes no depth band. A synthetic forest root remains non-drawable. Zero totals retain node metadata and empty-value diagnostics; no equal-share area is invented. Inclusive residuals remain blank tails, not synthetic leaves.
+
+All real nodes retain stable logical keys, original source lineage, fields and navigation metadata. `getMarkItems` reports visible geometry and `navigation` (parent, firstChild, sibling keys and root). Inspection reports focus, breadcrumb keys and diagnostics. Nonvisible nodes have no graphic or hit candidate. Label thresholds hide ink but retain the accessible name. Existing selection predicates remain active with keep-hidden; node-key/field predicates therefore retain selected hidden nodes and reappear on zoom-out. Property and aggregate selection predicates retain their existing reevaluation semantics. Explicit `drop` intersects the previous membership with visible node keys and stores the result through `editMarkSelection`; a later zoom-out does not resurrect those members.
+
+A source revision which deletes explicit focus recovers the nearest surviving ancestor using the prior parent chain. If none survives, focus becomes the new root, or empty for an empty model. Inspection records the previous key and `ancestor`, `root` or `empty` reason. Explicit focus editing clears that diagnostic. Every dependent plot is preflighted before revision; a failure preserves the input program and trace.
+
+Cartesian orientation is horizontal (value along x, depth along y) or vertical (value along y, depth along x). `reverseU` and `reverseV` reverse value/depth directions. Polar mapping uses degrees clockwise from 12 o'clock by default, `startAngle:0`, `sweep:360`, `direction:"clockwise"`, `innerRadius:0`, `outerRadius:"auto"`, `radiusPolicy:"equal-depth"`. Counterclockwise and equal-depth-area bands are explicit alternatives. Mapping follows the bound coordinate's effective frame and polarFrame; radii must fit the resolved available radius. Mapping fields remain stored when switching coordinate family. Coordinate/Canvas edits rematerialize that intent.
+
+`padding` defaults to `[0,0]`; a scalar applies to both sibling and depth gaps. Values are nonnegative screen pixels. Cartesian gaps inset each side by half a gap; polar angular gaps use the local band mid-radius and radial gaps use pixels. Oversized gaps yield no ink, never negative geometry. `clip:false` is default. Cells and labels use the hierarchy style owner, including solid, linear gradient, pattern and radial gradient fills. Labels default to false; enabling `{}` uses total values. `minWidth:0` and `minArcLength:0` are nonnegative pixel thresholds. Cell overrides and label text use exact typed node targets.
+
+## createPartitionPlot
+
+```typescript
+createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram
+```
+
+Chart authoring. Draw an icicle or sunburst from stored partition intervals. The first omitted ID is `partitionPlot`; another plot requires an explicit ID. Layout and coordinate use current eligible context, then a unique candidate; ambiguous state requires an explicit ID. With no coordinate, a Cartesian `main` coordinate is created. The complete proposed output is checked before changes.
+
+## editPartitionPlot
+
+```typescript
+editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram
+```
+
+Chart authoring. Edit focus, mapping, cells, labels or a partition layout binding. Target uses current eligible context, then a unique partition plot. A nonempty patch is required. Omission preserves intent; `focus:null` returns to the root, `outerRadius:"auto"` follows the coordinate, and `labels:false` removes labels. A new layout must contain any retained explicit focus. Invalid edits leave the earlier chart unchanged.
+
+See the [partition tutorial](./tutorials/partition/) for the maintained executable flow.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](./api/appearance/mark-style/). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
+
+<!-- Source: /tutorials/partition/ -->
+
+# Partition tutorial
+
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-contour/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+
+## Run the icicle
+
+Use the Getting Started browser module setup with a canvas whose id is `chart`.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const icicle = chart()
+  .createCanvas({
+  "plot": {
+    "width": 420,
+    "height": 225
+  },
+  "margin": {
+    "left": 30,
+    "top": 75,
+    "right": 30,
+    "bottom": 60
+  },
+  "background": "#ffffff",
+  "plotBorder": false
+})
+  .createData({
+  "id": "hierarchy-source",
+  "values": [
+    {
+      "key": "R",
+      "parentKey": null,
+      "value": 10
+    },
+    {
+      "key": "A",
+      "parentKey": "R",
+      "value": 6
+    },
+    {
+      "key": "A1",
+      "parentKey": "A",
+      "value": 2
+    },
+    {
+      "key": "A2",
+      "parentKey": "A",
+      "value": 4
+    },
+    {
+      "key": "B",
+      "parentKey": "R",
+      "value": 4
+    },
+    {
+      "key": "Z",
+      "parentKey": "R",
+      "value": 0
+    }
+  ],
+  "keyField": "key"
+})
+  .createHierarchyData({
+  "id": "hierarchy",
+  "key": "key",
+  "parent": "parentKey",
+  "value": "value",
+  "valueMode": "leaf-sum",
+  "forest": false
+})
+  .layoutHierarchy({
+  "id": "partition-layout",
+  "method": "partition"
+})
+  .createCoordinate({
+  "id": "partition-coordinate",
+  "type": "cartesian"
+})
+  .createPartitionPlot({
+  "layout": "partition-layout",
+  "coordinate": "partition-coordinate",
+  "rootVisible": true,
+  "orientation": "horizontal",
+  "padding": [
+    2,
+    2
+  ],
+  "cells": {
+    "strokeWidth": 0,
+    "overrides": [
+      {
+        "key": "R",
+        "fill": "#94a3b8"
+      },
+      {
+        "key": "A",
+        "fill": "#2563eb"
+      },
+      {
+        "key": "A1",
+        "fill": "#60a5fa"
+      },
+      {
+        "key": "A2",
+        "fill": "#93c5fd"
+      },
+      {
+        "key": "B",
+        "fill": "#f59e0b"
+      },
+      {
+        "key": "Z",
+        "fill": "#475569"
+      }
+    ]
+  },
+  "labels": {
+    "overrides": [
+      {
+        "key": "R",
+        "text": "R 10"
+      },
+      {
+        "key": "A",
+        "text": "A 6"
+      },
+      {
+        "key": "A1",
+        "text": "A1 2"
+      },
+      {
+        "key": "A2",
+        "text": "A2 4"
+      },
+      {
+        "key": "B",
+        "text": "B 4"
+      },
+      {
+        "key": "Z",
+        "text": "Z 0"
+      }
+    ]
+  }
+})
+  .createTitle({
+  "text": "Icicle · full hierarchy",
+  "subtitle": "R=10; A=6; B=4; zero node Z retained",
+  "align": "left",
+  "alongOffset": 24,
+  "offset": 2,
+  "gap": 8,
+  "titleStyle": {
+    "color": "#0f172a",
+    "fontSize": 18,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  },
+  "subtitleStyle": {
+    "color": "#0f172a",
+    "fontSize": 11,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  }
+});
+render(icicle, document.querySelector("#chart").getContext("2d"));
+```
+
+## Focus and return
+
+Continue from `icicle` above. `icicle.editPartitionPlot({focus:{key:"A"}})` expands A and its descendants into the same frame. `focus:null` returns to the current root. `rootVisible:false` removes the focus node's band while retaining its descendants. Selection by node key or source field retains hidden members; choose `prunedSelection:"drop"` to discard hidden membership explicitly. A source revision that deletes the focused node recovers its nearest surviving ancestor and reports that recovery in inspection.
+
+## Share intervals with a sunburst
+
+The sunburst variant in the same maintained program binds a polar coordinate and uses `innerRadius:20`, `outerRadius:120` and two-pixel gaps. `radiusPolicy:"equal-depth-area"` makes equal squared-radius bands; `direction:"counterclockwise"` changes angular direction. These mappings preserve the partition values and layout resource.
+
+Zero values retain metadata without artificial area. Inclusive parent residuals remain blank space. Tiny labels may be suppressed with `minWidth` or `minArcLength` while their names remain accessible. See [Partition plots](./api/partition/) for all defaults, coordinate rules, selection semantics and atomic errors.
 
 <!-- Source: /api/flows/ -->
 
@@ -49417,9 +50915,15 @@ position/size encodings and automatic axes/legends do not apply to these marks.
 Use typed style overrides for body appearance and selection/highlighting for
 emphasis. Remove marks with `removeMark` before removing their layout or graph
 with `removeResource`; live consumers are protected by dependency checks.
+Highlight strokes apply to node and link bodies. Node labels share highlight
+fill, opacity and offset while retaining their text appearance.
 
 Every action returns an immutable program. Unknown options, explicit
 `undefined`, invalid keys and ambiguous omitted references are rejected.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](./api/appearance/mark-style/). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
 
 <!-- Source: /tutorials/flows/ -->
 
@@ -49677,7 +51181,7 @@ createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
 ```
 
 Options are `{ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?,
-strokeWidth?, opacity?, clip? }`. Create a Canvas first. The default mark ID is
+strokeWidth?, opacity?, clip?, outline?, shadow? }`. Create a Canvas first. The default mark ID is
 `contour`; use an explicit ID when creating another. Geometry and Cartesian
 coordinate references use explicit, current, then unique eligible inference.
 A missing coordinate is created as `main`; ambiguous choices are errors.
@@ -49696,7 +51200,9 @@ Default scale IDs are `<mark>-x`, `<mark>-y` and `<mark>-color`.
 Set `color: false` for fixed paint. Defaults are `fill: "#2563eb"`,
 `stroke: "#1f2937"`, `strokeWidth: 1`, `opacity: 1` and `clip: true`. Filled
 contours accept the shared [FillPaint options](./api/appearance/mark-style/#pattern-and-gradient-fills).
-Zero opacity is valid. Ordinary row encodings do not replace intrinsic contour
+The shared `outline` and `shadow` options apply to each contour path; pass `false`
+to reset either effect. See [mark style](./api/appearance/mark-style/) for their values
+and explicit shadow preparation in Canvas/SVG hosts. Zero opacity is valid. Ordinary row encodings do not replace intrinsic contour
 coordinates; change mappings with `editContourMark`.
 
 Create guides explicitly. For example, call

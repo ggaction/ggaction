@@ -1,9 +1,12 @@
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 
 import { PUBLIC_CHARTS } from "../../examples/registry.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
+import { prepareShadowRendering } from "../../src/index.js";
+import { prepareNativeFonts } from "../../src/renderers/nativeBackend.js";
 import { loadDataset } from "../support/data.js";
 
 function chartData(definition) {
@@ -17,10 +20,19 @@ function chartData(definition) {
   );
 }
 
-test("renders every public chart through the SVG concrete schema", () => {
+test("renders every public chart through the SVG concrete schema", async () => {
   for (const chart of PUBLIC_CHARTS) {
     const program = chart.createProgram(chartData(chart.data));
-    const svg = renderToSVG(program, { title: chart.id });
+    const hasShadow = Object.values(program.graphicSpec.objects).some(object =>
+      [object, ...(object.items ?? [])].some(item => item.properties?.shadow !== undefined));
+    let fonts, shadows, svg;
+    try {
+      if (hasShadow) {
+        fonts = await prepareNativeFonts(program, GlobalFonts);
+        shadows = await prepareShadowRendering(program, { createCanvas, fonts });
+      }
+      svg = renderToSVG(program, { title: chart.id, ...(shadows ? { shadows } : {}) });
+    } finally { shadows?.dispose(); fonts?.dispose(); }
     assertSvgIntegrity(svg, chart.id);
 
     assert.match(

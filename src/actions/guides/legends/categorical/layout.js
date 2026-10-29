@@ -132,6 +132,9 @@ function resolveSampleBounds(program, config, width) {
         ...requestedStrokeDetails(layer, "Legend point symbol") } };
     });
     return clippedSampleBounds(items.map((item, itemIndex) => {
+      const { outline, shadow } = config.symbol.layers[itemIndex];
+      item = { ...item, properties: { ...item.properties, ...(outline === undefined ? {} : { outline }),
+        ...(shadow === undefined ? {} : { shadow }) } };
       const bounds = resolveConcreteGraphicBounds({
         objects: { sample: item },
         order: ["sample"]

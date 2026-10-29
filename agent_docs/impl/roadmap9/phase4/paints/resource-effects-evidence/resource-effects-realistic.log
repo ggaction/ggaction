@@ -1,0 +1,292 @@
+TAP version 13
+# Subtest: tt-penguins dag flow preserves observed values, identity and all edges
+ok 1 - tt-penguins dag flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 152.883708
+  type: 'test'
+  ...
+# Subtest: tt-penguins vertical flow preserves observed values, identity and all edges
+ok 2 - tt-penguins vertical flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 98.313167
+  type: 'test'
+  ...
+# Subtest: tt-penguins cyclic flow preserves observed values, identity and all edges
+ok 3 - tt-penguins cyclic flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 141.208083
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners dag flow preserves observed values, identity and all edges
+ok 4 - tt-london-marathon-winners dag flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 89.352541
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners vertical flow preserves observed values, identity and all edges
+ok 5 - tt-london-marathon-winners vertical flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 93.726209
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners cyclic flow preserves observed values, identity and all edges
+ok 6 - tt-london-marathon-winners cyclic flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 135.219458
+  type: 'test'
+  ...
+# Subtest: tt-astronauts dag flow preserves observed values, identity and all edges
+ok 7 - tt-astronauts dag flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 100.941125
+  type: 'test'
+  ...
+# Subtest: tt-astronauts vertical flow preserves observed values, identity and all edges
+ok 8 - tt-astronauts vertical flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 103.094041
+  type: 'test'
+  ...
+# Subtest: tt-astronauts cyclic flow preserves observed values, identity and all edges
+ok 9 - tt-astronauts cyclic flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 128.002083
+  type: 'test'
+  ...
+# Subtest: tt-us-births dag flow preserves observed values, identity and all edges
+ok 10 - tt-us-births dag flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 96.233708
+  type: 'test'
+  ...
+# Subtest: tt-us-births vertical flow preserves observed values, identity and all edges
+ok 11 - tt-us-births vertical flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 85.311375
+  type: 'test'
+  ...
+# Subtest: tt-us-births cyclic flow preserves observed values, identity and all edges
+ok 12 - tt-us-births cyclic flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 125.200875
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings dag flow preserves observed values, identity and all edges
+ok 13 - tt-chocolate-ratings dag flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 82.298459
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings vertical flow preserves observed values, identity and all edges
+ok 14 - tt-chocolate-ratings vertical flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 77.425292
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings cyclic flow preserves observed values, identity and all edges
+ok 15 - tt-chocolate-ratings cyclic flow preserves observed values, identity and all edges
+  ---
+  duration_ms: 129.248375
+  type: 'test'
+  ...
+# Subtest: every flow action has five authentic datasets and three distinct direct recipe witnesses
+ok 16 - every flow action has five authentic datasets and three distinct direct recipe witnesses
+  ---
+  duration_ms: 0.139709
+  type: 'test'
+  ...
+# Subtest: tt-penguins vertical hierarchy retains source contributions through edits and removal
+ok 17 - tt-penguins vertical hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 134.091625
+  type: 'test'
+  ...
+# Subtest: tt-penguins radial hierarchy retains source contributions through edits and removal
+ok 18 - tt-penguins radial hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 72.504083
+  type: 'test'
+  ...
+# Subtest: tt-penguins treemap hierarchy retains source contributions through edits and removal
+ok 19 - tt-penguins treemap hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 57.438958
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners vertical hierarchy retains source contributions through edits and removal
+ok 20 - tt-london-marathon-winners vertical hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 63.946084
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners radial hierarchy retains source contributions through edits and removal
+ok 21 - tt-london-marathon-winners radial hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 64.10925
+  type: 'test'
+  ...
+# Subtest: tt-london-marathon-winners treemap hierarchy retains source contributions through edits and removal
+ok 22 - tt-london-marathon-winners treemap hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 54.309541
+  type: 'test'
+  ...
+# Subtest: tt-astronauts vertical hierarchy retains source contributions through edits and removal
+ok 23 - tt-astronauts vertical hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 85.687625
+  type: 'test'
+  ...
+# Subtest: tt-astronauts radial hierarchy retains source contributions through edits and removal
+ok 24 - tt-astronauts radial hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 74.823084
+  type: 'test'
+  ...
+# Subtest: tt-astronauts treemap hierarchy retains source contributions through edits and removal
+ok 25 - tt-astronauts treemap hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 89.183333
+  type: 'test'
+  ...
+# Subtest: tt-us-births vertical hierarchy retains source contributions through edits and removal
+ok 26 - tt-us-births vertical hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 80.084375
+  type: 'test'
+  ...
+# Subtest: tt-us-births radial hierarchy retains source contributions through edits and removal
+ok 27 - tt-us-births radial hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 76.309042
+  type: 'test'
+  ...
+# Subtest: tt-us-births treemap hierarchy retains source contributions through edits and removal
+ok 28 - tt-us-births treemap hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 72.099792
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings vertical hierarchy retains source contributions through edits and removal
+ok 29 - tt-chocolate-ratings vertical hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 66.87625
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings radial hierarchy retains source contributions through edits and removal
+ok 30 - tt-chocolate-ratings radial hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 63.747083
+  type: 'test'
+  ...
+# Subtest: tt-chocolate-ratings treemap hierarchy retains source contributions through edits and removal
+ok 31 - tt-chocolate-ratings treemap hierarchy retains source contributions through edits and removal
+  ---
+  duration_ms: 56.665125
+  type: 'test'
+  ...
+# Subtest: every hierarchy public action has at least five direct authentic dataset witnesses
+ok 32 - every hierarchy public action has at least five direct authentic dataset witnesses
+  ---
+  duration_ms: 0.076666
+  type: 'test'
+  ...
+# Subtest: mark shadow vertical retains source grain and complete effect options on tt-penguins
+ok 33 - mark shadow vertical retains source grain and complete effect options on tt-penguins
+  ---
+  duration_ms: 526.039583
+  type: 'test'
+  ...
+# Subtest: mark shadow horizontal retains source grain and complete effect options on tt-penguins
+ok 34 - mark shadow horizontal retains source grain and complete effect options on tt-penguins
+  ---
+  duration_ms: 456.71275
+  type: 'test'
+  ...
+# Subtest: mark shadow magnitude retains source grain and complete effect options on tt-penguins
+ok 35 - mark shadow magnitude retains source grain and complete effect options on tt-penguins
+  ---
+  duration_ms: 378.127583
+  type: 'test'
+  ...
+# Subtest: mark shadow vertical retains source grain and complete effect options on tt-london-marathon-winners
+ok 36 - mark shadow vertical retains source grain and complete effect options on tt-london-marathon-winners
+  ---
+  duration_ms: 372.610708
+  type: 'test'
+  ...
+# Subtest: mark shadow horizontal retains source grain and complete effect options on tt-london-marathon-winners
+ok 37 - mark shadow horizontal retains source grain and complete effect options on tt-london-marathon-winners
+  ---
+  duration_ms: 373.379125
+  type: 'test'
+  ...
+# Subtest: mark shadow magnitude retains source grain and complete effect options on tt-london-marathon-winners
+ok 38 - mark shadow magnitude retains source grain and complete effect options on tt-london-marathon-winners
+  ---
+  duration_ms: 398.630833
+  type: 'test'
+  ...
+# Subtest: mark shadow vertical retains source grain and complete effect options on tt-astronauts
+ok 39 - mark shadow vertical retains source grain and complete effect options on tt-astronauts
+  ---
+  duration_ms: 420.362
+  type: 'test'
+  ...
+# Subtest: mark shadow horizontal retains source grain and complete effect options on tt-astronauts
+ok 40 - mark shadow horizontal retains source grain and complete effect options on tt-astronauts
+  ---
+  duration_ms: 399.407958
+  type: 'test'
+  ...
+# Subtest: mark shadow magnitude retains source grain and complete effect options on tt-astronauts
+ok 41 - mark shadow magnitude retains source grain and complete effect options on tt-astronauts
+  ---
+  duration_ms: 379.838916
+  type: 'test'
+  ...
+# Subtest: mark shadow vertical retains source grain and complete effect options on tt-us-births
+ok 42 - mark shadow vertical retains source grain and complete effect options on tt-us-births
+  ---
+  duration_ms: 377.406958
+  type: 'test'
+  ...
+# Subtest: mark shadow horizontal retains source grain and complete effect options on tt-us-births
+ok 43 - mark shadow horizontal retains source grain and complete effect options on tt-us-births
+  ---
+  duration_ms: 373.829709
+  type: 'test'
+  ...
+# Subtest: mark shadow magnitude retains source grain and complete effect options on tt-us-births
+ok 44 - mark shadow magnitude retains source grain and complete effect options on tt-us-births
+  ---
+  duration_ms: 444.808791
+  type: 'test'
+  ...
+# Subtest: mark shadow vertical retains source grain and complete effect options on tt-chocolate-ratings
+ok 45 - mark shadow vertical retains source grain and complete effect options on tt-chocolate-ratings
+  ---
+  duration_ms: 360.501667
+  type: 'test'
+  ...
+# Subtest: mark shadow horizontal retains source grain and complete effect options on tt-chocolate-ratings
+ok 46 - mark shadow horizontal retains source grain and complete effect options on tt-chocolate-ratings
+  ---
+  duration_ms: 401.393959
+  type: 'test'
+  ...
+# Subtest: mark shadow magnitude retains source grain and complete effect options on tt-chocolate-ratings
+ok 47 - mark shadow magnitude retains source grain and complete effect options on tt-chocolate-ratings
+  ---
+  duration_ms: 380.355375
+  type: 'test'
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7936.121125

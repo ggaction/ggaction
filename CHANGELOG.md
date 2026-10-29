@@ -4,11 +4,17 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics`, and `prepareFontRendering` for explicit font loading, exact measured layout and immutable resource replacement. Preserve embedded font bytes through offline snapshots and Canvas/SVG/PNG/PDF/scene output; reject missing widths, stale preparation and disposed rendering handles.
+- Add Full-only `createInferredGraphData` and `editInferredGraphData` for nearest-neighbor, radius, similarity, spanning, group and sequence relationships. Preserve typed edge identities, source revisions, preprocessing and search diagnostics through dependent layouts, inspection, accessibility and offline restoration.
+
+- Add Full-only `createGraphPlot` and `editGraphPlot` for explicit graph layouts, with directed arrows, separate parallel edges, self-loops, typed node styles and labels. Preserve node and edge source rows through selections, graph/layout revisions, scoped composition and offline snapshots across Canvas, SVG, PNG and PDF.
 - Add Full-only `createFlowData`, `editFlowData`, `layoutFlow`, `createFlowNodes`, `editFlowNodes`, `createFlowLinks`, and `editFlowLinks` for conserved Sankey flows and cyclic feedback. Store explicit node/edge identities, common value-to-thickness scales, and all feedback edges; preserve labels, selections and offline snapshots across source and layout revisions.
 
 - Add Full-only `layoutGraph` for stored fixed, circular, and seeded force layouts. Share `editLayout` with hierarchy layouts and preserve graph bindings, pins, component packing and limits through data revisions and offline restoration.
 
 - Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.
+- Add Full-only `createPartitionPlot` and `editPartitionPlot` for icicle and sunburst views of stored hierarchy intervals. Preserve typed focus, navigation, selections and source revision recovery across Cartesian and polar mappings. Hierarchy and partition body and label fills accept shared structured paints across Canvas, SVG, PNG and PDF.
+
 - Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.
 - Add Full-only `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`, `createTreePlot`, `editTreePlot`, `createTreemapPlot`, and `editTreemapPlot`. Preserve typed node identity, exact source contributions, stored layout geometry, labels and selections through edits, facets and offline restoration. Tree and treemap views use the same concrete graphics across Canvas, SVG, PNG and PDF.
 

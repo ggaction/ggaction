@@ -4,6 +4,7 @@ import { encodeRowKey } from "../../core/itemIdentity.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
 import { graphLimits } from "./model.js";
 import { normalizeForceOptions } from "./force.js";
+import { GRAPH_LAYOUT_METHODS } from "../../core/vocabulary.js";
 
 function coordinates(value, pin) {
   ownArray(value, pin ? "Graph pins" : "Graph positions");
@@ -22,7 +23,7 @@ function coordinates(value, pin) {
 export function normalizeGraphLayout(method, input = {}) {
   ownRecord(input, "Graph layout options");
   input = Object.assign(Object.create(null), input);
-  if (!["fixed", "circular", "force"].includes(method)) throw new TypeError("Graph layout method must be fixed, circular or force.");
+  if (!GRAPH_LAYOUT_METHODS.includes(method)) throw new TypeError("Graph layout method must be fixed, circular or force.");
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Graph layout options cannot contain null or undefined.");
   const common = ["maxNodes", "maxEdges"];
   const allowed = method === "fixed" ? ["positions"] : method === "circular" ? ["center", "radius", "startAngle"]

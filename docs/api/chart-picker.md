@@ -76,12 +76,14 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](../reference/actions/charts-data.md#createadjacentplot) | default | [`editCompositionLayout`](../reference/actions/charts-data.md#editcompositionlayout) · [`editCompositionScales`](../reference/actions/charts-data.md#editcompositionscales) · [`replaceCompositionChild`](../reference/actions/charts-data.md#replacecompositionchild) |
 | Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](../reference/actions/charts-data.md#createlayerplot) | default | [`encodeColor`](../reference/actions/encodings.md#encodecolor) · [`encodeOpacity`](../reference/actions/encodings.md#encodeopacity) · [`removeMark`](../reference/actions/marks.md#removemark) |
 
-## Hierarchies
+## Hierarchies and networks
 
 | Task / input | Chart action | Package entry | Direct editor |
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](../reference/actions/charts-data.md#createtreeplot) | default | [`editTreePlot`](../reference/actions/charts-data.md#edittreeplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](../reference/actions/charts-data.md#createtreemapplot) | default | [`editTreemapPlot`](../reference/actions/charts-data.md#edittreemapplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
+| Explicit node and edge tables with a stored graph layout | [`createGraphPlot`](../reference/actions/charts-data.md#creategraphplot) | default | [`editGraphPlot`](../reference/actions/charts-data.md#editgraphplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
+| Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](../reference/actions/charts-data.md#createpartitionplot) | default | [`editPartitionPlot`](../reference/actions/charts-data.md#editpartitionplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
 
 <!-- chart-picker:end -->
 

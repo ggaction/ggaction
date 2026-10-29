@@ -1,0 +1,1043 @@
+[
+  {
+    "id": "composition/content-facet",
+    "status": "passed",
+    "durationMs": 212.89200000000005
+  },
+  {
+    "id": "composition/program",
+    "status": "passed",
+    "durationMs": 2924.8164589999997
+  },
+  {
+    "id": "composition/deserialize-program",
+    "status": "passed",
+    "durationMs": 125.05770799999937
+  },
+  {
+    "id": "composition/shared-lane",
+    "status": "passed",
+    "durationMs": 837.380709
+  },
+  {
+    "id": "composition/create-canvas",
+    "status": "passed",
+    "durationMs": 609.6097499999996
+  },
+  {
+    "id": "composition/windowed",
+    "status": "passed",
+    "durationMs": 454.7477079999999
+  },
+  {
+    "id": "composition/parent-legend",
+    "status": "passed",
+    "durationMs": 676.3961250000002
+  },
+  {
+    "id": "composition/parent-combined",
+    "status": "passed",
+    "durationMs": 404.0993749999998
+  },
+  {
+    "id": "composition/initial-headers",
+    "status": "passed",
+    "durationMs": 20.00824999999986
+  },
+  {
+    "id": "composition/many-panels",
+    "status": "passed",
+    "durationMs": 1986.8537500000002
+  },
+  {
+    "id": "composition/compact-facet",
+    "status": "passed",
+    "durationMs": 46.18266699999913
+  },
+  {
+    "id": "composition/plot-anchored-facet",
+    "status": "passed",
+    "durationMs": 47.60833300000013
+  },
+  {
+    "id": "composition/package-polar-rows",
+    "status": "passed",
+    "durationMs": 191.60366600000089
+  },
+  {
+    "id": "composition/package-parallel-unit",
+    "status": "passed",
+    "durationMs": 143.44275000000016
+  },
+  {
+    "id": "package-entries/create-canvas",
+    "status": "passed",
+    "durationMs": 27.241500000000087
+  },
+  {
+    "id": "package-entries/create-canvas-2",
+    "status": "passed",
+    "durationMs": 61.24983299999985
+  },
+  {
+    "id": "package-entries/clip-base",
+    "status": "passed",
+    "durationMs": 96.45708300000115
+  },
+  {
+    "id": "package-entries/long-line",
+    "status": "passed",
+    "durationMs": 858.5291660000003
+  },
+  {
+    "id": "package-entries/create-canvas-3",
+    "status": "passed",
+    "durationMs": 33587.039667
+  },
+  {
+    "id": "package-entries/precomputed-box",
+    "status": "passed",
+    "durationMs": 105.8717919999981
+  },
+  {
+    "id": "package-entries/text-plot",
+    "status": "passed",
+    "durationMs": 142.02854099999968
+  },
+  {
+    "id": "package-entries/exponential-regression",
+    "status": "passed",
+    "durationMs": 51.94495800000004
+  },
+  {
+    "id": "package-entries/create-canvas-4",
+    "status": "passed",
+    "durationMs": 378.88324999999895
+  },
+  {
+    "id": "package-entries/create-canvas-5",
+    "status": "passed",
+    "durationMs": 25.97770799999853
+  },
+  {
+    "id": "package-entries/centered",
+    "status": "passed",
+    "durationMs": 34.61979199999769
+  },
+  {
+    "id": "package-entries/entry-surface",
+    "status": "passed",
+    "durationMs": 3.2986670000027516
+  },
+  {
+    "id": "guides/three-channel-interval-legend",
+    "status": "passed",
+    "durationMs": 567.3978750000024
+  },
+  {
+    "id": "guides/overflow-summary-line",
+    "status": "passed",
+    "durationMs": 49.45270899999741
+  },
+  {
+    "id": "guides/axis-label-edge-threshold",
+    "status": "passed",
+    "durationMs": 63.06100000000151
+  },
+  {
+    "id": "guides/create-horizontal-grid",
+    "status": "passed",
+    "durationMs": 86.1894159999938
+  },
+  {
+    "id": "guides/create-canvas",
+    "status": "passed",
+    "durationMs": 95.48483399999532
+  },
+  {
+    "id": "guides/create-canvas-2",
+    "status": "passed",
+    "durationMs": 517.9460000000036
+  },
+  {
+    "id": "guides/create-canvas-3",
+    "status": "passed",
+    "durationMs": 135.28416600000492
+  },
+  {
+    "id": "guides/create-canvas-4",
+    "status": "passed",
+    "durationMs": 197.25250000000233
+  },
+  {
+    "id": "guides/underlay-plot",
+    "status": "passed",
+    "durationMs": 134.12475000000268
+  },
+  {
+    "id": "guides/spaced-base",
+    "status": "passed",
+    "durationMs": 115.42016600000352
+  },
+  {
+    "id": "guides/spaced-basic",
+    "status": "passed",
+    "durationMs": 65.96112500000163
+  },
+  {
+    "id": "guides/create-canvas-5",
+    "status": "passed",
+    "durationMs": 386.6023750000022
+  },
+  {
+    "id": "guides/polygon-vertices",
+    "status": "passed",
+    "durationMs": 272.1106660000005
+  },
+  {
+    "id": "guides/mapped-size",
+    "status": "passed",
+    "durationMs": 194.57083300000522
+  },
+  {
+    "id": "guides/independent-ramp",
+    "status": "passed",
+    "durationMs": 63.9988749999975
+  },
+  {
+    "id": "guides/create-canvas-6",
+    "status": "passed",
+    "durationMs": 245.32479199999943
+  },
+  {
+    "id": "guides/create-canvas-7",
+    "status": "passed",
+    "durationMs": 516.6846670000014
+  },
+  {
+    "id": "guides/blank-lines",
+    "status": "passed",
+    "durationMs": 39.39050000000134
+  },
+  {
+    "id": "guides/subtitle-line-spacing",
+    "status": "passed",
+    "durationMs": 37.75366699999722
+  },
+  {
+    "id": "guides/blank-legend",
+    "status": "passed",
+    "durationMs": 27.334332999998878
+  },
+  {
+    "id": "guides/create-canvas-8",
+    "status": "passed",
+    "durationMs": 251.57712500000343
+  },
+  {
+    "id": "guides/create-canvas-9",
+    "status": "passed",
+    "durationMs": 65.54116699999577
+  },
+  {
+    "id": "guides/create-canvas-10",
+    "status": "passed",
+    "durationMs": 279.38683299999684
+  },
+  {
+    "id": "guides/create-canvas-11",
+    "status": "passed",
+    "durationMs": 91.515625
+  },
+  {
+    "id": "guides/inside-legend",
+    "status": "passed",
+    "durationMs": 264.502542000002
+  },
+  {
+    "id": "guides/stroked",
+    "status": "passed",
+    "durationMs": 204.6812080000018
+  },
+  {
+    "id": "guides/create-canvas-12",
+    "status": "passed",
+    "durationMs": 155.74841700000252
+  },
+  {
+    "id": "guides/category-sizes",
+    "status": "passed",
+    "durationMs": 91.2742919999946
+  },
+  {
+    "id": "guides/bounded-combined-seed",
+    "status": "passed",
+    "durationMs": 23.012917000000016
+  },
+  {
+    "id": "guides/installed-appearance",
+    "status": "passed",
+    "durationMs": 186.23849999999948
+  },
+  {
+    "id": "guides/installed-display-axis",
+    "status": "passed",
+    "durationMs": 11.27637500000128
+  },
+  {
+    "id": "guides/installed-facet-headers",
+    "status": "passed",
+    "durationMs": 29.739290999998047
+  },
+  {
+    "id": "guides/polar-base",
+    "status": "passed",
+    "durationMs": 959.5234589999964
+  },
+  {
+    "id": "guides/axis-lifecycle",
+    "status": "passed",
+    "durationMs": 9.96583400000236
+  },
+  {
+    "id": "guides/fitted-labels",
+    "status": "passed",
+    "durationMs": 348.13495899999543
+  },
+  {
+    "id": "guides/create-canvas-13",
+    "status": "passed",
+    "durationMs": 48.59324999999808
+  },
+  {
+    "id": "guides/transition-rows",
+    "status": "passed",
+    "durationMs": 1861.7724999999991
+  },
+  {
+    "id": "guides/joint-pie",
+    "status": "passed",
+    "durationMs": 13.92070799999783
+  },
+  {
+    "id": "guides/ordered-pie",
+    "status": "passed",
+    "durationMs": 33.39299999999639
+  },
+  {
+    "id": "guides/create-canvas-14",
+    "status": "passed",
+    "durationMs": 118.93404100000043
+  },
+  {
+    "id": "guides/measured-radius",
+    "status": "passed",
+    "durationMs": 47.923625000003085
+  },
+  {
+    "id": "guides/parallel-facade",
+    "status": "passed",
+    "durationMs": 111.67008300000452
+  },
+  {
+    "id": "guides/shape-legend-base",
+    "status": "passed",
+    "durationMs": 29.40870800000266
+  },
+  {
+    "id": "guides/create-canvas-15",
+    "status": "passed",
+    "durationMs": 238.29091699999844
+  },
+  {
+    "id": "guides/create-canvas-16",
+    "status": "passed",
+    "durationMs": 67.51283300000068
+  },
+  {
+    "id": "guides/create-canvas-17",
+    "status": "passed",
+    "durationMs": 270.9543330000015
+  },
+  {
+    "id": "guides/create-canvas-18",
+    "status": "passed",
+    "durationMs": 594.7554170000003
+  },
+  {
+    "id": "guides/create-canvas-19",
+    "status": "passed",
+    "durationMs": 219.13770800000202
+  },
+  {
+    "id": "guides/create-canvas-20",
+    "status": "passed",
+    "durationMs": 769.1094169999997
+  },
+  {
+    "id": "guides/legend-content-base",
+    "status": "passed",
+    "durationMs": 572.0592499999984
+  },
+  {
+    "id": "guides/entry-surface",
+    "status": "passed",
+    "durationMs": 0.12508399999933317
+  },
+  {
+    "id": "guides/create-canvas-21",
+    "status": "passed",
+    "durationMs": 322.92008400000486
+  },
+  {
+    "id": "guides/create-canvas-22",
+    "status": "passed",
+    "durationMs": 297.54899999999907
+  },
+  {
+    "id": "guides/bottom-legend-base",
+    "status": "passed",
+    "durationMs": 84.56949999999779
+  },
+  {
+    "id": "guides/edited-size-legend",
+    "status": "passed",
+    "durationMs": 70.81145799999649
+  },
+  {
+    "id": "guides/create-canvas-23",
+    "status": "passed",
+    "durationMs": 162.79170799999702
+  },
+  {
+    "id": "guides/discrete-size",
+    "status": "passed",
+    "durationMs": 5.49316700000054
+  },
+  {
+    "id": "guides/create-canvas-24",
+    "status": "passed",
+    "durationMs": 458.57983299999614
+  },
+  {
+    "id": "guides/weighted-rules",
+    "status": "passed",
+    "durationMs": 261.7208329999994
+  },
+  {
+    "id": "guides/comparison-rows",
+    "status": "passed",
+    "durationMs": 276.97245799999655
+  },
+  {
+    "id": "guides/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.13270800000464078
+  },
+  {
+    "id": "guides/histogram-labels",
+    "status": "passed",
+    "durationMs": 41.93037500000355
+  },
+  {
+    "id": "guides/reference-rect",
+    "status": "passed",
+    "durationMs": 81.57024999999703
+  },
+  {
+    "id": "guides/source-text-scale",
+    "status": "passed",
+    "durationMs": 49.88829099999566
+  },
+  {
+    "id": "guides/standalone-axis",
+    "status": "passed",
+    "durationMs": 30.325417000000016
+  },
+  {
+    "id": "guides/explicit-rotations",
+    "status": "passed",
+    "durationMs": 7.4039170000032755
+  },
+  {
+    "id": "guides/semantic-labels",
+    "status": "passed",
+    "durationMs": 488.10845799999515
+  },
+  {
+    "id": "guides/legend-base",
+    "status": "passed",
+    "durationMs": 55.50124999999389
+  },
+  {
+    "id": "encodings/edit-y-scale",
+    "status": "passed",
+    "durationMs": 39.05970800000068
+  },
+  {
+    "id": "encodings/create-canvas",
+    "status": "passed",
+    "durationMs": 215.13833299999533
+  },
+  {
+    "id": "encodings/palette-base",
+    "status": "passed",
+    "durationMs": 99.35450000000128
+  },
+  {
+    "id": "encodings/interval-rows",
+    "status": "passed",
+    "durationMs": 419.07066699999996
+  },
+  {
+    "id": "encodings/numeric-area",
+    "status": "passed",
+    "durationMs": 210.8248750000057
+  },
+  {
+    "id": "encodings/blended-bar",
+    "status": "passed",
+    "durationMs": 550.2507089999999
+  },
+  {
+    "id": "encodings/resource-cleanup",
+    "status": "passed",
+    "durationMs": 2.2868749999979627
+  },
+  {
+    "id": "encodings/entry-surface",
+    "status": "passed",
+    "durationMs": 0.18849999999656575
+  },
+  {
+    "id": "encodings/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.06799999999930151
+  },
+  {
+    "id": "encodings/polar-frame",
+    "status": "passed",
+    "durationMs": 19.568249999996624
+  },
+  {
+    "id": "encodings/basic-themed",
+    "status": "passed",
+    "durationMs": 12.619832999997016
+  },
+  {
+    "id": "encodings/scatter-facade",
+    "status": "passed",
+    "durationMs": 5.212166999997862
+  },
+  {
+    "id": "encodings/basic-scatter",
+    "status": "passed",
+    "durationMs": 10.530416000001424
+  },
+  {
+    "id": "encodings/rule-source",
+    "status": "passed",
+    "durationMs": 18.629124999999476
+  },
+  {
+    "id": "encodings/filled-band",
+    "status": "passed",
+    "durationMs": 317.9421250000014
+  },
+  {
+    "id": "encodings/create-canvas-2",
+    "status": "passed",
+    "durationMs": 19.34754100000282
+  },
+  {
+    "id": "encodings/timed-horizon",
+    "status": "passed",
+    "durationMs": 33.20241700000042
+  },
+  {
+    "id": "encodings/horizon",
+    "status": "passed",
+    "durationMs": 280.0509170000005
+  },
+  {
+    "id": "encodings/area-rows",
+    "status": "passed",
+    "durationMs": 227.49004199999763
+  },
+  {
+    "id": "encodings/line-facade",
+    "status": "passed",
+    "durationMs": 35.03849999999511
+  },
+  {
+    "id": "encodings/ordered-line-facade",
+    "status": "passed",
+    "durationMs": 21.24987500000134
+  },
+  {
+    "id": "encodings/offset-scale-facade",
+    "status": "passed",
+    "durationMs": 37.04087499999878
+  },
+  {
+    "id": "encodings/ordered-categories",
+    "status": "passed",
+    "durationMs": 10.49279199999728
+  },
+  {
+    "id": "encodings/midpoint-plot",
+    "status": "passed",
+    "durationMs": 131.6304170000003
+  },
+  {
+    "id": "encodings/binned-heatmap-facade",
+    "status": "passed",
+    "durationMs": 20.825665999997
+  },
+  {
+    "id": "encodings/gradient-plot-facade",
+    "status": "passed",
+    "durationMs": 365.49441600000137
+  },
+  {
+    "id": "encodings/weighted-arcs",
+    "status": "passed",
+    "durationMs": 1.3434999999954016
+  },
+  {
+    "id": "encodings/text-datum",
+    "status": "passed",
+    "durationMs": 2.4099999999962165
+  },
+  {
+    "id": "encodings/annotation-source",
+    "status": "passed",
+    "durationMs": 12.53679099999863
+  },
+  {
+    "id": "encodings/utc-text",
+    "status": "passed",
+    "durationMs": 4.078125
+  },
+  {
+    "id": "encodings/text-source",
+    "status": "passed",
+    "durationMs": 129.65666700000293
+  },
+  {
+    "id": "encodings/font-weight-program",
+    "status": "passed",
+    "durationMs": 16.271749999999884
+  },
+  {
+    "id": "encodings/sequential-count",
+    "status": "passed",
+    "durationMs": 4.630042000004323
+  },
+  {
+    "id": "encodings/direct-sequential-count",
+    "status": "passed",
+    "durationMs": 0.3007500000021537
+  },
+  {
+    "id": "authoring/create-canvas",
+    "status": "passed",
+    "durationMs": 2.039375000000291
+  },
+  {
+    "id": "authoring/entry-surface",
+    "status": "passed",
+    "durationMs": 0.18408300000010058
+  },
+  {
+    "id": "authoring/entry-surface-2",
+    "status": "passed",
+    "durationMs": 0.047166999996989034
+  },
+  {
+    "id": "authoring/entry-surface-3",
+    "status": "passed",
+    "durationMs": 0.022625000005064066
+  },
+  {
+    "id": "authoring/entry-surface-4",
+    "status": "passed",
+    "durationMs": 0.06841600000188919
+  },
+  {
+    "id": "authoring/entry-surface-5",
+    "status": "passed",
+    "durationMs": 0.06587500000023283
+  },
+  {
+    "id": "authoring/entry-surface-6",
+    "status": "passed",
+    "durationMs": 0.04433299999800511
+  },
+  {
+    "id": "authoring/entry-surface-7",
+    "status": "passed",
+    "durationMs": 0.012917000000015832
+  },
+  {
+    "id": "authoring/entry-surface-8",
+    "status": "passed",
+    "durationMs": 0.031374999998661224
+  },
+  {
+    "id": "authoring/radar-wide",
+    "status": "passed",
+    "durationMs": 7.174707999998645
+  },
+  {
+    "id": "authoring/radar-profile-summary",
+    "status": "passed",
+    "durationMs": 235.85866700000042
+  },
+  {
+    "id": "authoring/entry-surface-9",
+    "status": "passed",
+    "durationMs": 0.1184579999971902
+  },
+  {
+    "id": "authoring/entry-surface-10",
+    "status": "passed",
+    "durationMs": 0.048792000001412816
+  },
+  {
+    "id": "authoring/entry-surface-11",
+    "status": "passed",
+    "durationMs": 0.03479199999856064
+  },
+  {
+    "id": "authoring/entry-surface-12",
+    "status": "passed",
+    "durationMs": 0.031667000002926216
+  },
+  {
+    "id": "authoring/entry-surface-13",
+    "status": "passed",
+    "durationMs": 0.030624999999417923
+  },
+  {
+    "id": "authoring/entry-surface-14",
+    "status": "passed",
+    "durationMs": 0.033208999993803445
+  },
+  {
+    "id": "authoring/entry-surface-15",
+    "status": "passed",
+    "durationMs": 0.02979100000084145
+  },
+  {
+    "id": "authoring/entry-surface-16",
+    "status": "passed",
+    "durationMs": 0.03004200000577839
+  },
+  {
+    "id": "authoring/entry-surface-17",
+    "status": "passed",
+    "durationMs": 0.030458000001090113
+  },
+  {
+    "id": "authoring/entry-surface-18",
+    "status": "passed",
+    "durationMs": 0.031292000006942544
+  },
+  {
+    "id": "authoring/entry-surface-19",
+    "status": "passed",
+    "durationMs": 0.030041999998502433
+  },
+  {
+    "id": "authoring/entry-surface-20",
+    "status": "passed",
+    "durationMs": 0.029624999995576218
+  },
+  {
+    "id": "authoring/binned",
+    "status": "passed",
+    "durationMs": 24.860082999999577
+  },
+  {
+    "id": "authoring/create-canvas-2",
+    "status": "passed",
+    "durationMs": 23.490874999995867
+  },
+  {
+    "id": "authoring/regression-opt-out",
+    "status": "passed",
+    "durationMs": 23.34900000000198
+  },
+  {
+    "id": "authoring/entry-surface-21",
+    "status": "passed",
+    "durationMs": 0.19750000000203727
+  },
+  {
+    "id": "authoring/entry-surface-22",
+    "status": "passed",
+    "durationMs": 0.023417000003973953
+  },
+  {
+    "id": "authoring/bar-facade",
+    "status": "passed",
+    "durationMs": 3.138334000002942
+  },
+  {
+    "id": "authoring/histogram-facade",
+    "status": "passed",
+    "durationMs": 5.86454099999537
+  },
+  {
+    "id": "authoring/heatmap-facade",
+    "status": "passed",
+    "durationMs": 116.65104199999769
+  },
+  {
+    "id": "authoring/violin-plot-facade",
+    "status": "passed",
+    "durationMs": 65.3919590000005
+  },
+  {
+    "id": "authoring/create-canvas-3",
+    "status": "passed",
+    "durationMs": 17.54950000000099
+  },
+  {
+    "id": "authoring/reference-facades",
+    "status": "passed",
+    "durationMs": 63.34962500000256
+  },
+  {
+    "id": "data-transforms/bootstrap-rows",
+    "status": "passed",
+    "durationMs": 13.505499999999302
+  },
+  {
+    "id": "data-transforms/extracted",
+    "status": "passed",
+    "durationMs": 36.061875000006694
+  },
+  {
+    "id": "data-transforms/calendar",
+    "status": "passed",
+    "durationMs": 6.7196660000045085
+  },
+  {
+    "id": "data-transforms/installed-data-flow",
+    "status": "passed",
+    "durationMs": 152.55737499999668
+  },
+  {
+    "id": "data-transforms/monthly",
+    "status": "passed",
+    "durationMs": 2.3689999999987776
+  },
+  {
+    "id": "data-transforms/local-week",
+    "status": "passed",
+    "durationMs": 31.39704100000381
+  },
+  {
+    "id": "data-transforms/summarized",
+    "status": "passed",
+    "durationMs": 1.4317920000030426
+  },
+  {
+    "id": "data-transforms/large-summary",
+    "status": "passed",
+    "durationMs": 2241.3249170000054
+  },
+  {
+    "id": "data-transforms/weighted-summary",
+    "status": "passed",
+    "durationMs": 1.9202500000101281
+  },
+  {
+    "id": "data-transforms/reusable-bins",
+    "status": "passed",
+    "durationMs": 1.3240829999995185
+  },
+  {
+    "id": "data-transforms/folded",
+    "status": "passed",
+    "durationMs": 1.0378749999945285
+  },
+  {
+    "id": "data-transforms/computed",
+    "status": "passed",
+    "durationMs": 116.92299999999523
+  },
+  {
+    "id": "data-transforms/classified",
+    "status": "passed",
+    "durationMs": 19.725417000008747
+  },
+  {
+    "id": "data-transforms/completed",
+    "status": "passed",
+    "durationMs": 3.9111249999987194
+  },
+  {
+    "id": "data-transforms/stacked",
+    "status": "passed",
+    "durationMs": 7.7364159999997355
+  },
+  {
+    "id": "data-transforms/elapsed",
+    "status": "passed",
+    "durationMs": 2.5878329999977723
+  },
+  {
+    "id": "data-transforms/normal-interval",
+    "status": "passed",
+    "durationMs": 2.7991670000046724
+  },
+  {
+    "id": "data-transforms/normal-regression",
+    "status": "passed",
+    "durationMs": 13.473125000004075
+  },
+  {
+    "id": "selection/keyed-revision",
+    "status": "passed",
+    "durationMs": 256.4120410000032
+  },
+  {
+    "id": "selection/row-provenance",
+    "status": "passed",
+    "durationMs": 360.0791249999893
+  },
+  {
+    "id": "selection/temporal-rect",
+    "status": "passed",
+    "durationMs": 42.44033300000592
+  },
+  {
+    "id": "extension/compound-path",
+    "status": "passed",
+    "durationMs": 127.06995800000732
+  },
+  {
+    "id": "extension/passthrough",
+    "status": "passed",
+    "durationMs": 1.0996659999946132
+  },
+  {
+    "id": "guides/label-relative-axis-title",
+    "status": "passed",
+    "durationMs": 521.8270420000044
+  },
+  {
+    "id": "guides/prospective-numeric-axis-title-replay",
+    "status": "passed",
+    "durationMs": 240.83116699999664
+  },
+  {
+    "id": "data-transforms/pivot",
+    "status": "passed",
+    "durationMs": 33.89274999999907
+  },
+  {
+    "id": "regression/quadratic-loess",
+    "status": "passed",
+    "durationMs": 195.9195000000036
+  },
+  {
+    "id": "data-transforms/calendar-completion",
+    "status": "passed",
+    "durationMs": 102.08508299999812
+  },
+  {
+    "id": "parameters/fresh-process-lifecycle",
+    "status": "passed",
+    "durationMs": 1224.8436669999937
+  },
+  {
+    "id": "parameters/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 28.34070800000336
+  },
+  {
+    "id": "prepared-data/full-and-basic-create",
+    "status": "passed",
+    "durationMs": 48.92354200000409
+  },
+  {
+    "id": "prepared-data/fresh-process-offline-refresh",
+    "status": "passed",
+    "durationMs": 1194.317791999987
+  },
+  {
+    "id": "prepared-data/authenticity-and-freshness",
+    "status": "passed",
+    "durationMs": 12.302209000001312
+  },
+  {
+    "id": "prepared-data/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 47.974583000002895
+  },
+  {
+    "id": "conditional-encoding/fresh-process-lifecycle",
+    "status": "passed",
+    "durationMs": 2148.9432919999963
+  },
+  {
+    "id": "conditional-encoding/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 34.37058300001081
+  },
+  {
+    "id": "conditional-encoding/bar-blend-lifecycle",
+    "status": "passed",
+    "durationMs": 167.54875000000175
+  },
+  {
+    "id": "conditional-encoding/position-text-lifecycle",
+    "status": "failed",
+    "durationMs": 30101.175499999998,
+    "error": "Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\n    at Object.spawnSync (node:internal/child_process:1123:20)\n    at spawnSync (node:child_process:877:24)\n    at execFileSync (node:child_process:920:15)\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-pJQeS6/conditional-encoding.mjs:142:20)\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-pJQeS6/consumer.mjs:8:27"
+  },
+  {
+    "id": "paint/structured-filled-marks",
+    "status": "passed",
+    "durationMs": 41174.72666700001
+  },
+  {
+    "id": "paint/structured-text",
+    "status": "passed",
+    "durationMs": 382.95375000001513
+  },
+  {
+    "id": "paint/fresh-codec",
+    "status": "passed",
+    "durationMs": 3475.1608330000017
+  },
+  {
+    "id": "images/resource-lifecycle",
+    "status": "passed",
+    "durationMs": 115.87195800000336
+  },
+  {
+    "id": "images/renderer-scene-offline",
+    "status": "passed",
+    "durationMs": 43.64208399999188
+  },
+  {
+    "id": "hierarchy/full-basic-lifecycle",
+    "status": "passed",
+    "durationMs": 34.62174999999115
+  },
+  {
+    "id": "hierarchy/fresh-process-edit-revise",
+    "status": "passed",
+    "durationMs": 3726.1063330000034
+  },
+  {
+    "id": "hierarchy/renderers-and-scene",
+    "status": "passed",
+    "durationMs": 77.69533399998909
+  }
+]

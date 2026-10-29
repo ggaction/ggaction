@@ -1,3 +1,6 @@
+import { requestedStrokeDetails, STROKE_STYLE_PROPERTIES } from "./strokeStyle.js";
+import { requestedMarkOutline } from "./markOutline.js";
+import { requestedMarkShadow } from "./markShadow.js";
 import { normalizeConditionalEncoding } from "./conditionalEncoding.js";
 import { validateFillPaint } from "./paint.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
@@ -88,7 +91,7 @@ export function textOffsetValue(encoding, row, fallback) {
 }
 
 export const TEXT_MARK_STYLE_OPTIONS = Object.freeze([
-  "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
+  ...STROKE_STYLE_PROPERTIES, "fill", "opacity", "outline", "shadow", "fontSize", "fontFamily", "fontWeight",
   "align", "baseline", "rotation", "dx", "dy", "inheritColor", "lineHeight", "blockAlign"
 ]);
 
@@ -129,7 +132,7 @@ export function formatTextValue(value, format = "auto") {
 }
 
 export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
-  const config = { ...base };
+  const config = { ...base, ...requestedMarkOutline(options, "Text"), ...requestedMarkShadow(options, "Text"), ...requestedStrokeDetails(options, "Text") };
   if (options.textOverrides === "auto") delete config.textOverrides;
   else if (Object.hasOwn(options, "textOverrides")) config.textOverrides = normalizeTextOverrides(options.textOverrides);
   if (Object.hasOwn(options, "lineHeight")) {

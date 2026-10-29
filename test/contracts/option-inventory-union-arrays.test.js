@@ -29,3 +29,13 @@ test("option inventory preserves object and named-array branches at the same pro
   assert.ok(paths.has("option-path:createScatterPlot.color.scale.range[]"));
   assert.equal(inventory.optionPaths.some(option => /\.length\.|\.charAt|__@/u.test(option.path)), false);
 });
+
+test("prepared font and metric authority remains an opaque input in public option coverage", async () => {
+  const inventory = await buildPublicOptionInventory(cards.filter(card => ["createFontResource", "replaceFontResource", "applyTextMetrics"].includes(card.name)));
+  for (const action of ["createFontResource", "replaceFontResource", "applyTextMetrics"]) {
+    assert.ok(inventory.optionPaths.some(option => option.id === `option-path:${action}.prepared` && option.required));
+    assert.ok(inventory.optionPaths.some(option => option.id === `option-path:${action}.requestToken` && option.required));
+    assert.equal(inventory.optionPaths.some(option => option.action === action && option.path.startsWith("prepared.")), false);
+  }
+  assert.equal(inventory.optionPaths.some(option => option.path.includes("__@")), false);
+});

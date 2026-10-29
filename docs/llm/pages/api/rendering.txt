@@ -9,11 +9,12 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-Node PNG/PDF keep the requested font families first and append installed common
-CJK, Unicode, and emoji fallback families for missing glyphs. Text and layout
-remain unchanged; fonts are never downloaded. Install an appropriate font on the
-export host for the scripts you use, or specify your own ordered font-family list.
-Browser Canvas and SVG use the browser's font resolution.
+Canvas, PNG, and PDF keep the requested font families first and share one ordered
+list of common CJK, Unicode, and emoji fallback families. The drawing host skips
+unavailable families. Exact embedded font bindings use only their prepared alias.
+Text and layout remain unchanged; fonts are never downloaded. Install an
+appropriate font on the drawing host for the scripts you use, or specify your own
+ordered font-family list. SVG uses the browser's font resolution.
 
 ## At a glance
 
@@ -124,9 +125,9 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
-An explicit bar `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
-within its visible stroke bounds. It obeys the same per-surface limits, including
-pixel ratio and nested clips, and is reused while painting individual bars.
+An explicit mark `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
+within its visible fill and stroke bounds. It obeys the same per-surface limits, including
+pixel ratio and nested clips, and is reused while painting individual items.
 Unsupported custom Canvas contexts fail before resizing or clearing the chart;
 ordinary drawing does not require the extra surface/compositing capabilities.
 
@@ -227,8 +228,8 @@ absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
 Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
 
-Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
-opacity, dashes, and linear gradients remain vector output. An explicit bar
+Ordinary Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
+opacity, dashes, and linear gradients remain vector output. An explicit mark
 `blend: "multiply"`, `"screen"`, or `"difference"`, or explicit legend recipe-layer opacity rasterizes only
 that glyph's fill-and-outline source for native PDF compositing; the rest of the
 page stays vector. The adapter does not
@@ -353,13 +354,16 @@ program after an edit.
 
 ## Explicit whole-glyph opacity
 
-Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
-source-over instruction; circles accept only that normal marker. The renderer
-paints fill and outline together, attenuates the source once, and composites it.
-This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
-legacy painting unchanged; line/text/containers do not accept blend markers.
-The bar action's `blend:'normal'` remains a semantic reset which removes its
-optional concrete blend field. Normal does not enable circle difference blending.
+Concrete circle/rect/path/line/text nodes accept `blend:'normal'` as an explicit
+whole-glyph source-over instruction. The renderer paints the fill and stroke or
+outline together, attenuates the source once, and composites it. This marker is
+emitted for explicit legend recipe-layer opacity. Omission keeps ordinary painting
+unchanged. Containers and image nodes do not accept blend markers.
+
+The same five glyph types also accept multiply, screen, and difference. The public
+mark actions treat `blend:'normal'` as a semantic reset which removes the optional
+concrete blend field. See [per-item blend modes](../../../api/appearance/mark-style/#blending-each-mark-item)
+for the supported mark and facade options.
 
 ## Transition scenes
 
@@ -573,6 +577,134 @@ internally before output. They do not fetch the source URI, and other graphic no
 remain vector in SVG/PDF. Editable and graphic-only snapshots retain image payloads
 and validate them offline; decoder objects and preparation handles are never saved.
 Image selection and inspection use the clipped rectangle, not pixel alpha.
+
+## Embedded fonts
+
+Full authoring separates font loading, text measurement, and rendering. Use
+`prepareFontResource(program, request, host)`, then commit its authentic handle
+with `createFontResource({prepared,requestToken})` on that exact receiver.
+Replacement uses `kind:"replace"` with `target` and `replaceFontResource`.
+Request tokens are application identifiers for superseded work; the explicit
+action token appears in the action trace, so use a request identifier, not a secret.
+
+The request includes `uri`, lowercase SHA256 `expectedHash`, `mimeType`, `family`,
+`style:"normal"|"italic"`, numeric weight 100–900 in steps of 100, and
+`metricsProviderVersion`. Optional fields are `maxBytes`, `license`, and
+`attribution`. TTF, OTF, WOFF and WOFF2 use their `font/*` MIME values; the default
+and maximum byte limit is 16 MiB per font. The host explicitly supplies `load`
+and `decode`. Loading returns `{bytes:Uint8Array,mimeType}`. Decoding validates
+the complete font and returns its exact `contentHash`, `family`, `style`, `weight`
+and `metricsProviderVersion`. A decoder may not substitute a fallback font.
+
+Next, `prepareTextMetrics(program,{id,fonts},host)` takes explicit font resource
+IDs and `{requestToken,decode,measure,signal?}`. The measurement callback receives
+`{asset,queries,signal?}` and returns `{contentHash,metricsProviderVersion,widths}`.
+Each query has `text` and `fontSize`; `asset` supplies the exact bytes and font
+descriptor. Widths must be finite, nonnegative, in query order, and measured using
+that font. Apply the result with `applyTextMetrics({prepared,requestToken})`.
+The helper prepares the queries required by existing text layout, including
+bounded grapheme prefixes for wrapping. It never treats a missing width as zero
+or an estimate. Preparation allows 64 font bindings, 64 MiB of unique bytes,
+10,000 queries, 1,048,576 total UTF-16 units, and 256 layout passes.
+
+An exact profile requires a unique resource for each family/style/weight tuple.
+New labels or typography may require new measurements. Such edits fail atomically;
+use `removeTextMetrics()`, make the edit, then prepare and apply the new layout.
+Replacing a bound font prepares its new measurement closure before committing
+the resource and all affected text, including tree, treemap, and graph labels.
+These labels reuse their stored layout coordinates when typography changes. Existing schema 1 profiles retain their
+documented estimate behavior for unmatched queries.
+
+Canvas uses `prepareFontRendering(programOrCanvasScene,{register,signal?})` from
+Full or Basic. The explicit `register` callback receives bytes, MIME, content hash,
+a content-addressed `family` alias, original `sourceFamily`, style, weight and
+provider version. It registers **that alias**, then returns
+`{contentHash,family,style,weight,metricsProviderVersion,dispose}`. The identity
+fields must match the request; `dispose()` releases that exact host registration.
+Pass the result as `render(program,context,{fonts})` or
+`renderTransitionScene(scene,context,{fonts})`, and call `fonts.dispose()` when
+finished. Aborts and partial failures also release completed registrations.
+Callbacks sharing an external font registry must manage their own registration
+ownership; deleting another caller's face is not a valid disposal implementation.
+
+Missing, stale, copied, aborted or disposed handles fail before Canvas clear or
+resize. Any change to the prepared graphic content requires preparation again.
+The rendering budget is 64 distinct font identities and 64 MiB of unique bytes.
+No callbacks or handles enter a saved program. SVG embeds the bytes with the same
+aliases; PNG/PDF register the bytes during output and release their native leases
+after drawing. Renderers do not measure or rewrap text. Missing glyph coverage
+must be addressed by the application's chosen fonts; the library does not invent
+a replacement font or claim that one font covers every Unicode character.
+
+The [complete font example](../../../tutorials/font-assets/) includes explicit browser
+and Node host adapters, pinned Korean and monochrome emoji subsets, combining
+marks, wrapping, offline snapshots and the same primitive across four renderers.
+
+## Prepared shadows
+
+`prepareShadowRendering(programOrCanvasScene, {createCanvas, decode?, fonts?, pixelRatio?, signal?})` is available
+from `ggaction` and `ggaction/basic`. It prepares each affected glyph from actual source pixels, combines its
+shadow and retains the canonical PNG in an opaque handle. Canvas and SVG then consume those same bytes.
+This preparation does not change the immutable program.
+
+Complete browser module with a destination `<canvas id="chart">`:
+
+> **Executable complete.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
+
+```js
+import { chart, prepareShadowRendering, render } from "ggaction";
+import { renderToSVG } from "ggaction/svg";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 160, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ fill: "#d2462d", shadow: {
+    color: "rgba(30,60,90,.5)", offsetX: 8, offsetY: 6, blurRadius: 4
+  } })
+  .encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodePointRadius({ value: 18 });
+const context = document.querySelector("#chart").getContext("2d");
+const shadows = await prepareShadowRendering(program, {
+  createCanvas(width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    return canvas;
+  },
+  async decode({ bytes, mimeType }) {
+    const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
+    return { image, width: image.width, height: image.height, originClean: true };
+  }
+});
+try {
+  render(program, context, { shadows });
+  const svg = renderToSVG(program, { shadows });
+  // Use svg as an inline or saved SVG document.
+} finally {
+  shadows.dispose();
+}
+```
+
+For SVG-only output, omit `decode`. For high-density Canvas output, pass the same `pixelRatio` to preparation
+and `render`. Text shadows additionally require a `fonts` handle from [font preparation](../../../api/rendering/#embedded-fonts)
+for the exact same program or Canvas scene. Pass both `fonts` and `shadows` to Canvas rendering. The host must
+provide finite actual glyph ink metrics; missing fonts or metrics are errors. The original multiline positions,
+rotation, glyph holes, structured fill and outlines are preserved.
+
+`renderToPNG`/`renderToPNGBuffer` and `renderToPDF`/`renderToPDFBuffer` prepare fonts and shadows automatically
+with the installed native backend. They do not fetch resources. PDF keeps unaffected geometry vector and uses
+an image only for each affected glyph. A source outside an owner clip can still cast its shadow inside that clip.
+
+For Canvas scenes, prepare the exact scene returned by `createTransitionScene(program,{format:"canvas"})`, then
+pass the handle to `renderTransitionScene`. For SVG scenes, pass a program-bound handle to
+`createTransitionScene(program,{shadows})`. Scene output contains the prepared effect without adding semantic items.
+
+Handles belong to one exact graphic identity/content and output density. After editing or restoring either
+program codec, prepare again. Disposing twice is safe; missing, changed, stale, disposed or aborted preparation
+fails before the destination is cleared or resized. The handle is ephemeral and cannot be serialized.
+
+Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 MiB of numeric/RGBA output buffers.
+The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
+All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
 
 ## Related
 

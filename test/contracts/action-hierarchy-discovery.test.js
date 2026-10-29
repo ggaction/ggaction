@@ -19,6 +19,7 @@ const completeChartActions = [
   "createDumbbellPlot",
   "createECDFPlot",
   "createGradientPlot",
+  "createGraphPlot",
   "createHeatmap",
   "createHistogram",
   "createHorizonPlot",
@@ -27,6 +28,7 @@ const completeChartActions = [
   "createLinePlot",
   "createLollipopPlot",
   "createParallelCoordinates",
+  "createPartitionPlot",
   "createPiePlot",
   "createPolarLinePlot",
   "createPolarScatterPlot",
@@ -95,15 +97,28 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
       continue;
     }
     const descendants = [...reachableActions(card, byName)].map(child => byName.get(child));
-    if (["createTreePlot", "createTreemapPlot"].includes(name)) {
+    if (name === "createGraphPlot") {
       assert.deepEqual(card.wraps, ["editSemantic"]);
+      const program = fullChart().createCanvas().createData({ id: "nodes", values: [{ key: "a" }] })
+        .createData({ id: "edges", values: [] })
+        .createGraphData({ id: "g", nodes: "nodes", edges: "edges", nodeKey: "key", source: "from", target: "to" })
+        .layoutGraph({ id: "l", method: "circular" }).createGraphPlot();
+      const materialize = program.trace.children.at(-1).children.find(child => child.op === "materializeGraphPlot");
+      assert.ok(materialize.children.some(child => child.op === "createGraphics"));
+      assert.ok(materialize.children.some(child => child.op === "editGraphics"));
+      continue;
+    }
+    if (["createTreePlot", "createTreemapPlot", "createPartitionPlot"].includes(name)) {
+      const partition = name === "createPartitionPlot";
+      // Discovery lists reachable actions; the program trace below owns execution order.
+      assert.deepEqual([...card.wraps].sort(), partition ? ["createCoordinate", "editSemantic"] : ["editSemantic"]);
       const base = fullChart().createCanvas().createData({ values: [{ id: "root", parent: null, value: 1 }] })
         .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" });
       const tree = name === "createTreePlot";
-      const program = base.layoutHierarchy({ id: "l", method: tree ? "tree" : "treemap", options: tree
+      const program = base.layoutHierarchy({ id: "l", method: partition ? "partition" : tree ? "tree" : "treemap", options: partition ? {} : tree
         ? { nodeSize: [10, 10], siblingGap: 10, depthGap: 10, orientation: "vertical" }
         : { size: [100, 100], padding: 0, method: "slice-dice" } })[name]({});
-      const materialize = program.trace.children.at(-1).children.find(child => child.op === (tree ? "materializeTreePlot" : "materializeTreemapPlot"));
+      const materialize = program.trace.children.at(-1).children.find(child => child.op === (partition ? "materializePartitionPlot" : tree ? "materializeTreePlot" : "materializeTreemapPlot"));
       assert.ok(materialize.children.some(child => child.op === "createGraphics"));
       assert.ok(materialize.children.some(child => child.op === "editGraphics"));
       continue;
@@ -125,9 +140,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 39,
+    contextual: actionCards.length - 41,
     deferred: 2,
-    complete: 34,
+    complete: 36,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

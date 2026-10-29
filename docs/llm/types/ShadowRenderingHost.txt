@@ -1,0 +1,12 @@
+export interface ShadowRenderingHost {
+  createCanvas(width: number, height: number): {
+    readonly width: number; readonly height: number;
+    getContext(type: "2d"): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
+  };
+  /** Required for Canvas output and image source masks; SVG embeds the prepared bytes directly. */
+  decode?: ImageRenderingHost["decode"];
+  /** Exact font preparation is required for Text shadows. */
+  fonts?: PreparedFontRendering;
+  pixelRatio?: number;
+  signal?: AbortSignal;
+}

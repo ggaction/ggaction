@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 914000; // Public flow documentation: 913578 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 941000; // Integrated resource role effects and Flow documentation: 940813 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

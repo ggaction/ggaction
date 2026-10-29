@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd",
+    "contractId": "sha256:922cf9de255957581bcdbaf57d970f31ef096bf2b0b27829f9ac000f91705367",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 157,
+  "sectionCount": 162,
   "sections": [
     {
       "order": 1,
@@ -813,8 +813,8 @@
         "layoutgraph",
         "related"
       ],
-      "bytes": 24800,
-      "sha256": "265a3b474d5fe768fdfaa4a097a4afc466947257fcbdb17337cdc0ce3769dff2"
+      "bytes": 24883,
+      "sha256": "608bbae1dfb009ace3765202a7a7780a335d5a84b19b75d2f77ff23b878cdbae"
     },
     {
       "order": 51,
@@ -964,8 +964,8 @@
         "blend-with-underlying-content",
         "related"
       ],
-      "bytes": 7015,
-      "sha256": "644715abd006cff7b40760a587b29cbabac10b1f0c5f3c2c58e9b89d0659dd30"
+      "bytes": 7133,
+      "sha256": "0e23c24e3b5141d5deb323a9b97369a2be54e4569b5bde7233fa7874d8e0d27f"
     },
     {
       "order": 60,
@@ -1221,10 +1221,12 @@
         "measured-text-layout",
         "identity-across-revisions",
         "embedded-images",
+        "embedded-fonts",
+        "prepared-shadows",
         "related"
       ],
-      "bytes": 30391,
-      "sha256": "83ecd45eb35bfec65e5d8e3d07df3ab679561da3725af67b0380d7928324d3b4"
+      "bytes": 38433,
+      "sha256": "ec442a43cd6a18d924ff6ecfa2d4165f7d8cf4b847a200dc1bf8f510622df58b"
     },
     {
       "order": 73,
@@ -1470,13 +1472,16 @@
         "mark-style",
         "canonical-stroke-compatibility",
         "pattern-and-gradient-fills",
+        "outlines-and-text-halos",
         "stroke-caps-joins-and-rounded-rectangles",
         "stroke-color-and-linerule-appearance",
         "encodebarwidth-band-pixels-target",
+        "blending-each-mark-item",
+        "shadows",
         "related"
       ],
-      "bytes": 13610,
-      "sha256": "e84d3c988c9cff93b6a6742d1f9d153d868ad89793ed7c0c254a79b854d39ec7"
+      "bytes": 18463,
+      "sha256": "b225f33b96a8fe0d0b508dedf07ddd546423378cd79abbbf3a4bcd808698c2f8"
     },
     {
       "order": 88,
@@ -1920,8 +1925,8 @@
         "reproducibility-checklist",
         "related"
       ],
-      "bytes": 3287,
-      "sha256": "4fced11a7e063a64e00216c34c4bf47ef94283e866d8892aadbba9cb37d74406"
+      "bytes": 4338,
+      "sha256": "c2358b33e057021be87e48c0aa1e715445d2b5faf89dddfbc309eeb0ac40f56a"
     },
     {
       "order": 114,
@@ -1986,8 +1991,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 35441,
-      "sha256": "fc3ec7fbe3e05d731f38fb3785264c5b987de6cdea00e67b893d54c665363024"
+      "bytes": 36315,
+      "sha256": "b6a5040e5788995791c5e73490d8d5ba2ae85f7e10d28c50351dfbba07b45f5b"
     },
     {
       "order": 118,
@@ -2013,6 +2018,8 @@
         "filterdata",
         "creategraphdata",
         "editgraphdata",
+        "editinferredgraphdata",
+        "createinferredgraphdata",
         "createparameter",
         "editparameter",
         "removeparameter",
@@ -2108,6 +2115,12 @@
         "createtreemapplot",
         "edittreemapplot",
         "layoutgraph",
+        "creategraphplot",
+        "editgraphplot",
+        "createfontresource",
+        "replacefontresource",
+        "createpartitionplot",
+        "editpartitionplot",
         "createflowdata",
         "editflowdata",
         "layoutflow",
@@ -2118,8 +2131,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 231463,
-      "sha256": "f397d9fda6f467a621b3da63ecc2904e3dda1d17eef61fa1b3aacd66f76d34c5"
+      "bytes": 247385,
+      "sha256": "c1ba07d865dd46c696bf880009b02593b86aa17ffb1c36c86555c88da7e684f8"
     },
     {
       "order": 119,
@@ -2174,8 +2187,8 @@
         "editcontourmark",
         "related"
       ],
-      "bytes": 100072,
-      "sha256": "4979b23a3f9045edf8a5d294d7f8f9a285f2944c3d1cc9f8ad331d933d0897df"
+      "bytes": 109208,
+      "sha256": "665347819c76d9013f238977e6c3cf01b57a1611024da1722a3964988eef8d26"
     },
     {
       "order": 120,
@@ -2453,8 +2466,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 38271,
-      "sha256": "e9fc99661cf1f98ffcc3cc075be657e04f7b3b8ddc5d4c343ca10375d998ab31"
+      "bytes": 43539,
+      "sha256": "aca7584e93984ddfc987bf5782d68e39b7ea7d1cd5d3173ab5f00005ade55dd3"
     },
     {
       "order": 126,
@@ -2473,6 +2486,7 @@
         "type-annotationanchor",
         "type-annotationbaseoptions",
         "type-applydataupdateoptions",
+        "type-applyfontresourceoptions",
         "type-applyimageresourceoptions",
         "type-applytextmetricsoptions",
         "type-applythemeoptions",
@@ -2519,6 +2533,7 @@
         "type-binnedheatmapcoloroptions",
         "type-binnedheatmapoptions",
         "type-binnedheatmappositionchannel",
+        "type-blendmode",
         "type-bootstrapmeanintervalmethod",
         "type-boxplotcategorychannel",
         "type-boxplotguideoptions",
@@ -2620,6 +2635,7 @@
         "type-createhistogramoptions",
         "type-createhorizonplotoptions",
         "type-createimagemarkoptions",
+        "type-createinferredgraphdataoptions",
         "type-createintervalplotoptions",
         "type-createlayerplotoptions",
         "type-createlineplotoptions",
@@ -2760,6 +2776,7 @@
         "type-editfolddataoptions",
         "type-editgradientplotoptions",
         "type-editgraphdataoptions",
+        "type-editgraphplotoptions",
         "type-editgraphicsoptions",
         "type-editgriddirectionsoptions",
         "type-editgridoptions",
@@ -2767,6 +2784,7 @@
         "type-edithorizonoptions",
         "type-editimagemarkoptions",
         "type-editimputeddataoptions",
+        "type-editinferredgraphdataoptions",
         "type-editintervaldataoptions",
         "type-editlayoutoptions",
         "type-editlegendblockoptions",
@@ -2786,6 +2804,7 @@
         "type-editparallelaxisoptions",
         "type-editparallelscaleoptions",
         "type-editparameteroptions",
+        "type-editpartitionplotoptions",
         "type-editpivotdataoptions",
         "type-editpolaraxisoptions",
         "type-editpolargridoptions",
@@ -2893,13 +2912,25 @@
         "type-gradientplotguideoptions",
         "type-gradientplotoptions",
         "type-gradientplotpositionchannel",
+        "type-graphcandidatemstdefinition",
         "type-graphcircularoptions",
+        "type-graphedgepaint",
+        "type-graphfeaturepolicy",
         "type-graphfixedoptions",
         "type-graphforceoptions",
         "type-graphkeyfield",
+        "type-graphlabelpaint",
+        "type-graphlabelsoptions",
         "type-graphlayoutlimits",
+        "type-graphmetricdefinition",
+        "type-graphmetricmstdefinition",
+        "type-graphneighbordefinition",
+        "type-graphnodepaint",
         "type-graphpin",
+        "type-graphplotoptions",
         "type-graphposition",
+        "type-graphsearchoptions",
+        "type-graphstructuraldefinition",
         "type-graphicclip",
         "type-graphicclippath",
         "type-graphiccliprect",
@@ -2936,6 +2967,8 @@
         "type-imagemarkoptions",
         "type-imputeddatabaseoptions",
         "type-imputeddataoptions",
+        "type-inferredgraphdefinition",
+        "type-inferredgraphsource",
         "type-inferredruledatumpositionencodingoptions",
         "type-insertcompositionchildoptions",
         "type-intervalcenter",
@@ -2983,7 +3016,9 @@
         "type-marklabelplacement",
         "type-marklabelplacementleaderoptions",
         "type-marklabelselectionoptions",
+        "type-markoutline",
         "type-markselector",
+        "type-markshadow",
         "type-meanconfidenceintervalmethod",
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
@@ -3035,6 +3070,7 @@
         "type-parametervalue",
         "type-parameterizedaggregateoperation",
         "type-parsetimeformat",
+        "type-partitionplotoptions",
         "type-pathfillrule",
         "type-pathlegendoptions",
         "type-pathorderencodingoptions",
@@ -3074,7 +3110,9 @@
         "type-positionscalebranches",
         "type-pregriddedheatmapoptions",
         "type-prepareddataupdate",
+        "type-preparedfontresource",
         "type-preparedimageresource",
+        "type-preparedtextmetrics",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3250,8 +3288,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 433002,
-      "sha256": "be37ba9bdf0cd71aa1397cba888448fc5615b83500b59ec8a2430dc38397ac83"
+      "bytes": 448934,
+      "sha256": "f21b938c38f08f9d2b0d3db96bef493f956a2dec8884f9562b21b8989077cb58"
     },
     {
       "order": 127,
@@ -3512,8 +3550,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2221,
-      "sha256": "c8ca65194baac5b737a29b91bba2af679e38c327cd1a2b416eed1da3fa240d78"
+      "bytes": 2501,
+      "sha256": "c826ee0822fc9c854eb4da9129ee1531fefe2b3eec93d7fd257786b8cfeedaef"
     },
     {
       "order": 143,
@@ -3607,13 +3645,13 @@
         "distributions",
         "parts-radial-values-and-dense-samples",
         "multiple-views",
-        "hierarchies",
+        "hierarchies-and-networks",
         "compose-or-refine",
         "three-independent-choices",
         "related"
       ],
-      "bytes": 11418,
-      "sha256": "f8b1d268ae454ecb06c436ac4edb29f9dd089819b3cf7ec489bdd30577664800"
+      "bytes": 12000,
+      "sha256": "b3fe868100cf201a56c242e4d85afb23ad426c2eefb70eff5c5369d39a117f3d"
     },
     {
       "order": 149,
@@ -3626,7 +3664,7 @@
         "migration-from-v0013"
       ],
       "bytes": 2982,
-      "sha256": "3d6ca6f0940dd59eb9b959834102a2958b509d8797dc97f6fccd339e13377057"
+      "sha256": "b8babd816c4b19ff0391f6d548ed9007894b545e043099df8d061ad039596c59"
     },
     {
       "order": 150,
@@ -3654,13 +3692,28 @@
         "place-a-retained-image",
         "prepare-and-place",
         "render-and-preserve",
-        "complete-program"
+        "complete-program",
+        "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 5974,
-      "sha256": "88b062943fcfccae299735ca0c383fa6d5d651bcf4c94e98531f622f366f4972"
+      "bytes": 6637,
+      "sha256": "91a4f670cd1994977d502db782996276f9c011384670034c707d8fb8153ef90e"
     },
     {
       "order": 152,
+      "title": "Prepared Fonts Tutorial",
+      "route": "/tutorials/font-assets/",
+      "source": "tutorials/font-assets.md",
+      "headings": [
+        "prepare-fonts-before-text-layout",
+        "load-measure-apply",
+        "draw-the-prepared-text",
+        "change-labels-or-fonts"
+      ],
+      "bytes": 3333,
+      "sha256": "6cd2b60bfe7ece4ddc90b650ea74bf73b2fda5fcd30214c34521cd608eadfe4f"
+    },
+    {
+      "order": 153,
       "title": "Hierarchy Resources and Plots",
       "route": "/api/hierarchy/",
       "source": "api/hierarchy.md",
@@ -3676,13 +3729,14 @@
         "createtreemapplot",
         "edittreemapplot",
         "labels-overrides-and-retained-identity",
-        "revising-and-restoring"
+        "revising-and-restoring",
+        "outlines-and-shadows"
       ],
-      "bytes": 7603,
-      "sha256": "5f753665296568cdd4c1f03d4473e3eb2fa3bda8d478b3f1e58acc653c6bfd33"
+      "bytes": 8751,
+      "sha256": "7b3bd68b399e198072e27a746395afc31e24c53e5c3b231ef3af123c255fec79"
     },
     {
-      "order": 153,
+      "order": 154,
       "title": "Hierarchy Tutorial",
       "route": "/tutorials/hierarchy/",
       "source": "tutorials/hierarchy.md",
@@ -3697,7 +3751,66 @@
       "sha256": "03a6494ab3d0dece387d6ba272baccd8e1310cd05e01dc1e9ae75bd89c5c8780"
     },
     {
-      "order": 154,
+      "order": 155,
+      "title": "Graph Plots",
+      "route": "/api/graphs/",
+      "source": "api/graphs.md",
+      "headings": [
+        "graph-plots",
+        "creategraphplot",
+        "editgraphplot",
+        "labels-and-identity",
+        "updates-removal-and-outputs",
+        "graph-inference",
+        "outlines-and-shadows"
+      ],
+      "bytes": 8989,
+      "sha256": "a9589206686061f274bc5d6207bf742df0a459be56d0e536f04670f8a79d0d64"
+    },
+    {
+      "order": 156,
+      "title": "Graph Tutorial",
+      "route": "/tutorials/graphs/",
+      "source": "tutorials/graphs.md",
+      "headings": [
+        "draw-an-observed-network",
+        "preserve-separate-connections",
+        "revise-the-view"
+      ],
+      "bytes": 2397,
+      "sha256": "301c4d6642ba5c95fd5101cde820c03054f73d8a99b2963f58921a88b7ca8f9a"
+    },
+    {
+      "order": 157,
+      "title": "Partition Plots",
+      "route": "/api/partition/",
+      "source": "api/partition.md",
+      "headings": [
+        "partition-plots",
+        "shared-contract",
+        "createpartitionplot",
+        "editpartitionplot",
+        "outlines-and-shadows"
+      ],
+      "bytes": 5387,
+      "sha256": "f111d0c6a023adbb2b4c61603d959b081a5aa86915f6482ede3a9bdd37ca163a"
+    },
+    {
+      "order": 158,
+      "title": "Partition Tutorial",
+      "route": "/tutorials/partition/",
+      "source": "tutorials/partition.md",
+      "headings": [
+        "partition-tutorial",
+        "run-the-icicle",
+        "focus-and-return",
+        "share-intervals-with-a-sunburst"
+      ],
+      "bytes": 4368,
+      "sha256": "8bce2ea71f5ccb1a543ad016ccfb13d861d38a599de2e23335accd393ef200ab"
+    },
+    {
+      "order": 159,
       "title": "Flow Data and Sankey Layouts",
       "route": "/api/flows/",
       "source": "api/flows.md",
@@ -3710,13 +3823,14 @@
         "editflownodes",
         "createflowlinks",
         "editflowlinks",
-        "consumers-and-lifecycle"
+        "consumers-and-lifecycle",
+        "outlines-and-shadows"
       ],
-      "bytes": 8998,
-      "sha256": "42252f554b3745980b8a9580478a7b1ec1acb7a4231a527824226854924d0350"
+      "bytes": 9796,
+      "sha256": "5e0c431409b1a37b93c9fd534ab079eb0706eeaf7b4df65492ca1030e8888bb4"
     },
     {
-      "order": 155,
+      "order": 160,
       "title": "Draw Conserved Flows",
       "route": "/tutorials/flows/",
       "source": "tutorials/flows.md",
@@ -3727,7 +3841,7 @@
       "sha256": "9df7b6b19308477060a13360e5d741cb01f692943d831b879203fd45ea8cda7a"
     },
     {
-      "order": 156,
+      "order": 161,
       "title": "Contours and Two-Dimensional Density",
       "route": "/api/contours/",
       "source": "api/contours.md",
@@ -3739,11 +3853,11 @@
         "createcontourmark",
         "editcontourmark"
       ],
-      "bytes": 7578,
-      "sha256": "257a07ecb20559d6964d44a041bbcaf3598603ff65720012a61d94eca014bd44"
+      "bytes": 7821,
+      "sha256": "128a153ec10839098b3da6a365473ca0bc741a05d64fff0f7536d3c61cc52243"
     },
     {
-      "order": 157,
+      "order": 162,
       "title": "Draw Levels, Bands and Density",
       "route": "/tutorials/contours/",
       "source": "tutorials/contours.md",

@@ -80,6 +80,16 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "geometry",
       "required": false,
       "type": "string | undefined"
@@ -136,7 +146,7 @@
     }
   ],
   "callPatterns": [
-    "editContourMark({ target?, coordinate?, geometry?, mode?, x?, y?, color?, fill? })"
+    "editContourMark({ target?, coordinate?, outline?, shadow?, geometry?, mode?, x?, y? })"
   ],
   "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
   "errors": [],

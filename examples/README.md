@@ -618,6 +618,18 @@ Fill marks with repeated patterns or object-bound radial gradients.
 
 Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
 
+### [Prepared Korean and emoji fonts](./font-assets/)
+
+Prepare fonts and exact widths, then retain the text for offline rendering.
+
+Representative actions: `createFontResource`, `applyTextMetrics`, `replaceFontResource`. [Documentation](https://ggaction.github.io/ggaction/tutorials/font-assets/).
+
+### [Outlines and text halos](./mark-outlines/)
+
+Add pre-fill outlines and text halos to filled marks.
+
+Representative actions: `createRectMark`, `createTextMark`, `editTextMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
+
 ### [Retained image placement](./image-assets/)
 
 Prepare one source, place an image mark, and render from retained bytes.
@@ -653,6 +665,48 @@ Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemap
 Create a hierarchy resource, compute an explicit squarify layout, and draw its nodes.
 
 Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
+### [Directed graph](./graph-plots/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
+### [Parallel edges](./graph-parallel/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
+### [Self-loop](./graph-self-loop/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
+### [Icicle partition](./partition-layouts/)
+
+Normalized hierarchy intervals become rectangular value and depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
+### [Sunburst partition](./partition-sunburst/)
+
+The same hierarchy intervals become angular value and radial depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
+### [Bounded mark shadows](./mark-shadows/)
+
+Prepare the actual mark alpha once and share its bounded shadow across output backends.
+
+Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
+
+### [Exact text shadows](./text-shadows/)
+
+Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+
+Representative actions: `createTextMark`, `createFontResource`, `applyTextMetrics`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
 
 ### [Conserved flows](./flow-layouts/)
 

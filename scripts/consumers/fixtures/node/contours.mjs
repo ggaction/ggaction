@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { inflateSync } from "node:zlib";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { chart, render } from "ggaction";
+import { chart, render, prepareShadowRendering } from "ggaction";
 import { chart as basicChart } from "ggaction/basic";
 import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
 import { getMarkItems, inspectProgram } from "ggaction/inspection";
@@ -58,11 +58,15 @@ export const cases = [
   } },
   { id: "contour/renderers-scene-codec", async run() {
     for (const mode of ["line", "filled"]) {
-      const p = program(mode), graphic = deserializeGraphic(serializeGraphic(p));
-      assert.equal(graphic.semanticSpec, undefined); assert.equal(renderToSVG(graphic), renderToSVG(p));
+      const p = program(mode).editContourMark({ outline: { color: "white", width: 2 },
+        shadow: { color: "#1238", offsetX: 3, offsetY: 2, blurRadius: 1 } }), graphic = deserializeGraphic(serializeGraphic(p));
+      const decode = async ({ bytes }) => { const image = await loadImage(bytes); return { image, width: image.width, height: image.height, originClean: true }; };
+      const shadows = await prepareShadowRendering(p, { createCanvas, decode });
+      const graphicShadows = await prepareShadowRendering(graphic, { createCanvas, decode });
+      assert.equal(graphic.semanticSpec, undefined); assert.equal(renderToSVG(graphic, { shadows: graphicShadows }), renderToSVG(p, { shadows }));
       const png = await renderToPNGBuffer(p), restoredPNG = await renderToPNGBuffer(graphic);
       assert.deepEqual(restoredPNG.buffer, png.buffer);
-      const canvas = createCanvas(1, 1), ctx = canvas.getContext("2d"); render(graphic, ctx);
+      const canvas = createCanvas(1, 1), ctx = canvas.getContext("2d"); render(graphic, ctx, { shadows: graphicShadows });
       const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
       const decoded = createCanvas(png.width, png.height); decoded.getContext("2d").drawImage(await loadImage(png.buffer), 0, 0);
       assert.deepEqual(decoded.getContext("2d").getImageData(0, 0, png.width, png.height).data, pixels);
@@ -71,10 +75,12 @@ export const cases = [
       assert.deepEqual([pdf.width, pdf.height, pdf.pages], [260, 200, 1]);
       const scene = createTransitionScene(p, { format: "canvas" });
       assert.deepEqual(createTransitionScene(graphic, { format: "canvas" }), scene);
-      const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext);
+      const sceneShadows = await prepareShadowRendering(scene, { createCanvas, decode });
+      const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext, { shadows: sceneShadows });
       assert.deepEqual(sceneContext.getImageData(0, 0, sceneCanvas.width, sceneCanvas.height).data, pixels);
       const changed = p.editContourMark({ x: { reverse: true } });
       assert.deepEqual(createTransitionScene(changed, { format: "canvas" }).nodes.map(node => node.key), scene.nodes.map(node => node.key));
+      sceneShadows.dispose(); graphicShadows.dispose(); shadows.dispose();
     }
   } }
 ];

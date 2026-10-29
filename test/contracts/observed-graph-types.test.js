@@ -12,7 +12,7 @@ test("observed graph declarations distinguish source target columns from graph e
   try {
     const file = path.join(directory, "consumer.mts");
     await writeFile(file, `
-import { chart, type GraphResource, type GraphLayoutResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import { chart, type ObservedGraphResource, type GraphLayoutResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basicChart } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 const definition: CreateGraphDataOptions = { id: "graph", nodes: "nodes", edges: "edges", nodeKey: ["family", "id"], source: "from", target: ["tf", "tn"], weight: "weight" };
 const program = chart().createGraphData(definition).editGraphData({ target: "graph", definition: { target: "to", directed: true } });
@@ -21,6 +21,19 @@ program.layoutGraph({ id: "fixed", method: "fixed", options: { positions: [{ key
   .layoutGraph({ id: "circular", method: "circular" })
   .layoutGraph({ id: "force", graph: "graph", method: "force", options: { seed: 2, pinned: [{ key: "a", fx: 0, fy: 0 }] } })
   .editLayout({ target: "force", options: { iterations: 10 } });
+program.createGraphPlot().editGraphPlot({ nodes: { fill: { type: "pattern", style: "dots", foreground: "red", background: "white", pitch: 8 } } });
+program.createGraphPlot({ labels: { field: "name", overrides: [{ key: ["a", 1], text: "A" }] } });
+program.editGraphPlot({ target: { childPath: ["left"], id: "networkPlot" }, edges: { arrows: false } });
+// @ts-expect-error graph nodes are circles
+program.createGraphPlot({ nodes: { shape: "square" } });
+// @ts-expect-error label field is a string
+program.createGraphPlot({ labels: { field: 1 } });
+// @ts-expect-error graph labels are disabled or an option object
+program.createGraphPlot({ labels: true });
+// @ts-expect-error node override keys are required
+program.editGraphPlot({ nodes: { overrides: [{ fill: "red" }] } });
+// @ts-expect-error Full graph plots are not Basic methods
+basicChart().createGraphPlot();
 const layout = program.semanticSpec.resources.find((value): value is GraphLayoutResource => value.kind === "layout" && value.inputs[0].kind === "graph");
 if (layout) {
   const graphKind: "graph" = layout.inputs[0].kind;
@@ -37,7 +50,7 @@ program.layoutGraph({ id: "circular", method: "circular", options: { seed: 2 } }
 program.editLayout({ options: { iterations: 2 }, order: "input" });
 // @ts-expect-error explicit undefined is not omission
 program.layoutGraph({ id: "force", method: "force", options: undefined });
-const resource = program.semanticSpec.resources.find((value): value is GraphResource => value.kind === "graph");
+const resource = program.semanticSpec.resources.find((value): value is ObservedGraphResource => value.kind === "graph" && value.provenance.origin === "observed");
 if (resource) {
   const inputKind: "data" = resource.inputs[0].kind;
   const diagnostics: null = resource.result.diagnostics;

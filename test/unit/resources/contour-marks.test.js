@@ -152,6 +152,29 @@ test("contour vertical composition keeps child edits scoped and rejects implicit
   assert.equal(serializeProgram(child), saved);
 });
 
+test("contour effects share role normalization, preserve geometry and reset before concrete materialization", () => {
+  for (const mode of ["line", "filled"]) {
+    const p = base().createContourMark({ mode, color: false }), before = serializeProgram(p);
+    const outline = { color: "white", width: 3 }, shadow = { color: "#1238", offsetX: 2, offsetY: 0, blurRadius: 0 };
+    const q = p.editContourMark({ outline, shadow: { color: "#1238", offsetX: 2 } });
+    assert.equal(q.semanticSpec.resources, p.semanticSpec.resources);
+    assert.deepEqual(getMarkItems(q, { target: "contour" }).map(item => item.key), getMarkItems(p, { target: "contour" }).map(item => item.key));
+    for (const item of q.graphicSpec.objects.contour.items) {
+      assert.deepEqual(item.properties.outline, outline); assert.deepEqual(item.properties.shadow, shadow);
+    }
+    const restored = deserializeProgram(serializeProgram(q)).editContourData({ grid: { ...grid, dx: 2 } });
+    assert.ok(restored.graphicSpec.objects.contour.items.every(item => item.properties.outline.width === 3));
+    const reset = restored.editContourMark({ outline: false, shadow: false });
+    assert.ok(reset.graphicSpec.objects.contour.items.every(item => item.properties.outline === undefined && item.properties.shadow === undefined));
+    assert.deepEqual(deserializeProgram(serializeProgram(reset)).graphicSpec, reset.graphicSpec);
+    for (const patch of [{ outline, stroke: "black" }, { outline: { color: "red", width: -1 } }, { shadow: { color: "red", blurRadius: -1 } }]) assert.throws(() => p.editContourMark(patch));
+    const envelope = JSON.parse(serializeProgram(q)), state = decodeValue(envelope.payload);
+    delete state.materializationConfigs.marks.contour.contour.shadow.offsetX;
+    assert.throws(() => deserializeProgram(JSON.stringify({ ...envelope, payload: encodeValue(state) })), /shadow|resolved/);
+    assert.equal(serializeProgram(p), before);
+  }
+});
+
 test("prepared source and computed parameter closures update density contours and reject negative weights atomically", async () => {
   const values = [{ id: "a", x: 0, y: 0, w: 2 }, { id: "b", x: 1, y: 1, w: 3 }];
   let p = chart().createCanvas().createParameter({ id: "gain", value: 1 });

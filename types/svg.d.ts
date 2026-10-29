@@ -1,6 +1,7 @@
-import type { ChartProgram } from "./program.js";
+import type { ChartProgram, PreparedShadowRendering } from "./program.js";
 
 export interface SVGRenderOptions {
+  readonly shadows?: PreparedShadowRendering;
   readonly title?: string;
   readonly description?: string;
   readonly resourceNamespace?: string;
