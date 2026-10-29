@@ -776,11 +776,11 @@ test/unit/interaction-preview-preparation.test.js and the actual browser bitmap 
 
 Every select, legend-selection/visibility, brush, lasso, moveNode, annotate or navigate binding accepts
 optional `priority` and `modifiers`. Priority is an integer from -1,000,000 to 1,000,000. Defaults are
-annotation50, brush/lasso40, node30, navigation20 and click/legend10. Modifiers are an own-data record
+annotation 50, brush/lasso 40, node 30, navigation 20 and click/legend 10. Modifiers are an own-data record
 with optional boolean alt, ctrl, meta and shift conjunctions; omission leaves that key unconstrained.
 Equal priorities whose modifier conditions can overlap are initialization errors, even for different
 owners. Explicit priority or disjoint modifier conditions resolve the ambiguity; array order never does.
-Inspect/context-menu/linked bindings do not accept these options. Limits are256 editing and259 total.
+Inspect/context-menu/linked bindings do not accept these options. Limits are 256 editing and 259 total.
 
 On primary pointerdown, the session probes matching candidates in descending priority. Annotation/node
 candidates require an exact current visible target hit; region/navigation candidates require the native
@@ -790,7 +790,7 @@ candidates do not claim capture. Only the winning adapter begins a transaction; 
 history, capture or preparation side effects. One shared DOM capture owner serves all editing bindings.
 
 The winner, modifier choice and transaction remain fixed through pointerup/cancel despite later modifier
-changes. A second pointer promotes only the same navigation winner to pinch when it falls in that winner’s viewport; another child’s pointer is ignored. Final coordinates,3CSSpx
+changes. A second pointer promotes only the same navigation winner to pinch when it falls in that winner’s viewport; another child’s pointer is ignored. Final coordinates, 3 CSS px
 threshold, RAF coalescing, preview assets, one commit/settled pair, undo and cancel restoration retain their
 existing contracts. Program/frame replacement, source removal, remount, unmount and destroy cancel the
 winner once and release shared listeners/captures. Late input cannot reactivate it. Pure click-only custom

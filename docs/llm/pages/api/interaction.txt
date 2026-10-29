@@ -1214,8 +1214,8 @@ view is disposed, then call `disposeRoutes()`.
 
 Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
 `alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
-Default ranks are annotation50, brush/lasso40, node movement30, navigation20 and click/legend10. Priority
-must be an integer between -1,000,000 and1,000,000. Equal ranks with overlapping conditions are rejected
+Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
 before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
 
 A higher rank only wins when its target applies at the pointer location. Hidden or removed annotations,

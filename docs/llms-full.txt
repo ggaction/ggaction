@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39. Status: development. Runtime source: d74d66a6a3266cc10ee81a1648af24777f60ba63. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/d74d66a6a3266cc10ee81a1648af24777f60ba63/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11932,8 +11932,8 @@ view is disposed, then call `disposeRoutes()`.
 
 Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
 `alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
-Default ranks are annotation50, brush/lasso40, node movement30, navigation20 and click/legend10. Priority
-must be an integer between -1,000,000 and1,000,000. Equal ranks with overlapping conditions are rejected
+Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
 before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
 
 A higher rank only wins when its target applies at the pointer location. Hidden or removed annotations,
@@ -50469,12 +50469,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53559,7 +53559,7 @@ The comparison baseline below is the older release used by the migration notes.
 | --- | --- |
 | Contract fingerprint | `sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `current` |
+| Runtime source commit | `d74d66a6a3266cc10ee81a1648af24777f60ba63` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |
