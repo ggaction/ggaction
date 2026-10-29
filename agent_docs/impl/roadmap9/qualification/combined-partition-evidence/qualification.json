@@ -76,5 +76,12 @@
     "Public typed animation planner and sampler integration",
     "Offline timeline and current-frame interruption",
     "Final STEP077 complete qualification"
-  ]
+  ],
+  "combinedMerge": {
+    "sourceRevision": "5496d28d7f66b35350f3e855d8df4a38600445ec",
+    "owning": 79,
+    "boundaries": 24,
+    "docs": 227,
+    "note": "Common corpus and composition witness repairs retained; canonical generation has no delta."
+  }
 }
