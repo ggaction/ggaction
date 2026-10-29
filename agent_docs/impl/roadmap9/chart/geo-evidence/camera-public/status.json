@@ -87,7 +87,10 @@
         "tests": 202,
         "pass": 200
       },
-      "final": "pending source pin"
+      "final": {
+        "tests": 202,
+        "pass": 202
+      }
     },
     "builtDocs": {
       "beforeSourcePin": {
@@ -99,7 +102,16 @@
           768
         ]
       },
-      "final": "pending source pin"
+      "final": {
+        "pages": 172,
+        "llmArtifacts": 1529,
+        "responsiveWidths": [
+          320,
+          390,
+          768
+        ],
+        "desktopSearch": "passed"
+      }
     }
   },
   "package": {
@@ -368,5 +380,13 @@
     "Session gesture/history/keyboard/abort와 root generic player/current-frame hit/reduced-motion 연결은 후행 소비자 의무다.",
     "Conditional resource-grain fields와 feature/graticule labels는 다음 Geo 개념으로 남는다.",
     "buildDirectDataResources에 native pan이 추가됐다. 공통 realistic-lifecycle-factor-effects, realistic-scenario-generator, realistic-scenario-generation-isolation의 최종 합산 재검증은 root가 수행한다."
-  ]
+  ],
+  "sourceCommit": "c59dba999f605eb6f0afe09da287babf317e3901",
+  "metadataFollowup": "이 기록을 포함하는 후속 commit은 문서 provenance와 증거만 변경한다. 1039개 package 입력 parity가 다시 통과했다.",
+  "visual": {
+    "image": ".artifacts/test/png/charts/geographic-marks/geographic-marks/camera/user-facing.png",
+    "sha256": "20af591c74cc86bcadb7783aaa3d79da982474e37e3ff2c6bbd268e5ddaeaab0",
+    "inspected": true,
+    "expectation": "기존 planar district를 중심 확대·이동한 좌표이며 point CSS 반경은 8px로 유지한다. 독립 affine primitive와 같은 렌더 결과를 검증했다."
+  }
 }

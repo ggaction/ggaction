@@ -34,7 +34,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/c59dba999f605eb6f0afe09da287babf317e3901/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on

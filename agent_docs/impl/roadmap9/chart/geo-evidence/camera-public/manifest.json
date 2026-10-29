@@ -25,14 +25,29 @@
     "sourceSha256": "3fbd90202674222e3627d59f6e887cdefe5257e2edd66fdd04770cb7188f89a2"
   },
   {
+    "file": "camera-build-final.log.gz",
+    "sourceBytes": 420,
+    "sourceSha256": "b3e13ba4d18703950fe0bbf17269b6349aaf93204b5dc8ce167df8c3ba49cfff"
+  },
+  {
     "file": "camera-build.log.gz",
     "sourceBytes": 420,
     "sourceSha256": "4007c4f94f10bc228efe273d38802548b61934d1431c08b7d01aa34339ee923d"
   },
   {
+    "file": "camera-built-browser-final.log.gz",
+    "sourceBytes": 79,
+    "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+  },
+  {
     "file": "camera-built-browser.log.gz",
     "sourceBytes": 79,
     "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+  },
+  {
+    "file": "camera-built-final.log.gz",
+    "sourceBytes": 102,
+    "sourceSha256": "609ac22e81ef5f18a4d13247a04f1ffd994d46314d2bafde1babc10981d5102e"
   },
   {
     "file": "camera-built.log.gz",
@@ -75,6 +90,11 @@
     "sourceSha256": "20a6d2197547f2683bc43243ef5e45530bacfe8efec290517200915859613aa3"
   },
   {
+    "file": "camera-docs-final.log.gz",
+    "sourceBytes": 47381,
+    "sourceSha256": "a57db112aa2d3312317ce8edfa6cb8d2ee0fa2d1708e5c6dd40bd9be65054806"
+  },
+  {
     "file": "camera-final-packaged-snippet.log.gz",
     "sourceBytes": 375,
     "sourceSha256": "184fb93d36ca1983f7a0ec27f342dfa74436c9865072e33c94f70bff301cad0f"
@@ -101,6 +121,11 @@
   },
   {
     "file": "camera-generate-4.log.gz",
+    "sourceBytes": 12389,
+    "sourceSha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+  },
+  {
+    "file": "camera-generate-pinned.log.gz",
     "sourceBytes": 12389,
     "sourceSha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
   },
@@ -351,8 +376,8 @@
   },
   {
     "file": "record-camera-public-evidence.mjs.gz",
-    "sourceBytes": 5911,
-    "sourceSha256": "5806095e1391449c6a6d9c0e79b626aef8b123da826a34aee5c7fbcc0c8f4be8"
+    "sourceBytes": 5920,
+    "sourceSha256": "c82dd094ebea2190913fc21d2ab9e97cfc6b108ec864a71d2a55e3a0cd879dc6"
   },
   {
     "file": "run-camera-public-installed.mjs.gz",

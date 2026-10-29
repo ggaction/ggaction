@@ -748,3 +748,8 @@ Node 20·22·24 설치에서 각각 새 runtime 3개·strict types·5개 browser
 원래 실패한 fixture/metadata와 수리 검증, source pin 이후 문서 최종 상태는
 [공개 camera 증거](geo-evidence/camera-public/status.json)에서 구분한다.
 전체 normal/global coverage 및 공통 realistic 3개 파일의 새 합산 결과를 대신 주장하지 않는다.
+
+Source `c59dba999`를 푸시한 뒤 문서 202/202, built 172페이지·1529개 selective LLM
+artifact, desktop 검색과 320·390·768px 모든 페이지 containment를 통과했다. 문서 provenance와
+증거 후속 변경 후에도 고정 archive의 1039개 package 입력 parity는 불일치가 없었다.
+Session/player 및 남은 Geo 소비자 의무는 위 구분대로 계속 유지한다.
