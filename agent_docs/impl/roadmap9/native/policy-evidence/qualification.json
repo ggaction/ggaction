@@ -92,5 +92,20 @@
   "openObligations": [
     "STEP050 final combined admission qualification",
     "STEP074-077 exact combined native candidate and all required consumer evidence"
-  ]
+  ],
+  "combinedIntegration": {
+    "sourceRevision": "a1deea942528535c0e4bc21d4ee7e7935dc4166e",
+    "owningPassed": 19,
+    "docsFirst": {
+      "total": 227,
+      "passed": 225,
+      "failed": 2
+    },
+    "docsRepairedPassed": 227,
+    "searchBytes": 1074694,
+    "previousCeilingBytes": 1074300,
+    "ceilingBytes": 1074700,
+    "runtimeDelta": 0,
+    "remaining": "Whole native completion remains pending; owner assignment does not mean passing evidence."
+  }
 }

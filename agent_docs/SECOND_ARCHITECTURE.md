@@ -4354,3 +4354,7 @@ Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,
 Private partition typed track과 native frame의 raw→bend→CSS gap 순서를 합친 Node22
 package는1115entries/1,589,127packed/7,233,578unpacked bytes다. 새 grammar owner1개와
 기존 adapter/bend/mapping/frame의 재사용에 최소 한도1115/1,590,000/7,234,000을 적용한다.
+
+Native scope 정책과 accessible items를 합친 검색 payload는1,074,694bytes다.
+이전1,074,300 한도 실패를 보존하고 최소100byte 단위1,074,700으로 조정한다.
+새 runtime 모듈이나 공개 package entry는 추가하지 않는다.
