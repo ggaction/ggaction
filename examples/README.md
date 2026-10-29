@@ -678,6 +678,36 @@ Validate a directed flow graph, store its layout, then draw links and nodes.
 
 Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
 
+### [A level boundary](./contours/)
+
+Draw explicit level boundaries and filled bands with preserved holes.
+
+Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
+
+### [Bands between levels](./contour-bands/)
+
+Draw explicit level boundaries and filled bands with preserved holes.
+
+Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
+
+### [A missing center remains empty](./contour-holes/)
+
+Draw explicit level boundaries and filled bands with preserved holes.
+
+Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
+
+### [Weighted point bins](./contour-histogram/)
+
+Draw explicit level boundaries and filled bands with preserved holes.
+
+Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
+
+### [A two-dimensional kernel](./contour-density/)
+
+Draw explicit level boundaries and filled bands with preserved holes.
+
+Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

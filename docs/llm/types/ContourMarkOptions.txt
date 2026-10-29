@@ -1,0 +1,6 @@
+export interface ContourMarkOptions {
+  readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
+  readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
+}

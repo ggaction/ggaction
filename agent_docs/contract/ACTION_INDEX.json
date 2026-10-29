@@ -5924,46 +5924,142 @@
         "file": "agent_docs/contract/current/FLOWS.md",
         "anchor": "editflowlinks"
       }
+    },
+    {
+      "name": "createContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createcontourdata"
+      }
+    },
+    {
+      "name": "createDensityContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createdensitycontourdata"
+      }
+    },
+    {
+      "name": "editContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "editcontourdata"
+      }
+    },
+    {
+      "name": "createContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourMark`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createcontourmark"
+      }
+    },
+    {
+      "name": "editContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourMark`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "editcontourmark"
+      }
     }
   ],
   "plannedActions": [],
   "plannedCapabilities": [],
   "internal": {
     "materialization": [
+      "materializeBin2DData",
+      "materializeBinData",
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
-      "materializeBinData",
-      "materializeBin2DData",
-      "materializeComposition",
       "materializeCompleteData",
+      "materializeComposition",
       "materializeComputedData",
+      "materializeContourMark",
       "materializeDensityData",
       "materializeECDFData",
       "materializeEmptyMark",
+      "materializeFilteredData",
+      "materializeFlattenData",
+      "materializeFlowLinks",
+      "materializeFlowNodes",
+      "materializeFoldData",
+      "materializeGradientPlot",
+      "materializeGradientPlotFill",
       "materializeGradientProfileData",
       "materializeHorizonData",
       "materializeImputedData",
-      "materializeGradientPlot",
-      "materializeGradientPlotFill",
-      "materializeFilteredData",
-      "materializeLookupData",
-      "materializeFlattenData",
-      "materializeFoldData",
-      "materializePivotData",
-      "materializeMarkFilteredData",
       "materializeIntervalData",
+      "materializeLabelLayout",
+      "materializeLookupData",
+      "materializeMarkFilteredData",
+      "materializeMarkLabelPlacement",
       "materializeNormalizedData",
+      "materializePivotData",
       "materializeRegressionData",
       "materializeRegressionStatisticsData",
-      "materializeSummaryData",
+      "materializeRuleSpan",
+      "materializeSortedData",
       "materializeStackData",
       "materializeStatisticalReferenceData",
+      "materializeSummaryData",
       "materializeTimeUnitData",
+      "materializeTreePlot",
+      "materializeTreemapPlot",
       "materializeWindowData",
-      "materializeRuleSpan",
-      "materializeLabelLayout",
-      "materializeMarkLabelPlacement",
       "rematerializeArcMark",
       "rematerializeAreaMark",
       "rematerializeBarMark",
@@ -5971,14 +6067,15 @@
       "rematerializeErrorBar",
       "rematerializeGradientLegend",
       "rematerializeGradientPlotLegend",
-      "rematerializeIntervalLegend",
       "rematerializeGrid",
       "rematerializeHorizontalGrid",
       "rematerializeHorizontalLegendLane",
+      "rematerializeImageMark",
+      "rematerializeIntervalLegend",
       "rematerializeLegend",
       "rematerializeLegendBackground",
-      "rematerializeLegendHighlights",
       "rematerializeLegendGroups",
+      "rematerializeLegendHighlights",
       "rematerializeLegendLabels",
       "rematerializeLegendSymbolLines",
       "rematerializeLegendSymbolPoints",
@@ -5988,6 +6085,7 @@
       "rematerializeLineMark",
       "rematerializeMarkHighlights",
       "rematerializeOpacityLegend",
+      "rematerializeOverlay",
       "rematerializeParallelAxes",
       "rematerializePlotBorder",
       "rematerializePlotDrawOrder",
@@ -5995,7 +6093,6 @@
       "rematerializeRadialGrid",
       "rematerializeRectMark",
       "rematerializeRuleMark",
-      "rematerializeTextMark",
       "rematerializeScale",
       "rematerializeSideLegendLane",
       "rematerializeSizeLegend",
@@ -6003,17 +6100,11 @@
       "rematerializeStrokeGradientLegend",
       "rematerializeStrokeIntervalLegend",
       "rematerializeStrokeWidthLegend",
+      "rematerializeTextMark",
       "rematerializeThetaGrid",
       "rematerializeTickMark",
       "rematerializeTitle",
-      "rematerializeVerticalGrid",
-      "materializeSortedData",
-      "rematerializeOverlay",
-      "rematerializeImageMark",
-      "materializeTreePlot",
-      "materializeTreemapPlot",
-      "materializeFlowNodes",
-      "materializeFlowLinks"
+      "rematerializeVerticalGrid"
     ],
     "guideComponents": [
       "createLegendBackground",

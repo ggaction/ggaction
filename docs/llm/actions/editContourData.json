@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "editContourData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise contour geometry and update its shared scales, marks and guides atomically.",
+  "signature": "editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;",
+  "intents": [
+    "edit contour data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "contour geometry",
+    "scalar grid regions"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored contour geometry"
+    ],
+    "owns": [
+      "geometry resource"
+    ],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editContourData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored contour geometry"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "grid",
+      "required": false,
+      "type": "ContourGrid | undefined"
+    },
+    {
+      "name": "thresholds",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "definition",
+      "required": false,
+      "type": "Partial<ContourDensityDefinition> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editContourData({ target?, data?, grid?, thresholds?, definition? })"
+  ],
+  "snippet": "program.editContourData({ target: \"surface\", thresholds: [0, 0.5, 2] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editcontourdata"
+}

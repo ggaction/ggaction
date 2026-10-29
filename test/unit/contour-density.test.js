@@ -88,3 +88,12 @@ test("density input errors and budgets fail before estimation and preserve calle
   assert.throws(() => kde(Array(1001).fill(points[0]), { grid: { ...grid, width: 100, height: 100 } }), /estimation work/);
   assert.deepEqual(points, original);
 });
+
+test("density refuses oversized point and bandwidth arrays before reading their elements", () => {
+  let reads = 0;
+  const oversized = Array(10001);
+  Object.defineProperty(oversized, 0, { get() { reads += 1; return { x: 0, y: 0 }; }, enumerable: true });
+  assert.throws(() => kde(oversized), /point count/);
+  assert.throws(() => kde([], { bandwidth: oversized }), /two positive finite numbers/);
+  assert.equal(reads, 0);
+});

@@ -1304,6 +1304,14 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createContourData({ id: "directContourGrid", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2,
+      values: rows.slice(0, 4).map(row => row.positive) }, thresholds: [0, Math.max(...rows.map(row => row.positive)) + 1] })
+    .createDensityContourData({ id: "directContourDensity", data: "directSource", x: "x", y: "positive", estimator: "kde", normalization: "unit",
+      grid: { origin: [xMinimum, 0], dx: stableSpan / 2, dy: Math.max(...rows.map(row => row.positive)) / 2, width: 3, height: 3 },
+      bandwidth: [stableSpan, Math.max(...rows.map(row => row.positive))], kernel: "gaussian", thresholds: [0, 1] })
+    .createContourMark({ id: "directContours", geometry: "directContourDensity", mode: "filled", color: false, opacity: .2 })
+    .editContourMark({ target: "directContours", opacity: .3 })
+    .editContourData({ target: "directContourGrid", thresholds: [0, Math.max(...rows.map(row => row.positive)) + 2] })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
     .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
     .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })

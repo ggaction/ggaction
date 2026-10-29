@@ -325,5 +325,10 @@
   "createFlowNodes": "/reference/actions/marks/#createflownodes",
   "editFlowNodes": "/reference/actions/marks/#editflownodes",
   "createFlowLinks": "/reference/actions/marks/#createflowlinks",
-  "editFlowLinks": "/reference/actions/marks/#editflowlinks"
+  "editFlowLinks": "/reference/actions/marks/#editflowlinks",
+  "createContourData": "/reference/actions/charts-data/#createcontourdata",
+  "createDensityContourData": "/reference/actions/charts-data/#createdensitycontourdata",
+  "editContourData": "/reference/actions/charts-data/#editcontourdata",
+  "createContourMark": "/reference/actions/marks/#createcontourmark",
+  "editContourMark": "/reference/actions/marks/#editcontourmark"
 }

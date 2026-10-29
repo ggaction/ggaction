@@ -71,6 +71,7 @@ const ENTITY_PATHS = Object.freeze({
       "hierarchyLabels",
       "flowBinding",
       "flowLabels",
+      "contourBinding",
       "mark.missing",
       "mark.orientation",
       "mark.blend",

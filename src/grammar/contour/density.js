@@ -8,8 +8,8 @@ import { findHistogramBinIndex } from "../histogram.js";
 import { normalizeContourFrame } from "./grid.js";
 
 function normalizePoints(input) {
+  if (Array.isArray(input)) validateGeneratedItemLimit(input.length, "Contour density point count");
   ownArray(input, "Contour density points");
-  validateGeneratedItemLimit(input.length, "Contour density point count");
   return input.map(point => {
     ownRecord(point, "Contour density point");
     rejectUnknownProperties(point, ["x", "y", "weight"], "contour density point");
@@ -42,11 +42,7 @@ function histogram(points, frame, unit) {
 }
 
 function kde(points, frame, unit, options) {
-  ownArray(options.bandwidth, "Contour density bandwidth");
-  if (options.bandwidth.length !== 2 || options.bandwidth.some(value => !Number.isFinite(value) || value <= 0)) {
-    throw new RangeError("Contour KDE bandwidth requires two positive finite numbers.");
-  }
-  const kernel = DENSITY_KERNEL_FUNCTIONS[validateDensityKernel(options.kernel)];
+  const kernel = DENSITY_KERNEL_FUNCTIONS[options.kernel];
   validateWorkLimit(points.length * frame.width * frame.height, "Contour density estimation work");
   const [hx, hy] = options.bandwidth;
   const area = hx * hy;
@@ -62,17 +58,33 @@ function kde(points, frame, unit, options) {
 }
 
 export function estimateContourDensity(input, options) {
+  options = normalizeContourDensityOptions(options);
+  const frame = options.grid, points = normalizePoints(input);
+  const normalization = options.normalization;
+  const totalWeight = stableFiniteSum(points.map(point => point.weight), "Contour density total weight", { compensated: true });
+  const unit = normalization === "unit" && totalWeight > 0 ? totalWeight : 1;
+  const values = options.estimator === "histogram" ? histogram(points, frame, unit) : kde(points, frame, unit, options);
+  return cloneAndFreeze({ grid: { ...frame, values }, estimator: options.estimator, normalization,
+    ...(options.estimator === "kde" ? { bandwidth: options.bandwidth, kernel: options.kernel } : {}), totalWeight, sourceCount: points.length });
+}
+
+export function normalizeContourDensityOptions(options) {
   ownRecord(options, "Contour density options");
   rejectUnknownProperties(options, ["estimator", "grid", "normalization", "bandwidth", "kernel"], "contour density");
   if (!["histogram", "kde"].includes(options.estimator)) throw new TypeError("Contour estimator must be histogram or kde.");
   if (options.estimator === "histogram" && (Object.hasOwn(options, "bandwidth") || Object.hasOwn(options, "kernel"))) {
     throw new TypeError("Contour histogram does not accept bandwidth or kernel.");
   }
-  const frame = normalizeContourFrame(options.grid), points = normalizePoints(input);
+  const frame = normalizeContourFrame(options.grid);
   const normalization = validateDensityNormalization(options.normalization);
-  const totalWeight = stableFiniteSum(points.map(point => point.weight), "Contour density total weight", { compensated: true });
-  const unit = normalization === "unit" && totalWeight > 0 ? totalWeight : 1;
-  const values = options.estimator === "histogram" ? histogram(points, frame, unit) : kde(points, frame, unit, options);
-  return cloneAndFreeze({ grid: { ...frame, values }, estimator: options.estimator, normalization,
-    ...(options.estimator === "kde" ? { bandwidth: options.bandwidth, kernel: options.kernel } : {}), totalWeight, sourceCount: points.length });
+  if (options.estimator === "kde") {
+    if (Array.isArray(options.bandwidth) && options.bandwidth.length !== 2) throw new RangeError("Contour KDE bandwidth requires two positive finite numbers.");
+    ownArray(options.bandwidth, "Contour density bandwidth");
+    if (options.bandwidth.length !== 2 || options.bandwidth.some(value => !Number.isFinite(value) || value <= 0)) {
+      throw new RangeError("Contour KDE bandwidth requires two positive finite numbers.");
+    }
+    validateDensityKernel(options.kernel);
+  }
+  return cloneAndFreeze({ estimator: options.estimator, grid: frame, normalization,
+    ...(options.estimator === "kde" ? { bandwidth: options.bandwidth, kernel: options.kernel } : {}) });
 }

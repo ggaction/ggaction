@@ -1,7 +1,6 @@
-import { annotateError } from "../core/diagnostics.js";
 import { resolveLayoutResource } from "./layouts.js";
 import { requireStoredResource, resolveInputReference } from "./resources.js";
-import { requireCoordinate } from "./coordinates.js";
+import { resolveCartesianCoordinate } from "./coordinates.js";
 
 export function resolveFlowLayout(program, requested) {
   return resolveLayoutResource(program, requested, "graph", ["dag", "cyclic"]);
@@ -16,16 +15,5 @@ export function resolveFlowLayerResources(program, layer) {
   return { layout, graph, dataset, nodesDataset };
 }
 export function resolveFlowCoordinate(program, requested) {
-  if (requested !== undefined) {
-    const coordinate = requireCoordinate(program, requested);
-    if (coordinate.type !== "cartesian") throw new TypeError("Flow marks require a Cartesian coordinate.");
-    return coordinate;
-  }
-  const eligible = program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "cartesian");
-  const current = eligible.find(coordinate => coordinate.id === program.context.currentCoordinate);
-  if (current) return current;
-  if (eligible.length > 1) throw annotateError(new Error("Flow coordinate is ambiguous; provide an explicit coordinate."), { code: "ambiguous-resource" });
-  if (eligible.length === 1) return eligible[0];
-  if (program.semanticSpec.coordinates.some(coordinate => coordinate.id === "main")) throw new TypeError("Flow default coordinate conflicts with an existing coordinate.");
-  return { id: "main", type: "cartesian" };
+  return resolveCartesianCoordinate(program, requested, "Flow marks");
 }

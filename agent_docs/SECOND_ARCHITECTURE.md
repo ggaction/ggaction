@@ -68,7 +68,14 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
+Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다. Contour는 같은 Full registry의 geometry handler를 사용한다.
+`grammar/contour/`는 명시 grid 및 density와 결정적 level/band geometry를 계산하고,
+`materialization/contour/state.js`는 동일한 bounded 계산으로 stored grid/source/holes 정합성만 검산한다.
+결과를 복원 시 덮어쓰거나 graphic을 만들지 않는다. `actions/contours/`는 resource revision 후
+shared scale union과 mark/guide closure를 명시 실행한다. `materialization/contour/plot.js`의
+compound path는 기존 renderer의 유일한 입력이다. 정확한 값과 lifecycle은
+[등고선 계약](contract/current/CONTOURS.md)이 소유한다.
+
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
@@ -761,8 +768,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 602,000 bytes |
-| `ggaction/basic` | 345,000 bytes |
+| `ggaction` | 610,000 bytes |
+| `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 

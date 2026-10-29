@@ -10,6 +10,7 @@ import {
   requireConsumerDataset
 } from "./common.js";
 import { resolveMarkFamilyConsumerValues } from "./families.js";
+import { contourScaleValues } from "../../contour/scaleValues.js";
 import { CATEGORY_ORDER_CHANNELS, resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { resolveHistogramInput } from
   "../../bars/histogram.js";
@@ -78,6 +79,7 @@ export function resolveConsumerValuesForDataset(program, consumer, dataset) {
 }
 
 export function resolveConsumerValues(program, consumer) {
+  if (consumer.layer.mark.type === "contour") return contourScaleValues(program, consumer);
   return resolveConsumerValuesForDataset(
     program,
     consumer,

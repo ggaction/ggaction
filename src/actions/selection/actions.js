@@ -471,7 +471,8 @@ export const applyPathHighlight = /* @__PURE__ */ closedAction(
       throw new Error("applyPathHighlight requires a path selection policy.");
     }
     if (keys.length === 0) return this;
-    return editSelectedItems(this, resolved, keys, item => ({
+    const transform = requireSelectionPolicy(markType).transformHighlightChild;
+    return editSelectedItems(this, resolved, keys, item => transform ? transform(item, args.style) : ({
       ...item,
       properties: transformPathHighlightProperties(item.properties, args.style)
     }));

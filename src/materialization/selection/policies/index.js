@@ -1,4 +1,5 @@
 import { imageSelectionPolicy } from "./image.js";
+import { contourSelectionPolicy } from "./contour.js";
 import { treeSelectionPolicy, treemapSelectionPolicy } from "./hierarchy.js";
 import { flowNodeSelectionPolicy, flowLinkSelectionPolicy } from "./flow.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
@@ -21,6 +22,7 @@ import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
   image: imageSelectionPolicy,
+  contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy,
   "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,
   text: textSelectionPolicy,

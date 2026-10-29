@@ -5,6 +5,7 @@ import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit 
 export function normalizeContourFrame(input) {
   ownRecord(input, "Contour grid");
   rejectUnknownProperties(input, ["origin", "dx", "dy", "width", "height"], "contour grid frame");
+  if (Array.isArray(input.origin) && input.origin.length !== 2) throw new TypeError("Contour origin requires two finite coordinates.");
   ownArray(input.origin, "Contour grid origin");
   if (input.origin.length !== 2 || input.origin.some(value => !Number.isFinite(value))) {
     throw new TypeError("Contour origin requires two finite coordinates.");
@@ -32,6 +33,7 @@ export function normalizeContourGrid(input) {
   rejectUnknownProperties(input, ["origin", "dx", "dy", "width", "height", "values"], "contour grid");
   const { values, ...frame } = input;
   const normalized = normalizeContourFrame(frame);
+  if (Array.isArray(values)) validateGeneratedItemLimit(values.length, "Contour grid value count");
   ownArray(values, "Contour grid values");
   if (values.length !== normalized.width * normalized.height || values.some(value => value !== null && !Number.isFinite(value))) {
     throw new TypeError("Contour values require one finite scalar or null per grid point.");
@@ -40,8 +42,8 @@ export function normalizeContourGrid(input) {
 }
 
 export function normalizeContourThresholds(input, grid) {
+  if (Array.isArray(input)) validateGeneratedItemLimit(input.length, "Contour threshold count");
   ownArray(input, "Contour thresholds");
-  validateGeneratedItemLimit(input.length, "Contour threshold count");
   if (!input.length || input.some((value, index) => !Number.isFinite(value) || index > 0 && value <= input[index - 1])) {
     throw new RangeError("Contour thresholds must be nonempty, finite and strictly increasing.");
   }

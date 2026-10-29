@@ -535,6 +535,10 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createContourData({ id: "surface", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2, values: [0, 1, 1, 2] }, thresholds: [0, 1, 2] })
+      .createContourMark().editContourMark({ opacity: .5 }).editContourData({ target: "surface", thresholds: [0, .5, 2] }),
+    chart().createData({ id: "samples", values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
+      .createDensityContourData({ id: "density", x: "x", y: "y", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2 }, estimator: "histogram", normalization: "count", thresholds: [0, 1] }),
     chart().createCanvas().createData({ id: "flowNodesSource", values: [{ id: "a" }, { id: "b" }] })
       .createData({ id: "flowEdgesSource", values: [{ id: "ab", from: "a", to: "b", amount: 5 }] })
       .createFlowData({ id: "flow", nodes: "flowNodesSource", edges: "flowEdgesSource", nodeKey: "id", source: "from", target: "to", edgeKey: "id", value: "amount" })

@@ -372,7 +372,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
     }
   }
   const continuousColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "line", "bar", "rect", "text", "area", "arc", "tick"].includes(layer.mark?.type)
+    const encoding = CONTINUOUS_COLOR_MARK_TYPES.includes(layer.mark?.type)
       ? layer.encoding?.color
       : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
@@ -396,7 +396,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
     return { steps: [{ op: "createGradientLegend", args }], finish: "auto" };
   }
   const intervalColorCandidates = candidates.filter(layer => {
-    const encoding = ["point", "line", "bar", "rect", "text", "area", "arc", "tick"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
+    const encoding = CONTINUOUS_COLOR_MARK_TYPES.includes(layer.mark?.type) ? layer.encoding?.color : undefined;
     const scale = findSemanticScale(program, encoding?.scale);
     return ["quantize", "quantile", "threshold"].includes(scale?.type);
   });
@@ -612,3 +612,4 @@ export const removeCategoricalLegend = /* @__PURE__ */ action(
     return next._withoutMaterializationConfig(["guides", "legend", kind]);
   })
 );
+import { CONTINUOUS_COLOR_MARK_TYPES } from "../../../../core/vocabulary.js";

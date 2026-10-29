@@ -1,3 +1,4 @@
+import { createContours } from "./contours/program.js";
 import { createFlow } from "./flow-layouts/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
@@ -285,6 +286,31 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "contours", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createContours("line"),
+    browser: { path: "browser-host/?chart=contours", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "contours", width: 640, height: 480 } } }
+  }),
+  example({ id: "contour-bands", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createContours("filled"),
+    browser: { path: "browser-host/?chart=contour-bands", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "contour-bands", width: 640, height: 480 } } }
+  }),
+  example({ id: "contour-holes", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createContours("holes"),
+    browser: { path: "browser-host/?chart=contour-holes", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "contour-holes", width: 640, height: 480 } } }
+  }),
+  example({ id: "contour-histogram", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createContours("histogram"),
+    browser: { path: "browser-host/?chart=contour-histogram", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "contour-histogram", width: 640, height: 480 } } }
+  }),
+  example({ id: "contour-density", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createContours("kde"),
+    browser: { path: "browser-host/?chart=contour-density", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "contour-density", width: 640, height: 480 } } }
   }),
   example({ id: "flow-layouts", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createFlow("dag"),

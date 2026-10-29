@@ -62,3 +62,13 @@ export function requireMaterializedDataset(program, id) {
   }
   return dataset;
 }
+
+export function resolveMaterializedDataset(program, requested, label = "Data") {
+  const id = requested ?? program.context.currentData;
+  if (id !== undefined) return requireMaterializedDataset(program, id);
+  const candidates = program.semanticSpec.datasets.filter(dataset => Array.isArray(dataset.values));
+  if (candidates.length !== 1) throw annotateError(new Error(`${label} must be explicit unless one materialized dataset exists.`), {
+    code: candidates.length ? "ambiguous-resource" : "missing-resource"
+  });
+  return candidates[0];
+}

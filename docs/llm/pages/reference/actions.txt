@@ -39,8 +39,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createCanvas`](../../../reference/actions/charts-data/#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](../../../reference/actions/statistics/#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](../../../reference/actions/statistics/#createcomputeddata) | H1 | user-facing | statistics |
+| [`createContourData`](../../../reference/actions/charts-data/#createcontourdata) | H2 | user-facing | core |
+| [`createContourMark`](../../../reference/actions/marks/#createcontourmark) | H2 | user-facing | marks |
 | [`createCoordinate`](../../../reference/actions/charts-data/#createcoordinate) | H2 | user-facing | core |
 | [`createData`](../../../reference/actions/charts-data/#createdata) | H2 | user-facing | core |
+| [`createDensityContourData`](../../../reference/actions/charts-data/#createdensitycontourdata) | H2 | user-facing | core |
 | [`createDensityData`](../../../reference/actions/charts-data/#createdensitydata) | H2 | user-facing | core |
 | [`createDensityPlot`](../../../reference/actions/statistics/#createdensityplot) | H0, H1 | user-facing | statistics |
 | [`createDerivedData`](../../../reference/actions/charts-data/#createderiveddata) | H2 | user-facing | core |
@@ -157,6 +160,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) | H3 | user-facing | composition |
 | [`editCompositionScales`](../../../reference/actions/charts-data/#editcompositionscales) | H3 | user-facing | composition |
 | [`editComputedData`](../../../reference/actions/statistics/#editcomputeddata) | H1, H3 | user-facing | statistics |
+| [`editContourData`](../../../reference/actions/charts-data/#editcontourdata) | H3 | user-facing | core |
+| [`editContourMark`](../../../reference/actions/marks/#editcontourmark) | H3 | user-facing | marks |
 | [`editCoordinate`](../../../reference/actions/charts-data/#editcoordinate) | H2 | user-facing | core |
 | [`editDensity`](../../../reference/actions/encodings/#editdensity) | H2, H3 | user-facing | encodings |
 | [`editDensityData`](../../../reference/actions/charts-data/#editdensitydata) | H2 | user-facing | core |

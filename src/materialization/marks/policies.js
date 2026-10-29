@@ -13,6 +13,8 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  contour: Object.freeze({ canMaterialize: (_program, layer) => layer.contourBinding !== undefined,
+    op: "materializeContourMark", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   image: Object.freeze({ canMaterialize: (_program, layer) => layer.image !== undefined,
     op: "rematerializeImageMark", graphicOwner: imageClipOwner,
     positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: false }),

@@ -54,6 +54,11 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
+  createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
+  editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
+  editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
   editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
   layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
@@ -2267,6 +2272,56 @@ type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
 
 Related types: [`SizeScaleCommonOptions`](../../../reference/types/#type-sizescalecommonoptions) · [`ScaleFields`](../../../reference/types/#type-scalefields).
 
+### `ContourDensityDefinition` {#type-contourdensitydefinition}
+
+ Expand ContourDensityDefinition
+
+```typescript
+export type ContourDensityDefinition = {
+  readonly x: string; readonly y: string; readonly weight?: string;
+  readonly grid: ContourGridFrame; readonly normalization: "unit" | "count";
+} & ({ readonly estimator: "histogram"; readonly bandwidth?: never; readonly kernel?: never }
+  | { readonly estimator: "kde"; readonly bandwidth: readonly [number, number]; readonly kernel: DensityKernel });
+```
+
+Related types: [`ContourGridFrame`](../../../reference/types/#type-contourgridframe) · [`DensityKernel`](../../../reference/types/#type-densitykernel).
+
+### `ContourGrid` {#type-contourgrid}
+
+ Expand ContourGrid
+
+```typescript
+export interface ContourGrid extends ContourGridFrame { readonly values: readonly (number | null)[]; }
+```
+
+Related types: [`ContourGridFrame`](../../../reference/types/#type-contourgridframe).
+
+### `ContourGridFrame` {#type-contourgridframe}
+
+ Expand ContourGridFrame
+
+```typescript
+export interface ContourGridFrame {
+  readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
+  readonly width: number; readonly height: number;
+}
+```
+
+### `ContourMarkOptions` {#type-contourmarkoptions}
+
+ Expand ContourMarkOptions
+
+```typescript
+export interface ContourMarkOptions {
+  readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
+  readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
+}
+```
+
+Related types: [`QuantitativePositionScaleOptions`](../../../reference/types/#type-quantitativepositionscaleoptions) · [`ContinuousColorScaleOptions`](../../../reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](../../../reference/types/#type-discretizedcolorscaleoptions) · [`FillPaint`](../../../reference/types/#type-fillpaint).
+
 ### `CoordinateAspect` {#type-coordinateaspect}
 
  Expand CoordinateAspect
@@ -2423,6 +2478,16 @@ export type CreateBeeswarmPlotOptions = {
 
 Related types: [`BasicColorChannel`](../../../reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](../../../reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](../../../reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke) · [`BeeswarmPackingOptions`](../../../reference/types/#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](../../../reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](../../../reference/types/#type-rugmeasurechannel) · [`StripCategoryChannel`](../../../reference/types/#type-stripcategorychannel).
 
+### `CreateContourDataOptions` {#type-createcontourdataoptions}
+
+ Expand CreateContourDataOptions
+
+```typescript
+export interface CreateContourDataOptions { readonly id: string; readonly grid: ContourGrid; readonly thresholds: readonly number[]; }
+```
+
+Related types: [`ContourGrid`](../../../reference/types/#type-contourgrid).
+
 ### `CreateCoordinateOptions` {#type-createcoordinateoptions}
 
  Expand CreateCoordinateOptions
@@ -2460,6 +2525,16 @@ export type CreateDataUpdateRequest = DataSourceKeys & {
 ```
 
 Related types: [`DataSourceKeys`](../../../reference/types/#type-datasourcekeys) · [`DataSource`](../../../reference/types/#type-datasource).
+
+### `CreateDensityContourDataOptions` {#type-createdensitycontourdataoptions}
+
+ Expand CreateDensityContourDataOptions
+
+```typescript
+export type CreateDensityContourDataOptions = ContourDensityDefinition & { readonly id: string; readonly data?: string; readonly thresholds: readonly number[]; };
+```
+
+Related types: [`ContourDensityDefinition`](../../../reference/types/#type-contourdensitydefinition).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -4732,6 +4807,29 @@ export type EditComputedDataOptions = FocusedDerivedDataEdit<ComputedDataOptions
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`ComputedDataOptions`](../../../reference/types/#type-computeddataoptions).
 
+### `EditContourDataOptions` {#type-editcontourdataoptions}
+
+ Expand EditContourDataOptions
+
+```typescript
+export interface EditContourDataOptions {
+  readonly target?: string; readonly grid?: ContourGrid; readonly thresholds?: readonly number[];
+  readonly data?: string; readonly definition?: Partial<ContourDensityDefinition>;
+}
+```
+
+Related types: [`ContourGrid`](../../../reference/types/#type-contourgrid) · [`ContourDensityDefinition`](../../../reference/types/#type-contourdensitydefinition).
+
+### `EditContourMarkOptions` {#type-editcontourmarkoptions}
+
+ Expand EditContourMarkOptions
+
+```typescript
+export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
+```
+
+Related types: [`ContourMarkOptions`](../../../reference/types/#type-contourmarkoptions).
+
 ### `EditCoordinateOptions` {#type-editcoordinateoptions}
 
  Expand EditCoordinateOptions
@@ -5013,6 +5111,7 @@ Related types: [`FlowDefinition`](../../../reference/types/#type-flowdefinition)
 
 ```typescript
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+/** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */
 ```
 
 Related types: [`FlowLinksOptions`](../../../reference/types/#type-flowlinksoptions).
@@ -11211,7 +11310,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "geometry";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}

@@ -1,1 +1,2 @@
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+/** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */

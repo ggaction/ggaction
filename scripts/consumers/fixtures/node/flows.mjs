@@ -33,6 +33,12 @@ export const cases = [
       assert.equal(typeof chart()[name], "function"); assert.equal(basicChart()[name], undefined);
     }
     const p = program(), saved = serializeProgram(p);
+    const highlighted = p.highlightMarks({ target: "flowNodes", select: { field: "value", op: "gt", value: 0 }, stroke: "red", strokeWidth: 3 });
+    assert.ok(highlighted.graphicSpec.objects.flowNodes.items.filter(item => item.identity.role === "body")
+      .every(item => item.properties.stroke === "red"));
+    assert.ok(highlighted.graphicSpec.objects.flowNodes.items.filter(item => item.identity.role === "label")
+      .every(item => !Object.hasOwn(item.properties, "stroke") && !Object.hasOwn(item.properties, "strokeWidth")));
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(highlighted))), renderToSVG(highlighted));
     const q = p.editFlowNodes({ labels: false, nodes: { opacity: 0 } })
       .editFlowLinks({ links: { overrides: [{ key: "ac", fill: "red" }] } })
       .editFlowData({ definition: { balance: "strict" } }).editLayout({ options: { orientation: "vertical" } });

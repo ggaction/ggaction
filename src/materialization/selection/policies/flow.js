@@ -3,6 +3,7 @@ import { resolveFlowPlot } from "../../flow/plot.js";
 import { memberRowReferences } from "../rows.js";
 import { concreteProperties } from "../items/common.js";
 import { normalizeAreaHighlightStyle } from "../styles.js";
+import { transformLabeledPathHighlightChild } from "../path.js";
 
 function items(program, layer, concrete) {
   const resolved = resolveFlowPlot(program, layer, program.markConfigs[layer.id]?.flowPlot);
@@ -21,6 +22,7 @@ function items(program, layer, concrete) {
 }
 const policy = Object.freeze({ resourceBacked: true, supportedGrains: Object.freeze(["item"]),
   resolveItems: (program, layer) => items(program, layer, true), resolveSourceItems: (program, layer) => items(program, layer, false),
-  normalizeHighlightStyle: normalizeAreaHighlightStyle, applyHighlightOp: "applyPathHighlight" });
+  normalizeHighlightStyle: normalizeAreaHighlightStyle, transformHighlightChild: transformLabeledPathHighlightChild,
+  applyHighlightOp: "applyPathHighlight" });
 export const flowNodeSelectionPolicy = Object.freeze({ ...policy, rematerializeOp: "materializeFlowNodes" });
 export const flowLinkSelectionPolicy = Object.freeze({ ...policy, rematerializeOp: "materializeFlowLinks" });

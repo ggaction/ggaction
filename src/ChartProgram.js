@@ -6,10 +6,11 @@ import { recordBuiltinActions } from "./core/extensionRegistry.js";
 import { registerActions } from "./actions/index.js";
 import { ChartProgram as CoreChartProgram } from "./core/ChartProgram.js";
 import { graphResourceHandler } from "./materialization/graph/state.js";
+import { contourResourceHandler } from "./materialization/contour/state.js";
 
 export class ChartProgram extends CoreChartProgram {}
 
-registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, graph: graphResourceHandler });
+registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, graph: graphResourceHandler, geometry: contourResourceHandler });
 registerActions(ChartProgram);
 recordBuiltinActions(ChartProgram, ["hconcat", "vconcat", "rematerializeEncodingScales"]);
 

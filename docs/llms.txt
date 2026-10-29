@@ -219,3 +219,5 @@ requirements after resolving each part.
 - Hierarchy Tutorial: ./tutorials/hierarchy/
 - Flow Data and Sankey Layouts: ./api/flows/
 - Draw Conserved Flows: ./tutorials/flows/
+- Contours and Two-Dimensional Density: ./api/contours/
+- Draw Levels, Bands and Density: ./tutorials/contours/

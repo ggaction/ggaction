@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 3,
+  "name": "createDensityContourData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create weighted two-dimensional histogram or kernel density contours with explicit grid and bandwidth policies.",
+  "signature": "createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;",
+  "intents": [
+    "create density contour data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "two-dimensional density",
+    "weighted point contours"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized point dataset"
+    ],
+    "owns": [
+      "geometry resource"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editContourData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bandwidth",
+      "unit": "data-value"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized point dataset"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "x",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "grid",
+      "required": true,
+      "type": "ContourGridFrame"
+    },
+    {
+      "name": "normalization",
+      "required": true,
+      "type": "\"count\" | \"unit\""
+    },
+    {
+      "name": "estimator",
+      "required": true,
+      "type": "\"histogram\" | \"kde\""
+    },
+    {
+      "name": "bandwidth",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "kernel",
+      "required": false,
+      "type": "DensityKernel | undefined"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "thresholds",
+      "required": true,
+      "type": "readonly number[]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createDensityContourData({ x, y, grid, normalization, estimator, id, thresholds, data? })"
+  ],
+  "snippet": "program.createDensityContourData({ id: \"density\", data: \"points\", x: \"x\", y: \"y\", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2 }, estimator: \"histogram\", normalization: \"count\", thresholds: [0, 1] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createdensitycontourdata"
+}

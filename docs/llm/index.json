@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:32b7c029bed896d136d17e81508bf6982ee0cf4d1c24e31932b41428ac3d1ff2",
+  "contractId": "sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "1bf0add5d969797fe8a4fcb5dca12957cb561413f4e064126d0e61b10cf10896",
-      "bytes": 1054586
+      "sha256": "0a35c49c8d9955b5aa8d1db249cb39b73ef9c22430d2c6bd3a746be3307c2077",
+      "bytes": 1070498
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "b2f699571fd339572d90c40913d73209e79cab2ab022471b5c320c0974790d22",
-      "bytes": 253291
+      "sha256": "cdddbda95749664d29c5e49dde9adc2304a726c5d40c50791a1607059c2641ed",
+      "bytes": 257148
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 155,
+      "count": 157,
       "path": "llm/pages.json",
-      "bytes": 38653,
-      "sha256": "4e95e6bb013efc73c4cca56534a4d4f52972588a7fd650c093b9db183eba07cf"
+      "bytes": 39120,
+      "sha256": "b3eefb9dd95c344a119625520a9b073b0dfe0572becb2f51430f09a83a4c84f2"
     },
     "actions": {
-      "count": 327,
+      "count": 332,
       "path": "llm/actions.json",
-      "bytes": 92645,
-      "sha256": "86d6ae145e151c2bb0158d5e7d3b387dc19fe94a07b11500ba27d983700dd1b1"
+      "bytes": 94099,
+      "sha256": "e5c69576f5e27cff0851eb535a4f2b4ea2338d1e6d93d097ab99f09a23dd8567"
     },
     "types": {
-      "count": 846,
+      "count": 857,
       "path": "llm/types.json",
-      "bytes": 189889,
-      "sha256": "b8a59c3d983d6099f57e1d46be3b1d149e9305c8c387ddf5057fbf5a640173b0"
+      "bytes": 192264,
+      "sha256": "2e2deeb1c64f4356b0de717940548d9aa5bf7ec12078bc2a0b40fcbfbbd1622a"
     }
   },
   "paths": {

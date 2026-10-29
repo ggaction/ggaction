@@ -146,3 +146,13 @@ test("masked scalar grids conserve exactly the area of complete quads", () => {
     near(result.bands.reduce((sum, band) => sum + contourArea(band.polygons), 0), expected);
   }
 });
+
+test("oversized contour arrays are rejected before element descriptors are traversed", () => {
+  let reads = 0;
+  const oversized = Array(10001);
+  Object.defineProperty(oversized, 0, { get() { reads += 1; return 0; }, enumerable: true });
+  assert.throws(() => contourGrid(grid(oversized), [0]), /grid value count/);
+  assert.throws(() => contourGrid(grid([0, 0, 0, 0], 2, 2), oversized), /threshold count/);
+  assert.throws(() => contourGrid(grid([0, 0, 0, 0], 2, 2, { origin: oversized }), [0]), /two finite coordinates/);
+  assert.equal(reads, 0);
+});

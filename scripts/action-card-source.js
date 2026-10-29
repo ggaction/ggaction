@@ -186,6 +186,13 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createContourData", "createDensityContourData", "editContourData"].includes(action.name)) return {
+    prerequisites: action.name === "createDensityContourData" ? ["materialized point dataset"] : action.name === "editContourData" ? ["stored contour geometry"] : ["explicit scalar grid"],
+    owns: ["geometry resource"], idOptions: (action.name.startsWith("create") ? ["id", "data"] : ["target", "data"]).filter(name => optionNames.includes(name))
+  };
+  if (["createContourMark", "editContourMark"].includes(action.name)) return {
+    prerequisites: ["stored contour geometry", "Canvas"], owns: ["contour mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "coordinate"]
+  };
   if (["layoutGraph", "layoutFlow"].includes(action.name)) return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
   if (["createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"].includes(action.name)) return {
     prerequisites: ["stored DAG or cyclic flow layout"], owns: ["flow mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]

@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 602_000, // Public flow layouts, Node20/24: 601,073 gzip bytes.
-  "ggaction/basic": 345_000, // Shared flow reference consumers, Node20/24: 344,083 gzip bytes.
+  ggaction: 610_000, // Public contours, identical minified bytes, Node20/24: 609,575.
+  "ggaction/basic": 346_000, // Shared contour scale consumers, Node20/24: 345,696.
   "ggaction/svg": 25_000
 });
 

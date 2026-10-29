@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:32b7c029bed896d136d17e81508bf6982ee0cf4d1c24e31932b41428ac3d1ff2",
+  "contractId": "sha256:984fac9073d7619f0c830636120f139021e89a455c5da0cbb3e2165b0fb374fd",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-flow",
+  "exampleSourceRef": "codex/roadmap9-contour",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 327,
+  "actionCount": 332,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -163,6 +163,26 @@
       "status": "development"
     },
     "createParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createContourData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createDensityContourData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editContourData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createContourMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editContourMark": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

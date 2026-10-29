@@ -2,6 +2,7 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };

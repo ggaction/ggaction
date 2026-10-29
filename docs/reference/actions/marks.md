@@ -1956,6 +1956,93 @@ Edit flow ribbon styling or layout binding. Full only.
 [Flow data and Sankey layouts](../../api/flows.md#editflowlinks)
 
 
+## `createContourMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ContourMarkOptions`](./../types.md#type-contourmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `mode` | Optional / branch-dependent | `"filled" \| "line" \| undefined` |
+| `x` | Optional / branch-dependent | `QuantitativePositionScaleOptions \| undefined` |
+| `y` | Optional / branch-dependent | `QuantitativePositionScaleOptions \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })
+```
+
+Draw stored contour level boundaries or filled bands with shared position and color scales. See [Contours and two-dimensional density](../../api/contours.md#createcontourmark).
+
+
+## `editContourMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditContourMarkOptions`](./../types.md#type-editcontourmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `mode` | Optional / branch-dependent | `"filled" \| "line" \| undefined` |
+| `x` | Optional / branch-dependent | `QuantitativePositionScaleOptions \| undefined` |
+| `y` | Optional / branch-dependent | `QuantitativePositionScaleOptions \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip? })
+```
+
+Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](../../api/contours.md#editcontourmark).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)
