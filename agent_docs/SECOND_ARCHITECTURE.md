@@ -3954,3 +3954,10 @@ Entries 1059와 packed 1510000은 유지한다. 같은 archive의 Node20/24 brow
 Basic 398278은 기존 398300 안이며 SVG/Graph/Interaction 한도도 유지한다.
 [정확한 입력·실행 증거](impl/roadmap9/chart/conditional-domain-evidence/status.json)를 보존한다.
 이 수치는 registry 배포나 roadmap 전체 완료를 뜻하지 않는다.
+
+동일 source inputs의 원격 CI 재포장에서 Linux/macOS는1,512,649,
+Windows는1,512,709 packed bytes로 측정됐다. Local Node20/22/24 재포장도
+1,512,649이며 기존 검증 archive와 tar의 압축 해제 bytes/hash가 정확히 같다.
+압축 결과 차이를 수용하도록 packed 한도만 다음 최소1,000-byte 단위인1,513,000으로
+조정한다. Entries1059/unpacked6,887,000 및 browser 한도는 유지한다.
+이 보정은 원격 realistic 검사 등의 별도 실패를 통과로 바꾸지 않는다.
