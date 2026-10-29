@@ -1312,10 +1312,11 @@
         "prepare-native-work-before-replacing-the-program",
         "combine-editing-gestures",
         "keyboard-item-focus",
-        "accessible-tooltips-and-touch"
+        "accessible-tooltips-and-touch",
+        "native-control-alternatives"
       ],
-      "bytes": 89572,
-      "sha256": "171ff12163329ba1fa6fbfa8211c8f8ba557cbee979fac9d32b109b5381bd748"
+      "bytes": 98116,
+      "sha256": "1342e7eef3beb031fd1fb078fecc9bb64f6a1aaa301a690999c2b436e35b7313"
     },
     {
       "order": 77,

@@ -28,6 +28,14 @@
       {
         "type": "file",
         "path": "browser/accessible-tooltip.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-controls.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/accessible-controls.test.js"
       }
     ],
     "actions": [
