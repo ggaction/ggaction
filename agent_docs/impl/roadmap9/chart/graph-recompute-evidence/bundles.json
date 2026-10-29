@@ -1,0 +1,19 @@
+{
+  "node": "v20.20.2",
+  "records": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 785,
+      "minifiedBytes": 2262625,
+      "gzipBytes": 640278
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 521,
+      "minifiedBytes": 1243479,
+      "gzipBytes": 362683
+    }
+  ]
+}

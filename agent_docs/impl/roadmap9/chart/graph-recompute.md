@@ -7,7 +7,7 @@
 - [x] private typed-key subset의 immutable data/lineage/revision 연결
 - [x] filterMarks recompute 옵션·replace/compose/remove·resource closure
 - [x] candidate MST·source revision·codec·selection/hit·nested consumer 검증
-- [ ] current/types/docs/generated/installed 증거 및 commit/push
+- [x] current/types/docs/generated/installed 증거 및 commit/push
 
 ## 구체 계약
 
@@ -54,3 +54,12 @@ Source graph/edges를 암묵적으로 편집하지 않는다. Empty subset과 �
   native기대값과lighttheme기대값을혼동한테스트이며theme담당branch에서수리중이다. Graph lineage
   신규transform inventory누락1건은canonicalrecomputed example로수리했다. Graph현재228은모두통과다.
 - STEP032 drag/controller및전체STEP077은완료표시하지않는다. 후속interaction owner가소유한다.
+
+
+### 최종 검증
+
+Source `527977412`를 원격에 고정한 후 provenance를 갱신했으며 docs177/177이 통과했다.
+[전체 결과와 재현 명령](graph-recompute-evidence/summary.json)에 첫 실패, 수리 후 검사,
+고정 tar 소비자 기록을 분리해서 저장했다. Node20 전체 소비자의 Full bundle 한도 실패는
+같은 tar에서 실측 및 갱신한 한도로 추가 검증했으며 원본 실패를 덮어쓰지 않았다.
+Node22/24도 같은 tar의 두 그래프 종합 소비자를 통과했다. Main 반영은 이 metadata checkpoint와 함께 한다.

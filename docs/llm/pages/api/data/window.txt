@@ -126,5 +126,5 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](../../../../api/data/) · [Source and derived data](../../../../api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-resource-integration/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/527977412d1b3f43f0c33edf9097068855e44516/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](../../../../reference/actions/)
