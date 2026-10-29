@@ -7,6 +7,7 @@ const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },
+  "scene-snapshot": { prefix: "sceneSnapshot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact node associations must retain concrete scene cache identity without semantic materialization." },
   "hit-frame": { prefix: "interaction/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Current frame lifecycle must reject stale updates, preserve atomic index replacement and release disposed state." },
   "hit-geometry": { prefix: "grammar/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "CSS coordinate, transform and exact hit decisions must reject stale or non-finite geometry without mutating chart state." },
   "theme-native-guide-defaults": { prefix: "actions/theme/guideDefaults.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme removal must reuse native guide defaults and preserve child-owned snapshots and explicit colors." },

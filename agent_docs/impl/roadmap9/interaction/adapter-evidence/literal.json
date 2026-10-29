@@ -1,0 +1,21 @@
+{
+  "points": [
+    [
+      70,
+      140
+    ],
+    [
+      170,
+      90
+    ]
+  ],
+  "expected": [
+    true,
+    false
+  ],
+  "actual": [
+    true,
+    false
+  ],
+  "diff": []
+}

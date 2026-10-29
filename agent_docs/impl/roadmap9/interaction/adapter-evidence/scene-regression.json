@@ -1,0 +1,33 @@
+{
+  "baseline": "63af304de",
+  "comparison": [
+    {
+      "format": "canvas",
+      "composition": false,
+      "expectedHash": "3886d74135ed59729b1444546d0aa5c56c0f1aaf942cd641f710f98126b0cc1a",
+      "actualHash": "3886d74135ed59729b1444546d0aa5c56c0f1aaf942cd641f710f98126b0cc1a",
+      "diff": []
+    },
+    {
+      "format": "svg",
+      "composition": false,
+      "expectedHash": "e153e34adb3208af0fd2594fa116683c451f1f8724ccb0af73deb9ac3810f616",
+      "actualHash": "e153e34adb3208af0fd2594fa116683c451f1f8724ccb0af73deb9ac3810f616",
+      "diff": []
+    },
+    {
+      "format": "canvas",
+      "composition": true,
+      "expectedHash": "1c5c4e1f3e69cff41c1b22b51d7e52526bd4f8257c8794b0b7d634c2b1fa2de5",
+      "actualHash": "1c5c4e1f3e69cff41c1b22b51d7e52526bd4f8257c8794b0b7d634c2b1fa2de5",
+      "diff": []
+    },
+    {
+      "format": "svg",
+      "composition": true,
+      "expectedHash": "0c91f2b5f99df533bab36e849134219cbb22030a3baac537580555b112514dbd",
+      "actualHash": "0c91f2b5f99df533bab36e849134219cbb22030a3baac537580555b112514dbd",
+      "diff": []
+    }
+  ]
+}
