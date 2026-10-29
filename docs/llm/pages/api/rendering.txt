@@ -331,7 +331,7 @@ guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parall
 coordinate dimensions use their field names as column roles.
 
 Omitting `target` exports every stable chart owner in semantic order. An explicit
-target must name a stable owner; requesting an owned component reports its owner.
+target must name a stable owner; requesting an owned component fails with an error naming its owner.
 A composition returns child views in composition order, each with `ownerId`,
 `kind: "composition-child"`, `title`, and nested `views`. Facet children also have
 a `facet` field/value record. Grid facets contain both row and column fields;

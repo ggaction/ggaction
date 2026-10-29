@@ -4338,3 +4338,7 @@ Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합�
 accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한다. 합산 Node22 package는
 1114entries/1,587,160packed/7,225,523unpacked bytes다. 최소 한도
 1114/1,588,000/7,226,000을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.
+
+Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,243bytes다.
+이전1,073,700 한도를 넘으므로 최소100byte 단위1,074,300을 적용한다. 같은 package의
+기존5개 browser entry는 앞선 합산과 byte 단위로 같으며 새 accessibility owner를 import하지 않는다.

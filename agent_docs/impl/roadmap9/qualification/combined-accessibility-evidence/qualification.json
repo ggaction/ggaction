@@ -1,0 +1,105 @@
+{
+  "status": "focused-verified",
+  "sourceRevision": "7778c6b5b",
+  "mergedRevision": "5b0c323c4",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owningAndPackageBoundaries": 27,
+    "typesSourceAndPackage": 19,
+    "docs": 227,
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "archive": "9310012826f15f4d0c72f38527b5fac0fb159c3330ce52d524f0d8e09e460358",
+        "cases": [
+          "accessible-items/native-grain-and-basic",
+          "accessible-items/nested-scoped-membership",
+          "accessible-items/fresh-process-filter-and-selection"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "9310012826f15f4d0c72f38527b5fac0fb159c3330ce52d524f0d8e09e460358",
+        "cases": [
+          "accessible-items/native-grain-and-basic",
+          "accessible-items/nested-scoped-membership",
+          "accessible-items/fresh-process-filter-and-selection"
+        ],
+        "types": "passed"
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "9310012826f15f4d0c72f38527b5fac0fb159c3330ce52d524f0d8e09e460358",
+        "cases": [
+          "accessible-items/native-grain-and-basic",
+          "accessible-items/nested-scoped-membership",
+          "accessible-items/fresh-process-filter-and-selection"
+        ],
+        "types": "passed"
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1114,
+    "packedBytes": 1587160,
+    "unpackedBytes": 7225523,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "e7922e8aa83c77ed6fe655d2106c6fadc19b40a6",
+    "sha256": "9310012826f15f4d0c72f38527b5fac0fb159c3330ce52d524f0d8e09e460358"
+  },
+  "browserBundles": {
+    "node": "v22.23.1",
+    "archive": "9310012826f15f4d0c72f38527b5fac0fb159c3330ce52d524f0d8e09e460358",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1023,
+        "minifiedBytes": 2701141,
+        "gzipBytes": 771345
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 607,
+        "minifiedBytes": 1440570,
+        "gzipBytes": 421200
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73895,
+        "gzipBytes": 24765
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 194,
+        "minifiedBytes": 381868,
+        "gzipBytes": 122074
+      }
+    }
+  },
+  "searchBytes": 1074243,
+  "preservedFailures": [
+    "Independent branch limits were not reused for the combined native chart/interaction/geometry surface. Canonical measurement informed1114/1588000/7226000 caps.",
+    "Combined search1074243 exceeds prior1073700. Minimum100byte cap1074300; full227 documentation tests passed."
+  ],
+  "remaining": [
+    "Current-frame keyboard/focus/native activation and tooltip/touch integration",
+    "Public animation/reduced-motion dependency",
+    "Whole repository final STEP077 qualification"
+  ]
+}
