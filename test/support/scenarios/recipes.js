@@ -962,7 +962,7 @@ function buildHierarchicalAuthoringActions(factors) {
       text: "Hierarchical authoring action lifecycle",
       subtitle: factors.theme
     })
-    .applyTheme({ theme: factors.theme })
+    .applyTheme({ theme: { base: factors.theme, tokens: { axisStrokeWidth: 1, tickStrokeWidth: 1, tickSize: 6, gridStrokeWidth: 1 } } })
     .removeTheme();
   program = program.fitCanvas({ padding: 8, overflow: "report" });
   return program;

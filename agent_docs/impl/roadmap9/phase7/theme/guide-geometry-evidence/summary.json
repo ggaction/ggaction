@@ -1,0 +1,201 @@
+{
+  "base": "52207ed93",
+  "sourceCommit": "a273eeef5",
+  "scope": "Native axis, tick and grid numeric theme defaults",
+  "sourceFiles": {
+    "README.md": "5f5c8a2754fe8d7ae6ff4bb14fc6bf77607d039d9ecee6676a815068fb01a1f9",
+    "agent_docs/contract/current/CORE.md": "8cec98d1ad36c0dcf96b7a998fe838cec0fa02defad2f8765f348d84bb827771",
+    "agent_docs/impl/roadmap9/phase7/theme/GUIDE_GEOMETRY.md": "e97a58407fbc3aa7da12d9472743da9dfa6e594ed44f83c40c8c3e65d138eed4",
+    "agent_docs/impl/roadmap9/phase7/theme/PUBLIC.md": "06e59609289a4953dee61972226963d5756712d3f19dd3fbf4a9bc779e3a0a4c",
+    "scripts/browser-bundle-size.js": "e65529fe8e24b403045b8ed7cf49bd4079fc22415a565c0b09500caa85c97729",
+    "scripts/consumers/fixtures/types-2.ts": "bcfe2c7d4a244f60ea3b1430636951de2075d6ae3b084845b7e72d588dd4d80a",
+    "scripts/package-artifact.js": "772d6108484ce9aa9178f703a22b81a5c9bbba32eb197e1c8027d15f59caac3c",
+    "src/actions/theme/guideDefaults.js": "f601c25a1757ea5ae409a02272cde124b8c059ad7c15be2c612034c71f8624c4",
+    "src/actions/theme/reconcile.js": "3ad5ac9f96781710cf0ced5d89f9a752bc90224022814f8be1499c1ca7210a7f",
+    "src/theme/defaults.js": "ee1d2290f097ce9a497ab696a9a6da6b99195ce598bdd3f1c1900ce305bb1e94",
+    "test/capabilities.json": "197a449e4217f1a2f0b9a1d760a6bda4ae8bba2f406abefe5a8bb64fcd002811",
+    "test/contracts/generated-scenario-feature-coverage.test.js": "d0c4782655d9a15b572009b3b2b89bd8cf0766fefff705a5153d9de2b728316c",
+    "test/contracts/generated-scenarios.test.js": "cb959724fdc389b609855e6c6d2871feb759e1163a3105f86cb57281e6726d50",
+    "test/support/scenarios/recipes.js": "07d4bc9a6e28b1d8f09c99ca43b0b43f0675e4eb396b9ef48c9eeb34f5dd2c35",
+    "test/unit/actions/theme-guide-geometry.test.js": "b32a9088678e2cd778a2feabb0c5e2b2bef00785d707ed215973dc487d7083bf",
+    "test/unit/theme/defaults.test.js": "36f04d357fc34de24852aae36aea613ee63c9c599ee1cd2cf81e036f30a88890",
+    "types/program.d.ts": "bd67c96e734dfde59ee07d18b66bb7dd781b51f0c564647aeeb00f0e713fad46"
+  },
+  "verification": {
+    "focused": {
+      "passed": 116,
+      "failed": 0
+    },
+    "boundaries": {
+      "passed": 40,
+      "failed": 0
+    },
+    "package": {
+      "passed": 7,
+      "failed": 0
+    },
+    "axisCanvasPNG": {
+      "passed": 2,
+      "failed": 0
+    },
+    "actualRecipe": {
+      "passed": 1,
+      "variants": [
+        "light",
+        "dark"
+      ],
+      "determinism": true,
+      "directOptions": 4,
+      "analyticPixels": true
+    },
+    "inventory": {
+      "passed": 7,
+      "publicActions": 328,
+      "optionPaths": 30021,
+      "requiredOptionPaths": 19981,
+      "excludedOptionPaths": 10040,
+      "sourceChangeNote": "Runtime, types, action cards and inventory contract inputs stayed fixed. README/size limits, generated-scenarios focused witness and implementation evidence were completed while the independent inventory ran; its overall Git dirty-state hash therefore changed."
+    },
+    "coverage": {
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actual": {
+        "guideDefaults.js": {
+          "lines": 100,
+          "branches": 99.15,
+          "functions": 100
+        },
+        "resourcePlots.js": {
+          "lines": 100,
+          "branches": 95.89,
+          "functions": 100
+        },
+        "typographyRoles.js": {
+          "lines": 100,
+          "branches": 95.16,
+          "functions": 100
+        }
+      }
+    },
+    "installed": {
+      "passed": 63,
+      "typeScriptFixtures": "all existing fixtures including four token positive/negative witness",
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-guide-geometry/package/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography",
+        "theme-flow",
+        "theme-guide-geometry"
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 776,
+          "minifiedBytes": 2255646,
+          "gzipBytes": 637735
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 516,
+          "minifiedBytes": 1242248,
+          "gzipBytes": 362200
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        }
+      },
+      "runner": "installed-runner.txt: restore at .artifacts/theme-guide-geometry/installed.mjs and use the exact packed artifact path before running."
+    },
+    "bundleLimits": {
+      "limits": {
+        "ggaction": 638000,
+        "ggaction/basic": 363000,
+        "ggaction/svg": 25000
+      },
+      "actual": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 776,
+          "minifiedBytes": 2255646,
+          "gzipBytes": 637735
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 516,
+          "minifiedBytes": 1242248,
+          "gzipBytes": 362200
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        }
+      },
+      "passed": true
+    },
+    "docs": {
+      "passed": 177,
+      "failed": 0
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-guide-geometry/package/ggaction-0.0.26.tgz",
+    "sha256": "fc17af60806b05d90cdfefdf11f0418f6a84e26ba43d4ad9ac53870f79f5257f",
+    "entries": 865,
+    "packed": 1265093,
+    "unpacked": 5820624
+  },
+  "commands": {
+    "focused": "node --test --experimental-test-coverage test/unit/theme/defaults.test.js test/unit/actions/theme-guide-geometry.test.js test/unit/actions/theme-flow.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme-typography.test.js test/unit/actions/theme-guide-defaults.test.js test/unit/actions/theme-item-identity.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/contracts/theme.test.js",
+    "boundaries": "node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js test/unit/support/coverage-policy.test.js",
+    "package": "node --test test/contracts/package-artifact.test.js",
+    "axisRender": "node --test test/contracts/axis-component-lifecycle-render.test.js",
+    "actualRecipe": "node --max-old-space-size=512 --test --test-concurrency=2 --import ./scripts/test-file-metrics.js --test-name-pattern='hierarchical authoring executes' test/contracts/generated-scenarios.test.js",
+    "inventory": "node scripts/run-tests.js realistic test/contracts/generated-scenario-feature-coverage.test.js",
+    "docs": "npm run docs:generate && node scripts/run-tests.js docs",
+    "installed": "PATH=<node20-bin>:$PATH node .artifacts/theme-guide-geometry/installed.mjs"
+  },
+  "notRun": [
+    "whole source coverage",
+    "full realistic corpus",
+    "all installed cases on three Node versions",
+    "new four-backend pixel sweep"
+  ],
+  "logs": {
+    ".artifacts/theme-guide-geometry/after.log": "6101b057eae0f3742b92d7a5e4c00f9198af7c3023b19d10fad3bfeddb3525ac",
+    ".artifacts/theme-guide-geometry/after2.log": "b223d549e46e0522e6ac1d2c1093247d0af47bce8d941b702f387586acee6d1e",
+    ".artifacts/theme-guide-geometry/after3.log": "37387546ac198fc9079296d1224c935a5df536d5d3dc18d95bb8ee6388316112",
+    ".artifacts/theme-guide-geometry/after4.log": "d3c4f1ea5e875e92b6add1ed04b00ef943054435ab655c0f4adf4f6b6dd97a29",
+    ".artifacts/theme-guide-geometry/axis-render.log": "81bc45005a3f593548781529dbac10b97e6516a2615feb6b037887340d1968fb",
+    ".artifacts/theme-guide-geometry/before.log": "5a2e34686306593e8d8b3205dc556c6a366e8c609a0bdeaa624eaee4c9a7ac77",
+    ".artifacts/theme-guide-geometry/boundaries.log": "e07a9086a98467cdfe848919a3c04e62f4781b5c586eb205532c67e5c89a8ef7",
+    ".artifacts/theme-guide-geometry/docs-final.log": "f100fea6edd518d3c9d34ab0ac6df8bb7f7c327247b2135f276e6f2ea769aef0",
+    ".artifacts/theme-guide-geometry/docs-generate-final.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-guide-geometry/docs-initial.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-guide-geometry/expanded.log": "0a9e76eae610a180944306e2b07527a17c88398243d894cd5e0aba24b73035c7",
+    ".artifacts/theme-guide-geometry/focused.log": "c5958a62f452c0064dabc63c6fc2682f0359716a289472fd0743e7727068e7fd",
+    ".artifacts/theme-guide-geometry/installed-final.log": "bf8b872bbaf0efd7db82e1b48d7584b60e8673482a519d0b3a8ea492bd7dc11d",
+    ".artifacts/theme-guide-geometry/installed-initial.log": "c4ca1df64acee958a57bcf56c947ccb5d2e2fa4fd18739c8ef54a286bcfa811c",
+    ".artifacts/theme-guide-geometry/inventory.log": "79c8389e2d294110d22f998ab5dbfa948c6f34265604e678ed3ca55d22d11a22",
+    ".artifacts/theme-guide-geometry/package-contract.log": "88dbb2a3600f2053126d2587620ea0e36aa95e5ea4cf8be736d094399752e5b8",
+    ".artifacts/theme-guide-geometry/package-final.log": "48af769bfe8634f895f47ede1a2af1801c827af2dbfa93ea009c0ce0da1bda54",
+    ".artifacts/theme-guide-geometry/package-initial.log": "c915b3fa9638ad23dada51e16c0d37c6979e66a904b5acd3ca18ebf70c0d55a2",
+    ".artifacts/theme-guide-geometry/recipe.log": "5ee5ed8c88df9af0fed283dec7d56a1318ca01d14896b6d023c4a3020212281e"
+  }
+}

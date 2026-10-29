@@ -1,5 +1,6 @@
 import { themeTypographyValue } from "./typographyRoles.js";
-import { guideConfigDefault, guideGraphicDefaults } from "./guideDefaults.js";
+import { guideConfigDefault, guideGraphicDefaults, guideNumericProperty, themeGuideGeometrySteps } from "./guideDefaults.js";
+import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
 import { legendSampleFill } from "../../materialization/legends.js";
 import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { resourcePlotThemeOwner, resourcePlotThemeProperty, addResourcePlotThemeOverrides, clearResourcePlotThemeOverrides } from "./resourcePlots.js";
@@ -444,12 +445,17 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize", "fontWeight"]
+    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length"]
       .includes(property)) {
       return { changed: false, value };
     }
     if (isOverridden(overrides, `c:${path.join(".")}`)) {
       return { changed: false, value };
+    }
+    const numeric = guideNumericProperty(path);
+    if (numeric !== undefined) {
+      const target = themeActive ? targetTokens[numeric.token] ?? numeric.defaultValue : numeric.defaultValue;
+      return { changed: value !== target, value: target };
     }
     if (property === "background" && value === "transparent") {
       return { changed: false, value };
@@ -837,6 +843,7 @@ function addAxisOverrides(overrides, op, args, node) {
   const component = match[2].toLowerCase();
   const axisId = axisOverrideId(node, channel, args);
   const idPrefix = match[1] === "Radial" ? "radial" : channel;
+  for (const property of ["lineWidth", "length"]) if (Object.hasOwn(args, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
   if (Object.hasOwn(args, "color")) {
     overrides.add(`c:guides.axis.${axisId}.${component}.color`);
     overrides.add(
@@ -866,6 +873,7 @@ function addCompleteAxisOverride(overrides, name, args, node) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
+    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
     const suffix = `${component[0].toUpperCase()}${component.slice(1)}`;
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(`c:guides.axis.${axisId}.${component}.color`);
@@ -909,11 +917,23 @@ function addCompleteAxisOverrides(overrides, op, args, node) {
 }
 
 function addGridOverrides(overrides, op, args) {
+  const group = op === "createGrid" || op === "editGrid" ? args : op === "createGuides" ? args.grid : args.guides?.grid;
+  if (group !== null && typeof group === "object") {
+    for (const direction of ["horizontal", "vertical", "theta", "radial"]) {
+      for (const property of ["color", "lineWidth"]) if (Object.hasOwn(group[direction] ?? {}, property)) {
+        overrides.add(`c:guides.grid.${direction}.${property}`);
+        if (property === "color") overrides.add(`g:${direction}Grid.stroke`);
+      }
+    }
+  }
   const match = /^(?:create|edit)(Horizontal|Vertical|Theta|Radial)Grid$/u.exec(op);
-  if (match === null || !Object.hasOwn(args, "color")) return;
+  if (match === null) return;
   const direction = match[1].toLowerCase();
-  overrides.add(`c:guides.grid.${direction}.color`);
-  overrides.add(`g:${direction}Grid.stroke`);
+  if (Object.hasOwn(args, "lineWidth")) overrides.add(`c:guides.grid.${direction}.lineWidth`);
+  if (Object.hasOwn(args, "color")) {
+    overrides.add(`c:guides.grid.${direction}.color`);
+    overrides.add(`g:${direction}Grid.stroke`);
+  }
 }
 
 function addTitleOverrides(overrides, args) {
@@ -949,6 +969,7 @@ function addParallelOverrides(overrides, program, op, args) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
+    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(
         `c:guides.axis.parallel.axes.dimensions.${index}.${component}.color`
@@ -1212,6 +1233,10 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     return textHandled ? [] : [{ op: owner.op, args: { id: layer.id } }];
   });
   if (resourceMarks.length > 0) next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: resourceMarks }));
+
+  const guideGeometry = themeGuideGeometrySteps(next, themed, overrides);
+  if (guideGeometry.length > 0) next = withGuideLayoutTransaction(next,
+    candidate => applyMaterializationPlan(candidate, buildMaterializationPlan({ guides: guideGeometry })));
 
   const parallelChanged = configs.value.guides.axis?.parallel !==
     themed.guideConfigs.axis?.parallel;

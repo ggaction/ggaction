@@ -29,6 +29,7 @@ export const DEFAULT_COLORS = Object.freeze({
 });
 
 export const THEME_NAMES = Object.freeze(["light", "dark"]);
+export const GUIDE_NUMERIC_THEME_TOKENS = Object.freeze(["axisStrokeWidth", "tickStrokeWidth", "tickSize", "gridStrokeWidth"]);
 
 export const THEME_TOKEN_KEYS = Object.freeze([
   "background",
@@ -49,7 +50,7 @@ export const THEME_TOKEN_KEYS = Object.freeze([
   "gradientCenter",
   "highlight",
   "fontFamily", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily",
-  "axisLabelFontSize", "axisTitleFontSize", "fontSize", "fontWeight"
+  "axisLabelFontSize", "axisTitleFontSize", "fontSize", "fontWeight", ...GUIDE_NUMERIC_THEME_TOKENS
 ]);
 
 const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
@@ -117,7 +118,9 @@ function normalizeThemeTokens(tokens) {
   validateKeys(tokens, THEME_TOKEN_KEYS, "applyTheme theme.tokens");
   const normalized = {};
   for (const [key, value] of Object.entries(tokens)) {
-    if (key.endsWith("FontSize") || key === "fontSize") {
+    if (GUIDE_NUMERIC_THEME_TOKENS.includes(key)) {
+      if (!Number.isFinite(value) || value < 0) throw new RangeError(`applyTheme theme.tokens.${key} must be nonnegative and finite.`);
+    } else if (key.endsWith("FontSize") || key === "fontSize") {
       if (!Number.isFinite(value) || value <= 0) throw new RangeError(`applyTheme theme.tokens.${key} must be positive and finite.`);
     } else if (key === "fontWeight") {
       if (!Number.isFinite(value) && !(typeof value === "string" && value.length > 0)) {

@@ -61,6 +61,8 @@ Graph, tree, treemap, partition, and flow plots also follow theme defaults for t
 
 Axes, grids, and legends also return to their native family colors when the last theme is removed. An explicitly chosen color stays in place even when it equals a default. Nested compositions preserve each child's resolved styles; the parent does not recolor those snapshots a second time. Updating a stroke legend's sample fill keeps its field-driven stroke and existing geometry.
 
+Use `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, and `gridStrokeWidth` for guide defaults in CSS pixels. These tokens accept finite nonnegative numbers, including zero. Explicit guide options stay in place. Removing a token restores that guide family's native default. The chart keeps its declared Canvas size and margins; a guide that no longer fits causes the change to fail atomically.
+
 Optional `fontSize` and `fontWeight` tokens set text defaults across marks, labels, guides, titles, and facet headers. Axis-specific size tokens override the global size. Authored role styles and named highlights keep priority, including an explicit numeric zero where the original style option accepts it. Removing or replacing a theme restores the native role defaults for omitted tokens. If an exact font profile is active, prepare the required font and measurements before changing typography; missing preparation rejects the whole change.
 
 ## Related

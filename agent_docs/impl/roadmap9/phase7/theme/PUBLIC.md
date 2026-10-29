@@ -16,6 +16,7 @@ Graph/Tree/Treemap role 적용과 descriptor safety를 별도 [기반 checkpoint
 nested guide 배치까지 별도 후속 의무로 유지한다.
 Native guide 색 복원과 composition snapshot 소유권 수리는 [별도 checkpoint](GUIDE_DEFAULTS.md)에 기록한다.
 Flow native role과 exact typography 연결은 [Flow checkpoint](FLOW.md)에 기록한다.
+Guide 선·tick·grid의 네 수치 token은 [geometry checkpoint](GUIDE_GEOMETRY.md)로 구현한다.
 
 ## 공개 흐름과 저장 owner
 
