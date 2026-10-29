@@ -474,3 +474,17 @@ package artifact 7개가 통과했다. 공개 API/타입/entry와 persisted stat
 추가 private module 1개를 포함한 package 크기는 지원 Node20/22/24에서 모두 실제 측정했고
 기존 browser bundle에 연결되지 않는 순수 계산이므로 installed/browser corpus를 반복하지 않았다.
 정본은 [geo-evidence/lod-levels/status.json](./geo-evidence/lod-levels/status.json)이다.
+
+## Shared topology 단순화 계약
+
+`grammar/geo/simplify.js`는 retained decoded arcs를 한 번만 처리한다. 허용 오차는 planar에서
+caller coordinate unit, geographic에서 degree plane이며 antimeridian seam을 가로지르는 arc는
+그대로 보존한다. 같은 shared arc를 참조하는 양쪽 polygon은 항상 동일한 retained vertex 목록을
+정방향/역방향으로 읽는다. Endpoint/junction·원 z 값·arc index·feature order·source hash를 유지한다.
+원본 asset은 덮어쓰지 않는다. 원본 topology 재확장은 기존 `topology.js`의 변환/접합 owner를 재사용한다.
+
+단순화 후보는 반복 stack의 최대 거리 기준으로 만들고 ring 최소 길이·방향·교차·ring containment를
+검사한다. 후보가 이 topology 조건을 보존하지 못하면 원래 shared arcs를 유지하고 그 이유를 결과
+진단에 명시한다. 허용 오차는 최대 오차이지 최소 점 제거 수를 약속하지 않는다. tolerance 0은
+원본을 그대로 유지한다. 기존 invalid geometry는 고치지 않고 먼저 거부한다. 모든 snapshot,
+거리 검사, 선분 후보 비교와 containment를 하나의 bounded work counter로 제한한다.
