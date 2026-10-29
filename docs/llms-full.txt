@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:858ee495c94672e6004e82cc99a297ee2e77798e132ec9f87410fafc2ec21d12. Status: development. Runtime source: 3df72643e1fa599549411853ca6e7d21eb25c4b7. Release baseline: v0.0.13.
+Contract: sha256:b5b61569a7e9cdfee7b56f908946d0b8106d464cfeae0f2ae62ec6f21d90fc28. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3df72643e1fa599549411853ca6e7d21eb25c4b7/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3df72643e1fa599549411853ca6e7d21eb25c4b7/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12759,6 +12759,61 @@ body and center-rule resource.
 See the complete [mark-selection tutorial](./tutorials/mark-selection/) for
 the approved point, stacked-bar, and line-series examples.
 
+## Selections from expressions
+
+Use `where` on `selectMarks` or `editMarkSelection` to retain a boolean version 2
+expression. Fields are read at the final item grain: a grouped path or aggregate
+must have one unique value for the referenced field. The expression does not
+match individual contributing rows behind that item.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas().createData({
+  id: "observations",
+  values: [
+    { Horsepower: 90, Weight: 1800 },
+    { Horsepower: 120, Weight: 2400 },
+    { Horsepower: 180, Weight: 3200 }
+  ]
+}).createScatterPlot({ id: "points", x: "Horsepower", y: "Weight" });
+
+const liveSelection = program
+  .createParameter({ id: "threshold", value: 100 })
+  .selectMarks({
+    id: "aboveThreshold",
+    target: "points",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "Horsepower" },
+        right: { type: "parameter", id: "threshold" }
+      }
+    }
+  })
+  .highlightMarks({ selection: "aboveThreshold", color: "red" });
+
+const changed = liveSelection.editParameter({ target: "threshold", value: 150 });
+```
+
+Parameter edits refresh the selection, its highlights, named labels and
+conditional encodings together. Saving and restoring retains exact parameter
+bindings. Every branch is validated, including inactive branches and empty
+selections. The result must be boolean; existing expression limits also apply.
+An absent field across all nonempty items is an error. Missing fields on some
+items follow the expression's missing-value rules.
+
+`where` is exclusive of other selector modes. The highlight facade also accepts
+`select: { where }` because it creates a persistent selection. For labels, use
+`selection: "aboveThreshold"`; inline label selectors and `filterMarks` retain
+their existing comparison grammar. A set update such as `mode: "add"` evaluates
+an incoming AST once and stores item keys. Use the default `replace` to keep a
+live expression.
+
 ## Related
 
 [Appearance overview](./api/appearance/) · [Mark-selection tutorial](./tutorials/mark-selection/) · [Data filtering](./api/data/filtering/)
@@ -20711,7 +20766,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelectionSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -32039,6 +32094,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
 | `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
@@ -32074,6 +32130,13 @@ values, and properties are concrete graphical values. A range requires `min` or
 or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](./api/appearance/selection-and-highlighting/#mark-selection-and-highlighting)
 
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](./api/appearance/selection-and-highlighting/#selections-from-expressions)
+
 ## `editMarkSelection`
 
 **API layer:** advanced. **Authoring roles:** H3.
@@ -32095,6 +32158,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `mode` | Optional / branch-dependent | `"add" \| "intersect" \| "replace" \| "subtract" \| "toggle" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
 | `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
@@ -32783,6 +32847,7 @@ export type {
   SemanticScale,
   SemanticSpec,
   SelectMarksOptions,
+  MarkSelectionSelector,
   StrokeDashEncodingOptions,
   StrokeWidthEncodingOptions,
   StrokeWidthScaleOptions,
@@ -39059,10 +39124,10 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
 export type EditMarkSelectionOptions = {
   selection?: string;
   mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector).
 
 ### `EditNormalizedDataOptions` {#type-editnormalizeddataoptions}
 
@@ -41114,7 +41179,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -41130,7 +41195,7 @@ export interface HighlightMarksOptions {
 }
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern) · [`PointShape`](./reference/types/#type-pointshape).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern) · [`PointShape`](./reference/types/#type-pointshape).
 
 ### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
 
@@ -42145,6 +42210,21 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
 ```typescript
 export interface MarkOutline { color: string; width: number; }
 ```
+
+### `MarkSelectionSelector` {#type-markselectionselector}
+
+ Expand MarkSelectionSelector
+
+```typescript
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
+```
+
+Related types: [`MarkSelector`](./reference/types/#type-markselector) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
 
 ### `MarkSelector` {#type-markselector}
 
@@ -44802,10 +44882,10 @@ Related types: [`RulePositionEncodingBase`](./reference/types/#type-ruleposition
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 
@@ -46637,12 +46717,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3df72643e1fa599549411853ca6e7d21eb25c4b7/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3df72643e1fa599549411853ca6e7d21eb25c4b7/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -49687,9 +49767,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:858ee495c94672e6004e82cc99a297ee2e77798e132ec9f87410fafc2ec21d12` |
+| Contract fingerprint | `sha256:b5b61569a7e9cdfee7b56f908946d0b8106d464cfeae0f2ae62ec6f21d90fc28` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `3df72643e1fa599549411853ca6e7d21eb25c4b7` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

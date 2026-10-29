@@ -839,6 +839,7 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - 값 변경은 해당 parameter를 읽는 모든 저장 computed snapshot을 시작점으로 dataset DAG 전체 closure를 stable topological order로 갱신한다. Lookup diamond는 한 번만 재계산하며 영향 없는 sibling은 공유한다. 같은 결과라도 다른 parameter revision을 읽으면 새 data provenance를 만든다.
 - Graph는 호출 스택에 의존하지 않는 bounded iterative 순회다. 전체 재계산 비용은 각 transform의 실제 새 source 행 수를 합산하며 computed는 AST node 수를 곱한다. 합계 10,000,000을 넘으면 resource-limit으로 거부한다. Filter 확장/축소 이후의 행 수를 사용하고 기존 snapshot의 행 수로 추정하지 않는다.
 - 새 immutable dataset revision에 exact parameterInputs를 결합하고 logical owners/layer/selection/statistical references를 재결합한 뒤 기존 scales→marks→guides→layout→highlights materialization을 수행한다. Speculative immutable branch의 전 과정을 검증한 뒤 반환하므로 실패 시 기존 program/trace/graphics는 유지된다. Dependents/force/cascade 옵션은 없다.
+- Named AST selection inputs also receive the exact new parameter revision. The action rebinds conditional selection inputs, refreshes affected marks/named labels/highlights, and checks predicates even without visual consumers. The selection contract owns final-item field meaning and expression limits.
 - Facet/repeat parent는 retained source를 수정한 뒤 children/shared guides/layout을 재생성한다. Concat는 명시 childPath가 필요하며 같은 ID의 sibling에 전파하지 않는다. Full 전용이다.
 
 ### Formal values — `editParameter`

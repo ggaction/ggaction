@@ -83,6 +83,11 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "where",
+      "required": false,
+      "type": "ComputedExpressionV2 | undefined"
+    },
+    {
       "name": "items",
       "required": false,
       "type": "readonly string[] | undefined"

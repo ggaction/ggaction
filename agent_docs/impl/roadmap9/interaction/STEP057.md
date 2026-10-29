@@ -85,3 +85,23 @@ Node20/22/24에서 실행2·strict 타입·4 browser entry가 모두 통과했�
 6,003,484unpacked로909/1,310,000/6,004,000을 적용하며 browser/search 한도는 올리지 않았다.
 문서180, build164페이지/1,410 selective artifacts, 수정 페이지4폭 containment·Axe0 및390px 시각 확인을 마쳤다.
 전체 runtime/renderer/installed sweep 완료로 확대하지 않는다. B2 및 C/D는 계속 구현 대상이다.
+
+
+## B2 이름 있는 AST 선택
+
+기존 포괄 승인 AUTHORIZATION을 재사용한다. 구체 public shape는 `selectMarks`/`editMarkSelection`의
+`where: ComputedExpressionV2`와 persistent selection을 생성하는 `highlightMarks.select`다.
+`MarkSelectionSelector`를 별도 union으로 두어 inline label/markFilter/graph view의 기존 MarkSelector에
+추적되지 않은 parameter 의존성을 열지 않는다. 해당 인라인 확장은 원 카드의 이름 있는 predicate state 요구에
+포함하지 않으며, 라벨은 기존 `selection: id`를 통해 같은 AST 선택을 사용한다.
+
+Pure grammar는 최종 item.fields만 평가하고 모든 AST branch의 parameter refs를 첫 출현 순서로 저장한다.
+기존 persistent-selection resource revision 전파를 재사용하고 parameter action이 조건부·data·mark·label·highlight
+후속을 명시적으로 호출한다. Full resolver는 class별 once-only private registration으로 연결하여 Basic import를
+보존한다. 소비자가 없는 nullable predicate도 editParameter에서 원자 평가 오류로 거부한다.
+
+첫 focused 검사 오류 세 개는 테스트 fixture의 존재하지 않는 bar facade명, codec payload 경로,
+diagnostic WeakMap accessor 오용이었다. 그 다음 bar fixture가 기존 point linear scale을 상속하는 오류는
+독립 bar program으로 바꿔 집계 grain 반례를 명시했다. 이 최초 로그와 최종 검증을 별도 evidence로 보존한다.
+현재 새 owner 두 개는100/100/100이다. 최종 installed/docs/source qualification은 진행 중이다.
+C/D, linked target resolve·nearest·orphan/drop·session command 및 STEP077은 완료하지 않았다.

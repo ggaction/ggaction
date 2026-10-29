@@ -27,7 +27,8 @@ import { unionConcreteGraphicBounds } from
   "../grammar/schemas/graphicBounds.js";
 import { findGraphic } from "../grammar/schemas/graphicTree.js";
 import { polarDirection } from "../grammar/polar.js";
-import { normalizeMarkSelector, selectMarkItemKeys } from "../grammar/markSelection.js";
+import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
+import { selectProgramItemKeys } from "./selection/expression.js";
 
 import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
@@ -316,9 +317,9 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     kind: "all"
   };
   const resolveMarkSelection = (program, target, selector) => {
-    const normalized = normalizeMarkSelector(selector);
+    const normalized = normalizeSelectionSelector(selector);
     const items = resolveMarkItems(program, target, normalized.grain, { channels: normalized.channel === undefined ? [] : [normalized.channel] });
-    return { items, keys: selectMarkItemKeys(items, normalized) };
+    return { items, keys: selectProgramItemKeys(program, items, normalized) };
   };
   let allItems;
   let items;

@@ -26,6 +26,18 @@ p.editMarkSelection({target:{childPath:['left']},selection:'picked',items,mode:'
 p.selectMarks({field:'x',op:'range',min:0,minInclusive:false});
 p.editMarkSelection({field:'x',op:'range',max:4,maxInclusive:true});
 p.filterMarks({field:'x',op:'range',min:0,max:4,minInclusive:false,maxInclusive:true});
+const where={version:2,registry:'standard@1',root:{type:'binary',op:'gt',left:{type:'field',name:'x'},right:{type:'parameter',id:'threshold'}}} as const;
+p.selectMarks({id:'chosen',where});
+p.editMarkSelection({selection:'chosen',where,mode:'add'});
+p.highlightMarks({id:'chosen',select:{where},color:'red'});
+// @ts-expect-error expression and item modes are exclusive
+p.selectMarks({where,items:[]});
+// @ts-expect-error inline label selectors retain their own closed grammar
+p.createMarkLabels({source:'points',field:'name',select:{where}});
+// @ts-expect-error mark filters retain their own closed grammar
+p.filterMarks({where});
+// @ts-expect-error Basic does not author expression selection
+basic().selectMarks({where});
 // @ts-expect-error shorthand and endpoint closure cannot mix
 p.selectMarks({field:'x',op:'range',min:0,max:1,inclusive:true,minInclusive:false});
 // @ts-expect-error a range needs at least one endpoint

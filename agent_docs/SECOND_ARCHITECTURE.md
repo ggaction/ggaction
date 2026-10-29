@@ -3481,3 +3481,18 @@ Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runt
 `grammar/orderedRange.js`는 data filter와 final-item mark selector의 숫자·문자열 endpoint 검증 및 포함 판정을 함께 소유한다.
 Mark selector는 기존 normalized inclusive 저장 형태를 보존하고 새로운 개별 endpoint 표기만 정규화한다.
 Resource lifecycle과 materializer는 그대로이며 정확한 공개 범위 옵션은 MARK_SELECTION과 data filter Current 계약을 따른다.
+
+
+### 최종 항목 AST 선택과 매개변수 폐쇄
+
+`grammar/selectionExpression.js`는 이름 있는 선택의 AST를 기존 predicate evaluator에 위임하고,
+최종 item.fields에서 참조된 필드만 bounded row로 만든다. 원본 행을 임의로 대신 평가하지 않는다.
+`materialization/selection/expression.js`는 명시 parameter resource를 resolve하며, exact refs는 기존
+persistent-selection.inputs 한 곳에 저장된다. 일반 inline selector의 owner와 저장 계약은 그대로 유지한다.
+
+기존 resource primitive가 parameter revision을 selection resource/config로 전파하고, parameter domain action이
+조건부 입력 재결합→데이터 revision→의존 순서의 mark/label/highlight materialization을 명시 호출한다.
+시각 소비자가 없는 selection도 최종 predicate를 검사한다. 이 마지막 검사만 Full의 기존 final-item resolver가
+필요하므로 Full assembly에서 constructor별 private resolver를 한 번 등록한다. Map의 handler는 frozen이고
+검증 중 교체·상속 fallback·외부 plugin API가 없다. Basic parameter entry가 Full mark policy를 import하지 않는다.
+정확한 값·제한·저장 형태와 지원은 [expression selection](contract/current/MARK_SELECTION.md#expression-selection)이 소유한다.

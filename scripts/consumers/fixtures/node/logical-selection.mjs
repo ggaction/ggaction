@@ -20,6 +20,14 @@ export const cases=[
   assert.deepEqual(getMarkItems(ranged,{target:"points"}).filter(item=>item.properties.fill==="red").map(item=>item.fields.id),["b"]);
   const open=ranged.editMarkSelection({selection:"picked",field:"x",op:"range",max:2,maxInclusive:false});
   assert.deepEqual(getMarkItems(deserializeProgram(serializeProgram(open)),{target:"points"}).filter(item=>item.properties.fill==="red").map(item=>item.fields.id),["a"]);
+  const where={version:2,registry:"standard@1",root:{type:"binary",op:"gte",left:{type:"field",name:"x"},right:{type:"parameter",id:"threshold"}}};
+  const expressed=base().createParameter({id:"threshold",value:1}).selectMarks({id:"picked",where})
+   .highlightMarks({selection:"picked",color:"red",bringToFront:false})
+   .createMarkLabels({id:"labels",source:"points",field:"id",selection:"picked"});
+  const expressionEdit=deserializeProgram(serializeProgram(expressed)).editParameter({target:"threshold",value:2});
+  assert.deepEqual(getMarkItems(expressionEdit,{target:"points"}).filter(i=>i.properties.fill==="red").map(i=>i.fields.id),["b"]);
+  assert.deepEqual(getMarkItems(expressionEdit,{target:"labels"}).map(i=>i.fields.id),["b"]);
+  assert.equal(expressionEdit.semanticSpec.resources.find(r=>r.id==="picked").revision,1);
   session.updateProgram(r);session.destroy();
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(r))),renderToSVG(r));
   assert.equal(q.semanticSpec.resources[0].revision,0);assert.equal(r.semanticSpec.resources[0].revision,1);

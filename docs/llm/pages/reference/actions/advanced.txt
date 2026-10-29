@@ -74,6 +74,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
 | `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
@@ -109,6 +110,13 @@ values, and properties are concrete graphical values. A range requires `min` or
 or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../../../../api/appearance/selection-and-highlighting/#mark-selection-and-highlighting)
 
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](../../../../api/appearance/selection-and-highlighting/#selections-from-expressions)
+
 ## `editMarkSelection`
 
 **API layer:** advanced. **Authoring roles:** H3.
@@ -130,6 +138,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `mode` | Optional / branch-dependent | `"add" \| "intersect" \| "replace" \| "subtract" \| "toggle" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
 | `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |

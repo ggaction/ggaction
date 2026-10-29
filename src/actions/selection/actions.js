@@ -38,8 +38,9 @@ import {
   resolveEffectiveThemeTokens
 } from "../theme/state.js";
 
-const SELECT_OPTIONS = Object.freeze(["id", "target", ...MARK_SELECTOR_KEYS]);
-const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", "mode", ...MARK_SELECTOR_KEYS]);
+const NAMED_SELECTOR_KEYS = Object.freeze([...MARK_SELECTOR_KEYS, "where"]);
+const SELECT_OPTIONS = Object.freeze(["id", "target", ...NAMED_SELECTOR_KEYS]);
+const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", "mode", ...NAMED_SELECTOR_KEYS]);
 const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
 const HIGHLIGHT_OPTIONS = Object.freeze([
   "id", "target", "select", "selection", "color", "opacity", "fill",
@@ -53,7 +54,7 @@ const REMATERIALIZE_OPTIONS = Object.freeze(["target", "highlights"]);
 
 function selectorFrom(args) {
   return Object.fromEntries(
-    MARK_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
+    NAMED_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
   );
 }
 
@@ -155,6 +156,26 @@ export function rematerializeLabelsBeforeHighlights(
       ? program
       : rematerializeLabels(program, labels)
     : rebuildTargetHighlights(program, target, { labels });
+}
+
+// Resource revisions can change several named projections of the same
+// selection. Refresh each target and its named labels once, after conditionals.
+function rematerializeSelectionConsumers(program, resourceIds) {
+  const changed = new Set(resourceIds), byTarget = new Map();
+  const highlighted = new Set(Object.values(program.materializationConfigs.highlights ?? {}).map(config => config.selection));
+  for (const [id, definition] of Object.entries(program.materializationConfigs.selections ?? {})) {
+    if (!changed.has(definition.resource.id)) continue;
+    const consumer = byTarget.get(definition.target) ?? { labels: new Set(), highlight: false };
+    for (const label of namedLabelDependents(program, id)) consumer.labels.add(label);
+    consumer.highlight ||= highlighted.has(id);
+    byTarget.set(definition.target, consumer);
+  }
+  let next = program;
+  for (const [target, consumer] of byTarget) {
+    const labels = [...consumer.labels].sort();
+    next = consumer.highlight ? rematerializeLabelsBeforeHighlights(next, target, labels) : rematerializeLabels(next, labels);
+  }
+  return next;
 }
 
 function selectedKeys(args, resolved) {
@@ -315,15 +336,7 @@ export const editMarkSelection = /* @__PURE__ */ closedAction(
     const conditionals = rebindConditionalInputs(next, { selection: next.materializationConfigs.selections[current.id].resource.id });
     next = conditionals.program;
     for (const target of orderConditionalMarkIds(next, conditionals.targets)) next = applyLayerDataRematerialization(next, target);
-    const consumers = Object.entries(next.materializationConfigs.selections).filter(([, definition]) =>
-      definition.resource.kind === next.materializationConfigs.selections[current.id].resource.kind &&
-      definition.resource.id === next.materializationConfigs.selections[current.id].resource.id);
-    for (const [selectionId, definition] of consumers) {
-      const labels = namedLabelDependents(this, selectionId);
-      const highlighted = Object.values(next.materializationConfigs.highlights ?? {}).some(config => config.selection === selectionId);
-      next = highlighted ? rematerializeLabelsBeforeHighlights(next, definition.target, labels) : rematerializeLabels(next, labels);
-    }
-    return next;
+    return rematerializeSelectionConsumers(next, [next.materializationConfigs.selections[current.id].resource.id]);
   }
 );
 

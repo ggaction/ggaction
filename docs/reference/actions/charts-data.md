@@ -2326,7 +2326,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelectionSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |

@@ -1,0 +1,6 @@
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};

@@ -4041,7 +4041,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Stable create-only",
-      "update": "Create a new selection ID",
+      "update": "Create a new selection ID with a final-item predicate, live AST, or logical keys",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4059,7 +4059,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replace a stored selector or combine logical item keys while preserving its ID and target",
+      "update": "Replace a stored selector or live AST, or combine resolved logical item keys while preserving its ID and target",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

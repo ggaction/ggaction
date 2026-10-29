@@ -226,6 +226,22 @@
     "executable": false
   },
   {
+    "file": "api/appearance/selection-and-highlighting.md",
+    "block": 8,
+    "heading": "Selections from expressions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"aboveThreshold\"",
+      "target: \"threshold\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.",
+    "sha256": "91e0289d6e4988b2f27176ec3dc70dc1c9c33775c9cab635cdc714045f9a3ea1",
+    "executable": true
+  },
+  {
     "file": "api/axes.md",
     "block": 1,
     "heading": "Keep a title outside its labels",

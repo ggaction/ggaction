@@ -216,6 +216,17 @@ type MarkSelector =
   retention, owner/context cleanup and missing owner failure.
 - Evidence: `test/unit/actions/data/filter-marks.test.js`.
 
+## Expression selection
+
+- `selectMarks`, `editMarkSelection`, and `highlightMarks({ select })` also accept `{ where: ComputedExpressionV2, grain?: "item" | "stack" }` as the separate `MarkSelectionSelector` union. It cannot mix with item keys, row references, value selectors, or `empty`.
+- `where` uses the existing version 2 boolean predicate AST and `standard@1` registry. Field nodes read fields uniquely defined at the final selected item grain. A line series or aggregate is never selected merely because one contributing raw row matches. An absent field across every nonempty item is an error; a field missing on some items follows the existing AST missing-value policy. Empty item arrays use unknown optional field types while still validating every AST branch and parameter.
+- The persistent selection keeps `{ mode: "predicate", predicate: { where } }`; its `inputs` are exact parameter references in first AST occurrence order, including inactive branches. Parameter IDs and types must resolve at creation. Stored vectors must match the entire AST exactly, and restoration rejects missing, reordered, stale or forged bindings without recalculating graphics.
+- `editParameter` revises dependent selection resources, rebinds conditional selection inputs, revises computed data, and explicitly rematerializes affected marks, named labels and highlights in dependency order. The final predicates are checked even when no visual consumer exists. Failure leaves the receiver and its trace unchanged. Existing facet/repeat adoption and explicit concat child scope preserve the parameter closure.
+- Non-`replace` selection updates evaluate incoming expressions once and store the resulting logical key set; this intentionally removes predicate/parameter dependencies. `replace` retains the supplied AST for live reevaluation.
+- Work is bounded before constructing rows: `itemCount * (AST nodeCount + referencedFieldCount) <= 10,000,000`, plus the existing AST depth, node, operand and value limits. Referenced data accessors are rejected without execution, and caller inputs remain unchanged.
+- Inline `createMarkLabels({ select })`, `editMarkLabelSelection({ select })`, `filterMarks`, and graph view selectors keep `MarkSelector` and reject `where`. Use `selection: id` for labels and highlights. The highlight facade creates the same persistent selection when given an AST inline. Basic authoring remains unsupported; renderer contracts do not change.
+- Evidence: `test/unit/grammar/selection-expression.test.js`, `test/unit/actions/selection/expression-selection.test.js`, `test/contracts/logical-selection-types.test.js`, and the five-dataset/three-grain `test/contracts/realistic-logical-selection.test.js`.
+
 ## `selectMarks`
 
 - Signature: `selectMarks({ id?, target?, ...selector })`
@@ -231,7 +242,7 @@ type MarkSelector =
 
 ### Formal values — `selectMarks`
 
-- Implemented: `selectMarks({ id?: UserId; target?: UserId } & MarkSelector)` for point/bar/line/area/arc/rule/Tick item grain,
+- Implemented: `selectMarks({ id?: UserId; target?: UserId } & MarkSelectionSelector)` for point/bar/line/area/arc/rule/Tick item grain,
   stacked bar grain, the three explicit value sources, and every comparison, set, range and grouped/ungrouped extrema
   mode above.
 - Proposed (NOT IMPLEMENTED): —.
@@ -277,7 +288,7 @@ type MarkSelector =
 
 ### Formal values — `editMarkSelection`
 
-- Implemented: `editMarkSelection({ selection?: UserId } & MarkSelector)` with the complete shared selector algebra.
+- Implemented: `editMarkSelection({ selection?: UserId; mode?: "replace" | "add" | "toggle" | "subtract" | "intersect" } & MarkSelectionSelector)` with the complete shared selector algebra.
 - Proposed (NOT IMPLEMENTED): target/ID replacement and partial selector merge.
 
 ### Value coverage — `editMarkSelection`
@@ -355,7 +366,7 @@ type MarkSelector =
 
 ### Formal values — `highlightMarks`
 
-- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | readonly NonNegativeFinite[]; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point/bar/line/area/arc/rule/Tick with mark-specific option applicability.
+- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelectionSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | readonly NonNegativeFinite[]; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point/bar/line/area/arc/rule/Tick with mark-specific option applicability.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `highlightMarks`

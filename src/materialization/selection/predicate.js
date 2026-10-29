@@ -1,6 +1,6 @@
 import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { rowsForSelectedItems } from "./rows.js";
-import { selectMarkItemKeys } from "../../grammar/markSelection.js";
+import { selectProgramItemKeys } from "./expression.js";
 
 // Dependent components follow their owner's current selection after data or
 // encoding revisions, rather than freezing a list of previously selected rows.
@@ -12,7 +12,7 @@ export function selectionPredicate(program, definition, { resolveMarkItems, reso
   if (!definition.projection.data) return { ...predicate, grain: definition.grain };
   const items = predicate.property ? resolveMarkItems(program, parent.target, predicate.grain)
     : resolveMarkSourceItems(program, parent.target, predicate.grain);
-  const resolved = { items, keys: selectMarkItemKeys(items, predicate) };
+  const resolved = { items, keys: selectProgramItemKeys(program, items, predicate) };
   return { grain: definition.grain, rows: rowsForSelectedItems(program, resolved.items, resolved.keys, definition.projection.data) };
 }
 

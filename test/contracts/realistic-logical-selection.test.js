@@ -51,6 +51,18 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
     const edited=ranged.editMarkSelection({selection:"rangePicked",field:"category",op:"range",...range});
     assert.equal(edited.semanticSpec.resources.find(r=>r.id==="rangePicked").revision,1);
    }
+   const where={version:2,registry:"standard@1",root:{type:"binary",op:"eq",left:{type:"field",name:"category"},right:{type:"parameter",id:"categoryChoice"}}};
+   const ast=p.createParameter({id:"categoryChoice",value:min}).selectMarks({id:"expressionPicked",target:"mark",where})
+    .highlightMarks({selection:"expressionPicked",color:"#ef4444",bringToFront:false});
+   const astSaved=serializeProgram(ast);
+   for(const value of [min,max]) {
+    const revised=deserializeProgram(astSaved).editParameter({target:"categoryChoice",value});
+    const expected=items.filter(item=>item.fields.category===value).map(item=>item.key);
+    const actual=getMarkItems(revised,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+    assert.deepEqual(actual,expected);
+    assertGraphicIntegrity(revised,`${dataset}/${recipe}/expression`);assertSvgIntegrity(renderToSVG(revised),`${dataset}/${recipe}/expression`);
+   }
+   assert.equal(serializeProgram(ast),astSaved);
    witnessed.add(`${dataset}/${recipe}`);
   } finally {releaseTidyTuesdaySourceCache(dataset);}
  });

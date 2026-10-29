@@ -2,7 +2,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;

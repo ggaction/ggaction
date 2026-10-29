@@ -1,9 +1,9 @@
+import { selectProgramItemKeys } from "../expression.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
 import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
 import {
-  MARK_GRAPHIC_PROPERTIES,
-  selectMarkItemKeys
+  MARK_GRAPHIC_PROPERTIES
 } from "../../../grammar/markSelection.js";
 import { unionConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
@@ -221,7 +221,7 @@ export function reorderHighlightedItems(program, layer, definitions, groups = {}
     const predicate = selectionPredicate(program, selection, selectionResolvers);
     const grouped = groups[predicate.grain];
     const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
-    let selected = new Set(selectMarkItemKeys(candidates, predicate));
+    let selected = new Set(selectProgramItemKeys(program, candidates, predicate));
     if (grouped) {
       const members = new Set(grouped.filter(item => selected.has(item.key)).flatMap(item => item.members));
       selected = new Set(ordered.filter(item => item.members.some(row => members.has(row))).map(item => item.key));

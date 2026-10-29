@@ -6522,12 +6522,12 @@ Related types: [`MarkSelector`](#type-markselector).
 export type EditMarkSelectionOptions = {
   selection?: string;
   mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector).
 
 ### `EditNormalizedDataOptions` {#type-editnormalizeddataoptions}
 
@@ -9039,7 +9039,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -9057,7 +9057,7 @@ export interface HighlightMarksOptions {
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`PointShape`](#type-pointshape).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`PointShape`](#type-pointshape).
 
 ### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
 
@@ -10267,6 +10267,24 @@ export interface MarkOutline { color: string; width: number; }
 ```
 
 </details>
+
+### `MarkSelectionSelector` {#type-markselectionselector}
+
+<details markdown="1">
+<summary>Expand MarkSelectionSelector</summary>
+
+```typescript
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
+```
+
+</details>
+
+Related types: [`MarkSelector`](#type-markselector) · [`ComputedExpressionV2`](#type-computedexpressionv2).
 
 ### `MarkSelector` {#type-markselector}
 
@@ -13474,12 +13492,12 @@ Related types: [`RulePositionEncodingBase`](#type-rulepositionencodingbase) · [
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 

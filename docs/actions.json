@@ -27844,6 +27844,11 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
+        },
+        {
           "name": "items",
           "required": false,
           "type": "readonly string[] | undefined"
@@ -28021,6 +28026,11 @@
           "name": "grain",
           "required": false,
           "type": "\"item\" | \"stack\" | undefined"
+        },
+        {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
         },
         {
           "name": "items",
@@ -28376,7 +28386,7 @@
         {
           "name": "select",
           "required": false,
-          "type": "MarkSelector | undefined"
+          "type": "MarkSelectionSelector | undefined"
         },
         {
           "name": "selection",

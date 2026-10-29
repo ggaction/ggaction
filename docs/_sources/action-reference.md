@@ -3646,6 +3646,13 @@ values, and properties are concrete graphical values. A range requires `min` or
 or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](../api/appearance/selection-and-highlighting.md#selections-from-expressions)
+
 ### `editMarkSelection`
 
 ```javascript

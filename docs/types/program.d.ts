@@ -1433,14 +1433,20 @@ export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[];
       ties?: "first" | "all";
     }
 );
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 export type EditMarkSelectionOptions = {
   selection?: string;
   mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
-} & MarkSelector;
+} & MarkSelectionSelector;
 export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
@@ -1458,7 +1464,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;

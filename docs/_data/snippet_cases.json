@@ -330,5 +330,15 @@
     "result": "program, picked, toggled",
     "prerequisites": "Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "expression-selection",
+    "file": "api/appearance/selection-and-highlighting.md",
+    "contains": "const liveSelection = program",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, liveSelection, changed",
+    "prerequisites": "Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.",
+    "rendering": "authoring-only"
   }
 ]

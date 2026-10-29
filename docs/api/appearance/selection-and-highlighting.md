@@ -297,6 +297,65 @@ body and center-rule resource.
 See the complete [mark-selection tutorial](../../tutorials/mark-selection.md) for
 the approved point, stacked-bar, and line-series examples.
 
+## Selections from expressions
+
+Use `where` on `selectMarks` or `editMarkSelection` to retain a boolean version 2
+expression. Fields are read at the final item grain: a grouped path or aggregate
+must have one unique value for the referenced field. The expression does not
+match individual contributing rows behind that item.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas().createData({
+  id: "observations",
+  values: [
+    { Horsepower: 90, Weight: 1800 },
+    { Horsepower: 120, Weight: 2400 },
+    { Horsepower: 180, Weight: 3200 }
+  ]
+}).createScatterPlot({ id: "points", x: "Horsepower", y: "Weight" });
+
+const liveSelection = program
+  .createParameter({ id: "threshold", value: 100 })
+  .selectMarks({
+    id: "aboveThreshold",
+    target: "points",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "Horsepower" },
+        right: { type: "parameter", id: "threshold" }
+      }
+    }
+  })
+  .highlightMarks({ selection: "aboveThreshold", color: "red" });
+
+const changed = liveSelection.editParameter({ target: "threshold", value: 150 });
+```
+
+Parameter edits refresh the selection, its highlights, named labels and
+conditional encodings together. Saving and restoring retains exact parameter
+bindings. Every branch is validated, including inactive branches and empty
+selections. The result must be boolean; existing expression limits also apply.
+An absent field across all nonempty items is an error. Missing fields on some
+items follow the expression's missing-value rules.
+
+`where` is exclusive of other selector modes. The highlight facade also accepts
+`select: { where }` because it creates a persistent selection. For labels, use
+`selection: "aboveThreshold"`; inline label selectors and `filterMarks` retain
+their existing comparison grammar. A set update such as `mode: "add"` evaluates
+an incoming AST once and stores item keys. Use the default `replace` to keep a
+live expression.
+
 ## Related
 
 [Appearance overview](../appearance.md) · [Mark-selection tutorial](../../tutorials/mark-selection.md) · [Data filtering](../data/filtering.md)
