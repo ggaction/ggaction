@@ -6,7 +6,7 @@
 - [x] 기존 AUTHORIZATION.json의 STEP-077 전체 승인 재사용
 - [x] durable active manifest와 독립 실패 시험 구현
 - [x] 집중 검증 및 원본 요구/consumer 보존 비교
-- [ ] source checkpoint와 미완료 집계 인계
+- [x] source checkpoint와 미완료 집계 인계
 
 이 작업은 최종 qualification 완료가 아니라 그 판정 기반이다. 최종 통합 후보의
 전체 suite와 동일 package artifact 검증은 root가 수행한다.
@@ -104,3 +104,9 @@ publish workflow에 선행 gate를 추가하지 않는다.
 49개 모두 통과했다. 아래 최종 source 고정 검증에서 다시 실행해 exact receipt를 보존한다.
 역사 요구 이관 비교는 30 IDs/79 groups/570 cells와 기존 모든 requirement→group edge의
 보존을 확인했고 12개 공통 그룹의 추가 연결만 있다.
+
+
+최종 source `5f870e868fb8d8953944d3deaece829be5e49152`의 clean 실행 전후 receipt에서
+49/49, exit 0, 5.807초를 확인했다. [정확한 증거와 미완료 집계](native-evidence/status.json)에
+원본 실패/수정 후 실행을 구분해 저장했다. 전체 release/realistic/coverage/renderer/browser/
+설치 suite는 이 과제에서 실행하지 않았다. Native qualification은 계속 pending이다.

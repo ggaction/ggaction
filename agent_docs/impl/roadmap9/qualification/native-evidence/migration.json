@@ -1,0 +1,54 @@
+{
+  "status": "scope-preserved",
+  "scopeOnly": true,
+  "requirements": 30,
+  "acceptanceGroups": 79,
+  "preservedConsumerCells": 570,
+  "additionalInteractionCells": 7,
+  "removedRequirements": [],
+  "removedGroups": [],
+  "removedCells": [],
+  "newExemptions": [],
+  "addedFoundationLinks": {
+    "GGA-01": [
+      "AT-08",
+      "AT-16",
+      "AT-18"
+    ],
+    "GGA-02": [
+      "AT-04",
+      "AT-14",
+      "AT-21"
+    ],
+    "GGA-04": [
+      "AT-53"
+    ],
+    "GGA-06": [
+      "AT-07"
+    ],
+    "GGA-10": [
+      "AT-01",
+      "AT-02",
+      "AT-11",
+      "AT-12"
+    ]
+  },
+  "inputs": [
+    {
+      "path": "study/coverage-expansion-2026-10-27/roadmap/requirement-map.json",
+      "sha256": "c4dcb29bfc07db011bd68058f1bfd5435c8b7c1b2f3a1abf526020e17f40f2e3"
+    },
+    {
+      "path": "study/coverage-expansion-2026-10-27/roadmap/acceptance-cases.json",
+      "sha256": "489f8cbb2b143e4c9613a6308462a3d8645b12a687f0c0a3c770332c744dc95a"
+    },
+    {
+      "path": "study/coverage-expansion-2026-10-27/roadmap/consumer-matrix.json",
+      "sha256": "bebd2091777a70ff38562b3fa5c921af43672e7c08fd05943e1bec14c83c2adc"
+    },
+    {
+      "path": "test/native-capabilities.json",
+      "sha256": "bc35f6cfa5fb4d22d2eca422dd269d5c6f871ba88bcd2106d8c2c735404ac721"
+    }
+  ]
+}
