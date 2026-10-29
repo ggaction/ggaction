@@ -3133,6 +3133,14 @@ planner의 입력 준비이며 typed compatibility·중간 장면·offline anima
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
+`grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
+`scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만
+기하 보간한다. mapper를 복제하거나 pixel에서 semantic 값을 추정하지 않는다.
+공개 planner·scene 연결 전의 private numeric owner이며 새 저장/renderer 경계는 없다.
+Node22 canonical package는1066entries/1,517,992packed/6,918,212unpacked bytes다.
+새 내부 모듈1개를 포함하도록 최소 한도1066/1,518,000/6,919,000을 적용하고
+공개 entry와 browser bundle cap은 유지한다.
+
 ### Cartesian title label-relative offset measurement
 
 Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌
