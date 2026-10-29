@@ -191,3 +191,21 @@ test("scans large path command lists without argument-spread limits", () => {
     nonDegenerateItemCount: 1
   });
 });
+
+
+test("accepts filled flow ribbons without stroke and rejects collapsed or non-finite ribbons", () => {
+  const ribbon = commands => ({
+    semanticSpec: { layers: [{ id: "links", mark: { type: "flow-link" } }] },
+    graphicSpec: { objects: { links: { type: "collection", items: [{ type: "path",
+      properties: { commands, fill: "#64748b", stroke: "none", strokeWidth: 0 } }] } } }
+  });
+  const commands = [
+    { op: "M", x: 0, y: 0 }, { op: "C", x1: 10, y1: 0, x2: 10, y2: 5, x: 20, y: 5 },
+    { op: "L", x: 20, y: 8 }, { op: "C", x1: 10, y1: 8, x2: 10, y2: 3, x: 0, y: 3 }, { op: "Z" }
+  ];
+  assert.equal(assertAnalyticLayerIntegrity(ribbon(commands)).nonDegenerateItemCount, 1);
+  for (const invalid of [
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 0 }, { op: "Z" }],
+    commands.map(command => command.op === "L" ? { ...command, y: Infinity } : command)
+  ]) assert.throws(() => assertAnalyticLayerIntegrity(ribbon(invalid)), /no finite, non-zero geometry/);
+});

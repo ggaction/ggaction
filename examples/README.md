@@ -762,6 +762,12 @@ Draw explicit level boundaries and filled bands with preserved holes.
 
 Representative actions: `createContourData`, `createDensityContourData`, `createContourMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/contours/).
 
+### [Inspect overlapping chart items](./inspect-chart/)
+
+Inspect the same final chart items through Canvas, SVG, or headless CSS points.
+
+Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
