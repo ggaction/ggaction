@@ -1268,8 +1268,6 @@ It respects clipping, opacity, nested scopes and geographic representations. Foc
 program or history. Enter or Space executes an explicitly configured native selection; partition
 activation can instead use `activation: { type: "focusHierarchy" }`.
 
-> **Executable complete.** Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
-
 ```html
 <div id="item-focus" role="listbox" aria-label="Measurements" tabindex="0"
      style="position:relative;width:360px;height:240px">

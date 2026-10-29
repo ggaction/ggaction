@@ -117,3 +117,7 @@ B source `d2441294413d13de40fc545f070489645c038276`를 고정했다.
 고정 tar,3Node consumers,critical coverage와 실제 화면을 보존했다. source pin 후49 docs,
 172 built pages/1535 LLM hashes,320/390/768/1440 overflow0/Axe0을 확인했다. 320/1440 화면을
 직접 확인했고 두 코드 블록의 공통 host 안내를 명료화했다. C/D와 전체077은 계속 미완료다.
+
+화면 확인에서 정적 HTML 앞의 이전 수동 안내 한 줄이 남아 있어 제거했다. 실행 JavaScript의
+공통 안내만 유지하고 owning49/build172/1535 hashes/4폭 Axe0을 재확인했다. Runtime/type와
+고정 tar는 변하지 않았다.

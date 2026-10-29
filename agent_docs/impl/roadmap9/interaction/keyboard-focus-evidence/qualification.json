@@ -387,6 +387,14 @@
       "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf"
     },
     {
+      "path": "keyboard-evidence-commit.log.gz",
+      "sha256": "e5ec3fe95ca7687cd57675f4e28e7a4b43a6e26f23cc4cd607c8be98d9845d6c"
+    },
+    {
+      "path": "keyboard-evidence-push.log.gz",
+      "sha256": "12a4a7b3800ad730c102dce6341319bc03b334958c534553bccacd95d266178b"
+    },
+    {
       "path": "keyboard-existing-first.log.gz",
       "sha256": "2d5b08506419af348c868ccab0ef20d901528dbe982d467ab5e77f2726e50c56"
     },
@@ -449,6 +457,26 @@
     {
       "path": "keyboard-hit-second.log.gz",
       "sha256": "73f28fef89e6a1631eef163b5c3c9f0572cd724d412cf81874a9fcfe58d9265c"
+    },
+    {
+      "path": "keyboard-host-label-browser.log.gz",
+      "sha256": "68e6f452728d899b6f1086441c65bf07f29924a7b724268fa8b2d900221ba5d9"
+    },
+    {
+      "path": "keyboard-host-label-build.log.gz",
+      "sha256": "f751d02de61f157a347cba2a18d69fb1dc6fb14e6884bcc0205d383da1a71090"
+    },
+    {
+      "path": "keyboard-host-label-built.log.gz",
+      "sha256": "1ec05c4e74288ef806fa965037bd3335acae6f1b91d245a6f566a0dc03be2546"
+    },
+    {
+      "path": "keyboard-host-label-docs.log.gz",
+      "sha256": "285b43a868c08a857ac22fb2b2ed1370cc9a938379fad0baadd9d692eb11f574"
+    },
+    {
+      "path": "keyboard-host-label-generation.log.gz",
+      "sha256": "28154b0304c1d610ecbca0b3215856e8d4101a321800dae99d2f06da3ad19f85"
     },
     {
       "path": "keyboard-measure-final-node20.json.gz",
@@ -556,19 +584,19 @@
     },
     {
       "path": "api-interaction-1440.png",
-      "sha256": "fd46b50b34884f3c53c2f53985c47a0e43487e14ae76e3ec40495bea50f6187f"
+      "sha256": "015cb20c4a3d08f11488ccd8afe06e9b9f97a494ca1be7359be3133a6008f5d4"
     },
     {
       "path": "api-interaction-320.png",
-      "sha256": "abb5253745475cf182df54966ba5a3fe345d4611cb112a11b5c22a32b1b91789"
+      "sha256": "4fa415a97b40006bff3b96e620077a96a4f747724dcf174a4c10ff6dda23c244"
     },
     {
       "path": "api-interaction-390.png",
-      "sha256": "2d8bfae9ea456cee62c4be2750cd523ef0f355ba44cc9b13eeabae8fd193f518"
+      "sha256": "b621a0ec0bd498b9e1f51ea08d30de070e0bb443c93347c35d76188ed5a406be"
     },
     {
       "path": "api-interaction-768.png",
-      "sha256": "e66c5a1f6001e2b4298bc73324952ebdee8e6e3f15d9b3b3d33656d79fb604a0"
+      "sha256": "95f505ad8a57e2f5a7b6e9dad7340fe7e45c8e8b602cdc36060650b5dc4cbc4e"
     }
   ]
 }
