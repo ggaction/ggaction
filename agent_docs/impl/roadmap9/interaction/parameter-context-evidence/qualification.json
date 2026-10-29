@@ -1,6 +1,6 @@
 {
   "baseCommit": "752e80216889ffa6b2cd05073114973103387f42",
-  "sourceCommit": null,
+  "sourceCommit": "176c767233d1b8d1d7946dbdc9137affa32c93a0",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "STEP060 D host parameter controls through the existing command and context semantic-hit requests; no new widget, authoring action, persistence schema or renderer",
   "sourceHashes": {
@@ -212,6 +212,12 @@
       "focus": "multiplier",
       "disposed": true,
       "errors": []
+    },
+    "sourcePinnedDocs": {
+      "passed": 50,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "visualEvidence": "Four-width Axe0 reused because only provenance revision changed; runtime/types/final archive and page content unchanged."
     }
   },
   "artifact": {
@@ -416,6 +422,30 @@
     {
       "path": "context-controls-shared-coverage.log.gz",
       "sha256": "a4cfa3172aa18a9bef09ee29bbf23fa0c9b45de9e082e19bbfa49ad4d9d5b539"
+    },
+    {
+      "path": "context-controls-source-commit.log.gz",
+      "sha256": "68503af3547c114cecf6a88a45bcfe6f6bfd8b3e4f35b07e58e8bac1fcd49fc6"
+    },
+    {
+      "path": "context-controls-source-push.log.gz",
+      "sha256": "9399152efded430d0de18fd7b494f1d0f762be1ef4d3106e1fe530f0e6cb1014"
+    },
+    {
+      "path": "context-controls-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "context-controls-pinned-docs.log.gz",
+      "sha256": "c9be5780259b55d1a8fbba4c3ec68e8cada366cd8c271573bcaa69702731f197"
+    },
+    {
+      "path": "context-controls-pinned-build.log.gz",
+      "sha256": "bde34fc0d1333c9382f804b0bc070e1e59b79d204c0565991e18d5a245c0d309"
+    },
+    {
+      "path": "context-controls-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
     }
   ]
 }

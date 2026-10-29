@@ -300,3 +300,6 @@ compact search987,568에987,600을 적용하고 최초 초과도 남긴다.
 Docs source 최초46/47의 search budget 보정 후 owning2, built170pages/1458LLM·네 폭 Axe0이다.
 Source 고정 뒤 provenance와 owning docs47을 다시 기록한다. 전체 normal/coverage 반복 없이
 변경 owner와 실제 소비자를 검증했으며 annotation/drag/focus/geo/keyboard와 전체AT/077은 미완료다.
+
+D source `176c76723` push 후 source-pinned provenance→machine→LLM, owning docs50 및
+built170pages/1458LLM을 통과했다. 최종 archive `5a1675aa`와 runtime/타입은 그대로다.
