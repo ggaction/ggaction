@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:66fa398d1adb91a595936de4022e506b262cd7289b7621e20e6779c2f254d9f6",
-    "sourceCommit": "9289b595ab950d6ea37840335154524c3f8bdeee",
+    "contractId": "sha256:c6814679dcc45c5a3f6a7abee32a5c23666522eb082030e257f59b4343465053",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "0a3e06071a98ebb3416af24767ac7a71a9988a450b0554d54179fe3350648c84"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1238,10 +1238,12 @@
         "create-and-mount",
         "inspect-without-a-dom",
         "replace-a-program-or-sampled-frame",
-        "state-and-cleanup"
+        "state-and-cleanup",
+        "commit-selections-and-parameters",
+        "link-named-selections"
       ],
-      "bytes": 6788,
-      "sha256": "b9babbe8c065fc07dd93678f1d4a1cf061558771536f75f033368c62556e4270"
+      "bytes": 13940,
+      "sha256": "2e0474d94782af99786d07eaba8ad36769f98c211d4b939743c678b5554f1b7d"
     },
     {
       "order": 74,
@@ -2502,8 +2504,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 48123,
-      "sha256": "82d3695602919329bf3c0f24e080782bc65cef5f4fdf19f1c17b0d210d388501"
+      "bytes": 51453,
+      "sha256": "07a099de992ae468460cd6fb3e5c33f9f584ab3361df12d1a669273a56c323b7"
     },
     {
       "order": 128,
@@ -3370,8 +3372,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "1db120cee93dd6cb662dea45b4ae0e6c6b484fe6283cd5ce17a9f4b8a3b100a8"
+      "bytes": 20908,
+      "sha256": "5f7076bac2540b7055788bf2e8d3885900f2f17e3334d9879ed15445b4b2f9c8"
     },
     {
       "order": 131,
@@ -3710,8 +3712,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "4bac58ecf07a17a8c93ab03430a25cef2c4fbe16aafe31b1cfe37e7a3933deb8"
+      "bytes": 3000,
+      "sha256": "8c5d6d6b0fabf824d2ae639977b65d63216bd326d89815fe7b7a762255da294f"
     },
     {
       "order": 152,

@@ -649,6 +649,14 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-links.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

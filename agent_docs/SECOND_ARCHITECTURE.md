@@ -797,10 +797,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 654,000 bytes |
-| `ggaction/basic` | 369,000 bytes |
+| `ggaction` | 663,000 bytes |
+| `ggaction/basic` | 371,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 83,000 bytes |
+| `ggaction/interaction` | 93,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3444,7 +3444,8 @@ unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,
 공개 `src/interaction.js`와 `types/interaction.d.ts`의
 `ggaction/interaction`은 Full/Basic authoring import와 분리된 browser-safe controller entry다.
 `interaction/session.js`가 DOM listener와 transient inspect/current-frame lifetime을 소유하며,
-program action/selection/history를 만들지 않는다. `sceneFrame.js`는 host가 전달한 concrete frame을
+inspection은 program action/selection/history를 만들지 않는다. 아래 원자 authoring command 경계가 편집을 소유한다.
+`sceneFrame.js`는 host가 전달한 concrete frame을
 bounded own-data snapshot으로 고정한 뒤 기존 renderer scene validation을 재사용한다.
 기존 scene/source identity로 metadata를 연결하고 version/generation 교체를 원자적으로 수행한다.
 
@@ -3525,3 +3526,35 @@ Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 pack
 Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
 interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
 coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.
+
+### Interaction의 원자 authoring command 경계
+
+`interaction/selection.js`는 명시 owner/child scope의 select/clearSelection/setParameter를 receiver의
+기존 wrapped domain action에 위임한다. Full assembly를 controller에 import하거나 private primitive로
+state를 쓰지 않는다. `session.js`는 후보 program과 hit frame 모두 준비한 뒤 한 번에 교체하며
+transaction revision·event·FIFO·중복 transaction 억제는 runtime에만 둔다. Renderer는 여전히
+graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource만 저장한다.
+
+`interaction/input.js`는 queued command와 외부 concrete frame의 bounded own-data snapshot을 공유한다.
+기존 sceneFrame은 해당 snapshot 뒤 canonical scene/concrete validator를 호출한다. 구체 공개 명령,
+오류·동기 settled 의미와 지원 한도는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+
+### 명시 linked selection의 runtime projection
+
+`interaction/bindings.js`는 명시 owner DAG와 source별 투영 집합을 session 수명 안에서 소유한다.
+`grammar/selectionProjection.js`는 기존 typed row-key 인코더와 final-item의 original row lineage를
+재사용해 대상 item key 집합만 계산한다. B2 class-scoped frozen resolver가 Full final-item 계산을
+제공하고 controller는 Full assembly를 import하지 않는다. Facet source는 기존 source-only item
+adapter를 읽고 새 그래픽을 숨겨서 materialize하지 않는다.
+
+연결된 기존 selection resource는 receiver의 wrapped editor가 저장하며 모든 후보·dependency closure와
+hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. 정확한
+범위·제한과 오류는 [INTERACTION](contract/current/INTERACTION.md#linked-selections)이 소유한다.
+
+
+Linked selection의 신규 pure projection/runtime binding2개 owner로 package915entries를 측정했다.
+Node20 초기 packed1,319,185/unpacked6,040,680 bytes에 cap915/1,320,000/6,041,000을 적용한다.
+Interaction gzip91,705는89,000을 초과해92,000으로만 올렸고 Full651,735/Basic366,102/SVG20,196은
+기존 cap을 유지한다. Search958,319bytes에는959,000 최소 cap을 적용한다. 최종 archive의 이후
+작은 work-accounting 수정 측정은 개념 checkpoint evidence에서 구분하며 최초 실패를 지우지 않는다.

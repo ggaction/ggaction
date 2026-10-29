@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart } from "../../src/index.js";
+import { chart, hconcat } from "../../src/index.js";
+import { createInteractionSession } from "../../src/interaction.js";
 import { getMarkItems } from "../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
@@ -62,6 +63,32 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
     assert.deepEqual(actual,expected);
     assertGraphicIntegrity(revised,`${dataset}/${recipe}/expression`);assertSvgIntegrity(renderToSVG(revised),`${dataset}/${recipe}/expression`);
    }
+   const session=createInteractionSession({program:deserializeProgram(astSaved),bindings:[]}),phases=[];
+   session.subscribe(event=>{if('phase' in event)phases.push(event.phase);});
+   session.dispatch({type:"setParameter",target:"categoryChoice",payload:{value:max}});
+   const expected=items.filter(item=>item.fields.category===max).map(item=>item.key);
+   const selected=getMarkItems(session.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+   assert.deepEqual(selected,expected);
+   session.dispatch({type:"select",target:"mark",payload:{id:"expressionPicked",select:{items:[keys[0]]}}});
+   assert.deepEqual(getMarkItems(session.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key),[keys[0]]);
+   session.dispatch({type:"clearSelection",target:"mark",payload:{id:"expressionPicked"}});
+   assert.ok(getMarkItems(session.getState().program,{target:"mark"}).every(item=>item.geometry.every(g=>g.properties.fill!=="#ef4444"&&g.properties.stroke!=="#ef4444")));
+   assert.deepEqual(phases,["commit","settled","commit","settled","commit","settled"]);
+   assertGraphicIntegrity(session.getState().program,`${dataset}/${recipe}/session`);
+   assertSvgIntegrity(renderToSVG(deserializeProgram(serializeProgram(session.getState().program))),`${dataset}/${recipe}/session`);
+   const child=ast.editMarkSelection({selection:"expressionPicked",items:[]});
+   const linkedProgram=hconcat({programs:[{id:"source",program:child},{id:"target",program:child}]});
+   const linked=createInteractionSession({program:linkedProgram,bindings:[{type:"linkSelection",id:"categories",resolve:"global",target:{childPath:["target"],id:"mark"},selection:"expressionPicked",sources:[{target:{childPath:["source"],id:"mark"},selection:"expressionPicked",projection:{type:"fields",sourceFields:["category"],targetFields:["category"]}}]}]});
+   linked.dispatch({type:"select",target:{childPath:["source"],id:"mark"},payload:{id:"expressionPicked",select:{field:"category",op:"eq",value:max}}});
+   const targetChild=linked.getState().program.children.target;
+   const linkedActual=getMarkItems(targetChild,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+   assert.deepEqual(linkedActual,items.filter(item=>item.fields.category===max).map(item=>item.key));
+   assert.equal(linked.getState().revision,1);assert.equal(linked.getState().linkedSelections[0].sources.length,1);
+   linked.dispatch({type:"clearSelection",target:{childPath:["source"],id:"mark"},payload:{id:"expressionPicked"}});
+   assert.equal(linked.getState().linkedSelections[0].keys.length,0);
+   assertGraphicIntegrity(linked.getState().program,`${dataset}/${recipe}/linked`);
+   assertSvgIntegrity(renderToSVG(linked.getState().program),`${dataset}/${recipe}/linked`);linked.destroy();
+   session.destroy();
    assert.equal(serializeProgram(ast),astSaved);
    witnessed.add(`${dataset}/${recipe}`);
   } finally {releaseTidyTuesdaySourceCache(dataset);}

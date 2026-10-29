@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { chart } from "ggaction";
+import { chart, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
+import { getMarkItems } from "ggaction/inspection";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 const make = factory => factory().createCanvas({ width: 200, height: 160, margin: 0 })
   .createData({ id: "rows", values: [{ x: 50, y: 60 }, { x: 50, y: 60 }] })
@@ -15,6 +16,19 @@ export const cases = [
       assert.deepEqual(session.dispatch({ type: "inspect", point: { x: 50, y: 60 } }), { status: "applied" });
       assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "inspect", events: null }] }), /array/);
       const hit = session.getState().hit;
+      if (factory === chart) {
+        const events = [], stop = session.subscribe(event => { if ('phase' in event) events.push(event); });
+        session.dispatch({ type: 'select', target: 'points', payload: { id: 'picked', select: { items: [hit.target.itemKey] } }, transactionId: 'pick' });
+        const selected = session.getState().program.highlightMarks({ selection: 'picked', color: 'red', bringToFront: false, dimOthers: false });
+        session.updateProgram(deserializeProgram(serializeProgram(selected)));
+        assert.equal(getMarkItems(session.getState().program, {target:'points'}).filter(i=>i.properties.fill==='red').length,1);
+        session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'}});
+        assert.equal(getMarkItems(session.getState().program, {target:'points'}).filter(i=>i.properties.fill==='red').length,0);
+        assert.deepEqual(events.map(e=>e.phase),['commit','settled','commit','settled']);
+        assert.equal(events[0].previous,p); assert.equal(events[0].transactionId,'pick');
+        stop();
+      } else assert.throws(()=>session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}}),/does not support/);
+
       assert.equal(hit.candidates.length, 2); assert.equal(hit.target.role, "point");
       assert.equal(new Set(hit.candidates.map(item => item.itemKey)).size, 2);
       assert.deepEqual(hit.target.localPoint, { x: 50, y: 60 });
@@ -25,6 +39,15 @@ export const cases = [
     }
   } },
   { id: "interaction/current-frame-and-restored-program", run() {
+    const child=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+    const joined=hconcat({programs:[{id:'left',program:child},{id:'right',program:child}]});
+    const linked=createInteractionSession({program:deserializeProgram(serializeProgram(joined)),bindings:[{type:'linkSelection',id:'rows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
+    const first=getMarkItems(linked.getState().program,{target:{childPath:['left'],id:'points'}})[0].key;
+    linked.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{items:[first]}}});
+    assert.equal(getMarkItems(linked.getState().program.children.right,{target:'points'}).filter(item=>item.properties.fill==='red').length,1);
+    assert.equal(linked.getState().linkedSelections[0].keys.length,1);
+    linked.dispatch({type:'clearSelection',target:{childPath:['left'],id:'points'},payload:{id:'picked'}});
+    assert.equal(linked.getState().linkedSelections[0].keys.length,0);linked.destroy();
     const p = make(chart), session = createInteractionSession({ program: p }), state = session.getState();
     const scene = structuredClone(state.scene);
     for (const node of scene.nodes.filter(node => node.type === "circle")) node.properties.x += 30;
@@ -52,6 +75,14 @@ export const cases = [
     const text = session.getState().scene.nodes.find(node => node.type === "text");
     session.dispatch({ type: "inspect", point: { x: text.properties.x + text.offset[0], y: text.properties.y + text.offset[1] } });
     assert.equal(session.getState().hit.target.role, "chart-title");
+    const parameterProgram=p.createParameter({id:'threshold',value:1});
+    session.updateProgram(parameterProgram);
+    session.dispatch({type:'setParameter',target:'threshold',payload:{value:2}});
+    const edited=session.getState().program;
+    assert.equal(edited.semanticSpec.resources.find(r=>r.id==='threshold').result.value,2);
+    assert.throws(()=>session.dispatch({type:'setParameter',target:'threshold',payload:{value:'bad'}}));
+    assert.equal(session.getState().program,edited);
+    assert.equal(serializeProgram(deserializeProgram(serializeProgram(edited))),serializeProgram(edited));
     session.destroy();
   } }
 ];

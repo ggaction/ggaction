@@ -1,0 +1,27 @@
+{
+  "expected": {
+    "ids": [
+      "c"
+    ],
+    "phases": [
+      "commit",
+      "settled"
+    ],
+    "revision": 1,
+    "generation": 1,
+    "originalUnchanged": true
+  },
+  "actual": {
+    "ids": [
+      "c"
+    ],
+    "phases": [
+      "commit",
+      "settled"
+    ],
+    "revision": 1,
+    "generation": 1,
+    "originalUnchanged": true
+  },
+  "diff": []
+}
