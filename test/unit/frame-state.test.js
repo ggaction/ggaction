@@ -25,9 +25,13 @@ test("collects literal plot bounds, shared endpoints and every conditional branc
 });
 
 test("hidden guides retain scale identity while mirrored visible owners are rejected", () => {
-  const p = base().createYAxis().createYAxis({ id: "right", position: "right" });
+  const source = base().createYAxis();
+  const p = semantic(source, { guides: { axis: { ...source.semanticSpec.guides.axis, right: {
+    ...source.semanticSpec.guides.axis.y, channel: "y", position: "right"
+  } } } });
+  p.guideConfigs = { axis: { ...source.guideConfigs.axis, right: source.guideConfigs.axis.y } };
   assert.throws(() => assertProgramSingleY(p), /one visible Y guide/);
-  const hidden = p.editYAxis({ target: "right", visible: false });
+  const hidden = { ...p, guideConfigs: { axis: { ...p.guideConfigs.axis, right: { ...p.guideConfigs.axis.right, visibility: { all: false } } } } };
   assert.doesNotThrow(() => assertProgramSingleY(hidden));
   const wrong = semantic(hidden, { guides: { ...hidden.semanticSpec.guides, axis: {
     ...hidden.semanticSpec.guides.axis, right: { ...hidden.semanticSpec.guides.axis.right, scale: "other" }

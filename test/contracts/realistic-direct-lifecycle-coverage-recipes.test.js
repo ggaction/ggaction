@@ -1,3 +1,4 @@
+import { directProgramOperations, directProgramTrace } from "../support/program-traces.js";
 import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -307,7 +308,7 @@ function directTraceValues(entry, option) {
 
 function observeDirectCoverageTail(program) {
   const observed = new Set();
-  const traces = program.trace.children ?? [];
+  const traces = directProgramTrace(program);
   const has = (operation, predicate) => traces.some(entry =>
     entry.op === operation && predicate(entry.args)
   );
@@ -382,7 +383,7 @@ function targetEvidenceIndex(inventory, targetIds) {
 
 function observeDirectTargets(program, metadata, index) {
   const observed = new Set();
-  for (const entry of program.trace.children ?? []) {
+  for (const entry of directProgramTrace(program)) {
     for (const option of index.optionsByAction.get(entry.op) ?? []) {
       const values = directTraceValues(entry, option);
       if (values.length === 0) continue;
@@ -469,7 +470,7 @@ function evaluatePlan(recipe, factors, index) {
   const label = `${recipe.id}/${factors.dataset}/${factors.profile.id}`;
   const program = recipe.build(factors);
   const metadata = recipe.describe(factors);
-  const directActions = new Set(program.trace.children?.map(entry => entry.op) ?? []);
+  const directActions = directProgramOperations(program);
   assert.ok(recipe.expectedDirectActions.every(action => directActions.has(action)), label);
   assertTruthfulMetadata(recipe, factors, program, metadata, label);
   assertGraphicIntegrity(program, label);
@@ -1261,6 +1262,25 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
   }
 });
 
+function removalAnalysisRows(program) {
+  assert.deepEqual(Object.keys(program.children).sort(), ["measure", "sourceOrder", "xOffset", "yOffset"]);
+  const rows = program.children.measure.semanticSpec.datasets.find(value =>
+    value.id === "analysisRows"
+  ).values;
+  for (const id of ["sourceOrder", "xOffset", "yOffset"]) {
+    assert.deepEqual(program.children[id].semanticSpec.datasets.find(value =>
+      value.id === "analysisRows"
+    ).values, rows, `${id} retains the same selected source observations`);
+  }
+  const positions = program.children.sourceOrder.semanticSpec.layers;
+  assert.deepEqual(positions.map(layer => layer.id).sort(), ["remove-strokeWidth", "remove-x2", "remove-y2"]);
+  assert.ok(positions.every(layer => layer.encoding.y.field === "position" &&
+    layer.encoding.y.scale === "removalOrderY"));
+  assert.ok(program.children.measure.semanticSpec.layers.every(layer =>
+    layer.encoding.y === undefined || layer.encoding.y.field === "positiveY"));
+  return rows;
+}
+
 test("keeps the assigned single-series operation truthful and removal-only", () => {
   const removal = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
     value.id === "realistic-direct-lifecycle-removal-coverage"
@@ -1277,9 +1297,7 @@ test("keeps the assigned single-series operation truthful and removal-only", () 
       const factors = { dataset, profile: { id: "maximal" } };
       const program = removal.build(factors);
       const metadata = removal.describe(factors);
-      const rows = program.semanticSpec.datasets.find(value =>
-        value.id === "analysisRows"
-      ).values;
+      const rows = removalAnalysisRows(program);
       assert.deepEqual([...new Set(rows.map(row => row.group))], ["All observations"]);
       assert.deepEqual([...new Set(rows.map(row => row.series))], ["All observations"]);
       assert.equal(
@@ -1346,9 +1364,7 @@ test("uses stable selected source order for the one-measure Spiders removal view
       captureProgram(program) {
         captured = true;
         const metadata = recipe.describe(factors);
-        const rows = program.semanticSpec.datasets.find(value =>
-          value.id === "analysisRows"
-        ).values;
+        const rows = removalAnalysisRows(program);
         const selectedIndexes = new Set(rows.map(row => row.sourceRowIndex));
         const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset)
           .filter(entry => selectedIndexes.has(entry.sourceRowIndex))
@@ -1438,10 +1454,10 @@ test("uses stable selected source order for the one-measure Spiders removal view
         assert.equal(metadata.analysisQuestion, REMOVAL_ANALYSIS_QUESTION);
         assert.equal(program.semanticSpec.title.subtitle, REMOVAL_ANALYSIS_QUESTION);
         assert.deepEqual(
-          program.trace.children
+          directProgramTrace(program)
             .filter(value => value.op === "removeEncoding")
-            .map(value => value.args.channel),
-          REMOVAL_CHANNELS
+            .map(value => value.args.channel).sort(),
+          [...REMOVAL_CHANNELS].sort()
         );
         assert.deepEqual(recipe.observeFactors(program, factors), [{
           factor: "profile",
@@ -1516,9 +1532,7 @@ test(REMOVAL_SWEEP_TEST_NAME, () => {
         captureProgram(program) {
           captured = true;
           const metadata = recipe.describe(factors);
-          const rows = program.semanticSpec.datasets.find(value =>
-            value.id === "analysisRows"
-          ).values;
+          const rows = removalAnalysisRows(program);
           const bindings = metadata.provenance.fieldBindings;
           const orderedMeasures = rows.map(row => row.value)
             .sort((left, right) => left - right);
@@ -1607,10 +1621,10 @@ test(REMOVAL_SWEEP_TEST_NAME, () => {
           assert.equal(metadata.analysisQuestion, REMOVAL_ANALYSIS_QUESTION);
           assert.equal(program.semanticSpec.title.subtitle, REMOVAL_ANALYSIS_QUESTION);
           assert.deepEqual(
-            program.trace.children
+            directProgramTrace(program)
               .filter(value => value.op === "removeEncoding")
-              .map(value => value.args.channel),
-            REMOVAL_CHANNELS,
+              .map(value => value.args.channel).sort(),
+            [...REMOVAL_CHANNELS].sort(),
             dataset
           );
           assert.deepEqual(recipe.observeFactors(program, factors), [{

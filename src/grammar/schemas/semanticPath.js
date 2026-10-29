@@ -80,6 +80,8 @@ const ENTITY_PATHS = Object.freeze({
       "mark.blend",
       "derivedBindings.regression",
       "derivedBindings.overlay",
+      "derivedBindings.plotSnapshot",
+      "derivedBindings.plotAnchor",
       "layout.mode",
       ...CONDITIONAL_CHANNELS.map(channel => `conditionals.${channel}`),
       ...ENCODING_PATHS

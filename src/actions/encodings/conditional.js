@@ -1,3 +1,6 @@
+import { conditionalBranchRequest } from "./conditionalRequest.js";
+import { clearPlotPositionChannel } from "./position/apply.js";
+import { assertPositionEncodingFrame, isPositionEncodingEntry, resolvePositionEncoding } from "./position/resolve.js";
 import { getPositionChannelDefinition } from "../../core/vocabulary.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
 import { positionBindings, uniquePositionBinding, commonPositionBinding } from "../../core/encodingBindings.js";
@@ -20,7 +23,7 @@ import { requireStoredResource } from "../../selectors/resources.js";
 import { requireLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale, requireSemanticScale } from "../../selectors/scales.js";
 import { applyEncodingScale, resolveTarget, rebindPositionGuides } from "./shared.js";
-import { withPreviewLayerEncodings } from "../primitives/semanticAction.js";
+import { withPreviewLayerEncodings, withoutPreviewLayerEncodings } from "../primitives/semanticAction.js";
 
 function method(channel) { if (channel === "radius") return "encodeR"; return `encode${channel[0].toUpperCase()}${channel.slice(1)}`; }
 function markTypes(channel) {
@@ -36,7 +39,7 @@ function withoutConditional(program, target, channel) {
 }
 
 function clearAssignment(program, layer, channel) {
-  let next = withoutConditional(program, layer.id, channel);
+  let next = withoutConditional(clearPlotPositionChannel(program, layer, channel), layer.id, channel);
   if (layer.encoding?.[channel] !== undefined) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${channel}`, remove: true });
   if (isConditionalPositionChannel(channel) || ["text", "dx", "dy"].includes(channel)) return next;
   if (channel === "size") next = withoutConditional(next, layer.id, "pointRadius");
@@ -66,6 +69,21 @@ function encodeConditional(program, original, channel, args) {
     return { kind: resource.kind, id: resource.id, revision: resource.revision };
   });
   const selectionInputs = inspected.selections.map(id => conditionalSelectionInput(program, id));
+  const scales = new Map();
+  const positional = isConditionalPositionChannel(channel);
+  const textChannel = ["text", "dx", "dy"].includes(channel);
+  const branchRequest = conditionalBranchRequest(layer, channel, inspected.definition);
+  if (["x", "y"].includes(channel) && isPositionEncodingEntry(program)) {
+    const pureBaseline = withoutPreviewLayerEncodings(program, { id: target, channels: [channel], conditionals: true });
+    const branches = [...inspected.definition.conditions.map((condition, index) => [condition.value, ["conditions", index]]),
+      [inspected.definition.otherwise, ["otherwise"]]];
+    const plans = branches.map(([value, path]) => {
+      const { previous, payload } = branchRequest(value, path);
+      const view = previous === undefined ? pureBaseline : withPreviewLayerEncodings(pureBaseline, { id: target, encodings: { [channel]: previous } });
+      return { ...resolvePositionEncoding(view, channel, { ...payload, target }, method(channel)), layer };
+    });
+    assertPositionEncodingFrame(program, channel, plans);
+  }
   let baseline = clearAssignment(program, layer, channel);
   if (channel === "color" && layer.derivedBindings?.overlay?.inheritColor) baseline = baseline.editSemantic({
     property: `layer[${target}].derivedBindings.overlay`, value: { ...layer.derivedBindings.overlay, inheritColor: false }
@@ -73,25 +91,13 @@ function encodeConditional(program, original, channel, args) {
   const previewBaseline = createDeferredEncodingProgram(baseline)
     ._withoutMaterializationConfig(["selections"])
     ._withoutMaterializationConfig(["highlights"]);
-  const scales = new Map();
-  const positional = isConditionalPositionChannel(channel);
-  const textChannel = ["text", "dx", "dy"].includes(channel);
   let coordinate;
   let enabledStroke;
   const normalized = normalizeConditionalEncoding(inspected.definition, {
     environment: expressionEnvironment(program, dataset, parameterInputs),
     selections: Object.keys(program.materializationConfigs.selections ?? {}),
     normalizeValue(value, path) {
-      if (value === null || typeof value !== "object" || Array.isArray(value) || Object.hasOwn(value, "target")) throw new TypeError("Conditional values require an encoder payload without target.");
-      const field = Object.hasOwn(value, "field");
-      const previous = (path[0] === "otherwise" ? layer.conditionals?.[channel]?.otherwise : layer.conditionals?.[channel]?.conditions[path[1]]?.value)
-        ?? (channel === "text" || positional ? layer.encoding?.[channel] : undefined);
-      const coupledScale = ["x2", "y2"].includes(channel) ? commonPositionBinding(layer, channel[0])?.scale
-        : ["bar", "area"].includes(layer.mark.type) && ["x", "y"].includes(channel) ? commonPositionBinding(layer, `${channel}2`)?.scale
-        : layer.mark.type === "arc" && channel === "theta"
-          ? commonPositionBinding(layer, channel)?.scale ?? `${target}-theta` : undefined;
-      const payload = (field || positional) && channel !== "angle" && !textChannel ? { ...value, scale: { ...value.scale,
-        id: value.scale?.id ?? previous?.scale ?? coupledScale ?? `${target}-${channel}-${path[0] === "otherwise" ? "otherwise" : `condition-${path[1]}`}` } } : value;
+      const { field, previous, payload } = branchRequest(value, path);
       const branchBaseline = previous === undefined || (!textChannel && previous.scale === undefined && previous.field === undefined) ? previewBaseline
         : withPreviewLayerEncodings(previewBaseline, { id: target, encodings: { ...requireLayer(previewBaseline, target).encoding, [channel]: previous } });
       const preview = invokeWrappedActionImplementation(original, branchBaseline, { ...payload, target });
@@ -187,8 +193,13 @@ export function registerConditionalEncodingActions(ProgramClass) {
       if (!this.semanticSpec.layers.some(layer => layer.conditionals?.[channel] !== undefined)) return invokeWrappedActionImplementation(original, this, args);
       const types = markTypes(channel);
       const { id, layer } = resolveTarget(this, args.target, types, "encoding mark");
-      let baseline = withoutConditional(this, id, channel);
       const previous = isConditionalPositionChannel(channel) ? commonPositionBinding(layer, channel) : undefined;
+      if (["x", "y"].includes(channel) && isPositionEncodingEntry(this)) {
+        let view = withoutPreviewLayerEncodings(this, { id, channels: [channel], conditionals: true });
+        if (previous !== undefined) view = withPreviewLayerEncodings(view, { id, encodings: { [channel]: previous } });
+        assertPositionEncodingFrame(this, channel, [{ ...resolvePositionEncoding(view, channel, args, name), layer }]);
+      }
+      let baseline = withoutConditional(this, id, channel);
       if (previous !== undefined) baseline = withPreviewLayerEncodings(baseline, { id, encodings: { [channel]: previous } });
       const next = invokeWrappedActionImplementation(original, baseline, args);
       return applyDetachedScaleRematerialization(next, [layer]);

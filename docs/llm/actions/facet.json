@@ -29,7 +29,17 @@
   "authoringRoles": [
     "H0"
   ],
-  "wraps": [],
+  "wraps": [
+    "filterData",
+    "editXAxisLine",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisLine",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle"
+  ],
   "editableVia": [
     "editFacetSource",
     "editFacetHeaders",

@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { isBarCategoryEncoding } from "../../grammar/bars/policy.js";
 import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
@@ -74,6 +75,9 @@ export const createBarPlot = /* @__PURE__ */ action(
     const positions = isBarCategoryEncoding(y) || orientation === "horizontal"
       ? [["encodeY", y], [xRange ? "encodeXRange" : "encodeX", x]]
       : [["encodeX", x], [yRange ? "encodeYRange" : "encodeY", y]];
+    assertFacadePositionFrame(this, { id, data, mark: { type: "bar", ...bar,
+      ...(args.missing === undefined ? {} : { missing: args.missing }), ...(orientation === undefined ? {} : { orientation }) },
+      coordinate: args.coordinate, positions: positions.map(([operation, value]) => [operation[6].toLowerCase(), value]), guides });
     let next = this.createBarMark({ id, data, ...bar, ...(args.missing === undefined ? {} : { missing: args.missing }), ...(orientation === undefined ? {} : { orientation }) });
     for (const [operation, encoding] of positions) {
       next = next[operation](positionArgs(encoding, {

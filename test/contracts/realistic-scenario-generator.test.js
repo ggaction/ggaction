@@ -1,3 +1,4 @@
+import { directProgramOperations } from "../support/program-traces.js";
 import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -933,7 +934,7 @@ test("observes lifecycle features from recipe-specific direct trace signatures",
       });
       const program = recipe.build(factors);
       const expected = recipe.expectedDirectActionsFor(factors);
-      const direct = new Set(program.trace.children.map(node => node.op));
+      const direct = directProgramOperations(program);
       assert.equal(
         expected.every(operation => direct.has(operation)),
         true,
@@ -943,13 +944,12 @@ test("observes lifecycle features from recipe-specific direct trace signatures",
       assert.equal(recipe.observe(program, factors).includes(feature), true);
 
       const missingOperation = expected[0];
-      const altered = {
-        ...program,
-        trace: {
-          ...program.trace,
-          children: program.trace.children.filter(node => node.op !== missingOperation)
-        }
-      };
+      const removeOperation = owner => ({
+        ...owner,
+        trace: { ...owner.trace, children: owner.trace.children.filter(node => node.op !== missingOperation) },
+        children: Object.fromEntries(Object.entries(owner.children ?? {}).map(([id, child]) => [id, removeOperation(child)]))
+      });
+      const altered = removeOperation(program);
       assert.equal(
         recipe.observe(altered, factors).includes(feature),
         false,

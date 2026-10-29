@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "./frame.js";
+import { resolveDensityCreation } from "../encodings/density.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
@@ -42,6 +44,9 @@ export const createDensityPlot = /* @__PURE__ */ action({
     throw new Error(`${OPERATION} area.fill cannot be combined with color.`);
   }
   const guides = normalizeCategoricalGuides(requestedGuides, OPERATION, color);
+  const plan = resolveDensityCreation(this, { id, data, mark: { type: "area" }, encoding: {} }, density);
+  assertFacadeBindingFrame(this, { id, data: plan.derivedId, mark: { type: "area" }, coordinate: args.coordinate,
+    bindings: plan.definition, guides, explicitGuides: requestedGuides ?? {} });
   let next = this.createAreaMark({ id, data, ...area }).encodeDensity({ ...density, target: id });
   if (color !== undefined) next = next.encodeColor({ ...color, target: id });
   return applyFacadeGuides(next, guides, id, requestedGuides ?? {});

@@ -1,3 +1,4 @@
+import { assertFacadeBindingFrame } from "../charts/frame.js";
 import { closedAction } from "../../core/action.js";
 
 import { normalizeBoxSummary } from "../../grammar/boxPlot.js";
@@ -69,6 +70,9 @@ export const createBoxPlot = /* @__PURE__ */ closedAction(
       ? category.scale
       : category?.scale?.id;
     const categoryScale = findSemanticScale(this, categoryScaleId);
+    assertFacadeBindingFrame(this, { id, data, mark: { type: "bar" }, coordinate: args.coordinate ?? source?.coordinate,
+      bindings: { ...(x === undefined ? {} : { x: boxEncodingArgs(x) }), ...(y === undefined ? {} : { y: boxEncodingArgs(y) }) },
+      guides: x !== undefined && y !== undefined ? guides : false });
     let next = categoryScale?.type === "point"
       ? this.editScale({ id: categoryScaleId, type: "band" })
       : this;

@@ -321,7 +321,7 @@
       "target: \"share\""
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"share\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "39795f944a3111610e45fc6d3750e80715d703d4162a80f09c3ee7679234ede9",
+    "sha256": "601568e7dfebbcab29d791cf2f0a979dc3237c3721bfa15675feeec8588a7d6c",
     "executable": false
   },
   {

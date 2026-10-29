@@ -146,7 +146,7 @@ test("false disables this facade's requests without deleting shared guides", () 
 test("a new facade scopes automatic guides to its own layer", () => {
   const before = scatter(base(), false).createBarPlot({
     id: "bars", x: { field: "category", fieldType: "nominal", scale: { id: "categoryX" } },
-    y: { field: "y", scale: { id: "measureY" } }, guides: false
+    y: { field: "y", scale: { id: "y" } }, guides: false
   });
   const actual = line(before);
   assert.equal(actual.semanticSpec.guides.axis.x.scale, "x");
@@ -178,7 +178,7 @@ const legendFacades = [
   ["Point size", (p, id, guides) => p.createScatterPlot({ id, x: "x", y: "y", size: "x", guides })],
   ["Point continuous color", (p, id, guides) => p.createScatterPlot({ id, x: "x", y: "y", color: { field: "x", fieldType: "quantitative" }, guides })],
   ["Point interval color", (p, id, guides) => p.createScatterPlot({ id, x: "x", y: "y", color: { field: "x", fieldType: "quantitative", scale: { type: "quantize", range: ["red", "blue"] } }, guides })],
-  ["Bar categorical", (p, id, guides) => p.createBarPlot({ id, x: { field: "category", fieldType: "nominal" }, y: { field: "y", scale: { id: `${id}Y` } }, color: "group", guides: guides ?? { axes: false, grid: false } })],
+  ["Bar categorical", (p, id, guides) => p.createBarPlot({ id, x: { field: "category", fieldType: "nominal" }, y: { field: "y", scale: { id: "sharedY" } }, color: "group", guides: guides ?? { axes: false, grid: false } })],
   ["Histogram categorical", (p, id, guides) => p.createHistogram({ id, field: "x", maxBins: 2, color: "group", guides })],
   ["Heatmap continuous", (p, id, guides) => p.createHeatmap({ id, x: { field: "x", fieldType: "ordinal" }, y: "group", color: { field: "y", fieldType: "quantitative" }, guides })],
   ["Violin categorical", (p, id, guides) => p.createViolinPlot({ id, data: "data", x: "category", y: "y", color: "category", density: { bandwidth: 0.5, steps: 8 }, guides: guides ?? { legend: {} } })]

@@ -76,7 +76,7 @@ test("resolves explicit, current, unique, and ambiguous mark targets", () => {
   const layered = first
     .createPointMark({ id: "second" })
     .encodeX({ target: "second", field: "x", scale: { id: "secondX" } })
-    .encodeY({ target: "second", field: "y", scale: { id: "secondY" } })
+    .encodeY({ target: "second", field: "y", scale: { id: "y" } })
     .encodeRadius({ target: "second", value: 2 });
   assert.equal(
     layered.selectMarks({ id: "current", field: "x", op: "max" })

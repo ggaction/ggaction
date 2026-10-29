@@ -2,6 +2,15 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Shared Cartesian admission
+
+최상위 Full/Basic action은 최종 immutable candidate의 Cartesian frame을
+[단일 Y 계약](AXES.md#single-y-per-cartesian-frame)으로 검증한다. 잘못된 candidate는
+호출자에게 반환하지 않으며 이전 program과 trace는 그대로다. `editSemantic`의 직접 후보,
+composition child snapshot 및 editable import도 같은 검증을 적용한다. 미완성 extension
+assignment는 concrete mark가 생기기 전까지 coordinate reference를 지연할 수 있다.
+완성된 frame에서 서로 다른 Y identity, 숨긴 독립 Y 또는 보이는 mirror axis는 거부한다.
+
 ## `createCanvas`
 
 - Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
@@ -1967,6 +1976,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`와 Parallel chart contract가 all three types, attachments,
   idempotence, conflicts와 validation을 검증한다.
 - Cartesian, Polar와 Parallel resources는 모두 current materialized consumers와 guides를 가진다.
+- Direct coordinate attachment admits the final selected layer bindings through the [single-Y frame policy](AXES.md#single-y-per-cartesian-frame) before a semantic child writes them, including unfinished extension layers.
 
 ### Formal values — `createCoordinate`
 
@@ -1986,6 +1996,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 - Signature: `editCoordinate({ target, aspect?, polarFrame? })`; at least one patch is required.
 - `target`: required existing coordinate ID. The action does not infer a coordinate.
+- Direct edits validate the final Cartesian frame geometry before a semantic child, so an aspect change cannot overlay independent frames. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - `aspect`: `"auto"` or `{ mode, ratio, alignX?, alignY? }`.
   - `mode: "frame"` fixes the effective plot width/height ratio.
   - `mode: "data"` fixes `(pixels per x unit) / (pixels per y unit)` and is available only for one complete Cartesian

@@ -31,7 +31,11 @@
     "H3"
   ],
   "wraps": [
-    "editDensity"
+    "editDensity",
+    "editSemantic",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle"
   ],
   "editableVia": [
     "editViolinPlot"

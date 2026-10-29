@@ -1,3 +1,4 @@
+import { programTraceOwners } from "../test/support/program-traces.js";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -465,7 +466,10 @@ export async function buildActionRelationships() {
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
     .editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })];
-  for (const program of programs) {
+  const seen = new Set();
+  for (const rootProgram of programs) for (const program of programTraceOwners(rootProgram)) {
+    if (seen.has(program)) continue;
+    seen.add(program);
     collectDirectRelationships(program.trace, directNames, relationships, observed);
   }
   const missing = actionNames.filter(name => !observed.has(name));

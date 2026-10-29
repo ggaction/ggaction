@@ -2145,7 +2145,7 @@ export interface SemanticLayer {
   readonly coordinate?: string;
   readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "multiply" | "screen" | "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
-  readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }>;
+  readonly derivedBindings?: Readonly<{ plotAnchor?: Readonly<{ x?: number; y?: number }>; plotSnapshot?: Readonly<{ x?: string; y?: string }>; regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }>;
     overlay?: Readonly<{ source: string; basis: "visibleItems"; mode: "follow"; series: "source" | "total";
       missing: "break" | "connect"; orderBy?: "x" | "y"; inheritColor: boolean }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;

@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "conditional-encoding-requests": { prefix: "actions/encodings/conditionalRequest.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Direct and aggregate conditional encoders must resolve branch resource identities with one policy." },
+  "facade-frame-admission": { prefix: "actions/charts/frame.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Complete facade positions and guide ownership must be admitted before any state-changing child." },
+  "axis-frame-admission": { prefix: "actions/guides/axes/frame.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Axis creation and visibility changes must validate their final single-Y meaning before any child writes." },
+  "plot-position": { prefix: "grammar/plotPosition.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Plot-space anchors and detached snapshots must remain distinct from independent data scales." },
   "frame-policy": { prefix: "grammar/framePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One Cartesian frame must preserve one Y resource identity and bounded overlap admission." },
   "frame-state": { prefix: "materialization/frameState.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Frame admission must resolve existing bindings and namespaced child regions without mutating or compiling programs." },
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },

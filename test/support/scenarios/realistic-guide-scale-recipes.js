@@ -1,9 +1,10 @@
+import { directProgramTrace } from "../program-traces.js";
 import { appendLegendCombinationLifecycle } from "./realistic-legend-combination-lifecycle.js";
 import { exerciseCartesianAxisOwners } from "./cartesian-axis-owner-witness.js";
 import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { createHash } from "node:crypto";
 
-import { chart } from "../../../src/index.js";
+import { chart, vconcat } from "../../../src/index.js";
 import { measureTextWidth } from "../../../src/core/textMetrics.js";
 import { PALETTE_NAMES } from "../../../src/grammar/palettes.js";
 
@@ -2255,10 +2256,10 @@ function buildFacetGuides(factors) {
   const context = contextFor(factors.dataset, view, "guide-scale-facet");
   const firstPolicy = factors.variant.first;
   const secondPolicy = firstPolicy === "independent" ? "shared" : "independent";
-  let program = chart()
+  const base = chart()
     .createCanvas(facetCanvas(view, context))
-    .createData({ id: "analysisRows", values: view.rows })
-    .createPointMark({
+    .createData({ id: "analysisRows", values: view.rows });
+  let program = base.createPointMark({
       id: "facetPoints",
       shape: "circle",
       opacity: 0.78,
@@ -2323,8 +2324,8 @@ function buildFacetGuides(factors) {
       field: "subgroup",
       fieldType: "nominal",
       scale: { range: [[], [5, 3], [2, 2], [8, 3, 2, 3]] }
-    })
-    .createBarMark({
+    });
+  const xOffset = base.createBarMark({
       id: "xOffsetBars",
       opacity: 0.12,
       stroke: false
@@ -2355,8 +2356,8 @@ function buildFacetGuides(factors) {
       fieldType: "nominal",
       layout: "group",
       scale: { id: "barColor", type: "ordinal", palette: "tableau10" }
-    })
-    .createBarMark({
+    });
+  const yOffset = base.createBarMark({
       id: "yOffsetBars",
       opacity: 0.1,
       stroke: false
@@ -2387,8 +2388,8 @@ function buildFacetGuides(factors) {
       fieldType: "nominal",
       layout: "group",
       scale: { id: "horizontalColor", type: "ordinal", palette: "tableau10" }
-    })
-    .createGuides({
+    });
+  program = program.createGuides({
       axes: {
         x: {
           scale: "x",
@@ -2434,23 +2435,15 @@ function buildFacetGuides(factors) {
       symbol: "auto",
       labels: FACET_SIDE_LEGEND.labels,
       titleStyle: FACET_SIDE_LEGEND.titleStyle
-    })
-    .facet({
+    });
+  function resolveFacets(panel, channels) {
+    const policies = value => Object.fromEntries(channels.map(channel => [channel, value]));
+    return panel.facet({
       field: "subgroup",
       columns: factors.variant.columns,
       gap: factors.variant.gap,
       padding: factors.variant.padding,
-      scales: {
-        x: secondPolicy,
-        y: secondPolicy,
-        xOffset: secondPolicy,
-        yOffset: secondPolicy,
-        color: secondPolicy,
-        shape: secondPolicy,
-        size: secondPolicy,
-        opacity: secondPolicy,
-        strokeDash: secondPolicy
-      },
+      scales: policies(secondPolicy),
       guides: { axes: "each", legend: false },
       align: factors.variant.align
     })
@@ -2461,37 +2454,32 @@ function buildFacetGuides(factors) {
       color: "#334155",
       offset: 12
     })
-    .editFacetScales({
-      x: firstPolicy,
-      y: firstPolicy,
-      xOffset: firstPolicy,
-      yOffset: firstPolicy,
-      color: firstPolicy,
-      shape: firstPolicy,
-      size: firstPolicy,
-      opacity: firstPolicy,
-      strokeDash: firstPolicy
-    })
+    .editFacetScales(policies(firstPolicy))
     .editFacetGuides({
       axes: "outer",
       legend: false
     })
-    .editFacetScales({
-      x: secondPolicy,
-      y: secondPolicy,
-      xOffset: secondPolicy,
-      yOffset: secondPolicy,
-      color: secondPolicy,
-      shape: secondPolicy,
-      size: secondPolicy,
-      opacity: secondPolicy,
-      strokeDash: secondPolicy
-    })
+    .editFacetScales(policies(secondPolicy))
     .editFacetGuides({
       axes: "each",
       legend: secondPolicy === "shared" ? "shared" : false
     });
-  return program.createTitle(titleOptions(context, factors.variant, { final: true }));
+  }
+  function offsetPanel(panel, x, y, offset) {
+    return resolveFacets(panel.createGuides({
+      axes: {
+        x: { scale: x, title: { text: x === "barX" ? context.dimensionText : "Observation count" } },
+        y: { scale: y, title: { text: y === "barY" ? "Observation count" : context.dimensionText } }
+      },
+      grid: false,
+      legend: false
+    }), ["x", "y", offset, "color"]);
+  }
+  return vconcat({ id: "facetPolicyPanels", programs: [
+    { id: "measure", program: resolveFacets(program, ["x", "y", "color", "shape", "size", "opacity", "strokeDash"]) },
+    { id: "xOffset", program: offsetPanel(xOffset, "barX", "barY", "xOffset") },
+    { id: "yOffset", program: offsetPanel(yOffset, "horizontalX", "horizontalY", "yOffset") }
+  ] }).createTitle(titleOptions(context, factors.variant, { final: true }));
 }
 
 const CARTESIAN_ACTIONS = Object.freeze([
@@ -2552,7 +2540,7 @@ function sameValue(left, right) {
 }
 
 function directTraceEntries(program, operation) {
-  return (program.trace.children ?? []).filter(entry => entry.op === operation);
+  return directProgramTrace(program).filter(entry => entry.op === operation);
 }
 
 function containsValue(value, expected) {
@@ -2638,7 +2626,8 @@ function observeFactorEffects(program, values, view, context) {
   const createdTitle = directTraceEntries(program, "createTitle").some(({ args }) =>
     args.text === title.text && args.subtitle === title.subtitle
   );
-  const finalData = program.semanticSpec.datasets.find(dataset =>
+  const dataOwner = values.variant.first === undefined ? program : program.children.measure;
+  const finalData = dataOwner.semanticSpec.datasets.find(dataset =>
     dataset.id === "analysisRows"
   );
   const finalTitle = program.semanticSpec.title;

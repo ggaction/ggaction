@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { TEXT_MARK_STYLE_OPTIONS } from "../../grammar/text.js";
 import {
@@ -22,6 +23,8 @@ export const createTextPlot = /* @__PURE__ */ action({
   const color = normalizeEncoding(args.color, "createTextPlot color");
   const style = normalizeAppearance(args.style, STYLE_OPTIONS, "createTextPlot style");
   const guides = normalizeGuides(args.guides, "createTextPlot");
+  assertFacadePositionFrame(this, { id, data, mark: { type: "text", ...style }, coordinate: args.coordinate,
+    positions: [["x", x], ["y", y]], guides });
   const apply = program => {
     let next = program.createTextMark({ id, data, ...style })
       .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))

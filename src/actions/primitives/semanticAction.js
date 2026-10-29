@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { statisticalReferenceContributions } from "../../materialization/statisticalPopulation.js";
 import { hasSemanticScaleReferences } from "../../selectors/scales.js";
 import { closedAction } from "../../core/action.js";
@@ -263,7 +264,7 @@ export function withPreviewLayerEncodings(program, { id, encodings }) {
   } });
 }
 
-export function withoutPreviewLayerEncodings(program, { id, channels }) {
+export function withoutPreviewLayerEncodings(program, { id, channels, conditionals = false }) {
   const removed = new Set(channels);
   const semanticSpec = {
     ...program.semanticSpec,
@@ -275,11 +276,19 @@ export function withoutPreviewLayerEncodings(program, { id, channels }) {
           Object.entries(layer.encoding ?? {}).filter(
             ([channel]) => !removed.has(channel)
           )
-        )
+        ),
+        ...(conditionals ? { conditionals: Object.fromEntries(Object.entries(layer.conditionals ?? {})
+          .filter(([channel]) => !removed.has(channel))) } : {})
       };
     })
   };
   return program._clone({ semanticSpec });
+}
+
+export function withPreviewLayerData(program, { id, data }) {
+  return program._clone({ semanticSpec: { ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(layer => layer.id === id ? { ...layer, data } : layer)
+  } });
 }
 
 // Composition materialization may retain this native combined guide meaning.
@@ -406,6 +415,9 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
         : parsed.kind === "title"
           ? updateTitle(this.semanticSpec, parsed, value)
           : updateEntity(this, parsed, value, args);
+      if (this.actionStack.length === 1) {
+        assertProgramSingleY({ ...this, semanticSpec, guideConfigs: this.guideConfigs }, { geometry: false, allowIncomplete: true });
+      }
       const contextKey = CONTEXT_KEYS[parsed.kind];
       const context = contextKey === undefined
         ? this.context

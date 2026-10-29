@@ -33,7 +33,9 @@
   ],
   "wraps": [
     "editScale",
-    "createBoxPlot"
+    "createBoxPlot",
+    "createScatterPlot",
+    "editGraphics"
   ],
   "editableVia": [
     "encodeColor",

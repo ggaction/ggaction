@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "./frame.js";
+import { previewMarkRemovalFrame } from "../marks/remove.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { action } from "../../core/action.js";
 import { resolveConfiguredOwner } from "../../selectors/layers.js";
@@ -60,6 +62,13 @@ function normalizeOutputs(value, id, operation) {
 
 
 
+function ecdfPositions(id, as) {
+  return {
+    x: { field: as.value, fieldType: "quantitative", scale: { id: `${id}Value`, zero: false, nice: false } },
+    y: { field: as.probability, fieldType: "quantitative", scale: { id: `${id}Probability`, domain: [0, 1], zero: true, nice: false } }
+  };
+}
+
 export const createECDFPlot = /* @__PURE__ */ action(
   {
     op: "createECDFPlot",
@@ -85,6 +94,8 @@ export const createECDFPlot = /* @__PURE__ */ action(
     const guides = normalizeGuides(args.guides, operation);
     const dataId = `${id}ECDFData`;
 
+    const bindings = ecdfPositions(id, as);
+    assertFacadeBindingFrame(this, { id, data: dataId, mark: { type: "line" }, coordinate: args.coordinate, bindings, guides });
     let next = this
       .createECDFData({
         id: dataId,
@@ -96,20 +107,8 @@ export const createECDFPlot = /* @__PURE__ */ action(
         as
       })
       .createLineMark({ id, data: dataId, curve: "step-after", ...line })
-      .encodeX({
-        target: id,
-        field: as.value,
-        fieldType: "quantitative",
-        scale: { id: `${id}Value`, zero: false, nice: false },
-        ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate })
-      })
-      .encodeY({
-        target: id,
-        field: as.probability,
-        fieldType: "quantitative",
-        scale: { id: `${id}Probability`, domain: [0, 1], zero: true, nice: false },
-        ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate })
-      });
+      .encodeX({ target: id, ...bindings.x, ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }) })
+      .encodeY({ target: id, ...bindings.y, ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }) });
     if (groupBy.length > 0) next = next.encodeGroup({ target: id, fields: groupBy });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (labels !== false) {
@@ -169,6 +168,8 @@ export const editECDFPlot = /* @__PURE__ */ action(
       else if (key === "color" && args[key] === false) delete revised.color;
       else revised[key] = args[key];
     }
+    assertFacadeBindingFrame(previewMarkRemovalFrame(this, owner.id), { id: owner.id, data: current.data,
+      mark: { type: "line" }, coordinate: revised.coordinate, bindings: ecdfPositions(owner.id, revised.as), guides: revised.guides });
     return this.removeMark({ target: owner.id }).createECDFPlot(revised);
   }
 );

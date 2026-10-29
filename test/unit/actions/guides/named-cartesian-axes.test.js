@@ -36,10 +36,10 @@ test("named axes own a stable identity, one frame, and ordinary concrete compone
 test("target omission prefers canonical identity, then a unique named owner, and rejects ambiguity", () => {
   const single = axis().editYAxisLabels({ color: "red" });
   assert.equal(single.guideConfigs.axis.share.labels.color, "red");
-  const canonical = single.createYAxis().editYAxisLabels({ color: "green" });
+  const canonical = single.editYAxis({ target: "share", visible: false }).createYAxis().editYAxisLabels({ color: "green" });
   assert.equal(canonical.guideConfigs.axis.y.labels.color, "green");
   assert.equal(canonical.guideConfigs.axis.share.labels.color, "red");
-  const pair = axis().createYAxis({ id: "left", position: "left" });
+  const pair = axis().editYAxis({ target: "share", visible: false }).createYAxis({ id: "left", position: "left" });
   assert.throws(() => pair.editYAxisLabels({ color: "red" }), /explicit target/u);
   for (const target of ["missing", "x", "theta"]) {
     assert.throws(() => pair.editYAxisLabels({ target, color: "red" }), /Unknown y-axis target/u);
@@ -48,7 +48,7 @@ test("target omission prefers canonical identity, then a unique named owner, and
 });
 
 test("whole-axis movement and component lifecycle preserve siblings and remove only the final owner", () => {
-  const p = axis().createYAxis();
+  const p = axis().editYAxis({ target: "share", visible: false }).createYAxis();
   const saved = snapshot(p);
   assert.throws(() => p.editYAxis({ target: "share", position: "left" }), /occupied/u);
   assert.throws(() => p.editYAxisLabels({ target: "share", position: "left" }), /complete axis position/u);
@@ -72,18 +72,18 @@ test("whole-axis movement and component lifecycle preserve siblings and remove o
 });
 
 test("aggregate named arrays are nonempty, ordered, atomic and usable through createGuides and facades", () => {
-  const options = Object.freeze({ x: false, y: Object.freeze([
-    Object.freeze({ id: "left", position: "left" }),
-    Object.freeze({ id: "right", position: "right" })
+  const options = Object.freeze({ y: false, x: Object.freeze([
+    Object.freeze({ id: "bottom", position: "bottom" }),
+    Object.freeze({ id: "top", position: "top" })
   ]) });
   const source = base(), saved = snapshot(source);
   const p = source.createAxes(options);
-  assert.deepEqual(Object.keys(p.semanticSpec.guides.axis), ["left", "right"]);
+  assert.deepEqual(Object.keys(p.semanticSpec.guides.axis), ["bottom", "top"]);
   assert.deepEqual(p.trace.children.at(-1).children.filter(node => /create[XY]Axis$/u.test(node.op))
-    .map(node => node.args.id), ["left", "right"]);
+    .map(node => node.args.id), ["bottom", "top"]);
   const q = source.createGuides({ axes: options, grid: false, legend: false });
   assert.deepEqual(q.graphicSpec, p.graphicSpec);
-  for (const y of [[], [{}], [{ id: "one", position: "left" }, { id: "two", position: "left" }],
+  for (const y of [[{ id: "left", position: "left" }, { id: "right", position: "right" }], [], [{}], [{ id: "one", position: "left" }, { id: "two", position: "left" }],
     [{ id: "one", position: "left" }, { id: "one", position: "right" }], [{ id: "x" }]]) {
     assert.throws(() => source.createAxes({ x: false, y }));
     assert.equal(snapshot(source), saved);
@@ -121,18 +121,18 @@ test("named axes refresh geometry through scale, Canvas, coordinate and editable
 });
 
 test("independent standalone scales and sparse components remain live consumers", () => {
-  const source = base().createYAxis().createScale({ id: "ratio", type: "linear", domain: [0, 1] });
-  const p = axis(source, { scale: "ratio", coordinate: "main", line: false, title: false });
+  const source = base().createXAxis().createScale({ id: "ratio", type: "linear", domain: [0, 1] });
+  const p = source.createXAxis({ id: "share", position: "top", scale: "ratio", coordinate: "main", line: false, title: false });
   assert.equal(p.guideConfigs.axis.share.binding.standalone, true);
-  assert.deepEqual(p.resolvedScales.ratio.range, [320, 80]);
-  const changed = p.editCanvas({ height: 500 }).editScale({ id: "ratio", domain: [0, 2] });
-  assert.deepEqual(changed.resolvedScales.ratio.range, [420, 80]);
+  assert.deepEqual(p.resolvedScales.ratio.range, [80, 520]);
+  const changed = p.editCanvas({ width: 700 }).editScale({ id: "ratio", domain: [0, 2] });
+  assert.deepEqual(changed.resolvedScales.ratio.range, [80, 620]);
   assert.ok(changed.graphicSpec.objects.axis_share__Labels.items.some(item => item.properties.text === "2"));
   assert.throws(() => p.removeScale({ id: "ratio" }), /referenc|consumer/u);
 });
 
 test("multiple bound tick policies require an explicit grid sampling policy", () => {
-  const p = axis(base(), { ticksAndLabels: { count: 3 } }).createYAxis({ ticksAndLabels: { count: 5 } });
+  const p = axis(base(), { ticksAndLabels: { count: 3 } }).editYAxis({ target: "share", visible: false }).createYAxis({ ticksAndLabels: { count: 5 } });
   assert.throws(() => p.createHorizontalGrid(), /explicit count or values/u);
   const explicit = p.createHorizontalGrid({ count: 4 });
   assert.equal(explicit.guideConfigs.grid.horizontal.count, 4);
@@ -170,7 +170,7 @@ test("named text collisions are checked across real occupied text bounds while l
 });
 
 test("data, encoding reassignment, and mark removal refresh every named consumer", () => {
-  const p = axis().createYAxis();
+  const p = axis().editYAxis({ target: "share", visible: false }).createYAxis();
   const rebound = p.encodeY({ field: "x", scale: { id: "nextY" } });
   assert.equal(rebound.semanticSpec.guides.axis.share.scale, "nextY");
   assert.equal(rebound.semanticSpec.guides.axis.y.scale, "nextY");
@@ -191,25 +191,26 @@ test("named axis theme typography and explicit appearance remain independent own
   assert.equal(themed.guideConfigs.axis.share.labels.fontSize, 12);
   assert.equal(themed.guideConfigs.axis.share.title.fontSize, 15);
   assert.equal(themed.graphicSpec.objects.axis_share__Title.properties.fontSize, 15);
-  const implicit = axis().editYAxisLabels({ fontSize: 14 }).createYAxis().applyTheme({ theme });
+  const implicit = axis().editYAxisLabels({ fontSize: 14 }).editYAxis({ target: "share", visible: false }).createYAxis().applyTheme({ theme });
   assert.equal(implicit.guideConfigs.axis.share.labels.fontSize, 14);
   assert.equal(implicit.guideConfigs.axis.y.labels.fontSize, 9);
 });
 
-function facetedSource() {
+function facetedSource(side = "right") {
   return chart().createCanvas({ width: 320, height: 260, margin: 65 })
     .createData({ id: "rows", values: Array.from({ length: 5 }, (_, index) => ({
       x: index + 1, y: index + 2, z: index + 3, panel: `Panel ${index}`, row: index < 3 ? "A" : "B", column: index % 3
     })) })
     .createScatterPlot({ x: "x", y: "y", guides: false })
     .createAxes({ x: [{ id: "bottom", position: "bottom" }, { id: "top", position: "top" }],
-      y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] });
+      y: [{ id: side, position: side }] });
 }
 
 test("ragged facets retain named guides on their actual top, right, bottom and left occupied edges", () => {
-  const p = facetedSource().facet({ field: "panel", columns: 3, guides: { axes: "outer", legend: false } });
+  for (const side of ["left", "right"]) {
+  const p = facetedSource(side).facet({ field: "panel", columns: 3, guides: { axes: "outer", legend: false } });
   const placements = resolveFacetProgramLayout(p).layout.children;
-  const expected = { top: [0, 1, 2], bottom: [2, 3, 4], left: [0, 3], right: [2, 4] };
+  const expected = { top: [0, 1, 2], bottom: [2, 3, 4], [side]: side === "left" ? [0, 3] : [2, 4] };
   for (const [index, cell] of placements.entries()) {
     for (const side of Object.keys(expected)) {
       const id = namespaceGraphicId(`${p.compositionSpec.id}-${cell.id}`, `axis_${side}__Line`);
@@ -218,10 +219,11 @@ test("ragged facets retain named guides on their actual top, right, bottom and l
   }
   const each = p.editFacetGuides({ axes: "each" });
   for (const cell of resolveFacetProgramLayout(each).layout.children) {
-    assert.ok(each.graphicSpec.objects[namespaceGraphicId(`${each.compositionSpec.id}-${cell.id}`, "axis_right__Labels")]);
+    assert.ok(each.graphicSpec.objects[namespaceGraphicId(`${each.compositionSpec.id}-${cell.id}`, `axis_${side}__Labels`)]);
   }
   assert.deepEqual(deserializeProgram(snapshot(p)).editCompositionLayout({ gap: 20 }).graphicSpec,
     p.editCompositionLayout({ gap: 20 }).graphicSpec);
+  }
 });
 
 test("grid facets and repeated charts preserve named identities through template and layout replay", () => {
@@ -248,10 +250,10 @@ test("named identity maps preserve prototype-shaped IDs without inheriting calle
 
 test("standalone named grid resources require an explicit scale when encoded and independent axes coexist", () => {
   const source = base().createScale({ id: "ratio", type: "linear", domain: [0, 1] });
-  const p = axis(source, { scale: "ratio", coordinate: "main", title: false });
-  assert.throws(() => p.createHorizontalGrid(), /multiple y scales/u);
-  const grid = p.createHorizontalGrid({ scale: "ratio", values: [0, 0.5, 1] });
-  assert.equal(grid.guideConfigs.grid.horizontal.scale, "ratio");
+  const p = source.createXAxis({ id: "share", position: "top", scale: "ratio", coordinate: "main", title: false });
+  assert.throws(() => p.createVerticalGrid(), /multiple x scales/u);
+  const grid = p.createVerticalGrid({ scale: "ratio", values: [0, 0.5, 1] });
+  assert.equal(grid.guideConfigs.grid.vertical.scale, "ratio");
   assert.deepEqual(deserializeProgram(snapshot(grid)).editCanvas({ height: 500 }).graphicSpec,
     grid.editCanvas({ height: 500 }).graphicSpec);
   const standalone = chart().createCanvas({ width: 600, height: 400, margin: 80 })

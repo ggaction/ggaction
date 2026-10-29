@@ -1,3 +1,5 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { previewNativePositionFrame } from "../encodings/position/resolve.js";
 import { validateFillPaint } from "../../grammar/paint.js";
 import { editGraphicProperties } from "../primitives/graphicProperties.js";
 import { action, closedAction } from "../../core/action.js";
@@ -9,7 +11,7 @@ import {
   STROKE_STYLE_PROPERTIES
 } from "../../grammar/strokeStyle.js";
 import { createResolvedIntervalData } from "../data/intervalEdit.js";
-import { resolveIntervalComposite } from "../intervals/resolve.js";
+import { resolveIntervalComposite, intervalPositionBindings } from "../intervals/resolve.js";
 import { errorBandBoundaries, resolveBoundaryAppearance } from "./edit.js";
 
 const OPTIONS = Object.freeze([
@@ -105,6 +107,10 @@ export const createErrorBandBoundary = /* @__PURE__ */ action(
     miterLimit
   } = {}) {
     const vertical = orientation === "vertical";
+    assertProgramSingleY(previewNativePositionFrame(this, { id, data, mark: { type: "line" }, encoding: {} }, coordinate, {
+      [vertical ? "x" : "y"]: { ...position, scale: { id: positionScale } },
+      [vertical ? "y" : "x"]: { field: bound, fieldType: "quantitative", scale: { id: intervalScale } }
+    }), { allowIncomplete: true });
     let next = this
       .createLineMark({
         id,
@@ -177,6 +183,8 @@ export const createErrorBand = /* @__PURE__ */ closedAction(
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
     if (args.fill !== undefined) validateFillPaint(args.fill, "Error-band fill");
+    assertProgramSingleY(previewNativePositionFrame(this, { id: resolved.id, data: resolved.dataId,
+      mark: { type: "area" }, encoding: {} }, resolved.coordinate, intervalPositionBindings(resolved)), { allowIncomplete: true });
     let next = createResolvedIntervalData(this, resolved);
     next = next.createAreaMark({
       id: resolved.id,

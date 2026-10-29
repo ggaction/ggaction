@@ -86,7 +86,7 @@ test("uses explicit targets, current marks, and one unique shared channel scale"
   const shared = points("first")
     .createPointMark({ id: "second", data: "rows" })
     .encodeX({ target: "second", field: "x", scale: { id: "secondX" } })
-    .encodeY({ target: "second", field: "y", scale: { id: "secondY" } })
+    .encodeY({ target: "second", field: "y", scale: { id: "y" } })
     .encodeColor({ target: "second", field: "group", scale: { id: "color" } })
     .createLegend({ target: "first", channels: ["color"] });
   const viaTarget = shared.editXScale({ target: "first", domain: [0, 8] });
@@ -117,7 +117,7 @@ test("rejects ambiguity, selector conflicts, wrong channels, orphan scales, and 
   const two = points("first")
     .createPointMark({ id: "second", data: "rows" })
     .encodeX({ target: "second", field: "x", scale: { id: "secondX" } })
-    .encodeY({ target: "second", field: "y", scale: { id: "secondY" } })
+    .encodeY({ target: "second", field: "y", scale: { id: "y" } })
     .encodeColor({ target: "second", field: "group", scale: { id: "secondColor" } });
   const ambiguous = two._clone({ context: {} });
   const wrongName = chart()

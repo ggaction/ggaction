@@ -96,7 +96,7 @@ test('filtered histograms and their source-following overlays use the same fitte
   assert.equal(path.length, 2);
   assert.notDeepEqual(path, base.graphicSpec.objects.trend.items[0].properties.commands);
   assert.equal(next.semanticSpec.layers.find(l => l.id === 'trend').encoding.x.scale, 'x');
-  const unfiltered = base.createScatterPlot({ id: 'raw', data: 'data', x: { field: 'x', scale: { id: 'x' } }, y: { field: 'y', scale: { id: 'raw-y' } }, guides: false });
+  const unfiltered = base.createScatterPlot({ id: 'raw', data: 'data', x: { field: 'x', scale: { id: 'x' } }, y: { field: 'y', scale: { id: 'y' } }, guides: false });
   assert.deepEqual(xDomain(filter(unfiltered, 'gte', 30)), [2, 50]);
 });
 

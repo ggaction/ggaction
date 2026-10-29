@@ -1,3 +1,5 @@
+import { assertFacadePositionFrame } from "./frame.js";
+import { resolveFacadeData, inferFacadeFieldType, normalizeGuides } from "./shared.js";
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -45,13 +47,19 @@ export const createBeeswarmPlot = /* @__PURE__ */ action(
       operation
     });
     const packing = normalizePacking(args.packing, operation);
+    const data = resolveFacadeData(this, args.data, operation);
+    const x = ownerScale(args.x, `${id}X`, `${operation} x`);
+    const y = ownerScale(args.y, `${id}Y`, `${operation} y`);
+    assertFacadePositionFrame(this, { id, data, mark: { type: "point", ...(args.missing === undefined ? {} : { missing: args.missing }) },
+      coordinate: args.coordinate, positions: [["x", { ...x, fieldType: inferFacadeFieldType(this, data, x, `${operation} x`) }],
+        ["y", { ...y, fieldType: inferFacadeFieldType(this, data, y, `${operation} y`) }]], guides: normalizeGuides(args.guides, operation) });
     let next = this.createStripPlot({
       id,
       ...(args.missing === undefined ? {} : { missing: args.missing }),
       ...(args.data === undefined ? {} : { data: args.data }),
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
-      x: ownerScale(args.x, `${id}X`, `${operation} x`),
-      y: ownerScale(args.y, `${id}Y`, `${operation} y`),
+      x,
+      y,
       ...(args.color === undefined ? {} : { color: args.color }),
       ...(args.size === undefined ? {} : { size: args.size }),
       ...(args.shape === undefined ? {} : { shape: args.shape }),

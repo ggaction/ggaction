@@ -30,7 +30,10 @@
   "authoringRoles": [
     "H0"
   ],
-  "wraps": [],
+  "wraps": [
+    "removeTitle",
+    "encodeX"
+  ],
   "editableVia": [
     "editFacetSource",
     "editFacetHeaders",

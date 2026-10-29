@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:fc25a4a54f3c758ae84d022c764722fd24f25e1a972e28b1b18a12048418d117",
+  "contractId": "sha256:a319dc22b4e4c53c7e470da214863b0bc3f27f781a123c92159abfdc1100ffbd",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "08508763953543de5555e23e87adcca63a90480bdc9d36c8a30e0a0bf09f405f",
-      "bytes": 1108048
+      "sha256": "1abcb0fec14316b4d6786239fc2db8b4ffbe7aa27cc25767352c6c1eccb80c5b",
+      "bytes": 1109054
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "c5d1b3f6397378a4d9eca918251c5d95b8507c4cbbada147d0802b55e119d711",
-      "bytes": 274192
+      "sha256": "6c89fa2c72ebf32f0a61044b0bdaa9cee1a33ce10b777fccc0159d463f7f33b0",
+      "bytes": 274296
     }
   ],
   "catalogs": {
     "pages": {
       "count": 164,
       "path": "llm/pages.json",
-      "bytes": 40809,
-      "sha256": "4e79d48421b8213b372b3fe18d825dc16d73dbfcff8a6957689f45d458880da0"
+      "bytes": 40808,
+      "sha256": "8e0b473a86b8298b1d289ab8dd029565facf2d6471d0a67e683938285fb52940"
     },
     "actions": {
       "count": 340,
       "path": "llm/actions.json",
       "bytes": 96796,
-      "sha256": "1939fc36f6484666b1aa53b5ad1a33f12582d9b32f347d0685d30928ba01beb9"
+      "sha256": "ac0c0a116e31cede0f4973a3cce4574ff16af1a0d2d18af4262e923c530ac8a8"
     },
     "types": {
       "count": 906,
       "path": "llm/types.json",
       "bytes": 202905,
-      "sha256": "e07416754e8b7887ae5012e5989bfa93dc35670bf734801ae6b4db61f7532708"
+      "sha256": "1ff8137881f98e8a169c05267126225d4aa5bc6b251a3c097cafea03832a7fb7"
     }
   },
   "paths": {

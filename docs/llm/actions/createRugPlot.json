@@ -36,6 +36,7 @@
     "createTickMark",
     "encodeX",
     "encodeY",
+    "editSemantic",
     "encodeAngle"
   ],
   "editableVia": [],

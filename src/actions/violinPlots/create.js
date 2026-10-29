@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "../charts/frame.js";
+import { resolveDensityCreation } from "../encodings/density.js";
 import { action } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -176,18 +178,7 @@ export const createViolinPlot = /* @__PURE__ */ action(
     );
     const { strokeWidth, ...areaCreate } = area;
     const hasFillStroke = strokeWidth !== undefined && area.stroke === undefined;
-    let next = this.createAreaMark({
-      id,
-      data,
-      ...areaCreate,
-      ...(area.stroke === undefined || strokeWidth === undefined
-        ? {}
-        : { strokeWidth })
-    });
-    if (hasFillStroke) {
-      next = next.configureAreaStrokeFromFill({ id, strokeWidth });
-    }
-    next = next.encodeDensity({
+    const densityArgs = {
       target: id,
       source: data,
       field: value.field,
@@ -203,7 +194,22 @@ export const createViolinPlot = /* @__PURE__ */ action(
         ...(split === undefined ? {} : { split }),
         ...(category.scale === undefined ? {} : { scale: category.scale })
       }
+    };
+    const plan = resolveDensityCreation(this, { id, data, mark: { type: "area" }, encoding: {} }, densityArgs);
+    assertFacadeBindingFrame(this, { id, data: plan.derivedId, mark: { type: "area" }, coordinate: args.coordinate,
+      bindings: plan.definition, guides, explicitGuides: args.guides ?? {} });
+    let next = this.createAreaMark({
+      id,
+      data,
+      ...areaCreate,
+      ...(area.stroke === undefined || strokeWidth === undefined
+        ? {}
+        : { strokeWidth })
     });
+    if (hasFillStroke) {
+      next = next.configureAreaStrokeFromFill({ id, strokeWidth });
+    }
+    next = next.encodeDensity(densityArgs);
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     next = applyFacadeGuides(next, guides, id, args.guides ?? {});
     const transform = findDataset(next, findLayer(next, id).data).transform[0];

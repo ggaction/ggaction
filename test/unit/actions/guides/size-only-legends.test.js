@@ -101,7 +101,7 @@ test("requires a target for multiple size points and accepts an explicit one", (
   const multiple = sizeBase()
     .createPointMark({ id: "other" })
     .encodeX({ target: "other", field: "x", scale: { id: "otherX" } })
-    .encodeY({ target: "other", field: "y", scale: { id: "otherY" } })
+    .encodeY({ target: "other", field: "y", scale: { id: "y" } })
     .encodeSize({
       target: "other",
       field: "magnitude",

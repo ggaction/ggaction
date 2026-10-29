@@ -64,7 +64,7 @@ test("keeps content edits through filtered data and independent categorical owne
   assert.equal(filtered.graphicSpec.objects.sizeLegendTitle.properties.text, "Mass");
   const independent = p.editCanvas({ margin: { left: 180, right: 180, top: 40, bottom: 60 } })
     .createPointMark({ id: "other" }).encodeX({ field: "x", scale: { id: "otherX" } })
-    .encodeY({ field: "y", scale: { id: "otherY" } }).encodeColor({ field: "group" })
+    .encodeY({ field: "y", scale: { id: "y" } }).encodeColor({ field: "group" })
     .createLegend({ target: "other", channels: ["color"], position: "left", labels: { color: "red" } });
   const q = independent.editLegendLabels({ target: "points", color: "blue" });
   assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 40);

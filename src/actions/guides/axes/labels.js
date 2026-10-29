@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { axisLabelTexts, axisLabelLines } from "../../../materialization/axisLabelText.js";
 import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
@@ -502,6 +503,7 @@ function makeCreate(channel) {
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
     resolveAxisLabels(this, channel, config, axisId);
+    assertAxisFrame(previewAxisFrame(this, channel, axisId, { scale }, { labels: true }));
     return this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,

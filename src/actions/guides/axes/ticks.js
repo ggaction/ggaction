@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
@@ -235,6 +236,7 @@ function makeCreate(channel) {
     const config = patchGuideDash({ scale, position: defaultAxisPosition(channel), length: DEFAULTS.length, color: DEFAULTS.color, lineWidth: DEFAULTS.lineWidth, ...options, inferredValues: inferredValues !== undefined, mode: Object.hasOwn(options, "values") ? "values" : "count" }, args);
     if (config.mode === "values") delete config.count; else config.count ??= DEFAULTS.count;
     validateConfig(channel, config); geometry(this, channel, config, axisId);
+    assertAxisFrame(previewAxisFrame(this, channel, axisId, { scale }, { ticks: true }));
     const next = this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,

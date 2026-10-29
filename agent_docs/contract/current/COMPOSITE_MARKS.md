@@ -8,6 +8,9 @@ generated child and preserve them during topology/statistics replay. Exact value
 
 ## `createBoxPlot`
 
+Box creation and statistical role edits apply the [single-Y frame preflight](AXES.md#single-y-per-cartesian-frame) before changing scales, marks, or derived data.
+Evidence: `test/unit/single-y-aggregate-admission.test.js`.
+
 ```typescript
 createBoxPlot({
   id?: UserId;

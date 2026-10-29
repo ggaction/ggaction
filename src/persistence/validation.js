@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../materialization/frameState.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
@@ -675,6 +676,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     if (!legacy) for (const item of graphic.items ?? []) {

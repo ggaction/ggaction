@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
@@ -159,6 +160,7 @@ function createAxisLine(channel) {
         throw new Error(`${operation} requires a missing ${channel}-axis line.`);
       }
 
+    assertAxisFrame(previewAxisFrame(this, channel, axisId, { scale }, { line: true }));
       return this
         .editSemantic({ property: guidePath, value: scale })
         .createGraphics({

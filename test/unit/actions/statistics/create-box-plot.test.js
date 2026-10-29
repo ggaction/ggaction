@@ -150,7 +150,7 @@ test("rejects ambiguous encoded sources before authoring and permits explicit po
     .encodeY({ target: "first", field: "Miles_per_Gallon", scale: { id: "firstY" } })
     .createPointMark({ id: "second", data: "data" })
     .encodeX({ target: "second", field: "Origin", fieldType: "nominal", scale: { id: "secondX" } })
-    .encodeY({ target: "second", field: "Miles_per_Gallon", scale: { id: "secondY" } })
+    .encodeY({ target: "second", field: "Miles_per_Gallon", scale: { id: "firstY" } })
     ._withContext({ currentMark: undefined, currentData: undefined });
 
   assert.throws(
@@ -162,7 +162,7 @@ test("rejects ambiguous encoded sources before authoring and permits explicit po
   const explicit = encoded.createBoxPlot({
     data: "data",
     x: { field: "Origin", fieldType: "nominal" },
-    y: { field: "Miles_per_Gallon" }
+    y: { field: "Miles_per_Gallon", scale: { id: "firstY" } }
   });
   assert.ok(explicit.semanticSpec.layers.some(layer => layer.id === "boxPlot"));
 });

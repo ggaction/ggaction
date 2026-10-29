@@ -1349,9 +1349,9 @@
 
 - id: axis-owners
   example: /examples/axis-owners/
-  title: Independent Cartesian axis owners
+  title: Named Cartesian axis owners
   image: /assets/images/axis-owners.png
-  alt: A scatterplot with separate quantity and share axes and an inside horizontal title
+  alt: A scatterplot with a named quantity axis and an inside horizontal title
   width: 940
   height: 540
   thumbnail: /assets/images/axis-owners-thumb.png

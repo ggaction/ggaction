@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
@@ -39,6 +40,10 @@ export const createAreaPlot = /* @__PURE__ */ action({ op: OPERATION, descriptio
   const color = args.color === undefined ? undefined : normalizeCategoricalColor(args.color, `${OPERATION} color`);
   if (color !== undefined && area.fill !== undefined) throw new Error("createAreaPlot area.fill cannot be combined with color.");
   const guides = normalizeCategoricalGuides(args.guides, OPERATION, color);
+  assertFacadePositionFrame(this, { id, data, mark: { type: "area", ...area, missing: args.missing ?? "error" },
+    coordinate: args.coordinate, positions: [[independentChannel, independent],
+      [valueChannel, { lower, upper, ...(measurement.scale === undefined ? {} : { scale: measurement.scale }) }]],
+    guides, explicitGuides: args.guides ?? {} });
   let next = this.createAreaMark({ id, data, ...area, missing: args.missing ?? "error" });
   if (groupBy !== undefined) next = next.encodeGroup({ target: id, fields: groupBy });
   next = next[independentChannel === "x" ? "encodeX" : "encodeY"](positionArgs(independent, { target: id, coordinate: args.coordinate }))

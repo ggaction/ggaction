@@ -31,7 +31,11 @@
   "authoringRoles": [
     "H0"
   ],
-  "wraps": [],
+  "wraps": [
+    "removeTitle",
+    "filterData",
+    "editGraphics"
+  ],
   "editableVia": [
     "editFacetSource",
     "editFacetHeaders",

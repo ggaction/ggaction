@@ -16,7 +16,7 @@ export const d65DataOptions = {
 };
 export const d65MarkOptions = {"id": "d65", "data": "d65Data", "stroke": false};
 export const d65XOptions = {"target": "d65", "lower": "lo", "upper": "hi", "scale": {"id": "d65X", "domain": [0, 480]}};
-export const d65YOptions = {"target": "d65", "lower": "bottom", "upper": "top", "scale": {"id": "d65Y", "domain": [0, 270]}};
+export const d65YOptions = {"target": "d65", "lower": "bottom", "upper": "top", "scale": {"id": "y", "domain": [0, 270]}};
 export const d65ColorOptions = {"target": "d65", "field": "value", "fieldType": "quantitative", "scale": {"id": "d65Color", "domain": [0, 1], "range": ["red", "blue"], "interpolate": "lab"}};
 export const d50DataOptions = {
   id: "d50Data",
@@ -34,7 +34,7 @@ export const d50DataOptions = {
 };
 export const d50MarkOptions = {"id": "d50", "data": "d50Data", "stroke": false};
 export const d50XOptions = {"target": "d50", "lower": "lo", "upper": "hi", "scale": {"id": "d50X", "domain": [0, 480]}};
-export const d50YOptions = {"target": "d50", "lower": "bottom", "upper": "top", "scale": {"id": "d50Y", "domain": [0, 270]}};
+export const d50YOptions = {"target": "d50", "lower": "bottom", "upper": "top", "scale": {"id": "y", "domain": [0, 270]}};
 export const d50ColorOptions = {"target": "d50", "field": "value", "fieldType": "quantitative", "scale": {"id": "d50Color", "domain": [0, 1], "range": ["red", "blue"], "interpolate": "lab"}};
 export const d50EditOptions = {"target": "d50", "whitePoint": "d50"};
 export const publicCalls = [

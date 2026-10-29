@@ -77,7 +77,7 @@ test("keeps temporal bar geometry finite across a full explicit range", () => {
   assert.equal(program.resolvedScales.x.bandwidth, 1e308);
 });
 
-test("preserves explicitly independent temporal and quantitative scales", () => {
+test("preserves independent temporal scales with one shared quantitative Y scale", () => {
   const independent = chart()
     .createCanvas({ width: 360, height: 260, margin: 40 })
     .createData({ values: rows })
@@ -95,12 +95,12 @@ test("preserves explicitly independent temporal and quantitative scales", () => 
       target: "trend",
       field: "value",
       aggregate: "mean",
-      scale: { id: "lineY" }
+      scale: { id: "barY" }
     });
 
   assert.deepEqual(
     independent.semanticSpec.scales.map(scale => scale.id),
-    ["barX", "barY", "lineX", "lineY"]
+    ["barX", "barY", "lineX"]
   );
   assert.equal(independent.graphicSpec.objects.trend.items.length, 1);
 });

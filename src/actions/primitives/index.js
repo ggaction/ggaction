@@ -1,3 +1,5 @@
+import { registerActionResultValidator } from "../../core/action.js";
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { createSemanticValueValidator } from "./semanticValidation/index.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateBin2DTransform } from "../../grammar/bin2d.js";
@@ -32,7 +34,12 @@ function validateBasicDatasetTransforms(value) {
   validateBin2DTransform(value[0]);
 }
 
+function registerFrameValidation(ProgramClass) {
+  registerActionResultValidator(ProgramClass, program => assertProgramSingleY(program, { materialized: true, allowIncomplete: true }));
+}
+
 export function registerBasicPrimitiveActions(ProgramClass) {
+  registerFrameValidation(ProgramClass);
   const validateBasicSemanticValue = createSemanticValueValidator({
     validateDatasetTransforms: validateBasicDatasetTransforms,
     sourceMarkTypes: ["point", "bar", "rect"]
@@ -44,6 +51,7 @@ export function registerBasicPrimitiveActions(ProgramClass) {
 }
 
 export function registerPrimitiveActions(ProgramClass) {
+  registerFrameValidation(ProgramClass);
   registerSemanticPrimitiveAction(ProgramClass);
   registerCreateGraphicsAction(ProgramClass);
   registerEditGraphicsAction(ProgramClass);

@@ -1,3 +1,4 @@
+import { isLiteralAnnotation } from "../text.js";
 import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -127,8 +128,7 @@ export function resolveFacetFamily(semanticSpec) {
   // coordinate family. Keep validating/materializing them, but do not confuse
   // a plot-space Cartesian annotation with a second Cartesian chart in a polar
   // or parallel facet. A text-only chart still supplies its own primary layer.
-  const annotations = semanticSpec.layers.filter(layer => layer.mark?.type === 'text' &&
-    ['x', 'y', 'text'].every(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, 'datum')));
+  const annotations = semanticSpec.layers.filter(isLiteralAnnotation);
   const dataLayers = semanticSpec.layers.filter(layer =>
     layer.mark?.type !== "image" && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
   const primary = dataLayers.length ? dataLayers : annotations;

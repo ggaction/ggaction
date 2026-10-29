@@ -1,3 +1,6 @@
+import { assertFacadeBindingFrame, assertFacadePositionFrame } from "../charts/frame.js";
+import { resolveErrorBand } from "../errorBands/create.js";
+import { intervalPositionBindings } from "../intervals/resolve.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
@@ -81,28 +84,31 @@ export const createRegressionBand = /* @__PURE__ */ closedAction(
     const id = validateUserId(args.id, "Regression band id");
     const { transform } = requireRegressionBandDataset(this, args);
     validateAreaCreateOutline(args, "createRegressionBand");
-    let next = this
-      .createErrorBand({
-        id,
-        data: args.data,
-        x: {
-          field: args.x,
-          fieldType: "quantitative",
-          scale: { id: args.xScale }
-        },
-        y: {
-          center: transform.y,
-          lower: args.lower,
-          upper: args.upper,
-          scale: { id: args.yScale }
-        },
-        ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
-        coordinate: args.coordinate,
-        fill: args.color ?? DEFAULT_COLORS.regressionBand,
-        opacity: args.opacity ?? 0.18,
-        ...(args.curve === undefined ? {} : { curve: args.curve }),
-        ...requestedStrokeDetails(args, "createRegressionBand")
-      })
+    const bandArgs = {
+      id,
+      data: args.data,
+      x: {
+        field: args.x,
+        fieldType: "quantitative",
+        scale: { id: args.xScale }
+      },
+      y: {
+        center: transform.y,
+        lower: args.lower,
+        upper: args.upper,
+        scale: { id: args.yScale }
+      },
+      ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
+      coordinate: args.coordinate,
+      fill: args.color ?? DEFAULT_COLORS.regressionBand,
+      opacity: args.opacity ?? 0.18,
+      ...(args.curve === undefined ? {} : { curve: args.curve }),
+      ...requestedStrokeDetails(args, "createRegressionBand")
+    };
+    const planned = resolveErrorBand(this, bandArgs);
+    assertFacadeBindingFrame(this, { id, data: planned.dataId, mark: { type: "area" }, coordinate: planned.coordinate,
+      bindings: intervalPositionBindings(planned) });
+    let next = this.createErrorBand(bandArgs)
       .editSemantic({
         property: `layer[${id}].encoding.y.title`,
         remove: true
@@ -191,6 +197,9 @@ export const createRegressionLine = /* @__PURE__ */ closedAction(
   }, LINE_OPTIONS,
   function (args = {}) {
     const id = validateUserId(args.id, "Regression line id");
+    assertFacadePositionFrame(this, { id, data: args.data, mark: { type: "line" }, coordinate: args.coordinate,
+      positions: [["x", { field: args.x, fieldType: "quantitative", scale: { id: args.xScale } }],
+        ["y", { field: args.y, fieldType: "quantitative", scale: { id: args.yScale } }]] });
     let next = this
       .createLineMark({
         id,

@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -109,6 +110,10 @@ export const createRugPlot = /* @__PURE__ */ action(
     const anchor = measure === "x" ? "y" : "x";
     const highEdge = edge === "top" || edge === "right";
 
+    assertFacadePositionFrame(this, { id, data, mark: { type: "tick", ...tick }, coordinate: args.coordinate,
+      positions: [[measure, encoding], [anchor, { datum: highEdge ? 1 : 0, fieldType: "quantitative",
+        scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false } }]],
+      plotAnchor: { [anchor]: highEdge ? 1 : 0 }, guides });
     let next = this.createTickMark({ id, data, ...tick });
     if (args.coordinate !== undefined) {
       next = next.createCoordinate({ id: args.coordinate, type: "cartesian", layers: [id] });
@@ -122,6 +127,7 @@ export const createRugPlot = /* @__PURE__ */ action(
       fieldType: "quantitative",
       scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false }
     });
+    next = next.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: { [anchor]: highEdge ? 1 : 0 } });
     next = next.encodeAngle({ target: id, value: measure === "x" ? 0 : 90 });
     return applyFacadeGuides(next, guides, id, guides);
   }
@@ -260,6 +266,11 @@ export const createStripPlot = /* @__PURE__ */ action(
       operation
     );
 
+    assertFacadePositionFrame(this, { id, data, mark: { type: "point", ...point,
+      ...(args.missing === undefined ? {} : { missing: args.missing }) }, coordinate: args.coordinate,
+      positions: [["x", x], ["y", y ?? { datum: 0.5, fieldType: "quantitative",
+        scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false } }]],
+      ...(y === undefined ? { plotAnchor: { y: 0.5 } } : {}), guides });
     let next = this.createPointMark({ id, data, ...point, ...(args.missing === undefined ? {} : { missing: args.missing }) });
     if (args.coordinate !== undefined) {
       next = next.createCoordinate({ id: args.coordinate, type: "cartesian", layers: [id] });
@@ -273,6 +284,7 @@ export const createStripPlot = /* @__PURE__ */ action(
           scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false }
         })
       : next.encodeY(positionArgs(y, { target: id }));
+    if (y === undefined) next = next.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: { y: 0.5 } });
     if (radius !== undefined) next = next.encodePointRadius({ target: id, value: radius });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (size !== undefined) next = next.encodeSize(targetArgs(size, id));

@@ -129,13 +129,15 @@ test("explicit and shared offset scales survive leaving grouped layout", () => {
   const shared = bar().layoutSeries({ mode: "group" })
     .createPointMark({ id: "points", data: "data" })
     .encodeX({ field: "category", fieldType: "nominal" })
-    .encodeY({ field: "value", scale: { id: "pointY" } })
+    .encodeY({ field: "value", scale: { id: "y" } })
     .encodeXOffset({ field: "series", scale: { id: "xOffset" } });
   const stacked = shared.layoutSeries({ target: "m", mode: "stack" });
   assert.ok(stacked.semanticSpec.scales.some(s => s.id === "xOffset"));
   assert.ok(stacked.resolvedScales.xOffset);
   assert.equal(layer(stacked).encoding.xOffset, undefined);
-  assert.deepEqual(stacked.graphicSpec.objects.points, shared.graphicSpec.objects.points);
+  assert.deepEqual(stacked.graphicSpec.objects.points.items.map(item => item.properties.x),
+    shared.graphicSpec.objects.points.items.map(item => item.properties.x));
+  assert.equal(stacked.semanticSpec.layers.find(value => value.id === "points").encoding.y.scale, layer(stacked).encoding.y.scale);
 });
 
 test("bar tuple groups and cell quantitative color remain independent", () => {

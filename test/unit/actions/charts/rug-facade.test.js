@@ -31,6 +31,7 @@ test("creates horizontal-measure Rug ticks at the bottom plot edge", () => {
       target: "rug", datum: 0, fieldType: "quantitative",
       scale: { id: "rugAnchor", domain: [0, 1], zero: false, nice: false }
     })
+    .editSemantic({ property: "layer[rug].derivedBindings.plotAnchor", value: { y: 0 } })
     .encodeAngle({ target: "rug", value: 0 });
   assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
   assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
@@ -39,7 +40,7 @@ test("creates horizontal-measure Rug ticks at the bottom plot edge", () => {
     item.properties.x1 === item.properties.x2
   ), true);
   assert.deepEqual(actual.trace.children.at(-1).children.map(node => node.op), [
-    "createTickMark", "encodeX", "encodeY", "encodeAngle"
+    "createTickMark", "encodeX", "encodeY", "editSemantic", "encodeAngle"
   ]);
 });
 

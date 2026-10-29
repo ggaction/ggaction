@@ -522,7 +522,15 @@
       "name": "removeMark",
       "wraps": [
         "editSemantic",
-        "editGraphics"
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ]
     },
     {
@@ -953,7 +961,11 @@
     {
       "name": "editViolinPlot",
       "wraps": [
-        "editDensity"
+        "editDensity",
+        "editSemantic",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ]
     },
     {
@@ -1736,15 +1748,32 @@
     },
     {
       "name": "facet",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ]
     },
     {
       "name": "facetGrid",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "filterData",
+        "editGraphics"
+      ]
     },
     {
       "name": "repeatCharts",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "encodeX"
+      ]
     },
     {
       "name": "editFacetSource",
@@ -1764,7 +1793,18 @@
     },
     {
       "name": "editFacetGuides",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "removeTitle"
+      ]
     },
     {
       "name": "createScatterPlot",
@@ -1914,6 +1954,7 @@
         "createTickMark",
         "encodeX",
         "encodeY",
+        "editSemantic",
         "encodeAngle"
       ]
     },
@@ -2093,7 +2134,9 @@
       "name": "createLayerPlot",
       "wraps": [
         "editScale",
-        "createBoxPlot"
+        "createBoxPlot",
+        "createScatterPlot",
+        "editGraphics"
       ]
     },
     {
@@ -2218,8 +2261,8 @@
     {
       "name": "createPartitionPlot",
       "wraps": [
-        "editSemantic",
-        "createCoordinate"
+        "createCoordinate",
+        "editSemantic"
       ]
     },
     {
@@ -2293,9 +2336,9 @@
     {
       "name": "createContourMark",
       "wraps": [
+        "createCoordinate",
         "editSemantic",
-        "createScale",
-        "createCoordinate"
+        "createScale"
       ]
     },
     {

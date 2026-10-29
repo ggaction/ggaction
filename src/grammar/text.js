@@ -30,6 +30,11 @@ export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;
 }
 
+export function isLiteralAnnotation(layer) {
+  return layer?.mark?.type === "text" && ["x", "y", "text"].every(channel =>
+    layer.conditionals?.[channel] === undefined && Object.hasOwn(layer.encoding?.[channel] ?? {}, "datum"));
+}
+
 export function isIndependentText(layer) {
   return layer?.mark?.type === "text" && layer.source === undefined;
 }

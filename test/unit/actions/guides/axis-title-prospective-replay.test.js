@@ -76,7 +76,7 @@ test("missing or different-channel pending titles cannot defer a fixed title che
 });
 
 test("named owners are resolved with the existing explicit target selector", () => {
-  const p = original().createYAxis({ id: "other", scale: "y", position: "right",
+  const p = original().editYAxis({ visible: false }).createYAxis({ id: "other", scale: "y", position: "right",
     title: { text: "Other", offset: 30 } });
   const pending = steps => p._withContext({ pendingMaterializationPlan: { steps, next: 0 } });
   assert.equal(hasPendingAxisTitleRematerialization(pending([
@@ -95,7 +95,7 @@ test("named owners are resolved with the existing explicit target selector", () 
   const moved = p.editCanvas({ margin });
   assert.equal(moved.guideConfigs.axis.other.title.offset, 30);
   assert.equal(Object.hasOwn(moved.context, "pendingMaterializationPlan"), false);
-  const ambiguous = p.removeYAxis().createYAxis({ id: "left", scale: "y", position: "left", title });
+  const ambiguous = p.removeYAxis().editYAxis({ target: "other", visible: false }).createYAxis({ id: "left", scale: "y", position: "left", title });
   assert.throws(() => hasPendingAxisTitleRematerialization(ambiguous._withContext({
     pendingMaterializationPlan: { steps: [{ op: "editYAxisTitle" }], next: 0 }
   }), "y", "left"), /Multiple y-axes require an explicit target/);

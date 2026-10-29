@@ -1,5 +1,6 @@
 import { appendRealisticColorControls } from "./realistic-color-controls.js";
-import { chart } from "../../../src/index.js";
+import { chart, vconcat } from "../../../src/index.js";
+import { directProgramOperations } from "../program-traces.js";
 import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
 import {
@@ -1004,7 +1005,7 @@ function buildRemovalCoverage(factors) {
     "analysisRows",
     { removalProjection: true, singleSeriesProjection: true }
   );
-  let program = initial
+  const common = initial
     .createData({ id: "unusedRemovalData", values: view.rows.slice(0, 1) })
     .createScale({ id: "unusedRemovalScale", type: "linear" })
     .createCoordinate({ id: "unusedRemovalCoordinate", type: "cartesian" })
@@ -1017,7 +1018,13 @@ function buildRemovalCoverage(factors) {
       field: "rowOrdinal",
       range: { min: 1, max: 12, inclusive: true }
     });
+  let program = common;
+  const slotPanels = {};
   for (const channel of REMOVE_CHANNELS) {
+    const measurePanel = program;
+    const panel = ["x2", "y2", "strokeWidth"].includes(channel)
+      ? "sourceOrder" : ["xOffset", "yOffset"].includes(channel) ? channel : undefined;
+    if (panel !== undefined) program = slotPanels[panel] ?? common;
     const target = `remove-${channel}`;
     if (channel === "text") {
       program = program.createTextMark({ id: target, data: "removalMaterialRows" })
@@ -1025,30 +1032,30 @@ function buildRemovalCoverage(factors) {
           target, field: "positiveX", scale: { id: `remove-base-x-${channel}` }
         })
         .encodeY({
-          target, field: "positiveY", scale: { id: `remove-base-y-${channel}` }
+          target, field: "positiveY", scale: { id: "y" }
         });
     } else if (["x2", "y2"].includes(channel)) {
       program = program.createRuleMark({ id: target, data: "removalMaterialRows" })
         .encodeX({ target, field: "lower", fieldType: "quantitative", scale: { id: `remove-x-${channel}` } })
-        .encodeY({ target, field: "position", fieldType: "quantitative", scale: { id: `remove-y-${channel}` } });
+        .encodeY({ target, field: "position", fieldType: "quantitative", scale: { id: "removalOrderY" } });
     } else if (["group", "strokeDash"].includes(channel)) {
       program = program.createLineMark({ id: target, data: "removalMaterialRows" })
         .encodeX({ target, field: "positiveX", scale: { id: `remove-x-${channel}` } })
-        .encodeY({ target, field: "positiveY", scale: { id: `remove-y-${channel}` } });
+        .encodeY({ target, field: "positiveY", scale: { id: "y" } });
     } else if (channel === "strokeWidth") {
       program = program.createRuleMark({ id: target, data: "removalMaterialRows" })
         .encodeX({ target, field: "lower", fieldType: "quantitative", scale: { id: `remove-x-${channel}` } })
         .encodeX2({ target, field: "upper", fieldType: "quantitative" })
-        .encodeY({ target, field: "position", fieldType: "quantitative", scale: { id: `remove-y-${channel}` } });
+        .encodeY({ target, field: "position", fieldType: "quantitative", scale: { id: "removalOrderY" } });
     } else if (["xOffset", "yOffset"].includes(channel)) {
       program = program.createBarMark({ id: target, data: "removalMaterialRows" });
       program = channel === "xOffset"
         ? program
             .encodeX({ target, field: "category", fieldType: "nominal", scale: { id: `remove-x-${channel}`, type: "band" } })
-            .encodeY({ target, field: "positiveY", aggregate: "mean", stack: null, scale: { id: `remove-y-${channel}` } })
+            .encodeY({ target, field: "positiveY", aggregate: "mean", stack: null, scale: { id: "y" } })
         : program
             .encodeX({ target, field: "positiveY", aggregate: "mean", stack: null, scale: { id: `remove-x-${channel}` } })
-            .encodeY({ target, field: "category", fieldType: "nominal", scale: { id: `remove-y-${channel}`, type: "band" } });
+            .encodeY({ target, field: "category", fieldType: "nominal", scale: { id: "removalCategoryY", type: "band" } });
     } else {
       program = program.createPointMark({ id: target, data: "removalMaterialRows" });
       if (["theta", "radius"].includes(channel)) {
@@ -1061,7 +1068,7 @@ function buildRemovalCoverage(factors) {
             target, field: "positiveX", scale: { id: `remove-base-x-${channel}` }
           })
           .encodeY({
-            target, field: "positiveY", scale: { id: `remove-base-y-${channel}` }
+            target, field: "positiveY", scale: { id: "y" }
           });
       }
     }
@@ -1076,9 +1083,15 @@ function buildRemovalCoverage(factors) {
         .encodeColor({ target, field: "group", fieldType: "nominal", layout: "group" })
         .encodeBarWidth({ target, band: 0.72 });
     }
+    if (panel !== undefined) { slotPanels[panel] = program; program = measurePanel; }
   }
   return finish(
-    program,
+    vconcat({ id: "removalPanels", programs: [
+      { id: "measure", program },
+      { id: "sourceOrder", program: slotPanels.sourceOrder },
+      { id: "xOffset", program: slotPanels.xOffset },
+      { id: "yOffset", program: slotPanels.yOffset }
+    ] }),
     factors.dataset,
     "Encoding removal lifecycle coverage",
     REMOVAL_ANALYSIS_QUESTION
@@ -2419,7 +2432,7 @@ function makeRecipe({
       return freeze([]);
     },
     observeFactors(program, factors) {
-      const direct = new Set(program.trace.children?.map(entry => entry.op) ?? []);
+      const direct = directProgramOperations(program);
       return expectedDirectActions.every(action => direct.has(action))
         ? freeze([{
             factor: "profile",
@@ -2500,7 +2513,7 @@ function makeDelegatedGuideRecipe({
       return freeze([]);
     },
     observeFactors(program, factors) {
-      const direct = new Set(program.trace.children?.map(entry => entry.op) ?? []);
+      const direct = directProgramOperations(program);
       return expectedDirectActions.every(action => direct.has(action))
         ? freeze([{
             factor: "profile",

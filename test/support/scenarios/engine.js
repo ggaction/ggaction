@@ -1,3 +1,4 @@
+import { programTraceOwners, directProgramTrace } from "../program-traces.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { assertEquivalentMeaning, withoutAllocatedIdentity } from "../identity-equivalence.js";
@@ -934,7 +935,7 @@ function assertRecipeEvidence(recipe, program, factors, metadata, label) {
   )) {
     throw new TypeError(`Scenario recipe "${recipe.id}" declared invalid direct actions.`);
   }
-  const direct = new Set(collectDirectTraceOperations(program.trace));
+  const direct = new Set(directProgramTrace(program).map(node => node.op));
   const missing = [...new Set(expected)].filter(operation => !direct.has(operation));
   assert.deepEqual(missing, [], `${label} expected direct actions`);
   return effective;
@@ -2706,12 +2707,6 @@ function collectTraceOperations(node, operations = []) {
   return operations;
 }
 
-function collectDirectTraceOperations(trace) {
-  return (trace?.children ?? [])
-    .map(node => node?.op)
-    .filter(operation => typeof operation === "string");
-}
-
 function collectDirectTrace(trace) {
   return Object.freeze((trace?.children ?? []).flatMap(node =>
     typeof node?.op !== "string"
@@ -2792,8 +2787,8 @@ export function runScenario(descriptor, {
         description: metadata?.analysisQuestion ?? `Generated ${descriptor.recipe} scenario.`
       }), svg, `${descriptor.id} SVG replay`);
     }
-    const operations = collectTraceOperations(program.trace);
-    const directOperations = collectDirectTraceOperations(program.trace);
+    const operations = programTraceOwners(program).flatMap(owner => collectTraceOperations(owner.trace));
+    const directOperations = directProgramTrace(program).map(node => node.op);
     const factorEffects = observedFactorEffects(recipe, program, descriptor.factors);
     const result = Object.freeze({
       id: descriptor.id,
@@ -2801,7 +2796,7 @@ export function runScenario(descriptor, {
       dataset: descriptor.factors.dataset,
       operations: Object.freeze([...new Set(operations)]),
       directOperations: Object.freeze([...new Set(directOperations)]),
-      directTrace: collectDirectTrace(program.trace),
+      directTrace: Object.freeze(programTraceOwners(program).flatMap(owner => collectDirectTrace(owner.trace))),
       metadata,
       effectiveFeatures,
       factorEffects,

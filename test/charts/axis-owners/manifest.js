@@ -2,7 +2,7 @@ import { createAxisOwners, publicCalls } from "../../../examples/axis-owners/pro
 import { createAxisOwnersPrimitive } from "./primitive.program.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 export const visualVariants = [defineVisualVariant({
-  chart: "axis-owners", variant: "independent-scales", title: "Independent quantity and share axes with an inside title",
+  chart: "axis-owners", variant: "single-y", title: "Named quantity axis with an inside title",
   width: 470, height: 270, userFacing: createAxisOwners, primitive: createAxisOwnersPrimitive,
   callChain: "chart()\n" + publicCalls.map(call => `  .${call.op}(${JSON.stringify(call.args)})`).join("\n") + ";",
   compareSemanticSpec: false, artifact: { scope: "charts", capability: "cartesian-guides" },

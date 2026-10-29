@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { normalizeCompositionLegends } from "../../core/compositionState.js";
 import { normalizeCompositionShares } from "../../core/compositionScales.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -57,6 +58,7 @@ function childDescriptor({ id, program }) {
   if (program.actionStack.length !== 0) {
     throw new Error(`Composition child "${id}" has an unfinished action stack.`);
   }
+  assertProgramSingleY(program, { materialized: true });
   namespaceGraphicSnapshot(program.graphicSpec, { namespace: id });
   const canvasId = program.graphicSpec.order.find(
     graphicId => program.graphicSpec.objects[graphicId]?.type === "canvas"

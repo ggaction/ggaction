@@ -1,3 +1,5 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { previewNativePositionFrame } from "../encodings/position/resolve.js";
 import { closedAction } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -12,7 +14,7 @@ import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { createResolvedIntervalData, ownOptions } from
   "../data/intervalEdit.js";
-import { resolveIntervalComposite } from "../intervals/resolve.js";
+import { resolveIntervalComposite, intervalPositionBindings } from "../intervals/resolve.js";
 import { errorBarCaps, resolveErrorBarAppearance } from "./edit.js";
 
 const OPTIONS = Object.freeze([
@@ -169,6 +171,10 @@ export const createErrorBarCap = /* @__PURE__ */ closedAction(
     }
     const positionAction = vertical ? "encodeX" : "encodeY";
     const intervalAction = vertical ? "encodeY" : "encodeX";
+    assertProgramSingleY(previewNativePositionFrame(this, { id: args.id, data: args.data, mark: { type: "rule" }, encoding: {} }, args.coordinate, {
+      [vertical ? "x" : "y"]: { field: args.positionField, fieldType: args.positionFieldType, scale: { id: args.positionScale } },
+      [vertical ? "y" : "x"]: { field: args.intervalField, fieldType: "quantitative", scale: { id: args.intervalScale } }
+    }), { allowIncomplete: true });
     let next = this
       .createRuleMark({
         id: args.id,
@@ -260,6 +266,8 @@ export const createErrorBar = /* @__PURE__ */ closedAction(
   function (args = {}) {
     const resolved = resolveErrorBar(this, args);
     const appearance = resolveAppearance(args);
+    assertProgramSingleY(previewNativePositionFrame(this, { id: resolved.id, data: resolved.dataId,
+      mark: { type: "rule" }, encoding: {} }, resolved.coordinate, intervalPositionBindings(resolved)), { allowIncomplete: true });
     let next = createResolvedIntervalData(this, resolved);
     next = next.createRuleMark({
       id: resolved.id,

@@ -195,7 +195,7 @@ test("updates one semantic padding policy on a shared offset scale", () => {
     .encodeBarWidth({ target: "left" })
     .createBarMark({ id: "right" })
     .encodeX({ target: "right", field: "year", fieldType: "ordinal", scale: { id: "rightX" } })
-    .encodeY({ target: "right", field: "perc", scale: { id: "rightY" } })
+    .encodeY({ target: "right", field: "perc", scale: { id: "leftY" } })
     .encodeColor({ target: "right", field: "sex", layout: "group", scale: { id: "rightColor" } })
     .encodeBarWidth({ target: "right" });
 

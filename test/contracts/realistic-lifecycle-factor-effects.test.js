@@ -145,7 +145,7 @@ test("scales explicit intervals to the authentic New Zealand name time span", ()
     const program = recipe.build(factors);
     assertGraphicIntegrity(program, `${dataset} direct data resources`);
     assertAnalyticLayerIntegrity(program, `${dataset} direct data resources`);
-    const intervals = program.graphicSpec.objects.directIntervalPlotInterval.items;
+    const intervals = program.children.interval.graphicSpec.objects.directIntervalPlotInterval.items;
     assert.ok(intervals.length > 0);
     assert.ok(intervals.every(item =>
       Number.isFinite(item.properties.y1) &&

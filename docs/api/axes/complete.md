@@ -62,7 +62,7 @@ Canvas, theme, facet and editable-persistence replay retain the requested placem
 
 Create an axis with `id` when it needs an independent identity. The default IDs are
 `x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
-not its mark or scale. This complete runnable program uses an independent right scale:
+not its mark or scale. This complete runnable program places the chart’s single Y axis on the right:
 
 <!-- snippet-context:start -->
 
@@ -76,11 +76,15 @@ import { chart } from "ggaction";
 const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
   .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
   .createScatterPlot({ x: "x", y: "y", guides: false })
-  .createYAxis()
-  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
-  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
-  .editYAxisTitle({ target: "share", text: "Share" });
+  .createYAxis({ id: "share", position: "right", scale: "y", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Quantity" });
 ```
+
+A Cartesian plot uses one Y scale resource and at most one visible Y axis. Hiding an
+axis does not allow a second data Y scale, and equal domains on separate scale IDs
+still count as separate scales. Use adjacent or faceted panels for independent Y
+measurements. A range endpoint `y2` shares its primary Y scale. Multiple retained
+Y axis owners must share this scale and all but one must be hidden.
 
 `createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
 `id` in every entry. Arrays create axes in entry order and fail atomically if any

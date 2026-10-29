@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "./frame.js";
+import { previewMarkRemovalFrame } from "../marks/remove.js";
 import { prepareFacadeMissingData } from './missing.js';
 import { validateUserId } from "../../core/identifiers.js";
 import { action } from "../../core/action.js";
@@ -176,6 +178,13 @@ function positionBindings(id, category, value, orientation, coordinate) {
     : { x: categoryBinding, y: valueBinding };
 }
 
+function assertEndpointFrame(program, { id, source, category, value, summary, orientation, coordinate, guides, role = "value" }) {
+  const data = summary === false ? source : `${id}SummaryData`;
+  const finalValue = summary === false ? value : { ...value, field: outputField(id, role) };
+  return assertFacadeBindingFrame(program, { id, data, mark: { type: "point" }, coordinate,
+    bindings: positionBindings(id, category, finalValue, orientation, coordinate), guides });
+}
+
 function createPoint(program, { id, data, bindings, appearance }) {
   const { radius, ...style } = appearance;
   let next = program
@@ -278,6 +287,7 @@ export const createDotPlot = /* @__PURE__ */ action(
     const point = normalizePoint(args.point, operation);
     const guides = normalizeGuides(args.guides, operation);
     const labels = normalizeLabels(args.labels, operation, false);
+    assertEndpointFrame(this, { id, source, category, value, summary, orientation, coordinate: args.coordinate, guides });
     const prepared = prepareData(this, {
       id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation, missing: args.missing
     });
@@ -312,6 +322,7 @@ export const createLollipopPlot = /* @__PURE__ */ action(
     const stem = normalizeRule(args.stem, operation, "stem");
     const guides = normalizeGuides(args.guides, operation);
     const labels = normalizeLabels(args.labels, operation, false);
+    assertEndpointFrame(this, { id, source, category, value, summary, orientation, coordinate: args.coordinate, guides });
     const prepared = prepareData(this, {
       id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation, missing: args.missing
     });
@@ -362,6 +373,8 @@ export const createDumbbellPlot = /* @__PURE__ */ action(
     const guides = normalizeDumbbellGuides(args.guides, orientation, operation);
     const labels = normalizeLabels(args.labels, operation, true);
     const sharedScale = start.scale ?? end.scale;
+    assertEndpointFrame(this, { id, source, category, value: { ...end, scale: sharedScale },
+      summary, orientation, coordinate: args.coordinate, guides, role: "end" });
     const prepared = prepareData(this, {
       id, data: source, category,
       measures: [
@@ -509,6 +522,13 @@ export const editEndpointPlot = /* @__PURE__ */ action(
     for (const key of changes) revised[key] = args[key];
     const axes = { fromAxis: current.orientation === "vertical" ? "y" : "x",
       toAxis: revised.orientation === "vertical" ? "y" : "x" };
+    const operation = "editEndpointPlot";
+    const category = normalizeCategory(revised.category, operation);
+    const value = current.kind === "dumbbell" ? normalizeValue(revised.end, operation, "end") : normalizeValue(revised.value, operation, "value");
+    if (current.kind === "dumbbell") value.scale = normalizeValue(revised.start, operation, "start").scale ?? value.scale;
+    assertEndpointFrame(previewMarkRemovalFrame(this, owner.id), { id: owner.id, source: revised.data,
+      category, value, summary: normalizeSummary(revised.summary, operation), orientation: normalizeOrientation(revised.orientation, operation),
+      coordinate: revised.coordinate, guides: revised.guides, role: current.kind === "dumbbell" ? "end" : "value" });
     const retained = retainStatisticalDependents(this, owner.id);
     let next = reviseRoleGuideSamples(retained.program, owner, current, revised, changes);
     next = next.removeMark({ target: owner.id });

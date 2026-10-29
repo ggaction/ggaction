@@ -17,6 +17,7 @@ export function createCenteredAreaStreamPrimitives(jobs) {
     })
     .createData({ id: "jobs", values: values.rows })
     .createAreaMark({ id: "occupations", opacity: 1 })
+    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({
       property: "layer[occupations].coordinate",
       value: "main"
@@ -90,7 +91,6 @@ export function createCenteredAreaStreamPrimitives(jobs) {
       property: "scale[color].range",
       value: CENTERED_AREA_COLORS
     })
-    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .rematerializeScale({ id: "x" })
     .rematerializeScale({ id: "y" })
     .rematerializeScale({ id: "color" })

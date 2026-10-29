@@ -42,7 +42,7 @@ test("prepared parameter edits replay a raw/filter/computed diamond once and ref
     .createScatterPlot({ id: "points", data: "joined", x: "x", y: "scaledY" })
     .encodeOpacity({ target: "points", conditions: [{ when: expression(north), value: { value: 1 } }], otherwise: { value: 0 } })
     .createData({ id: "static", values: [{ x: 5, y: 6 }] })
-    .createScatterPlot({ id: "unchangedData", data: "static", x: { field: "x", scale: { id: "staticX" } }, y: { field: "y", scale: { id: "staticY" } }, guides: false })
+    .createScatterPlot({ id: "unchangedData", data: "static", x: { field: "x", scale: { id: "staticX" } }, y: { field: "y", scale: { id: "y" } }, guides: false })
     .encodeOpacity({ target: "unchangedData", conditions: [{ when: expression(north), value: { value: 0.8 } }], otherwise: { value: 0.2 } });
   const saved = serializeProgram(original), revised = await parameterUpdate(original);
   assert.deepEqual(current(revised, "filter", "selected").values, [revisedRows[1]]);

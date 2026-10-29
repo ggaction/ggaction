@@ -1102,6 +1102,14 @@
       {
         "type": "file",
         "path": "unit/frame-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/single-y-admission.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/single-y-aggregate-admission.test.js"
       }
     ],
     "statistical-fixtures": [

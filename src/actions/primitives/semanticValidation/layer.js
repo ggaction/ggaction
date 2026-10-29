@@ -1,3 +1,4 @@
+import { normalizePlotSnapshot, normalizePlotAnchor } from "../../../grammar/plotPosition.js";
 import { validateInputReference } from "../../../core/resourceReference.js";
 import { requireStoredResource } from "../../../selectors/resources.js";
 import { validateStoredConditional } from "../../../grammar/conditionalState.js";
@@ -72,6 +73,8 @@ export function validateLayerSemanticValue(
     validateStoredConditional(parsed.path[1], value);
     return;
   }
+  if (property === "derivedBindings.plotAnchor") { normalizePlotAnchor(value); return; }
+  if (property === "derivedBindings.plotSnapshot") { normalizePlotSnapshot(value); return; }
   if (property === "derivedBindings.overlay") {
     const binding = normalizeOverlayBinding(value);
     validateLayerSource(program, parsed, binding.source, ["bar", "line", "area", "point"]);

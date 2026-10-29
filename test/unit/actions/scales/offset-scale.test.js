@@ -158,7 +158,7 @@ test("updates every consumer of a shared offset scale", () => {
     .encodeX({
       target: "right", field: "category", fieldType: "nominal", scale: { id: "x" }
     })
-    .encodeY({ target: "right", field: "value", scale: { id: "rightY" } })
+    .encodeY({ target: "right", field: "value", scale: { id: "y" } })
     .encodeXOffset({ target: "right", field: "subgroup", scale: { id: "slots" } })
     .encodeBarWidth({ target: "right" });
   const beforeRight = source.graphicSpec.objects.right.items.map(
@@ -247,7 +247,7 @@ test("migrates one consistent legacy mark policy and rejects conflicting owners"
     .encodeX({
       target: "right", field: "category", fieldType: "nominal", scale: { id: "x" }
     })
-    .encodeY({ target: "right", field: "value", scale: { id: "rightY" } })
+    .encodeY({ target: "right", field: "value", scale: { id: "y" } })
     .encodeXOffset({ target: "right", field: "subgroup", scale: { id: "slots" } })
     .encodeBarWidth({ target: "right" });
   let legacy = canonical;

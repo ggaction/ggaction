@@ -3469,3 +3469,25 @@ Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runt
 child Canvas를 읽는 read-only adapter다. 기존 coordinateBounds/Canvas owner를 재사용하고
 새 frame 저장 상태나 자동 materializer를 추가하지 않는다. 현재 공개 진입 경계에는 연결하지
 않았으며 [구현 기록](impl/roadmap9/chart/single-y-policy.md)이 남은 연결을 추적한다.
+
+
+## Cartesian frame admission
+
+`grammar/framePolicy.js`가 하나의 Cartesian plot region 안의 Y/Y2 resource identity와
+보이는 Y guide 수를 검증한다. `materialization/frameState.js`는 기존 semantic bindings,
+guide visibility, coordinate bounds 및 composition의 실제 child Canvas offset을 읽어
+그 validator에 전달한다. 별도 persisted frame cache나 자동 materialization은 없다.
+
+Full/Basic primitive assembly는 `core/action.js`의 private constructor별 read-only result
+validator를 등록한다. 최상위 wrapped action의 theme completion까지 끝난 immutable candidate를
+검사하고 실패 후보를 반환하지 않는다. 중간 primitive들은 aggregate의 합법적인 재바인딩을 위해
+완성된 후보에서 함께 판정한다. 최상위 semantic primitive, composition child admission,
+editable restore도 같은 frame owner를 사용한다. Renderer는 이 의미 검증을 하지 않는다.
+
+Source-owned text와 literal annotation은 데이터 Y를 중복 소유하지 않는다. Detached overlay의
+정규화된 plot 위치는 `derivedBindings.plotSnapshot`에 실제 snapshot field를 기록하며,
+ordinary position encoding이 해당 축의 intent를 제거한다. 저장 검증은 실제 binding과
+정규화 linear scale을 대조한다. Rug/단일 measure Strip의 고정 위치도 `derivedBindings.plotAnchor`에
+정규화 constant intent를 기록한다. 두 종류의 intent 정규화는 `grammar/plotPosition.js`가 소유하고,
+실제 binding 검증은 같은 frame adapter가 맡는다. 정확한 사용자 제약은 [AXES](contract/current/AXES.md)와
+[OVERLAYS](contract/current/OVERLAYS.md)가 소유한다.

@@ -1,4 +1,5 @@
-import { chart, hconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
+import { directProgramOperations } from "../program-traces.js";
+import { chart, hconcat, vconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
 import { readFileSync } from "node:fs";
 
 import { loadZooDataset } from "../datasets/zoo.js";
@@ -1346,7 +1347,7 @@ function buildDirectDataResources(factors) {
     .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
     .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
-  return program
+  const resources = program
     .createDensityData({
       id: "directDensity",
       source: "directSource",
@@ -1384,25 +1385,29 @@ function buildDirectDataResources(factors) {
     })
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
-    .encodeY({ target: "resourcePoints", field: "positive" })
-    .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"})
-    .createDotPlot({
+    .encodeY({ target: "resourcePoints", field: "positive", scale: { id: "directContours-y" } })
+    .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"});
+  const panel = () => chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "directSource", values: rows });
+  return vconcat({ id: "directAnalysis", programs: [
+    { id: "resources", program: resources },
+    { id: "dot", program: panel().createDotPlot({
       id: "directDot",
       data: "directSource",
       category: "category",
       value: "x",
       summary: "mean",
       guides: false
-    })
-    .createLollipopPlot({
+    }) },
+    { id: "lollipop", program: panel().createLollipopPlot({
       id: "directLollipop",
       data: "directSource",
       category: "category",
       value: "positive",
       summary: "mean",
       guides: false
-    })
-    .createDumbbellPlot({
+    }) },
+    { id: "dumbbell", program: panel().createDumbbellPlot({
       id: "directDumbbell",
       data: "directSource",
       category: "category",
@@ -1414,8 +1419,8 @@ function buildDirectDataResources(factors) {
     .editEndpointPlot({
       target: "directDumbbell",
       start: "endpointStart"
-    })
-    .createIntervalPlot({
+    }) },
+    { id: "interval", program: panel().createIntervalPlot({
       id: "directIntervalPlot",
       data: "directSource",
       x: { field: "category", fieldType: "nominal" },
@@ -1425,23 +1430,23 @@ function buildDirectDataResources(factors) {
         upper: "intervalUpper"
       },
       guides: false
-    })
-    .createRegressionPlot({
+    }) },
+    { id: "regression", program: panel().createRegressionPlot({
       id: "directRegressionPlot",
       data: "directSource",
       x: "x",
       y: "positive",
       guides: false
-    })
-    .createECDFPlot({
+    }) },
+    { id: "ecdf", program: panel().createECDFPlot({
       id: "directECDFPlot",
       data: "directSource",
       field: "x",
       groupBy: "color",
       guides: false
     })
-    .editECDFPlot({ target: "directECDFPlot", groupBy: false })
-    .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
+    .editECDFPlot({ target: "directECDFPlot", groupBy: false }) }
+  ] }).createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
 }
 
 function appendConditionalPoints(program) {
@@ -1453,7 +1458,7 @@ function appendConditionalPoints(program) {
   return program.createData({ id: "conditionalRows", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }] })
     .createPointMark({ id: "conditionalPoints", data: "conditionalRows" })
     .encodeX({ target: "conditionalPoints", field: "x", scale: { id: "conditionalX" } })
-    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "conditionalY" } })
+    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "y" } })
     .encodeColor(options("red", "blue"))
     .encodeStroke(options("#111111", "#222222"))
     .encodeSize(options(36, 16))
@@ -1851,7 +1856,7 @@ function buildDirectPolarParts(factors) {
   const labels = { color: "#334155", offset: 12, fontSize: 11, fontFamily: "sans-serif", fontWeight: 600,
     format: factors.count === 4 ? "auto" : { decimals: 1 } };
   const title = { color: "#0f172a", fontSize: 13, fontFamily: "sans-serif", fontWeight: 600 };
-  return chart()
+  const polar = chart()
     .createCanvas(polarCanvas(factors, true))
     .createData({ id: "directPolarRows", values: rows })
     .createPolarScatterPlot({
@@ -1903,16 +1908,20 @@ function buildDirectPolarParts(factors) {
       order: [...new Set(rows.map(row => row.angle))],
       line: { strokeWidth: 1.5 },
       guides: false
-    })
-    .createRugPlot({
+    });
+  const panel = () => chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "directPolarRows", values: rows });
+  return vconcat({ id: "directProfiles", programs: [
+    { id: "polar", program: polar },
+    { id: "rug", program: panel().createRugPlot({
       id: "directRug",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directRugX", zero: true } },
       edge: "bottom",
       tick: { length: 12, strokeWidth: 1.25 },
       guides: false
-    })
-    .createStripPlot({
+    }) },
+    { id: "strip", program: panel().createStripPlot({
       id: "directStrip",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directStripX", zero: true } },
@@ -1925,8 +1934,8 @@ function buildDirectPolarParts(factors) {
       guides: false
     })
     .packPoints({ target: "directStrip", channel: "y", overflow: "overlap" })
-    .removePointPacking({ target: "directStrip" })
-    .createBeeswarmPlot({
+    .removePointPacking({ target: "directStrip" }) },
+    { id: "beeswarm", program: panel().createBeeswarmPlot({
       id: "directBeeswarm",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directBeeswarmX", zero: true } },
@@ -1938,8 +1947,8 @@ function buildDirectPolarParts(factors) {
       point: { radius: 3, opacity: 0.6 },
       packing: { overflow: "overlap" },
       guides: false
-    })
-    .createRaincloudPlot({
+    }) },
+    { id: "raincloud", program: panel().createRaincloudPlot({
       id: "directRaincloud",
       data: "directPolarRows",
       category: { field: "raincloudGroup", fieldType: "nominal" },
@@ -1953,7 +1962,8 @@ function buildDirectPolarParts(factors) {
       side: "after",
       summary: { type: "interval", center: "mean", extent: "stderr" },
       points: { type: "strip", jitter: false }
-    });
+    }) }
+  ] });
 }
 
 export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
@@ -2334,7 +2344,7 @@ function lifecycleSignature(base, factors) {
 }
 
 function observeLifecycleFeatures(base, program, factors) {
-  const operations = new Set(program.trace?.children?.map(node => node.op) ?? []);
+  const operations = directProgramOperations(program);
   const features = [];
   const signature = lifecycleSignature(base, factors);
   if (signature.every(operation => operations.has(operation))) {

@@ -6,6 +6,9 @@ owner through create/edit and lifecycle replay. It rejects `cornerRadius`. Exact
 
 ## `createViolinPlot`
 
+Creation admits the native density position/guide plan through the [single-Y frame preflight](AXES.md#single-y-per-cartesian-frame) before creating the Area or density data. Inferred axis titles continue to preserve existing custom titles.
+Evidence: `test/unit/single-y-aggregate-admission.test.js`, `test/unit/actions/charts/facade-guide-reuse.test.js`.
+
 ```javascript
 createViolinPlot({
   id?, data?, coordinate?, x, y,

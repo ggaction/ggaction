@@ -486,7 +486,7 @@ Refine a complete bar with one compositing edit.
 
 Representative actions: `createBarPlot`, `editBarMark`. [Documentation](https://ggaction.github.io/ggaction/api/marks/bar/#blend-with-underlying-content).
 
-### [Independent Cartesian axis owners](./axis-owners/)
+### [Named Cartesian axis owners](./axis-owners/)
 
 Create complete named axes before focused placement and text edits.
 

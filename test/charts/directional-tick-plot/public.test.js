@@ -56,6 +56,6 @@ test("matches the approved Cars rug through the public Rug facade", () => {
   );
   assert.ok(facade);
   assert.deepEqual(facade.children.map(node => node.op), [
-    "createTickMark", "encodeX", "encodeY", "encodeAngle"
+    "createTickMark", "encodeX", "encodeY", "editSemantic", "encodeAngle"
   ]);
 });

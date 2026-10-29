@@ -1,9 +1,12 @@
 import { positionBindings } from "../core/encodingBindings.js";
 import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
+import { normalizePlotSnapshot, normalizePlotAnchor } from "../grammar/plotPosition.js";
+import { requireSemanticScale } from "../selectors/scales.js";
 import { assertSingleYFrames } from "../grammar/framePolicy.js";
 import { resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
 import { cartesianAxisOwners } from "../selectors/axes.js";
-import { requireCoordinate } from "../selectors/coordinates.js";
+import { isLiteralAnnotation, isSourceOwnedText } from "../grammar/text.js";
+import { findCoordinate, requireCoordinate } from "../selectors/coordinates.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import { resolveCoordinateBounds } from "./coordinateBounds.js";
 import { isGuidePartVisible } from "./guides/visibility.js";
@@ -14,7 +17,7 @@ const graphicId = (scope, id) => scope.reduceRight((value, namespace) => namespa
 
 // This adapter reads existing owners only. No new frame state or graphical
 // materialization is introduced by policy admission.
-export function collectCartesianFrames(program, { materialized = false } = {}) {
+export function collectCartesianFrames(program, { materialized = false, geometry = true, allowIncomplete = false } = {}) {
   const frames = [], ancestors = new Set();
   let work = 0;
   function visit(unit, scope) {
@@ -44,9 +47,35 @@ export function collectCartesianFrames(program, { materialized = false } = {}) {
       return local.get(id);
     }
     for (const layer of unit.semanticSpec.layers) {
+      const snapshot = layer.derivedBindings?.plotSnapshot, anchor = layer.derivedBindings?.plotAnchor;
+      for (const [position, normalize, property, label] of [
+        [snapshot, normalizePlotSnapshot, "field", "snapshot"],
+        [anchor, normalizePlotAnchor, "datum", "anchor"]
+      ]) {
+        if (position === undefined) continue;
+        normalize(position);
+        for (const [channel, value] of Object.entries(position)) {
+          const binding = layer.encoding?.[channel];
+          const scale = requireSemanticScale(unit, binding?.scale);
+          if ((snapshot?.[channel] !== undefined && anchor?.[channel] !== undefined) ||
+              layer.derivedBindings.overlay !== undefined || layer.conditionals?.[channel] !== undefined ||
+              binding?.[property] !== value || binding.fieldType !== "quantitative" ||
+              binding[property === "field" ? "datum" : "field"] !== undefined ||
+              ["aggregate", "bin", "stack", "temporalUnit"].some(key => binding[key] !== undefined) ||
+              scale.type !== "linear" || scale.domain?.length !== 2 || scale.domain[0] !== 0 || scale.domain[1] !== 1 ||
+              scale.reverse === true || scale.zero !== false || scale.nice !== false) {
+            throw new Error(`Plot ${label} "${layer.id}.${channel}" requires its normalized linear position binding.`);
+          }
+        }
+      }
+      if (isLiteralAnnotation(layer) || isSourceOwnedText(layer)) continue;
+      // Extension primitives may assign a coordinate before declaring it. Only
+      // unfinished, unmaterialized layers may defer this reference check.
+      if (allowIncomplete && unit.graphicSpec.objects[layer.id] === undefined &&
+          findCoordinate(unit, layer.coordinate) === undefined) continue;
       for (const channel of ["y", "y2"]) for (const binding of positionBindings(layer, channel)) {
         validateWorkLimit(++work, "Frame binding traversal");
-        if (binding.scale === undefined) continue;
+        if (binding.scale === undefined || snapshot?.[channel] !== undefined || anchor?.[channel] !== undefined) continue;
         if (layer.coordinate === undefined) throw new Error(`Y binding "${layer.id}.${channel}" requires a coordinate.`);
         frame(layer.coordinate)?.bindings.push({ owner: `${layer.id}.${channel}`, scale: qualify(scope, binding.scale) });
       }
@@ -65,7 +94,7 @@ export function collectCartesianFrames(program, { materialized = false } = {}) {
     if (local.size === 0) return;
     const canvasId = graphicId(scope, "canvas");
     const concrete = materialized ? program.graphicSpec.objects[canvasId] : unit.graphicSpec.objects.canvas;
-    const hasCanvas = concrete?.type === "canvas" && unit.materializationConfigs.canvas?.margin !== undefined;
+    const hasCanvas = geometry && concrete?.type === "canvas" && unit.materializationConfigs.canvas?.margin !== undefined;
     if (materialized && scope.length > 0 && !hasCanvas) throw new Error(`Cartesian child frame requires Canvas "${canvasId}".`);
     const parent = materialized && scope.length > 0 ? resolveGraphicParentOffset(program.graphicSpec, canvasId) : [0, 0];
     const dx = parent[0] + (scope.length > 0 && materialized ? concrete.properties.x ?? 0 : 0);

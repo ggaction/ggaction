@@ -20,6 +20,16 @@ no Full-only action to the Basic entry.
   No truthiness, callbacks or JS source. A zero-valued branch remains zero.
 - All branch shapes, fields, types, scale definitions and exact parameter/selection
   references validate before output. Inactive invalid branches reject atomically.
+- Direct `encodeX`/`encodeY` requests preflight their final Cartesian frame before
+  state-changing child actions, including every conditional branch, guide scale
+  rebinding and removal of plot-position intent. Replacing a conditional assignment
+  with an ordinary one uses the same check before clearing the previous assignment.
+- Direct `encodeChannels` checks its complete Cartesian resource-identity proposal,
+  including inactive conditional branches and guide handoff, before its deferred
+  draft can invoke state-changing children. Direct range, Histogram, Density, and
+  Horizon encoders admit their native final pair before creating an endpoint or
+  derived dataset. Internal normalized overlay/plot-anchor authoring keeps the
+  outer owner's final-state admission. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - Existing mark capability, constant/field restrictions and aggregate owners apply.
   Color includes continuous Tick fields; conditional Tick color/stroke remain exclusive.
   Paths and aggregate marks evaluate at their final item grain. Non-unique raw fields
@@ -27,8 +37,11 @@ no Full-only action to the Basic entry.
 - `layer.conditionals[channel]` is the sole semantic owner: normalized conditions,
   otherwise, ordered exact `parameterInputs` and `selectionInputs`. Otherwise is not
   copied into ordinary encoding or materialization config. Reassignment clears the
-  previous owner. Branch field scales get stable target/channel/branch IDs when omitted;
-  reassignment preserves the previous branch ID. Explicit scale sharing retains the
+  previous owner. Y branches share the unique explicitly requested scale, the existing
+  Y/Y2 binding, or the default `y` identity. Distinct explicit Y identities fail the
+  [single-Y frame policy](AXES.md#single-y-per-cartesian-frame). Other branch field scales
+  get stable target/channel/branch IDs when omitted; reassignment preserves the previous
+  branch ID. Explicit scale sharing retains the
   ordinary compatibility and edit rules.
 - Every distinct field/type/scale branch binding contributes its full final-item
   population to automatic domains, including inactive branches. Predicate truth does

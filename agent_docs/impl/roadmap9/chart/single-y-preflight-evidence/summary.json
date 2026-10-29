@@ -1,0 +1,453 @@
+{
+  "status": "source-frozen-for-root-integration",
+  "createdAt": "2026-10-29T12:58:26.801834+00:00",
+  "baseCommit": "3e7ed05e6fc6b24685157cf62796638a29d2279c",
+  "branch": "codex/roadmap9-single-y",
+  "scope": "STEP050 facade, guide, native aggregate, bulk encoding and coordinate first-child single-Y preflight",
+  "ownedSourceFiles": [
+    "src/actions/boxPlots/create.js",
+    "src/actions/charts/area.js",
+    "src/actions/charts/bar.js",
+    "src/actions/charts/beeswarm.js",
+    "src/actions/charts/density.js",
+    "src/actions/charts/ecdf.js",
+    "src/actions/charts/endpoints.js",
+    "src/actions/charts/frame.js",
+    "src/actions/charts/heatmap.js",
+    "src/actions/charts/histogram.js",
+    "src/actions/charts/horizon.js",
+    "src/actions/charts/interval-regression.js",
+    "src/actions/charts/line.js",
+    "src/actions/charts/raincloud.js",
+    "src/actions/charts/rug-strip.js",
+    "src/actions/charts/scatter.js",
+    "src/actions/charts/text.js",
+    "src/actions/coordinates/actions.js",
+    "src/actions/coordinates/edit.js",
+    "src/actions/distributions/revision.js",
+    "src/actions/encodings/channels.js",
+    "src/actions/encodings/conditional.js",
+    "src/actions/encodings/conditionalRequest.js",
+    "src/actions/encodings/density.js",
+    "src/actions/encodings/histogram.js",
+    "src/actions/encodings/horizon.js",
+    "src/actions/encodings/position/areaAlignment.js",
+    "src/actions/encodings/position/index.js",
+    "src/actions/encodings/position/resolve.js",
+    "src/actions/encodings/ranged.js",
+    "src/actions/errorBands/create.js",
+    "src/actions/errorBars/create.js",
+    "src/actions/gradientPlots/create.js",
+    "src/actions/guides/axes/axes.js",
+    "src/actions/guides/axes/axis.js",
+    "src/actions/guides/axes/edit.js",
+    "src/actions/guides/axes/frame.js",
+    "src/actions/guides/axes/labels.js",
+    "src/actions/guides/axes/lines.js",
+    "src/actions/guides/axes/tickGroups.js",
+    "src/actions/guides/axes/ticks.js",
+    "src/actions/guides/axes/titles.js",
+    "src/actions/guides/guides.js",
+    "src/actions/intervals/resolve.js",
+    "src/actions/intervals/revision.js",
+    "src/actions/marks/remove.js",
+    "src/actions/regression/components.js",
+    "src/actions/scales/definitions.js",
+    "src/actions/violinPlots/create.js"
+  ],
+  "newPrivateSources": [
+    "src/actions/charts/frame.js",
+    "src/actions/guides/axes/frame.js",
+    "src/actions/encodings/conditionalRequest.js"
+  ],
+  "currentContracts": [
+    "agent_docs/contract/current/AXES.md",
+    "agent_docs/contract/current/COMPLETE_CHARTS.md",
+    "agent_docs/contract/current/ENCODINGS.md",
+    "agent_docs/contract/current/STATISTICS.md",
+    "agent_docs/contract/current/GRADIENT_PLOTS.md",
+    "agent_docs/contract/current/COMPOSITE_MARKS.md",
+    "agent_docs/contract/current/VIOLIN_PLOTS.md",
+    "agent_docs/contract/current/CORE.md"
+  ],
+  "testAndPolicyFiles": [
+    "test/unit/single-y-admission.test.js",
+    "test/unit/single-y-aggregate-admission.test.js",
+    "test/capabilities.json",
+    "scripts/coverage-policy.js"
+  ],
+  "testResults": {
+    ".artifacts/single-y-preflight/aggregate-owner-final.log": {
+      "tests": 2195,
+      "pass": 2194,
+      "fail": 1,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-reuse-final.log": {
+      "tests": 46,
+      "pass": 46,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-final-owners.log": {
+      "tests": 799,
+      "pass": 799,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-final-chart-regressions.log": {
+      "tests": 64,
+      "pass": 64,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-coordinate-final.log": {
+      "tests": 44,
+      "pass": 44,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-final-critical.log": {
+      "tests": 485,
+      "pass": 485,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    ".artifacts/single-y-preflight/aggregate-frozen-boundaries.log": {
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    }
+  },
+  "resolvedInitialFailure": {
+    "log": ".artifacts/single-y-preflight/aggregate-owner-final.log",
+    "test": "Violin inferred source titles preserve existing custom axis titles",
+    "cause": "Pure proposal treated an inferred title as an explicit replacement; now shares explicitGuides provenance with actual facade materialization.",
+    "verifiedBy": [
+      "aggregate-reuse-final",
+      "aggregate-final-owners",
+      "aggregate-final-critical"
+    ]
+  },
+  "criticalPolicy": {
+    "pass": true,
+    "floors": {
+      "actions/charts/frame.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actions/guides/axes/frame.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "actions/encodings/conditionalRequest.js": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "actions/charts/frame.js": {
+        "lines": 100,
+        "branches": 94.12,
+        "functions": 100
+      },
+      "actions/guides/axes/frame.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "actions/encodings/conditionalRequest.js": {
+        "lines": 100,
+        "branches": 98.18,
+        "functions": 100
+      }
+    }
+  },
+  "allWorkingSourceHashes": {
+    "src/actions/boxPlots/create.js": "b3211a76ad200e87e9842c6d502906990046e6a6274752099e7b8ac316af5c8b",
+    "src/actions/charts/area.js": "f4b11e0af1867834d39c590b1a2fd1b22cc250e63c129f3445803d3080f44712",
+    "src/actions/charts/bar.js": "824f421b51942ecf4e9d21356d6928f226a614f35e4bebc5591863730ed3a839",
+    "src/actions/charts/beeswarm.js": "d238e8f08e51745e1d59f2e0d396903a0285f40761e0b60d66a565c409ef97a3",
+    "src/actions/charts/density.js": "b0690a3613391577514271651bf62aca5149abd5a5826787f7a817ae2936d5bc",
+    "src/actions/charts/ecdf.js": "fdf51376793fca436443befd8da5e958a274ab081547e235d7d4f6e4d00babeb",
+    "src/actions/charts/endpoints.js": "b716ebe8211777681809adc9b905d5da8fdcfad27af60e6d88ead2305d443b52",
+    "src/actions/charts/frame.js": "c3358ee1ecaea3915a00773061578bc5d29608023ea74d94719c51e4af35bd5e",
+    "src/actions/charts/heatmap.js": "ccc6ad17c8af36ba41f233b2546b58df4fb0e29944f0df002a2c6ae687373f9a",
+    "src/actions/charts/histogram.js": "535528f275a48e4834cf090046bfc1881bfccbe551676c0a693b3c27b25be1d2",
+    "src/actions/charts/horizon.js": "0ef1b279ab047df05ea1496d00f6d149039a40f2fc7de101b5ad33530e82b526",
+    "src/actions/charts/interval-regression.js": "0bcb54e49f67a3455e0835f047d588baf6d93c8740b9b5f773bac07c4d35527b",
+    "src/actions/charts/line.js": "f1088d9a9850b4dc7a1d3078a9b1376b495f374bedd8620ec9c4967aecde578c",
+    "src/actions/charts/raincloud.js": "926bcd8b2a830db280e21b7d39b42600b9345541aa648cb4801f9acd7feec6e2",
+    "src/actions/charts/rug-strip.js": "81a80673406cc067b7d3dc902b86ee5977e04457552e8f2e5fdfb1471ce9e6d7",
+    "src/actions/charts/scatter.js": "2135de5402d23677254b97f76284282fdc84ce36693397491b034ae50efb090f",
+    "src/actions/charts/text.js": "4e6981db2f4ec85938d99bc4415eba7c8f7d6a7ee276d8eda8fec702fda9e0d7",
+    "src/actions/composition/actions.js": "ed3b4e3d7315b78a84d31be50b555dfe6514fbdc4e513048b625ff1877cd367a",
+    "src/actions/coordinates/actions.js": "0929a9e54cda24ae01005195306be683857717cc7c7cc337c16dd14ff75d2fcc",
+    "src/actions/coordinates/edit.js": "6a954ebfca783026b0f1a549ffa9ad37a820dde8d9fe59e65370c5cec75a68d3",
+    "src/actions/distributions/revision.js": "98fe1daaa4ca4c4e4b835b3ce039170374493d349152a87f8b1f476300eb2e46",
+    "src/actions/encodings/channels.js": "c2792d7a445b99a8ef00a6121ac771940168b6eef8e240519e113a7853a871d0",
+    "src/actions/encodings/conditional.js": "047f1fd9168ce63bbde6a22f29b266e8349889ff11ff4cc41d10d8483736f0de",
+    "src/actions/encodings/conditionalRequest.js": "a8e827fb2316e2524c84521f2abb0bae7e71e483b4d335b050c40a7c4b45cebc",
+    "src/actions/encodings/density.js": "b3803429979b20d629be36cd64c1e89d1b1c8c6791a7a26eee4a0ac179b272bc",
+    "src/actions/encodings/histogram.js": "d329603fad259bd7b2888279cf273e71c65d17c99c89905127a90971abc30714",
+    "src/actions/encodings/horizon.js": "2077d27e230211c1d6276a241a39106e2d33c4ccac99599c8d989e56d360c1af",
+    "src/actions/encodings/position/apply.js": "595cd49c01e0715f1e31900b73389c8c6d4d316f7381ad8e0e2825eed5baeca4",
+    "src/actions/encodings/position/areaAlignment.js": "4612203791a3bb85ab948d15b5e4cca3300b51267ad741ff1928bed1b01ccd5f",
+    "src/actions/encodings/position/index.js": "09542869288bd6a5d0eee411e948c3e91298630c99c4b356a1278eebc42a0547",
+    "src/actions/encodings/position/resolve.js": "9299145f64843bdb673fd507cf03f9a17cc67f9fc0a1a292b1e87b64fb44817f",
+    "src/actions/encodings/ranged.js": "710ff01cc2bb7fd8e7bf91983836b51f7626fb2205a925e30a8a7afd3697de61",
+    "src/actions/errorBands/create.js": "c1d4a85934e6b4fa83329c0ebfcdc6da5568c794d34e3dd43e538a53eea3423c",
+    "src/actions/errorBars/create.js": "8ba4ea7126b03b7000bf5549facebb684d57624c7ae034aa0433826ecc931f4c",
+    "src/actions/gradientPlots/create.js": "65b54abd517048d65f197ea22dc5d7b747f3c78c83450f4c922be66cd59d4aa0",
+    "src/actions/guides/axes/axes.js": "e3d785e822a581aa19541ff936b23ee17e70f7b8c284c3776123e3b237ca0ab2",
+    "src/actions/guides/axes/axis.js": "29d05a9b739872438fd1ebbb4c7f30548f1a3424a72697692740b45314b1dece",
+    "src/actions/guides/axes/edit.js": "02281e0130dd095506313db53c24c0ed55e5bb66efc1d5c1e3bb639bfb2979e1",
+    "src/actions/guides/axes/frame.js": "1a26a9a3bd626141eff8f0418c0854c7c951d148c9d31fa0bf3fe9244068a781",
+    "src/actions/guides/axes/labels.js": "09d28bbe252509df554c947ce8e0c9253640639d58cd819e35f4cb2f12e2709e",
+    "src/actions/guides/axes/lines.js": "27da92239ebfe8fb1175cee4b4d4783d5dbea2dfabe9f8bdfbdf275f9151b37f",
+    "src/actions/guides/axes/tickGroups.js": "e75681d5b180acdfdb309da12f86773460737136906e640f88ad4d2d2de2bdf5",
+    "src/actions/guides/axes/ticks.js": "6200ca6144a9ece68ec4a7288880fdf2714737b1002580cbd413f120da2572bf",
+    "src/actions/guides/axes/titles.js": "85b82845419669798be5e764c6ca765d9df8559f20027b5f9b710c3484242970",
+    "src/actions/guides/guides.js": "28abdd8c0d947ec990d71397cdc1508b0d23e3413d0f68b792b6a14a9cbf2186",
+    "src/actions/intervals/resolve.js": "9edddf8117773a58bb1fdc8bc9b7e1aedb7f221e5a25dcf16f477e53a85082e2",
+    "src/actions/intervals/revision.js": "7b2444a73921aacc792ea948a595516f0df46363b27b6f2f35d9b5e2b72cf66c",
+    "src/actions/marks/remove.js": "08837b5c9138311afece5cb1d495acdbac6ce573ac138f07802daa883e3febc0",
+    "src/actions/overlays/snapshot.js": "cbc926771bd0fdcf3c8b466abb625286cdfa5b8b686d701e4c058eed3383086a",
+    "src/actions/primitives/index.js": "eee26f0d139fd560f1d29cb61da16f73bc7551640a63dba023e1e1ce789f3469",
+    "src/actions/primitives/semanticAction.js": "cfd65a91c684781f029439f1694d04ab2d7e14df2d7860ebb9f6158e51756e58",
+    "src/actions/primitives/semanticValidation/layer.js": "89f92759568caf562aeade1a04a6e78d625e913b5e0c0433c1fb762f10f041c6",
+    "src/actions/regression/components.js": "926bec7c408fb728ef6864709cc2de3da5b364031770e2e25aa903fe9a68b503",
+    "src/actions/scales/definitions.js": "0df3153ad5a2c626abc7ad1ba881e5fef927fc1812af1e3e4a3875371c6832a6",
+    "src/actions/violinPlots/create.js": "dd84d25d545c477b17180c3c49e19bf89df48b36c16657e3a1fd9abfcb6af678",
+    "src/core/action.js": "3ea581b0ba3c725630a734d29c8bc3dd5f61a350f7cf2c3682aa0dd29abeac65",
+    "src/grammar/facets/dependencies.js": "748c9fe286a0acbaa3960c0d7d55355f97698b4129a8839ba04a5833a9194084",
+    "src/grammar/plotPosition.js": "d2a48f7519db6bdae1891e7eb0290481d3a3bbdcc5cb8ba4af49c6ee44b42dfd",
+    "src/grammar/schemas/semanticPath.js": "07936026bac3603d16f6ff28bc04bd26d5e5d92d52c80c960caf5002df738bc2",
+    "src/grammar/text.js": "19e104db05c7f51a694858d14445c9e5c8a4da7e7942260735d90737e38d0761",
+    "src/materialization/frameState.js": "0c1cad1bd3225763ea846f6d62ccd37d8c431402e278b1101fd8e2577999aa1c",
+    "src/persistence/validation.js": "4bd617082bc3059e29da8e97c1cd7cc01052db95cce5080f9f99cfca2346ebfe"
+  },
+  "ownershipNote": "All pre-existing root WIP, eight corpus fixture changes, and interrupted evidence are retained. Source hashes intentionally include unchanged root-owned working deltas for integration comparison; ownedSourceFiles identifies this agent scope.",
+  "publicSurface": "No public action, option, declaration or persisted-schema change; private helpers only.",
+  "pendingRootIntegration": [
+    "Merge the preserved source candidate with latest main/Routes/034/035/gestures before final qualification.",
+    "Fix prospective editCanvas overlapping-frame admission before the first child using .artifacts/single-y-preflight/canvas-followup.mjs and .json. Root owns this boundary.",
+    "Regenerate docs/catalogs, measure package and bundle limits including three new private source entries, then run final package/coverage/realistic qualification.",
+    "The prior 58-minute corpus run is interrupted, not passed; do not count it as final evidence. No new corpus, full coverage or installed sweep was run for this handoff."
+  ],
+  "canvasExceptionMatrix": ".artifacts/single-y-preflight/canvas-followup.json",
+  "evidenceFiles": {
+    "aggregate-anchors.log": {
+      "sha256": "970a29efd7bb1db7716ea88d9867135e1c856852c663500528fa9727e542fae6",
+      "bytes": 10704
+    },
+    "aggregate-basic.log": {
+      "sha256": "8c8899cf7140ada701a1fac1b90b21cc254d1e925c043a034cf57246e781b200",
+      "bytes": 4169
+    },
+    "aggregate-bulk-final.log": {
+      "sha256": "e8c23735aea29b931a8d7d34cbc91a1cf87e068d31c2f766eeef2bbcc7d73d2f",
+      "bytes": 130985
+    },
+    "aggregate-capture-2.log": {
+      "sha256": "8a3b5295cf0d495f7a7aceaf5e8e8f22df939e3bf17af472a9c18583b444cf20",
+      "bytes": 1729
+    },
+    "aggregate-capture-boundaries.log": {
+      "sha256": "3966ef686b4a73b9c5d3275f63c9ddec59078c737d2094033a2fb070f00f522c",
+      "bytes": 4661
+    },
+    "aggregate-capture-matrix-2.log": {
+      "sha256": "976e2065f5dd25e59d2ade6797592faae6dfe93f1d281597c771b5209be1f0be",
+      "bytes": 5949
+    },
+    "aggregate-capture-matrix.log": {
+      "sha256": "91d32f090b8c769bb1c7b39356bca77cd857c54680b75ef4e0eca7efa4a711f9",
+      "bytes": 6010
+    },
+    "aggregate-capture.log": {
+      "sha256": "076fc93d28636206a099b73e5278ed40f6464ba8957a06da258e4d263ef83a65",
+      "bytes": 4988
+    },
+    "aggregate-composites.log": {
+      "sha256": "f4d91a966f892050bc460ac01f76dc5783afbdf0e9a29720b033fb9e10e55a48",
+      "bytes": 4667
+    },
+    "aggregate-coordinate-final.log": {
+      "sha256": "0cbb5fd9f96364edff6f9f56bdc3d725732e96d8a492417be9f65290db84b115",
+      "bytes": 10211
+    },
+    "aggregate-critical-coverage.log": {
+      "sha256": "6f379b04050f95c456ad291c7df74093669da0e287b4c6bbfbe707358a8c5c23",
+      "bytes": 70979
+    },
+    "aggregate-critical-final-2.log": {
+      "sha256": "8b7fb26d0a3f23fa706203f5de0176ca08b4bacfa1d0990074c35f96937c9a38",
+      "bytes": 102588
+    },
+    "aggregate-critical-final.log": {
+      "sha256": "67146967a5a70b0d44febb5392067f359141f4a928a040f93d551eac2f2df86b",
+      "bytes": 115989
+    },
+    "aggregate-critical-policy.json": {
+      "sha256": "44f0d825eb68331320a64975df3e6a4885237d8c7ba0d6e71e865650de26bd88",
+      "bytes": 731
+    },
+    "aggregate-density.log": {
+      "sha256": "cf5b027eb8706d97f740effc66b572c8fcd7fed05be0ae3ea6430e850bafde16",
+      "bytes": 11752
+    },
+    "aggregate-derived.log": {
+      "sha256": "ae5d87e3e97ed0803cd355453c00e118abcc67e38820fb01d9078749bf92aa33",
+      "bytes": 6452
+    },
+    "aggregate-encoders.log": {
+      "sha256": "388c56a37bc23391652f0b85e44d59b722fbbe40347edac7827ef78e7352376b",
+      "bytes": 8779
+    },
+    "aggregate-final-boundaries-2.log": {
+      "sha256": "97288aa062246a6449f86640bd97aaba48b9ee2f602c9c3c772b8b5e759f527d",
+      "bytes": 5476
+    },
+    "aggregate-final-boundaries.log": {
+      "sha256": "7f10a0915de6740611e015529582fb765aac0764d3b34e7573762e326ca8b912",
+      "bytes": 6589
+    },
+    "aggregate-final-chart-regressions.log": {
+      "sha256": "d575e2682d4fa63526a3fe3a8d184423ee04eb679515fe8971b5a7358e3dc49f",
+      "bytes": 14192
+    },
+    "aggregate-final-critical.log": {
+      "sha256": "031b843329b437a2e85f989f1e47cc9e8ba3ea694aee6465bb7cc6457114083a",
+      "bytes": 107520
+    },
+    "aggregate-final-owners.log": {
+      "sha256": "6ebc9f06e32c6d6b3a55b15df103435d1e7fc4beca90235c576f39d8bf7fb11f",
+      "bytes": 166922
+    },
+    "aggregate-focused.log": {
+      "sha256": "8b6bdad043f5825114057858eb74dea7d1d69895881d28be29401c2a6862dbcd",
+      "bytes": 24726
+    },
+    "aggregate-frozen-boundaries.log": {
+      "sha256": "41793f7544276c51cb0c6618d4acf378a5ec76810d68ae6ed5781dbd64f9fe65",
+      "bytes": 5481
+    },
+    "aggregate-guides.log": {
+      "sha256": "f073246a7a67472f70d476ccef96b71fd06e464e4e2fb826c4dd708f6b867dd6",
+      "bytes": 3480
+    },
+    "aggregate-initial-2.log": {
+      "sha256": "f5f7c5920b939ed5a474dee042b48da6f5497108c6a5b637a48daf957ac1fa24",
+      "bytes": 3487
+    },
+    "aggregate-initial.log": {
+      "sha256": "ad0cb417ba7b4b5b82b46872c8f8a6f232b070d7f8fa839d894fae0b6df8cbd5",
+      "bytes": 21382
+    },
+    "aggregate-native-capture-final.log": {
+      "sha256": "bcedeb94e546a5e599eb76d7d9f1139eae5492a754d874ba28bb7321fdcf8b74",
+      "bytes": 1788
+    },
+    "aggregate-native-final.log": {
+      "sha256": "d34bf03b944f4bde2f9c1a63c9393c148e39f23e8ac3fc498b9737238cb50b94",
+      "bytes": 25339
+    },
+    "aggregate-owner-final.log": {
+      "sha256": "278118a0959592eaafa1358662db10dc7154063b5673f2125b29f80aa7bc0f4c",
+      "bytes": 473165
+    },
+    "aggregate-raincloud-horizon.log": {
+      "sha256": "2b746a09bf9c302402bc98dfb2d69f0d0014c6f056cf7e183d70181ec5d9189e",
+      "bytes": 14982
+    },
+    "aggregate-reuse-final.log": {
+      "sha256": "2230eaaa7a023f69e6971f5278f97e1148c2f86e97b1f99d81347cf0b6a5c0c2",
+      "bytes": 9909
+    },
+    "aggregate-source-boundaries-final.log": {
+      "sha256": "ee3ce5f444a4ce67554845f1e6bedc14c7ddcabc77b6f2fb6eaee2e3c2f24014",
+      "bytes": 2308
+    },
+    "aggregate-source-boundaries.log": {
+      "sha256": "6f39eed9ba533c5d86f73a8ea2379803d5e7b1d8c032763f5ab3cfe39ce65eeb",
+      "bytes": 2311
+    },
+    "aggregate-statistics.log": {
+      "sha256": "bea5742b82faae57e564b833fe233064365c63b893ba258bcedba020ba4be3d5",
+      "bytes": 4268
+    },
+    "aggregate-summary.json": {
+      "sha256": "d4a6f7aa091b5387b25bb1af6fc9405b7420653b1c856349133a09274760fb11",
+      "bytes": 13472
+    },
+    "alignment.log": {
+      "sha256": "ad98d90ce0ceb95a385b0e3a66dfcb64bfe1dbc093dfd909026a21d1973b7e78",
+      "bytes": 4858
+    },
+    "boundaries-final.log": {
+      "sha256": "d2414c229017240f402163793975577c6812dacaa17d96a3029ed11f05d903d6",
+      "bytes": 2307
+    },
+    "boundaries.log": {
+      "sha256": "4a3735209c5aaf382916481f4ef05d9e336cdda80b3ea341227e1fc294ce23dc",
+      "bytes": 3295
+    },
+    "canvas-followup.json": {
+      "sha256": "066d05d68c14dfd22f4e39cccafdc69cbe6df8736318ec542621fe414b87b7bb",
+      "bytes": 2066
+    },
+    "canvas-followup.mjs": {
+      "sha256": "05cdedd4fb1ae61749527c37cf4e56f8f6ca3d2de12243764cde9611f51d438e",
+      "bytes": 2344
+    },
+    "conditionals-final.log": {
+      "sha256": "261662fd7300b222c1ccef9eca72e7616cdf9f9cc308a823f2ca910703243b5c",
+      "bytes": 19234
+    },
+    "conditionals.log": {
+      "sha256": "168d1cfe2a747358d4b49f5013bc79f3932678d4d0d4526d7bee3004ad2498aa",
+      "bytes": 19859
+    },
+    "coverage-final.log": {
+      "sha256": "3c1a7abe1fe1e9bbcb789ec26a3580d06054737072db1e45bcf32e0669a9e5f6",
+      "bytes": 35461
+    },
+    "coverage.log": {
+      "sha256": "544348183c8b4ddd114a7ebcd908ba882a7fec207d4d70181d9c876a3b7a73ca",
+      "bytes": 35518
+    },
+    "encodings.log": {
+      "sha256": "2e06fdef83bd42ec3f708eafc170bc8c46a754c2f0b50768ec26633afe22c65e",
+      "bytes": 130296
+    },
+    "entry.log": {
+      "sha256": "2d4602ea0890ffd9b257cba72a9b484516588c5421b32cf186ed95c16f1406ce",
+      "bytes": 3247
+    },
+    "final.log": {
+      "sha256": "947a4186374739c24095a8f74defadaf94121719c47cd7361be087c07c1080ed",
+      "bytes": 11606
+    },
+    "initial.log": {
+      "sha256": "f97dc51e755dcc64e8232650a763f8c0238919d67bb75f2a463be758e2b1eb64",
+      "bytes": 10049
+    },
+    "summary.json": {
+      "sha256": "7d49ca35f04cf9cf05d9add54cb60a296c90a8049a95138f2a34035db76d971d",
+      "bytes": 3494
+    }
+  },
+  "rootIntegration": "Frozen candidate only. Latest main merge, prospective Canvas first-child rejection, package, complete corpus and final qualification remain."
+}

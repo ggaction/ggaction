@@ -61,9 +61,9 @@ test('a single position reassignment cannot silently change another plot shared 
   const p=swarm().createLayerPlot(layer), before=serializeProgram(p);
   assert.throws(()=>p.encodeY({target:'points',field:'other'}),/shared with plot/);
   assert.equal(serializeProgram(p),before);
-  const q=p.removeYAxis().encodeY({target:'points',field:'other',scale:{id:'otherValue'}});
-  assert.equal(q.semanticSpec.layers.find(l=>l.id==='box').encoding.y.scale,p.semanticSpec.layers.find(l=>l.id==='box').encoding.y.scale);
-  assert.equal(q.semanticSpec.layers.find(l=>l.id==='points').encoding.y.scale,'otherValue');
+  const q=p.removeYAxis(), saved=serializeProgram(q);
+  assert.throws(()=>q.encodeY({target:'points',field:'other',scale:{id:'otherValue'}}),/requires one Y scale/);
+  assert.equal(serializeProgram(q),saved);
   assert.throws(()=>p.createLayerPlot({id:'third',source:'boxMedian',plot:{action:'createBoxPlot'}}));
 });
 for(const action of ['createRosePlot','createRadialBarPlot','createPiePlot'])for(const aggregate of ['count','sum'])

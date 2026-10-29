@@ -40,6 +40,16 @@ connected marks, axes, and grids are recomputed. An explicit new scale ID
 rebinds a non-shared guide while retaining the old named scale. Inferred axis
 titles follow the new field; explicit titles and appearance stay unchanged.
 
+A single Cartesian plot region uses one Y scale identity, including all `y2` endpoints
+and conditional Y branches. Use the existing Y scale for another layer, or place an
+independent measurement in a separate facet or adjacent panel. Hiding axes does not
+change this rule. Literal annotations and detached plot-position snapshots retain
+their own positioning.
+
+Rug edges and the center of a Strip plot with a single measure are fixed plot positions.
+They can accompany a chart without adding another data Y scale. Re-encoding that position
+as data makes it subject to the same single-Y rule.
+
 ## Errors and limitations
 
 A conflicting layer coordinate, non-Cartesian coordinate, cross-channel scale,

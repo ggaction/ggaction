@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { action } from "../../core/action.js";
 import { validateMarkClipCoordinate } from "../../selectors/markClip.js";
 import { validateCoordinateType } from "../../grammar/coordinates.js";
@@ -59,6 +60,15 @@ export const createCoordinate = /* @__PURE__ */ action(
           `Layer "${layerId}" already uses coordinate "${layer.coordinate}".`
         );
       }
+    }
+
+    if (this.actionStack.length === 1) {
+      const selected = new Set(layers);
+      assertProgramSingleY({ ...this, markConfigs: this.markConfigs, guideConfigs: this.guideConfigs,
+        semanticSpec: { ...this.semanticSpec,
+          coordinates: existing === undefined ? [...this.semanticSpec.coordinates, { id, type }] : this.semanticSpec.coordinates,
+          layers: this.semanticSpec.layers.map(layer => selected.has(layer.id) ? { ...layer, coordinate: id } : layer)
+        } }, { allowIncomplete: true });
     }
 
     let program = existing === undefined

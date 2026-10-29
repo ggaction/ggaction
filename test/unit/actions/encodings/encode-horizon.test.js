@@ -49,7 +49,7 @@ test("exposes original x titles before a shared Horizon scale rematerializes its
     .createGuides();
   const before = structuredClone(p.semanticSpec);
   const next = p.createAreaMark({ id: "second", data: "source" })
-    .encodeHorizon({ target: "second", x: "time", y: { field: "value", scale: { id: "secondFolded" } } });
+    .encodeHorizon({ target: "second", x: "time", y: { field: "value", scale: { id: "firstHorizonAmplitude" } } });
   assert.equal(next.semanticSpec.layers[1].encoding.x.title, "Time");
   assert.deepEqual(next.guideConfigs, p.guideConfigs);
   assert.deepEqual(p.semanticSpec, before);

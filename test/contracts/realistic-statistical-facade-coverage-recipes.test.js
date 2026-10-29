@@ -726,6 +726,42 @@ contractTest("the 540-chart projection losslessly subsumes the retired facade sc
   );
 });
 
+contractTest("keeps statistical legend witnesses on the facade positional meaning", () => {
+  const dataset = "tt-penguins";
+  try {
+    for (const recipe of REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES) {
+      const factors = realisticStatisticalFacadeWitnessFactors(recipe, dataset).find(values =>
+        values.variant.legendKind !== "continuous" &&
+        (values.variant.legendProfile ?? 0) % 4 === 1
+      );
+      assert.notEqual(factors, undefined, recipe.id);
+      const program = recipe.build(factors);
+      const facade = program.semanticSpec.layers.find(layer => layer.id.startsWith("facade"));
+      assert.notEqual(facade, undefined, recipe.id);
+      const context = program.semanticSpec.layers.find(layer => layer.id === "seriesContextLines");
+      if (["facadeHeatmap", "facadeHistogram"].includes(facade.id)) {
+        assert.equal(context, undefined, recipe.id);
+        assert.ok(program.semanticSpec.layers.every(layer => !layer.id.includes("Context") &&
+          !layer.id.startsWith("context")), recipe.id);
+        const legends = Object.values(program.guideConfigs.legend ?? {});
+        assert.ok(legends.length > 0, recipe.id);
+        assert.ok(legends.every(legend => legend.target === facade.id), recipe.id);
+      } else {
+        assert.notEqual(context, undefined, recipe.id);
+        for (const channel of ["x", "y"]) {
+          assert.equal(context.encoding[channel].scale, facade.encoding[channel].scale,
+            `${recipe.id} ${channel} shares the actual facade scale`);
+        }
+      }
+      assertAnalyticLayerIntegrity(program, recipe.id);
+      assertGraphicIntegrity(program, recipe.id);
+      assertSvgIntegrity(renderToSVG(program), recipe.id);
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
 contractTest("every same-binding facade variant materially changes the final program", () => {
   const dataset = "tt-penguins";
   try {

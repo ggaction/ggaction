@@ -1,3 +1,4 @@
+import { directProgramTrace, programTraceOwners } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -84,7 +85,7 @@ function meetsMinimum(stats) {
 }
 
 function directEntries(program, action) {
-  return (program.trace.children ?? []).filter(entry => entry.op === action);
+  return directProgramTrace(program).filter(entry => entry.op === action);
 }
 
 function targetInventory(inventory) {
@@ -202,11 +203,17 @@ async function projection() {
           const program = recipe.build(factors);
           const metadata = recipe.describe(factors);
           assertMetadata(recipe, factors, program, metadata, label);
-          assert.deepEqual(
-            program.graphicSpec.objects.canvas.properties,
-            { width: 1_600, height: 1_000, background: "#ffffff" },
-            `${label} compact readable canvas`
-          );
+          const panels = programTraceOwners(program).filter(owner =>
+            Object.keys(owner.children ?? {}).length === 0);
+          const compact = recipe.id !== "realistic-direct-polar-encoding-options";
+          for (const panel of panels) {
+            assert.deepEqual(panel.graphicSpec.objects.canvas.properties,
+              { width: compact ? 600 : 1_600, height: compact ? 400 : 1_000, background: "#ffffff" },
+              `${label} compact readable panel`);
+          }
+          const { width, height } = program.graphicSpec.objects.canvas.properties;
+          assert.ok(width < 16_384 && height < 16_384 && width * height < 64 * 1_024 ** 2,
+            `${label} bounded composition raster dimensions`);
           if (recipe.id === "realistic-direct-polar-encoding-options") {
             assert.deepEqual(
               program.semanticSpec.layers.map(layer => layer.id),

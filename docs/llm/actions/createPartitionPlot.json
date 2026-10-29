@@ -34,8 +34,8 @@
     "H1"
   ],
   "wraps": [
-    "editSemantic",
-    "createCoordinate"
+    "createCoordinate",
+    "editSemantic"
   ],
   "editableVia": [
     "editPartitionPlot",

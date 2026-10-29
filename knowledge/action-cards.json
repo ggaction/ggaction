@@ -9788,7 +9788,15 @@
       ],
       "wraps": [
         "editSemantic",
-        "editGraphics"
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ],
       "editableVia": [],
       "supports": {
@@ -17197,7 +17205,11 @@
         "H3"
       ],
       "wraps": [
-        "editDensity"
+        "editDensity",
+        "editSemantic",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ],
       "editableVia": [
         "editViolinPlot"
@@ -32526,7 +32538,17 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -32682,7 +32704,11 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "removeTitle",
+        "filterData",
+        "editGraphics"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -32833,7 +32859,10 @@
       "authoringRoles": [
         "H0"
       ],
-      "wraps": [],
+      "wraps": [
+        "removeTitle",
+        "encodeX"
+      ],
       "editableVia": [
         "editFacetSource",
         "editFacetHeaders",
@@ -33337,7 +33366,18 @@
       "authoringRoles": [
         "H3"
       ],
-      "wraps": [],
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "removeTitle"
+      ],
       "editableVia": [
         "editFacetGuides"
       ],
@@ -35576,6 +35616,7 @@
         "createTickMark",
         "encodeX",
         "encodeY",
+        "editSemantic",
         "encodeAngle"
       ],
       "editableVia": [],
@@ -38503,7 +38544,9 @@
       ],
       "wraps": [
         "editScale",
-        "createBoxPlot"
+        "createBoxPlot",
+        "createScatterPlot",
+        "editGraphics"
       ],
       "editableVia": [
         "encodeColor",
@@ -40586,8 +40629,8 @@
         "H1"
       ],
       "wraps": [
-        "editSemantic",
-        "createCoordinate"
+        "createCoordinate",
+        "editSemantic"
       ],
       "editableVia": [
         "editPartitionPlot",
@@ -42017,9 +42060,9 @@
         "H2"
       ],
       "wraps": [
+        "createCoordinate",
         "editSemantic",
-        "createScale",
-        "createCoordinate"
+        "createScale"
       ],
       "editableVia": [
         "editContourMark",

@@ -48,6 +48,7 @@ export function createCarsDensityAreaPrimitiveProgram(cars, {
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "cars", values: cars })
     .createAreaMark({ id: "densities", opacity: 0.5 })
+    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({
       property: `dataset[${datasetId}].source`,
       value: "cars"
@@ -132,7 +133,6 @@ export function createCarsDensityAreaPrimitiveProgram(cars, {
       property: "scale[color].range",
       value: { palette: "tableau10" }
     })
-    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "Acceleration" })

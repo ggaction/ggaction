@@ -1,3 +1,7 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { normalizeConditionalEncoding } from "../../grammar/conditionalEncoding.js";
+import { conditionalBranchRequest } from "./conditionalRequest.js";
+import { previewPositionIdentityFrame } from "./position/resolve.js";
 import {
   action,
   invokeWrappedActionImplementation
@@ -378,6 +382,24 @@ function applyEncodingDraft(program, target, requests) {
   return draft;
 }
 
+function assertEncodingAssignmentFrame(program, target, requests) {
+  let candidate = stageFinalPositionRoles(program, target, requests);
+  for (const { channel, payload } of requests) {
+    if (!["x", "y"].includes(channel)) continue;
+    const layer = findLayer(candidate, target);
+    if (layer === undefined) continue; // The ordinary target owner reports it.
+    let values = [payload];
+    if (Object.hasOwn(payload, "conditions") || Object.hasOwn(payload, "otherwise")) {
+      const { definition } = normalizeConditionalEncoding(payload);
+      const branch = conditionalBranchRequest(layer, channel, definition);
+      values = [...definition.conditions.map((condition, index) => branch(condition.value, ["conditions", index]).payload),
+        branch(definition.otherwise, ["otherwise"]).payload];
+    }
+    candidate = previewPositionIdentityFrame(candidate, layer, channel, values);
+  }
+  assertProgramSingleY(candidate, { allowIncomplete: true });
+}
+
 function planEncodingAssignments(program, target, requests) {
   const originalLayer = findLayer(program, target);
   const draft = applyEncodingDraft(program, target, requests);
@@ -408,6 +430,9 @@ export const encodeChannels = /* @__PURE__ */ action(
   },
   function (args = {}) {
     const { target, requests } = normalizeEncodeChannelsArgs(args);
+    // Nested native owners may still be completing explicit plot-snapshot intent.
+    // Their final proposal is admitted by the outer owner.
+    if (this.actionStack.length === 1) assertEncodingAssignmentFrame(this, target, requests);
     const plan = planEncodingAssignments(this, target, requests);
     let next = applyEncodingAssignments(this, plan);
     const scaleIds = plan.scaleIds;

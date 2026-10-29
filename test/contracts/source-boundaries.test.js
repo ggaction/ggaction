@@ -100,7 +100,7 @@ test("keeps source imports inside their architectural boundaries", () => {
             "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
             "legends/sampling.js", "legends/size.js", "legends/colorSize.js", "legends/continuous/gradient.js"
           ].some(name => path.relative(root, dependency) === path.join("actions", "guides", name))) ||
-          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
+          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "frameState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
             path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
           (path.relative(root, file) === path.join("resources", "dataUpdate.js") &&

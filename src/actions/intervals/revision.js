@@ -4,7 +4,7 @@ import {
   mergeIntervalStatistics,
   validateIntervalStatistics
 } from "../data/intervalEdit.js";
-import { resolveDistributionScalePlan } from "../distributions/revision.js";
+import { resolveDistributionScalePlan, assertDistributionFrame } from "../distributions/revision.js";
 import { resolveIntervalComposite } from "./resolve.js";
 
 export function currentIntervalRoleArgs(program, owner, current, bar) {
@@ -95,7 +95,7 @@ export function resolveIntervalRoleScales(program, resolved, current, policy, ow
   };
   const xScale = plan("x", x);
   const yScale = plan("y", y);
-  return {
+  const candidate = {
     x: { ...x, scale: xScale.id },
     y: { ...y, scale: yScale.id },
     xScale,
@@ -110,6 +110,9 @@ export function resolveIntervalRoleScales(program, resolved, current, policy, ow
         fieldType: owner.encoding.y.fieldType, scale: owner.encoding.y.scale }
     }
   };
+  const centers = program.semanticSpec.layers.filter(layer => program.markConfigs[layer.id]?.intervalPlot?.intervalId === owner.id).map(layer => layer.id);
+  assertDistributionFrame(program, owner, candidate, centers);
+  return candidate;
 }
 
 export function applyIntervalStatistics(program, full, policy, args, resolved) {
