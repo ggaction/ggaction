@@ -10,7 +10,7 @@ export function prepareSelectionState(program, id, target, selector) {
     kind: "persistent-selection", id, revision: previous === undefined ? 0 : previous.revision + 1,
     algorithmVersion: "1", ownership: { mode: "authored" },
     inputs: dataset === undefined ? [] : [dataInputReference(dataset)],
-    options: dataset === undefined ? { mode: "predicate", predicate }
+    options: selector.items !== undefined ? { mode: "item-keys", itemKeys: selector.items, empty: selector.empty } : dataset === undefined ? { mode: "predicate", predicate }
       : { mode: "row-keys", logicalDataId: dataset.logicalId, rowKeys: selector.rows.indices.map(index => dataset.rowKeys[index]) },
     result: {}, provenance: { origin: "authored" }
   };

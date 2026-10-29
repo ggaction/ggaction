@@ -84,6 +84,16 @@ type MarkSelector =
   정할 수 없는 empty chart와 이미 materialized된 chart의 empty filter 결과는 구분한다. Ambiguous
   field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에 실패한다.
 
+## Logical item selection and set updates
+
+- `MarkSelector` also accepts `{ items: readonly string[], empty?: "none" | "all", grain? }`, exclusively of row or value selectors. Keys are the opaque `getMarkItems(...).key` or interaction hit `itemKey` at the same target/grain. Duplicates normalize by first occurrence; malformed, sparse, accessor or non-string key arrays fail. The cumulative key count plus UTF-16 key length is bounded by the shared 10,000,000 work limit.
+- Default `empty: "none"` selects nothing for an explicit empty key list. `empty: "all"` selects every current item only when the stored key list itself is empty. A nonempty list whose keys are hidden or deleted selects nothing; it never expands to all items. Absent keys are retained and can reappear after filtering or source revision. This checkpoint has no automatic drop policy or orphan event.
+- Selection resources add normalized `options: { mode: "item-keys", itemKeys, empty }` with unchanged algorithm version `"1"`; the existing resource/config ownership and exact revision binding remain. Row-key and predicate resources retain their current storage and behavior. Input indices are never stored as logical item keys.
+- `editMarkSelection` accepts `mode?: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default `"replace"`. Replace stores the supplied complete selector, retaining live predicate and row-key behavior. Other modes require the existing grain and store the resulting logical key set. Add preserves previous keys and appends new keys in incoming order; toggle removes common keys and appends previously absent keys; subtract/intersect preserve previous key order. An incoming predicate or row selector resolves once at update time. Existing and incoming nonempty item lists retain hidden keys. An explicit empty-all list is evaluated against current items for set operations. The resulting empty policy preserves the existing policy unless `empty` is supplied with an items selector.
+- Logical keys are relative to the owning program. Scoped actions accept namespaced keys from inspection of that exact explicit child path, remove only those ancestor namespaces, and reject keys from another scope. Nested snapshots add namespaces back through the existing identity owner. A composite inspection may report several component targets; use each item's reported target when selecting that component.
+- `selectMarks`, `editMarkSelection`, inline/named `highlightMarks`, mark labels and `filterMarks` share this selector. Compound highlights project root membership through existing source-row lineage. Conditional encodings rebind the updated resource revision before rematerializing. Resize, filter removal, compatible source revision and editable snapshot restoration preserve key meaning. Full authors these actions; Basic authoring support is unchanged.
+- Evidence: `test/unit/grammar/selection-set.test.js`, `test/unit/actions/selection/logical-item-selection.test.js`, `test/contracts/logical-selection-types.test.js`, `test/contracts/realistic-logical-selection.test.js`.
+
 ## `filterMarks`
 
 - Signature: `filterMarks({ target?, mode?: "replace" | "compose", ...selector })`
@@ -176,7 +186,7 @@ type MarkSelector =
   area, arc, rule과 Tick의 final semantic item resolver를 제공한다.
 - `id`: 생략한 첫 selection은 `${target}Selection`을 사용한다. 같은 role의 두 번째 selection은 explicit
   ID가 필요하며 기존 ID를 교체하지 않는다.
-- Effect: normalized predicate or row-key meaning is stored once in `semanticSpec.resources` as a persistent-selection resource.
+- Effect: normalized predicate, row-key or logical item-key meaning is stored once in `semanticSpec.resources` as a persistent-selection resource.
   `materializationConfigs.selections` stores target, grain, projection, exact resource ref and optional composite sourceSelection.
   `currentSelection` is updated; graphics stay unchanged. Input row indices are immediately resolved to stable row keys.
 - Rematerialization: stored selector는 현재 semantic point item에 다시 평가되므로 Canvas/scale/encoding/data
@@ -214,9 +224,9 @@ type MarkSelector =
 
 ## `editMarkSelection`
 
-- Signature: `editMarkSelection({ selection?, ...selector })`.
+- Signature: `editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })`.
 - `selection`: explicit ID, current selection, unique stored selection 순으로 resolve한다. Existing ID와 target은
-  유지하며 supplied selector는 partial merge가 아니라 complete replacement다. Target replacement는
+  유지하며 default replace는 supplied selector의 complete replacement다. Explicit set update modes follow the logical item contract above. Target replacement는
   `removeMarkSelection` 뒤 `selectMarks`가 소유한다.
 - Effect: 새 selector 전체를 normalize하고 current target의 final item grain에서 compatibility를 preflight한 뒤
   the persistent-selection resource at its next revision and rebinds all dependent selection references atomically.

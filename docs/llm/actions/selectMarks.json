@@ -78,6 +78,16 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "items",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"all\" | \"none\" | undefined"
+    },
+    {
       "name": "rows",
       "required": false,
       "type": "{ data: string; indices: readonly number[]; }"
@@ -145,7 +155,8 @@
   ],
   "callPatterns": [
     "selectMarks({ id?, field | channel | property, op, ...operands })",
-    "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+    "selectMarks({ id?, target?, grain?, op: min | max, count? })",
+    "selectMarks({ id?, target?, items: logicalKeys, empty?: none | all })"
   ],
   "snippet": "program.selectMarks({ field: \"category\", op: \"eq\", value: \"A\" })",
   "errors": [],

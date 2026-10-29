@@ -916,7 +916,7 @@ materializationConfigs = {
 아니라 이 canonical object에서 값을 읽는 getter다. `_actionSequence`처럼 serialization
 대상이 아닌 bookkeeping은 enumerable state가 아니다.
 
-`semanticSpec.resources`의 persistent-selection은 predicate 또는 stable row-key 집합을 소유한다. `selections`는 target mark, grain/projection, exact resource ref와 composite sourceSelection 관계를 저장한다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
+`semanticSpec.resources`의 persistent-selection은 predicate, stable row-key 또는 logical item-key 집합을 소유한다. `selections`는 target mark, grain/projection, exact resource ref와 composite sourceSelection 관계를 저장한다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
 `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete 값만 읽는다.
 Item resolver가 현재 semantic/materialization 계산에서 point row, final bar segment/stack, line/area series 또는
 rule row를 다시 만든 뒤 selection을 평가한다. Bar의 semantic position은 start `x`/`y`와 end `x2`/`y2`로
@@ -3404,3 +3404,18 @@ README 진입점 추가 전 최대1,281,005packed/5,879,334unpacked bytes에 최
 Node별 설치 근거는 interaction 공개 체크포인트 기록이 소유한다.
 공개 inspection API/recipe와 entry reference를 포함한 search index는945,337bytes로 기존941,000을
 넘어 최소1,000bytes 올림946,000으로 조정했다. 검색 내용이나 기능을 제외하지 않았다.
+
+
+### Logical item selection의 집합 연산과 scoped identity
+
+`grammar/selectionSet.js`가 immutable key 집합의 normalize/replace/add/toggle/subtract/intersect와
+누적 key 작업 한도를 소유한다. 기존 `grammar/markSelection.js`의 final-grain 평가를 모든 selection,
+filter, labels, conditional 소비자가 공유한다. `actions/selection/resources.js`는 logical item set을
+기존 persistent-selection resource에 명시 저장하고, action editor가 기존 dependent rematerialization을
+실행한다. 새 자동 compiler나 renderer 상태는 추가하지 않는다.
+
+`grammar/schemas/graphicIdentity.js`가 composition namespace의 추가와 제거를 함께 소유한다.
+`actions/composition/targets.js`는 선택 관련 scoped action의 inspected key를 명시 childPath에 맞춰
+child-local identity로 바꾼다. Child resource는 local key만 저장하며 부모 graphic snapshot은 기존
+namespace를 재적용한다. 정확한 옵션/빈 집합/숨긴 키 정책은
+[Mark selection](contract/current/MARK_SELECTION.md#logical-item-selection-and-set-updates)이 소유한다.

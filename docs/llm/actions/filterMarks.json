@@ -76,6 +76,16 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "items",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"all\" | \"none\" | undefined"
+    },
+    {
       "name": "rows",
       "required": false,
       "type": "{ data: string; indices: readonly number[]; }"
@@ -143,7 +153,8 @@
   ],
   "callPatterns": [
     "filterMarks({ field | channel | property, op, ...operands })",
-    "filterMarks({ target?, mode: replace | compose, ...selector })"
+    "filterMarks({ target?, mode: replace | compose, ...selector })",
+    "filterMarks({ target?, items: logicalKeys, empty?: none | all })"
   ],
   "snippet": "program.filterMarks({ field: \"value\", op: \"gt\", value: 0 })",
   "errors": [],

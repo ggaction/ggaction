@@ -2107,18 +2107,21 @@
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
-      "filterMarks({ target?, mode: replace | compose, ...selector })"
+      "filterMarks({ target?, mode: replace | compose, ...selector })",
+      "filterMarks({ target?, items: logicalKeys, empty?: none | all })"
     ],
     "removeMarkFilter": [
       "removeMarkFilter({ target? })"
     ],
     "selectMarks": [
       "selectMarks({ id?, field | channel | property, op, ...operands })",
-      "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+      "selectMarks({ id?, target?, grain?, op: min | max, count? })",
+      "selectMarks({ id?, target?, items: logicalKeys, empty?: none | all })"
     ],
     "editMarkSelection": [
       "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
-      "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+      "editMarkSelection({ selection?, grain?, op: min | max, count? })",
+      "editMarkSelection({ selection?, mode: add | toggle | subtract | intersect, items: logicalKeys })"
     ],
     "editMarkLabelSelection": [
       "editMarkLabelSelection({ target, select | selection | all: true })"

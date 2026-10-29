@@ -1409,7 +1409,8 @@ export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
   | "fill" | "stroke" | "strokeWidth" | "opacity";
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -1437,6 +1438,7 @@ export type SelectMarksOptions = {
 } & MarkSelector;
 export type EditMarkSelectionOptions = {
   selection?: string;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
 } & MarkSelector;
 export interface RemoveMarkSelectionOptions {
   selection?: string;
@@ -1929,6 +1931,7 @@ export interface PersistentSelectionResource {
   readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
   readonly inputs: readonly InputRef[];
   readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
+    | { readonly mode: "item-keys"; readonly itemKeys: readonly string[]; readonly empty: "none" | "all" }
     | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
   readonly result: Readonly<Record<string, never>>;
   readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };

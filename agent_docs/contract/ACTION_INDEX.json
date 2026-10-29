@@ -4059,7 +4059,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replace a stored selector while preserving its ID and target",
+      "update": "Replace a stored selector or combine logical item keys while preserving its ID and target",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

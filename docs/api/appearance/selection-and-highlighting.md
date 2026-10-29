@@ -10,7 +10,7 @@ title: Selection and Highlighting
 ## Mark selection and highlighting
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself
-does not alter `semanticSpec` or `graphicSpec`:
+stores its meaning in `semanticSpec.resources` and leaves `graphicSpec` unchanged:
 
 <!-- snippet-context:start -->
 
@@ -187,6 +187,52 @@ Selection and highlight intent is immutable and is reapplied after owning mark
 rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
+
+## Selecting stable item keys
+
+Use `items` when a picker or list already identifies complete visual items. Keys
+come from `getMarkItems` or the interaction hit result; array positions and raw
+graphic IDs are not keys.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+
+const program = chart().createCanvas({ width: 300, height: 240, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+const items = getMarkItems(program, { target: "points" });
+const picked = program.selectMarks({
+  id: "picked", target: "points", items: [items[0].key]
+});
+const toggled = picked.editMarkSelection({
+  selection: "picked", mode: "toggle", items: [items[0].key]
+});
+```
+
+`items: []` selects nothing by default. Set `empty: "all"` explicitly to make an
+empty list select every current item. A nonempty list with no visible matches
+still selects nothing. Hidden keys remain stored, so removing a filter can make
+the same selection visible again. Duplicate keys are stored once.
+
+`editMarkSelection` defaults to `mode: "replace"`. Use `add`, `toggle`,
+`subtract`, or `intersect` to combine the current set with incoming items, rows,
+or a value selector. These four modes store the resulting item keys at the
+existing grain. Existing hidden keys survive unless the operation removes them.
+The empty policy is preserved unless explicitly supplied with an items selector.
+A replacement field/range selector keeps reevaluating against current values.
+
+The same items selector works in `highlightMarks({ select: ... })`,
+`createMarkLabels({ select: ... })`, and `filterMarks`. Use keys from the exact
+mark and grain being selected. In a composition, inspect and author with the
+same explicit `{ childPath, id }` target; a key from another child is rejected.
+Composite inspection reports each item's component `target`.
 
 ## Editing and removing stored intent
 

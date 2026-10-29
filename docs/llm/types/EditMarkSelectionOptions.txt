@@ -1,3 +1,4 @@
 export type EditMarkSelectionOptions = {
   selection?: string;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
 } & MarkSelector;

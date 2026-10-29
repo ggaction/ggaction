@@ -3588,10 +3588,12 @@ Use these actions for explicit semantic resources or focused axis control.
 ### Reusable mark selections
 
 ```javascript
-selectMarks({ id?, target?, grain?, field | channel | property, op, ...operatorOptions })
+selectMarks({ id?, target?, ...selector })
 ```
 
 Store a reusable semantic final-item selection without changing graphics.
+Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
+`getMarkItems` or interaction inspection; `empty` defaults to `"none"`.
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
@@ -3601,11 +3603,11 @@ values, and properties are concrete graphical values.
 ### `editMarkSelection`
 
 ```javascript
-editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })
 ```
 
-Replace the complete selector while preserving the stored selection ID and
-mark target. Dependent highlights and exact categorical legend reflection are
+Replace the complete selector by default, or combine its logical item keys with
+`add`, `toggle`, `subtract`, or `intersect`. The selection ID and mark target remain. Dependent highlights and exact categorical legend reflection are
 replayed from a clean baseline.
 [Selection lifecycle](../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 

@@ -1067,5 +1067,18 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "logical-selection.mjs",
+    "cases": [
+      {
+        "id": "selection/logical-item-update",
+        "statements": 1
+      },
+      {
+        "id": "selection/logical-scoped-update",
+        "statements": 1
+      }
+    ]
   }
 ]

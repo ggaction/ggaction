@@ -55,9 +55,15 @@ export function validateStoredResource(resource, ProgramClass) {
   }
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
-  if (options?.mode === "predicate") {
+  if (options?.mode === "item-keys") {
+    exact(options, ["mode", "itemKeys", "empty"], "Logical item selection");
+    const normalized = normalizeMarkSelector({ items: options.itemKeys, empty: options.empty });
+    if (canonicalJSON(normalized.items) !== canonicalJSON(options.itemKeys) || normalized.empty !== options.empty) {
+      throw error("Selection item keys and empty policy must be normalized.");
+    }
+  } else if (options?.mode === "predicate") {
     exact(options, ["mode", "predicate"], "Predicate selection");
-    if (Object.hasOwn(options.predicate, "grain") || Object.hasOwn(options.predicate, "rows")) throw error("Selection projection belongs to its target configuration.");
+    if (Object.hasOwn(options.predicate, "grain") || Object.hasOwn(options.predicate, "rows") || Object.hasOwn(options.predicate, "items") || Object.hasOwn(options.predicate, "empty")) throw error("Selection projection belongs to its target configuration.");
     const { grain: _grain, ...normalized } = normalizeMarkSelector(options.predicate);
     if (canonicalJSON(normalized) !== canonicalJSON(options.predicate)) throw error("Selection predicate must be normalized.");
   } else if (options?.mode === "row-keys") {

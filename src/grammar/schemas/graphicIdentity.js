@@ -38,3 +38,14 @@ export function namespaceItemKey(key, namespace) {
   if (!Array.isArray(path)) throw new TypeError("Item identity requires a child path.");
   return JSON.stringify([[namespace, ...path], ...rest]);
 }
+
+// Public inspected keys include ancestor namespaces. A scoped action stores
+// only the key relative to its explicitly selected child program.
+export function unnamespaceItemKey(key, namespaces) {
+  const value = JSON.parse(key);
+  if (!Array.isArray(value) || value.length !== 4 || !Array.isArray(value[0]) ||
+      value[0].length !== namespaces.length || namespaces.some((part, index) => value[0][index] !== part)) {
+    throw new TypeError("Selection logical key does not belong to the explicit child scope.");
+  }
+  return JSON.stringify([[], ...value.slice(1)]);
+}

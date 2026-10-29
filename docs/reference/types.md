@@ -6397,6 +6397,7 @@ Related types: [`MarkSelector`](#type-markselector).
 ```typescript
 export type EditMarkSelectionOptions = {
   selection?: string;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
 } & MarkSelector;
 ```
 
@@ -10144,7 +10145,8 @@ export interface MarkOutline { color: string; width: number; }
 <summary>Expand MarkSelector</summary>
 
 ```typescript
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }

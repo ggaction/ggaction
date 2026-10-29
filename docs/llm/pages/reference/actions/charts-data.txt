@@ -1938,6 +1938,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |

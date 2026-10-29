@@ -1,4 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { ownRecord } from "../core/ownData.js";
+import { normalizeSelectionKeys, normalizeSelectionEmpty } from "./selectionSet.js";
 import { ENCODING_CHANNELS } from "../core/vocabulary.js";
 
 export const MARK_SELECTOR_OPERATORS = Object.freeze([
@@ -42,7 +44,8 @@ const COMPARISON_OPERATORS = new Set([
 ]);
 const ORDERED_COMPARISON_OPERATORS = new Set(["gt", "gte", "lt", "lte"]);
 const RANK_OPERATORS = new Set(["min", "max"]);
-const SELECTOR_KEYS = Object.freeze([
+export const MARK_SELECTOR_KEYS = Object.freeze([
+  "items", "empty",
   "rows",
   "grain",
   "field",
@@ -94,9 +97,20 @@ export function normalizeMarkSelector(selector) {
   if (!isPlainObject(selector)) {
     throw new TypeError("Mark selector must be a plain object.");
   }
-  const unknown = Object.keys(selector).find(key => !SELECTOR_KEYS.includes(key));
+  ownRecord(selector, "Mark selector");
+  selector = Object.assign(Object.create(null), selector);
+  const unknown = Object.keys(selector).find(key => !MARK_SELECTOR_KEYS.includes(key));
   if (unknown !== undefined) {
     throw new Error(`Unknown mark selector option "${unknown}".`);
+  }
+
+  if (Object.hasOwn(selector, "items")) {
+    if (Object.keys(selector).some(key => !["grain", "items", "empty"].includes(key))) {
+      throw new TypeError("Logical item selection accepts only items, empty and grain.");
+    }
+    const grain = selector.grain === undefined ? "item" : selector.grain;
+    if (!MARK_SELECTOR_GRAINS.includes(grain)) throw new Error(`Unknown mark selector grain "${grain}".`);
+    return Object.freeze({ grain, items: normalizeSelectionKeys(selector.items), empty: normalizeSelectionEmpty(selector.empty) });
   }
 
   if (selector.rows !== undefined) {
@@ -309,6 +323,11 @@ function rankGroup(items, selector) {
 export function selectMarkItemKeys(items, selector) {
   validateItems(items);
   const normalized = normalizeMarkSelector(selector);
+  if (normalized.items !== undefined) {
+    const selected = new Set(normalized.items);
+    return Object.freeze(items.filter(item => selected.has(item.key) ||
+      (selected.size === 0 && normalized.empty === "all")).map(item => item.key));
+  }
   if (normalized.rows) {
     const indices = new Set(normalized.rows.indices);
     return cloneAndFreeze(items.filter(item => item.rows?.some(ref => ref.data === normalized.rows.data && indices.has(ref.index))).map(item => item.key));

@@ -3,6 +3,7 @@ import { requireDataset } from "./datasets.js";
 
 export function storedSelectionSelector(program, definition) {
   const resource = requireStoredResource(program, definition.resource);
+  if (resource.options.mode === "item-keys") return { grain: definition.grain, items: resource.options.itemKeys, empty: resource.options.empty };
   if (resource.options.mode === "predicate") return { grain: definition.grain, ...resource.options.predicate };
   const dataset = requireDataset(program, definition.projection.data);
   const selected = new Set(resource.options.rowKeys);

@@ -1,3 +1,5 @@
+import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
+import { combineSelectionKeys, SELECTION_SET_MODES } from "../../grammar/selectionSet.js";
 import { rebindConditionalInputs, orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 import { requireDataset } from "../../selectors/datasets.js";
@@ -36,12 +38,8 @@ import {
   resolveEffectiveThemeTokens
 } from "../theme/state.js";
 
-const SELECTOR_KEYS = Object.freeze([
-  "rows", "grain", "field", "channel", "property", "op", "value", "values", "min", "max",
-  "inclusive", "count", "groupBy", "ties"
-]);
-const SELECT_OPTIONS = Object.freeze(["id", "target", ...SELECTOR_KEYS]);
-const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", ...SELECTOR_KEYS]);
+const SELECT_OPTIONS = Object.freeze(["id", "target", ...MARK_SELECTOR_KEYS]);
+const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", "mode", ...MARK_SELECTOR_KEYS]);
 const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
 const HIGHLIGHT_OPTIONS = Object.freeze([
   "id", "target", "select", "selection", "color", "opacity", "fill",
@@ -55,7 +53,7 @@ const REMATERIALIZE_OPTIONS = Object.freeze(["target", "highlights"]);
 
 function selectorFrom(args) {
   return Object.fromEntries(
-    SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
+    MARK_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
   );
 }
 
@@ -289,16 +287,30 @@ export const selectMarks = /* @__PURE__ */ closedAction(
 export const editMarkSelection = /* @__PURE__ */ closedAction(
   {
     op: "editMarkSelection",
-    description: "Replace one stored mark selector while preserving its identity and target."
+    description: "Update one stored mark selection while preserving its identity and target."
   }, EDIT_SELECTION_OPTIONS,
   function (args = {}) {
+    const mode = Object.hasOwn(args, "mode") && args.mode !== undefined ? args.mode : "replace";
+    if (!SELECTION_SET_MODES.includes(mode)) throw new TypeError("Unknown selection update mode.");
     const current = resolveStoredSelection(this, args.selection);
     const replacement = resolveMarkSelection(
       this,
       current.definition.target,
       selectorFrom(args)
     );
-    let next = writeSelectionState(this, current.id, current.definition.target, replacement.selector)
+    if (mode !== "replace" && current.selector.grain !== replacement.selector.grain) {
+      throw new Error("Selection set updates require the existing grain.");
+    }
+    const selector = mode === "replace" ? replacement.selector : {
+      grain: current.selector.grain,
+      items: combineSelectionKeys(
+        current.selector.items?.length ? current.selector.items : current.keys,
+        replacement.selector.items?.length ? replacement.selector.items : replacement.keys,
+        mode
+      ),
+      empty: Object.hasOwn(args, "empty") ? replacement.selector.empty : current.selector.empty ?? "none"
+    };
+    let next = writeSelectionState(this, current.id, current.definition.target, selector)
       ._withContext({ currentSelection: current.id });
     const conditionals = rebindConditionalInputs(next, { selection: next.materializationConfigs.selections[current.id].resource.id });
     next = conditionals.program;

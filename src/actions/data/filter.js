@@ -1,3 +1,4 @@
+import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
@@ -42,10 +43,6 @@ import {
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls", "where"
-]);
-const MARK_SELECTOR_KEYS = Object.freeze([
-  "rows", "grain", "field", "channel", "property", "op", "value", "values",
-  "min", "max", "inclusive", "count", "groupBy", "ties"
 ]);
 const MARK_OPTIONS = Object.freeze(["target", "mode", ...MARK_SELECTOR_KEYS]);
 const REMOVE_MARK_FILTER_OPTIONS = Object.freeze(["target"]);

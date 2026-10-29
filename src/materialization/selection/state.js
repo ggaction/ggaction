@@ -8,7 +8,7 @@ export function resolveMarkSelection(program, target, selector) {
   const normalized = normalizeMarkSelector(selector);
   const items = resolveMarkItems(program, target, normalized.grain);
   if (normalized.rows) validateRowSelection(program, normalized.rows, items);
-  if (items.length > 0 && !normalized.rows) {
+  if (items.length > 0 && !normalized.rows && normalized.items === undefined) {
     const source = normalized.field !== undefined
       ? "fields"
       : normalized.channel !== undefined
