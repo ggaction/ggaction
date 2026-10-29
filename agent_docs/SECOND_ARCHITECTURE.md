@@ -3879,3 +3879,10 @@ Geographic annotation은 기존 Geo layer의 닫힌 mode와 native Text primitiv
 annotation은 원 feature 의미와 literal text를 보존한다. Typography/theme/selection/복원은
 기존 owner를 사용하고 renderer에는 concrete Text만 전달한다. 정확한 API는
 [GEOMETRY.md](contract/current/GEOMETRY.md#creategeoannotation)를 따른다.
+
+Geo camera의 private `grammar/geo/camera.js`는 명시 projection parameter와 operation의
+순수 변환만 담당한다. Pointer inverse와 composite eligibility는 기존 projection kernel,
+geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는 구면 quaternion과
+호환성 판단을 소유하고 숫자·양수 scale 보간은 `grammar/animation/values.js`를 재사용한다.
+초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
+않는다. 공개 action/session/player 통합은 별도 후행 경계다.

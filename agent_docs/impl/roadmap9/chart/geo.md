@@ -669,3 +669,45 @@ selective artifact 및 전체320/390/768px browser containment·검색·접근�
 1035개 package input의 canonical byte parity도 다시 확인했다. 최초 실패와 owning 수리는
 위 evidence status와 원본 로그로 분리했다. 이 checkpoint는 ordinary fields와 기존legend
 연결이며 conditional resource-grain, feature/graticule labels, camera046 전체 완료를 뜻하지 않는다.
+
+## Camera 순수 계산 계약
+
+STEP046의 기존 승인과 전체 남은 Gate 승인을 재사용한다. 첫 checkpoint는 공개 action/session
+상태를 추가하지 않는 순수 계산이며, projection의 기존 normalized parameter와 명시 operation을
+받아 새 normalized parameter를 반환한다. `applyGeoCamera`는 pan(deltaPx), zoom(anchorPx,
+factor, 명시 scaleExtent), pinch(이전/현재 두 pointer와 scaleExtent), rotate(절대 rotateDeg),
+fit(geometry/viewport/coordinateKind), reset(명시 initial snapshot), resize(이전/현재 viewport와
+preserve|fit scaling)를 닫힌 입력으로 처리한다. 모든 값은 유한해야 하고 scale·거리·viewport는
+양수다. Invalid/overflow/hidden inverse는 이전 값을 몰래 유지하지 않고 실패한다.
+
+Zoom은 기존 projection inverse로 pointer의 실제 geographic/planar anchor와 composite component를
+검증한다. Bounded scale의 실제 비율로 translation을 보정한 뒤 같은 anchor의 오차가0.25px
+이하인지 확인한다. Pinch는 두 중심의 이동과 거리 비율을 같은 결과에 반영한다. Resize는 이전
+viewport 중심의 projected 위치를 새 중심으로 옮기고, 명시 fit일 때 두 크기 비율의 최솟값으로
+scale도 바꾼다. Projection의 authored clipExtent는 별도 의미라 자동 변경하지 않으며 Geo mark의
+Canvas clip은 기존 materializer가 소유한다. Reset 초기상태는 caller가 명시 공급하고 hidden
+전역 baseline이나 두 번째 persisted camera는 추가하지 않는다.
+
+`interpolateGeoCamera`는 동일 projection/static parameter에서 translation의 유한 선형 보간과
+양수 scale의 log 보간을 공통 `grammar/animation/values.js`에 위임한다. 해당 owner는 root의
+검증된206524886을 좁게 cherry-pick해 재사용한다. Geo는 spherical rotation의 quaternion
+shortest path와 native Euler 변환만 소유한다. Rx(roll)Ry(-latitude)Rz(longitude) 순서를
+projection 수학과 대조하고 독립 혼합축 literal로 검증한다. 시작/끝 snapshot은 정확히 반환한다.
+Projection type 또는 정적 shape/clip이 다르면 reason과 두 endpoint/weights를 가진 명시
+crossfade description을 반환한다. 이 private 결과는 renderer나 player를 실행하지 않는다.
+
+후속 공개 연결에서 native editProjection의 exact revision closure, 명시 초기 snapshot의 수명,
+command/history·pan/rotate gesture 분리·wheel/pinch/keyboard·current-frame hit·abort/offline restore,
+reduced motion과 generic player sampler 연결을 모두 닫아야 한다. Computed agent의 현재
+setViewport는 native editProjection dispatcher이고 별도 camera/reset state가 없음을 확인했다.
+Feature/graticule labels와 conditional resource-grain 소비자는 별도 미완료 Geo 의무로 유지한다.
+
+
+Camera 순수 checkpoint는13 camera +9 공통 animation 시험이 Node20/22/24 각각22/22 통과했다.
+두 Camera owner와 공통값 owner 모두100/100/100이며 기존95/90/100 기준을 유지한다.
+첫 극점 Euler 시험의 asin 정밀도 실패를 atan2 변환으로 수리했고 literal 기대값은 유지했다.
+Source/discovery27, package7도 통과했다. 공개 entry에서 아직 camera를 가져오지 않으므로
+public renderer/type/설치 전체 corpus를 재실행했다고 주장하지 않는다.3Node package dry-run의
+1038 entries/최대1474207 packed/6710451 unpacked를 근거로 ceiling을1038/1475000/6711000으로
+갱신했다. [Kernel evidence](geo-evidence/camera-kernel/status.json)에 원본실패·수리와 공개연결
+미완료 범위를 구분한다.
