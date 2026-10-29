@@ -4,13 +4,13 @@
 
 - [x] STEP-033과 geometry-design/core, 기존 theme·inspection·font 경계 대조
 - [x] 사용자 전체 STEP-077 승인 `b758b912` 재사용; 아래 구체 선택을 기록
-- [ ] closed token 확장·실제 winning source inspection
-- [ ] paint-only / typography / guide geometry dependency 연결
-- [ ] nested composition·named selection·codec·renderer·설치 소비자 검증
-- [ ] 타입·Current·public docs·generated inventory 동기화 및 checkpoint
+- [x] closed token 확장·실제 winning source inspection
+- [x] paint-only / typography / guide geometry dependency 연결
+- [x] nested composition·named selection·codec·renderer·설치 소비자 검증
+- [x] 타입·Current·public docs·generated inventory 동기화 및 checkpoint
 
 기준은 font/GraphPlot 통합 source `e412fe55e`, evidence `36349d6b1`다.
-아래 guide·palette token 확장과 inspection은 미구현 계획이며 Current 기능으로 표시하지 않는다. Global
+아래 guide·palette token 확장과 inspection source는 [completion checkpoint](COMPLETION.md)에 구현했다. 최종 qualification 상태는 해당 기록이 소유한다. Global
 `fontSize`/`fontWeight`는 [typography checkpoint](TYPOGRAPHY.md)로 구현·검증한다. 먼저 기존 token의
 Graph/Tree/Treemap role 적용과 descriptor safety를 별도 [기반 checkpoint](RESOURCE_PLOTS.md)로 검증한다. STEP-034/035의 responsive solver와
 nested guide 배치까지 별도 후속 의무로 유지한다.

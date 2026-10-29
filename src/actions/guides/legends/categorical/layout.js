@@ -1,3 +1,4 @@
+import { themePatternForValues } from "../../../theme/palettes.js";
 import { validateLegendOverflow } from "../../../../grammar/legendOverflow.js";
 import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
 import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
@@ -193,7 +194,8 @@ export function resolveAppearance(program, config) {
   for (let index = 0; index < config.channels.length; index += 1) {
     const scale = program.resolvedScales[config.scales[index]];
     const values = mapOrdinalValues(config.domain, scale.domain, scale.range);
-    if (config.channels[index] === "color") colors = values;
+    if (config.channels[index] === "color") colors = themePatternForValues(program, target, config.domain, config.scales[index])
+      ?.map((fill, item) => fill ?? values[item]) ?? values;
     if (config.channels[index] === "stroke") strokes = values;
     if (config.channels[index] === "strokeDash") dashes = values;
     if (config.channels[index] === "shape") shapes = values;

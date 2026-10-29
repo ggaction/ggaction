@@ -790,8 +790,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 650,000 bytes |
-| `ggaction/basic` | 365,000 bytes |
+| `ggaction` | 652,000 bytes |
+| `ggaction/basic` | 368,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 83,000 bytes |
 
@@ -1929,9 +1929,13 @@ Theme는 이 기본값과 authored override를 구분하고 기존 plot material
 갱신한다. 마지막 frame 제거는 해당 family 기본값을 복원한다. 저장된 graph/hierarchy/layout 계산은
 다시 실행하지 않으며 named highlight는 새 baseline에서 기존 selection owner가 다시 적용한다.
 
-Theme reconciliation은 concrete appearance와 해당 materialization config만 바꾼다. Field-driven
-palette output, semantic spec, resolved scale, 통계 row, grouping, domain, item/draw order는 입력과
-동일하게 유지한다. Explicit local style은 값이 preset 또는 library default와 같더라도 action
+Theme 정의 정규화는 `actions/theme/definition.js`에서 core own-data·paint grammar를 재사용한다.
+`theme/defaults.js`는 공유 token/default 값만 소유한다. Optional categorical palette는 자동 appearance scale의
+resolved range와 기존 mark/legend materializer를 갱신한다. Pattern palette는 final item의 typed category와
+기존 fill materializer를 사용하며 scalar scale range에 구조화 paint를 저장하지 않는다.
+Semantic spec, position scale, 통계 row, grouping, domain과 item identity는 동일하게 유지한다.
+Inspection은 같은 theme override/reset owner에서 winning source를 읽으며 별도 persisted history를 추가하지 않는다.
+권한을 입증하지 못한 legacy/extension 값은 unknown이다. Explicit local style은 값이 preset 또는 library default와 같더라도 action
 trace의 top-level authoring argument로 식별하므로 theme 교체와 제거 뒤에도 보존된다. 정확한
 public signature와 지원 preset은 [CORE current contract](contract/current/CORE.md)가 소유한다.
 

@@ -226,7 +226,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
   return {
     target: layer.id,
     scale: encoding.scale,
-    ...normalizeItemLegendConfig(args, encoding, 40),
+    ...normalizeItemLegendConfig(args, encoding, "size", program.materializationConfigs.theme),
     ...(args.overflow === undefined ? {} : { overflow: normalizeLegendOverflow(args.overflow) }),
     domain: scale.domain,
     ...(discrete ? { count } : { sampling }),

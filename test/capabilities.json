@@ -1388,6 +1388,22 @@
       {
         "type": "file",
         "path": "unit/actions/theme-guide-geometry.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-palettes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-provenance.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-paint-consumers.test.js"
       }
     ]
   },

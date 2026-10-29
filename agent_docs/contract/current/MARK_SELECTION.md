@@ -389,3 +389,16 @@ keys so moving between child paths enters/exits. SVG scene v1 and Canvas scene v
 
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/core/resource-state.test.js`,
 `test/unit/persistence/legacy-selection.test.js`, `test/unit/persistence/legacy-derived.test.js`.
+
+## Appearance inspection
+
+`ggaction/inspection`의 `getMarkItems`와 `inspectProgram().views`는 immutable `appearance` 배열을 반환한다.
+각 entry는 semantic `owner`와 optional scoped `itemKey`, component role, property, 실제 resolved `value`,
+winning `source`를 담는다. Source kind는 `defaults`, `family`, `theme`, `style`, `explicit`, `interaction`,
+`unknown`이다. Theme는 frame owner/name/token, authored option은 action, named highlight는 selection ID를 보존한다.
+Guide offset/length/itemGap은 저장된 실제 배치 설정을 보고하며 inferred title 보정 후의 값을 유지한다.
+명시한 값이 기본값과 같아도 authored source다. Source는 canonical trace/reset과 stored binding/style에서 파생하며
+별도 mutable provenance 상태를 저장하지 않는다. Inspection은 action, solver 또는 재배치를 실행하지 않는다.
+Trace 없는 legacy/extension item 교체 또는 pre-highlight property selector의 baseline을 입증할 수 없으면
+`unknown`이며 default라고 추측하지 않는다. Property source는 glyph 자체의 pixel visibility를 주장하지 않는다.
+Coverage: `test/unit/actions/theme-provenance.test.js`와 existing inspection/selection tests.

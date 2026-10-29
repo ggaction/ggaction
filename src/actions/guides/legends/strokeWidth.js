@@ -135,7 +135,7 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
   return {
     target: layer.id,
     scale: encoding.scale,
-    ...normalizeItemLegendConfig(args, encoding, 32),
+    ...normalizeItemLegendConfig(args, encoding, "strokeWidth", program.materializationConfigs.theme),
     sampling,
 
   };

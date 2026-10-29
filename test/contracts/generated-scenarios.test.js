@@ -83,7 +83,7 @@ test("each offline recipe has a differential analytic raster witness", async () 
   }
 });
 
-test("hierarchical authoring executes the four guide geometry theme options", async () => {
+test("hierarchical authoring executes guide spacing and categorical theme palettes", async () => {
   const { assertAnalyticPixels } = await import("../support/analytic-pixels.js");
   const descriptors = generateScenarioDescriptors({
     mode: "deep",
@@ -96,7 +96,8 @@ test("hierarchical authoring executes the four guide geometry theme options", as
     const result = runScenario(descriptor, { captureProgram: value => { program = value; } });
     const theme = result.directTrace.find(({ op }) => op === "applyTheme");
     assert.deepEqual(theme.args.theme.tokens, {
-      axisStrokeWidth: 1, tickStrokeWidth: 1, tickSize: 6, gridStrokeWidth: 1
+      axisStrokeWidth: 1, tickStrokeWidth: 1, tickSize: 6, gridStrokeWidth: 1,
+      axisLabelGap: 12, axisTitleGap: 42, legendItemGap: 18, paletteCount: 2, patternPaletteCount: 2
     });
     assert.ok(assertAnalyticPixels(program, descriptor.id) > 0);
   }
