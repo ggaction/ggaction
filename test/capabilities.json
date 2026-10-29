@@ -208,6 +208,32 @@
         "path": "charts/"
       }
     ],
+    "composition-recipes": [
+      {
+        "type": "file",
+        "path": "unit/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/composition-recipes.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/marginal/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bullet/"
+      }
+    ],
     "contour": [
       {
         "type": "file",
@@ -1358,6 +1384,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
       }
     ],
     "rendering": [
@@ -1830,6 +1860,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
       },
       {
         "type": "file",

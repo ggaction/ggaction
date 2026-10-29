@@ -71,6 +71,15 @@
   url: /recipes/
   nav_group: start
   nav_order: 6
+- title: Marginal Distribution Recipe
+  url: /recipes/marginal/
+  parent: /recipes/
+- title: Bullet Comparison Recipe
+  url: /recipes/bullet/
+  parent: /recipes/
+- title: Combo Chart Recipe
+  url: /recipes/combo/
+  parent: /recipes/
 - title: Scatterplot Recipe
   url: /recipes/scatterplot/
   parent: /recipes/

@@ -1525,5 +1525,22 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "composition-recipes.mjs",
+    "cases": [
+      {
+        "id": "composition-recipes/marginal",
+        "statements": 11
+      },
+      {
+        "id": "composition-recipes/bullet",
+        "statements": 8
+      },
+      {
+        "id": "composition-recipes/combo",
+        "statements": 7
+      }
+    ]
   }
 ]
