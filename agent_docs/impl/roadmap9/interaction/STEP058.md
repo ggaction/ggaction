@@ -8,6 +8,7 @@
 - [x] 실제 DOM capture·Escape/blur/lostcapture 및 click adapter
 - [ ] domain preview/RAF coalescing과 final-up 처리 연결
 - [x] click의 실제 mouse/touch/Escape 및 installed public consumers
+- [x] 기존 annotation/region/node/navigation/click 후보의 공개 priority·modifiers와 단일 capture 연결
 - [ ] 후행 keyboard focus/activation 및 domain gesture consumers
 - [ ] 후행 brush/lasso/navigation 연결과 AT35/36 전체 종료
 
@@ -94,3 +95,23 @@ limits100,600 및922/1,332,000/6,090,000을 기록했다. 원본 실패와 수�
 Docs source185, 최종 provenance owning32, built164pages/1,411artifacts 및320/390/768/1440
 폭의 overflow0/Axe0을 확인했다. 390px 실제 이미지를 검토했다. 전체 repository sweep 또는
 전체 installed suite 통과로 확대하지 않는다. 후행 domain preview·RAF·keyboard·history 및077은 미완료다.
+
+## 공개 편집 후보 arbitration 후속
+
+전체 remainingApproval과 부모의 구체안 확인을 재사용한다. 기존 gestures owner의50/40/30/20/10
+기본 rank와 bounded priority·boolean modifiers를 native binding에 연결한다. Domain normalization은
+기존 소유자를 그대로 쓰고 wrapper만 공통 옵션을 분리한다. 같은 rank에서 조건이 겹치면 초기화
+오류이며 배열 순서나 owner 이름으로 tie를 숨기지 않는다. Public exact 계약은 Current INTERACTION에 둔다.
+
+새 pointerBindings owner는 읽기전용 candidate probe와 실제 begin을 분리하고 하나의 기존 capture
+adapter로 winner만 실행한다. Hidden/removed annotation, node hit miss, 다른 child viewport는
+낮은 rank로 넘어간다. Winner 이후 modifier 변경은 transaction을 바꾸지 않으며 navigation만 pinch다.
+Source/update/frame/remount/dispose 및 transient asset 취소는 기존 session owner를 사용한다.
+
+집중324검사와4owner coverage는 gestures100/100/100, pointerBindings100/100/100,
+pointerCapture100/97.52/100, session100/95.49/100을 통과했다. 신규9개는 실제 hit·modifier·
+단일 capture·nested viewport·hidden/removed·preview late asset·teardown을 포함한다. 실제 browser의
+정확 공개문서 call chain으로 Canvas/SVG 각각 label drag·Shift brush·click·Escape를 확인했다.
+초기 refactor의 scene 지역변수 누락과 click final-up cancel 분기 누락을 기존 회귀가 발견해 수리했고,
+과거 단일 binding 오류 기대는 동일rank ambiguity 거부로 교체했다. 설치/문서 최종 qualification은
+마감 중이며 이 기록은 STEP058/066/067/077 전체 완료를 뜻하지 않는다.

@@ -8,6 +8,43 @@ import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
 test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
+test("canonical editing arbitration uses actual label hits, Shift brush and click through one Canvas or SVG capture", async () => {
+  const snippet=(await documentationPrograms()).find(p=>p.id==="interaction-arbitration");assert.ok(snippet);
+  const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:1000,height:700}});
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL("examples/inspect-chart/",server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async code=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());document.body.innerHTML='<canvas id="chart"></canvas><div id="vector"></div>';
+      for(const[specifier,file]of[["ggaction","index"],["ggaction/interaction","interaction"]])code=code.replaceAll(JSON.stringify(specifier),JSON.stringify(new URL(`/src/${file}.js`,location.href).href));
+      const url=URL.createObjectURL(new Blob([code+'\nwindow.__arbitration=[gestureSession];window.__gestureBindings=gestureBindings;window.__gestureProgram=program;',],{type:"text/javascript"}));
+      try{await import(url);}finally{URL.revokeObjectURL(url);}
+      const {createInteractionSession}=await import("/src/interaction.js"),{renderToSVG}=await import("/src/renderers/svg.js");
+      document.querySelector("#vector").innerHTML=renderToSVG(window.__gestureProgram);
+      const svg=document.querySelector("#vector svg");svg.style.touchAction="none";
+      const session=createInteractionSession({program:window.__gestureProgram,bindings:window.__gestureBindings});
+      session.subscribe(e=>{if(e.state.destroyed)return;const next=new DOMParser().parseFromString(renderToSVG(e.state.previewProgram??e.state.program),"image/svg+xml").documentElement;svg.replaceChildren(...next.childNodes);});
+      session.mount(svg);window.__arbitration.push(session);window.__arbitrationEvents=[[],[]];
+      window.__arbitration.forEach((s,i)=>s.subscribe(e=>{if(e.phase)window.__arbitrationEvents[i].push([e.type,e.phase]);}));
+    },snippet.code);
+    for(const[index,selector]of["#chart","#vector svg"].entries()){
+      const box=await page.locator(selector).boundingBox(),move=(x,y)=>page.mouse.move(box.x+x,box.y+y);
+      await page.keyboard.down("Shift");await move(150,30);await page.mouse.down();await move(170,40);await page.waitForTimeout(30);
+      const preview=await page.evaluate(i=>{const s=window.__arbitration[i].getState();return {x:s.previewProgram.graphicSpec.objects.note.items[0].properties.x,history:s.history.undoCount};},index);
+      assert.deepEqual(preview,{x:170,history:0});await page.mouse.up();await page.keyboard.up("Shift");
+      await page.keyboard.down("Shift");await move(20,40);await page.mouse.down();await move(90,90);await page.waitForTimeout(30);await page.mouse.up();await page.keyboard.up("Shift");
+      await page.mouse.click(box.x+200,box.y+130);
+      const state=await page.evaluate(async i=>{const {getMarkItems}=await import("/src/inspection.js"),s=window.__arbitration[i].getState();return {history:s.history.undoCount,x:s.program.graphicSpec.objects.note.items[0].properties.x,
+        fills:getMarkItems(s.program,{target:"points"}).map(item=>item.properties.fill),commits:window.__arbitrationEvents[i].filter(e=>e[1]==="commit").map(e=>e[0])};},index);
+      assert.deepEqual(state,{history:3,x:170,fills:["red","red"],commits:["annotate","select","select"]});
+      await move(170,40);await page.mouse.down();await move(190,50);await page.waitForTimeout(30);await page.keyboard.press("Escape");await page.mouse.up();
+      assert.deepEqual(await page.evaluate(i=>{const s=window.__arbitration[i].getState();return [s.history.undoCount,s.previewProgram,window.__arbitrationEvents[i].filter(e=>e[1]==="cancel").length];},index),[3,null,1]);
+    }
+    assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll("#vector circle")].map(n=>n.getAttribute("fill"))),["red","red"]);
+    assert.equal(await page.evaluate(()=>document.querySelector("#chart").getContext("2d").getImageData(100,120,1,1).data[0]),255);
+    await page.evaluate(()=>window.__arbitration.forEach(s=>s.destroy()));assertNoBrowserErrors(errors,"editing arbitration");await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});
+
 test("host buttons and keyboard commit filter and reorder to the same Canvas and SVG view", async () => {
   const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
   try {

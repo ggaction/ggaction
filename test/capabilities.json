@@ -1353,6 +1353,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-gesture-arbitration.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-node-move.test.js"
       },
       {

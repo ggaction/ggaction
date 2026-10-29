@@ -615,5 +615,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag."
+  },
+  {
+    "id": "interaction-arbitration",
+    "file": "api/interaction.md",
+    "contains": "const gestureSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
   }
 ]

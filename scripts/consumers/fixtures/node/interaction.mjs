@@ -11,6 +11,15 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/editing-arbitration", run() {
+    const p=make(chart).selectMarks({id:"picked",target:"points",items:[]}).createAnnotation({id:"note",space:"screen",x:100,y:30,text:"Move",align:"center",baseline:"middle"});
+    const s=createInteractionSession({program:p,bindings:[{type:"annotate",target:"note"},{type:"brush",target:"points",selection:"picked",modifiers:{shift:true}},{type:"select",target:"points",selection:"picked",modifiers:{shift:false}}]}),listeners=new Map(),captures=new Set(),phases=[];let frame;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener(type,fn){const group=listeners.get(type)??new Set();group.add(fn);listeners.set(type,group);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),requestAnimationFrame:fn=>(frame=fn,1),cancelAnimationFrame(){frame=undefined;}};
+    const fire=(type,x,y,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:"mouse",button:0,clientX:x,clientY:y,...extra});};s.subscribe(e=>{if(e.phase==="commit")phases.push(e.type);});s.mount(host);assert.equal(listeners.get("pointerdown").size,1);
+    fire("pointerdown",100,30,{shiftKey:true});fire("pointermove",120,40,{shiftKey:true});frame();fire("pointerup",120,40,{shiftKey:true});assert.equal(s.getState().program.graphicSpec.objects.note.items[0].properties.x,120);
+    fire("pointerdown",20,30,{shiftKey:true});fire("pointerup",90,90,{shiftKey:true});assert.deepEqual(phases,["annotate","select"]);assert.equal(s.getState().history.undoCount,2);assert.equal(captures.size,0);
+    s.dispatch({type:"undo"});assert.equal(s.getState().history.undoCount,1);assert.equal(p.graphicSpec.objects.note.items[0].properties.x,100);assert.deepEqual(deserializeProgram(serializeProgram(s.getState().program)).graphicSpec,s.getState().program.graphicSpec);s.destroy();assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
   { id: "interaction/prepared-native-preview", async run() {
     const p=chart().createCanvas({width:200,height:160,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
     const calls=[],released=[],s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}],async assetResolver(q){calls.push(q);const images=await prepareImageRendering(q.program,{decode(){throw new Error('No image decode expected');},signal:q.signal});return {images,dispose(){released.push(q.program);}};}});

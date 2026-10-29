@@ -131,7 +131,7 @@ test("node dragging rejects unsupported bindings and sampled positions without c
   assert.throws(() => host.fire("pointerdown", 45, 60), /committed concrete/); assert.equal(host.captures.size, 0); s.destroy();
   assert.throws(() => createInteractionSession({ program: p.editGraphPlot({ target: "network", origin: "auto" }), bindings: [{ type: "moveNode", target: "network" }] }), /explicit graph plot origin/);
   assert.throws(() => createInteractionSession({ program: make("circular"), bindings: [{ type: "moveNode", target: "network" }] }), /fixed or force/);
-  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "moveNode", target: "network" }, { type: "select", target: "network", selection: "picked" }] }), /one editing pointer/);
+  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "moveNode", target: "network", priority: 10 }, { type: "select", target: "network", selection: "picked" }] }), /ambiguous priority/);
 });
 
 test("node dragging maps a nested negative CSS transform and keeps untouched child references", () => {

@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, node-movement, or annotation-offset binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures and clock, are rejected. Asset preparation is opt-in as specified below.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
 
 ## Handle and commands
 
@@ -252,7 +252,7 @@ realistic corpus, browser interaction tests and installed interaction consumers.
 
 ## Automatic click binding
 
-Full accepts one `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` binding. The target
+Full accepts `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` bindings. The target
 is one explicit root or concat mark owner and `selection` must be an existing authored selection on
 that owner. Root/concat facade items follow their native final grain. Basic, generated selection IDs,
 facet-source geometry, duplicate click bindings and conflicting linked target writers are rejected.
@@ -277,8 +277,7 @@ the existing FIFO lifecycle. Captured up commits before the subsequent click ins
 release listeners, and a captured old listener is inactive. All successful selection event consumers
 must render the accepted program; the controller never renders. SVG hosts remount after replacing
 the root element. Headless authors use explicit select/clear commands instead of a new low-level
-click command. No automatic modifier, brush/lasso, competing binding, keyboard focus is
-inferred. Existing count/work limits apply; candidate and key expansion additionally share a
+click command. No modifier-driven mode change or keyboard focus is inferred. Explicit competing editing bindings use the arbitration rules below. Existing count/work limits apply; candidate and key expansion additionally share a
 10,000,000-unit click-selection budget.
 
 Evidence: `test/unit/interaction-click-selection.test.js`, `test/browser/interaction-session.browser.js`,
@@ -317,14 +316,14 @@ or empty viewport cannot acquire capture; one arising during a gesture cancels i
 
 DOM events, capture IDs and armed program references are runtime-only. Codec, static PNG/PDF and
 renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
-Navigation pinch remains an unsupported public option; region preview and session history are specified below.
+The click binding does not accept a pinch option; native navigation, region preview and session history are specified below.
 Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.
 
 
 ## Brush and screen lasso bindings
 
-Full sessions accept one `{type:"brush",target,selection,axis?,channels?,mode?}` or
-`{type:"lasso",target,selection,mode?}` instead of the click-selection binding. The existing authored
+Full sessions accept `{type:"brush",target,selection,axis?,channels?,mode?}` and
+`{type:"lasso",target,selection,mode?}` through the common pointer arbitration rules. The existing authored
 selection must match the explicit root or concat owner; facet-source geometry and linked target
 writers are rejected. A missing endpoint after program replacement remains dormant. Brush axis
 is `"x"`, `"y"`, `"theta"` or default `"xy"`. Optional `channels` maps each active axis to its same-axis semantic
@@ -367,7 +366,7 @@ The prior program and trace remain exact; late up/RAF callbacks cannot commit. T
 FIFO guarantees as captured click apply. For SVG previews keep the captured host stable (for example,
 a correctly sized wrapper containing the replaced SVG); replacing the capture element cancels it.
 The host owns touch-action and rendering, and must redraw the committed program after cancel.
-No keyboard, multi-binding arbitration or pinch support is implied.
+Region bindings participate in the common pointer arbitration below; they do not add keyboard or pinch handling.
 
 Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
@@ -425,19 +424,18 @@ dormant; an invalid or ambiguous replacement rejects without changing committed 
 The shared captured-click lifecycle, immutable native command transaction, selection policy and
 linked-selection/filter closure apply with `origin:"user"`. Runtime bindings are recreated after
 codec restoration; the native selection is persisted. Root and explicit child scopes are supported;
-facet-source geometry, competing editing bindings and linked target-selection writers reject.
+facet-source geometry and linked target-selection writers reject. Editing bindings use the common arbitration below.
 Evidence: `test/unit/interaction-legend-selection.test.js`, `test/browser/interaction-session.browser.js`,
 `test/contracts/realistic-logical-selection.test.js`, and the installed interaction consumer.
 
 
 ## Categorical legend visibility
 
-Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as its one editing
+Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as an editing
 pointer binding. It selects an existing categorical legend block at the explicit root/concat owner;
 no named selection is required. Each symbol/label click toggles that typed category using native
 `setMarkVisibility`. Titles, background, overflow summaries and other blocks are inert. Missing
-owners or removed legends become dormant. Continuous/interval blocks, facet geometry, competing
-pointer bindings and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
+owners or removed legends become dormant. Continuous/interval blocks, facet geometry and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
 identity and immutable input rules match categorical selection.
 
 `dispatch({type:"setVisibility",target,payload:{channel,values,visible,scaleDomain},transactionId?,origin?,causeTransactionId?})`
@@ -469,8 +467,8 @@ resource revision/DAG closure, then the same session reconciliation and linked p
 Invalid values preserve program/trace/revision; unchanged values do not commit. The session creates no
 DOM widget or implicit coercion and does not bypass Basic's missing parameter editor.
 
-`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and one
-editing pointer binding. Only that explicit mounted binding prevents the native `contextmenu` default.
+`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and
+editing pointer bindings. Only that explicit mounted binding prevents the native `contextmenu` default.
 It emits `{type:"contextMenu",state}` through existing subscribers; `state.hit` contains current-frame
 semantic candidates with the same CSS coordinates, clips, roles, item/row/resource identities and ordering
 as inspection. Missing geometry produces a null target and diagnostics, never an inferred owner. No raw
@@ -535,7 +533,7 @@ Evidence: `test/unit/interaction-viewport.test.js`, the canonical viewport brows
 `{type:"moveNode",target}` binds one explicit GraphPlot with a fixed or force layout and an explicit
 plot origin. It uses the current visible node hit, the exact stored layout reference and original typed
 source key. Edges/background do not capture. Facet sources, automatic origins, incompatible methods,
-extra options and competing editing pointer bindings fail closed. Scope and explicit CSS transforms
+unsupported options fail closed. Editing bindings use the common arbitration below. Scope and explicit CSS transforms
 follow the common coordinate owner; no graph position or transform is inferred from screen bounds.
 
 Capture starts armed; movement of at least 3 CSS pixels begins dragging. The initial pointer-to-node
@@ -564,7 +562,7 @@ It edits native dx/dy from the committed baseline using local pointer displaceme
 data/plot/feature/item/screen anchor intent, lineage and item keys. The target layer is the edit unit:
 all source-owned labels move together; use a separate annotation with membership for a single label.
 Encoded offsets and facet sources reject. Missing owners are inert; malformed/Basic/other mark targets reject.
-The existing one editing pointer binding limit remains. No new persisted schema or renderer is introduced.
+The common pointer arbitration rules apply. No new persisted schema or renderer is introduced.
 
 The host provides pointer capture, RAF and touch-action policy. Only an exact target hit begins capture,
 and the owner's graphics must match the committed frame. Root/child matrices convert CSS displacement
@@ -572,8 +570,7 @@ without DPR inference. Preview uses the same native editor, reconciliation/link 
 hit frame; immutable committed state changes only once on final release. Escape/cancel/lost capture/blur/
 update/frame/unmount/destroy restore the committed frame and discard preview. Under-threshold clicks are
 no-ops. Coordinate overflow cancels; native preflight errors release capture and publish error without commit.
-Keyboard hosts dispatch the same annotate command. General focus and multi-binding arbitration
-are separate remaining session capabilities. Evidence: `test/unit/interaction-annotation-drag.test.js`,
+Keyboard hosts dispatch the same annotate command. General keyboard focus remains a separate session capability. Evidence: `test/unit/interaction-annotation-drag.test.js`,
 `test/browser/interaction-session.browser.js`, and installed `interaction/annotation-drag`.
 
 
@@ -713,7 +710,7 @@ is substituted. User-driven authoring and asynchronous preparation retain their 
 ## Native camera navigation binding
 
 `{type:"navigate",target,mode:"pan"|"rotate",scaleExtent:[min,max],initial,rotationStepDeg?}` is Full-only
-and occupies the session's one editing pointer binding. `target` is one explicit projection ID or scoped
+and participates in the common pointer arbitration rules. `target` is one explicit projection ID or scoped
 `{childPath,id}`; facet sources and composition containers reject. `initial` is an explicit native
 `ProjectionParameters` snapshot with the same type as the current projection. The extent is finite,
 positive and ordered. Only rotate mode requires a positive finite `rotationStepDeg`, measured in degrees
@@ -744,7 +741,7 @@ semantic baseline before the public animation adapter is connected. The accepted
 belong only to state.program; previewAssets belongs only to the exact previewProgram, as described below.
 
 Evidence: `test/unit/interaction-navigation.test.js`, shared pointer/session regressions and the canonical
-navigation browser snippet. Full camera animation and multi-editing gesture priority remain separate.
+navigation browser snippet. Full camera animation remains separate.
 
 ## Prepared gesture previews
 
@@ -773,3 +770,34 @@ Host rendering selects state.previewProgram with state.previewAssets, or state.p
 it must not reuse committed handles for a preview. Existing image/font/shadow authentication is unchanged.
 This integration covers native gesture previews, not independently sampled animation scenes. Evidence:
 test/unit/interaction-preview-preparation.test.js and the actual browser bitmap lifecycle fixture.
+
+
+## Editing gesture arbitration
+
+Every select, legend-selection/visibility, brush, lasso, moveNode, annotate or navigate binding accepts
+optional `priority` and `modifiers`. Priority is an integer from -1,000,000 to 1,000,000. Defaults are
+annotation50, brush/lasso40, node30, navigation20 and click/legend10. Modifiers are an own-data record
+with optional boolean alt, ctrl, meta and shift conjunctions; omission leaves that key unconstrained.
+Equal priorities whose modifier conditions can overlap are initialization errors, even for different
+owners. Explicit priority or disjoint modifier conditions resolve the ambiguity; array order never does.
+Inspect/context-menu/linked bindings do not accept these options. Limits are256 editing and259 total.
+
+On primary pointerdown, the session probes matching candidates in descending priority. Annotation/node
+candidates require an exact current visible target hit; region/navigation candidates require the native
+owner's current viewport and compatible committed frame. Click/legend candidates require their existing
+native command to apply, including an explicit click clear-on-miss. Hidden, missing or out-of-viewport
+candidates do not claim capture. Only the winning adapter begins a transaction; probes have no program,
+history, capture or preparation side effects. One shared DOM capture owner serves all editing bindings.
+
+The winner, modifier choice and transaction remain fixed through pointerup/cancel despite later modifier
+changes. A second pointer promotes only the same navigation winner to pinch when it falls in that winner’s viewport; another child’s pointer is ignored. Final coordinates,3CSSpx
+threshold, RAF coalescing, preview assets, one commit/settled pair, undo and cancel restoration retain their
+existing contracts. Program/frame replacement, source removal, remount, unmount and destroy cancel the
+winner once and release shared listeners/captures. Late input cannot reactivate it. Pure click-only custom
+surfaces remain supported; any drag binding requires capture and host RAF methods.
+
+Wheel/keyboard select among matching navigation bindings; synthetic/keyboard click selects among matching
+click/legend bindings. Native Ctrl/Meta/Alt keyboard shortcuts remain host-owned. Modifiers choose bindings
+and never silently change a binding's authored update mode. An active pointer gesture does not switch
+owners mid-drag. Public animation and accessible focus are separate integrations. Evidence:
+`test/unit/interaction-gesture-arbitration.test.js`, common capture regressions and actual browser consumers.

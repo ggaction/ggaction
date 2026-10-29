@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:df6ca1f548d3c70ac74bc3104498200d430d7a50ea17e752d3e19508f725431c. Status: development. Runtime source: 63df4901cf4b5e0d02d0df6df99315568b324096. Release baseline: v0.0.13.
+Contract: sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/63df4901cf4b5e0d02d0df6df99315568b324096/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/63df4901cf4b5e0d02d0df6df99315568b324096/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11338,7 +11338,7 @@ supported by this selection binding. It does not change category visibility or s
 
 The binding uses the same captured click, cancellation, child scope and linked update
 rules as ordinary click selection. It requires Full and an existing named selection.
-Only one editing pointer binding can be active alongside inspection and linked bindings.
+Editing pointer bindings share the explicit priority and modifier rules in [Combine editing gestures](./api/interaction/#combine-editing-gestures).
 For SVG, remount the new SVG element after rendering a committed program. Call
 `legendSession.destroy()` when the surface is removed; selection state remains in the chart.
 
@@ -11434,10 +11434,10 @@ of the same explicit key snapshot, or clearing an already empty key snapshot, pr
 Only primary-button click events are used; modifier keys do not change the configured mode. The
 binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
 
-At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+Click-selection bindings may be combined with explicit priorities and modifier conditions. A linked
 target cannot also be its click-selection writer. Root and explicit concat owners are supported;
 facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
-The controller does not yet arbitrate competing bindings, keyboard activation or modifiers.
+Use the arbitration options below to choose bindings; automatic keyboard focus remains separate.
 
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
@@ -11456,7 +11456,7 @@ inspection runs after this up commit. Host controls may still send an activation
 the controller does not assign Enter/Space behavior or a focused item.
 
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
-Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch are not supported by this binding. History commands operate on the whole session.
+Elements use capture automatically. Brush/lasso and navigation are separate binding types; this click binding does not start their gestures. History commands operate on the whole session.
 
 ## Brush or lasso an existing selection
 
@@ -11517,8 +11517,7 @@ stable wrapper with the same logical dimensions and replace only its SVG content
 replacing the captured element cancels the gesture. Canvas/SVG use the same program, and ordinary
 PNG/PDF exports can render a preview snapshot without running a controller.
 
-Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
-bindings and navigation are not inferred. Lasso input is limited to 10,000 samples and
+Explicit concat targets retain child scope. Facet-source geometry, Basic editing and navigation are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
 
@@ -11764,8 +11763,7 @@ active. Escape, lost capture, pointer cancel, blur, external program/frame updat
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
 one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
-inactive until an explicit matching owner returns. The current session supports one editing pointer
-binding alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
 
 ## Move graph nodes with pointer or keyboard
 
@@ -11929,6 +11927,57 @@ Subscribe to the `program` event to render the accepted replacement. The subsequ
 their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
 in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
 view is disposed, then call `disposeRoutes()`.
+
+## Combine editing gestures
+
+Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
+`alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
+Default ranks are annotation50, brush/lasso40, node movement30, navigation20 and click/legend10. Priority
+must be an integer between -1,000,000 and1,000,000. Equal ranks with overlapping conditions are rejected
+before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
+
+A higher rank only wins when its target applies at the pointer location. Hidden or removed annotations,
+node misses and another child's viewport do not block lower-ranked candidates. The winner is fixed from
+pointerdown through release or cancel; changing modifiers mid-drag does not switch tools. Only navigation
+can take a second pointer, and only within its chosen viewport. Every gesture uses the same preview, prepared asset, history and cleanup rules.
+
+> **Executable complete.** Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+canvas.setAttribute("aria-label", "Points: drag the label, Shift-drag to brush, or click a point");
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 50, y: 60 }, { id: "b", x: 200, y: 130 }] })
+  .createPointMark({ id: "points" }).encodePointRadius({ value: 8 })
+  .encodeX({ field: "x", scale: { domain: [0, 300], range: [0, 300] } })
+  .encodeY({ field: "y", scale: { domain: [0, 200], range: [0, 200] } })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false })
+  .createAnnotation({ id: "note", space: "screen", x: 150, y: 30, text: "Drag label", align: "center", baseline: "middle" });
+const gestureBindings = [
+  { type: "annotate", target: "note" },
+  { type: "brush", target: "points", selection: "picked", modifiers: { shift: true } },
+  { type: "select", target: "points", selection: "picked", mode: "toggle", modifiers: { shift: false } }
+];
+const gestureSession = createInteractionSession({ program, bindings: gestureBindings });
+const draw = state => render(state.previewProgram ?? state.program, canvas.getContext("2d"), { pixelRatio: 2 });
+const unsubscribe = gestureSession.subscribe(event => { if (!event.state.destroyed) draw(event.state); });
+draw(gestureSession.getState());
+gestureSession.mount(canvas);
+const disposeGestures = () => { unsubscribe(); gestureSession.destroy(); };
+```
+
+The annotation wins when its label is hit, including while Shift is pressed. Elsewhere Shift selects the
+brush and a plain click toggles a point. `priority` and `modifiers` are available on all editing bindings,
+including legends and navigation; they do not apply to inspection, context menus or linked bindings.
+There are at most256 editing bindings and259 total records. A click clear-on-miss remains an applicable
+command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
+bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
+and remount when replacing it. Call `disposeGestures()` when removing this view.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -35935,7 +35984,12 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
-export interface ClickSelectionBinding {
+/** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
+export interface GestureBindingOptions {
+  readonly priority?: number;
+  readonly modifiers?: { readonly alt?: boolean; readonly ctrl?: boolean; readonly meta?: boolean; readonly shift?: boolean };
+}
+export interface ClickSelectionBinding extends GestureBindingOptions {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
   readonly target: InteractionTarget;
@@ -35946,7 +36000,7 @@ export interface ClickSelectionBinding {
   readonly hitInvisible?: boolean;
 }
 /** Activate a categorical legend block using its public channel and existing selection. */
-export interface LegendSelectionBinding {
+export interface LegendSelectionBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'selection';
   readonly target: InteractionTarget;
@@ -35957,7 +36011,7 @@ export interface LegendSelectionBinding {
   readonly slop?: number;
 }
 /** Toggle actual category membership; the control legend remains available to restore it. */
-export interface LegendVisibilityBinding {
+export interface LegendVisibilityBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'visibility';
   readonly target: InteractionTarget;
@@ -35965,7 +36019,7 @@ export interface LegendVisibilityBinding {
   readonly scaleDomain: 'visible-data' | 'all-data';
   readonly slop?: number;
 }
-interface RegionSelectionBindingOptions {
+interface RegionSelectionBindingOptions extends GestureBindingOptions {
   readonly target: InteractionTarget;
   readonly selection: string;
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
@@ -35980,11 +36034,11 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
-export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
-export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
+export interface AnnotationMovementBinding extends GestureBindingOptions { readonly type: 'annotate'; readonly target: InteractionTarget; }
 /** Native projection navigation. The host supplies focus and touch-action: none. */
-export type NavigationBinding = {
+export type NavigationBinding = GestureBindingOptions & {
   readonly type: 'navigate';
   readonly target: InteractionTarget;
   readonly scaleExtent: readonly [number, number];
@@ -50415,12 +50469,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/63df4901cf4b5e0d02d0df6df99315568b324096/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/63df4901cf4b5e0d02d0df6df99315568b324096/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53503,9 +53557,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:df6ca1f548d3c70ac74bc3104498200d430d7a50ea17e752d3e19508f725431c` |
+| Contract fingerprint | `sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `63df4901cf4b5e0d02d0df6df99315568b324096` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |

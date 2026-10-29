@@ -2710,6 +2710,22 @@
     "executable": false
   },
   {
+    "file": "api/interaction.md",
+    "block": 24,
+    "heading": "Combine editing gestures",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\"",
+      "target: \"note\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.",
+    "sha256": "e842dec3d27f8f5aa5c8c90d5c3480801e0f5332ae959cf3fbbadf1001767048",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

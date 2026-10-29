@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:df6ca1f548d3c70ac74bc3104498200d430d7a50ea17e752d3e19508f725431c",
-    "sourceCommit": "63df4901cf4b5e0d02d0df6df99315568b324096",
+    "contractId": "sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "05153ddf15b7dbb9e36771eb9dcf2af9e2d99c429df97c36c4bd889d6473ae85"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1260,10 +1260,11 @@
         "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
         "edit-existing-annotations",
-        "prepare-native-work-before-replacing-the-program"
+        "prepare-native-work-before-replacing-the-program",
+        "combine-editing-gestures"
       ],
-      "bytes": 71987,
-      "sha256": "9881c4a27e1f4a29108f5b24fb9ebafee62b65820cc1ce6fa58da87c5b5558bd"
+      "bytes": 75585,
+      "sha256": "1cf1a364ae4647fe1bdfe607e291ad4ee8a60901a0a92166144c6da0616c158b"
     },
     {
       "order": 74,
@@ -2555,8 +2556,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 70007,
-      "sha256": "c0f7f6ddb6c7dfd89f6031883a7a51e6ecd5aa4fc6417994d0ef2fb9fe1c54b9"
+      "bytes": 70506,
+      "sha256": "97261065626b1d8e3b9d6fce1cd4b3cf3cd433ea25477bd2a9af7abbdeefa28a"
     },
     {
       "order": 128,
@@ -3486,8 +3487,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "e338813fdfb29e82c9e5bd331ecba2b640025bb136037d96c830bd45f99f2233"
+      "bytes": 20908,
+      "sha256": "3ddf7078544f79ed6e4f5339894d9a88267f9178643b13a03372f684a6eb0256"
     },
     {
       "order": 131,
@@ -3827,8 +3828,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "ca1429afefe11809d9fb2c28ebb34f948a8b3d317b9ab77c6dbf6f9f0f165070"
+      "bytes": 3000,
+      "sha256": "616470e34fbeeaac3c994f385a57f8799d0106f16dd08691974248ef9e831a62"
     },
     {
       "order": 152,

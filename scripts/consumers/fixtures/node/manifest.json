@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/editing-arbitration",
+        "statements": 24
+      },
+      {
         "id": "interaction/prepared-native-preview",
         "statements": 27
       },
