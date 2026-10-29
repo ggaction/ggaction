@@ -2,9 +2,9 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, node-movement, or annotation-offset binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, node-movement, or annotation-offset binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures and clock, are rejected. Asset preparation is opt-in as specified below.
 
 ## Handle and commands
 
@@ -14,7 +14,7 @@
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
 - `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
 - `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
-- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,history,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
+- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,history,assets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
 Dispatch and updateProgram return `{status:"applied"|"queued"|"stale"|"unchanged"}`. Reentrant calls return queued; invalid operations throw. No inspection creates a selection resource, persistent hover, authoring transaction, history entry or asset request.
@@ -52,11 +52,11 @@ The following advanced controller commands require an explicit `target` and `pay
 
 A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter, reorder and hierarchy-focus commands identify the mark owner; parameter commands identify the parameter and viewport commands identify the projection; node commands identify the layout. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
 
-Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision and generation once, advances frameVersion, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
+Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision and generation once, advances frameVersion, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller never draws. Without assetResolver, `settled` means the synchronous program/frame work is complete. With assetResolver, the atomic preparation contract below also applies before commit.
 
 Transaction events contain `{type,transactionId,origin,causeTransactionId?,phase,revision,affectedOwners,previous,current,diagnostics,selectionChanges,state}`. The type is the command type. `previous` and `current` are immutable program references. `affectedOwners` contains the explicitly addressed owner and changed linked target owners, each with its child path; it is not an inventory of every rematerialized dependency. Origin defaults to `programmatic`, with `user`, `replay`, and `linked` also accepted. IDs are nonempty strings of at most 1,024 characters; an omitted ID is generated within the session. A cause ID records provenance without enabling automatic linked propagation.
 
-Successful commands publish `commit` then `settled` at one revision. A valid envelope whose payload, target, action or frame preparation fails publishes one `error` with unchanged program/frame/revision, empty affectedOwners and a diagnostic, then throws. Malformed envelopes and unsafe snapshots are rejected before a transaction begins. Subscriber errors propagate and stop further delivery, preserve an already committed state, and discard pending work; they are not reported as action rejections.
+Successful commands publish `commit` then `settled` at one revision. A valid envelope whose payload, target, action or frame preparation fails publishes one `error` with unchanged program/frame/revision, empty affectedOwners and a diagnostic, then throws. Malformed envelopes and unsafe snapshots are rejected before a transaction begins. Subscriber errors propagate and stop further delivery, preserve an already committed state, and discard pending work; a requested destroy still completes. They are not reported as action rejections.
 
 Reentrant commands are snapshotted before callbacks resume and run FIFO after both transaction phases. Repeated transaction IDs in one drain return `stale`, preventing callback feedback for that transaction. The 256-operation drain bound remains. IDs are not retained as a durable replay ledger. Input snapshots have a 10,000,000-unit cumulative work limit and reject accessors, cycles, sparse arrays and executable values. Runtime queues, IDs and subscribers never enter the program codec.
 
@@ -602,3 +602,52 @@ and the initial baseline; the public terminal state retains only the existing fi
 
 Evidence: test/unit/interaction-history.test.js, test/unit/interaction-annotation-drag.test.js,
 test/browser/interaction-session.browser.js and installed interaction fixtures.
+
+## Atomic asset preparation
+
+`createInteractionSession({program,bindings?,selectionPolicy?,historyLimit?,assetResolver?})` accepts
+an optional explicit host callback. It receives `{program,signal,sessionGeneration,transactionId,
+baseRevision,resourceRevisionVector}`. The program is the immutable native candidate; no DOM event
+or mutable source is passed. The vector contains every dataset and stored resource in each composition
+scope, including retained facet sources and invisible resources, with `childPath` plus its exact input
+reference. Dataset entries retain logical identity. Snapshot work is bounded by 10,000,000 units and
+100,000 resource entries. The callback must return or resolve a lease
+`{images?,fonts?,shadows?,dispose()}` using the existing authentic prepared renderer handles.
+A lease container may contain only those own data properties; handles must be frozen objects.
+The renderer retains authentication and exact graphic identity validation. The host releases partial
+preparation when its callback throws; the session owns every complete returned lease.
+
+`state.assets` is a frozen projection of the accepted lease's rendering handles, or null before
+initial preparation and after destroy. It is suitable as the renderer options for `state.program`;
+it is not an animation-scene preparation or a second asset cache. `state.preparation` is the pending
+job's four tags, or null. No second authoritative program enters state. `whenSettled()` returns the
+job Promise current at that call: `{status:'settled'|'cancelled'|'error',preparation?}`. Without a
+resolver it resolves immediately. Resolver and validation failures return error and publish one error
+event; subscriber or disposer exceptions reject that Promise. Unobserved Promise rejection does not
+create a global unhandled rejection, but awaiting the same Promise still observes the exception.
+
+Without a resolver, native commands retain the existing synchronous lifecycle. With a resolver,
+native action and hit preparation run before the callback, and dispatch returns queued. The previous
+committed program, trace, revision, history and assets remain usable while the candidate prepares.
+Only the same pending transaction with matching session generation, base revision, scoped resource
+revision vector and immutable base program may commit. Acceptance installs the new handles and
+candidate in one FIFO reducer, then emits commit and settled once. Failure emits error once with
+commit zero. A superseding valid candidate, an unchanged restore, a new editing gesture or destroy
+cancels pending work once, aborts its signal, and prevents a late commit or settled. Invalid commands
+preserve an already pending job. A late complete lease is disposed once without publishing another event.
+History stores no prepared handles; undo/redo/reset prepare their exact restored program again.
+
+Initial preparation leaves revision/history unchanged. External updateProgram also waits for the
+lease before publishing its existing program event or applying its history policy. Initial and external
+preparation publish `{type:'assets',status:'settled'|'cancelled'|'error',preparation,diagnostics,state}`.
+Native edits use their existing transaction event instead. Initial transaction ID is interaction-initial;
+external replacements receive a generated ID. Inspection and mounting remain available while preparing.
+A successful candidate is rebound to the current host transform immediately before commit.
+
+Replacement aborts and disposes the previous accepted lease after publishing the replacement. Destroy
+aborts pending work, releases its accepted lease and host listeners/capture, and clears callback and
+candidate references. Host disposers are called once even when they throw. A destroy requested from a
+subscriber remains terminal even if that subscriber throws; the original subscriber exception is
+preserved. Reentrant commands still use the bounded FIFO and transaction-ID guard when asynchronous
+completion enters the reducer. The session does not schedule worker layouts, observe resize, prepare
+animation frames or import a renderer; those owners must pass their accepted native program explicitly.

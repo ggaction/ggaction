@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add atomic interaction asset preparation with abortable host leases, exact revision guards and terminal disposal.
+
 - Add bounded interaction undo/redo/reset with exact program and selection snapshots and explicit external update history policy.
 
 - Added Full `editAnnotation` and the `annotate` interaction command for atomic edits to existing text, datum anchors, offsets, source-item membership, data-less screen anchors, native offset dragging and label placement while preserving native source ownership.

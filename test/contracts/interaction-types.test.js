@@ -23,6 +23,19 @@ session.dispatch({type:'undo',origin:'user',transactionId:'back'});
 session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
 session.updateProgram(program,{history:'record',origin:'replay'});
 const undoCount:number=session.getState().history.undoCount;
+const asyncSession=createInteractionSession({program,async assetResolver(request){
+  const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;
+  const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
+  return {dispose(){}};
+}});
+const ready:Promise<import(${JSON.stringify(path.join(root, "types/interaction.js"))}).InteractionSettlement>=asyncSession.whenSettled();
+// @ts-expect-error asset preparation must return a disposable lease
+createInteractionSession({program,assetResolver:()=>({})});
+// @ts-expect-error asset results use authentic prepared handles
+createInteractionSession({program,assetResolver:()=>({images:{},dispose(){}})});
+// @ts-expect-error dependency vectors are readonly
+asyncSession.getState().preparation?.resourceRevisionVector.push({kind:'parameter',id:'n',revision:0,childPath:[]});
+
 // @ts-expect-error whole-session history has no owner or payload
 session.dispatch({type:'undo',target:'points',payload:{}});
 // @ts-expect-error only record/reset are supported for external updates

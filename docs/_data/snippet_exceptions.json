@@ -2889,5 +2889,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "This browser continuation requires the prepared points program, picked selection and mounted Canvas named in the text. Native browser brush and lasso execution with actual rendering and captured pointers is verified at DPR 1 and 2 in interaction-region.browser.js."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-assets-before-committing:1",
+    "sha256": "77fe8f64e9bce629a4437f83ca728ddf98899fe6a8b60ec33b918fbcb3fae6e1",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires a retained-image program and Canvas context supplied by the host. The exact fragment is executed with real browser image bytes and late bitmap cancellation in test/browser/interaction-session.browser.js; it is not a standalone authoring example."
   }
 ]

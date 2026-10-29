@@ -12,6 +12,7 @@ import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { createInteractionHistory, INTERACTION_HISTORY_TYPES } from "./history.js";
+import { createInteractionPreparation, interactionResourceRevisions } from "./preparation.js";
 import { interactionOptions as options, snapshotInteractionInput, interactionOrigin, interactionTransactionMetadata } from "./input.js";
 import { prepareInteractionEdit, interactionTransaction, INTERACTION_EDIT_TYPES } from "./selection.js";
 import { getErrorDetails } from "../core/diagnostics.js";
@@ -70,23 +71,25 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit"], "Interaction session");
+  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit", "assetResolver"], "Interaction session");
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
-  let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
+  let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
   let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null;
   const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
   const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
-  const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene,
+  const preparation = createInteractionPreparation(request.assetResolver, operation => perform(operation), () => snapshot());
+  const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene, ...preparation.inspect(),
     frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
   const publish = (type, details) => {
+    if (details?.transactionId !== undefined && details.phase !== "preview") drainedTransactions.add(details.transactionId);
     const event = freezeOwned({ type, ...details, state: snapshot() });
     for (const listener of [...listeners]) if (listeners.has(listener)) listener(event);
   };
@@ -104,6 +107,11 @@ export function createInteractionSession(input) {
         first ??= result;
       }
       return first;
+    } catch (error) {
+      // A queued destroy is terminal even when the requesting subscriber throws.
+      // Preserve that original exception while finishing every owned disposer.
+      if (destroyRequested && !destroyed) { try { close(); } catch {} }
+      throw error;
     } finally { processing = false; queue.length = 0; drainedTransactions.clear(); }
   };
   const inspect = (point, query = {}, type = "inspect") => {
@@ -121,13 +129,25 @@ export function createInteractionSession(input) {
   };
   const close = () => {
     let failure;
-    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
+    try { preparation.dispose(); } catch (error) { failure = error; }
+    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure ??= error; }
     mounted = undefined; lastHit = null; destroyed = true; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
     finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
     return outcome("applied");
   };
+  const prepareAssets = (candidate, metadata, handlers, vector) => {
+    const previous = program, sessionGeneration = generation, baseRevision = revision;
+    return preparation.start(candidate, { sessionGeneration, transactionId: metadata.transactionId, baseRevision }, {
+      current: tags => !destroyed && program === previous && generation === tags.sessionGeneration && revision === tags.baseRevision,
+      ...handlers
+    }, vector);
+  };
+  const publishAssets = (status, tags, diagnostics = []) => publish("assets", { status, preparation: tags, diagnostics: cloneAndFreeze(diagnostics) });
+  const assetHandlers = prepare => ({ prepare,
+    cancel: (reason, tags) => publishAssets("cancelled", tags, [{ code: "preparation-cancelled", message: reason }]),
+    error: (error, tags) => publishAssets("error", tags, [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]) });
   const prepareEdit = command => {
     let prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
     if (prepared.program === program) return null;
@@ -138,13 +158,14 @@ export function createInteractionSession(input) {
     const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
     const candidate = prepareProgramHitFrame(prepared.program, version);
     const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-    return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame };
+    const resourceRevisions = preparation.enabled ? interactionResourceRevisions(prepared.program) : undefined;
+    return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame, resourceRevisions };
   };
   const edit = (command, draft) => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
     const previous = program, previousSnapshot = committedSnapshot();
-    let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
+    let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, resourceRevisions, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
       ...(command.causeTransactionId === undefined ? {} : { causeTransactionId: command.causeTransactionId }),
@@ -152,56 +173,85 @@ export function createInteractionSession(input) {
     });
     try {
       const result = draft ?? prepareEdit(command);
-      if (!result) return outcome("unchanged");
-      ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges } = result);
-      if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+      if (result) {
+        ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges, resourceRevisions } = result);
+        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+      }
     } catch (error) {
       publish(command.type, details("error", Object.freeze([]), [{ code: getErrorDetails(error)?.code ?? "interaction-command-failed", message: error.message }]));
       throw error;
     }
-    mounted?.capture?.cancel("updateProgram");
-    previewProgram = null;
-    // Geometry previews may already have accepted the same concrete draft.
-    if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-    bridge.updateFrame(frame); base = candidate; program = prepared.program;
-    linkedSelections = prepared.projections; selectionRecords = reconciled.records;
-    generation = nextGeneration; revision = nextRevision; lastHit = null;
-    history.record(previousSnapshot, prepared.affectedOwners);
-    publish(command.type, details("commit", prepared.affectedOwners));
-    publish(command.type, details("settled", prepared.affectedOwners));
-    return outcome("applied");
+    if (!prepared) { preparation.cancel("superseded"); return outcome("unchanged"); }
+    const prepareCommit = () => {
+      // Host mount/frame changes while assets load do not invalidate an immutable
+      // candidate. Rebind its concrete geometry to the current host transform.
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate; program = prepared.program;
+        linkedSelections = prepared.projections; selectionRecords = reconciled.records;
+        generation = nextGeneration; revision = nextRevision; lastHit = null;
+        history.record(previousSnapshot, prepared.affectedOwners);
+        publish(command.type, details("commit", prepared.affectedOwners));
+        publish(command.type, details("settled", prepared.affectedOwners));
+        return outcome("applied");
+      };
+    };
+    if (preparation.enabled) {
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      return prepareAssets(prepared.program, command, {
+        prepare: prepareCommit,
+        cancel: reason => publish(command.type, details("cancel", [], [{ code: "preparation-cancelled", message: reason }])),
+        error: error => publish(command.type, details("error", [], [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]))
+      }, resourceRevisions);
+    }
+    return prepareCommit()();
   };
   const restore = command => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
     const previous = program, previousSnapshot = committedSnapshot(), entry = history.target(command.type);
     if (!entry || entry.state.program === program) {
+      preparation.cancel("superseded");
       mounted?.capture?.cancel("updateProgram");
       return outcome("unchanged");
     }
     const details = (phase, diagnostics = []) => freezeOwned({ ...interactionTransactionMetadata(command), phase,
       revision, previous, current: program, affectedOwners: phase === "error" ? Object.freeze([]) : entry.affectedOwners,
       diagnostics: cloneAndFreeze(diagnostics), selectionChanges: Object.freeze([]) });
-    let candidate, frame, nextGeneration, nextRevision;
+    let candidate, frame, nextGeneration, nextRevision, resourceRevisions;
     try {
       const version = nextInteger(bridge.getState().version);
       nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
       candidate = prepareProgramHitFrame(entry.state.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      resourceRevisions = preparation.enabled ? interactionResourceRevisions(entry.state.program) : undefined;
       if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
     } catch (error) {
       publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "interaction-history-failed", message: error.message }]));
       throw error;
     }
-    mounted?.capture?.cancel("updateProgram");
-    previewProgram = null;
-    if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-    bridge.updateFrame(frame); base = candidate;
-    ({ program, selectionRecords, linkedSelections } = entry.state);
-    generation = nextGeneration; revision = nextRevision; lastHit = null;
-    history.accept(command.type, previousSnapshot, entry.affectedOwners);
-    publish(command.type, details("commit")); publish(command.type, details("settled"));
-    return outcome("applied");
+    const prepareCommit = () => {
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate;
+        ({ program, selectionRecords, linkedSelections } = entry.state);
+        generation = nextGeneration; revision = nextRevision; lastHit = null;
+        history.accept(command.type, previousSnapshot, entry.affectedOwners);
+        publish(command.type, details("commit")); publish(command.type, details("settled"));
+        return outcome("applied");
+      };
+    };
+    if (preparation.enabled) {
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      return prepareAssets(entry.state.program, command, { prepare: prepareCommit,
+        cancel: reason => publish(command.type, details("cancel", [{ code: "preparation-cancelled", message: reason }])),
+        error: error => publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }])) }, resourceRevisions);
+    }
+    return prepareCommit()();
   };
   const dispatch = command => {
     live();
@@ -243,8 +293,9 @@ export function createInteractionSession(input) {
     }
     throw new TypeError("Unsupported interaction command type.");
   };
-  return Object.freeze({
+  const session = Object.freeze({
     getState() { return state; },
+    whenSettled() { return preparation.whenSettled(); },
     dispatch,
     updateProgram(next, configuration = {}) {
       live();
@@ -268,13 +319,25 @@ export function createInteractionSession(input) {
         const candidate = prepareProgramHitFrame(linked.program, version);
         let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
         if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
-        mounted?.capture?.cancel("updateProgram");
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
-        linkedSelections = linked.projections; selectionRecords = verified.records;
-        if (policy === "reset") history.clear();
-        else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
-        publish("program", { origin, history: policy, selectionChanges }); return outcome("applied");
+        const prepareCommit = tags => {
+          frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+          return () => {
+            mounted?.capture?.cancel("updateProgram");
+            if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+            bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+            linkedSelections = linked.projections; selectionRecords = verified.records;
+            if (policy === "reset") history.clear();
+            else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
+            publish("program", { origin, history: policy, selectionChanges });
+            if (tags) publishAssets("settled", tags);
+            return outcome("applied");
+          };
+        };
+        if (preparation.enabled) {
+          mounted?.capture?.cancel("updateProgram"); transactionSequence = nextInteger(transactionSequence);
+          return prepareAssets(linked.program, { transactionId: `interaction-${transactionSequence}` }, assetHandlers(prepareCommit));
+        }
+        return prepareCommit()();
       });
     },
     subscribe(listener) {
@@ -352,6 +415,7 @@ export function createInteractionSession(input) {
                 const context = moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
                   : prepareRegionGesture(program, binding, base, scene, transform, point);
                 if (!context) return null;
+                preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return gesture = { transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
               },
@@ -413,6 +477,7 @@ export function createInteractionSession(input) {
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: () => {
                 if (!resolvePointerSelection(program, binding, true)) return null;
+                preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
               },
@@ -465,9 +530,12 @@ export function createInteractionSession(input) {
       };
     },
     destroy() {
-      if (destroyed || queue.includes(close)) return false;
+      if (destroyed || destroyRequested) return false;
+      destroyRequested = true;
       perform(close);
       return true;
     }
   });
+  if (preparation.enabled) prepareAssets(program, { transactionId: "interaction-initial" }, assetHandlers(tags => () => publishAssets("settled", tags)));
+  return session;
 }

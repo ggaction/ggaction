@@ -1352,6 +1352,10 @@
       {
         "type": "file",
         "path": "unit/interaction-history.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-preparation.test.js"
       }
     ],
     "selectors": [

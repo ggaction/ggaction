@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chart, hconcat } from "ggaction";
+import { chart, hconcat, prepareImageRendering } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
 import { getMarkItems } from "ggaction/inspection";
@@ -10,6 +10,21 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/asset-preparation", async run() {
+    const p=make(chart).createParameter({id:"level",value:1}),calls=[],disposed=[];
+    const session=createInteractionSession({program:p,bindings:[],async assetResolver(request){
+      const images=await prepareImageRendering(request.program,{signal:request.signal,decode(){throw new Error("no images")}});
+      if(!calls.length){calls.push(request);return{images,dispose(){disposed.push("initial")}}}
+      return new Promise(resolve=>calls.push({...request,finish(){resolve({images,dispose(){disposed.push(request.transactionId)}})}}));
+    }});
+    await session.whenSettled();const before=session.getState(),events=[];session.subscribe(e=>events.push(e));
+    session.dispatch({type:"setParameter",target:"level",payload:{value:2},transactionId:"old"});const first=session.whenSettled();await new Promise(setImmediate);
+    session.dispatch({type:"setParameter",target:"level",payload:{value:3},transactionId:"new"});const second=session.whenSettled();await new Promise(setImmediate);
+    assert.equal((await first).status,"cancelled");assert.equal(calls[1].signal.aborted,true);assert.equal(session.getState().program,p);assert.equal(session.getState().assets,before.assets);
+    calls[2].finish();assert.equal((await second).status,"settled");const committed=session.getState();calls[1].finish();await new Promise(setImmediate);
+    assert.equal(session.getState(),committed);assert.equal(committed.history.undoCount,1);assert.deepEqual(events.map(e=>e.phase),["cancel","commit","settled"]);
+    session.destroy();assert.deepEqual(disposed,["initial","old","new"]);assert.equal(session.getState().assets,null);
+  } },
   { id: "interaction/history", run() {
     const p=make(chart).createParameter({id:"level",value:1}),s=createInteractionSession({program:p,historyLimit:2});
     const events=[];s.subscribe(e=>events.push(e));

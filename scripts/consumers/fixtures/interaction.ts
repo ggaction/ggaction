@@ -150,3 +150,12 @@ const historyCount:number=session.getState().history.undoCount;
 session.dispatch({type:'undo',target:'points',payload:{}});
 // @ts-expect-error external history policy is closed
 session.updateProgram(program,{history:'keep'});
+
+const preparing=createInteractionSession({program,async assetResolver({program,signal,resourceRevisionVector}){
+  const vector:readonly import('ggaction').InputRef[]=resourceRevisionVector;
+  const images=await import('ggaction/basic').then(({prepareImageRendering})=>prepareImageRendering(program,{signal,decode(){throw new Error('fixture has no images')}}));
+  return {images,dispose(){}};
+}});
+const preparationStatus:Promise<import('ggaction/interaction').InteractionSettlement>=preparing.whenSettled();
+// @ts-expect-error preparation requires a disposal owner
+createInteractionSession({program,assetResolver:()=>({images:{}})});

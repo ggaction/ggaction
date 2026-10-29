@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/asset-preparation",
+        "statements": 25
+      },
+      {
         "id": "interaction/history",
         "statements": 19
       },

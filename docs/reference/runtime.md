@@ -1139,6 +1139,28 @@ import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, Categ
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
+import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
+export interface InteractionAssets {
+  readonly images?: PreparedImageRendering;
+  readonly fonts?: PreparedFontRendering;
+  readonly shadows?: PreparedShadowRendering;
+}
+/** Host owns partially prepared assets; the session disposes each returned lease once. */
+export interface InteractionAssetLease extends InteractionAssets { dispose(): void; }
+export interface InteractionPreparation {
+  readonly sessionGeneration: number;
+  readonly transactionId: string;
+  readonly baseRevision: number;
+  readonly resourceRevisionVector: readonly (InputRef & { readonly childPath: readonly string[] })[];
+}
+export interface InteractionAssetRequest extends InteractionPreparation {
+  readonly program: InteractionProgram;
+  readonly signal: AbortSignal;
+}
+export interface InteractionSettlement {
+  readonly status: 'settled' | 'cancelled' | 'error';
+  readonly preparation?: InteractionPreparation;
+}
 export interface InteractionPoint { readonly x: number; readonly y: number; }
 /** Explicit local-to-CSS affine matrix [a,b,c,d,e,f]; no device pixel ratio. */
 export type InteractionTransform = readonly [number, number, number, number, number, number];
@@ -1289,6 +1311,10 @@ export interface InteractionState {
   readonly linkedSelections: readonly LinkedSelectionState[];
   /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
+  /** Prepared handles for this exact committed program; host passes them to its renderer. */
+  readonly assets: Readonly<InteractionAssets> | null;
+  /** Pending candidate identity. Program and history remain committed until ready. */
+  readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
@@ -1407,7 +1433,15 @@ export interface InteractionProgramEvent {
   readonly state: InteractionState;
   readonly selectionChanges: readonly SelectionChange[];
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
+/** Initial and external replacement preparation; native edits retain their transaction event. */
+export interface InteractionAssetEvent {
+  readonly type: 'assets';
+  readonly status: 'settled' | 'cancelled' | 'error';
+  readonly preparation: InteractionPreparation;
+  readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly state: InteractionState;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent;
 export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -1430,10 +1464,14 @@ export interface InteractionSession {
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
+  /** Observe the job current at this call. Subscriber/disposer exceptions reject this promise. */
+  whenSettled(): Promise<InteractionSettlement>;
   destroy(): boolean;
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Explicit host preparation. Candidate state commits only after this lease is ready. */
+  readonly assetResolver?: (request: InteractionAssetRequest) => InteractionAssetLease | Promise<InteractionAssetLease>;
   /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
   readonly historyLimit?: number;
   /** Removed final items remain selected by default; drop snapshots surviving membership. */

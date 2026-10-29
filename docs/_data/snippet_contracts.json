@@ -2351,6 +2351,20 @@
   {
     "file": "api/interaction.md",
     "block": 2,
+    "heading": "Prepare assets before committing",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "signal"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "77fe8f64e9bce629a4437f83ca728ddf98899fe6a8b60ec33b918fbcb3fae6e1",
+    "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 3,
     "heading": "Undo, redo and reset",
     "mode": "complete",
     "environment": "node-esm",
@@ -2364,7 +2378,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 3,
+    "block": 4,
     "heading": "Inspect without a DOM",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2378,7 +2392,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 4,
+    "block": 5,
     "heading": "Replace a program or sampled frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2392,7 +2406,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 5,
+    "block": 6,
     "heading": "State and cleanup",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2406,7 +2420,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 6,
+    "block": 7,
     "heading": "Commit selections and parameters",
     "mode": "complete",
     "environment": "node-esm",
@@ -2421,7 +2435,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 7,
+    "block": 8,
     "heading": "Filter and reorder a view",
     "mode": "complete",
     "environment": "node-esm",
@@ -2435,7 +2449,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 8,
+    "block": 9,
     "heading": "Link named selections",
     "mode": "complete",
     "environment": "node-esm",
@@ -2450,7 +2464,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 9,
+    "block": 10,
     "heading": "Filter another view from a selection",
     "mode": "complete",
     "environment": "node-esm",
@@ -2465,7 +2479,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 10,
+    "block": 11,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2480,7 +2494,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 11,
+    "block": 12,
     "heading": "Select categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2495,7 +2509,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 12,
+    "block": 13,
     "heading": "Hide and restore categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2509,7 +2523,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 13,
+    "block": 14,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2524,7 +2538,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 14,
+    "block": 15,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2541,7 +2555,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 15,
+    "block": 16,
     "heading": "Connect parameter inputs and a context action",
     "mode": "complete",
     "environment": "browser-module",
@@ -2558,7 +2572,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 16,
+    "block": 17,
     "heading": "Navigate a partition view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2572,7 +2586,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 17,
+    "block": 18,
     "heading": "Adjust a geographic view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2588,7 +2602,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 18,
+    "block": 19,
     "heading": "Move graph nodes with pointer or keyboard",
     "mode": "complete",
     "environment": "browser-module",
@@ -2603,7 +2617,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 19,
+    "block": 20,
     "heading": "Edit existing annotations",
     "mode": "complete",
     "environment": "browser-module",

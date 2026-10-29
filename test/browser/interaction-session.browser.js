@@ -827,3 +827,58 @@ test("canonical annotation dragging preserves anchors across mouse touch keyboar
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("canonical asset resolver keeps browser pixels committed and closes late image bitmaps after destroy", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const assetSession = createInteractionSession")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart } = await import("/src/index.js");
+      document.body.innerHTML = '<button id="edit">Change level</button><button id="destroy">Destroy session</button><canvas aria-label="Prepared image"></canvas>';
+      const sample = document.createElement("canvas"); sample.width = sample.height = 2;
+      sample.getContext("2d").fillStyle = "#008000"; sample.getContext("2d").fillRect(0, 0, 2, 2);
+      const blob = await new Promise(resolve => sample.toBlob(resolve)), bytes = new Uint8Array(await blob.arrayBuffer());
+      const contentHash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
+      const image = { contentHash, mimeType: "image/png", byteLength: bytes.length, width: 2, height: 2, payload: { encoding: "base64", data: btoa(String.fromCharCode(...bytes)) } };
+      let program = chart().createCanvas({ width: 200, height: 120, margin: 0 }).createParameter({ id: "level", value: 0 }).createGraphics({ id: "picture", type: "image", parent: "plot-main" });
+      for (const [property, value] of Object.entries({ image, x: 10, y: 10, width: 40, height: 40 })) program = program.editGraphics({ target: "picture", property, value });
+      window.__assetProgram = program; window.__assetContext = document.querySelector("canvas").getContext("2d");
+      window.__assetHolds = []; window.__assetCloseCount = 0; window.__assetWrites = 0; window.__assetHold = false;
+      const native = window.createImageBitmap.bind(window);
+      window.createImageBitmap = async (...args) => {
+        const bitmap = await native(...args), close = bitmap.close.bind(bitmap);
+        bitmap.close = () => { window.__assetCloseCount++; close(); };
+        if (window.__assetHold) await new Promise(resolve => window.__assetHolds.push(resolve));
+        return bitmap;
+      };
+      let module = 'const program=window.__assetProgram, context=window.__assetContext;\n' + code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      module += '\nwindow.__assetSession=assetSession;window.__assetCleanup=disposeAssets;';
+      const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      window.__assetSession.subscribe(event => { if (event.phase === "commit") window.__assetWrites++; });
+      window.__assetHold = true; let value = 0;
+      document.querySelector("#edit").onclick = () => window.__assetSession.dispatch({ type: "setParameter", target: "level", payload: { value: ++value } });
+      document.querySelector("#destroy").onclick = () => window.__assetCleanup();
+    }, source);
+    assert.deepEqual(await page.evaluate(() => [...window.__assetContext.getImageData(20, 20, 1, 1).data]), [0, 128, 0, 255]);
+    await page.getByRole("button", { name: "Change level" }).click(); await page.waitForFunction(() => window.__assetHolds.length === 1);
+    await page.getByRole("button", { name: "Change level" }).focus(); await page.keyboard.press("Enter"); await page.waitForFunction(() => window.__assetHolds.length === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().revision, window.__assetWrites]), [0, 0]);
+    await page.evaluate(async () => { window.__assetHolds[1](); await window.__assetSession.whenSettled(); window.__assetHolds[0](); });
+    await page.waitForFunction(() => window.__assetCloseCount === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().revision, window.__assetSession.getState().history.undoCount, window.__assetWrites]), [1, 1, 1]);
+    await page.getByRole("button", { name: "Change level" }).click(); await page.waitForFunction(() => window.__assetHolds.length === 3);
+    await page.getByRole("button", { name: "Destroy session" }).click();
+    await page.evaluate(() => window.__assetHolds[2]()); await page.waitForFunction(() => window.__assetCloseCount === 4);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().destroyed, window.__assetSession.getState().assets, window.__assetWrites]), [true, null, 1]);
+    assert.deepEqual(await page.evaluate(() => [...window.__assetContext.getImageData(20, 20, 1, 1).data]), [0, 128, 0, 255]);
+    assertNoBrowserErrors(errors, "atomic image preparation"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

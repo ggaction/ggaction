@@ -3991,3 +3991,19 @@ Basic384,464 / SVG20,196 / graph43,759는 E9와 같다. Package는1048entries,
 packed1,486,675 / unpacked6,765,752로 최소cap1048/1,487,000/6,766,000이다.
 새 helper는 interaction entry만 소비하고 authoring/renderer bundle에는 유입되지 않는다.
 최초 기존 entry/bundle cap 실패와 동일 archive 측정·재검증은 STEP065 qualification에 보존한다.
+
+### Session asset preparation ownership
+
+`interaction/preparation.js`는 명시 host resolver의 AbortSignal·완료 Promise·pending 네 tag와 accepted
+lease 수명을 소유한다. `session.js`는 native candidate·hit frame·단일 committed program을 계속
+소유하며 준비 완료 전에 history나 program을 바꾸지 않는다. state.assets는 accepted lease의 읽기 전용
+renderer handle projection이고 cache나 저장 resource가 아니다. Renderers는 기존 authentic handle과
+exact graphic identity 검증을 유지한다. Session에 decoder/font/raster 또는 private player import는 없다.
+취소·실패·destroy는 candidate와 callback 참조를 해제하고 늦은 lease를 폐기한다. 구체 event와 Promise
+계약은 [Current INTERACTION](contract/current/INTERACTION.md#atomic-asset-preparation)이 소유한다.
+
+Asset preparation source-free Node20/24 interaction은115,827gzip으로 최소cap115,900을 적용했다.
+Full729,256/Basic384,464/SVG20,196/graph43,759는 직전 history와 동일하다. 새 interaction private
+owner1개로1049entries이며 Node20 packed1,490,213/unpacked6,779,434에 cap1,491,000/6,780,000을
+적용한다. 최초 entry·bundle cap 실패와 동일 archive의 cap 재검사를 구분해 증거로 보존한다.
+검색 index1,028,729bytes는 최소cap1,028,800이며 renderer나 authoring bundle 경계는 바뀌지 않는다.
