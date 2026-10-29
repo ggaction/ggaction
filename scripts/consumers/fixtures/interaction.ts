@@ -167,3 +167,7 @@ session.mount(document.createElement('canvas'),{observeResize:true});
 session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
 // @ts-expect-error resize observation is an explicit boolean
 session.mount(document.createElement('canvas'),{observeResize:'auto'});
+
+import { getProjectionView } from 'ggaction/inspection';
+const camera = getProjectionView(program,{target:'map'});
+session.updateProgram(({program})=>{if (!('navigateProjection' in program)) throw new Error('Full navigation required');return program.navigateProjection({target:'map',operation:{type:'reset',initial:camera.parameters}});},{history:'record'});

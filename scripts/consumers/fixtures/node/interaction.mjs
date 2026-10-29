@@ -11,6 +11,18 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/geographic-label-screen-history", async run() {
+    const p=chart().createCanvas({width:300,height:200,margin:0})
+      .createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{name:'Alpha'},geometry:{type:'Point',coordinates:[40,50]}}})
+      .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'})
+      .createMarkLabels({field:'name'}).createAnnotation({id:'note',space:'screen',x:10,y:20,text:'Fixed'});
+    const session=createInteractionSession({program:p,bindings:[]}), key=getMarkItems(p,{target:'places-labels'})[0].key;
+    session.updateProgram(({program})=>program.navigateProjection({target:'map',operation:{type:'pan',deltaPx:[30,-10]}}),{history:'record'});await session.whenSettled();
+    const q=session.getState().program;assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item=>[item.properties.x,item.properties.y]),[[70,40]]);
+    assert.equal(getMarkItems(q,{target:'places-labels'})[0].key,key);assert.deepEqual(q.graphicSpec.objects.note,p.graphicSpec.objects.note);
+    assert.deepEqual(q.graphicSpec.objects.note.items[0].identity.lineage,{kind:'screen'});assert.equal(q.graphicSpec.objects['places-labels'].items[0].identity.lineage.resource.kind,'geometry');
+    assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);session.dispatch({type:'undo'});assert.equal(session.getState().program,p);session.dispatch({type:'redo'});assert.equal(session.getState().program,q);session.destroy();
+  } },
   { id: "interaction/observed-resize-prepared-native-policy", async run() {
     const program=make(chart), session=createInteractionSession({program,bindings:[]}), observers=[], pending=[];
     class ResizeObserver { constructor(callback){this.callback=callback;this.disconnected=0;observers.push(this);} observe(target,options){this.target=target;assert.deepEqual(options,{box:'content-box'});} disconnect(){this.disconnected++;} resize(width,height){this.callback([{target:this.target,contentRect:{width,height}}]);} }

@@ -9,7 +9,8 @@ title: Text Marks
 
 Text marks turn data values into visible labels. Add one after a compatible point,
 line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
-source.
+source. Full geographic feature and graticule marks also supply their own source
+items without requiring a dataset; see [attached labels](./labels.md#geographic-sources).
 
 ## `createAnnotation(options)`
 

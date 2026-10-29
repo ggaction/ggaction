@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/geographic-label-screen-history",
+        "statements": 16
+      },
+      {
         "id": "interaction/observed-resize-prepared-native-policy",
         "statements": 27
       },
@@ -1320,6 +1324,69 @@
       },
       {
         "id": "geographic-annotations/four-renderer-native-text-parity",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "geographic-encodings.mjs",
+    "cases": [
+      {
+        "id": "geographic-encodings/conditional-references-and-atomicity",
+        "statements": 9
+      },
+      {
+        "id": "geographic-encodings/fresh-process-conditional-source-revision",
+        "statements": 6
+      },
+      {
+        "id": "geographic-encodings/four-renderer-conditional-parity",
+        "statements": 10
+      },
+      {
+        "id": "geographic-encodings/fields-guides-and-atomic-edits",
+        "statements": 13
+      },
+      {
+        "id": "geographic-encodings/fresh-process-field-source-revision",
+        "statements": 7
+      },
+      {
+        "id": "geographic-encodings/four-renderer-feature-area-parity",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "geographic-camera.mjs",
+    "cases": [
+      {
+        "id": "geographic-camera/explicit-native-view-lifecycle",
+        "statements": 10
+      },
+      {
+        "id": "geographic-camera/fresh-process-restored-native-navigation",
+        "statements": 6
+      },
+      {
+        "id": "geographic-camera/four-renderer-anchored-view-parity",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "geographic-labels.mjs",
+    "cases": [
+      {
+        "id": "geographic-labels/native-source-and-selection",
+        "statements": 9
+      },
+      {
+        "id": "geographic-labels/offline-restored-source-revision",
+        "statements": 4
+      },
+      {
+        "id": "geographic-labels/four-renderer-native-text-parity",
         "statements": 5
       }
     ]

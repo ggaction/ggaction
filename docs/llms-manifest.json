@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b81dee194a30397557dfe48e2662f291033760992aef1a58f1c3a1411432d956",
-    "sourceCommit": "4931f38f37f9c2995a7b0ece0d4074261b3129b8",
+    "contractId": "sha256:0aeef546fa270376dff6a58e0c25680b13739e198acffce60dc47f327d3e0447",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6213,
-      "sha256": "1d56c787d6eebb0633195ce75863893b6643d0c392352c15b4965ba7ec35d429"
+      "bytes": 6175,
+      "sha256": "d9f1e0200b200104e067de644b3c45b36efe4c3ff636668018f755a2b9fc1857"
     },
     {
       "order": 3,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "fa3cdfa19ade447aadff1408a03f93ef3c1d2b5f207d3eda72f60530ae880124"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -109,8 +109,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5473,
-      "sha256": "cd3f0748ff439f8d122f54df295da3c1f0bb52bc50c75123492d1ea046918521"
+      "bytes": 5397,
+      "sha256": "dbe711746a28257ed69278bc35ef87576e63ec4d7137b154dde17c63038f8d8f"
     },
     {
       "order": 7,
@@ -125,8 +125,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3562,
-      "sha256": "1cee4f7b4d00cae9737127c632ebf568599d569973aabd3deefb3419e84f2439"
+      "bytes": 3543,
+      "sha256": "4f8e104718e50d41c850e2e9f032f964a61707efc0bd98a839f83b52cfa506a7"
     },
     {
       "order": 8,
@@ -140,8 +140,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3449,
-      "sha256": "ec152647d47f4accd98691454df3e6d50340cc494821d7cf2b8ffddca91be7a4"
+      "bytes": 3430,
+      "sha256": "55533410f3293acf260d30d149c257883a60f1df3a9ff5a597f3e23ad8d2732f"
     },
     {
       "order": 9,
@@ -161,8 +161,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9986,
-      "sha256": "a5a07d5ed3d65eccaed56ac185903a0745d604d28e9b239dff25c461eab01767"
+      "bytes": 9967,
+      "sha256": "1ee14eeab8e89ba84c2f8ed48758df814353095e12d33a6701ae0197c195a712"
     },
     {
       "order": 10,
@@ -178,8 +178,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4781,
-      "sha256": "62b88791c461e3f9faa0ef2be07364be0d4aed5ab738ad3f5930ce8bda3c1801"
+      "bytes": 4705,
+      "sha256": "66b2d1c8a9bb970c38e039d66b07bd01d3b30eb67e95e7e80f10c9a6ff38dcee"
     },
     {
       "order": 11,
@@ -193,8 +193,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4380,
-      "sha256": "7679ff31da5ad8c87077c0348f8f2fbf205e9b290351594e6013d5e1a6e68bd2"
+      "bytes": 4304,
+      "sha256": "2af2eaae230e06e5e545195f3708297da4b4757b76204b81fda5de69bfdc3827"
     },
     {
       "order": 12,
@@ -209,8 +209,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4153,
-      "sha256": "3d0345c23276b637adfb18083721a164f10df86b42cbaea628d46e5292aa8a31"
+      "bytes": 4077,
+      "sha256": "d3da8b49ce3ee7c1a6007e60a7195f5ced160605edc371548878ca60e5929f9e"
     },
     {
       "order": 13,
@@ -224,8 +224,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4216,
-      "sha256": "e21dafe4ca10e00e135d2388c49c5c5fc1289446090288a910177aa4f2150591"
+      "bytes": 4159,
+      "sha256": "d8b15208861c47d80683173dff31185ded2add42e6c7317c3828e779fef2ed02"
     },
     {
       "order": 14,
@@ -239,8 +239,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3527,
-      "sha256": "47b04052ac4e3b065002106ce7d858f9c5ddcf0cc3561c7461ad5bbade9dd444"
+      "bytes": 3508,
+      "sha256": "e9ec7acf9f080df908a94bc7bb0c60f0625c66c3475fbd542fba4073f719fcfd"
     },
     {
       "order": 15,
@@ -256,8 +256,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6267,
-      "sha256": "dffd4205f55157d4f94fdc33b84e846f3e1dce2d27fe91a2e2e32ea934053583"
+      "bytes": 6172,
+      "sha256": "3aaa81067e899ee35cb6f735a7b2423a4bee4fbf205192480b1345f26476de8e"
     },
     {
       "order": 16,
@@ -272,8 +272,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4650,
-      "sha256": "3f46758c1de46d4fb86ddd49db0d5ce9cd4a2a7c7909cb8e3b36ef51dae32aa2"
+      "bytes": 4593,
+      "sha256": "6e8b0540606e3a0e668b449ba7125eb780f32a2cfdef2cf5dfa28a639ffa0bce"
     },
     {
       "order": 17,
@@ -288,8 +288,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3587,
-      "sha256": "2b295a50803830d8f1dcc2021e8aa46ad9c9a9e404af8632b09c11285cf25765"
+      "bytes": 3530,
+      "sha256": "8faa44cc69ff4b9cdeb8785c3c6914cf74d6c4451a28fbfba42a9bde20b832c9"
     },
     {
       "order": 18,
@@ -304,8 +304,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3811,
-      "sha256": "5b210cb124a78ee4ee1827c64d57ab6b4206bce56067d489c3880dceafc17d5d"
+      "bytes": 3754,
+      "sha256": "0ec77d6b01ba43dc1efe6eec1db57e7fb775306d0c44daf7a02a6876a52d11c7"
     },
     {
       "order": 19,
@@ -321,8 +321,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6372,
-      "sha256": "6cf0fc5a57db12bbeca9203e1dac6305bcb649b6f8315a63b9db8154ad234add"
+      "bytes": 6315,
+      "sha256": "e68fb562b6769721f186183da4516fb894d3216ed8013f53821ad371769351d7"
     },
     {
       "order": 20,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3958,
-      "sha256": "b9a878337c5087398d5eba376be1eb626efa562848fffd02010a24c5e3c44c68"
+      "bytes": 3939,
+      "sha256": "2ef60d5eb742c4f2f7fbd31321f518acebef90c261b202d66260a8725f5beacd"
     },
     {
       "order": 22,
@@ -874,8 +874,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5887,
-      "sha256": "39b492105e98c622ff9a9b2006eb5e9b0bbe4b4217207552b71f70c621367748"
+      "bytes": 5868,
+      "sha256": "f41443690135a9fb28a98f4d086bf9a65e525bc456b33bd0a25e53435cadeb7d"
     },
     {
       "order": 55,
@@ -1005,8 +1005,8 @@
         "numeric-pixel-offsets",
         "related"
       ],
-      "bytes": 18620,
-      "sha256": "27ab82434c3de000b3bc07e4679caf6e30bdd0f2217b2686b7446a4655807e78"
+      "bytes": 18791,
+      "sha256": "2e34b65274619afed71a5cf0e0904d28da6e2dba35eb55dd121a300d6cb804bb"
     },
     {
       "order": 62,
@@ -1052,8 +1052,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 23837,
-      "sha256": "734e6f647d7ba74d1e192278be8ea73053350824f5fffc7322e21e49a3973caf"
+      "bytes": 24058,
+      "sha256": "e89d67904ee144b3b9e3cacfa29b163ebefcedd058a87bb12f59a131275eb856"
     },
     {
       "order": 64,
@@ -1301,8 +1301,8 @@
         "shared-color-legends",
         "nested-responsive-panels"
       ],
-      "bytes": 9565,
-      "sha256": "c41109745ec289cff15a341f0102769871180c7e91fa1e98dcf7fb12b6ea0669"
+      "bytes": 9527,
+      "sha256": "5ff80edf662f702bcd8d19f0ac4dbb00d6aebd333e79d4b28b4caf188736c194"
     },
     {
       "order": 76,
@@ -1353,8 +1353,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7299,
-      "sha256": "f9dbaeea494fea8d308e8334c79ff3a735fd87582b90503e95523aebac5437cb"
+      "bytes": 7280,
+      "sha256": "932298d2e6b87d40d68e004f87bf3a6c2ba320ad41bc387b9c41f3ce1e80f4d4"
     },
     {
       "order": 79,
@@ -1435,8 +1435,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5794,
-      "sha256": "328645e41070833c93efb8a97d58b3c6cebf137329010289ce3d837fb007b218"
+      "bytes": 5775,
+      "sha256": "5f3988fafc5af8591bbb2a8e9742a7d04cbb92eb70715ad0866c06e61564c5c5"
     },
     {
       "order": 84,
@@ -1925,6 +1925,7 @@
         "program-inspection",
         "complete-inspection-workflow",
         "read-a-dataset-contract",
+        "read-a-projection-view",
         "expression-functions",
         "preflight-an-action",
         "compare-immutable-revisions",
@@ -1933,8 +1934,8 @@
         "responsive-layout-decisions",
         "related"
       ],
-      "bytes": 8272,
-      "sha256": "3f7bdb03ad67be54de803b34e930290854405feb3c73294c7769277c7c5ae3ee"
+      "bytes": 9034,
+      "sha256": "dd8b6c32d23fbea7e2a9d3ca5701c2e333b9afd3ee2562930bdd11dfd3392c33"
     },
     {
       "order": 113,
@@ -2047,8 +2048,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 38926,
-      "sha256": "824a1c10a79f726e71780f24329ef088a104ffa7efbf78270a7fe34de7c819c5"
+      "bytes": 39032,
+      "sha256": "fb80f6f1efc960950023eead417638c9069d1927e68ecfec40c15d8ef9752e78"
     },
     {
       "order": 120,
@@ -2194,14 +2195,15 @@
         "editgeoloddata",
         "createprojection",
         "editprojection",
+        "navigateprojection",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "setmarkvisibility",
         "removemarkvisibility",
         "related"
       ],
-      "bytes": 267684,
-      "sha256": "f8499a614ac0c81892aa6fe1413cd29792c985aebcaad1f3dbd65a38270bdf5f"
+      "bytes": 268958,
+      "sha256": "a3834952920e1d128386cac3e7aa9ee3ae08c74b82350fd9a2c052a6bfaad570"
     },
     {
       "order": 121,
@@ -2552,8 +2554,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 68416,
-      "sha256": "c8555a7eef78b9329aa82255b2b5401bb4797f040fc669db4ff47e5197669e10"
+      "bytes": 69111,
+      "sha256": "e4ed7866fb91b6b360f75f5b0f3021f52c70b2b1a42c999c525575b9084f556f"
     },
     {
       "order": 128,
@@ -3027,6 +3029,7 @@
         "type-forcedirectededgerouteoptions",
         "type-geoannotationanchor",
         "type-geoannotationoptions",
+        "type-geocameraoperation",
         "type-geoeditoptions",
         "type-geojsoninput",
         "type-geojoinkeyoptions",
@@ -3166,6 +3169,7 @@
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
         "type-namedcompleteaxis",
+        "type-navigateprojectionoptions",
         "type-noncartesianstrokedashchannel",
         "type-nonpointbandpositionscaleoptions",
         "type-nonpointcategoricalcolorscaleoptions",
@@ -3446,8 +3450,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 487527,
-      "sha256": "47bffbe00ccce7b38d7c2202a8a2d91fe7bc0c24ce57a856bb6e4b32c8c8a50b"
+      "bytes": 489504,
+      "sha256": "054f972b439f2f589a0dc9c413ec5fac521d018946c1605d12b029c91942cf91"
     },
     {
       "order": 129,
@@ -3481,8 +3485,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "d5074677ee889d72a5a7d299d1626b2b925bfefad91c72590393d25d5823f48f"
+      "bytes": 20870,
+      "sha256": "48dfc894187e7083eadc05d7269d1644315c9ea6c0fc24aebafaf56ab63cd297"
     },
     {
       "order": 131,
@@ -3565,8 +3569,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 30024,
-      "sha256": "e7ccf225371af6640ef95f279ec13881f8aa973ce174234aca998ad198ecbd20"
+      "bytes": 29948,
+      "sha256": "a5075e728dc0c80741ab4e9d63ecf441fe68cb84a6fd6b122db81724c537aa20"
     },
     {
       "order": 136,
@@ -3597,10 +3601,11 @@
         "createmarklabelsoptions",
         "editmarklabelselectionoptions",
         "editmarklabelplacementoptions",
-        "removemarklabelsoptions"
+        "removemarklabelsoptions",
+        "geographic-sources"
       ],
-      "bytes": 9176,
-      "sha256": "28535493d29cb409b6b2b69d4d91a95ec134dcce6065de8b57e89946ac2debcb"
+      "bytes": 10904,
+      "sha256": "01eb388d000459ac7053039e50248e7ac2d38b82840623973afeecae7cdfa1d5"
     },
     {
       "order": 138,
@@ -3612,8 +3617,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2614,
-      "sha256": "1c001c80ed5862aa9c9f5573b95dacdb3801d1867924afcc98808ffb336417c8"
+      "bytes": 2595,
+      "sha256": "e0663de91c547b3494f14e9a35b811447f75854298146907a2a780bf34005c85"
     },
     {
       "order": 139,
@@ -3821,8 +3826,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "641de65292c26428ed838f03a3d5f837f602bb21a33d315cb32d63b69daac1b2"
+      "bytes": 2981,
+      "sha256": "67cdfb41ce0d9d72d1379f0ae2b0cdd09f02a194c38e1ee1623b2f089736b24d"
     },
     {
       "order": 152,
@@ -3854,8 +3859,8 @@
         "complete-program",
         "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 6673,
-      "sha256": "4ec61bc95048fb768efe9808e4b6df4f6e5ecdfa3dafddff050e3e5e48a6b084"
+      "bytes": 6635,
+      "sha256": "07dc933c7290dc8828c1f970f68631b6279c4dc84a282a44ad6764292fbf58f1"
     },
     {
       "order": 154,
@@ -3868,8 +3873,8 @@
         "draw-the-prepared-text",
         "change-labels-or-fonts"
       ],
-      "bytes": 3387,
-      "sha256": "dc7a33b4a1c8d367c31e78552cbffa6c245a5f146d2bbf68c6bd40e410ddcf87"
+      "bytes": 3330,
+      "sha256": "db5b9595843b2786d597843bb01ad89bda04a0143d6681a4822fad791a175dcf"
     },
     {
       "order": 155,
@@ -3906,8 +3911,8 @@
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 5486,
-      "sha256": "0771dd3cc3f21917fd3701b87e620a4af84b7797bd5b9c152e362fc37d569e2a"
+      "bytes": 5448,
+      "sha256": "8bc4d4a28b26e36791557ade4359f57461209d81772ab444cf0c0eb5eba2cf28"
     },
     {
       "order": 157,
@@ -3963,8 +3968,8 @@
       "headings": [
         "bundle-existing-graph-edges"
       ],
-      "bytes": 1812,
-      "sha256": "11baf6e46b9985cabe7d4cdc29f32bf31981df4603e755caa4bebb531b91e853"
+      "bytes": 1793,
+      "sha256": "709d322d0f79304850615a09edcfd8b16e0a63107eb978809637ddaf5efe1ab6"
     },
     {
       "order": 161,
@@ -3992,8 +3997,8 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 4386,
-      "sha256": "208d6434152d96384228dc08886c820189c293ec905513f5c7b07e050247f1cd"
+      "bytes": 4367,
+      "sha256": "33fe791751c208c9aa5557b0f2f50f9911c0355db7a8e0896ff838721e63d18e"
     },
     {
       "order": 163,
@@ -4023,8 +4028,8 @@
       "headings": [
         "draw-conserved-flows"
       ],
-      "bytes": 3692,
-      "sha256": "97d29311debea273dc35076850c194937da826994e91b6f0b2c21cd9b4a715fd"
+      "bytes": 3673,
+      "sha256": "b2d226ed436f84c24a96f4a34032b717dcc2c00072583ce6ea296ccb392e9a7c"
     },
     {
       "order": 165,
@@ -4041,8 +4046,11 @@
         "editgeoloddata",
         "createprojection",
         "editprojection",
+        "navigateprojection",
         "draw-through-a-geo-coordinate",
         "creategeoshapemark",
+        "map-feature-fields-to-color-and-size",
+        "choose-color-or-size-with-conditions",
         "editgeoshapemark",
         "creategeopointmark",
         "editgeopointmark",
@@ -4051,10 +4059,11 @@
         "creategraticule",
         "editgraticule",
         "creategeoannotation",
-        "editgeoannotation"
+        "editgeoannotation",
+        "label-feature-fields-and-graticules"
       ],
-      "bytes": 21789,
-      "sha256": "7bfa787250abebc6befe4b69aeafe63c2d14d966a5bb4d7aaeca815a4db0ae89"
+      "bytes": 29230,
+      "sha256": "4cec0679d1299ffc9698b23c064aa6afebcba5a6fb7cf749b16fa0013e479dba"
     },
     {
       "order": 166,
@@ -4080,8 +4089,8 @@
       "headings": [
         "draw-levels-bands-and-density"
       ],
-      "bytes": 2908,
-      "sha256": "b6ee7f6f378bd06130388ed0b09b391269b0fc8c63e0f0bbafafbce1336fcf23"
+      "bytes": 2889,
+      "sha256": "1a135182e3e0b3282d8935d2b62e5f225ea9aae140d24597b543f8bf3d5a4a42"
     },
     {
       "order": 168,
@@ -4117,8 +4126,8 @@
       "headings": [
         "place-observations-on-a-calendar"
       ],
-      "bytes": 2879,
-      "sha256": "7a2a3d53236c3d6378a3ca33f5877795eb49fd54a735ab8a2acd432be679683b"
+      "bytes": 2860,
+      "sha256": "228eba75d327dfe3003bf66862b64cfb84b4e137ec5452af6696a4d10ffc64dd"
     },
     {
       "order": 171,
@@ -4139,10 +4148,14 @@
       "headings": [
         "draw-geometry-on-a-map",
         "complete-program",
-        "keep-labels-attached-to-their-features"
+        "keep-labels-attached-to-their-features",
+        "map-visitor-counts-to-stop-area",
+        "emphasize-stops-with-conditions",
+        "keep-stops-stable-while-navigating",
+        "label-feature-fields-and-graticules"
       ],
-      "bytes": 4687,
-      "sha256": "cf5194052191a0aec743b768b798218bbf70ae607bbe63927c8ff67507caba1c"
+      "bytes": 7535,
+      "sha256": "ebe38413feabf5ca1d7655cca129191aefee380aa1a0d9abb83395e745137948"
     }
   ]
 }

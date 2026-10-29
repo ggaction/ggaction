@@ -159,3 +159,21 @@ C source `4931f38f3`를 고정한 뒤 docs49/49, built172pages/1531LLM,
 320/390/768/1440px Axe0·overflow0을 통과했다. 320px와1440px 화면도 직접 확인했다.
 동일 tar 세Node검증 및 최초실패·최종한도·명령·fingerprint는
 [resize qualification](resize-evidence/qualification.json)에 보존한다. Camera와 player 후행 의무는 유지한다.
+
+## C 이후 Geo camera/labels 안정본 합산
+
+Resize 최종 `5f6c94a23` 위에 Geo `295283729c4526b12bc8be7512ecb79c418a3f27`을 합친다.
+공통 Text 생성·screen lineage·resource lineage·selection dataOptional/resourceBacked·legend의
+원 데이터와 visibility 순서를 양쪽 모두 보존했다. Generated 파일은 canonical source로 재생성했다.
+새 camera gesture API를 이 병합에서 추가하지 않고 기존 callback updateProgram과 setViewport를 쓴다.
+
+Focused330, 새 혼합 Text/history/nested2를 포함한 viewport5, 실제 camera/selection32,
+DPR1/2 Geo conditional/labels3와 실제 ResizeObserver1이 통과했다. 패키지 소비자는 같은 tar의
+interaction18 + camera3 + labels3 및 strict types/5bundles다. 첫 Node20은 optional peer 설치가 없는
+harness 때문에 실패했으며 canonical testOptionalDependencies를 재사용했다. 다음 TypeScript 실패는
+InteractionProgram이 Basic도 포함하므로 Full guard를 fixture에 추가해 해결했다. 새 native 권한은 없다.
+최종 runtime24/types 성공 후 기존 합산 bundle cap 실패만 남아 실측 최소cap으로 닫는다.
+
+Docs55의 최초3실패는 검색크기2와 아직mergecommit에없는example source-link1이다. 검색실측으로
+수리하고 source commit 뒤 provenance를 고정해 해당 링크를 검증한다. 전체coverage/normal/077
+완료를 주장하지 않으며 native camera gesture·player·최종matrix는 후행으로 유지한다.

@@ -2907,6 +2907,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "navigateProjection": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeoShapeMark": {
     "operation": "create",
     "authoringRoles": [

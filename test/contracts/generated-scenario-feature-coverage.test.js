@@ -216,16 +216,16 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 356);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3442);
-  assert.equal(inventory.counts.nestedOptionPaths, 28786);
-  assert.equal(inventory.counts.optionPaths, 32228);
-  assert.equal(inventory.counts.requiredOptionPaths, 21575);
-  assert.equal(inventory.counts.excludedOptionPaths, 10653);
-  for (const action of ["createGeoAnnotation", "editGeoAnnotation", "createGeoLODData", "editGeoLODData", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
+  assert.equal(inventory.counts.publicActions, 357);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3444);
+  assert.equal(inventory.counts.nestedOptionPaths, 28842);
+  assert.equal(inventory.counts.optionPaths, 32286);
+  assert.equal(inventory.counts.requiredOptionPaths, 21613);
+  assert.equal(inventory.counts.excludedOptionPaths, 10673);
+  for (const action of ["navigateProjection", "createGeoAnnotation", "editGeoAnnotation", "createGeoLODData", "editGeoLODData", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
-  for (const id of ["option-path:createGeoAnnotation.anchor.type", "option-path:createGeoAnnotation.anchor.geometry", "option-path:createGeoAnnotation.text", "option-path:editGeoAnnotation.dx", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom", "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
+  for (const id of ["option-path:navigateProjection.operation.type", "option-path:navigateProjection.operation.factor", "option-path:navigateProjection.operation.canvas.width", "option-path:navigateProjection.operation.initial.type", "option-path:createGeoAnnotation.anchor.type", "option-path:createGeoAnnotation.anchor.geometry", "option-path:createGeoAnnotation.text", "option-path:editGeoAnnotation.dx", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom", "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
   }
   for (const action of ["bundleGraphEdges", "editEdgeRoute", "createCalendarLayout", "createCalendarPlot", "editCalendarPlot", "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark", "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
@@ -253,10 +253,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
     ]);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 1210);
   assert.equal(inventory.counts.topLevelLiteralValues, 4364);
-  assert.equal(inventory.counts.literalFamilies, 269);
-  assert.equal(inventory.counts.pathLiteralRequirements, 15480);
+  assert.equal(inventory.counts.literalFamilies, 271);
+  assert.equal(inventory.counts.pathLiteralRequirements, 15495);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 512);
+  assert.equal(inventory.counts.pathDiversityRequirements, 513);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
@@ -526,7 +526,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10653 }
+    { "redacted-array": 10673 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -598,7 +598,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
         dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] }],
     datasetCorpus: { datasets: [datasetDefinition(preparedRecipe.datasets[0])] }, ledger
   });
-  for (const id of ["action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
+  for (const id of ["action:navigateProjection", "option-path:navigateProjection.operation", "option-path:navigateProjection.operation.type", "option-path:navigateProjection.operation.deltaPx", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
     "option-path:createCalendarLayout.date", "option-path:createCalendarLayout.aggregate", "option-path:createCalendarPlot.color", "option-path:createCalendarPlot.cells.opacity", "option-path:editCalendarPlot.monthBoundary", "action:createContourData", "action:createDensityContourData", "action:editContourData", "action:createContourMark", "action:editContourMark",
     "option-path:createContourData.grid", "option-path:createDensityContourData.estimator", "option-path:editContourData.thresholds", "option-path:createContourMark.mode", "option-path:editContourMark.opacity", "option-path:createContourMark.outline.width", "option-path:createContourMark.shadow", "option-path:editContourMark.outline", "option-path:editContourMark.shadow", "action:createFlowData", "action:editFlowData", "action:layoutFlow",
     "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
@@ -647,7 +647,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 37978);
+  assert.equal(ledger.requirements.length, 38032);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

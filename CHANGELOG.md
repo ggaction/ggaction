@@ -1,5 +1,7 @@
 # Changelog
 
+- Add Full `navigateProjection` camera commands and `getProjectionView` inspection snapshots for anchored zoom, pinch, rotation, explicit reset, fit and native Canvas resize.
+
 - Add `createGeoLODData` and `editGeoLODData` with shared topology simplification, detail hysteresis and original selection representation mapping.
 
 All notable changes to `ggaction` are recorded in this file.
@@ -23,6 +25,12 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes; the `annotate` command routes explicit geographic targets to the same native editor.
+- Extend existing `createMarkLabels` and source-owned `createTextMark` to Full geographic features and graticules, preserving centroid anchors, typed feature identity, actual joined rows, detail representations, native Text styling and immutable revision closure.
+
+- Extend geographic color and point-area encodings with first-match conditions, typed expressions, named selections, exact parameter revisions and native scale/legend lifecycle. Validate every branch and preserve feature identity through joins, detail changes and offline restoration.
+
+- Extend ordinary `encodeColor` to Full geographic shape/point/line fields and `encodeSize` to geographic point area, with existing scales, legends, original feature identity and atomic join/LOD/source revisions. Preserve explicit quantitative color empty-domain policies.
+
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 

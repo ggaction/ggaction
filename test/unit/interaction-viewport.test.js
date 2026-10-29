@@ -78,3 +78,33 @@ test("scoped projection edits preserve siblings and reject every invalid patch a
   const b = createInteractionSession({ program: basic().createCanvas(), bindings: [] });
   assert.throws(() => b.dispatch(move({ scalePx: 2 })), /editProjection/); b.destroy();
 });
+
+test("prepared native camera updates preserve geographic label and screen annotation lineage through history", async () => {
+  const p = make().createMarkLabels({source:"places",field:"name"})
+    .createAnnotation({id:"note",space:"screen",x:12,y:18,text:"Fixed"});
+  const source = serializeProgram(p), s = createInteractionSession({program:p,bindings:[]});
+  const label = getMarkItems(p,{target:"places-labels"})[0], note = getMarkItems(p,{target:"note"})[0];
+  assert.deepEqual(p.graphicSpec.objects.note.items[0].identity.lineage,{kind:"screen"});
+  assert.equal(p.graphicSpec.objects['places-labels'].items[0].identity.lineage.resource.kind,"geometry");
+  s.updateProgram(({program})=>program.navigateProjection({target:"map",operation:{type:"pan",deltaPx:[30,-10]}}),{history:"record"});
+  assert.equal((await s.whenSettled()).status,"settled");
+  const q = s.getState().program, moved = getMarkItems(q,{target:"places-labels"})[0];
+  assert.equal(moved.key,label.key);assert.deepEqual(moved.rows,[]);
+  assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item=>[item.properties.x,item.properties.y]),[[110,80]]);
+  assert.deepEqual(q.graphicSpec.objects.note,p.graphicSpec.objects.note);assert.equal(getMarkItems(q,{target:"note"})[0].key,note.key);
+  assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
+  s.dispatch({type:"undo"});assert.equal(s.getState().program,p);s.dispatch({type:"redo"});assert.equal(s.getState().program,q);
+  assert.equal(serializeProgram(p),source);s.destroy();
+});
+
+test("scoped camera edits retain mixed Text identities and the untouched nested sibling", () => {
+  const child=make().createMarkLabels({source:"places",field:"name"}).createAnnotation({id:"note",space:"screen",x:10,y:20,text:"Local"});
+  const p=hconcat({programs:[{id:"left",program:child},{id:"right",program:child}]}),s=createInteractionSession({program:p,bindings:[]});
+  const before=getMarkItems(p,{target:{childPath:["left"],id:"places-labels"}})[0];
+  s.dispatch({...move({translatePx:[5,6]}),target:{childPath:["left"],id:"map"}});
+  const q=s.getState().program;
+  assert.equal(q.children.right,p.children.right);assert.deepEqual(q.children.left.graphicSpec.objects.note,child.graphicSpec.objects.note);
+  assert.equal(getMarkItems(q,{target:{childPath:["left"],id:"places-labels"}})[0].key,before.key);
+  assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
+  assert.deepEqual(getMarkItems(q,{target:{childPath:["left"],id:"note"}})[0].rows,[]);s.destroy();
+});

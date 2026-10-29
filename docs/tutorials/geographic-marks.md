@@ -78,3 +78,51 @@ The anchor follows the original feature when its geometry or projection changes.
 the annotation remembers the selected original level and key even while a coarser feature represents
 it. Use a position anchor when the location is meaningful without a named feature. Empty text and
 clipped anchors keep their semantic intent while producing no visible text.
+
+## Map visitor counts to stop area
+
+{% include chart-example.html id="geographic-fields" %}
+
+The field example uses the same planar
+features with three stop counts, 1, 4 and 9. Their circle radii are 8, 16 and 24
+pixels, so their areas have the same ratio as those counts. Native categorical
+color scales distinguish the stops. The shared public program uses `createGeographicMarks("fields")`; it supplies its own measured features.
+
+Use `encodeColor({ field, scale })` after a shape, point or line mark, and
+`encodeSize({ field, scale })` after a point mark. `createLegend()` can add the
+existing color and size blocks. A join exposes the matching table fields and
+LOD exposes the active level. See [field mapping rules](../api/geometry.md#map-feature-fields-to-color-and-size)
+for unknown values, geographic radii and explicit constant transitions.
+
+## Emphasize stops with conditions
+
+The same public program's `createGeographicMarks("conditional")` variant keeps the
+visitor-area mapping while drawing West gray, Central teal and East red. A
+visitor count of at least eight matches the first color branch; a count of at
+least four matches the second. The required `otherwise` supplies West's color.
+Both color and size use the same original feature key, and their native scales
+still inspect all eligible features. The exact executable conditions live in
+that program's shared fixture. See [conditional feature mapping](../api/geometry.md#choose-color-or-size-with-conditions)
+for predicates, selections and legend ambiguity.
+
+## Keep stops stable while navigating
+
+The executable `createGeographicMarks("camera")` variant in the same example applies an anchored
+0.75 zoom followed by a small pan. Its district and route move with the projection, while each
+stop remains eight CSS pixels in radius. Use `navigateProjection` for these view changes; save
+`getProjectionView(program).parameters` before navigation when you want an explicit reset target.
+The [camera reference](../api/geometry.md#navigateprojection) lists pinch, fit and resize options.
+
+## Label feature fields and graticules
+
+Use `createGeographicMarks("labels")` from the same shared example module for one
+Text label layer reading each stop's `name`. Its `createMarkLabels` call selects
+`source: "geo-point"`, applies an eighteen-pixel font and a negative sixteen-pixel
+vertical offset. This produces the same West, Central and East labels as the fixed
+annotation example, with content now read from the source features.
+
+The `createGeographicMarks("grid-labels")` variant labels the existing graticule's
+`value` field with `format: ".0f"`. Its inline selector chooses `axis: "longitude"`,
+so only −40, 0 and 40 appear above the meridian centroids. Both variants preserve
+source feature identity through projection edits and reuse the native Text
+style, font and collision-layout actions. See [geographic label rules](../api/marks/labels.md#geographic-sources).

@@ -32,14 +32,14 @@ export function materializeMarkOutput(program, id) {
       (conditionalProperties[graphicId] ??= {})[property] = byKey.get(item.key);
     }));
   }
-  const dataset = isScreenAnnotation(layer) ? undefined : requireDataset(clipped, layer.data);
+  const dataset = layer.data === undefined ? undefined : requireDataset(clipped, layer.data);
   const identities = new Map();
   for (const item of resolveMarkIdentities(clipped, id)) {
     for (const [index, graphicId] of item.graphicIds.entries()) {
       identities.set(graphicId, {
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
-        lineage: dataset === undefined ? { kind: "screen" } : { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
-          rowKeys: item.rowKeys }
+        lineage: item.lineage ?? (isScreenAnnotation(layer) ? { kind: "screen" } : { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
+          rowKeys: item.rowKeys })
       });
     }
   }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 366,
+  "actionCount": 367,
   "relationships": [
     {
       "name": "createCanvas",
@@ -638,7 +638,9 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -666,7 +668,9 @@
       "name": "encodeSize",
       "wraps": [
         "editSemantic",
-        "createScale"
+        "createScale",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -2419,6 +2423,13 @@
       "name": "editProjection",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "navigateProjection",
+      "wraps": [
+        "editProjection",
+        "editCanvas"
       ]
     },
     {

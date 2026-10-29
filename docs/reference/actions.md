@@ -358,6 +358,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | H2 | user-facing | encodings |
+| [`navigateProjection`](./actions/charts-data.md#navigateprojection) | H3 | user-facing | core |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | H2 | user-facing | encodings |
 | [`packPoints`](./actions/marks.md#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | H2, H3 | user-facing | encodings |

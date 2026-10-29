@@ -1,3 +1,6 @@
+import { resolveGeoMark } from "../../materialization/geo/mark.js";
+import { getLayerScaleIds } from "../../materialization/marks/index.js";
+import { resolveScalePreview } from "../scales/preview.js";
 import { applyMaterializationPlan, planCoordinateRematerialization, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { mapCoordinateResourceBindings, mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
@@ -6,6 +9,14 @@ import { createGeoJoinResource } from "../../materialization/geo/joinResource.js
 import { resolveInputReference } from "../../selectors/resources.js";
 import { orderResourceDependencies, validateResourceGraph } from "../../materialization/resourceState.js";
 import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
+
+export function preflightGeoConsumers(program, ids) {
+  const selected = new Set(ids);
+  const layers = program.semanticSpec.layers.filter(layer => layer.mark.type === "geo" && selected.has(layer.id));
+  const resolvedScales = { ...program.resolvedScales };
+  for (const id of new Set(layers.flatMap(getLayerScaleIds))) resolvedScales[id] = resolveScalePreview(program, id).resolvedScale;
+  for (const layer of layers) resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id].geo, resolvedScales);
+}
 
 export function writeGeometryResource(program, geometry) {
   const key = ref => JSON.stringify([ref.kind, ref.id]), revised = new Map([[key(geometry), geometry]]), entries = [];
@@ -33,12 +44,13 @@ export function writeGeometryResource(program, geometry) {
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, coordinates, layers,
     resources: program.semanticSpec.resources.map(resource => revised.get(key(resource)) ?? resource) } };
   validateResourceGraph(preview, program.constructor);
+  const projectionIds = new Set(entries.filter(entry => entry.resource.kind === "projection").map(entry => entry.resource.id));
+  const coordinateIds = new Set(coordinates.filter(coordinate => coordinate.type === "geo" && projectionIds.has(coordinate.projection.id)).map(coordinate => coordinate.id));
+  const markIds = layers.filter(layer => layer.mark.type === "geo" &&
+    (layer.geoBinding.geometry && revised.has(key(layer.geoBinding.geometry)) || coordinateIds.has(layer.coordinate))).map(layer => layer.id);
+  preflightGeoConsumers(preview, markIds);
   const next = withPreparedResourceResults(program, { property: `resource[geometry:${geometry.id}]`, value: geometry }, entries,
     args => program.editSemantic(args));
-  const projectionIds = new Set(entries.filter(entry => entry.resource.kind === "projection").map(entry => entry.resource.id));
-  const coordinateIds = new Set(next.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && projectionIds.has(coordinate.projection.id)).map(coordinate => coordinate.id));
-  const markIds = next.semanticSpec.layers.filter(layer => layer.mark.type === "geo" &&
-    (layer.geoBinding.geometry && revised.has(key(layer.geoBinding.geometry)) || coordinateIds.has(layer.coordinate))).map(layer => layer.id);
   return applyMaterializationPlan(next, planLayersDataRematerialization(next, markIds));
 }
 

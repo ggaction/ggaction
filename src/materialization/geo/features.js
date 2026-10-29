@@ -40,7 +40,7 @@ export function geographicFeatures(program, resource) {
       return { ...features[index], ...feature, key,
         ...(aliases === undefined ? {} : { representationKeys: aliases.get(key) }),
         ...(dataset === undefined ? {} : { fields: row === null ? {} : dataset.values[row],
-          rows: row === null ? [] : [current.provenance.sourceRows[row]] }) };
+          rows: row === null ? [] : [{ ...current.provenance.sourceRows[row], index: row }] }) };
     });
   }
   return features;

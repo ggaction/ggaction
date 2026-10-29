@@ -1287,7 +1287,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels; Full Geo feature/graticule sources share native Text content, placement, resource identity and source revisions",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -6445,6 +6445,24 @@
       "contract": {
         "file": "agent_docs/contract/current/GEOMETRY.md",
         "anchor": "editprojection"
+      }
+    },
+    {
+      "name": "navigateProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `navigateProjection`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "navigateprojection"
       }
     },
     {

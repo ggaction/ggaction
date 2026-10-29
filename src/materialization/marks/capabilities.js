@@ -1,4 +1,5 @@
 import { isScreenAnnotation } from "../../grammar/screenAnnotation.js";
+import { isGeoLabelSource } from "../../grammar/geo/mark.js";
 import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -183,12 +184,12 @@ const TEXT_SOURCE_CAPABILITIES = Object.freeze({
 });
 
 export function isTextSource(layer) {
-  return layer?.data !== undefined &&
+  return isGeoLabelSource(layer) || layer?.data !== undefined &&
     Object.hasOwn(TEXT_SOURCE_CAPABILITIES, layer.mark?.type);
 }
 
 export function canMaterializeTextSource(program, source) {
-  return isTextSource(source) && TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source) &&
+  return isTextSource(source) && (isGeoLabelSource(source) || TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source)) &&
     Array.isArray(program.graphicSpec.objects[source.id]?.items);
 }
 

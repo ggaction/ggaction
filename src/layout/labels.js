@@ -162,6 +162,7 @@ export function assertMarkLabelPlacementSupport({ markType, coordinateType, inte
         : `Point does not support mark label anchor "${anchor}".`
     );
   }
+  if (markType === "geo" && anchor === "center") return placement;
   if (markType === "line") {
     throw new Error("Line labels retain the endpoint API and do not accept semantic placement objects.");
   }

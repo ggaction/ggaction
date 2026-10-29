@@ -1093,12 +1093,23 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
   ID for an additional label layer on the same source. Different sources have independent default label IDs.
 - `field`, `value`, and `content` are mutually exclusive with the same semantics, supported marks, formatting and validation
   as `encodeText`. Omitting all three means `content: "value"`; this requires a Bar or Arc with a supported semantic measure.
-  Point/Line/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
+  Point/Line/Rule/Rect/Geo require an explicit field or constant rather than guessing one position channel as the value.
   `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
 - Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
   source-fill contrast use `createTextMark`. Semantic placement is opt-in; when omitted, no sign-dependent offset is inferred.
   An outside semantic placement uses the ordinary text fill unless the author supplied an explicit fill, while inside and
   center Arc/Rect labels retain source-fill contrast. Explicit appearance overrides the facade defaults.
+- Full geographic Shape/Point/Line and Graticule are source-owned Text sources without a dataset. Each currently
+  visible eligible feature produces one label, including multipart features. The anchor is its source-space centroid
+  projected through the source coordinate; a clipped/non-drawable centroid produces no Text item. Generated graticules
+  expose their existing `axis` and numeric `value` fields. Explicit fields/constants use ordinary Text formatting.
+  Original feature keys and joined row references remain attached; LOD representation aliases are scoped to the label
+  layer while current hit identity stays on the visible feature. `placement: {anchor:"center"}` is supported;
+  other semantic boundary anchors have no geographic meaning. Native dx/dy and `layoutLabels` remain available.
+  Use `inheritColor` or constant fill as for other source labels; direct field color still requires independent Text.
+  Projection clip controls anchor visibility. The generic Text `clip` option retains its Cartesian-only contract.
+  Geometry, join, detail, projection, source, selection and parameter revisions refresh source then labels once.
+  No new geometric annotation anchor or dataset is stored. Fixed `createGeoAnnotation` keeps its separate single-anchor contract.
 - A Line source creates one label per final series item. Its anchor is the last concrete path coordinate and an explicit
   field reads the final ordered member row. This supports endpoint labels without changing Line path or selection grain.
 - `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
@@ -1343,7 +1354,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
-- Explicit `source` selects an existing point/bar/rule/rect/arc with data, regardless of current mark or dataset.
+- Explicit `source` selects an existing point/bar/line/rule/rect/arc with data or a Full geographic feature/graticule mark, regardless of current mark or dataset.
   It is mutually exclusive with `data`. Invalid IDs, missing layers and unsupported source kinds reject before creation.
   An explicit source may be incomplete: content and appearance persist, no text items are created until its position is
   complete, and later source encoding actions materialize the labels. Automatic inference retains its existing eligibility.

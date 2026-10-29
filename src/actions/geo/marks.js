@@ -1,3 +1,5 @@
+import { preflightGeoConsumers } from "./closure.js";
+import { getLayerScaleIds } from "../../materialization/marks/index.js";
 import { registerGeoAnnotationActions } from "./annotation.js";
 import { closedAction } from "../../core/action.js";
 import { normalizeGeoStyle, normalizeGraticule, GEO_STYLE_FIELDS } from "../../grammar/geo/mark.js";
@@ -11,13 +13,15 @@ import { assertMarkAvailable, resolveMarkId } from "../marks/shared.js";
 import { rematerializeHighlightBaseline } from "../marks/lifecycle.js";
 
 export const materializeGeoMark = /* @__PURE__ */ closedAction(
-  { op: "materializeGeoMark", description: "Materialize geographic feature parts through one coordinate projection." }, ["id"], function ({ id } = {}) {
+  { op: "materializeGeoMark", description: "Materialize geographic feature parts through one coordinate projection." }, ["id", "scales"], function ({ id, scales } = {}) {
+    if (scales !== undefined && typeof scales !== "boolean") throw new TypeError("Geographic scales must be boolean.");
     const layer = requireLayer(this, id);
     if (layer.mark.type !== "geo") throw new TypeError("Geographic materialization requires a Geo mark.");
-    const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: "materializeGeoMark", resetProperty: "items", resetValue: [] });
+    const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: "materializeGeoMark", scales, resetProperty: "items", resetValue: [] });
     if (highlighted !== undefined) return highlighted;
-    const config = this.markConfigs[id].geo, resolved = resolveGeoMark(this, layer, config);
     let next = this;
+    if (scales !== false) for (const scale of getLayerScaleIds(layer)) next = next.rematerializeScale({ id: scale, marks: false, guides: false });
+    const config = next.markConfigs[id].geo, resolved = resolveGeoMark(next, layer, config);
     if (!next.graphicSpec.objects[id]) next = next.createGraphics({ id, type: "collection", ...resolveMarkGraphicPlacement(next, { markType: "geo" }) });
     next = next.editGraphics({ target: id, property: "items", value: resolved.graphics });
     if (config.clip || next.graphicSpec.objects[id].clip !== undefined) next = next.editGraphics({ target: id, property: "clip", value: config.clip ? resolved.frame : false });
@@ -49,11 +53,13 @@ function facade(mode, editing, name) {
         }
         if (radiusDeg !== undefined) binding.radiusDeg = radiusDeg; else delete binding.radiusDeg;
       }
+      if ((previous?.encoding?.color !== undefined || previous?.conditionals?.color !== undefined) && Object.hasOwn(args, mode === "line" ? "stroke" : "fill")) throw new TypeError("Geographic color is field-bound; remove its encoding or use encodeColor with a constant value.");
+      if ((previous?.encoding?.size !== undefined || previous?.conditionals?.size !== undefined) && ["radiusPx", "radiusDeg"].some(key => Object.hasOwn(args, key))) throw new TypeError("Geographic size is field-bound; remove its encoding or use encodeSize with a constant value.");
       const style = Object.fromEntries(GEO_STYLE_FIELDS.filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]]));
       const config = normalizeGeoStyle(mode, style, previous === undefined ? undefined : this.markConfigs[id].geo);
-      const layer = { ...previous, id, mark: { type: "geo" }, coordinate: coordinate.id, geoBinding: binding, encoding: {} };
-      const preview = { ...this, semanticSpec: { ...this.semanticSpec, layers: [...this.semanticSpec.layers.filter(value => value.id !== id), layer] } };
-      resolveGeoMark(preview, layer, config);
+      const layer = { ...previous, id, mark: { type: "geo" }, coordinate: coordinate.id, geoBinding: binding, encoding: previous?.encoding ?? {} };
+      const preview = { ...this, materializationConfigs: { ...this.materializationConfigs, marks: { ...this.markConfigs, [id]: { ...this.markConfigs[id], geo: config } } }, semanticSpec: { ...this.semanticSpec, layers: [...this.semanticSpec.layers.filter(value => value.id !== id), layer] } };
+      preflightGeoConsumers(preview, [id]);
       const next = this.editSemantic({ property: `layer[${id}].mark.type`, value: "geo" })
         .editSemantic({ property: `layer[${id}].coordinate`, value: coordinate.id })
         .editSemantic({ property: `layer[${id}].geoBinding`, value: binding })._withMarkConfig(id, { geo: config });

@@ -364,6 +364,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editGeoLODData`](current/GEOMETRY.md#editgeoloddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createProjection`](current/GEOMETRY.md#createprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editProjection`](current/GEOMETRY.md#editprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`navigateProjection`](current/GEOMETRY.md#navigateprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoShapeMark`](current/GEOMETRY.md#creategeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeoShapeMark`](current/GEOMETRY.md#editgeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeoPointMark`](current/GEOMETRY.md#creategeopointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |

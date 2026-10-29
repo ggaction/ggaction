@@ -285,6 +285,48 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 - ✅ Covered: exact revision closure, shape edits, explicit transform override, type defaults, fit source rebind, current/unique/ambiguous resolution, removal protection and atomic failure.
 - Evidence: `test/unit/geo/projection-resources.test.js`.
 
+## `navigateProjection`
+
+- Signature: `navigateProjection({target?,operation})`. Full chart authoring; target uses the same
+  explicit/current/unique projection inference as editProjection. Every operation is closed and requires
+  its stated parameters; invalid input, clipped anchors or incompatible consumers fail atomically.
+- `pan`: `{type:"pan",deltaPx:[x,y]}` translates in logical CSS pixels.
+- `zoom`: `{type:"zoom",anchorPx:[x,y],factor,scaleExtent:[minimum,maximum]}` requires a finite positive
+  factor and positive ordered extent. Clamp the resulting scale and preserve the visible inverse anchor
+  to within0.25px, including its composite component. Hidden/non-invertible anchors fail.
+- `pinch`: `{type:"pinch",fromPx:[[x,y],[x,y]],toPx:[[x,y],[x,y]],scaleExtent}` combines the two centers'
+  translation and distance ratio. Coincident pointers fail. `rotate`: `{type:"rotate",rotateDeg:[x,y,z?]}`
+  sets the native absolute spherical rotation; identity and composite projections reject it.
+- `reset`: `{type:"reset",initial:ProjectionParameters}` restores explicitly supplied view parameters.
+  A frozen `getProjectionView` snapshot supplies these parameters; there is no implicit initial baseline.
+  Reset does not restore historical revision numbers or previous live fit policies.
+- `fit`: `{type:"fit",fit:ProjectionFitOptions}` delegates the existing live geometry fit contract.
+  Other operations commit complete resolved parameters and detach a previous fit dependency.
+- `resize`: `{type:"resize",canvas:{width?,height?,plot?},scaling:"preserve"|"fit"}` delegates the nonempty
+  Canvas size patch. Native exact-plot/outer-size conflicts remain errors: use explicit `plot:false`
+  when switching to outer width/height. Scaling preserve keeps pixel scale; fit multiplies it by the
+  smaller settled plot width/height ratio. Both move the previous plot center to the new center.
+  Responsive guides settle through editCanvas first. Authored projection clipExtentPx stays unchanged.
+- Success advances the chosen projection exactly once and updates its coordinates/marks through
+  editProjection. Resize also uses editCanvas and its existing screen-route revision closure.
+  The command is one top-level trace node with meaningful native child actions. No camera state,
+  callback, DOM handler or renderer-global state is persisted. LOD zoom remains an independent decision.
+- `getProjectionView(program,{target?,childPath?})` from `ggaction/inspection` is read-only. It returns
+  frozen `{projection:{kind:"projection",id,revision},parameters,viewport}`. Parameters are normalized
+  and fit-resolved; viewport is the current logical plot rectangle or null before Canvas creation.
+  Child paths address explicit concat children. The query requires a closed program and adds no trace.
+
+### Formal values — `navigateProjection`
+
+- Implemented: `navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram`.
+- Planned: no additional operation values.
+- Proposed (NOT IMPLEMENTED): implicit renderer-owned camera state.
+
+### Value coverage — `navigateProjection`
+
+- ✅ Covered: explicit pan/zoom/pinch/rotate/fit/reset/resize, native Canvas/plot/responsive layout, exact revisions, concat scope, unchanged identity, offline restoration, invalid/unsafe/ambiguous inputs and immutable failure.
+- Evidence: `test/unit/geo/camera-actions.test.js`, `test/unit/geo/camera.test.js`, `test/contracts/geo-camera-types.test.js`.
+
 ## Geographic mark rules
 
 The Full actions below require a Canvas and a Geo coordinate created with
@@ -324,10 +366,57 @@ Remove a mark with removeMark. Live geometry/projection references restrict remo
 cascade; remove consuming marks/coordinates and authored fit projections explicitly first.
 
 Hconcat/vconcat and scoped edits preserve child identities. Implicit row facet/repeat is incompatible with
-resource-owned geometry. Current marks expose native style; table joins, field color/size and geographic
-label anchors are not accepted by these options. These are separate consumer integration obligations.
+resource-owned geometry. Native style is set by these mark options; field mapping uses the existing
+encoding actions described below, and semantic labels use geographic annotation actions.
 Generated features/points share a cumulative10000 item ceiling and stream work is bounded at10000000;
 source normalization retains its separate configured limits.
+
+## Feature color and size
+
+`encodeColor` accepts ordinary or conditional nominal/ordinal/quantitative/temporal fields on Geo shape, point and line.
+It uses the existing field/scale contract: shape/point fill or line stroke, native temporalUnit, continuous
+and discretized scales, explicit unknown and existing range/transform behavior. Aggregate and color
+layout are incompatible. Shape line parts keep fill none. `encodeSize` accepts quantitative, nominal
+or ordinal fields on Geo point only; mapped CSS-pixel area becomes radius `sqrt(area/pi)`. It cannot
+coexist with geographic radiusDeg. First change the mark to radiusPx when switching those units.
+
+Fields read original feature properties, a join's current matching table row, or the active LOD level.
+MultiPoint parts share one feature value and identity. Null/empty geometry is excluded from scale values
+and concrete items; its logical source record remains inspectable. Projection clipping and hidden
+backside geometry do not filter domains. Missing/invalid fields require an explicit scale.unknown;
+otherwise authoring, resource revision and editable restore reject them. No zero is synthesized.
+
+Native scale create/edit/remove and categorical/gradient/interval/size legends are shared. Omitted
+createLegend channels infer existing color and size as separate blocks. A constant `{value}` encoding
+removes its field binding and affected legend, restores the native mark style and preserves other
+channels. Direct mark fill (shape/point), stroke (line), or radius edits conflict with the corresponding
+field mapping; removeEncoding or a constant encoder resolves the conflict explicitly. Removing an
+encoding alone restores the dormant native style.
+
+Conditional color and size use the shared `conditions` array and required `otherwise`; the first matching
+branch wins. Predicates accept the existing typed expression AST and explicit named selections. Every
+branch is validated, including inactive fields, scales and values. Predicate fields read the same
+feature/table/active-level view as ordinary encodings. Each drawable feature is one evaluation item;
+all pieces share its selected value. Size zero is valid. Other conditional channels, graticules and
+annotations are incompatible. Native scales use the full drawable field values of every branch;
+predicate membership and projection clipping do not shrink their domains. A legend requires one
+unique field/scale binding for its channel. Multiple bindings reject an existing or requested legend
+atomically; remove that guide explicitly before changing to an ambiguous conditional mapping.
+
+Parameter and selection revisions update exact branch refs and rematerialize affected consumers.
+Selection membership across different marks follows shared source-row lineage; it does not equate
+unrelated feature IDs. Graphical feedback cycles reject before writes. Empty geometry can use literal,
+parameter or selection predicates, and field mappings retain their explicit native empty-domain policy.
+A field predicate on a completely empty feature view rejects because its field type cannot be inferred.
+
+Source geometry, join table and active LOD changes preflight all affected fields and shared scale
+candidates before primitive writes, then materialize the scale/mark/guide union once. Projection and
+Canvas changes retain pixel-area semantics. Selection channels expose semantic values, including
+normalized temporal values, while fields and original lineage stay intact. Scoped concat edits and
+offline restoration retain the same meaning. Evidence: `test/unit/geo/encodings.test.js`,
+`test/unit/geo/encoding-lifecycle.test.js`, `test/unit/geo/conditional-encodings.test.js`,
+`test/contracts/realistic-geographic-encodings.test.js` (five authentic datasets × three ordinary and three
+conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `createGeoShapeMark`
 
@@ -528,3 +617,11 @@ source normalization retains its separate configured limits.
 - ✅ Covered: explicit/current target, partial style edits, original feature anchoring, text omission,
   font/theme rematerialization, immutable failed edit, resource lifecycle and exact restoration.
 - Evidence: `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.
+
+### Attached feature and graticule labels
+
+Full geographic Shape/Point/Line/Graticule marks are eligible existing Text sources. Use the canonical
+[`createMarkLabels`](MARKS.md#createmarklabels) and [`createTextMark`](MARKS.md#createtextmark) contract
+for field/constant content, centroid anchors, native styles, membership, collision layout and removal.
+This source relationship follows geometry/join/LOD/projection revisions without a synthesized dataset.
+Graticules expose `axis` and numeric `value`. Fixed geographic annotations remain single-anchor resources.

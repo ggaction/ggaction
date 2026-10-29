@@ -70,9 +70,10 @@ function encodeConditional(program, original, channel, args) {
   if (channel === "color" && layer.derivedBindings?.overlay?.inheritColor) baseline = baseline.editSemantic({
     property: `layer[${target}].derivedBindings.overlay`, value: { ...layer.derivedBindings.overlay, inheritColor: false }
   });
-  const previewBaseline = createDeferredEncodingProgram(baseline)
-    ._withoutMaterializationConfig(["selections"])
-    ._withoutMaterializationConfig(["highlights"]);
+  const preview = createDeferredEncodingProgram(baseline)._withoutMaterializationConfig(["highlights"]);
+  // Geo style actions preflight their other feature channels before writing.
+  // Their exact selection inputs remain available while graphical work is deferred.
+  const previewBaseline = layer.mark.type === "geo" ? preview : preview._withoutMaterializationConfig(["selections"]);
   const scales = new Map();
   const positional = isConditionalPositionChannel(channel);
   const textChannel = ["text", "dx", "dy"].includes(channel);

@@ -24,7 +24,7 @@ function fullSemanticValidator() {
     validateDatasetTransforms,
     validateParallel,
     validateGeoCoordinate: validateGeoCoordinateValue,
-    sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc"]
+    sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc", "geo"]
   });
 }
 

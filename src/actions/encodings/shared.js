@@ -1,3 +1,5 @@
+import { geoLabelDataset } from "../../materialization/geo/labels.js";
+import { geoFeatureDataset } from "../../materialization/geo/featureDataset.js";
 import { editScaleForEncoding } from "../scales/edit.js";
 import { collectResourceReferences } from "../../core/resourceReferences.js";
 import { removeScale } from "../resources/remove.js";
@@ -256,7 +258,7 @@ export function resolveTarget(
   });
   const id = layer.id;
 
-  const dataset = findDataset(program, layer.data);
+  const dataset = layer.mark.type === "geo" ? geoFeatureDataset(program, layer) : geoLabelDataset(program, layer) ?? findDataset(program, layer.data);
 
   if (dataset === undefined) {
     throw new Error(`Mark "${id}" requires an existing dataset.`);

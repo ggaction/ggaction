@@ -143,8 +143,8 @@ function collectionBounds(program, items) {
   return { x: left, y: top, width: right - left, height: bottom - top };
 }
 
-export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers } = {}) {
-  if (selectionResolvers?.sourceOnly) return identifyItems(program, layer, grain, definitions);
+export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers, resourceBacked = false } = {}) {
+  if (selectionResolvers?.sourceOnly) return resourceBacked ? definitions : identifyItems(program, layer, grain, definitions);
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]
@@ -158,7 +158,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
-  definitions = identifyItems(program, layer, grain, definitions);
+  if (!resourceBacked) definitions = identifyItems(program, layer, grain, definitions);
   if (reorder) {
     definitions = reorderHighlightedItems(program, layer, definitions, {}, selectionResolvers);
     if (definitions.some(definition => definition.graphicIndices !== undefined)) {
@@ -171,7 +171,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       });
     }
   }
-  const positions = selectionResolvers?.identityOnly
+  const positions = selectionResolvers?.identityOnly && !resourceBacked
     ? new Map((isScreenAnnotation(layer) ? [] : requireDataset(program, layer.data).rowKeys).map((key, index) => [key, index]))
     : undefined;
   return Object.freeze(definitions.map((definition, index) => {
@@ -198,6 +198,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
     return Object.freeze({
       key: definition.key,
       topology: definition.topology,
+      ...(resourceBacked ? { lineage: definition.lineage, rowKeys: [], ...(definition.representationKeys === undefined ? {} : { representationKeys: definition.representationKeys }) } : {}),
       graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
       layer: layer.id,
       markType: layer.mark.type,
@@ -208,7 +209,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
         ? {}
         : { geometry: cloneAndFreeze(definition.geometry) }),
       members: Object.freeze([...definition.members]),
-      rows: Object.freeze(memberRowReferences(program, definition.members, layer.data, definition.memberKeys)),
+      rows: Object.freeze(resourceBacked ? [...definition.rows] : memberRowReferences(program, definition.members, layer.data, definition.memberKeys)),
       graphicIds: Object.freeze(items.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])
       ))
@@ -226,7 +227,7 @@ export function reorderHighlightedItems(program, layer, definitions, groups = {}
     if (selection?.target !== layer.id) continue;
     const predicate = selectionPredicate(program, selection, selectionResolvers);
     const grouped = groups[predicate.grain];
-    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
+    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: item.rows ?? memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
     let selected = new Set(selectProgramItemKeys(program, candidates, predicate));
     if (grouped) {
       const members = new Set(grouped.filter(item => selected.has(item.key)).flatMap(item => item.members));

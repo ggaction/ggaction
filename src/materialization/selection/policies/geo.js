@@ -1,11 +1,11 @@
 import { cloneAndFreeze } from "../../../core/immutable.js";
 import { geoFeatureKey, geoMarkSource } from "../../geo/source.js";
-import { concreteProperties } from "../items/common.js";
+import { channelMapFromRow, concreteProperties } from "../items/common.js";
 import { normalizeAreaHighlightStyle } from "../styles.js";
 import { transformPathHighlightProperties, transformLabeledPathHighlightChild } from "../path.js";
 
 function items(program, layer, concrete) {
-  const config = program.markConfigs[layer.id].geo;
+  const config = program.materializationConfigs.marks[layer.id].geo;
   const { features, resource, projection } = geoMarkSource(program, layer, config);
   const graphics = program.graphicSpec.objects[layer.id]?.items;
   if (concrete && !Array.isArray(graphics)) throw new Error("Geographic selection requires materialized geometry.");
@@ -20,7 +20,7 @@ function items(program, layer, concrete) {
     if (concrete && !children.length) return [];
     return [cloneAndFreeze({ key, layer: layer.id, markType: "geo", role: "feature", topology: children[0]?.identity.topology ?? "",
       ...(feature.representationKeys === undefined ? {} : { representationKeys: feature.representationKeys.map(key => geoFeatureKey(layer, resource, { key })) }),
-      channels: {}, rows: feature.rows ?? [], fields: feature.fields ?? feature.properties ?? {}, members: [], rowKeys: [], graphicRoles: children.map(child => child.identity.role),
+      channels: channelMapFromRow(feature.fields, layer), rows: feature.rows ?? [], fields: feature.fields ?? feature.properties ?? {}, members: [], rowKeys: [], graphicRoles: children.map(child => child.identity.role),
       lineage: { kind: "resource", resource: layer.geoBinding.geometry ?? { kind: "projection", id: projection.id, revision: projection.revision } },
       properties: concrete ? concreteProperties(children[0].properties) : config,
       ...(concrete ? { graphicIds: children.map(child => child.id) } : {}) })];
