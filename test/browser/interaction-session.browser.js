@@ -6,7 +6,7 @@ import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveB
 import { startStaticServer } from "../support/static-server.js";
 import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
-test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
+test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url)), { dependencies: "repository" }); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
 test("canonical editing arbitration uses actual label hits, Shift brush and click through one Canvas or SVG capture", async () => {
   const snippet=(await documentationPrograms()).find(p=>p.id==="interaction-arbitration");assert.ok(snippet);
@@ -501,7 +501,7 @@ test("native parameter inputs and host context actions preserve keyboard focus a
     await page.evaluate(async code => {
       window.__inspectionSessions.forEach(session => session.destroy());
       document.body.innerHTML = '<canvas id="chart" aria-label="Adjustable points"></canvas><div id="vector"></div>';
-      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href));
+      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href)).replaceAll('"ggaction/inspection"', JSON.stringify(new URL('/src/inspection.js', location.href).href));
       const url = URL.createObjectURL(new Blob([source + '\nwindow.__parameterSession=parameterSession;window.__disposeControls=disposeControls;'], { type: "text/javascript" }));
       try { await import(url); } finally { URL.revokeObjectURL(url); }
       const { renderToSVG } = await import("/src/renderers/svg.js");

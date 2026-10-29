@@ -859,3 +859,12 @@ cannot move adjacent controls during a click. It stores no alternate semantic se
 new runtime service and makes no reduced-motion/player support claim. `format:'items'` supplies current
 logical fields/selected state; the session supplies exact current-frame eligibility. A host must dispose
 its own tooltip/control listeners together with its session.
+
+The documented native-control alternatives preserve ordinary HTML button/input focus and dispatch the
+existing native edit/history commands with `origin: "user"`. Category controls remain reachable when
+their items are hidden. Their status text reads committed `exportAccessibleData(..., {format:"items"})`
+values and `selectedBy`; they do not infer visibility from opacity or keep a second selection/history
+store. The parameter context-action button obtains its explicit native item's current-frame focus
+point before requesting `contextMenu`, so keyboard and touch users do not need hover or right-click.
+Hosts own labeled controls, safe text, control disposal and applicability; the library does not install
+a DOM widget system. Public playback and reduced-motion integration remain outside these static examples.

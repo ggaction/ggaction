@@ -657,5 +657,16 @@
     "rendering": "renders-canvas",
     "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
     "host": "paired-html"
+  },
+  {
+    "id": "interaction-native-controls",
+    "file": "api/interaction.md",
+    "contains": "const controlSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "prerequisites": "Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch."
   }
 ]

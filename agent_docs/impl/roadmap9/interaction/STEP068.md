@@ -8,7 +8,7 @@
 - [x] B: exact current-frame clip/opacity를 사용하는 keyboard focus/restore
 - [x] B: native selection activation·hierarchy navigation
 - [x] C1: hover/focus/Escape tooltip와 touch native activation
-- [ ] C2: 모든 actionable control의 keyboard/touch matrix
+- [x] C2: 현재 native edit/history control의 keyboard/touch matrix
 - [ ] D: public animation/reduced-motion 합산 및 AT53 전체 matrix
 - [ ] STEP074–077 최종 통합
 
@@ -175,3 +175,24 @@ Root가 최신 scaffold 수리를 이미 가진 경우 두 baseline 실패는 �
 전체129 또는 전체 문서가 green이었다고 주장하지 않는다. 기존 C1 페이지/코드/renderer/package
 입력은 같으므로 그 build·4폭·Axe 및3Node runtime 증거는 그대로 재사용한다. 실제 native control
 전체 matrix와 reduced-motion/public player는 아직 남아 있다.
+
+## C2: 현재 native control 대안
+
+[정적 접근성/AT53 책임 matrix](ACCESSIBILITY_MATRIX.md)에 원 요구와 후행 소유자를 연결했다.
+현재 edit10+history3 명령은 모두 canonical host button/input과 실제 keyboard/touch witness를
+갖는다. 새 category controls는 A/B 선택·숨김·복구와 user filter·순서·이력을 동일 reducer에
+전달하고 native snapshot의 `selectedBy`와 visible items만 읽는다. Tab은 모든 활성 button을
+통과해 외부 control로 나간다. Parameter의 context action은 명시 item a의 exact frame focus
+point를 사용하므로 right-click/hover 없이 keyboard/touch로 같은 selection에 접근한다.
+Graph 예제는 두 node 모두 native button 대안을 제공한다. 새 공개 runtime/타입/저장 상태는 없다.
+
+새 browser7개와 기존 parameter/partition/camera/node/annotation5개가 통과했다. 최초 parameter
+두 실패는 native revision 후 dataset id를 고정 문자열로 가정한 테스트 오류였다. Public final-item
+fields를 읽어 literal computed 값을 비교하도록 고쳤다. 최초 inventory는 기존 node snippet ID의
+오기1개였고 정본 ID로 수리했다. 첫 owner docs66 중64개가 통과했고 두 실패는 search 증가뿐이었다.
+실측1040495bytes에 최소1040500 한도를 적용해66/66 통과했다. 원본 실패는 보존한다.
+
+C2의 실제 host 코드는 라이브러리 source/type fingerprint를 바꾸지 않는다. B의 동일7cab archive와
+3Node native/typing/bundle 검증은 유효 입력에 한해 재사용하고, 새 문서3종의 source-free 실제
+keyboard/touch 동작은 Node22/Vite/Chromium에서 다시 실행한다. Public player/reduced-motion과
+AT53 전체 및074–077 합산은 계속 미완료다.
