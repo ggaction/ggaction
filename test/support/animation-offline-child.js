@@ -5,12 +5,6 @@ import net from 'node:net';
 import tls from 'node:tls';
 import { syncBuiltinESMExports } from 'node:module';
 import { createHash } from 'node:crypto';
-import { createCanvas, loadImage, GlobalFonts } from '@napi-rs/canvas';
-import { prepareFontRendering, prepareImageRendering, render } from '../../src/index.js';
-import { deserializeAnimation, exportAnimationFrames } from '../../src/animation.js';
-import { renderToSVG } from '../../src/renderers/svg.js';
-import { renderToPNGBuffer } from '../../src/renderers/png.js';
-import { renderToPDFBuffer } from '../../src/renderers/pdf.js';
 
 export const animationOfflineChildURL = new URL(import.meta.url);
 
@@ -21,6 +15,12 @@ globalThis.fetch=deny;
 for(const module of [http,https]){module.get=deny;module.request=deny;}
 net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;
 syncBuiltinESMExports();
+const { createCanvas, loadImage, GlobalFonts } = await import('@napi-rs/canvas');
+const { prepareFontRendering, prepareImageRendering, render } = await import('../../src/index.js');
+const { deserializeAnimation, exportAnimationFrames } = await import('../../src/animation.js');
+const { renderToSVG } = await import('../../src/renderers/svg.js');
+const { renderToPNGBuffer } = await import('../../src/renderers/png.js');
+const { renderToPDFBuffer } = await import('../../src/renderers/pdf.js');
 const sha=value=>createHash('sha256').update(value).digest('hex');
 let text='';for await(const chunk of process.stdin)text+=chunk;
 const {plan,playback}=deserializeAnimation(text),records=[];

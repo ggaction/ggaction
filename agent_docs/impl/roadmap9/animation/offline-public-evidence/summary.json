@@ -1,0 +1,148 @@
+{
+  "sourceCommit": "4d7664861",
+  "archive": {
+    "sha256": "67d01611f7fac2ebdb0a57c70cbdc33cdea4e4f1ae69848101ae6e3dac27224b",
+    "entries": 1129,
+    "packedBytes": 1602288,
+    "unpackedBytes": 7282271
+  },
+  "runtime": {
+    "focused": 143,
+    "passed": 143
+  },
+  "coverage": {
+    "tests": 40,
+    "lines": 100,
+    "branches": 98.74,
+    "functions": 100,
+    "criticalFloor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "browser": {
+    "tests": 1,
+    "devicePixelRatios": [
+      1,
+      2
+    ]
+  },
+  "render": {
+    "tests": 1,
+    "timesMs": [
+      0,
+      50,
+      100
+    ],
+    "pixelTolerance": 1
+  },
+  "discovery": {
+    "tests": 16,
+    "passed": 16
+  },
+  "docs": {
+    "initialTests": 227,
+    "initialPassed": 224,
+    "initialFailed": 3,
+    "repairedOwnersPassed": 31,
+    "pinnedOwnersPassed": 19,
+    "builtPages": 186,
+    "machineArtifacts": 1598,
+    "browser": {
+      "status": "passed",
+      "viewports": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true
+    }
+  },
+  "installed": {
+    "nodeMajors": [
+      20,
+      22,
+      24
+    ],
+    "runtimeCasesEach": 5,
+    "strictTypes": true,
+    "executableDocumentation": true,
+    "browserEntry": "ggaction/animation",
+    "maximumGzip": 185433,
+    "limit": 185500,
+    "node20Evidence": "initial runtime/types/snippet pass + identical archive bundle-only final cap pass",
+    "freshImportGuard": {
+      "casesEach": 2,
+      "nodeMajors": [
+        20,
+        22,
+        24
+      ],
+      "status": "passed",
+      "guardBeforeImports": true
+    }
+  },
+  "limitations": [
+    "Typed interpolation currently covers compatible continuous Cartesian circle points; other families retain explicit weighted fallback decisions.",
+    "No claim of STEP077 or integrated release completion."
+  ],
+  "evidenceHashes": {
+    "animation-capability-final.log.gz": "2f73715f1028be241704c11a5172e4f778d4f46d05c621b57cebe65f0342f5b8",
+    "animation-discovery-final.log.gz": "abf0eace060de8bb7f192924c06ed75efd8133847bd4e05d99e9a9fe4f17963e",
+    "animation-discovery-sorted-final.log.gz": "4e074600d27a700fd338ab615154c958296cd4a689f711b9a54436ef4d58ff2a",
+    "animation-discovery.log.gz": "cacdab7d494437f537b292faf79c0a91254f7b56dfaa81b4624b8b9eeefd7077",
+    "animation-docs-all.log.gz": "6cfbf72c7e29cd18fcf50372eea82993d3669b561aa3b3fa037e33174bb9b003",
+    "animation-docs-built.log.gz": "466d393ec700b49345112c79387acd73fb973431f7ae5ae53bbf8dc4313e1d2b",
+    "animation-docs-environment-final.log.gz": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c",
+    "animation-docs-environment.log.gz": "510bfb2cfccdd19e650689056551124f9a87079a5296ae8bc2368a004149e551",
+    "animation-docs-owning-final.log.gz": "ff322d8318c0a3310bec9c841f933db0e2aca7209d19411a79078f7f70262aa4",
+    "animation-docs-pinned-browser.log.gz": "a0ac0a6d4a3941eb57dcdcca7f46a3c1e0f3e0939fe3b04bf5e1226db2cb5257",
+    "animation-docs-pinned-build.log.gz": "b2ce07914a2504f31f7d1aad978df35961eb068a0baaafbc9a0e6a59675f8c18",
+    "animation-docs-pinned-built.log.gz": "dfc2ae94539d4dab233c1b8380f6d06de7c71fafc86f87ed973d3c4cd66b4d8a",
+    "animation-docs-pinned-generation.log.gz": "7928ce78d0b1d13297e6c26ae22ea0f0c2109b26893798751bec7b1ea9f5883b",
+    "animation-docs-pinned-owners.log.gz": "afffa55944fd445f22428b3eed485e94af76985ef2445d1d4fe07a183abcd470",
+    "animation-docs-repaired-owners.log.gz": "6f97454d87fc09025ab4e2043100d4ea3b0be39e024b66c100a4866ba565b2ed",
+    "animation-final-package-check.log.gz": "d5bb2a947cb085f473d20db8042cc5acab1274002669b4e1d91af6dd9fcdea3f",
+    "animation-final-test-fixtures.log.gz": "784ca82abecb80bb164f96ceb4456ef199e62de849e19a4430e6c04f47b30b53",
+    "animation-import-guard-20.log.gz": "b00f7e417c3b1895517909d07449b2019dea1654d845cba58af9687627d177a5",
+    "animation-import-guard-22.log.gz": "b00f7e417c3b1895517909d07449b2019dea1654d845cba58af9687627d177a5",
+    "animation-import-guard-24.log.gz": "b00f7e417c3b1895517909d07449b2019dea1654d845cba58af9687627d177a5",
+    "animation-installed-20-bundle-final.log.gz": "22e759a26f3ff823531365b75c310b84f83e9cb22a9d55a103a76e9799f1b978",
+    "animation-installed-20-final.log.gz": "53f10f8e0fc8f9f81a1b6c32bf1d8923fb40ec42b8d95710d57c50d36305eb31",
+    "animation-installed-20.log.gz": "3fcd692fe68746aaa085fa1cbabfc64e1e33b0ebc1ef3343b8ab2435e642b506",
+    "animation-installed-22.log.gz": "fc380783519449b17d5457c7eee5a4b6a9382e83959dc8251eb53569b87f27f0",
+    "animation-installed-24.log.gz": "3452f8097f98d7457c3cafb0b6ca9cc4df2a0757c1a29612f792c955ff965fa9",
+    "animation-offline-browser-final.log.gz": "c4d0977e27f64c4b6cf29bc23a65556669d7e57c2e950252b85439e794c0a2fd",
+    "animation-offline-import-guard-fixture.log.gz": "f38ac75ca464ccaa5c4c0f15beda6799073c56af2aa48ef2ba8dbbbc3f692f77",
+    "animation-offline-import-guard.log.gz": "f520abd5ef4cc29de57a7423e36bc518bb6ebc6968673ec582db34e449c074af",
+    "animation-offline-rebase-all.log.gz": "6b69e4446e3705a6c67012a7316d1c571bb0816b3f2f8f6a560c1a28468b55b4",
+    "animation-offline-render-final.log.gz": "8196aabc37910a3740fd4fe51e6702add5384f7e07c557bf6888b0c6857052a9",
+    "animation-offline-render.log.gz": "6ad81cadc85362fcdfac425dff42353f41c823497b97f095096b568e453e9836",
+    "animation-package-contracts-final.log.gz": "54b6b791e862e586e52aa928d78f046820954c2767868cfdcb53a141060ba800",
+    "animation-package-contracts.log.gz": "a6fb16205a946c2e1138b99ffd9f21bf8794565063307f95b9b743bbfb3c5a11",
+    "animation-package-first.log.gz": "2185dc57970c79d8cbb10a050577479dba628a0eb6cfed64ec72d13eae3593ce",
+    "animation-public-browser-final.log.gz": "a8a7249a51b5d0d03de93c935f49806b5125518b204ebf6399387d1e31b53921",
+    "animation-public-final-coverage.log.gz": "c86463c45b77a742ac67f4b3556326f33b36707a3db72bb5127b948d4119abdb",
+    "animation-public-final-focused.log.gz": "e35cb98e335cd82d11fe98853642f8dcba6cdb9af5aa9cd77020fed6e9f9c662",
+    "animation-public-pack.log.gz": "791522eaf5b9776ceddce4b6d4676ddc4e1de9d8ac4a6167524bc521ce55c2b2",
+    "import-guard-node20.json": "e8eb35c644b76b24fa69e10d29104630780f2a0bdef88e41958e0252485ca9df",
+    "import-guard-node22.json": "87fd88fbf8c98be5af5c329d979391c5bd9be7b7938d37eba4c5f7e87db821a9",
+    "import-guard-node24.json": "3d00beba65e9f6e0d2fd5ecbffe3f30cbbfcaa3a5d1c2752de94bf7365776fb6",
+    "installed-node20-bundle-final.json": "db4fab7b18c25d27fa916e9d33705851b59e0601b24768e6fc286f66decad8a7",
+    "installed-node20.json": "5f3b1ec9c0ff02e447d4398a14e8cce32126e2faca8cb51b98a06f8cdc3a29a8",
+    "installed-node22.json": "b3d802d1985049ec91001405db34bd4481884c9d30f64acd237c88dfb7797916",
+    "installed-node24.json": "b140dfe1cd3c2b13a3fe1b6ea3e27897e1aa9e309ec92c4d456fca92cc05e577",
+    "offline-0.png": "6b250638def896b0c7404e14cbe6e6bf8d89b6ac259e7f1c58c53af96fea27cb",
+    "offline-100.png": "f512e7e8714f5f0ab7ec9468b2878306da82c81744b48edd6372e0abe31c130f",
+    "offline-50.png": "35895b211855f22a62b74edf64499cfd96ce113d9b6847eebd78c088e75d5eb9",
+    "offline-pixels.json": "eb9926ef3a62a5ae6ae763fdd69061f24a81d3be022f6c1ebd4b3fb1488d23d9",
+    "package-measurements.json": "a9d5664b4e8d5d27ad8fb72a8837e698d02d27b9cb6b0a6a6bb3413c61192d1c",
+    "qualify-import-guard.mjs.txt": "0e27999b287acfdfbba242afcf97dcb554211a85ddc03ded7848d9b4539a6213",
+    "qualify-package.mjs.txt": "df7e206fc4fd27c8651bd86a1501abfe727bd3d81a246cf53e38b745a8ee606c"
+  },
+  "fixtureQualification": {
+    "tests": 23,
+    "passed": 23
+  }
+}
