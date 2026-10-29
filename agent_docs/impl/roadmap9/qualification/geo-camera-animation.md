@@ -6,7 +6,7 @@
 - [x] 구체 계약과 기존 승인 재사용을 기록했다.
 - [x] private 준비·복원·반복 샘플과 실제 Geo 장면을 검증했다.
 - [x] 지원 Node 및 기존 owner 경계를 검증했다.
-- [ ] 개념 checkpoint를 commit/push하고 후속 planner 의무를 전달한다.
+- [x] 검증된 소스와 증거를 개념 checkpoint로 고정하고 후속 planner 의무를 전달했다.
 
 ## 범위와 승인
 
@@ -77,7 +77,13 @@ unpacked 최초 측정은 기존cap6,761,000보다201bytes 컸다. 실제 측정
 이 검사는 private source를 대상으로 실행했으며 설치 public API 또는 전체 release
 검증이라고 주장하지 않는다. 공개 import graph에 이 두 private owner의 consumer가 없으므로
 새 public consumer fixture, Current action, 타입, docs build는 만들지 않았다.
-최종 source hash와 실행 로그는 별도 evidence manifest에 고정한다.
+최종 source `e4b659b290a41446872764940d42defc8778a0f9`와 실행 로그는
+[evidence manifest](geo-camera-animation-evidence/qualification.json)에 고정했다.
+실행 당시 working candidate의 source bytes를 해당 commit과 대조한 증거이며,
+clean release receipt라고 주장하지 않는다. 기존 evidence owner의 exact hash/blob 검증을
+사용했고 large source buffer 수리 `ea8900b3a`는 별도 cherry-pick `ae9f09c71`로 보존했다.
+Package 측정은 기존 staging/compaction의 `runPack`을 임시 module에서 읽고 즉시 제거한
+측정 helper와 세 runtime/zlib 결과를 같이 보존했다. production cap 검증은 우회하지 않았다.
 
 Root의 별도 positions owner는 이 branch에 없으며 합산 시 log domain
 `[150,150.00000000000003]`·value150의 stationary 중간 결과가 endpoint와 정확히 같은지
