@@ -1,0 +1,52 @@
+{
+  "sourceCommit": "46272ba30",
+  "integratedParent": "c078f06db",
+  "sourceResolution": [
+    "Shared MARK_SELECTOR_KEYS keeps graph recompute option",
+    "Logical items bypass field availability in shared resolveItemSelection owner"
+  ],
+  "passed": {
+    "focused": 59,
+    "graphAndDiscoveryInitial": {
+      "passed": 36,
+      "failed": 1,
+      "failure": "41 files vs stale40; owning discovery rerun passed"
+    },
+    "docsFinal": 180,
+    "installedNode20": {
+      "runtime": 2,
+      "types": "passed",
+      "bundleMeasurements": 4
+    }
+  },
+  "budgets": {
+    "package": {
+      "entries": 908,
+      "packedMaxNode20": 1309540,
+      "unpacked": 6002341,
+      "limits": [
+        908,
+        1310000,
+        6003000
+      ]
+    },
+    "search": {
+      "measured": 956169,
+      "limit": 957000
+    },
+    "bundleMaxNode20": {
+      "full": 650479,
+      "basic": 365346,
+      "svg": 20196,
+      "interaction": 82468
+    },
+    "bundleLimits": [
+      651000,
+      366000,
+      25000,
+      83000
+    ]
+  },
+  "reuse": "Unchanged source/runtime surfaces retain c078f06db and407f8f070 qualification; no full suite or new full browser sweep claimed",
+  "firstFailures": "Old discovery/search/package/bundle ceilings and source link provenance before merge commit preserved."
+}

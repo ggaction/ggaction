@@ -58,3 +58,12 @@ Source `e40f9fba0`를 고정한 [qualification](selection-evidence/qualification
 모바일390px 결과를 시각 확인했다. 전체 UI/CSS가 그대로인 페이지의 이전 전수 browser 증거는 `121acb6c6`에서 재사용한다.
 초기 캐시·snippet·metadata 동시변경·임시 browser probe 오류와 수정 결과를 분리했으며 전체 suite green으로 확대 보고하지 않는다.
 B/C/D 및 다른 STEP 인수 조건은 계속 남아 있다.
+
+### 최신 통합본 반영
+
+`c078f06db`와의 source 병합은 `46272ba30`이다. Graph recompute의 필터 옵션과 공통 selector 목록을 함께 유지했고,
+기존 state에서 분리된 `resolveItemSelection` owner로 logical item 분기만 옮겼다.
+59 focused와 graph/recompute 동작 검사가 통과했다. 두 브랜치가 각각 추가한 realistic 파일 수를 41로 합치고
+discovery owning 검사를 다시 통과시켰다. 합산 docs는 source commit 고정 후 180/180 통과했다.
+[병합 qualification](selection-evidence/merged/qualification.json)은 Node20 최소 설치·타입·4 bundles 실측,
+초기 한도 실패와 최소 조정, 이전 두 checkpoint에서 재사용한 검증 범위를 구분한다.

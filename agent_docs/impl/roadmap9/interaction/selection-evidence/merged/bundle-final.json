@@ -1,0 +1,48 @@
+{
+  "limits": {
+    "ggaction": 651000,
+    "ggaction/basic": 366000,
+    "ggaction/svg": 25000,
+    "ggaction/interaction": 83000
+  },
+  "receipt": {
+    "node": "v20.20.2",
+    "artifact": "aefed93f0bcd8cc9c644325b3e95e6d72002e90d540a05ad2fa9b208ccdb1303",
+    "sourceFree": true,
+    "runtime": [
+      "selection/logical-item-update PASS",
+      "selection/logical-scoped-update PASS"
+    ],
+    "types": "passed",
+    "bundles": [
+      {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 805,
+        "minifiedBytes": 2297338,
+        "gzipBytes": 650479
+      },
+      {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 528,
+        "minifiedBytes": 1253983,
+        "gzipBytes": 365346
+      },
+      {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 37,
+        "minifiedBytes": 59445,
+        "gzipBytes": 20196
+      },
+      {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 138,
+        "minifiedBytes": 248334,
+        "gzipBytes": 82468
+      }
+    ]
+  }
+}
