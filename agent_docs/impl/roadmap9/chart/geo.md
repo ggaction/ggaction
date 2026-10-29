@@ -448,3 +448,29 @@ Node20/22/24에서 각 runtime 3개, strict Full/Basic 타입, runnable docs 1�
 Join source `8f19d5a42`의 postcommit 문서 197/197, built 172페이지/1,511 machine artifacts와
 전체 페이지 320/390/768px 검증이 완료됐다. 런타임과 1,020 packed inputs는 검증한 tar와
 변경 없이 유지했다. 이 후속 기록은 provenance와 증거만 갱신하며 LOD 구현은 다음 개념이다.
+
+## LOD 순수 level 계약
+
+`remainingApproval`과 STEP045를 재사용한다. 첫 계산 owner는 `grammar/geo/levels.js`다.
+입력 level은 coarse→fine 순서이며 각 level의 명시 typed region keys를 공통 key encoder로
+정규화한다. Fine level의 `{key,parent}`는 바로 앞 level의 key를 정확히 참조하며 빠짐·중복·
+잘못된 parent를 거부한다. 이름 유사도나 배열 위치로 관계를 추정하지 않는다. 서로 다른
+level에서 같은 typed key를 써도 level ID로 구분한다. Empty level은 그대로 보존한다.
+
+각 fine level은 `enterZoom > exitZoom >= 0`이며 enter/exit 배열은 각각 엄격히 증가한다.
+현재 level을 명시적으로 받아 `zoom >= enterZoom`에서 더 상세한 level로, `zoom < exitZoom`에서
+상위 level로 이동한다. 따라서 4.2에서 진입하고 정확히 3.8에서는 유지하며 3.8 미만에서
+나온다. 이전 level 생략은 가장 coarse level에서 시작하며 zoom은 finite nonnegative다.
+
+결과는 선택한 level과 모든 level의 원래 key→현재 representation key 목록을 함께 반환한다.
+County→state는 정확한 parent 하나, state→county는 원래 입력 순서의 descendant 목록이다.
+원래 logical key를 parent key로 덮어쓰지 않는다. Descriptor·전체 region 수·key 문자량·
+parent traversal·output mapping 작업량을 공통 제한으로 검증하며 callbacks/ChartProgram/
+renderer나 전역 cache를 쓰지 않는다. 공개 resource/selection/annotation/LOD 단순화는 이
+순수 checkpoint 이후 이어 연결하며 이 계산만으로 AT31 완료를 선언하지 않는다.
+
+LOD level 순수 계산 7개와 해당 owner coverage 100/100/100, source boundary 11개,
+package artifact 7개가 통과했다. 공개 API/타입/entry와 persisted state는 아직 변경하지 않았다.
+추가 private module 1개를 포함한 package 크기는 지원 Node20/22/24에서 모두 실제 측정했고
+기존 browser bundle에 연결되지 않는 순수 계산이므로 installed/browser corpus를 반복하지 않았다.
+정본은 [geo-evidence/lod-levels/status.json](./geo-evidence/lod-levels/status.json)이다.
