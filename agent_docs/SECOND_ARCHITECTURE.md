@@ -84,6 +84,10 @@ Density 계산은 sparse field와 direction channels를 `routes/densityField.js`
 및 point-buffer 수명을 `routes/density.js`가 소유한다. Dense grid 차분과 같은 값을 계산하고
 완료 vector만 반환한다. 합산 package933 entries/6,135,655 unpacked/최대1,339,858 packed
 bytes에 최소 상한933/1,340,000/6,136,000을 적용하며 public bundle 입력은 유지한다.
+`routes/shortestPath.js`는 bounded Dijkstra와 full edge-key sequence tie를, `routes/edgePath.js`는
+기하 cost 우선순위·skip/lock·stretch·convex corner smoothing을 소유한다. Semantic weight와
+graph topology는 바꾸지 않는다. 이 두 owner를 포함한 package935 entries/6,145,064 unpacked/
+최대1,342,662 packed bytes에 상한935/1,343,000/6,146,000을 적용한다.
 
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를

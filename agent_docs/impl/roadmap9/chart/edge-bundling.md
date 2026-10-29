@@ -8,7 +8,7 @@
 - [x] Hierarchical LCA + clamped B-spline private kernel
 - [x] Force-directed compatibility + double buffer
 - [x] Density field + vector advection
-- [ ] Edge-path Dijkstra + skip/lock
+- [x] Edge-path Dijkstra + skip/lock
 - [ ] Full public actions·exact resource revision closure·prepared entry
 - [ ] 네 렌더러·scene·selection·inspection·codec·실제 데이터 소비자
 - [ ] AT80/81/82의 session·animation·geo 교차 종료
@@ -190,3 +190,29 @@ endpoints를 넘어 모든 internal sample의 y=0을 요구한 과도한 조건�
 원 계약의 허용 오차 및 endpoint 보존으로 고쳤다. 기존 floor는 낮추지 않았다.
 세 Node의 실제 package는933 entries/6,135,655 unpacked/최대1,339,858 packed bytes이고
 새 private owner만 추가돼 기존 HEB bundle 입력과 증거는 그대로 유효하다.
+
+## Edge-path 계산 구체화
+
+`exponent`는 기본2의 양수 finite, `maxStretch`는 기본2의1 이상 finite이며 `zeroLength`는
+`point`다. 원 normalized geometric length의 지수만 cost로 쓰고 semantic weight를 읽지 않는다.
+Descending cost 다음 raw typed edge-key 순서로 candidate를 처리한다. Dijkstra의 동일 cost는
+전체 경유 edge-key sequence의 사전순으로 결정하며 zero-cost cycle은 settled node를 재방문하지
+않는다. Skip/lock은 호출별 private 배열이고 성공한 path의 실제 graph edges만 lock한다.
+
+원 anchor chain은 controlPoints와 provenance에 보존한다. Vector는 endpoint를 고정한 .25
+convex corner cut 한 번을 적용한다. Convex triangle inequality로 길이가 늘지 않는 방식이며
+실제 pre/post 길이를 모두 검사한다. 수치 초과가 있으면 smoothing을0으로 줄여 원 polyline을
+쓴다. Graph node를 추가하거나 숨은 shortcut을 만들지 않는다. Cost/길이 overflow, queue 또는
+output sample/work 초과는 완료 결과를 반환하지 않는다.
+
+
+[Edge-path 고정 증거](edge-bundling-evidence/edge-path/status.json): canonical unit41/41,
+같은41개 coverage에서11개 route owner가 기존95/90/100 floor를 모두 통과했다.
+`edgePath.js`는100/100/100, `shortestPath.js`는98.41/92.31/100이며 나머지는100/100/100이다.
+Boundary/discovery/policy34/34, package7/7도 통과했다. 삼각형 literal의 경유 node와
+2√2 원 path 길이, stretch1.2 거절, 반대 방향, typed-key tie, stale queue, zero-cost cycle,
+parallel/self/empty, semantic weight 무관성, budget/abort/overflow를 검증했다. 실제 부동소수점
+collinear 사례에서 smoothing 후 길이의 작은 초과를 발견하고 원 anchor polyline으로 되돌리는
+회귀도 고정했다. Package는935 entries/6,145,064 unpacked/최대1,342,662 packed bytes다.
+새 owner만 추가되어 HEB의 public bundle 증거는 그대로 유효하며 전체 공개 소비자 검증은
+다음 체크포인트에 남아 있다. 네 알고리즘의 계산이 끝난 것을 STEP036–041 전체 완료로 보지 않는다.
