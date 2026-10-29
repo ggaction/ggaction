@@ -1,6 +1,8 @@
 import { validateOptionObject } from "../../core/validation.js";
 import { floorUtcTimeUnit, offsetUtcTimeUnit, TIME_UNITS, validTimestamp } from "../timeUnit.js";
 import { mapContinuousScaleValues } from "../scales/mapping.js";
+import { mapOrdinalPositionValues, mapOrdinalOffsetValues } from "../scales/ordinal.js";
+import { finiteMidpoint } from "../numeric.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 
 export const DEFAULT_BAR_WIDTH = Object.freeze({ band: 0.72 });
@@ -126,4 +128,31 @@ export function resolveBarInterval(config, value, scale) {
   const [a, b] = mapContinuousScaleValues([start, end], scale), width = Math.abs(b - a) - insetStart - insetEnd;
   if (width <= 0) throw new RangeError("Bar interval insets must leave a positive width.");
   return { position: Math.min(a, b) + (b >= a ? insetStart : insetEnd), width };
+}
+
+// Aggregate bar placement has one owner for authored materialization and
+// prepared semantic animation. Aggregation and layout happen before this call.
+export function resolveAggregateBarGeometry({ categoryScale, measureScale, offsetScale, categoryValue, start, end,
+  widthConfig, grouped = false, vertical = true, explicitGroup = false, seriesIndex, offsetValue }) {
+  const temporal = categoryScale.type === "time";
+  const defaultWidth = widthConfig?.interval === undefined ? resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step)) : undefined;
+  const index = categoryScale.domain.indexOf(categoryValue);
+  const interval = widthConfig?.interval === undefined ? undefined : resolveBarInterval(widthConfig, categoryValue, categoryScale);
+  const width = interval?.width ?? defaultWidth;
+  const categoryCenter = (temporal ? mapContinuousScaleValues : mapOrdinalPositionValues)([categoryValue], categoryScale)[0];
+  let position = interval?.position ?? (!grouped && explicitGroup && !temporal && categoryScale.step > 0
+    ? (categoryScale.start ?? categoryScale.range[0]) + index * categoryScale.step + categoryScale.bandwidth / 2 - width / 2
+    : categoryCenter - width / 2);
+  if (grouped) {
+    const direction = Math.sign(categoryScale.step ?? categoryScale.range[1] - categoryScale.range[0]) || 1;
+    const offsetCenter = offsetValue === undefined ? offsetScale.start + seriesIndex * offsetScale.step + (Math.sign(offsetScale.step) || 1) * offsetScale.bandwidth / 2 : mapOrdinalOffsetValues([offsetValue], offsetScale)[0];
+    if (offsetValue === undefined && vertical && direction > 0 && offsetScale.step > 0) {
+      const categoryStart = temporal ? categoryCenter - categoryScale.bandwidth / 2
+        : (categoryScale.start ?? categoryScale.range[0]) + index * categoryScale.step;
+      position = categoryStart + offsetScale.start + seriesIndex * offsetScale.step + (offsetScale.bandwidth - width) / 2;
+    } else position = categoryCenter + direction * (offsetCenter - finiteMidpoint(...offsetScale.range)) - width / 2;
+  }
+  const [a, b] = mapContinuousScaleValues([start, end], measureScale);
+  return { x: vertical ? position : Math.min(a, b), y: vertical ? Math.min(a, b) : position,
+    width: vertical ? width : Math.abs(a - b), height: vertical ? Math.abs(a - b) : width };
 }

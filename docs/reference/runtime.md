@@ -1646,6 +1646,8 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
+/** Semantic kernels report cartesian-point, cartesian-geometry, or completed-graph.
+ * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'enter'; readonly targetIndex: number }
   | { readonly kind: 'exit'; readonly sourceIndex: number }

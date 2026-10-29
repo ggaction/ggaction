@@ -1,3 +1,6 @@
+import { projectCartesianAnimationState } from "../materialization/animation/cartesian.js";
+import { ANIMATION_CARTESIAN_VERSION } from "../grammar/animation/cartesianState.js";
+import { prepareCartesianTrack, emptyAnimationCartesian, hasAnimationCartesian, validateAnimationCartesian } from "./cartesianTracks.js";
 import { ChartProgram } from "../core/ChartProgram.js";
 import { requireClosedProgramState } from "../core/programState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
@@ -22,6 +25,7 @@ import { graphTrackPreparation, emptyAnimationGraphs } from "./graphTracks.js";
 export const TRANSITION_PLAN_VERSION = 1;
 const plans = new WeakSet();
 const preparedPositions = new WeakMap();
+const preparedCartesian = new WeakMap();
 const preparedGraphs = new WeakMap();
 const exactFrames = new WeakMap();
 // Transition version also fixes timing/easing, correspondence and weighted blending.
@@ -91,16 +95,17 @@ export function normalizeTransitionOptions(input) {
   if(easing===undefined)throw new TypeError("Transition easing cannot be undefined.");
   return {durationMs:options.durationMs,easing};
 }
-function assemble(from,to,a,b,options,graphs) {
+function assemble(from,to,a,b,options,graphs,cartesian) {
   validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes");
   const matching=matchAnimationEndpoints(from,to);
+  budget([cartesian.from,cartesian.to]);
   const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
-  const tracks=matching.matches.map(match=>graphPreparation.track(match)??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
+  const tracks=matching.matches.map(match=>graphPreparation.track(match)??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
   const frames=frameTracks(from,to),frameSources=new Set(frames.map(track=>track.sourceIndex)),frameTargets=new Set(frames.map(track=>track.targetIndex));
   for(const item of [...tracks,...frames])if(item.kind==="crossfade")blendAnimationNodes(from.scene.nodes[item.sourceIndex],to.scene.nodes[item.targetIndex],.5,Math.max(from.scene.width,to.scene.width),Math.max(from.scene.height,to.scene.height));
   const plan=cloneAndFreeze({kind:"transition-plan",version:TRANSITION_PLAN_VERSION,...options,
     from,to,tracks,frameTracks:frames,enters:matching.enters.filter(index=>!frameTargets.has(index)),exits:matching.exits.filter(index=>!frameSources.has(index))});
-  plans.add(plan);preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));return plan;
+  plans.add(plan);preparedCartesian.set(plan,cloneAndFreeze(cartesian));preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));return plan;
 }
 export function planTransition(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
@@ -109,9 +114,9 @@ export function planTransition(input) {
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
     if(proof!==undefined)return prepareFrameEndpoint(value,proof);
-    const endpoint=projectAnimationEndpoint(value);return{endpoint,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint)};
+    const endpoint=projectAnimationEndpoint(value);return{endpoint,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint)};
   };
-  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)});
+  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)},{from:from.cartesian??emptyAnimationCartesian(from.endpoint),to:to.cartesian??emptyAnimationCartesian(to.endpoint)});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});
   return plan;
 }
@@ -120,18 +125,19 @@ export function requireTransitionPlan(plan) {
 }
 
 export function exportTransitionPlan(input) {
-  const plan=requireTransitionPlan(input),positions=preparedPositions.get(plan),graphs=preparedGraphs.get(plan);
+  const plan=requireTransitionPlan(input),positions=preparedPositions.get(plan),graphs=preparedGraphs.get(plan),cartesian=preparedCartesian.get(plan);
   const endpoint=side=>{
     const frame=exactFrames.get(plan)?.[side],source=plan[side];
-    const graphState=graphs[side].groups.length?{graphs:graphs[side]}:{};
+    const graphState={...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasAnimationCartesian(cartesian[side])?{cartesian:cartesian[side]}:{})};
     const view=frame===undefined?{}:{view:{progress:frame.progress,decisions:frame.decisions,...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
     return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...graphState,...view}:{scene:source.scene,identities:source.identities,
       backgrounds:source.backgrounds,positions:positions[side],...graphState,...view};
   };
-  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
+  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(hasAnimationCartesian(cartesian.from)||hasAnimationCartesian(cartesian.to)?{cartesian:ANIMATION_CARTESIAN_VERSION}:{}),...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
     from:endpoint("from"),to:endpoint("to")});
 }
 
+export function transitionCartesian(plan) {requireTransitionPlan(plan);return preparedCartesian.get(plan);}
 export function transitionGraphs(plan) {requireTransitionPlan(plan);return preparedGraphs.get(plan);}
 export function transitionEndpointFrame(plan,side) {requireTransitionPlan(plan);return exactFrames.get(plan)?.[side];}
 export function transitionEndpointPositions(plan,side) {requireTransitionPlan(plan);return preparedPositions.get(plan)[side];}
@@ -143,13 +149,13 @@ function closed(value, keys, label) {
 function restoreEndpoint(input) {
   let endpoint,frame;
   if(Object.hasOwn(input,"scene")){
-    closed(input,["scene","identities","backgrounds","positions","view",...(Object.hasOwn(input,"graphs")?["graphs"]:[])],"Restored sampled endpoint");
+    closed(input,["scene","identities","backgrounds","positions","view",...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"cartesian")?["cartesian"]:[])],"Restored sampled endpoint");
     const scene=cloneAndFreeze(input.scene),graphicSpec=canvasSceneProgram(scene).graphicSpec;validateGraphic(graphicSpec);
     validateSampledEndpointMetadata(scene,input.identities,input.backgrounds,input.view);
     frame=cloneAndFreeze({graphicSpec,scene,...input.view});
     endpoint=projectSampledAnimationEndpoint(frame,cloneAndFreeze(input.identities),cloneAndFreeze(input.backgrounds));
   }else{
-    closed(input,["graphicSpec","positions",...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"view")?["view"]:[])],"Restored animation endpoint");
+    closed(input,["graphicSpec","positions",...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"cartesian")?["cartesian"]:[]),...(Object.hasOwn(input,"view")?["view"]:[])],"Restored animation endpoint");
     validateGraphic(input.graphicSpec);endpoint=projectAnimationEndpoint({graphicSpec:cloneAndFreeze(input.graphicSpec)});
     if(Object.hasOwn(input,"view")){
       validateSampledEndpointMetadata(endpoint.scene,endpoint.identities,endpoint.backgrounds,input.view);
@@ -163,24 +169,28 @@ function restoreEndpoint(input) {
   }
   const graphs=Object.hasOwn(input,"graphs")?validateAnimationGraphState(input.graphs,endpoint):emptyAnimationGraphs(endpoint.scene.nodes.length);
   if(Object.hasOwn(input,"graphs")&&graphs.groups.length===0)throw new TypeError("An empty animation graph state must be omitted.");
+  const cartesian=Object.hasOwn(input,"cartesian")?validateAnimationCartesian(input.cartesian,endpoint):emptyAnimationCartesian(endpoint);
+  if(Object.hasOwn(input,"cartesian")&&!hasAnimationCartesian(cartesian))throw new TypeError("Empty Cartesian animation states must be omitted.");
   for(const [index,decision]of (input.view?.decisions??[]).entries())if(decision.kind==="semantic-kernel"){
-    if(decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):graphs.items[index]===null||Object.hasOwn(graphs.items[index],"reason")) {
+    if(decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):decision.kernel==="cartesian-geometry"?cartesian[index].kind===undefined:graphs.items[index]===null||Object.hasOwn(graphs.items[index],"reason")) {
       throw new TypeError("Sampled semantic decision requires its retained prepared meaning.");
     }
   }
-  return {endpoint,positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),frame};
+  return {endpoint,positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),cartesian,frame};
 }
 export function restoreTransitionPlan(input) {
   budget([input],true);
   closed(input,["kind","version","kernels","durationMs","easing","from","to"],"Restored transition plan");
   if(input.kind!=="transition-plan"||input.version!==TRANSITION_PLAN_VERSION)throw new TypeError("Unsupported transition plan kind or version.");
   const graphKernel=Object.hasOwn(input.from,"graphs")||Object.hasOwn(input.to,"graphs");
-  closed(input.kernels,["transition","position",...(graphKernel?["graph","route"]:[])],"Animation kernels");
+  const cartesianKernel=Object.hasOwn(input.from,"cartesian")||Object.hasOwn(input.to,"cartesian");
+  closed(input.kernels,["transition","position",...(cartesianKernel?["cartesian"]:[]),...(graphKernel?["graph","route"]:[])],"Animation kernels");
+  if(cartesianKernel&&input.kernels.cartesian!==ANIMATION_CARTESIAN_VERSION)throw new TypeError("Unsupported Cartesian animation kernel version.");
   if(graphKernel&&(input.kernels.graph!==ANIMATION_GRAPH_VERSION||input.kernels.route!==ANIMATION_ROUTE_VERSION))throw new TypeError("Unsupported animation graph kernel version.");
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position)throw new TypeError("Unsupported animation kernel version.");
   const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
-  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs});
+  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});
   return plan;
 }

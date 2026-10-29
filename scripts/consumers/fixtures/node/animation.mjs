@@ -121,5 +121,46 @@ export const cases=[
     assert.throws(()=>deserializeAnimation(JSON.stringify(broken)),/digest/);
     assert.throws(()=>serializeAnimation(structuredClone(plan)),/authentic/);
     assert.deepEqual(sampleTransition(plan,50),before);
+  }},
+  {id:'animation/cartesian-native-families',async run(){
+    const values=[{id:1,x:1,y:20,high:50,category:'A'},{id:'1',x:3,y:40,high:70,category:'B'}];
+    const base=()=>chart().createCanvas({width:300,height:200}).createData({id:'rows',values,keyField:'id'});
+    const programs=[
+      base().createRuleMark({id:'mark'}).encodeX({field:'x',fieldType:'quantitative'}),
+      base().createRectMark({id:'mark'}).encodeXRange({lower:'x',upper:{datum:4},fieldType:'quantitative'}).encodeYRange({lower:'y',upper:'high',fieldType:'quantitative'}),
+      base().createBarMark({id:'mark'}).encodeX({field:'category',fieldType:'nominal'}).encodeY({field:'y',aggregate:'sum'}),
+      base().createLineMark({id:'mark',curve:'step'}).encodeX({field:'x'}).encodeY({field:'y'}),
+      base().createAreaMark({id:'mark'}).encodeX({field:'x'}).encodeYRange({lower:'y',upper:'high'}),
+      base().createHistogram({id:'mark',field:'x',binBoundaries:[0,2,4],guides:false})
+    ];
+    for(const from of programs){
+      const to=from.editCanvas({width:500,height:300});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      assert.ok(frame.decisions.some(decision=>decision.kernel==='cartesian-geometry'));
+      const restored=deserializeAnimation(serializeAnimation(plan)).plan;
+      assert.deepEqual(sampleTransition(restored,50),frame);
+      const rebase=planTransition({from:frame,to:from,options:{durationMs:100}});
+      assert.equal(sampleTransition(rebase,0),frame);
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebase)).plan,50),sampleTransition(rebase,50));
+    }
+  }},
+  {id:'animation/cartesian-offline-renderers',async run(){
+    const from=chart().createCanvas({width:300,height:200,margin:20})
+      .createData({id:'rows',values:[{id:'a',x:1}],keyField:'id'}).createRectMark({id:'mark',fill:'red'})
+      .encodeXRange({lower:'x',upper:{datum:1000},fieldType:'quantitative',scale:{type:'log',domain:[1,1000],nice:false}})
+      .encodeYRange({lower:{datum:20},upper:{datum:80},fieldType:'quantitative',scale:{domain:[0,100],nice:false,zero:false}});
+    const to=from.reviseData({source:'rows',id:'next',values:[{id:'a',x:100}]});
+    const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+    const child=spawnSync(process.execPath,['--input-type=module','-e',`
+      import {deserializeAnimation,sampleTransition} from 'ggaction/animation';
+      globalThis.fetch=()=>{throw Error('network forbidden');};let text='';for await(const c of process.stdin)text+=c;
+      console.log(JSON.stringify(sampleTransition(deserializeAnimation(text).plan,50)));
+    `],{input:saved,encoding:'utf8',timeout:30000});
+    assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),JSON.parse(JSON.stringify(frame)));
+    const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+    assert.deepEqual([...canvas.getContext('2d').getImageData(200,100,1,1).data],[255,0,0,255]);
+    assert.deepEqual([...canvas.getContext('2d').getImageData(106,100,1,1).data],[255,255,255,255]);
+    assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+    assert.match(renderToSVG(frame),/<rect/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
   }}
 ];

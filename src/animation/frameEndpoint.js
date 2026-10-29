@@ -1,3 +1,4 @@
+import { unavailableCartesianAnimation } from "../grammar/animation/cartesianState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownRecord, ownArray } from "../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../core/validation.js";
@@ -53,7 +54,7 @@ export function captureFrameMeaning(frame, plan, timeMs) {
 export function prepareFrameEndpoint(frame, proof) {
   if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
   const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
-  return { endpoint: proof.endpoint, positions: cloneAndFreeze(positions), graphs: proof.graphs, frame };
+  return { endpoint: proof.endpoint, positions: cloneAndFreeze(positions), graphs: proof.graphs, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }
 
 export function validateSampledEndpointMetadata(scene,identities,backgrounds,view) {
@@ -89,8 +90,8 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
     if(!singular){
       const identity=identities[index],background=backgrounds.find(value=>value.index===index);
       if(identity?(decision.itemKey!==identity.key||decision.role!==identity.role):(decision.owner!==background?.owner||decision.role!=="canvas-background"))throw new TypeError("Sampled decision differs from its retained identity.");
-      if(decision.kind==="semantic-kernel"&&!["cartesian-point","completed-graph"].includes(decision.kernel))throw new TypeError("Unsupported sampled semantic kernel.");
-      if((decision.kind==="semantic-kernel"&&(decision.kernel==="cartesian-point"?scene.nodes[index].type!=="circle":!["circle","path","text"].includes(scene.nodes[index].type)))||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
+      if(decision.kind==="semantic-kernel"&&!["cartesian-point","completed-graph","cartesian-geometry"].includes(decision.kernel))throw new TypeError("Unsupported sampled semantic kernel.");
+      if((decision.kind==="semantic-kernel"&&(decision.kernel==="cartesian-point"?scene.nodes[index].type!=="circle":decision.kernel==="cartesian-geometry"?!["line","rect","path"].includes(scene.nodes[index].type):!["circle","path","text"].includes(scene.nodes[index].type)))||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
       if(decision.kind==="crossfade")validateAnimationFallbackReason(decision.reason);
     }
   }

@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 774_200, // Native Geo part helper reuse: Node20/24 774,129 gzip bytes.
-  "ggaction/basic": 422_200, // Combined installed Basic authoring: Node20/24 422,154 gzip bytes.
+  ggaction: 774_200, // Combined Cartesian and graph preparation: Node20 774,093 gzip bytes.
+  "ggaction/basic": 422_300, // Shared native aggregate geometry: Node20 422,288 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 192_200, // Concrete empty collection frame admission: Node20/24 192,107 gzip bytes.
+  "ggaction/animation": 200_300, // Cartesian/graph typed preparation and flat frame proof: Node20 200,273 gzip bytes.
   "ggaction/interaction": 128_700 // Shared admission and bounded native preparation work: Node20 128,607.
 });
 

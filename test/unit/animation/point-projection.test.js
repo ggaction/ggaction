@@ -11,14 +11,14 @@ const points = () => base().createPointMark({ id: "points" }).encodeX({ field: "
 const prepare = (from, to = from) => planTransition({ from, to, options: { durationMs: 100 } });
 const reasons = program => prepare(program).tracks.map(t => t.reason);
 
-test("native coordinate, offset, overlay and non-point owners remain explicit unsupported consumers", () => {
+test("native point restrictions coexist with typed Cartesian line support", () => {
   const polar = base().createPointMark({ id: "points" }).encodeTheta({ field: "x", scale: { domain: [0, 10] } }).encodeR({ field: "y", scale: { domain: [0, 100] } });
   assert.deepEqual(reasons(polar), ["coordinate-family", "coordinate-family"]);
   const offset = base([{ id: "a", x: "A", group: "u", y: 20 }, { id: "b", x: "B", group: "v", y: 60 }])
     .createPointMark({ id: "points" }).encodeX({ field: "x", fieldType: "nominal" }).encodeY({ field: "y" }).encodeXOffset({ field: "group" });
   assert.deepEqual(reasons(offset), ["offset-position", "offset-position"]);
   const line = base().createLineMark({ id: "line" }).encodeX({ field: "x" }).encodeY({ field: "y" });
-  assert.deepEqual(reasons(line), ["unsupported-family"]);
+  assert.deepEqual(prepare(line).tracks.map(track=>track.kind), ["exact"]);
   const overlay = line.createOverlay({ id: "overlay", source: "line", type: "point" });
   assert.ok(reasons(overlay).includes("overlay-position"));
   const diamond = points().editPointMark({ shape: "diamond" });

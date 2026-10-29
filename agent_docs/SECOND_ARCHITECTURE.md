@@ -890,11 +890,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 774,200 bytes |
-| `ggaction/basic` | 422,200 bytes |
+| `ggaction/basic` | 422,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 128,700 bytes |
-| `ggaction/animation` | 192,200 bytes |
+| `ggaction/animation` | 200,300 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4529,3 +4529,13 @@ Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/
 실측하여 최소1,138/1,628,000/7,371,000 상한을 적용한다. 같은 현재 source의6entry bundle은
 3Node에서 동일 minified bytes이며 Full 최대774,129·animation192,107 gzip에 최소774,200/192,200을
 적용한다. 이는 설치 archive qualification이 아니며 최종 공개 Geo에서 same-tar 소비자를 별도 닫는다.
+### Cartesian animation meaning and geometry
+
+`materialization/animation/cartesian*`는 native final item/row identity와 실제 row/series owner를
+통해 rule·rect·bar·histogram·line·area의 준비값을 한 번 얻는다. `grammar/animation/cartesianPosition`은
+기존 continuous mapping 및 ordinal band resolver를 공유하고, `cartesianState`는 준비한 endpoint
+값을 기존 curve/rounded rectangle/bar geometry로 그린다. Aggregate bar placement는
+`grammar/bars/geometry`의 단일 helper를 native materializer와 sampler가 함께 사용한다.
+Sample은 집계·binning·stack/layout을 다시 실행하지 않는다. Flat frame proof와 optional versioned
+Cartesian vector는 동일한 현재 의미를 rebase/strict restore에 공급한다. 공개 함수와 renderer schema는
+변경하지 않으며 정확한 지원·fallback 범위는 [Animation](contract/current/ANIMATION.md)이 소유한다.

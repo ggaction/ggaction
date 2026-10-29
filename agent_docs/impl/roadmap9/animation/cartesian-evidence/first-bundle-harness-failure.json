@@ -1,0 +1,78 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "1ebd53ab3a6dfde08d3cbaf3e6bed092ad5ab049b9f5846ab3fc1d95e06d13c3",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2149.673458
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2754.404708,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1024,
+        "minifiedBytes": 2702054,
+        "gzipBytes": 774093
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1393.8610419999995,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 608,
+        "minifiedBytes": 1441494,
+        "gzipBytes": 422288
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 74.86337500000081,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24954
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 218.43929200000093,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 44076
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 588.2502920000006,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 199,
+        "minifiedBytes": 400793,
+        "gzipBytes": 128607
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "failed",
+      "durationMs": 353.23270799999955,
+      "error": "../../../../../../private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-HlE4wY/minimal-browser-bundle-animation/main.js (2:9): \"chart\" is not exported by \"../../../../../../private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-HlE4wY/node_modules/ggaction/src/animation.js\", imported by \"../../../../../../private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-HlE4wY/minimal-browser-bundle-animation/main.js\".\nfile: /private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-HlE4wY/minimal-browser-bundle-animation/main.js:2:9\n\n1: \n2: import { chart, render } from \"ggaction/animation\";\n            ^\n3: \n4: const observations = [\n\n    at getRollupError (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/parseAst.js:317:41)\n    at error (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/parseAst.js:313:42)\n    at Module.error (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:17396:16)\n    at Module.traceVariable (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:17829:29)\n    at ModuleScope.findVariable (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:15419:39)\n    at Identifier.bind (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:5451:40)\n    at CallExpression.bind (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:2833:23)\n    at CallExpression.bind (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:12528:15)\n    at MemberExpression.bind (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:2833:23)\n    at MemberExpression.bind (file:///Users/hyeonjeon/Projects/ggactionnewbrand/node_modules/rollup/dist/es/shared/node-entry.js:7418:19)"
+    }
+  ]
+}

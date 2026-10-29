@@ -32,7 +32,7 @@ console.log(renderToSVG(frames[1]));
 ```
 
 Item keys retain number/string distinctions and child composition namespaces.
-The Cartesian semantic kernel moves compatible circle points by
+The Cartesian point kernel moves compatible circle points by
 interpolating their data values and scale mappings. For example, a logarithmic
 axis maps the interpolated data value; it does not average endpoint pixels.
 Other geometry or incompatible appearance uses a bounded weighted crossfade,
@@ -58,6 +58,28 @@ produce an explicit crossfade reason for the affected item. Compatible nodes kee
 moving independently. These rules also apply after offline serialization. Native
 current-frame hit testing uses the displayed geometry; restored offline frames can
 render and rebase, but cannot bind to a live session without native endpoint metadata.
+
+## Move Cartesian shapes and series
+
+Compatible rules, range or categorical rectangles, aggregate/ranged/centered bars,
+histograms, lines, and areas interpolate their prepared values before mapping them
+through their scales. The decision kernel is `cartesian-geometry`. A logarithmic
+position maps the interpolated value instead of averaging endpoint pixels.
+
+Preparation retains the native bin totals, stack/fill/center/wiggle endpoints,
+ordered sample membership, curve, bar width, and corner policy. Sampling does not
+repeat aggregation, binning, or layout. The existing native geometry rules produce
+step and smooth lines, closed areas, horizontal and vertical bars, rounded corners,
+and explicit band, pixel, or calendar-interval widths. Categorical transitions require
+the same typed domain order, item value, and padding policy; their ranges may change.
+
+Changed sample membership, curve/layout/width/corner policy, categorical domain,
+scale policy, appearance, or structured paint uses an explicit crossfade reason.
+Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
+fixed/category-slot placements, and density-derived areas are outside this typed
+kernel. All remain renderable through the shared concrete fallback. Authentic
+samples retain current values for interruption and offline replay; unknown kernel
+versions or inconsistent stored geometry reject the restore.
 
 ## Functions
 

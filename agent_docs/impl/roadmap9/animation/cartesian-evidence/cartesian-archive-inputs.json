@@ -1,0 +1,8 @@
+{
+  "sourceCommit": "ea543c62f",
+  "archiveSha256": "2179358c355a2786344f5292bbc701bee209319dc2fd7134f2a0b4ad1b29656f",
+  "repackedSha256": "2179358c355a2786344f5292bbc701bee209319dc2fd7134f2a0b4ad1b29656f",
+  "canonicalEntryCount": 1141,
+  "status": "passed",
+  "note": "Canonical packing compacts declared JS/JSON. Raw byte comparison and a relative staging destination were unsuitable verification attempts; the absolute canonical repack proves equality."
+}
