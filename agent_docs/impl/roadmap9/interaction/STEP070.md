@@ -6,10 +6,10 @@
 - [x] 공개 animation source4d7664861 + 최종 caf731f73 및 private hit13be5912f 병합
 - [x] 작은 geometry의 반복 중단에서 이전 계획 연쇄가 256단계를 넘는 실제 실패 재현
 - [x] Sample 의미·native 출처 평탄화와 100/1000회 public interruption/hit 검증
-- [ ] 세션 authentic frame command, atomic hit/keyboard/current-frame publication
-- [ ] current native final-item 교집합 activation과 frame transient asset lease
-- [ ] source/update/gesture/cancel/destroy/reentry 및 100/1000회 focus/lease 검증
-- [ ] 실제 Canvas/SVG 현재 프레임, reduced motion, source-free 설치 교차
+- [x] 세션 authentic frame command, atomic hit/keyboard/current-frame publication
+- [x] current native final-item 교집합 activation과 frame transient asset lease
+- [x] source/update/gesture/cancel/destroy/reentry 및 100/1000회 focus/lease 검증
+- [x] 실제 Canvas/SVG 현재 프레임, reduced motion, source-free 설치 교차
 - [ ] 원 카드 AT34/65/80/81/82의 나머지 partition/routes/Geo/LOD/worker 통합
 
 원본은 [STEP-070 카드](../../../../study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-070-cross-feature-integration.ko.md)다.
@@ -39,7 +39,7 @@ Offline 복원에는 native program 권한이 없으므로 현재 이 경로의 
 100/1000회 공개 player 중단은 매번 시작 객체 동일성, 실제 위치의 독립 재귀 expected,
 finite geometry, 단일 scoped hit와 row resource 출처를 검사한다. 이전 program 권한 제거,
 가짜 frame/동일값 다른 program/오프라인 frame 거부, 반복 이후 export/restore, dispose 이후
-callback0도 포함한다. 실제 session focus/asset lease 검증은 D 후속으로 남아 있다.
+callback0도 포함한다. 당시 후속이었던 실제 session focus/asset lease 검증은 아래 D1에서 닫았다.
 
 현재 증거는 `frame-retention-evidence/`에 고정한다. 새 테스트는 runtime에 roadmap을 import하지
 않으며 `test/unit/animation/retention.test.js`와 source-free consumer가 durable owner다.
@@ -65,6 +65,20 @@ admitted source만 사용한다. Lasso의 실제 표시 metadata도 committed ba
 검사한다. Source-free 패키지의 같은 세 사례는 four format 출력과 import 전 네트워크 차단을
 포함한다. PNG는 actual pixel, PDF는 유효 header를 확인하며 PDF pixel equality라고 과장하지 않는다.
 
-관련359개 테스트와 변경3owner coverage가 통과했다. 이 source candidate 이후 동일 tar3Node,
-설치본 browser, 최종 문서 provenance와 package/bundle 실측 증거를 `session-frame-evidence/`에
-닫은 뒤 D1만 qualified로 표시한다. 상단 원 카드와 offline native authority 복원은 계속 미완료다.
+Source `8cd965393e05f10e13931675fd87a12fa2f66e1f`와 동일 archive
+`ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f`를 고정했다.
+관련359개 테스트, 변경3owner lines/functions100%·branches94.22/95.04/95.39%, 계약43개가
+통과했다. 이후 Basic 명시 사례만 추가한 owning14개도 통과했으며 두 수치는 중복이 있어 합산하지 않는다.
+전체 repository suite를 다시 실행했다고 주장하지 않는다.
+
+같은 tar Node20/22/24에서 각각 새 runtime3개·strict types·6entry bundle을 확인했다.
+Node20은 runtime/types 성공 뒤 기존 Full gzip cap에 실패했으므로 원본을 보존하고 같은 tar의
+bundle-only 보충으로 닫았다. 실측 최대 Full773950/Basic422008/interaction129659를
+774000/422100/129700으로 최소 올림했다. 패키지는1132entries/1611830packed/7322421unpacked이며
+caps1132/1612000/7323000이다. Node22에서는 설치본을 읽는 동일 browser4개도 통과했다.
+
+소스 고정 문서58개, Jekyll186pages/1598LLM 링크·해시, 변경 페이지320/390/768/1280폭의
+overflow0·Axe0·browser errors0를 확인했다. 첫 잘못된 HTML 경로 실패도 최종 pretty permalink
+성공과 함께 보존했다. `session-frame-evidence/summary.json`과 압축 로그가 전체 근거다.
+후속 metadata commit은 소스·타입·archive를 바꾸지 않는다. D1만 qualified이며 상단 원 카드와
+offline native authority 복원, typed 움직임·domain 통합은 계속 미완료다.
