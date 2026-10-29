@@ -36,3 +36,12 @@ export function createFashionTsnePolarPoints(fashionRows) {
       guides: false
     });
 }
+
+export function createAngularSelectionChart(rows) {
+  return chart().createCanvas({ width: 200, height: 200, margin: 0 })
+    .createData({ id: "rows", keyField: "id", values: rows })
+    .createPolarScatterPlot({ id: "points", theta: { field: "angle", scale: { domain: [0, 360] } },
+      radius: { field: "radius", scale: { domain: [0, 2] } }, guides: false })
+    .selectMarks({ id: "picked", target: "points", items: [] })
+    .highlightMarks({ selection: "picked", color: "red", bringToFront: false, dimOthers: false });
+}

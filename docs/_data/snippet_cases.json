@@ -380,5 +380,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection."
+  },
+  {
+    "id": "selection-typed-region",
+    "file": "api/appearance/selection-and-highlighting.md",
+    "contains": "id: \"window\", target: \"points\"",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).",
+    "rendering": "authoring-only"
   }
 ]

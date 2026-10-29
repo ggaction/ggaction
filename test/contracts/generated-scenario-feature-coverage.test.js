@@ -218,10 +218,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 338);
   assert.equal(inventory.counts.topLevelOptionPaths, 3197);
-  assert.equal(inventory.counts.nestedOptionPaths, 28214);
-  assert.equal(inventory.counts.optionPaths, 31411);
-  assert.equal(inventory.counts.requiredOptionPaths, 21008);
-  assert.equal(inventory.counts.excludedOptionPaths, 10403);
+  assert.equal(inventory.counts.nestedOptionPaths, 28271);
+  assert.equal(inventory.counts.optionPaths, 31468);
+  assert.equal(inventory.counts.requiredOptionPaths, 21026);
+  assert.equal(inventory.counts.excludedOptionPaths, 10442);
   for (const action of ["bundleGraphEdges", "editEdgeRoute", "createCalendarLayout", "createCalendarPlot", "editCalendarPlot", "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark", "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
@@ -520,7 +520,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10403 }
+    { "redacted-array": 10442 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -633,7 +633,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 37062);
+  assert.equal(ledger.requirements.length, 37080);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

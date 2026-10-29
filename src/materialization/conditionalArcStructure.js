@@ -1,6 +1,6 @@
 import { canonicalJSON } from "../core/contentDigest.js";
 import { conditionalPositionTemplate, positionBindings } from "../core/encodingBindings.js";
-import { deriveMeasuredArcValues, deriveProportionalArcThetaValues, deriveProportionalArcRadiusValues, deriveRadialArcValues } from "../grammar/arcs.js";
+import { usesProportionalArcTheta, deriveMeasuredArcValues, deriveProportionalArcThetaValues, deriveProportionalArcRadiusValues, deriveRadialArcValues } from "../grammar/arcs.js";
 import { readNominalField, resolveOrdinalDomain } from "../grammar/scales/index.js";
 import { requireSemanticScale } from "../selectors/scales.js";
 
@@ -13,8 +13,9 @@ export function hasConditionalArcPosition(layer) {
 export function deriveConditionalArcBranch(program, layer, dataset) {
   const theta = layer.encoding.theta, radius = layer.encoding.radius;
   const thetaScale = requireSemanticScale(program, theta.scale);
-  const measured = radius !== undefined && requireSemanticScale(program, radius.scale).radialMapping !== undefined;
-  const proportional = !measured && (theta.fieldType === "quantitative" || theta.aggregate !== undefined);
+  const radiusScale = radius === undefined ? undefined : requireSemanticScale(program, radius.scale);
+  const measured = radiusScale?.radialMapping !== undefined;
+  const proportional = usesProportionalArcTheta(theta, radiusScale);
   const domain = theta.fieldType === "quantitative" ? undefined : resolveOrdinalDomain(thetaScale.domain, readNominalField(dataset.values, theta.field));
   let values = measured ? deriveMeasuredArcValues(dataset.values, layer) : proportional
     ? deriveProportionalArcThetaValues(dataset.values, layer, { domain, includeZero: true }) : deriveRadialArcValues(dataset.values, layer);

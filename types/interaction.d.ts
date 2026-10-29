@@ -40,6 +40,20 @@ export interface ClickSelectionBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+interface RegionSelectionBindingOptions {
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+}
+export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly type: 'brush' } & (
+  { readonly axis?: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
+  | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
+  | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
+);
+export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
+  readonly type: 'lasso';
+}
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -90,6 +104,8 @@ export interface LinkedSelectionState {
 }
 export interface InteractionState {
   readonly program: InteractionProgram;
+  /** Separate transient selection rendering. Null outside an active preview. */
+  readonly previewProgram: InteractionProgram | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
@@ -148,7 +164,7 @@ export interface InteractionTransactionEvent {
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
-  readonly phase: 'commit' | 'settled' | 'cancel' | 'error';
+  readonly phase: 'preview' | 'commit' | 'settled' | 'cancel' | 'error';
   readonly revision: number;
   readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
   readonly previous: InteractionProgram;
@@ -191,5 +207,5 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding)[];
 }): InteractionSession;

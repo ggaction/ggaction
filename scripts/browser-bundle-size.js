@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 686_000, // Combined routes and nested responsive closure; measured across supported Node runtimes.
-  "ggaction/basic": 376_000, // Shared viewport registry retains Full-only computation outside Basic.
+  ggaction: 689_000, // Combined routes and nested responsive closure; measured across supported Node runtimes.
+  "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
   "ggaction/graph": 43_000,
-  "ggaction/interaction": 102_000 // Nested responsive hit metadata with captured click: Node20/24 101,103 gzip bytes.
+  "ggaction/interaction": 109_000 // Nested responsive hit metadata with captured click: Node20/24 101,103 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

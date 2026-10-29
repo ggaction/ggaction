@@ -652,7 +652,8 @@ export function compactActionCardByteLimit(name) {
   // Shadow inheritance measures ReferenceBand 3807, MarkLabels 4063,
   // Annotation 4057 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
-  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
+  // Angular pointer metadata measures editMarkSelection at 3606 bytes.
+  return 180 + ({editMarkSelection: 3430, editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
     createAnnotation: 3880, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
 }
 

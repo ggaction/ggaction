@@ -7,7 +7,7 @@ import { chart as basic } from "../../src/basic.js";
 import { createTransitionScene, renderTransitionScene } from "../../src/scene.js";
 import { getMarkItems } from "../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
-import { prepareProgramHitFrame } from "../../src/interaction/hitProgram.js";
+import { prepareProgramHitFrame, programHitOwnerPlacement } from "../../src/interaction/hitProgram.js";
 import { prepareConcreteHitShape } from "../../src/interaction/hitConcrete.js";
 import { createHitFrameBridge } from "../../src/interaction/hitFrame.js";
 import { hitShape } from "../../src/grammar/hitShapes.js";
@@ -177,4 +177,15 @@ test("actual materialized point scenes hit the same CSS targets at DPR1, DPR2 an
       assert.equal(bridge.hit({ x, y }, { slop: 0 }).target !== null, expected);
     }
   }
+});
+
+
+test("owner placement uses the authentic empty scene and exact nested path", () => {
+  const p = pointProgram().filterMarks({target: "points", field: "id", op: "eq", value: "absent"});
+  const nested = hconcat({programs:[{id:"one", program:p}, {id:"two", program:p}]}), frame = prepareProgramHitFrame(nested);
+  assert.equal(frame.entries.length, 0);
+  assert.deepEqual(programHitOwnerPlacement(frame,["one"]).offset,[0,0]);
+  assert.ok(programHitOwnerPlacement(frame,["two"]).offset[0] >= 300);
+  assert.throws(() => programHitOwnerPlacement({...frame},["one"]), /authentic/);
+  assert.throws(() => programHitOwnerPlacement(frame,["absent"]), /no materialized Canvas/);
 });

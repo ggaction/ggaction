@@ -298,10 +298,14 @@ export function deriveArcSectorsFromValues(values, layer, { thetaScale, radiusSc
   return cloneAndFreeze({ sectors: sectors.map(item => item.value) });
 }
 
+export function usesProportionalArcTheta(theta, radiusScale) {
+  return radiusScale?.radialMapping === undefined && (theta.fieldType === "quantitative" || ["count", "sum"].includes(theta.aggregate));
+}
+
 export function deriveArcSectors(rows, layer, options = {}) {
   if (!Array.isArray(rows)) throw new TypeError("Arc derivation requires rows.");
   const theta = requireArcLayer(layer), measured = options.radiusScale?.radialMapping !== undefined;
-  const proportional = !measured && (theta.fieldType === "quantitative" || ["count", "sum"].includes(theta.aggregate));
+  const proportional = usesProportionalArcTheta(theta, options.radiusScale);
   let values = measured ? deriveMeasuredArcValues(rows, layer) : proportional
     ? deriveProportionalArcThetaValues(rows, layer, { domain: options.thetaScale?.domain }) : deriveRadialArcValues(rows, layer);
   if (options.radiusScale !== undefined && proportional) {

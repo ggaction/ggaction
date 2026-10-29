@@ -1,0 +1,273 @@
+{
+  "numeric": [
+    {
+      "input": {
+        "scale": {
+          "type": "linear",
+          "domain": [
+            0,
+            360
+          ],
+          "range": [
+            0,
+            360
+          ]
+        },
+        "angles": [
+          350,
+          10
+        ]
+      },
+      "expected": [
+        [
+          0,
+          10
+        ],
+        [
+          350,
+          360
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          10
+        ],
+        [
+          349.99999999999994,
+          360
+        ]
+      ],
+      "diff": [
+        [
+          0,
+          0
+        ],
+        [
+          -5.684341886080802e-14,
+          0
+        ]
+      ],
+      "tolerance": 1e-10
+    },
+    {
+      "input": {
+        "scale": {
+          "type": "linear",
+          "domain": [
+            0,
+            360
+          ],
+          "range": [
+            -180,
+            180
+          ]
+        },
+        "angles": [
+          350,
+          10
+        ]
+      },
+      "expected": [
+        [
+          170,
+          190
+        ]
+      ],
+      "actual": [
+        [
+          169.99999999999994,
+          190
+        ]
+      ],
+      "diff": [
+        [
+          -5.684341886080802e-14,
+          0
+        ]
+      ],
+      "tolerance": 1e-10
+    },
+    {
+      "input": {
+        "scale": {
+          "type": "linear",
+          "domain": [
+            0,
+            360
+          ],
+          "range": [
+            360,
+            0
+          ]
+        },
+        "angles": [
+          350,
+          10
+        ]
+      },
+      "expected": [
+        [
+          0,
+          10
+        ],
+        [
+          350,
+          360
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          10.000000000000057
+        ],
+        [
+          350,
+          360
+        ]
+      ],
+      "diff": [
+        [
+          0,
+          5.684341886080802e-14
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "tolerance": 1e-10
+    },
+    {
+      "input": {
+        "scale": {
+          "type": "log",
+          "domain": [
+            1,
+            1000
+          ],
+          "range": [
+            0,
+            360
+          ]
+        },
+        "angles": [
+          0,
+          120
+        ]
+      },
+      "expected": [
+        [
+          1,
+          10
+        ],
+        [
+          1000,
+          1000
+        ]
+      ],
+      "actual": [
+        [
+          1,
+          10
+        ],
+        [
+          1000,
+          1000
+        ]
+      ],
+      "diff": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "tolerance": 1e-10
+    }
+  ],
+  "public": {
+    "input": {
+      "rows": [
+        {
+          "id": "p0",
+          "angle": 0,
+          "radius": 1
+        },
+        {
+          "id": "p5",
+          "angle": 5,
+          "radius": 1
+        },
+        {
+          "id": "p90",
+          "angle": 90,
+          "radius": 1
+        },
+        {
+          "id": "p180",
+          "angle": 180,
+          "radius": 1
+        },
+        {
+          "id": "p355",
+          "angle": 355,
+          "radius": 1
+        },
+        {
+          "id": "p360",
+          "angle": 360,
+          "radius": 1
+        }
+      ],
+      "angles": [
+        350,
+        10
+      ]
+    },
+    "inputSha256": "f9ea73b1805bad0e84bc4eb2d6de03e810ed2d2a4105c687f8154b50bf6461e7",
+    "calls": [
+      "createAngularSelectionChart(rows)",
+      "createInteractionSession({program,bindings:[{type:\"brush\",axis:\"theta\",target:\"points\",selection:\"picked\"}]}).mount(host)",
+      "pointerdown(350deg);pointermove(10deg);RAF;pointerup(10deg)"
+    ],
+    "expected": {
+      "ids": [
+        "p0",
+        "p5",
+        "p355",
+        "p360"
+      ],
+      "phases": [
+        "preview",
+        "preview",
+        "commit",
+        "settled"
+      ],
+      "revision": 1,
+      "captureCount": 0,
+      "overlay": null
+    },
+    "actual": {
+      "ids": [
+        "p0",
+        "p5",
+        "p355",
+        "p360"
+      ],
+      "phases": [
+        "preview",
+        "preview",
+        "commit",
+        "settled"
+      ],
+      "revision": 1,
+      "captureCount": 0,
+      "overlay": null
+    },
+    "diff": []
+  }
+}

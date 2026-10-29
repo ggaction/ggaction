@@ -11,6 +11,47 @@ import { encodeRowKey } from "../../../src/core/itemIdentity.js";
 
 const get = (p, kind, id) => p.semanticSpec.resources.find(r => r.kind === kind && r.id === id);
 const count = (trace, op) => (trace.op === op ? 1 : 0) + trace.children.reduce((sum, child) => sum + count(child, op), 0);
+
+test("screen lasso keeps routed graph node identity through Canvas and source revisions", () => {
+  const nodes = [{ key: "a" }, { key: "b" }];
+  const p = chart().createCanvas({ width: 400, height: 300, margin: 40 })
+    .createData({ id: "nodes", values: nodes, keyField: "key" })
+    .createData({ id: "edges", values: [{ id: 1, s: "a", t: "b" }], keyField: "id" })
+    .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "key", source: "s", target: "t", edgeKey: "id" })
+    .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 100, y: 100 }, { key: "b", x: 250, y: 100 }] } })
+    .bundleGraphEdges({ id: "route", method: "edge-path", coordinateSpace: "screen" })
+    .createGraphPlot({ id: "plot", routes: "route", nodes: { radius: 5 }, edges: { arrows: false } })
+    .selectMarks({ id: "picked", target: "plot", items: [] })
+    .highlightMarks({ selection: "picked", fill: "red", dimOthers: false, bringToFront: false });
+  const saved = serializeProgram(p), listeners = new Map(), captures = new Set();
+  let scheduled;
+  const host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 400, height: 300 }),
+    addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type),
+    setPointerCapture: id => captures.add(id), releasePointerCapture: id => captures.delete(id), hasPointerCapture: id => captures.has(id),
+    requestAnimationFrame: fn => { scheduled = fn; return 1; }, cancelAnimationFrame: () => { scheduled = undefined; } };
+  const session = createInteractionSession({ program: p, bindings: [{ type: "lasso", target: "plot", selection: "picked" }] });
+  session.mount(host);
+  const node = getMarkItems(p, { target: "plot" }).find(item => item.fields.kind === "node" && item.fields.key === "a");
+  const { x, y } = node.geometry[0].properties;
+  const fire = (type, dx, dy) => listeners.get(type)({ pointerId: 1, pointerType: "mouse", clientX: x + dx, clientY: y + dy });
+  fire("pointerdown", -10, -10); fire("pointermove", 10, -10); fire("pointermove", 10, 10); fire("pointermove", -10, 10);
+  const flush = scheduled; scheduled = undefined; flush();
+  const selected = program => getMarkItems(program, { target: "plot" }).filter(item => item.properties.fill === "red").map(item => item.key);
+  assert.deepEqual(selected(session.getState().previewProgram), [node.key]);
+  assert.equal(session.getState().program, p);
+  fire("pointerup", -10, -10);
+  const committed = session.getState().program;
+  assert.deepEqual(selected(committed), [node.key]);
+  assert.equal(session.getState().revision, 1);
+  const revised = committed.editCanvas({ width: 500 }).reviseData({ source: "nodes", id: "updated", values: nodes });
+  session.updateProgram(revised);
+  assert.deepEqual(selected(session.getState().program), [node.key]);
+  assert.equal(get(revised, "edge-route", "route").revision, 2);
+  assert.deepEqual(selected(deserializeProgram(serializeProgram(revised))), [node.key]);
+  assert.equal(serializeProgram(p), saved);
+  session.destroy(); assert.equal(listeners.size + captures.size, 0); assert.equal(scheduled, undefined);
+  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "brush", target: "plot", selection: "picked" }] }), /explicit resolved position scale/);
+});
 function hierarchySource() {
   const rows = [{ key: "root", parent: null, value: 0 }, { key: "a", parent: "root", value: 1 }, { key: "b", parent: "root", value: 1 }];
   let p = chart().createCanvas({ width: 400, height: 300, margin: 0 })
