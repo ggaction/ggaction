@@ -3582,3 +3582,12 @@ Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 pack
 Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
 interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
 coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.
+
+
+### Geographic source normalization
+
+`grammar/geo/`는 아직 공개 entry에서 도달하지 않는 순수 JSON/geometry owner다. Caller source의
+own-data snapshot·유형·finite/closed ring과 TopoJSON shared arc decode를 정규화하며
+기존 immutable/value digest/typed-key/work-budget core를 재사용한다. 프로그램, trace, renderer,
+asset loader를 가져오지 않는다. 공개 resource 및 projection/stream consumers는 이 checkpoint에
+등록하지 않았다. Source values provenance와 실제 asset byte provenance를 혼동하지 않는다.

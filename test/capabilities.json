@@ -464,6 +464,12 @@
         "path": "unit/resources/font-resource-labels.test.js"
       }
     ],
+    "geo": [
+      {
+        "type": "prefix",
+        "path": "unit/geo/"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",
