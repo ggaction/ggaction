@@ -3359,3 +3359,12 @@ consumer qualification separately from this measurement.
 Private hit index를 resource effects 공개 baseline f1800607d와 통합한 package는867 entries,
 unpacked5,837,672/packed Node22 1,267,560 및 Node20/24 1,270,493bytes다. 한도는867/1,271,000/5,838,000이다.
 Private hit owner는 Full/Basic/SVG public import에 들어가지 않으므로 기존 public bundle 경계는 유지한다.
+
+
+### Private current-frame lifecycle
+
+`interaction/hitFrame.js`는 외부 sampler가 제공한 explicit scene/entries/version을 받아 현재 index를 소유한다.
+새 순수 index 준비가 끝난 뒤 한 번에 교체하고 늦은 version은 폐기한다. Dispose는 현재 참조를 해제한다.
+Program/trace/codec와 renderer는 바꾸지 않으며 DOM/event/RAF를 만들지 않는다. Exact public interaction 및
+035/guide/animation 소비자 경계는 [STEP049](impl/roadmap9/interaction/STEP049.md)의 잔여 의무로 유지한다.
+이 source 추가 후 package868entries/5,839,653unpacked/최대1,271,066packed bytes에 cap868/1,272,000/5,840,000을 쓴다.

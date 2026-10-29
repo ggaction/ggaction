@@ -532,6 +532,28 @@
         "path": "contracts/hierarchy-types.test.js"
       }
     ],
+    "hit-testing": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-coordinates.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-stroke.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-shapes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-index.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-frame.test.js"
+      }
+    ],
     "horizon": [
       {
         "type": "file",

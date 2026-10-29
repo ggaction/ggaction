@@ -10,7 +10,8 @@
 - [x] private geometry별 hit, CSS stroke slop/dash/cap/join, 변환 clip/opacity 검증
 - [ ] current scene index, 의미 role/lineage 및 concrete scene adapter 연결
 - [ ] STEP035 중첩 composition과 공개 interaction entry·선언·소비자 통합
-- [ ] STEP048 broad phase/guide roles 및 STEP049 synthetic/current frame bridge
+- [x] STEP048 private broad phase/명시 guide roles 및 STEP049 synthetic/current frame bridge
+- [ ] 실제 guide/mark adapter와 공개 interaction consumer 통합
 
 Shadow source와 검증은 `ccbce6a6b`로 먼저 push했다. 이 기록은 STEP047의 private 계산만 소유하며
 STEP047/048/049 또는 AT33/34 완료를 뜻하지 않는다. Root가 Image/H/Partition/GraphPlot P2 합산과

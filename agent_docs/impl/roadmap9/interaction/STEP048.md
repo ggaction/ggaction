@@ -9,7 +9,8 @@
 - [x] Node20/22/24 각38개, 경계33개, 새 owner100% coverage
 - [ ] concrete scene→geometry/semantic adapter와 실제 모든 guide materializer 연결
 - [ ] STEP035 중첩 composition 및 공개 interaction/browser/AT33 통합
-- [ ] STEP049 current frame lifecycle과 AT34
+- [x] STEP049 private current frame lifecycle
+- [ ] 공개 frame/session 소비자 및 AT34
 
 이 checkpoint는 순수 계산을 검증한 것이며 STEP048 또는 전체 AT33 완료 표시는 아니다.
 문서·타입·codec에 새 public 지원이나 저장 schema를 추가하지 않았다.

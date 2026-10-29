@@ -1,0 +1,75 @@
+{
+  "status": "private-frame-qualified",
+  "base": "668fe7d7d",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 46,
+    "node22Coverage": 46,
+    "node24": 46,
+    "boundaries": 33
+  },
+  "coverage": {
+    "hitFrame": [
+      100,
+      100,
+      100
+    ],
+    "hitIndex": [
+      100,
+      100,
+      100
+    ],
+    "hitCoordinates": [
+      100,
+      100,
+      100
+    ],
+    "hitShapes": [
+      100,
+      94.44,
+      100
+    ],
+    "hitStroke": [
+      100,
+      94.59,
+      100
+    ],
+    "floor": [
+      95,
+      90,
+      100
+    ]
+  },
+  "nativeCanvasPixelRatios": [
+    1,
+    2,
+    3
+  ],
+  "package": {
+    "entries": 868,
+    "unpackedBytes": 5839653,
+    "node22PackedBytes": 1268179,
+    "node20And24PackedBytes": 1271066,
+    "caps": {
+      "entries": 868,
+      "packedBytes": 1272000,
+      "unpackedBytes": 5840000
+    }
+  },
+  "failuresPreserved": [
+    "new frame test initially lacked named capability; added exact hit-testing selector",
+    "868 entries exceeded867 cap"
+  ],
+  "sources": {
+    "src/interaction/hitFrame.js": "54eb386c2501985185f5562f3bb591f2b3fefa9edbd171604d0f39a56f1a2096",
+    "test/unit/hit-frame.test.js": "03dee552949a4dc079765e178a49e731ac03d719fcdaaca982d520f0d05b7c01",
+    "scripts/coverage-policy.js": "2b3f0acf720e1fae9a782dc38e15c200ea5bfdb38a130f6ff80a55b096cdaceb",
+    "test/capabilities.json": "a75decf365df91183d2b500748ff8a4603bac4f7147e2b2880d2bf57f9d12416"
+  },
+  "remaining": [
+    "concrete scene adapter with all mark/guide provenance",
+    "STEP035 nested composition",
+    "public interaction session entry and types",
+    "browser event/animation sampler integration and AT33/34 closure"
+  ]
+}
