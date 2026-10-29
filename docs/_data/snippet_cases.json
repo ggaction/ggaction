@@ -627,5 +627,15 @@
     "rendering": "authoring-only",
     "result": "stream, centered, zeroBased",
     "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
+  },
+  {
+    "id": "interaction-navigation",
+    "file": "api/interaction.md",
+    "contains": "const navigationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag."
   }
 ]

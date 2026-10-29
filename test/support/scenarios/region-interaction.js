@@ -2,7 +2,7 @@ import { assertAnnotationInteraction } from "./annotation-interaction.js";
 import { chart, hconcat } from "../../../src/index.js";
 import assert from "node:assert/strict";
 import { createInteractionSession } from "../../../src/interaction.js";
-import { getMarkItems } from "../../../src/inspection.js";
+import { getMarkItems, getProjectionView } from "../../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 
 // Real-source recipes retain their final item grain. A category-series brush
@@ -246,6 +246,14 @@ function assertViewportSource(rows, recipe) {
   }
   assert.deepEqual(deserializeProgram(serializeProgram(session.getState().program)).graphicSpec, session.getState().program.graphicSpec);
   assert.equal(serializeProgram(p), before); session.destroy();
+  const navigation = createInteractionSession({program:p,bindings:[{type:"navigate",target:"map",mode:"pan",scaleExtent:[0.1,10],initial:getProjectionView(p,{target:"map"}).parameters}]}), listeners=new Map(),captures=new Set();let raf;
+  const surface={getBoundingClientRect:()=>({left:0,top:0,width:500,height:400}),addEventListener(type,fn){const set=listeners.get(type)??new Set();set.add(fn);listeners.set(type,set);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),
+    setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),requestAnimationFrame:fn=>(raf=fn,1),cancelAnimationFrame:()=>{raf=undefined}};
+  const fire=(type,x,y)=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:"mouse",button:0,clientX:x,clientY:y});};
+  navigation.mount(surface);fire("pointerdown",100,100);fire("pointermove",120,110);raf();fire("pointerup",120,110);
+  const moved=getMarkItems(navigation.getState().program,{target:"places"});
+  for(const[index,item]of moved.entries()){assert.equal(item.key,original[index].key);assert.equal(item.properties.x,rows[index].order+20);assert.equal(item.properties.y,rows[index].value+10);}
+  assert.equal(navigation.getState().history.undoCount,1);navigation.dispatch({type:"undo"});assert.equal(navigation.getState().program,p);navigation.destroy();assert.equal(captures.size,0);assert.ok([...listeners.values()].every(set=>set.size===0));
 }
 
 

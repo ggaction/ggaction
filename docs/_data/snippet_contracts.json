@@ -2653,6 +2653,20 @@
   {
     "file": "api/interaction.md",
     "block": 20,
+    "heading": "Navigate a map with drag, wheel, pinch and keyboard",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"map\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag.",
+    "sha256": "cccbfc8be81ebe867056e04f9939e0c51ebed38c4e65ca34e31a7331c95c88ca",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 21,
     "heading": "Move graph nodes with pointer or keyboard",
     "mode": "complete",
     "environment": "browser-module",
@@ -2667,7 +2681,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 21,
+    "block": 22,
     "heading": "Edit existing annotations",
     "mode": "complete",
     "environment": "browser-module",
@@ -2681,7 +2695,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 22,
+    "block": 23,
     "heading": "Prepare native work before replacing the program",
     "mode": "fragment",
     "environment": "esm-context",

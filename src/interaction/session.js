@@ -1,3 +1,4 @@
+import { normalizeCameraNavigation, resolveCameraNavigation, prepareCameraNavigation, joinCameraNavigation, cameraNavigationDraft, navigationCenter, cameraWheelCommand, cameraKeyboardCommand } from "./cameraNavigation.js";
 import { normalizeAnnotationMovement, resolveAnnotationMovement, prepareAnnotationMovement, annotationMovementCommand } from "./annotationMovement.js";
 import { normalizeNodeMovement, resolveNodeMovement, prepareNodeMovement, nodeMovementCommand } from "./nodeMovement.js";
 import { normalizeLegendVisibility, resolveLegendVisibility, legendVisibilityCommand } from "./legendVisibility.js";
@@ -33,14 +34,14 @@ function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
   if (!Array.isArray(value) || value.length > 259) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], context = [], linked = [], selected = [], regions = [], nodes = [], annotations = [];
+  const inspect = [], context = [], linked = [], selected = [], regions = [], nodes = [], annotations = [], navigation = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain"], "Interaction binding");
-    (head.type === "annotate" ? annotations : head.type === "moveNode" ? nodes : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain", "scaleExtent", "initial", "rotationStepDeg"], "Interaction binding");
+    (head.type === "navigate" ? navigation : head.type === "annotate" ? annotations : head.type === "moveNode" ? nodes : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
-  if (inspect.length > 1 || context.length > 1 || selected.length + regions.length + nodes.length + annotations.length > 1) throw new TypeError("Interaction bindings support at most one inspect, one context menu and one editing pointer binding.");
+  if (inspect.length > 1 || context.length > 1 || selected.length + regions.length + nodes.length + annotations.length + navigation.length > 1) throw new TypeError("Interaction bindings support at most one inspect, one context menu and one editing pointer binding.");
   const links = normalizeSelectionLinks(program, linked);
-  return { annotation: annotations.length ? normalizeAnnotationMovement(program, annotations[0]) : undefined, node: nodes.length ? normalizeNodeMovement(program, nodes[0]) : undefined, linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
+  return { navigation: navigation.length ? normalizeCameraNavigation(program, navigation[0]) : undefined, annotation: annotations.length ? normalizeAnnotationMovement(program, annotations[0]) : undefined, node: nodes.length ? normalizeNodeMovement(program, nodes[0]) : undefined, linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
     region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned([...inspect, ...context].map(binding => {
     const contextual = binding.type === "contextMenu";
     const request = options(binding, ["type"], contextual ? ["slop", "hitInvisible"] : ["events", "slop", "hitInvisible"], "Inspection binding");
@@ -150,8 +151,8 @@ export function createInteractionSession(input) {
   const assetHandlers = prepare => ({ prepare,
     cancel: (reason, tags) => publishAssets("cancelled", tags, [{ code: "preparation-cancelled", message: reason }]),
     error: (error, tags) => publishAssets("error", tags, [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]) });
-  const prepareEdit = command => {
-    let prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
+  const prepareEdit = (command, native) => {
+    let prepared = native ?? prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
     if (prepared.program === program) return null;
     const initial = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: managedSelections });
     prepared = applySelectionLinks(initial.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...initial.affectedOwners], command, selectionPolicy, initial.records);
@@ -177,7 +178,7 @@ export function createInteractionSession(input) {
       const result = draft ?? prepareEdit(command);
       if (result) {
         ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges, resourceRevisions } = result);
-        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+        if ((configured.node || configured.annotation || configured.navigation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
       }
     } catch (error) {
       publish(command.type, details("error", Object.freeze([]), [{ code: getErrorDetails(error)?.code ?? "interaction-command-failed", message: error.message }]));
@@ -230,7 +231,7 @@ export function createInteractionSession(input) {
       candidate = prepareProgramHitFrame(entry.state.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
       resourceRevisions = preparation.enabled ? interactionResourceRevisions(entry.state.program) : undefined;
-      if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+      if ((configured.node || configured.annotation || configured.navigation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
     } catch (error) {
       publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "interaction-history-failed", message: error.message }]));
       throw error;
@@ -269,11 +270,12 @@ export function createInteractionSession(input) {
     if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
     if (configured.node) resolveNodeMovement(linked.program, configured.node, true);
     if (configured.annotation) resolveAnnotationMovement(linked.program, configured.annotation, true);
+    if (configured.navigation) resolveCameraNavigation(linked.program, configured.navigation, true);
     const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
     const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
     const candidate = prepareProgramHitFrame(linked.program, version);
     let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-    if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+    if ((configured.node || configured.annotation || configured.navigation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
     const prepareCommit = tags => {
       frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
       return () => {
@@ -351,7 +353,7 @@ export function createInteractionSession(input) {
       return perform(() => {
         if (c.generation !== generation || c.version <= bridge.getState().version) return outcome("stale");
         let frame = rebindProgramHitFrame(base, scene, c.version, rootTransform);
-        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+        if ((configured.node || configured.annotation || configured.navigation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
         mounted?.capture?.cancel("updateProgram");
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(base, scene, nextInteger(bridge.getState().version), rootTransform);
         bridge.updateFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
@@ -418,8 +420,8 @@ export function createInteractionSession(input) {
               };
             lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: binding.type !== "contextMenu" });
           }
-          if (configured.region || configured.node || configured.annotation) {
-            const binding = configured.region ?? configured.node ?? configured.annotation, moving = binding.type === "moveNode" || binding.type === "annotate", eventType = moving ? binding.type : "select";
+          if (configured.region || configured.node || configured.annotation || configured.navigation) {
+            const binding = configured.region ?? configured.node ?? configured.annotation ?? configured.navigation, navigating = binding.type === "navigate", moving = navigating || binding.type === "moveNode" || binding.type === "annotate", eventType = navigating ? "setViewport" : moving ? binding.type : "select";
             const movement = binding.type === "annotate" ? { prepare: prepareAnnotationMovement, command: annotationMovementCommand }
               : { prepare: prepareNodeMovement, command: nodeMovementCommand };
             const scheduler = element.ownerDocument?.defaultView ?? element;
@@ -441,28 +443,31 @@ export function createInteractionSession(input) {
             };
             const preview = token => {
               if (token.previous !== program) throw new Error("Selection gesture baseline is stale.");
-              const result = (moving ? movement.command : regionGestureCommand)(token.context, token.points);
-              const command = interactionTransaction(result.command, token.transactionId), draft = prepareEdit(command);
-              previewProgram = moving ? draft.prepared.program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
-              if (moving) { nextInteger(nextInteger(draft.frame.version)); bridge.updateFrame(draft.frame); token.previewed = true; lastHit = null; }
+              const result = navigating ? cameraNavigationDraft(token.context, token.pointers) : (moving ? movement.command : regionGestureCommand)(token.context, token.points);
+              const command = interactionTransaction(result.command, token.transactionId), draft = prepareEdit(command, result.prepared);
+              previewProgram = moving ? draft?.prepared.program ?? program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
+              if (moving && draft) { nextInteger(nextInteger(draft.frame.version)); bridge.updateFrame(draft.frame); token.previewed = true; lastHit = null; }
+              else if (navigating && token.previewed) bridge.updateFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
               publish(eventType, { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
               return { command, draft };
             };
             lease.capture = prepareSelectionCapture(element, {
-              binding: { id: "selection", kind: binding.type },
+              binding: { id: "selection", kind: navigating ? "pan" : binding.type, ...(navigating ? { pinch: true } : {}) },
               current: () => !destroyed && mounted === lease,
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: point => {
                 const scene = bridge.getState().scene;
-                const context = moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
+                const context = navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
                   : prepareRegionGesture(program, binding, base, scene, transform, point);
                 if (!context) return null;
                 preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return gesture = { transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
               },
+              join: navigating ? (token, pointers) => { token.context = joinCameraNavigation(token.context, pointers); } : undefined,
               sample: (token, point) => {
+                if (navigating) return;
                 const previous = token.points.at(-1);
                 if (previous.x === point.x && previous.y === point.y) return;
                 if (moving || binding.type === "brush") token.points = [token.points[0], point];
@@ -471,7 +476,8 @@ export function createInteractionSession(input) {
                   token.points.push(point);
                 }
               },
-              preview: token => {
+              preview: (token, pointers) => {
+                if (navigating) token.pointers = pointers;
                 if (token.raf !== undefined) return;
                 token.raf = scheduler.requestAnimationFrame(() => {
                   token.raf = undefined;
@@ -482,7 +488,8 @@ export function createInteractionSession(input) {
                   });
                 });
               },
-              drag: (token, _point, _pointerType, gestureKind) => {
+              drag: (token, _point, _pointerType, gestureKind, pointers) => {
+                if (navigating) token.pointers = pointers;
                 if (moving && gestureKind === "click") {
                   discard(token); publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }]));
                   return outcome("unchanged");
@@ -492,8 +499,11 @@ export function createInteractionSession(input) {
                   if (token.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
                   token.raf = undefined;
                   result = preview(token);
-                  discard(token, false);
+                  // Asset preparation may defer the final commit; its displayed
+                  // baseline must be the committed frame throughout that wait.
+                  discard(token, navigating);
                 } catch (error) { failure(token, error); throw error; }
+                if (navigating && result.draft === null) { publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }])); return outcome("unchanged"); }
                 return edit(result.command, result.draft);
               },
               cancel: (token, reason) => {
@@ -503,6 +513,29 @@ export function createInteractionSession(input) {
               error: failure,
               blockClick: pointerId => { ignoredClick = pointerId; }
             });
+          }
+          if (configured.navigation) {
+            const binding = configured.navigation;
+            const navigate = (event, wheel) => {
+              if (destroyed || mounted !== lease || (!wheel && (event.altKey || event.ctrlKey || event.metaKey))) return;
+              if (!wheel && !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "+", "=", "-", "_", "Home"].includes(event.key)) return;
+              perform(() => {
+                if (destroyed || mounted !== lease) return outcome("stale");
+                if (!resolveCameraNavigation(program, binding, true)) return outcome("unchanged");
+                lease.capture.cancel("movement");
+                const point = wheel ? pointerCoordinates(element, event, transform).screenPoint : navigationCenter(base, binding.target, transform);
+                const context = prepareCameraNavigation(program, binding, base, bridge.getState().scene, transform, point);
+                if (!context) return outcome("unchanged");
+                const command = wheel ? cameraWheelCommand(context, event.deltaY, event.deltaMode, element.getBoundingClientRect().height) : cameraKeyboardCommand(context, event.key);
+                if (!command) return outcome("unchanged");
+                event.preventDefault();
+                transactionSequence = nextInteger(transactionSequence);
+                return edit(interactionTransaction(command, `interaction-${transactionSequence}`));
+              });
+            };
+            for (const [type, listener] of [["wheel", event => navigate(event, true)], ["keydown", event => navigate(event, false)]]) {
+              lease.listeners.push([type, listener]); element.addEventListener(type, listener, { passive: false });
+            }
           }
           if (configured.select) {
             const binding = configured.select, eventType = binding.effect === "visibility" ? "setVisibility" : "select";
@@ -572,6 +605,9 @@ export function createInteractionSession(input) {
         } catch (error) { try { detach(lease); } catch {} finally { candidate.dispose(); } throw error; }
         let failure;
         try { if (mounted !== undefined) detach(mounted); } catch (error) { failure = error; }
+        // Detaching an active native preview restores its pre-gesture scene.
+        // The new surface must bind that restored scene, not the earlier draft.
+        if (candidate.getState().scene !== bridge.getState().scene) candidate.updateFrame(rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version), transform));
         bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null;
         try { publish("mount"); } catch (error) { failure ??= error; }
         if (failure) throw failure;
@@ -581,9 +617,10 @@ export function createInteractionSession(input) {
         if (destroyed || mounted !== lease) return false;
         perform(() => {
           if (mounted !== lease) return outcome("stale");
-          const version = nextInteger(bridge.getState().version), frame = rebindProgramHitFrame(base, bridge.getState().scene, version);
-          let failure;
+          const version = nextInteger(bridge.getState().version);
+          let frame = rebindProgramHitFrame(base, bridge.getState().scene, version), failure;
           try { detach(lease); } catch (error) { failure = error; }
+          if (frame.scene !== bridge.getState().scene) frame = rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version));
           bridge.updateFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
           try { publish("unmount"); } catch (error) { failure ??= error; }
           if (failure) throw failure;

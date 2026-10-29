@@ -25,12 +25,12 @@ export function prepareSelectionCapture(element, callbacks) {
     }
     if (terminal) {
       try {
-        if (terminal.type === "commit" && hooks.drag) hooks.drag(token, terminal.pointers[0].point, terminal.pointers[0].type, terminal.gesture);
+        if (terminal.type === "commit" && hooks.drag) hooks.drag(token, terminal.pointers[0].point, terminal.pointers[0].type, terminal.gesture, terminal.pointers);
         else if (terminal.type === "commit" && terminal.gesture === "click") hooks.select(token, terminal.pointers[0].point, terminal.pointers[0].type);
         else hooks.cancel(token, terminal.type === "cancel" ? terminal.reason : "movement");
       } catch (error) { failure ??= error; }
     } else if (result.effects.some(effect => effect.type === "preview")) {
-      hooks.preview?.(token);
+      hooks.preview?.(token, current.pointers);
     }
     if (failure) throw failure;
   };
@@ -54,7 +54,24 @@ export function prepareSelectionCapture(element, callbacks) {
     const input = pointer(event), pointerType = event.pointerType || "mouse";
     if (input === null) return;
     hooks.perform(() => {
-      if (!valid() || current.phase !== "idle") return;
+      if (!valid()) return;
+      if (current.phase !== "idle") {
+        if (!hooks.binding?.pinch) return;
+        const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding });
+        if (!result.effects.some(effect => effect.type === "capture")) return;
+        try {
+          host.setPointerCapture(input.pointerId);
+          current = result.state;
+          hooks.join?.(active, current.pointers);
+          apply(result);
+        } catch (error) {
+          // Include the attempted second capture in failure cleanup even when
+          // the host throws after acquiring it.
+          current = result.state;
+          fail(error);
+        }
+        return;
+      }
       const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding ?? CLICK });
       const token = hooks.begin(input.point, pointerType);
       if (token === null) return;

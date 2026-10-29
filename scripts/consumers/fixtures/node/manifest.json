@@ -1117,11 +1117,11 @@
       },
       {
         "id": "interaction/prepared-update",
-        "statements": 19
+        "statements": 23
       },
       {
         "id": "interaction/asset-preparation",
-        "statements": 25
+        "statements": 26
       },
       {
         "id": "interaction/history",
@@ -1142,6 +1142,10 @@
       {
         "id": "interaction/annotation-edit",
         "statements": 29
+      },
+      {
+        "id": "interaction/native-camera-navigation",
+        "statements": 23
       }
     ]
   },

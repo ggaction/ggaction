@@ -200,3 +200,13 @@ test("force movement pins the requested node while the deterministic solver upda
   assert.deepEqual(replay.getState().program.graphicSpec, next.graphicSpec);
   assert.equal(layout(next).revision, layout(p).revision + 1); s.destroy(); replay.destroy();
 });
+
+test('detaching or remounting a native node preview restores the displayed committed frame',()=>{
+ for(const remount of [false,true]){
+  const p=make(),s=createInteractionSession({program:p,bindings:[{type:'moveNode',target:'network'}]}),host=surface(),off=s.mount(host.host);
+  const initial=s.getState().scene;host.fire('pointerdown',40,60);host.fire('pointermove',80,90);host.flush();
+  assert.notDeepEqual(s.getState().scene,initial);if(remount)s.mount(surface().host);else off();
+  assert.equal(s.getState().program,p);assert.deepEqual(s.getState().scene,initial);assert.equal(s.getState().history.undoCount,0);
+  assert.equal(host.captures.size,0);assert.equal(host.pending.size,0);s.destroy();
+ }
+});

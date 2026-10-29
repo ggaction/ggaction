@@ -1140,7 +1140,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../../../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ProjectionParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1249,6 +1249,15 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
 export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
 export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
+/** Native projection navigation. The host supplies focus and touch-action: none. */
+export type NavigationBinding = {
+  readonly type: 'navigate';
+  readonly target: InteractionTarget;
+  readonly scaleExtent: readonly [number, number];
+  /** Explicit reset parameters; their type must match the target projection. */
+  readonly initial: ProjectionParameters;
+} & ({ readonly mode: 'pan'; readonly rotationStepDeg?: never }
+  | { readonly mode: 'rotate'; readonly rotationStepDeg: number });
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -1498,7 +1507,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 

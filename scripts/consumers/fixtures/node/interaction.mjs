@@ -3,7 +3,7 @@ import { chart, hconcat, prepareImageRendering } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
 import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
-import { getMarkItems } from "ggaction/inspection";
+import { getMarkItems, getProjectionView } from "ggaction/inspection";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 const make = factory => factory().createCanvas({ width: 200, height: 160, margin: 0 })
   .createData({ id: "rows", values: [{ x: 50, y: 60 }, { x: 50, y: 60 }] })
@@ -11,6 +11,19 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/native-camera-navigation", run() {
+    const p=chart().createCanvas({width:400,height:300,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}})
+      .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
+    const s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}]}),listeners=new Map(),captures=new Set();let raf;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:400,height:300}),addEventListener(type,fn){const set=listeners.get(type)??new Set();set.add(fn);listeners.set(type,set);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),requestAnimationFrame:fn=>(raf=fn,1),cancelAnimationFrame:()=>{raf=undefined}};
+    const fire=(type,x,y,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:'touch',button:0,clientX:x,clientY:y,preventDefault(){},...extra});};
+    s.mount(host);fire('pointerdown',80,90);fire('pointermove',100,90);raf();assert.equal(s.getState().program,p);
+    fire('pointerdown',140,90,{pointerId:2});fire('pointermove',180,90,{pointerId:2});raf();fire('pointerup',100,90);
+    assert.equal(s.getState().history.undoCount,1);assert.equal(captures.size,0);assert.equal(getProjectionView(s.getState().program,{target:'map'}).parameters.scalePx,2);
+    assert.deepEqual(getMarkItems(s.getState().program,{target:'places'}).map(i=>[i.properties.x,i.properties.y]),[[100,90]]);
+    assert.deepEqual(deserializeProgram(serializeProgram(s.getState().program)).graphicSpec,s.getState().program.graphicSpec);
+    fire('keydown',0,0,{key:'Home'});assert.deepEqual(s.getState().program.graphicSpec,p.graphicSpec);s.destroy();assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
   { id: "interaction/geographic-label-screen-history", async run() {
     const p=chart().createCanvas({width:300,height:200,margin:0})
       .createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{name:'Alpha'},geometry:{type:'Point',coordinates:[40,50]}}})

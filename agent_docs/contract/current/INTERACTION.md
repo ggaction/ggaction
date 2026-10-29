@@ -708,3 +708,41 @@ while preserving the previous mount. A throwing disconnect does not prevent othe
 Malformed or duplicate matching entries and batches over the existing 256 dispatch bound reject
 before publication. Unsupported hosts fail explicitly; no global observer or inferred camera policy
 is substituted. User-driven authoring and asynchronous preparation retain their existing contracts.
+
+
+## Native camera navigation binding
+
+`{type:"navigate",target,mode:"pan"|"rotate",scaleExtent:[min,max],initial,rotationStepDeg?}` is Full-only
+and occupies the session's one editing pointer binding. `target` is one explicit projection ID or scoped
+`{childPath,id}`; facet sources and composition containers reject. `initial` is an explicit native
+`ProjectionParameters` snapshot with the same type as the current projection. The extent is finite,
+positive and ordered. Only rotate mode requires a positive finite `rotationStepDeg`, measured in degrees
+per local projection pixel; rotation requires a non-composite spherical projection. All other options
+reject. The host supplies surface focus/tabindex and touch-action CSS.
+
+One captured pointer translates or rotates from a fixed baseline. A second pointer is accepted only for
+navigation and converts the existing native phase candidate into a fixed pinch baseline. The second
+phase consumes native pinch center/distance; no duplicate camera math or stored camera is created.
+RAF previews update the explicit preview program and hit frame; final up handles the latest coordinates
+and one prepared candidate enters the existing selection/link/preparation/history pipeline. Native phase
+revisions and trace decomposition remain intact; the session history gains one entry. A click, unchanged
+two-pointer gesture or a drag returning to the initial position adds no history entry.
+
+Wheel deltaMode0/1/2 means CSS pixels/16-pixel lines/surface-height pages. Finite delta maps to
+`2^clamp(-deltaPx/300,-20,20)` before native extent clamping and inverse anchor validation. Zero delta is
+unchanged. The focused surface's Arrow keys pan ten local pixels or rotate by ten times rotationStepDeg;
++/= and -/_ zoom by two/one-half at the visible owner Canvas center, Home resets to initial. Unknown keys
+and Ctrl/Meta/Alt shortcuts are ignored. Wheel and keyboard interrupt an active draft and use the same
+native command lifecycle. Pointer starts outside the owner's transformed Canvas clip are ignored.
+
+Cancellation, source/frame replacement, remount and unmount restore both committed program and displayed
+frame. Pending final asset preparation also displays the committed frame; failure or cancellation cannot
+leave a camera preview visible. All pointer captures, RAF callbacks and DOM listeners are released on
+teardown, and late callbacks are ignored. Removed target owners remain inactive; replacement owners must
+remain compatible with the explicit binding. An independently sampled camera frame cannot be used as a
+semantic baseline before the public animation adapter is connected. The accepted state.assets handles
+belong only to state.program; rendering an asset-bound previewProgram requires separate preparation
+for that exact preview. Automatic preview asset preparation remains a follow-up integration obligation.
+
+Evidence: `test/unit/interaction-navigation.test.js`, shared pointer/session regressions and the canonical
+navigation browser snippet. Full camera animation and multi-editing gesture priority remain separate.
