@@ -1,6 +1,6 @@
 {
   "parent": "0c0067dc40738cb193f85becf85bf53dd8206bd0",
-  "sourceCommit": null,
+  "sourceCommit": "895517eb7664d0cf2ec327e26a8cad56fe537ab4",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Full editAnnotation wraps existing Text content, datum anchor, style, placement and layout owners. Explicit annotate dispatch uses the native receiver without a Full static dependency; Basic rejects. No stored schema or renderer changes.",
   "runtimeAndTypesFingerprint": "2cd2da6888db7aaf8e5504649296252858da7e4065c8720f4bdb96cbbffd1e4d",
@@ -208,7 +208,8 @@
           }
         ]
       }
-    ]
+    ],
+    "sourcePinnedDocs": 32
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-b9124cb2.tgz",
@@ -430,6 +431,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "5b7e301feb6d04e94b7eefeeab961d7c34b6001177fafb6ae0252ce2f09d2fb5"
+    },
+    {
+      "path": "annotation-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "annotation-docs-pinned.log.gz",
+      "sha256": "9610e17993056a7da1b6e37300c6a9ef006f3ec87a98cd065437fb6cbad6d930"
+    },
+    {
+      "path": "annotation-build-pinned.log.gz",
+      "sha256": "915deb6fa9dfdc9fb1b5eff4084fccf78011229935004a32e89fb1cc9c07fe8e"
+    },
+    {
+      "path": "annotation-built-pinned.log.gz",
+      "sha256": "a6e7d454de0e7472c070e692c990ca1b8e4940bc930fa2838ffa39ab0fc247e3"
     }
   ]
 }

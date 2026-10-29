@@ -527,3 +527,6 @@ Docs 최초202/205의 changelog1·search cap2 실패는 owning49/49로 수리 �
 Built172pages/1525LLM 및320/390/768/1440px overflow0/Axe0을 통과했다.
 [정확 artifact·명령·원본 실패](annotation-edit-evidence/qualification.json)를 보존한다.
 전수 normal/coverage·전체 installed matrix·STEP060/077 완료는 주장하지 않는다.
+
+E5 source `895517eb7` push 뒤 provenance를 고정해 owning docs32와 built172pages/1525LLM을
+다시 통과했다. Runtime·타입·최종 archive와 시각 입력은 같으므로 앞선 설치/4backend/네 폭Axe를 재사용한다.
