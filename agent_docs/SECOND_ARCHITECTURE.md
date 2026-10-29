@@ -4490,3 +4490,16 @@ unpacked7,343,716bytes다. 최소 상한1135/1,621,000/7,344,000을 적용한다
 animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적용한다.
 기존 SVG/graph/interaction 한도는 유지하며 Node 전용 renderer를 animation entry에 넣지 않는다.
 공개 graph 단락 추가 후 search payload1,080,369bytes에 최소1000-byte 상한1,081,000을 적용한다.
+
+### Native Geo animation prepared values
+
+`materialization/animation/geo.js`는 명시 native Geo layer의 exact projection/binding과
+최종 feature grain에서 원 geometry, winding, 완료 fit parameters, mapped radius를 읽는다.
+`grammar/animation/geoState.js`는 이 닫힌 group을 검증하고 기존 cameraInterpolation 및
+Geo stream을 호출한다. 샘플에서 fit/추론을 재실행하거나 endpoint pixel을 역산하지 않는다.
+클립 밖 feature도 준비 상태에 남아 현재 camera의 part 수 변화와 재출현을 native 계산으로
+처리한다. Public planner/sample 및 offline provenance 연결은 아직 별도 후행 의무다.
+
+두 private owner를 포함한 package는1137entries이며 Node22 1,621,186packed/
+7,354,400unpacked, Node20 1,623,611packed다. 최소천byte 한도는1,624,000/7,355,000이며
+공개 entry에 새 algorithm import를 추가하지 않았다. 현재 공개 animation 범위는 Current가 소유한다.

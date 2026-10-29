@@ -1,9 +1,9 @@
 import { validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { circleGeometryMath } from "./projectionMath.js";
 
-export function geoMarkGeometry(geometry, binding, parameters) {
+export function validateGeoMarkGeometry(geometry, binding) {
   if (geometry === null) return null;
-  const radius = binding.radiusDeg, stack = [geometry]; let work = 0;
+  const stack = [geometry]; let work = 0;
   while (stack.length) {
     const value = stack.pop(); validateWorkLimit(++work, "Geographic mark geometry work");
     if (value === null) continue;
@@ -11,6 +11,13 @@ export function geoMarkGeometry(geometry, binding, parameters) {
     const expected = binding.mode === "point" ? ["Point", "MultiPoint"] : ["LineString", "MultiLineString"];
     if (binding.mode !== "shape" && !expected.includes(value.type)) throw new TypeError("Geometry type is incompatible with the geographic mark mode.");
   }
+  return geometry;
+}
+
+export function geoMarkGeometry(geometry, binding, parameters) {
+  validateGeoMarkGeometry(geometry, binding);
+  if (geometry === null) return null;
+  const radius = binding.radiusDeg; let work = 0;
   if (radius === undefined) return geometry;
   const precision = Math.min(2, Math.max(.01, Math.sqrt(parameters.precisionPx / parameters.scalePx) * 180 / Math.PI));
   let circlePoints = 0;
