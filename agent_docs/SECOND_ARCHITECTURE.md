@@ -793,7 +793,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 652,000 bytes |
 | `ggaction/basic` | 367,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 89,000 bytes |
+| `ggaction/interaction` | 92,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3510,3 +3510,23 @@ graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/paramet
 `interaction/input.js`는 queued command와 외부 concrete frame의 bounded own-data snapshot을 공유한다.
 기존 sceneFrame은 해당 snapshot 뒤 canonical scene/concrete validator를 호출한다. 구체 공개 명령,
 오류·동기 settled 의미와 지원 한도는 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+
+### 명시 linked selection의 runtime projection
+
+`interaction/bindings.js`는 명시 owner DAG와 source별 투영 집합을 session 수명 안에서 소유한다.
+`grammar/selectionProjection.js`는 기존 typed row-key 인코더와 final-item의 original row lineage를
+재사용해 대상 item key 집합만 계산한다. B2 class-scoped frozen resolver가 Full final-item 계산을
+제공하고 controller는 Full assembly를 import하지 않는다. Facet source는 기존 source-only item
+adapter를 읽고 새 그래픽을 숨겨서 materialize하지 않는다.
+
+연결된 기존 selection resource는 receiver의 wrapped editor가 저장하며 모든 후보·dependency closure와
+hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. 정확한
+범위·제한과 오류는 [INTERACTION](contract/current/INTERACTION.md#linked-selections)이 소유한다.
+
+
+Linked selection의 신규 pure projection/runtime binding2개 owner로 package915entries를 측정했다.
+Node20 초기 packed1,319,185/unpacked6,040,680 bytes에 cap915/1,320,000/6,041,000을 적용한다.
+Interaction gzip91,705는89,000을 초과해92,000으로만 올렸고 Full651,735/Basic366,102/SVG20,196은
+기존 cap을 유지한다. Search958,319bytes에는959,000 최소 cap을 적용한다. 최종 archive의 이후
+작은 work-accounting 수정 측정은 개념 checkpoint evidence에서 구분하며 최초 실패를 지우지 않는다.

@@ -350,5 +350,15 @@
     "result": "program, selectedProgram",
     "prerequisites": "Run the complete ES module with its inline observations and public imports. The session commits one named selection, then clears it without changing the earlier program.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-linked-selection",
+    "file": "api/interaction.md",
+    "contains": "const linked = createInteractionSession",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, selected",
+    "prerequisites": "Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.",
+    "rendering": "authoring-only"
   }
 ]

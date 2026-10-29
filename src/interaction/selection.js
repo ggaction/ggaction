@@ -22,7 +22,7 @@ export function interactionTransaction(command, generatedId) {
   return cloneAndFreeze({ ...request, transactionId, origin });
 }
 
-function owner(program, requested) {
+export function interactionOwner(program, requested) {
   if (Array.isArray(requested)) throw new TypeError("Editing commands require one explicit owner target.");
   if (typeof requested !== "string") options(requested, ["childPath", "id"], ["facetSource"], "Editing target");
   const [target] = normalizeActionTargets(requested);
@@ -53,7 +53,7 @@ function invoke(program, method, args) {
 // Reuse the receiver's wrapped domain action. The controller never writes
 // semantic or graphic state and never imports the Full authoring assembly.
 export function prepareInteractionEdit(program, command) {
-  const { target, view } = owner(program, command.target);
+  const { target, view } = interactionOwner(program, command.target);
   const affectedOwners = cloneAndFreeze([target]);
   if (command.type === "setParameter") {
     requireMethod(program, "editParameter");

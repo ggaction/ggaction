@@ -167,3 +167,45 @@ Source `4959ad7ce`의 [qualification](command-evidence/qualification.json)과 �
 Node20/22/24 각각3 runtime·strict public types·4 entry browser bundle을 검증했다. Package최대
 913entries/1,314,971packed/6,024,096unpacked, interaction88,433gzip이며 위의 최소 한도를 충족한다.
 전체 sweep이나 C/D 잔여 기능 완료로 확대 보고하지 않는다. 최초 실패와 final metadata 재패킹은 구분했다.
+
+
+## C 연결 선택의 구체 최소 설계
+
+기존 포괄 승인과 parent의 방향 확인을 재사용한다. 기존 `bindings` 배열에
+`{type:"linkSelection",id,sources:[{target,selection,projection}],target,selection,resolve}`를 추가한다.
+Endpoint는 기존 이름 있는 selection과 일치하는 명시 mark/child target이다. `resolve`는
+union/intersection 또는 정확히 한 source를 갖는 global(owner scope)이다. Target selection은
+binding이 소유하므로 같은 session의 직접 select/clear로 덮어쓰지 않는다.
+
+각 source의 projection은 `{type:"rows",sourceData,targetData}` 또는
+`{type:"fields",sourceFields,targetFields}`다. Rows는 명시한 두 원본 dataset의 logicalId가 같고
+실제 final-item lineage가 그 원본에 닿아야 한다. 이름·행 index·item key의 우연한 일치로 연결하지 않는다.
+Fields는 길이가 같은 1~64개 명시 필드의 typed tuple이며 모든 final item에서 고유하게 정의되어야 한다.
+null/undefined/nonfinite 또는 모호한 aggregate field는 거부하고 string/number/boolean/bigint/date의
+기존 row-key 인코더를 재사용한다. 서로 다른 item이 같은 tuple을 가지는 many-to-many 연결은 허용한다.
+
+Session은 초기화/updateProgram에서 DAG·모든 endpoint·source별 projection set을 검증하며 authoring하지 않는다.
+성공한 편집의 후보 상태에서 영향받은 DAG를 순서대로 실행하고 target owner마다 한 번 기존 editMarkSelection을
+호출한다. 기존 source별 투영 집합과 최종 logical target key 집합을 runtime state에 명시 보관한다.
+원본 command와 모든 linked changes 및 hit frame은 하나의 atomic commit이며 실패 시 모두 이전 참조로 남는다.
+Bindings와 투영 cache는 codec에 저장하지 않으며, 복원된 selection resource에 host가 같은 bindings를 다시 설치한다.
+
+순환·같은 target owner의 중복 writer·unknown/ambiguous dataset·missing selection/field·지원하지 않는 Basic은
+사전 거부한다. B2의 class-scoped frozen resolver 등록을 재사용하여 interaction에서 Full mark policy를
+static import하지 않는다. 256 binding/source 및 누적 10M work 한도로 configuration/계산을 제한한다.
+자동 click/gesture/nearest/orphan/drop는 후속 D에 그대로 남긴다.
+
+
+C 구현 중 명시 DAG 밖의 실제 feedback 반례를 확인했다. A의 opacity property 선택이 B selection에
+연결되고, A의 conditional opacity가 B를 읽으면 A→B binding은 DAG이지만 후보 materialization 후
+A 선택이 바뀐다. 같은 누적 work budget으로 최종 projection을 다시 검사하고 달라지면 전체 candidate를
+거부한다. 고정점 반복·숨은 transaction 없이 old program/scene/cache identity를 보존하는 public 회귀를 추가했다.
+FacetSource는 기존 source-only grain resolver를 사용하므로 concrete-property endpoint만 명시 거부한다.
+
+
+C 소스 후보는 최종 focused/기존 선택 회귀121개를 통과했다. Pure projection100/97.50/100,
+link owner100/95.83/100, session100/97.01/100, expression resolver100/96.67/100,
+selection state100/100/100이며 기존보다 낮은 floor를 만들지 않았다. Source boundary/types/discovery28,
+package13, 실제 데이터5종×3 recipe/ledger16, browser5를 통과했다. 마지막 nested namespace work-accounting의
+보수적 상계 조정 후 owning121을 재검증했다. 최종 동일 tar 설치와 문서 qualification은 아직 진행 중이다.
+최초 callback 인자 오류와 nested fixture cardinality 오류, entry/bundle cap·snippet 등록/provenance 실패를 보존한다.

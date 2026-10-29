@@ -17,6 +17,16 @@ import { createInteractionSession, type InteractionCommand } from ${JSON.stringi
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
 const program = chart(); const session = createInteractionSession({ program });
 createInteractionSession({program: basic(), bindings: [{type:'inspect',events:['click'],slop:0,hitInvisible:true}]});
+
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'intersection',sources:[
+ {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
+ {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
+]}]});
+const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+// @ts-expect-error runtime projection sets are immutable
+session.getState().linkedSelections[0].keys.push('change');
+// @ts-expect-error row and tuple options cannot be mixed
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:'points',selection:'picked',resolve:'global',sources:[{target:'other',selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows',sourceFields:['x']}}]}]});
 declare const element: HTMLCanvasElement;
 const unmount = session.mount(element,{rootTransform:[1,0,0,1,0,0]});
 session.dispatch({type:'inspect',point:{x:1,y:2},pointerType:'touch'});

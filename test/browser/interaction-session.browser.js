@@ -97,3 +97,37 @@ test("host click commands commit and redraw the same logical selection in Canvas
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("one browser click commits a linked child selection and redraws Canvas and SVG together", async()=>{
+  const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:1000,height:700}});
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL("examples/inspect-chart/",server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async()=>{
+      window.__inspectionSessions.forEach(session=>session.destroy());
+      const {chart,hconcat,render}=await import('/src/index.js');
+      const {renderToSVG}=await import('/src/renderers/svg.js');
+      const {createInteractionSession}=await import('/src/interaction.js');
+      document.body.innerHTML='<canvas id="linkedCanvas"></canvas><div id="linkedSvg"></div>';
+      const child=chart().createCanvas({width:200,height:160,margin:0}).createData({id:'rows',keyField:'id',values:[{id:'a',x:50,y:60},{id:'b',x:100,y:100}]})
+        .createPointMark({id:'points'}).encodeX({field:'x',scale:{domain:[0,200],range:[0,200]}}).encodeY({field:'y',scale:{domain:[0,160],range:[0,160]}}).encodePointRadius({value:8})
+        .selectMarks({id:'picked',items:[]}).highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+      const program=hconcat({programs:[{id:'left',program:child},{id:'right',program:child}]});
+      const canvas=document.querySelector('#linkedCanvas');
+      const session=createInteractionSession({program,bindings:[{type:'inspect',events:['click']},{type:'linkSelection',id:'rows',resolve:'global',target:{childPath:['right'],id:'points'},selection:'picked',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
+      window.__linkedSession=session;window.__linkedPhases=[];
+      const draw=p=>{render(p,canvas.getContext('2d'),{pixelRatio:2});document.querySelector('#linkedSvg').innerHTML=renderToSVG(p);};
+      draw(program);session.mount(canvas);
+      session.subscribe(event=>{if(!event.phase)return;window.__linkedPhases.push(event.phase);if(event.phase==='commit')draw(event.current);});
+      canvas.addEventListener('click',()=>{const hit=session.getState().hit?.target;if(hit?.childPath[0]==='left')session.dispatch({type:'select',target:{childPath:hit.childPath,id:hit.ownerId},payload:{id:'picked',select:{items:[hit.itemKey]}},origin:'user'});});
+    });
+    const box=await page.locator('#linkedCanvas').boundingBox();await page.mouse.click(box.x+50,box.y+60);
+    const result=await page.evaluate(async()=>{
+      const {getMarkItems}=await import('/src/inspection.js'),session=window.__linkedSession;
+      return {phases:window.__linkedPhases,revision:session.getState().revision,
+        ids:['left','right'].map(child=>getMarkItems(session.getState().program.children[child],{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id)),
+        redSvg:document.querySelectorAll('#linkedSvg circle[fill="red"]').length};
+    });
+    assert.deepEqual(result,{phases:['commit','settled'],revision:1,ids:[['a'],['a']],redSvg:2});
+    await page.evaluate(()=>window.__linkedSession.destroy());assertNoBrowserErrors(errors,'linked selection transaction');await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});

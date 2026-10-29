@@ -2320,6 +2320,21 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 6,
+    "heading": "Link named selections",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.",
+    "sha256": "884221a7efbdc9dda30d5fd96e61cf1b69ff099883e39f8f3e06dad25786d061",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

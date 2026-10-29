@@ -28,3 +28,8 @@ session.mount(element, { pixelRatio: 2 });
 session.dispatch({ type: "frame", scene: createTransitionScene(program), version: 1, generation: 0 });
 // @ts-expect-error inspection metadata is immutable
 session.getState().hit!.target!.itemKey = "change";
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'rows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'tuple',target:'points',selection:'picked',resolve:'union',sources:[{target:'other',selection:'otherPicked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}]}]});
+const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+// @ts-expect-error projection results are immutable
+session.getState().linkedSelections[0].keys.push('change');

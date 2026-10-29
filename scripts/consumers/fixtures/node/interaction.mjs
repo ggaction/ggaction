@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { chart } from "ggaction";
+import { chart, hconcat } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
 import { getMarkItems } from "ggaction/inspection";
@@ -39,6 +39,15 @@ export const cases = [
     }
   } },
   { id: "interaction/current-frame-and-restored-program", run() {
+    const child=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+    const joined=hconcat({programs:[{id:'left',program:child},{id:'right',program:child}]});
+    const linked=createInteractionSession({program:deserializeProgram(serializeProgram(joined)),bindings:[{type:'linkSelection',id:'rows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
+    const first=getMarkItems(linked.getState().program,{target:{childPath:['left'],id:'points'}})[0].key;
+    linked.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{items:[first]}}});
+    assert.equal(getMarkItems(linked.getState().program.children.right,{target:'points'}).filter(item=>item.properties.fill==='red').length,1);
+    assert.equal(linked.getState().linkedSelections[0].keys.length,1);
+    linked.dispatch({type:'clearSelection',target:{childPath:['left'],id:'points'},payload:{id:'picked'}});
+    assert.equal(linked.getState().linkedSelections[0].keys.length,0);linked.destroy();
     const p = make(chart), session = createInteractionSession({ program: p }), state = session.getState();
     const scene = structuredClone(state.scene);
     for (const node of scene.nodes.filter(node => node.type === "circle")) node.properties.x += 30;

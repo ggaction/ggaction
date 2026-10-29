@@ -149,7 +149,7 @@ other session methods reject further work.
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Editing
-gestures, linked propagation, keyboard navigation, history, and asset loading
+gestures, keyboard navigation, history, and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 
@@ -220,3 +220,74 @@ Repeated IDs within one reentrant FIFO drain are ignored as stale. An unchanged
 parameter value returns `unchanged` with no event or revision. Subscriber errors
 stop delivery and preserve a commit already made. Runtime bindings and transaction
 metadata are not serialized with the chart.
+
+
+## Link named selections
+
+Use an explicit `linkSelection` binding to project existing selections into another
+owner. Each source contributes its own set of target items. `union` includes any
+source, `intersection` requires every source, and `global` uses exactly one source.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. One selection command updates both explicitly linked child owners.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, hconcat } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const child = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false });
+const program = hconcat({ programs: [
+  { id: "left", program: child }, { id: "right", program: child }
+] });
+const linked = createInteractionSession({ program, bindings: [{
+  type: "linkSelection", id: "sameRows", resolve: "global",
+  sources: [{
+    target: { childPath: ["left"], id: "points" }, selection: "picked",
+    projection: { type: "rows", sourceData: "rows", targetData: "rows" }
+  }],
+  target: { childPath: ["right"], id: "points" }, selection: "picked"
+}] });
+linked.dispatch({ type: "select", target: { childPath: ["left"], id: "points" },
+  payload: { id: "picked", select: { field: "id", op: "eq", value: "a" } }
+});
+const selected = linked.getState().program;
+const projectedKeys = linked.getState().linkedSelections[0].keys;
+linked.destroy();
+```
+
+Render `selected` with any supported renderer. The edit and its linked targets
+produce one commit/settled pair. A failure preserves the complete prior program.
+The original `program` and `child` remain unchanged. Add an explicit `inspect`
+binding to the array if mounted pointer inspection is also needed.
+
+Row projections require matching original data identities, including through
+supported derived-data lineage. Independently created datasets with the same name
+are different sources. To link independent tables, provide
+`projection: {type: "fields", sourceFields: ["category"], targetFields: ["group"]}`.
+Each tuple has 1–64 fields, equal source/target length, and a unique value per
+final item. Matching is typed: number `1` differs from string `"1"`. Missing,
+ambiguous, null or nonfinite values fail; duplicate tuples select all matching
+target items. Empty endpoints provide no inferred values.
+
+All endpoint selections must exist and match their owner. A target owner has one
+binding writer; cycles are rejected. Its target selection cannot be overwritten
+by a direct session selection command. Other named selections stay independent.
+Facet links address `facetSource: true` and use semantic source items; concrete
+property predicates are unavailable there. Generated cells remain read-only.
+
+Initialization and external `updateProgram` validate links without changing
+selection membership. Subsequent authoring changes update affected links in
+source-to-target order, once per target. `linkedSelections` exposes immutable
+source-specific projection sets and their resolved keys. Bindings allow at most
+256 links and 256 total source references, with bounded configuration and
+projection work. They remain runtime state: serialize the committed chart as
+usual and attach the bindings again after restoring it.

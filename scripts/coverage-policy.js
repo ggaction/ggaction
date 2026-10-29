@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "selection-projection": { prefix: "grammar/selectionProjection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typed tuple and original-lineage projections must remain bounded and preserve explicit source identity." },
+  "interaction-bindings": { prefix: "interaction/bindings", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Linked selection DAGs must validate ownership and commit the entire projection closure atomically." },
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },

@@ -8,14 +8,21 @@ import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordina
 import { normalizeHitQuery } from "../grammar/hitShapes.js";
 import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
+import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks } from "./bindings.js";
 
 const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
-function bindings(value) {
+function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
-  if (!Array.isArray(value) || value.length > 1) throw new TypeError("Interaction bindings support at most one inspect binding.");
+  if (!Array.isArray(value) || value.length > 257) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  return freezeOwned(value.map(binding => {
+  const inspect = [], linked = [];
+  for (const binding of value) {
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve"], "Interaction binding");
+    (head.type === "linkSelection" ? linked : inspect).push(head);
+  }
+  if (inspect.length > 1) throw new TypeError("Interaction bindings support at most one inspect binding.");
+  return { linked: normalizeSelectionLinks(program, linked), inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
     const events = request.events === undefined ? ["pointermove", "click"] : request.events;
@@ -26,7 +33,7 @@ function bindings(value) {
     const query = normalizeHitQuery({ ...(request.slop === undefined ? {} : { slop: request.slop }),
       ...(request.hitInvisible === undefined ? {} : { hitInvisible: request.hitInvisible }) });
     return cloneAndFreeze({ type: "inspect", events, ...(request.slop === undefined ? {} : { slop: query.slop }), hitInvisible: query.hitInvisible });
-  }));
+  })) };
 }
 function nextInteger(value) {
   if (value === Number.MAX_SAFE_INTEGER) throw new RangeError("Interaction frame counter is exhausted.");
@@ -39,14 +46,15 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
   const request = options(input, ["program"], ["bindings"], "Interaction session");
-  const configured = bindings(request.bindings);
+  const configured = bindings(request.program, request.bindings);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
+  let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
   let state, revision = 0, transactionSequence = 0;
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
   const snapshot = () => state = freezeOwned({ program, scene: bridge.getState().scene,
-    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, mounted: mounted !== undefined, destroyed });
+    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
   const publish = (type, details) => {
@@ -96,6 +104,7 @@ export function createInteractionSession(input) {
     try {
       prepared = prepareInteractionEdit(program, command);
       if (prepared.program === program) return outcome("unchanged");
+      prepared = applySelectionLinks(prepared.program, configured.linked, linkedSelections, prepared.affectedOwners, command);
       version = nextInteger(bridge.getState().version); nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
       candidate = prepareProgramHitFrame(prepared.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
@@ -104,6 +113,7 @@ export function createInteractionSession(input) {
       throw error;
     }
     bridge.updateFrame(frame); base = candidate; program = prepared.program;
+    linkedSelections = prepared.projections;
     generation = nextGeneration; revision = nextRevision; lastHit = null;
     publish(command.type, details("commit", prepared.affectedOwners));
     publish(command.type, details("settled", prepared.affectedOwners));
@@ -148,7 +158,9 @@ export function createInteractionSession(input) {
         const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
         const candidate = prepareProgramHitFrame(next, version);
         const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+        const projections = inspectSelectionLinks(next, configured.linked);
         bridge.updateFrame(frame); base = candidate; program = next; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        linkedSelections = projections;
         publish("program"); return outcome("applied");
       });
     },
@@ -171,7 +183,7 @@ export function createInteractionSession(input) {
         const frame = rebindProgramHitFrame(base, bridge.getState().scene, version, transform);
         const candidate = createHitFrameBridge(frame);
         try {
-          for (const binding of configured) for (const event of [...binding.events, "pointerleave"]) {
+          for (const binding of configured.inspect) for (const event of [...binding.events, "pointerleave"]) {
             const listener = event === "pointerleave" ? () => { if (!destroyed && mounted === lease) dispatch({ type: "leave" }); }
               : eventObject => {
                 if (destroyed || mounted !== lease) return;

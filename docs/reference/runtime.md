@@ -1118,6 +1118,42 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export type SelectionProjection = {
+  readonly type: 'rows';
+  readonly sourceData: string;
+  readonly targetData: string;
+} | {
+  readonly type: 'fields';
+  readonly sourceFields: readonly string[];
+  readonly targetFields: readonly string[];
+};
+export interface LinkedSelectionSource {
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly projection: SelectionProjection;
+}
+export interface LinkedSelectionBinding {
+  readonly type: 'linkSelection';
+  readonly id: string;
+  readonly sources: readonly LinkedSelectionSource[];
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  /** global requires exactly one source owner. */
+  readonly resolve: 'union' | 'intersection' | 'global';
+}
+export interface LinkedSelectionState {
+  readonly id: string;
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly resolve: 'union' | 'intersection' | 'global';
+  readonly sources: readonly {
+    readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+    readonly selection: string;
+    /** Logical keys projected into the target owner, with its child namespace. */
+    readonly keys: readonly string[];
+  }[];
+  readonly keys: readonly string[];
+}
 export interface InteractionState {
   readonly program: InteractionProgram;
   readonly scene: CanvasTransitionScene;
@@ -1126,6 +1162,7 @@ export interface InteractionState {
   /** Session-local committed program revision; inspection and frames do not increment it. */
   readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly linkedSelections: readonly LinkedSelectionState[];
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
@@ -1198,7 +1235,7 @@ export interface InteractionSession {
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly InspectBinding[];
+  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
 }): InteractionSession;
 ```
 
