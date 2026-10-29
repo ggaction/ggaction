@@ -58,6 +58,12 @@
       "file": "animation-matching-final-coverage-2.log.gz",
       "sha256": "fae0371f150944b5ff1e92a15ef8e5878d412ed0e659a6652b870d7e0b3a8212",
       "status": "failed-test-fixture-before-repair"
+    },
+    {
+      "file": "animation-matching-final-docs.log.gz",
+      "sha256": "a93453289fae55ae4c51d6f08c2b1b823c1b581c16c676565df721adff9480c4",
+      "status": "passed"
     }
-  ]
+  ],
+  "sourceCommit": "80a9c52a8"
 }
