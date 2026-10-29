@@ -171,6 +171,62 @@
       "artifact": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
       "entries": 967,
       "differences": []
+    },
+    "postCommitProvenance": {
+      "docsSource": {
+        "tests": 184,
+        "passed": 184
+      },
+      "builtPages": 169,
+      "machineArtifacts": 1463,
+      "browser": [
+        {
+          "width": 320,
+          "route": "version/",
+          "status": "passed"
+        },
+        {
+          "width": 320,
+          "route": "extension/primitives/",
+          "status": "passed"
+        },
+        {
+          "width": 320,
+          "route": "mcp/",
+          "status": "passed"
+        },
+        {
+          "width": 390,
+          "route": "version/",
+          "status": "passed"
+        },
+        {
+          "width": 390,
+          "route": "extension/primitives/",
+          "status": "passed"
+        },
+        {
+          "width": 390,
+          "route": "mcp/",
+          "status": "passed"
+        },
+        {
+          "width": 768,
+          "route": "version/",
+          "status": "passed"
+        },
+        {
+          "width": 768,
+          "route": "extension/primitives/",
+          "status": "passed"
+        },
+        {
+          "width": 768,
+          "route": "mcp/",
+          "status": "passed"
+        }
+      ],
+      "packedInputsUnchanged": true
     }
   },
   "artifact": {
@@ -622,7 +678,38 @@
       "file": "public-type-boundaries-second.log.gz",
       "sha256": "b026c575dbfb5ca356bc56b50263bce28544494cb908550297b1581ee60b9669",
       "bytes": 2547
+    },
+    {
+      "file": "source-doc-browser.log.gz",
+      "sha256": "6398bf6732e77d8e1066c05a1fb271ca6802fb14dd2f1d3f30628fa5e3ddde73",
+      "bytes": 65
+    },
+    {
+      "file": "source-packed-inputs.log.gz",
+      "sha256": "0577b1a03a003a297f3fb362c46ebb86042587c63c7442c0dad5ba73dd51b6f7",
+      "bytes": 118
+    },
+    {
+      "file": "source-provenance-build.log.gz",
+      "sha256": "460f4f4ac72d60f176fe28d6279808b411518b72878fe5ddeda4c39efbf6e66f",
+      "bytes": 420
+    },
+    {
+      "file": "source-provenance-built.log.gz",
+      "sha256": "c8716095a666f8d2bccbd29be09be70917cbdf6fd6e70e14e949b2dc7f2a9e8a",
+      "bytes": 179
+    },
+    {
+      "file": "source-provenance-check.log.gz",
+      "sha256": "4e1e3151a0a559dc5aaf34bed78cea879cd4d4663331dadacd3a5f589e7f3e97",
+      "bytes": 42804
+    },
+    {
+      "file": "source-provenance-generate.log.gz",
+      "sha256": "ee459806f2c60c707e2a610eb925d2fa6e024898aad84e2190b57e13e74bee84",
+      "bytes": 208
     }
   ],
-  "status": "verified"
+  "status": "verified",
+  "sourceCommit": "5a1912178969913399941f9eee38f0aaee474efc"
 }
