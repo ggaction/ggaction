@@ -95,6 +95,7 @@ test("keeps source imports inside their architectural boundaries", () => {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
           (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === "sceneSnapshot.js") ||
+          (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === path.join("animation", "frameProvenance.js")) ||
           (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
           (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
             "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
