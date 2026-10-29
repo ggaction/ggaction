@@ -11,7 +11,8 @@
 - [x] 실제 capture/RAF preview/final-up/cancel lifecycle 연결
 - [x] Cartesian/lasso types/Current/docs/codec/installed/browser 소비자 검증
 - [x] AT36 구현 인수 matrix와 source-fixed evidence
-- [ ] 최신 responsive/nested composition 통합 및 STEP074 qualification
+- [x] 최신 responsive/nested composition 통합
+- [ ] STEP074 qualification
 - [ ] 후행 history/077 종료
 
 [전체 승인](../AUTHORIZATION.json)을 재사용한다. 원 카드의 요구를 삭제하거나 private 계산을
@@ -191,3 +192,21 @@ cancel1/commit0 또는 commit1/settled1, capture/RAF0과 독립 literal 선택 �
 STEP074, 최신 main `de634f88e`의 responsive/nested 통합, 후행 history와 STEP077 전체 종료는 남아 있다.
 앞선 단락의 '후행/구현 중'은 해당 시점의 기록이며 현재 angular 공개 지원은 Current INTERACTION과
 MARK_SELECTION 계약이 소유한다. 새 요구를 삭제하거나 전체 로드맵 완료로 해석하지 않는다.
+
+
+## Responsive nested 통합 source
+
+Main `de634f88e`를 병합했고 source 충돌은 없었다. 양쪽 architecture/critical family를 유지하고
+생성물은 정본에서 재생성했다. 새 2단계 concat 안의 responsive Polar owner 회귀는 실제 placement와
+변한 frame을 읽으며 resize 중 preview 취소, 다시 시작한 seam 선택, sibling identity와 codec를 확인한다.
+교차42/42, 타입·source/package경계34/34, browser6/6, 실제데이터16/16을 통과했다.
+합산 동일tar `5d94ce0e…`의3Node 설치와 최종 source pin 문서는 qualification에 별도 기록한다.
+초기 docs18/20의두실패는 search상한973,000<실측973,997와 미커밋nested예제링크였으며
+전자는 최소974,000으로교정했고후자는 mergecommit뒤pin하여검증한다. 최초realistic cache환경누락은
+그대로보존했고명시된공유cache로canonical16/16을재실행했다. Runtime실패는없었다.
+
+Responsive nested 통합 qualification은 [고정 증거](angular-nested-evidence/qualification.json)가 소유한다.
+Source89ed1008d와 동일5d94ce0e archive로 Node20/22/24각3runtime+TS+4bundle이통과했다.
+Pinned문서20/20, built168pages/1435LLM, interaction/selection/composition3pages×4width의
+responsive+Axe12cells도통과했다. 코드변경없이source지시링크만핀한metadata후속이다.
+STEP059구현인수는이합산본까지유효하며STEP074/077종합종료는계속남는다.

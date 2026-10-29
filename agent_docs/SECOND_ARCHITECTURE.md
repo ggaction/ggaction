@@ -3772,3 +3772,9 @@ Source final rounding fix 이후 동일 archive 검증은 STEP059의 별도quali
 Angular preview의 실제 nested getter5회 재현을 수리해 own-data 사전 검증과 caller input불변을
 고정했다. 그 최종 archive는945/1,363,336/6,234,504, Full664,966/Basic372,376/interaction107,879gzip이다.
 Full만665,000으로 최소추가하며 나머지상한은유지한다. 초기cap실패와수리전archive는최종통과와구분한다.
+
+Angular와034/035 nested responsive를 합친 경계는 기존 양쪽 owner를 유지한다. 새macro owner 없이
+resolved Polar frame과 child placement를 읽고 resize중 captured preview를 취소한다. 합산 archive는
+951entries/1,370,214packed/6,271,222unpacked이며 Node20/24 최대 Full669,657/Basic376,363/
+interaction108,129gzip을 측정했다. 한도는951/1,371,000/6,272,000 및669,700/376,400/108,200,
+search973,997bytes→974,000이다. 각각의branch한도통과를합산근거로대체하지않는다.
