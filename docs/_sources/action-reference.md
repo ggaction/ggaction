@@ -3561,6 +3561,24 @@ editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
 
+### `createGeoJoinData`
+
+```javascript
+createGeoJoinData({ id, geometry?, data?, geometryKey, dataKey })
+```
+
+Create an immutable one-to-one typed geometry-table join, retaining unmatched features and source identity.
+See [Geometry and projections](../api/geometry.md#creategeojoindata) for exact keys, diagnostics and revision behavior.
+
+### `editGeoJoinData`
+
+```javascript
+editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
+```
+
+Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
+See [Geometry and projections](../api/geometry.md#editgeojoindata).
+
 ### `createProjection`
 
 ```javascript

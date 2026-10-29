@@ -69,6 +69,8 @@ interface ChartProgramActions {
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+  createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+  editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -2829,6 +2831,18 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 
 Related types: [`FlowDefinition`](../../../reference/types/#type-flowdefinition).
 
+### `CreateGeoJoinDataOptions` {#type-creategeojoindataoptions}
+
+ Expand CreateGeoJoinDataOptions
+
+```typescript
+export interface CreateGeoJoinDataOptions extends GeoJoinKeyOptions {
+  readonly id: string; readonly geometry?: string; readonly data?: string;
+}
+```
+
+Related types: [`GeoJoinKeyOptions`](../../../reference/types/#type-geojoinkeyoptions).
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -5442,6 +5456,18 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](../../../reference/types/#type-folddataoptions).
 
+### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
+
+ Expand EditGeoJoinDataOptions
+
+```typescript
+export interface EditGeoJoinDataOptions extends Partial<GeoJoinKeyOptions> {
+  readonly target?: string; readonly geometry?: string; readonly data?: string;
+}
+```
+
+Related types: [`GeoJoinKeyOptions`](../../../reference/types/#type-geojoinkeyoptions).
+
 ### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
 
  Expand EditGeoLineMarkOptions
@@ -7409,6 +7435,20 @@ export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Reco
 ```
 
 Related types: [`GeographicGeometry`](../../../reference/types/#type-geographicgeometry) · [`GeometryFeature`](../../../reference/types/#type-geometryfeature).
+
+### `GeoJoinKeyOptions` {#type-geojoinkeyoptions}
+
+ Expand GeoJoinKeyOptions
+
+```typescript
+export interface GeoJoinKeyOptions {
+  /** Exact own field or nonempty own-property path. Null and absent keys never match. */
+  readonly geometryKey: GeometryFeatureKey;
+  readonly dataKey: GeometryFeatureKey;
+}
+```
+
+Related types: [`GeometryFeatureKey`](../../../reference/types/#type-geometryfeaturekey).
 
 ### `GeoLineMarkOptions` {#type-geolinemarkoptions}
 

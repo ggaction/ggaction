@@ -72,6 +72,72 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 - ✅ Covered: retained keyed identity, new generated identity, object selection, immutable failure, removal, inspection, Full/Basic and corrupted offline restore.
 - Evidence: `test/unit/geo/geometry-resources.test.js`.
 
+## `createGeoJoinData`
+
+- Signature: `createGeoJoinData({id,geometry?,data?,geometryKey,dataKey})`.
+- Full only. Requires a missing explicit geometry ID and two explicit key paths. `geometry` resolves
+  explicit/current/unique geographic source or join; contours are ineligible. `data` resolves the
+  explicit/current/unique materialized dataset, including a logical derived-data owner.
+- Each key is a nonempty own-field string or own-property string array of at most128 fields. The
+  geometry path starts at a normalized feature; use `id` or`["properties","code"]`. The table path starts
+  at its row. Final keys reuse typed row-key scalars or tuples; numeric1, string"1", and tuple[1] differ.
+  Null/absent keys never match each other. Invalid/nonfinite keys, descriptors/accessors, sparse arrays,
+  unknown options and excessive work fail before writes. Features are limited to100000 and join work
+  including encoded key bytes to10000000.
+- The join is1:1: duplicate nonmissing keys on either input fail with `ambiguous-identity` and both
+  duplicate counts in error diagnostics. Aggregation must be an explicit preceding data transform.
+  No fuzzy matching, coercion, automatic aggregation or generated zero values occurs.
+- Feature order, properties, geometry, shared topology and logical feature keys are preserved.
+  Unmatched geometry remains present with null rowMap. Matching table rows are exposed as mark fields
+  and exact row references; unmatched items have empty fields. Original geometry properties remain in
+  the resource and are never merged with table fields. Chained joins preserve geometry and bind the
+  current join's table fields. A table value of0 remains0.
+- Stored kind:geometry, method:geo-join, algorithmVersion1, authored ownership, observed provenance,
+  exact geometry and data inputs. Result contains source features/identity/coordinateKind, optional
+  retained topology, rowMap and diagnostics: geometryCount, dataCount, matchedCount, zero duplicate
+  counts, unmatchedGeometry/unmatchedData source indices and matched/geometry coverage(empty=0).
+  Source rows retain every table row used to determine this result. Inspection reads these values;
+  offline restoration validates them against exact retained inputs without I/O.
+- Source geometry or table revision recomputes all transitive joins and fitted projections once, then
+  updates coordinate/mark refs and rematerializes the final consumer union. Duplicate keys, invalid
+  fit, cyclic inputs or incompatible consumers reject the whole operation with old state/trace intact.
+  Live authored dependencies restrict removal. Remove dependent marks, coordinates, projections and
+  joins explicitly through their existing removal actions before removing their inputs.
+
+### Formal values — `createGeoJoinData`
+
+- Implemented: `createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): fuzzy joins and implicit aggregation.
+
+### Value coverage — `createGeoJoinData`
+
+- ✅ Covered: typed1:1 keys, duplicate diagnostics, missing/empty/null, own descriptors and limits,
+  exact refs, field selection, source closure, Full/Basic boundaries and corrupted offline restore.
+- Evidence: `test/unit/geo/join.test.js`, `test/unit/geo/join-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `editGeoJoinData`
+
+- Signature: `editGeoJoinData({target?,geometry?,data?,geometryKey?,dataKey?})`.
+- Explicit target, current eligible join, then one unique join. Raw geometry and contour resources are
+  ineligible. Requires a nonempty patch without undefined values. Omitted inputs and key paths retain
+  their exact current decisions. Explicit input IDs use the same resolution as creation.
+- Every successful edit increments revision once, including a same-value edit. Keys remain the
+  geometry input's logical feature keys; replacing that input adopts its identity, without matching
+  unrelated regions by value. All dependent joins, fits and marks are refreshed atomically. Self and
+  indirect cycles, duplicates, invalid paths/inputs and incompatible outputs fail before writes.
+
+### Formal values — `editGeoJoinData`
+
+- Implemented: `editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): implicit region identity transfer between unrelated inputs.
+
+### Value coverage — `editGeoJoinData`
+
+- ✅ Covered: inherited/explicit keys and inputs, transitive revision, stable identity and immutable failure.
+- Evidence: `test/unit/geo/join-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
 ## `createProjection`
 
 - Signature: `createProjection({id,type,centerDeg?,rotateDeg?,parallelsDeg?,scalePx?,translatePx?,reflectX?,reflectY?,precisionPx?,clipAngleDeg?,clipExtentPx?,fit?})`.

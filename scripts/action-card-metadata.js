@@ -33,6 +33,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
+  "editGeoJoinData",
   "editProjection",
   "editGeometryData",
   "editEdgeRoute",
@@ -85,6 +86,8 @@ const explicitLifecycleEditors = Object.freeze({
   editProjection: ["editProjection", "removeResource"],
   createGeometryData: ["editGeometryData", "removeResource"],
   editGeometryData: ["editGeometryData", "removeResource"],
+  createGeoJoinData: ["editGeoJoinData", "removeResource"],
+  editGeoJoinData: ["editGeoJoinData", "removeResource"],
   bundleGraphEdges: ["editEdgeRoute", "removeResource"],
   editEdgeRoute: ["editEdgeRoute", "removeResource"],
   createCalendarLayout: ["editLayout", "removeResource"],
@@ -190,6 +193,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeoJoinData", "editGeoJoinData",
   "createGeometryData", "editGeometryData",
   "bundleGraphEdges", "editEdgeRoute",
   "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",

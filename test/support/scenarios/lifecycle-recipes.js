@@ -1334,6 +1334,8 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
       values: { type: "FeatureCollection", features: rows.map(row => ({ type: "Feature", id: row.id,
         properties: { category: row.category }, geometry: { type: "Point", coordinates: [row.x, row.positive] } })) } })
+    .createGeoJoinData({ id: "directGeoJoin", geometry: "directGeometry", data: "directSource", geometryKey: "id", dataKey: "id" })
+    .editGeoJoinData({ target: "directGeoJoin", geometryKey: ["id"], dataKey: ["id"] })
     .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
     .editProjection({ target: "directProjection", reflectX: true })
     .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })

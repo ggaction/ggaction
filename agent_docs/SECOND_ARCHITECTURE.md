@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 715,000 bytes |
+| `ggaction` | 716,000 bytes |
 | `ggaction/basic` | 381,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 44,000 bytes |
@@ -3641,6 +3641,15 @@ coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calend
 
 
 ### Geographic source normalization
+
+Geographic typed join은 `grammar/geo/join.js`에서 공통 row-key token으로1:1 correspondence와
+진단만 계산한다. `materialization/geo/joinResource.js`는 원본 feature/identity를 보존한 geometry
+result와 exact geometry+table inputs를 저장하고 field/selection은 table rowMap을 해석한다.
+`geometryState.js`의 닫힌 method dispatch는 source/contour/join 검증을 분리한다. Geometry
+revision과 Full data resource plan은 join→fit DAG를 먼저 계산하고 coordinate exact refs 및
+최종 mark/scale/guide union을 갱신한다. 기존 prepared envelope의 exact receiver/vector proof,
+screen sibling 권한과 renderer의 graphicSpec 전용 경계는 유지된다. 값 계약은
+[GEOMETRY.md](contract/current/GEOMETRY.md#creategeojoindata)의 join 절을 따른다.
 
 `grammar/geo/`는 순수 JSON/geometry owner다. Caller source의
 own-data snapshot·유형·finite/closed ring과 TopoJSON shared arc decode를 정규화하며

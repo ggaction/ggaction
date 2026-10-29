@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 357,
+  "actionCount": 359,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -223,6 +223,14 @@
       "status": "development"
     },
     "editGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoJoinData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoJoinData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

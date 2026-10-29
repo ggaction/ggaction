@@ -187,6 +187,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createGeoJoinData", "editGeoJoinData"].includes(action.name)) return {
+    prerequisites: ["geographic geometry resource", "materialized table"], owns: ["joined geometry resource"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "data"]
+  };
   if (/^(create|edit)(GeoShapeMark|GeoPointMark|GeoLineMark|Graticule)$/.test(action.name)) return {
     prerequisites: ["Canvas", "Geo coordinate", ...(action.name.endsWith("Graticule") ? [] : ["compatible geometry source"])], owns: ["geographic mark"],
     idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate", ...(action.name.endsWith("Graticule") ? [] : ["geometry"])]

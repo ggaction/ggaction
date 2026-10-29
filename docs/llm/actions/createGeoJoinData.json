@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 3,
+  "name": "createGeoJoinData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create an immutable one-to-one typed geometry-table join, retaining unmatched features and source identity.",
+  "signature": "createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;",
+  "intents": [
+    "create geo join data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "joined geographic geometry",
+    "typed geometry table join"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "geographic geometry resource",
+      "materialized table"
+    ],
+    "owns": [
+      "joined geometry resource"
+    ],
+    "idOptions": [
+      "id",
+      "geometry",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoJoinData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "geographic geometry resource",
+      "materialized table"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "geometryKey",
+      "required": true,
+      "type": "GeometryFeatureKey"
+    },
+    {
+      "name": "dataKey",
+      "required": true,
+      "type": "GeometryFeatureKey"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createGeoJoinData({ id, geometryKey, dataKey, data?, target?, geometry? })"
+  ],
+  "snippet": "program.createGeoJoinData({ id: \"joinedGeometry\", geometry: \"geometry\", data: \"measurements\", geometryKey: \"id\", dataKey: \"code\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#creategeojoindata"
+}

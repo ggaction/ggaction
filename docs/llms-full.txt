@@ -18969,6 +18969,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
+| [`createGeoJoinData`](./reference/actions/charts-data/#creategeojoindata) | H2 | user-facing | core |
 | [`createGeoLineMark`](./reference/actions/marks/#creategeolinemark) | H2 | user-facing | marks |
 | [`createGeometryData`](./reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
 | [`createGeoPointMark`](./reference/actions/marks/#creategeopointmark) | H2 | user-facing | marks |
@@ -19104,6 +19105,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeoJoinData`](./reference/actions/charts-data/#editgeojoindata) | H3 | user-facing | core |
 | [`editGeoLineMark`](./reference/actions/marks/#editgeolinemark) | H3 | user-facing | marks |
 | [`editGeometryData`](./reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
 | [`editGeoPointMark`](./reference/actions/marks/#editgeopointmark) | H3 | user-facing | marks |
@@ -24274,6 +24276,73 @@ editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](./api/geometry/#editgeometrydata).
+
+## `createGeoJoinData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateGeoJoinDataOptions`](./reference/types/#type-creategeojoindataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `geometryKey` | Required | `GeometryFeatureKey` |
+| `dataKey` | Required | `GeometryFeatureKey` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoJoinData({ id, geometry?, data?, geometryKey, dataKey })
+```
+
+Create an immutable one-to-one typed geometry-table join, retaining unmatched features and source identity.
+See [Geometry and projections](./api/geometry/#creategeojoindata) for exact keys, diagnostics and revision behavior.
+
+## `editGeoJoinData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoJoinDataOptions`](./reference/types/#type-editgeojoindataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `geometryKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `dataKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
+```
+
+Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
+See [Geometry and projections](./api/geometry/#editgeojoindata).
 
 ## `createProjection`
 
@@ -34226,6 +34295,7 @@ export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js"
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
 ```
 
 #### `ggaction/basic`
@@ -35167,6 +35237,8 @@ interface ChartProgramActions {
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+  createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+  editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -37927,6 +37999,18 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 
 Related types: [`FlowDefinition`](./reference/types/#type-flowdefinition).
 
+### `CreateGeoJoinDataOptions` {#type-creategeojoindataoptions}
+
+ Expand CreateGeoJoinDataOptions
+
+```typescript
+export interface CreateGeoJoinDataOptions extends GeoJoinKeyOptions {
+  readonly id: string; readonly geometry?: string; readonly data?: string;
+}
+```
+
+Related types: [`GeoJoinKeyOptions`](./reference/types/#type-geojoinkeyoptions).
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -40540,6 +40624,18 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](./reference/types/#type-folddataoptions).
 
+### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
+
+ Expand EditGeoJoinDataOptions
+
+```typescript
+export interface EditGeoJoinDataOptions extends Partial<GeoJoinKeyOptions> {
+  readonly target?: string; readonly geometry?: string; readonly data?: string;
+}
+```
+
+Related types: [`GeoJoinKeyOptions`](./reference/types/#type-geojoinkeyoptions).
+
 ### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
 
  Expand EditGeoLineMarkOptions
@@ -42507,6 +42603,20 @@ export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Reco
 ```
 
 Related types: [`GeographicGeometry`](./reference/types/#type-geographicgeometry) · [`GeometryFeature`](./reference/types/#type-geometryfeature).
+
+### `GeoJoinKeyOptions` {#type-geojoinkeyoptions}
+
+ Expand GeoJoinKeyOptions
+
+```typescript
+export interface GeoJoinKeyOptions {
+  /** Exact own field or nonempty own-property path. Null and absent keys never match. */
+  readonly geometryKey: GeometryFeatureKey;
+  readonly dataKey: GeometryFeatureKey;
+}
+```
+
+Related types: [`GeometryFeatureKey`](./reference/types/#type-geometryfeaturekey).
 
 ### `GeoLineMarkOptions` {#type-geolinemarkoptions}
 
@@ -52018,7 +52128,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Example and dataset source | `4191986ce68922a20d9d4a08552ba89737754849` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 357 |
+| Declared actions here | 359 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -54085,6 +54195,60 @@ unspecified limits. Every successful edit advances the resource revision once.
 Invalid edits leave the original program and its trace unchanged. Inspect or
 compare geometry through [inspection](./inspection/), and remove it through
 [`removeResource`](./reference/actions/charts-data/#removeresource).
+
+## `createGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+```
+
+Join a geometry resource and materialized table with exact typed keys. Supply a new
+`id`, `geometryKey` and `dataKey`; `geometry` and `data` may be omitted when the
+current resource or one eligible input identifies each unambiguously. Key paths
+start at the feature or table row, respectively.
+
+> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+
+```javascript
+import { chart } from "ggaction";
+
+const joined = chart()
+  .createData({ id: "population", values: [{ code: "west", population: 120 }] })
+  .createGeometryData({
+    id: "regions", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } },
+      { type: "Feature", id: "east", properties: {}, geometry: null }
+    ] }
+  })
+  .createGeoJoinData({ id: "measured-regions", geometryKey: "id", dataKey: "code" });
+```
+
+The result retains both regions. West maps to table row0; East has a missing
+measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
+and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
+nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
+
+Use a string field or a nonempty property path such as`["properties","code"]`.
+Geometry properties stay intact. Joined mark fields read the matching table row;
+unmatched items have no table fields. Diagnostics expose match coverage, duplicate
+counts and unmatched source indices. An empty geometry has coverage0.
+
+## `editGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
+```
+
+`editGeoJoinData` accepts `target?`, `geometry?`, `data?`, `geometryKey?` and
+`dataKey?`. Omitted values retain the current inputs and keys. Table or geometry
+revisions refresh the join, dependent fitted projections and marks atomically.
+Remove dependent joins before removing their source resources. Both actions are
+available in Full `ggaction`.
 
 ## `createProjection`
 

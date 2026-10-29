@@ -43,13 +43,13 @@
       "sha256": "bb02c581da10e893045035c576a7aca0117f0311ed95a95f4e540aae54a46a17"
     },
     "actions": {
-      "count": 357,
+      "count": 359,
       "path": "llm/actions.json",
       "bytes": 99442,
       "sha256": "0c5d07d09a396d577bd286e38703ff3b9c518f1b93b50319bb4895353d8a21e3"
     },
     "types": {
-      "count": 976,
+      "count": 980,
       "path": "llm/types.json",
       "bytes": 214942,
       "sha256": "9387c4f6e0b6a225544be21042c405dd1a7f4107bb3ff2409633e1c2b3c31116"

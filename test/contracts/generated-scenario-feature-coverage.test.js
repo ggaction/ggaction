@@ -216,16 +216,16 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 350);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3377);
-  assert.equal(inventory.counts.nestedOptionPaths, 28622);
-  assert.equal(inventory.counts.optionPaths, 31999);
-  assert.equal(inventory.counts.requiredOptionPaths, 21422);
-  assert.equal(inventory.counts.excludedOptionPaths, 10577);
-  for (const action of ["createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
+  assert.equal(inventory.counts.publicActions, 352);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3388);
+  assert.equal(inventory.counts.nestedOptionPaths, 28644);
+  assert.equal(inventory.counts.optionPaths, 32032);
+  assert.equal(inventory.counts.requiredOptionPaths, 21439);
+  assert.equal(inventory.counts.excludedOptionPaths, 10593);
+  for (const action of ["createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
-  for (const id of ["option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
+  for (const id of ["option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
   }
   for (const action of ["bundleGraphEdges", "editEdgeRoute", "createCalendarLayout", "createCalendarPlot", "editCalendarPlot", "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark", "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
@@ -254,7 +254,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.topLevelCategoricalPaths, 1192);
   assert.equal(inventory.counts.topLevelLiteralValues, 4310);
   assert.equal(inventory.counts.literalFamilies, 268);
-  assert.equal(inventory.counts.pathLiteralRequirements, 15384);
+  assert.equal(inventory.counts.pathLiteralRequirements, 15386);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
   assert.equal(inventory.counts.pathDiversityRequirements, 512);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
@@ -526,7 +526,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10577 }
+    { "redacted-array": 10593 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -618,6 +618,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:editPivotData.op", "option-path:editPivotData.groupBy",
     "option-path:filterData.where", "option-path:editFilteredData.where",
     "action:createGeoShapeMark", "action:editGeoShapeMark", "action:createGeoPointMark", "action:editGeoPointMark", "action:createGeoLineMark", "action:editGeoLineMark", "action:createGraticule", "action:editGraticule", "option-path:createGeoShapeMark.geometry", "option-path:editGeoPointMark.radiusPx", "option-path:editGeoLineMark.opacity", "option-path:editGraticule.opacity",
+    "action:createGeoJoinData", "action:editGeoJoinData",
+    "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey",
     "action:createProjection", "action:editProjection",
     "option-path:createGeometryData.format", "option-path:createGeometryData.coordinateKind",
     "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
@@ -643,7 +645,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 37723);
+  assert.equal(ledger.requirements.length, 37744);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

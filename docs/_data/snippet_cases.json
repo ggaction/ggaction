@@ -431,5 +431,16 @@
     "mode": "complete",
     "result": "filteredProgram",
     "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
+  },
+  {
+    "id": "geographic-typed-join",
+    "file": "api/geometry.md",
+    "contains": "const joined = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "joined",
+    "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
   }
 ]

@@ -1,5 +1,6 @@
 import { registerGeoMarkActions } from "./geo/marks.js";
 import { registerGeometryActions } from "./geo/resources.js";
+import { registerGeoJoinActions } from "./geo/join.js";
 import { registerProjectionActions } from "./geo/projections.js";
 import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
 import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
@@ -84,6 +85,7 @@ export function registerActions(ProgramClass) {
   registerCalendarResourceActions(ProgramClass);
   registerCalendarPlotActions(ProgramClass);
   registerGeometryActions(ProgramClass);
+  registerGeoJoinActions(ProgramClass);
   registerProjectionActions(ProgramClass);
   registerContourResourceActions(ProgramClass);
   registerContourMarkActions(ProgramClass);

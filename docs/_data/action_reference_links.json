@@ -346,6 +346,8 @@
   "editEdgeRoute": "/reference/actions/charts-data/#editedgeroute",
   "createGeometryData": "/reference/actions/charts-data/#creategeometrydata",
   "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
+  "createGeoJoinData": "/reference/actions/charts-data/#creategeojoindata",
+  "editGeoJoinData": "/reference/actions/charts-data/#editgeojoindata",
   "createProjection": "/reference/actions/charts-data/#createprojection",
   "editProjection": "/reference/actions/charts-data/#editprojection",
   "createGeoShapeMark": "/reference/actions/marks/#creategeoshapemark",
