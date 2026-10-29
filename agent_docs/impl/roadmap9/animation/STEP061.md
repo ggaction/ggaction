@@ -5,6 +5,7 @@
 - [x] 기존 승인 재사용: [remainingApproval](../AUTHORIZATION.json)
 - [x] 순수 수치 커널과 변경 경로의 독립 수치 검증
 - [x] item key·primitive role 기반 순수 대응과 실제 keyed 데이터 revision 검증
+- [x] [그래프 경로의 arc-length 대응·현재 node anchor 보정](routes.md)
 - [ ] item identity·primitive role별 transition planner
 - [ ] 정확한 두 endpoint와 typed scene 연결
 - [ ] 의미 좌표 및 곡선·partition·graph·Geo 통합
