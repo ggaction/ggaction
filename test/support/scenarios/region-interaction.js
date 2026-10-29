@@ -47,6 +47,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assert.deepEqual(restoredMetadata.semanticSpec.resources.find(resource => resource.id === "region-picked").options.screenAngles, [Math.PI * 35 / 18, Math.PI / 18]);
   assert.deepEqual(getMarkItems(restoredMetadata, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), [chosen.key]);
   assertAngularSource(rows);
+  assertDirectControls(source);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -71,4 +72,28 @@ function assertAngularSource(rows) {
   assert.deepEqual(getMarkItems(next, { target: "angular" }).filter(item => item.properties.fill === "#d11a2a").map(item => item.fields.key), expected);
   assert.deepEqual(phases, ["preview", "preview", "commit", "settled"]); assert.equal(captures.size, 0); assert.equal(scheduled, undefined);
   session.destroy(); assert.equal(listeners.size, 0);
+}
+
+function assertDirectControls(source) {
+  const items = getMarkItems(source, { target: "mark" }), category = items[0].fields.category;
+  const session = createInteractionSession({ program: source, bindings: [] }), before = serializeProgram(source), phases = [];
+  session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+  session.dispatch({ type: "filter", target: "mark", payload: { select: { field: "category", op: "eq", value: category } } });
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).map(item => item.key), items.filter(item => item.fields.category === category).map(item => item.key));
+  session.dispatch({ type: "filter", target: "mark", payload: { clear: true } });
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).map(item => item.key), items.map(item => item.key));
+  const categorical = session.getState().program.encodeX({ target: "mark", field: "category", fieldType: "nominal", scale: { id: "control-x" } });
+  session.updateProgram(categorical);
+  const values = [...new Set(items.map(item => item.fields.category))].reverse();
+  session.dispatch({ type: "reorder", target: "mark", payload: { channel: "x", values } });
+  const ordered = deserializeProgram(serializeProgram(session.getState().program));
+  assert.deepEqual(ordered.resolvedScales["control-x"].domain, values);
+  session.dispatch({ type: "filter", target: "mark", payload: { select: { field: "category", op: "eq", value: category } } });
+  assert.deepEqual(session.getState().program.resolvedScales["control-x"].domain, [category]);
+  session.dispatch({ type: "filter", target: "mark", payload: { clear: true } });
+  assert.deepEqual(session.getState().program.resolvedScales["control-x"].domain, values);
+  session.dispatch({ type: "reorder", target: "mark", payload: { channel: "x", clear: true } });
+  assert.deepEqual(session.getState().program.resolvedScales["control-x"].domain, [...values].reverse());
+  assert.deepEqual(phases, Array.from({ length: 6 }, () => ["commit", "settled"]).flat());
+  assert.equal(serializeProgram(source), before); session.destroy();
 }

@@ -72,6 +72,23 @@ session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{sp
 // @ts-expect-error no implicit unbounded nearest search
 session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
 session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
+session.dispatch({type:'filter',target:'points',payload:{select:{field:'x',op:'gte',value:2},mode:'replace',recompute:false}});
+session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+session.dispatch({type:'reorder',target:{childPath:['left'],id:'bars'},payload:{channel:'x',values:['B','A']}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',by:{field:'value',aggregate:'sum'},direction:'descending'}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+// @ts-expect-error clearing does not accept a replacement filter
+session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
+// @ts-expect-error inline filter selectors do not persist named selection region metadata
+session.dispatch({type:'filter',target:'points',payload:{select:{region:{x:{ranges:[]}}}}});
+// @ts-expect-error clear is an explicit true operation
+session.dispatch({type:'filter',target:'points',payload:{clear:false}});
+// @ts-expect-error explicit order cannot include computed direction
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['A'],direction:'ascending'}});
+// @ts-expect-error clear cannot set a new order
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,by:'count'}});
+// @ts-expect-error category order only uses existing native position channels
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'color',values:['A']}});
 session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
 session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});
 // @ts-expect-error one explicit owner is required

@@ -653,6 +653,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-direct-controls.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-links.test.js"
       },
       {

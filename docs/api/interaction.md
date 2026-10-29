@@ -220,6 +220,52 @@ parameter value returns `unchanged` with no event or revision. Subscriber errors
 stop delivery and preserve a commit already made. Runtime bindings and transaction
 metadata are not serialized with the chart.
 
+## Filter and reorder a view
+
+Use `filter` to call the existing mark filter through the same atomic session.
+The payload is `{select,mode?,recompute?}` or `{clear:true}`. `select` uses the
+inline [mark selector](appearance/selection-and-highlighting.md); named selection
+expressions, region and screen metadata are not inline filters. Native replace/
+compose and inferred-graph recompute rules remain unchanged. Clear restores that
+filter's source while preserving other authored state.
+
+Use `reorder` with `{channel,values}` or `{channel,by,direction?}` to apply the
+existing [category order](position/category-ordering.md). Channel is `x`, `y`, or
+`theta`. `{channel,clear:true}` removes an active order. These commands update the
+native data, geometry and guide consumers before committing the new hit frame.
+They preserve source row order and use the existing selection lifecycle policy.
+Basic programs reject these editors.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Install ggaction and import the authoring and interaction entries.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const controls = createInteractionSession({
+  program: chart().createCanvas({ width: 360, height: 240 })
+    .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 5 }] })
+    .createBarPlot({ id: "bars", x: "category", y: "value", guides: false }),
+  bindings: []
+});
+controls.dispatch({ type: "filter", target: "bars",
+  payload: { select: { field: "category", op: "eq", value: "B" } } });
+controls.dispatch({ type: "filter", target: "bars", payload: { clear: true } });
+controls.dispatch({ type: "reorder", target: "bars",
+  payload: { channel: "x", values: ["B", "A"] } });
+const orderedProgram = controls.getState().program;
+controls.destroy();
+```
+
+Each successful command publishes one `commit` followed by `settled`, including
+dependent linked selections. Invalid options leave the previous program and frame
+intact. Clearing a filter or order is an explicit operation; combining `clear`
+with replacement options is an error.
+
 
 ## Link named selections
 

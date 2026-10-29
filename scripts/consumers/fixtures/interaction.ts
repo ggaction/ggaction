@@ -67,3 +67,12 @@ createInteractionSession({program,bindings:[{type:'lasso',target:'points',select
 
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'theta'}]});
 program.editMarkSelection({selection:'picked',region:{theta:{ranges:[]}},screenAngles:[0,Math.PI/2]});
+session.dispatch({type:'filter',target:'points',payload:{select:{field:'x',op:'gte',value:2},mode:'compose'}});
+session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['B','A']}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',by:'count',direction:'descending'}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+// @ts-expect-error clear cannot also set a filter
+session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
+// @ts-expect-error clear cannot also set an order
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,values:['A']}});

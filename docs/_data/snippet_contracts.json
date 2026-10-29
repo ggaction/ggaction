@@ -2336,6 +2336,20 @@
   {
     "file": "api/interaction.md",
     "block": 6,
+    "heading": "Filter and reorder a view",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"bars\""
+    ],
+    "prerequisites": "Install ggaction and import the authoring and interaction entries.",
+    "sha256": "35c473e8a21748e2b4ad96494ff5fa8e81411000df58eb5903c9a9b39c33401d",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 7,
     "heading": "Link named selections",
     "mode": "complete",
     "environment": "node-esm",
@@ -2350,7 +2364,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 7,
+    "block": 8,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2365,7 +2379,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 8,
+    "block": 9,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2380,7 +2394,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 9,
+    "block": 10,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",

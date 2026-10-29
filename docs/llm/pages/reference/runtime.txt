@@ -1116,7 +1116,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../../../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelectionSelector, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1264,6 +1264,16 @@ export type InteractionSelectionPayload = {
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
 } & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
   | { readonly nearest: NearestSelection; readonly select?: never });
+export type InteractionFilterPayload = {
+  readonly select: MarkSelector;
+  readonly mode?: 'replace' | 'compose';
+  readonly recompute?: boolean;
+  readonly clear?: never;
+} | { readonly clear: true; readonly select?: never; readonly mode?: never; readonly recompute?: never };
+export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' } & (
+  (CategoryOrder & { readonly clear?: never })
+  | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
+);
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
@@ -1276,9 +1286,17 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'setParameter';
   readonly target: InteractionTarget;
   readonly payload: { readonly value: number | string | boolean | null };
+} | {
+  readonly type: 'filter';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionFilterPayload;
+} | {
+  readonly type: 'reorder';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;

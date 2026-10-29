@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 669_700, // Angular plus nested responsive: Node20 measured669657.
-  "ggaction/basic": 376_400, // Shared responsive and selection validation: measured376363.
+  ggaction: 669_800, // Native filtered category projection: Node20 measured669714.
+  "ggaction/basic": 376_500, // Shared filtered category projection: Node20 measured376439.
   "ggaction/svg": 25_000,
-  "ggaction/interaction": 108_200 // Resolved responsive hit metadata plus angular: measured108129.
+  "ggaction/interaction": 108_400 // Direct native filter/reorder commands: Node20 measured108372.
 });
 
 function minimalBrowserSource(specifier) {

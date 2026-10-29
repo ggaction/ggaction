@@ -390,5 +390,15 @@
     "result": "program",
     "prerequisites": "Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-direct-controls",
+    "file": "api/interaction.md",
+    "contains": "const orderedProgram =",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "orderedProgram",
+    "prerequisites": "Install ggaction and import the authoring and interaction entries."
   }
 ]
