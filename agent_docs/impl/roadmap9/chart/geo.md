@@ -6,7 +6,8 @@
 - [x] 남은 전체 승인 재사용, 순수 owner와 source provenance 구체화
 - [x] GeoJSON/TopoJSON 정규화와 독립 수치·오류 검사
 - [x] Geometry resource/action·identity/revision·stored validation 공개 checkpoint 검증
-- [ ] 15 projection registry·fit/inverse·split/clip/resample
+- [x] 15 projection private registry·raw/visible/inverse·explicit bounds fit 검증
+- [ ] Projection resource·geometry stream·split/clip/resample 공개 연결
 - [ ] Native geo marks/guide/typed join/shared-arc LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
@@ -131,3 +132,55 @@ staging transform을 적용해 archive967파일과 현재 source의 차이0개�
 | Full/Basic/types/package | Full만 등록, source-free 설치와 immutable type 검증 |
 | renderers/scene/hit | 아직 source만 저장하므로 concrete output 없음; 후속 geo mark에서 연결 |
 | projection/join/LOD/camera/asset bytes | 남은 STEP043–046 및 원본 byte provenance 통합 의무 |
+
+## Projection 순수 kernel 구체 계약
+
+`remainingApproval` 및 root의 순수 수학 dependency 허용 확인을 재사용한다. 15 native type은
+원안 그대로 유지한다. `projectionOptions.js`가 descriptor/schema/default 단독 소유자이며
+`projectionMath.js`는 exact dependency adapter, `projections.js`는 입력 검증·visible forward와
+역변환, `projectionFit.js`는 explicit finite bounds fit을 소유한다. Public action·저장 callback은
+아직 추가하지 않고 후속 resource/stream에서 이 경계를 재사용한다.
+
+Spherical 기본은 scalePx150, translatePx[0,0], centerDeg[0,0], rotateDeg[0,0,0],
+precisionPx0.5, reflectX/Y:false다. Identity는 planar scalePx1이며 center/rotate/precision/
+parallels/clipAngle을 받지 않는다. 세 conic은 parallelsDeg[30,60]를 쓰며 ±90° 표준위선은
+singular 오류다. Albers USA는 lower48/alaska/hawaii의 고정 구성과 inset extent를 보존하며
+scale/translate/precision만 받는다. 적용 불가 옵션과 undefined·getter·비유한 값은 거부한다.
+Mercator와 transverse는 자동 유한 world extent, orthographic은90° front hemisphere,
+gnomonic은60°, stereographic142°, 두 azimuthal은179.999°를 기본 clip으로 사용한다.
+Orthographic clip은90° 이하, gnomonic은90° 미만, 그 외 singular azimuthal은180° 미만이다.
+
+Forward는 private stream을 통한 실제 가시점 또는 null+reason을 반환한다. Inverse는 후보를
+동일 stream으로 다시 투영하여 screen 오차0.25px 이하와 해당 component의 clip 포함을 확인한다.
+Composite는 확정 component id를 반환하고 explicit component 역변환도 그 inset 안에서만 된다.
+Raw 수치는 radians/y-up이며 screen 수치는 degrees→CSS-pixel/y-down이다. Native fit은 명시
+finite bounds와 viewport/padding을 받고 collapsed dimension·point-only·empty를 구분한다.
+원안의 identity[0,0]..[10,20]→100×100은 scale5/translate[25,0]이다. Geometry stream의 bounds
+계산·antimeridian·polygon/hole·adaptive resample 및 public lifecycle는 후속 checkpoint다.
+
+의존성 version·integrity·license·projection별 수식 reference는 별도 dependency manifest에
+고정한다. Wrapper API/오류/시험에는 외부 chart library 어휘를 넣지 않고 필요한 package import
+및 provenance/license manifest identity만 남긴다. Worktree 의존성은 main node_modules와 격리했다.
+
+## Projection private kernel 검증
+
+15종의 literal/visible grid/원자 입력/합성 inset/fit13개와 영향을 받는 source/Geo/package
+계약64개, 배포 artifact·서명·discovery24개를 통과했다. 새4개 owner는 기존95/90/100 floor를
+자동 적용하고 line/function100%, branch97.01–100%를 기록했다. 첫13개 실행 중1개는
+orthographic 경계 바깥0.1px의 inverse를 최대0.25px 왕복 오차가 받아들인 실제 결함이었다.
+역변환의 numerical roundtrip 허용을 scale 상대오차로 더 엄격히 제한하여 복구했으며 원본을
+보존한다. 이 수리로 수학 clip 포함과 화면 오차 허용을 혼동하지 않는다.
+
+의존성은 중립 alias `geographic-math`로 import한다. 실제 배포 identity와 exact version,
+ISC/MIT 원문 notices, transitive lock, 모든 수식 source SHA256은 `licenses/geometry-math.json`과
+`THIRD_PARTY_NOTICES`가 소유한다. 검증에서는 설치된 파일·manifest·lock의 서명을 대조한다.
+새 private owner는 현재 공개 import graph에 도달하지 않아 기존 선언과 Current 행동을 바꾸지
+않는다. Public projection·coordinate·mark lifecycle을 구현한 것으로 기록하지 않는다.
+
+Package는977entries/6,347,818unpacked, Node22packed1,391,060 및 Node20/24packed1,394,455다.
+한도를977/1,395,000/6,348,000으로 최소 갱신했다. 같은 archive의 Node20/22/24에서 기존
+Geo+interaction6개, strict types와 private15projection smoke가 통과했다. Full/Basic/interaction
+bundle은 전 baseline과 byte-identical이며 기존686000/372000/93000 한도를 유지한다. 단독
+수치 checkpoint에는 새로운 그림이 없으므로 source 기존 visual evidence를 재사용하고 전체 Geo
+공개 시 renderer/browser/whole coverage를 다시 실행한다. 상세 원본과 수리 결과는
+`geo-evidence/projection/`에 둔다.

@@ -37,7 +37,9 @@
     "types/",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "THIRD_PARTY_NOTICES",
+    "licenses/"
   ],
   "bin": {
     "ggaction-mcp": "./src/mcp/cli.js"
@@ -200,5 +202,8 @@
     "@napi-rs/canvas": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "geographic-math": "npm:d3-geo@3.1.1"
   }
 }

@@ -468,6 +468,10 @@
       {
         "type": "prefix",
         "path": "unit/geo/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/geographic-math.test.js"
       }
     ],
     "grammar": [

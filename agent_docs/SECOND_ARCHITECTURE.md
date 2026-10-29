@@ -3596,8 +3596,13 @@ asset loader를 가져오지 않는다. Full의 `actions/geo/resources.js`는 �
 분리하고 각 stored result와 소비자 적격성을 검증한다. `selectors/geometry.js`는 geographic
 source의 명시·현재·유일한 선택만 허용한다. 복원은 retained source와 정규화 결과를 검산하며
 그래픽을 생성하지 않는다. Source values provenance와 실제 asset byte provenance를
-혼동하지 않는다. Projection/stream은 후속 독립 owner이며 renderer 입력은 여전히 concrete
-graphicSpec만이다.
+혼동하지 않는다. Projection의 private 순수 kernel은 `grammar/geo/projectionOptions.js`의
+native descriptor/schema, `projectionMath.js`의 고정 mathematical adapter,
+`projections.js`의 visible forward/per-component inverse, `projectionFit.js`의 bounded fit으로
+나뉜다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
+Math instance는 호출별 private 객체이며 semantic state/codec에 callback을 저장하지 않는다.
+공개 projection lifecycle와 geometry stream/marks는 후속 owner이며 renderer 입력은 여전히
+concrete graphicSpec만이다.
 
 ### Interaction의 원자 authoring command 경계
 
