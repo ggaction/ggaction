@@ -3599,9 +3599,12 @@ source의 명시·현재·유일한 선택만 허용한다. 복원은 retained s
 혼동하지 않는다. Projection의 private 순수 kernel은 `grammar/geo/projectionOptions.js`의
 native descriptor/schema, `projectionMath.js`의 고정 mathematical adapter,
 `projections.js`의 visible forward/per-component inverse, `projectionFit.js`의 bounded fit으로
-나뉜다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
+나뉜다. `stream.js`는 원본 member 경로를 보존하며 날짜변경선·구면/사각 clip·bounded
+resampling을 concrete point/compound path로 계산하고, `fit.js`는 그 동일 stream bounds로
+viewport fit을 계산한다. 구면 ring 방향 변환은 호출 내부에서만 일어나며 원본 geometry와
+feature identity는 바뀌지 않는다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
 Math instance는 호출별 private 객체이며 semantic state/codec에 callback을 저장하지 않는다.
-공개 projection lifecycle와 geometry stream/marks는 후속 owner이며 renderer 입력은 여전히
+공개 projection lifecycle와 geometry marks는 후속 owner이며 renderer 입력은 여전히
 concrete graphicSpec만이다.
 
 ### Interaction의 원자 authoring command 경계

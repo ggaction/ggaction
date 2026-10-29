@@ -31,11 +31,13 @@ export function createProjectionKernel(input) {
       const rotated = rotate(point);
       if (Math.cos(rotated[0] * RADIANS) * Math.cos(rotated[1] * RADIANS) < -1e-14) return result(null, "outside-visible-domain");
     }
+    let nonFinite = false;
     for (const part of parts) {
+      if (!finitePoint(part.projection(point))) { nonFinite = true; continue; }
       const projected = streamedPoint(part.projection, point);
       if (projected) return result(projected, null, part.id);
     }
-    return result(null, "outside-visible-domain");
+    return result(null, nonFinite ? "non-finite-projection" : "outside-visible-domain");
   }
   function inverse(value, settings = {}) {
     const point = projectionTuple(value, [2], "Inverse screen point");

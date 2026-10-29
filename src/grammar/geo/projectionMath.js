@@ -6,7 +6,7 @@ import {
   geoAzimuthalEquidistant, geoAzimuthalEquidistantRaw,
   geoConicEqualArea, geoConicEqualAreaRaw, geoConicConformal, geoConicConformalRaw,
   geoConicEquidistant, geoConicEquidistantRaw, geoTransverseMercator,
-  geoIdentity, geoAlbers, geoRotation
+  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate
 } from "geographic-math";
 
 const FACTORIES = {
@@ -66,4 +66,12 @@ export function rawProjectionMath(options) {
   }
   if (options.parallelsDeg) return CONIC_RAW[options.type](...options.parallelsDeg.map(value => value * RADIANS));
   return RAW[options.type];
+}
+
+export function streamGeometryMath(geometry, projection, sink) {
+  geoStream(geometry, projection.stream(sink));
+}
+
+export function sphericalMidpoint(a, b) {
+  return geoInterpolate(a, b)(0.5);
 }

@@ -7,7 +7,8 @@
 - [x] GeoJSON/TopoJSON 정규화와 독립 수치·오류 검사
 - [x] Geometry resource/action·identity/revision·stored validation 공개 checkpoint 검증
 - [x] 15 projection private registry·raw/visible/inverse·explicit bounds fit 검증
-- [ ] Projection resource·geometry stream·split/clip/resample 공개 연결
+- [x] Geometry stream·split/clip/resample·geometry fit 순수 kernel 검증
+- [ ] Projection resource·geometry stream 공개 연결
 - [ ] Native geo marks/guide/typed join/shared-arc LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
@@ -184,3 +185,43 @@ bundle은 전 baseline과 byte-identical이며 기존686000/372000/93000 한도�
 수치 checkpoint에는 새로운 그림이 없으므로 source 기존 visual evidence를 재사용하고 전체 Geo
 공개 시 renderer/browser/whole coverage를 다시 실행한다. 상세 원본과 수리 결과는
 `geo-evidence/projection/`에 둔다.
+
+## Geometry stream 구체 계약
+
+`grammar/geo/stream.js`는 normalized source geometry를 snapshot/검증한 뒤 component별
+finite point 또는 compound M/L/Z path parts와 bounds를 계산한다. `sourcePath`와 component,
+출력 part 순서로 part identity를 만들며 feature identity는 이 순수 계산에서 새로 발급하지 않는다.
+Polygon의 right-hand spherical winding을 계산 어댑터 규약으로 뒤집는 것은 transient 변환이며
+source ring 자체를 보수하거나 작은 반구로 임의 변경하지 않는다. 따라서 pole·큰 영역의 방향
+의미와 hole이 함께 보존된다. Planar는 spherical winding/rotation을 적용하지 않는다.
+
+`great-circle`은 각 source segment의 최단 구면호를 따르고, antipodal segment는 중간
+`routeHint`가 없으면 ambiguity 오류다. `source-segment`는 날짜변경선에서 짧은 longitude
+차이를 선택한 longitude/latitude 선형 보간을 bounded refinement한 뒤 같은 split/clip pipeline을
+쓴다. 기본은 source-segment이며 explicit great-circle은 큰 원 경로를 요구할 때 사용한다.
+두 경우 모두 endpoint visibility만으로 segment를 버리지 않는다. Input work는 기존 geometry
+budget, generated points/commands는 기존 path command ceiling 이하의 caller-lowerable 한도로
+제한한다. Empty/null과 clipped-only 결과는 빈 parts/bounds:null을 반환하고 fit은 이를 거부한다.
+
+Bounds fit은 spherical clip을 유지하고 explicit screen rectangle만 제거한 unit-scale geometry의
+finite bounds를 사용한다. Pixel precision이 unit scale에서 느슨해지지 않도록 실제 scale에 따른
+정규화 precision을 쓰며 최종 fitted scale에서 재계산한 bounds를 확인한다. Stroke/point glyph
+반경은 geometry bounds에 합치지 않는다. 이 checkpoint는 public action·renderer를 추가하지 않으며
+같은 결과를 후속 projection resource, geo marks 및 camera가 함께 소비한다.
+
+
+## Geometry stream private checkpoint 검증
+
+투영·stream26개와 Geo/source/package/discovery84개가 통과했다. 날짜변경선 양쪽의 hole,
+보이지 않는 양 끝점 사이의 visible segment, 극점과 exterior complement, shared arc 경계,
+각도 보간과 great-circle 차이, antipodal hint, compound path, overflow와 생성량 한도를
+독립 literal/hit 결과로 확인했다. 6개 owner에 기존95/90/100 floor를 적용했고 모두 통과했다.
+이 영향 검사에서 source 전체 coverage를 실행한 것으로 기록하지 않는다.
+
+최종 archive979files는 staging 변환을 적용한 현재 source와 차이0개다. 같은 archive
+`806b2c8cc1c6b8c21982ca7f9af2c14460e844752ad4af130064abee3cd33eb3`의 private kernel 시험26개가
+Node20/22/24 각각 통과했다. Package는6,358,508unpacked이며 packed는 Node22=1,394,296,
+Node20/24=1,397,803bytes로 ceiling979/1,398,000/6,359,000을 적용했다. Public entry import graph는
+바뀌지 않아 이전 공개 API/types/renderer/browser 증거를 재사용하고, 새 그림이나 전체 설치
+자격을 다시 실행했다고 주장하지 않는다. 최초 pack 명령의 상대 outputDirectory 경로 오류와
+의존 검사 실패를 보존하고 절대 경로로 다시 생성했다. 상세 증거는`geo-evidence/stream/`이다.
