@@ -63,6 +63,16 @@ reference가 소유한다.
 
 ## Private builtin resource validation
 
+Edge route의 공통 private 계산은 `grammar/graph/routes/`에 있다. 기존 graph model과 원 typed
+key 순서, 명시 node anchor를 검증해 정규화된 독립 work buffer를 만들고, budget과 endpoint를
+검사한 완료 vector만 원 edge 순서로 반환한다. `polyline.js`는 arc-length 재표본화를 공유한다.
+현재 이 소유자는 public resource registry나 renderer에 연결되지 않았으며 공개 연결은
+[edge-bundling 구현 기록](impl/roadmap9/chart/edge-bundling.md)의 소비자 표에서 추적한다.
+Theme 통합 기준과 이 private kernel의 합산 package는 927 entries/6,105,931 unpacked bytes,
+Node20/22/24 packed 최대1,331,298 bytes다. 상한은927/1,332,000/6,106,000으로 최소 올림한다.
+동일 tar의 합산 theme baseline bundle은 Full660,081/Basic369,582 gzip bytes로, 상한을
+661,000/370,000으로 맞춘다. Route kernel은 아직 public entry에서 import되지 않는다.
+
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
 freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plugin 또는 renderer registry가 아니다.
@@ -797,8 +807,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 659,000 bytes |
-| `ggaction/basic` | 368,000 bytes |
+| `ggaction` | 661,000 bytes |
+| `ggaction/basic` | 370,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 83,000 bytes |
 

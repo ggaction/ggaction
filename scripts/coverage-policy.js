@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "edge-route-kernel": { prefix: "grammar/graph/routes/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Edge route geometry must preserve exact endpoints, typed identity, deterministic work order and bounded immutable output." },
   "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },
   "calendar-materialization": { prefix: "materialization/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored calendar results and all cell, month boundary and label consumers require exact source identity and responsive geometry." },
   "calendar-selection": { prefix: "materialization/selection/policies/calendar.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar final day items must preserve contributing rows and exclude decorative roles from selection." },

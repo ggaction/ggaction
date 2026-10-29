@@ -270,6 +270,12 @@
         "path": "contracts/documentation-truth.test.js"
       }
     ],
+    "edge-routes": [
+      {
+        "type": "prefix",
+        "path": "unit/grammar/graph/routes/"
+      }
+    ],
     "expressions": [
       {
         "type": "file",
