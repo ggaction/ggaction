@@ -4102,3 +4102,23 @@ Interaction camera operation은 기존 closed command owner가 receiver의 nativ
 정확 배타 payload는 Current INTERACTION에 둔다. Source-free Node20 interaction은116,663gzip으로
 기존116,700 한도 안이다. Package1059entries/1,500,976packed/6,827,033unpacked에서 entries/packed는
 유지하고 unpacked만6,828,000으로 올렸다. 검색1,036,903bytes는1,037,000 한도로 변경했다.
+
+Navigation의 새로운 interaction/cameraNavigation owner는 명시 projection target과 초기 parameters를
+검증하고 기존 native camera facade를 호출한다. Pointer capture는 기존 reducer를 통해 두 손가락의
+수명과 phase 전환을 소유하고, adapter는 pan→pinch 경계의 private candidate만 유지한다.
+Authoritative program·history·asset 준비는 기존 session transaction owner 하나에 남는다.
+독립 sampled frame은 semantic camera baseline으로 추정하지 않고 거부한다. 새 Full 정적 import나
+renderer가 없으며 정확한 공개 계약은 Current INTERACTION에 둔다.
+
+Native preview 도중 remount/unmount할 때 detach가 복원한 committed scene을 새 bridge에 연결한다.
+이전에 남던 preview scene을 복원하는 공유 수리는 node 이동에도 같은 회귀로 검증한다.
+최종 camera gesture는 asset 준비 대기 전에 committed scene을 다시 표시한다. 실제 frame에 결합된
+준비 handle의 preview 지원과 public animation 연결은 별도 후행 통합 의무로 유지한다.
+
+Navigation 모듈 추가의 package 실측은1060entries/1,504,297packed/6,840,053unpacked(Node20)이며
+한도는1060/1,505,000/6,841,000이다. 검색1,037,603bytes의 한도는1,037,700으로 올린다.
+원본 한도 실패를 보존하며 새 archive와 변경 interaction bundle을 따로 검증한다.
+
+동일 navigation tar의 Node20 interaction bundle은119,691gzip(190modules)이며 한도를119,700으로
+최소100단위 올렸다. 새 adapter와 기존 pure projection 옵션 검증을 포함하고 Full/Basic/SVG/graph
+번들은 변화가 없어 기존 한도를 유지한다. 최초116,700 한도 실패와 통과한 runtime/types를 보존한다.

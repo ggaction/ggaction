@@ -10,7 +10,8 @@
 - [x] B: native 비동기 replacement와 기존 executor/asset pipeline 통합
 - [x] C: 명시 ResizeObserver mount 수명·CSS 크기 이벤트·host native resize 연결
 - [x] D: 배타 native camera operation 명령·공통 preparation/history/frame 경계
-- [ ] animation/layout worker/camera gesture 통합 및 AT40/41 최종 matrix
+- [x] E: 명시 native camera drag/wheel/pinch/keyboard binding과 취소·history 경계
+- [ ] asset-bound preview 및 animation/layout worker/camera 통합과 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
 기반은 bounded history `68d09461d`다. [승인 원문](../AUTHORIZATION.json)의 remainingApproval을 재사용한다.
@@ -210,3 +211,41 @@ D source `e4715d55a` 고정 뒤 provenance/LLM 재생성, owning docs49, build17
 320/390/768/1440 화면의 overflow0/Axe0까지 완료했다. 320/1440 이미지를 직접 확인했다.
 [정확 D qualification](camera-operation-evidence/qualification.json)에 source hash·동일 tar·초기실패·
 명령·원본로그·공개 브라우저 그림을 보존한다. STEP046/066/067 전체와077은 아직 완료가 아니다.
+
+## E 최소 공개안 — 명시 navigation binding
+
+남은승인과 부모의 2026-10-29 구체안 확인을 재사용한다.
+`{type:"navigate",target,mode:"pan"|"rotate",scaleExtent,initial,rotationStepDeg?}`를 기존
+단일 editing pointer binding 집합에 추가한다. initial은 host가 getProjectionView로 얻은
+명시 reset parameter다. Rotate에만 양수 rotationStepDeg(로컬 projection px당 degree)를 요구한다.
+현재 projection 및 initial의 type이 일치하고 scaleExtent는 양수의 정렬된 두 값이어야 한다.
+다중 편집 gesture 우선순위 조합은 아직 지원하지 않고 원 요구를 후행으로 유지한다.
+
+Pointer capture/reducer는 navigation일 때만 두 번째 pointer를 받는다. Pan/rotate→pinch가 되면
+기존 native action의 private phase candidate를 기준으로 삼고 원 committed program/history는
+그대로 둔다. Preview는 RAF당 한 번, final up은 마지막 위치까지 계산한다. 공통 준비 owner에
+넘기기 전에 표시 frame을 원 committed frame으로 복구하여 async 실패/취소도 일치시킨다.
+Escape/cancel/lost capture/blur/source/frame revise/unmount/destroy는 모든 pointer와 RAF를 정리한다.
+
+Wheel deltaMode0/1/2는 pixel/16px-line/surface-height-page로 정규화해 `2^(-deltaPx/300)`의
+bounded factor와 native inverse anchor로 zoom한다. Keyboard Arrow는로컬10px pan/rotate,
++/-는두배/절반 zoom, Home은initial reset이다. 표면의 native focus/`tabindex`와 `touch-action:none`은
+host가 명시한다. Modifier shortcut은 가로채지 않는다. 새로운 renderer/global camera/asset fetch는 없다.
+
+E source의 관련 session/controller/type/boundary 집중290/290, 추가 navigation·공유 node 수리26/26,
+실제5datasets×3recipes+inventory16, 실제 browser Canvas/SVG drag·wheel·touch pinch·keyboard 및
+orthographic rotation2/2가 통과했다. 새 owner100/97.59/100, pointerCapture100/97.48/100,
+session100/95.72/100으로 각95/90/100 floor를 유지한다. 최초remount/off scene 불일치를 실제로
+수리했고 새 공통 node 회귀도 추가했다. Browser 첫 wheel 예상은 DPR2에서 전달된 CSS delta를
+잘못 가정한 fixture였으며 실제 DOM delta와 독립 factor oracle로 교정했다. 최초discovery의
+잘못된 test-ledger key와 검색cap 실패도 보존한다. 전체077/066/067 완료를 주장하지 않는다.
+
+Asset-bound preview는 committed state.assets를 재사용할 수 없다. 이번 final 준비 대기/취소는
+원 frame 복원으로 검증했고, 실제 preview별 준비·폐기와 공개 player/gesture priority 통합은
+후행 의무로 남는다. Existing image/font/shadow authentic handle을 재사용할 때 별도 authoritative
+asset cache를 만들지 않는 현재 architecture 경계를 유지한다.
+
+E package archive c8d46732…를 고정해 source-free 설치 검증한다. Node20의 runtime19와 strict types는
+통과했으며 interaction119,691gzip만 기존116,700cap을 초과했다. 동일 측정 bundle을119,700cap으로
+검사했고 다른 네 entry 한도는 유지했다. Node22/24는 같은 tar로 runtime19·타입·five-entry를
+독립 실행한다. 원본실패/최종실측/실제브라우저 및 문서4width 그림은 navigation-evidence에 보존한다.

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:ee82decc433c341f5aa92482fe9665fbbbff7ae82420a1d4b67cd8af21df4d2c",
-    "sourceCommit": "e4715d55a373daf70d4fbae97affc96f2a7776ae",
+    "contractId": "sha256:3e9f83dd745ad314781b91f30a68642eee8dc1861fb280d5fdec79a68c77eaf6",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "7b43f70317eba954e499edf85bf196b150ad36ad2fe17fb6712efef9d331cbaa"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1257,12 +1257,13 @@
         "connect-parameter-inputs-and-a-context-action",
         "navigate-a-partition-view-from-host-controls",
         "adjust-a-geographic-view-from-host-controls",
+        "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
         "edit-existing-annotations",
         "prepare-native-work-before-replacing-the-program"
       ],
-      "bytes": 67788,
-      "sha256": "420d724e2869ade97f8ee87b7852c4d261e0ff0a57179269872d22aa229dcab2"
+      "bytes": 71293,
+      "sha256": "392a0aefee941d3cc1c05f2c6f0651c06ed988948bfaf59e601ca4fdccc8a6f9"
     },
     {
       "order": 74,
@@ -2554,8 +2555,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 69309,
-      "sha256": "a39058c585e48a7ee2c0440461269723b5d56d41ea37887dc7cb52baf4c84812"
+      "bytes": 69843,
+      "sha256": "8ad230c65612f92246130cd7be0e16260eb8159ebf7381220c84cb05c0ad040d"
     },
     {
       "order": 128,
@@ -3485,8 +3486,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "0b20a15ac93b5a5a7855014fc05e035d712cfa0020757bb6ad53b10c499037cd"
+      "bytes": 20908,
+      "sha256": "3ddf7078544f79ed6e4f5339894d9a88267f9178643b13a03372f684a6eb0256"
     },
     {
       "order": 131,
@@ -3826,8 +3827,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "66f2fe5d4b07a6f9b8bb8c1d942dfcc807fe15604278bcc6660bfd272ca210d3"
+      "bytes": 3000,
+      "sha256": "a97324e1973579da153c26b309970e190b43732f38b8ace264d74054ba71660e"
     },
     {
       "order": 152,

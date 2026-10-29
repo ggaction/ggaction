@@ -115,6 +115,14 @@ session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error viewport commands do not infer LOD zoom
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
 session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[10,-5]}}});
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',initial:{type:'identity'},scaleExtent:[0.5,8]}]});
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'rotate',rotationStepDeg:0.5,initial:{type:'orthographic'},scaleExtent:[1,1000]}]});
+// @ts-expect-error navigation requires an explicit reset baseline
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[1,8]}]});
+// @ts-expect-error rotation requires an explicit degree step
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'rotate',initial:{type:'orthographic'},scaleExtent:[1,8]}]});
+// @ts-expect-error pan does not accept a rotation step
+createInteractionSession({program,bindings:[{type:'navigate',target:'map',mode:'pan',rotationStepDeg:1,initial:{type:'identity'},scaleExtent:[1,8]}]});
 session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{operation:{type:'zoom',anchorPx:[100,100],factor:2,scaleExtent:[0.5,4]}}});
 session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'resize',canvas:{width:400,height:300},scaling:'preserve'}}});
 // @ts-expect-error absolute transform and native operation are mutually exclusive

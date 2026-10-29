@@ -605,5 +605,15 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "interaction-navigation",
+    "file": "api/interaction.md",
+    "contains": "const navigationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag."
   }
 ]

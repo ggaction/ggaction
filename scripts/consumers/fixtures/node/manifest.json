@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/native-camera-navigation",
+        "statements": 23
+      },
+      {
         "id": "interaction/geographic-label-screen-history",
         "statements": 16
       },
@@ -1081,11 +1085,11 @@
       },
       {
         "id": "interaction/prepared-update",
-        "statements": 19
+        "statements": 23
       },
       {
         "id": "interaction/asset-preparation",
-        "statements": 25
+        "statements": 26
       },
       {
         "id": "interaction/history",
@@ -1137,11 +1141,11 @@
       },
       {
         "id": "interaction/current-frame-and-restored-program",
-        "statements": 1
+        "statements": 34
       },
       {
         "id": "interaction/guide-and-host-cleanup",
-        "statements": 1
+        "statements": 85
       }
     ]
   },

@@ -1345,6 +1345,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-navigation.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-node-move.test.js"
       },
       {

@@ -1085,6 +1085,63 @@ Preparation failure or cancellation keeps the committed program, frame and histo
 command requires Full authoring and does not install pointer gestures or animate the change.
 
 
+## Navigate a map with drag, wheel, pinch and keyboard
+
+Use a Full `navigate` binding with one explicit projection target, positive ordered `scaleExtent`, and
+an explicit `initial` parameter snapshot for Home. Choose `mode:"pan"` for translation. A spherical
+rotation binding uses `mode:"rotate"` and a positive `rotationStepDeg` per local projection pixel.
+Pan rejects that rotation-only option. The initial projection type must match the target.
+
+The focused surface accepts Arrow keys (10 local pixels), +/= and -/_ (double or halve scale), and Home.
+Wheel deltas use pixels, 16 pixels per line, or the surface height per page, then `2^(-delta/300)` with a
+bounded exponent and the explicit scale extent. Wheel and pinch use the native inverse anchor; a hidden
+or noninvertible anchor rejects without changing the committed program. No projection or child is inferred.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { getProjectionView } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.tabIndex = 0;
+canvas.style.touchAction = "none";
+canvas.setAttribute("aria-label", "Map: drag to pan, scroll or pinch to zoom, arrow keys to pan, Home to reset");
+const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [["a", 80, 90], ["b", 140, 110]].map(([id, x, y]) => ({
+      type: "Feature", id, properties: { name: id }, geometry: { type: "Point", coordinates: [x, y] }
+    }))
+  } })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+  .createGeoPointMark({ id: "places", radiusPx: 8 });
+const navigationSession = createInteractionSession({ program, bindings: [{
+  type: "navigate", target: "map", mode: "pan", scaleExtent: [0.5, 8],
+  initial: getProjectionView(program, { target: "map" }).parameters
+}] });
+const draw = state => render(state.previewProgram ?? state.program, canvas.getContext("2d"), { pixelRatio: 2 });
+const unsubscribe = navigationSession.subscribe(event => draw(event.state));
+const unmount = navigationSession.mount(canvas);
+draw(navigationSession.getState());
+const disposeNavigation = () => { unmount(); unsubscribe(); navigationSession.destroy(); };
+```
+
+A pointer transaction previews at most once per animation frame and commits its final position once.
+Adding a second pointer preserves the current pan or rotation as a private pinch baseline. It adds no
+intermediate history entry. While assets prepare, the committed program and its displayed frame remain
+active. Escape, lost capture, pointer cancel, blur, external program/frame updates, unmount and destroy
+release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
+one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
+CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
+inactive until an explicit matching owner returns. The current session supports one editing pointer
+binding alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+
+
 ## Move graph nodes with pointer or keyboard
 
 Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot origin determine the

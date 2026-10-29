@@ -1003,3 +1003,60 @@ test("canonical observed resize uses CSS pixels and prepared native rendering wi
     assertNoBrowserErrors(errors,"observed resize lifecycle");await page.close();
   }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
 });
+
+test("canonical map navigation handles real drag wheel pinch keyboard and cancellation in Canvas and SVG",async()=>{
+ const snippet=(await documentationPrograms()).find(p=>p.id==='interaction-navigation');assert.ok(snippet);
+ const context=await browser.newContext({deviceScaleFactor:2,hasTouch:true,viewport:{width:1000,height:750}});
+ try{
+  const {page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async code=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());document.body.innerHTML='<canvas id="chart"></canvas><div id="vector"></div>';
+   let source=code;for(const[specifier,file]of[['ggaction','index'],['ggaction/interaction','interaction'],['ggaction/inspection','inspection']])source=source.replaceAll(JSON.stringify(specifier),JSON.stringify(new URL(`/src/${file}.js`,location.href).href));
+   const url=URL.createObjectURL(new Blob([source+'\nwindow.__navigation=navigationSession;window.__disposeNavigation=disposeNavigation;'],{type:'text/javascript'}));try{await import(url)}finally{URL.revokeObjectURL(url)}
+   const {renderToSVG}=await import('/src/renderers/svg.js');window.__navigationEvents=[];document.querySelector('canvas').addEventListener('wheel',event=>{window.__navigationWheel={deltaY:event.deltaY,deltaMode:event.deltaMode}},{passive:true});
+   const draw=state=>document.querySelector('#vector').innerHTML=renderToSVG(state.previewProgram??state.program);
+   window.__navigation.subscribe(e=>{if(e.phase)window.__navigationEvents.push(e.phase);draw(e.state)});draw(window.__navigation.getState());
+  },snippet.code);
+  const canvas=page.locator('canvas'),rect=await canvas.boundingBox(),point=(x,y)=>({x:rect.x+x,y:rect.y+y});
+  const inspect=()=>page.evaluate(()=>{const state=window.__navigation.getState(),circles=state.scene.nodes.filter(n=>n.type==='circle').map(n=>[n.properties.x,n.properties.y]),vector=[...document.querySelectorAll('#vector circle')].map(n=>[+n.getAttribute('cx'),+n.getAttribute('cy')]);
+   const ctx=document.querySelector('canvas').getContext('2d');return{circles,vector,history:state.history.undoCount,preview:state.previewProgram!==null,painted:circles.every(([x,y])=>ctx.getImageData(x*2,y*2,1,1).data[3]>0)};});
+  await page.mouse.move(...Object.values(point(80,90)));await page.mouse.down();await page.mouse.move(...Object.values(point(100,90)));await page.waitForTimeout(35);
+  assert.deepEqual(await inspect(),{circles:[[100,90],[160,110]],vector:[[100,90],[160,110]],history:0,preview:true,painted:true});
+  await page.keyboard.press('Escape');await page.mouse.up();assert.deepEqual((await inspect()).circles,[[80,90],[140,110]]);assert.equal((await inspect()).history,0);
+  await page.mouse.move(...Object.values(point(80,90)));await page.mouse.wheel(0,-300);await page.waitForTimeout(35);
+  const wheel=await page.evaluate(()=>window.__navigationWheel);assert.equal(wheel.deltaMode,0);assert.ok(wheel.deltaY<0);const factor=2**(-wheel.deltaY/300);
+  assert.deepEqual((await inspect()).circles,[[80,90],[80+60*factor,90+20*factor]]);assert.equal((await inspect()).history,1);
+  await canvas.focus();await page.keyboard.press('Home');assert.deepEqual((await inspect()).circles,[[80,90],[140,110]]);
+  const client=await context.newCDPSession(page);const touch=(x,y,id)=>({...point(x,y),id,radiusX:1,radiusY:1,force:1});
+  await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch(80,90,1)]});
+  await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[touch(100,90,1)]});await page.waitForTimeout(35);
+  await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch(100,90,1),touch(140,90,2)]});
+  await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[touch(100,90,1),touch(180,90,2)]});await page.waitForTimeout(35);
+  assert.deepEqual((await inspect()).circles,[[100,90],[220,130]]);
+  await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});assert.equal((await inspect()).history,3);assert.equal((await inspect()).preview,false);
+  await page.keyboard.press('ArrowRight');assert.deepEqual((await inspect()).circles,[[110,90],[230,130]]);assert.deepEqual((await inspect()).vector,[[110,90],[230,130]]);
+  await page.evaluate(async()=>{const {serializeProgram,deserializeProgram}=await import('/src/persistence.js');const s=window.__navigation;s.updateProgram(deserializeProgram(serializeProgram(s.getState().program)),{history:'record'});});
+  assert.deepEqual((await inspect()).circles,[[110,90],[230,130]]);assert.equal((await inspect()).painted,true);
+  await page.evaluate(()=>window.__disposeNavigation());await page.mouse.wheel(0,-300);await page.keyboard.press('Home');assertNoBrowserErrors(errors,'native camera navigation');await client.detach();await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
+});
+
+test('rotation navigation sends real pointer and keyboard input through native globe coordinates',async()=>{
+ const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:900,height:650}});
+ try{
+  const{page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async()=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());const {chart,render}=await import('/src/index.js'),{getProjectionView}=await import('/src/inspection.js'),{createInteractionSession}=await import('/src/interaction.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+   document.body.innerHTML='<canvas id="globe" tabindex="0" aria-label="Rotating globe" style="touch-action:none"></canvas><div id="vector"></div>';
+   const p=chart().createCanvas({width:400,height:300,margin:0}).createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[0,0]}}})
+    .createProjection({id:'map',type:'orthographic',scalePx:100,translatePx:[200,150]}).createCoordinate({type:'geo'}).createGeoPointMark({id:'world',radiusPx:8});
+   const s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'rotate',rotationStepDeg:0.5,scaleExtent:[10,500],initial:getProjectionView(p,{target:'map'}).parameters}]});window.__globe=s;
+   const draw=()=>{const state=s.getState(),p=state.previewProgram??state.program;render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p);};s.subscribe(draw);s.mount(document.querySelector('canvas'));draw();
+  });
+  const canvas=page.locator('canvas'),rect=await canvas.boundingBox();await page.mouse.move(rect.x+200,rect.y+150);await page.mouse.down();await page.mouse.move(rect.x+220,rect.y+150);await page.mouse.up();
+  const x=()=>page.evaluate(()=>window.__globe.getState().scene.nodes.find(n=>n.type==='circle').properties.x);
+  assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/18)))<1e-9);await canvas.focus();await page.keyboard.press('ArrowRight');assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/12)))<1e-9);
+  assert.equal(await page.evaluate(()=>window.__globe.getState().history.undoCount),2);await page.keyboard.press('Home');assert.equal(await x(),200);
+  await page.evaluate(()=>window.__globe.destroy());assertNoBrowserErrors(errors,'rotation navigation');await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
+});

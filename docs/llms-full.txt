@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:ee82decc433c341f5aa92482fe9665fbbbff7ae82420a1d4b67cd8af21df4d2c. Status: development. Runtime source: e4715d55a373daf70d4fbae97affc96f2a7776ae. Release baseline: v0.0.13.
+Contract: sha256:3e9f83dd745ad314781b91f30a68642eee8dc1861fb280d5fdec79a68c77eaf6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e4715d55a373daf70d4fbae97affc96f2a7776ae/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e4715d55a373daf70d4fbae97affc96f2a7776ae/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11705,6 +11705,58 @@ operation validates inverse visibility and the explicit scale extent. Reset uses
 Both payload forms preserve geometry and level of detail. Native buttons keep focus and keyboard behavior.
 Preparation failure or cancellation keeps the committed program, frame and history unchanged. This direct
 command requires Full authoring and does not install pointer gestures or animate the change.
+
+## Navigate a map with drag, wheel, pinch and keyboard
+
+Use a Full `navigate` binding with one explicit projection target, positive ordered `scaleExtent`, and
+an explicit `initial` parameter snapshot for Home. Choose `mode:"pan"` for translation. A spherical
+rotation binding uses `mode:"rotate"` and a positive `rotationStepDeg` per local projection pixel.
+Pan rejects that rotation-only option. The initial projection type must match the target.
+
+The focused surface accepts Arrow keys (10 local pixels), +/= and -/_ (double or halve scale), and Home.
+Wheel deltas use pixels, 16 pixels per line, or the surface height per page, then `2^(-delta/300)` with a
+bounded exponent and the explicit scale extent. Wheel and pinch use the native inverse anchor; a hidden
+or noninvertible anchor rejects without changing the committed program. No projection or child is inferred.
+
+> **Executable complete.** Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag.
+
+```js
+import { chart, render } from "ggaction";
+import { getProjectionView } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.tabIndex = 0;
+canvas.style.touchAction = "none";
+canvas.setAttribute("aria-label", "Map: drag to pan, scroll or pinch to zoom, arrow keys to pan, Home to reset");
+const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [["a", 80, 90], ["b", 140, 110]].map(([id, x, y]) => ({
+      type: "Feature", id, properties: { name: id }, geometry: { type: "Point", coordinates: [x, y] }
+    }))
+  } })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+  .createGeoPointMark({ id: "places", radiusPx: 8 });
+const navigationSession = createInteractionSession({ program, bindings: [{
+  type: "navigate", target: "map", mode: "pan", scaleExtent: [0.5, 8],
+  initial: getProjectionView(program, { target: "map" }).parameters
+}] });
+const draw = state => render(state.previewProgram ?? state.program, canvas.getContext("2d"), { pixelRatio: 2 });
+const unsubscribe = navigationSession.subscribe(event => draw(event.state));
+const unmount = navigationSession.mount(canvas);
+draw(navigationSession.getState());
+const disposeNavigation = () => { unmount(); unsubscribe(); navigationSession.destroy(); };
+```
+
+A pointer transaction previews at most once per animation frame and commits its final position once.
+Adding a second pointer preserves the current pan or rotation as a private pinch baseline. It adds no
+intermediate history entry. While assets prepare, the committed program and its displayed frame remain
+active. Escape, lost capture, pointer cancel, blur, external program/frame updates, unmount and destroy
+release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
+one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
+CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
+inactive until an explicit matching owner returns. The current session supports one editing pointer
+binding alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
 
 ## Move graph nodes with pointer or keyboard
 
@@ -35813,7 +35865,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ProjectionParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -35922,6 +35974,15 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
 export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
 export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
+/** Native projection navigation. The host supplies focus and touch-action: none. */
+export type NavigationBinding = {
+  readonly type: 'navigate';
+  readonly target: InteractionTarget;
+  readonly scaleExtent: readonly [number, number];
+  /** Explicit reset parameters; their type must match the target projection. */
+  readonly initial: ProjectionParameters;
+} & ({ readonly mode: 'pan'; readonly rotationStepDeg?: never }
+  | { readonly mode: 'rotate'; readonly rotationStepDeg: number });
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -36171,7 +36232,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -50343,12 +50404,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e4715d55a373daf70d4fbae97affc96f2a7776ae/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e4715d55a373daf70d4fbae97affc96f2a7776ae/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53431,9 +53492,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ee82decc433c341f5aa92482fe9665fbbbff7ae82420a1d4b67cd8af21df4d2c` |
+| Contract fingerprint | `sha256:3e9f83dd745ad314781b91f30a68642eee8dc1861fb280d5fdec79a68c77eaf6` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `e4715d55a373daf70d4fbae97affc96f2a7776ae` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |
