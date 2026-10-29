@@ -10,6 +10,25 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/geographic-representation", run() {
+    const feature = (id, x) => ({ type: 'Feature', id, properties: {}, geometry: { type: 'Point', coordinates: [x,60] } });
+    const geometry = features => ({ type: 'FeatureCollection', features });
+    const p = chart().createCanvas({ width: 240, height: 180, margin: 0 })
+      .createGeometryData({id:'states',format:'geojson',coordinateKind:'planar',featureKey:'id',values:geometry([feature('s',40)])})
+      .createGeometryData({id:'counties',format:'geojson',coordinateKind:'planar',featureKey:'id',values:geometry([feature(1,40),feature('1',100)])})
+      .createGeoLODData({id:'regions',levels:[{id:'state',geometry:'states'},{id:'county',geometry:'counties',parents:[{key:1,parent:'s'},{key:'1',parent:'s'}],enterZoom:4.2,exitZoom:3.8}],zoom:5})
+      .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'points',geometry:'regions'});
+    const key=getMarkItems(p)[0].key, selected=p.selectMarks({id:'picked',target:'points',items:[key],empty:'none'}).highlightMarks({selection:'picked',color:'red',dimOthers:false});
+    for (const selectionPolicy of ['keep-hidden','drop']) {
+      const session=createInteractionSession({program:selected,selectionPolicy,bindings:[]}),events=[];session.subscribe(event=>events.push(event));
+      const coarse=selected.editGeoLODData({target:'regions',zoom:3});session.updateProgram(coarse);
+      assert.equal(session.getState().program,coarse);assert.deepEqual(events[0].selectionChanges,[]);
+      session.dispatch({type:'inspect',point:{x:40,y:60},slop:0});assert.equal(session.getState().hit.target.itemKey,getMarkItems(coarse)[0].key);
+      const restored=deserializeProgram(serializeProgram(coarse)).editGeoLODData({target:'regions',zoom:5});session.updateProgram(restored);
+      assert.deepEqual(events.at(-1).selectionChanges,[]);assert.equal(getMarkItems(restored)[0].key,key);assert.equal(getMarkItems(restored)[0].properties.fill,'red');
+      session.destroy();
+    }
+  } },
   { id: "interaction/node-movement", run() {
     const p = chart().createCanvas({width:300,height:200,margin:0})
       .createData({id:'nodes',keyField:'id',values:[{id:1,g:'a'},{id:'1',g:'a'}]})

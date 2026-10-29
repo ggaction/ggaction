@@ -49,7 +49,8 @@
     "contracts/realistic-edge-routes.test.js": 6263,
     "contracts/realistic-geographic-marks.test.js": 1752,
     "contracts/realistic-projections.test.js": 1055,
-    "contracts/realistic-responsive-layout.test.js": 3484
+    "contracts/realistic-responsive-layout.test.js": 3484,
+    "contracts/realistic-geographic-join.test.js": 1652
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -107,6 +108,16 @@
     "contracts/realistic-logical-selection.test.js": {
       "environment": "macOS arm64, Node22.23.1, canonical realistic runner",
       "measurement": "Successful file duration 2180.84525ms rounded up. Five pinned datasets and observations/categories/series recipes, all five set modes plus empty policy and codec. Scheduling estimate only."
+    },
+    "contracts/realistic-geographic-join.test.js": {
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "source": "Canonical realistic runner; successful isolated test process elapsed time, no coverage instrumentation.",
+      "measuredDurationMs": 1651.55975
     }
   },
   "localMeasurements": {

@@ -585,6 +585,20 @@ export function buildActionRelationshipPrograms() {
       .createProjection({ id: "geoSphere", type: "equirectangular", translatePx: [200, 150] })
       .createCoordinate({ id: "sphere", type: "geo", projection: "geoSphere" }).createGraticule({ id: "geoGrid", coordinate: "sphere" })
       .editGraticule({ opacity: .3 }).editProjection({ target: "geoPlane", scalePx: 2 }).editCoordinate({ target: "geo", projection: "geoPlane" }),
+    chart().createData({ id: "measurements", values: [{ code: "place", value: 10 }] })
+      .createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
+        values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } } })
+      .createGeoJoinData({ id: "joinedGeometry", geometry: "geometry", data: "measurements", geometryKey: "id", dataKey: "code" })
+      .createProjection({ id: "joinedFit", type: "identity", fit: { width: 100, height: 100 } })
+      .editGeoJoinData({ target: "joinedGeometry", dataKey: "code" }),
+    chart().createCanvas().createGeometryData({ id: "coarse", format: "geojson", coordinateKind: "planar", featureKey: "id",
+      values: { type: "Feature", id: "s", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } } })
+      .createGeometryData({ id: "fine", format: "geojson", coordinateKind: "planar", featureKey: "id",
+        values: { type: "Feature", id: "c", properties: {}, geometry: { type: "Point", coordinates: [12, 22] } } })
+      .createGeoLODData({ id: "details", levels: [{ id: "state", geometry: "coarse" },
+        { id: "county", geometry: "fine", parents: [{ key: "c", parent: "s" }], enterZoom: 4.2, exitZoom: 3.8 }], zoom: 5 })
+      .createProjection({ id: "detailFit", type: "identity", fit: { width: 100, height: 100 } })
+      .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "details" }).editGeoLODData({ zoom: 3 }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

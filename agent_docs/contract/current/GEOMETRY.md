@@ -72,6 +72,142 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 - ✅ Covered: retained keyed identity, new generated identity, object selection, immutable failure, removal, inspection, Full/Basic and corrupted offline restore.
 - Evidence: `test/unit/geo/geometry-resources.test.js`.
 
+## `createGeoJoinData`
+
+- Signature: `createGeoJoinData({id,geometry?,data?,geometryKey,dataKey})`.
+- Full only. Requires a missing explicit geometry ID and two explicit key paths. `geometry` resolves
+  explicit/current/unique geographic source, join or LOD; contours are ineligible. `data` resolves the
+  explicit/current/unique materialized dataset, including a logical derived-data owner.
+- Each key is a nonempty own-field string or own-property string array of at most128 fields. The
+  geometry path starts at a normalized feature; use `id` or`["properties","code"]`. The table path starts
+  at its row. Final keys reuse typed row-key scalars or tuples; numeric1, string"1", and tuple[1] differ.
+  Null/absent keys never match each other. Invalid/nonfinite keys, descriptors/accessors, sparse arrays,
+  unknown options and excessive work fail before writes. Features are limited to100000 and join work
+  including encoded key bytes to10000000.
+- The join is1:1: duplicate nonmissing keys on either input fail with `ambiguous-identity` and both
+  duplicate counts in error diagnostics. Aggregation must be an explicit preceding data transform.
+  No fuzzy matching, coercion, automatic aggregation or generated zero values occurs.
+- Feature order, properties, geometry, shared topology and logical feature keys are preserved.
+  Unmatched geometry remains present with null rowMap. Matching table rows are exposed as mark fields
+  and exact row references; unmatched items have empty fields. Original geometry properties remain in
+  the resource and are never merged with table fields. Chained joins preserve geometry and bind the
+  current join's table fields. A table value of0 remains0.
+- Stored kind:geometry, method:geo-join, algorithmVersion1, authored ownership, observed provenance,
+  exact geometry and data inputs. Result contains source features/identity/coordinateKind, optional
+  retained topology, rowMap and diagnostics: geometryCount, dataCount, matchedCount, zero duplicate
+  counts, unmatchedGeometry/unmatchedData source indices and matched/geometry coverage(empty=0).
+  Source rows retain every table row used to determine this result. Inspection reads these values;
+  offline restoration validates them against exact retained inputs without I/O.
+- Source geometry or table revision recomputes all transitive joins and fitted projections once, then
+  updates coordinate/mark refs and rematerializes the final consumer union. Duplicate keys, invalid
+  fit, cyclic inputs or incompatible consumers reject the whole operation with old state/trace intact.
+  Live authored dependencies restrict removal. Remove dependent marks, coordinates, projections and
+  joins explicitly through their existing removal actions before removing their inputs.
+
+### Formal values — `createGeoJoinData`
+
+- Implemented: `createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): fuzzy joins and implicit aggregation.
+
+### Value coverage — `createGeoJoinData`
+
+- ✅ Covered: typed1:1 keys, duplicate diagnostics, missing/empty/null, own descriptors and limits,
+  exact refs, field selection, source closure, Full/Basic boundaries and corrupted offline restore.
+- Evidence: `test/unit/geo/join.test.js`, `test/unit/geo/join-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `editGeoJoinData`
+
+- Signature: `editGeoJoinData({target?,geometry?,data?,geometryKey?,dataKey?})`.
+- Explicit target, current eligible join, then one unique join. Raw geometry and contour resources are
+  ineligible. Requires a nonempty patch without undefined values. Omitted inputs and key paths retain
+  their exact current decisions. Explicit input IDs use the same resolution as creation.
+- Every successful edit increments revision once, including a same-value edit. Keys remain the
+  geometry input's logical feature keys; replacing that input adopts its identity, without matching
+  unrelated regions by value. All dependent joins, fits and marks are refreshed atomically. Self and
+  indirect cycles, duplicates, invalid paths/inputs and incompatible outputs fail before writes.
+
+### Formal values — `editGeoJoinData`
+
+- Implemented: `editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): implicit region identity transfer between unrelated inputs.
+
+### Value coverage — `editGeoJoinData`
+
+- ✅ Covered: inherited/explicit keys and inputs, transitive revision, stable identity and immutable failure.
+- Evidence: `test/unit/geo/join-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `createGeoLODData`
+
+- Signature: `createGeoLODData({id,levels,zoom?})`.
+- Full only. Create a new explicit geometry ID from ordered coarse-to-fine levels. Root level is
+  `{id,geometry,tolerance?}`; each later level also requires `parents:[{key,parent}]`, `enterZoom` and
+  `exitZoom`. Level IDs are unique and each geometry ID is explicit. Source geometry must have an
+  explicit `featureKey`; joins inherit that source key policy. All levels use one coordinateKind.
+  Nested LOD inputs, generated feature keys and non-geographic geometry are rejected.
+- Parent keys use the existing typed row-key contract. Each child has exactly one existing parent in
+  the immediately preceding level. Missing, duplicate and unknown relationships fail, including
+  inactive levels. Empty keyed levels and null geometry remain explicit; no placeholder geometry is created.
+- `zoom` defaults to0 and is finite/nonnegative. Each finer level requires `enterZoom > exitZoom >= 0`;
+  both threshold sequences strictly increase. Initial resolution starts at the coarsest level.
+  Promote at `zoom >= enterZoom`; demote at `zoom < exitZoom`. Equality at exit retains the finer level.
+- `tolerance` defaults to0, preserving every vertex. Positive tolerance requires retained shared topology.
+  Arcs are simplified once, preserving endpoints, direction references and original z values. Units are
+  planar source units or geographic degrees; geographic seam-crossing arcs remain exact. Invalid
+  candidate winding, collapse, crossings or containment retains the original topology with a diagnostic.
+  Tolerance bounds deviation and does not promise point reduction. Source assets and hashes are unchanged.
+- Stored kind:geometry, method:geo-lod, algorithmVersion1, authored ownership and observed provenance.
+  Exact geometry inputs own source references. Options retain ordered input roles, level intent, zoom
+  and the current activeLevel decision. Result contains active features, independent explicit logical
+  identity, coordinateKind, optional topology, all-level logical-key representation mapping and diagnostics.
+  At most128 levels,100000 total regions and10000000 units of mapping work are accepted; simplification
+  also uses existing geometry budgets. Offline restore validates all retained inputs and bounded results.
+- All Geo mark modes and fitted projections consume the active geometry. Fields and original row references
+  come from the active source/join. A subsequent join can replace fields without changing representation.
+  `getMarkItems` exposes readonly `representationKeys`; actual item/hit key remains the current representation.
+  `selectMarks({items:[key]})` keeps its authored original key and matches explicit current representations.
+  Selecting a county at state detail does not rewrite the county selection into a state selection.
+- Projection edits do not infer zoom. Resource zoom is explicit. Annotation geographic anchors and camera
+  gestures are separate consumers; this API does not create labels or author interaction bindings.
+- Source revisions validate every level before rebuilding LOD, joins, fitted projections and consumer
+  union once. Live dependencies restrict removal; use existing explicit resource/mark removal actions.
+
+### Formal values — `createGeoLODData`
+
+- Implemented: `createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): implicit hierarchy inference or nested detail resources.
+
+### Value coverage — `createGeoLODData`
+
+- ✅ Covered: typed hierarchy/hysteresis, shared-boundary simplification, source/hash retention, fields,
+  original selection correspondence, limits, immutable failure, exact refs and corrupted restore.
+- Evidence: `test/unit/geo/levels.test.js`, `test/unit/geo/shared-topology.test.js`, `test/unit/geo/lod-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `editGeoLODData`
+
+- Signature: `editGeoLODData({target?,levels?,zoom?})`.
+- Target resolves explicit, current eligible LOD, then one unique LOD. A nonempty patch is required;
+  undefined/null values are invalid. Omitted levels and zoom retain their previous intent. Supplied levels
+  replace the whole list and must retain the existing active level ID; removing it is an explicit error.
+- Hysteresis starts from the stored active level. Every successful edit increments revision once, even
+  without a level transition. Logical namespace stays fixed and keys combine level ID with the original
+  typed source key. Dependents update atomically. Self/cyclic refs or invalid source correspondence fail
+  without changing the original program, trace or caller input.
+
+### Formal values — `editGeoLODData`
+
+- Implemented: `editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): silent active-level reset or generated parent relationships.
+
+### Value coverage — `editGeoLODData`
+
+- ✅ Covered: inherited/explicit intent, stable identity through transitions, source/join/fit closure,
+  current selection representations, atomic invalid edits and offline restore.
+- Evidence: `test/unit/geo/lod-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
 ## `createProjection`
 
 - Signature: `createProjection({id,type,centerDeg?,rotateDeg?,parallelsDeg?,scalePx?,translatePx?,reflectX?,reflectY?,precisionPx?,clipAngleDeg?,clipExtentPx?,fit?})`.

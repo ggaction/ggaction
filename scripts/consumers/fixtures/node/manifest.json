@@ -1216,5 +1216,39 @@
         "statements": 17
       }
     ]
+  },
+  {
+    "file": "geographic-join.mjs",
+    "cases": [
+      {
+        "id": "geographic-join/typed-fields-and-atomic-revision",
+        "statements": 9
+      },
+      {
+        "id": "geographic-join/offline-fresh-process",
+        "statements": 3
+      },
+      {
+        "id": "geographic-join/four-renderer-source-geometry-parity",
+        "statements": 6
+      }
+    ]
+  },
+  {
+    "file": "geographic-levels.mjs",
+    "cases": [
+      {
+        "id": "geographic-levels/hysteresis-selection-and-atomicity",
+        "statements": 10
+      },
+      {
+        "id": "geographic-levels/offline-fresh-process",
+        "statements": 4
+      },
+      {
+        "id": "geographic-levels/four-renderer-current-level-parity",
+        "statements": 6
+      }
+    ]
   }
 ]

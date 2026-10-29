@@ -1,8 +1,17 @@
 import { annotateError } from "../core/diagnostics.js";
 import { requireStoredResource } from "./resources.js";
 
-export function resolveGeometryResource(program, target) {
-  const eligible = resource => resource.kind === "geometry" && resource.options.method === "geo";
+export function isGeographicGeometry(resource) {
+  return resource?.kind === "geometry" && ["geo", "geo-join", "geo-lod"].includes(resource.options.method);
+}
+
+export function geographicCoordinateKind(resource) {
+  if (!isGeographicGeometry(resource)) throw new TypeError("A geographic or planar geometry source resource is required.");
+  return resource.options.method === "geo" ? resource.options.coordinateKind : resource.result.coordinateKind;
+}
+
+export function resolveGeometryResource(program, target, { method } = {}) {
+  const eligible = resource => isGeographicGeometry(resource) && (method === undefined || resource.options.method === method);
   if (target !== undefined) {
     const resource = requireStoredResource(program, { kind: "geometry", id: target });
     if (!eligible(resource)) throw annotateError(new Error("Geometry is not a geographic source resource."), { code: "incompatible-resource", resourceId: target });

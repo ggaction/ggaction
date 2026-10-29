@@ -1106,6 +1106,15 @@
     "Graticule": [
       "graticule",
       "longitude and latitude grid"
+    ],
+    "GeoJoinData": [
+      "joined geographic geometry",
+      "typed geometry table join"
+    ],
+    "GeoLODData": [
+      "geographic detail levels",
+      "region hierarchy",
+      "map level of detail"
     ]
   },
   "summaryOverrides": {
@@ -2259,6 +2268,31 @@
     "editGraticule": {
       "target": "grid",
       "opacity": 0.7
+    },
+    "createGeoJoinData": {
+      "id": "joinedGeometry",
+      "geometry": "geometry",
+      "data": "measurements",
+      "geometryKey": "id",
+      "dataKey": "code"
+    },
+    "editGeoJoinData": {
+      "target": "joinedGeometry",
+      "dataKey": "code"
+    },
+    "createGeoLODData": {
+      "id": "regions",
+      "levels": [
+        {
+          "id": "county",
+          "geometry": "geometry"
+        }
+      ],
+      "zoom": 4
+    },
+    "editGeoLODData": {
+      "target": "regions",
+      "zoom": 5
     }
   },
   "callPatternOverrides": {

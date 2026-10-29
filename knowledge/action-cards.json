@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 359,
+  "count": 363,
   "cards": [
     {
       "schemaVersion": 3,
@@ -43420,6 +43420,384 @@
       "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editgeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoJoinData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create an immutable one-to-one typed geometry-table join, retaining unmatched features and source identity.",
+      "signature": "createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;",
+      "intents": [
+        "create geo join data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "joined geographic geometry",
+        "typed geometry table join"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "geographic geometry resource",
+          "materialized table"
+        ],
+        "owns": [
+          "joined geometry resource"
+        ],
+        "idOptions": [
+          "id",
+          "geometry",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoJoinData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "geographic geometry resource",
+          "materialized table"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometryKey",
+          "required": true,
+          "type": "GeometryFeatureKey"
+        },
+        {
+          "name": "dataKey",
+          "required": true,
+          "type": "GeometryFeatureKey"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoJoinData({ id, geometryKey, dataKey, data?, target?, geometry? })"
+      ],
+      "snippet": "program.createGeoJoinData({ id: \"joinedGeometry\", geometry: \"geometry\", data: \"measurements\", geometryKey: \"id\", dataKey: \"code\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeojoindata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoJoinData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.",
+      "signature": "editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geo join data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "joined geographic geometry",
+        "typed geometry table join"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "geographic geometry resource",
+          "materialized table"
+        ],
+        "owns": [
+          "joined geometry resource"
+        ],
+        "idOptions": [
+          "target",
+          "geometry",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoJoinData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "geographic geometry resource",
+          "materialized table"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometryKey",
+          "required": false,
+          "type": "GeometryFeatureKey | undefined"
+        },
+        {
+          "name": "dataKey",
+          "required": false,
+          "type": "GeometryFeatureKey | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoJoinData({ target?, data?, geometry?, geometryKey?, dataKey? })"
+      ],
+      "snippet": "program.editGeoJoinData({ target: \"joinedGeometry\", dataKey: \"code\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeojoindata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoLODData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create detail levels with explicit typed parent correspondence, shared topology simplification and hysteresis.",
+      "signature": "createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;",
+      "intents": [
+        "create geo lod data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic detail levels",
+        "region hierarchy"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit keyed geometry levels and parent mappings"
+        ],
+        "owns": [
+          "geographic detail resource"
+        ],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoLODData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit keyed geometry levels and parent mappings"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "levels",
+          "required": true,
+          "type": "GeoLODLevels"
+        },
+        {
+          "name": "zoom",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoLODData({ id, levels, target?, zoom? })"
+      ],
+      "snippet": "program.createGeoLODData({ id: \"regions\", levels: [{ id: \"county\", geometry: \"geometry\" }], zoom: 4 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeoloddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoLODData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Update detail intent and all geographic consumers while retaining original logical selection keys.",
+      "signature": "editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geo lod data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic detail levels",
+        "region hierarchy"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit keyed geometry levels and parent mappings"
+        ],
+        "owns": [
+          "geographic detail resource"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoLODData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit keyed geometry levels and parent mappings"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "levels",
+          "required": false,
+          "type": "GeoLODLevels | undefined"
+        },
+        {
+          "name": "zoom",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoLODData({ target?, levels?, zoom? })"
+      ],
+      "snippet": "program.editGeoLODData({ target: \"regions\", zoom: 5 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeoloddata"
     },
     {
       "schemaVersion": 3,

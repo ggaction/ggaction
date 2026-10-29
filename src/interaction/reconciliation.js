@@ -49,9 +49,16 @@ function capture(program, owner, spend, policy) {
     return { ...owner, grain: definition.grain, signature, availableKeys: [], selectedKeys: [], intentKeys: [], hiddenKeys: [], missing: false };
   }
   const resolved = resolveRegisteredSelection(view, owner.selection, { sourceOnly: owner.target.facetSource === true });
-  const availableKeys = keysWork(resolved.items.filter(item => item.visible !== false).map(item => item.key), spend), available = new Set(availableKeys);
-  const selectedKeys = keysWork(resolved.keys.filter(key => available.has(key)), spend);
+  const available = new Set(); let represented = false;
+  for (const item of resolved.items) if (item.visible !== false) {
+    represented ||= item.representationKeys !== undefined;
+    for (const key of keysWork([item.key, ...(item.representationKeys ?? [])], spend)) available.add(key);
+  }
+  const availableKeys = [...available];
+  // Explicit keys remain the lifecycle identity while a different visible item
+  // represents them. Hit/selection resolution continues to return current keys.
   const intentKeys = keysWork(resolved.selector.items?.length ? [...resolved.selector.items] : [...resolved.keys], spend);
+  const selectedKeys = keysWork((represented && resolved.selector.items?.length ? intentKeys : resolved.keys).filter(key => available.has(key)), spend);
   return { ...owner, grain: resolved.definition.grain, signature, availableKeys, selectedKeys, intentKeys, hiddenKeys: [], missing: false };
 }
 function compare(current, previous, policy, spend) {

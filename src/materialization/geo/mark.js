@@ -31,7 +31,7 @@ export function resolveGeoMark(program, layer, config) {
       graphicRoles.push(role);
       graphics.push({ type: point ? "circle" : "path", properties: materializeMarkEffectProperties(properties), identity: { key, topology, role, lineage } });
     }
-    items.push({ key, topology, role: "feature", properties: style, fields: feature.properties ?? {}, members: [], rowKeys: [], graphicRoles, lineage });
+    items.push({ key, topology, role: "feature", properties: style, fields: feature.fields ?? feature.properties ?? {}, members: [], rows: feature.rows ?? [], rowKeys: [], graphicRoles, lineage });
   }
   validateGeneratedItemLimit(graphics.length, "Geographic graphic count");
   const concrete = materializeFillItems(program, layer, graphics);

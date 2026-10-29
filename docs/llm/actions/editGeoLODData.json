@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 3,
+  "name": "editGeoLODData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Update detail intent and all geographic consumers while retaining original logical selection keys.",
+  "signature": "editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;",
+  "intents": [
+    "edit geo lod data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "geographic detail levels",
+    "region hierarchy"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "explicit keyed geometry levels and parent mappings"
+    ],
+    "owns": [
+      "geographic detail resource"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoLODData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "explicit keyed geometry levels and parent mappings"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "levels",
+      "required": false,
+      "type": "GeoLODLevels | undefined"
+    },
+    {
+      "name": "zoom",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGeoLODData({ target?, levels?, zoom? })"
+  ],
+  "snippet": "program.editGeoLODData({ target: \"regions\", zoom: 5 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgeoloddata"
+}

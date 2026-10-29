@@ -1,0 +1,100 @@
+{
+  "scope": "Private typed geographic hierarchy mapping and deterministic LOD hysteresis; no public action, persisted schema or renderer integration yet",
+  "base": "98cab73a4",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "kernel": {
+      "tests": 7,
+      "pass": 7,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "sourceBoundaries": {
+      "tests": 11,
+      "pass": 11
+    },
+    "packageArtifact": {
+      "tests": 7,
+      "pass": 7
+    },
+    "sourceDocs": {
+      "tests": 197,
+      "pass": 197
+    }
+  },
+  "package": {
+    "limits": {
+      "entries": 1021,
+      "packedBytes": 1457000,
+      "unpackedBytes": 6628000
+    },
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1021,
+        "packedBytes": 1456290,
+        "unpackedBytes": 6627320
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1021,
+        "packedBytes": 1452682,
+        "unpackedBytes": 6627320
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1021,
+        "packedBytes": 1456290,
+        "unpackedBytes": 6627320
+      }
+    ]
+  },
+  "deferred": "Shared topology simplification, public lifecycle, selection/annotation representation, renderers and source-free consumers remain in STEP045; this kernel does not close AT31.",
+  "manifest": [
+    {
+      "file": "levels-coverage-1.log.gz",
+      "sha256": "6ef42b4b970fddd87da2675679c5bf345216ef83aefdaf88d8ee34f80dd03799"
+    },
+    {
+      "file": "levels-boundaries.log.gz",
+      "sha256": "5baa1e358a2a42e7e2515d19d76d3495b6da469bc1c70f1d7ff44471d5774bd9"
+    },
+    {
+      "file": "levels-package-contract.log.gz",
+      "sha256": "d80c2b6684f5351a8156bbbac0a0df877901946079d9de3ac5e4c679f8e7c367"
+    },
+    {
+      "file": "package-size-20.json.gz",
+      "sha256": "6850256743a90badb89483a41b02f8318830873d1fa4344b2ddb6894517e13f4"
+    },
+    {
+      "file": "package-size-22.json.gz",
+      "sha256": "b8a4a3a3dcc60c4fe322b8d0e9f4ade3c9806203d512b6cc2f3d62d703ab8ff6"
+    },
+    {
+      "file": "package-size-24.json.gz",
+      "sha256": "e4449dea773e2f295e6bc77d61a7437bbca732610968dcbbcb0c0377bf34b17d"
+    },
+    {
+      "file": "levels-docs.log.gz",
+      "sha256": "8734bf165c2334adbdf966364a8caa86f2b30a886576b9b77ac74e976c446a75"
+    },
+    {
+      "file": "levels-provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "levels-machine.log.gz",
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d"
+    },
+    {
+      "file": "levels-llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    }
+  ],
+  "sourceCommit": "4a9dac2e3"
+}

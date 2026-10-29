@@ -1,0 +1,5 @@
+export interface GeoJoinKeyOptions {
+  /** Exact own field or nonempty own-property path. Null and absent keys never match. */
+  readonly geometryKey: GeometryFeatureKey;
+  readonly dataKey: GeometryFeatureKey;
+}

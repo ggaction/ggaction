@@ -1328,6 +1328,10 @@
       {
         "type": "file",
         "path": "unit/interaction-node-move.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-geo-representation.test.js"
       }
     ],
     "selectors": [

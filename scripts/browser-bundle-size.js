@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 716_400, // Single-node fixed/force layout editing: Node20 716,325 bytes.
-  "ggaction/basic": 381_400, // Shared viewport and filter projection: Node20 381,341; editors remain Full-only.
+  ggaction: 723_200, // Combined geographic detail and interaction controls: Node20 723,106 gzip bytes.
+  "ggaction/basic": 382_000, // Shared selection aliases: Node20 381,050 gzip bytes.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
-  "ggaction/interaction": 112_700 // Captured node movement and current preview hit frames: Node20 112,676.
+  "ggaction/interaction": 112_800 // Logical geographic representation lifecycle: Node20 112,714.
 });
 
 function minimalBrowserSource(specifier) {

@@ -1,26 +1,18 @@
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { geometryPosition, sameGeometryPosition, validateGeometryBBox } from "./geometry.js";
 
 function integer(value) { return Number.isInteger(value) && value >= -2147483648 && value <= 2147483647; }
 
-export function decodeTopology(source, coordinateKind, budget, objectName) {
-  ownRecord(source, "Topology"); validateGeometryBBox(source);
-  if (!Object.hasOwn(source, "type") || source.type !== "Topology") throw new TypeError("TopoJSON requires a Topology object.");
-  ownRecord(source.objects, "Topology objects"); ownArray(source.arcs, "Topology arcs");
-  const names = Object.keys(source.objects);
-  if (objectName === undefined && names.length !== 1) throw new Error("Topology requires an explicit object when no unique object exists.");
-  const object = objectName ?? names[0];
-  if (typeof object !== "string" || !Object.hasOwn(source.objects, object)) throw new Error("Unknown topology object.");
-  let transform;
-  if (Object.hasOwn(source, "transform")) {
-    ownRecord(source.transform, "Topology transform"); transform = source.transform;
+function positionReader(transform, coordinateKind, budget) {
+  if (transform !== undefined) {
+    ownRecord(transform, "Topology transform");
     for (const key of ["scale", "translate"]) {
       ownArray(transform[key], `Topology transform ${key}`);
       if (transform[key].length !== 2 || transform[key].some(v => !Number.isFinite(v))) throw new TypeError("Topology transform requires two finite scale and translate values.");
     }
   }
-  const position = (point, accumulated) => {
+  return (point, accumulated) => {
     ownArray(point, "Topology position");
     if (point.length < 2 || point.some(v => !Number.isFinite(v))) throw new TypeError("Topology positions require finite coordinates.");
     let result = [...point];
@@ -35,12 +27,9 @@ export function decodeTopology(source, coordinateKind, budget, objectName) {
     }
     return geometryPosition(result, coordinateKind, budget);
   };
-  budget.count("arcs", source.arcs.length);
-  const arcs = source.arcs.map(arc => {
-    ownArray(arc, "Topology arc");
-    if (arc.length < 2) throw new TypeError("Topology arcs require at least two positions.");
-    const sum = [0, 0]; return arc.map(point => position(point, sum));
-  });
+}
+
+function expandObject(selected, object, arcs, position, budget) {
   const stitch = refs => {
     ownArray(refs, "Topology arc references"); const result = [];
     for (const ref of refs) {
@@ -75,10 +64,46 @@ export function decodeTopology(source, coordinateKind, budget, objectName) {
       default: throw new TypeError("Unsupported topology geometry discriminator.");
     }
   };
-  const selected = source.objects[object]; ownRecord(selected, "Topology selected object");
+  ownRecord(selected, "Topology selected object");
   const rows = selected.type === "GeometryCollection" ? ownArray(selected.geometries, "Topology selected geometries") : [selected];
   validateGeneratedItemLimit(rows.length, "Geometry features", budget.limits.maxFeatures);
-  const features = rows.map((value, i) => ({ source: value, geometry: expand(value),
+  return rows.map((value, i) => ({ source: value, geometry: expand(value),
     sourcePath: selected.type === "GeometryCollection" ? ["objects", object, "geometries", i] : ["objects", object] }));
-  return { features, topology: { object, arcs, references: selected, ...(transform === undefined ? {} : { transform }) } };
+}
+
+export function decodeTopology(source, coordinateKind, budget, objectName) {
+  ownRecord(source, "Topology"); validateGeometryBBox(source);
+  if (!Object.hasOwn(source, "type") || source.type !== "Topology") throw new TypeError("TopoJSON requires a Topology object.");
+  ownRecord(source.objects, "Topology objects"); ownArray(source.arcs, "Topology arcs");
+  const names = Object.keys(source.objects);
+  if (objectName === undefined && names.length !== 1) throw new Error("Topology requires an explicit object when no unique object exists.");
+  const object = objectName ?? names[0];
+  if (typeof object !== "string" || !Object.hasOwn(source.objects, object)) throw new Error("Unknown topology object.");
+  const transform = Object.hasOwn(source, "transform") ? source.transform : undefined;
+  const position = positionReader(transform, coordinateKind, budget);
+  budget.count("arcs", source.arcs.length);
+  const arcs = source.arcs.map(arc => {
+    ownArray(arc, "Topology arc");
+    if (arc.length < 2) throw new TypeError("Topology arcs require at least two positions.");
+    const sum = [0, 0]; return arc.map(point => position(point, sum));
+  });
+  const selected = source.objects[object];
+  return { features: expandObject(selected, object, arcs, position, budget),
+    topology: { object, arcs, references: selected, ...(transform === undefined ? {} : { transform }) } };
+}
+
+// Retained arcs are already decoded; isolated Point/MultiPoint references still
+// use the source transform. Both paths share the same stitching and point rules.
+export function expandDecodedTopology(topology, coordinateKind, budget) {
+  ownRecord(topology, "Decoded topology");
+  rejectUnknownProperties(topology, ["object", "arcs", "references", "transform"], "decoded topology");
+  if (typeof topology.object !== "string") throw new TypeError("Decoded topology requires its selected object name.");
+  ownArray(topology.arcs, "Decoded topology arcs"); budget.count("arcs", topology.arcs.length);
+  const arcs = topology.arcs.map(arc => {
+    ownArray(arc, "Decoded topology arc");
+    if (arc.length < 2) throw new TypeError("Topology arcs require at least two positions.");
+    return arc.map(point => geometryPosition(point, coordinateKind, budget));
+  });
+  const position = positionReader(topology.transform, coordinateKind, budget);
+  return expandObject(topology.references, topology.object, arcs, position, budget);
 }

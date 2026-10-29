@@ -410,7 +410,9 @@ It commits with the same transaction, linked-selection and failure behavior as o
 
 Pass `selectionPolicy: "keep-hidden"` (the default) to preserve selections when a filter,
 partition focus or removed child hides their logical items. Matching selected keys can become visible
-again. Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
+again. Geographic detail changes preserve the original selected region while a visible region explicitly
+represents it. Hidden/restored events keep the original selection key; current hits use the visible region.
+Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
 A live range or predicate becomes a key snapshot only when items must be dropped. Explicitly authored
 replacement selection options take precedence. Opacity zero and sampled animation frames do not count
 as removed items.

@@ -1,6 +1,6 @@
 import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { requireLayer } from "../../selectors/layers.js";
-import { layerResourceBindings, mapLayerResourceBindings } from "../../core/resourceReferences.js";
+import { layerResourceBindings, mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
 import { orderResourceDependencies, validateResourceGraph } from "../../materialization/resourceState.js";
 import { createHierarchyResource, createHierarchyLayoutResource } from "../../materialization/hierarchy/resources.js";
 import { createObservedGraphResource } from "../../materialization/graph/resources.js";
@@ -9,6 +9,9 @@ import { createFlowResource, flowSourceDefinition } from "../../materialization/
 import { createGraphLayoutResource } from "../../materialization/graph/layoutResource.js";
 import { GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { createContourResource } from "../../materialization/contour/resources.js";
+import { createGeoLODResource } from "../../materialization/geo/lodResource.js";
+import { createGeoJoinResource } from "../../materialization/geo/joinResource.js";
+import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
 import { createCalendarResource } from "../../materialization/calendar/resources.js";
 import { resolveHierarchyPlot } from "../../materialization/hierarchy/plot.js";
 import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
@@ -36,7 +39,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
   for (const previous of orderResourceDependencies(program.semanticSpec.resources)) {
     const changed = previous.inputs.some(ref => ref.kind === "data" ? dataReplacements.has(ref.id) : revised.has(key(ref))) ||
       needsScreenRouteRevision(program, previous);
-    if (!changed || !["hierarchy", "graph", "geometry", "layout", "edge-route"].includes(previous.kind)) continue;
+    if (!changed || !["hierarchy", "graph", "geometry", "layout", "edge-route", "projection"].includes(previous.kind)) continue;
     const identity = { id: previous.id, revision: previous.revision + 1 };
     let resource;
     if (previous.kind === "edge-route") {
@@ -57,6 +60,15 @@ export function planSourceResourceRevision(program, dataReplacements) {
           ? createObservedGraphResource({ ...inputs, definition: previous.options.definition })
           : createFlowResource({ ...inputs, definition: flowSourceDefinition(previous) });
       }
+    } else if (previous.kind === "projection") {
+      resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]) });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
+      const { method, ...definition } = previous.options;
+      resource = createGeoJoinResource({ ...identity, geometry: resourceInput(previous.inputs[0]), dataset: source(previous.inputs[1]), definition });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-lod") {
+      const { method, ...definition } = previous.options;
+      resource = createGeoLODResource({ ...identity, program, definition, geometries: previous.inputs.map(resourceInput),
+        input: resourceInput, logicalId: previous.result.identity.logicalId, allocationId: previous.result.identity.allocationId });
     } else if (previous.kind === "geometry") {
       resource = createContourResource({ ...identity, dataset: source(previous.inputs[0]),
         definition: previous.options.definition, thresholds: previous.options.thresholds });
@@ -81,12 +93,15 @@ export function planSourceResourceRevision(program, dataReplacements) {
   const layers = mapLayerResourceBindings(program.semanticSpec.layers.map(layer => views.has(layer.id)
     ? { ...layer, partitionView: views.get(layer.id) } : layer), ref => revised.has(key(ref))
     ? { ...ref, revision: revised.get(key(ref)).revision } : ref);
-  const preview = { ...program, markConfigs: program.markConfigs, semanticSpec: { ...program.semanticSpec, resources, layers } };
+  const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, ref => revised.has(key(ref))
+    ? { ...ref, revision: revised.get(key(ref)).revision } : ref);
+  const preview = { ...program, markConfigs: program.markConfigs, semanticSpec: { ...program.semanticSpec, resources, layers, coordinates } };
   validateResourceGraph(preview, program.constructor);
   previewGraphLayouts(preview, resources, layouts);
   preflightContourConsumers(preview, entries.map(entry => entry.resource).filter(resource => resource.kind === "geometry"));
   preflightCalendarConsumers(preview, layouts.filter(resource => resource.options.method === "calendar"));
-  const marks = layers.filter(layer => layerResourceBindings(layer).some(({ ref }) => revised.has(key(ref)))).map(layer => layer.id);
+  const coordinateIds = new Set(coordinates.filter(coordinate => coordinate.type === "geo" && revised.has(key(coordinate.projection))).map(coordinate => coordinate.id));
+  const marks = layers.filter(layer => layerResourceBindings(layer).some(({ ref }) => revised.has(key(ref))) || coordinateIds.has(layer.coordinate)).map(layer => layer.id);
   return { entries, views, marks };
 }
 

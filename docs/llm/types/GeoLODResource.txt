@@ -1,0 +1,19 @@
+export interface GeoLODResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: { readonly method: "geo-lod"; readonly zoom: number; readonly activeLevel: string;
+    readonly levels: readonly ({ readonly id: string; readonly input: number; readonly tolerance: number;
+      readonly parents?: GeoLODChildLevel["parents"]; readonly enterZoom?: number; readonly exitZoom?: number })[] };
+  readonly result: {
+    readonly features: GeometrySourceResource["result"]["features"];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly topology?: GeometrySourceResource["result"]["topology"];
+    readonly coordinateKind: "planar" | "geographic";
+    readonly mapping: readonly { readonly level: string; readonly regions: readonly { readonly key: string; readonly representations: readonly string[] }[] }[];
+    readonly diagnostics: { readonly levelCount: number; readonly featureCount: number;
+      readonly simplification: null | { readonly inputPoints: number; readonly outputPoints: number; readonly maxDeviation: number;
+        readonly seamArcCount: number; readonly retainedForTopology: null | "ring-collapse" | "ring-winding" | "crossing" | "ring-containment"; readonly work: number } };
+  };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly [] };
+}

@@ -14,6 +14,7 @@
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
+- [x] E4: geographic detail representation의 원 선택키 lifecycle 결합
 - [ ] geo pointer navigation 및 일반 session keyboard/focus·coordinate morph
 - [ ] AT35/38/65/80 consumer matrix와 STEP074/077 전달
 
@@ -463,3 +464,25 @@ annotation 편집, pointer pan/pinch, camera/LOD, 일반 keyboard focus/history,
 
 E3 source `e422f9ebc` push 뒤 provenance를 고정해 owning docs30과 built172pages/1509LLM을
 다시 통과했다. Runtime/타입/최종 archive 및 시각 입력이 같으므로 앞선 설치·네 폭Axe를 재사용한다.
+
+
+## E4 geographic representation과 session lifecycle
+
+검증된 Geo `430f9df90`를 E3 `bcdeaeb419`에 직접 병합했다. Semantic/source runtime 충돌은 없고
+DEFAULT_ACTION_METHODS·문서·카드는 정본으로 다시 생성했다. 현재 Geo item/hit key는 그대로 유지하고,
+visible item의 명시 representationKeys만 available logical key로 인정한다. Explicit items 선택은 원 authored
+key를 lifecycle snapshot과 hidden/restored/dropped event에 보존한다. 일반 item의 기존 event 순서도 유지한다.
+
+County→state 및 scoped state→county에서 hidden/drop 오탐을 재현했다. 실제 geometry null 이후 다른
+representation으로 복귀할 때 restored 알림 누락도 재현했다. 최종5새회귀와 집중36/36,
+변경 owner100/98.89/100, 결합초기54 및 계약32가 통과했다. 실제5datasets×3recipes에서 keep-hidden/drop
+모두 전환/codec/복귀를 실행한16개가 통과했다. Source/geometry/renderer owner의 기존LOD 증거는 재사용한다.
+
+동일 최종 tarc8ffec62에서 Node20/22/24 각각9runtime·strictTS·5bundles를 통과했다.
+앞선913c864b는 일반 selection event 순서를 보존하는 보강 전 archive로 구분해 남겼다.
+Combined package1036entries/Node20packed1,473,732/unpacked6,705,695에1,474,000/6,706,000 cap,
+Full723,106과 interaction최종실측에는723,200/112,800 cap을 적용한다. Basic382,000/SVG25,000/graph44,000은 유지한다.
+Docs204/204, built172pages/1523LLM 및 네 폭overflow0/Axe0이 통과했다.
+[정확 artifact·실행·원본 실패](geographic-representation-evidence/qualification.json)에 증거를 둔다.
+전수 coverage/normal·전체 installed matrix·060/077 완료를 주장하지 않는다. LOD zoom을 projection에서
+임의 추론하지 않으며 명시 camera 결합, pointer navigation, annotation·history/focus는 후행 의무다.

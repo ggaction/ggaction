@@ -79,6 +79,8 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  /** Original logical keys represented by this current geographic detail item. The hit key remains key. */
+  readonly representationKeys?: readonly string[];
   readonly appearance: readonly AppearanceProvenance[];
   readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";

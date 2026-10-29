@@ -11,7 +11,9 @@
 - [x] Projection resource·명시 fit·geometry revision closure 공개 checkpoint 검증
 - [x] Geometry stream의 native geo mark 공개 연결과 소비자 검증
 - [ ] Geo guide·label 공개 연결
-- [ ] Native geo marks/guide/typed join/shared-arc LOD
+- [x] Typed geometry/table join 및 exact source revision closure
+- [x] Shared-arc/hierarchy LOD resource와 명시적 selection representation
+- [ ] LOD semantic feature/geographic annotation와 interaction availability 연결
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 기준은
@@ -393,3 +395,155 @@ interaction/direct controls/linked filter/region35개와 browser13개, 경계·�
 현재 source와 차이0이다. Postcommit 문서196/196, built172페이지/1505machine artifacts와
 전체 페이지320/390/768px 검증도 통과했다. 합산 증거는 `geo-evidence/marks-merge/status.json`이다.
 이후 join 변경은 별도 개념 commit으로 진행한다.
+
+## Typed join 구체 계약
+
+`AUTHORIZATION.json.remainingApproval`을 재사용한다. `createGeoJoinData({id,geometry?,data?,geometryKey,dataKey})`와
+`editGeoJoinData({target?,geometry?,data?,geometryKey?,dataKey?})`는 geometry kind의
+`method:"geo-join"` resource를 소유한다. Geometry와 materialized table을 exact InputRef 두 개로
+참조하며 source 변경은 geometry→join→fitted projection→mark 및 data→join closure를 한 번
+계산한다. 모든 후보를 검증한 뒤 단일 최종 mark/scale/guide union을 명시 실행한다.
+
+키 옵션은 비어 있지 않은 own-field 문자열 또는 최대128단계 own-property path다. 값은 공통
+`core/itemIdentity.js`의 scalar/tuple 인코더를 재사용하며 숫자1과 문자열"1"은 다르다.
+기존 `grammar/lookup.js`와 동일하게 null/없는 키는 서로 매칭하지 않는다. 일반 lookup의
+primary 중복 허용·field alias 복사와 달리 Geo는 승인된1:1 정책이므로 양쪽 nonmissing 키
+중복을 모두 세어 원자적으로 거부한다. 원본 lookup 의미는 변경하지 않는다.
+
+결과는 원래 geometry feature 순서·properties·null geometry·키를 그대로 보존하고 table
+rowMap과 diagnostics를 별도 소유한다. Unmatched geometry는 null rowMap으로 남는다.
+Inspection은 matched/duplicate count, unmatched geometry/data index 목록과 coverage를
+읽으며 empty geometry coverage는0이다. Duplicate 오류에도 양쪽 count를 제공한다.
+Geometry properties를 table 필드와 합쳐 덮어쓰지 않는다. Join의 field consumer는 매칭된
+table row 또는 빈 fields를 읽고 원본 geometry properties는 resource에 보존한다.
+
+Own descriptor를 읽기 전에 검증하고 tuple/깊이/feature/전체 작업량 제한을 적용한다.
+저장 복원에서는 exact inputs로 같은 correspondence를 검산하며 네트워크나 callback을 실행하지
+않는다. 본 개념 뒤 shared-arc LOD, field color/size, guide/label, camera와 AT31/32 후행
+통합을 계속한다. 본 join만으로 STEP045 전체 완료를 주장하지 않는다.
+
+
+## Typed join 검증 checkpoint
+
+새 join과 기존 Geo owner의 집중 coverage 99/99, 100/98.21/100 및 기존 critical 33개
+95/90/100 기준을 통과했다. 실제 pinned 데이터 5종×3 조합과 witness 16개, DATA/prepared/
+Canvas/graph 공통 회귀 27개, 추가 join→fit과 독립 screen-route sibling의 responsive source
+revision 검사 포함 33개가 통과했다. 각 resource revision은 한 번만 증가하며 이전 program과
+trace를 보존한다. 독립 replay의 allocation namespace 정규화는 geo-join에 한해 확장했고,
+잘못된 rowMap·source field·stale input·feature identity를 숨기지 않는 회귀 4개를 통과했다.
+
+Public inventory는 352 actions / 32,032 option paths이며 canonical 실제 direct-call 검사는
+10/10이다. 기본 ledger는 37,748 requirements, renderer 항목을 제외한 owning fixture는
+37,744다. 경계 계약 52개와 catalog 11개, source docs 197개, built 172페이지/1,511 machine
+artifacts, desktop search·accessibility 및 전체 페이지 320/390/768px 검증을 통과했다.
+
+동일 tar `6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11`의
+Node20/22/24에서 각 runtime 3개, strict Full/Basic 타입, runnable docs 1개와 browser bundle
+5개를 검증했다. 원본 도형과 join 결과의 concrete properties·Canvas·SVG·PNG·PDF draw stream이
+동일하다. 1,020 packed inputs는 source와 차이 0이며, size/gzip은 각 Node/zlib의 실제 측정값을
+기록했다. 최초 fixture/문서/coverage 부족과 owning 수리를 분리한 정본은
+[geo-evidence/join/status.json](./geo-evidence/join/status.json)이다. 전체 unit/global coverage나
+전체 installed corpus를 재실행한 것으로 요약하지 않는다. Source commit 후 provenance만
+동기화하는 최종 proof는 별도로 기록한다.
+
+Join source `8f19d5a42`의 postcommit 문서 197/197, built 172페이지/1,511 machine artifacts와
+전체 페이지 320/390/768px 검증이 완료됐다. 런타임과 1,020 packed inputs는 검증한 tar와
+변경 없이 유지했다. 이 후속 기록은 provenance와 증거만 갱신하며 LOD 구현은 다음 개념이다.
+
+## LOD 순수 level 계약
+
+`remainingApproval`과 STEP045를 재사용한다. 첫 계산 owner는 `grammar/geo/levels.js`다.
+입력 level은 coarse→fine 순서이며 각 level의 명시 typed region keys를 공통 key encoder로
+정규화한다. Fine level의 `{key,parent}`는 바로 앞 level의 key를 정확히 참조하며 빠짐·중복·
+잘못된 parent를 거부한다. 이름 유사도나 배열 위치로 관계를 추정하지 않는다. 서로 다른
+level에서 같은 typed key를 써도 level ID로 구분한다. Empty level은 그대로 보존한다.
+
+각 fine level은 `enterZoom > exitZoom >= 0`이며 enter/exit 배열은 각각 엄격히 증가한다.
+현재 level을 명시적으로 받아 `zoom >= enterZoom`에서 더 상세한 level로, `zoom < exitZoom`에서
+상위 level로 이동한다. 따라서 4.2에서 진입하고 정확히 3.8에서는 유지하며 3.8 미만에서
+나온다. 이전 level 생략은 가장 coarse level에서 시작하며 zoom은 finite nonnegative다.
+
+결과는 선택한 level과 모든 level의 원래 key→현재 representation key 목록을 함께 반환한다.
+County→state는 정확한 parent 하나, state→county는 원래 입력 순서의 descendant 목록이다.
+원래 logical key를 parent key로 덮어쓰지 않는다. Descriptor·전체 region 수·key 문자량·
+parent traversal·output mapping 작업량을 공통 제한으로 검증하며 callbacks/ChartProgram/
+renderer나 전역 cache를 쓰지 않는다. 공개 resource/selection/annotation/LOD 단순화는 이
+순수 checkpoint 이후 이어 연결하며 이 계산만으로 AT31 완료를 선언하지 않는다.
+
+LOD level 순수 계산 7개와 해당 owner coverage 100/100/100, source boundary 11개,
+package artifact 7개가 통과했다. 공개 API/타입/entry와 persisted state는 아직 변경하지 않았다.
+추가 private module 1개를 포함한 package 크기는 지원 Node20/22/24에서 모두 실제 측정했고
+기존 browser bundle에 연결되지 않는 순수 계산이므로 installed/browser corpus를 반복하지 않았다.
+정본은 [geo-evidence/lod-levels/status.json](./geo-evidence/lod-levels/status.json)이다.
+
+## Shared topology 단순화 계약
+
+`grammar/geo/simplify.js`는 retained decoded arcs를 한 번만 처리한다. 허용 오차는 planar에서
+caller coordinate unit, geographic에서 degree plane이며 antimeridian seam을 가로지르는 arc는
+그대로 보존한다. 같은 shared arc를 참조하는 양쪽 polygon은 항상 동일한 retained vertex 목록을
+정방향/역방향으로 읽는다. Endpoint/junction·원 z 값·arc index·feature order·source hash를 유지한다.
+원본 asset은 덮어쓰지 않는다. 원본 topology 재확장은 기존 `topology.js`의 변환/접합 owner를 재사용한다.
+
+단순화 후보는 반복 stack의 최대 거리 기준으로 만들고 ring 최소 길이·방향·교차·ring containment를
+검사한다. 후보가 이 topology 조건을 보존하지 못하면 원래 shared arcs를 유지하고 그 이유를 결과
+진단에 명시한다. 허용 오차는 최대 오차이지 최소 점 제거 수를 약속하지 않는다. tolerance 0은
+원본을 그대로 유지한다. 기존 invalid geometry는 고치지 않고 먼저 거부한다. 모든 snapshot,
+거리 검사, 선분 후보 비교와 containment를 하나의 bounded work counter로 제한한다.
+
+## 공개 LOD resource와 representation 계약
+
+`AUTHORIZATION.json.remainingApproval`의 남은 전체 설계/시각 승인과 STEP045 원안에 따라
+`createGeoLODData({id,levels,zoom?})`, `editGeoLODData({target?,levels?,zoom?})`를 연결한다.
+`levels`는 coarse→fine 순서의 `{id,geometry,tolerance?}` root와
+`{id,geometry,tolerance?,parents,enterZoom,exitZoom}` 하위 단계다. geometry는 명시 ID이며
+원본 `featureKey`가 있는 geo 또는 geo-join만 허용한다. 각 단계의 coordinateKind는 같아야 한다.
+중첩 LOD를 단계 입력으로 재사용하지 않는다. 기본 zoom=0, tolerance=0; 양수 tolerance는
+shared topology 입력만 받는다. 기존 순수 level/단순화 계산과 제한을 그대로 사용한다.
+
+저장 options는 단계 ID, exact inputs의 index, threshold/parent/tolerance, zoom과 activeLevel을
+단일 소유한다. activeLevel은 hysteresis의 현재 결정으로, edit에서 기존 ID가 사라지면 명시
+오류다. 줌의 미세 흔들림은 기존 선택 단계를 보존한다. 저장 결과는 현재 geometry, 독립 typed
+identity, 전체 원래 logical key→현재 representation 대응과 diagnostics다. 원본 source와
+asset hash는 exact input resource에서 보존하며 단순화 결과로 덮어쓰지 않는다.
+
+선택은 원래 `items:[key]`를 저장하고, 현재 Geo final-item의 읽기 전용 `representationKeys`를
+통해 대응한다. 현재 hit key는 현재 표현의 key이며 숨겨진 county key로 치환하지 않는다.
+실제 field 선택은 현재 단계의 feature/table grain으로 평가한다. source 수정은 모든 단계의
+부모 관계까지 preflight한 뒤 LOD→join→fitted projection→mark closure를 자원당 한 번 갱신한다.
+복원은 bounded 계산으로 retained refs와 결과를 검산하고 renderer에서 계산하지 않는다.
+기존 Annotation의 Geo 지원은 별도 semantic feature/geographic anchor 소비자 연결과 함께
+검증하며, LOD resource 구현만으로 AT31 annotation 또는 AT32 camera를 완료 처리하지 않는다.
+
+
+### 공개 LOD checkpoint 검증
+
+`createGeoLODData`/`editGeoLODData`의 자원 생성·수정, keyed geometry와 join inputs,
+active-level hysteresis, shared topology, source revision closure 및 original-key selection을
+연결했다. 현재 hit key는 실제 보이는 representation이며 `representationKeys`만 logical
+key correspondence를 노출한다. coarse/fine 전환, highlight replay, hconcat scoped edits,
+잘못된 inactive parent/저장 상태, source/trace 불변을 검사했다.
+
+새 lifecycle 10개, 기존 Geo/selection 교차 55개, 실제 5 dataset×3 recipe와 assertion 16개,
+최종 source/package/type 경계 25개를 통과했다. 신규 owner coverage 100/96.25/100,
+공통 markSelection 97.49/95.43/100이며 기존 floor는 변경하지 않았다. inventory 최초 10개 중
+9개 통과 후 stale redacted-array 수치를 canonical 10629로 수정하고 owning 7개를 통과했다.
+새 실제 데이터 파일을 discovery 목록과 수치 48개에 연결했다.
+
+문서 전체 최초 198개 중196개 통과 후 검색 한도 두 assertion을 실측 1014928 bytes의 다음
+1000-byte 경계로 조정했고 owning31개를 통과했다. Built172페이지/1519 selective artifacts와
+320/390/768px 전체 containment·검색·접근성 검사가 통과했다. 같은 archive
+`5b01080fd0c44ed5ee41d27b8f0824e0229bc6877e45ae41aa0e814058930268`을 Node20/22/24에
+각각 설치하여 3 runtime case, strict Full/Basic 타입, 공개 문서 예제, 5 browser bundle을
+검증했다. Renderer case는 각 coarse/fine에서 기존 geometry의 concrete properties,
+Canvas pixels, SVG, PNG bytes, PDF content stream과 정확히 비교한다.
+
+최초 fixture/environment 실패와 owning 수리, 실행 환경·tar hash·coverage·측정치는
+[levels-public/status.json](geo-evidence/levels-public/status.json)에 분리 보존한다. 새 전체
+normal/coverage corpus 통과로 주장하지 않는다. 공통 realistic 생성 3파일은 최종 통합에서
+한 번 실행하도록 parent에 인계했다. Annotation rebase, session availability reconciliation,
+field/label/guide 및 camera 소비자는 후행 구현이며 AT31/32 전체 완료가 아니다.
+
+
+공개 LOD source는 `6ea274544`로 고정했다. 이후 provenance/LLM source pin만 갱신하고
+문서 source 전체 198/198 및 package dry check(1026 entries, 1460317/6659038 bytes)를
+다시 확인했다. Runtime/declaration/packed entry bytes는 설치 검증 tar와 동일하다.

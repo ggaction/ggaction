@@ -205,7 +205,11 @@ selection membership at initialization, after committed commands, and after `upd
 Initialization records existing hidden keys without authoring or emitting changes. Changes compare
 exact logical keys at the final item grain. An absent item, removed child/owner, or explicit
 `visible:false` item (such as partition focus) is unavailable. Opacity zero, clipping, and a sampled
-animation frame do not remove semantic membership.
+animation frame do not remove semantic membership. A visible geographic detail item also makes its
+explicit `representationKeys` available. An explicit items selection retains its authored logical keys
+for lifecycle snapshots and hidden/restored/dropped events; its current resolved selection and hit still
+use the visible representation's key. A detail-level change alone neither prunes nor emits hidden keys.
+If every representation is absent, the normal policy applies to the original authored key.
 
 Keep-hidden preserves stored item keys and live range/predicate intent. A missing owner's selected keys
 remain in a session-local record; the session never recreates a mark, child or selection. Matching keys

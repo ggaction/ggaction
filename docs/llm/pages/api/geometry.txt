@@ -87,6 +87,118 @@ Invalid edits leave the original program and its trace unchanged. Inspect or
 compare geometry through [inspection](../../../inspection/), and remove it through
 [`removeResource`](../../../reference/actions/charts-data/#removeresource).
 
+## `createGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+```
+
+Join a geometry resource and materialized table with exact typed keys. Supply a new
+`id`, `geometryKey` and `dataKey`; `geometry` and `data` may be omitted when the
+current resource or one eligible input identifies each unambiguously. Key paths
+start at the feature or table row, respectively.
+
+> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+
+```javascript
+import { chart } from "ggaction";
+
+const joined = chart()
+  .createData({ id: "population", values: [{ code: "west", population: 120 }] })
+  .createGeometryData({
+    id: "regions", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } },
+      { type: "Feature", id: "east", properties: {}, geometry: null }
+    ] }
+  })
+  .createGeoJoinData({ id: "measured-regions", geometryKey: "id", dataKey: "code" });
+```
+
+The result retains both regions. West maps to table row0; East has a missing
+measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
+and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
+nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
+
+Use a string field or a nonempty property path such as`["properties","code"]`.
+Geometry properties stay intact. Joined mark fields read the matching table row;
+unmatched items have no table fields. Diagnostics expose match coverage, duplicate
+counts and unmatched source indices. An empty geometry has coverage0.
+
+## `editGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
+```
+
+`editGeoJoinData` accepts `target?`, `geometry?`, `data?`, `geometryKey?` and
+`dataKey?`. Omitted values retain the current inputs and keys. Table or geometry
+revisions refresh the join, dependent fitted projections and marks atomically.
+Remove dependent joins before removing their source resources. Both actions are
+available in Full `ggaction`.
+
+## `createGeoLODData`
+
+**Chart authoring.**
+
+```typescript
+createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+```
+
+Use explicit keyed geometry resources for each detail level. List levels from coarse to fine.
+Every finer region needs one typed key and its parent key in the preceding level. All resources
+must use the same coordinate system. Joins retain their source feature keys and can supply measurements.
+
+> **Executable complete.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
+
+```javascript
+import { chart } from "ggaction";
+
+const feature = (id, x) => ({ type: "Feature", id, properties: {},
+  geometry: { type: "Point", coordinates: [x, 20] } });
+const program = chart()
+  .createGeometryData({ id: "states", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: feature("s", 10) })
+  .createGeometryData({ id: "counties", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "FeatureCollection", features: [feature("a", 8), feature("b", 12)] } })
+  .createGeoLODData({ id: "regions", zoom: 4, levels: [
+    { id: "state", geometry: "states" },
+    { id: "county", geometry: "counties", enterZoom: 4.2, exitZoom: 3.8,
+      parents: [{ key: "a", parent: "s" }, { key: "b", parent: "s" }] }
+  ] });
+```
+
+The initial zoom defaults to0. County detail begins at4.2 and remains active until zoom falls below3.8.
+This gap prevents repeated switching around4. Each finer threshold pair must increase and enter must
+exceed exit. Missing parents, generated source keys, mixed coordinate systems and nested LOD fail.
+
+Optional level `tolerance` defaults to0. A positive value simplifies retained shared topology once for
+all neighbors, in planar units or geographic degrees. Unsafe topology changes keep the original arcs
+and record why. Geographic seam arcs stay exact. Original geometry and source hashes remain available.
+
+Geo marks and fitted projections can use `geometry:"regions"`. Original selection keys remain stored
+when their region is shown by a parent or children. [Item inspection](../../../inspection/) exposes
+`representationKeys` alongside each current key; hits always identify the visible representation.
+Fields and original table rows come from the current level. The action creates no marks, annotations
+or interaction bindings, and changing a projection does not automatically change LOD zoom.
+
+## `editGeoLODData`
+
+**Chart authoring.**
+
+```typescript
+editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+```
+
+Change `zoom`, replace `levels`, or both. Omission preserves the existing decision. `target` can be
+omitted for the current or unique detail resource. A replacement list must retain the active level ID;
+there is no silent reset. Each successful edit advances revision once and updates dependent joins,
+fitted projections and marks atomically. Invalid edits preserve the earlier program and trace.
+
 ## `createProjection`
 
 **Chart authoring.**

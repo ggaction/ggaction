@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:4fb29f6f5b8e69156d461867c0bd3939b2fcf41294bd1846669167c3e405feb0",
-  "sourceCommit": "e422f9ebcad968eb21d096aaa136e9b3674704a5",
-  "sourceRef": "e422f9ebcad968eb21d096aaa136e9b3674704a5",
+  "contractId": "sha256:19669d1844a450820a3d6a4a797bc06e9794d26aa5a9ff3969e78e732ce37a2b",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "0a217a83b217d228b6a17dc73e1d5979544acdcb",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 359,
+  "actionCount": 363,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -231,6 +231,22 @@
       "status": "development"
     },
     "editGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoLODData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoLODData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoJoinData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoJoinData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

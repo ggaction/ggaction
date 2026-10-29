@@ -2134,6 +2134,67 @@ export interface GeometrySourceResource {
 }
 export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
   | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+export interface GeoJoinKeyOptions {
+  /** Exact own field or nonempty own-property path. Null and absent keys never match. */
+  readonly geometryKey: GeometryFeatureKey;
+  readonly dataKey: GeometryFeatureKey;
+}
+export interface CreateGeoJoinDataOptions extends GeoJoinKeyOptions {
+  readonly id: string; readonly geometry?: string; readonly data?: string;
+}
+export interface EditGeoJoinDataOptions extends Partial<GeoJoinKeyOptions> {
+  readonly target?: string; readonly geometry?: string; readonly data?: string;
+}
+export interface GeoJoinResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [{ readonly kind: "geometry"; readonly id: string; readonly revision: number }, Extract<InputRef, { readonly kind: "data" }>];
+  readonly options: { readonly method: "geo-join"; readonly geometryKey: readonly string[]; readonly dataKey: readonly string[] };
+  readonly result: {
+    readonly features: GeometrySourceResource["result"]["features"];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly topology?: GeometrySourceResource["result"]["topology"];
+    readonly coordinateKind: "geographic" | "planar";
+    readonly rowMap: readonly (number | null)[];
+    readonly diagnostics: { readonly geometryCount: number; readonly dataCount: number; readonly matchedCount: number;
+      readonly duplicateGeometryCount: 0; readonly duplicateDataCount: 0; readonly unmatchedGeometry: readonly number[];
+      readonly unmatchedData: readonly number[]; readonly coverage: number };
+  };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface GeoLODBaseLevel {
+  readonly id: string;
+  /** Explicit geometry source or join with a stable featureKey; nested LOD is rejected. */
+  readonly geometry: string;
+  /** Maximum deviation in planar units or geographic degrees; positive values require shared topology. */
+  readonly tolerance?: number;
+}
+export interface GeoLODChildLevel extends GeoLODBaseLevel {
+  readonly parents: readonly { readonly key: RowKey; readonly parent: RowKey }[];
+  readonly enterZoom: number; readonly exitZoom: number;
+}
+export type GeoLODLevels = readonly [GeoLODBaseLevel, ...GeoLODChildLevel[]];
+export interface CreateGeoLODDataOptions { readonly id: string; readonly levels: GeoLODLevels; readonly zoom?: number; }
+export interface EditGeoLODDataOptions { readonly target?: string; readonly levels?: GeoLODLevels; readonly zoom?: number; }
+export interface GeoLODResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: { readonly method: "geo-lod"; readonly zoom: number; readonly activeLevel: string;
+    readonly levels: readonly ({ readonly id: string; readonly input: number; readonly tolerance: number;
+      readonly parents?: GeoLODChildLevel["parents"]; readonly enterZoom?: number; readonly exitZoom?: number })[] };
+  readonly result: {
+    readonly features: GeometrySourceResource["result"]["features"];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly topology?: GeometrySourceResource["result"]["topology"];
+    readonly coordinateKind: "planar" | "geographic";
+    readonly mapping: readonly { readonly level: string; readonly regions: readonly { readonly key: string; readonly representations: readonly string[] }[] }[];
+    readonly diagnostics: { readonly levelCount: number; readonly featureCount: number;
+      readonly simplification: null | { readonly inputPoints: number; readonly outputPoints: number; readonly maxDeviation: number;
+        readonly seamArcCount: number; readonly retainedForTopology: null | "ring-collapse" | "ring-winding" | "crossing" | "ring-containment"; readonly work: number } };
+  };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly [] };
+}
 export interface ProjectionPlaneParameters {
   readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
   readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
@@ -2481,7 +2542,7 @@ export interface SemanticGeoCoordinate {
 export type SemanticCoordinate = SemanticNativeCoordinate | SemanticGeoCoordinate;
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6580,6 +6641,13 @@ export class ChartProgram {
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+
+  /** Join geographic features to a materialized table without changing feature identity or source properties. */
+  createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+  editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+  /** Edit join inputs or keys and refresh every dependent projection and mark atomically. */
+  editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
