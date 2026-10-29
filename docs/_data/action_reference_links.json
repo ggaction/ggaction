@@ -22,6 +22,8 @@
   "createPivotData": "/reference/actions/statistics/#createpivotdata",
   "createGraphData": "/reference/actions/charts-data/#creategraphdata",
   "editGraphData": "/reference/actions/charts-data/#editgraphdata",
+  "editInferredGraphData": "/reference/actions/charts-data/#editinferredgraphdata",
+  "createInferredGraphData": "/reference/actions/charts-data/#createinferredgraphdata",
   "createParameter": "/reference/actions/charts-data/#createparameter",
   "editParameter": "/reference/actions/charts-data/#editparameter",
   "removeParameter": "/reference/actions/charts-data/#removeparameter",
@@ -322,5 +324,14 @@
   "createGraphPlot": "/reference/actions/charts-data/#creategraphplot",
   "editGraphPlot": "/reference/actions/charts-data/#editgraphplot",
   "createFontResource": "/reference/actions/charts-data/#createfontresource",
-  "replaceFontResource": "/reference/actions/charts-data/#replacefontresource"
+  "replaceFontResource": "/reference/actions/charts-data/#replacefontresource",
+  "createPartitionPlot": "/reference/actions/charts-data/#createpartitionplot",
+  "editPartitionPlot": "/reference/actions/charts-data/#editpartitionplot",
+  "createFlowData": "/reference/actions/charts-data/#createflowdata",
+  "editFlowData": "/reference/actions/charts-data/#editflowdata",
+  "layoutFlow": "/reference/actions/charts-data/#layoutflow",
+  "createFlowNodes": "/reference/actions/marks/#createflownodes",
+  "editFlowNodes": "/reference/actions/marks/#editflownodes",
+  "createFlowLinks": "/reference/actions/marks/#createflowlinks",
+  "editFlowLinks": "/reference/actions/marks/#editflowlinks"
 }

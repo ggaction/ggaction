@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+not ok 1 - resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+  ---
+  duration_ms: 1314.671334
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/charts/mark-shadows/resource-consumers.render.js:23:1'
+  failureType: 'testCodeFailure'
+  error: 'Glyph preparation requires one exact font-bound concrete Text from the prepared program.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    preparedTextGlyphInput (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/textGlyphInput.js:13:59)
+    measureTextInkBounds (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/textInkBounds.js:13:52)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/shadowRendering.js:60:38
+    Object.item (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/paintFrames.js:27:35)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:120:20)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:130:5)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:130:5)
+    walkGraphicTreeEvents (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:147:5)
+    walkGraphicPaintItems (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/paintFrames.js:9:3)
+    prepareShadowRendering (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/shadowRendering.js:58:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1957.643666

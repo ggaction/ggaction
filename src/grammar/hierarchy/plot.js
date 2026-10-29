@@ -1,10 +1,12 @@
+import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js";
+import { validateFillPaint } from "../paint.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFinite, validateUnitInterval, validateFontWeight, validatePositiveFinite, validateGeneratedItemLimit } from "../../core/validation.js";
 
-const PAINT = ["fill", "stroke", "strokeWidth", "opacity"];
-const LABEL = ["fill", "fontSize", "fontFamily", "fontWeight"];
+const PAINT = ["fill", "stroke", "strokeWidth", "opacity", ...MARK_EFFECT_PROPERTIES];
+const LABEL = ["fill", "fontSize", "fontFamily", "fontWeight", ...MARK_EFFECT_PROPERTIES];
 export const HIERARCHY_PLOT_DEFAULTS = cloneAndFreeze({
   nodes: { radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
   cells: { fill: "#3b82f6", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
@@ -18,16 +20,18 @@ function pair(value, label) {
   if (value.length !== 2 || !value.every(Number.isFinite)) throw new TypeError(`${label} requires two finite numbers.`);
   return value;
 }
-function paint(value, allowed, label) {
+function paint(value, allowed, label, stored = false) {
   ownRecord(value, label); rejectUnknownProperties(value, allowed, label);
+  const normalized = { ...value, ...normalizeMarkEffects(value, label, stored) };
   for (const [key, entry] of Object.entries(value)) {
-    if (["fill", "stroke", "fontFamily"].includes(key)) validateNonEmptyString(entry, `${label} ${key}`);
+    if (key === "fill") normalized.fill = validateFillPaint(entry, `${label} fill`);
+    else if (["stroke", "fontFamily"].includes(key)) validateNonEmptyString(entry, `${label} ${key}`);
     else if (["radius", "strokeWidth"].includes(key)) validateNonNegativeFinite(entry, `${label} ${key}`);
     else if (key === "opacity") validateUnitInterval(entry, `${label} opacity`);
     else if (key === "fontSize") validatePositiveFinite(entry, `${label} fontSize`);
     else if (key === "fontWeight") validateFontWeight(entry, `${label} fontWeight`);
   }
-  return value;
+  return normalized;
 }
 export function hierarchyTargetKey(target, sourceOptions) {
   const hasKey = Object.hasOwn(target, "key"), hasPath = Object.hasOwn(target, "path");
@@ -58,9 +62,9 @@ function overrides(values, allowed, hierarchy, text = false) {
     if (keys.has(key) || !nodes.has(key)) throw new TypeError("Hierarchy override target must be unique and exist.");
     keys.add(key);
     const { key: _key, path: _path, text: label, ...style } = value;
-    paint(style, allowed, "Hierarchy override");
+    const normalized = paint(style, allowed, "Hierarchy override");
     if (Object.hasOwn(value, "text") && (!text || typeof label !== "string")) throw new TypeError("Only label overrides accept string text.");
-    return { key, ...style, ...(label === undefined ? {} : { text: label }) };
+    return { key, ...normalized, ...(label === undefined ? {} : { text: label }) };
   });
 }
 
@@ -80,12 +84,12 @@ export function normalizeHierarchyPlot(method, patch, hierarchy, previous, previ
     ownRecord(patch[bodyName], "Hierarchy body style");
     if (Object.values(patch[bodyName]).some(value => value === undefined)) throw new TypeError("Hierarchy body options cannot be undefined.");
     const { overrides: requested, ...style } = patch[bodyName];
-    paint(style, [...PAINT, ...(method === "tree" ? ["radius"] : [])], "Hierarchy body style");
-    config[bodyName] = { ...config[bodyName], ...style, ...(requested === undefined ? {} : {
+    const normalized = paint(style, [...PAINT, ...(method === "tree" ? ["radius"] : [])], "Hierarchy body style");
+    config[bodyName] = { ...config[bodyName], ...normalized, ...(requested === undefined ? {} : {
       overrides: overrides(requested, [...PAINT, ...(method === "tree" ? ["radius"] : [])], hierarchy) }) };
   }
   if (Object.hasOwn(patch, "links")) {
-    config.links = patch.links === false ? false : { ...(config.links || DEFAULT_LINKS), ...paint(patch.links, ["stroke", "strokeWidth", "opacity"], "Hierarchy links") };
+    config.links = patch.links === false ? false : { ...(config.links || DEFAULT_LINKS), ...paint(patch.links, ["stroke", "strokeWidth", "opacity", "shadow"], "Hierarchy links") };
   }
   let labels = previousLabels;
   if (Object.hasOwn(patch, "labels")) {
@@ -94,11 +98,11 @@ export function normalizeHierarchyPlot(method, patch, hierarchy, previous, previ
       ownRecord(patch.labels, "Hierarchy labels");
       if (Object.values(patch.labels).some(value => value === undefined)) throw new TypeError("Hierarchy label options cannot be undefined.");
       const { content, offset, overrides: requested, ...style } = patch.labels;
-      paint(style, LABEL, "Hierarchy labels");
+      const normalized = paint(style, LABEL, "Hierarchy labels");
       if (content !== undefined && content !== "value") throw new TypeError("Hierarchy label content must be value.");
       const entries = requested === undefined ? undefined : overrides(requested, LABEL, hierarchy, true);
       labels = { content: "value", overrides: entries === undefined ? (previousLabels?.overrides ?? []) : entries.filter(entry => entry.text !== undefined).map(({ key, text }) => ({ key, text })) };
-      config.labels = { ...DEFAULT_LABELS, offset: method === "tree" ? [0, 14] : [0, 0], ...config.labels, ...style,
+      config.labels = { ...DEFAULT_LABELS, offset: method === "tree" ? [0, 14] : [0, 0], ...config.labels, ...normalized,
         ...(offset === undefined ? {} : { offset: pair(offset, "Hierarchy label offset") }),
         ...(entries === undefined ? {} : { overrides: entries.map(({ text: _text, ...entry }) => entry) }) };
     }
@@ -123,19 +127,19 @@ export function validateHierarchyPlotDefinition(method, config, labels) {
       if (keys.has(value.key)) throw new TypeError("Stored hierarchy override keys must be unique.");
       keys.add(value.key);
       const { key: _key, ...style } = value;
-      paint(style, allowed, "Stored hierarchy override");
+      paint(style, allowed, "Stored hierarchy override", true);
     }
   };
   record(config, ["origin", "clip", bodyName, ...(method === "tree" ? ["links"] : [])], ["labels"], "Stored hierarchy plot");
   if (config.origin !== "auto") pair(config.origin, "Stored hierarchy origin");
   if (typeof config.clip !== "boolean") throw new TypeError("Stored hierarchy clip must be boolean.");
   const fields = [...PAINT, ...(method === "tree" ? ["radius"] : [])];
-  record(config[bodyName], [...fields, "overrides"], [], "Stored hierarchy body");
-  const { overrides: bodyOverrides, ...style } = config[bodyName]; paint(style, fields, "Stored hierarchy body");
+  record(config[bodyName], [...fields.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "overrides"], MARK_EFFECT_PROPERTIES, "Stored hierarchy body");
+  const { overrides: bodyOverrides, ...style } = config[bodyName]; paint(style, fields, "Stored hierarchy body", true);
   storedOverrides(bodyOverrides, fields);
   if (method === "tree" && config.links !== false) {
-    record(config.links, ["stroke", "strokeWidth", "opacity"], [], "Stored hierarchy links");
-    paint(config.links, ["stroke", "strokeWidth", "opacity"], "Stored hierarchy links");
+    record(config.links, ["stroke", "strokeWidth", "opacity"], ["shadow"], "Stored hierarchy links");
+    paint(config.links, ["stroke", "strokeWidth", "opacity", "shadow"], "Stored hierarchy links", true);
   }
   if (labels === false) {
     if (Object.hasOwn(config, "labels")) throw new TypeError("Disabled hierarchy labels cannot retain active placement.");
@@ -150,9 +154,9 @@ export function validateHierarchyPlotDefinition(method, config, labels) {
       if (typeof item.key !== "string" || !item.key || typeof item.text !== "string" || keys.has(item.key)) throw new TypeError("Stored hierarchy label text requires unique keys and strings.");
       keys.add(item.key);
     }
-    record(config.labels, [...LABEL, "offset", "overrides"], [], "Stored hierarchy label paint");
+    record(config.labels, [...LABEL.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "offset", "overrides"], MARK_EFFECT_PROPERTIES, "Stored hierarchy label paint");
     const { offset, overrides: labelOverrides, ...labelPaint } = config.labels;
-    pair(offset, "Stored hierarchy label offset"); paint(labelPaint, LABEL, "Stored hierarchy label paint"); storedOverrides(labelOverrides, LABEL);
+    pair(offset, "Stored hierarchy label offset"); paint(labelPaint, LABEL, "Stored hierarchy label paint", true); storedOverrides(labelOverrides, LABEL);
   }
   return config;
 }

@@ -62,6 +62,18 @@
     "executable": false
   },
   {
+    "file": "api/appearance/mark-style.md",
+    "block": 6,
+    "heading": "Blending each mark item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline rows supply both position fields.",
+    "sha256": "480f2390eca85e54863d9a0cabab8734556ea126bae33561997c2666b8e10841",
+    "executable": true
+  },
+  {
     "file": "api/appearance/point.md",
     "block": 1,
     "heading": "`encodeRadius({ value, target? })`",
@@ -2020,6 +2032,18 @@
     "executable": false
   },
   {
+    "file": "api/graphs.md",
+    "block": 1,
+    "heading": "Graph inference",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726",
+    "executable": true
+  },
+  {
     "file": "api/grids.md",
     "block": 1,
     "heading": "`createGrid(options?)`",
@@ -3907,6 +3931,18 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "39234f8fd4e5fc2decc98d29b1674a602a83af0e719deb754c5233cded5ff9fc",
     "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 14,
+    "heading": "Prepared shadows",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use the installed ggaction package in a browser module with a canvas element whose id is chart.",
+    "sha256": "8490da610111f4e9d96e4e88978061578fed62a4d43b667097a2836a241181d8",
+    "executable": true
   },
   {
     "file": "api/scales.md",

@@ -1,0 +1,7 @@
+export interface PreparedShadowRendering {
+  readonly [preparedShadowRenderingBrand]: true;
+  readonly kind: "shadow-rendering";
+  readonly glyphCount: number;
+  readonly pixelRatio: number;
+  dispose(): void;
+}

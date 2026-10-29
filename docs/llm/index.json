@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:d59cc20e8b8aa2da62b823d0a9c3d106c82a52164063627042e645d503a105e3",
+  "contractId": "sha256:449fc8fef42573cb3dab86578302f1afbbe67aaab60d02a42f29ed9d5179d170",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "5771dd5670856b69a91b5f1814633c5f2d27c6f02934b6dc584e1c853d55b469",
-      "bytes": 1049661
+      "sha256": "193b33b0568c3d68b7f9f62189a59b749280ae1e9f9761e95bf3e0d2f491cb3d",
+      "bytes": 1091484
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "9d402050d52c256aac4a5dbeebcd110fc89869800d63695e41e3fc3d747e720f",
-      "bytes": 254475
+      "sha256": "9fd0b46a4349d1a9a174b92975904d8ab1a905053045d9ad677066de2d9d98d8",
+      "bytes": 269664
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 156,
+      "count": 160,
       "path": "llm/pages.json",
-      "bytes": 38918,
-      "sha256": "ff8924f005c36214c102c14e9446f2be71dac212a3d438ddef904cfce4b4b5d4"
+      "bytes": 39849,
+      "sha256": "d82a69e6d41e37a85e63ce8515b0943c3e15dd774913cf12a7f423a041c49753"
     },
     "actions": {
-      "count": 324,
+      "count": 335,
       "path": "llm/actions.json",
-      "bytes": 91968,
-      "sha256": "da3b1e90f71f446eed61db57412138671f97dc9542bbad3a3fa9270a65f1d31e"
+      "bytes": 95342,
+      "sha256": "a19dc259f8674c86b163b647aa76325e3c1f4eeb2e90f5c183744e0b76f8f29c"
     },
     "types": {
-      "count": 855,
+      "count": 895,
       "path": "llm/types.json",
-      "bytes": 191742,
-      "sha256": "c3e0ffab01370bd90abcd7cb0a0eccde31c9aa01367f0a031ebcd30c6fcd1656"
+      "bytes": 200502,
+      "sha256": "ec93c34acdf8b0b9d6950bdbb604efeadd89bfe97603e05e45ad4f6c33a992bb"
     }
   },
   "paths": {

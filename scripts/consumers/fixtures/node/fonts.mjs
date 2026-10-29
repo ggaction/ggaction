@@ -120,3 +120,5 @@ export const cases = [
     }
   } }
 ];
+
+export { bytes as installedFontBytes, source as installedFontSource, host as installedFontHost, register as registerInstalledFont };

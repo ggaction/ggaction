@@ -499,3 +499,17 @@
 - title: Graph Tutorial
   url: /tutorials/graphs/
   parent: /tutorials/
+
+- title: Partition Plots
+  url: /api/partition/
+  parent: /api/hierarchy/
+- title: Partition Tutorial
+  url: /tutorials/partition/
+  parent: /tutorials/
+
+- title: Flow Data and Sankey Layouts
+  url: /api/flows/
+  parent: /api/
+- title: Draw Conserved Flows
+  url: /tutorials/flows/
+  parent: /tutorials/

@@ -1,12 +1,13 @@
+import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { validateFillPaint } from "../paint.js";
 import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFinite, validatePositiveFinite, validateFontWeight, validateUnitInterval, validateGeneratedItemLimit } from "../../core/validation.js";
 
-const NODE_FIELDS = ["radius", "fill", "stroke", "strokeWidth", "opacity"];
-const EDGE_FIELDS = ["stroke", "strokeWidth", "opacity", "parallelGap", "loopRadius", "arrowSize", "arrows"];
-const LABEL_FIELDS = ["fill", "fontSize", "fontFamily", "fontWeight"];
+const NODE_FIELDS = ["radius", "fill", "stroke", "strokeWidth", "opacity", ...MARK_EFFECT_PROPERTIES];
+const EDGE_FIELDS = ["stroke", "strokeWidth", "opacity", "parallelGap", "loopRadius", "arrowSize", "arrows", "shadow"];
+const LABEL_FIELDS = ["fill", "fontSize", "fontFamily", "fontWeight", ...MARK_EFFECT_PROPERTIES];
 export const GRAPH_PLOT_DEFAULTS = cloneAndFreeze({
   nodes: { radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
   edges: { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 1, parallelGap: 16, loopRadius: 20, arrowSize: 8, arrows: "auto" },
@@ -23,10 +24,10 @@ function pair(value, label) {
   if (value.length !== 2 || !value.every(Number.isFinite)) throw new TypeError(`${label} requires two finite coordinates.`);
   return value;
 }
-function paint(input, fields, label) {
+function paint(input, fields, label, stored = false) {
   const value = record(input, fields, label);
   for (const [key, entry] of Object.entries(value)) {
-    if (key === "fill") validateFillPaint(entry, `${label} fill`);
+    if (key === "fill") value.fill = validateFillPaint(entry, `${label} fill`);
     else if (["stroke", "fontFamily"].includes(key)) validateNonEmptyString(entry, `${label} ${key}`);
     else if (["radius", "strokeWidth", "parallelGap", "loopRadius", "arrowSize"].includes(key)) validateNonNegativeFinite(entry, `${label} ${key}`);
     else if (key === "opacity") validateUnitInterval(entry, `${label} opacity`);
@@ -34,7 +35,7 @@ function paint(input, fields, label) {
     else if (key === "fontWeight") validateFontWeight(entry, `${label} fontWeight`);
     else if (key === "arrows" && entry !== "auto" && typeof entry !== "boolean") throw new TypeError("Graph arrows must be auto or boolean.");
   }
-  return value;
+  return Object.assign(value, normalizeMarkEffects(value, label, stored));
 }
 function overrides(input, fields, graph, labels) {
   ownArray(input, "Graph node overrides"); validateGeneratedItemLimit(input.length, "Graph override count");
@@ -45,7 +46,7 @@ function overrides(input, fields, graph, labels) {
     const key = encodeRowKey(value.key);
     if (!known.has(key) || seen.has(key)) throw new TypeError("Graph override keys must exist and be unique.");
     seen.add(key);
-    const { key: _key, text, ...style } = value; paint(style, fields, "Graph override style");
+    const { key: _key, text, ...style } = value; Object.assign(style, paint(style, fields, "Graph override style"));
     if (Object.hasOwn(value, "text") && typeof text !== "string") throw new TypeError("Graph label overrides require string text.");
     return { key, ...style, ...(text === undefined ? {} : { text }) };
   });
@@ -61,7 +62,7 @@ export function normalizeGraphPlot(input, graph, previous, previousLabels = fals
   }
   if (Object.hasOwn(patch, "nodes")) {
     const value = record(patch.nodes, [...NODE_FIELDS, "overrides"], "Graph nodes");
-    const { overrides: requested, ...style } = value; paint(style, NODE_FIELDS, "Graph node style");
+    const { overrides: requested, ...style } = value; Object.assign(style, paint(style, NODE_FIELDS, "Graph node style"));
     config.nodes = { ...config.nodes, ...style, ...(requested === undefined ? {} : { overrides: overrides(requested, NODE_FIELDS, graph, false) }) };
   }
   if (Object.hasOwn(patch, "edges")) config.edges = { ...config.edges, ...paint(patch.edges, EDGE_FIELDS, "Graph edges") };
@@ -70,7 +71,7 @@ export function normalizeGraphPlot(input, graph, previous, previousLabels = fals
     if (patch.labels === false) { labels = false; delete config.labels; }
     else {
       const value = record(patch.labels, ["field", "offset", "overrides", ...LABEL_FIELDS], "Graph labels");
-      const { field, offset, overrides: requested, ...style } = value; paint(style, LABEL_FIELDS, "Graph label style");
+      const { field, offset, overrides: requested, ...style } = value; Object.assign(style, paint(style, LABEL_FIELDS, "Graph label style"));
       if (field !== undefined) validateNonEmptyString(field, "Graph label field");
       const entries = requested === undefined ? undefined : overrides(requested, LABEL_FIELDS, graph, true);
       labels = { ...(previousLabels === false ? {} : previousLabels), ...(field === undefined ? {} : { field }),
@@ -96,24 +97,24 @@ export function validateGraphPlotDefinition(config, labels) {
       validateNonEmptyString(entry.key, "Stored graph override key");
       if (seen.has(entry.key)) throw new TypeError("Stored graph override keys must be unique.");
       seen.add(entry.key);
-      const { key: _key, text: content, ...style } = entry; paint(style, fields, "Stored graph style");
+      const { key: _key, text: content, ...style } = entry; paint(style, fields, "Stored graph style", true);
       if (text && typeof content !== "string") throw new TypeError("Stored graph label text must be a string.");
     }
   };
   exact(config, ["origin", "clip", "nodes", "edges"], ["labels"], "Stored graph plot");
   if (config.origin !== "auto") pair(config.origin, "Stored graph origin");
   if (typeof config.clip !== "boolean") throw new TypeError("Stored graph clip must be boolean.");
-  exact(config.nodes, [...NODE_FIELDS, "overrides"], [], "Stored graph node style");
-  const { overrides: nodeOverrides, ...nodeStyle } = config.nodes; paint(nodeStyle, NODE_FIELDS, "Stored graph node style"); entries(nodeOverrides, NODE_FIELDS);
-  exact(config.edges, EDGE_FIELDS, [], "Stored graph edge style"); paint(config.edges, EDGE_FIELDS, "Stored graph edge style");
+  exact(config.nodes, [...NODE_FIELDS.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "overrides"], MARK_EFFECT_PROPERTIES, "Stored graph node style");
+  const { overrides: nodeOverrides, ...nodeStyle } = config.nodes; paint(nodeStyle, NODE_FIELDS, "Stored graph node style", true); entries(nodeOverrides, NODE_FIELDS);
+  exact(config.edges, EDGE_FIELDS.filter(key => key !== "shadow"), ["shadow"], "Stored graph edge style"); paint(config.edges, EDGE_FIELDS, "Stored graph edge style", true);
   if (labels === false) {
     if (Object.hasOwn(config, "labels")) throw new TypeError("Disabled graph labels cannot retain paint.");
   } else {
     exact(labels, ["overrides"], ["field"], "Stored graph label meaning");
     if (Object.hasOwn(labels, "field")) validateNonEmptyString(labels.field, "Stored graph label field");
     entries(labels.overrides, [], true);
-    exact(config.labels, [...LABEL_FIELDS, "offset", "overrides"], [], "Stored graph label style");
+    exact(config.labels, [...LABEL_FIELDS.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "offset", "overrides"], MARK_EFFECT_PROPERTIES, "Stored graph label style");
     const { offset, overrides: labelOverrides, ...labelStyle } = config.labels;
-    pair(offset, "Stored graph label offset"); paint(labelStyle, LABEL_FIELDS, "Stored graph label style"); entries(labelOverrides, LABEL_FIELDS);
+    pair(offset, "Stored graph label offset"); paint(labelStyle, LABEL_FIELDS, "Stored graph label style", true); entries(labelOverrides, LABEL_FIELDS);
   }
 }

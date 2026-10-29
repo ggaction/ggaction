@@ -1,3 +1,6 @@
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
@@ -47,6 +50,7 @@ import { applyItemMissingPolicy, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
+  "blend", "shadow",
   "clip", "stroke", "strokeWidth", "strokeDash", "opacity",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -101,7 +105,9 @@ const createRuleMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRuleMark");
+    validateRequestedMarkBlend(args, "rule");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     const strokeDetails = requestedStrokeDetails(args, "createRuleMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "rule",
@@ -127,6 +133,7 @@ const createRuleMark = /* @__PURE__ */ action(
         value: validateItemMissing(args.missing, "Rule missing")
       });
     }
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -138,6 +145,7 @@ const createRuleMark = /* @__PURE__ */ action(
       ._withMarkConfig(id, {
         ...DEFAULT_RULE_CONFIG,
         ...requestedMarkClip(args),
+        ...requestedMarkShadow(args),
         ...strokeDetails,
         ...(inherited === undefined
           ? {}
@@ -156,7 +164,9 @@ const editRuleMark = /* @__PURE__ */ action(
   { op: "editRuleMark", description: "Edit constant rule appearance through its encoding owners." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRuleMark");
+    validateRequestedMarkBlend(args, "rule");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     const strokeDetails = requestedStrokeDetails(args, "editRuleMark");
     if (args.target !== undefined) validateUserId(args.target, "Rule mark id");
     const layer = resolveEligibleLayer(this, {
@@ -167,18 +177,20 @@ const editRuleMark = /* @__PURE__ */ action(
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const appearance = planRuleAppearance(args, layer);
     if (appearance.length === 0 && Object.keys(strokeDetails).length === 0 &&
-        !Object.hasOwn(args, "missing") && !Object.hasOwn(args, "clip")) {
+        !Object.hasOwn(args, "missing") && !Object.hasOwn(args, "clip") && !Object.hasOwn(args, "blend") && !Object.hasOwn(args, "shadow")) {
       throw new Error("editRuleMark requires missing or an appearance change.");
     }
-    const semantic = Object.hasOwn(args, "missing")
+    let semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
           value: validateItemMissing(args.missing, "Rule missing")
         })
       : this;
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const configured = semantic._withMarkConfig(layer.id, {
       ...semantic.markConfigs[layer.id],
       ...requestedMarkClip(args),
+        ...requestedMarkShadow(args),
       ...strokeDetails
     });
     const materialized = appearance.length === 0

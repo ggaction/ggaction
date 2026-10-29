@@ -550,6 +550,14 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ id: "flowNodesSource", values: [{ id: "a" }, { id: "b" }] })
+      .createData({ id: "flowEdgesSource", values: [{ id: "ab", from: "a", to: "b", amount: 5 }] })
+      .createFlowData({ id: "flow", nodes: "flowNodesSource", edges: "flowEdgesSource", nodeKey: "id", source: "from", target: "to", edgeKey: "id", value: "amount" })
+      .layoutFlow({ id: "flow-layout", method: "dag" })
+      .createFlowLinks().createFlowNodes({ labels: {} })
+      .editFlowLinks({ links: { opacity: .6 } }).editFlowNodes({ nodes: { fill: "#123456" } })
+      .editLayout({ target: "flow-layout", options: { nodePadding: 10 } })
+      .editFlowData({ target: "flow", definition: { balance: "strict" } }),
     chart().createCanvas().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
@@ -557,6 +565,10 @@ export function buildActionRelationshipPrograms() {
       .createGraphPlot({ labels: {} }).editGraphPlot({ nodes: { radius: 8 } })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas().createData({ id: "features", values: [{ id: "a", x: 0 }, { id: "b", x: 1 }, { id: "c", x: 3 }] })
+      .createInferredGraphData({ id: "neighbors", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean" })
+      .layoutGraph({ id: "neighbor-layout", method: "circular" }).createGraphPlot({ labels: {} })
+      .editInferredGraphData({ definition: { options: { k: 2 } } }),
     chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })
       .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
       .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: "vertical" } })
@@ -565,6 +577,11 @@ export function buildActionRelationshipPrograms() {
       .editLayout({ target: "tree-layout", options: { siblingGap: 12 } })
       .layoutHierarchy({ id: "treemap-layout", hierarchy: "hierarchy", method: "treemap", options: { size: [200, 100], padding: 3, method: "squarify" } })
       .createTreemapPlot({ id: "treemap", layout: "treemap-layout", labels: {} }).editTreemapPlot({ cells: { opacity: .8 } })
+      .layoutHierarchy({ id: "partition-layout", hierarchy: "hierarchy", method: "partition" })
+      .createPartitionPlot({ id: "partition", layout: "partition-layout", labels: {} })
+      .selectMarks({ id: "partition-choice", target: "partition", field: "id", op: "eq", value: "root" })
+      .editPartitionPlot({ focus: { key: "a" }, prunedSelection: "drop", padding: [2, 3] })
+      .removeMark({ target: "partition" }).removeResource({ kind: "layout", id: "partition-layout" })
       .removeMark({ target: "tree" }).removeMark({ target: "treemap" })
       .removeResource({ kind: "layout", id: "tree-layout" }).removeResource({ kind: "layout", id: "treemap-layout" })
       .removeResource({ kind: "hierarchy", id: "hierarchy" }),

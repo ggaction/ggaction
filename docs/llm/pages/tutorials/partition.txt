@@ -1,0 +1,177 @@
+# Partition tutorial
+
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+
+## Run the icicle
+
+Use the Getting Started browser module setup with a canvas whose id is `chart`.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const icicle = chart()
+  .createCanvas({
+  "plot": {
+    "width": 420,
+    "height": 225
+  },
+  "margin": {
+    "left": 30,
+    "top": 75,
+    "right": 30,
+    "bottom": 60
+  },
+  "background": "#ffffff",
+  "plotBorder": false
+})
+  .createData({
+  "id": "hierarchy-source",
+  "values": [
+    {
+      "key": "R",
+      "parentKey": null,
+      "value": 10
+    },
+    {
+      "key": "A",
+      "parentKey": "R",
+      "value": 6
+    },
+    {
+      "key": "A1",
+      "parentKey": "A",
+      "value": 2
+    },
+    {
+      "key": "A2",
+      "parentKey": "A",
+      "value": 4
+    },
+    {
+      "key": "B",
+      "parentKey": "R",
+      "value": 4
+    },
+    {
+      "key": "Z",
+      "parentKey": "R",
+      "value": 0
+    }
+  ],
+  "keyField": "key"
+})
+  .createHierarchyData({
+  "id": "hierarchy",
+  "key": "key",
+  "parent": "parentKey",
+  "value": "value",
+  "valueMode": "leaf-sum",
+  "forest": false
+})
+  .layoutHierarchy({
+  "id": "partition-layout",
+  "method": "partition"
+})
+  .createCoordinate({
+  "id": "partition-coordinate",
+  "type": "cartesian"
+})
+  .createPartitionPlot({
+  "layout": "partition-layout",
+  "coordinate": "partition-coordinate",
+  "rootVisible": true,
+  "orientation": "horizontal",
+  "padding": [
+    2,
+    2
+  ],
+  "cells": {
+    "strokeWidth": 0,
+    "overrides": [
+      {
+        "key": "R",
+        "fill": "#94a3b8"
+      },
+      {
+        "key": "A",
+        "fill": "#2563eb"
+      },
+      {
+        "key": "A1",
+        "fill": "#60a5fa"
+      },
+      {
+        "key": "A2",
+        "fill": "#93c5fd"
+      },
+      {
+        "key": "B",
+        "fill": "#f59e0b"
+      },
+      {
+        "key": "Z",
+        "fill": "#475569"
+      }
+    ]
+  },
+  "labels": {
+    "overrides": [
+      {
+        "key": "R",
+        "text": "R 10"
+      },
+      {
+        "key": "A",
+        "text": "A 6"
+      },
+      {
+        "key": "A1",
+        "text": "A1 2"
+      },
+      {
+        "key": "A2",
+        "text": "A2 4"
+      },
+      {
+        "key": "B",
+        "text": "B 4"
+      },
+      {
+        "key": "Z",
+        "text": "Z 0"
+      }
+    ]
+  }
+})
+  .createTitle({
+  "text": "Icicle · full hierarchy",
+  "subtitle": "R=10; A=6; B=4; zero node Z retained",
+  "align": "left",
+  "alongOffset": 24,
+  "offset": 2,
+  "gap": 8,
+  "titleStyle": {
+    "color": "#0f172a",
+    "fontSize": 18,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  },
+  "subtitleStyle": {
+    "color": "#0f172a",
+    "fontSize": 11,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  }
+});
+render(icicle, document.querySelector("#chart").getContext("2d"));
+```
+
+## Focus and return
+
+Continue from `icicle` above. `icicle.editPartitionPlot({focus:{key:"A"}})` expands A and its descendants into the same frame. `focus:null` returns to the current root. `rootVisible:false` removes the focus node's band while retaining its descendants. Selection by node key or source field retains hidden members; choose `prunedSelection:"drop"` to discard hidden membership explicitly. A source revision that deletes the focused node recovers its nearest surviving ancestor and reports that recovery in inspection.
+
+## Share intervals with a sunburst
+
+The sunburst variant in the same maintained program binds a polar coordinate and uses `innerRadius:20`, `outerRadius:120` and two-pixel gaps. `radiusPolicy:"equal-depth-area"` makes equal squared-radius bands; `direction:"counterclockwise"` changes angular direction. These mappings preserve the partition values and layout resource.
+
+Zero values retain metadata without artificial area. Inclusive parent residuals remain blank space. Tiny labels may be suppressed with `minWidth` or `minArcLength` while their names remain accessible. See [Partition plots](../../../api/partition/) for all defaults, coordinate rules, selection semantics and atomic errors.

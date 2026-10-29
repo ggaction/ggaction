@@ -73,11 +73,11 @@ for(const mode of ["difference","multiply","screen"])test(`rounded, gradient and
 test("blend rejects invalid inputs and unsupported concrete types atomically",()=>{
   const p=bars(),before=serializeProgram(p);
   for(const blend of ["overlay","source-over","",null,undefined,1])assert.throws(()=>p.editBarMark({blend}),/blend/);
-  assert.throws(()=>p.createBarMark({id:"second",blend:"difference"}),/blend/);
+  assert.equal(p.createBarMark({id:"second",blend:"difference"}).semanticSpec.layers.at(-1).mark.blend,"difference");
   assert.equal(p.editGraphics({target:p.graphicSpec.objects.barPlot.items[0].id,property:"blend",value:"normal"}).graphicSpec.objects.barPlot.items[0].properties.blend,"normal");
   const points=chart().createCanvas().createData({values:[{x:1,y:2}]}).createScatterPlot({x:"x",y:"y",guides:false});
-  assert.throws(()=>points.editGraphics({target:points.graphicSpec.objects.scatterPlot.items[0].id,property:"blend",value:"difference"}),/blend/);
-  assert.throws(()=>points.editSemantic({property:"layer[scatterPlot].mark.blend",value:"difference"}),/blend/);
+  assert.equal(points.editGraphics({target:points.graphicSpec.objects.scatterPlot.items[0].id,property:"blend",value:"difference"}).graphicSpec.objects.scatterPlot.items[0].properties.blend,"difference");
+  assert.equal(points.editSemantic({property:"layer[scatterPlot].mark.blend",value:"difference"}).semanticSpec.layers[0].mark.blend,"difference");
   assert.equal(serializeProgram(p),before);
 });
 
@@ -154,10 +154,10 @@ test("malformed stored blend is rejected by shared graphic and semantic validati
   for(const mutate of [
     state=>{state.semanticSpec.layers[0].mark.blend="normal";},
     state=>{state.graphicSpec.objects.barPlot.items[0].properties.blend="overlay";},
-    state=>{state.semanticSpec.layers[0].mark.type="point";}
+    state=>{state.semanticSpec.layers[0].mark.type="unsupported";}
   ]){
     const envelope=JSON.parse(serializeProgram(p)),state=decodeValue(envelope.payload);mutate(state);envelope.payload=encodeValue(state);
-    assert.throws(()=>deserializeProgram(JSON.stringify(envelope)),/blend/);
+    assert.throws(()=>deserializeProgram(JSON.stringify(envelope)),/blend|mark type/);
   }
 });
 

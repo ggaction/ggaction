@@ -183,6 +183,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editInferredGraphData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "createInferredGraphData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createParameter": {
     "operation": "create",
     "authoringRoles": [
@@ -2648,5 +2664,79 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createPartitionPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0",
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editPartitionPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createFlowData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editFlowData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "layoutFlow": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "createFlowNodes": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editFlowNodes": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createFlowLinks": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editFlowLinks": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

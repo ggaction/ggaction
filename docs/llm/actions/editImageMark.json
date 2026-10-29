@@ -101,6 +101,11 @@
       "name": "clip",
       "required": false,
       "type": "false | GraphicClip | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
     }
   ],
   "callPatterns": [

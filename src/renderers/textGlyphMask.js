@@ -1,5 +1,5 @@
 import { ownRecord } from "../core/ownData.js";
-import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
+import { preparedTextGlyphInput } from "./textGlyphInput.js";
 import { translateFillPaint } from "../grammar/paint.js";
 import { readPreparedFonts } from "./fontRendering.js";
 import { drawResolvedGraphicSpec, resolveGraphicRenderTarget } from "./canvas/index.js";
@@ -9,7 +9,7 @@ import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./canvas/limits.js";
 function closed(value, keys, label) {
   ownRecord(value, label);
   if (Object.keys(value).some(key => !keys.includes(key))) throw new TypeError(`${label} has unsupported properties.`);
-  return value;
+  return { __proto__: null, ...value };
 }
 
 // Private host preparation for the actual fill/outline glyph source. The caller
@@ -27,18 +27,10 @@ export function prepareTextGlyphMask(program, text, frame, options) {
   if (![rasterWidth, rasterHeight].every(value => Number.isSafeInteger(value) && value > 0 && value <= MAX_RASTER_DIMENSION) ||
       rasterWidth * rasterHeight > MAX_RASTER_PIXELS) throw new RangeError("Glyph frame exceeds its raster allocation budget.");
   if (typeof options.createCanvas !== "function") throw new TypeError("Glyph preparation requires an explicit compatible Canvas factory.");
-  const graphicSpec = program?.graphicSpec;
-  const fontAliases = readPreparedFonts(graphicSpec, options.fonts);
-  let found = false;
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ object }) { if (object === text && object.type === "text" && !object.items) found = true; },
-    item({ object, owner }) { if (object === text && (object.type ?? owner.type) === "text") found = true; }
-  });
-  if (!found || text.properties.font === undefined) throw new TypeError("Glyph preparation requires one exact font-bound concrete Text from the prepared program.");
-  const original = text.properties;
-  const units = (original.lines ?? [{ text: original.text }]).reduce((sum, line) => sum + line.text.length, 0);
-  if (units > 1_048_576) throw new RangeError("Glyph source text exceeds its work budget.");
-  const properties = { ...original, x: original.x - left, y: original.y - top, opacity: 1 };
+  const { graphicSpec, properties: original, fontAliases } = preparedTextGlyphInput(program, text, options.fonts);
+  const { shadow, blend, ...sourceProperties } = original;
+  void shadow; void blend;
+  const properties = { ...sourceProperties, x: original.x - left, y: original.y - top, opacity: 1 };
   if (properties.fill !== undefined) properties.fill = translateFillPaint(properties.fill, -left, -top);
   if (original.fillBounds) properties.fillBounds = { left: original.fillBounds.left - left, right: original.fillBounds.right - left,
     top: original.fillBounds.top - top, bottom: original.fillBounds.bottom - top };

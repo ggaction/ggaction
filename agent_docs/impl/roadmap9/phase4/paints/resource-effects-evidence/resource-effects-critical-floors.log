@@ -1,0 +1,10 @@
+{
+  "floors": 381,
+  "all": {
+    "lines": 96.54,
+    "branches": 94.41,
+    "functions": 98.95
+  },
+  "completeSourceCoverage": true,
+  "criticalFloors": "passed"
+}

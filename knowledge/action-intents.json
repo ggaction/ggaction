@@ -1014,6 +1014,37 @@
       "graph plot",
       "network plot",
       "nodes and edges"
+    ],
+    "PartitionPlot": [
+      "icicle chart",
+      "sunburst chart",
+      "focused hierarchy partition"
+    ],
+    "InferredGraphData": [
+      "inferred graph data",
+      "nearest neighbor network",
+      "similarity and spanning graph",
+      "group and sequence connections"
+    ],
+    "FlowData": [
+      "flow graph",
+      "directed flow values",
+      "conservation"
+    ],
+    "Flow": [
+      "Sankey layout",
+      "DAG flow",
+      "cyclic flow"
+    ],
+    "FlowNodes": [
+      "flow nodes",
+      "flow rectangles",
+      "flow labels"
+    ],
+    "FlowLinks": [
+      "flow links",
+      "flow ribbons",
+      "feedback lanes"
     ]
   },
   "summaryOverrides": {
@@ -1952,6 +1983,49 @@
       "nodes": {
         "radius": 8
       }
+    },
+    "createPartitionPlot": {
+      "id": "partition",
+      "layout": "partition-layout",
+      "labels": {}
+    },
+    "editPartitionPlot": {
+      "target": "partition",
+      "focus": {
+        "key": "a"
+      },
+      "padding": [
+        2,
+        3
+      ]
+    },
+    "createInferredGraphData": {
+      "id": "neighbors",
+      "data": "points",
+      "nodeKey": "id",
+      "ruleId": "nearest",
+      "rule": "knn",
+      "features": [
+        "x"
+      ],
+      "metric": "euclidean"
+    },
+    "editInferredGraphData": {
+      "target": "neighbors",
+      "definition": {
+        "options": {
+          "k": 2
+        }
+      }
+    },
+    "createFlowData": {
+      "id": "flow",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to",
+      "value": "amount"
     }
   },
   "callPatternOverrides": {

@@ -5,11 +5,7 @@ import { contentBytesDigest, copyContentBytes } from "../core/contentDigest.js";
 import { exactAssetRecord } from "../grammar/assetRequest.js";
 export { exactAssetRecord, normalizeAssetRequest } from "../grammar/assetRequest.js";
 
-export function assetBase64(bytes) {
-  let binary = "";
-  for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
-  return btoa(binary);
-}
+export { contentBytesBase64 as assetBase64 } from "../core/contentDigest.js";
 
 
 export async function prepareAssetBytes(request, load, signal, matchesMime, kind) {

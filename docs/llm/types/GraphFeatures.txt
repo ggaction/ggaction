@@ -1,0 +1,1 @@
+export type GraphFeatures = readonly string[] | { readonly set: string } | { readonly longitude: string; readonly latitude: string };

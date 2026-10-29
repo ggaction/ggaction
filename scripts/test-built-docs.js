@@ -404,6 +404,8 @@ try {
   await lastGalleryImage.evaluate(image => image.decode());
   assert.equal(await lastGalleryImage.evaluate(image => image.naturalWidth > 0), true);
   await assertAccessible(desktop, "all chart examples");
+  await desktop.goto(`${baseUrl}version/`, { waitUntil: "networkidle" });
+  await assertAccessible(desktop, "desktop version inline list links");
   await desktop.goto(`${baseUrl}getting-started/`, { waitUntil: "networkidle" });
   assert.equal(await desktop.locator(".docs-example-figure img").count(), 1);
   assert.equal(
@@ -602,6 +604,8 @@ try {
     "remove"
   );
 
+  await mobile.goto(`${baseUrl}version/`, { waitUntil: "networkidle" });
+  await assertAccessible(mobile, "mobile version inline list links");
   await mobile.goto(`${baseUrl}reference/types/`, { waitUntil: "networkidle" });
   assert.equal(await mobile.locator(".docs-code-label").first().textContent(), "Type contract");
   assert.equal(await mobile.locator(".docs-copy-button").count(), await mobile.locator("pre code").count());

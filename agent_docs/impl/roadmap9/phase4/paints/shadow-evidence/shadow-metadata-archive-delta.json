@@ -1,0 +1,9 @@
+{
+  "installedArchiveSha256": "d4ebe98b9e799164da277ea6c1a01a885622628a9e5a48df28ff7ac56c00572c",
+  "finalMetadataArchiveSha256": "e43b7d0f98b5648fe2e4a928368bb752861c6a933d2e14c7e7b4e17aafbc3aee",
+  "changedFiles": [
+    "package/README.md"
+  ],
+  "runtimeAndDeclarationsIdentical": true,
+  "finalArchiveBytes": 1198723
+}

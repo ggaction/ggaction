@@ -1,4 +1,6 @@
 import { rendererFontFamily } from "./text.js";
+import { shadowGraphicItems } from "./shadowState.js";
+import { prepareShadowRendering } from "./shadowRendering.js";
 import { prepareImageRendering } from "./imageRendering.js";
 import { prepareFontRendering, retainPreparedFontRegistrations } from "./fontRendering.js";
 
@@ -76,4 +78,12 @@ export function nativeFontRegistrar(globalFonts) {
 
 export function prepareNativeFonts(program, globalFonts) {
   return prepareFontRendering(program, { register: nativeFontRegistrar(globalFonts) });
+}
+
+export function prepareNativeShadows(program, { createCanvas, loadImage, fonts, pixelRatio = 1 }) {
+  if (!shadowGraphicItems(program.graphicSpec).size) return undefined;
+  return prepareShadowRendering(program, { createCanvas, fonts, pixelRatio, decode: async ({ bytes }) => {
+    const image = await loadImage(bytes);
+    return { image, width: image.width, height: image.height, originClean: true };
+  } });
 }

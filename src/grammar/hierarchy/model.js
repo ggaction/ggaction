@@ -97,3 +97,15 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
   }
   return { nodes, indexes, work };
 }
+
+// Strip only layout-owned numeric geometry before applying the shared model validator.
+export function hierarchyLayoutModel(result) {
+  ownRecord(result, "Hierarchy layout result");
+  if (Array.isArray(result.nodes)) validateWorkLimit(result.nodes.length * 48, "Hierarchy layout projection work");
+  ownArray(result.nodes, "Hierarchy layout nodes");
+  return { ...result, nodes: result.nodes.map(node => {
+    ownRecord(node, "Hierarchy layout node");
+    return Object.fromEntries(["key", "parentKey", "childrenKeys", "depth", "ownValue", "totalValue", "residual", "sourceRows", "synthetic"]
+      .filter(key => Object.hasOwn(node, key)).map(key => [key, node[key]]));
+  }) };
+}

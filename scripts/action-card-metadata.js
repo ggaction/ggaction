@@ -15,6 +15,7 @@ const analysisChartNames = new Set([
   "createHorizonPlot",
   "createTreePlot",
   "createGraphPlot",
+  "createPartitionPlot",
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
@@ -24,12 +25,13 @@ const analysisChartEditorNames = new Set([
   "editRaincloudPlot",
   "editTreePlot",
   "editGraphPlot",
+  "editPartitionPlot",
   "editTreemapPlot"
 ]);
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
+  "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -66,6 +68,16 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createInferredGraphData: ["editInferredGraphData", "removeResource"],
+  editInferredGraphData: ["editInferredGraphData", "removeResource"],
+  createFlowData: ["editFlowData", "removeResource"],
+  editFlowData: ["editFlowData", "removeResource"],
+  layoutFlow: ["editLayout", "removeResource"],
+  createFlowNodes: ["editFlowNodes", "removeMark"],
+  editFlowNodes: ["editFlowNodes", "removeMark"],
+  createFlowLinks: ["editFlowLinks", "removeMark"],
+  editFlowLinks: ["editFlowLinks", "removeMark"],
+
   createHierarchyData: ["editHierarchyData", "removeResource"],
   editHierarchyData: ["editHierarchyData", "removeResource"],
   layoutHierarchy: ["editLayout", "removeResource"],
@@ -76,6 +88,8 @@ const explicitLifecycleEditors = Object.freeze({
   createGraphPlot: ["editGraphPlot", "removeMark"],
   editGraphPlot: ["editGraphPlot", "removeMark"],
   editTreePlot: ["editTreePlot", "removeMark"],
+  createPartitionPlot: ["editPartitionPlot", "removeMark"],
+  editPartitionPlot: ["editPartitionPlot", "removeMark"],
   createTreemapPlot: ["editTreemapPlot", "removeMark"],
   editTreemapPlot: ["editTreemapPlot", "removeMark"],
   applyDataUpdate: ["applyDataUpdate", "reviseData", "removeData"],
@@ -149,8 +163,10 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",
   "layoutGraph",
   "createGraphData",
+  "createInferredGraphData",
   "editGraphData",
   "filterData",
   "filterMarks",

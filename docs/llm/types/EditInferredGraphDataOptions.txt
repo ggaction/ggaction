@@ -1,0 +1,4 @@
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}

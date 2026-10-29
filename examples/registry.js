@@ -1,8 +1,12 @@
 import { createGraph } from "./graph-plots/program.js";
+import { createTextShadowExample } from "./text-shadows/program.js";
+import { createMarkShadowExample } from "./mark-shadows/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
+import { createFlow } from "./flow-layouts/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
 import { createFontExample } from "./font-assets/program.js";
+import { createPartition } from "./partition-layouts/program.js";
 import { createTree } from "./tree-layouts/program.js";
 import { createTreemap } from "./treemap-layouts/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
@@ -184,6 +188,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "font-assets/", canvas: "canvas" } }),
   example({ id: "mark-outlines", data: {}, width: 280, height: 200, docsGroup: "tutorials", createProgram: () => createMarkOutlineExample(),
     browser: { path: "mark-outlines/", canvas: "#chart" } }),
+  example({ id: "text-shadows", testDirectory: "mark-shadows", data: {}, width: 220, height: 160, docsGroup: "tutorials", createProgram: () => createTextShadowExample(),
+    browser: { path: "text-shadows/", canvas: "#chart" } }),
+  example({ id: "mark-shadows", data: {}, width: 260, height: 200, docsGroup: "tutorials", createProgram: () => createMarkShadowExample(),
+    browser: { path: "mark-shadows/", canvas: "#chart" } }),
   example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
     browser: { path: "structured-paints/", canvas: "#chart" } }),
   example({ id: "image-assets", data: {}, width: 200, height: 210, docsGroup: "tutorials", createProgram: () => createImageExample(),
@@ -304,6 +312,26 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createGraph("self-loop"),
     browser: { path: "browser-host/?chart=graph-self-loop", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "graph-self-loop", width: 300, height: 240 } } }
   }),
+  example({ id: "flow-layouts", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("dag"),
+    browser: { path: "browser-host/?chart=flow-layouts", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-layouts", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("vertical"),
+    browser: { path: "browser-host/?chart=flow-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-vertical", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic"),
+    browser: { path: "browser-host/?chart=flow-cyclic", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic-vertical"),
+    browser: { path: "browser-host/?chart=flow-cyclic-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic-vertical", width: 640, height: 500 } } }
+  }),
   example({ id: "tree-layouts", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTree("vertical"),
     browser: { path: "browser-host/?chart=tree-layouts", canvas: "#chart",
@@ -318,6 +346,14 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createTree("radial"),
     browser: { path: "browser-host/?chart=tree-radial", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "tree-radial", width: 640, height: 500 } } }
+  }),
+  example({ id: "partition-layouts", programDirectory: "partition-layouts", testDirectory: "partition-layouts", data: {}, width: 480, height: 360, docsGroup: "tutorials",
+    createProgram: () => createPartition("icicle"),
+    browser: { path: "browser-host/?chart=partition-layouts", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "partition-layouts", width: 480, height: 360 } } }
+  }),
+  example({ id: "partition-sunburst", programDirectory: "partition-layouts", testDirectory: "partition-layouts", data: {}, width: 480, height: 360, docsGroup: "tutorials",
+    createProgram: () => createPartition("sunburst"),
+    browser: { path: "browser-host/?chart=partition-sunburst", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "partition-sunburst", width: 480, height: 360 } } }
   }),
   example({ id: "treemap-layouts", programDirectory: "treemap-layouts", testDirectory: "treemap-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTreemap("slice-dice"),

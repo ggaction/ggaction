@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-  "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "create point mark",
     "create",
@@ -93,6 +93,16 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -149,7 +159,7 @@
     }
   ],
   "callPatterns": [
-    "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
+    "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
   ],
   "snippet": "program.createPointMark({})",
   "errors": [],

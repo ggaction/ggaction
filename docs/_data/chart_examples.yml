@@ -1876,3 +1876,125 @@
   actions: createGraphData · layoutGraph · createGraphPlot
   tasks: graph network layout
   url: /tutorials/graphs/
+- id: partition-layouts
+  tutorial_order: 250
+  example: /examples/partition-layouts/
+  title: Icicle partition
+  image: /assets/images/partition-layouts.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Normalized hierarchy intervals become rectangular value and depth bands.
+  summary: Normalized hierarchy intervals become rectangular value and depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: partition-sunburst
+  example: /examples/partition-sunburst/
+  title: Sunburst partition
+  image: /assets/images/partition-sunburst.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-sunburst-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: The same hierarchy intervals become angular value and radial depth bands.
+  summary: The same hierarchy intervals become angular value and radial depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: mark-shadows
+  example: /examples/mark-shadows/
+  title: Bounded mark shadows
+  image: /assets/images/mark-shadows.png
+  alt: A red rectangle with a soft blue-gray shadow and an unaffected yellow sibling
+  width: 520
+  height: 400
+  thumbnail: /assets/images/mark-shadows-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 400
+  caption: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  summary: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  actions: createRectMark · editRectMark
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows
+- id: text-shadows
+  example: /examples/text-shadows/
+  title: Exact text shadows
+  image: /assets/images/text-shadows.png
+  alt: Rotated multiline red text with a green outline and a blue glyph-shaped shadow
+  width: 440
+  height: 320
+  thumbnail: /assets/images/text-shadows-thumb.png
+  thumbnail_width: 440
+  thumbnail_height: 320
+  caption: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  summary: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  actions: createTextMark · createFontResource · applyTextMetrics
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows
+- id: flow-layouts
+  tutorial_order: 200
+  example: /examples/flow-layouts/
+  title: Conserved flows
+  image: /assets/images/flow-layouts.png
+  alt: Two sources contribute six and four units to a shared total
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Two sources contribute six and four units to a shared total.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-vertical
+  example: /examples/flow-vertical/
+  title: Vertical flows
+  image: /assets/images/flow-vertical.png
+  alt: The same conserved quantities flow from top to bottom
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: The same conserved quantities flow from top to bottom.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic
+  example: /examples/flow-cyclic/
+  title: Cyclic flows
+  image: /assets/images/flow-cyclic.png
+  alt: Both directions remain visible in separate feedback lanes
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Both directions remain visible in separate feedback lanes.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic-vertical
+  example: /examples/flow-cyclic-vertical/
+  title: Vertical feedback
+  image: /assets/images/flow-cyclic-vertical.png
+  alt: Feedback lanes and node attachments transpose together
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Feedback lanes and node attachments transpose together.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/

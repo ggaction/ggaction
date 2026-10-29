@@ -1,3 +1,6 @@
+import { withGraphSourceRevisions } from "./sourceRevisionContext.js";
+import { orderResourceDependencies } from "../../materialization/resourceState.js";
+import { createInferredGraphData, editInferredGraphData } from "./inference.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -21,7 +24,7 @@ export const createGraphData = /* @__PURE__ */ closedAction(
 
 export const editGraphData = /* @__PURE__ */ closedAction(
   { op: "editGraphData", description: "Revise an observed graph and preserve typed endpoint identity." }, ["target", "nodes", "edges", "definition"], function (args = {}) {
-    const previous = resolveGraphResource(this, args.target, "observed");
+    const previous = resolveGraphResource(this, args.target, "observed", false);
     const { nodes, edges, definition = {} } = args;
     ownRecord(definition, "Graph definition patch");
     if (Object.keys(args).every(key => key === "target")) throw new TypeError("Graph edits require a nonempty patch.");
@@ -34,17 +37,19 @@ export const editGraphData = /* @__PURE__ */ closedAction(
   });
 
 export function registerGraphActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createGraphData, editGraphData, layoutGraph });
+  Object.assign(ProgramClass.prototype, { createGraphData, editGraphData, createInferredGraphData, editInferredGraphData, layoutGraph });
 }
 
 export function reviseGraphInputs(program, replacements) {
   let next = program;
-  for (const resource of program.semanticSpec.resources) {
-    if (resource.kind !== "graph") continue;
+  for (const original of orderResourceDependencies(program.semanticSpec.resources)) {
+    if (original.kind !== "graph") continue;
+    const resource = findStoredResource(next, "graph", original.id);
     const nodes = replacements.get(resource.inputs[resource.options.roles.nodes].id);
     const edges = replacements.get(resource.inputs[resource.options.roles.edges].id);
-    if (nodes !== undefined || edges !== undefined) next = next.editGraphData({ target: resource.id,
-      ...(nodes === undefined ? {} : { nodes }), ...(edges === undefined ? {} : { edges }) });
+    if (nodes !== undefined || edges !== undefined) next = withGraphSourceRevisions(next, replacements, () =>
+      resource.provenance.origin === "inferred" ? next.editInferredGraphData({ target: resource.id, data: nodes }) : next[resource.options.flow ? "editFlowData" : "editGraphData"]({ target: resource.id,
+        ...(nodes === undefined ? {} : { nodes }), ...(edges === undefined ? {} : { edges }) }));
   }
   return next;
 }

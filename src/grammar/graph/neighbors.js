@@ -9,7 +9,7 @@ import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
 import { normalizeGraphSearch, searchExactGraph } from "./search.js";
 import { searchApproximateGraph } from "./approximate.js";
 
-function normalize(options) {
+export function normalizeGraphNeighborOptions(options) {
   ownRecord(options, "Graph neighbor options");
   options = Object.assign(Object.create(null), options);
   const rule = options.rule;
@@ -42,7 +42,7 @@ function normalize(options) {
 // Return selected raw-source indexes and stable typed identities. The domain
 // adapter, not this pure kernel, supplies graph nodes and row provenance.
 export function inferGraphNeighbors(keys, vectors, options) {
-  const policy = normalize(options);
+  const policy = normalizeGraphNeighborOptions(options);
   if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph neighbor nodes");
   ownArray(keys, "Graph node keys");
   if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes");

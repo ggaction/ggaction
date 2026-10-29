@@ -684,6 +684,54 @@ Draw a stored graph layout with independently identifiable nodes and connections
 
 Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
 
+### [Icicle partition](./partition-layouts/)
+
+Normalized hierarchy intervals become rectangular value and depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
+### [Sunburst partition](./partition-sunburst/)
+
+The same hierarchy intervals become angular value and radial depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
+### [Bounded mark shadows](./mark-shadows/)
+
+Prepare the actual mark alpha once and share its bounded shadow across output backends.
+
+Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
+
+### [Exact text shadows](./text-shadows/)
+
+Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+
+Representative actions: `createTextMark`, `createFontResource`, `applyTextMetrics`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
+
+### [Conserved flows](./flow-layouts/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Vertical flows](./flow-vertical/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Cyclic flows](./flow-cyclic/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Vertical feedback](./flow-cyclic-vertical/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

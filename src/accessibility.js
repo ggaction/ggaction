@@ -80,8 +80,11 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
-  if (["tree", "treemap"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
-    series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children }
+  if (["flow-node", "flow-link"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+    series: {}, values: item.fields
+  }));
+  if (["tree", "treemap", "partition"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+    series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children, ...(item.visible === undefined ? {} : { visible: item.visible, name: item.fields.name, parent: item.navigation.parent, firstChild: item.navigation.firstChild }) }
   }));
   if (["line", "area"].includes(layer.mark.type)) return pathRows(program, layer);
   if (!["point", "bar", "arc", "rule", "tick", "rect"].includes(layer.mark.type)) {

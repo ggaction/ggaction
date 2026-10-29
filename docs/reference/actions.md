@@ -63,6 +63,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | H1 | user-facing | statistics |
 | [`createFlattenData`](./actions/statistics.md#createflattendata) | H1 | user-facing | statistics |
+| [`createFlowData`](./actions/charts-data.md#createflowdata) | H2 | user-facing | core |
+| [`createFlowLinks`](./actions/marks.md#createflowlinks) | H2 | user-facing | marks |
+| [`createFlowNodes`](./actions/marks.md#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./actions/charts-data.md#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
@@ -79,6 +82,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImageMark`](./actions/marks.md#createimagemark) | H2 | user-facing | marks |
 | [`createImageResource`](./actions/charts-data.md#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
+| [`createInferredGraphData`](./actions/charts-data.md#createinferredgraphdata) | H2 | user-facing | core |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLayerPlot`](./actions/charts-data.md#createlayerplot) | H0 | user-facing | composition |
@@ -94,6 +98,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](./actions/charts-data.md#createparameter) | H2 | user-facing | core |
+| [`createPartitionPlot`](./actions/charts-data.md#createpartitionplot) | H0, H1 | user-facing | charts |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./actions/statistics.md#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
@@ -184,6 +189,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](./actions/charts-data.md#editfiltereddata) | H2 | user-facing | core |
 | [`editFlattenData`](./actions/statistics.md#editflattendata) | H1, H3 | user-facing | statistics |
+| [`editFlowData`](./actions/charts-data.md#editflowdata) | H3 | user-facing | core |
+| [`editFlowLinks`](./actions/marks.md#editflowlinks) | H3 | user-facing | marks |
+| [`editFlowNodes`](./actions/marks.md#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
@@ -195,6 +203,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editHorizontalGrid`](./actions/guides.md#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImageMark`](./actions/marks.md#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./actions/statistics.md#editimputeddata) | H1, H3 | user-facing | statistics |
+| [`editInferredGraphData`](./actions/charts-data.md#editinferredgraphdata) | H3 | user-facing | core |
 | [`editIntervalData`](./actions/statistics.md#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLayout`](./actions/charts-data.md#editlayout) | H2 | user-facing | core |
 | [`editLegend`](./actions/guides.md#editlegend) | H3 | user-facing | legend_and_title |
@@ -215,6 +224,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](./actions/charts-data.md#editparameter) | H3 | user-facing | core |
+| [`editPartitionPlot`](./actions/charts-data.md#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
@@ -314,6 +324,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | H3 | user-facing | marks |
+| [`layoutFlow`](./actions/charts-data.md#layoutflow) | H2 | user-facing | core |
 | [`layoutGraph`](./actions/charts-data.md#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |

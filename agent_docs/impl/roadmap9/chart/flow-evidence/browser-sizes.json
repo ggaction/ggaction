@@ -1,0 +1,86 @@
+{
+  "artifact": "32b0580008170a33dd42021239dbd9b0d5adc5775e860c88e4dcbc09df59a146",
+  "measurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "results": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 729,
+          "minifiedBytes": 2134705,
+          "gzipBytes": 601073
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 478,
+          "minifiedBytes": 1181360,
+          "gzipBytes": 344083
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 18070
+        }
+      ]
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "results": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 729,
+          "minifiedBytes": 2134705,
+          "gzipBytes": 599726
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 478,
+          "minifiedBytes": 1181360,
+          "gzipBytes": 343322
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 17939
+        }
+      ]
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "results": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 729,
+          "minifiedBytes": 2134705,
+          "gzipBytes": 601073
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 478,
+          "minifiedBytes": 1181360,
+          "gzipBytes": 344083
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 18070
+        }
+      ]
+    }
+  ]
+}

@@ -132,8 +132,17 @@ import {
     getMarkItems(chart(), { grain: "series" });
 
     chart().editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
-    // @ts-expect-error only the bar editor owns blend
     chart().createBarMark({blend:"difference"});
+    chart().createPointMark({blend:"multiply"}).editPointMark({blend:"normal"});
+    chart().createRectMark({blend:"screen"}).editRectMark({blend:"difference"});
+    chart().createAreaMark({blend:"screen"}).editAreaMark({blend:"normal"});
+    chart().createArcMark({blend:"multiply"}).editArcMark({blend:"normal"});
+    chart().createTextMark({blend:"difference"}).editTextMark({blend:"screen"});
+    chart().createLineMark({blend:"multiply"}).editLineMark({blend:"normal"});
+    chart().createRuleMark({blend:"difference"}).editRuleMark({blend:"screen"});
+    chart().createTickMark({blend:"multiply"}).editTickMark({blend:"normal"});
+    basicChart().createPointMark({blend:"screen"}).createBarMark({blend:"multiply"})
+      .createRectMark({blend:"difference"}).createLineMark({blend:"normal"});
     // @ts-expect-error blend is a closed vocabulary
     chart().editBarMark({blend:"overlay"});
     // @ts-expect-error Basic does not expose appearance editing
@@ -2141,6 +2150,11 @@ async function imageConsumer() {
   base.createImageResource({prepared: {kind: "image-resource", request: {kind: "create", id: "logo"}}, requestToken: "now"});
 }
 
+chart().createTextPlot({ x: "x", y: "y", text: "text", style: { blend: "screen" } });
+chart().createDotPlot({ category: "c", value: "y", labels: { blend: "screen" } });
+chart().createLollipopPlot({ category: "c", value: "y", stem: { blend: "multiply" }, labels: { blend: "screen" } });
+chart().createDumbbellPlot({ category: "c", start: "x", end: "y", connector: { blend: "difference" }, labels: { blend: "screen" } });
+chart().createECDFPlot({ field: "y", labels: { blend: "screen" } });
 import { prepareFontResource, prepareTextMetrics, prepareFontRendering, type FontResourceHost,
   type TextMetricsHost, type FontRenderingHost, type PreparedFontResource, type PreparedTextMetrics } from "ggaction";
 import { prepareFontRendering as prepareBasicFonts } from "ggaction/basic";

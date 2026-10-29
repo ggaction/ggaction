@@ -1,4 +1,7 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -18,10 +21,10 @@ import { STROKE_STYLE_PROPERTIES } from
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
-import { isBlendMode } from "../../../grammar/compositing.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "clip", "missing", "blend", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "blend",
+  "target", "clip", "missing", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -32,10 +35,11 @@ export const editBarMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
+    validateRequestedMarkBlend(args, "bar");
     requestedMarkClip(args);
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "clip", "missing", "blend", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+      "clip", "missing", "blend", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -70,15 +74,12 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    if (Object.hasOwn(args, "blend") && !isBlendMode(args.blend)) {
-      throw new Error("Bar blend must be normal, multiply, screen, or difference.");
-    }
     const missing = Object.hasOwn(args, "missing")
       ? validateItemMissing(args.missing, "Bar missing") : undefined;
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
     const appearance = { ...config.barAppearance };
-    Object.assign(appearance, styleDetails, requestedMarkOutline(args));
+    Object.assign(appearance, styleDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "fill")) {
       appearance.fill = validateFillPaint(args.fill, "Bar fill");
     }
@@ -113,13 +114,7 @@ export const editBarMark = /* @__PURE__ */ action(
     let semantic = missing === undefined ? this : this.editSemantic({
       property: `layer[${layer.id}].mark.missing`, value: missing
     });
-    if (Object.hasOwn(args, "blend")) {
-      if (args.blend !== "normal") {
-        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, value: args.blend});
-      } else if (layer.mark.blend !== undefined) {
-        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, remove: true});
-      }
-    }
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const editsAppearance = changes.some(key => key !== "missing" && key !== "blend" && key !== "clip" &&
       Object.hasOwn(args, key));
     const next = editsAppearance || Object.hasOwn(args, "clip") ? semantic._withMarkConfig(layer.id, {

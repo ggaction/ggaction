@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "capabilities": {
     "accessibility": [
       {
@@ -102,11 +101,27 @@
       },
       {
         "type": "prefix",
-        "path": "gates/blend-paints/"
+        "path": "charts/bar-compositing/variants/native/"
       },
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-blend-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-blends.test.js"
       }
     ],
     "calendar": [
@@ -265,6 +280,40 @@
         "path": "unit/renderers/empty-text-renderer.test.js"
       }
     ],
+    "flow": [
+      {
+        "type": "file",
+        "path": "unit/flow-layouts.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/flow-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "browser/flow-layouts.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/flow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-state.test.js"
+      }
+    ],
     "font-assets": [
       {
         "type": "prefix",
@@ -361,6 +410,26 @@
       {
         "type": "file",
         "path": "browser/graph-output.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inferred-graph-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "guides": [
@@ -699,6 +768,28 @@
         "path": "unit/support/npm-command.test.js"
       }
     ],
+    "partition": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-view.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-mapping.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-bend.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/partition-layouts/"
+      }
+    ],
     "pattern-paints": [
       {
         "type": "file",
@@ -807,6 +898,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-legend-option-witness.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "rendering": [
@@ -871,12 +966,40 @@
     ],
     "shadow-paints": [
       {
+        "type": "prefix",
+        "path": "charts/mark-shadows/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-shadow.test.js"
+      },
+      {
         "type": "file",
         "path": "unit/grammar/shadow.test.js"
       },
       {
-        "type": "prefix",
-        "path": "gates/shadow-paints/"
+        "type": "file",
+        "path": "unit/grammar/shadow-composite.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/shadow-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/text-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-shadow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-shadows.test.js"
       }
     ],
     "statistical-fixtures": [
@@ -1167,5 +1290,6 @@
         "path": "contracts/theme.test.js"
       }
     ]
-  }
+  },
+  "version": 2
 }

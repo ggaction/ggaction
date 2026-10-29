@@ -8,7 +8,7 @@ import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
 import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
 
-function policy(input, metric) {
+export function normalizeGraphSpanningOptions(input, metric) {
   ownRecord(input, "Graph spanning options");
   rejectUnknownProperties(input, ["ruleId", "forest", ...(metric ? ["metric", "preprocess", "missing", "zeroVector"] : [])], "graph spanning");
   const options = Object.assign(Object.create(null), input);
@@ -71,7 +71,7 @@ function select(keys, candidates, order, configuration) {
 // Explicit weighted candidates may contain parallel connections or self loops.
 // Kruskal selects only non-self connections; the domain adapter supplies lineage.
 export function selectGraphSpanningForest(keys, candidates, options) {
-  const configuration = policy(options, false), order = nodeRanks(keys);
+  const configuration = normalizeGraphSpanningOptions(options, false), order = nodeRanks(keys);
   if (Array.isArray(candidates)) candidateWork(keys.length, candidates.length);
   ownArray(candidates, "Graph spanning candidates");
   const validated = candidates.map(input => {
@@ -91,7 +91,7 @@ export function selectGraphSpanningForest(keys, candidates, options) {
 // Complete metric graphs share the feature policy with neighbor inference.
 // Source indexes are restored only after selecting included nodes.
 export function inferGraphMst(keys, vectors, input) {
-  const configuration = policy(input, true), { options } = configuration;
+  const configuration = normalizeGraphSpanningOptions(input, true), { options } = configuration;
   nodeRanks(keys);
   if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes");
   ownArray(vectors, "Graph spanning vectors");
@@ -100,7 +100,7 @@ export function inferGraphMst(keys, vectors, input) {
     .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]])));
   const indexes = preparation.sourceIndices, n = indexes.length;
   const includedKeys = indexes.map(i => keys[i]), order = nodeRanks(includedKeys);
-  const pairCount = n * (n - 1) / 2;
+  const pairCount = n < 2 ? 0 : n * (n - 1) / 2;
   const dimension = preparation.vectors.reduce((max, vector) => Math.max(max, vector.length), 0);
   const featureWork = vectors.reduce((total, vector) => total + vector.length * 8, 0);
   const metricWork = pairCount * Math.max(1, dimension) * (preparation.metric === "jaccard"

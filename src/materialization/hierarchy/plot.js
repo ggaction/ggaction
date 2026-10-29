@@ -1,4 +1,8 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { bindTextFontProperties } from "../textFont.js";
+import { materializeFillItems } from "../fillPaint.js";
+import { resolvePartitionPlot } from "./partitionPlot.js";
+import { hierarchyNodeItemKey } from "./items.js";
 import { hierarchyInputSources } from "../../grammar/hierarchy/input.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -7,9 +11,6 @@ import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { uniqueFields } from "../selection/items/common.js";
 
-export function hierarchyNodeItemKey(layer, hierarchy, node) {
-  return JSON.stringify([[], layer.id, "node", [hierarchy.id, node.key]]);
-}
 function boundsOf(nodes, method) {
   if (!nodes.length) return { x0: 0, x1: 0, y0: 0, y1: 0 };
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
@@ -21,6 +22,7 @@ function boundsOf(nodes, method) {
 }
 
 export function resolveHierarchyPlot(program, layer, config) {
+  if (layer.mark.type === "partition") return resolvePartitionPlot(program, layer, config);
   const { layout, hierarchy, dataset } = resolveHierarchyLayerResources(program, layer), method = layer.mark.type;
   const frame = resolveGraphicBounds(program), nodes = layout.result.nodes.filter(node => !node.synthetic);
   const bounds = boundsOf(nodes, method), origin = config.origin === "auto"
@@ -70,7 +72,8 @@ export function resolveHierarchyPlot(program, layer, config) {
   }
   const known = new Set(nodes.map(node => node.key)), targets = new Set([...bodyOverrides.keys(), ...labelOverrides.keys(), ...labelText.keys()]);
   validateGeneratedItemLimit(graphics.length, "Hierarchy plot graphic count");
-  for (const graphic of graphics) validateConcreteGraphicProperties(graphic.type, graphic.properties);
-  return { graphics, items, dataset, layout, hierarchy, frame,
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
+  for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
+  return { graphics: concrete, items, dataset, layout, hierarchy, frame,
     diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };
 }

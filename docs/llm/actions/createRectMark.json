@@ -78,6 +78,16 @@
   },
   "options": [
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -169,7 +179,7 @@
     }
   ],
   "callPatterns": [
-    "createRectMark({ id?, data?, target?, clip?, missing?, fill?, outline?, opacity? })"
+    "createRectMark({ id?, data?, target?, blend?, shadow?, clip?, missing?, fill? })"
   ],
   "snippet": "program.createRectMark({})",
   "errors": [],

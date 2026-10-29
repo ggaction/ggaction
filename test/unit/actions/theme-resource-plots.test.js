@@ -13,16 +13,16 @@ function plot(kind, options = {}, before = chart()) {
     .layoutGraph({ id: "layout", method: "force", options: { seed: 7, iterations: 2 } })
     .createGraphPlot({ id: "plot", labels: {}, ...options });
   return p.createHierarchyData({ id: "source", key: "id", parent: "parent", value: "value" })
-    .layoutHierarchy({ id: "layout", method: kind, options: kind === "tree"
+    .layoutHierarchy({ id: "layout", method: kind, options: kind === "partition" ? {} : kind === "tree"
       ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
       : { size: [180, 100], padding: 5, method: "slice-dice" } })
-    [kind === "tree" ? "createTreePlot" : "createTreemapPlot"]({ id: "plot", labels: {}, ...options });
+    [{ tree: "createTreePlot", treemap: "createTreemapPlot", partition: "createPartitionPlot" }[kind]]({ id: "plot", labels: {}, ...options });
 }
 const items = program => program.graphicSpec.objects.plot.items;
 const body = program => items(program).filter(item => ["circle", "rect"].includes(item.type));
 const labels = program => items(program).filter(item => item.type === "text");
 const operations = trace => [trace.op, ...(trace.children ?? []).flatMap(operations)];
-for (const kind of ["graph", "tree", "treemap"]) {
+for (const kind of ["graph", "tree", "treemap", "partition"]) {
   test(`${kind} theme paint changes preserve stored layouts and final item identity`, () => {
     const source = plot(kind), saved = serializeProgram(source), resources = source.semanticSpec.resources;
     const keys = getMarkItems(source, { target: "plot" }).map(item => item.key);
@@ -38,7 +38,7 @@ for (const kind of ["graph", "tree", "treemap"]) {
     assert.equal(serializeProgram(source), saved);
   });
   test(`${kind} same-as-default authored paint and per-item styles outrank a theme`, () => {
-    const name = kind === "treemap" ? "cells" : "nodes", color = kind === "treemap" ? "#3b82f6" : "#2563eb";
+    const name = ["treemap", "partition"].includes(kind) ? "cells" : "nodes", color = ["treemap", "partition"].includes(kind) ? "#3b82f6" : "#2563eb";
     const source = plot(kind, { [name]: { fill: color, opacity: 0, strokeWidth: 0, overrides: [{ key: "b", fill: "orange" }] }, labels: { fill: "#0f172a" } });
     const dark = source.applyTheme({ theme: "dark" });
     assert.deepEqual(body(dark).map(item => item.properties.fill), [color, "orange"]);
@@ -82,9 +82,9 @@ test("scoped resource themes preserve child-local requests and restore family de
   assert.ok(body(second).every(item => item.properties.fill === "#3b82f6"));
 });
 
-for (const kind of ["graph", "tree", "treemap"]) {
+for (const kind of ["graph", "tree", "treemap", "partition"]) {
   test(`${kind} theme follows label reset and preserves a named highlight baseline`, () => {
-    const edit = { graph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot" }[kind];
+    const edit = { graph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot" }[kind];
     const p = plot(kind, { labels: { fill: "orange" } }).applyTheme({ theme: "dark" });
     const reset = p[edit]({ target: "plot", labels: false })[edit]({ target: "plot", labels: {} });
     assert.ok(labels(reset).every(item => item.properties.fill === "#e2e8f0"));

@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "checkpoint": "P2 per-item blend public integration",
+  "status": "verified; shadow and remaining common paint consumers are open",
+  "base": "20fbe3819cf67d5317f7046249994f5fededb4cc",
+  "sourceCommits": [
+    "fb9c96155eecb8a3def94e4d92256912bcbbe5fd",
+    "d0b3f763c4c02be85bb9e023a85a46286121d674"
+  ],
+  "archive": {
+    "file": ".artifacts/release/blend-facades-final.tgz",
+    "sha256": "158ef7bd2defb14f0b0baeaf3dcdd8fc9dccc39a800854983412447f04d2b8d1",
+    "source": "d0b3f763c4c02be85bb9e023a85a46286121d674",
+    "entryCount": 796,
+    "unpackedBytes": 5417436,
+    "packedBytes": {
+      "node20": 1178080,
+      "node22": 1176036,
+      "node24": 1178080
+    }
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "cases": 214,
+      "qualification": 7,
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 699,
+          "minifiedBytes": 2070541,
+          "gzipBytes": 581376
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 477,
+          "minifiedBytes": 1178279,
+          "gzipBytes": 343054
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 31,
+          "minifiedBytes": 53231,
+          "gzipBytes": 18243
+        }
+      },
+      "casesReceipt": "blend-installed-node20.json",
+      "qualificationReceipt": "blend-qualified-node20.json",
+      "log": "blend-installed-node20.log.gz"
+    },
+    {
+      "node": "v22.23.1",
+      "cases": 214,
+      "qualification": 7,
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 699,
+          "minifiedBytes": 2070541,
+          "gzipBytes": 580621
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 477,
+          "minifiedBytes": 1178279,
+          "gzipBytes": 342310
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 31,
+          "minifiedBytes": 53231,
+          "gzipBytes": 18115
+        }
+      },
+      "casesReceipt": "blend-installed-node22.json",
+      "qualificationReceipt": "blend-qualified-node22.json",
+      "log": "blend-installed-node22.log.gz"
+    },
+    {
+      "node": "v24.22.1",
+      "cases": 214,
+      "qualification": 7,
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 699,
+          "minifiedBytes": 2070541,
+          "gzipBytes": 581376
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 477,
+          "minifiedBytes": 1178279,
+          "gzipBytes": 343054
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 31,
+          "minifiedBytes": 53231,
+          "gzipBytes": 18243
+        }
+      },
+      "casesReceipt": "blend-installed-node24.json",
+      "qualificationReceipt": "blend-qualified-node24.json",
+      "log": "blend-installed-node24.log.gz"
+    }
+  ],
+  "verification": {
+    "unit": {
+      "passed": 5564,
+      "scope": "Started before final own-data read boundary and three facade forwarding lines; relevant focused regressions and coverage are fresh."
+    },
+    "contracts": {
+      "passed": 734,
+      "failed": 1,
+      "repair": "Only chart baseline ledger after approved gate graduation; repaired contract 3/3."
+    },
+    "focusedLifecycleAfterFacade": {
+      "passed": 21
+    },
+    "realistic": {
+      "canonicalRunner": true,
+      "dataMarkRecipes": 14,
+      "blendRecipes": 15,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "ownersPerRecipe": 9,
+      "textFacadesPerRecipe": 5,
+      "modesPerOwner": 4,
+      "optionPaths": 128
+    },
+    "focusedCoverage": {
+      "passed": 91,
+      "floors": "blend-critical-coverage.json",
+      "scope": "Fresh after own-data patch; before three facade whitelist lines. No floor reduction."
+    },
+    "render": {
+      "entriesPassed": 4,
+      "newExactPublicPrimitivePngPdfPairs": 12,
+      "retainedArtifactHashes": 163,
+      "artifacts": "renderer-artifacts.json",
+      "scope": "Focused glyph and native entries rerun to retain stable paths after runner reset. No comparison claim to removed old review tree."
+    },
+    "browser": {
+      "testsPassed": 2,
+      "scope": "Canvas/Offscreen/SVG independent pixels; render source unchanged by later facade forwarding."
+    },
+    "docs": {
+      "earlierSourcePassed": 169,
+      "earlierSourceTotal": 170,
+      "remainingFailure": "Uncommitted example source ref; final source-focused 8 assertions passed after source commit.",
+      "finalFocusedSourcePassed": 8,
+      "builtPages": 153,
+      "selectiveLlmPages": 1285,
+      "changedPageWidths": [
+        1280,
+        320,
+        390,
+        768
+      ],
+      "axeViolations": 0,
+      "horizontalOverflow": 0,
+      "pageErrors": 0,
+      "fullUiSweep": "Prior outline integration evidence reused; structural UI inputs unchanged."
+    }
+  },
+  "caps": {
+    "packageEntries": 796,
+    "packedBytes": 1179000,
+    "unpackedBytes": 5418000,
+    "fullGzip": 582000,
+    "basicGzip": 344000,
+    "svgGzip": 25000
+  },
+  "initialFailures": {
+    "logs": "logs.json",
+    "installedEarlierArchive": "Earlier 15fa644a archive passed 213 cases and 6 qualification checks; obsolete createBar blend type rejection failed. Repaired exact installed type fixture tsc exit 0. Final archive above passes all 7 on all 3 Node versions.",
+    "relativeArchive": "Initial relative path lookup failed ENOENT; final runs use exact absolute archive path.",
+    "preservation": "All non-empty blend logs retained compressed, including first failures; logs.json hashes uncompressed bytes."
+  },
+  "remaining": [
+    "P2 shadow actual glyph preparation and four renderer public flow",
+    "Image/H/Partition common applicable paint consumers",
+    "Endpoint and ECDF labels forward older outline option",
+    "STEP017 and Roadmap9 STEP077 completion remain open"
+  ]
+}

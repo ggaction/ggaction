@@ -44,7 +44,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "fillRule",
     "opacity"
   ]),
-  image: new Set(["image", "x", "y", "width", "height", "opacity", "length"]),
+  image: new Set(["image", "x", "y", "width", "height", "opacity", "shadow", "length"]),
   circle: new Set([
     "x",
     "y",
@@ -58,6 +58,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   rect: new Set([
@@ -74,6 +75,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   line: new Set([
@@ -88,6 +90,8 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "lineJoin",
     "miterLimit",
     "opacity",
+    "blend",
+    "shadow",
     "length"
   ]),
   text: new Set([
@@ -110,6 +114,8 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "textBaseline",
     "rotation",
     "opacity",
+    "blend",
+    "shadow",
     "length"
   ]),
   path: new Set([
@@ -125,6 +131,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ])
 });

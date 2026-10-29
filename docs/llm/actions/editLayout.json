@@ -67,7 +67,7 @@
     {
       "name": "options",
       "required": false,
-      "type": "GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
+      "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
     }
   ],
   "callPatterns": [

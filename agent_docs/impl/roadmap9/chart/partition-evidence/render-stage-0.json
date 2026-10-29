@@ -1,0 +1,33 @@
+{
+  "label": "render-stage-0",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "scripts/run-tests.js",
+    "render"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 188436,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T20:59:00.942Z",
+  "finishedAt": "2026-10-28T21:02:09.379Z",
+  "source": {
+    "available": true,
+    "commit": "eb5fd61a0d250ced6f11ecaba725cfd0e0102a91",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "eb5fd61a0d250ced6f11ecaba725cfd0e0102a91",
+    "clean": false,
+    "statusSha256": "57edae12fbaccfae0fd7dea8de3d66c1e5b4cc4078d10b062efc98cb2429424c"
+  },
+  "logSha256": "c4144567130cb55adb53db92ce4cf8f2fe65d0f9624d808a7346a693d2e6c69a",
+  "bytes": 51615,
+  "retainedBytes": 51615,
+  "truncated": false
+}

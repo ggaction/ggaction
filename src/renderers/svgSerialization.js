@@ -1,3 +1,5 @@
+import { readPreparedShadows } from "./shadowState.js";
+import { readBlendMode } from "../grammar/compositing.js";
 import { patternFillGeometry, validatePatternWork } from "../grammar/patterns.js";
 import { paintColorCSS } from "../grammar/color.js";
 import { collectTransitionGraphics } from "./transitionScene.js";
@@ -27,7 +29,7 @@ import { validateRendererOptions } from "./options.js";
 import { isBlendMode } from "../grammar/compositing.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace"]);
+const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace", "shadows"]);
 const RESOURCE_NAMESPACE = /^[A-Za-z][A-Za-z0-9_-]*$/;
 const TEXT_ANCHORS = Object.freeze({
   left: "start",
@@ -293,7 +295,8 @@ function serializeCircle(state, graphicId, properties) {
     ["r", formatNumber(radius)],
     ["fill", serializeFill(state, properties.fill, { left: x - radius, right: x + radius, top: y - radius, bottom: y + radius }, graphicId)],
     ...strokeAttributes(properties, strokeWidth),
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -333,7 +336,7 @@ function serializeRect(state, graphicId, properties) {
     ["fill", fill],
     ...strokeAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -363,7 +366,8 @@ function serializeLine(state, graphicId, properties) {
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -423,7 +427,7 @@ function serializePath(state, graphicId, properties) {
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -494,6 +498,7 @@ function serializeText(state, graphicId, properties) {
     ["text-anchor", TEXT_ANCHORS[textAlign]],
     ["dominant-baseline", DOMINANT_BASELINES[textBaseline]],
     ["opacity", formatNumber(opacity)],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined],
     ["transform", rotation === 0
       ? undefined
       : `rotate(${formatNumber(rotationDegrees)} ${formatNumber(x)} ${formatNumber(y)})`]
@@ -503,6 +508,17 @@ function serializeText(state, graphicId, properties) {
 }
 
 function serializeConcreteGraphic(state, id, graphic) {
+  if (Object.hasOwn(graphic.properties ?? {}, "shadow")) {
+    const glyph = state.shadows?.get(id);
+    if (!glyph) throw new Error(`Graphic "${id}" requires a prepared shadow glyph.`);
+    if (glyph.empty) return "";
+    const blend = readBlendMode(graphic.properties);
+    return element("image", [["x", formatNumber(glyph.x)], ["y", formatNumber(glyph.y)],
+      ["width", formatNumber(glyph.width)], ["height", formatNumber(glyph.height)],
+      ["opacity", formatNumber(requireOpacity(graphic.properties, id))],
+      ["preserveAspectRatio", "none"], ["href", `data:image/png;base64,${glyph.payload.payload.data}`],
+      ["style", blend === undefined || blend === "normal" ? undefined : `mix-blend-mode:${blend}`]]);
+  }
   if (graphic.type === "collection") {
     const items = (graphic.items ?? []).map(item =>
       serializeConcreteGraphic(state, item.id ?? id, item)
@@ -616,7 +632,7 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
 
 function requireSVGOptions(options) {
   validateRendererOptions(options, SVG_OPTIONS, "renderToSVG options");
-  for (const key of SVG_OPTIONS) {
+  for (const key of ["title", "description", "resourceNamespace"]) {
     if (
       options[key] !== undefined &&
       (typeof options[key] !== "string" || options[key].length === 0)
@@ -657,6 +673,7 @@ export function renderToSVG(program, options = {}) {
   let namespace = resolvedOptions.resourceNamespace;
   concreteFonts(graphicSpec);
   const state = {
+    shadows: readPreparedShadows(graphicSpec, resolvedOptions.shadows),
     clipCount: 1,
     definitions: [],
     gradientCount: 1,
@@ -669,9 +686,9 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true;
+      if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true;
     },
-    item({object}) { if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true; }
+    item({object}) { if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(
     graphicSpec,
@@ -702,11 +719,15 @@ export function renderToSVG(program, options = {}) {
 }
 
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
-export function renderTransitionGraphics(graphicSpec, identities) {
+export function renderTransitionGraphics(graphicSpec, identities, options = {}) {
   concreteFonts(graphicSpec);
-  const scene = collectTransitionGraphics(graphicSpec, identities);
+  const prepared = readPreparedShadows(graphicSpec, options.shadows), shadows = new Map();
+  const scene = collectTransitionGraphics(graphicSpec, identities, { onNode(id, node) {
+    if (prepared.has(id)) shadows.set(node.key, prepared.get(id));
+  } });
   let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
+    shadows,
     get resourceNamespace() { return namespace ??= `scene-${resourceNamespace(graphicSpec)}`; } };
   const nodes = scene.nodes.map(({ properties, clips, ...node }) => {
     let svg = serializeConcreteGraphic(state, node.key, { type: node.type, properties });

@@ -7,3 +7,4 @@ export { prepareImageResource } from "./resources/imageResource.js";
 export { prepareFontResource } from "./resources/fontResource.js";
 export { prepareTextMetrics } from "./resources/textMetricsFull.js";
 export { prepareFontRendering } from "./renderers/fontRendering.js";
+export { prepareShadowRendering } from "./renderers/shadowRendering.js";

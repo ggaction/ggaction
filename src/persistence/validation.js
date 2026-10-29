@@ -1,3 +1,4 @@
+import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
@@ -625,7 +626,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     if (resources.get("mark").get(id)?.mark.type === "image") {
       const config = program.markConfigs[id];
-      exactKeys(config, IMAGE_MARK_CONFIG_KEYS, `${path}.materializationConfigs.marks.${id}`);
+      exactKeys(config, IMAGE_MARK_CONFIG_KEYS.filter(key => key !== "shadow" || Object.hasOwn(config, key)), `${path}.materializationConfigs.marks.${id}`);
       if (canonicalJSON(normalizeImageMarkConfig(config)) !== canonicalJSON(config)) throw invalidSnapshot("Image mark configuration must be normalized.", path);
     } else {
       requestedMarkClip(program.markConfigs[id]);
@@ -643,6 +644,15 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for (const outline of [markConfig.outline, markConfig.barAppearance?.outline]) {
       if (outline !== undefined) normalizeMarkOutline(outline, "Stored mark outline");
+    }
+    if (markConfig.shadow !== undefined && (!MARK_SHADOW_TYPES.includes(markType) || markType === "bar") ||
+        markConfig.barAppearance?.shadow !== undefined && markType !== "bar") {
+      throw invalidSnapshot(`Mark config "${id}" has an unsupported shadow owner.`, path);
+    }
+    for (const shadow of [markConfig.shadow, markConfig.barAppearance?.shadow]) {
+      if (shadow !== undefined && canonicalJSON(normalizeMarkShadow(shadow, "Stored mark shadow")) !== canonicalJSON(shadow)) {
+        throw invalidSnapshot("Stored mark shadow must be normalized.", path);
+      }
     }
     for (const fill of [markConfig.fill, markConfig.barAppearance?.fill]) {
       if (fill !== undefined) validateFillPaint(fill, "Stored mark fill");

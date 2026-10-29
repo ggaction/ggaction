@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 3,
+  "name": "layoutFlow",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Store a DAG or cyclic Sankey layout while preserving every edge.",
+  "signature": "layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;",
+  "intents": [
+    "layout flow",
+    "layout",
+    "avoid overlap",
+    "chart setup",
+    "data and scales",
+    "Sankey layout",
+    "DAG flow"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing graph resource"
+    ],
+    "owns": [
+      "layout resource"
+    ],
+    "idOptions": [
+      "id",
+      "graph"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editLayout",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing graph resource"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "graph",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "method",
+      "required": true,
+      "type": "\"cyclic\" | \"dag\""
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "FlowLayoutOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "layoutFlow({ id, method, target?, graph?, options? })"
+  ],
+  "snippet": "program.layoutFlow({ id: \"flow-1\", method: \"cyclic\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#layoutflow"
+}

@@ -46,6 +46,7 @@
   "Hierarchies and networks": {
     "createTreePlot": "Typed hierarchy and an explicit tree layout",
     "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout",
-    "createGraphPlot": "Explicit node and edge tables with a stored graph layout"
+    "createGraphPlot": "Explicit node and edge tables with a stored graph layout",
+    "createPartitionPlot": "Typed hierarchy and a partition layout projected as rectangles or sectors"
   }
 }

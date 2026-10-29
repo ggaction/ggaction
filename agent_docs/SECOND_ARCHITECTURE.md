@@ -163,10 +163,28 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
 graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
 기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
-Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
-`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference 공개 연결은 후속 domain owner다.
+Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→inferred graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
+`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference는 Full의 `actions/graphs/inference.js`가 명시적으로 호출한다. 입력 dataset과 선택 candidate graph의 typed revision을 저장하며, source 갱신은 공통 resource DAG 순서로 각 graph/layout을 한 번씩 갱신한다.
+`materialization/graph/inferredState.js`는 저장 model·source binding·진단의 정합성을 검사하며 pair search나 spanning solver를 재실행하지 않는다. Prepared resource context는 exact receiver/primitive argument에만 graph와 data-reference 교체 권한을 결박하고 작업 종료 때 제거한다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
+
+## Partition view, mapping and frame preparation
+
+`grammar/hierarchy/partitionView.js`는 위의 model/partition owner를 명시 호출하여 focus 구간과 상대 depth view,
+nearest surviving ancestor와 navigation metadata를 계산한다. Canonical key/value/interval owner를 복제하거나 원 hierarchy를 변경하지 않는다.
+`partitionMapping.js`는 normalized cell을 Cartesian/polar geometry로 매핑하고 pixel gap과 radial policy를 소유한다.
+`actions/hierarchy/partition.js`는 저장된 layout 결과에서 이 view를 투영하고,
+`materialization/hierarchy/partitionPlot.js`는 기존 rect/path/text와 공통 FillPaint owner로 concrete 출력을 만든다.
+Focus·root visibility는 semantic layer, mapping·paint는 materialization config에 남는다.
+Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning을 함께 사전 검증한다.
+자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
+
+`partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
+compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
+이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
+AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
 
 ## 내부 expression kernel 경계
 
@@ -764,8 +782,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 596,000 bytes |
-| `ggaction/basic` | 346,000 bytes |
+| `ggaction` | 635,000 bytes |
+| `ggaction/basic` | 360,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3245,3 +3263,68 @@ Node20/22 canonical staging은 동일821 entries/5,551,125 unpacked bytes이며 
 1,208,302 bytes였다. 통합 한도는 최소821/1,209,000/5,552,000으로 조정한다. Node20 browser
 gzip Full600,160/Basic348,432 bytes에 따라601,000/349,000만 적용하고 SVG25,000과
 수치·coverage 한도는 유지한다. 초기 한도 초과를 integration evidence에 보존한다.
+### 그래프 추론 공개 연결의 package 경계
+
+관측 graph와 같은 model로 연결한 여섯 inference rule, exact/approximate search, 저장 검증과
+source/candidate revision closure가 Full bundle에 포함된다. Node20 실측은 Full612,463/Basic345,748gzip bytes다.
+Full 한도를596,000에서613,000으로 최소 조정하며 Basic346,000과 SVG25,000은 유지한다.
+패키지 실측814entries/unpacked5,535,332bytes이며 packed는 Node22 1,200,162,
+Node20 1,203,209bytes다. 이 실측에 맞춰814/1,204,000/5,536,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.
+
+### Shared per-item blend materialization
+
+기존 semantic mark.blend owner를 9개 일반 mark에 공유한다. 각 domain action이 명시적으로 pure capability
+검증과 semantic write를 수행하고 기존 final mark-output 단계가 concrete mode를 적용·제거한다.
+Bar geometry owner의 중복 blend 처리는 제거한다. Renderer는 같은 concrete glyph를 소비하며 circle/line/text도
+기존 isolated glyph owner 및 SVG serializer를 사용한다. 별도 compiler/group transaction/registry를 추가하지 않는다.
+정확한 값·상속 소비자·렌더링 경계는 [MARKS](contract/current/MARKS.md#per-item-blend-modes)에 둔다.
+
+### Explicit prepared per-glyph effects
+
+Shadow intent는 기존 mark appearance에 한 번 저장하고 final mark-output에서 명시적으로 concrete 값으로 만든다.
+동기 Canvas/SVG는 exact graphic identity·digest·density에 묶인 private 준비 handle을 소비한다. Native PNG/PDF는
+같은 준비 owner를 호출한다. 실제 glyph RGBA와 공통 pure blur/composite를 거친 image payload는 ephemeral하며
+program이나 codec에 backend 객체를 넣지 않는다. Text ink 측정은 기존 font/line/origin을 바꾸지 않는 준비 단계이고,
+layout reflow나 semantic compilation이 아니다. 준비된 exact font와 실제 glyph drawer를 재사용한다.
+공통 bounds owner는 occupied effect 범위를 별도로 계산하며 selection/hit은 원래 source geometry를 유지한다.
+정확한 지원·수명·한도는 [MARKS](contract/current/MARKS.md#prepared-per-item-shadows)가 소유한다.
+
+Shadow source checkpoint의 실측은815 entries / unpacked5,516,118 bytes이며 packed는 Node22의1,198,723과
+Node20·24의1,201,262 bytes이다. 동일 내부 파일의 압축 차이를 반영해 cap은815/1,202,000/5,517,000이다.
+동일 Node22 archive의 minimal installed Vite는 Node22에서 Full585,965/Basic346,504/SVG20,051gzip,
+Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,000/25,000 cap을 사용한다.
+Exact support와 lifecycle은 Current에, 최초실패와
+최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
+
+### Flow data and layout ownership
+
+Flow는 observed graph의 exact source identity와 resource revision을 재사용한다. 순수
+`grammar/flow`가 conservation·SCC·배치를 계산하고 `materialization/flow`가 저장 결과 검증과
+concrete node/ribbon 생성을 소유한다. `actions/flow`는 graph→layout→mark/label/selection
+closure를 preflight하고 wrapped materialization을 호출한다. Renderer는 최종 graphicSpec만
+읽는다. 정확한 공개 계약은 [FLOWS.md](contract/current/FLOWS.md)가 소유한다.
+
+Flow 공개 확장으로 package entry는819, Node20/24 packed 최대1,200,981bytes,
+unpacked5,522,719bytes로 측정되어 한도를819/1,201,000/5,523,000으로 최소 단위 갱신했다.
+동일 minified JS의 Node20/22/24 gzip을 비교해 Full 최대601,073, Basic344,083bytes를
+확인하고 한도를602,000/345,000으로 갱신했다. SVG25,000과 기존 coverage floor는 유지한다.
+Flow 두 문서 및7action의 검색 색인은913,578bytes여서914,000으로 갱신했다.
+
+### Resource role effects and image source masks
+
+Graph/H/Partition/Flow의 기존 role appearance config가 outline/shadow intent를 단독 소유한다.
+공통 pure effect 정규화와 concrete false 제거를 재사용하지만 각 domain materializer가 명시적으로
+실행한다. Layout 계산이나 semantic compiler를 추가하지 않는다. Image shadow preparation은
+한도 검증 후 exact source payload를 기존 image decoder로 읽고 실제 alpha를 같은 glyph 합성기에
+넘긴다. 준비된 pixel mask는 ephemeral하며 image resource·원래 item identity·hit geometry를 바꾸지 않는다.
+
+### Integrated resource effect consumer budget
+
+The combined inference, Flow, prepared glyph shadows and P2 resource/image consumer source
+contains 863 published entries. Canonical staging measured 1,258,299 packed and 5,801,784
+unpacked bytes on Node20/22/24 before the equal-length README ceiling correction.
+The installed archive measured Full634,881/Basic359,550/SVG20,196 gzip bytes on Node20
+and Full633,808/Basic358,837/SVG20,055 on Node22. The current budgets therefore become
+863 entries, packed1,259,000/unpacked5,802,000 and Full635,000/Basic360,000/SVG25,000.
+These retain every module and public option; the final fixed archive receives installed
+consumer qualification separately from this measurement.
