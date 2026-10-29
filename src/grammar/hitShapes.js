@@ -1,3 +1,4 @@
+import { clippedBoundaryDistance } from "./hitClipDistance.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { flattenPathCommands, pathFillContains, pathStrokeDistance, arcToCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
@@ -85,9 +86,18 @@ function compilePath(commands, transform, fillRule, budget) {
   const points = flattenedCommands(flat);
   return { commands: points, fillRule, bounds: resolvePathCommandBounds(points) };
 }
-function compileGeometry(normalized, transform, tolerance, budget) {
+function closeFillCommands(commands) {
+  const closed = [];
+  for (const command of commands) {
+    if (command.op === "M" && closed.length && closed.at(-1).op !== "Z") closed.push({ op: "Z" });
+    closed.push(command);
+  }
+  if (closed.length && closed.at(-1).op !== "Z") closed.push({ op: "Z" });
+  return closed;
+}
+function compileGeometry(normalized, transform, tolerance, budget, close = false) {
   const paths = normalized.circle ? [circleCommands(normalized.circle, tolerance)] : normalized.paths;
-  return paths.map(commands => ({ ...compilePath(commands, transform, normalized.fillRule, budget),
+  return paths.map(commands => ({ ...compilePath(close ? closeFillCommands(commands) : commands, transform, normalized.fillRule, budget),
     ...(normalized.circle ? { circle: normalized.circle, transform } : {}) }));
 }
 function toleranceFor(transform) {
@@ -147,10 +157,12 @@ export function prepareHitShape(input) {
   const diagnostics = [coordinate({ x: 0, y: 0 }, input.transform),
     ...clipInputs.map(clip => coordinate({ x: 0, y: 0 }, clip.transform))].flatMap(result => result.diagnostics)
     .filter(diagnostic => diagnostic.code === "hit-transform-singular");
-  const fill = paint.fill ? compileGeometry(shape, input.transform, tolerance, budget) : [];
+  const emptyFill = shape.circle?.radius === 0 || (["rect", "image"].includes(input.geometry.type) &&
+    (input.geometry.rect.width === 0 || input.geometry.rect.height === 0));
+  const fill = paint.fill && !emptyFill ? compileGeometry(shape, input.transform, tolerance, budget, true) : [];
   const strokes = strokeParts.map(part => compileGeometry(part.type === "circle"
     ? { circle: part, fillRule: "nonzero" } : { paths: [part.commands], fillRule: "nonzero" }, input.transform, tolerance, budget)[0]);
-  const clips = clipInputs.map(clip => compileGeometry(clip.normalized, clip.transform, clip.tolerance, budget));
+  const clips = clipInputs.map(clip => compileGeometry(clip.normalized, clip.transform, clip.tolerance, budget, true));
   let bounds = unionBounds([...fill, ...strokes]);
   if (bounds !== null) {
     // Include the shared subdivision tolerance in the broad phase only.
@@ -181,7 +193,9 @@ export function normalizeHitQuery(options = {}) {
   return freezeOwned({ pointerType, slop, hitInvisible });
 }
 
-export function hitShape(prepared, point, options = {}) {
+function queryShape(prepared, point, options, nearest, spend) {
+  const budget = { value: 0 };
+  spend ??= count => work(count, budget);
   const state = states.get(prepared);
   if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
   transformHitPoint(identity, point);
@@ -191,10 +205,18 @@ export function hitShape(prepared, point, options = {}) {
       state.clips.every(parts => parts.some(part => contains(part, point)))) {
     hit = state.fill.some(part => contains(part, point));
     if (hit) distance = 0;
-    else for (const part of state.strokes) distance = Math.min(distance, boundaryDistance(part, point));
+    else for (const part of nearest ? [...state.fill, ...state.strokes] : state.strokes) {
+      const value = nearest && state.clips.length && !contains(part, point) ? clippedBoundaryDistance(part, state.clips, point, spend) : boundaryDistance(part, point);
+      distance = Math.min(distance, value);
+    }
     hit ||= distance <= query.slop;
   }
   const mapped = hit ? coordinate(point, state.transform) : null;
   return freezeOwned({ hit: hit && mapped.localPoint !== null, distance, localPoint: mapped?.localPoint ?? null,
     diagnostics: mapped?.diagnostics.length ? mapped.diagnostics : prepared.diagnostics });
 }
+
+export function hitShape(prepared, point, options = {}) { return queryShape(prepared, point, options, false); }
+
+// Reuse painted footprints and clip admission, but include distance to fill edges.
+export function nearestHitShape(prepared, point, options, spend) { return queryShape(prepared, point, options, true, spend); }

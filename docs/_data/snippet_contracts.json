@@ -2335,6 +2335,36 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 7,
+    "heading": "Select the nearest item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "selection: \"picked\"",
+      "target: \"points\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.",
+    "sha256": "f21054589ac4140b990679744f595a4223a1c52fcc00a505017cfc15524ab403",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 8,
+    "heading": "Automatic click selection",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.",
+    "sha256": "3e7d8469623f77728140d0501a858ef2fd5b9dabe52532df347cc8031776d449",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

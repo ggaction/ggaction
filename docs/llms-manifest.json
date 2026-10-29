@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c6814679dcc45c5a3f6a7abee32a5c23666522eb082030e257f59b4343465053",
+    "contractId": "sha256:186213ca83510c2421588dab71fdd18cf7f1b5035beac86b2e4fe3724bbc02fd",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1240,10 +1240,13 @@
         "replace-a-program-or-sampled-frame",
         "state-and-cleanup",
         "commit-selections-and-parameters",
-        "link-named-selections"
+        "link-named-selections",
+        "select-the-nearest-item",
+        "keep-or-drop-hidden-selections",
+        "automatic-click-selection"
       ],
-      "bytes": 13940,
-      "sha256": "2e0474d94782af99786d07eaba8ad36769f98c211d4b939743c678b5554f1b7d"
+      "bytes": 23155,
+      "sha256": "adcadef65da5b65d099bb3ac3713b6b15d86e267afd68ffdc9ab6295d3abdcb6"
     },
     {
       "order": 74,
@@ -2504,8 +2507,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 51453,
-      "sha256": "07a099de992ae468460cd6fb3e5c33f9f584ab3361df12d1a669273a56c323b7"
+      "bytes": 53257,
+      "sha256": "cc689b1b2e990b29fcabb7554b5808d5a000b8fbb47f51b44652169cb2638e6e"
     },
     {
       "order": 128,
@@ -3713,7 +3716,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "8c5d6d6b0fabf824d2ae639977b65d63216bd326d89815fe7b7a762255da294f"
+      "sha256": "d516fad2906f33f3f8c5d12a4b9df142616076cbefeff554c0e90373a17caa76"
     },
     {
       "order": 152,

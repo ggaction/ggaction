@@ -15,7 +15,8 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
  test(`${dataset} ${recipe} logical selection preserves item grain through toggles and restore`,()=>{
   try {
    const view=realisticRecordView(dataset,{rowLimit:24,groupLimit:4});
-   const rows=view.rows.map((row,index)=>({...row,order:index}));
+   const categories=[...new Set(view.rows.map(row=>row.category))];
+   const rows=view.rows.map((row,index)=>({...row,order:index,categoryIndex:categories.indexOf(row.category)}));
    assert.ok(rows.length>=4);assert.ok(rows.every(row=>view.provenance.sourceRowIndexes.includes(row.sourceRowIndex)));
    let p=chart().createCanvas({width:500,height:360,margin:45}).createData({id:"rows",values:rows,keyField:"key"});
    if(recipe==="observations") p=p.createScatterPlot({id:"mark",x:"order",y:"value",guides:false});
@@ -25,6 +26,31 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.ok(keys.length>=2);
    const q=p.selectMarks({id:"picked",target:"mark",items:[keys[0]]}).highlightMarks({selection:"picked",color:"#ef4444",bringToFront:false});
    const saved=serializeProgram(q);
+   const shape=items[0].geometry[0], properties=shape.properties;
+   const probe=shape.type==='path'?properties.commands.find(command=>command.op==='M'):
+    {x:properties.x+(shape.type==='rect'?properties.width/2:0),y:properties.y+(shape.type==='rect'?properties.height/2:0)};
+   for(const mode of ['replace','toggle'])for(const onMiss of ['clear','ignore']) {
+    const selectedProgram=p.selectMarks({id:'automatic',target:'mark',items:[]}).highlightMarks({selection:'automatic',color:'#ef4444',bringToFront:false,dimOthers:false});
+    const automatic=createInteractionSession({program:selectedProgram,bindings:[{type:'select',target:'mark',selection:'automatic',mode,onMiss,slop:0}]}),listeners=new Map();
+    const captures=new Set(),host={getBoundingClientRect:()=>({left:0,top:0,width:500,height:360}),addEventListener:(type,listener)=>listeners.set(type,listener),removeEventListener:type=>listeners.delete(type),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id)};
+    automatic.mount(host);automatic.dispatch({type:'inspect',point:{x:probe.x,y:probe.y},slop:0});
+    const expected=automatic.getState().hit.candidates.find(candidate=>candidate.ownerId==='mark').itemKey;
+    const pointer={clientX:probe.x,clientY:probe.y,pointerId:1,pointerType:'mouse',button:0};
+    const click=(x=probe.x,y=probe.y)=>{const event={...pointer,clientX:x,clientY:y};listeners.get('pointerdown')(event);listeners.get('pointerup')(event);listeners.get('click')({...event,detail:1});};
+    const beforeCapture=automatic.getState().program;listeners.get('pointerdown')(pointer);listeners.get('pointermove')({...pointer,clientX:probe.x+10});listeners.get('pointerup')(pointer);listeners.get('click')({...pointer,detail:1});assert.equal(automatic.getState().program,beforeCapture);assert.equal(captures.size,0);
+    const active=()=>getMarkItems(automatic.getState().program,{target:'mark'}).filter(item=>item.geometry.some(g=>g.properties.fill==='#ef4444'||g.properties.stroke==='#ef4444')).map(item=>item.key);
+    click();assert.deepEqual(active(),[expected]);click();assert.deepEqual(active(),mode==='toggle'?[]:[expected]);
+    if(mode==='toggle')click();click(5000,5000);assert.deepEqual(active(),onMiss==='clear'?[]:[expected]);
+    automatic.destroy();assert.equal(listeners.size,0);assert.equal(captures.size,0);
+   }
+   for(const selectionPolicy of ['keep-hidden','drop']) {
+    const lifecycle=createInteractionSession({program:q,selectionPolicy,bindings:[]}),events=[];lifecycle.subscribe(event=>events.push(event));
+    lifecycle.updateProgram(q.filterMarks({target:'mark',field:'category',op:'neq',value:items[0].fields.category}));
+    assert.deepEqual(events[0].selectionChanges[0][selectionPolicy==='drop'?'droppedKeys':'hiddenKeys'],[keys[0]]);
+    lifecycle.updateProgram(deserializeProgram(serializeProgram(lifecycle.getState().program)).removeMarkFilter({target:'mark'}));
+    const actual=getMarkItems(lifecycle.getState().program,{target:'mark'}).filter(item=>item.geometry.some(g=>g.properties.fill==='#ef4444'||g.properties.stroke==='#ef4444')).map(item=>item.key);
+    assert.deepEqual(actual,selectionPolicy==='drop'?[]:[keys[0]]);lifecycle.destroy();
+   }
    for(const [mode,requested,expected]of[["replace",[keys[1]],[keys[1]]],["add",[keys[1]],[keys[0],keys[1]]],["toggle",[keys[0],keys[1]],[keys[1]]],["subtract",[keys[0]],[]],["intersect",[keys[0],keys[1]],[keys[0]]]]) {
     const revised=deserializeProgram(saved).editMarkSelection({selection:"picked",mode,items:requested});
     const actual=getMarkItems(revised,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
@@ -74,6 +100,14 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    session.dispatch({type:"clearSelection",target:"mark",payload:{id:"expressionPicked"}});
    assert.ok(getMarkItems(session.getState().program,{target:"mark"}).every(item=>item.geometry.every(g=>g.properties.fill!=="#ef4444"&&g.properties.stroke!=="#ef4444")));
    assert.deepEqual(phases,["commit","settled","commit","settled","commit","settled"]);
+   const nearestField=recipe==="observations"?"order":"categoryIndex";
+   const nearestValue=items[0].fields[nearestField]+0.25;
+   const nearestExpected=[...items].sort((a,b)=>Math.abs(a.fields[nearestField]-nearestValue)-Math.abs(b.fields[nearestField]-nearestValue)||(a.key<b.key?-1:a.key>b.key?1:0))[0].key;
+   for(const metric of ["euclidean","manhattan"]) {
+    session.dispatch({type:"select",target:"mark",payload:{id:"expressionPicked",nearest:{space:"data",fields:[nearestField],values:[nearestValue],metric,maxDistance:1}}});
+    const actual=getMarkItems(session.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+    assert.deepEqual(actual,[nearestExpected]);
+   }
    assertGraphicIntegrity(session.getState().program,`${dataset}/${recipe}/session`);
    assertSvgIntegrity(renderToSVG(deserializeProgram(serializeProgram(session.getState().program))),`${dataset}/${recipe}/session`);
    const child=ast.editMarkSelection({selection:"expressionPicked",items:[]});

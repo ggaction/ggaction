@@ -12,7 +12,7 @@ import { guideHitMetadata } from "./hitGuides.js";
 
 const frameSources = new WeakMap();
 
-function requireProgram(program) {
+export function requireProgram(program) {
   if (!(program instanceof ChartProgram) || !Object.isFrozen(program)) throw new TypeError("Hit preparation requires an immutable ChartProgram.");
   for (const key of ["graphicSpec", "semanticSpec", "materializationConfigs", "resolvedScales", "children", "compositionSpec", "actionStack"]) {
     const descriptor = Object.getOwnPropertyDescriptor(program, key);

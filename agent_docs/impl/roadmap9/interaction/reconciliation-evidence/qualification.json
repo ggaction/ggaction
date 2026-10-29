@@ -1,0 +1,432 @@
+{
+  "sourceCommit": "7980936d7e831a8465fb7e2072c7e8e3b32d9302",
+  "scope": "STEP057 D3 hidden/drop membership and dormant linked endpoints; automatic bindings, gestures/history and STEP077 remain open",
+  "sourceHashes": {
+    "src/interaction/bindings.js": "a550649c7d13c26003701294cd9a236ba915ef855ceca3b5eec57c2735b766f6",
+    "src/interaction/hitProgram.js": "2bae893d416ea4c1b6e44a97253644f8490e17fea376f3a6e4e0919096c452f3",
+    "src/interaction/reconciliation.js": "de514279ce959d0fc21ff3a228d24f4383721d2afc15748db696904529ef12d9",
+    "src/interaction/selection.js": "2a05bf284c7e10ead8a06a1f0ae43e27e4db89a8ae3d4ebb0f3ee24070f1e138",
+    "src/interaction/session.js": "03bb0d1f3b18539779f74e209c41a927fb11f315d532e9680375aa6979e673e1",
+    "types/interaction.d.ts": "34577893312ccbb369bb16124b7bbfbe2378945d2148d8209ff542fd151ac315"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 106,
+      "lifecycleTests": 15,
+      "newOwner": {
+        "interaction/reconciliation.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "changedOwners": {
+        "interaction/bindings.js": [
+          100,
+          96.3,
+          100
+        ],
+        "interaction/hitProgram.js": [
+          100,
+          94.87,
+          100
+        ],
+        "interaction/selection.js": [
+          100,
+          98.78,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          97.12,
+          100
+        ]
+      },
+      "criticalFloor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "typesBoundaryDiscovery": 28,
+    "packageContracts": 13,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "policiesPerRecipe": [
+        "keep-hidden",
+        "drop"
+      ],
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "tests": 7,
+      "scope": "Actual Canvas/SVG pointer, accepted drop program and existing frame/nearest/linked consumers"
+    },
+    "docs": {
+      "sourceTests": 184,
+      "finalProvenanceOwningTests": 29,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualReviewed": ".artifacts/interaction-reconciliation-docs/reconciliation-390.png",
+      "environment": "Explicit Ruby3.2/Node22 PATH",
+      "reused": "Responsive browser checked before metadata-only source provenance regeneration; page prose/CSS/runtime unchanged"
+    },
+    "sameArchive": [
+      {
+        "node": "v20.20.2",
+        "artifact": "99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 159,
+            "minifiedBytes": 297342,
+            "gzipBytes": 97221
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 650908
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 365369
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 159,
+            "minifiedBytes": 297342,
+            "gzipBytes": 96601
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 159,
+            "minifiedBytes": 297342,
+            "gzipBytes": 97221
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 919,
+    "packedBytes": 1322981,
+    "unpackedBytes": 6066891,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-reconciliation-qualified.tgz",
+    "sha1": "092c0447e8ef28ff5b783a9a7d45483e444e5679",
+    "sha256": "99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5"
+  },
+  "packageMeasurementNode20": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 919,
+    "packedBytes": 1325924,
+    "unpackedBytes": 6066891
+  },
+  "limits": {
+    "entries": 919,
+    "packedBytes": 1326000,
+    "unpackedBytes": 6067000,
+    "interactionGzip": 97500,
+    "searchBytes": 960000
+  },
+  "initialFailures": [
+    "Legacy missing-endpoint assertion updated for explicit dormant lifecycle; malformed replacement rollback remains independently asserted.",
+    "Initial concrete-property facet fixture lacked explicit opacity; fixture now authors its property before selection.",
+    "Package 919 entries exceeded 918.",
+    "Search 959574 bytes exceeded 959000.",
+    "Node22 interaction 96601 exceeded 95000; Node20/24 97221 requires 97500. Runtime and types passed in initial archive checks.",
+    "Copied responsive helper accidentally renamed the nearest heading locator; corrected to the actual hidden-selection heading.",
+    "A nonexistent standalone provenance test path was corrected to the owning documentation.test.js suite."
+  ],
+  "notClaimed": [
+    "Full repository unit/coverage sweep",
+    "All installed consumers or renderer pixel suite",
+    "Automatic click/toggle, gestures, navigation, history or roadmap completion"
+  ],
+  "logs": {
+    "reconciliation-boundaries.log.gz": {
+      "sha256": "6eb23eb1499cc8cd493424c2387b1cc7139c88380f768b1b101ecd166d18596b",
+      "bytes": 2967
+    },
+    "reconciliation-bounded.log.gz": {
+      "sha256": "586fe112742e7eeda1e69f3d0027df5e318c570dab7019a44abad036c454b5fe",
+      "bytes": 1317
+    },
+    "reconciliation-browser.log.gz": {
+      "sha256": "1ff88ba278bf907184e6991c5f8ebd4acf5aa1dbb1de1bd0744284bb91671a80",
+      "bytes": 1636
+    },
+    "reconciliation-consumer-check.mjs.gz": {
+      "sha256": "96c38cf73af96e8f892083696ab42637cf5a7d83cd3d72c67c340915385bf021",
+      "bytes": 2006
+    },
+    "reconciliation-consumer20-final.log.gz": {
+      "sha256": "2662801aa3b94ee9102be507d06ea0a72c4bfe6dd9fdc359ab232a5e1ae4a61a",
+      "bytes": 938
+    },
+    "reconciliation-consumer20.log.gz": {
+      "sha256": "57bf1a2558f40321ad50e98e24fce6f20ace961a1504740f97b446688dbc1719",
+      "bytes": 1486
+    },
+    "reconciliation-consumer22-final.log.gz": {
+      "sha256": "9f817fca8d16e961f1fa4924a6878f80aa18fb0c9ddc1bfabf2c4f9917e63ed9",
+      "bytes": 938
+    },
+    "reconciliation-consumer22-initial.log.gz": {
+      "sha256": "6405b4629c8ebf4781807cf55a761571f1cf1bbee5a9d96bb8dde39dac1c27d9",
+      "bytes": 1505
+    },
+    "reconciliation-consumer24.log.gz": {
+      "sha256": "4ca1ea31eb6d1d3e87f4bf77e266e692a25f491e55f38350c28fadafb064b40d",
+      "bytes": 938
+    },
+    "reconciliation-contracts.log.gz": {
+      "sha256": "7f6efe31575705f858ce13d760ca0e7b1434ab3c55650611c7e1f1a140a4a495",
+      "bytes": 5742
+    },
+    "reconciliation-doc-browser.mjs.gz": {
+      "sha256": "b39f9c4f647241de690c879608e953c0e53621537693cad8e4875c2587076ac9",
+      "bytes": 2821
+    },
+    "reconciliation-docs-browser-fixed.log.gz": {
+      "sha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50",
+      "bytes": 197
+    },
+    "reconciliation-docs-browser.log.gz": {
+      "sha256": "746a599a866213c2dca90f2cfecbb3e6dda2cdcac53358d1896d10d90574e8cb",
+      "bytes": 449
+    },
+    "reconciliation-docs-build.log.gz": {
+      "sha256": "f0394e9728cee3c2c4bff3bb81d4857bce02cc9d975ba6d37ca97e07dcb41310",
+      "bytes": 419
+    },
+    "reconciliation-docs-built.log.gz": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179
+    },
+    "reconciliation-docs-final-build.log.gz": {
+      "sha256": "bdbd7005658d06f6fca3889fb1b1f774a7bd2a5cfcd79c69e7b1bced1803774f",
+      "bytes": 419
+    },
+    "reconciliation-docs-final-built.log.gz": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179
+    },
+    "reconciliation-docs-final-owning.log.gz": {
+      "sha256": "03234da75f0821c1746b9bf91008ddcf286672ae15eb85f0e234b1c363436d08",
+      "bytes": 5631
+    },
+    "reconciliation-docs-final-provenance.log.gz": {
+      "sha256": "48b4633005c90d001c42ca1686fb0ffb87c979e9398c3e374f0ee7cb4845b994",
+      "bytes": 46
+    },
+    "reconciliation-docs-source-fixed.log.gz": {
+      "sha256": "c337606f55a3597004ea550d78eccd935e430d2b55a0ee15079e37bde55ae9c3",
+      "bytes": 42890
+    },
+    "reconciliation-docs-source.log.gz": {
+      "sha256": "bebea74edb592997ef9e6aefe75bfc1072b67ee034429263165526651cb4a5fd",
+      "bytes": 44221
+    },
+    "reconciliation-dormant.log.gz": {
+      "sha256": "4847541eee010bc41d5401ab3ee6b259e0d24d23e2784dc6f5b6ec1813ee7e03",
+      "bytes": 7026
+    },
+    "reconciliation-feedback-initial.log.gz": {
+      "sha256": "1ce12c1c8a98c0899aab79fb2d750b5c4fef8c583d73ac6727c06304836794f0",
+      "bytes": 11
+    },
+    "reconciliation-feedback-predicate.log.gz": {
+      "sha256": "1ce12c1c8a98c0899aab79fb2d750b5c4fef8c583d73ac6727c06304836794f0",
+      "bytes": 11
+    },
+    "reconciliation-feedback-reordered.log.gz": {
+      "sha256": "1ce12c1c8a98c0899aab79fb2d750b5c4fef8c583d73ac6727c06304836794f0",
+      "bytes": 11
+    },
+    "reconciliation-feedback-repro.mjs.gz": {
+      "sha256": "f174cace59dba207ef7ded463b13bbd81b1019015f8df913fbfff189a0c43e39",
+      "bytes": 981
+    },
+    "reconciliation-final-coverage.log.gz": {
+      "sha256": "6d459b502adcd2bfe4367949b484d7d0f60162db4918bb115f940352c195581b",
+      "bytes": 135971
+    },
+    "reconciliation-fixed.json.gz": {
+      "sha256": "58a021d01ab093f1e50fd16ff792b0d3c115dd6201b9f9d822c80d3e2038d69d",
+      "bytes": 433
+    },
+    "reconciliation-focused-coverage.log.gz": {
+      "sha256": "7f3a9a99cfdf97dd4fba46ba080c87cabb602d9432248a426c83801e6f42fc19",
+      "bytes": 122739
+    },
+    "reconciliation-initial.log.gz": {
+      "sha256": "7213c4dd3dd611a412d57259ef56e206684d691bc423acf9a6d5380a7e7a5e24",
+      "bytes": 1318
+    },
+    "reconciliation-linked-initial.log.gz": {
+      "sha256": "a859d81f842ca335a4b3357afdf436a596797f0acc5f422c6f2567a4e6f26a57",
+      "bytes": 6817
+    },
+    "reconciliation-measure-node20.json.gz": {
+      "sha256": "e5cbfd3f36d33bc7382c2579ecdabf0d7d86e62af31156f5d7c334e2598718c9",
+      "bytes": 160
+    },
+    "reconciliation-measure-node20.log.gz": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "reconciliation-measure.mjs.gz": {
+      "sha256": "fdb696cbec95d7b434b5cb48efbddc7d35d187f981f3c503bd44f7d966559d88",
+      "bytes": 9479
+    },
+    "reconciliation-oracle.json.gz": {
+      "sha256": "a9d8c9715005e01b5e540f4f45e26bd068b5bed19df010e80ed7c5e3ffff5807",
+      "bytes": 2184
+    },
+    "reconciliation-oracle.mjs.gz": {
+      "sha256": "93f25e8fb9b60a574efcc8d1d1412791d21dcd5a52ddae87446918af1d5eb04b",
+      "bytes": 2139
+    },
+    "reconciliation-package-contracts.log.gz": {
+      "sha256": "9309adb92067bf1c603b40bdd9c8557312bb96a3cd51cfe44724017e280f0abe",
+      "bytes": 2553
+    },
+    "reconciliation-package-initial.log.gz": {
+      "sha256": "83969afc1129eb0b99c1d32f6b8a5ee0b2f24d1926c0989c8cce3f4548baa7b4",
+      "bytes": 1127
+    },
+    "reconciliation-packed-initial.json.gz": {
+      "sha256": "c5bb20d2fb0e6fbe7e84eb736c127f955e841ac9c1bd950955ec58ed65a8b639",
+      "bytes": 413
+    },
+    "reconciliation-packed-initial.log.gz": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "reconciliation-public-initial.log.gz": {
+      "sha256": "bfa015969015874c0d7e82cb41383acb80d1380be08f1f431d9229c836396393",
+      "bytes": 2024
+    },
+    "reconciliation-realistic.log.gz": {
+      "sha256": "f95b29a0f145dca67fc339516bd957803f37e87a2daedc506c8394002e48468f",
+      "bytes": 4268
+    },
+    "reconciliation-resource.log.gz": {
+      "sha256": "65a0f6d630dd1cddc5751d1c3c9ee0c125389f5f36b32ea2704b9c75eb327a78",
+      "bytes": 7824
+    },
+    "reconciliation-session-initial.log.gz": {
+      "sha256": "bc0aa91fb93b5b208648612c1d420a1f39853d2629e955d309b0156b937e3181",
+      "bytes": 17142
+    },
+    "reconciliation-session-validation.log.gz": {
+      "sha256": "75f60b7dd059ebe4a42b18becf75b23352ba3716a6a169ad306d6a46cb20338f",
+      "bytes": 13630
+    }
+  }
+}

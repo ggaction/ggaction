@@ -1,0 +1,47 @@
+{
+  "expected": {
+    "selections": [
+      [
+        "a"
+      ],
+      [
+        "b"
+      ],
+      []
+    ],
+    "restored": [],
+    "originalUnchanged": true,
+    "phases": [
+      "commit",
+      "settled",
+      "commit",
+      "settled",
+      "commit",
+      "settled"
+    ],
+    "revision": 3
+  },
+  "actual": {
+    "selections": [
+      [
+        "a"
+      ],
+      [
+        "b"
+      ],
+      []
+    ],
+    "restored": [],
+    "originalUnchanged": true,
+    "phases": [
+      "commit",
+      "settled",
+      "commit",
+      "settled",
+      "commit",
+      "settled"
+    ],
+    "revision": 3
+  },
+  "diff": []
+}

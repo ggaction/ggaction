@@ -1,0 +1,298 @@
+{
+  "input": {
+    "points": [
+      [
+        "a",
+        50,
+        60
+      ],
+      [
+        "b",
+        50,
+        60
+      ],
+      [
+        "c",
+        200,
+        130
+      ]
+    ],
+    "clicks": [
+      [
+        50,
+        60
+      ],
+      [
+        50,
+        60
+      ],
+      [
+        280,
+        180
+      ],
+      [
+        200,
+        130
+      ]
+    ],
+    "onMiss": "clear"
+  },
+  "expected": [
+    {
+      "mode": "replace",
+      "states": [
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 3,
+          "selected": [
+            "c"
+          ]
+        }
+      ],
+      "events": [
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "clearSelection",
+          "commit",
+          "user"
+        ],
+        [
+          "clearSelection",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "destroy",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "mode": "toggle",
+      "states": [
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 3,
+          "selected": [
+            "c"
+          ]
+        }
+      ],
+      "events": [
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "destroy",
+          null,
+          null
+        ]
+      ]
+    }
+  ],
+  "actual": [
+    {
+      "mode": "replace",
+      "states": [
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 3,
+          "selected": [
+            "c"
+          ]
+        }
+      ],
+      "events": [
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "clearSelection",
+          "commit",
+          "user"
+        ],
+        [
+          "clearSelection",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "destroy",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "mode": "toggle",
+      "states": [
+        {
+          "revision": 1,
+          "selected": [
+            "b"
+          ]
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 2,
+          "selected": []
+        },
+        {
+          "revision": 3,
+          "selected": [
+            "c"
+          ]
+        }
+      ],
+      "events": [
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "select",
+          "commit",
+          "user"
+        ],
+        [
+          "select",
+          "settled",
+          "user"
+        ],
+        [
+          "destroy",
+          null,
+          null
+        ]
+      ]
+    }
+  ],
+  "diff": [],
+  "sourceUnchanged": true
+}

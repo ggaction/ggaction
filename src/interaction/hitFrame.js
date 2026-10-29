@@ -1,6 +1,6 @@
 import { freezeOwned } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
-import { prepareHitIndex, hitIndex } from "../grammar/hitIndex.js";
+import { prepareHitIndex, hitIndex, nearestHitIndex } from "../grammar/hitIndex.js";
 
 function request(frame) {
   ownRecord(frame, "Hit frame");
@@ -36,6 +36,10 @@ export function createHitFrameBridge(initialFrame) {
     },
     hit(point, options = {}) {
       const frame = live(), result = hitIndex(frame.index, frame.scene, point, options);
+      return freezeOwned({ ...result, frameVersion: frame.version });
+    },
+    nearest(point, options) {
+      const frame = live(), result = nearestHitIndex(frame.index, frame.scene, point, options);
       return freezeOwned({ ...result, frameVersion: frame.version });
     },
     dispose() {

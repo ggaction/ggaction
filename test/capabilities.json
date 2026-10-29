@@ -657,6 +657,26 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-nearest.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-reconciliation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-click-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/gesture-controller.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-pointer-capture.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

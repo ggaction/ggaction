@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 968000; // Calendar and linked selection documentation: measured 967011 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 969000; // Calendar and captured click documentation: measured 968887 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

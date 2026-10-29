@@ -1,0 +1,460 @@
+{
+  "sourceCommit": "9e92ab01f32704dea6acae5650835a2107b91963",
+  "scope": "STEP058 existing select binding captured-click lifecycle; domain previews, RAF, keyboard, brush/lasso, navigation, history and STEP077 remain open",
+  "sourceHashes": {
+    "src/interaction/gestures.js": "3b863c916b81797462666436cae37c494848dd08de7e09ba9af3639a7f1bbe4f",
+    "src/interaction/pointerCapture.js": "8d343237583b374ed86847aec054e18770511b3eb4440d35ce6307561499b887",
+    "src/interaction/session.js": "7211aec556125deb64e438a5a73453caf70702c8b62f2a48356ee2d8e943a66a",
+    "types/interaction.d.ts": "62ed6ebfce8dfd78522b43dd584e83a03b69e46148ecab64787e848726f85a1a"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 141,
+      "newCaptureTests": 14,
+      "criticalFloor": [
+        95,
+        90,
+        100
+      ],
+      "owners": {
+        "interaction/gestures.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/pointerCapture.js": [
+          100,
+          96.81,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          95.96,
+          100
+        ]
+      }
+    },
+    "typesBoundaryDiscovery": 28,
+    "packageBoundaryDocumentationTruth": 16,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "modes": [
+        "replace",
+        "toggle"
+      ],
+      "onMiss": [
+        "clear",
+        "ignore"
+      ],
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "tests": 10,
+      "scope": "Actual Canvas/SVG mouse capture, Escape, 100 moves, touch drag and tap, remount and prior frame consumers",
+      "reuse": "Executed before final capture-acquisition error-only event hook; normal/cancel runtime paths and browser inputs unchanged. Final focused141 covers the added error event."
+    },
+    "docs": {
+      "sourceTests": 185,
+      "finalProvenanceOwningTests": 32,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualReviewed": ".artifacts/interaction-pointer-capture-docs/pointer-capture-390.png",
+      "environment": "Explicit Ruby3.2/Node22 PATH",
+      "reuse": "Responsive page checked before metadata-only provenance regeneration; rendered prose/CSS unchanged."
+    },
+    "sameArchive": [
+      {
+        "node": "v20.20.2",
+        "artifact": "1445af0cd3ce634d5f4f8bc70dc12b777d0bf9e291259e1f3f8c68f485e0cf73",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 162,
+            "minifiedBytes": 308117,
+            "gzipBytes": 100541
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "1445af0cd3ce634d5f4f8bc70dc12b777d0bf9e291259e1f3f8c68f485e0cf73",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 650908
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 365369
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 162,
+            "minifiedBytes": 308117,
+            "gzipBytes": 100059
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "1445af0cd3ce634d5f4f8bc70dc12b777d0bf9e291259e1f3f8c68f485e0cf73",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 162,
+            "minifiedBytes": 308117,
+            "gzipBytes": 100541
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 922,
+    "packedBytes": 1328716,
+    "unpackedBytes": 6089158,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-pointer-capture-qualified.tgz",
+    "sha1": "97df930252647763957b689efae85fa8212aaf7b",
+    "sha256": "1445af0cd3ce634d5f4f8bc70dc12b777d0bf9e291259e1f3f8c68f485e0cf73"
+  },
+  "budgets": {
+    "node20DryMeasurement": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 922,
+      "packedBytes": 1331459,
+      "unpackedBytes": 6089158
+    },
+    "packageLimits": {
+      "entries": 922,
+      "packedBytes": 1332000,
+      "unpackedBytes": 6090000
+    },
+    "interactionGzipLimit": 100600,
+    "interactionGzipMaximum": 100541,
+    "searchBytes": 960195,
+    "searchLimit": 961000
+  },
+  "initialFailures": [
+    "Initial source fixture used unsupported equals operator; corrected to op:eq/value without runtime workaround.",
+    "Initial package entry count922 exceeded921; final unpacked6089158 exceeded interim6089000. Measured final caps recorded.",
+    "Initial installed fixture removed new remount listener because mock ignored listener identity; fixed mock only, preserving runtime.",
+    "Node20 interaction gzip100541 exceeded prior97600 after runtime/types passed; minimum rounded100600 cap, then same archive full focused consumers passed."
+  ],
+  "consumerMatrix": {
+    "nativeActions": "Existing editMarkSelection/clear transaction; one final commit and settled; unchanged no-op rules.",
+    "immutability": "Down/cancel retain exact original program and trace; source input immutable. Literal expected/actual/diff retained.",
+    "DOM": "Capture acquired before moves; threshold3 CSS px; terminal state accepted before release; late events inert; cleanup survives subscriber and host failures.",
+    "composition": "Existing exact concat child and current-frame owner resolution reused.",
+    "codec": "No new stored gesture state; restored programs use existing runtime binding reconstruction.",
+    "renderers": "No geometry added. Actual Canvas/SVG event hosts and installed source-free interaction entry verified.",
+    "limits": "Primary pointer only for this binding; click-only custom surfaces preserved; partial capture APIs rejected. Private priority/pinch reducer is not public support.",
+    "remaining": "STEP058 domain previews and RAF, STEP059 brush/lasso/angular/domain inversion, later keyboard/navigation/history and overall077."
+  },
+  "notClaimed": [
+    "Full repository unit or coverage sweep",
+    "All installed-package cases",
+    "Public competing gesture, pinch or brush/lasso support",
+    "STEP058 or STEP077 completion"
+  ],
+  "logs": {
+    "pointer-capture-browser-existing.log": {
+      "sha256": "54dfb91222c53e14c3fffa5815a5f8699ea98ae51fb09ae6223650360619a895",
+      "bytes": 1912,
+      "gzip": "pointer-capture-browser-existing.log.gz"
+    },
+    "pointer-capture-browser.log": {
+      "sha256": "adc8f9297f99a9696e159d631f15edd31587da25c0a8fbe449eaa4763019af01",
+      "bytes": 2388,
+      "gzip": "pointer-capture-browser.log.gz"
+    },
+    "pointer-capture-consumer-check.mjs": {
+      "sha256": "58da8dda644da613086add836007eadbc634b0a3a5c28f2fc6964587b1979b29",
+      "bytes": 2007,
+      "gzip": "pointer-capture-consumer-check.mjs.gz"
+    },
+    "pointer-capture-consumer-node20-fixed.log": {
+      "sha256": "0f85c7286725ceca386112dd1fef533c70d3fa9e274530ec42a0f58ce68b3b23",
+      "bytes": 1489,
+      "gzip": "pointer-capture-consumer-node20-fixed.log.gz"
+    },
+    "pointer-capture-consumer-node20-initial.log": {
+      "sha256": "139411044c0d63ce5ceb30829dca84af63fd17702c9cb7f3e3536027542904c4",
+      "bytes": 3781,
+      "gzip": "pointer-capture-consumer-node20-initial.log.gz"
+    },
+    "pointer-capture-consumer-node20.log": {
+      "sha256": "2fe6baf7a3108336590646bbb648205d5a180236d47a3a40646d0a57e1bd7eff",
+      "bytes": 939,
+      "gzip": "pointer-capture-consumer-node20.log.gz"
+    },
+    "pointer-capture-consumer-node22.log": {
+      "sha256": "0383a43fc9c902e939595458564c9b264ca7079ceb7f88d8a124a5470c30e4cd",
+      "bytes": 939,
+      "gzip": "pointer-capture-consumer-node22.log.gz"
+    },
+    "pointer-capture-consumer-node24.log": {
+      "sha256": "a1fe5234dd5be23e170a29150f2dd8d3e3ea223400ad961a276bbc0e62ee2a68",
+      "bytes": 939,
+      "gzip": "pointer-capture-consumer-node24.log.gz"
+    },
+    "pointer-capture-contracts.log": {
+      "sha256": "464f4dd0c4d668b97a1c31b0c3bdfd4be2e8b0342ade70213f92e881ca55995b",
+      "bytes": 5742,
+      "gzip": "pointer-capture-contracts.log.gz"
+    },
+    "pointer-capture-doc-browser.mjs": {
+      "sha256": "779e545d6ec48eddf843c3fb3ac460b2a2cd9cf7553fe470d667d2bf991c5012",
+      "bytes": 2865,
+      "gzip": "pointer-capture-doc-browser.mjs.gz"
+    },
+    "pointer-capture-docs-browser.log": {
+      "sha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50",
+      "bytes": 197,
+      "gzip": "pointer-capture-docs-browser.log.gz"
+    },
+    "pointer-capture-docs-build.log": {
+      "sha256": "a00c5c5b652fd92d7c57efc157b1c412a6647c32c0d569b2c874a5e45e0f13c6",
+      "bytes": 419,
+      "gzip": "pointer-capture-docs-build.log.gz"
+    },
+    "pointer-capture-docs-built.log": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179,
+      "gzip": "pointer-capture-docs-built.log.gz"
+    },
+    "pointer-capture-docs-final-build.log": {
+      "sha256": "8d94445a65b6f739d29c66aa84e5f43b2860852a5a6313d27944f33506d8bbfb",
+      "bytes": 419,
+      "gzip": "pointer-capture-docs-final-build.log.gz"
+    },
+    "pointer-capture-docs-final-built.log": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179,
+      "gzip": "pointer-capture-docs-final-built.log.gz"
+    },
+    "pointer-capture-docs-final-owning.log": {
+      "sha256": "e1aa3bd39dafaf16d6b42eb3c8b56bb2f54e4bb874fc477bfadfea03ec168152",
+      "bytes": 6274,
+      "gzip": "pointer-capture-docs-final-owning.log.gz"
+    },
+    "pointer-capture-docs-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257,
+      "gzip": "pointer-capture-docs-preflight.log.gz"
+    },
+    "pointer-capture-docs-source.log": {
+      "sha256": "bda25c1d8fd29a9423042e559f83bec77b99f65f0155d9b218b42311c6151a8a",
+      "bytes": 43089,
+      "gzip": "pointer-capture-docs-source.log.gz"
+    },
+    "pointer-capture-expected-actual-diff.json": {
+      "sha256": "7c5dc178e93a821308b26cf6e40dd663611d60cbe36c298c195f476f95beb8fd",
+      "bytes": 1467,
+      "gzip": "pointer-capture-expected-actual-diff.json.gz"
+    },
+    "pointer-capture-final-coverage.log": {
+      "sha256": "fc88d03025c175ce7049d4aa99c19ebc1f056dccd05a4d2a4d58f1d5cd8ab1e4",
+      "bytes": 146014,
+      "gzip": "pointer-capture-final-coverage.log.gz"
+    },
+    "pointer-capture-final-error-coverage.log": {
+      "sha256": "5c531e7bb67eb9d6d5b352f970ae32a3f6695c76a2d008aa325f96fafeac1875",
+      "bytes": 145995,
+      "gzip": "pointer-capture-final-error-coverage.log.gz"
+    },
+    "pointer-capture-final-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335,
+      "gzip": "pointer-capture-final-generation.log.gz"
+    },
+    "pointer-capture-fixed.json": {
+      "sha256": "170c703189300c98b2c0e33e47be35e00521334294b8690a7ba073d9bdbb2877",
+      "bytes": 434,
+      "gzip": "pointer-capture-fixed.json.gz"
+    },
+    "pointer-capture-focused.log": {
+      "sha256": "14dcd28fa9b8961acf1ccd8c3401aefc0bfbe8ee58bd380bab691205a0d80c43",
+      "bytes": 119733,
+      "gzip": "pointer-capture-focused.log.gz"
+    },
+    "pointer-capture-generation.log": {
+      "sha256": "6fd65570d2606774f9b2d91095d2afd416c73426043fca3234340f78bb8c5616",
+      "bytes": 919,
+      "gzip": "pointer-capture-generation.log.gz"
+    },
+    "pointer-capture-initial.log": {
+      "sha256": "2c9a8d5dc5b3e2164e78d3e67dd11f58d7d7008c6c33308e07d4bf469959809e",
+      "bytes": 120443,
+      "gzip": "pointer-capture-initial.log.gz"
+    },
+    "pointer-capture-measure-node20.json": {
+      "sha256": "61d3a347dab591d9859988e6d5d5ef2c4a1823dd19144bc25c068ee675e6a19c",
+      "bytes": 160,
+      "gzip": "pointer-capture-measure-node20.json.gz"
+    },
+    "pointer-capture-measure-node20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "pointer-capture-measure-node20.log.gz"
+    },
+    "pointer-capture-oracle.log": {
+      "sha256": "940aaf4b7a97f4d7693190f202d8c79ce05c66946618c5e780a7a75e96c640e6",
+      "bytes": 57,
+      "gzip": "pointer-capture-oracle.log.gz"
+    },
+    "pointer-capture-oracle.mjs": {
+      "sha256": "577abd16469de245381373c76d82d7238bb857d4abecafc95b763395c1e7a961",
+      "bytes": 2974,
+      "gzip": "pointer-capture-oracle.mjs.gz"
+    },
+    "pointer-capture-pack-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "pointer-capture-pack-final.log.gz"
+    },
+    "pointer-capture-pack.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "pointer-capture-pack.log.gz"
+    },
+    "pointer-capture-package-contracts.log": {
+      "sha256": "47412e24267ae80187bdadcebd2583069db270f5df72e2da9b9e20644d171f4b",
+      "bytes": 3414,
+      "gzip": "pointer-capture-package-contracts.log.gz"
+    },
+    "pointer-capture-package-final-node20.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzip": "pointer-capture-package-final-node20.json.gz"
+    },
+    "pointer-capture-package-final-node20.log": {
+      "sha256": "ce3303035965c60f29a1a3e943ce741b53ca946b962ee50af05b4c084b7913f2",
+      "bytes": 1042,
+      "gzip": "pointer-capture-package-final-node20.log.gz"
+    },
+    "pointer-capture-package-initial.log": {
+      "sha256": "7ac04132ed9cc553bb4262f6a92268b7a32836064d1670e0fc36be3b4f63e898",
+      "bytes": 1127,
+      "gzip": "pointer-capture-package-initial.log.gz"
+    },
+    "pointer-capture-package-node20-qualified.json": {
+      "sha256": "57610a248e9ae535c3f6170645e06949a7f84b2141a72a1e5f27707ab249f687",
+      "bytes": 160,
+      "gzip": "pointer-capture-package-node20-qualified.json.gz"
+    },
+    "pointer-capture-package-node20-qualified.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "pointer-capture-package-node20-qualified.log.gz"
+    },
+    "pointer-capture-packed-final.json": {
+      "sha256": "5206f4635ddf06c30088e6902a9b15cf82aa15f79b2779a6ef48575bdcb6e854",
+      "bytes": 413,
+      "gzip": "pointer-capture-packed-final.json.gz"
+    },
+    "pointer-capture-packed-initial.json": {
+      "sha256": "7f3d93d4f8f2d4373b289ee63974ba3880d3433ab75485c69bb53c7fbf39ca69",
+      "bytes": 413,
+      "gzip": "pointer-capture-packed-initial.json.gz"
+    },
+    "pointer-capture-realistic.log": {
+      "sha256": "c8bcb1f3b5a2b6df5c7bd25c1561d7541676b1dff32b251a1cc51509c4c8475e",
+      "bytes": 4270,
+      "gzip": "pointer-capture-realistic.log.gz"
+    }
+  }
+}

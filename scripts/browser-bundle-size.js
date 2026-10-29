@@ -8,7 +8,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 663_000, // Calendar, selection and theme owners: Node20 662,620 bytes.
   "ggaction/basic": 371_000, // Calendar source-resource closure: Node20 370,736 bytes.
   "ggaction/svg": 25_000,
-  "ggaction/interaction": 93_000 // Calendar and linked selections: Node20/24 measured 92,100 gzip bytes.
+  "ggaction/interaction": 101_000 // Calendar with captured click: Node20/24 measured 100,884 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
