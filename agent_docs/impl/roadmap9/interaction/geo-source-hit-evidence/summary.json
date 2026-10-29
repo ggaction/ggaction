@@ -94,5 +94,6 @@
     "Public Geo presentation/closed decision/frame proof integration",
     "Actual public Geo sample installed/browser current-frame qualification",
     "Remaining STEP070 partition/routes/LOD/worker cells and STEP074 full qualification"
-  ]
+  ],
+  "sourceCommit": "a9cc561e84538c4918fae4b4981efb31d4522612"
 }

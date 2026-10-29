@@ -62,3 +62,6 @@ Node20/24 interaction130506gzip만 새 cap130600이 필요했고 다른5entry ca
 처음 packed cap 실패, 초기 fixture 수리, 좁은 coverage의 기존 callback 미도달 로그를 모두
 `geo-source-hit-evidence/`에 보존했다. Public Geo sampler 생성·렌더러/브라우저/설치 결합은
 Geo owner와 후속 checkpoint에서 닫는다.
+
+Source `a9cc561e84538c4918fae4b4981efb31d4522612`가 원격에 push됐다. 이 source pin은
+메타데이터만 추가하며 runtime/archive는 검증한 그대로다.
