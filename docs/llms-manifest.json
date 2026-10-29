@@ -2079,6 +2079,7 @@
       "headings": [
         "supported-features",
         "complete-chart-support",
+        "native-chart-scope",
         "shared-foundations",
         "current-limitations",
         "data-transforms-and-heatmaps",
@@ -2088,8 +2089,8 @@
         "coordinates-and-composition",
         "individual-display-text"
       ],
-      "bytes": 10306,
-      "sha256": "0d83130a075bfcecd451a278ccaa7b01bc94380f8cce352bab68a34a539365bf"
+      "bytes": 11188,
+      "sha256": "9fbb5a2d8a72935487197d2b17497901c7b4e42ad83adc37a28bcb0a115dc8dd"
     },
     {
       "order": 122,
