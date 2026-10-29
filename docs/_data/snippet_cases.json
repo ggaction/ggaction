@@ -644,7 +644,8 @@
     "environment": "browser-module",
     "result": "program",
     "rendering": "renders-canvas",
-    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text."
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "host": "paired-html"
   },
   {
     "id": "interaction-accessible-tooltip",
@@ -654,6 +655,7 @@
     "environment": "browser-module",
     "result": "program",
     "rendering": "renders-canvas",
-    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description."
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
+    "host": "paired-html"
   }
 ]

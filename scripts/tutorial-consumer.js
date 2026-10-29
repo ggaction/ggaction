@@ -12,20 +12,20 @@ import { docInputs } from "../test/support/docs-inputs.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
-function tutorialHtml(name) {
+function tutorialHtml(name, html) {
   return `<!doctype html>
 <html lang="en">
   <head><meta charset="UTF-8"><title>${name}</title></head>
   <body>
-    <canvas id="chart" aria-label="${name} tutorial chart"></canvas>
+    ${html ?? `<canvas id="chart" aria-label="${name} tutorial chart"></canvas>`}
     <script type="module" src="./main.js"></script>
   </body>
 </html>
 `;
 }
 
-export async function prepareTutorials(directory) {
-  const examples = await documentationPrograms();
+export async function prepareTutorials(directory, { examples } = {}) {
+  examples ??= await documentationPrograms();
   const publicDirectory = path.join(directory, "public");
   await mkdir(publicDirectory, { recursive: true });
   for (const dataset of new Set(examples.map(example => example.dataset).filter(Boolean))) {
@@ -48,16 +48,23 @@ export async function prepareTutorials(directory) {
     const renderResult = example.resultKind === "semantic"
       ? `window.__ggactionSemanticResult = { resources: ${result}.semanticSpec.resources.length, graphics: Object.keys(${result}.graphicSpec.objects).length };`
       : example.rendering === "authoring-only" ? `renderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));` : "";
-    const source = `${prefix}\n${example.code}\n${renderResult}\nwindow.__ggactionSnippetCompleted = true;\n`;
+    const results = example.result.split(",").map(name => name.trim());
+    const summary = `window.__ggactionSnippetResults = [${results.join(",")}].map(program => ({
+      semantic: program?.semanticSpec !== undefined,
+      canvas: program?.graphicSpec?.objects?.canvas !== undefined,
+      materialized: Object.values(program?.graphicSpec?.objects ?? {}).some(object =>
+        (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text"].includes(object.type))
+    }));`;
+    const source = `${prefix}\n${example.code}\n${renderResult}\n${summary}\nwindow.__ggactionSnippetCompleted = true;\n`;
     assert.doesNotMatch(source, /from ["']\.\.\/.*src\//, "Examples must import the installed package.");
     const tutorialDirectory = path.join(directory, "tutorials", name);
     await mkdir(tutorialDirectory, { recursive: true });
     await copyDocumentationSupportFiles(example, tutorialDirectory);
     await writeFile(path.join(tutorialDirectory, "main.js"), source);
     const html = path.join(tutorialDirectory, "index.html");
-    await writeFile(html, tutorialHtml(name));
+    await writeFile(html, tutorialHtml(name, example.html));
     inputs[name] = html;
-    consumers.push({ name, dataset: example.dataset, id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering, ...(example.resultKind ? { resultKind: example.resultKind } : {}) });
+    consumers.push({ name, dataset: example.dataset, id: example.id ?? example.file, file: example.file, sha256: example.sha256, ...(example.htmlSha256 ? { htmlSha256: example.htmlSha256 } : {}), rendering: example.rendering, ...(example.resultKind ? { resultKind: example.resultKind } : {}) });
   }
   return { inputs, consumers };
 }
@@ -84,6 +91,9 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset, resultKind) 
   await page.waitForFunction(() => {
     return window.__ggactionSnippetCompleted === true;
   });
+  const results = await page.evaluate(() => window.__ggactionSnippetResults);
+  assert.ok(results.length > 0 && results.every(result => result.semantic), `${name} must return programs.`);
+  if (resultKind !== "semantic") assert.ok(results.every(result => result.canvas && result.materialized), `${name} must materialize its returned programs.`);
   const canvas = await page.locator("canvas").evaluate(element => {
     const context = element.getContext("2d");
     const pixels = context.getImageData(0, 0, element.width, element.height).data;
@@ -113,9 +123,9 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset, resultKind) 
   );
 }
 
-export async function testTutorialConsumers(directory) {
+export async function testTutorialConsumers(directory, { examples, evidenceFile = path.join(root, ".artifacts/consumers/tutorials.json") } = {}) {
   directory = await realpath(directory);
-  const { inputs, consumers } = await prepareTutorials(directory);
+  const { inputs, consumers } = await prepareTutorials(directory, { examples });
   await build({
     root: directory,
     logLevel: "silent",
@@ -154,8 +164,8 @@ export async function testTutorialConsumers(directory) {
     const failed = records.filter(record => record.status === "failed");
     if (failed.length) throw new AggregateError(failed.map(record => new Error(`${record.id}: ${record.error}`)), "Documentation consumers failed");
   } finally {
-    await mkdir(path.join(root, ".artifacts/consumers"), { recursive: true });
-    await writeFile(path.join(root, ".artifacts/consumers/tutorials.json"), JSON.stringify(records, null, 2));
+    await mkdir(path.dirname(evidenceFile), { recursive: true });
+    await writeFile(evidenceFile, JSON.stringify(records, null, 2));
     await browser.close();
     await new Promise((resolve, reject) => server.httpServer.close(error => {
       if (error) reject(error);
