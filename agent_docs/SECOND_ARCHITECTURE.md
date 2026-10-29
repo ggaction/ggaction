@@ -4419,3 +4419,17 @@ Node20 Full bundle is 732,895 gzip bytes (732,900 bound) and interaction is 126,
 The host example search payload is 1,039,320 bytes with a 1,039,400 bound.
 Original failed measurements are retained in the STEP068 evidence; combined integration
 remeasures its archive rather than reusing these branch-specific caps.
+
+합산 native keyboard 후보의 Node22 staging은1117entries/1,594,582packed/7,254,528unpacked bytes다.
+최소 한도1117/1,595,000/7,255,000을 적용한다. 동일 archive의 Full772,312와
+interaction127,988gzip에 각각772,400/128,000 한도를 적용하고 나머지 세 한도는 유지한다.
+문서 HTML host 실행의 실패는 별도 통합 의무이며 이 측정으로 통과 처리하지 않는다.
+
+키보드·툴팁의 paired HTML host 예제를 합친 검색 payload는1,075,834bytes다.
+이전1,074,700 한도 실패를 보존하고 최소100byte 한도1,075,900으로 조정한다.
+일반 문서와 source-free tutorial은 같은 실제 Chromium 실행 owner를 공유하며
+JavaScript와 HTML의 독립 hash를 보존한다. Runtime archive ecbd493d…는 그대로다.
+
+Native control host 예제의 합산 검색 payload는1,076,418bytes다.
+이전1,075,900 한도 실패를 보존하고 최소100byte 한도1,076,500을 적용한다.
+정적 native 제어는 기존 command/history reducer를 사용하며 runtime archive는 ecbd493d…로 유지한다.

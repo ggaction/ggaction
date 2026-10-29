@@ -45,6 +45,7 @@ export async function generateDocSnippetContracts({ check = false } = {}) {
       records.push({ file: relative, block: index + 1, heading: block.heading, mode,
         environment: registered?.environment ?? (/\bdocument\./.test(block.code) ? "browser-module" : "esm-context"),
         receivers, resources, prerequisites,
+        ...(registered?.htmlSha256 ? { host: registered.host, htmlSha256: registered.htmlSha256 } : {}),
         sha256: createHash("sha256").update(block.code).digest("hex"),
         executable: Boolean(registered) });
       const label = registered ? `Executable ${mode}` : mode === "fragment" ? "Contextual fragment" : mode;

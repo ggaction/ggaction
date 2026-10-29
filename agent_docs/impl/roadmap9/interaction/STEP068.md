@@ -7,7 +7,8 @@
 - [x] A: source/type/package/docs qualification과 원격 checkpoint
 - [x] B: exact current-frame clip/opacity를 사용하는 keyboard focus/restore
 - [x] B: native selection activation·hierarchy navigation
-- [ ] C: tooltip/touch/control 접근 경로
+- [x] C1: hover/focus/Escape tooltip와 touch native activation
+- [x] C2: 현재 native edit/history control의 keyboard/touch matrix
 - [ ] D: public animation/reduced-motion 합산 및 AT53 전체 matrix
 - [ ] STEP074–077 최종 통합
 
@@ -121,3 +122,82 @@ B source `d2441294413d13de40fc545f070489645c038276`를 고정했다.
 화면 확인에서 정적 HTML 앞의 이전 수동 안내 한 줄이 남아 있어 제거했다. 실행 JavaScript의
 공통 안내만 유지하고 owning49/build172/1535 hashes/4폭 Axe0을 재확인했다. Runtime/type와
 고정 tar는 변하지 않았다.
+
+## C1: hover/focus tooltip와 touch native activation
+
+기존 승인과 B의 공개 commands를 재사용한다. 새로운 tooltip runtime/binding/DOM library 없이
+완전한 host 예제를 추가한다. safe text와 native item snapshot, 정확한 inspect/focus key만 읽고
+click/tap→focus→activate를 기존 reducer로 전달한다. hoverable tooltip의 Escape는 host capture
+listener가 우선 처리하며 이전 selection/program/history를 바꾸지 않는다. 외부 layout에 영향을
+주지 않도록 설명 영역을 고정하고 DOM/window listener를 명시적으로 제거한다.
+
+실제 Canvas/SVG 각각 keyboard 및 touch4개 검증에서 태그 모양의 원 데이터가 textContent로
+표시되고 실행되지 않음을 확인한다. pointer→tooltip 이동, Escape, native toggle, filter로 focus
+container 복구, disabled 중복 filter control, dispose 후 event0을 검사한다. 최초4실패는 tooltip
+닫기와 함께 버튼 위치가 이동하는 host 배치 결함으로 재현했으며 설명 영역 고정 후4/4 통과다.
+Library source/types/package는 B와 동일하다. Graph의 inferred origin/rule/ruleId/metric 및 실제
+endpoint/degree를 literal로 추가 확인한다. 모든 native control의 keyboard/touch matrix와 public
+animation/reduced-motion은 C2/D 의무로 남긴다.
+
+C1 최종 입력에서 Canvas/SVG 각각 keyboard/touch4개와 마크 제거 후 빈 설명·container 복구를
+확인했다. Native item literal와 discovery26, owning docs31+18, built172pages/1535hashes,
+320/390/768/1440 overflow0/Axe0을 통과했다. 320/1440 화면을 직접 확인했다. Search 실측
+1039911 bytes에 따라 한도1040000으로 최소 조정했으며 최초47/49 실패를 보존했다.
+
+B의 동일7cab archive를 Node22/Vite/Chromium에서 source-free 설치해 최신 문서 예제의
+keyboard/touch/native selection/filter fallback/teardown/Axe0을 검증했다. 새 라이브러리 코드나
+타입이 없으므로 B의 동일 runtime/types fingerprint와3Node 검증을 재사용한다. 최초 Vite의
+macOS realpath 경로 오류 및 임시 테스트 host의 h1 누락은 harness 수리이며 runtime 결함이 아니다.
+Root의 최신 native dependency loader와 연결하도록 두 browser fixture에 repository dependency
+옵션을 명시한다. 이 branch의 이전 loader는 옵션을 사용하지 않으므로 최신 loader 합산 검증은
+root가 소유한다. C2/D와 AT53·전체077은 계속 미완료다.
+
+C1 source `27ce21d20`와 [최종 machine evidence](tooltip-accessibility-evidence/qualification.json)에
+실제 명령·고정 tar 재사용 근거·source/type fingerprint·원본 실패·화면을 보존한다.
+Repository dependency 옵션 추가 뒤 B2+C1 browser4의 합산6개도 통과했다.
+
+## C2 선행 수리: paired HTML 실행 정본
+
+Root의 전체 문서 검사에서 B `interaction-keyboard`가 `#item-focus`를 Canvas-only scaffold로
+실행해 실패했다. C1도 같은 경계였다. 이 실패를 실제 HTML+JavaScript를 함께 실행하는 문서
+계약으로 수리한다. Registry의 `host: "paired-html"`은 같은 section의 유일한 선행 HTML block을
+요구하며 scripts·128KiB 초과·다른 execution environment·모호한 host는 거부한다. 새로운
+runtime/API나 임의 selector mock은 없다. Normal docs와 설치 tutorial은 기존 tutorial consumer의
+Vite/Chromium owner를 공유하며 semantic result·실제 Canvas ink·console/HTTP 오류도 검사한다.
+HTML과 JavaScript hash가 모두 일치해야 실행 receipt를 인정한다.
+
+집중 두 실제 browser 문서와 preparation/hash receipt4개, parser/소유문서/discovery68개가
+통과했다. 동일7cab archive의 source-free Node22 canonical tutorial consumer도 두 paired 예제를
+통과했다. 최초 전체 executable+support129개 중126개 통과, 나머지는 이 branch의 이전
+navigation/arbitration scaffold의 `canvas.setAttribute` 부재2개 및 새 테스트의 잘못 기입한
+SHA literal1개였다. Literal을 Python 독립 SHA 계산으로 교정해 owning 검사를 통과했다.
+Root가 최신 scaffold 수리를 이미 가진 경우 두 baseline 실패는 합산 후 제거된다. 이 기록은
+전체129 또는 전체 문서가 green이었다고 주장하지 않는다. 기존 C1 페이지/코드/renderer/package
+입력은 같으므로 그 build·4폭·Axe 및3Node runtime 증거는 그대로 재사용한다. 실제 native control
+전체 matrix와 reduced-motion/public player는 아직 남아 있다.
+
+## C2: 현재 native control 대안
+
+[정적 접근성/AT53 책임 matrix](ACCESSIBILITY_MATRIX.md)에 원 요구와 후행 소유자를 연결했다.
+현재 edit10+history3 명령은 모두 canonical host button/input과 실제 keyboard/touch witness를
+갖는다. 새 category controls는 A/B 선택·숨김·복구와 user filter·순서·이력을 동일 reducer에
+전달하고 native snapshot의 `selectedBy`와 visible items만 읽는다. Tab은 모든 활성 button을
+통과해 외부 control로 나간다. Parameter의 context action은 명시 item a의 exact frame focus
+point를 사용하므로 right-click/hover 없이 keyboard/touch로 같은 selection에 접근한다.
+Graph 예제는 두 node 모두 native button 대안을 제공한다. 새 공개 runtime/타입/저장 상태는 없다.
+
+새 browser7개와 기존 parameter/partition/camera/node/annotation5개가 통과했다. 최초 parameter
+두 실패는 native revision 후 dataset id를 고정 문자열로 가정한 테스트 오류였다. Public final-item
+fields를 읽어 literal computed 값을 비교하도록 고쳤다. 최초 inventory는 기존 node snippet ID의
+오기1개였고 정본 ID로 수리했다. 첫 owner docs66 중64개가 통과했고 두 실패는 search 증가뿐이었다.
+실측1040495bytes에 최소1040500 한도를 적용해66/66 통과했다. 원본 실패는 보존한다.
+
+C2의 실제 host 코드는 라이브러리 source/type fingerprint를 바꾸지 않는다. B의 동일7cab archive와
+3Node native/typing/bundle 검증은 유효 입력에 한해 재사용하고, 새 문서3종의 source-free 실제
+keyboard/touch 동작은 Node22/Vite/Chromium에서 다시 실행한다. Public player/reduced-motion과
+AT53 전체 및074–077 합산은 계속 미완료다.
+
+C2 source `cae13ebe4`와 [machine evidence](native-controls-evidence/qualification.json)에 정확
+fingerprint·같은tar·명령·기존/신규 검증·실패·문서 화면을 보존했다. 마지막 입력 기준 browser7+5,
+owning66, executable3, source-free 문서3, build172/1535 및4폭 overflow0/Axe0을 확인했다.
+320/1440 화면을 직접 확인했다. Library source/type 및 B package는 그대로다.

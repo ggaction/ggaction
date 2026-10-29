@@ -20,9 +20,10 @@ export async function publicSnippetCoverage() {
       const heading = block.heading.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
       const ordinal = (seen.get(heading) ?? 0) + 1; seen.set(heading, ordinal);
       const id = `${file}#${heading}:${ordinal}`;
-      const executable = programs.some(program => path.posix.normalize(`docs/${program.file}`) === file && program.code === block.code);
+      const program = programs.find(program => path.posix.normalize(`docs/${program.file}`) === file && program.code === block.code);
       const generated = file.startsWith("docs/reference/actions/");
-      records.push({ id, file, heading: block.heading, executable, generated,
+      records.push({ id, file, heading: block.heading, executable: Boolean(program), generated,
+        ...(program?.htmlSha256 ? { htmlSha256: program.htmlSha256 } : {}),
         sha256: createHash("sha256").update(block.code).digest("hex") });
     }
   }
@@ -32,7 +33,10 @@ export async function publicSnippetCoverage() {
 /** Registration and observed execution are deliberately separate counts. */
 export function snippetExecutionSummary(records, receipts) {
   const byIdentity = new Map(receipts.map(receipt => [`${path.posix.normalize(`docs/${receipt.file}`)}\0${receipt.sha256}`, receipt]));
-  const executed = records.filter(record => record.executable && byIdentity.get(`${record.file}\0${record.sha256}`)?.status === "passed");
+  const executed = records.filter(record => {
+    const receipt = byIdentity.get(`${record.file}\0${record.sha256}`);
+    return record.executable && receipt?.status === "passed" && receipt.htmlSha256 === record.htmlSha256;
+  });
   return {
     blocks: records.length,
     registered: records.filter(record => record.executable).length,

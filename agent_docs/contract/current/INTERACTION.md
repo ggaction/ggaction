@@ -851,3 +851,20 @@ No DOM, HTML string, inferred accessible name or new renderer state is authored 
 
 Tooltip/touch parity for additional controls and public animation/reduced-motion integration remain
 separate capabilities; this entry does not invent a player or an implicit timer.
+
+The documented accessible-tooltip recipe is host-owned UI using the existing `inspect`, `focus` and
+`activate` commands. It demonstrates safe native descriptions, a hoverable tooltip, Escape dismissal,
+keyboard/touch selection and teardown for Canvas/SVG. The host reserves tooltip space so hiding it
+cannot move adjacent controls during a click. It stores no alternate semantic selection, imports no
+new runtime service and makes no reduced-motion/player support claim. `format:'items'` supplies current
+logical fields/selected state; the session supplies exact current-frame eligibility. A host must dispose
+its own tooltip/control listeners together with its session.
+
+The documented native-control alternatives preserve ordinary HTML button/input focus and dispatch the
+existing native edit/history commands with `origin: "user"`. Category controls remain reachable when
+their items are hidden. Their status text reads committed `exportAccessibleData(..., {format:"items"})`
+values and `selectedBy`; they do not infer visibility from opacity or keep a second selection/history
+store. The parameter context-action button obtains its explicit native item's current-frame focus
+point before requesting `contextMenu`, so keyboard and touch users do not need hover or right-click.
+Hosts own labeled controls, safe text, control disposal and applicability; the library does not install
+a DOM widget system. Public playback and reduced-motion integration remain outside these static examples.
