@@ -178,8 +178,8 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (decision.kind === "crossfade") {
       const a = bases.from.scene.nodes[decision.sourceIndex], b = bases.to.scene.nodes[decision.targetIndex];
       if (a === undefined || b === undefined) throw new TypeError("Animation hit blend requires both endpoint nodes.");
-      const list = (source, value) => source.type === "weighted-blend"
-        ? Array.isArray(value) ? value : source.properties.sources.map(() => value) : [value];
+      const list = (source, value) => Array.isArray(value) ? value
+        : Array(source.type === "weighted-blend" ? source.properties.sources.length : 1).fill(value);
       metrics = [...list(a, from.source.profiles.get(a.key)), ...list(b, to.source.profiles.get(b.key))];
     }
     const shape = prepareConcreteHitShape(node, metrics, rootTransform);

@@ -1,7 +1,7 @@
 import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties } from "../core/validation.js";
 import { cloneAndFreeze } from "../core/immutable.js";
-import { planTransition, requireTransitionPlan } from "./planner.js";
+import { planTransition, requireTransitionPlan, requireTransitionEndpoint, normalizeTransitionOptions } from "./planner.js";
 import { sampleTransition } from "./sample.js";
 import { createPlaybackController } from "./player.js";
 
@@ -19,7 +19,7 @@ export function createAnimationPlayer(input) {
   function interrupt(request) {
     ownRecord(request, "Animation interruption");
     rejectUnknownProperties(request, ["to", "options", "rate", "repeat", "reducedMotion"], "animation interruption");
-    const target = request.to, options = cloneAndFreeze(ownRecord(request.options, "Transition options"));
+    const target = requireTransitionEndpoint(request.to), options = cloneAndFreeze(normalizeTransitionOptions(request.options));
     const playback = optional(request, ["rate", "repeat", "reducedMotion"]);
     controller.interrupt({ durationMs: options.durationMs,
       ...playback,

@@ -3186,6 +3186,18 @@ Node22 canonical package는1066entries/1,517,992packed/6,918,212unpacked bytes�
 새 내부 모듈1개를 포함하도록 최소 한도1066/1,518,000/6,919,000을 적용하고
 공개 entry와 browser bundle cap은 유지한다.
 
+Typed playback의 `animation/createPlayer.js`는 기존 controller에 planner와 sampler만
+주입한다. clock·예약·run Promise의 정본은 계속 controller 하나이며, queued interruption의
+준비 실패는 현재 run과 다음 예약을 보존한다. 목표와 전환 옵션은 queue 진입 전에 공통
+endpoint/options owner로 검사한다. 공개 entry와 offline 계약은 같은 기능의 후속 합산에서 연결한다.
+
+`animation/frameProvenance.js`는 sampler와 hit consumer가 공유하는 private WeakMap 연결만
+소유하며 frame의 직렬화 표면에는 상태를 추가하지 않는다. `interaction/hitProgram.js`의 좁은
+직접 import는 이 경량 owner에 한정한다. Planner·solver·renderer를 interaction으로 가져오지 않는다.
+현재 native frame hit은 원 endpoint의 metadata와 준비된 Text metric을 재사용하고, weighted
+표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Offline frame의 native metadata,
+session publication·asset lease 및 반복 interruption의 retention 검증은 후속 의무다.
+
 ### Cartesian title label-relative offset measurement
 
 Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌

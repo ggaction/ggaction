@@ -34,6 +34,7 @@ export function createPlaybackController(input) {
   let status = "idle", timeMs = rate < 0 ? durationMs : 0, iteration = 0, frame;
   let anchor, scheduled = false, handle, generation = 0, requesting = false;
   let busy = false, queue = [], settled, resolveFinished, finished;
+  let rejectedControl;
 
   function newRun() {
     settled = false;
@@ -117,6 +118,11 @@ export function createPlaybackController(input) {
       schedule();
     } catch (error) {
       queue = [];
+      if (rejectedControl !== undefined && Object.is(rejectedControl.error, error)) {
+        rejectedControl = undefined;
+        schedule();
+        throw error;
+      }
       if (status !== "disposed") {
         status = "cancelled";
         try { unschedule(); } finally { settle("cancelled"); }
@@ -226,7 +232,12 @@ export function createPlaybackController(input) {
     }
     // A rejected target must leave the active run and its pending frame intact.
     const prepared = busy ? undefined : prepare();
-    return perform(() => replace(prepared ?? prepare()));
+    return perform(() => {
+      let replacement;
+      try { replacement = prepared ?? prepare(); }
+      catch (error) { rejectedControl = { error }; throw error; }
+      replace(replacement);
+    });
   }
   function dispose() {
     if (status === "disposed") return;

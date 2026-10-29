@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, hconcat } from "../../../src/index.js";
 import { getMarkItems } from "../../../src/inspection.js";
-import { planTransition } from "../../../src/animation/planner.js";
+import { planTransition, exportTransitionPlan, restoreTransitionPlan } from "../../../src/animation/planner.js";
 import { sampleTransition } from "../../../src/animation/sample.js";
 import { registerAnimationPlan, registerAnimationFrame } from "../../../src/animation/frameProvenance.js";
 import { prepareAnimationHitFrame } from "../../../src/interaction/hitProgram.js";
@@ -18,10 +18,7 @@ const program = values => chart().createCanvas({ width: 300, height: 200, margin
   .encodeY({ field: "y", scale: { domain: [0, 10], nice: false } });
 function sample(from, to, time) {
   const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
-  registerAnimationPlan(plan, { from, to });
-  const frame = sampleTransition(plan, time);
-  registerAnimationFrame(frame, { plan, timeMs: time });
-  return frame;
+  return sampleTransition(plan, time);
 }
 function hit(frame, at) {
   const bridge = createHitFrameBridge(prepareAnimationHitFrame(frame));
@@ -70,6 +67,21 @@ test("nested current-frame hits retain the exact child path and scoped item key"
   assert.deepEqual(circles.map(node => hit(frame, point(node)).target.childPath), [["left"], ["right"]]);
 });
 
+test("interrupted weighted geometry retains one hit and the current endpoint's native lineage", () => {
+  const from = program([{ id: "a", x: 2, y: 5 }]);
+  const to = from.reviseData({ source: "rows", id: "next", values: [{ id: "a", x: 8, y: 5 }] }).encodeColor({ value: "red" });
+  const middle = sample(from, to, 50);
+  const goal = from.reviseData({ source: "rows", id: "goal", values: [{ id: "a", x: 5, y: 5 }] }).encodeColor({ value: "blue" });
+  const frame = sample(middle, goal, 50);
+  const weighted = frame.scene.nodes.find(node => node.type === "weighted-blend" && node.properties.sources[0].type === "circle");
+  assert.equal(weighted.properties.sources.length, 3);
+  for (const source of weighted.properties.sources) {
+    const result = hit(frame, { x: source.properties.x + source.offset[0], y: source.properties.y + source.offset[1] });
+    assert.equal(result.candidates.length, 1); assert.equal(result.target.resourceRefs[0].id, "goal");
+    assert.equal(result.target.itemKey, getMarkItems(goal)[0].key);
+  }
+});
+
 test("weighted text hit uses each concrete source's own prepared measurement", () => {
   const properties = { x: 10, y: 10, text: "WW", fontSize: 10, fontFamily: "sans-serif", textAlign: "left", textBaseline: "top", fill: "black" };
   const source = x => ({ type: "text", properties: { ...properties, x }, weight: .5, offset: [0, 0], clip: { x: 0, y: 0, width: 300, height: 200 }, clips: [] });
@@ -85,9 +97,8 @@ test("native frame admission rejects invalid counters, missing endpoint metadata
   const frame = sample(from, to, 50);
   assert.throws(() => prepareAnimationHitFrame(frame, -1), /version/);
   const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
-  const unbound = sampleTransition(plan, 50); registerAnimationFrame(unbound, { plan, timeMs: 50 });
+  const unbound = sampleTransition(restoreTransitionPlan(exportTransitionPlan(plan)), 50);
   assert.throws(() => prepareAnimationHitFrame(unbound), /native endpoint metadata/);
-  registerAnimationPlan(plan, { from, to });
   const missing = cloneAndFreeze({ ...frame, decisions: [] }); registerAnimationFrame(missing, { plan, timeMs: 50 });
   assert.throws(() => prepareAnimationHitFrame(missing), /exact sampled nodes/);
   const altered = structuredClone(frame); altered.decisions[1].targetIndex = 999;
