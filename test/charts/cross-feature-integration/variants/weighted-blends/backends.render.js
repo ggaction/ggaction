@@ -18,7 +18,7 @@ async function samples(buffer, checks, opaque = false) {
     return { actual, expected };
   });
 }
-for (const kind of ["opaque", "translucent", "topology", "many", "unequal", "endpoint", "text", "image"]) test(`weighted ${kind} keeps literal colors in PNG and per-item PDF lowering`, async () => {
+for (const kind of ["native-circle", "native-fill-path", "native-stroke-path", "opaque", "translucent", "topology", "many", "unequal", "endpoint", "text", "image"]) test(`weighted ${kind} keeps literal colors in PNG and per-item PDF lowering`, async () => {
   await mkdir(directory, { recursive: true });
   const bytes = kind === "text" ? await readFile(new URL("../../../../fixtures/fonts/metric-fixture.ttf", import.meta.url)) : undefined;
   const font = bytes && { contentHash: createHash("sha256").update(bytes).digest("hex"), mimeType: "font/ttf", byteLength: bytes.length,

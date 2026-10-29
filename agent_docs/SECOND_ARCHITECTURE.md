@@ -3151,6 +3151,21 @@ planner의 입력 준비이며 typed compatibility·중간 장면·offline anima
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
+`animation/planner.js`는 settled immutable program 두 개에서 기존 endpoint와 item key/role
+대응을 준비한다. `materialization/animation/point.js`는 exact child scope·final row identity와
+rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별도 mapper를 만들지 않는다.
+`animation/sample.js`는 기존 browser-safe concrete scene compiler를 공유하여 renderer-ready
+`{graphicSpec,scene,progress,decisions}`를 반환한다. 정확 endpoint는 원래 graphicSpec과 scene
+참조를 보존하며 중간 frame은 깊게 동결된 concrete data다. 같은 named Canvas의 background는
+기존 endpoint frame provenance로 별도 대응한다. 일반 anonymous graphics의 fallback key를
+item correspondence로 해석하지 않는다. 지원하지 않는 family·topology·appearance는 명시 이유와
+concrete weighted-blend로 남긴다. 이는 나머지 compatible family 구현을 대체하지 않는다.
+`core/programState.js`의 descriptor-safe settled-state admission을 hit preparation과 planner가 공유한다.
+이 checkpoint는 private authentic plan만 지원한다. 공개 entry·offline 복원·current-frame 재기준과
+player 연결은 후행 의무이며 새 semantic 상태나 public API는 없다. Node22 package는
+1118entries/1,592,653packed/7,244,281unpacked bytes이고 Node20/24 packed는1,595,412bytes다.
+최소 상한1118/1,596,000/7,245,000을 적용하며 공개 entry·browser bundle cap은 유지한다.
+
 `grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
 `scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만
 기하 보간한다. mapper를 복제하거나 pixel에서 semantic 값을 추정하지 않는다.

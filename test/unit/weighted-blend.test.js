@@ -84,3 +84,17 @@ test("all ordinary source kinds share their existing concrete validators and loc
   validateConcreteGraphicProperties("weighted-blend", { sources: [sources[0], source(.5, {
     type: "path", properties: { commands: [{ op: "M", x: 0, y: 0 }, { op: "L", x: 5, y: 5 }], fill: "none", stroke: "blue", strokeWidth: 1 } })] });
 });
+
+test("native fill-only and stroke-only sources need no invented paint fields", () => {
+  const commands = [{ op: "M", x: 0, y: 0 }, { op: "L", x: 5, y: 5 }];
+  for (const [type, properties] of [["circle", { x: 2, y: 3, radius: 1, fill: "red" }],
+    ["path", { commands, fill: "red" }], ["path", { commands, stroke: "blue", strokeWidth: 1 }]]) {
+    const pair = [source(.5, { type, properties }), source(.5, { type, properties })];
+    validateConcreteGraphicProperties("weighted-blend", { sources: pair });
+    assert.deepEqual(pair[0].properties, properties);
+  }
+  for (const [type, properties] of [["circle", { x: 2, y: 3, radius: 1, fill: "red", stroke: "blue" }],
+    ["path", { commands }], ["path", { commands, stroke: "blue" }]]) {
+    assert.throws(() => validateConcreteGraphicProperties("weighted-blend", { sources: [source(1), source(0, { type, properties })] }), /fully materialized/);
+  }
+});
