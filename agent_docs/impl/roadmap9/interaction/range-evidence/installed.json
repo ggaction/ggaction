@@ -1,0 +1,130 @@
+{
+  "artifact": {
+    "sha256": "2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036",
+    "entryCount": 909,
+    "size": 1307103,
+    "unpackedSize": 6003484
+  },
+  "receipts": [
+    {
+      "node": "v20.20.2",
+      "artifact": "2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036",
+      "sourceFree": true,
+      "runtime": [
+        "selection/logical-item-update PASS",
+        "selection/logical-scoped-update PASS"
+      ],
+      "types": "passed",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 806,
+          "minifiedBytes": 2297477,
+          "gzipBytes": 650587
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 529,
+          "minifiedBytes": 1254114,
+          "gzipBytes": 365437
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 138,
+          "minifiedBytes": 248334,
+          "gzipBytes": 82468
+        }
+      ]
+    },
+    {
+      "node": "v22.23.1",
+      "artifact": "2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036",
+      "sourceFree": true,
+      "runtime": [
+        "selection/logical-item-update PASS",
+        "selection/logical-scoped-update PASS"
+      ],
+      "types": "passed",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 806,
+          "minifiedBytes": 2297477,
+          "gzipBytes": 649740
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 529,
+          "minifiedBytes": 1254114,
+          "gzipBytes": 364720
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 138,
+          "minifiedBytes": 248334,
+          "gzipBytes": 81892
+        }
+      ]
+    },
+    {
+      "node": "v24.22.1",
+      "artifact": "2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036",
+      "sourceFree": true,
+      "runtime": [
+        "selection/logical-item-update PASS",
+        "selection/logical-scoped-update PASS"
+      ],
+      "types": "passed",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 806,
+          "minifiedBytes": 2297477,
+          "gzipBytes": 650587
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 529,
+          "minifiedBytes": 1254114,
+          "gzipBytes": 365437
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 138,
+          "minifiedBytes": 248334,
+          "gzipBytes": 82468
+        }
+      ]
+    }
+  ]
+}

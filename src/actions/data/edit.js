@@ -1,4 +1,5 @@
 import { reviseDataResources } from "./resourceRevision.js";
+import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -357,6 +358,7 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
   for (const target of orderConditionalMarkIds(next, consumers.map(consumer => consumer.id))) {
     next = applyLayerDataRematerialization(next, target);
   }
+  validateSelectionExpressionTargets(next, consumers.map(consumer => consumer.id));
   for (const revision of [...plan.revisions].reverse()) {
     if (retain.has(revision.old)) continue;
     next = next.releaseDerivedData({ id: revision.old });

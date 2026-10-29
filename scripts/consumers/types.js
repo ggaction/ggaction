@@ -3,6 +3,9 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const logicalSelectionFile = path.join(directory, "logical-selection.mts");
+  await writeFile(logicalSelectionFile, await readFile(new URL("./fixtures/logical-selection.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", logicalSelectionFile], directory);
   const interactionFile = path.join(directory, "interaction.mts");
   await writeFile(interactionFile, await readFile(new URL("./fixtures/interaction.ts", import.meta.url), "utf8"));
   run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", interactionFile], directory);

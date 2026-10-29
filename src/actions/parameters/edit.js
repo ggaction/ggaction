@@ -13,6 +13,7 @@ import { requireDataset } from "../../selectors/datasets.js";
 import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
 import { createPreparedSource } from "../data/sourceCreate.js";
 import { preparedSourceUpdate } from "../data/sourceContext.js";
+import { validateSelectionExpressionConsumers } from "../../materialization/selection/expression.js";
 
 let reviseFacetParameter;
 export function registerFacetParameterRevision(handler) { reviseFacetParameter = handler; }
@@ -34,13 +35,19 @@ export function reviseUnitParameter(program, { resource, value, preparedPlan }) 
   next = withPreparedResourceResults(next, { property: `resource[parameter:${resource.id}]`,
     value: { ...resource, revision: resource.revision + 1, result: { value } } },
   replacements, args => next.editSemantic(args));
-  const conditionals = rebindConditionalInputs(next, { parameter: resource.id });
+  const selections = next.semanticSpec.resources.filter(candidate => candidate.kind === "persistent-selection" &&
+    candidate.inputs.some(input => input.kind === "parameter" && input.id === resource.id)).map(candidate => candidate.id);
+  const conditionals = rebindConditionalInputs(next, { parameter: resource.id, selections });
   next = conditionals.program;
   if (plan.revisions.length) next = withGuideLayoutTransaction(next,
     candidate => applyRevisionPlan(candidate, undefined, plan, { parameterBudget: true, retain }));
-  for (const target of orderConditionalMarkIds(next, conditionals.targets)) {
+  const selectedResources = new Set(selections);
+  const selectionTargets = Object.values(next.materializationConfigs.selections ?? {}).filter(definition =>
+    selectedResources.has(definition.resource.id)).map(definition => definition.target);
+  for (const target of orderConditionalMarkIds(next, [...selectionTargets, ...conditionals.targets])) {
     if (!plan.revisions.some(revision => revision.id === requireLayer(next, target).data)) next = applyLayerDataRematerialization(next, target);
   }
+  validateSelectionExpressionConsumers(next, selections);
   return { program: next, plan };
 }
 

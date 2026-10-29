@@ -1,3 +1,6 @@
+import { ownRecord } from "../../core/ownData.js";
+import { unnamespaceItemKey } from "../../grammar/schemas/graphicIdentity.js";
+import { normalizeSelectionKeys } from "../../grammar/selectionSet.js";
 import { getWrappedActionMetadata } from "../../core/action.js";
 import { restoreProgramContextKeys } from "../../core/programState.js";
 import { normalizeActionTargets } from "../../grammar/actionTargets.js";
@@ -64,6 +67,26 @@ function refreshAncestors(original, revised) {
   return next.materializeComposition();
 }
 
+const ITEM_SELECTION_ACTIONS = new Set(["selectMarks", "editMarkSelection", "filterMarks", "highlightMarks", "createMarkLabels", "editMarkLabelSelection"]);
+function scopedSelectionOptions(program, path, operation, options) {
+  if (!path.length || !ITEM_SELECTION_ACTIONS.has(operation)) return options;
+  let current = program;
+  const namespaces = path.map(id => {
+    const namespace = `${current.compositionSpec.id}-${id}`;
+    current = current.children[id];
+    return namespace;
+  });
+  const local = items => normalizeSelectionKeys(items).map(key => unnamespaceItemKey(key, namespaces));
+  if (Object.hasOwn(options, "items")) return { ...options, items: local(options.items) };
+  if (Object.hasOwn(options, "select")) {
+    ownRecord(options.select, "Scoped mark selector");
+    if (Object.hasOwn(options.select, "items")) {
+      return { ...options, select: { ...options.select, items: local(options.select.items) } };
+    }
+  }
+  return options;
+}
+
 // Explicit public dispatch only. Edits run on immutable candidates, then shared
 // domains and all changed ancestor snapshots are materialized once from the
 // complete final state. This avoids intermediate mixed-palette/domain failures.
@@ -85,7 +108,8 @@ export function dispatchActionTargets(program, wrappedAction, args) {
   for (const target of targets) next = changePath(next, target.childPath, selected => {
     const hidden = collected.get(JSON.stringify(target.childPath));
     const candidate = hidden ? selected._withContext({ compositionCollectedLegends: [...hidden] }) : selected;
-    const nativeOptions = { ...options, ...(target.id === undefined ? {} : { target: target.id }) };
+    const localOptions = scopedSelectionOptions(program, target.childPath, getWrappedActionMetadata(wrappedAction).op, options);
+    const nativeOptions = { ...localOptions, ...(target.id === undefined ? {} : { target: target.id }) };
     const result = target.facetSource
       ? candidate.editFacetSource({ action: { method: getWrappedActionMetadata(wrappedAction).op, options: nativeOptions } })
       : wrappedAction.call(candidate, nativeOptions);

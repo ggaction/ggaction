@@ -85,6 +85,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -92,27 +95,40 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-selectMarks({ id?, target?, grain?, field | channel | property, op, ...operatorOptions })
+selectMarks({ id?, target?, ...selector })
 ```
 
 Store a reusable semantic final-item selection without changing graphics.
+Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
+`getMarkItems` or interaction inspection; `empty` defaults to `"none"`.
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
-values, and properties are concrete graphical values.
+values, and properties are concrete graphical values. A range requires `min` or
+`max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
+or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
+
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](../../api/appearance/selection-and-highlighting.md#selections-from-expressions)
 
 
 ## `editMarkSelection`
@@ -135,7 +151,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
+| `mode` | Optional / branch-dependent | `"add" \| "intersect" \| "replace" \| "subtract" \| "toggle" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -143,12 +163,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -156,11 +178,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })
 ```
 
-Replace the complete selector while preserving the stored selection ID and
-mark target. Dependent highlights and exact categorical legend reflection are
+Replace the complete selector by default, or combine its logical item keys with
+`add`, `toggle`, `subtract`, or `intersect`. The selection ID and mark target remain. Dependent highlights and exact categorical legend reflection are
 replayed from a clean baseline.
 [Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 

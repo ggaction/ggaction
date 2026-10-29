@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:e44bce80ddb926a8c23ee07bf4467f01375e35ba85222578fd1a10324cb3c87f. Status: development. Runtime source: 039deaf148263274dcb72aff182947405a045204. Release baseline: v0.0.13.
+Contract: sha256:dd4532a717b448f51ee550a6d95530587671458c2d09b5e633b8a67ae7e650b6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/039deaf148263274dcb72aff182947405a045204/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/039deaf148263274dcb72aff182947405a045204/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12500,7 +12500,7 @@ Explicit shape ranges may reuse supported shapes for different categories. Provi
 ## Mark selection and highlighting
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself
-does not alter `semanticSpec` or `graphicSpec`:
+stores its meaning in `semanticSpec.resources` and leaves `graphicSpec` unchanged:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -12526,13 +12526,13 @@ Choose exactly one value source:
 | --- | --- | --- |
 | `eq`, `neq`, `gt`, `gte`, `lt`, `lte` | `value` | Strict comparison without coercion |
 | `oneOf` | `values` array | Strict set membership |
-| `range` | `min`, `max`, optional `inclusive` | Both endpoints included by default |
+| `range` | At least one of `min`, `max`; optional endpoint flags | Both endpoints included by default |
 | `min`, `max` | optional `count`, `groupBy`, `ties` | `count: 1`, `ties: "first"` |
 
 Operators are strict
 `eq | neq | gt | gte | lt | lte`, set membership with
 `{ op: "oneOf", values }`, range selection with
-`{ op: "range", min, max, inclusive? }`, or ranked selection with
+`{ op: "range", min?, max?, minInclusive?, maxInclusive? }`, or ranked selection with
 `{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
 `ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
 values without coercion. The default `grain: "item"` selects one point symbol,
@@ -12541,6 +12541,14 @@ line/area series path, one arc sector, or one rule line.
 Stacked bars additionally accept `grain: "stack"` to treat all segments in one
 bin or category as a single item. A multi-row path field or channel must have
 one unique value at series grain.
+
+A range needs at least one endpoint. For example, `min: 10, max: 20,
+minInclusive: true, maxInclusive: false` selects values from 10 up to, but
+excluding, 20. Omit one endpoint for a one-sided range. The existing
+`inclusive` shorthand sets both ends together; do not combine it with endpoint
+flags. Each endpoint defaults to included, and a flag requires its endpoint.
+Numeric and string bounds compare only values of the same type. Use a temporal
+channel's epoch milliseconds for time ranges.
 
 Bar channel and graphical property names intentionally mean different things.
 For a vertical bar, semantic `y` is the lower/start endpoint and semantic `y2`
@@ -12662,6 +12670,48 @@ rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
 
+## Selecting stable item keys
+
+Use `items` when a picker or list already identifies complete visual items. Keys
+come from `getMarkItems` or the interaction hit result; array positions and raw
+graphic IDs are not keys.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+
+const program = chart().createCanvas({ width: 300, height: 240, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+const items = getMarkItems(program, { target: "points" });
+const picked = program.selectMarks({
+  id: "picked", target: "points", items: [items[0].key]
+});
+const toggled = picked.editMarkSelection({
+  selection: "picked", mode: "toggle", items: [items[0].key]
+});
+```
+
+`items: []` selects nothing by default. Set `empty: "all"` explicitly to make an
+empty list select every current item. A nonempty list with no visible matches
+still selects nothing. Hidden keys remain stored, so removing a filter can make
+the same selection visible again. Duplicate keys are stored once.
+
+`editMarkSelection` defaults to `mode: "replace"`. Use `add`, `toggle`,
+`subtract`, or `intersect` to combine the current set with incoming items, rows,
+or a value selector. These four modes store the resulting item keys at the
+existing grain. Existing hidden keys survive unless the operation removes them.
+The empty policy is preserved unless explicitly supplied with an items selector.
+A replacement field/range selector keeps reevaluating against current values.
+
+The same items selector works in `highlightMarks({ select: ... })`,
+`createMarkLabels({ select: ... })`, and `filterMarks`. Use keys from the exact
+mark and grain being selected. In a composition, inspect and author with the
+same explicit `{ childPath, id }` target; a key from another child is rejected.
+Composite inspection reports each item's component `target`.
+
 ## Editing and removing stored intent
 
 Replace a stored selector while keeping its ID and mark target:
@@ -12708,6 +12758,61 @@ body and center-rule resource.
 
 See the complete [mark-selection tutorial](./tutorials/mark-selection/) for
 the approved point, stacked-bar, and line-series examples.
+
+## Selections from expressions
+
+Use `where` on `selectMarks` or `editMarkSelection` to retain a boolean version 2
+expression. Fields are read at the final item grain: a grouped path or aggregate
+must have one unique value for the referenced field. The expression does not
+match individual contributing rows behind that item.
+
+> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas().createData({
+  id: "observations",
+  values: [
+    { Horsepower: 90, Weight: 1800 },
+    { Horsepower: 120, Weight: 2400 },
+    { Horsepower: 180, Weight: 3200 }
+  ]
+}).createScatterPlot({ id: "points", x: "Horsepower", y: "Weight" });
+
+const liveSelection = program
+  .createParameter({ id: "threshold", value: 100 })
+  .selectMarks({
+    id: "aboveThreshold",
+    target: "points",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "Horsepower" },
+        right: { type: "parameter", id: "threshold" }
+      }
+    }
+  })
+  .highlightMarks({ selection: "aboveThreshold", color: "red" });
+
+const changed = liveSelection.editParameter({ target: "threshold", value: 150 });
+```
+
+Parameter edits refresh the selection, its highlights, named labels and
+conditional encodings together. Saving and restoring retains exact parameter
+bindings. Every branch is validated, including inactive branches and empty
+selections. The result must be boolean; existing expression limits also apply.
+An absent field across all nonempty items is an error. Missing fields on some
+items follow the expression's missing-value rules.
+
+`where` is exclusive of other selector modes. The highlight facade also accepts
+`select: { where }` because it creates a persistent selection. For labels, use
+`selection: "aboveThreshold"`; inline label selectors and `filterMarks` retain
+their existing comparison grammar. A set update such as `mode: "add"` evaluates
+an incoming AST once and stores item keys. Use the default `replace` to keep a
+live expression.
 
 ## Related
 
@@ -20546,6 +20651,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -20553,12 +20660,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -20665,7 +20774,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelectionSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -31993,6 +32102,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -32000,25 +32112,38 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-selectMarks({ id?, target?, grain?, field | channel | property, op, ...operatorOptions })
+selectMarks({ id?, target?, ...selector })
 ```
 
 Store a reusable semantic final-item selection without changing graphics.
+Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
+`getMarkItems` or interaction inspection; `empty` defaults to `"none"`.
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
-values, and properties are concrete graphical values.
+values, and properties are concrete graphical values. A range requires `min` or
+`max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
+or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](./api/appearance/selection-and-highlighting/#mark-selection-and-highlighting)
+
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](./api/appearance/selection-and-highlighting/#selections-from-expressions)
 
 ## `editMarkSelection`
 
@@ -32039,7 +32164,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
+| `mode` | Optional / branch-dependent | `"add" \| "intersect" \| "replace" \| "subtract" \| "toggle" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -32047,22 +32176,24 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })
 ```
 
-Replace the complete selector while preserving the stored selection ID and
-mark target. Dependent highlights and exact categorical legend reflection are
+Replace the complete selector by default, or combine its logical item keys with
+`add`, `toggle`, `subtract`, or `intersect`. The selection ID and mark target remain. Dependent highlights and exact categorical legend reflection are
 replayed from a clean baseline.
 [Selection lifecycle](./api/appearance/selection-and-highlighting/#editing-and-removing-stored-intent)
 
@@ -32724,6 +32855,7 @@ export type {
   SemanticScale,
   SemanticSpec,
   SelectMarksOptions,
+  MarkSelectionSelector,
   StrokeDashEncodingOptions,
   StrokeWidthEncodingOptions,
   StrokeWidthScaleOptions,
@@ -39011,10 +39143,11 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
 ```typescript
 export type EditMarkSelectionOptions = {
   selection?: string;
-} & MarkSelector;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector).
 
 ### `EditNormalizedDataOptions` {#type-editnormalizeddataoptions}
 
@@ -41066,7 +41199,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -41082,7 +41215,7 @@ export interface HighlightMarksOptions {
 }
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern) · [`PointShape`](./reference/types/#type-pointshape).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector) · [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern) · [`PointShape`](./reference/types/#type-pointshape).
 
 ### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
 
@@ -42098,12 +42231,28 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
 export interface MarkOutline { color: string; width: number; }
 ```
 
+### `MarkSelectionSelector` {#type-markselectionselector}
+
+ Expand MarkSelectionSelector
+
+```typescript
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
+```
+
+Related types: [`MarkSelector`](./reference/types/#type-markselector) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
 ### `MarkSelector` {#type-markselector}
 
  Expand MarkSelector
 
 ```typescript
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -42112,12 +42261,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -42127,7 +42271,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 );
 ```
 
-Related types: [`MarkGraphicProperty`](./reference/types/#type-markgraphicproperty).
+Related types: [`MarkGraphicProperty`](./reference/types/#type-markgraphicproperty) · [`FilterRange`](./reference/types/#type-filterrange).
 
 ### `MarkShadow` {#type-markshadow}
 
@@ -44758,10 +44902,10 @@ Related types: [`RulePositionEncodingBase`](./reference/types/#type-ruleposition
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](./reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](./reference/types/#type-markselectionselector).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 
@@ -46600,12 +46744,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/039deaf148263274dcb72aff182947405a045204/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/039deaf148263274dcb72aff182947405a045204/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -49656,9 +49800,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e44bce80ddb926a8c23ee07bf4467f01375e35ba85222578fd1a10324cb3c87f` |
+| Contract fingerprint | `sha256:dd4532a717b448f51ee550a6d95530587671458c2d09b5e633b8a67ae7e650b6` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `039deaf148263274dcb72aff182947405a045204` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

@@ -1,3 +1,4 @@
+import { normalizeOrderedRange, orderedRangeContains } from "./orderedRange.js";
 import { inspectPredicateExpression, normalizePredicateExpression } from "./expressionAst.js";
 import { evaluatePredicateExpression } from "./conditionalEncoding.js";
 import { validateExpressionParameterInputs } from "./expressionInputs.js";
@@ -39,50 +40,11 @@ function validatePredicate(predicate) {
 }
 
 function validateRange(range) {
-  if (!isPlainObject(range)) {
-    throw new TypeError("Filter range must be a plain object.");
-  }
-  const unknown = Object.keys(range).find(
-    key => !["min", "max", "inclusive", "minInclusive", "maxInclusive"].includes(key)
-  );
-  if (unknown !== undefined) {
-    throw new Error(`Unknown filter range property "${unknown}".`);
-  }
-  const hasMin = Object.hasOwn(range, "min");
-  const hasMax = Object.hasOwn(range, "max");
-  if (!hasMin && !hasMax) throw new TypeError("Filter range requires min or max.");
-  if ((hasMin && !isFiniteOrString(range.min)) || (hasMax && !isFiniteOrString(range.max))) {
-    throw new TypeError("Filter range endpoints must be finite numbers or strings.");
-  }
-  if (hasMin && hasMax && typeof range.min !== typeof range.max) {
-    throw new TypeError("Filter range endpoints must use one type.");
-  }
-  if (hasMin && hasMax && range.min > range.max) {
-    throw new RangeError("Filter range min must not exceed max.");
-  }
-  if (range.inclusive !== undefined && typeof range.inclusive !== "boolean") {
-    throw new TypeError("Filter range inclusive must be a boolean.");
-  }
-  if (range.inclusive !== undefined && (
-    range.minInclusive !== undefined || range.maxInclusive !== undefined
-  )) throw new Error("Filter range cannot combine inclusive with endpoint inclusivity.");
-  for (const [key, endpoint] of [["minInclusive", "min"], ["maxInclusive", "max"]]) {
-    if (range[key] !== undefined && typeof range[key] !== "boolean") {
-      throw new TypeError(`Filter range ${key} must be a boolean.`);
-    }
-    if (range[key] !== undefined && !Object.hasOwn(range, endpoint)) {
-      throw new Error(`Filter range ${key} requires ${endpoint}.`);
-    }
-  }
+  normalizeOrderedRange(range, "Filter range");
 }
 
 function normalizeRange(range) {
-  validateRange(range);
-  const shared = range.inclusive;
-  return {
-    ...(Object.hasOwn(range, "min") ? { min: range.min, minInclusive: shared ?? range.minInclusive ?? true } : {}),
-    ...(Object.hasOwn(range, "max") ? { max: range.max, maxInclusive: shared ?? range.maxInclusive ?? true } : {})
-  };
+  return normalizeOrderedRange(range, "Filter range");
 }
 
 function normalizeSet(values, name) {
@@ -262,12 +224,7 @@ function matches(value, transform) {
     if (op === "gt") return value > operand;
     return value >= operand;
   }
-  const { min, max, minInclusive = transform.range.inclusive ?? true, maxInclusive = transform.range.inclusive ?? true } = transform.range;
-  if (min !== undefined && !comparable(value, min)) return false;
-  if (max !== undefined && !comparable(value, max)) return false;
-  if (min !== undefined && (value < min || (value === min && !minInclusive))) return false;
-  if (max !== undefined && (value > max || (value === max && !maxInclusive))) return false;
-  return true;
+  return orderedRangeContains(value, transform.range);
 }
 
 export function deriveFilteredRows(values, transform, environment) {

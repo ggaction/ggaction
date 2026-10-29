@@ -96,7 +96,7 @@
     {
       "name": "select",
       "required": false,
-      "type": "MarkSelector | undefined"
+      "type": "MarkSelectionSelector | undefined"
     },
     {
       "name": "selection",

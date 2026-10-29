@@ -181,6 +181,21 @@
   {
     "file": "api/appearance/selection-and-highlighting.md",
     "block": 5,
+    "heading": "Selecting stable item keys",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.",
+    "sha256": "09d266e96679940bb8fa0250805c6d87a5c564a6f3b22c18d80020a4075ded34",
+    "executable": true
+  },
+  {
+    "file": "api/appearance/selection-and-highlighting.md",
+    "block": 6,
     "heading": "Editing and removing stored intent",
     "mode": "fragment",
     "environment": "esm-context",
@@ -196,7 +211,7 @@
   },
   {
     "file": "api/appearance/selection-and-highlighting.md",
-    "block": 6,
+    "block": 7,
     "heading": "Editing and removing stored intent",
     "mode": "fragment",
     "environment": "esm-context",
@@ -209,6 +224,22 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `revised`. Resource selectors used here: `selection: \"highestByOrigin\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "603c1ba75dd5e8887575daa63ef177b1bb2e133abed89cc6724d61a88323792a",
     "executable": false
+  },
+  {
+    "file": "api/appearance/selection-and-highlighting.md",
+    "block": 8,
+    "heading": "Selections from expressions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"aboveThreshold\"",
+      "target: \"threshold\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.",
+    "sha256": "91e0289d6e4988b2f27176ec3dc70dc1c9c33775c9cab635cdc714045f9a3ea1",
+    "executable": true
   },
   {
     "file": "api/axes.md",
