@@ -14194,6 +14194,11 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisLabelGap?: number;
+  axisTitleGap?: number;
+  legendItemGap?: number;
+  palette?: readonly string[];
+  patternPalette?: readonly PatternPaint[];
   axisStrokeWidth?: number;
   tickStrokeWidth?: number;
   tickSize?: number;
@@ -14227,6 +14232,8 @@ export interface ThemeTokens {
 ```
 
 </details>
+
+Related types: [`PatternPaint`](#type-patternpaint).
 
 ### `ThetaAxisLabelOptions` {#type-thetaaxislabeloptions}
 

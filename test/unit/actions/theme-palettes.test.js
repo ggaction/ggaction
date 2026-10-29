@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { chart as basicChart } from "../../../src/basic.js";
 import { chart, hconcat } from "../../../src/index.js";
 import { getMarkItems } from "../../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 const values = [{ id: "a", x: 1, y: 2, group: 1 }, { id: "b", x: 2, y: 4, group: "1" }, { id: "c", x: 3, y: 1, group: true }];
-const base = () => chart().createCanvas({ width: 640, height: 400, margin: 70 }).createData({ id: "raw", values, keyField: "id" })
+const base = (factory = chart) => factory().createCanvas({ width: 640, height: 400, margin: 70 }).createData({ id: "raw", values, keyField: "id" })
   .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" });
 const palette = ["red", "blue"];
 const patterns = [{ type: "pattern", style: "diagonal", foreground: "red" }, { type: "pattern", style: "dots", foreground: "blue" }];
@@ -70,4 +71,13 @@ test("palette inputs are descriptor-safe, copied and bounded; nested descendants
   const composed = hconcat({ programs: [{ id: "a", program: p }, { id: "b", program: p }] });
   const q = composed.applyTheme({ theme }); assert.deepEqual(fills(q.children.a), ["red", "blue", "red"]);
   assert.deepEqual(q.removeTheme().graphicSpec, composed.graphicSpec);
+});
+
+
+test("Basic categorical fills and native stroke channels share automatic palette precedence", () => {
+  const basic = base(basicChart).encodeColor({ field: "group" }).applyTheme({ theme: { base: "light", tokens: { palette, patternPalette: patterns } } });
+  assert.deepEqual(fills(basic).map(fill => fill.style), ["diagonal", "dots", "diagonal"]);
+  const p = base().encodeStroke({ field: "group" }), q = p.applyTheme({ theme });
+  assert.deepEqual(q.graphicSpec.objects.points.items.map(item => item.properties.stroke), ["red", "blue", "red"]);
+  assert.deepEqual(q.removeTheme().graphicSpec, p.graphicSpec);
 });

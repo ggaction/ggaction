@@ -1,0 +1,6 @@
+import {readFile,writeFile} from 'node:fs/promises';import path from 'node:path';
+import {preparePackageConsumer} from '../../scripts/package-consumer.js';import {run} from '../../scripts/consumers/runtime.js';
+const consumer=await preparePackageConsumer({packageSpec:path.resolve('.artifacts/theme-completion/package/ggaction-0.0.26.tgz')});
+try{const fixture=(await readFile('test/unit/actions/theme-palettes.test.js','utf8')).replaceAll('../../../src/index.js','ggaction').replaceAll('../../../src/basic.js','ggaction/basic').replaceAll('../../../src/persistence.js','ggaction/persistence').replaceAll('../../../src/inspection.js','ggaction/inspection');
+await writeFile(path.join(consumer.directory,'palettes.mjs'),fixture);run(process.execPath,['--test','palettes.mjs'],consumer.directory,{stdio:'inherit'});
+}finally{await consumer.cleanup()}

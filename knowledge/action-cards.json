@@ -512,6 +512,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ],
       "editableVia": [
@@ -588,6 +591,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ],
       "editableVia": [

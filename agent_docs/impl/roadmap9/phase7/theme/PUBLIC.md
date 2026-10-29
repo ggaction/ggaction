@@ -6,8 +6,8 @@
 - [x] 사용자 전체 STEP-077 승인 `b758b912` 재사용; 아래 구체 선택을 기록
 - [x] closed token 확장·실제 winning source inspection
 - [x] paint-only / typography / guide geometry dependency 연결
-- [ ] nested composition·named selection·codec·renderer·설치 소비자 검증
-- [ ] 타입·Current·public docs·generated inventory 동기화 및 checkpoint
+- [x] nested composition·named selection·codec·renderer·설치 소비자 검증
+- [x] 타입·Current·public docs·generated inventory 동기화 및 checkpoint
 
 기준은 font/GraphPlot 통합 source `e412fe55e`, evidence `36349d6b1`다.
 아래 guide·palette token 확장과 inspection source는 [completion checkpoint](COMPLETION.md)에 구현했다. 최종 qualification 상태는 해당 기록이 소유한다. Global

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:57d7f0ad2cf03db46ca2b74f540e16db9a9f75098ad407ec43033d17070865a2. Status: development. Runtime source: a273eeef5182708ccc9c19f943fd02f25e3aade1. Release baseline: v0.0.13.
+Contract: sha256:c544143e7f6f5b4a5d28ef9ed3ee3fff6d59be3b964ca91882ef95ee81557b3f. Status: development. Runtime source: 5a38661bd3ef8cd25820b8bb65830cbcc0c402ef. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/a273eeef5182708ccc9c19f943fd02f25e3aade1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/5a38661bd3ef8cd25820b8bb65830cbcc0c402ef/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/a273eeef5182708ccc9c19f943fd02f25e3aade1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/5a38661bd3ef8cd25820b8bb65830cbcc0c402ef/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -17271,6 +17271,14 @@ resource targets include their bound marks, and image mark views expose the name
 resource in `sourceRefs`. IDs from different resource kinds never alias, and
 `childPath` is resolved from the outer program inward.
 
+## Appearance provenance
+
+`getMarkItems(program, { target })` and `inspectProgram(program).views` include an immutable `appearance` array. Each entry identifies its semantic owner, item key or guide component, property and resolved value. Its `source.kind` is `defaults`, `family`, `theme`, `style`, `explicit`, `interaction` or `unknown`.
+
+Theme sources include the frame owner, theme name and token. Authored options include their action; named overlays identify their selection. A value deliberately set equal to a default remains authored. Guide offsets and item gaps report the resolved stored setting, including automatic title placement adjustments. These reads preserve the program, resources and trace.
+
+Legacy state without authoring evidence, extension replacement of complete graphic items, or a property selection whose pre-highlight baseline cannot be proven reports `unknown`. The inspection does not infer a source from a matching color alone or claim pixel visibility.
+
 ## Related
 
 [Data updates and snapshots](./data-updates/) ·
@@ -32810,7 +32818,18 @@ export interface PartitionNavigation {
   readonly key: string; readonly parent: string | null; readonly firstChild: string | null;
   readonly previousSibling: string | null; readonly nextSibling: string | null; readonly root: string | null;
 }
-export interface OwnerInspection { readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export type AppearanceSource =
+  | { readonly kind: "defaults" | "family"; readonly action?: string }
+  | { readonly kind: "theme"; readonly owner: string; readonly name: "light" | "dark"; readonly token: keyof import("./program.js").ThemeTokens }
+  | { readonly kind: "style"; readonly action?: string; readonly key?: string }
+  | { readonly kind: "explicit"; readonly action: string; readonly channel?: string }
+  | { readonly kind: "interaction"; readonly selection: string; readonly token?: "highlight"; readonly complement?: true }
+  | { readonly kind: "unknown" };
+export interface AppearanceProvenance {
+  readonly owner: ResourceRef; readonly itemKey?: string; readonly component: string;
+  readonly primitive?: number; readonly property: string; readonly value: unknown; readonly source: AppearanceSource;
+}
+export interface OwnerInspection { readonly appearance: readonly AppearanceProvenance[]; readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
 export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
@@ -32842,6 +32861,7 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  readonly appearance: readonly AppearanceProvenance[];
   readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
@@ -44854,6 +44874,11 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisLabelGap?: number;
+  axisTitleGap?: number;
+  legendItemGap?: number;
+  palette?: readonly string[];
+  patternPalette?: readonly PatternPaint[];
   axisStrokeWidth?: number;
   tickStrokeWidth?: number;
   tickSize?: number;
@@ -44885,6 +44910,8 @@ export interface ThemeTokens {
   fontFamily: string;
 }
 ```
+
+Related types: [`PatternPaint`](./reference/types/#type-patternpaint).
 
 ### `ThetaAxisLabelOptions` {#type-thetaaxislabeloptions}
 
@@ -45978,12 +46005,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a273eeef5182708ccc9c19f943fd02f25e3aade1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5a38661bd3ef8cd25820b8bb65830cbcc0c402ef/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a273eeef5182708ccc9c19f943fd02f25e3aade1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5a38661bd3ef8cd25820b8bb65830cbcc0c402ef/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -48493,6 +48520,12 @@ Use `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, and `gridStrokeWidth` for 
 
 Optional `fontSize` and `fontWeight` tokens set text defaults across marks, labels, guides, titles, and facet headers. Axis-specific size tokens override the global size. Authored role styles and named highlights keep priority, including an explicit numeric zero where the original style option accepts it. Removing or replacing a theme restores the native role defaults for omitted tokens. If an exact font profile is active, prepare the required font and measurements before changing typography; missing preparation rejects the whole change.
 
+Use `axisLabelGap` and `axisTitleGap` for the existing axis offsets. Automatic Cartesian titles still adjust their preferred gap to fit labels and the Canvas. Explicit offsets, including zero and label-relative gaps, take priority. `legendItemGap` sets the spacing of item and sampled legends and must be positive; continuous gradient bars keep their existing geometry.
+
+Optional `palette: ["red", "blue"]` changes automatic categorical color and stroke ranges. Explicit ranges and continuous scales keep their settings. `patternPalette` accepts pattern paint objects and cycles them by the typed category domain for filled marks and categorical legend symbols. For example, use `[{ type: "pattern", style: "diagonal" }, { type: "pattern", style: "dots" }]`. Existing pattern origins, alpha and clipping apply; named highlights remain on top.
+
+Read [appearance provenance](./inspection/#appearance-provenance) to see which theme, option or selection supplied a resolved value.
+
 ## Related
 
 [Authoring conventions](./concepts/authoring-conventions/) · [Data policies](./api/data/policies/) ·
@@ -49028,9 +49061,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:57d7f0ad2cf03db46ca2b74f540e16db9a9f75098ad407ec43033d17070865a2` |
+| Contract fingerprint | `sha256:c544143e7f6f5b4a5d28ef9ed3ee3fff6d59be3b964ca91882ef95ee81557b3f` |
 | Example and dataset source | `b63c5f8739681aae0603281f97d065a26d564efa` |
-| Runtime source commit | `a273eeef5182708ccc9c19f943fd02f25e3aade1` |
+| Runtime source commit | `5a38661bd3ef8cd25820b8bb65830cbcc0c402ef` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 335 |
 | Declared actions in that release | 234 |

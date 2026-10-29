@@ -1,0 +1,552 @@
+{
+  "counts": {
+    "publicActions": 328,
+    "topLevelOptionPaths": 3089,
+    "nestedOptionPaths": 26948,
+    "optionPaths": 30037,
+    "requiredOptionPaths": 19986,
+    "excludedOptionPaths": 10051,
+    "topLevelCategoricalPaths": 1080,
+    "topLevelLiteralValues": 4060,
+    "literalFamilies": 252,
+    "pathLiteralRequirements": 14617,
+    "familyLiteralRequirements": 525,
+    "pathDiversityRequirements": 488
+  },
+  "tokens": [
+    {
+      "id": "option-path:applyTheme.theme.tokens",
+      "action": "applyTheme",
+      "path": "theme.tokens",
+      "depth": 1,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axis",
+      "action": "applyTheme",
+      "path": "theme.tokens.axis",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisLabel",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisLabel",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisLabelFontFamily",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisLabelFontFamily",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisLabelFontSize",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisLabelFontSize",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisLabelGap",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisLabelGap",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisStrokeWidth",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisStrokeWidth",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisTitle",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisTitle",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisTitleFontFamily",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisTitleFontFamily",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisTitleFontSize",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisTitleFontSize",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.axisTitleGap",
+      "action": "applyTheme",
+      "path": "theme.tokens.axisTitleGap",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.background",
+      "action": "applyTheme",
+      "path": "theme.tokens.background",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.border",
+      "action": "applyTheme",
+      "path": "theme.tokens.border",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.boxLine",
+      "action": "applyTheme",
+      "path": "theme.tokens.boxLine",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.boxMedian",
+      "action": "applyTheme",
+      "path": "theme.tokens.boxMedian",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.fontFamily",
+      "action": "applyTheme",
+      "path": "theme.tokens.fontFamily",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.fontSize",
+      "action": "applyTheme",
+      "path": "theme.tokens.fontSize",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.fontWeight",
+      "action": "applyTheme",
+      "path": "theme.tokens.fontWeight",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.gradientCenter",
+      "action": "applyTheme",
+      "path": "theme.tokens.gradientCenter",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.grid",
+      "action": "applyTheme",
+      "path": "theme.tokens.grid",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.gridStrokeWidth",
+      "action": "applyTheme",
+      "path": "theme.tokens.gridStrokeWidth",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.highlight",
+      "action": "applyTheme",
+      "path": "theme.tokens.highlight",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.legendItemGap",
+      "action": "applyTheme",
+      "path": "theme.tokens.legendItemGap",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.mark",
+      "action": "applyTheme",
+      "path": "theme.tokens.mark",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.mutedText",
+      "action": "applyTheme",
+      "path": "theme.tokens.mutedText",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.palette",
+      "action": "applyTheme",
+      "path": "theme.tokens.palette",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.palette[]",
+      "action": "applyTheme",
+      "path": "theme.tokens.palette[]",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.palette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[]",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[]",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].background",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].background",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].coordinateSpace",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].coordinateSpace",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "literalFamily": "literal-4ede1f4d4e29",
+      "literalPolicy": "path-values",
+      "values": [
+        "string:object",
+        "string:plot"
+      ]
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].foreground",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].foreground",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].phase",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].phase",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].phase[]",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].phase[]",
+      "depth": 4,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].pitch",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].pitch",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].strokeWidth",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].strokeWidth",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].style",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].style",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "literalFamily": "literal-e550ce7e3096",
+      "literalPolicy": "path-values",
+      "values": [
+        "string:antidiagonal",
+        "string:cross",
+        "string:diagonal",
+        "string:dots",
+        "string:horizontal",
+        "string:solid",
+        "string:vertical"
+      ]
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.patternPalette[].type",
+      "action": "applyTheme",
+      "path": "theme.tokens.patternPalette[].type",
+      "depth": 3,
+      "topLevel": false,
+      "required": false,
+      "evidence": "redacted-trace",
+      "exclusion": {
+        "reason": "redacted-array",
+        "detail": "Action traces summarize arrays as counts; the observable parent option owns coverage.",
+        "replacement": "option-path:applyTheme.theme.tokens.patternPalette"
+      },
+      "literalFamily": "literal-064f5dce523b",
+      "literalPolicy": "path-values",
+      "values": [
+        "string:pattern"
+      ]
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.referenceBand",
+      "action": "applyTheme",
+      "path": "theme.tokens.referenceBand",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.referenceLine",
+      "action": "applyTheme",
+      "path": "theme.tokens.referenceLine",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.regressionBand",
+      "action": "applyTheme",
+      "path": "theme.tokens.regressionBand",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.sizeSymbol",
+      "action": "applyTheme",
+      "path": "theme.tokens.sizeSymbol",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.strongText",
+      "action": "applyTheme",
+      "path": "theme.tokens.strongText",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.text",
+      "action": "applyTheme",
+      "path": "theme.tokens.text",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.tickSize",
+      "action": "applyTheme",
+      "path": "theme.tokens.tickSize",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    },
+    {
+      "id": "option-path:applyTheme.theme.tokens.tickStrokeWidth",
+      "action": "applyTheme",
+      "path": "theme.tokens.tickStrokeWidth",
+      "depth": 2,
+      "topLevel": false,
+      "required": true,
+      "evidence": "direct-trace",
+      "values": []
+    }
+  ]
+}
