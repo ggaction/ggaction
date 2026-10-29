@@ -1557,6 +1557,18 @@
           "tests": [
             "test/charts/partition-layouts/png.render.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/partition-transition.test.js",
+            "test/browser/animation-partition.browser.js",
+            "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+          ]
         }
       }
     },
@@ -1638,6 +1650,18 @@
           ],
           "tests": [
             "test/charts/partition-layouts/png.render.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/partition-transition.test.js",
+            "test/browser/animation-partition.browser.js",
+            "test/charts/cross-feature-integration/variants/animation/partition.render.js"
           ]
         }
       }

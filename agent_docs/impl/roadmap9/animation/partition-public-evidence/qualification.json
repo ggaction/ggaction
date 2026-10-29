@@ -193,5 +193,13 @@
     "Combine with Cartesian/polar/Geo typed animation and accepted native session evidence",
     "Complete remaining guides/timeline/family obligations",
     "Final native qualification and STEP077 release scope"
-  ]
+  ],
+  "nativeManifestAssignment": {
+    "scope": [
+      "partition-cartesian/scene-animation",
+      "partition-polar/scene-animation"
+    ],
+    "tests": 16,
+    "meaning": "Assign current contract and executable owners only; all577 consumer verdicts and79 acceptance group verdicts remain pending final candidate qualification."
+  }
 }
