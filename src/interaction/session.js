@@ -27,27 +27,28 @@ const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
 function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
-  if (!Array.isArray(value) || value.length > 258) throw new TypeError("Interaction bindings exceed the binding limit.");
+  if (!Array.isArray(value) || value.length > 259) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], linked = [], selected = [], regions = [];
+  const inspect = [], context = [], linked = [], selected = [], regions = [];
   for (const binding of value) {
     const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain"], "Interaction binding");
-    (["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
+    (head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
-  if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one editing pointer binding.");
+  if (inspect.length > 1 || context.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect, one context menu and one editing pointer binding.");
   const links = normalizeSelectionLinks(program, linked);
   return { linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
-    region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
-    const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
-    if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
-    const events = request.events === undefined ? ["pointermove", "click"] : request.events;
+    region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned([...inspect, ...context].map(binding => {
+    const contextual = binding.type === "contextMenu";
+    const request = options(binding, ["type"], contextual ? ["slop", "hitInvisible"] : ["events", "slop", "hitInvisible"], "Inspection binding");
+    if (!contextual && request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
+    const events = contextual ? ["contextmenu"] : request.events === undefined ? ["pointermove", "click"] : request.events;
     ownArray(events, "Inspect binding events");
-    if (!events.length || events.length > 2 || new Set(events).size !== events.length || events.some(event => !["pointermove", "click"].includes(event))) {
+    if (!events.length || events.length > 2 || new Set(events).size !== events.length || events.some(event => !(contextual ? ["contextmenu"] : ["pointermove", "click"]).includes(event))) {
       throw new TypeError("Inspect binding events require distinct pointermove or click values.");
     }
     const query = normalizeHitQuery({ ...(request.slop === undefined ? {} : { slop: request.slop }),
       ...(request.hitInvisible === undefined ? {} : { hitInvisible: request.hitInvisible }) });
-    return cloneAndFreeze({ type: "inspect", events, ...(request.slop === undefined ? {} : { slop: query.slop }), hitInvisible: query.hitInvisible });
+    return cloneAndFreeze({ type: request.type, events, ...(request.slop === undefined ? {} : { slop: query.slop }), hitInvisible: query.hitInvisible });
   })) };
 }
 function pointerCoordinates(element, event, transform) {
@@ -100,8 +101,8 @@ export function createInteractionSession(input) {
       return first;
     } finally { processing = false; queue.length = 0; drainedTransactions.clear(); }
   };
-  const inspect = (point, query = {}) => {
-    lastHit = bridge.hit(point, query); publish("inspect"); return outcome("applied");
+  const inspect = (point, query = {}, type = "inspect") => {
+    lastHit = bridge.hit(point, query); publish(type); return outcome("applied");
   };
   const clear = () => { lastHit = null; publish("leave"); return outcome("applied"); };
   const detach = (lease, reason = "unmount") => {
@@ -172,11 +173,11 @@ export function createInteractionSession(input) {
       return perform(() => edit(editCommand));
     }
     const head = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation"], "Interaction command");
-    if (head.type === "inspect") {
+    if (head.type === "inspect" || head.type === "contextMenu") {
       const c = options(head, ["type", "point"], ["pointerType", "slop", "hitInvisible"], "Inspect command");
       const point = transformHitPoint(IDENTITY, c.point), query = normalizeHitQuery(Object.fromEntries(
         ["pointerType", "slop", "hitInvisible"].filter(key => Object.hasOwn(c, key)).map(key => [key, c[key]])));
-      return perform(() => inspect(point, query));
+      return perform(() => inspect(point, query, c.type));
     }
     if (head.type === "leave") { options(head, ["type"], [], "Leave command"); return perform(clear); }
     if (head.type === "frame") {
@@ -235,19 +236,21 @@ export function createInteractionSession(input) {
         const frame = rebindProgramHitFrame(base, bridge.getState().scene, version, transform);
         const candidate = createHitFrameBridge(frame);
         try {
-          for (const binding of configured.inspect) for (const event of [...binding.events, "pointerleave"]) {
+          for (const binding of configured.inspect) for (const event of binding.type === "contextMenu" ? binding.events : [...binding.events, "pointerleave"]) {
             const listener = event === "pointerleave" ? () => { if (!destroyed && mounted === lease) dispatch({ type: "leave" }); }
               : eventObject => {
                 if (destroyed || mounted !== lease) return;
+                if (binding.type === "contextMenu") eventObject.preventDefault();
                 const coordinates = pointerCoordinates(element, eventObject, transform);
-                const query = { pointerType: eventObject.pointerType || "mouse", hitInvisible: binding.hitInvisible,
-                  ...(binding.slop === undefined ? {} : { slop: binding.slop }) };
-                if (coordinates.localPoint === null) perform(() => {
-                  lastHit = emptyHit(bridge.getState().version, coordinates.diagnostics); publish("inspect"); return outcome("applied");
+                const query = normalizeHitQuery({ pointerType: eventObject.pointerType || "mouse", hitInvisible: binding.hitInvisible,
+                  ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
+                perform(() => {
+                  if (destroyed || mounted !== lease) return outcome("stale");
+                  if (coordinates.localPoint !== null) return inspect(coordinates.screenPoint, query, binding.type);
+                  lastHit = emptyHit(bridge.getState().version, coordinates.diagnostics); publish(binding.type); return outcome("applied");
                 });
-                else dispatch({ type: "inspect", point: coordinates.screenPoint, ...query });
               };
-            lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: true });
+            lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: binding.type !== "contextMenu" });
           }
           if (configured.region) {
             const binding = configured.region;

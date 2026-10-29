@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserContextEvidence } from "../support/browser.js";
 import { startStaticServer } from "../support/static-server.js";
+import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
 test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
@@ -441,6 +442,68 @@ test("categorical visibility retains control labels and restores actual items on
     assert.deepEqual(await page.locator("#legend-canvas").evaluate(canvas => [canvas.width, canvas.height]), [1000, 700]);
     await page.evaluate(() => window.__legendSessions.forEach(session => session.destroy()));
     assertNoBrowserErrors(errors, "legend visibility"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+
+test("native parameter inputs and host context actions preserve keyboard focus and immutable commits", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-parameter-context");
+  assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Adjustable points"></canvas><div id="vector"></div>';
+      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href));
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__parameterSession=parameterSession;window.__disposeControls=disposeControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js");
+      window.__parameterPhases = [];
+      window.__parameterSession.subscribe(event => {
+        if (event.phase) window.__parameterPhases.push(event.phase);
+        if (event.phase === "commit") document.querySelector("#vector").innerHTML = renderToSVG(event.current);
+      });
+    }, snippet.code);
+    const range = page.getByRole("slider", { name: "Multiplier" }); await range.focus(); await page.keyboard.press("ArrowRight");
+    assert.deepEqual(await page.evaluate(() => {
+      const state = window.__parameterSession.getState(); return { value: document.querySelector("input").value,
+        computed: state.program.semanticSpec.datasets.find(dataset => dataset.id === state.program.semanticSpec.layers.find(layer => layer.id === "points").data).values.map(row => row.height),
+        revision: state.revision, focus: document.activeElement.id, svg: !!document.querySelector("#vector svg") };
+    }), { value: "2", computed: [6, 12], revision: 1, focus: "multiplier", svg: true });
+    const hit = await page.evaluate(() => {
+      const n = window.__parameterSession.getState().scene.nodes.find(node => node.type === "circle");
+      return { x: n.offset[0] + n.properties.x, y: n.offset[1] + n.properties.y };
+    });
+    const box = await page.locator("canvas").boundingBox();
+    await page.mouse.click(box.x + hit.x, box.y + hit.y, { button: "right" });
+    assert.equal(await page.getByRole("button", { name: "Select this point" }).isVisible(), true);
+    assert.equal(await page.evaluate(() => document.activeElement.id), "select-context");
+    await page.keyboard.press("Escape");
+    assert.equal(await page.evaluate(() => document.activeElement.id), "multiplier");
+    assert.equal(await page.evaluate(() => window.__parameterSession.getState().revision), 1);
+    await page.mouse.click(box.x + hit.x, box.y + hit.y, { button: "right" }); await page.keyboard.press("Enter");
+    assert.deepEqual(await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); const state = window.__parameterSession.getState();
+      return { selected: getMarkItems(state.program, { target: "points" }).filter(item => item.properties.fill === "red").map(item => item.fields.id),
+        focus: document.activeElement.id, revision: state.revision, phases: window.__parameterPhases };
+    }), { selected: ["a"], focus: "multiplier", revision: 2, phases: ["commit", "settled", "commit", "settled"] });
+    await page.keyboard.press("End");
+    assert.deepEqual(await page.evaluate(() => {
+      const s = window.__parameterSession, before = s.getState(); let rejected = false;
+      const noop = s.dispatch({ type: "setParameter", target: "factor", payload: { value: 4 } });
+      try { s.dispatch({ type: "setParameter", target: "factor", payload: { value: "bad" } }); } catch { rejected = true; }
+      return { computed: before.program.semanticSpec.datasets.find(dataset => dataset.id === before.program.semanticSpec.layers.find(layer => layer.id === "points").data).values.map(row => row.height),
+        unchanged: before.program === s.getState().program, rejected, noop: noop.status, revision: s.getState().revision };
+    }), { computed: [12, 24], unchanged: true, rejected: true, noop: "unchanged", revision: 3 });
+    assert.deepEqual(await page.evaluate(() => {
+      window.__disposeControls(); const event = new MouseEvent("contextmenu", { cancelable: true, bubbles: true });
+      document.querySelector("canvas").dispatchEvent(event);
+      return { prevented: event.defaultPrevented, destroyed: window.__parameterSession.getState().destroyed, panel: !!document.querySelector("#multiplier") };
+    }), { prevented: false, destroyed: true, panel: false });
+    assertNoBrowserErrors(errors, "parameter inputs and context actions"); await page.close();
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });

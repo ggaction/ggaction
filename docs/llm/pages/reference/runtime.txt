@@ -1149,6 +1149,12 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host-owned context UI receives current-frame semantic candidates through subscribe. */
+export interface ContextMenuBinding {
+  readonly type: 'contextMenu';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export interface ClickSelectionBinding {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
@@ -1262,7 +1268,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -1354,7 +1360,7 @@ export interface InteractionProgramEvent {
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
-  readonly type: 'inspect';
+  readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
@@ -1381,7 +1387,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 

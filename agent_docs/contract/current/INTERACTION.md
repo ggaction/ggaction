@@ -4,16 +4,16 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, categorical legend-selection/visibility, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
-- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive listeners and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
+- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
 - `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
-- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
 - `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
@@ -451,3 +451,29 @@ codec restoration; visibility intent and original-row lineage are persisted in t
 
 Evidence: visibility grammar/action/session suites, the real-data selection corpus and Canvas/SVG
 browser interaction suite.
+
+
+## Host controls and context requests
+
+Parameter controls call the existing `setParameter` command with an explicit typed scalar. The host owns
+inputs, parsing, labels, keyboard behavior, focus and listener cleanup. Parameter changes use the native
+resource revision/DAG closure, then the same session reconciliation and linked propagation as other edits.
+Invalid values preserve program/trace/revision; unchanged values do not commit. The session creates no
+DOM widget or implicit coercion and does not bypass Basic's missing parameter editor.
+
+`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and one
+editing pointer binding. Only that explicit mounted binding prevents the native `contextmenu` default.
+It emits `{type:"contextMenu",state}` through existing subscribers; `state.hit` contains current-frame
+semantic candidates with the same CSS coordinates, clips, roles, item/row/resource identities and ordering
+as inspection. Missing geometry produces a null target and diagnostics, never an inferred owner. No raw
+DOM event, menu widget, action list or callback is serialized. The host determines which actions apply,
+renders the menu, manages focus/Escape and dispatches a subsequent existing semantic command.
+
+Headless and host keyboard requests use `dispatch({type:"contextMenu",point,pointerType?,slop?,hitInvisible?})`.
+The point is CSS-local; query defaults match inspection. Requests do not mutate program, trace or session
+revision. Subscriber edits enter the existing bounded FIFO after the context callback. Full and Basic
+support read-only requests; authoring commands retain their own capability limits. Unmount, remount,
+destroy and failed mount release exactly the installed listener, and stale callbacks are ignored.
+
+Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`,
+`test/browser/interaction-session.browser.js` and the installed interaction consumer.

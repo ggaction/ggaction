@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e. Status: development. Runtime source: 5b69d264c27819e7493adef213f95aceda491bc6. Release baseline: v0.0.13.
+Contract: sha256:42d0fb6f2d260d37bb5c4cd2c6c4c4504f33b9c4e82e18a3761478c259da726a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/5b69d264c27819e7493adef213f95aceda491bc6/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/5b69d264c27819e7493adef213f95aceda491bc6/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10801,7 +10801,7 @@ hit targets in that frame.
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
-Subscribers receive `{ type, state }`; event types are `inspect`, `leave`, `frame`,
+Subscribers receive `{ type, state }`; event types are `inspect`, `contextMenu`, `leave`, `frame`,
 `program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
 `{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
@@ -11357,6 +11357,77 @@ Explicit concat targets retain child scope. Facet-source geometry, Basic editing
 bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
+
+## Connect parameter inputs and a context action
+
+Use native HTML controls and send their typed values to `setParameter`. The host owns keyboard behavior
+and focus; the session commits the parameter's dependent data, marks and selections together. For a
+context menu, subscribe to `contextMenu` and use its current semantic hit to build your own actions.
+The binding prevents the browser menu only on the mounted surface. A request itself changes no chart state.
+
+This browser module expects `<canvas id="chart" aria-label="Adjustable points"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const panel = document.createElement("div");
+panel.innerHTML = '<label>Multiplier <input id="multiplier" type="range" min="1" max="4" step="1" value="1"></label> <button id="select-context" hidden>Select this point</button>';
+canvas.before(panel);
+const range = panel.querySelector("input");
+const choose = panel.querySelector("button");
+const program = chart().createCanvas({ width: 400, height: 280 })
+  .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 1, y: 3 }, { id: "b", x: 2, y: 6 }] })
+  .createParameter({ id: "factor", value: 1 })
+  .createComputedData({ id: "scaled", source: "rows", as: "height", expression: {
+    version: 2, registry: "standard@1", root: { type: "binary", op: "multiply",
+      left: { type: "field", name: "y" }, right: { type: "parameter", id: "factor" } }
+  } })
+  .createScatterPlot({ id: "points", x: "x", y: { field: "height", scale: { domain: [0, 30] } }, guides: false })
+  .selectMarks({ target: "points", id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "red" });
+const parameterSession = createInteractionSession({ program, bindings: [{ type: "contextMenu" }] });
+const draw = value => render(value, canvas.getContext("2d"));
+let contextTarget = null;
+const closeMenu = () => { choose.hidden = true; contextTarget = null; };
+const unsubscribe = parameterSession.subscribe(event => {
+  if (event.type === "contextMenu") {
+    contextTarget = event.state.hit?.target ?? null;
+    choose.hidden = !contextTarget || contextTarget.ownerId !== "points";
+    if (!choose.hidden) choose.focus();
+  }
+  if ("phase" in event && event.phase === "commit") { closeMenu(); draw(event.current); }
+});
+const change = () => parameterSession.dispatch({ type: "setParameter", target: "factor",
+  payload: { value: range.valueAsNumber }, origin: "user" });
+const select = () => {
+  if (!contextTarget) return;
+  parameterSession.dispatch({ type: "select", target: { id: contextTarget.ownerId, childPath: contextTarget.childPath },
+    payload: { id: "chosen", select: { items: [contextTarget.itemKey] } }, origin: "user" });
+  range.focus();
+};
+const escape = event => { if (event.key === "Escape") { closeMenu(); range.focus(); } };
+range.addEventListener("input", change);
+choose.addEventListener("click", select);
+panel.addEventListener("keydown", escape);
+draw(program);
+const unmount = parameterSession.mount(canvas);
+// Call when removing this view.
+const disposeControls = () => {
+  range.removeEventListener("input", change);
+  choose.removeEventListener("click", select);
+  panel.removeEventListener("keydown", escape);
+  unsubscribe(); unmount(); parameterSession.destroy(); panel.remove();
+};
+```
+
+A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using its focused item's
+current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
+host decides which commands are applicable. It does not infer a focused item or menu policy. Without a
+context binding, the mounted surface keeps its normal browser menu.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -34435,6 +34506,12 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host-owned context UI receives current-frame semantic candidates through subscribe. */
+export interface ContextMenuBinding {
+  readonly type: 'contextMenu';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export interface ClickSelectionBinding {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
@@ -34548,7 +34625,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -34640,7 +34717,7 @@ export interface InteractionProgramEvent {
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
-  readonly type: 'inspect';
+  readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
@@ -34667,7 +34744,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -48259,12 +48336,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5b69d264c27819e7493adef213f95aceda491bc6/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5b69d264c27819e7493adef213f95aceda491bc6/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51315,9 +51392,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e` |
+| Contract fingerprint | `sha256:42d0fb6f2d260d37bb5c4cd2c6c4c4504f33b9c4e82e18a3761478c259da726a` |
 | Example and dataset source | `3a9901e925b04d640f064ff7e06d434011a4d858` |
-| Runtime source commit | `5b69d264c27819e7493adef213f95aceda491bc6` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 347 |
 | Declared actions in that release | 234 |

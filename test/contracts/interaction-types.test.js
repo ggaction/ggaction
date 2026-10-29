@@ -16,6 +16,14 @@ import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
 const program = chart(); const session = createInteractionSession({ program });
+createInteractionSession({program:basic(),bindings:[{type:'contextMenu',slop:0,hitInvisible:false}]});
+session.dispatch({type:'contextMenu',point:{x:0,y:0},pointerType:'touch'});
+session.subscribe(event=>{if(event.type==='contextMenu'){const candidate=event.state.hit?.target; candidate?.childPath;}});
+// @ts-expect-error host targets come from hits, not an inferred or specified binding owner
+createInteractionSession({program,bindings:[{type:'contextMenu',target:'points'}]});
+// @ts-expect-error context requests are inspection, not authoring transactions
+session.dispatch({type:'contextMenu',point:{x:0,y:0},transactionId:'menu'});
+
 createInteractionSession({program: basic(), bindings: [{type:'inspect',events:['click'],slop:0,hitInvisible:true}]});
 
 createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'intersection',sources:[

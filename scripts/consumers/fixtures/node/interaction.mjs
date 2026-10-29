@@ -10,6 +10,21 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/context-host-request", run() {
+    for (const factory of [chart, basic]) {
+      const p = make(factory), original = serializeProgram(p), events = [], listeners = new Map();
+      const s = createInteractionSession({ program: p, bindings: [{ type: "contextMenu" }] });
+      s.subscribe(event => events.push(event));
+      const release = s.mount({ getBoundingClientRect: () => ({ left: 10, top: 20, width: 200, height: 160 }),
+        addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) });
+      let prevented = false;
+      listeners.get("contextmenu")({ clientX: 60, clientY: 80, preventDefault() { prevented = true; } });
+      assert.equal(prevented, true); assert.equal(events.at(-1).type, "contextMenu");
+      assert.equal(s.getState().hit.candidates.length, 2); assert.equal(s.getState().hit.target.ownerId, "points");
+      assert.equal(s.getState().program, p); assert.equal(s.getState().revision, 0); assert.equal(serializeProgram(p), original);
+      assert.equal(release(), true); assert.equal(listeners.size, 0); s.destroy();
+    }
+  } },
   { id: "interaction/legend-visibility-filter-composition", run() {
     const p = chart().createCanvas({ width: 500, height: 350, margin: 100 }).createData({ id: "rows", keyField: "id", values: [
       { id: "a", x: 1, y: 2, category: 1 }, { id: "b", x: 2, y: 20, category: "1" }, { id: "c", x: 3, y: 4, category: 1 }

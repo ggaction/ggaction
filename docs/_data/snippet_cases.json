@@ -430,5 +430,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items."
+  },
+  {
+    "id": "interaction-parameter-context",
+    "file": "api/interaction.md",
+    "contains": "const parameterSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button."
   }
 ]

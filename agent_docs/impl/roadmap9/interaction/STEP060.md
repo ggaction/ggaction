@@ -9,7 +9,7 @@
 - [x] C1: categorical legend sample/label의 typed selection binding
 - [x] C2: categorical legend visibility, 사용자 filter 합성 및 visible-data/all-data 정책
 - [ ] continuous/interval legend 조작의 원 카드 후행 범위
-- [ ] parameter controls, context action targets
+- [x] D: 기존 setParameter host controls와 context semantic targets
 - [ ] annotation anchor/offset 편집
 - [ ] node drag, partition focus/breadcrumb, geo navigation 및 keyboard
 - [ ] AT35/38/65/80 consumer matrix와 STEP074/077 전달
@@ -250,3 +250,53 @@ Superseded `e582ecdc`는 dormant hidden 보완 전이므로 최종 증거로 세
 C2 source `5b69d264c` push 뒤 provenance→machine→LLM을 source commit에 고정했고 owning docs47,
 built170pages/1458LLM을 통과했다. Runtime/타입·같은 archive `cb065aa8`는 불변이며 기존 네 폭
 Axe0 증거를 재사용한다. 최종metadata commit은 source/runtime scope를 확장하지 않는다.
+
+## D parameter controls와 context request 최소 계약
+
+C2 다음 원 STEP060 직접 조작을 기존 전체 승인 범위에서 이어 구현한다. `setParameter`는 이미
+parameter editor·AST dependency closure·selection reconciliation과 연결되어 있으므로 새 program API나
+DOM control 추상화를 추가하지 않는다. Host range/select/button가 typed value를 명시 dispatch하고
+native keyboard/focus를 유지하는 실제 브라우저·source-free 예제를 추가한다.
+
+Context 메뉴도 host가 소유한다. 명시 `{type:"contextMenu",slop?,hitInvisible?}` binding 한 개를
+inspection/편집 binding과 함께 사용할 수 있다. Mounted surface의 `contextmenu`에서만 browser
+기본 메뉴를 막고, 기존 CSS/current-frame hit pipeline으로 `{type:"contextMenu",state.hit}` 이벤트를
+`subscribe`에 전달한다. Headless 및 host keyboard 호출은
+`dispatch({type:"contextMenu",point,pointerType?,slop?,hitInvisible?})`를 사용한다. 후보의 기존
+ownerId/role/childPath/itemKey/rowKeys/resourceRefs를 그대로 전달하며 raw DOM event나 callback을
+program에 저장하지 않는다. Host가 메뉴 항목·활성 가능 여부·DOM focus/Escape와 후속 명령을 결정한다.
+Empty/clip/singular hit는 기존 null+diagnostics이며 임의 첫 owner 선택은 없다. Menu request 자체는
+program/trace/revision을 바꾸지 않는다. 동기 subscriber의 후속 dispatch는 기존 FIFO로 실행하고
+unmount/destroy는 정확 listener를 해제한다. 메뉴 binding이 없으면 native contextmenu를 건드리지 않는다.
+
+새 action/저장 schema/renderer는 없고 Basic도 읽기 전용 context hit를 지원한다. 실제 parameter 변경은
+기존 Full-only editor 경계를 유지한다. 일반 session focus/history/drag/annotation/partition/geo와
+AT35/38/65/80 전체 후행 요구는 이 작은 연결만으로 완료 처리하지 않는다.
+
+
+### D 검증 및 인계
+
+Context request는 기존 current-frame hit/subscribe 경로만 확장하고 parameter control은 기존
+setParameter를 재사용한다. Read-only 요청에서 program·trace·revision 보존, 겹친 후보·typed rows,
+Full/Basic, invalid own-data, headless/scaled CSS·sampled frame·empty viewport를 검증했다.
+Subscriber가 remount를 먼저 queue한 뒤 이전 surface 이벤트가 들어오는 반례를 추가했고,
+실행 시 lease를 다시 검사해 오래된 context/inspect callback이 새 surface를 건드리지 않도록 했다.
+
+집중15 이후 최종 interaction159와 session owner100/95.14/100, source/type/discovery28이 통과했다.
+실제5datasets×3recipes+inventory16은 guide context와 parameter-backed predicate selection을 함께
+검증한다. 실제 browser1은 공개 snippet을 그대로 실행해 range Arrow/End, context 우클릭→Enter,
+Escape·focus 복구, no-op/error 원자성·dispose를 확인한다. 기존 parameter renderer4를 통해
+Canvas/SVG/PNG/PDF·graphic codec·scene endpoint 소비도 확인했다. 새 renderer나 DOM widget은 없다.
+
+동일 최종 archive `5a1675aa`로 Node20/22/24 각각 runtime5·strict TS·5bundles가 통과했고,
+source-free 공개 snippet도 실제 입력1→selection2 revision과 focus·cleanup을 확인했다.
+README cap 설명 동기화 전의 `b8351339`는 superseded로 보존한다. Runtime/타입은 같아도 최종
+archive 세Node 증거는 새 파일로 다시 실행했다. Node20 packed1,416,517/unpacked6,443,877,
+988entries에 맞춰 unpacked cap만6,444,000으로 최소 증가했다. Interaction gzip111,970에112,000,
+compact search987,568에987,600을 적용하고 최초 초과도 남긴다.
+
+기존 canonical architecture bundle 표와 README가 실제 script cap보다 오래된 상태였음을 발견해
+현재 전체표·Basic378,400 설명을 동기화했다. Owning documentation-truth3이 통과했다.
+Docs source 최초46/47의 search budget 보정 후 owning2, built170pages/1458LLM·네 폭 Axe0이다.
+Source 고정 뒤 provenance와 owning docs47을 다시 기록한다. 전체 normal/coverage 반복 없이
+변경 owner와 실제 소비자를 검증했으며 annotation/drag/focus/geo/keyboard와 전체AT/077은 미완료다.

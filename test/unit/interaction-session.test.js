@@ -160,3 +160,90 @@ test("queued frame commands snapshot caller bytes before a subscriber can mutate
   assert.equal(session.getState().scene.nodes.find(node => node.type === "circle").properties.x, 90);
   session.destroy();
 });
+
+test("context requests return current semantic candidates without editing Full or Basic programs", () => {
+  for (const factory of [chart, basic]) {
+    const program = pointProgram(factory), original = serializeProgram(program), session = createInteractionSession({ program, bindings: [] });
+    const events = []; session.subscribe(event => events.push(event));
+    session.dispatch({ type: "contextMenu", point, slop: 0 });
+    assert.equal(events.length, 1); assert.equal(events[0].type, "contextMenu");
+    const target = events[0].state.hit.target;
+    assert.equal(target.ownerId, "points"); assert.deepEqual(target.childPath, []); assert.ok(target.itemKey);
+    assert.ok(target.rowKeys.length); assert.deepEqual(target.screenPoint, point);
+    assert.equal(session.getState().program, program); assert.equal(session.getState().revision, 0);
+    assert.equal(serializeProgram(program), original); assert.ok(Object.isFrozen(events[0].state.hit));
+    const scene = structuredClone(session.getState().scene); scene.nodes.find(node => node.type === "circle").properties.x += 30;
+    session.dispatch({ type: "frame", scene, version: 4, generation: 0 });
+    session.dispatch({ type: "contextMenu", point, slop: 0 }); assert.equal(session.getState().hit.target, null);
+    session.dispatch({ type: "contextMenu", point: { x: point.x + 30, y: point.y }, slop: 0 });
+    assert.equal(session.getState().hit.target.itemKey, target.itemKey); assert.equal(session.getState().hit.frameVersion, 4);
+    session.destroy(); assert.throws(() => session.dispatch({ type: "contextMenu", point }), /disposed/);
+  }
+});
+
+test("explicit context binding owns only its nonpassive listener and preserves current CSS transforms", () => {
+  const session = createInteractionSession({ program: pointProgram(), bindings: [{ type: "inspect" }, { type: "contextMenu", slop: 0 }] });
+  const element = surface(), events = []; session.subscribe(event => events.push(event));
+  const remove = session.mount(element, { rootTransform: [0, 2, -2, 0, 400, 0] }); let prevented = 0;
+  assert.equal(element.count(), 4);
+  element.emit("contextmenu", { clientX: 170, clientY: 220, pointerType: "pen", preventDefault() { prevented++; } });
+  assert.equal(prevented, 1); assert.equal(events.at(-1).type, "contextMenu");
+  assert.deepEqual(session.getState().hit.target.screenPoint, { x: 120, y: 140 }); assert.deepEqual(session.getState().hit.target.localPoint, point);
+  const late = [...element.listeners.get("contextmenu")][0]; assert.equal(remove(), true); assert.equal(element.count(), 0);
+  late({ preventDefault() { throw new Error("stale listener"); } });
+  const empty = surface({ left: 0, top: 0, width: 0, height: 20 }); session.mount(empty);
+  empty.emit("contextmenu", { clientX: 0, clientY: 0, preventDefault() { prevented++; } });
+  assert.equal(session.getState().hit.target, null); assert.equal(session.getState().hit.diagnostics[0].code, "hit-empty-viewport");
+  session.destroy(); assert.equal(empty.count(), 0);
+  const ordinary = createInteractionSession({ program: pointProgram() }), host = surface(); ordinary.mount(host);
+  assert.equal(host.listeners.has("contextmenu"), false); ordinary.destroy();
+});
+
+test("context host callbacks dispatch semantic actions through the existing FIFO transaction", () => {
+  const program = pointProgram(), session = createInteractionSession({ program, bindings: [] }), seen = [];
+  session.subscribe(event => {
+    seen.push(event.type + (event.phase ? `:${event.phase}` : ""));
+    if (event.type === "contextMenu") {
+      const target = event.state.hit.target;
+      assert.deepEqual(session.dispatch({ type: "select", target: { id: target.ownerId, childPath: target.childPath },
+        payload: { id: "menu", select: { items: [target.itemKey] } }, origin: "user", transactionId: "menu-pick" }), { status: "queued" });
+    }
+  });
+  session.dispatch({ type: "contextMenu", point });
+  assert.deepEqual(seen, ["contextMenu", "select:commit", "select:settled"]); assert.equal(session.getState().revision, 1);
+  assert.equal(program.materializationConfigs.selections?.menu, undefined); session.destroy();
+});
+
+test("context binding and command validation remains closed and rejects executable options", () => {
+  const program = pointProgram(); let getterCalls = 0;
+  for (const binding of [{ type: "contextMenu", events: ["click"] }, { type: "contextMenu", target: "points" },
+    { type: "contextMenu", slop: -1 }, { type: "contextMenu", hitInvisible: "yes" },
+    { type: "contextMenu", get slop() { getterCalls++; return 1; } }]) {
+    assert.throws(() => createInteractionSession({ program, bindings: [binding] }));
+  }
+  assert.equal(getterCalls, 0);
+  assert.throws(() => createInteractionSession({ program, bindings: [{ type: "contextMenu" }, { type: "contextMenu" }] }), /at most one/);
+  const session = createInteractionSession({ program });
+  const state = session.getState();
+  for (const command of [{ type: "contextMenu", point: { x: NaN, y: 0 } }, { type: "contextMenu", point, target: "points" },
+    { type: "contextMenu", point, hitInvisible: 1 }, { type: "contextMenu", point, origin: "user" }]) assert.throws(() => session.dispatch(command));
+  assert.equal(session.getState(), state); session.destroy();
+});
+
+test("queued context and inspect host events cannot cross a remount lease", () => {
+  for (const type of ["contextMenu", "inspect"]) {
+    const session = createInteractionSession({ program: pointProgram(), bindings: [{ type }] }), original = surface(), replacement = surface();
+    session.mount(original); let count = 0;
+    session.subscribe(event => {
+      if (event.type !== type) return;
+      count++;
+      if (count === 1) {
+        session.mount(replacement);
+        original.emit(type === "contextMenu" ? "contextmenu" : "click", { clientX: 120, clientY: 220, preventDefault() {} });
+      }
+    });
+    session.dispatch({ type, point });
+    assert.equal(count, 1); assert.equal(original.count(), 0); assert.equal(session.getState().hit, null);
+    session.destroy(); assert.equal(replacement.count(), 0);
+  }
+});

@@ -143,8 +143,26 @@ function assertLegendSelection(source) {
   listeners.get("click")(point);
   assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), []);
   session.destroy(); assert.equal(listeners.size, 0);
+  assertContextControls(p, { x: point.clientX, y: point.clientY });
 }
 
+function assertContextControls(source, point) {
+  const items = getMarkItems(source, { target: "mark" }), category = items[0].fields.category;
+  const nextCategory = items.find(item => item.fields.category !== category)?.fields.category ?? category;
+  const p = source.createParameter({ id: "control-category", value: category }).editMarkSelection({ selection: "legend-picked", where: {
+    version: 2, registry: "standard@1", root: { type: "binary", op: "eq", left: { type: "field", name: "category" }, right: { type: "parameter", id: "control-category" } }
+  } });
+  const session = createInteractionSession({ program: p, bindings: [{ type: "contextMenu" }] }), original = serializeProgram(p), events = [];
+  session.subscribe(event => events.push(event));
+  session.dispatch({ type: "contextMenu", point });
+  assert.equal(events.at(-1).type, "contextMenu"); assert.equal(session.getState().hit.target.role, "legend-item");
+  assert.equal(session.getState().program, p); assert.equal(session.getState().revision, 0);
+  session.dispatch({ type: "setParameter", target: "control-category", payload: { value: nextCategory }, origin: "user" });
+  const next = deserializeProgram(serializeProgram(session.getState().program));
+  const selected = getMarkItems(next, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key);
+  assert.deepEqual(selected, items.filter(item => item.fields.category === nextCategory).map(item => item.key));
+  assert.equal(serializeProgram(p), original); session.destroy();
+}
 
 function assertLegendVisibility(source) {
   const p = source.editCanvas({ width: 800, height: 500, margin: 140 }).encodeColor({ target: "mark", field: "category" })
