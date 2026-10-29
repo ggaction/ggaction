@@ -1,0 +1,3 @@
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */

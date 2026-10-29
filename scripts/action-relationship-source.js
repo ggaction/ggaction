@@ -574,6 +574,10 @@ export function buildActionRelationshipPrograms() {
       .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
+      values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
+      .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })
+      .editProjection({ reflectX: true }).editGeometryData({ target: "fitShape", values: { type: "LineString", coordinates: [[0, 0], [20, 20]] } }),
     chart().createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "geographic", featureKey: "id",
       values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [12.6, 55.7] } } })
       .editGeometryData({ coordinateKind: "planar" }),

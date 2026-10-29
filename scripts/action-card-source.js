@@ -187,6 +187,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createProjection", "editProjection"].includes(action.name)) return {
+    prerequisites: action.name === "editProjection" ? ["existing named projection"] : ["explicit native projection type"],
+    owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]
+  };
   if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {
     prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
     idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
@@ -365,7 +369,8 @@ export async function declaredActionMetadata(actions) {
             // Keep the exact named public payload instead of an expanded,
             // truncated Omit union for conditional branches.
             type: conditional && ["conditions", "otherwise"].includes(property.name)
-              ? `${conditional}["${property.name}"]` : checker.typeToString(
+              ? `${conditional}["${property.name}"]` : ["createProjection", "editProjection"].includes(action.name) && property.name === "type"
+              ? "ProjectionType" : checker.typeToString(
               checker.getTypeOfSymbolAtLocation(commonProperty ?? property, propertyDeclaration)
             )
           });

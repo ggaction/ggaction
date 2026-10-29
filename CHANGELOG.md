@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
+
 - Add Full-only `createGeometryData` and `editGeometryData` for geographic or planar GeoJSON/TopoJSON sources. Retain shared arcs, immutable feature keys and source provenance through bounded validation, edits, inspection and offline restoration.
 
 - Add Full-only `bundleGraphEdges` and `editEdgeRoute` for hierarchical, force-directed, density and edge-path bundling. Bind original graph edges through `createGraphPlot({ routes })`, preserve exact revisions and offline vectors, and use the browser-safe `ggaction/graph` entry for explicit worker preparation, cancellation and bounded caching.

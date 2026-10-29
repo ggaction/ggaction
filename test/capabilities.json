@@ -472,6 +472,14 @@
       {
         "type": "file",
         "path": "contracts/geographic-math.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/projection-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-projections.test.js"
       }
     ],
     "grammar": [

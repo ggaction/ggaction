@@ -45,7 +45,7 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
     if (screenRooted && (previous.kind !== "edge-route" || resource.options.coordinateSpace !== "screen")) throw new TypeError("Prepared screen replacements require screen edge routes.");
-    if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route"] : ["data-source", "graph", "layout", "edge-route"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
+    if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route"] : ["data-source", "graph", "layout", "edge-route", "projection"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");
     }

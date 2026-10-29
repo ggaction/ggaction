@@ -2834,5 +2834,21 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createProjection": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editProjection": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

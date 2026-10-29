@@ -853,7 +853,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 686,000 bytes |
+| `ggaction` | 701,000 bytes |
 | `ggaction/basic` | 372,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
@@ -3604,8 +3604,14 @@ resampling을 concrete point/compound path로 계산하고, `fit.js`는 그 동�
 viewport fit을 계산한다. 구면 ring 방향 변환은 호출 내부에서만 일어나며 원본 geometry와
 feature identity는 바뀌지 않는다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
 Math instance는 호출별 private 객체이며 semantic state/codec에 callback을 저장하지 않는다.
-공개 projection lifecycle와 geometry marks는 후속 owner이며 renderer 입력은 여전히
-concrete graphicSpec만이다.
+Full의 `actions/geo/projections.js`는 `grammar/geo/projectionDefinition.js`의 단일 정의를
+`materialization/geo/projectionResource.js`로 구체화한다. 명시 viewport fit은 exact geometry
+InputRef 하나를 보존하고, `projectionState.js`가 복원 시 같은 bounded fit을 검산한다.
+`actions/geo/closure.js`는 geometry와 모든 fitted projection 후보를 먼저 검증하여 private
+prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명시·현재·유일 후보만
+허용하고 Basic에는 이 handler/action을 등록하지 않는다. 정확한 공개 계약은
+[current/GEOMETRY.md](contract/current/GEOMETRY.md)가 소유한다. Geometry marks는 후속 owner이며
+renderer 입력은 여전히 concrete graphicSpec만이다.
 
 ### Interaction의 원자 authoring command 경계
 

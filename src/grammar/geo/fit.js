@@ -22,5 +22,13 @@ export function fitGeometryProjection(geometry, input, viewport, streamOptions) 
   const correction = fitProjectedBounds(screen.bounds, { ...viewport, scalePx: 1, ...(viewport.pointScale === undefined ? {} : { pointScale: 1 }) });
   parameters = normalizeProjectionOptions({ ...parameters, scalePx: parameters.scalePx * correction.scalePx,
     translatePx: parameters.translatePx.map((value, index) => value * correction.scalePx + correction.translatePx[index]) });
-  return cloneAndFreeze({ parameters, bounds: projectGeometry(geometry, parameters, streamOptions).bounds });
+  const { clipExtentPx: finalClip, ...finalUnclipped } = parameters;
+  const final = projectGeometry(geometry, finalUnclipped, streamOptions);
+  const expected = screen.bounds.map((value, index) => value * correction.scalePx + correction.translatePx[index % 2]);
+  const pointOnly = screen.bounds[0] === screen.bounds[2] && screen.bounds[1] === screen.bounds[3];
+  const tolerance = pointOnly ? 1e-7 : Math.max(1e-7, parameters.precisionPx ?? 0) * 2;
+  if (final.bounds === null || final.bounds.some((value, index) => Math.abs(value - expected[index]) > tolerance)) {
+    throw new RangeError("Projection fit cannot preserve viewport precision.");
+  }
+  return cloneAndFreeze({ parameters, bounds: finalClip == null ? final.bounds : projectGeometry(geometry, parameters, streamOptions).bounds });
 }

@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Geometry Sources
+title: Geometry and Projections
 ---
 
-# Geometry sources
+# Geometry and projections
 
 Keep geographic or planar shapes in an immutable resource with explicit feature
 identity. These Full `ggaction` actions prepare source geometry; creating a
@@ -95,3 +95,89 @@ unspecified limits. Every successful edit advances the resource revision once.
 Invalid edits leave the original program and its trace unchanged. Inspect or
 compare geometry through [inspection](../inspection.md), and remove it through
 [`removeResource`](../reference/actions/charts-data.md#removeresource).
+
+## `createProjection`
+
+**Chart authoring.**
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Create a named mathematical projection with an explicit `id` and `type`. A
+projection is a reusable resource; creating it does not draw geometry.
+
+| Family | Types |
+| --- | --- |
+| Cylindrical and global | `mercator`, `equirectangular`, `equal-earth`, `natural-earth`, `transverse-mercator` |
+| Azimuthal | `orthographic`, `stereographic`, `gnomonic`, `azimuthal-equal-area`, `azimuthal-equidistant` |
+| Conic | `conic-equal-area`, `conic-conformal`, `conic-equidistant` |
+| Composite insets | `albers-usa` |
+| Planar | `identity` |
+
+Spherical projections use longitude/latitude degrees and downward-y CSS pixels.
+The parameter names state their units: `centerDeg`, `rotateDeg`, `parallelsDeg`,
+`scalePx`, `translatePx`, `precisionPx`, `clipAngleDeg` and `clipExtentPx`.
+Spherical scale defaults to 150, translation to `[0, 0]`, center/rotation to zero,
+precision to 0.5 pixels and reflection to false. Scale and precision must be
+positive. Conic parallels default to `[30, 60]`.
+
+`identity` preserves planar units with scale 1 and supports translation,
+reflection and rectangular clipping. It does not accept spherical parameters.
+`albers-usa` uses fixed lower48, Alaska and Hawaii components and accepts scale,
+translation and precision. Other inapplicable parameters are rejected.
+
+To fit an existing geometry source, provide `fit` with explicit `width` and
+`height`. `geometry` can be omitted when the current or unique source determines
+it. Optional `padding` defaults to zero. The geometry coordinate kind must match
+identity (planar) or a spherical projection (geographic).
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const fitted = chart()
+  .createGeometryData({
+    id: "shape", format: "geojson", coordinateKind: "planar",
+    values: { type: "LineString", coordinates: [[0, 0], [10, 20]] }
+  })
+  .createProjection({
+    id: "map", type: "identity",
+    fit: { geometry: "shape", width: 100, height: 100 }
+  });
+// The fitted scale is 5 and translation is [25, 0].
+```
+
+Fit uses the projected geometry, including holes and visible clipped segments.
+It does not read Canvas size or include stroke/glyph padding. Empty or wholly
+clipped geometry is an error. Point-only geometry uses `pointScale`, or the
+current/default scale. A request cannot combine `fit` with explicit `scalePx`
+or `translatePx`. Large inputs that exceed the geometry or path work limits,
+and numbers that cannot preserve viewport precision, are rejected.
+
+## `editProjection`
+
+**Chart authoring.**
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+`target` may be omitted for the current or unique projection. Supply a nonempty
+parameter patch. Shape and rotation edits retain an existing fit. A new fit can
+choose another geometry and viewport. Changing `type` starts with the new type's
+parameter defaults; its explicit options must be applicable to that type.
+
+An explicit scale or translation edit detaches the previous fit and uses the
+current resolved value of the other transform. Editing a fitted geometry source
+updates each dependent projection once. An invalid source or incompatible
+coordinate kind rejects the whole edit and preserves the previous program.
+
+Remove authored fit projections explicitly before removing their geometry.
+Geometry cascade does not delete a reusable authored projection. Projection
+resources and their exact fit inputs survive offline serialization.

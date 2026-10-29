@@ -9,10 +9,11 @@ import { ChartProgram as CoreChartProgram } from "./core/ChartProgram.js";
 import { graphResourceHandler } from "./materialization/graph/state.js";
 import { geometryResourceHandler } from "./materialization/geometryState.js";
 import { edgeRouteResourceHandler } from "./materialization/graph/routeState.js";
+import { projectionResourceHandler } from "./materialization/geo/projectionState.js";
 
 export class ChartProgram extends CoreChartProgram {}
 
-registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: geometryResourceHandler, "edge-route": edgeRouteResourceHandler });
+registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: geometryResourceHandler, "edge-route": edgeRouteResourceHandler, projection: projectionResourceHandler });
 registerActions(ChartProgram);
 recordBuiltinActions(ChartProgram, ["hconcat", "vconcat", "rematerializeEncodingScales"]);
 

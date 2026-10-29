@@ -66,6 +66,8 @@ interface ChartProgramActions {
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
@@ -3184,6 +3186,16 @@ export interface CreatePolarScatterPlotOptions {
 
 Related types: [`PolarThetaChannel`](../../../reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](../../../reference/types/#type-polarradiuschannel) · [`BasicColorChannel`](../../../reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](../../../reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](../../../reference/types/#type-basicshapechannel) · [`CreateScatterPlotOptions`](../../../reference/types/#type-createscatterplotoptions) · [`PolarPointGuideOptions`](../../../reference/types/#type-polarpointguideoptions).
 
+### `CreateProjectionOptions` {#type-createprojectionoptions}
+
+ Expand CreateProjectionOptions
+
+```typescript
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](../../../reference/types/#type-projectionfittedoptions).
+
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
  Expand CreateRadarPlotOptions
@@ -5928,6 +5940,17 @@ export interface EditPolarGridOptions {
 ```
 
 Related types: [`AxisValue`](../../../reference/types/#type-axisvalue).
+
+### `EditProjectionOptions` {#type-editprojectionoptions}
+
+ Expand EditProjectionOptions
+
+```typescript
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](../../../reference/types/#type-projectioneditfittedoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -10431,6 +10454,85 @@ export interface PreparedTextMetrics {
 }
 ```
 
+### `ProjectionEditFittedOptions` {#type-projectioneditfittedoptions}
+
+ Expand ProjectionEditFittedOptions
+
+```typescript
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](../../../reference/types/#type-projectionfitoptions).
+
+### `ProjectionFitOptions` {#type-projectionfitoptions}
+
+ Expand ProjectionFitOptions
+
+```typescript
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+```
+
+### `ProjectionFittedOptions` {#type-projectionfittedoptions}
+
+ Expand ProjectionFittedOptions
+
+```typescript
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](../../../reference/types/#type-projectionfitoptions).
+
+### `ProjectionParameters` {#type-projectionparameters}
+
+ Expand ProjectionParameters
+
+```typescript
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+```
+
+Related types: [`ProjectionPlaneParameters`](../../../reference/types/#type-projectionplaneparameters) · [`ProjectionType`](../../../reference/types/#type-projectiontype) · [`ProjectionSphereParameters`](../../../reference/types/#type-projectionsphereparameters).
+
+### `ProjectionPlaneParameters` {#type-projectionplaneparameters}
+
+ Expand ProjectionPlaneParameters
+
+```typescript
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+```
+
+### `ProjectionSphereParameters` {#type-projectionsphereparameters}
+
+ Expand ProjectionSphereParameters
+
+```typescript
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+```
+
+Related types: [`ProjectionPlaneParameters`](../../../reference/types/#type-projectionplaneparameters).
+
+### `ProjectionType` {#type-projectiontype}
+
+ Expand ProjectionType
+
+```typescript
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+```
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
  Expand QuantileColorScaleOptions
@@ -11968,7 +12070,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}

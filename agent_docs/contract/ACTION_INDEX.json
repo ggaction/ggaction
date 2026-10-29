@@ -6284,6 +6284,42 @@
         "file": "agent_docs/contract/current/GEOMETRY.md",
         "anchor": "editgeometrydata"
       }
+    },
+    {
+      "name": "createProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "createprojection"
+      }
+    },
+    {
+      "name": "editProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editprojection"
+      }
     }
   ],
   "plannedActions": [],

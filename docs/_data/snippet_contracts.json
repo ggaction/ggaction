@@ -2005,6 +2005,18 @@
     "executable": true
   },
   {
+    "file": "api/geometry.md",
+    "block": 2,
+    "heading": "`createProjection`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].",
+    "sha256": "78a61f37e91416784f8cf0964388c3d656ac81831b84026133f02655ef559848",
+    "executable": true
+  },
+  {
     "file": "api/gradient-plots.md",
     "block": 1,
     "heading": "Create a gradient plot",

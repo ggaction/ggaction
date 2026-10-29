@@ -228,7 +228,7 @@ requirements after resolving each part.
 - Partition Tutorial: ./tutorials/partition/
 - Flow Data and Sankey Layouts: ./api/flows/
 - Draw Conserved Flows: ./tutorials/flows/
-- Geometry Sources: ./api/geometry/
+- Geometry and Projections: ./api/geometry/
 - Contours and Two-Dimensional Density: ./api/contours/
 - Draw Levels, Bands and Density: ./tutorials/contours/
 - Calendar Plots: ./api/calendar/

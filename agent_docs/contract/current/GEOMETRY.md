@@ -71,3 +71,80 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 
 - ✅ Covered: retained keyed identity, new generated identity, object selection, immutable failure, removal, inspection, Full/Basic and corrupted offline restore.
 - Evidence: `test/unit/geo/geometry-resources.test.js`.
+
+## `createProjection`
+
+- Signature: `createProjection({id,type,centerDeg?,rotateDeg?,parallelsDeg?,scalePx?,translatePx?,reflectX?,reflectY?,precisionPx?,clipAngleDeg?,clipExtentPx?,fit?})`.
+- Full only; requires a new explicit ID and one native type: mercator, equirectangular, equal-earth,
+  natural-earth, orthographic, stereographic, gnomonic, azimuthal-equal-area, azimuthal-equidistant,
+  conic-equal-area, conic-conformal, conic-equidistant, transverse-mercator, albers-usa or identity.
+  Creation stores a reusable projection and does not draw marks or create a coordinate.
+- Spherical coordinates use longitude/latitude degrees and CSS-pixel output with downward y. Default
+  scalePx150, translatePx[0,0], centerDeg[0,0], rotateDeg[0,0,0], precisionPx0.5 and reflectX/Y:false.
+  Identity uses planar units and scalePx1; it accepts scale/translation/reflection/rectangular clipping only.
+  The three conic families also accept parallelsDeg, default[30,60], excluding singular ±90 parallels.
+  Albers USA has fixed lower48/Alaska/Hawaii components and accepts scalePx/translatePx/precisionPx only.
+- Scale and precision must be finite positive numbers; translate is a finite pair, center a finite pair
+  with latitude[-90,90], rotation a finite pair or triple. Longitude/rotation are normalized. Clip extent
+  is null(default) or two increasing finite corners. Antimeridian clipping is the ordinary spherical
+  default, with finite automatic world extent for Mercator/transverse. Orthographic defaults to90°,
+  gnomonic60°, stereographic142°, the two azimuthal families179.999°. Those circular projections require
+  a non-null positive clip angle: orthographic≤90°, gnomonic<90°, the other three<180°. Other spherical
+  projections accept null or an angle in(0,180]. Inapplicable explicit options and undefined values fail.
+- Optional fit is `{geometry?,width,height,padding?,pointScale?}`. Width/height are finite positive CSS
+  pixels, padding defaults0 and must leave positive inner dimensions. Geometry resolves explicit ID,
+  current eligible geographic source, then one unique eligible source; contours are ineligible. The
+  exact geometry ref is stored once. Identity requires planar geometry, all other types geographic.
+  The viewport is explicit and does not read Canvas size/margins. Fit and explicit scale/translation
+  in the same request conflict. Point-only fit uses explicit positive pointScale or the type default.
+- Fit uses actual projected geometry bounds, spherical/antimeridian clip and shared bounded stream;
+  explicit rectangular postclip is excluded from fitting and retained for the final result. Source
+  segments preserve their longitude/latitude interpolation, holes and member paths. Empty/wholly
+  clipped source, overflow, unrepresentable viewport precision or stream work/command limits fail.
+  Stroke and glyph radius do not expand geometry fit bounds.
+- Stored kind:projection, algorithmVersion1, authored ownership, no source rows. Unfitted resources
+  have normalized mathematical options, no input refs and empty result. Fitted options omit scale and
+  translation and store the resolved fit policy; result contains scalePx, translatePx and final bounds.
+  Bounds may be null if the retained rectangular clip excludes the fitted geometry. There are no
+  stored callbacks. Offline validation checks exact schema/refs and bounded fit consistency without
+  renderer I/O. Typed inspection, comparison and [restrictive removal](CORE.md#removeresource) apply.
+
+### Formal values — `createProjection`
+
+- Implemented: `createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): arbitrary registered projection callbacks.
+
+### Value coverage — `createProjection`
+
+- ✅ Covered: fifteen native types, exact source refs, literal fit/point-only results, independent mathematical kernels, descriptor safety, option conflict, restore and Full/Basic boundaries.
+- Evidence: `test/unit/geo/projection-resources.test.js`, `test/unit/geo/projections.test.js`, `test/unit/geo/stream.test.js`, `test/contracts/projection-types.test.js`.
+
+## `editProjection`
+
+- Signature: `editProjection({target?,type?,centerDeg?,rotateDeg?,parallelsDeg?,scalePx?,translatePx?,reflectX?,reflectY?,precisionPx?,clipAngleDeg?,clipExtentPx?,fit?})`.
+- Target resolves explicit ID, current projection, then one unique projection. Requires a nonempty patch
+  without undefined values. Same-type edits retain unspecified parameters. An explicit different type
+  starts from that type's defaults plus the supplied parameters; inapplicable explicit options fail.
+- Shape/rotation/precision edits retain an existing fit and recompute its result. A new fit supplies
+  width/height and may choose another geometry; omitted geometry retains the existing fit input or uses
+  normal unique inference. Omitted pointScale on a new fit uses the current resolved scale. Existing fit
+  policy is retained on type changes unless an explicit scale/translation patch detaches it.
+- Explicit scalePx or translatePx edits detach the fit dependency and preserve the other current
+  resolved transform for same-type edits. A simultaneous fit still conflicts. A successful edit advances
+  revision once. Original programs, inputs and traces remain immutable on success or rejection.
+- Editing a geographic source recomputes all its fitted projections against the same final source,
+  each once, before the semantic write. Invalid fit, empty output or incompatible coordinateKind
+  rejects the complete source revision. Projection resources are authored dependents: even geometry
+  cascade cannot delete them implicitly; remove the projection first.
+
+### Formal values — `editProjection`
+
+- Implemented: `editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): silently retaining a previous fit after invalid geometry.
+
+### Value coverage — `editProjection`
+
+- ✅ Covered: exact revision closure, shape edits, explicit transform override, type defaults, fit source rebind, current/unique/ambiguous resolution, removal protection and atomic failure.
+- Evidence: `test/unit/geo/projection-resources.test.js`.

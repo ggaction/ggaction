@@ -1,0 +1,4 @@
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };

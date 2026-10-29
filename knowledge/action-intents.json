@@ -1079,6 +1079,12 @@
       "planar shapes",
       "GeoJSON features",
       "TopoJSON shared arcs"
+    ],
+    "Projection": [
+      "geographic projection",
+      "map projection",
+      "planar projection",
+      "geometry fit"
     ]
   },
   "summaryOverrides": {
@@ -2173,6 +2179,18 @@
     "editGeometryData": {
       "target": "geometry",
       "coordinateKind": "planar"
+    },
+    "createProjection": {
+      "id": "projection",
+      "type": "mercator",
+      "centerDeg": [
+        0,
+        0
+      ]
+    },
+    "editProjection": {
+      "target": "projection",
+      "scalePx": 200
     }
   },
   "callPatternOverrides": {

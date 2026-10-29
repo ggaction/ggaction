@@ -8,7 +8,8 @@
 - [x] Geometry resource/action·identity/revision·stored validation 공개 checkpoint 검증
 - [x] 15 projection private registry·raw/visible/inverse·explicit bounds fit 검증
 - [x] Geometry stream·split/clip/resample·geometry fit 순수 kernel 검증
-- [ ] Projection resource·geometry stream 공개 연결
+- [x] Projection resource·명시 fit·geometry revision closure 공개 checkpoint 검증
+- [ ] Geometry stream의 native geo mark/guide 공개 연결
 - [ ] Native geo marks/guide/typed join/shared-arc LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
@@ -225,3 +226,42 @@ Node20/24=1,397,803bytes로 ceiling979/1,398,000/6,359,000을 적용했다. Publ
 바뀌지 않아 이전 공개 API/types/renderer/browser 증거를 재사용하고, 새 그림이나 전체 설치
 자격을 다시 실행했다고 주장하지 않는다. 최초 pack 명령의 상대 outputDirectory 경로 오류와
 의존 검사 실패를 보존하고 절대 경로로 다시 생성했다. 상세 증거는`geo-evidence/stream/`이다.
+
+## 공개 projection resource 구체 계약
+
+`remainingApproval`을 재사용하여 Full `createProjection({id,type,...parameters,fit?})`와
+`editProjection({target?,...patch})`를 추가한다. `fit`은 `{geometry?,width,height,padding?,pointScale?}`이며
+Canvas를 암묵적으로 읽지 않는 명시 viewport다. Geometry는 explicit/current/unique source로
+확정하고 exact input ref 한 곳에 저장한다. 옵션에는 id를 다시 복제하지 않는다. Fit pointScale
+생략은 생성 시 해당 type 기본 scale, edit에서 새 fit 지정 시 현재 resolved scale이다.
+동시 fit+scalePx/translatePx는 오류, fit 뒤 scale/translate patch는 현재 resolved transform을
+기준으로 fit 의존성을 해제한다. Fit을 유지한 shape/precision edit는 같은 geometry로 다시 계산한다.
+Type edit는 해당 새 type의 기본 math parameters부터 explicit patch를 적용하고 기존 fit 정책은
+명시 transform override가 없을 때 유지한다. Inapplicable explicit options는 계속 거부한다.
+
+`projection` kind는 authored/version1/no rows이며 수식 callback을 저장하지 않는다. Unfitted는
+normalized options와 empty result, fitted는 scale/translate가 없는 authored shape+fit options와
+계산된 result `{scalePx,translatePx,bounds}`를 저장하여 같은 결정을 두 번 저장하지 않는다.
+복원은 exact options/refs/result shape와 bounded fit 결과를 검증하고 그림을 만들지 않는다.
+Geometry edit는 모든 dependent fitted projection을 최종 geometry 후보로 preflight하고 existing
+prepared resource envelope로 각각 한 번 갱신한다. 잘못된 fit이나 coordinateKind 변경은 전체
+편집을 거부한다. 일반 removeResource의 restrict와 inspection/compare를 재사용한다. Authored fit projection은
+geometry cascade로 자동 삭제하지 않으며 projection을 먼저 명시 제거한다.
+공개 coordinate/mark와 camera는 이어지는 checkpoint이며 이 자원 생성만으로 그림을 만들지 않는다.
+
+
+## Projection 공개 검증 기록
+
+54개 Geo focused 수치/state 검사와 21개 critical owner의 기존 95/90/100 floor를 유지한다.
+공개 2 action은 실제 TT 5 dataset × 3 recipe(viewport 변경, reflection, 명시 transform 분리)로
+원 측정값을 planar 좌표로 보존하고 독립 affine box 계산과 비교한다. 실행 예제·타입·Full/Basic·
+검증된 전체 dependency source signature·offline fresh process 복원은 동일 tar의 Node20/22/24에서
+확인한다. 직접 lifecycle/inventory 10개와 신규 actual projection 16개는 canonical realistic
+runner로 분리 실행한다. 공통 recipe 영향 3파일은 최종 root 통합에 인계한다.
+
+첫 public 회귀에서 거대한 point 좌표가 translation cancellation으로 viewport 중심을 잃는
+경우를 확인하여 저장 전 precision 검사를 추가했다. 이후 문서 registry/CHANGELOG/search size,
+card override 한도, realistic discovery count 누락은 각각 owning check로 보완한다. 새 source의
+전체 coverage/render/browser 완료로 주장하지 않고 Geo marks 통합에서 수행한다. 이 checkpoint는
+아직 화면 graphic을 만들지 않으므로 새로운 visual target은 없다. 원본 실패와 수리 검증은
+`geo-evidence/projection-public/`에 구분 보존한다.

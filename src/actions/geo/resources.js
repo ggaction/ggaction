@@ -7,6 +7,7 @@ import { createGeometryResource } from "../../materialization/geo/resources.js";
 import { resolveGeometryResource } from "../../selectors/geometry.js";
 import { findStoredResource } from "../../selectors/resources.js";
 import { newDatasetNamespace } from "../primitives/datasetIdentity.js";
+import { writeGeometryResource } from "./closure.js";
 
 export const createGeometryData = /* @__PURE__ */ closedAction(
   { op: "createGeometryData", description: "Normalize an immutable geographic or planar geometry source." },
@@ -29,7 +30,7 @@ export const editGeometryData = /* @__PURE__ */ closedAction(
       ...(Object.hasOwn(patch, "limits") ? { limits: { ...intent.limits, ...ownRecord(patch.limits, "Geometry limit patch") } } : {}) }),
       values: Object.hasOwn(args, "values") ? values : previous.result.source.values, allocationId: newDatasetNamespace(),
       previous, replaceValues: Object.hasOwn(args, "values") || Object.hasOwn(args, "topoObject") && args.topoObject !== previous.options.topoObject });
-    return this.editSemantic({ property: `resource[geometry:${resource.id}]`, value: resource });
+    return writeGeometryResource(this, resource);
   });
 
 export function registerGeometryActions(ProgramClass) {

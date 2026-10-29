@@ -345,5 +345,7 @@
   "bundleGraphEdges": "/reference/actions/charts-data/#bundlegraphedges",
   "editEdgeRoute": "/reference/actions/charts-data/#editedgeroute",
   "createGeometryData": "/reference/actions/charts-data/#creategeometrydata",
-  "editGeometryData": "/reference/actions/charts-data/#editgeometrydata"
+  "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
+  "createProjection": "/reference/actions/charts-data/#createprojection",
+  "editProjection": "/reference/actions/charts-data/#editprojection"
 }

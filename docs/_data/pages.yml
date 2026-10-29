@@ -526,7 +526,7 @@
   url: /tutorials/flows/
   parent: /tutorials/
 
-- title: Geometry Sources
+- title: Geometry and Projections
   url: /api/geometry/
   parent: /api/
 

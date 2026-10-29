@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:5ba66393669d964d56a008d9166a0b43975ed3c268f6faf7a8392e669824e45c",
-  "sourceCommit": "0b68912ea39ca7395872cb13c1bb611fac0224db",
-  "sourceRef": "0b68912ea39ca7395872cb13c1bb611fac0224db",
+  "contractId": "sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "a491a8b8e421ace56be22a83296e163e2315be70",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 347,
+  "actionCount": 349,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -211,6 +211,14 @@
       "status": "development"
     },
     "createGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editProjection": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

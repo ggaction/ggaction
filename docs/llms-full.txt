@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:5ba66393669d964d56a008d9166a0b43975ed3c268f6faf7a8392e669824e45c. Status: development. Runtime source: 0b68912ea39ca7395872cb13c1bb611fac0224db. Release baseline: v0.0.13.
+Contract: sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0b68912ea39ca7395872cb13c1bb611fac0224db/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0b68912ea39ca7395872cb13c1bb611fac0224db/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -18577,6 +18577,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
+| [`createProjection`](./reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
 | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -18705,6 +18706,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
+| [`editProjection`](./reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
@@ -23831,6 +23833,87 @@ editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
 ```
 
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](./api/geometry/#editgeometrydata).
+
+## `createProjection`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateProjectionOptions`](./reference/types/#type-createprojectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Required | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](./api/geometry/#createprojection).
+
+## `editProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditProjectionOptions`](./reference/types/#type-editprojectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `type` | Optional / branch-dependent | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](./api/geometry/#editprojection).
 
 ## Focused core data editing
 
@@ -32786,6 +32869,7 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
+export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
@@ -34161,6 +34245,8 @@ interface ChartProgramActions {
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
@@ -37279,6 +37365,16 @@ export interface CreatePolarScatterPlotOptions {
 
 Related types: [`PolarThetaChannel`](./reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](./reference/types/#type-polarradiuschannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`CreateScatterPlotOptions`](./reference/types/#type-createscatterplotoptions) · [`PolarPointGuideOptions`](./reference/types/#type-polarpointguideoptions).
 
+### `CreateProjectionOptions` {#type-createprojectionoptions}
+
+ Expand CreateProjectionOptions
+
+```typescript
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](./reference/types/#type-projectionfittedoptions).
+
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
  Expand CreateRadarPlotOptions
@@ -40023,6 +40119,17 @@ export interface EditPolarGridOptions {
 ```
 
 Related types: [`AxisValue`](./reference/types/#type-axisvalue).
+
+### `EditProjectionOptions` {#type-editprojectionoptions}
+
+ Expand EditProjectionOptions
+
+```typescript
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](./reference/types/#type-projectioneditfittedoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -44526,6 +44633,85 @@ export interface PreparedTextMetrics {
 }
 ```
 
+### `ProjectionEditFittedOptions` {#type-projectioneditfittedoptions}
+
+ Expand ProjectionEditFittedOptions
+
+```typescript
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+```
+
+Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](./reference/types/#type-projectionfitoptions).
+
+### `ProjectionFitOptions` {#type-projectionfitoptions}
+
+ Expand ProjectionFitOptions
+
+```typescript
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+```
+
+### `ProjectionFittedOptions` {#type-projectionfittedoptions}
+
+ Expand ProjectionFittedOptions
+
+```typescript
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+```
+
+Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](./reference/types/#type-projectionfitoptions).
+
+### `ProjectionParameters` {#type-projectionparameters}
+
+ Expand ProjectionParameters
+
+```typescript
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+```
+
+Related types: [`ProjectionPlaneParameters`](./reference/types/#type-projectionplaneparameters) · [`ProjectionType`](./reference/types/#type-projectiontype) · [`ProjectionSphereParameters`](./reference/types/#type-projectionsphereparameters).
+
+### `ProjectionPlaneParameters` {#type-projectionplaneparameters}
+
+ Expand ProjectionPlaneParameters
+
+```typescript
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+```
+
+### `ProjectionSphereParameters` {#type-projectionsphereparameters}
+
+ Expand ProjectionSphereParameters
+
+```typescript
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+```
+
+Related types: [`ProjectionPlaneParameters`](./reference/types/#type-projectionplaneparameters).
+
+### `ProjectionType` {#type-projectiontype}
+
+ Expand ProjectionType
+
+```typescript
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+```
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
  Expand QuantileColorScaleOptions
@@ -46063,7 +46249,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -47628,12 +47814,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b68912ea39ca7395872cb13c1bb611fac0224db/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b68912ea39ca7395872cb13c1bb611fac0224db/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50684,11 +50870,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5ba66393669d964d56a008d9166a0b43975ed3c268f6faf7a8392e669824e45c` |
+| Contract fingerprint | `sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b` |
 | Example and dataset source | `a491a8b8e421ace56be22a83296e163e2315be70` |
-| Runtime source commit | `0b68912ea39ca7395872cb13c1bb611fac0224db` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 347 |
+| Declared actions here | 349 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -52634,7 +52820,7 @@ fields, defaults and lifecycle behavior.
 
 <!-- Source: /api/geometry/ -->
 
-# Geometry sources
+# Geometry and projections
 
 Keep geographic or planar shapes in an immutable resource with explicit feature
 identity. These Full `ggaction` actions prepare source geometry; creating a
@@ -52722,6 +52908,88 @@ unspecified limits. Every successful edit advances the resource revision once.
 Invalid edits leave the original program and its trace unchanged. Inspect or
 compare geometry through [inspection](./inspection/), and remove it through
 [`removeResource`](./reference/actions/charts-data/#removeresource).
+
+## `createProjection`
+
+**Chart authoring.**
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Create a named mathematical projection with an explicit `id` and `type`. A
+projection is a reusable resource; creating it does not draw geometry.
+
+| Family | Types |
+| --- | --- |
+| Cylindrical and global | `mercator`, `equirectangular`, `equal-earth`, `natural-earth`, `transverse-mercator` |
+| Azimuthal | `orthographic`, `stereographic`, `gnomonic`, `azimuthal-equal-area`, `azimuthal-equidistant` |
+| Conic | `conic-equal-area`, `conic-conformal`, `conic-equidistant` |
+| Composite insets | `albers-usa` |
+| Planar | `identity` |
+
+Spherical projections use longitude/latitude degrees and downward-y CSS pixels.
+The parameter names state their units: `centerDeg`, `rotateDeg`, `parallelsDeg`,
+`scalePx`, `translatePx`, `precisionPx`, `clipAngleDeg` and `clipExtentPx`.
+Spherical scale defaults to 150, translation to `[0, 0]`, center/rotation to zero,
+precision to 0.5 pixels and reflection to false. Scale and precision must be
+positive. Conic parallels default to `[30, 60]`.
+
+`identity` preserves planar units with scale 1 and supports translation,
+reflection and rectangular clipping. It does not accept spherical parameters.
+`albers-usa` uses fixed lower48, Alaska and Hawaii components and accepts scale,
+translation and precision. Other inapplicable parameters are rejected.
+
+To fit an existing geometry source, provide `fit` with explicit `width` and
+`height`. `geometry` can be omitted when the current or unique source determines
+it. Optional `padding` defaults to zero. The geometry coordinate kind must match
+identity (planar) or a spherical projection (geographic).
+
+> **Executable complete.** Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].
+
+```javascript
+import { chart } from "ggaction";
+
+const fitted = chart()
+  .createGeometryData({
+    id: "shape", format: "geojson", coordinateKind: "planar",
+    values: { type: "LineString", coordinates: [[0, 0], [10, 20]] }
+  })
+  .createProjection({
+    id: "map", type: "identity",
+    fit: { geometry: "shape", width: 100, height: 100 }
+  });
+// The fitted scale is 5 and translation is [25, 0].
+```
+
+Fit uses the projected geometry, including holes and visible clipped segments.
+It does not read Canvas size or include stroke/glyph padding. Empty or wholly
+clipped geometry is an error. Point-only geometry uses `pointScale`, or the
+current/default scale. A request cannot combine `fit` with explicit `scalePx`
+or `translatePx`. Large inputs that exceed the geometry or path work limits,
+and numbers that cannot preserve viewport precision, are rejected.
+
+## `editProjection`
+
+**Chart authoring.**
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+`target` may be omitted for the current or unique projection. Supply a nonempty
+parameter patch. Shape and rotation edits retain an existing fit. A new fit can
+choose another geometry and viewport. Changing `type` starts with the new type's
+parameter defaults; its explicit options must be applicable to that type.
+
+An explicit scale or translation edit detaches the previous fit and uses the
+current resolved value of the other transform. Editing a fitted geometry source
+updates each dependent projection once. An invalid source or incompatible
+coordinate kind rejects the whole edit and preserves the previous program.
+
+Remove authored fit projections explicitly before removing their geometry.
+Geometry cascade does not delete a reusable authored projection. Projection
+resources and their exact fit inputs survive offline serialization.
 
 <!-- Source: /api/contours/ -->
 

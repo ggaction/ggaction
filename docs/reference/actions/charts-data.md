@@ -5537,6 +5537,95 @@ editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
 
 
+## `createProjection`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateProjectionOptions`](./../types.md#type-createprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Required | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../../api/geometry.md#createprojection).
+
+
+## `editProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditProjectionOptions`](./../types.md#type-editprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `type` | Optional / branch-dependent | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../../api/geometry.md#editprojection).
+
+
 ## Focused core data editing
 
 ```javascript

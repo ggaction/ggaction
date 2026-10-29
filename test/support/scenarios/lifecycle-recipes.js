@@ -1333,6 +1333,8 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
       values: { type: "FeatureCollection", features: rows.map(row => ({ type: "Feature", id: row.id,
         properties: { category: row.category }, geometry: { type: "Point", coordinates: [row.x, row.positive] } })) } })
+    .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
+    .editProjection({ target: "directProjection", reflectX: true })
     .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })
     .createContourData({ id: "directContourGrid", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2,
       values: rows.slice(0, 4).map(row => row.positive) }, thresholds: [0, Math.max(...rows.map(row => row.positive)) + 1] })
@@ -2524,6 +2526,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createProjection", "editProjection",
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",

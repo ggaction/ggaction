@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:5ba66393669d964d56a008d9166a0b43975ed3c268f6faf7a8392e669824e45c",
-    "sourceCommit": "0b68912ea39ca7395872cb13c1bb611fac0224db",
+    "contractId": "sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "b96cfa6826297a755c108d3590dd7aecdb343d0043828d56905187b56788a308"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2025,8 +2025,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 37029,
-      "sha256": "bcaf6d124bf08c305e71ec76e3b75191050988f364070f33aee48306a6ced059"
+      "bytes": 37229,
+      "sha256": "f05ba92ae85ade1a5d82c9e8218796df0cbd764c948bb28f74d6a4c585244f1a"
     },
     {
       "order": 120,
@@ -2166,12 +2166,14 @@
         "editedgeroute",
         "creategeometrydata",
         "editgeometrydata",
+        "createprojection",
+        "editprojection",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 256976,
-      "sha256": "126efe16b9606ba0b04eff9f7383f556f6e2ada0158ba97344c593edba7a2bdb"
+      "bytes": 261481,
+      "sha256": "f45a87b23f9d031c8c0347be439f25a175fb81e50444ac424ff3360afd50da74"
     },
     {
       "order": 121,
@@ -2509,8 +2511,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 54453,
-      "sha256": "d6418b06cf7f8c1cff09938f89ee05501a3e489b8284bb786aea7d25ad26f54f"
+      "bytes": 54672,
+      "sha256": "07753c9676f5c03840d280e107d8c6619923a36570d1328b1154fcf8943c87ff"
     },
     {
       "order": 128,
@@ -2703,6 +2705,7 @@
         "type-createpieplotoptions",
         "type-createpolarlineplotoptions",
         "type-createpolarscatterplotoptions",
+        "type-createprojectionoptions",
         "type-createradarplotoptions",
         "type-createradialaxislabelsoptions",
         "type-createradialaxislineoptions",
@@ -2871,6 +2874,7 @@
         "type-editpivotdataoptions",
         "type-editpolaraxisoptions",
         "type-editpolargridoptions",
+        "type-editprojectionoptions",
         "type-editrscaleoptions",
         "type-editradarplotoptions",
         "type-editradialaxisoptions",
@@ -3187,6 +3191,13 @@
         "type-preparedgraphedgeroutes",
         "type-preparedimageresource",
         "type-preparedtextmetrics",
+        "type-projectioneditfittedoptions",
+        "type-projectionfitoptions",
+        "type-projectionfittedoptions",
+        "type-projectionparameters",
+        "type-projectionplaneparameters",
+        "type-projectionsphereparameters",
+        "type-projectiontype",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3364,8 +3375,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 466581,
-      "sha256": "edb988b02a0a105639487ef7cacee38feb824c684c1a8877f25fbcb928d50617"
+      "bytes": 471339,
+      "sha256": "92aeefb7d989649aada60f9e173fad64bdc33ebb0896f2854cd994c716acaf45"
     },
     {
       "order": 129,
@@ -3399,8 +3410,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "a2cb5e6ae8442c2ccf69500d81a995d0bdabc082671817910982e3f844a5cc94"
+      "bytes": 20908,
+      "sha256": "015c171d0d3d204a5a9177ac3f23edb1c9f9b256e6be4102a244e8b40145139b"
     },
     {
       "order": 131,
@@ -3739,8 +3750,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "2e682cad8278288a6c35488b4eca86919e4ec2ec350fbccb281c706ea5c60616"
+      "bytes": 3000,
+      "sha256": "5d0e592d714589a15169532bbbb6ce9a2bb676c7644889bb6fdb606b4243d2c9"
     },
     {
       "order": 152,
@@ -3945,16 +3956,18 @@
     },
     {
       "order": 165,
-      "title": "Geometry Sources",
+      "title": "Geometry and Projections",
       "route": "/api/geometry/",
       "source": "api/geometry.md",
       "headings": [
-        "geometry-sources",
+        "geometry-and-projections",
         "creategeometrydata",
-        "editgeometrydata"
+        "editgeometrydata",
+        "createprojection",
+        "editprojection"
       ],
-      "bytes": 3802,
-      "sha256": "ad1a126db0fea27e47eb439fc60c4b359e21db34743c556801249bb2c6c4a16f"
+      "bytes": 7554,
+      "sha256": "5aad308b6b0726b4b2b2294a3f44a8705a7869e4a198d5f68dcdf3fd7a3f8996"
     },
     {
       "order": 166,

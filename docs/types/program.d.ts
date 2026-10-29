@@ -2096,6 +2096,39 @@ export interface GeometrySourceResource {
   };
   readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
 }
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+export interface ProjectionResource {
+  readonly kind: "projection"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: ProjectionParameters | (Omit<ProjectionSphereParameters, "scalePx" | "translatePx"> & {
+    readonly type: ProjectionType; readonly parallelsDeg?: readonly [number, number]; readonly fit: Required<Omit<ProjectionFitOptions, "geometry">> });
+  readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
+  readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
+}
 export interface ContourGridFrame {
   readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
   readonly width: number; readonly height: number;
@@ -2138,7 +2171,7 @@ export interface ContourMarkOptions {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
 }
 export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -2370,7 +2403,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | CalendarLayoutResource | EdgeRouteResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6441,6 +6474,8 @@ export class ChartProgram {
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
