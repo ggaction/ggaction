@@ -87,6 +87,17 @@ const allowed = Object.freeze({
   theme: new Set(["theme"])
 });
 
+test("the frame association shared by interaction reaches only its lightweight core owners", () => {
+  const association = path.join(root, "animation", "frameProvenance.js"), pending = [association], seen = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (seen.has(file)) continue;
+    seen.add(file);
+    assert.ok(file === association || layer(file) === "core", path.relative(root, file));
+    pending.push(...localImports(file));
+  }
+});
+
 test("keeps source imports inside their architectural boundaries", () => {
   for (const file of sourceFiles()) {
     const owner = layer(file);
