@@ -1,0 +1,143 @@
+[
+  {
+    "log": ".artifacts/interaction-focused-coverage.log",
+    "sha256": "6a3522405cb118041d7889ec979d97346ba34beb0314a270d261ebec4d5b09e8",
+    "tests": 84,
+    "passed": 84,
+    "failed": 0,
+    "floors": {
+      "interaction/hitConcrete.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/hitFrame.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/hitGuides.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/hitLegends.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/hitProgram.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/sceneFrame.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/session.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/axisLabelText.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/legendClip.js": {
+        "lines": 90,
+        "branches": 80,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "grammar/axisFormat.js": {
+        "lines": 95.74,
+        "branches": 95,
+        "functions": 100
+      },
+      "interaction/hitConcrete.js": {
+        "lines": 100,
+        "branches": 98,
+        "functions": 100
+      },
+      "interaction/hitFrame.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "interaction/hitGuides.js": {
+        "lines": 100,
+        "branches": 94.92,
+        "functions": 100
+      },
+      "interaction/hitLegends.js": {
+        "lines": 100,
+        "branches": 95,
+        "functions": 100
+      },
+      "interaction/hitProgram.js": {
+        "lines": 100,
+        "branches": 94.87,
+        "functions": 100
+      },
+      "interaction/sceneFrame.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "interaction/session.js": {
+        "lines": 100,
+        "branches": 96.64,
+        "functions": 100
+      },
+      "materialization/axisLabelText.js": {
+        "lines": 100,
+        "branches": 94.74,
+        "functions": 100
+      },
+      "materialization/legendClip.js": {
+        "lines": 97.92,
+        "branches": 83.67,
+        "functions": 100
+      },
+      "all files": {
+        "lines": 99.48,
+        "branches": 94.02,
+        "functions": 100
+      }
+    }
+  },
+  {
+    "log": ".artifacts/interaction-guide-owner-coverage.log",
+    "sha256": "96573661f7a68516dc5a74d949a802ac4eca74553cdc207b6d9d9ffa54118f7a",
+    "tests": 1128,
+    "passed": 1128,
+    "failed": 0,
+    "floors": {},
+    "actual": {
+      "actions/guides/axes/labels.js": {
+        "lines": 98.47,
+        "branches": 93.35,
+        "functions": 100
+      },
+      "actions/guides/axes/policy.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "actions/guides/legends/size.js": {
+        "lines": 95.47,
+        "branches": 92.8,
+        "functions": 100
+      },
+      "all files": {
+        "lines": 97.75,
+        "branches": 94.05,
+        "functions": 100
+      }
+    }
+  }
+]

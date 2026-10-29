@@ -1,3 +1,4 @@
+import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
 import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
 import { registerCalendarPlotActions } from "./calendar/plots.js";
 import { registerImageResourceActions } from "./images/index.js";
@@ -84,6 +85,7 @@ export function registerActions(ProgramClass) {
   registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
   registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout"],
-    revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements) });
+    revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
+    reviseSource: reviseSourceResourceInputs });
   registerTextMetricActions(ProgramClass);
 }

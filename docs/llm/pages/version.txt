@@ -9,7 +9,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7e54727b1a1b9740e2a6ce1dd5a0bc5f7fb227b1e3418a8d6d703605b8188d4e` |
+| Contract fingerprint | `sha256:75c33334d9284bf0ce84cf3a06adf5ca6d9aec7af88369f887f52c5be09b6620` |
 | Example and dataset source | `codex/roadmap9-calendar` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

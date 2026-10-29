@@ -1,0 +1,148 @@
+{
+  "base": "badf9351d",
+  "sourceCommit": "ebe34f896",
+  "scope": "Flow node, ribbon and label native theme roles",
+  "sourceFiles": {
+    "src/actions/theme/resourcePlots.js": "0856d9e533c6842a2728d877881bee4e80f59d0eca158f745f7d4789b5fc597f",
+    "src/actions/theme/reconcile.js": "2c87a10f102d701ebd840db2a383dd9da4e8c7ca374f7f3dfca5da69e179c04a",
+    "scripts/browser-bundle-size.js": "b9d425e2c62242535a07418e9acfa3ceedfbf0247c652a8a66ec6ef323dfe194",
+    "test/unit/actions/theme-flow.test.js": "42984fd8fc6212453c65aadc9c7b12d84af6597c59b8a9c7f3980d43ca582003",
+    "test/capabilities.json": "82d7e5d1081c1ec5daba4136c8c050d5f8d28f0844ed320be9de563c0cd42905",
+    "agent_docs/contract/current/CORE.md": "11e8faa408a3edcee658e0cff697157f9e815157a293ab9988a226f3a1033468",
+    "agent_docs/contract/current/FLOWS.md": "8fc3eef44f6de814f5854e5efe7e15cd2d52d22c6cbd0dfa9c83851a58e7a547",
+    "docs/recipes/apply-custom-theme.md": "e01c8fc2aa670ea8cde0ee0c237cca73361a9ced3a8e110a32bf13f3f7c1ca24"
+  },
+  "verification": {
+    "initialRegression": {
+      "passed": 1,
+      "failed": 5,
+      "total": 6
+    },
+    "focused": {
+      "passed": 101,
+      "failed": 0
+    },
+    "cross": {
+      "passed": 77,
+      "failed": 0
+    },
+    "package": {
+      "passed": 7,
+      "failed": 0
+    },
+    "coverage": {
+      "floors": {
+        "actions/theme/guideDefaults.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "actions/theme/resourcePlots.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "actions/theme/typographyRoles.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "actual": {
+        "actions/theme/guideDefaults.js": {
+          "lines": 97.22,
+          "branches": 96.83,
+          "functions": 100
+        },
+        "actions/theme/resourcePlots.js": {
+          "lines": 100,
+          "branches": 95.89,
+          "functions": 100
+        },
+        "actions/theme/typographyRoles.js": {
+          "lines": 100,
+          "branches": 95.16,
+          "functions": 100
+        }
+      }
+    },
+    "installed": {
+      "passed": 54,
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-flow/package/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography",
+        "theme-flow"
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 776,
+          "minifiedBytes": 2252746,
+          "gzipBytes": 637032
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 516,
+          "minifiedBytes": 1239354,
+          "gzipBytes": 361506
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        }
+      }
+    },
+    "bundleLimits": {
+      "limits": {
+        "ggaction": 638000,
+        "ggaction/basic": 362000,
+        "ggaction/svg": 25000
+      },
+      "passed": true
+    },
+    "docs": {
+      "passed": 177,
+      "failed": 0
+    }
+  },
+  "artifact": {
+    "sha256": "692f66ae08526b2aac62476f7cdc21f68249a5861eede3183c692d347bc694e9",
+    "entries": 865,
+    "packed": 1264208,
+    "unpacked": 5815733
+  },
+  "commands": {
+    "focused": "node --test --experimental-test-coverage test/unit/actions/theme-flow.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme-typography.test.js test/unit/actions/theme-guide-defaults.test.js test/unit/actions/theme-item-identity.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/contracts/theme.test.js",
+    "cross": "node --test test/unit/resources/flow-plots.test.js test/unit/resources/flow-consumers.test.js test/unit/resources/resource-plot-effects.test.js test/unit/resources/font-resource-labels.test.js test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js test/unit/support/coverage-policy.test.js",
+    "package": "node --test test/contracts/package-artifact.test.js",
+    "docs": "npm run docs:generate; node scripts/run-tests.js docs",
+    "installed": "PATH=<node20-bin>:$PATH node .artifacts/theme-flow/installed.mjs"
+  },
+  "notRun": [
+    "whole source coverage",
+    "full realistic corpus",
+    "all installed cases on three Node versions",
+    "new four-backend pixel comparison"
+  ],
+  "logs": {
+    ".artifacts/theme-flow/installed.log": "3a79e433905f5936514c5c25e2c93aac3c99896e1f705f469f1c47094042cb7e",
+    ".artifacts/theme-flow/focused-final.log": "077cf239b417938dd0a9abb83f4476bd293db5bb98696410fd9fd372643427d0",
+    ".artifacts/theme-flow/cross.log": "1470c164f98160890182a9ca5a41a711a367011378d4c675d9202fd1b67abaa3",
+    ".artifacts/theme-flow/docs.log": "71f3a398867bd92fc4bd129f0cc40b1171569867e7d4ce0885a331fb8ef592cf",
+    ".artifacts/theme-flow/package-contract.log": "260bd50acafa0c603fbaaf8350dc44f7d2bacbded3aceac05ff0152f6df38cf0",
+    ".artifacts/theme-flow/pack.log": "5ea287b88e2fa1624b122d2a4e1345c0abbc29d408669138970f1039035a2226",
+    ".artifacts/theme-flow/before.log": "62819af6909ee41be9ceee37531a8915bc5e4ee279727e274664cf8213143dd3",
+    ".artifacts/theme-flow/docs-generate.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-flow/focused.log": "816d2689a33d948c6cc7d36b71f7cd3c38d973372c9fc79f3da7b26e2a2bd020",
+    ".artifacts/theme-flow/after.log": "fe78a78923e7c7d563bc3e330c0c8aea07a8c8952d3466df0fe2d23ded367e9e"
+  }
+}

@@ -75,6 +75,7 @@ const DEFAULT_TITLE = {
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
 };
+export { DEFAULT_TITLE as CONTINUOUS_LEGEND_TITLE_STYLE };
 export const ITEM_LEGEND_LABELS = Object.freeze(DEFAULT_LABELS);
 export const ITEM_LEGEND_TITLE_STYLE = Object.freeze({
   ...DEFAULT_TITLE, color: DEFAULT_COLORS.strongText
@@ -109,6 +110,7 @@ const DEFAULT_BORDER = {
   padding: 12,
   background: "transparent"
 };
+export { DEFAULT_BORDER as LEGEND_BORDER_DEFAULTS };
 
 export const validatePositive = validatePositiveFinite;
 export const validateNonNegative = validateNonNegativeFinite;

@@ -13,7 +13,7 @@ export function preflightCalendarConsumers(program, resources) {
     resources: program.semanticSpec.resources.map(value => value.kind === "layout" ? replacements.get(value.id) ?? value : value) } };
   const resolvedScales = { ...program.resolvedScales };
   for (const id of new Set(affected.flatMap(getLayerScaleIds))) resolvedScales[id] = resolveScalePreview(preview, id).resolvedScale;
-  for (const layer of affected) resolveCalendarPlot(preview, layer, program.markConfigs[layer.id].calendarPlot, resolvedScales);
+  for (const layer of affected) resolveCalendarPlot(preview, layer, program.materializationConfigs.marks[layer.id].calendarPlot, resolvedScales);
   return affected.map(layer => layer.id);
 }
 export function materializeCalendarConsumers(program, ids) {

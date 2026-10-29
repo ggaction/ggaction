@@ -651,14 +651,14 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`\" on docs/api/data/filtering.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-selector-filter-marks-:2",
+    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-recompute-selector-filter-marks-:2",
     "sha256": "e53dfbf266a10c9fc821441db564d8d9d7a3a81529c1c066e2afbc5a2c50874b",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/filtering.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`filterMarks({ target?, mode?, ...selector })` {#filter-marks}\" on docs/api/data/filtering.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-selector-filter-marks-:3",
+    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-recompute-selector-filter-marks-:3",
     "sha256": "b96ff556f3e855b7e130ddb501ebf6bb40ab04fd64604ba2d0efb542044405ba",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/filtering.md",
@@ -2847,5 +2847,40 @@
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/image-assets.md",
     "reason": "This fragment requires an already prepared image program and application canvas. The complete canonical image-assets example executes the same preparation and rendering workflow in the browser and installed-package tests."
+  },
+  {
+    "id": "docs/api/interaction.md#create-and-mount:1",
+    "sha256": "de9f6d9f6149996e2a054fc7814a28789067239d3d82332481ff4e92e463ce2e",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Contextual continuation of the rendered inspection program in \"Create and mount\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
+  },
+  {
+    "id": "docs/api/interaction.md#inspect-without-a-dom:1",
+    "sha256": "bb01ebfa6ab31d1d7b7295ebdf0d3af0000ea20e68c0c3bd0faa04479c02d991",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Contextual continuation of the rendered inspection program in \"Inspect without a DOM\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
+  },
+  {
+    "id": "docs/api/interaction.md#replace-a-program-or-sampled-frame:1",
+    "sha256": "1cb949f506022a683ba38196aebba8f4959998681e5fb45411b89c32971ad7be",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Contextual continuation of the rendered inspection program in \"Replace a program or sampled frame\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
+  },
+  {
+    "id": "docs/api/interaction.md#state-and-cleanup:1",
+    "sha256": "8613cc992f9b48f19dece300e915361a75c4f63bfccdbdd4e0c8855c26e5113c",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Contextual continuation of the rendered inspection program in \"State and cleanup\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
+  },
+  {
+    "id": "docs/recipes/inspect-chart.md#add-inspection:1",
+    "sha256": "0ad78798509793c17be93423355fb6c8101d4fc41546f41ef2844ad3bc68f005",
+    "mode": "contextual-fragment",
+    "owner": "docs/recipes/inspect-chart.md",
+    "reason": "Contextual continuation of the rendered inspection program in \"Add inspection\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
   }
 ]

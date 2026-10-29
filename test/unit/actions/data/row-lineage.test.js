@@ -1,3 +1,4 @@
+import { createGraph } from "../../../../examples/graph-plots/program.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -79,6 +80,7 @@ test("every registered transform emits unique row keys and exact resolvable line
     Object.values(program.children).forEach(inspect);
   };
   buildActionRelationshipPrograms().forEach(inspect);
+  inspect(createGraph("recomputed"));
   inspect(chart().createData({ id: "rows", values: [1, 2, 3, 4, 50].map(v => ({ g: "a", v })) })
     .createBoxOutlierData({ id: "outliers", category: "g", field: "v" }));
   assert.deepEqual([...seen].sort(), [...TRANSFORM_TYPES].sort());

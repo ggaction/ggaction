@@ -1,3 +1,8 @@
+import { themeTypographyValue } from "./typographyRoles.js";
+import { guideConfigDefault, guideGraphicDefaults, guideNumericProperty, themeGuideGeometrySteps } from "./guideDefaults.js";
+import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
+import { legendSampleFill } from "../../materialization/legends.js";
+import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { resourcePlotThemeOwner, resourcePlotThemeProperty, addResourcePlotThemeOverrides, clearResourcePlotThemeOverrides } from "./resourcePlots.js";
 import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
 import { synchronizeFacetLegendAppearance } from "../../materialization/facetGuides/owner.js";
@@ -26,7 +31,7 @@ const THEME_STYLE_PROPERTIES = Object.freeze([
   "background",
   "fill",
   "stroke",
-  "fontFamily", "fontSize"
+  "fontFamily", "fontSize", "fontWeight"
 ]);
 const COLOR_TOKENS = Object.freeze([
   "mark",
@@ -74,8 +79,8 @@ function roleToken(tokens, role, family = "cartesian") {
   if (tokens[role] !== undefined) return tokens[role];
   if (role === "axisLabel") return family === "parallel" ? tokens.axis : tokens.text;
   if (["axisLabelFontFamily", "axisTitleFontFamily"].includes(role)) return tokens.fontFamily;
-  if (role === "axisLabelFontSize") return AXIS_LABEL_FONT_SIZES[family];
-  if (role === "axisTitleFontSize") return AXIS_TITLE_FONT_SIZE;
+  if (role === "axisLabelFontSize") return tokens.fontSize ?? AXIS_LABEL_FONT_SIZES[family];
+  if (role === "axisTitleFontSize") return tokens.fontSize ?? AXIS_TITLE_FONT_SIZE;
   return undefined;
 }
 
@@ -87,7 +92,7 @@ function roleValues(role, sourceTokens, legacy = [], family) {
   ]);
 }
 
-function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family) {
+function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family, nativeDefault, themeActive = true) {
   if (Array.isArray(value)) {
     let changed = false;
     const next = value.map(item => {
@@ -96,17 +101,17 @@ function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family) {
         role,
         sourceTokens,
         targetTokens,
-        legacy, family
+        legacy, family, nativeDefault, themeActive
       );
       changed ||= mapped.changed;
       return mapped.value;
     });
     return { changed, value: changed ? next : value };
   }
-  if (!roleValues(role, sourceTokens, legacy, family).has(value)) {
+  if ((nativeDefault === undefined || value !== nativeDefault) && !roleValues(role, sourceTokens, legacy, family).has(value)) {
     return { changed: false, value };
   }
-  const target = roleToken(targetTokens, role, family);
+  const target = !themeActive && nativeDefault !== undefined ? nativeDefault : roleToken(targetTokens, role, family);
   return { changed: value !== target, value: target };
 }
 
@@ -255,6 +260,8 @@ function mapGraphicProperties(
   sourceTokens,
   targetTokens,
   overrides,
+  nativeDefaults,
+  themeActive,
   overrideId = id
 ) {
   let changed = false;
@@ -263,7 +270,8 @@ function mapGraphicProperties(
     if (!Object.hasOwn(properties, property)) continue;
     if (isOverridden(overrides, `g:${overrideId}.${property}`) ||
         isOverridden(overrides, `g:${id}.${property}`)) continue;
-    const role = graphicRole(program, id, property);
+    const native = nativeDefaults.get(id);
+    const role = (native?.property === property ? native.role : undefined) ?? graphicRole(program, id, property);
     if (role === undefined || isFieldDrivenLegendSymbol(id) ||
         isFieldDrivenMark(program, id, property)) continue;
     const mapped = mapRoleValue(
@@ -271,7 +279,8 @@ function mapGraphicProperties(
       role,
       sourceTokens,
       targetTokens,
-      roleLegacy(role), axisFamily(id)
+      roleLegacy(role), axisFamily(id),
+      native?.property === property ? native.value : undefined, themeActive
     );
     if (mapped.changed) {
       next[property] = mapped.value;
@@ -287,8 +296,16 @@ function recolorGraphic(
   graphic,
   sourceTokens,
   targetTokens,
-  overrides
+  overrides,
+  nativeDefaults,
+  themeActive
 ) {
+  if (program.compositionSpec !== undefined && !nativeDefaults.has(id) &&
+      !["canvas", "chartTitle", "chartSubtitle", `${program.compositionSpec.id}-headers`].includes(id)) {
+    // Child and collected-guide snapshots already carry their owning program's
+    // resolved appearance, including local overrides and native family defaults.
+    return program;
+  }
   if (resourcePlotThemeOwner(findLayer(program, id)) !== undefined) return program;
   if (id === `${program.compositionSpec?.id}-headers`) {
     const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
@@ -307,6 +324,8 @@ function recolorGraphic(
       sourceTokens,
       targetTokens,
       overrides,
+      nativeDefaults,
+      themeActive,
       id
     );
     if (!mapped.changed) return program;
@@ -334,10 +353,13 @@ function recolorGraphic(
       sourceTokens,
       targetTokens,
       overrides,
+      nativeDefaults,
+      themeActive,
       item.id
     );
     changed ||= mapped.changed;
-    return { type, properties: mapped.properties };
+    return { type, properties: mapped.properties,
+      ...(item.identity === undefined ? {} : { identity: item.identity }) };
   });
   return changed
     ? program.editGraphics({ target: id, property: "items", value: items })
@@ -373,7 +395,7 @@ function configRole(program, path) {
     return layer?.mark?.type === "text" ? "text" : "mark";
   }
   if (path[0] === "guides" && path[1] === "axis") {
-    const component = path[3];
+    const component = path[2] === "parallel" ? path.at(-2) : path[3];
     if (property !== "color") return undefined;
     if (component === "line") return "axis";
     if (component === "ticks") return "mutedText";
@@ -382,6 +404,11 @@ function configRole(program, path) {
   }
   if (path[0] === "guides" && path[1] === "grid" && property === "color") {
     return "grid";
+  }
+  if (path[0] === "guides" && path[1] === "legend" && property === "color") {
+    if (path.includes("titleStyle")) return "strongText";
+    if (path.includes("labels")) return "text";
+    if (path.includes("border")) return "border";
   }
   if (path[0] === "title" && property === "color") {
     if (path.includes("titleStyle")) return "strongText";
@@ -418,22 +445,29 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize"]
+    if (!["color", "fill", "emptyFill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length"]
       .includes(property)) {
       return { changed: false, value };
     }
     if (isOverridden(overrides, `c:${path.join(".")}`)) {
       return { changed: false, value };
     }
+    const numeric = guideNumericProperty(path);
+    if (numeric !== undefined) {
+      const target = themeActive ? targetTokens[numeric.token] ?? numeric.defaultValue : numeric.defaultValue;
+      return { changed: value !== target, value: target };
+    }
     if (property === "background" && value === "transparent") {
       return { changed: false, value };
     }
-    const resource = resourcePlotThemeProperty(path);
+    const resource = resourcePlotThemeProperty(path, path[0] === "marks" && path[2] === "flowPlot" ? findLayer(program, path[1]) : undefined);
     if (resource?.explicit) return { changed: false, value };
     if (resource !== undefined) {
-      const target = themeActive ? targetTokens[resource.token] : resource.defaultValue;
+      const target = themeActive ? targetTokens[resource.token] ?? resource.defaultValue : resource.defaultValue;
       return { changed: value !== target, value: target };
     }
+    const typography = themeTypographyValue(program, path, targetTokens, sourceTokens);
+    if (typography !== undefined) return { changed: typography !== value, value: typography };
     const role = configRole(program, path);
     return role === undefined
       ? mapColorValue(value, sourceTokens, targetTokens)
@@ -442,7 +476,7 @@ function recolorConfig(
           role,
           sourceTokens,
           targetTokens,
-          roleLegacy(role), axisFamily(String(path[2] ?? ""))
+          roleLegacy(role), axisFamily(String(path[2] ?? "")), guideConfigDefault(path), themeActive
         );
   }
   if (["theme", "highlights", "selections"].includes(path[0])) {
@@ -483,7 +517,7 @@ function addMarkOverrides(overrides, program, op, args) {
     (op.startsWith("create") ? type : undefined) ??
     (candidates.length === 1 ? candidates[0].id : program.context.currentMark);
   if (typeof id !== "string") return;
-  for (const property of ["fill", "stroke", "fontFamily"]) {
+  for (const property of ["fill", "stroke", "fontFamily", "fontSize", "fontWeight"]) {
     if (!Object.hasOwn(args, property)) continue;
     addMarkPropertyOverrides(overrides, id, property);
   }
@@ -548,12 +582,15 @@ function resolveConfiguredOwner(program, key, requested, defaultId) {
 }
 
 function addTextFacadeOverrides(overrides, node) {
-  if (!["createAnnotation", "createMarkLabels"].includes(node.op)) return;
-  const id = findDescendant(node, "createTextMark")?.args.id ?? node.args.id;
-  if (typeof id !== "string") return;
-  for (const property of ["fill", "fontFamily"]) {
-    if (!Object.hasOwn(node.args, property)) continue;
-    addMarkPropertyOverrides(overrides, id, property);
+  const style = ["createAnnotation", "createMarkLabels"].includes(node.op) ? node.args
+    : node.op === "createTextPlot" ? node.args.style : node.args.labels;
+  if (style === null || typeof style !== "object") return;
+  const ids = new Set();
+  visitTrace(node, child => {
+    if (child.op === "createTextMark" && typeof child.args.id === "string") ids.add(child.args.id);
+  });
+  for (const id of ids) for (const property of ["fill", "fontFamily", "fontSize", "fontWeight"]) {
+    if (Object.hasOwn(style, property)) addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
@@ -806,13 +843,14 @@ function addAxisOverrides(overrides, op, args, node) {
   const component = match[2].toLowerCase();
   const axisId = axisOverrideId(node, channel, args);
   const idPrefix = match[1] === "Radial" ? "radial" : channel;
+  for (const property of ["lineWidth", "length"]) if (Object.hasOwn(args, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
   if (Object.hasOwn(args, "color")) {
     overrides.add(`c:guides.axis.${axisId}.${component}.color`);
     overrides.add(
       `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
     );
   }
-  for (const property of ["fontFamily", "fontSize"]) {
+  for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
     if (["labels", "title"].includes(component) && Object.hasOwn(args, property)) {
       overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
       overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${property}`);
@@ -835,6 +873,7 @@ function addCompleteAxisOverride(overrides, name, args, node) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
+    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
     const suffix = `${component[0].toUpperCase()}${component.slice(1)}`;
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(`c:guides.axis.${axisId}.${component}.color`);
@@ -842,7 +881,7 @@ function addCompleteAxisOverride(overrides, name, args, node) {
         `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
       );
     }
-    for (const property of ["fontFamily", "fontSize"]) {
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
       if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
         overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
         overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${property}`);
@@ -878,11 +917,23 @@ function addCompleteAxisOverrides(overrides, op, args, node) {
 }
 
 function addGridOverrides(overrides, op, args) {
+  const group = op === "createGrid" || op === "editGrid" ? args : op === "createGuides" ? args.grid : args.guides?.grid;
+  if (group !== null && typeof group === "object") {
+    for (const direction of ["horizontal", "vertical", "theta", "radial"]) {
+      for (const property of ["color", "lineWidth"]) if (Object.hasOwn(group[direction] ?? {}, property)) {
+        overrides.add(`c:guides.grid.${direction}.${property}`);
+        if (property === "color") overrides.add(`g:${direction}Grid.stroke`);
+      }
+    }
+  }
   const match = /^(?:create|edit)(Horizontal|Vertical|Theta|Radial)Grid$/u.exec(op);
-  if (match === null || !Object.hasOwn(args, "color")) return;
+  if (match === null) return;
   const direction = match[1].toLowerCase();
-  overrides.add(`c:guides.grid.${direction}.color`);
-  overrides.add(`g:${direction}Grid.stroke`);
+  if (Object.hasOwn(args, "lineWidth")) overrides.add(`c:guides.grid.${direction}.lineWidth`);
+  if (Object.hasOwn(args, "color")) {
+    overrides.add(`c:guides.grid.${direction}.color`);
+    overrides.add(`g:${direction}Grid.stroke`);
+  }
 }
 
 function addTitleOverrides(overrides, args) {
@@ -894,9 +945,10 @@ function addTitleOverrides(overrides, args) {
       overrides.add(`c:title.${option}.color`);
       overrides.add(`g:${id}.fill`);
     }
-    if (Object.hasOwn(args[option] ?? {}, "fontFamily")) {
-      overrides.add(`c:title.${option}.fontFamily`);
-      overrides.add(`g:${id}.fontFamily`);
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
+      if (!Object.hasOwn(args[option] ?? {}, property)) continue;
+      overrides.add(`c:title.${option}.${property}`);
+      overrides.add(`g:${id}.${property}`);
     }
   }
 }
@@ -917,12 +969,13 @@ function addParallelOverrides(overrides, program, op, args) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
+    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(
         `c:guides.axis.parallel.axes.dimensions.${index}.${component}.color`
       );
     }
-    for (const property of ["fontFamily", "fontSize"]) {
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
       if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
         overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
       }
@@ -936,8 +989,12 @@ function addLegendOverrides(overrides, program, args) {
     for (const [option, suffix, property, graphicProperty] of [
       ["labels", "Labels", "color", "fill"],
       ["labels", "Labels", "fontFamily", "fontFamily"],
+      ["labels", "Labels", "fontSize", "fontSize"],
+      ["labels", "Labels", "fontWeight", "fontWeight"],
       ["titleStyle", "Title", "color", "fill"],
       ["titleStyle", "Title", "fontFamily", "fontFamily"],
+      ["titleStyle", "Title", "fontSize", "fontSize"],
+      ["titleStyle", "Title", "fontWeight", "fontWeight"],
       ["border", "Background", "color", "stroke"]
     ]) {
       if (!Object.hasOwn(args[option] ?? {}, property)) continue;
@@ -978,7 +1035,9 @@ function addLegendBlockOverrides(overrides, program, args) {
     const graphic = legendPrefix(kind);
     for (const [property, graphicProperty] of [
       ["color", "fill"],
-      ["fontFamily", "fontFamily"]
+      ["fontFamily", "fontFamily"],
+      ["fontSize", "fontSize"],
+      ["fontWeight", "fontWeight"]
     ]) {
       if (!Object.hasOwn(args.text ?? {}, property)) continue;
       overrides.add(`${prefix}.text.${property}`);
@@ -1006,7 +1065,9 @@ function addFacetOverrides(overrides, program, args) {
     : args.role;
   for (const [property, graphicProperty] of [
     ["color", "fill"],
-    ["fontFamily", "fontFamily"]
+    ["fontFamily", "fontFamily"],
+    ["fontSize", "fontSize"],
+    ["fontWeight", "fontWeight"]
   ]) {
     if (Object.hasOwn(args.title ?? {}, property)) {
       overrides.add(`c:facets.${id}.headers.${owner}.title.${property}`);
@@ -1022,7 +1083,7 @@ function explicitOverrides(program, node) {
   const overrides = new Set();
   if (op === "editGraphics" &&
       typeof args.target === "string" &&
-      ["background", "fill", "stroke", "fontFamily", "fontSize"].includes(args.property)) {
+      ["background", "fill", "stroke", "fontFamily", "fontSize", "fontWeight"].includes(args.property)) {
     overrides.add(`g:${args.target}.${args.property}`);
   }
   if (["createCanvas", "editCanvas"].includes(op) &&
@@ -1061,8 +1122,7 @@ function explicitOverrides(program, node) {
   if (op === "editLegendBlock") {
     addLegendBlockOverrides(overrides, program, args);
   }
-  const parentLegendOptions = op === "editFacetGuides" ? args.legend
-    : ["facet", "facetGrid", "repeatCharts"].includes(op) ? args.guides?.legend : undefined;
+  const parentLegendOptions = ["createGuides", "editFacetGuides"].includes(op) ? args.legend : args.guides?.legend;
   if (parentLegendOptions !== null && typeof parentLegendOptions === "object") {
     addLegendOverrides(overrides, program, parentLegendOptions);
   }
@@ -1096,7 +1156,7 @@ function collectOverrides(program) {
 
 function axisTypographyChanged(before, after) {
   if (before === after || after === null || typeof after !== "object") return false;
-  return Object.entries(after).some(([key, value]) => ["fontFamily", "fontSize"].includes(key)
+  return Object.entries(after).some(([key, value]) => ["fontFamily", "fontSize", "fontWeight"].includes(key)
     ? value !== before?.[key] : axisTypographyChanged(before?.[key], value));
 }
 
@@ -1126,6 +1186,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     : current;
   const sourceTokens = resolveEffectiveThemeTokens(contentState(sourceState));
   const targetTokens = resolveEffectiveThemeTokens(contentState(state));
+  const themeActive = resolveEffectiveThemeFrame(contentState(state)) !== undefined;
   const overrides = collectOverrides(program);
 
   let themed = program._withMaterializationConfig(
@@ -1139,7 +1200,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     sourceTokens,
     targetTokens,
     overrides,
-    resolveEffectiveThemeFrame(contentState(state)) !== undefined
+    themeActive
   );
   let next = configs.changed
     ? themed
@@ -1157,8 +1218,8 @@ export function reconcileProgramTheme(program, { source, metadata }) {
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;
-  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily ||
-    axisTypographyChanged(themed.guideConfigs.axis, configs.value.guides.axis);
+  const typographyChanged = ["fontFamily", "fontSize", "fontWeight"].some(key => sourceTokens[key] !== targetTokens[key]) ||
+    axisTypographyChanged(themed.materializationConfigs, configs.value);
   if (facetsChanged && next.compositionSpec?.type === "facet") {
     next = next.materializeComposition();
   } else if (typographyChanged) {
@@ -1168,10 +1229,14 @@ export function reconcileProgramTheme(program, { source, metadata }) {
   const resourceMarks = next.semanticSpec.layers.flatMap(layer => {
     const owner = resourcePlotThemeOwner(layer);
     if (owner === undefined || themed.markConfigs[layer.id]?.[owner.key] === next.markConfigs[layer.id]?.[owner.key]) return [];
-    const textHandled = typographyChanged && layer.hierarchyLabels !== false && layer.graphLabels !== false;
+    const textHandled = typographyChanged && layer.hierarchyLabels !== false && layer.graphLabels !== false && layer.flowLabels !== false;
     return textHandled ? [] : [{ op: owner.op, args: { id: layer.id } }];
   });
   if (resourceMarks.length > 0) next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: resourceMarks }));
+
+  const guideGeometry = themeGuideGeometrySteps(next, themed, overrides);
+  if (guideGeometry.length > 0) next = withGuideLayoutTransaction(next,
+    candidate => applyMaterializationPlan(candidate, buildMaterializationPlan({ guides: guideGeometry })));
 
   const parallelChanged = configs.value.guides.axis?.parallel !==
     themed.guideConfigs.axis?.parallel;
@@ -1179,7 +1244,30 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     next = next.rematerializeParallelAxes();
   }
 
+  const nativeDefaults = guideGraphicDefaults(next);
+  const beforeMarkColors = next;
+  const markIds = new Set(next.semanticSpec.layers.map(layer => layer.id));
+  for (const id of markIds) {
+    const graphic = next.graphicSpec.objects[id];
+    if (graphic !== undefined) next = recolorGraphic(next, id, graphic,
+      sourceTokens, targetTokens, overrides, nativeDefaults, themeActive);
+  }
+  // Stroke legend samples retain the target's concrete fill as well as their
+  // field-driven stroke. Refresh that dependency after mark colors, before
+  // reconciling the new legend chrome through its own theme roles.
+  for (const kind of ["strokeGradient", "strokeInterval"]) {
+    const config = next.guideConfigs.legend?.[kind], target = config?.target;
+    if (target !== undefined && beforeMarkColors.graphicSpec.objects[target] !== next.graphicSpec.objects[target]) {
+      const fill = config.blockSymbol?.fill ?? legendSampleFill(next, target) ?? targetTokens.mark;
+      for (const id of legendResourcePolicy(kind).graphicIds) {
+        if (/(?:Strips|Symbols)$/u.test(id) && next.graphicSpec.objects[id] !== undefined) {
+          next = next.editGraphics({ target: id, property: "fill", value: fill });
+        }
+      }
+    }
+  }
   for (const [id, graphic] of Object.entries(next.graphicSpec.objects)) {
+    if (markIds.has(id)) continue;
     if (parallelChanged && id.startsWith("parallelAxis")) continue;
     const graphicSourceTokens = id === "canvas"
       ? sourceRootTokens
@@ -1193,7 +1281,9 @@ export function reconcileProgramTheme(program, { source, metadata }) {
       graphic,
       graphicSourceTokens,
       graphicTargetTokens,
-      overrides
+      overrides,
+      nativeDefaults,
+      themeActive
     );
   }
 

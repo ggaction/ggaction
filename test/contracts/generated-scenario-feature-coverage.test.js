@@ -217,16 +217,21 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 336);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3167);
-  assert.equal(inventory.counts.nestedOptionPaths, 27741);
-  assert.equal(inventory.counts.optionPaths, 30908);
-  assert.equal(inventory.counts.requiredOptionPaths, 20729);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3168);
+  assert.equal(inventory.counts.nestedOptionPaths, 27747);
+  assert.equal(inventory.counts.optionPaths, 30915);
+  assert.equal(inventory.counts.requiredOptionPaths, 20736);
   assert.equal(inventory.counts.excludedOptionPaths, 10179);
   for (const action of ["createCalendarLayout", "createCalendarPlot", "editCalendarPlot", "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark", "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
   for (const id of ["option-path:createCalendarLayout.weekStartsOn", "option-path:createCalendarPlot.cells.emptyFill", "option-path:editCalendarPlot.labels.month.fontSize", "option-path:createContourData.grid.origin", "option-path:createDensityContourData.bandwidth", "option-path:editContourData.definition.normalization", "option-path:createContourMark.mode", "option-path:editContourMark.color.type", "option-path:createFlowData.value", "option-path:layoutFlow.options.order", "option-path:createFlowLinks.links.overrides[].key", "option-path:createFlowNodes.labels.content.field"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
+  }
+  for (const path of ["theme.tokens.fontSize", "theme.tokens.fontWeight"]) {
+    const option = inventory.optionPaths.find(option => option.action === "applyTheme" && option.path === path);
+    assert.equal(option?.required, true, path);
+    assert.equal(option?.evidence, "direct-trace", path);
   }
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
@@ -240,10 +245,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 1103);
-  assert.equal(inventory.counts.topLevelLiteralValues, 4101);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 1104);
+  assert.equal(inventory.counts.topLevelLiteralValues, 4103);
   assert.equal(inventory.counts.literalFamilies, 256);
-  assert.equal(inventory.counts.pathLiteralRequirements, 15033);
+  assert.equal(inventory.counts.pathLiteralRequirements, 15035);
   assert.equal(inventory.counts.familyLiteralRequirements, 534);
   assert.equal(inventory.counts.pathDiversityRequirements, 505);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
@@ -622,7 +627,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 35873);
+  assert.equal(ledger.requirements.length, 36647);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

@@ -1,5 +1,6 @@
 import { createCalendar } from "./calendar/program.js";
 import { createContours } from "./contours/program.js";
+import { createInspectionChart } from "./inspect-chart/program.js";
 import { createGraph } from "./graph-plots/program.js";
 import { createTextShadowExample } from "./text-shadows/program.js";
 import { createMarkShadowExample } from "./mark-shadows/program.js";
@@ -173,6 +174,7 @@ export const DOCUMENTATION_ONLY_PROGRAMS = Object.freeze({
 // Ordered authoring lessons reuse the chart families below. Their exact displayed
 // programs are checked by the documentation and installed-consumer suites.
 export const DOCUMENTATION_WORKFLOWS = Object.freeze([
+  example({ id: "inspect-chart", data: {}, width: 420, height: 300, createProgram: createInspectionChart, workflow: true, browser: { path: "inspect-chart/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "inspect-chart", width: 420, height: 300 } } } }),
   example({ id: "hierarchical-authoring", data: {}, width: 1240, height: 300, createProgram: createHierarchicalAuthoring, workflow: true, browser: { path: "hierarchical-authoring/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "hierarchical-authoring", width: 1240, height: 300 } } } }),
   example({ id: "remove-dependent-resources", data: {}, width: 740, height: 280, createProgram: createResourceRemovalWorkflow, workflow: true, browser: { path: "remove-dependent-resources/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "remove-dependent-resources", width: 740, height: 280 } } } }),
   example({ id: "edit-facet-source", data: {}, width: 810, height: 322, createProgram: createFacetSourceWorkflow, workflow: true, browser: { path: "edit-facet-source/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edit-facet-source", width: 810, height: 322 } } } }),

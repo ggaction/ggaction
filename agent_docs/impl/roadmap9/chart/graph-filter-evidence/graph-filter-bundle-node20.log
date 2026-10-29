@@ -1,0 +1,18 @@
+{
+  "package": "ggaction@0.0.26",
+  "source": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "full": {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 777,
+    "minifiedBytes": 2249276,
+    "gzipBytes": 635805
+  },
+  "basic": {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 512,
+    "minifiedBytes": 1233993,
+    "gzipBytes": 360127
+  }
+}

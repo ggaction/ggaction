@@ -13,7 +13,7 @@ export function preflightContourConsumers(program, resources) {
     resources: program.semanticSpec.resources.map(value => value.kind === "geometry" ? replacements.get(value.id) ?? value : value) } };
   const resolvedScales = { ...program.resolvedScales };
   for (const id of new Set(affected.flatMap(getLayerScaleIds))) resolvedScales[id] = resolveScalePreview(preview, id).resolvedScale;
-  for (const layer of affected) resolveContourPlot(preview, layer, program.markConfigs[layer.id].contour, resolvedScales);
+  for (const layer of affected) resolveContourPlot(preview, layer, program.materializationConfigs.marks[layer.id].contour, resolvedScales);
   return affected.map(layer => layer.id);
 }
 

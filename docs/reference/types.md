@@ -8145,6 +8145,9 @@ Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFil
 
 ```typescript
 export type FilterMarksOptions = {
+  /** Inferred graphs only: rebuild topology and dependent layouts from selected source identities. Omission preserves an existing filter mode. */
+  recompute?: boolean;
+  /** Graph plots select node items; the default induced view preserves topology and layout. */
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
@@ -8625,6 +8628,7 @@ Related types: [`InferredGraphSource`](#type-inferredgraphsource).
 
 ```typescript
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 ```
 
 </details>
@@ -8731,6 +8735,7 @@ Related types: [`GraphLabelPaint`](#type-graphlabelpaint) · [`RowKey`](#type-ro
 
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 ```
 
 </details>
@@ -14466,6 +14471,12 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisStrokeWidth?: number;
+  tickStrokeWidth?: number;
+  tickSize?: number;
+  gridStrokeWidth?: number;
+  fontSize?: number;
+  fontWeight?: string | number;
   axisLabel?: string;
   axisLabelFontFamily?: string;
   axisTitleFontFamily?: string;

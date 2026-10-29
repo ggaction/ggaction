@@ -1,0 +1,159 @@
+{
+  "base": "f5c4ccda7",
+  "scope": "Native guide color reset and composition snapshot ownership",
+  "sourceFiles": {
+    "agent_docs/contract/current/CORE.md": "0c4596034298e43a0feacd823e79f8bbe568d2f33aabf1ddfd00bbc2de9a384c",
+    "scripts/browser-bundle-size.js": "5082d949486c84802f9ce6869b5ea4368b0daac9cb2231c61b03d3b8a598f38b",
+    "scripts/coverage-policy.js": "9d3b7e572c7484bf5ebc1fb08ef39578fbc298f44ad26bb35fd4360dfb37f709",
+    "scripts/package-artifact.js": "0cd4fe63a19ef113072197413879bc7363de9ef3c1a333058fb708135f67d97b",
+    "src/actions/gradientPlots/components.js": "3c817268dba5dd83ce0665a6087a701c41c5c6184affe24721ae52acc7686c4e",
+    "src/actions/guides/axes/labels.js": "ff3b2eb2e25ce9100f639ef7de7c32dd89a6e1b11aafa395e79156d2581f1456",
+    "src/actions/guides/axes/lines.js": "96accccdc9aaedb0f89b8985bc1090a4ef58a07397aa4b38687b6c87c31ffa0c",
+    "src/actions/guides/axes/ticks.js": "908a5b02b2279f27883ecc09beece84e34dc63809fcc96213e3cd9d2b4df69e8",
+    "src/actions/guides/axes/titles.js": "5ee4686d271dae0196870ed4e58d03f632ce97c969a8bb838bd9c6009693e7aa",
+    "src/actions/guides/grids/resolve.js": "c1ec491b744d0055c53fb2d9c914eba3a59bfde9c8e04e0723cff59c269399b7",
+    "src/actions/guides/legends/continuous/common.js": "a5f169d28f0208180b5a605e680314baeb83bebd7f13f21f5bcccf6a313ba15f",
+    "src/actions/guides/legends/continuous/stroke.js": "1b45aeac87f552c7f113aa0b2cfffc7fab11c9b21b729cd038262deec473461f",
+    "src/actions/theme/reconcile.js": "4c395afc01a5ec6610ac15dae900591ea9723ca237aee5f26fe3336e7e37746b",
+    "src/materialization/legends.js": "7d650ccaf0c7318632529f7d040201c8dca542e4b99cc57c40b510935f97c8df",
+    "test/capabilities.json": "4f70011ae5761bc9756745e458291793d4a5f1d36143dd81839bec61d3ee873e",
+    "test/contracts/theme.test.js": "4b50a8646974ce2808712ec4d1be126159028d71c6ea1e99a0ee15f72cc7b98a",
+    "src/actions/theme/guideDefaults.js": "3336f3dcfee8eb3711f9bbafcf84730f2c090f377b1f95780f5b94e8cc018f8d",
+    "test/unit/actions/theme-guide-defaults.test.js": "03d3d3cdeabb1e4eea4e7c2c471f2f36d4e92deb04d466476076044e33cfd6f9"
+  },
+  "verification": {
+    "focused": {
+      "passed": 118,
+      "failed": 0
+    },
+    "publicUnitAudit": {
+      "equal": 88,
+      "total": 88,
+      "permanentContract": "test/contracts/theme.test.js"
+    },
+    "contracts": {
+      "passed": 40,
+      "failed": 0
+    },
+    "packageContracts": {
+      "passed": 7,
+      "failed": 0
+    },
+    "docs": {
+      "passed": 172,
+      "failed": 0
+    },
+    "coverage": {
+      "floors": {
+        "actions/theme/guideDefaults.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "actions/theme/resourcePlots.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "actions/theme/typographyRoles.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "actual": {
+        "actions/theme/guideDefaults.js": {
+          "lines": 97.22,
+          "branches": 96.83,
+          "functions": 100
+        },
+        "actions/theme/resourcePlots.js": {
+          "lines": 100,
+          "branches": 91.38,
+          "functions": 100
+        },
+        "actions/theme/typographyRoles.js": {
+          "lines": 100,
+          "branches": 95,
+          "functions": 100
+        }
+      }
+    },
+    "installed": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-defaults/package/ggaction-0.0.26.tgz",
+      "tests": 18,
+      "passed": 18,
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 733,
+          "minifiedBytes": 2141796,
+          "gzipBytes": 602826
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 496,
+          "minifiedBytes": 1204788,
+          "gzipBytes": 351086
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 34,
+          "minifiedBytes": 56009,
+          "gzipBytes": 19199
+        }
+      }
+    }
+  },
+  "artifact": {
+    "sha256": "49f428695dc1db3e47724b799e82c3d9e7625d655f0537d3fda511eda1705acb",
+    "entries": 824,
+    "packed": 1212890,
+    "unpacked": 5569000
+  },
+  "commands": {
+    "focused": "node --test --experimental-test-coverage test/unit/actions/theme-guide-defaults.test.js test/unit/actions/theme-item-identity.test.js test/unit/actions/theme-typography.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/unit/theme/defaults.test.js test/contracts/theme.test.js test/unit/actions/guides/parallel-axis-resolution.test.js test/unit/actions/guides/parallel-axis-reencoding.test.js test/unit/actions/guides/parallel-axis-lifecycle.test.js test/unit/actions/statistics/create-gradient-plot.test.js",
+    "publicAudit": "node --test test/contracts/theme.test.js",
+    "contracts": "node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js test/unit/support/coverage-policy.test.js",
+    "package": "node --test test/contracts/package-artifact.test.js",
+    "docs": "npm run docs:generate; node scripts/run-tests.js docs",
+    "installed": "PATH=<node20-bin>:$PATH node .artifacts/theme-defaults/installed.mjs"
+  },
+  "logs": {
+    ".artifacts/theme-defaults/regression.log": "0741d69cb5c233bdff0c98a4e4dd76fc18c6c1c8481c84e5741d482e938a8784",
+    ".artifacts/theme-defaults/docs-final.log": "bc7b7d000c0753044f0858b470e319c8898d21eaded585df982a462f5528bb4f",
+    ".artifacts/theme-defaults/contracts-final.log": "54c16f744400dfea6f3fd19b879e0eb85c012ffb987032ae8f934fb395ab263d",
+    ".artifacts/theme-defaults/contracts.log": "4c4db7f924a5fcf9862aa40c057b9e49f3502975e096265e7e3e5a3135180129",
+    ".artifacts/theme-defaults/first.log": "b9b40d51e058a89f90a909851a36966dadb719d319e316a6097c80f1e678e9bf",
+    ".artifacts/theme-defaults/installed-measure.log": "ef9c609ec6e8407a9fc549a2bb822137df1f1129bc7c029f37c232b0ec813f4f",
+    ".artifacts/theme-defaults/focused-final.log": "4e13be78541b19fb998c2b92e8a7788e3d2b15e060d19e77d47bf9ce0f565b67",
+    ".artifacts/theme-defaults/docs-generate-final.log": "1307dec0cf9b84cbb6a4b82770b4b0901ba785935ba357f6a4134c30391fa34e",
+    ".artifacts/theme-defaults/docs-generate-final2.log": "1307dec0cf9b84cbb6a4b82770b4b0901ba785935ba357f6a4134c30391fa34e",
+    ".artifacts/theme-defaults/gradient2.log": "4f6c63ad042ca08e290ac6c3be3252139971b1140ea26467de61778c9b830eff",
+    ".artifacts/theme-defaults/package-final.log": "007d290cc455f4c0f9356f48d6dbe0e263bed26146638f1cf3d98a708a5df189",
+    ".artifacts/theme-defaults/docs.log": "f8c7d3ee9bee5029ab33b628c56c05477c1a799e1384c23e40549e1228ba91d1",
+    ".artifacts/theme-defaults/composition.log": "39753b45b5f4a23fdf4625a7c8ad46631e656698547faeb931f9f6f44daa2318",
+    ".artifacts/theme-defaults/package-contracts.log": "fe30d80c12225bf39027a600c8b23d0f27ce13dab56276eba3b906d751a187f7",
+    ".artifacts/theme-defaults/focused-final3.log": "e5102f62af671f58aa4ad4ec62f49cc2ec52c15de3f60fead315c65580dacbfb",
+    ".artifacts/theme-defaults/focused-final2.log": "6fbcb6d8c48ac7d8225b27c461a6bdb81354ad3df1ff2c994c9cd42450fa9f3f",
+    ".artifacts/theme-defaults/regression2.log": "64f36508c3b6c30118b9d58013b79973e3d529ed8cf6b7adc826de454e7a2767",
+    ".artifacts/theme-defaults/pack-initial.log": "2bd782524af15a0d2f9e1424f3311e2bc51222635930600e24aafb7884db87b7",
+    ".artifacts/theme-defaults/gradient.log": "74b418a525c7a3754e3ea38e1a8b482a26ac959843bccfdf3edd80e84dd7fc4e",
+    ".artifacts/theme-defaults/package-final2.log": "3aea6e626827c9235376653fca691c30cef16c1fff73429521fc8d444be63d4d",
+    ".artifacts/theme-defaults/regression3.log": "5cde7132e89c74dc85642d14d6afe59f073a425e0051d6ea28f039bc2e518006",
+    ".artifacts/theme-defaults/docs-generate.log": "1307dec0cf9b84cbb6a4b82770b4b0901ba785935ba357f6a4134c30391fa34e",
+    ".artifacts/theme-defaults/installed-final.log": "423310476b3fe3b06ab3e6c3a6a2f778dd135453dfb3607d46ac5f3b01b9d004",
+    ".artifacts/theme-defaults/focused.log": "a2ef3bcf4e136f197ee6974f9f93759db3dda68360a0b0fc539f19d1dfd9baf8",
+    ".artifacts/theme-defaults/public-audit-regression.log": "f8e0a750f9ae46f4d93023ac9c961f978ed24d3cf73ca9f9ef79ef1364f6584e"
+  },
+  "notRun": [
+    "whole source coverage",
+    "full realistic corpus",
+    "all installed cases on three Node versions",
+    "new pixel comparison"
+  ]
+}

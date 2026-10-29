@@ -496,6 +496,17 @@
     },
     "rendering": "authoring-only"
   },
+  "recipes/inspect-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/inspect-chart/program.js",
+      "exported": "createInspectionChart"
+    },
+    "rendering": "renders-canvas"
+  },
   "tutorials/calendar.md": {
     "mode": "complete",
     "environment": "node-esm",

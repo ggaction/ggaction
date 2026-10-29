@@ -5,7 +5,7 @@
 - [x] STEP024/AT25/OR19 및 기존 날짜 owner 대조
 - [x] 기존 전체 승인 범위와 순수 kernel 계약 기록
 - [x] civil-day 집계와 year/week/day cell kernel·독립 oracle
-- [ ] 공개 Calendar action·원본 갱신·전체 소비자 계약과 구현
+- [x] 공개 Calendar action·원본 갱신·전체 소비자 계약과 구현
 - [ ] 타입·문서·실데이터·renderer·설치 및 최종 checkpoint
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 사용자에게 남은
@@ -122,3 +122,6 @@ The parent authorized one final deferred plan across resource families, with no 
 after merging main2d92baea0. Final qualification includes graphSubset/graphPrepared preservation,
 Calendar theme roles, three-family revision, packages, docs and required full checks.
 Evidence: `calendar-evidence/public-source/`.
+
+공통 source revision의 최종 resource 후보·단일 materialization union과 Calendar theme/font 역할 연결을
+2d92baea0 통합 상태에서 검증했다. 타입·실제 고정 archive·전체 coverage·문서 검증은 다음 기록에 남긴다.

@@ -1,0 +1,56 @@
+{
+  "status": "private-coordinate-qualified",
+  "base": "ccbce6a6bec95a5187885d397d769aeaf41dc7b7",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 8,
+    "node22": 8,
+    "node24": 8,
+    "sourcePackageDiscovery": 33
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "package": {
+    "entries": 816,
+    "unpackedBytes": 5520464,
+    "node22PackedBytes": 1200158,
+    "node20And24PackedBytes": 1202819,
+    "caps": {
+      "entries": 816,
+      "packedBytes": 1203000,
+      "unpackedBytes": 5521000
+    }
+  },
+  "priorPackageFailures": [
+    "entries 816 > 815",
+    "unpacked 5520464 > 5517000",
+    "Node20/24 packed 1202819 > 1202000"
+  ],
+  "remaining": [
+    "exact geometry and clip traversal",
+    "scene identity and current revision binding",
+    "guide roles and semantic lineage",
+    "spatial index and synthetic frame bridge",
+    "STEP035 nested composition",
+    "public entry types consumer evidence and AT33/34"
+  ],
+  "sources": {
+    "src/grammar/hitCoordinates.js": "068294f0c0d13b6f375710e699a1d7ad67d8df596b7cbf9e9763fd0df4831453",
+    "test/unit/grammar/hit-coordinates.test.js": "00f588ee8866020fc088444df402f516afda2b73abdf3bf7dee8abeb9c7cdd0b"
+  },
+  "sourceCommit": "23a493c48",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 154,
+    "selectiveLlmArtifacts": 1310,
+    "browserReuse": "only runtime provenance identity changed; CSS/JS/images and rendered layout unchanged from ccbce6a6b browser pass"
+  }
+}

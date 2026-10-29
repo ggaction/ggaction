@@ -7,7 +7,8 @@
 - [x] createInferredGraphData / editInferredGraphData 연결
 - [x] source/candidate graph revision→inference→layout→plot 원자적 갱신
 - [x] 저장 검증·선택·inspection·접근성·타입·설치·문서 ([공개 checkpoint](../phase3/graph/INFERENCE_PUBLIC.md))
-- [ ] induced-view filter와 explicit recompute 소비자 통합
+- [x] induced-view filter 소비자 통합 ([검증](graph-filter.md))
+- [ ] explicit recompute 소비자 통합
 
 [전체 남은 결정 승인](../AUTHORIZATION.json)을 적용한다. 새 시각 도형은 추가하지 않으며 [graph-plots](graph-plots.md)의 승인된 node/edge/label 표시를 소비한다. 아래 기록은 구현 완료 증거를 대신하지 않는다.
 

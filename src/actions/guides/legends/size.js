@@ -157,7 +157,7 @@ export function resolveSizeLegendLayout(program, config) {
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
   const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
   return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
-    symbolY: layout.itemY.slice(0, radii.length), radii, text,
+    symbolY: layout.itemY.slice(0, radii.length), radii, text, values, hiddenCount,
     ...(effective.labelMap === undefined ? {} : {
       labelItemIndices: text.flatMap((label, index) => label === "" ? [] : [index])
     }), labels, titleStyle, background, config: effective };

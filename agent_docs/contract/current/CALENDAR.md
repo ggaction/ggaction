@@ -115,10 +115,16 @@ Calendar mark가 cell·월 경계·날짜 label을 concrete Rect/Path/Text로 �
 `{target?,options:{date?,value?,start?,end?,timeZone?,weekStartsOn?,aggregate?,missing?}}`을 받는다.
 비어 있지 않은 options가 필수이며 order는 civil 날짜순이므로 거부한다. count로 바꾸면 이전 value
 field를 제거한다. source는 bound data를 유지하며 raw/computed/parameter/prepared revise를 따라간다.
-같은 source의 모든 calendar 후보를 먼저 계산·검증한 뒤 최종 상태에서 scale/mark/guide union을 한 번
+같은 source의 calendar/contour/graph/hierarchy와 dependent layout 후보를 먼저 계산·검증한 뒤
+native 소비자까지 합친 최종 상태에서 scale/mark/guide union을 한 번
 materialize한다. 실패하면 전체 이전 상태를 보존한다. 같은 ID의 revision은1 증가한다.
 
 hconcat/vconcat과 scoped edits를 지원한다. facet/repeatCharts는 resource-backed calendar의
 암묵적 partition을 수행하지 않는다. 명시 layout과 composition을 사용한다. 후행 composition
 소비자 통합의 책임은 roadmap의 STEP035에 유지한다. [removeResource](CORE.md#removeresource)는
 live authored mark를 cascade에서도 제거하지 않는다. removeMark 후 layout을 명시 제거한다.
+
+Calendar theme 역할은 cells.fill→mark, cells.emptyFill→background, monthBoundary.stroke→mutedText이며
+month/weekday/week/year label의 fill과 font는 text/typography token을 사용한다. 명시 paint/font와
+false로 비활성화한 역할은 유지한다. 비활성화 후 재활성화한 역할은 현재 theme를 사용하고
+removeTheme는 Calendar 고유 기본값을 복원한다. 정확 font metrics가 없는 글꼴·크기 변경은 원자적으로 거부한다.

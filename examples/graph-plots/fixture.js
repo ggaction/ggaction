@@ -22,6 +22,20 @@ export const variants = [
     paths: [[{ op: "M", x: 140, y: 150 }, { op: "C", x1: 108, y1: 86, x2: 192, y2: 86, x: 160, y: 150 }]],
     pathFills: ["none"], pathStrokes: ["#64748b"], pathWidths: [2] }
 ];
+variants.push({ ...variants[0], id: "induced", title: "Induced graph view",
+  nodes: [{ id: "A" }, { id: "B" }, { id: "C" }],
+  edges: [{ source: "A", target: "B" }, { source: "B", target: "C" }],
+  positions: [...variants[0].positions, { key: "C", x: 240, y: 210 }],
+  visiblePositions: variants[0].positions,
+  filter: { target: "networkPlot", field: "key", op: "oneOf", values: ["A", "B"] }
+});
+variants.push({ ...variants[0], id: "recomputed", title: "Recomputed sequence after filtering",
+  nodes: [{ id: "A", order: 0 }, { id: "B", order: 1 }, { id: "C", order: 2 }],
+  positions: [{ key: "A", x: 60, y: 120 }, { key: "B", x: 150, y: 210 }, { key: "C", x: 240, y: 120 }],
+  visiblePositions: [{ key: "A", x: 60, y: 120 }, { key: "C", x: 240, y: 120 }],
+  inference: { nodeKey: "id", rule: "sequence", ruleId: "sequence", options: { orderField: "order" } },
+  filter: { target: "networkPlot", field: "key", op: "oneOf", values: ["A", "C"], recompute: true }
+});
 export function graphVariant(id) {
   const variant = variants.find(value => value.id === id);
   if (!variant) throw new Error(`Unknown graph variant ${id}.`);

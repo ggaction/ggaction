@@ -5,12 +5,14 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 644_000, // Contour on integrated main, same minified bytes under Node20/24: 643,501 gzip bytes.
-  "ggaction/basic": 362_000, // Shared contour scale consumers, Node20/24: 361,202 gzip bytes.
-  "ggaction/svg": 25_000
+  ggaction: 659_000, // Calendar and final resource union: Node20/24 658,183 gzip bytes.
+  "ggaction/basic": 368_000, // Shared theme and revision boundary: Node20/24 367,366 gzip bytes.
+  "ggaction/svg": 25_000,
+  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `
 import { renderToSVG } from "ggaction/svg";

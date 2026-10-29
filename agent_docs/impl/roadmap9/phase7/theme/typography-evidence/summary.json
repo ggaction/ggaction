@@ -1,0 +1,167 @@
+{
+  "base": "70d861eed",
+  "scope": "Optional global typography theme tokens; not complete STEP-033",
+  "approval": "b758b912",
+  "runtimeHashes": {
+    "src/actions/guides/axes/labels.js": "605f3f84a6d0f463777098fe9c20dd9fd02863d82d1c0602048a658706c9fd61",
+    "src/actions/guides/axes/parallel/policy.js": "749dbd27aab70f7748473e43d507064c26dbe297a1eb3c092e06bdd4739b8340",
+    "src/actions/guides/axes/titles.js": "96ff29c820cf26ac028925ef6b39e2148a9fee635fbaed15886391c0f8a7199e",
+    "src/actions/guides/polar/resolve.js": "82a78614f457f2996f0f6d4f01d163626422c0e95f97fb44eac71931b13a39e8",
+    "src/actions/theme/reconcile.js": "8938a2ef82d4292dd049b45f2c83a89b4f67055cdcda358f1c4d607038f0a4be",
+    "src/actions/theme/resourcePlots.js": "fd8f17e50639bbb8aec770b2348641daa8d263522e7aa2ddbb6cd0119a38d162",
+    "src/actions/theme/state.js": "a420a09ad1ab2160c3502a8c2422a6da85d19f7d9fa4fcd041343d251fbc7eba",
+    "src/actions/theme/typographyRoles.js": "128993517ea8c51048bb5cfae7cb1e6fe7b45c67aea55be6c939f090e3a31739",
+    "src/actions/titles/resolve.js": "7292ad87461f1dcb0550042564cefdde360318006d8536ae9e470d3779b7fc09",
+    "src/theme/defaults.js": "51d020575dfb1154579206fd92768d720abf2989010c4b3db9d6434045d311e8",
+    "types/program.d.ts": "9d402050d52c256aac4a5dbeebcd110fc89869800d63695e41e3fc3d747e720f"
+  },
+  "checks": {
+    "themeAndParallel": {
+      "passed": 91,
+      "command": "node --test --experimental-test-coverage test/unit/actions/theme-typography.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/unit/theme/defaults.test.js test/contracts/theme.test.js test/unit/actions/guides/parallel-axis-resolution.test.js test/unit/actions/guides/parallel-axis-reencoding.test.js test/unit/actions/guides/parallel-axis-lifecycle.test.js"
+    },
+    "boundariesAndPackage": {
+      "passed": 47
+    },
+    "canonicalDiscovery": {
+      "passed": 27
+    },
+    "docs": {
+      "passed": 172,
+      "command": "npm run docs:generate; npm run test:docs"
+    },
+    "inventory": {
+      "uniqueCasesVerified": 16,
+      "evidence": "15 passing cases in inventory-final.log plus exact corrected ledger-count case in inventory-counts-final.log; no runtime changes between these inventory runs",
+      "focusedCommand": "node --test --test-name-pattern=\"derives a bounded public option inventory\" test/contracts/generated-scenario-feature-coverage.test.js"
+    },
+    "installed": {
+      "node": "20.20.2",
+      "cases": 1,
+      "typescript": "all installed TypeScript fixtures passed",
+      "families": [
+        "graph",
+        "tree",
+        "treemap"
+      ],
+      "proof": [
+        "exact token values in concrete text",
+        "Canvas=PNG bytes",
+        "Program/Graphic codec",
+        "Canvas scene bytes",
+        "SVG concrete color",
+        "PDF emission"
+      ]
+    },
+    "criticalCoverage": "all affected existing/new critical floors asserted"
+  },
+  "packageFinal": {
+    "node": "v20.20.2",
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-typography/package-final/ggaction-0.0.26.tgz",
+    "entryCount": 823,
+    "packedBytes": 1210887,
+    "unpackedBytes": 5560950,
+    "sha256": "bdc25595f1cb03a2b2d2349e6e2307d87848bd2c2d17ad4aef30ec66489d79fd"
+  },
+  "packageMatrix": [
+    {
+      "node": "v20.20.2",
+      "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-typography/package-final/ggaction-0.0.26.tgz",
+      "entryCount": 823,
+      "packedBytes": 1210887,
+      "unpackedBytes": 5560950,
+      "sha256": "bdc25595f1cb03a2b2d2349e6e2307d87848bd2c2d17ad4aef30ec66489d79fd"
+    },
+    {
+      "node": "v22.23.1",
+      "entryCount": 823,
+      "packedBytes": 1208342,
+      "unpackedBytes": 5560950,
+      "sha256": "e0c38647e6a015b84c88bde73ed56910e94a3e5d5aefa4403edb67ceca649994"
+    },
+    {
+      "node": "v24.22.1",
+      "entryCount": 823,
+      "packedBytes": 1210887,
+      "unpackedBytes": 5560950,
+      "sha256": "bdc25595f1cb03a2b2d2349e6e2307d87848bd2c2d17ad4aef30ec66489d79fd"
+    }
+  ],
+  "installed": {
+    "node": "v20.20.2",
+    "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-typography/package-final/ggaction-0.0.26.tgz",
+    "case": "theme/resource-plot-renderer-lifecycle",
+    "status": "passed",
+    "durationMs": 4137.820625,
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 732,
+        "minifiedBytes": 2138625,
+        "gzipBytes": 601972,
+        "limit": 602000
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 494,
+        "minifiedBytes": 1201172,
+        "gzipBytes": 350018,
+        "limit": 351000
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 34,
+        "minifiedBytes": 56009,
+        "gzipBytes": 19199,
+        "limit": 25000
+      }
+    }
+  },
+  "limits": {
+    "entries": 823,
+    "packedBytes": 1212000,
+    "unpackedBytes": 5562000,
+    "fullGzip": 602000,
+    "basicGzip": 351000,
+    "svgGzip": 25000
+  },
+  "excludedClaims": [
+    "No full STEP-033 completion",
+    "No full source coverage rerun",
+    "No whole realistic corpus rerun",
+    "No full three-version installed matrix",
+    "No SVG/PDF raster parity"
+  ],
+  "remaining": [
+    "Guide geometry and palette tokens",
+    "Winning-source inspection",
+    "Cartesian axis family color restoration",
+    "Flow theme consumer after parent integration",
+    "STEP-034 and STEP-035"
+  ],
+  "evidenceHashes": {
+    "coverage-final.log.gz": "1c71b4b727028fa038b91f22a3cc93325bf4c512f5f10eb4b3cf0f008dbb0a00",
+    "boundaries-final.log.gz": "31f62d39da30e15ee5cc83ad9253274f78190c553281ad3f39e70f95aa1d65cb",
+    "discovery-final.log.gz": "022ae0143642e41f06b5d46756e525db3c9cbd46d00e958576f2741b38a234e8",
+    "docs-generate.log.gz": "efd898d72734f5de3f96cc79bdc67d710664ceba41a235c86013db1159b8d86a",
+    "docs-tests.log.gz": "8bec0de62d3deba359d00f3a45f02856d22d2e00eafd7f34ad7b315468aab322",
+    "inventory-final.log.gz": "8f432250dbea210b67a98401c024ada1b6d81ba704fe3b40f4ad4c212cfe3b50",
+    "inventory-counts-final.log.gz": "2039d3051bfe9fdf3ddf83ac5babf662f7a4a4cccb93630486a5fea5282dad00",
+    "installed-node20-final.log.gz": "73bb55ed9f6d2a998d55ed36478be7303ca8ca5d516485a3848b841eddc7e116",
+    "installed-node20-final.json": "07c42a9d73ee0088ad0d49d532f09f16f90b0d45287815705ede1871fce369f4",
+    "pack-final.json": "fcf6c892f67822ab68b549d2fd21a04e89f34f031563ecf0cfe47bda62327781",
+    "pack-final-node22.json": "75fbb792c7927d7b5a03f8396601af956f91b487bb044494920a173fe33b049b",
+    "pack-final-node24.json": "1b4451847e88fac59795edd1c9e50e454fd7ecbfefe3b06dcca5c594e151674d",
+    "source-inputs.json": "9ffd555d422bf070b83ce0879fb1e644399d77964346213553e9a085104b837d",
+    "critical-coverage.json": "ea0402a9d37a3c15f62d8b0f9f9a03e96266e2fa5af58ec2318cf8a160cd0865",
+    "option-inventory.json": "44f9d94e7c96952fd8b2fb5fdc847e110f51c0352fd0127e36bac14228c1c5a3",
+    "pack-initial.json": "679c0fcf48580e8cb7db9bcb43f9807baefa1bf243a58539f9c0b586998b5d0b",
+    "installed-node20-initial.json": "0fd9a6a207c9cf32a25faa7d5565c530e754a83bcb775d02c3aac87d875c01a8",
+    "expanded.log.gz": "5ff62d5969cdbbb19b5ebc9b6221415178b066111e78c6754a493c1e0bcf6334",
+    "contracts-initial.log.gz": "396f3480e90be79f1a5401a7b3596ab600210ec34559bd2a6c901895ad48c742",
+    "basic-fixed.log.gz": "d2e54227c53c66300c5f17338c09d750ba5ee34304aebde97b7f436545fed9b2"
+  }
+}

@@ -1069,6 +1069,23 @@
     ]
   },
   {
+    "file": "interaction.mjs",
+    "cases": [
+      {
+        "id": "interaction/full-basic-immutable-inspection",
+        "statements": 1
+      },
+      {
+        "id": "interaction/current-frame-and-restored-program",
+        "statements": 1
+      },
+      {
+        "id": "interaction/guide-and-host-cleanup",
+        "statements": 1
+      }
+    ]
+  },
+  {
     "file": "calendar-plots.mjs",
     "cases": [
       {
@@ -1078,6 +1095,10 @@
       {
         "id": "calendar/fresh-process-source-revision",
         "statements": 11
+      },
+      {
+        "id": "calendar/shared-resource-source-union",
+        "statements": 10
       },
       {
         "id": "calendar/renderers-scene-codec",

@@ -54,6 +54,24 @@ export const cases = [
     assert.equal(serializeProgram(p), saved); assert.equal(serializeProgram(q), result);
     assert.throws(() => p.reviseData({ source: "days", id: "bad", values: [{ id: "a", day: "2024-03-01", value: 1 }] }));
   } },
+  { id: "calendar/shared-resource-source-union", run() {
+    const p = program().editCalendarPlot({ color: { id: "shared" } }).applyTheme({ theme: "dark" })
+      .createDensityContourData({ id: "density", data: "days", x: "value", y: "value", weight: "value",
+        grid: { origin: [0, 0], dx: 2, dy: 2, width: 4, height: 4 }, estimator: "histogram", normalization: "count", thresholds: [0, 1, 2, 4] })
+      .createContourMark({ color: { id: "shared" } })
+      .createInferredGraphData({ id: "graph", data: "days", nodeKey: "id", ruleId: "sequence", rule: "sequence", options: { orderField: "value" } })
+      .layoutGraph({ id: "graphLayout", method: "circular" }).createGraphPlot()
+      .filterMarks({ target: "graphPlot", field: "key", op: "neq", value: "b", recompute: true });
+    const saved = serializeProgram(p), q = p.reviseData({ source: "days", id: "next", values: rows.map((row, i) => ({ ...row, value: i + 5 })) });
+    const walk = node => [node, ...(node.children ?? []).flatMap(walk)], trace = walk(q.trace.children.at(-1));
+    for (const op of ["materializeCalendarPlot", "materializeContourMark", "materializeGraphPlot"]) assert.equal(trace.filter(node => node.op === op).length, 1, op);
+    assert.equal(trace.filter(node => node.op === "rematerializeScale" && node.args.id === "shared").length, 1);
+    assert.equal(getMarkItems(q, { target: "calendar" }).at(-1).fields.value, 13);
+    assert.equal(q.markConfigs.calendar.calendarPlot.cells.emptyFill, "#0f172a");
+    assert.deepEqual(getMarkItems(q, { target: "graphPlot" }).filter(item => item.fields.kind === "node").map(item => item.fields.key), ["a", "c"]);
+    assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+    assert.equal(serializeProgram(p), saved);
+  } },
   { id: "calendar/renderers-scene-codec", async run() {
     for (const missing of ["empty", "omit"]) {
       const p = program(missing).editCalendarPlot({ cells: { outline: { color: "white", width: 1 }, shadow: { color: "#1238", offsetX: 1 } } });

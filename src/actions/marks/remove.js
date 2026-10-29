@@ -164,6 +164,7 @@ function cleanupSelectionState(program, ids) {
 export function removeOwnedMark(program, id, partial = false) {
   const layer = findLayer(program, id);
   if (!partial && layer === undefined) return program;
+  if (program.markConfigs[id]?.graphPlot?.view?.recompute !== undefined) program = program.removeMarkFilter({ target: id });
   const cleaned = cleanupSelectionState(program, [id]);
   let next = cleaned.program;
   if (layer !== undefined) {
@@ -236,6 +237,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
     const ownedScales = new Set(ids.map(id => this.markConfigs[id]?.seriesOffsetScale).filter(Boolean));
     const positionScales = usedPositionScales(this, ids);
     let next = this;
+    for (const id of ids) if (next.markConfigs[id]?.graphPlot?.view?.recompute !== undefined) next = next.removeMarkFilter({ target: id });
 
     if (ids.includes(next.guideConfigs.axis?.parallel?.axes?.target)) {
       next = next.removeParallelAxes({

@@ -53,6 +53,7 @@ import {
   validateHorizonTransform
 } from "./horizon.js";
 import { validateMarkFilterTransform } from "./markFilter.js";
+import { validateGraphSubsetTransform } from "./graph/subset.js";
 import {
   normalizeNormalizeTransform,
   validateNormalizeTransform
@@ -494,6 +495,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("markFilter"),
     validate: validateMarkFilterTransform,
     materializeOp: "materializeMarkFilteredData"
+  }),
+  graphSubset: Object.freeze({
+    ...findTransformTopology("graphSubset"),
+    validate: validateGraphSubsetTransform,
+    materializeOp: "materializeGraphSubsetData"
   }),
   normalize: Object.freeze({
     ...findTransformTopology("normalize"),

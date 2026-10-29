@@ -31,6 +31,22 @@ for(const dataset of datasets) for(const rule of ["knn","mst","sequence"]) test(
     assert.equal(items.length,model.nodes.length+model.edges.length);
     assert.ok(items.every(item=>item.fields.rule===rule&&item.rows.every(row=>row.data==="records")));
     assert.equal(exportAccessibleData(p).views[0].rows.length,items.length);
+    const kept = new Set(rows.slice(0, Math.ceil(rows.length / 2)).map(row => row.id));
+    const filtered = p.filterMarks({ field: "key", op: "oneOf", values: [...kept] });
+    assert.equal(resource(filtered), graph);
+    const expected = items.filter(item => item.fields.kind === "node" ? kept.has(item.fields.key)
+      : kept.has(item.fields.sourceKey) && kept.has(item.fields.targetKey));
+    assert.deepEqual(getMarkItems(filtered).map(item => item.key), expected.map(item => item.key));
+    assert.equal(exportAccessibleData(filtered).views[0].rows.length, expected.length);
+    assert.deepEqual(filtered.removeMarkFilter().graphicSpec, p.graphicSpec);
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(filtered))), renderToSVG(filtered));
+    const recomputed = p.filterMarks({ recompute: true, field: "key", op: "oneOf", values: [...kept] });
+    assert.equal(resource(recomputed).revision, 1);
+    assert.deepEqual(getMarkItems(recomputed).filter(item => item.fields.kind === "node").map(item => item.fields.key), [...kept]);
+    const replay = deserializeProgram(serializeProgram(recomputed)).reviseData({ source: "records", id: "filtered-reordered", values: [...rows].reverse() });
+    assert.deepEqual(new Set(getMarkItems(replay).filter(item => item.fields.kind === "node").map(item => item.fields.key)), kept);
+    assert.deepEqual(resource(recomputed.removeMarkFilter()).result.model, model);
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(recomputed))), renderToSVG(recomputed));
     const selected=p.highlightMarks({id:"nodes",target:"graphPlot",select:{field:"kind",op:"eq",value:"node"},stroke:"red"});
     assert.equal(resource(selected),graph);
     const changed=p.reviseData({source:"records",id:"reordered",values:[...rows].reverse()});

@@ -1259,7 +1259,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 5,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "complete",
     "environment": "node-esm",
     "receivers": [],
@@ -1271,7 +1271,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 6,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1287,7 +1287,7 @@
   {
     "file": "api/data/filtering.md",
     "block": 7,
-    "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
+    "heading": "`filterMarks({ target?, mode?, recompute?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2217,6 +2217,60 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `groupedBars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "79a4da85ac622163bf5c62b30ffaf808706d9df02791d1af4346a6e3b14118f2",
+    "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 1,
+    "heading": "Create and mount",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "de9f6d9f6149996e2a054fc7814a28789067239d3d82332481ff4e92e463ce2e",
+    "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 2,
+    "heading": "Inspect without a DOM",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "session"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bb01ebfa6ab31d1d7b7295ebdf0d3af0000ea20e68c0c3bd0faa04479c02d991",
+    "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 3,
+    "heading": "Replace a program or sampled frame",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "session"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "1cb949f506022a683ba38196aebba8f4959998681e5fb45411b89c32971ad7be",
+    "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 4,
+    "heading": "State and cleanup",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "session"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "8613cc992f9b48f19dece300e915361a75c4f63bfccdbdd4e0c8855c26e5113c",
     "executable": false
   },
   {

@@ -32,6 +32,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
 `ggaction-mcp`는 별도의 Node stdio executable이며 chart code를 실행하지 않는다.
 검증 수치·과거 bundle 예산은 [기준 commit의 보존 기록](architecture/history/202b7afd-second-architecture.md)에서 확인한다.
@@ -462,6 +463,8 @@ rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds
 Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. 초기 축 layout 전에
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
+Global typography의 role 기본값은 기존 family defaults와 wrapped Text 생성 의도에서 읽는다. Theme frame과
+authored override 수집을 계속 재사용하며 별도 복원 snapshot이나 provenance history를 저장하지 않는다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
@@ -790,9 +793,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 644,000 bytes |
-| `ggaction/basic` | 362,000 bytes |
+| `ggaction` | 650,000 bytes |
+| `ggaction/basic` | 365,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+| `ggaction/interaction` | 83,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3217,6 +3221,12 @@ family로 필터링하며, exact font binding의 준비된 별칭은 이 경로�
 
 `actions/graphs/layouts.js`는 명시 graph layout 계산과 graph revision의 dependent layout closure를 소유한다. `actions/layouts/index.js`의 공통 editLayout은 source domain의 편집 body로 전달한다. Pure fixed/circular/force kernel은 topology를 보존하며, `materialization/graph/layoutResource.js`가 exact graph input과 resolved intent·결과를 저장한다. 복원 validator는 stored coordinates·node membership·pins·component bounds와 provenance만 검사하며 force solver를 재실행하지 않는다. Source revision은 계산한 모든 layout 결과를 기존 prepared primitive 경계로 원자적으로 교체한다. 정확 API는 [GRAPHS](contract/current/GRAPHS.md)와 [LAYOUTS](contract/current/LAYOUTS.md)가 소유한다.
 
+Graph plot의 필터는 기존 mark appearance config의 view recipe를 명시적으로 소비한다.
+`actions/data/graphFilter`가 완전 후보를 preflight한 뒤 기존 wrapped graph materializer를 호출하고,
+`materialization/graph/view`가 원래 node·edge geometry에서 induced subset을 선택한다. 공통
+item selector 검증은 `selection/itemSelection`이 소유한다. Graph/layout resource와 renderer 경계는
+유지하며 정확한 재평가·제거 계약은 [MARK_SELECTION](contract/current/MARK_SELECTION.md)이 소유한다.
+
 공개 graph layout 추가 뒤 Node20 실측은803entries/1,183,611packed/5,437,539unpacked bytes다.
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
 변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
@@ -3304,6 +3314,34 @@ Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,0
 Exact support와 lifecycle은 Current에, 최초실패와
 최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
 
+
+### Private hit 좌표 계산 경계
+
+`grammar/hitCoordinates.js`는 explicit client point/rect와 root·child affine matrix를 받아
+CSS-local→geometry-local 좌표를 계산하는 private 순수 owner다. DOM/DPR/semantic resource를
+읽거나 program·trace를 변경하지 않는다. Singular/overflow/empty viewport는 no-hit diagnostic이며
+모든 입력과 최대1024 child work를 계산 전에 검증한다. Existing pathGeometry/graphicClip/graphicTree와
+scene identity 소유권은 유지된다. 공개 interaction entry와 exact geometry/index/frame 소비자는
+아직 연결되지 않았으며 [private 범위 기록](impl/roadmap9/interaction/STEP047.md)이 잔여 의무를 구분한다.
+
+Private 좌표 owner 한 파일을 추가한 뒤 packed content는816entries/5,520,464unpacked bytes,
+Node22 packed1,200,158/Node20·24 packed1,202,819bytes였다. Package cap을816/1,203,000/5,521,000으로
+최소 갱신했다. Full/Basic/SVG import graph에는 새 owner가 아직 없으므로 browser bundle 한도와 지원 계약은 같다.
+
+
+Private hit 도형 계산은 `grammar/hitStroke.js`가 local painted stroke, `grammar/hitShapes.js`가 explicit
+CSS transform·clip·opacity와 filled geometry 판정을 소유한다. 기존 pathGeometry/strokeStyle owner를
+재사용하며 semantic state나 renderer를 읽지 않는다. Text는 explicit resolved line boxes, Image는
+viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세한 범위는 같은 STEP047 기록에 둔다.
+두 파일을 추가한 package는818 entries/5,541,801unpacked, packed 최대1,208,456bytes로 측정했으며
+cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.
+
+
+`grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
+순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
+Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. Renderer/semantic state/codec에는
+새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+실측819 entries/5,552,006unpacked/최대1,210,811packed bytes에 cap819/1,211,000/5,553,000을 적용했다.
 ### Flow data and layout ownership
 
 Flow는 observed graph의 exact source identity와 resource revision을 재사용한다. 순수
@@ -3337,6 +3375,49 @@ and Full633,808/Basic358,837/SVG20,055 on Node22. The current budgets therefore 
 These retain every module and public option; the final fixed archive receives installed
 consumer qualification separately from this measurement.
 
+
+Private hit index를 resource effects 공개 baseline f1800607d와 통합한 package는867 entries,
+unpacked5,837,672/packed Node22 1,267,560 및 Node20/24 1,270,493bytes다. 한도는867/1,271,000/5,838,000이다.
+Private hit owner는 Full/Basic/SVG public import에 들어가지 않으므로 기존 public bundle 경계는 유지한다.
+
+
+### Private current-frame lifecycle
+
+`interaction/hitFrame.js`는 외부 sampler가 제공한 explicit scene/entries/version을 받아 현재 index를 소유한다.
+새 순수 index 준비가 끝난 뒤 한 번에 교체하고 늦은 version은 폐기한다. Dispose는 현재 참조를 해제한다.
+Program/trace/codec와 renderer는 바꾸지 않으며 DOM/event/RAF를 만들지 않는다. Exact public interaction 및
+035/guide/animation 소비자 경계는 [STEP049](impl/roadmap9/interaction/STEP049.md)의 잔여 의무로 유지한다.
+이 source 추가 후 package868entries/5,840,161unpacked/최대1,271,149packed bytes에 cap868/1,272,000/5,841,000을 쓴다.
+
+실제 마크 hit 연결은 `sceneSnapshot.js`가 기존 scene의 onNode association을 ephemeral하게 보유하고,
+`interaction/hitProgram.js`가 이미 materialized된 item identity와 exact child namespace를 읽는 방식이다.
+Semantic grouping이나 materialization을 다시 실행하지 않는다. `interaction/hitConcrete.js`는 기존
+Text metrics의 줄별 영역과 path/stroke/clip owner를 재사용하여 같은 scene의 geometry를 준비한다.
+Public scene schema와 renderer 입력은 유지하며 가이드와 공개 session은 후속 연결이다.
+[Adapter 기록](impl/roadmap9/interaction/ADAPTER.md)이 현재 범위와 남은 소비자를 구분한다.
+이 concrete adapter checkpoint의 package는871entries/5,849,189unpacked, Node22 1,270,580packed,
+Node20/24 1,273,444packed bytes다. Cap은871/1,274,000/5,850,000으로 최소 조정했다.
+Public Full/Basic/SVG import graph에는 private hit owner가 없으며 CanvasScene은 기존 version2 shape를 유지한다.
+
+통합 graph view·theme·actual hit adapter는876entries/5,868,706unpacked, Node20packed1,278,262bytes다.
+현재 cap은876/1,279,000/5,869,000이며 설치 bundle Node20Full637,955/Basic362,086gzip에
+638,000/363,000 cap을 적용한다. Private hit adapter는 공개 interaction API의 완료를 뜻하지 않는다.
+
+
+### Graph selection과 명시 재추론 경계
+
+Graph view의 filter/restore wrapped owner는 Full graph registration에 속한다. 공통
+`filterMarks`는 lightweight selector로 graph mark를 판별하고 이 owner에 dispatch한다.
+따라서 Basic은 graph inference/layout kernel을 filtering import로 끌어오지 않는다.
+재추론의 선택 intent는 기존 graphPlot.view에 단독 저장하고, private graphSubset transform은
+기존 immutable derived-data identity/lineage/revision owner를 재사용한다. 원본 topology를
+기준으로 선택한 typed key를 저장하며 graph→layout→consumer closure의 순수 prepared plan을
+검증한 뒤 명시 child action으로 commit한다. Renderer는 기존 concrete graphicSpec만 읽는다.
+Exact option과 source/replace/remove 의미는 MARK_SELECTION current contract가 소유한다.
+
+Graph recompute의6개 작은 owner로 package882entries/5,885,200unpacked/Node22packed1,279,959bytes를 측정했다.
+현재 packagecap은882/1,283,000/5,886,000, Fullbundle640,278gzip측정에641,000cap을 적용한다.
+
 ### Contour integration on the shared resource boundary
 
 Contour의 `geometry` resource는 grid/density 계산·bounded stored-result 검증을 domain owner에
@@ -3350,12 +3431,54 @@ unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,
 기준으로 한도를 880 / packed1,278,000 / unpacked5,876,000 및 Full644,000 / Basic362,000으로
 갱신한다. Packed 한도는 측정값의 1,000-byte 경계가 3 bytes밖에 남지 않아 다음 1,000-byte
 경계를 사용하며 최종 tar에서 다시 검증한다. SVG25,000 및 source coverage floors는 유지한다.
+### Public inspection session boundary
 
-### Calendar layout owner
+공개 `src/interaction.js`와 `types/interaction.d.ts`의
+`ggaction/interaction`은 Full/Basic authoring import와 분리된 browser-safe controller entry다.
+`interaction/session.js`가 DOM listener와 transient inspect/current-frame lifetime을 소유하며,
+program action/selection/history를 만들지 않는다. `sceneFrame.js`는 host가 전달한 concrete frame을
+bounded own-data snapshot으로 고정한 뒤 기존 renderer scene validation을 재사용한다.
+기존 scene/source identity로 metadata를 연결하고 version/generation 교체를 원자적으로 수행한다.
 
-Calendar civil-day grouping and cell/month topology belong to `src/grammar/calendar/`.
-`src/actions/calendar/` composes explicit resource and graphic actions; `src/materialization/calendar/`
-validates stored data-backed layouts and emits backend-neutral Rect/Path/Text. The existing layout
-resource dispatch recognizes `input.kind:data` with `options.method:calendar`. Final day selection,
-color-scale domains, typography and source revision closure use their existing common consumers.
-Exact public behavior belongs to [Calendar](contract/current/CALENDAR.md).
+`hitGuides.js`/`hitLegends.js`는 가이드 정책의 raw typed values와 실제 physical item 대응만 읽는다.
+기존 pure tick/sample/layout resolver를 명시적으로 재사용하며 wrapped action을 실행하지 않는다.
+축 표시 문자열·줄 그룹은 `grammar/axisFormat.js`와 `materialization/axisLabelText.js`가 생성과
+검사의 공통 소유자다. Legend clip의 물리 그룹도 기존 `materialization/legendClip.js`가 소유한다.
+Renderer는 기존 graphicSpec만 읽고 public scene schema/codec는 바뀌지 않는다.
+정확한 command/return/event/지원 범위는 [INTERACTION.md](contract/current/INTERACTION.md)가 소유한다.
+050 이후 편집 제스처·selection orphan/history 및 035 추가 composition 소비자는 후속 의무다.
+
+독립 interaction bundle은 Node22 81,727, Node20/24 82,299 gzip bytes로 실측되어 한도83,000을
+추가했다. Full635,000/Basic360,000/SVG25,000 한도는 그대로 통과한다. Package는879entries,
+README 진입점 추가 전 최대1,281,005packed/5,879,334unpacked bytes에 최소1,000bytes
+올림을 적용하여879/1,282,000/5,880,000으로 조정했다. 동일 고정 archive의 실제 후속 bytes와
+Node별 설치 근거는 interaction 공개 체크포인트 기록이 소유한다.
+공개 inspection API/recipe와 entry reference를 포함한 search index는945,337bytes로 기존941,000을
+넘어 최소1,000bytes 올림946,000으로 조정했다. 검색 내용이나 기능을 제외하지 않았다.
+
+
+### Resource·guide·inspection 통합 검증
+
+Contour·graph recompute·guide geometry·public inspection을 같은 source에 통합했다.
+Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,000/365,000을 적용하고
+SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
+Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
+Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
+
+### Calendar and source resource union
+
+`grammar/calendar/`가 명시 civil-date 집계와 grid cell/month boundary를 계산하고
+`materialization/calendar/`가 exact source 검산과 concrete day/label 출력을 소유한다.
+`actions/data/resourcePlan.js`는 Full source revision의 typed resource DAG를 기존 family factories로
+한 번 계산하고 모든 후보를 preflight한다. 기존 private primitive authority에 exact data revision vector를
+결박하여 독립 roots와 dependent layouts를 함께 교체한다. Native와 resource 소비자의 합집합은
+기존 materialization planner가 scale→mark→guide 순서로 한 번 실행한다. Facet projection의 별도
+logical dataset 경로 및 명시 graph edit/recompute의 prepared 계획은 그대로 유지한다. 새 pending
+state·저장 callback·renderer semantic 해석은 없다. Calendar theme는 기존 resource role owner를
+사용하며 정확 API와 defaults는 [CALENDAR](contract/current/CALENDAR.md)가 소유한다.
+
+Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 packed 최대1,319,887bytes다.
+한도는920/1,320,000/6,062,000으로 최소 올림한다. 동일 minified JS의 Node20/22/24 gzip에서
+Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
+interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
+coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.

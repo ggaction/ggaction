@@ -230,7 +230,8 @@ export function transformInputFields(transform) {
   add(transform.groupBy);
   add(transform.partitionBy);
   add(transform.fields);
-  add(transform.keys);
+  if (transform.type === "graphSubset") add(transform.nodeKey);
+  else add(transform.keys);
   add(transform.weight?.field ?? transform.weight);
   add(transform.placement?.categoryField);
   add(transform.placement?.split?.field);
@@ -300,7 +301,7 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     return cloneAndFreeze({version:1,completeness:input.completeness==="known"||fields.length>0?"known":"unknown",origin:"derived",fields});
   }
   const definition = { ...transform, __sourceId: sourceId, __ownerId: ownerId };
-  const retain = ["filter", "markFilter", "sort", "computed", "timeUnit", "window", "normalize", "stack", "impute", "complete"];
+  const retain = ["filter", "markFilter", "graphSubset", "sort", "computed", "timeUnit", "window", "normalize", "stack", "impute", "complete"];
   let fields = retain.includes(transform.type) ? input.fields.map(field => ({ ...field })) : [];
   const push = field => {
     if (field === undefined) return;

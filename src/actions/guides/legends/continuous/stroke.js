@@ -4,6 +4,7 @@ import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
+import { legendSampleFill } from "../../../../materialization/legends.js";
 import {
   editGraphicProperties,
   editLegendBackground,
@@ -40,9 +41,7 @@ function strokeWidth(program, target) {
 }
 
 function sampleFill(program, target) {
-  const graphic = program.graphicSpec.objects[target];
-  const properties = graphic?.items?.[0]?.properties ?? graphic?.properties;
-  return properties?.fill ?? DEFAULT_COLORS.mark;
+  return legendSampleFill(program, target) ?? DEFAULT_COLORS.mark;
 }
 
 export function resolveStrokeGradientLegendCreation(program, args = {}) {

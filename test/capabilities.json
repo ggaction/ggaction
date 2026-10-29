@@ -164,6 +164,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-calendar-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/source-resource-plan.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-calendar.test.js"
       }
     ],
     "center-stack": [
@@ -484,6 +492,22 @@
       {
         "type": "file",
         "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-filter.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
+        "path": "unit/resources/graph-hit.test.js",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-coordinate-revisions.test.js"
       }
     ],
     "guides": [
@@ -584,6 +608,52 @@
       {
         "type": "file",
         "path": "contracts/hierarchy-types.test.js"
+      }
+    ],
+    "hit-testing": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-coordinates.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-stroke.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-shapes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-index.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-frame.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-program.test.js"
+      },
+      {
+        "path": "unit/resources/graph-hit.test.js",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-guides.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-session.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/interaction-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-session.browser.js"
       }
     ],
     "horizon": [
@@ -1313,6 +1383,18 @@
     "theme": [
       {
         "type": "file",
+        "path": "unit/actions/theme-guide-defaults.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-item-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-typography.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/theme-resource-plots.test.js"
       },
       {
@@ -1330,6 +1412,14 @@
       {
         "type": "file",
         "path": "contracts/theme.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-flow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-guide-geometry.test.js"
       }
     ]
   },

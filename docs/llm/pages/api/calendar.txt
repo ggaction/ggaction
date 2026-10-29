@@ -113,7 +113,8 @@ Switching to `count` removes the previous value-column binding.
 
 Raw, computed, parameter-driven and prepared source revisions update affected
 calendar layouts, shared scales, marks, legends and highlights together. All
-candidates are checked before the new state is materialized. A failure preserves
+candidates are checked before the new state is materialized. Shared Calendar,
+Contour, graph and ordinary mark consumers refresh once from that final state. A failure preserves
 the original program. Saved programs verify their stored cells and boundaries
 against the exact source and calendar definition.
 
@@ -121,3 +122,8 @@ Use `hconcat` or `vconcat` with explicit layouts for separate panels, and scoped
 targets for child edits. `facet` and `repeatCharts` do not partition calendar
 resources implicitly. Remove a calendar mark with `removeMark` before removing
 its layout with `removeResource({ kind: "layout", id })`.
+
+Themes apply the mark color to fixed-fill cells, the background color to empty
+cells, the muted text color to month boundaries, and text/font tokens to labels.
+Explicit role styles stay authored. Disabling and re-enabling a label or boundary
+resets its style to the active theme; removing the theme restores Calendar defaults.

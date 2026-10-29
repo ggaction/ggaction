@@ -43,6 +43,7 @@ const DEFAULT_STYLE = Object.freeze({
   lineWidth: 1,
   strokeDash: Object.freeze([])
 });
+export { DEFAULT_STYLE as CARTESIAN_GRID_DEFAULTS };
 
 function validateStrokeDash(value) {
   return validateGuideDash(value, "Grid strokeDash");

@@ -1,0 +1,13 @@
+{
+  "src/actions/data/filter.js": "23fe62a164a142f2fab0ed76d37bb568a1fecfb1f203a33989f8dafd93d362ef",
+  "src/actions/data/graphFilter.js": "cfb86e145a02371baa8accc53ff02e28359a7532a6015ae2e883e30d23ec7b6e",
+  "src/grammar/graph/plot.js": "02f8d7828f08d19f23d8d90c8a9a605b4a222173dcffc695f16a2d37d6bdaa00",
+  "src/materialization/graph/plot.js": "407d8daf097ade3ac8554316d10d5c34deae3a61ca741e49a205c556753406a0",
+  "src/materialization/graph/view.js": "c4a4664e0bd341d56092b3f906166746b37e3c279d41bde1d279dfa25584d31f",
+  "src/materialization/graph/layoutState.js": "d6fa93303c840bc01b29cac8968dad7717b3c5919617d3748892cd62d59a2921",
+  "src/materialization/selection/state.js": "0f6488c3fbff4c772e6fb143836b94f00c98a07299a3b53d5539d6c3e96dac2e",
+  "src/materialization/selection/itemSelection.js": "8aa98a6a11f041f37f63e43d5e1e8e05c033ed260c1f40891ebf319c0b2a6c59",
+  "test/unit/resources/graph-filter.test.js": "2455a00a49ac26b6bec708a1196ecfbb138dbd52db986a8638b4ccefd4f1c4dd",
+  "scripts/consumers/fixtures/node/inferred-graphs.mjs": "e617fbb56dd4cab2caafa890774d8b9da571b0dddc80de71c4f44903e3f61de6",
+  "types/program.d.ts": "668e7e0079512b7283219f041adf375c1cace72b81ce36b00824662b1340e6b6"
+}

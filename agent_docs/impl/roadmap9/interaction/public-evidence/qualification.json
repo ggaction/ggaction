@@ -1,0 +1,94 @@
+{
+  "sourceCommit": "7cc2977f4cc083d091c7c69046ac9b52da9f2b9d",
+  "approval": "../AUTHORIZATION.json",
+  "sourceHashesUnchanged": true,
+  "tests": {
+    "focused": 84,
+    "existingGuideOwners": 1128,
+    "packageSourceDiscovery": 41,
+    "browserPointerCases": 3,
+    "documentationSource": 178
+  },
+  "installed": {
+    "archive": "d5fedd309cffc6bb2e335406e65880dca9dca3079688dcef50b0d75bfe470039",
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "runtimeCasesPerNode": 3,
+    "strictTypes": true,
+    "bundlesPerNode": 4
+  },
+  "builtDocs": {
+    "pages": 162,
+    "selectiveArtifacts": 1392,
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "search": true,
+    "keyboard": true,
+    "axe": true
+  },
+  "browserScope": "Canvas and SVG pointer parity at DPR 1/2/3; sampled-frame replacement is drawn and hit-tested through Canvas.",
+  "notClaimed": [
+    "full integration suite",
+    "AT33 complete geometry/consumer matrix",
+    "AT34 animation sampler integration",
+    "STEP035 future composition integration",
+    "STEP057-068 selection, gestures, transactions, history and accessibility",
+    "STEP077 completion"
+  ],
+  "evidence": [
+    {
+      "file": "focused-coverage.log.gz",
+      "sha256": "6a3522405cb118041d7889ec979d97346ba34beb0314a270d261ebec4d5b09e8"
+    },
+    {
+      "file": "guide-owner-coverage.log.gz",
+      "sha256": "96573661f7a68516dc5a74d949a802ac4eca74553cdc207b6d9d9ffa54118f7a"
+    },
+    {
+      "file": "package-contracts.log.gz",
+      "sha256": "20d449cdfe34b4af8590be7b2fd8cd8ee87eabb89d026dca4f76c42b9644e54c"
+    },
+    {
+      "file": "browser.log.gz",
+      "sha256": "6ee830df5f7b80a9bb998ac4afdbad0a0f87b59f138b4901cf508adade2338d3"
+    },
+    {
+      "file": "docs-focused.log.gz",
+      "sha256": "56c16676301b5b1ae92a56e9ee6e082210680f5b2d5b070ec66f8ee20e16d5d8"
+    },
+    {
+      "file": "docs-source-initial.log.gz",
+      "sha256": "148bff5f9c004ddcd61f97c2ddf5ddafe2357330a0191a3bf38d833fee7b7467"
+    },
+    {
+      "file": "docs-source.log.gz",
+      "sha256": "c4e58d9dacfdfc70adb84e74cfe94745e9278c2ef0842c0f19ef19467a3123c6"
+    },
+    {
+      "file": "docs-preflight.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "file": "docs-build.log.gz",
+      "sha256": "da086b9f70b3309fa12e35e38a5b99231a7e99993898342e1fdd6da50a460360"
+    },
+    {
+      "file": "docs-built.log.gz",
+      "sha256": "aecc41940efd457d938cd7d4aa32b22514d478bc6ea944a44b7b4cd2e22b8f82"
+    },
+    {
+      "file": "docs-browser.log.gz",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "file": "docs-final-generate.log.gz",
+      "sha256": "d26456e5bda3ebdd7a3de79389b948ee74aebcf6ab01b11fddb2deafd576ea27"
+    }
+  ]
+}

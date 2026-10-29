@@ -1,3 +1,4 @@
+import { axisLabelTexts, axisLabelLines } from "../../../materialization/axisLabelText.js";
 import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
@@ -20,18 +21,15 @@ import { resolveCartesianAxisFrameBounds } from "../../../materialization/coordi
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
-  formatTransformedTick,
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
-import { formatTimeTick, formatTimeTicks, validateTickRounding } from "../../../grammar/ticks.js";
+import { validateTickRounding } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 import { valuesFromTickConfig } from "../tickValues.js";
-import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_LABEL_FONT_WEIGHT, AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
-  formatAxisValue,
-  formatNumericAxisTicks,
   resolveAxisLabelGeometry,
   validateAxisFormat,
   validateAxisPosition
@@ -45,12 +43,10 @@ import {
 } from "../../../core/textMetrics.js";
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
-import { wrapText } from "../../../layout/text.js";
 import {
   normalizeDisplayLabelMap,
   normalizeDisplayColorMap,
-  resolveDisplayLabelColor,
-  resolveDisplayLabel
+  resolveDisplayLabelColor
 } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
@@ -59,15 +55,16 @@ const OPTIONS = [
   "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
 ];
 
-const DEFAULTS = {
+const DEFAULTS = Object.freeze({
   count: 5,
   color: DEFAULT_COLORS.text,
   fontSize: AXIS_LABEL_FONT_SIZES.cartesian,
   fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: "normal",
+  fontWeight: AXIS_LABEL_FONT_WEIGHT,
   rotation: 0,
   overlap: "error"
-};
+});
+export { DEFAULTS as CARTESIAN_AXIS_LABEL_DEFAULTS };
 
 function normalizeLabelLayout(config, args, operation) {
   const next = { ...config };
@@ -197,19 +194,10 @@ function expandWrappedLabels(resolved, text, config, channel, profile) {
       groups: text.map((_, index) => index)
     };
   }
-  const style = {
-    fontSize: config.fontSize,
-    fontFamily: config.fontFamily,
-    fontWeight: config.fontWeight
-  };
   const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
   const expanded = { text: [], x: [], y: [], groups: [] };
   for (let index = 0; index < text.length; index += 1) {
-    const lines = config.maxWidth === undefined ? text[index].split(/\r\n|\r|\n/u) : wrapText(text[index], {
-      maxWidth: config.maxWidth,
-      mode: config.wrap,
-      style, profile
-    });
+    const lines = axisLabelLines(text[index], config, profile);
     validateGeneratedItemLimit(
       expanded.text.length + lines.length,
       "Axis label line count"
@@ -264,24 +252,7 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
   let positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
-  const fallback = value => formatAxisValue(
-        value,
-        scale.type,
-        config.format,
-        item => scale.type === "time"
-          ? formatTimeTick(item, scale.domain)
-          : isTransformedScaleType(scale.type)
-            ? formatTransformedTick(scale.type, item)
-            : String(item)
-      );
-  const automaticLabels = config.format === "ticks"
-    ? formatNumericAxisTicks(values, scale.type)
-    : scale.type === "time" && config.format === "auto"
-      ? formatTimeTicks(values, scale.domain)
-      : undefined;
-  let text = values.map((value, index) =>
-    resolveDisplayLabel(value, config.labelMap, raw =>
-      automaticLabels?.[index] ?? fallback(raw)));
+  let text = axisLabelTexts(values, scale, config);
   // Empty mapped text suppresses the label, never its raw tick or scale value.
   // Filter all aligned arrays before wrapping so group/color indices stay dense.
   if (text.includes("")) {

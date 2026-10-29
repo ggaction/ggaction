@@ -43,6 +43,7 @@ const DEFAULTS = Object.freeze({
   color: DEFAULT_COLORS.mutedText,
   lineWidth: 1
 });
+export { DEFAULTS as CARTESIAN_AXIS_TICK_DEFAULTS };
 
 function validateOptions(args, operation, create) {
   validateTickRounding(args.rounding, !Object.hasOwn(args, "rounding"));

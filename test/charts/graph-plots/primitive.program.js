@@ -10,10 +10,10 @@ export function createGraphPrimitive(id = "directed") {
       ...variant.paths.map((commands, index) => ({ type: "path", properties: {
         commands, fill: variant.pathFills[index], stroke: variant.pathStrokes[index], strokeWidth: variant.pathWidths[index], opacity: 1
       } })),
-      ...variant.positions.map(node => ({ type: "circle", properties: {
+      ...(variant.visiblePositions ?? variant.positions).map(node => ({ type: "circle", properties: {
         x: node.x, y: node.y, radius: 10, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1
       } })),
-      ...variant.positions.map(node => ({ type: "text", properties: {
+      ...(variant.visiblePositions ?? variant.positions).map(node => ({ type: "text", properties: {
         x: node.x, y: node.y + 24, text: node.key, fill: "#0f172a", fontSize: 14, fontFamily: "sans-serif",
         fontWeight: "normal", textAlign: "center", textBaseline: "middle"
       } }))

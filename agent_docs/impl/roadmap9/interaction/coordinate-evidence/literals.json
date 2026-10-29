@@ -1,0 +1,175 @@
+{
+  "cases": [
+    {
+      "name": "rotated-reflected",
+      "input": {
+        "point": {
+          "x": 120,
+          "y": 80
+        },
+        "rect": {
+          "left": 30,
+          "top": 40,
+          "width": 200,
+          "height": 120
+        },
+        "rootTransform": [
+          0,
+          2,
+          -2,
+          0,
+          100,
+          20
+        ],
+        "childTransforms": [
+          [
+            -1,
+            0,
+            0,
+            1,
+            12,
+            4
+          ]
+        ]
+      },
+      "expected": {
+        "x": 2,
+        "y": 1
+      },
+      "actual": {
+        "x": 2,
+        "y": 1
+      },
+      "diff": []
+    },
+    {
+      "name": "hole-local",
+      "input": {
+        "point": {
+          "x": 112,
+          "y": 74
+        },
+        "rect": {
+          "left": 30,
+          "top": 40,
+          "width": 200,
+          "height": 120
+        },
+        "rootTransform": [
+          0,
+          2,
+          -2,
+          0,
+          100,
+          20
+        ],
+        "childTransforms": [
+          [
+            -1,
+            0,
+            0,
+            1,
+            12,
+            4
+          ]
+        ]
+      },
+      "expected": {
+        "x": 5,
+        "y": 5
+      },
+      "actual": {
+        "x": 5,
+        "y": 5
+      },
+      "diff": []
+    },
+    {
+      "name": "island-local",
+      "input": {
+        "point": {
+          "x": 120,
+          "y": 58
+        },
+        "rect": {
+          "left": 30,
+          "top": 40,
+          "width": 200,
+          "height": 120
+        },
+        "rootTransform": [
+          0,
+          2,
+          -2,
+          0,
+          100,
+          20
+        ],
+        "childTransforms": [
+          [
+            -1,
+            0,
+            0,
+            1,
+            12,
+            4
+          ]
+        ]
+      },
+      "expected": {
+        "x": 13,
+        "y": 1
+      },
+      "actual": {
+        "x": 13,
+        "y": 1
+      },
+      "diff": []
+    },
+    {
+      "name": "outside-local",
+      "input": {
+        "point": {
+          "x": 120,
+          "y": 48
+        },
+        "rect": {
+          "left": 30,
+          "top": 40,
+          "width": 200,
+          "height": 120
+        },
+        "rootTransform": [
+          0,
+          2,
+          -2,
+          0,
+          100,
+          20
+        ],
+        "childTransforms": [
+          [
+            -1,
+            0,
+            0,
+            1,
+            12,
+            4
+          ]
+        ]
+      },
+      "expected": {
+        "x": 18,
+        "y": 1
+      },
+      "actual": {
+        "x": 18,
+        "y": 1
+      },
+      "diff": []
+    }
+  ],
+  "expectedHash": "2d903f85fa22ac2aaa5b06fb9f9c90ba8273940be78c7c0da10a074ecf1663c9",
+  "actualHash": "2d903f85fa22ac2aaa5b06fb9f9c90ba8273940be78c7c0da10a074ecf1663c9",
+  "diffHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+}
