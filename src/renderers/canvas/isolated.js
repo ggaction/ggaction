@@ -86,7 +86,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   const plans = new Map();
   function plan(id, object, type, frame) {
     const properties = object.properties;
-    if (!requiresIsolatedGlyph(properties)) return;
+    if (type === "weighted-blend" || !requiresIsolatedGlyph(properties)) return;
     const bounds = resolvePrimitiveGraphicBounds(type, properties);
     if (!bounds) throw new Error(`Graphic "${id}" requires finite isolated paint bounds.`);
     const {offset: [x, y], clip} = frame;

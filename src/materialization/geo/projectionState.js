@@ -27,7 +27,7 @@ function validateStored(resource) {
 function validateBindings(program, resource) {
   if (resource.options.fit !== undefined) {
     const expected = createProjectionResource({ id: resource.id, revision: resource.revision, options: resource.options,
-      geometry: resolveInputReference(program, resource.inputs[0]) });
+      geometry: resolveInputReference(program, resource.inputs[0]), input: ref => resolveInputReference(program, ref) });
     if (!same(resource.result, expected.result)) throw new TypeError("Stored projection fit disagrees with its geometry and options.");
   }
   const coordinates = new Set(program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && coordinate.projection.id === resource.id).map(coordinate => coordinate.id));

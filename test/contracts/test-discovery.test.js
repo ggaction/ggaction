@@ -58,7 +58,7 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 54);
+  assert.equal(realistic.length, 57);
   assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}dataset-fixtures.test.js`
@@ -93,7 +93,10 @@ test("separates network-backed corpus sweeps from source coverage", () => {
     "realistic-mark-shadows.test.js",
     "realistic-flow-layouts.test.js",
     "realistic-contours.test.js",
-    "realistic-responsive-layout.test.js"
+    "realistic-responsive-layout.test.js",
+    "realistic-stream-baselines.test.js",
+    "realistic-trail-plots.test.js",
+    "realistic-table-plots.test.js"
   ]) {
     assert.equal(realistic.some(file => file.endsWith(`${path.sep}${name}`)), true);
   }

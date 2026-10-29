@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified-private-kernel",
+  "sourceCommit": "e4b659b290a41446872764940d42defc8778a0f9",
+  "executionProvenance": "Checks ran on the working candidate. Declared source bytes were then compared with this committed source; these are not clean release execution receipts.",
+  "sources": [
+    {
+      "path": "src/grammar/animation/values.js",
+      "sha256": "169b8e32e9c367602d09db4550de0dbd9114d4286fd13ca916cd62be1dab6a82"
+    },
+    {
+      "path": "src/grammar/geo/cameraInterpolation.js",
+      "sha256": "ac6311cb0fb93e0af8629f040a3b437bf6f5796200edc2fc3fe3cdc872d83349"
+    },
+    {
+      "path": "test/unit/animation/values.test.js",
+      "sha256": "0e438e19b7df78ae2e665828573d4c5a7b7b42fee88fb336a53ab6698b8a0f82"
+    },
+    {
+      "path": "test/unit/geo/camera-interpolation.test.js",
+      "sha256": "6bd818902ede898ce9a54040c3ae6419c362aa53cf65b7f957f033c5aa5c2477"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "fea130d559558f0e91887f1bfdfe348373f15ce27999fffb6c51c3754e922f52"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "d74cf83a0d66f9cabde7363afafd53fe28cfbd3742e21a5177d9ab64f9b7b347"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/coverage-final.log.gz",
+      "sha256": "2fe87cd666bc96ffdcfd0ee7b0716f480d66c8c1704e832aa1ae43a50f3c0e72",
+      "decodedSha256": "5b978863b50fb635b3d708c534d5380d07231cb1274e93fc0c2228e407439225"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/node20.log.gz",
+      "sha256": "75a3f483f755a81f1ea4c020951c60bc4de72f8de90af0cc4d0765f4ff70c607",
+      "decodedSha256": "b48a148ad9e83160546eb3cb2b138803206749e94bfe2f9cdff6902128218a7d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/node24.log.gz",
+      "sha256": "450ae9b71985d0c2ebc3bbfa8f13680180a888d6d08c187ba603988e186e7536",
+      "decodedSha256": "c09405b7f915872dd8cec31dd18e27830fa2e8d4764eff8e90913f9edbe410ef"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/boundaries.log.gz",
+      "sha256": "550f903155c7e0ea55ac849ac63777fcd72aa9826cc1902e38dcf3922fa08202",
+      "decodedSha256": "dba838282419f3634c28f58890cb26a9ed3a9198543c2fd609dc40b686ac9027"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-contract.log.gz",
+      "sha256": "4f112a58bc7da01e26300a09e57ad4dddbeccff8b10f8caf834466a6b8585b49",
+      "decodedSha256": "390d518e2f00aade6ee77424e7e7716c1ee811ecd963c9642b0408ab9affb827"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-20.log.gz",
+      "sha256": "5f4e22fae53aae024d22baabc6dff9b437e6ee87278845f77061a26bba7f1c62",
+      "decodedSha256": "de19fc5d3ed0b19b0e87b35b6e1841a229d275e4d28aaee97471bb67e2cb075b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-22.log.gz",
+      "sha256": "4e6ea0b0a97d7af45f9c181c76ead5614d8a150e059b10c76efbef404e8bf708",
+      "decodedSha256": "b24849dd5c34956a0fc17e4ad908e01452067dd7368dbfdeb3ed4a1d3870aa19"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-24.log.gz",
+      "sha256": "6fbf665856822e660926c3cffe9dcd5a5627177757c7c66c75d2ebe0a41930e3",
+      "decodedSha256": "6c29cffcfcf45eef3e02880d401cb517bb8d2b2c32ffcf65320ed02057eb9134"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-20.json.gz",
+      "sha256": "94415a6cdd0b42580d65d946fe44c9b11034530a9b60391c8ae8c578e9e51d2c",
+      "decodedSha256": "86c890e4cd6510ce4626e337592695358245e892c50c2f224f3ea0c583cb5cf4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-22.json.gz",
+      "sha256": "908aeba9b8add997626a153ec3a7cb6f1332605e9e0db4fcb8c6cb0a2ef60fce",
+      "decodedSha256": "766ee15de7f50883359f3a408064378ec3bbe2dba350ec01ff10425d49632772"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/package-size-24.json.gz",
+      "sha256": "13ec9f1c6eb15e0b8bf269b17623a7b50944452ce2ee1eed0cd09fb7bba3ebd0",
+      "decodedSha256": "6cd126adc9c6b1d633e9f4250c0052ef193bd04cebd696828a7edf892117deb4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/geo-camera-animation-evidence/measure-package.mjs.gz",
+      "sha256": "3910ae6016c776c014cb8fa469f42e699282913b89e7b340d72aa5d800b0ba48",
+      "decodedSha256": "5f097e0e92ec60d3993e753e6fd6649fb9c99bd24e90a92b394efdf6c3e363f9"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "--experimental-test-coverage",
+        "--test-coverage-include=src/grammar/geo/cameraInterpolation.js",
+        "--test-coverage-include=src/grammar/animation/values.js",
+        "--test-coverage-lines=95",
+        "--test-coverage-branches=90",
+        "--test-coverage-functions=100",
+        "test/unit/geo/camera.test.js",
+        "test/unit/geo/camera-interpolation.test.js",
+        "test/unit/geo/camera-actions.test.js",
+        "test/unit/geo/polygon-winding.test.js",
+        "test/unit/animation/values.test.js"
+      ],
+      "exitCode": 0,
+      "tests": 51,
+      "log": "coverage-final.log.gz"
+    },
+    {
+      "command": [
+        "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "test/unit/geo/camera.test.js",
+        "test/unit/geo/camera-interpolation.test.js",
+        "test/unit/geo/camera-actions.test.js",
+        "test/unit/geo/polygon-winding.test.js",
+        "test/unit/animation/values.test.js"
+      ],
+      "exitCode": 0,
+      "tests": 51,
+      "log": "node20.log.gz"
+    },
+    {
+      "command": [
+        "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "test/unit/geo/camera.test.js",
+        "test/unit/geo/camera-interpolation.test.js",
+        "test/unit/geo/camera-actions.test.js",
+        "test/unit/geo/polygon-winding.test.js",
+        "test/unit/animation/values.test.js"
+      ],
+      "exitCode": 0,
+      "tests": 51,
+      "log": "node24.log.gz"
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=2",
+        "test/contracts/source-boundaries.test.js",
+        "test/contracts/package-boundaries.test.js",
+        "test/contracts/test-discovery.test.js",
+        "test/contracts/geo-label-boundaries.test.js",
+        "test/contracts/verification-evidence.test.js"
+      ],
+      "exitCode": 0,
+      "tests": 43,
+      "log": "boundaries.log.gz"
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=2",
+        "test/contracts/package-artifact.test.js"
+      ],
+      "exitCode": 0,
+      "tests": 7,
+      "log": "package-contract.log.gz"
+    }
+  ],
+  "coverage": {
+    "lines": 100,
+    "branches": 99.08,
+    "functions": 100,
+    "floors": {
+      "grammar/animation/values.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/geo/cameraInterpolation.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "packageMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1048,
+      "packedBytes": 1487978,
+      "unpackedBytes": 6761201
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1048,
+      "packedBytes": 1484277,
+      "unpackedBytes": 6761201
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1048,
+      "packedBytes": 1487978,
+      "unpackedBytes": 6761201
+    }
+  ],
+  "limits": {
+    "entries": 1048,
+    "packedBytes": 1489000,
+    "unpackedBytes": 6763000
+  },
+  "openIntegrationObligations": [
+    "Root position sampler stationary log domain [150,150.00000000000003] with value150 joint regression.",
+    "Public planner binding to exact projection/source revisions and current materialized scene.",
+    "Weighted per-item incompatible-camera and interrupted-crossfade capture.",
+    "Current-frame hit, clock, easing, reduced motion, four renderers and offline animation envelope."
+  ],
+  "notClaimed": [
+    "Public animation API",
+    "Installed consumer qualification",
+    "Full release or native completion",
+    "Whole roadmap completion"
+  ]
+}

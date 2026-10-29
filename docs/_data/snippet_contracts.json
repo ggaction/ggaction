@@ -2409,7 +2409,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "77fe8f64e9bce629a4437f83ca728ddf98899fe6a8b60ec33b918fbcb3fae6e1",
+    "sha256": "de7aebe5e0662ff0fd9ca445b98d8da78be71b2ce7f3a0481ba0c604f61c8b0d",
     "executable": false
   },
   {
@@ -2708,6 +2708,22 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"network\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
     "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 24,
+    "heading": "Combine editing gestures",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\"",
+      "target: \"note\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.",
+    "sha256": "e842dec3d27f8f5aa5c8c90d5c3480801e0f5332ae959cf3fbbadf1001767048",
+    "executable": true
   },
   {
     "file": "api/legends.md",
@@ -5314,5 +5330,20 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "16ba5aa82585149d337b27f9bcd4f80718073a8293d9b2a4b4eaf019be49329b",
     "executable": false
+  },
+  {
+    "file": "extension/primitives.md",
+    "block": 13,
+    "heading": "Blend concrete sources for one item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"canvas\"",
+      "target: \"item\""
+    ],
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "sha256": "9cf34080dbf14c171287361f8b745e1304e653206df5db3ad7a9c7aa5e85bca4",
+    "executable": true
   }
 ]

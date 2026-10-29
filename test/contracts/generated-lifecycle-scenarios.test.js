@@ -125,7 +125,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 360);
+  assert.equal(publicActions.length, 368);
   for (const operation of [
     "createTablePlot", "editTablePlot", "createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot",
     "bundleGraphEdges", "editEdgeRoute",
@@ -156,6 +156,18 @@ test("retains direct action effects in final semantic and graphic state", () => 
     .filter(owner => owner.semanticSpec.layers.some(layer => layer.id === "resourcePoints"));
   assert.equal(resourceOwners.length, 1, "prepared resource assertions require one explicit resource panel");
   const [resources] = resourceOwners;
+  const note = semanticResource(resources, "layers", "resourceNote");
+  assert.deepEqual(note.annotationAnchor, { space: "screen", x: 20, y: 20 });
+  assert.equal(resources.graphicSpec.objects.resourceNote.items[0].properties.x, 24);
+  const winding = semanticResource(resources, "resources", "directGeoWinding");
+  assert.equal(winding.options.polygonWinding, "right-hand");
+  assert.equal(winding.revision, 1);
+  assert.deepEqual(resources.trace.children.filter(node =>
+    (node.op === "createGeometryData" && node.args.id === winding.id) ||
+    (node.op === "editGeometryData" && node.args.target === winding.id))
+    .map(node => [node.op, node.args.polygonWinding]), [
+    ["createGeometryData", "left-hand"], ["editGeometryData", "right-hand"]
+  ]);
   const preparedSource = semanticResource(resources, "datasets", "unusedPreparedLifecycleSource");
   assert.deepEqual(preparedSource.values, [{ fixture: "prepared-source", value: 1 }]);
   assert.equal(preparedSource.sourceReceipt.sourceId, preparedSource.id);

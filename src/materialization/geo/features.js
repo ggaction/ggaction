@@ -1,3 +1,4 @@
+import { isGeographicGeometry } from "../../selectors/geometry.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { validateWorkLimit } from "../../core/validation.js";
 import { geometryFeatureKeys } from "../../grammar/geo/options.js";
@@ -13,6 +14,22 @@ export function geographicFeatureKeys(resource, input) {
   return geometryFeatureKeys(resource.result.features, source.options.featureKey);
 }
 
+// Direction is authored only on the original source. Follow exact join/current
+// detail refs so revised candidate resources and restored programs agree.
+export function geographicPolygonWinding(resource, input) {
+  if (!isGeographicGeometry(resource)) throw new TypeError("A geographic or planar geometry source resource is required.");
+  let source = resource;
+  const seen = new Set();
+  while (source.options.method !== "geo") {
+    if (!isGeographicGeometry(source) || seen.has(source.id)) throw new TypeError("Geographic polygon winding requires an acyclic source.");
+    seen.add(source.id); validateWorkLimit(seen.size, "Geographic source work");
+    const index = source.options.method === "geo-lod"
+      ? source.options.levels.findIndex(level => level.id === source.options.activeLevel) : 0;
+    source = input(source.inputs[index]);
+  }
+  return source.options.polygonWinding ?? "right-hand";
+}
+
 // One metadata path for source geometry, joins and current detail representations.
 // The resource DAG has already been validated; an explicit stack also supports
 // long join chains without relying on the JavaScript call stack.
@@ -25,7 +42,8 @@ export function geographicFeatures(program, resource) {
     source = resolveInputReference(program, source.inputs[index]);
   }
   let features = source.result.features.map((feature, index) => ({ ...feature,
-    key: source.result.identity.rowKeys[index], fields: feature.properties ?? {}, rows: [] }));
+    key: source.result.identity.rowKeys[index],
+    ...(source.options.coordinateKind === "geographic" ? { polygonWinding: source.options.polygonWinding ?? "right-hand" } : {}), fields: feature.properties ?? {}, rows: [] }));
   for (const current of chain.reverse()) {
     let aliases;
     if (current.options.method === "geo-lod") {

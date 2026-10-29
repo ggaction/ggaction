@@ -1,3 +1,4 @@
+import { validateWeightedBlendSources } from "./weightedBlend.js";
 import { normalizeMarkShadow } from "../markShadow.js";
 import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -34,6 +35,7 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (type === "weighted-blend" && property === "sources") validateWeightedBlendSources(value, validateConcreteGraphicProperties);
   if (property === "shadow") {
     if (value === false) throw new TypeError("Concrete shadow must be an object.");
     const normalized = normalizeMarkShadow(value, `${type}.shadow`);
@@ -132,6 +134,7 @@ export function validateConcreteGraphicProperties(type, properties) {
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
   }
+  if (type === "weighted-blend" && !Object.hasOwn(properties, "sources")) throw new TypeError("weighted-blend.properties requires sources.");
   if (type === "text" && typeof properties.fill === "object" && properties.fillBounds === undefined) {
     throw new TypeError("Structured Text fill requires concrete fillBounds.");
   }

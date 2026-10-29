@@ -1,5 +1,11 @@
 # `ggaction` Second Architecture
 
+Private animation plan transport는 실제 endpoint 그래픽과 준비한 의미값/scale만 저장한다.
+`animation/planner.js`가 기존 graphic validator와 `grammar/animation/pointState.js`를 통해
+닫힌 입력을 검증하고 endpoint/matching owner로 scene·track·enter/exit를 재생한다.
+Point adapter와 복원은 같은 fallback vocabulary 및 forward mapping 정합성 검증을 공유한다.
+저장된 plan을 다시 native action으로 실행하거나 pixel에서 의미값을 복원하지 않는다.
+
 > 작업에 필요한 section만 빠르게 찾으려면
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
@@ -247,10 +253,18 @@ Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning
 자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
 
 `partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+`partitionInterpolation.js`는 stable node/parent preorder와 원 normalized u/depth, bend,
+frame basis·hole·CSS gap을 가진 versioned private track을 검증·보간한다. 원 구간을 bend한 뒤
+`partitionBend.js`가 현재 CSS 거리로 inset하며, 현재 sample을 새 track의 시작점으로 사용할 수 있다.
+이 숫자 track의 복원 검증은 public planner나 semantic schema를 만들지 않는다.
 Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
 compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
 이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
 AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
+Private typed track 추가 후 package 실측은1,049entries/6,769,256unpacked, Node22
+packed1,486,310 및 Node20·24 packed1,489,945bytes다. 현재 한도는1,049entries,
+packed1,491,000/unpacked6,771,000으로 측정값에 최소1,000bytes 여유를 둔다.
+기존95/90/100 hierarchy owner floors와 공개 entry 경계는 유지한다.
 
 ## 내부 expression kernel 경계
 
@@ -862,11 +876,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 743,900 bytes |
-| `ggaction/basic` | 398,300 bytes |
-| `ggaction/svg` | 25,000 bytes |
-| `ggaction/graph` | 44,100 bytes |
-| `ggaction/interaction` | 116,700 bytes |
+| `ggaction` | 771,400 bytes |
+| `ggaction/basic` | 421,200 bytes |
+| `ggaction/svg` | 26,000 bytes |
+| `ggaction/graph` | 46,000 bytes |
+| `ggaction/interaction` | 122,100 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -1223,6 +1237,16 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 [축 계약](contract/current/AXES.md#cartesian-axis-underlays), [Canvas 계약](contract/current/CORE.md),
 [primitive 계약](contract/current/PRIMITIVES.md#editgraphics)이 소유한다.
 
+### 항목별 weighted concrete 합성
+
+`weighted-blend`는 semantic mark가 아닌 concrete primitive다. 기존 primitive sources와 가중치를
+평탄하게 저장하고 하나의 item identity를 유지한다. `grammar/schemas/graphicSources.js`가 embedded
+source 방문을 소유하여 image/font/shadow 준비가 같은 byte identity와 immutable handle을 재사용한다.
+Canvas/PNG는 제한된 항목 surface에서 linear-light premultiplied RGBA를 합산하고, SVG는 native arithmetic
+filter, PDF는 해당 항목만 raster로 lowering한다. renderer는 여전히 graphicSpec만 읽으며 clock/player,
+semantic correspondence, interruption 선택을 추론하지 않는다. exact shape/한도는
+[primitive 계약](contract/current/PRIMITIVES.md#concrete-weighted-blend)이 소유한다.
+
 ### Graphic type
 
 현재 type은 다음과 같다.
@@ -1230,7 +1254,7 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 ```text
 root/container      canvas
 named container     collection
-homogeneous draw    circle, rect, line, text, path
+homogeneous draw    circle, rect, line, text, path, image, weighted-blend
 heterogeneous items collection
 ```
 
@@ -3139,6 +3163,29 @@ owner에 두며, 기존 controller가 같은 playback 옵션 정규화를 재사
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
+`animation/planner.js`는 settled immutable program 두 개에서 기존 endpoint와 item key/role
+대응을 준비한다. `materialization/animation/point.js`는 exact child scope·final row identity와
+rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별도 mapper를 만들지 않는다.
+`animation/sample.js`는 기존 browser-safe concrete scene compiler를 공유하여 renderer-ready
+`{graphicSpec,scene,progress,decisions}`를 반환한다. 정확 endpoint는 원래 graphicSpec과 scene
+참조를 보존하며 중간 frame은 깊게 동결된 concrete data다. 같은 named Canvas의 background는
+기존 endpoint frame provenance로 별도 대응한다. 일반 anonymous graphics의 fallback key를
+item correspondence로 해석하지 않는다. 지원하지 않는 family·topology·appearance는 명시 이유와
+concrete weighted-blend로 남긴다. 이는 나머지 compatible family 구현을 대체하지 않는다.
+`core/programState.js`의 descriptor-safe settled-state admission을 hit preparation과 planner가 공유한다.
+이 checkpoint는 private authentic plan만 지원한다. 공개 entry·offline 복원·current-frame 재기준과
+player 연결은 후행 의무이며 새 semantic 상태나 public API는 없다. Node22 package는
+1118entries/1,592,653packed/7,244,281unpacked bytes이고 Node20/24 packed는1,595,412bytes다.
+최소 상한1118/1,596,000/7,245,000을 적용하며 공개 entry·browser bundle cap은 유지한다.
+
+`grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
+`scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만
+기하 보간한다. mapper를 복제하거나 pixel에서 semantic 값을 추정하지 않는다.
+공개 planner·scene 연결 전의 private numeric owner이며 새 저장/renderer 경계는 없다.
+Node22 canonical package는1066entries/1,517,992packed/6,918,212unpacked bytes다.
+새 내부 모듈1개를 포함하도록 최소 한도1066/1,518,000/6,919,000을 적용하고
+공개 entry와 browser bundle cap은 유지한다.
+
 ### Cartesian title label-relative offset measurement
 
 Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌
@@ -4125,6 +4172,15 @@ geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는
 초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
 않는다. 공개 action/session/player 통합은 별도 후행 경계다.
 
+동일 camera interpolation owner의 private prepare/sample 경계는 정규화된 두 projection
+endpoint와 version·호환 판정만 불변 plain data로 보존한다. 복원 샘플은 닫힌 shape와
+정합성을 검사하며 geometry fit·데이터 inference·pixel inverse를 수행하지 않는다.
+현재 camera frame의 parameters를 다음 준비의 from으로 전달하여 재기준하고, projection
+또는 clip이 호환되지 않는 경우 양 endpoint를 유지하는 crossfade 결정을 반환한다.
+private camera 준비값 추가 후 동일 package는1,048entries/6,761,201unpacked,
+Node22 packed1,484,277 및 Node20·24 packed1,487,978bytes다. unpacked cap만
+6,763,000으로 올리고 기존 entries1,048/packed1,489,000은 유지한다.
+
 공개 Geo camera는 `actions/geo/camera.js`의 `navigateProjection` facade가 기존 Canvas와
 projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
 읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
@@ -4217,3 +4273,94 @@ Navigation 모듈 추가의 package 실측은1060entries/1,504,297packed/6,840,0
 동일 navigation tar의 Node20 interaction bundle은119,691gzip(190modules)이며 한도를119,700으로
 최소100단위 올렸다. 새 adapter와 기존 pure projection 옵션 검증을 포함하고 Full/Basic/SVG/graph
 번들은 변화가 없어 기존 한도를 유지한다. 최초116,700 한도 실패와 통과한 runtime/types를 보존한다.
+
+Weighted concrete qualification은 runtime 모듈 5개를 추가하며 기존 public entry
+경계를 유지한다. 설치된 package의 Node20 측정은 Full732,039 / Basic387,595 /
+SVG24,941 / interaction110,455 gzip bytes이다. 각 cap은734,000 / 389,000 /
+26,000 / 112,000이고 graph cap은 유지한다. 최초 interaction cap 실패와 같은
+archive의 집중 재검증을 별도 보존한다. Package는1,048entries,
+Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
+1,048 / 1,488,000 / 6,757,000이다. 최종 Node22 archive의 packed1,482,864bytes와
+동일 archive Node20/22/24 설치 증거는 qualification 기록이 소유한다.
+
+합산 후보의 native chart·Table·weighted primitive 참조를 모두 생성한 검색 payload는
+1,065,602bytes다. 이전1,037,700 한도 실패를 보존하며 최소100byte 단위인
+1,065,700으로 조정한다. 검색은 기존 canonical content 생성과 on-demand loading을 유지한다.
+
+Area 최종 공유 layout 정책의 공개 예제를 추가한 합산 검색 payload는1,066,036bytes다.
+이전1,065,700 한도 실패를 보존하고 최소100byte 단위인1,066,100을 적용한다.
+Prepared native preview는 기존 interaction/preparation의 인스턴스를 활성 gesture의 transient
+수명에 한정해 재사용한다. Committed lease는 session이 보존하고, preview lease는 정확한
+previewProgram과 hit frame의 원자 publication에만 연결된다. Public readonly previewAssets는
+해당 transient lease의 projection이며 별도 asset cache나 authoritative chart state가 아니다.
+Pending 교체는 이전 accepted frame을 유지하고, 종료는 원 frame 복원 뒤 transient lease를 해제한다.
+최종 candidate는 기존 native commit/history 준비 경로 하나로 들어간다. Renderer는 여전히
+graphicSpec과 authentic prepared handles만 받으며 animation scene 준비는 분리된 후행 경계다.
+
+Preview 연결의 Node20 package는 기존1060entries/1,504,715packed, 새6,842,266unpacked로
+측정했다. Entries/packed 한도는 유지하고 unpacked만6,843,000으로 올린다. 검색1,037,619bytes는
+기존1,037,700 한도 안이며 runtime 준비 owner를 새로 복제하지 않는다.
+
+동일 preview tar의 Node20 interaction은119,991gzip으로 이전navigation보다300bytes 증가했다.
+최소100단위 한도120,000을 적용하고 나머지 네 entry 한도는 유지한다. 최초119,700 초과 시 이미
+통과한20runtime/strict types와 동일 archive의 측정 bundle을 cap 변경 뒤 재검사한 결과를 분리 보존한다.
+
+Native Table·Trail·Area 공유 정책과 weighted concrete·gesture asset preparation을 합친
+후보의 canonical staging은1111entries/1,581,245packed/7,202,585unpacked bytes다.
+기존 독립 slice 한도1065/1,517,000/6,913,000을 초과하므로 최소 한도
+1111/1,582,000/7,203,000을 적용한다. Node22 동일 설치 archive에서 Full770,901 /
+Basic421,153 / SVG24,765 / graph43,923 / interaction121,101gzip을 실측했다.
+Full/Basic/interaction만 다음100byte 단위771,000/421,200/121,200으로 조정하고
+SVG26,000/graph46,000은 유지한다. Native action은 Full에, 공유 concrete schema와
+materialization/renderer는 기존 Basic 경계에 남으며 새 export는 없다. 이 측정용
+archive는 합산 한도 결정 근거이며 최종 clean candidate qualification을 대신하지 않는다.
+
+의미 위치 private 커널을 합친 canonical package는1112entries/1,582,795packed/
+7,208,154unpacked bytes다. 내부 모듈1개와 동일 endpoint 수리만 추가되어
+최소 한도1112/1,583,000/7,209,000을 적용한다. 공개 entry/bundle 한도는 유지한다.
+### 편집 pointer 후보와 capture의 단일 수명
+
+`interaction/pointerBindings.js`는 기존 pure gestures의 명시 priority/modifier 정책과 domain의
+읽기전용 applicability probe를 연결한다. Domain normalizer·hit·geometry는 기존 owner가 유지하고,
+winner만 session transaction을 시작한다. 기존 pointerCapture는 모든 editing binding에 대해
+하나의 DOM listener/capture 집합을 소유하며 선택된 adapter와 baseline을 terminal까지 고정한다.
+별도 ChartProgram/cache/renderer 계산은 추가하지 않는다. Source/cancel/async preview 수명과
+native history는 기존 session/preparation owner에 남는다. 정확 공개 옵션과 오류는 Current
+INTERACTION이 소유하며, 새 critical adapter floor95/90/100을 기존 gesture/capture 수준으로 적용한다.
+
+Arbitration의 새 private adapter를 포함한 Node20 package 실측은1061entries/1,505,994packed/
+6,846,835unpacked이며 caps는1061/1,506,000/6,847,000으로 최소 조정했다. 기존1060entry
+검사 실패를 보존한다. 검색1,038,216bytes는 한도1,038,300으로 올린다. 새 source-free archive와
+interaction entry는 별도로 검증하며 기존 네 entry의 한도는 유지한다.
+
+동일 arbitration archive의 Node20 interaction은191modules/120,959gzip이다. 기존120,000 한도
+초과 원본과 이미 통과한21runtime/strict types를 보존하고 최소100단위121,000으로 조정했다.
+같은 bundle 측정값을 새 한도로 검증하며 Node22/24는 각 소비자를 독립 실행한다.
+
+단일 capture priority/modifier와100회 resize/worker/asset 수명 회귀를 합친 Node22
+package는1113entries/1,584,135packed/7,212,723unpacked bytes다. 최소 한도는
+1113/1,585,000/7,213,000이다. 설치된 같은archive의 Full770,912 / Basic421,163 /
+SVG24,765 / graph43,923은 기존 한도 안이며 interaction122,074는 이전121,200을
+초과하여 최소100byte 한도122,100으로 조정한다. private pointer arbitration만
+1모듈 추가하며 native action/renderer/package export 경계는 그대로다.
+
+명시 geographic polygon winding은 기존 모듈을 확장하며 source resource의
+options 한 곳만 정책을 소유한다. Join/LOD의 exact input traversal과 transient
+projection/centroid 변환은 기존 materialization feature owner가 공유한다.
+retained source의 좌표/순서/hash와 기존 기본 right-hand 및 보완 영역은 유지한다.
+Node20/24 packed1,487,545bytes, Node22 packed1,483,856bytes,
+unpacked6,759,508bytes, entries1,048을 측정해 cap을1,489,000 / 6,761,000 /
+1,048로 갱신했다. 기존 unpacked cap 실패는 최초 증거로 보존한다.
+
+Geo winding·private camera를 합친 Node22 canonical staging은1113entries/1,585,560packed/
+7,218,612unpacked bytes다. 기존 entries 한도는 유지하고 최소1,000byte 단위로
+1,586,000/7,219,000을 적용한다. 원 winding의 source options와 native camera의
+quaternion/log scale 수치 owner를 재사용하며 private camera track은 새 public entry가 아니다.
+
+동일 Geo 합산 archive(6c3d3fb3…)의 Node22 설치 bundle은 Full771,345 / Basic421,200 /
+SVG24,765 / graph43,923 / interaction122,074gzip이다. Full만 최소100byte 단위
+771,400으로 조정하고 나머지 네 한도는 유지한다. 위 package·bundle 실측은 최종077
+clean candidate qualification을 대신하지 않는다.
+
+Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 payload는1,066,690bytes다.
+이전1,066,100 한도 실패를 보존하고 최소100byte 단위1,066,700을 적용한다.

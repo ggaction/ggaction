@@ -17,6 +17,14 @@ import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"
 const source: GeoJSONInput = { type: "Feature", id: "a", properties: { nested: { code: 1 } }, geometry: { type: "Point", coordinates: [1, 2, 3], bbox: [0, 0, 2, 3] } };
 const p = chart().createGeometryData({ id: "source", format: "geojson", values: source, coordinateKind: "geographic", featureKey: ["properties", "nested", "code"] });
 p.editGeometryData({ values: null }).editGeometryData({ target: { childPath: ["left"], id: "source" }, limits: { maxFeatures: 20 } });
+p.editGeometryData({ polygonWinding: "left-hand" });
+chart().createGeometryData({ id: "cw", format: "geojson", values: source, coordinateKind: "geographic", polygonWinding: "left-hand" });
+// @ts-expect-error No automatic or unknown ring repair.
+p.editGeometryData({ polygonWinding: "auto" });
+// @ts-expect-error Ring direction has no planar meaning.
+chart().createGeometryData({ id: "cw", format: "geojson", values: source, coordinateKind: "planar", polygonWinding: "left-hand" });
+// @ts-expect-error Explicit undefined is not a winding reset.
+p.editGeometryData({ polygonWinding: undefined });
 const topology: TopoJSONInput = { type: "Topology", objects: { world: { type: "LineString", arcs: [-1] } }, arcs: [[[0, 0], [1, 1]]] };
 p.createGeometryData({ id: "topology", format: "topojson", values: topology, coordinateKind: "planar", topoObject: "world" });
 declare const resource: GeometrySourceResource;

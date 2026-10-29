@@ -25,6 +25,7 @@ export function resolveGeoMark(program, layer, config, resolvedScales = program.
     const radius = mapped.size === undefined ? radiusPx : Math.sqrt(mapped.size[index] / Math.PI);
     const geometry = binding.mode === "graticule" ? feature.geometry : geoMarkGeometry(feature.geometry, binding, parameters);
     const projected = projectGeometry(geometry, parameters, { coordinateKind,
+      ...(feature.polygonWinding === undefined || binding.radiusDeg !== undefined ? {} : { polygonWinding: feature.polygonWinding }),
       interpolation: binding.interpolation ?? "source-segment", ...(binding.routeHint === undefined ? {} : { routeHint: binding.routeHint }) });
     validateWorkLimit(work += projected.diagnostics.work, "Geographic mark stream work");
     validateGeneratedItemLimit(count += projected.diagnostics.outputPoints, "Geographic mark point count");

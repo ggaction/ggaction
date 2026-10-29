@@ -471,3 +471,52 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](../api/rendering.md#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.

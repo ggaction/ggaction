@@ -1,3 +1,4 @@
+import { linearLight, encodedLight } from "../linearColor.js";
 import { ownArray } from "../../core/ownData.js";
 import { validateNonNegativeFinite, validateUnitInterval } from "../../core/validation.js";
 
@@ -26,6 +27,7 @@ export function interpolateNumber(from, to, progress) {
   validateUnitInterval(progress, "Animation progress");
   if (progress === 0) return from;
   if (progress === 1) return to;
+  if (from === to) return from;
   // A convex combination avoids overflowing the endpoint difference.
   return from * (1 - progress) + to * progress;
 }
@@ -37,6 +39,7 @@ export function interpolatePositiveScale(from, to, progress) {
   validateUnitInterval(progress, "Animation progress");
   if (progress === 0) return from;
   if (progress === 1) return to;
+  if (from === to) return from;
   return Math.exp(interpolateNumber(Math.log(from), Math.log(to), progress));
 }
 
@@ -58,14 +61,6 @@ function rgba(value, label) {
   if (value.length !== 4) throw new TypeError(`${label} requires four normalized RGBA channels.`);
   for (const channel of value) validateUnitInterval(channel, label);
   return value;
-}
-
-function linearLight(channel) {
-  return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
-}
-
-function encodedLight(channel) {
-  return channel <= .0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - .055;
 }
 
 // Input and output RGB are normalized sRGB; alpha is linear. Color strings are

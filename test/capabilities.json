@@ -521,6 +521,10 @@
       },
       {
         "type": "file",
+        "path": "browser/geo-winding.browser.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/realistic-geographic-annotations.test.js"
       },
       {
@@ -1178,6 +1182,18 @@
       {
         "type": "file",
         "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-adapter.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/partition-frames.test.js"
       }
     ],
     "pattern-paints": [
@@ -1458,6 +1474,14 @@
       {
         "type": "file",
         "path": "unit/interaction-navigation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-preview-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-gesture-arbitration.test.js"
       },
       {
         "type": "file",
@@ -1978,6 +2002,32 @@
       {
         "type": "file",
         "path": "contracts/realistic-waterfall-plots.test.js"
+      }
+    ],
+    "weighted-blends": [
+      {
+        "type": "file",
+        "path": "unit/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend-assets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/weighted-blend-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/weighted-blends.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cross-feature-integration/variants/weighted-blends/"
       }
     ]
   },

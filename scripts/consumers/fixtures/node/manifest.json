@@ -1146,6 +1146,14 @@
       {
         "id": "interaction/guide-and-host-cleanup",
         "statements": 85
+      },
+      {
+        "id": "interaction/editing-arbitration",
+        "statements": 24
+      },
+      {
+        "id": "interaction/prepared-native-preview",
+        "statements": 27
       }
     ]
   },
@@ -1248,6 +1256,10 @@
       {
         "id": "geometry/topology-atomic-failure",
         "statements": 9
+      },
+      {
+        "id": "geometry/declared-winding-offline-renderers",
+        "statements": 17
       }
     ]
   },
@@ -1511,6 +1523,23 @@
       {
         "id": "composition-recipes/combo",
         "statements": 7
+      }
+    ]
+  },
+  {
+    "file": "weighted-blends.mjs",
+    "cases": [
+      {
+        "id": "weighted-blend/linear-pixels-and-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "weighted-blend/fresh-process-codec-and-scene",
+        "statements": 7
+      },
+      {
+        "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+        "statements": 11
       }
     ]
   }

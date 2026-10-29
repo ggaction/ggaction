@@ -7,6 +7,7 @@
 - [x] item key·primitive role 기반 순수 대응과 실제 keyed 데이터 revision 검증
 - [x] 실제 graphic-only endpoint의 scene·identity·lineage 투영과 중복 검증
 - [x] [그래프 경로의 arc-length 대응·현재 node anchor 보정](routes.md)
+- [x] [연속 semantic value·scale 기반 순수 위치 커널](positions.md)
 - [ ] item identity·primitive role별 transition planner
 - [ ] 정확한 두 endpoint와 typed scene 연결
 - [ ] 의미 좌표 및 곡선·partition·graph·Geo 통합

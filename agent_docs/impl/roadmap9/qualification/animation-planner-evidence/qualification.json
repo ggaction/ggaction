@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "status": "private-point-checkpoint",
+  "sourceCommit": "bd296d0317244420d223bdebc76387dc446656b9",
+  "approval": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "23209c7cd8cc1c40d7e56b6cad4023d763a915835f0e77cbd9b8a21f6a7487c1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner.md",
+      "sha256": "730e30c082d23a8a8214f1674ea5f05e5e56d84b9410d8a01758c58bf44529ef"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "d2d9315f0d12a77f32f48ba32b431f709e9fd54a3e140aa1cbc04d71070efe9d"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "8fe59f3ac444d543462da788926b978af263b8339edf62a05cf2d7af2f8b8a4e"
+    },
+    {
+      "path": "src/animation/concrete.js",
+      "sha256": "091f233c1c5dab50f8c58757c0e3e41ce3a205fca61dcc0dda012f3d27b7e9d8"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "fb2a417c4addc2a303711a8fad08a86fca689546c40ef925504383cee730b8a3"
+    },
+    {
+      "path": "src/animation/sample.js",
+      "sha256": "aaff385ac9afc89e3e43201e4280597ed29466c1488abc06a7945224f04d76d3"
+    },
+    {
+      "path": "src/core/programState.js",
+      "sha256": "75ce1bfc9eb0bf2de979ab668c9946cf627d899ef8a979e40d5fe771e1c6f34e"
+    },
+    {
+      "path": "src/grammar/schemas/weightedBlend.js",
+      "sha256": "6e8dd7275af86de3425b844fd6f30efbc9014df43d356a52cc47bdebd0f9c4f4"
+    },
+    {
+      "path": "src/interaction/hitProgram.js",
+      "sha256": "db91227868c49c8725cf2b6675af25b419eefab7d7e7ac95c145b762c9b35617"
+    },
+    {
+      "path": "src/materialization/animation/point.js",
+      "sha256": "80a37c9e808e3c89ade09785a04e1c0924eee7c94e778a3e7a6854a71539f490"
+    },
+    {
+      "path": "src/selectors/resources.js",
+      "sha256": "ba94e2d0626d164ac8139b30fb400c7300ec1fd1e3ba27c4b30a3ce22f3110de"
+    },
+    {
+      "path": "test/browser/animation-sampling.browser.js",
+      "sha256": "9b8aa483db8f467eebe2af62b88654e6f89c9e67135337e43c8b4e04515d2f60"
+    },
+    {
+      "path": "test/browser/weighted-blends.browser.js",
+      "sha256": "ff860c7b430c6b4127daf3fad53df3924220ab14e361f283529bde217fc99481"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/backends.render.js",
+      "sha256": "98265030c5d4d7001fb667ef4f5fe26b01d6b222dc1801bc44ce01309b9b21ba"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/weighted-blends/backends.render.js",
+      "sha256": "1cc385c0cddc1e3290dc99c48a2029d821200bb7a9e64360cfea3681c45a6806"
+    },
+    {
+      "path": "test/support/animation-point-frame.js",
+      "sha256": "c186ed29f645b192c8b02caca09a4c5bf97204a01186ce2dce5c5033661912a7"
+    },
+    {
+      "path": "test/support/weighted-blends.js",
+      "sha256": "89dee4ee76593d9248420dbd0839a5d3adea21e8fb51f7ca967a9c7dd5c5b43b"
+    },
+    {
+      "path": "test/unit/animation/concrete.test.js",
+      "sha256": "27a1b23c43c35b89741f286ad46e8433415e82ae5278bb8f88a63a19f1f838c0"
+    },
+    {
+      "path": "test/unit/animation/planner.test.js",
+      "sha256": "a371bd0d4d1f9079b300150e755493510eb079851daeb38ce5c768d79654711d"
+    },
+    {
+      "path": "test/unit/animation/point-projection.test.js",
+      "sha256": "221fa4506039bd6a46859f0a8824e70838f60470706d2203d607084d39141ba2"
+    },
+    {
+      "path": "test/unit/weighted-blend.test.js",
+      "sha256": "8fcc8a2f49fd21a790787c6f061e3e3d6d7fe180f52ca55961de66ce8c021cfa"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/canonical-unit.log.gz",
+      "sha256": "1dd044a73d99bdfc854bd3b2b95f70be221a3f00a4227bc5f540a9d961c0b392"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/clean-canonical-unit.log.gz",
+      "sha256": "09d2306480386c68b9d50f678d226e8ef260005e9aa965b3e65c1093ba3c5fef"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/qualification-contracts.log.gz",
+      "sha256": "71545cf40e79ce9baeb39d66021e548c3201c2e74abedc58ee21329c05f35554"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/coverage-final.log.gz",
+      "sha256": "0f3a6a413ed11041784a24b6dc4e89f237470563f0d1cffd338546d162351c35"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/weighted-backends.log.gz",
+      "sha256": "17f88e592a45f95d62c6d9c026d3b7391f8a3bb43d764182b9c86911be20224c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/point-backends.log.gz",
+      "sha256": "e33e5dc04d9eec651764f5a2e43e7adf07c4386494f6cdf24c9edca4ea74ba0c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/node20.log.gz",
+      "sha256": "656cccf05aecb19654915f83258923090b0fbff09f2a4f6050c509a3f6e1f643"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/node24.log.gz",
+      "sha256": "e2b0652dc54a6559ce8dd7e2c281b1d719b2d3d1e08ee5feac03e56fbf982b15"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/package-size-20.json.gz",
+      "sha256": "53a1a242e01dced6028445dcd5d4b6a1624e9ad41f4244d7c0b96ebb7001b02e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/package-size-22.json.gz",
+      "sha256": "0a04856b0b3b8a92ab9340d0ce535a76da59d54e72fd6154608d00b432b37bbc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/package-size-24.json.gz",
+      "sha256": "7d37de22a3e097b66b02f515e37a5d244edf4e1e349e17ea62b39d5fdc950fef"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/cumulative.log.gz",
+      "sha256": "3cd28e401726ce36210ebed8240e656588117438d465d315c0fb4ab6986bb34d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/clean-unit-receipt.json.gz",
+      "sha256": "1db429e9932d5897b73f54833e1da80b9783c766b83e189897893b441e0c8b5d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner-evidence/clean-unit-receipt.log.gz",
+      "sha256": "09d2306480386c68b9d50f678d226e8ef260005e9aa965b3e65c1093ba3c5fef"
+    }
+  ],
+  "checks": {
+    "canonicalUnit": 118,
+    "contracts": 40,
+    "focusedCoverage": {
+      "tests": 17,
+      "lines": 100,
+      "branches": 95.24,
+      "functions": 100,
+      "floors": "existing 95/90/100 unchanged"
+    },
+    "weightedFourBackendAndBrowser": 13,
+    "semanticPointFourBackendAndBrowser": 2,
+    "sourceNode20": 87,
+    "sourceNode24": 87
+  },
+  "evidenceScope": "Clean canonical unit receipt is pinned to sourceCommit. Other final logs were run against the identical source bytes before commit; sourceInputs verify the committed bytes. Original cumulative failure and subsequent passing owning results are distinct. No installed-package or full-suite claim.",
+  "openObligations": [
+    "public entry/types/current/docs and installed consumer",
+    "strict offline export/restore",
+    "authentic sampled-frame semantic rebase",
+    "compatible typed geometry families",
+    "player/session/frame reconciliation",
+    "integration and release qualification"
+  ]
+}

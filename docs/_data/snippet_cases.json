@@ -647,5 +647,25 @@
     "result": "program",
     "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "weighted-concrete-sources",
+    "file": "extension/primitives.md",
+    "contains": "const source = (weight, fill)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-arbitration",
+    "file": "api/interaction.md",
+    "contains": "const gestureSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
   }
 ]

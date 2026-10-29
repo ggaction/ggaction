@@ -89,7 +89,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 - Signature: `createGraphics({ id, type, length?, parent?, before?, after? })`.
 - `id`: 필수 global graphic ID. tree depth와 무관하게 unique하며 equivalent repeated definition과
   attachment는 idempotent하다.
-- `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"`.
+- `type`: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"`.
 - `length`: 일반 graphic은 `0..10,000` integer. semantic point layer와 selected materialized
   dataset 및 graphic ID/type의 소유권이 증명된 circle/rect/path/collection만 50,000 inclusive다.
   retained child의 namespace도 실제 child owner까지 추적한다. 우회 flag나 trace 문자열은 사용하지 않는다.
@@ -109,7 +109,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 ### Formal values — `createGraphics`
 
-- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
+- Implemented: `createGraphics({ id: UserId; type: "canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"; length?: NonNegativeInteger; parent?: UserId; before?: UserId; after?: UserId })`; `before | after` 중 최대 하나이며 anchor는 같은 parent의 direct sibling이다.
 - Proposed (NOT IMPLEMENTED): —
 - Maybe Future (NOT IMPLEMENTED): renderer-specific `svg | g` graphic types.
 
@@ -117,7 +117,7 @@ revision ref를 같은 transaction에서 갱신한다. remove는 live consumer�
 
 - `id`: ✅ Covered valid/invalid IDs, equivalent idempotence and conflicts.
 - `type`
-  - ✅ Covered: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path"` creation paths.
+  - ✅ Covered: `"canvas" | "collection" | "circle" | "rect" | "line" | "text" | "path" | "image" | "weighted-blend"` creation paths.
   - ✅ Covered: unknown type rejection.
   - Maybe Future: renderer-specific `svg/g`; current contract adds only backend-neutral primitives needed by multiple actions.
 - `length`
@@ -267,3 +267,37 @@ editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 ro
 Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.
 
 Image concrete properties also accept the same fully resolved `shadow` object as other drawable primitives. Its source mask is decoded pixel alpha; synchronous output requires exact prepared shadow/image handles. Concrete `shadow:false` remains invalid.
+
+
+### Concrete weighted blend
+
+`weighted-blend`는 fully materialized primitive sources를 한 논리 item으로 합성하는 concrete type이다.
+새 semantic mark/action은 없으며 `createGraphics`/`editGraphics` 및 heterogeneous collection items로 작성한다.
+Properties는 필수 `sources`와 선택적 `opacity`, `blend`이다. Source는 정확히
+`{weight,type,properties,offset,clip,clips}`이며 type은 기존 circle/rect/line/text/path/image만 허용한다.
+기존 primitive의 완성된 concrete properties와 retained image/font payload를 그대로 보존한다.
+`offset:[x,y]`는 source primitive에 적용하고, 필수 rect `clip`과 추가 rect/path `clips`는 그룹 local 좌표다.
+외부 named owner clip/Canvas offset은 그룹 전체에 적용한다.
+
+Sources는 2..64개, weight는 유한 0..1이며 합은1(누산오차1e-12 허용)이다. 추가 clips는 source당64,
+그룹당1024 이하다. 중첩 weighted-blend, sparse/accessor/cycle/unknown keys, 미완성 primitive,
+invalid source는 weight0이어도 거부한다. 빈 배열은 오류, zero area/empty Text/완전 clip은 정상 투명 출력이다.
+Source blend는 생략 또는 normal만 허용하며 공통 backdrop mode는 그룹 blend 한 곳이 소유한다.
+서로 다른 backdrop mode의 전환 의미를 이 type으로 추론하지 않는다.
+
+각 source의 clip/opacity/outline/shadow를 완성한 RGBA를 linear sRGB로 변환하고 premultiply하여
+가중합한 뒤 unpremultiply와 sRGB encoding을 적용한다. 그룹 opacity/blend는 그 결과에 한 번 적용한다.
+Weight1 endpoint는 원 primitive를 직접 출력하여 색 재양자화를 피한다. 일반 hit는 현재 source의
+가중치와 opacity가 양수인 painted geometry 합집합이며 그룹은 동일한 item 후보 하나를 유지한다.
+그림자는 기존처럼 hit 영역을 늘리지 않는다.
+
+Canvas/PNG는 항목별 offscreen만 사용한다. 항목1,048,576 pixels, 장면 결과16,777,216 pixels,
+source-pixel work67,108,864를 넘으면 대상 Canvas resize/clear 이전에 거부한다. Text는 실제 ink를 측정한다.
+SVG는 기존 source 직렬화와 native linearRGB arithmetic filter를 사용하며 Text의 명시 source clip으로
+filter extent를 제한한다. PDF는 중간 weighted item만 논리1px raster로 낮추고 ordinary endpoint는 벡터로 유지한다.
+기존 image/font/shadow 준비, stale/abort/dispose 규칙, native 좌표/자산 한도는 그대로 적용한다.
+전체 chart screenshot, renderer 결과 재입력, callback/renderer object의 저장은 없다.
+
+Evidence: `test/unit/weighted-blend.test.js`, `test/unit/renderers/weighted-blend.test.js`,
+`test/unit/renderers/weighted-blend-assets.test.js`, `test/browser/weighted-blends.browser.js`,
+`test/charts/cross-feature-integration/variants/weighted-blends/backends.render.js`, `test/contracts/weighted-blend-types.test.js`.

@@ -1,7 +1,8 @@
+import { requireClosedProgramState } from "../core/programState.js";
 import { transformHitPoint } from "../grammar/hitCoordinates.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { ChartProgram } from "../core/ChartProgram.js";
-import { freezeOwned, cloneAndFreeze, isOwned } from "../core/immutable.js";
+import { freezeOwned, cloneAndFreeze } from "../core/immutable.js";
 import { canvasSceneSnapshot } from "../sceneSnapshot.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
@@ -14,14 +15,7 @@ const frameSources = new WeakMap();
 
 export function requireProgram(program) {
   if (!(program instanceof ChartProgram) || !Object.isFrozen(program)) throw new TypeError("Hit preparation requires an immutable ChartProgram.");
-  for (const key of ["graphicSpec", "semanticSpec", "materializationConfigs", "resolvedScales", "children", "compositionSpec", "actionStack"]) {
-    const descriptor = Object.getOwnPropertyDescriptor(program, key);
-    if (descriptor === undefined || !Object.hasOwn(descriptor, "value") ||
-        !(key === "compositionSpec" && descriptor.value === undefined) && !isOwned(descriptor.value)) {
-      throw new TypeError("Hit preparation requires immutable own program state.");
-    }
-  }
-  if (program.actionStack.length !== 0) throw new Error("Hit preparation requires a closed action stack.");
+  requireClosedProgramState(program, "Hit preparation");
 }
 
 function spend(budget, count = 1) {

@@ -209,12 +209,12 @@ function geographic() {
   const features = value.features.filter(feature => feature.properties.type === "earthquake" && Number.isFinite(feature.properties.mag))
     .map(feature => ({ ...feature, properties: { ...feature.properties, depth: feature.geometry.coordinates[2] } }));
   const program = title(chart().createCanvas({ width: 1280, height: 760, margin: { top: 95, left: 35, right: 190, bottom: 45 }, background: "#f8fafc" })
-    .createGeometryData({ id: "land", format: "geojson", coordinateKind: "geographic", values: land.value })
+    .createGeometryData({ id: "land", format: "geojson", coordinateKind: "geographic", polygonWinding: "left-hand", values: land.value })
     .createGeometryData({ id: "events", format: "geojson", coordinateKind: "geographic", featureKey: "id", values: { type: "FeatureCollection", features } })
     .createProjection({ id: "earth", type: "equirectangular", scalePx: 1000 / (2 * Math.PI), translatePx: [540, 400] })
     .createCoordinate({ id: "map", type: "geo", projection: "earth" })
     .createGraticule({ coordinate: "map", extentDeg: [[-180, -80], [180, 80]], stepDeg: [30, 30], stroke: "#cbd5e1", strokeWidth: .6 })
-    .createGeoShapeMark({ geometry: "land", coordinate: "map", fill: "none", stroke: "#94a3b8", strokeWidth: .8 })
+    .createGeoShapeMark({ geometry: "land", coordinate: "map", fill: "#e2e8f0", stroke: "#94a3b8", strokeWidth: .8 })
     .createGeoPointMark({ id: "earthquakes", geometry: "events", coordinate: "map", opacity: .75, stroke: "#ffffff", strokeWidth: .7 })
     .encodeSize({ target: "earthquakes", field: "mag", scale: { domain: [5, 8], range: [50, 900] } })
     .encodeColor({ target: "earthquakes", field: "depth", fieldType: "quantitative", scale: { palette: "viridis", domain: [0, 650] } })
@@ -223,7 +223,7 @@ function geographic() {
   return { id: "native-usgs-geographic", title: "Geo · 실제 지진 133건의 위치·규모·깊이", tag: "신규 · Geo · real longitude / latitude",
     description: "관측된 위도·경도를 실제 세계 지도에 투영했습니다. 점의 크기와 색으로 규모와 깊이를 함께 표시합니다.", program,
     provenance: { ...provenance, sourceRows: value.features.length, usedRows: features.length,
-      additionalSources: [land.provenance], transformation: `USGS 2024-01-01–2024-02-01 UTC, magnitude≥5의 고정 응답 ${value.features.length}개 중 earthquake이며 규모가 유한한 ${features.length}개. 원 event ID·좌표·규모·깊이를 보존. 경위도는 equirectangular 투영. 해안선 배경은 Natural Earth v5.1.2 1:110m land (${land.value.features.length}features), SHA-256 ${land.provenance.sha256}.` } };
+      additionalSources: [land.provenance], transformation: `USGS 2024-01-01–2024-02-01 UTC, magnitude≥5의 고정 응답 ${value.features.length}개 중 earthquake이며 규모가 유한한 ${features.length}개. 원 event ID·좌표·규모·깊이를 보존. 경위도는 equirectangular 투영. 육지 배경은 원 좌표를 유지하고 명시적인 left-hand polygon winding을 적용한 Natural Earth v5.1.2 1:110m land (${land.value.features.length}features), SHA-256 ${land.provenance.sha256}.` } };
 }
 
 function table() {

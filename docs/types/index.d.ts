@@ -358,6 +358,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,

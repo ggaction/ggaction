@@ -2885,10 +2885,10 @@
   },
   {
     "id": "docs/api/interaction.md#prepare-assets-before-committing:1",
-    "sha256": "77fe8f64e9bce629a4437f83ca728ddf98899fe6a8b60ec33b918fbcb3fae6e1",
+    "sha256": "de7aebe5e0662ff0fd9ca445b98d8da78be71b2ce7f3a0481ba0c604f61c8b0d",
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
-    "reason": "Requires a retained-image program and Canvas context supplied by the host. The exact fragment is executed with real browser image bytes and late bitmap cancellation in test/browser/interaction-session.browser.js; it is not a standalone authoring example."
+    "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for both committed commands and pointer previews, including pending/cancelled bitmap cleanup, in test/browser/interaction-session.browser.js."
   },
   {
     "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",

@@ -59,7 +59,12 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
-export interface ClickSelectionBinding {
+/** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
+export interface GestureBindingOptions {
+  readonly priority?: number;
+  readonly modifiers?: { readonly alt?: boolean; readonly ctrl?: boolean; readonly meta?: boolean; readonly shift?: boolean };
+}
+export interface ClickSelectionBinding extends GestureBindingOptions {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
   readonly target: InteractionTarget;
@@ -70,7 +75,7 @@ export interface ClickSelectionBinding {
   readonly hitInvisible?: boolean;
 }
 /** Activate a categorical legend block using its public channel and existing selection. */
-export interface LegendSelectionBinding {
+export interface LegendSelectionBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'selection';
   readonly target: InteractionTarget;
@@ -81,7 +86,7 @@ export interface LegendSelectionBinding {
   readonly slop?: number;
 }
 /** Toggle actual category membership; the control legend remains available to restore it. */
-export interface LegendVisibilityBinding {
+export interface LegendVisibilityBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'visibility';
   readonly target: InteractionTarget;
@@ -89,7 +94,7 @@ export interface LegendVisibilityBinding {
   readonly scaleDomain: 'visible-data' | 'all-data';
   readonly slop?: number;
 }
-interface RegionSelectionBindingOptions {
+interface RegionSelectionBindingOptions extends GestureBindingOptions {
   readonly target: InteractionTarget;
   readonly selection: string;
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
@@ -104,11 +109,11 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
-export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
-export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
+export interface AnnotationMovementBinding extends GestureBindingOptions { readonly type: 'annotate'; readonly target: InteractionTarget; }
 /** Native projection navigation. The host supplies focus and touch-action: none. */
-export type NavigationBinding = {
+export type NavigationBinding = GestureBindingOptions & {
   readonly type: 'navigate';
   readonly target: InteractionTarget;
   readonly scaleExtent: readonly [number, number];
@@ -186,6 +191,8 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
+  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;

@@ -8,6 +8,43 @@ import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
 test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url)), { dependencies: "repository" }); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
+test("canonical editing arbitration uses actual label hits, Shift brush and click through one Canvas or SVG capture", async () => {
+  const snippet=(await documentationPrograms()).find(p=>p.id==="interaction-arbitration");assert.ok(snippet);
+  const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:1000,height:700}});
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL("examples/inspect-chart/",server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async code=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());document.body.innerHTML='<canvas id="chart"></canvas><div id="vector"></div>';
+      for(const[specifier,file]of[["ggaction","index"],["ggaction/interaction","interaction"]])code=code.replaceAll(JSON.stringify(specifier),JSON.stringify(new URL(`/src/${file}.js`,location.href).href));
+      const url=URL.createObjectURL(new Blob([code+'\nwindow.__arbitration=[gestureSession];window.__gestureBindings=gestureBindings;window.__gestureProgram=program;',],{type:"text/javascript"}));
+      try{await import(url);}finally{URL.revokeObjectURL(url);}
+      const {createInteractionSession}=await import("/src/interaction.js"),{renderToSVG}=await import("/src/renderers/svg.js");
+      document.querySelector("#vector").innerHTML=renderToSVG(window.__gestureProgram);
+      const svg=document.querySelector("#vector svg");svg.style.touchAction="none";
+      const session=createInteractionSession({program:window.__gestureProgram,bindings:window.__gestureBindings});
+      session.subscribe(e=>{if(e.state.destroyed)return;const next=new DOMParser().parseFromString(renderToSVG(e.state.previewProgram??e.state.program),"image/svg+xml").documentElement;svg.replaceChildren(...next.childNodes);});
+      session.mount(svg);window.__arbitration.push(session);window.__arbitrationEvents=[[],[]];
+      window.__arbitration.forEach((s,i)=>s.subscribe(e=>{if(e.phase)window.__arbitrationEvents[i].push([e.type,e.phase]);}));
+    },snippet.code);
+    for(const[index,selector]of["#chart","#vector svg"].entries()){
+      const box=await page.locator(selector).boundingBox(),move=(x,y)=>page.mouse.move(box.x+x,box.y+y);
+      await page.keyboard.down("Shift");await move(150,30);await page.mouse.down();await move(170,40);await page.waitForTimeout(30);
+      const preview=await page.evaluate(i=>{const s=window.__arbitration[i].getState();return {x:s.previewProgram.graphicSpec.objects.note.items[0].properties.x,history:s.history.undoCount};},index);
+      assert.deepEqual(preview,{x:170,history:0});await page.mouse.up();await page.keyboard.up("Shift");
+      await page.keyboard.down("Shift");await move(20,40);await page.mouse.down();await move(90,90);await page.waitForTimeout(30);await page.mouse.up();await page.keyboard.up("Shift");
+      await page.mouse.click(box.x+200,box.y+130);
+      const state=await page.evaluate(async i=>{const {getMarkItems}=await import("/src/inspection.js"),s=window.__arbitration[i].getState();return {history:s.history.undoCount,x:s.program.graphicSpec.objects.note.items[0].properties.x,
+        fills:getMarkItems(s.program,{target:"points"}).map(item=>item.properties.fill),commits:window.__arbitrationEvents[i].filter(e=>e[1]==="commit").map(e=>e[0])};},index);
+      assert.deepEqual(state,{history:3,x:170,fills:["red","red"],commits:["annotate","select","select"]});
+      await move(170,40);await page.mouse.down();await move(190,50);await page.waitForTimeout(30);await page.keyboard.press("Escape");await page.mouse.up();
+      assert.deepEqual(await page.evaluate(i=>{const s=window.__arbitration[i].getState();return [s.history.undoCount,s.previewProgram,window.__arbitrationEvents[i].filter(e=>e[1]==="cancel").length];},index),[3,null,1]);
+    }
+    assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll("#vector circle")].map(n=>n.getAttribute("fill"))),["red","red"]);
+    assert.equal(await page.evaluate(()=>document.querySelector("#chart").getContext("2d").getImageData(100,120,1,1).data[0]),255);
+    await page.evaluate(()=>window.__arbitration.forEach(s=>s.destroy()));assertNoBrowserErrors(errors,"editing arbitration");await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});
+
 test("host buttons and keyboard commit filter and reorder to the same Canvas and SVG view", async () => {
   const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
   try {
@@ -303,7 +340,7 @@ async function installCapturedSelections(page) {
   });
 }
 
-test("real mouse capture, Escape and long movement cancel once in Canvas and SVG", async () => {
+test("real mouse capture, Escape and long movement cancel once in Canvas and SVG", async t => {
   const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
   try {
     const { page, errors } = await openBrowserPage(context, new URL('examples/inspect-chart/', server.baseUrl).href,
@@ -314,10 +351,17 @@ test("real mouse capture, Escape and long movement cancel once in Canvas and SVG
       const before = await page.evaluate(async index => { const { serializeProgram } = await import('/src/persistence.js'); return serializeProgram(window.__captureSessions[index].getState().program); }, index);
       await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
       assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), true);
-      await page.mouse.move(box.x + 295, box.y + 118); await page.keyboard.press('Escape');
+      for (const dx of [294.25, 294.5, 295]) await page.mouse.move(box.x + dx, box.y + 118); await page.keyboard.press('Escape');
       assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), false);
       await page.mouse.up();
       assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape']]);
+      const actual = await page.evaluate(async ({index, selector, before}) => {
+        const {serializeProgram} = await import('/src/persistence.js'); const state = window.__captureSessions[index].getState();
+        return {terminalEvents:window.__captureEvents[index].map(([phase])=>phase),commitCount:window.__captureEvents[index].filter(([phase])=>phase==='commit').length,
+          historyDelta:state.history.undoCount,baselineChanged:serializeProgram(state.program)!==before,capturedPointersAfter:Number(document.querySelector(selector).hasPointerCapture(window.__captureIds[index]))};
+      },{index,selector,before});
+      const expected={terminalEvents:['cancel'],commitCount:0,historyDelta:0,baselineChanged:false,capturedPointersAfter:0};
+      assert.deepEqual(actual,expected);t.diagnostic(JSON.stringify({input:{backend:index===0?'Canvas':'SVG',events:['down','move','move','move','Escape','up']},expected,actual,diff:[]}));
       await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
       await page.mouse.move(box.x + 394, box.y + 118, { steps: 100 }); await page.mouse.up();
       assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape'], ['cancel', 'movement']]);
@@ -856,7 +900,7 @@ test("canonical asset resolver keeps browser pixels committed and closes late im
         if (window.__assetHold) await new Promise(resolve => window.__assetHolds.push(resolve));
         return bitmap;
       };
-      let module = 'const program=window.__assetProgram, context=window.__assetContext;\n' + code;
+      let module = 'const program=window.__assetProgram, context=window.__assetContext, interactionBindings=[];\n' + code;
       for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
       module += '\nwindow.__assetSession=assetSession;window.__assetCleanup=disposeAssets;';
       const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
@@ -883,7 +927,7 @@ test("canonical asset resolver keeps browser pixels committed and closes late im
   finally { await context.close(); }
 });
 
-test("canonical native update and real browser workers reject stale completion and release transport on destroy", async () => {
+test("canonical native update and real browser workers reject stale completion and release transport on destroy", async t => {
   const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
   const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
     .find(block => block.code.includes("const routeExecutor = createGraphRouteExecutor")).code;
@@ -907,8 +951,8 @@ test("canonical native update and real browser workers reject stale completion a
       const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
       try { await import(url); } finally { URL.revokeObjectURL(url); }
       const draw = program => { render(program, document.querySelector("canvas").getContext("2d"), { pixelRatio: 2 }); document.querySelector("#vector").innerHTML = renderToSVG(program); };
-      window.__routeWrites = 0; draw(window.__routeSession.getState().program);
-      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } });
+      window.__routeWrites = 0; window.__routeStatuses = []; draw(window.__routeSession.getState().program);
+      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } if(event.type === "update") window.__routeStatuses.push([event.transactionId,event.status]); });
       window.__routeWorkers = [];
       const workerUrl = URL.createObjectURL(new Blob([`import {computeGraphEdgeRoutes} from ${JSON.stringify(new URL('/src/graph.js', location.href).href)};onmessage=({data})=>postMessage(computeGraphEdgeRoutes(data.job));`], { type: "text/javascript" }));
       const executor = createGraphRouteExecutor({ createWorker() {
@@ -926,7 +970,7 @@ test("canonical native update and real browser workers reject stale completion a
         window.__routeSession.updateProgram(async ({ program, signal, transactionId }) => {
           const prepared = await prepareGraphEdgeRoutes(program, { kind: "edit", target: "routes", options: { exponent: value } }, { executor, signal, requestToken: transactionId });
           return program.editEdgeRoute({ prepared, requestToken: transactionId });
-        }, { history: "record" });
+        }, { history: "record", transactionId: `job${value - 2}` });
       };
       document.querySelector("#destroy").onclick = () => { window.__routeCleanup(); executor.dispose(); URL.revokeObjectURL(workerUrl); };
       window.__routeLate = index => { const worker = window.__routeWorkers[index]; worker.late({ data: computeGraphEdgeRoutes(worker.job) }); };
@@ -944,6 +988,9 @@ test("canonical native update and real browser workers reject stale completion a
     await page.evaluate(async () => { window.__routeWorkers[1].release(); await window.__routeSession.whenSettled(); window.__routeLate(0); });
     assert.deepEqual(await page.evaluate(() => window.__routeParity()), { svg: true, pixels: true });
     assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount, window.__routeWrites]), [2, 2, 1]);
+    const actual=await page.evaluate(()=>({applied:window.__routeStatuses.filter(([,status])=>status==='settled').map(([id])=>id),discarded:window.__routeStatuses.filter(([,status])=>status==='cancelled').map(([id])=>id),finalRevision:window.__routeSession.getState().revision}));
+    const expected={applied:['job2'],discarded:['job1'],finalRevision:2};assert.deepEqual(actual,expected);
+    t.diagnostic(JSON.stringify({input:{dispatch:['job1','job2'],completion:['job2','job1'],baseRevision:1},expected,actual,diff:[]}));
     await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 3);
     await page.getByRole("button", { name: "Destroy routes" }).click(); await page.evaluate(() => window.__routeLate(2));
     assert.deepEqual(await page.evaluate(() => ({ destroyed: window.__routeSession.getState().destroyed, writes: window.__routeWrites,
@@ -1058,5 +1105,39 @@ test('rotation navigation sends real pointer and keyboard input through native g
   assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/18)))<1e-9);await canvas.focus();await page.keyboard.press('ArrowRight');assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/12)))<1e-9);
   assert.equal(await page.evaluate(()=>window.__globe.getState().history.undoCount),2);await page.keyboard.press('Home');assert.equal(await x(),200);
   await page.evaluate(()=>window.__globe.destroy());assertNoBrowserErrors(errors,'rotation navigation');await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
+});
+
+test("canonical preview asset rendering waits for real browser bitmaps and releases cancelled gesture leases",async()=>{
+ const {readFile}=await import('node:fs/promises'),{documentationCodeBlocks}=await import('../../scripts/doc-snippets.js');
+ const code=documentationCodeBlocks(await readFile(new URL('../../docs/api/interaction.md',import.meta.url),'utf8')).find(b=>b.code.includes('const assetSession = createInteractionSession')).code;
+ const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:900,height:650}});
+ try{
+  const{page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async code=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());const {chart}=await import('/src/index.js'),{getProjectionView}=await import('/src/inspection.js');
+   document.body.innerHTML='<canvas id="map" tabindex="0" aria-label="Prepared map" style="touch-action:none"></canvas>';
+   const sample=document.createElement('canvas');sample.width=sample.height=2;sample.getContext('2d').fillStyle='#008000';sample.getContext('2d').fillRect(0,0,2,2);
+   const blob=await new Promise(resolve=>sample.toBlob(resolve)),bytes=new Uint8Array(await blob.arrayBuffer()),contentHash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');
+   const image={contentHash,mimeType:'image/png',byteLength:bytes.length,width:2,height:2,payload:{encoding:'base64',data:btoa(String.fromCharCode(...bytes))}};
+   let p=chart().createCanvas({width:200,height:160,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places',radiusPx:6}).createGraphics({id:'picture',type:'image',parent:'plot-main'});
+   for(const[property,value]of Object.entries({image,x:2,y:2,width:12,height:12}))p=p.editGraphics({target:'picture',property,value});
+   window.__previewBase=p;window.__previewBindings=[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}];
+   window.__previewHolds=[];window.__previewCloses=0;window.__previewHold=false;const native=createImageBitmap.bind(window);
+   window.createImageBitmap=async(...args)=>{const bitmap=await native(...args),close=bitmap.close.bind(bitmap);bitmap.close=()=>{window.__previewCloses++;close();};if(window.__previewHold)await new Promise(resolve=>window.__previewHolds.push(resolve));return bitmap;};
+   let source='const program=window.__previewBase,context=document.querySelector("canvas").getContext("2d"),interactionBindings=window.__previewBindings;\n'+code;
+   for(const[specifier,file]of[['ggaction','index'],['ggaction/interaction','interaction']])source=source.replaceAll(JSON.stringify(specifier),JSON.stringify(new URL(`/src/${file}.js`,location.href).href));
+   source+='\nwindow.__previewSession=assetSession;window.__previewDispose=disposeAssets;assetSession.mount(document.querySelector("canvas"));';
+   const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));try{await import(url)}finally{URL.revokeObjectURL(url)}window.__previewHold=true;
+  },code);
+  const canvas=page.locator('canvas'),box=await canvas.boundingBox(),point=(x,y)=>[box.x+x,box.y+y];
+  const state=()=>page.evaluate(()=>{const s=window.__previewSession.getState(),ctx=document.querySelector('canvas').getContext('2d');return{preview:s.previewProgram!==null,x:s.scene.nodes.find(n=>n.type==='circle').properties.x,green:[...ctx.getImageData(5,5,1,1).data],history:s.history.undoCount};});
+  await page.mouse.move(...point(80,90));await page.mouse.down();await page.mouse.move(...point(100,90));await page.waitForFunction(()=>window.__previewHolds.length===1);
+  assert.deepEqual(await state(),{preview:false,x:80,green:[0,128,0,255],history:0});
+  await page.evaluate(async()=>{window.__previewHolds[0]();await window.__previewSession.whenSettled();});assert.deepEqual(await state(),{preview:true,x:100,green:[0,128,0,255],history:0});
+  await page.mouse.move(...point(120,90));await page.waitForFunction(()=>window.__previewHolds.length===2);await page.keyboard.press('Escape');await page.mouse.up();
+  assert.deepEqual(await state(),{preview:false,x:80,green:[0,128,0,255],history:0});assert.equal(await page.evaluate(()=>window.__previewCloses),1);
+  await page.evaluate(()=>window.__previewHolds[1]());await page.waitForFunction(()=>window.__previewCloses===2);assert.equal((await state()).x,80);
+  await page.evaluate(()=>window.__previewDispose());assert.equal(await page.evaluate(()=>window.__previewCloses),3);assertNoBrowserErrors(errors,'prepared native gesture preview');await page.close();
  }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
 });

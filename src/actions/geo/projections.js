@@ -9,7 +9,7 @@ import { normalizeProjectionDefinition, projectionParameters } from "../../gramm
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
 import { resolveProjectionResource } from "../../selectors/projections.js";
 import { resolveGeometryResource } from "../../selectors/geometry.js";
-import { findStoredResource } from "../../selectors/resources.js";
+import { findStoredResource, resolveInputReference } from "../../selectors/resources.js";
 
 const PARAMETERS = ["type", "centerDeg", "rotateDeg", "parallelsDeg", "scalePx", "translatePx", "reflectX", "reflectY", "precisionPx", "clipAngleDeg", "clipExtentPx", "fit"];
 function intent(program, args, previous) {
@@ -29,7 +29,7 @@ function intent(program, args, previous) {
   }
   if (policy !== undefined) { delete math.scalePx; delete math.translatePx; }
   const options = normalizeProjectionDefinition({ ...math, ...(policy === undefined ? {} : { fit: policy }) });
-  return { options, ...(policy === undefined ? {} : { geometry: resolveGeometryResource(program, geometryId) }) };
+  return { options, input: ref => resolveInputReference(program, ref), ...(policy === undefined ? {} : { geometry: resolveGeometryResource(program, geometryId) }) };
 }
 
 export const createProjection = /* @__PURE__ */ closedAction(

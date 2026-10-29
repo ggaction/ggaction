@@ -96,7 +96,8 @@ Superseding edits and destroy abort the request; a late result is released witho
 result. Native transaction events keep their existing commit/settled/error/cancel phases.
 Initial and external preparation use an `assets` event with a separate `status` field.
 
-Continue from an immutable `program` containing retained images and a Canvas `context`:
+Continue from an immutable `program` containing retained images, a Canvas `context`, and an
+explicit `interactionBindings` array (use `[]` for commands without pointer editing):
 
 <!-- snippet-context:start -->
 
@@ -110,7 +111,7 @@ import { createInteractionSession } from "ggaction/interaction";
 
 const assetSession = createInteractionSession({
   program,
-  bindings: [],
+  bindings: interactionBindings,
   async assetResolver({ program, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
@@ -131,9 +132,11 @@ const assetSession = createInteractionSession({
   }
 });
 const stopDrawing = assetSession.subscribe(event => {
-  if (event.phase === "commit" || (event.type === "assets" && event.status === "settled")) {
-    render(event.state.program, context, event.state.assets);
-  }
+  const state = event.state;
+  if (state.destroyed) return;
+  const current = state.previewProgram ?? state.program;
+  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
 const disposeAssets = () => { stopDrawing(); assetSession.destroy(); };
@@ -144,7 +147,13 @@ and release their handles in the lease's `dispose`. Release partially acquired r
 preparation throws. Prepared handles belong to the exact committed program; undo/redo/reset
 prepare the restored snapshot again. `state.assets` exposes only the accepted rendering handles;
 `state.preparation` exposes the pending transaction, generation, base revision and scoped resource
-revisions. The host still owns rendering, resize observation and animation-frame preparation.
+revisions. With editing bindings, the same resolver prepares each exact preview.
+`previewProgram`, `previewAssets` and its hit frame appear together only when ready. While a new
+preview is pending, the previous accepted frame remains visible. New samples abort older pending
+work; cancellation restores the committed program and releases transient handles. Initial asset
+preparation must finish before editing capture begins. Final release prepares the latest candidate
+through the ordinary commit path and adds one history entry. The host still owns drawing and
+public animation-frame preparation.
 
 ## Undo, redo and reset
 
@@ -676,7 +685,7 @@ supported by this selection binding. It does not change category visibility or s
 
 The binding uses the same captured click, cancellation, child scope and linked update
 rules as ordinary click selection. It requires Full and an existing named selection.
-Only one editing pointer binding can be active alongside inspection and linked bindings.
+Editing pointer bindings share the explicit priority and modifier rules in [Combine editing gestures](#combine-editing-gestures).
 For SVG, remount the new SVG element after rendering a committed program. Call
 `legendSession.destroy()` when the surface is removed; selection state remains in the chart.
 
@@ -782,10 +791,10 @@ of the same explicit key snapshot, or clearing an already empty key snapshot, pr
 Only primary-button click events are used; modifier keys do not change the configured mode. The
 binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
 
-At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+Click-selection bindings may be combined with explicit priorities and modifier conditions. A linked
 target cannot also be its click-selection writer. Root and explicit concat owners are supported;
 facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
-The controller does not yet arbitrate competing bindings, keyboard activation or modifiers.
+Use the arbitration options below to choose bindings; automatic keyboard focus remains separate.
 
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
@@ -805,7 +814,7 @@ inspection runs after this up commit. Host controls may still send an activation
 the controller does not assign Enter/Space behavior or a focused item.
 
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
-Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch are not supported by this binding. History commands operate on the whole session.
+Elements use capture automatically. Brush/lasso and navigation are separate binding types; this click binding does not start their gestures. History commands operate on the whole session.
 
 
 ## Brush or lasso an existing selection
@@ -871,8 +880,7 @@ stable wrapper with the same logical dimensions and replace only its SVG content
 replacing the captured element cancels the gesture. Canvas/SVG use the same program, and ordinary
 PNG/PDF exports can render a preview snapshot without running a controller.
 
-Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
-bindings and navigation are not inferred. Lasso input is limited to 10,000 samples and
+Explicit concat targets retain child scope. Facet-source geometry, Basic editing and navigation are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
 
@@ -1138,8 +1146,7 @@ active. Escape, lost capture, pointer cancel, blur, external program/frame updat
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
 one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
-inactive until an explicit matching owner returns. The current session supports one editing pointer
-binding alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
 
 
 ## Move graph nodes with pointer or keyboard
@@ -1317,3 +1324,59 @@ Subscribe to the `program` event to render the accepted replacement. The subsequ
 their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
 in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
 view is disposed, then call `disposeRoutes()`.
+
+
+## Combine editing gestures
+
+Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
+`alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
+Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
+before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
+
+A higher rank only wins when its target applies at the pointer location. Hidden or removed annotations,
+node misses and another child's viewport do not block lower-ranked candidates. The winner is fixed from
+pointerdown through release or cancel; changing modifiers mid-drag does not switch tools. Only navigation
+can take a second pointer, and only within its chosen viewport. Every gesture uses the same preview, prepared asset, history and cleanup rules.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+canvas.setAttribute("aria-label", "Points: drag the label, Shift-drag to brush, or click a point");
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 50, y: 60 }, { id: "b", x: 200, y: 130 }] })
+  .createPointMark({ id: "points" }).encodePointRadius({ value: 8 })
+  .encodeX({ field: "x", scale: { domain: [0, 300], range: [0, 300] } })
+  .encodeY({ field: "y", scale: { domain: [0, 200], range: [0, 200] } })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false })
+  .createAnnotation({ id: "note", space: "screen", x: 150, y: 30, text: "Drag label", align: "center", baseline: "middle" });
+const gestureBindings = [
+  { type: "annotate", target: "note" },
+  { type: "brush", target: "points", selection: "picked", modifiers: { shift: true } },
+  { type: "select", target: "points", selection: "picked", mode: "toggle", modifiers: { shift: false } }
+];
+const gestureSession = createInteractionSession({ program, bindings: gestureBindings });
+const draw = state => render(state.previewProgram ?? state.program, canvas.getContext("2d"), { pixelRatio: 2 });
+const unsubscribe = gestureSession.subscribe(event => { if (!event.state.destroyed) draw(event.state); });
+draw(gestureSession.getState());
+gestureSession.mount(canvas);
+const disposeGestures = () => { unsubscribe(); gestureSession.destroy(); };
+```
+
+The annotation wins when its label is hit, including while Shift is pressed. Elsewhere Shift selects the
+brush and a plain click toggles a point. `priority` and `modifiers` are available on all editing bindings,
+including legends and navigation; they do not apply to inspection, context menus or linked bindings.
+There are at most256 editing bindings and259 total records. A click clear-on-miss remains an applicable
+command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
+bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
+and remount when replacing it. Call `disposeGestures()` when removing this view.
