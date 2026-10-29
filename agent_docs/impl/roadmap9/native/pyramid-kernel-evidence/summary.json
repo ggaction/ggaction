@@ -18,7 +18,10 @@
     "relatedUnit": 32,
     "initialBoundaries": 27,
     "finalContracts": 40,
-    "coveragePolicy": 7
+    "coveragePolicy": 7,
+    "docs": 191,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/pyramid-foundation/package/ggaction-0.0.26.tgz",
@@ -456,7 +459,6 @@
   "oracle": "Existing source-independent signedPolygonArea (shoelace) plus literal four-direction polygons and width/area fixtures; deterministic127-stage proportionality/containment",
   "failure": "Initial8/9 exposed last progress endpoint rounding outside the viewport; exact final endpoint fixes actual geometry. Initial log retained.",
   "remaining": [
-    "Source-pinned documentation provenance and built validation",
     "Primitive visual evidence and public create/edit/revise lifecycle",
     "All public mark consumer matrix cells",
     "OHLC and waterfall",
@@ -531,6 +533,49 @@
     "related.log": {
       "sha256": "a3ecfea00c60b21569f49ff981ee3641e2dbef17d24640975dd4a353d5763fb2",
       "bytes": 7346
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "docs.log": {
+      "sha256": "b8723f96134354b79ef24384cc91dbd8c7909e913208197d43beff0aeb6092ff",
+      "bytes": 44626
+    },
+    "build.log": {
+      "sha256": "ddec7248a678ef6f1927b554cae8a8fc16e7b578cc85358b8d3e0c9e4c027c4f",
+      "bytes": 419
+    },
+    "built.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "package-pinned.json": {
+      "sha256": "a2db569fdedb33a62bf04ad6e975206d1a0d9db50cf16ed7ed8f4d8aabea3a18",
+      "bytes": 159
+    },
+    "package-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "source": "854607630",
+  "pinnedArtifact": {
+    "sha256": "1adb7ff059ef544be118cae392d3540f361a333d7f39c933743acd4ff6aabc78",
+    "byteIdentical": true,
+    "entries": 981,
+    "packedBytes": 1406091,
+    "unpackedBytes": 6409665
+  },
+  "reuse": {
+    "responsiveBrowser": "Source/HTML structure, CSS, scripts and images unchanged; immediate preceding f2915cd17 direct-controls browser widths320/390/768 evidence reused. Pinned source191 and built170/1454 links/assets rechecked."
   }
 }

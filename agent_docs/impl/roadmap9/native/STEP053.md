@@ -39,3 +39,8 @@ percentBase를 생략하면 비율 metadata는 null이다. first/total/previous�
 수정 후 9/9, 새 owner line/branch/function100%다. 전체 source coverage를 뜻하지 않는다.
 공개 API·새 primitive schema·패키지 export·기존 chart 출력은 아직 바꾸지 않는다.
 현재 계산 증거는 후행 public visual/consumer 검증을 대체하지 않는다.
+
+순수 source `854607630`의 같은 tar `1adb7ff0`를 Node20/22/24에서 각각 kernel9·기존runtime23·strict TS·optional peers·5bundle로 확인했다. 다섯 bundle gzip은 앞선 main과 정확히 같다.
+패키지981entries/1406091packed/6409665unpacked에981/1407000/6410000의 최소 상한을 적용했다.
+source pin 후 동일 bytes를 확인했고 문서191·built170pages/1454LLM이 통과했다. 새 공개 문서·이미지·HTML 구조는 없으므로 직전 main의320/390/768px browser 증거를 재사용한다.
+[증거](pyramid-kernel-evidence/summary.json)는 최초 실패와 source·설치·문서 로그를 보존한다.
