@@ -2737,6 +2737,8 @@
       "target: \"points\""
     ],
     "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "host": "paired-html",
+    "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
     "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
     "executable": true
   },
@@ -2752,6 +2754,8 @@
       "target: \"points\""
     ],
     "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
+    "host": "paired-html",
+    "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
     "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
     "executable": true
   },

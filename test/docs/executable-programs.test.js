@@ -7,6 +7,7 @@ import test from "node:test";
 
 import { documentationPrograms, copyDocumentationSupportFiles } from "../../scripts/doc-snippets.js";
 import { assertDocumentationRendering, documentationEnvironment } from "../support/docs-runtime.js";
+import { testTutorialConsumers } from "../../scripts/tutorial-consumer.js";
 import { docInputs, datasetValues } from "../support/docs-inputs.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
@@ -17,7 +18,14 @@ for (const example of await documentationPrograms()) {
   test(`executes documented ${example.file} [${example.id ?? "primary"}] against its stated inputs`, async t => {
     let passed = false;
     const started = performance.now();
-    t.after(async () => writeFile(path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "primary") + ".json"), JSON.stringify({ id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering, status: passed ? "passed" : "failed", durationMs: performance.now() - started }, null, 2)));
+    t.after(async () => writeFile(path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "primary") + ".json"), JSON.stringify({ id: example.id ?? example.file, file: example.file, sha256: example.sha256, ...(example.htmlSha256 ? { htmlSha256: example.htmlSha256 } : {}), rendering: example.rendering, status: passed ? "passed" : "failed", durationMs: performance.now() - started }, null, 2)));
+    if (example.host === "paired-html") {
+      const browserDirectory = path.join(directory, example.id);
+      await mkdir(browserDirectory, { recursive: true });
+      await testTutorialConsumers(browserDirectory, { examples: [example], evidenceFile: path.join(browserDirectory, "browser-receipts.json") });
+      passed = true;
+      return;
+    }
     const fixture = example.fixture ? docInputs[example.fixture] : {};
     assert.ok(fixture, `Unknown fixture ${example.fixture}`);
     const data = example.dataset ? datasetValues(example.dataset) : undefined;
@@ -85,6 +93,11 @@ test("marks tutorial and recipe snippets with explicit execution contracts", asy
     for (const [index, consumer] of consumers.entries()) {
       const source = await readFile(path.join(temporary, "tutorials", consumer.name, "main.js"), "utf8");
       assert.ok(source.includes(programs[index].code), consumer.name);
+      if (programs[index].html) {
+        const html = await readFile(path.join(temporary, "tutorials", consumer.name, "index.html"), "utf8");
+        assert.ok(html.includes(programs[index].html), consumer.name);
+        assert.equal(consumer.htmlSha256, programs[index].htmlSha256);
+      }
     }
   } finally { await rm(temporary, { recursive: true, force: true }); }
 });
@@ -120,6 +133,9 @@ test("snippet execution evidence must match the current code hash and pass statu
   assert.equal(snippetExecutionSummary([record], [receipt]).observedPassing, 1);
   assert.equal(snippetExecutionSummary([record], [{ ...receipt, sha256: "stale" }]).observedPassing, 0);
   assert.equal(snippetExecutionSummary([record], [{ ...receipt, status: "failed" }]).observedPassing, 0);
+  assert.equal(snippetExecutionSummary([{ ...record, htmlSha256: "host" }], [receipt]).observedPassing, 0);
+  assert.equal(snippetExecutionSummary([{ ...record, htmlSha256: "host" }], [{ ...receipt, htmlSha256: "old" }]).observedPassing, 0);
+  assert.equal(snippetExecutionSummary([{ ...record, htmlSha256: "host" }], [{ ...receipt, htmlSha256: "host" }]).observedPassing, 1);
   assert.equal(snippetExecutionSummary([record], []).registered, 1);
   assert.equal(snippetExecutionSummary([record], []).observedPassing, 0);
 });

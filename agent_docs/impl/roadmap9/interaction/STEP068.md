@@ -155,3 +155,23 @@ root가 소유한다. C2/D와 AT53·전체077은 계속 미완료다.
 C1 source `27ce21d20`와 [최종 machine evidence](tooltip-accessibility-evidence/qualification.json)에
 실제 명령·고정 tar 재사용 근거·source/type fingerprint·원본 실패·화면을 보존한다.
 Repository dependency 옵션 추가 뒤 B2+C1 browser4의 합산6개도 통과했다.
+
+## C2 선행 수리: paired HTML 실행 정본
+
+Root의 전체 문서 검사에서 B `interaction-keyboard`가 `#item-focus`를 Canvas-only scaffold로
+실행해 실패했다. C1도 같은 경계였다. 이 실패를 실제 HTML+JavaScript를 함께 실행하는 문서
+계약으로 수리한다. Registry의 `host: "paired-html"`은 같은 section의 유일한 선행 HTML block을
+요구하며 scripts·128KiB 초과·다른 execution environment·모호한 host는 거부한다. 새로운
+runtime/API나 임의 selector mock은 없다. Normal docs와 설치 tutorial은 기존 tutorial consumer의
+Vite/Chromium owner를 공유하며 semantic result·실제 Canvas ink·console/HTTP 오류도 검사한다.
+HTML과 JavaScript hash가 모두 일치해야 실행 receipt를 인정한다.
+
+집중 두 실제 browser 문서와 preparation/hash receipt4개, parser/소유문서/discovery68개가
+통과했다. 동일7cab archive의 source-free Node22 canonical tutorial consumer도 두 paired 예제를
+통과했다. 최초 전체 executable+support129개 중126개 통과, 나머지는 이 branch의 이전
+navigation/arbitration scaffold의 `canvas.setAttribute` 부재2개 및 새 테스트의 잘못 기입한
+SHA literal1개였다. Literal을 Python 독립 SHA 계산으로 교정해 owning 검사를 통과했다.
+Root가 최신 scaffold 수리를 이미 가진 경우 두 baseline 실패는 합산 후 제거된다. 이 기록은
+전체129 또는 전체 문서가 green이었다고 주장하지 않는다. 기존 C1 페이지/코드/renderer/package
+입력은 같으므로 그 build·4폭·Axe 및3Node runtime 증거는 그대로 재사용한다. 실제 native control
+전체 matrix와 reduced-motion/public player는 아직 남아 있다.

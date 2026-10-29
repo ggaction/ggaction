@@ -51,6 +51,23 @@ export function documentationCodeBlocks(markdown) {
   return blocks;
 }
 
+// Paired HTML is executable input, not an implicit Canvas selector fallback.
+export function documentationHtmlHost(blocks, block, options) {
+  if (options.host === undefined) return {};
+  if (options.host !== "paired-html" || options.environment !== "browser-module" ||
+      options.rendering !== "renders-canvas" || options.mode !== "complete") {
+    throw new Error("A paired HTML host requires a complete rendering browser module.");
+  }
+  const hosts = blocks.filter(candidate => candidate.language === "html" &&
+    candidate.heading === block.heading && candidate.line < block.line);
+  if (hosts.length !== 1 || Buffer.byteLength(hosts[0].code) > 131072 ||
+      /<script\b/i.test(hosts[0].code)) {
+    throw new Error("A paired HTML host requires one bounded preceding HTML block without scripts in the same section.");
+  }
+  const html = hosts[0].code;
+  return { html, htmlSha256: createHash("sha256").update(html).digest("hex") };
+}
+
 export async function documentationPrograms() {
   const registry = JSON.parse(await readFile(
     path.join(root, "docs/_data/snippet_programs.json"), "utf8"
@@ -87,6 +104,6 @@ export async function documentationPrograms() {
         !/^[A-Za-z_$][\w$]*(?:\s*,\s*[A-Za-z_$][\w$]*)*$/.test(options.result ?? "")) {
       throw new Error(`${file} must identify its environment and observable result.`);
     }
-    return { file, ...options, ...block, sha256: createHash("sha256").update(block.code).digest("hex") };
+    return { file, ...options, ...block, ...documentationHtmlHost(blocks, block, options), sha256: createHash("sha256").update(block.code).digest("hex") };
   }));
 }
