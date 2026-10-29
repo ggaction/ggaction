@@ -12,6 +12,14 @@ declare const element: HTMLCanvasElement;
 const unmount = session.mount(element, { rootTransform: [1, 0, 0, 1, 0, 0] });
 const unsubscribe = session.subscribe((event: InteractionEvent) => { const key: string | undefined = event.state.hit?.target?.itemKey; });
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:10,y:20},maxDistance:8,hitInvisible:true}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x','y'],values:[1,2],metric:'euclidean',maxDistance:5},mode:'toggle'}});
+// @ts-expect-error nearest and ordinary selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},nearest:{space:'screen',point:{x:1,y:2},maxDistance:3}}});
+// @ts-expect-error screen and data distances must be explicit
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x'],values:[1],metric:'cosine',maxDistance:5}}});
+// @ts-expect-error no implicit unbounded nearest search
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
 session.dispatch({type:'setParameter',target:{childPath:['left'],id:'threshold'},payload:{value:2},origin:'user'});
 session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},transactionId:'clear'});
 session.subscribe(event=>{if ('phase' in event) {const previous=event.previous;const next=event.current;const revision:number=event.revision;}});

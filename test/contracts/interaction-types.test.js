@@ -36,6 +36,14 @@ session.updateProgram(program);session.subscribe(event=>{const key:string|undefi
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
 session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{where:{version:2,registry:'standard@1',root:{type:'literal',value:true}}}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:10,y:20},maxDistance:8,hitInvisible:true}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x','y'],values:[1,2],metric:'euclidean',maxDistance:5},mode:'toggle'}});
+// @ts-expect-error nearest and ordinary selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},nearest:{space:'screen',point:{x:1,y:2},maxDistance:3}}});
+// @ts-expect-error screen and data distances must be explicit
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x'],values:[1],metric:'cosine',maxDistance:5}}});
+// @ts-expect-error no implicit unbounded nearest search
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
 session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
 session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
 session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});

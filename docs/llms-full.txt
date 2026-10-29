@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:9dcdc2dadee0731bf9231f6d564726b9b2017146cfc25d53aa125bced513de22. Status: development. Runtime source: c3c55c11bedffe8bc11ea4a516814d1bf520a86d. Release baseline: v0.0.13.
+Contract: sha256:865d5e24eade95b3e4f2cb266ffd1bcc9708060d615292256994417025164829. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c3c55c11bedffe8bc11ea4a516814d1bf520a86d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c3c55c11bedffe8bc11ea4a516814d1bf520a86d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10930,6 +10930,55 @@ source-specific projection sets and their resolved keys. Bindings allow at most
 256 links and 256 total source references, with bounded configuration and
 projection work. They remain runtime state: serialize the committed chart as
 usual and attach the bindings again after restoring it.
+
+## Select the nearest item
+
+Use `nearest` instead of `select` in a selection command. The selection must already exist on the
+explicit mark owner. This complete headless example chooses the observation nearest to `[2, 3]`
+in raw data units:
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+const original = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "picked", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false, dimOthers: false });
+const session = createInteractionSession({ program: original, bindings: [] });
+session.dispatch({ type: "select", target: "points", payload: {
+  id: "picked", nearest: { space: "data", fields: ["x", "y"], values: [2, 3],
+    metric: "euclidean", maxDistance: 1 }
+} });
+const program = session.getState().program;
+const selected = getMarkItems(program, { target: "points" })
+  .filter(item => item.properties.fill === "red").map(item => item.fields.id);
+session.destroy();
+// selected is ["b"].
+```
+
+For screen distance, supply `nearest: { space: "screen", point: { x, y }, maxDistance: 12 }`.
+The point and distance use CSS-local pixels in the current accepted frame. Filled interiors have
+zero distance; outside points measure the nearest painted fill edge or stroke, including dash gaps.
+Clipped-out intervals are excluded, and the query point must itself be inside every clip. Opacity-zero
+items require `hitInvisible: true`. Text uses its metric rectangles, images their placed viewport,
+and shadows do not enlarge the target. Path approximation remains 0.25 CSS pixels.
+
+Data distance requires `euclidean` or `manhattan`, 1–64 explicit numeric fields and an equal-length
+query tuple. It does not normalize units. Missing, null, nonnumeric, ambiguous aggregate values and
+distance overflow reject the whole command, including linked changes. Facet sources support data
+nearest; screen nearest requires a root or explicit concat child owner with one concrete frame.
+
+The finite non-negative `maxDistance` is required and inclusive. Ties choose the smallest opaque
+logical item key, independently of draw order. A miss supplies an empty set to the existing `mode`:
+`replace` clears, and add/toggle/subtract/intersect retain their normal set behavior. The resulting
+selection stores keys and survives serialization; nearest is not a continuously evaluated predicate.
+It commits with the same transaction, linked-selection and failure behavior as ordinary selection.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -33673,15 +33722,29 @@ export interface InteractionTransaction {
   readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
+export type NearestSelection = {
+  readonly space: 'screen';
+  /** CSS-local point in the current accepted frame. */
+  readonly point: InteractionPoint;
+  readonly maxDistance: number;
+  readonly hitInvisible?: boolean;
+} | {
+  readonly space: 'data';
+  readonly fields: readonly string[];
+  readonly values: readonly number[];
+  readonly metric: 'euclidean' | 'manhattan';
+  readonly maxDistance: number;
+};
+export type InteractionSelectionPayload = {
+  readonly id: string;
+  /** Creation requires replace; other modes require an existing selection. */
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+} & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
+  | { readonly nearest: NearestSelection; readonly select?: never });
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
-  readonly payload: {
-    readonly id: string;
-    readonly select: MarkSelectionSelector;
-    /** Creation requires replace; other modes require an existing selection. */
-    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
-  };
+  readonly payload: InteractionSelectionPayload;
 } | {
   readonly type: 'clearSelection';
   readonly target: InteractionTarget;
@@ -46925,12 +46988,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c3c55c11bedffe8bc11ea4a516814d1bf520a86d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c3c55c11bedffe8bc11ea4a516814d1bf520a86d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -49975,9 +50038,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9dcdc2dadee0731bf9231f6d564726b9b2017146cfc25d53aa125bced513de22` |
+| Contract fingerprint | `sha256:865d5e24eade95b3e4f2cb266ffd1bcc9708060d615292256994417025164829` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `c3c55c11bedffe8bc11ea4a516814d1bf520a86d` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

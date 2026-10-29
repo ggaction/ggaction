@@ -1170,15 +1170,29 @@ export interface InteractionTransaction {
   readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
+export type NearestSelection = {
+  readonly space: 'screen';
+  /** CSS-local point in the current accepted frame. */
+  readonly point: InteractionPoint;
+  readonly maxDistance: number;
+  readonly hitInvisible?: boolean;
+} | {
+  readonly space: 'data';
+  readonly fields: readonly string[];
+  readonly values: readonly number[];
+  readonly metric: 'euclidean' | 'manhattan';
+  readonly maxDistance: number;
+};
+export type InteractionSelectionPayload = {
+  readonly id: string;
+  /** Creation requires replace; other modes require an existing selection. */
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+} & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
+  | { readonly nearest: NearestSelection; readonly select?: never });
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
-  readonly payload: {
-    readonly id: string;
-    readonly select: MarkSelectionSelector;
-    /** Creation requires replace; other modes require an existing selection. */
-    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
-  };
+  readonly payload: InteractionSelectionPayload;
 } | {
   readonly type: 'clearSelection';
   readonly target: InteractionTarget;

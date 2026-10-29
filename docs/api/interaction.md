@@ -291,3 +291,57 @@ source-specific projection sets and their resolved keys. Bindings allow at most
 256 links and 256 total source references, with bounded configuration and
 projection work. They remain runtime state: serialize the committed chart as
 usual and attach the bindings again after restoring it.
+
+
+## Select the nearest item
+
+Use `nearest` instead of `select` in a selection command. The selection must already exist on the
+explicit mark owner. This complete headless example chooses the observation nearest to `[2, 3]`
+in raw data units:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+const original = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "picked", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false, dimOthers: false });
+const session = createInteractionSession({ program: original, bindings: [] });
+session.dispatch({ type: "select", target: "points", payload: {
+  id: "picked", nearest: { space: "data", fields: ["x", "y"], values: [2, 3],
+    metric: "euclidean", maxDistance: 1 }
+} });
+const program = session.getState().program;
+const selected = getMarkItems(program, { target: "points" })
+  .filter(item => item.properties.fill === "red").map(item => item.fields.id);
+session.destroy();
+// selected is ["b"].
+```
+
+For screen distance, supply `nearest: { space: "screen", point: { x, y }, maxDistance: 12 }`.
+The point and distance use CSS-local pixels in the current accepted frame. Filled interiors have
+zero distance; outside points measure the nearest painted fill edge or stroke, including dash gaps.
+Clipped-out intervals are excluded, and the query point must itself be inside every clip. Opacity-zero
+items require `hitInvisible: true`. Text uses its metric rectangles, images their placed viewport,
+and shadows do not enlarge the target. Path approximation remains 0.25 CSS pixels.
+
+Data distance requires `euclidean` or `manhattan`, 1–64 explicit numeric fields and an equal-length
+query tuple. It does not normalize units. Missing, null, nonnumeric, ambiguous aggregate values and
+distance overflow reject the whole command, including linked changes. Facet sources support data
+nearest; screen nearest requires a root or explicit concat child owner with one concrete frame.
+
+The finite non-negative `maxDistance` is required and inclusive. Ties choose the smallest opaque
+logical item key, independently of draw order. A miss supplies an empty set to the existing `mode`:
+`replace` clears, and add/toggle/subtract/intersect retain their normal set behavior. The resulting
+selection stores keys and survives serialization; nearest is not a continuously evaluated predicate.
+It commits with the same transaction, linked-selection and failure behavior as ordinary selection.

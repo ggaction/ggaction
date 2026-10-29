@@ -2,7 +2,7 @@ import { cloneAndFreeze, freezeOwned, isOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateInputReference } from "../core/resourceReference.js";
 import { transformHitPoint } from "./hitCoordinates.js";
-import { hitShape, hitShapeWork, normalizeHitQuery } from "./hitShapes.js";
+import { hitShape, nearestHitShape, hitShapeWork, normalizeHitQuery } from "./hitShapes.js";
 
 export const MAX_HIT_INDEX_ITEMS = 100_000;
 export const MAX_HIT_INDEX_WORK = 10_000_000;
@@ -102,16 +102,16 @@ function within(bounds, point, slop) {
     (point.y >= bounds.top || bounds.top - point.y <= slop) &&
     (point.y <= bounds.bottom || point.y - bounds.bottom <= slop);
 }
-function candidateOrder(a, b, work) {
+function candidateOrder(a, b, work, nearest = false) {
   spend(work);
-  const priority = b.zIndex - a.zIndex || a.distance - b.distance;
+  const priority = nearest ? a.distance - b.distance : b.zIndex - a.zIndex || a.distance - b.distance;
   if (priority) return priority;
   spend(work, a.itemKey.length + b.itemKey.length);
   const item = compareText(a.itemKey, b.itemKey);
   if (item) return item;
   const ap = JSON.stringify(a.childPath), bp = JSON.stringify(b.childPath);
   spend(work, ap.length + bp.length + a.ownerId.length + b.ownerId.length);
-  return compareText(ap, bp) || compareText(a.ownerId, b.ownerId);
+  return compareText(ap, bp) || compareText(a.ownerId, b.ownerId) || (nearest ? b.zIndex - a.zIndex : 0);
 }
 
 /** Bind explicit node/semantic mappings to one immutable current scene; no resource inference. */
@@ -139,12 +139,12 @@ export function prepareHitIndex(scene, entries) {
   return result;
 }
 
-export function hitIndex(index, scene, point, options = {}) {
+function queryIndex(index, scene, point, options, scope, work = { value: 0, limit: MAX_HIT_QUERY_WORK }) {
   const state = states.get(index);
   if (!state) throw new TypeError("Hit query requires its prepared index.");
   if (scene !== state.scene) throw new TypeError("Hit index is stale for this scene.");
   const screenPoint = transformHitPoint(identity, point), query = normalizeHitQuery(options);
-  const work = { value: 0, limit: MAX_HIT_QUERY_WORK }, pending = state.root ? [state.root] : [], hits = new Map(), testedShapes = new Map();
+  const pending = state.root ? [state.root] : [], hits = new Map(), testedShapes = new Map();
   spend(work, state.diagnostics.length);
   const diagnostics = [...state.diagnostics], diagnosticKeys = new Set();
   let visited = 0, tested = 0;
@@ -154,9 +154,13 @@ export function hitIndex(index, scene, point, options = {}) {
     if (!node.items) { pending.push(node.right, node.left); continue; }
     for (const item of node.items) {
       spend(work);
+      if (scope) {
+        spend(work, item.metadata.ownerId.length + JSON.stringify(item.metadata.childPath).length + item.metadata.itemKey.length);
+        if (item.metadata.ownerId !== scope.ownerId || JSON.stringify(item.metadata.childPath) !== scope.path || !scope.keys.has(item.metadata.itemKey)) continue;
+      }
       if (!within(item.shape.bounds, screenPoint, query.slop)) continue;
       let result = testedShapes.get(item.shape);
-      if (result === undefined) { spend(work, item.cost); result = hitShape(item.shape, screenPoint, query); testedShapes.set(item.shape, result); tested++; }
+      if (result === undefined) { spend(work, item.cost); result = (scope ? nearestHitShape : hitShape)(item.shape, screenPoint, query, count => spend(work, count)); testedShapes.set(item.shape, result); tested++; }
       if (result.diagnostics !== item.shape.diagnostics) for (const diagnostic of result.diagnostics) {
         const key = JSON.stringify([item.semanticKey, diagnostic.code, diagnostic.transformIndex]); spend(work, key.length);
         if (!diagnosticKeys.has(key)) { diagnosticKeys.add(key); diagnostics.push(freezeOwned({ itemKey: item.metadata.itemKey, ...diagnostic })); }
@@ -164,10 +168,25 @@ export function hitIndex(index, scene, point, options = {}) {
       if (!result.hit) continue;
       const candidate = freezeOwned({ ...item.metadata, screenPoint, localPoint: result.localPoint, distance: result.distance, zIndex: item.zIndex });
       const previous = hits.get(item.semanticKey);
-      if (!previous || candidateOrder(candidate, previous, work) < 0) hits.set(item.semanticKey, candidate);
+      if (!previous || candidateOrder(candidate, previous, work, scope !== undefined) < 0) hits.set(item.semanticKey, candidate);
     }
   }
-  const candidates = [...hits.values()].sort((a, b) => candidateOrder(a, b, work));
+  const candidates = [...hits.values()].sort((a, b) => candidateOrder(a, b, work, scope !== undefined));
   return freezeOwned({ target: candidates[0] ?? null, candidates: freezeOwned(candidates), diagnostics: freezeOwned(diagnostics),
     statistics: freezeOwned({ visited, tested, work: work.value }) });
+}
+
+export function hitIndex(index, scene, point, options = {}) { return queryIndex(index, scene, point, options); }
+
+export function nearestHitIndex(index, scene, point, options) {
+  ownRecord(options, "Nearest hit options");
+  const required = ["ownerId", "childPath", "itemKeys", "maxDistance"];
+  if (required.some(key => !Object.hasOwn(options, key)) || Object.keys(options).some(key => ![...required, "hitInvisible"].includes(key))) {
+    throw new TypeError("Nearest hit requires an explicit owner, item keys and maximum distance.");
+  }
+  const work = { value: 0, limit: MAX_HIT_QUERY_WORK };
+  const ownerId = text(options.ownerId, work), childPath = strings(options.childPath, work), keys = strings(options.itemKeys, work, true);
+  const query = normalizeHitQuery({ slop: options.maxDistance, hitInvisible: Object.hasOwn(options, "hitInvisible") ? options.hitInvisible : false });
+  if (!Number.isFinite(options.maxDistance)) throw new TypeError("Nearest hit requires an explicit finite maximum distance.");
+  return queryIndex(index, scene, point, query, { ownerId, path: JSON.stringify(childPath), keys: new Set(keys) }, work);
 }

@@ -224,3 +224,29 @@ Node20/22/24 각각3 runtime·strict 타입·4 entry browser bundle이 통과했
 915entries/1,319,191packed/6,040,713unpacked, interaction91,706gzip으로 최소 cap을 충족한다.
 최초 실패와 마지막 namespace work-accounting 수정 전 archive를 별도 보존했다. 전체 sweep이나
 STEP057 D/AT37·STEP077 전체 완료로 확대 보고하지 않는다. 다음은 nearest·orphan/drop 및 자동 binding이다.
+
+
+## D2 nearest 구현
+
+AUTHORIZATION의 포괄 승인과 parent의 동일 범위 확인을 재사용한다. 기존 select payload에서
+select와 상호배타적인 nearest를 추가한다. 화면은 현재 accepted frame의 CSS painted footprint,
+데이터는 final item의 명시 numeric tuple와 euclidean/manhattan이다. 필수 finite maxDistance와
+stable logical key tie, 기존 owner/grain/mode 및 linked closure를 재사용한다. FacetSource는 화면
+geometry가 다중 cell이므로 data만 지원한다. Ordinary inspect의 기존 slop/overlap 계약은 그대로다.
+
+초기 focused92/92 이후 검토에서 clip 밖에 완전히 숨겨진 도형이 단순 boundary distance 후보가 될 수
+있는 반례를 찾았다. 기존 flattened path/segment distance를 재사용해 clip 교차점에서 painted
+boundary를 분할하고 허용된 구간만 계산한다. Clip work도 같은 query 예산에 합산한다. 열린 fill
+path의 암시적 닫힘과 zero-size rect/circle을 별도 회귀로 검증한다. 초기 fixture의 잘못된 hconcat
+cardinality/repeatCharts by 옵션은 기존 public API로 수정했고 최초 실패 로그는 보존한다.
+
+Nearest command의 소스/타입/current/문서와 실제 데이터·browser·설치 qualification은 진행 중이다.
+D의 hidden/orphan/drop 및 자동 binding, gesture/history와 STEP077 전체 의무는 계속 남아 있다.
+
+
+D2 focused96개와 독립 rectangle-distance oracle, 실제 데이터16, browser6이 통과했다. 새 numeric,
+nearest adapter와 clipped boundary owner는100/100/100, 변경 shape는100/95.21/100이며 기존
+floor를 유지한다. 최초 discovery 등록 누락과 문서 result에 scalar 배열을 Program으로 등록한 오류,
+stale provenance를 소유 metadata에서 바로잡았다. Package entries918/최대packed1,322,667/
+unpacked6,053,713 및 최초 interaction gzip94,603을 보존하고 최소 한도만 올린다. 최종 동일 archive
+Node20/22/24 및 문서 source/build/browser qualification 완료 전의 소스 후보임을 구분한다.

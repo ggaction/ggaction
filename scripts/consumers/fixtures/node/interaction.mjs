@@ -26,6 +26,11 @@ export const cases = [
         assert.equal(getMarkItems(session.getState().program, {target:'points'}).filter(i=>i.properties.fill==='red').length,0);
         assert.deepEqual(events.map(e=>e.phase),['commit','settled','commit','settled']);
         assert.equal(events[0].previous,p); assert.equal(events[0].transactionId,'pick');
+        const firstKey=getMarkItems(session.getState().program,{target:'points'}).map(item=>item.key).sort()[0];
+        for(const nearest of [{space:'screen',point:{x:63,y:60},maxDistance:6},{space:'data',fields:['x','y'],values:[50,60],metric:'euclidean',maxDistance:0}]) {
+          session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest}});
+          assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.key),[firstKey]);
+        }
         stop();
       } else assert.throws(()=>session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}}),/does not support/);
 

@@ -2335,6 +2335,21 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 7,
+    "heading": "Select the nearest item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "selection: \"picked\"",
+      "target: \"points\""
+    ],
+    "prerequisites": "Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.",
+    "sha256": "f21054589ac4140b990679744f595a4223a1c52fcc00a505017cfc15524ab403",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

@@ -1,12 +1,11 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { validateUserId } from "../core/identifiers.js";
-import { namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { normalizeSelectionProjection, projectSelectionKeys, selectionProjectionBudget } from "../grammar/selectionProjection.js";
 import { resolveRegisteredSelection } from "../materialization/selection/expression.js";
 import { requireMaterializedDataset } from "../selectors/datasets.js";
 import { interactionOptions as options, snapshotInteractionInput } from "./input.js";
-import { interactionOwner, prepareInteractionEdit } from "./selection.js";
+import { interactionOwner, prepareInteractionEdit, scopeSelectionKeys } from "./selection.js";
 
 const ownerKey = target => JSON.stringify([target.childPath, target.id, target.facetSource === true]);
 const same = (left, right) => {
@@ -66,18 +65,6 @@ function endpoint(program, target, selection) {
   return { view, resolved };
 }
 
-function scopedKeys(program, target, keys, spend) {
-  const namespaces = [];
-  for (const child of target.childPath) {
-    namespaces.push(`${program.compositionSpec.id}-${child}`); program = program.children[child];
-  }
-  const prefixWork = JSON.stringify(namespaces).length;
-  spend(keys.length * prefixWork * Math.max(1, namespaces.length));
-  return keys.map(key => {
-    spend(key.length * Math.max(1, namespaces.length));
-    return namespaces.reduceRight((local, namespace) => namespaceItemKey(local, namespace), key);
-  });
-}
 
 function projectLink(program, link, spend) {
   const target = endpoint(program, link.target, link.selection);
@@ -96,8 +83,8 @@ function projectLink(program, link, spend) {
   const keys = target.resolved.items.filter(item => link.resolve === "intersection"
     ? sets.every(set => set.has(item.key)) : sets.some(set => set.has(item.key))).map(item => item.key);
   return { target, projection: { id: link.id, target: link.target, selection: link.selection, resolve: link.resolve,
-    sources: sources.map(source => ({ ...source, keys: scopedKeys(program, link.target, source.keys, spend) })),
-    keys: scopedKeys(program, link.target, keys, spend) }, keys };
+    sources: sources.map(source => ({ ...source, keys: scopeSelectionKeys(program, link.target, source.keys, spend) })),
+    keys: scopeSelectionKeys(program, link.target, keys, spend) }, keys };
 }
 
 export function inspectSelectionLinks(program, links, spend = selectionProjectionBudget()) {

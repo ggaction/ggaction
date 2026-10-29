@@ -131,3 +131,40 @@ test("one browser click commits a linked child selection and redraws Canvas and 
     await page.evaluate(()=>window.__linkedSession.destroy());assertNoBrowserErrors(errors,'linked selection transaction');await page.close();
   }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
 });
+
+
+test("CSS nearest click outside a fill selects the same item on Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      const { render } = await import('/src/index.js'), { renderToSVG } = await import('/src/renderers/svg.js');
+      for (const [index, session] of window.__inspectionSessions.entries()) {
+        session.updateProgram(session.getState().program.selectMarks({id:'picked',target:'observations',items:[]})
+          .highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false}));
+        const element=document.querySelector(index===0?'#chart':'#vector svg');
+        element.addEventListener('click',event=>{
+          const rect=element.getBoundingClientRect();
+          session.dispatch({type:'select',target:'observations',payload:{id:'picked',nearest:{space:'screen',point:{x:event.clientX-rect.left,y:event.clientY-rect.top},maxDistance:20}},origin:'user'});
+        });
+        session.subscribe(event=>{
+          if(event.phase!=='commit')return;
+          if(index===0)render(event.current,document.querySelector('#chart').getContext('2d'),{pixelRatio:2});
+          else document.querySelector('#vector').innerHTML=renderToSVG(event.current);
+        });
+      }
+    });
+    for (const [index, selector] of ['#chart','#vector svg'].entries()) {
+      const box=await page.locator(selector).boundingBox(); await page.mouse.click(box.x+310,box.y+118);
+      const selected=await page.evaluate(async index=>{
+        const {getMarkItems}=await import('/src/inspection.js');
+        return getMarkItems(window.__inspectionSessions[index].getState().program,{target:'observations'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id);
+      },index);
+      assert.deepEqual(selected,['b']);
+    }
+    await page.evaluate(()=>window.__inspectionSessions.forEach(session=>session.destroy()));
+    assertNoBrowserErrors(errors,'nearest selection'); await page.close();
+  } catch(error) { await saveBrowserContextEvidence(context,error); throw error; }
+  finally { await context.close(); }
+});

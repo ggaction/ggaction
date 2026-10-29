@@ -1,3 +1,4 @@
+import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
@@ -102,7 +103,7 @@ export function createInteractionSession(input) {
       phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics)
     });
     try {
-      prepared = prepareInteractionEdit(program, command);
+      prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
       if (prepared.program === program) return outcome("unchanged");
       prepared = applySelectionLinks(prepared.program, configured.linked, linkedSelections, prepared.affectedOwners, command);
       version = nextInteger(bridge.getState().version); nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);

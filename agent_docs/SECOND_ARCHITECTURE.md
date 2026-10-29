@@ -3530,3 +3530,20 @@ Node20 초기 packed1,319,185/unpacked6,040,680 bytes에 cap915/1,320,000/6,041,
 Interaction gzip91,705는89,000을 초과해92,000으로만 올렸고 Full651,735/Basic366,102/SVG20,196은
 기존 cap을 유지한다. Search958,319bytes에는959,000 최소 cap을 적용한다. 최종 archive의 이후
 작은 work-accounting 수정 측정은 개념 checkpoint evidence에서 구분하며 최초 실패를 지우지 않는다.
+
+
+### Nearest 선택 계산 경계
+
+`grammar/nearestSelection.js`는 final-item 명시 numeric tuple을 검증하고 기존 graph metric 계산을
+재사용한다. `interaction/nearest.js`는 기존 Full resolver 등록·owner namespace·현재 hit bridge를
+사용해 ordinary select payload로 바꾼다. Session의 기존 atomic candidate/linked closure 경계와
+codec는 유지되며 별도 semantic predicate나 authoring action을 만들지 않는다.
+`grammar/hitClipDistance.js`는 기존 flattened path와 segment distance를 재사용한 clip 경계 분할만
+소유한다. 기존 hit index가 nearest query의 거리 우선 정렬과 누적 work를 소유하고 ordinary inspect
+순서는 유지한다. 정확한 공개 옵션/실패/수명은 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+
+D2 source 후보의 package 실측은918entries/6,053,713unpacked/Node20 최대1,322,667packed bytes로
+한도918/1,323,000/6,054,000을 적용한다. Interaction의 초기 Node22 gzip94,603에95,000 한도를
+적용하며 Full/Basic/SVG와 기존 critical floor는 유지한다. 최종 metadata tar의 검증은 STEP057 증거에
+별도로 구분한다. 최초 package entry 및 interaction bundle 초과 실패는 삭제하지 않는다.

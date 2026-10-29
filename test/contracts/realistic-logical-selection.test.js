@@ -15,7 +15,8 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
  test(`${dataset} ${recipe} logical selection preserves item grain through toggles and restore`,()=>{
   try {
    const view=realisticRecordView(dataset,{rowLimit:24,groupLimit:4});
-   const rows=view.rows.map((row,index)=>({...row,order:index}));
+   const categories=[...new Set(view.rows.map(row=>row.category))];
+   const rows=view.rows.map((row,index)=>({...row,order:index,categoryIndex:categories.indexOf(row.category)}));
    assert.ok(rows.length>=4);assert.ok(rows.every(row=>view.provenance.sourceRowIndexes.includes(row.sourceRowIndex)));
    let p=chart().createCanvas({width:500,height:360,margin:45}).createData({id:"rows",values:rows,keyField:"key"});
    if(recipe==="observations") p=p.createScatterPlot({id:"mark",x:"order",y:"value",guides:false});
@@ -74,6 +75,14 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    session.dispatch({type:"clearSelection",target:"mark",payload:{id:"expressionPicked"}});
    assert.ok(getMarkItems(session.getState().program,{target:"mark"}).every(item=>item.geometry.every(g=>g.properties.fill!=="#ef4444"&&g.properties.stroke!=="#ef4444")));
    assert.deepEqual(phases,["commit","settled","commit","settled","commit","settled"]);
+   const nearestField=recipe==="observations"?"order":"categoryIndex";
+   const nearestValue=items[0].fields[nearestField]+0.25;
+   const nearestExpected=[...items].sort((a,b)=>Math.abs(a.fields[nearestField]-nearestValue)-Math.abs(b.fields[nearestField]-nearestValue)||(a.key<b.key?-1:a.key>b.key?1:0))[0].key;
+   for(const metric of ["euclidean","manhattan"]) {
+    session.dispatch({type:"select",target:"mark",payload:{id:"expressionPicked",nearest:{space:"data",fields:[nearestField],values:[nearestValue],metric,maxDistance:1}}});
+    const actual=getMarkItems(session.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+    assert.deepEqual(actual,[nearestExpected]);
+   }
    assertGraphicIntegrity(session.getState().program,`${dataset}/${recipe}/session`);
    assertSvgIntegrity(renderToSVG(deserializeProgram(serializeProgram(session.getState().program))),`${dataset}/${recipe}/session`);
    const child=ast.editMarkSelection({selection:"expressionPicked",items:[]});

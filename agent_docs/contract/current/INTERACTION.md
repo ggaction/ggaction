@@ -111,3 +111,45 @@ selection resources use the existing program codec; reattach bindings explicitly
 Links do not install DOM listeners or synthesize additional transactions. A cause ID alone never
 creates a link. Evidence includes `test/unit/interaction-links.test.js`, the logical-selection realistic
 corpus, public interaction type checks and source-free interaction consumers.
+
+
+## Nearest selection commands
+
+`dispatch({type:"select",target,payload:{id,nearest,mode?},transactionId?,origin?,causeTransactionId?})`
+updates an existing authored selection. Exactly one of `select` and `nearest` is required. The selection
+must match the explicit owner and retain its stored grain. Generated projection IDs are not editable
+nearest owners. Basic rejects nearest commands. There is no inferred selection ID or new resource kind.
+
+`nearest` is one of:
+
+- `{space:"screen",point:{x,y},maxDistance,hitInvisible?}` measures CSS-pixel distance to the current
+  accepted frame's painted footprint. A filled interior has distance zero; an outside point measures
+  the nearest fill edge or painted stroke footprint, including dash gaps, caps and joins. Clipped-out
+  boundary intervals do not contribute. As with inspection, the query point must be inside every clip;
+  nearest does not search through a clip from an outside point. Opacity zero is excluded unless
+  `hitInvisible:true` (default false). Text uses its concrete metric rectangles and images their placed
+  viewport; shadows do not expand targeting. Curves retain the existing 0.25 CSS-pixel approximation.
+  Only items in the selection's exact owner/path/grain are eligible, and guides remain inspection-only.
+  A facet source has multiple cell geometries and rejects screen nearest; use data space for that source.
+- `{space:"data",fields,values,metric,maxDistance}` uses 1–64 distinct bounded field names and an
+  equal-length finite numeric query tuple. `metric` is explicitly `euclidean` or `manhattan`, in raw
+  field units without inferred normalization or scale mapping. Every final item, including unselected
+  items, must have a unique finite numeric value for every field. Missing, null, nonnumeric, ambiguous
+  aggregate fields and overflowing distances reject the complete transaction. Empty owners have no
+  candidate. Explicit facet-source semantic item grain is supported.
+
+`maxDistance` is required, finite and non-negative; the boundary is inclusive. Nearest chooses minimum
+distance then lexicographically smallest opaque logical item key, independently of drawing order.
+Decorations collapse to their owner item. A miss supplies an empty key set with `empty:"none"` to the
+existing set update mode; `replace` clears, while add/toggle/subtract/intersect retain native semantics.
+The chosen key is a snapshot selection, not a stored distance predicate. Codec restoration therefore
+requires no nearest-specific preparation or schema.
+
+Resolution occurs when the queued command executes against the current program and accepted sampled
+frame, including its root transform. Candidate program, linked-selection closure, frame and counters
+commit together, with the same commit/settled/error lifecycle as ordinary select. The command does not
+replace inspection candidate ordering or synthesize an inspect event. After a commit, native
+materialization replaces any sampled frame as for every authoring command. Data tuple work and
+namespace expansion share a 10,000,000-unit bound; screen queries retain the 2,000,000-unit bound,
+including clip intersections and comparisons. Evidence: `test/unit/interaction-nearest.test.js`, the
+logical-selection realistic corpus, browser interaction tests and installed interaction consumers.
