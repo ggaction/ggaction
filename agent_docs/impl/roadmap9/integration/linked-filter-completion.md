@@ -7,7 +7,7 @@
 - [x] 집중 coverage381·계약34·패키지7·실제데이터16·browser20
 - [x] 같은 tar Node20·22·24 각각 kernel8·runtime23·strict TS/optional peers/5bundles
 - [x] source pin 문서192·built170pages/1454LLM·전체320/390/768px browser
-- [ ] 검증한 동일 source와 기록의 main 반영
+- [x] 검증한 동일 source와 기록의 main 반영 (`6f6bc4ed9`)
 - [ ] STEP060 나머지 기능과 STEP074·077 인수
 
 현재 selection projection/DAG와 native filterMarks/removeMarkFilter를 사용한다. 생성 시 기존 target
