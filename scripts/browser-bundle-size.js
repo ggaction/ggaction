@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 706_000, // Geographic projections integrated with native routes and region controls; final measurement required.
+  ggaction: 707_700, // Geographic projections with native routes and linked controls: Node20/24 707,624 gzip bytes.
   "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
