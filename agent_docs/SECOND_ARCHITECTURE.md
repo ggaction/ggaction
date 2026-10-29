@@ -247,10 +247,18 @@ Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning
 자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
 
 `partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+`partitionInterpolation.js`는 stable node/parent preorder와 원 normalized u/depth, bend,
+frame basis·hole·CSS gap을 가진 versioned private track을 검증·보간한다. 원 구간을 bend한 뒤
+`partitionBend.js`가 현재 CSS 거리로 inset하며, 현재 sample을 새 track의 시작점으로 사용할 수 있다.
+이 숫자 track의 복원 검증은 public planner나 semantic schema를 만들지 않는다.
 Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
 compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
 이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
 AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
+Private typed track 추가 후 package 실측은1,049entries/6,769,256unpacked, Node22
+packed1,486,310 및 Node20·24 packed1,489,945bytes다. 현재 한도는1,049entries,
+packed1,491,000/unpacked6,771,000으로 측정값에 최소1,000bytes 여유를 둔다.
+기존95/90/100 hierarchy owner floors와 공개 entry 경계는 유지한다.
 
 ## 내부 expression kernel 경계
 
@@ -4342,3 +4350,7 @@ accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한
 Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,243bytes다.
 이전1,073,700 한도를 넘으므로 최소100byte 단위1,074,300을 적용한다. 같은 package의
 기존5개 browser entry는 앞선 합산과 byte 단위로 같으며 새 accessibility owner를 import하지 않는다.
+
+Private partition typed track과 native frame의 raw→bend→CSS gap 순서를 합친 Node22
+package는1115entries/1,589,127packed/7,233,578unpacked bytes다. 새 grammar owner1개와
+기존 adapter/bend/mapping/frame의 재사용에 최소 한도1115/1,590,000/7,234,000을 적용한다.
