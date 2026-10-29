@@ -15,6 +15,7 @@ import { chart } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
+import { planTransition, sampleTransition, type TransitionFrame } from ${JSON.stringify(path.join(root, "types/animation.js"))};
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
@@ -41,6 +42,7 @@ session.mount(document.createElement('div'),{observeResize:'auto'});
 const undoCount:number=session.getState().history.undoCount;
 const asyncSession=createInteractionSession({program,async assetResolver(request){
   const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;
+  const sample:TransitionFrame|undefined=request.frame;const frameVersion:number|undefined=request.frameVersion;
   const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
   return {dispose(){}};
 }});
@@ -208,6 +210,16 @@ const unmount = session.mount(element,{rootTransform:[1,0,0,1,0,0]});
 session.dispatch({type:'inspect',point:{x:1,y:2},pointerType:'touch'});
 session.dispatch({type:'leave'});
 session.dispatch({type:'frame',scene:createTransitionScene(program,{format:'canvas'}),generation:0,version:1});
+const sample=sampleTransition(planTransition({from:program,to:program,options:{durationMs:100,easing:'linear'}}),50);
+session.dispatch({type:'frame',frame:sample,generation:0,version:2});
+const accepted:TransitionFrame|null=session.getState().animationFrame;
+const frameImages=session.getState().frameAssets?.images;
+// @ts-expect-error authentic frame and arbitrary scene are exclusive
+session.dispatch({type:'frame',frame:sample,scene:sample.scene,generation:0,version:3});
+// @ts-expect-error accepted frame identity is read-only
+session.getState().animationFrame=sample;
+// @ts-expect-error a plain scene has no authentic animation frame identity
+session.dispatch({type:'frame',frame:sample.scene,generation:0,version:3});
 session.updateProgram(program);session.subscribe(event=>{const key:string|undefined=event.state.hit?.target?.itemKey;});
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
 session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});

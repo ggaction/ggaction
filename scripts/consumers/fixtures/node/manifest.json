@@ -1614,5 +1614,22 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "interaction-animation.mjs",
+    "cases": [
+      {
+        "id": "interaction-animation/native-frame-four-formats",
+        "statements": 20
+      },
+      {
+        "id": "interaction-animation/player-frame-leases",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/fresh-offline-native-scope",
+        "statements": 3
+      }
+    ]
   }
 ]

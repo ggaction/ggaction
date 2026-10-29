@@ -4165,6 +4165,20 @@ exact graphic identity 검증을 유지한다. Session에 decoder/font/raster �
 취소·실패·destroy는 candidate와 callback 참조를 해제하고 늦은 lease를 폐기한다. 구체 event와 Promise
 계약은 [Current INTERACTION](contract/current/INTERACTION.md#atomic-asset-preparation)이 소유한다.
 
+Authentic animation frame은 평탄한 native 출처 증명을 기존 hit owner에서 소비한다. Session은
+committed program 준비 owner와 별도 transient frame lease를 같은 preparation 구현으로 관리한다.
+frame/scene/index/keyboard model의 준비가 끝난 뒤 한 번에 게시하고, native authoring이 성공하면
+그 transient lease를 해제한다. `animationFrame`과 `frameAssets`는 읽기 전용 runtime projection이며
+새 저장 상태나 asset cache가 아니다. Native item 교집합은 기존 keyboard owner, weighted source의
+실제 anchor는 기존 hit grammar가 소유한다. Renderer와 player 실행은 계속 host 책임이다.
+
+Session frame checkpoint의 동일 archive 실측은1,132entries, packed1,611,830/unpacked7,322,421로
+cap1,612,000/7,323,000을 적용했다. 여섯 entry를 모두 다시 측정해 Node20/24의
+Full773,950·Basic422,008·interaction129,659gzip에 각각774,000/422,100/129,700을 적용했다.
+Full/Basic의 직전 cap은 Node22 기준이어서 이번 모든-entry Node20 검사에서 초과가 확인됐다.
+Animation186,027 및 SVG/graph는 기존 한도 안이며 새 renderer import나 공개 export는 없다.
+원본 실패와 동일 archive 보충 증거는 STEP070의 session-frame-evidence가 소유한다.
+
 Asset preparation source-free Node20/24 interaction은115,827gzip으로 최소cap115,900을 적용했다.
 Full729,256/Basic384,464/SVG20,196/graph43,759는 직전 history와 동일하다. 새 interaction private
 owner1개로1049entries이며 Node20 packed1,490,213/unpacked6,779,434에 cap1,491,000/6,780,000을

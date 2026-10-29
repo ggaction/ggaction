@@ -43,3 +43,28 @@ callback0도 포함한다. 실제 session focus/asset lease 검증은 D 후속�
 
 현재 증거는 `frame-retention-evidence/`에 고정한다. 새 테스트는 runtime에 roadmap을 import하지
 않으며 `test/unit/animation/retention.test.js`와 source-free consumer가 durable owner다.
+
+## D1 — 실제 세션 프레임과 transient 준비
+
+기존 remainingApproval과 parent의 구체적 구현 지시를 재사용한다. `TransitionFrame`의 exact
+native 출처에 현재 program이 포함되는 경우만 frame command가 받아들이며, plain scene와
+배타적으로 유지한다. Native program/history는 바꾸지 않고 현재 표시 index·focus·frameAssets를
+같이 게시한다. 준비 중 이전 표시를 유지하고 source/native edit, supersession, destroy에서
+기존 preparation owner의 abort·stale·dispose 수명을 재사용한다. 정확 계약은 Current INTERACTION이다.
+
+새 public session 회귀가 weighted shape의 keyboard anchor에서 `state.fill is not iterable` 결함을
+발견했다. 기존 hit grammar의 flat union을 재사용해 각 조각의 실제 opacity/clip을 검사하고 첫
+admitted source만 사용한다. Lasso의 실제 표시 metadata도 committed base와 분리해 기존 owner에
+전달한다. Brush의 scale inverse와 node/annotation 이동이 committed geometry를 요구하는 기존
+제약은 유지하며, 이를 모든 typed animation drag가 완성됐다는 뜻으로 확대하지 않는다.
+
+집중 검증은 exact identity·nested namespace·enter/exit native item 교집합·invalid/stale payload
+접근0·pending/failed/superseded asset·reentrant callback·throwing disposer·lasso cancel/commit,
+100/1000회 공개 player interruption과 실제 renderer handle의 생성/해제를 포함한다.
+브라우저 Canvas/SVG × DPR1/2에서 actual pixels·keyboard focus·native activation·reduced motion을
+검사한다. Source-free 패키지의 같은 세 사례는 four format 출력과 import 전 네트워크 차단을
+포함한다. PNG는 actual pixel, PDF는 유효 header를 확인하며 PDF pixel equality라고 과장하지 않는다.
+
+관련359개 테스트와 변경3owner coverage가 통과했다. 이 source candidate 이후 동일 tar3Node,
+설치본 browser, 최종 문서 provenance와 package/bundle 실측 증거를 `session-frame-evidence/`에
+닫은 뒤 D1만 qualified로 표시한다. 상단 원 카드와 offline native authority 복원은 계속 미완료다.

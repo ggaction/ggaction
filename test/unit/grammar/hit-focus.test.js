@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { prepareHitShape, hitShape, hitShapeAnchor } from '../../../src/grammar/hitShapes.js';
+import { prepareHitShape, prepareHitShapeUnion, hitShape, hitShapeAnchor } from '../../../src/grammar/hitShapes.js';
 const identity = [1,0,0,1,0,0];
 const rect = (x,y,width,height) => ({type:'rect',rect:{x,y,width,height}});
 const clip = geometry => ({geometry,transform:identity});
@@ -43,4 +43,17 @@ test('analytic circle admission finds paint outside the flattened chord approxim
  const prepared=shape({type:'circle',x:0,y:0,radius:10},{clips:[clip(rect(x-0.000002,y-0.000002,0.000004,0.000004))]});
  const point=anchor(prepared);assert.ok(Math.abs(point.x-x)<=0.0000021);assert.ok(Math.abs(point.y-y)<=0.0000021);
  assert.ok(Math.hypot(point.x,point.y)<=10);
+});
+test('weighted focus uses the first admitted source and shares cumulative work across invisible and clipped parts',()=>{
+ const circle=x=>({type:'circle',x,y:10,radius:2});
+ const hidden=shape(circle(10),{paint:{opacity:0}}),clipped=shape(circle(20),{clips:[clip(rect(0,0,2,2))]});
+ const singular=shape(circle(30),{transform:[0,0,0,1,0,0]}),visible=shape(circle(40)),other=shape(circle(50));
+ assert.deepEqual(anchor(prepareHitShapeUnion([hidden,clipped,singular,visible,other])),{x:40,y:10});
+ assert.deepEqual(anchor(prepareHitShapeUnion([other,visible])),{x:50,y:10});
+ assert.equal(hitShapeAnchor(prepareHitShapeUnion([hidden,clipped,singular])),null);
+ const union=prepareHitShapeUnion([hidden,clipped,visible]);let spent=0;
+ assert.throws(()=>hitShapeAnchor(union,count=>{spent+=count;if(spent>2)throw new RangeError('shared anchor work');}),/shared anchor work/);
+ const overlap=prepareHitShapeUnion([visible,shape(circle(40))]);
+ assert.equal(hitShape(overlap,{x:40,y:10},{slop:0}).hit,true);
+ assert.equal(hitShape(overlap,{x:100,y:10},{slop:0}).hit,false);
 });

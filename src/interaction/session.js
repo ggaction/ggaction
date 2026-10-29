@@ -21,7 +21,7 @@ import { prepareInteractionEdit, interactionTransaction, INTERACTION_EDIT_TYPES 
 import { getErrorDetails } from "../core/diagnostics.js";
 import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordinates.js";
 import { normalizeHitQuery } from "../grammar/hitShapes.js";
-import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
+import { prepareProgramHitFrame, rebindProgramHitFrame, prepareAnimationHitFrame, requireAnimationFrameProgram } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
 import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksNeedUpdate } from "./bindings.js";
 
@@ -87,7 +87,7 @@ export function createInteractionSession(input) {
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   const hasMoving = configured.pointers.some(({ binding }) => ["moveNode", "annotate", "navigate"].includes(binding.type));
   const managedSelections = configured.linked.filter(link => !link.filter);
-  let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
+  let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base), displayed = base;
   const keyboardFrames = new WeakMap();
   const keyboardFrameFor = (current, frame) => {
     if (configured.keyboard === null) return null;
@@ -100,13 +100,13 @@ export function createInteractionSession(input) {
   const adoptKeyboardFrame = model => { focus = reconcileKeyboardFocus(model, focus); keyboardFrame = model; };
   const setFrame = (frame, current = program) => {
     const model = keyboardFrameFor(current, frame), result = bridge.updateFrame(frame);
-    if (result.applied) adoptKeyboardFrame(model);
+    if (result.applied) { displayed = frame; adoptKeyboardFrame(model); }
     return result;
   };
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
-  let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null, previewPreparation = null;
+  let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null, previewPreparation = null, animationFrame = null, framePreparation = null, frameRequestVersion = -1;
   const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
   const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
@@ -116,7 +116,8 @@ export function createInteractionSession(input) {
   let activePreparation = preparation;
   const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene, ...preparation.inspect(),
     previewAssets: previewPreparation?.inspect().assets ?? null,
-    preparation: previewPreparation?.inspect().preparation ?? preparation.inspect().preparation,
+    animationFrame, frameAssets: framePreparation?.inspect().assets ?? null,
+    preparation: previewPreparation?.inspect().preparation ?? framePreparation?.inspect().preparation ?? preparation.inspect().preparation,
     frameVersion: bridge.getState().version, generation, revision, hit: lastHit, focus, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
@@ -165,14 +166,34 @@ export function createInteractionSession(input) {
     let failure;
     try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
     try { preparation.dispose(); } catch (error) { failure ??= error; }
+    try { releaseAnimationFrame(); } catch (error) { failure ??= error; }
     mounted = undefined; lastHit = null; focus = null; destroyed = true; assetResolver = undefined; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
-    finally { listeners.clear(); bridge.dispose(); base = null; keyboardFrame = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
+    finally { listeners.clear(); bridge.dispose(); base = null; displayed = null; keyboardFrame = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
     return outcome("applied");
   };
+  const cancelFramePreparation = reason => framePreparation?.cancel(reason);
+  const detachAnimationFrame = () => {
+    const previous = framePreparation;
+    framePreparation = null; animationFrame = null;
+    frameRequestVersion = bridge.getState().version;
+    return () => previous?.dispose();
+  };
+  const releaseAnimationFrame = () => detachAnimationFrame()();
+  // Candidate index and keyboard models are prepared before a renderer lease can
+  // be published. The actual swap has no fallible geometry work or host callback.
+  const prepareFramePublication = (frame, sample) => {
+    const model = keyboardFrameFor(program, frame), candidate = createHitFrameBridge(frame);
+    return () => {
+      const previous = bridge; bridge = candidate; displayed = frame; animationFrame = sample;
+      adoptKeyboardFrame(model); lastHit = null; previous.dispose();
+      publish("frame"); return outcome("applied");
+    };
+  };
   const prepareAssets = (candidate, metadata, handlers, vector) => {
     const previous = program, sessionGeneration = generation, baseRevision = revision;
+    cancelFramePreparation("native-update");
     activePreparation = preparation;
     return preparation.start(candidate, { sessionGeneration, transactionId: metadata.transactionId, baseRevision }, {
       current: tags => !destroyed && program === previous && generation === tags.sessionGeneration && revision === tags.baseRevision,
@@ -227,11 +248,12 @@ export function createInteractionSession(input) {
         mounted?.capture?.cancel("updateProgram"); previewProgram = null;
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, prepared.program); base = candidate; program = prepared.program;
+        const releaseFrame = detachAnimationFrame();
         linkedSelections = prepared.projections; selectionRecords = reconciled.records;
         generation = nextGeneration; revision = nextRevision; lastHit = null;
         history.record(previousSnapshot, prepared.affectedOwners);
-        publish(command.type, details("commit", prepared.affectedOwners));
-        publish(command.type, details("settled", prepared.affectedOwners));
+        try { publish(command.type, details("commit", prepared.affectedOwners));
+          publish(command.type, details("settled", prepared.affectedOwners)); } finally { releaseFrame(); }
         return outcome("applied");
       };
     };
@@ -243,7 +265,7 @@ export function createInteractionSession(input) {
         error: error => publish(command.type, details("error", [], [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]))
       }, resourceRevisions);
     }
-    preparation.cancel("superseded");
+    cancelFramePreparation("native-update"); preparation.cancel("superseded");
     return prepareCommit()();
   };
   const restore = command => {
@@ -278,10 +300,11 @@ export function createInteractionSession(input) {
         mounted?.capture?.cancel("updateProgram"); previewProgram = null;
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, entry.state.program); base = candidate;
+        const releaseFrame = detachAnimationFrame();
         ({ program, selectionRecords, linkedSelections } = entry.state);
         generation = nextGeneration; revision = nextRevision; lastHit = null;
         history.accept(command.type, previousSnapshot, entry.affectedOwners);
-        publish(command.type, details("commit")); publish(command.type, details("settled"));
+        try { publish(command.type, details("commit")); publish(command.type, details("settled")); } finally { releaseFrame(); }
         return outcome("applied");
       };
     };
@@ -291,7 +314,7 @@ export function createInteractionSession(input) {
         cancel: reason => publish(command.type, details("cancel", [{ code: "preparation-cancelled", message: reason }])),
         error: error => publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }])) }, resourceRevisions);
     }
-    preparation.cancel("superseded");
+    cancelFramePreparation("native-update"); preparation.cancel("superseded");
     return prepareCommit()();
   };
   const prepareReplacement = (next, policy, origin) => {
@@ -320,11 +343,12 @@ export function createInteractionSession(input) {
         mounted?.capture?.cancel("updateProgram");
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         setFrame(frame, linked.program); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        const releaseFrame = detachAnimationFrame();
         linkedSelections = linked.projections; selectionRecords = verified.records;
         if (policy === "reset") history.clear();
         else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
-        publish("program", { origin, history: policy, selectionChanges });
-        if (tags) publishAssets("settled", tags);
+        try { publish("program", { origin, history: policy, selectionChanges });
+          if (tags) publishAssets("settled", tags); } finally { releaseFrame(); }
         return outcome("applied");
       };
     };
@@ -374,7 +398,7 @@ export function createInteractionSession(input) {
   const dispatch = command => {
     live();
     // Inspect the envelope before reading type; queued edits snapshot all payload data.
-    const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId", "itemKey", "move"], "Interaction command");
+    const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "frame", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId", "itemKey", "move"], "Interaction command");
     if (envelope.type === "focus") {
       const owned = normalizeFocusCommand(program, configured.keyboard, envelope);
       return perform(() => focusCommand(owned));
@@ -392,7 +416,7 @@ export function createInteractionSession(input) {
       const editCommand = interactionTransaction(owned, `interaction-${transactionSequence}`);
       return perform(() => edit(editCommand));
     }
-    const head = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation"], "Interaction command");
+    const head = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "frame", "version", "generation"], "Interaction command");
     if (head.type === "inspect" || head.type === "contextMenu") {
       const c = options(head, ["type", "point"], ["pointerType", "slop", "hitInvisible"], "Inspect command");
       const point = transformHitPoint(IDENTITY, c.point), query = normalizeHitQuery(Object.fromEntries(
@@ -401,18 +425,40 @@ export function createInteractionSession(input) {
     }
     if (head.type === "leave") { options(head, ["type"], [], "Leave command"); return perform(clear); }
     if (head.type === "frame") {
-      const c = options(head, ["type", "scene", "version", "generation"], [], "Frame command");
+      const c = options(head, ["type", "version", "generation"], ["scene", "frame"], "Frame command");
+      if (Object.hasOwn(c, "scene") === Object.hasOwn(c, "frame")) throw new TypeError("Frame command requires exactly one scene or authentic frame.");
       if (![c.version, c.generation].every(value => Number.isSafeInteger(value) && value >= 0)) throw new TypeError("Frame command counters must be non-negative safe integers.");
-      // Snapshot current host data at dispatch; a late result is never inspected.
-      const scene = c.generation === generation && c.version > bridge.getState().version ? ownHitScene(c.scene) : undefined;
+      const stale = () => c.generation !== generation || c.version <= Math.max(bridge.getState().version, frameRequestVersion);
+      // A stale object is never inspected, including nested accessors or forged samples.
+      const sampled = Object.hasOwn(c, "frame"), scene = !stale() && !sampled ? ownHitScene(c.scene) : undefined;
       return perform(() => {
-        if (c.generation !== generation || c.version <= bridge.getState().version) return outcome("stale");
-        let frame = rebindProgramHitFrame(base, scene, c.version, rootTransform);
-        keyboardFrameFor(program, frame);
+        if (stale()) return outcome("stale");
+        const current = program, sessionGeneration = generation, baseRevision = revision;
+        if (sampled) requireAnimationFrameProgram(c.frame, current);
+        const bind = version => sampled ? prepareAnimationHitFrame(c.frame, version, rootTransform)
+          : rebindProgramHitFrame(base, scene, version, rootTransform);
+        const initial = bind(c.version);
+        // Preflight before cancelling any pending native or frame work.
+        keyboardFrameFor(current, initial); const check = createHitFrameBridge(initial); check.dispose();
         if (hasMoving && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
         mounted?.capture?.cancel("updateProgram");
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(base, scene, nextInteger(bridge.getState().version), rootTransform);
-        setFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
+        frameRequestVersion = c.version;
+        preparation.cancel("frame");
+        const prepare = () => prepareFramePublication(bind(Math.max(c.version, nextInteger(bridge.getState().version))), sampled ? c.frame : null);
+        if (!sampled || !preparation.enabled) {
+          const commit = prepare(), releaseFrame = detachAnimationFrame();
+          try { return commit(); } finally { releaseFrame(); }
+        }
+        if (framePreparation === null) framePreparation = createInteractionPreparation(assetResolver, operation => perform(operation), () => snapshot());
+        activePreparation = framePreparation;
+        transactionSequence = nextInteger(transactionSequence);
+        return framePreparation.start(current, { sessionGeneration, baseRevision, frameVersion: c.version, transactionId: `interaction-${transactionSequence}` }, {
+          current: tags => !destroyed && program === current && generation === tags.sessionGeneration && revision === tags.baseRevision && frameRequestVersion === tags.frameVersion,
+          produce: (request, resolveAssets) => resolveAssets(freezeOwned({ ...request, frame: c.frame })),
+          prepare,
+          cancel: (reason, tags) => publishAssets("cancelled", tags, [{ code: "frame-preparation-cancelled", message: reason }]),
+          error: (error, tags) => publishAssets("error", tags, [{ code: getErrorDetails(error)?.code ?? "frame-preparation-failed", message: String(error?.message ?? error) }])
+        });
       });
     }
     throw new TypeError("Unsupported interaction command type.");
@@ -434,7 +480,7 @@ export function createInteractionSession(input) {
           mounted?.capture?.cancel("updateProgram"); transactionSequence = nextInteger(transactionSequence);
           return prepareAssets(linked.program, { transactionId: `interaction-${transactionSequence}` }, assetHandlers(prepareCommit));
         }
-        preparation.cancel("superseded");
+        cancelFramePreparation("native-update"); preparation.cancel("superseded");
         return prepareCommit()();
       });
     },
@@ -457,7 +503,7 @@ export function createInteractionSession(input) {
       const lease = { element, listeners: [] };
       perform(() => {
         const version = nextInteger(bridge.getState().version);
-        const frame = rebindProgramHitFrame(base, bridge.getState().scene, version, transform);
+        let frame = rebindProgramHitFrame(displayed, bridge.getState().scene, version, transform);
         const candidate = createHitFrameBridge(frame);
         let candidateKeyboard;
         try { candidateKeyboard = keyboardFrameFor(program, frame); } catch (error) { candidate.dispose(); throw error; }
@@ -506,7 +552,7 @@ export function createInteractionSession(input) {
             const discard = (token, restore = true) => {
               try {
                 if (token?.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
-                if (moving && restore && token?.previewed) setFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
+                if (moving && restore && token?.previewed) setFrame(rebindProgramHitFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform));
               }
               finally {
                 if (token) token.raf = undefined; gesture = undefined; previewProgram = null;
@@ -531,7 +577,7 @@ export function createInteractionSession(input) {
                 if (moving && draft) {
                   frame = rebindProgramHitFrame(draft.candidate, draft.candidate.scene, nextInteger(bridge.getState().version), transform);
                   nextInteger(nextInteger(frame.version));
-                } else if (navigating && token.previewed) frame = rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform);
+                } else if (navigating && token.previewed) frame = rebindProgramHitFrame(token.frame, token.scene, nextInteger(bridge.getState().version), transform);
                 if (frame) keyboardFrameFor(draft?.prepared.program ?? program, frame);
                 return () => {
                   previewProgram = next;
@@ -556,18 +602,18 @@ export function createInteractionSession(input) {
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               candidate: point => {
-                if (preparation.enabled && preparation.inspect().assets === null) return null;
+                if (preparation.enabled && preparation.inspect().assets === null && framePreparation?.inspect().assets == null) return null;
                 const scene = bridge.getState().scene;
                 const context = navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
-                  : prepareRegionGesture(program, binding, base, scene, transform, point);
+                  : prepareRegionGesture(program, binding, base, scene, transform, point, displayed);
                 return context;
               },
               begin: (point, _pointerType, context) => {
-                preparation.cancel("gesture");
+                preparation.cancel("gesture"); cancelFramePreparation("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 const scene = bridge.getState().scene;
                 if (preparation.enabled) previewPreparation = createInteractionPreparation(assetResolver, operation => perform(operation), () => snapshot());
-                return gesture = { preparation: previewPreparation, transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
+                return gesture = { preparation: previewPreparation, transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, frame: displayed, previewed: false, raf: undefined };
               },
               join: navigating ? (token, pointers) => { token.context = joinCameraNavigation(token.context, pointers); } : undefined,
               joinCandidate: navigating ? point => prepareCameraNavigation(program, binding, base, base.scene, transform, point) !== null : undefined,
@@ -666,7 +712,7 @@ export function createInteractionSession(input) {
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               candidate: (point, pointerType) => resolvePointerSelection(program, binding, true) && commandAt(point, pointerType),
               begin: () => {
-                preparation.cancel("gesture");
+                preparation.cancel("gesture"); cancelFramePreparation("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
               },
@@ -726,10 +772,10 @@ export function createInteractionSession(input) {
         // Detaching an active native preview restores its pre-gesture scene.
         // The new surface must bind that restored scene, not the earlier draft.
         if (candidate.getState().scene !== bridge.getState().scene) {
-          const restored = rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version), transform);
-          candidateKeyboard = keyboardFrameFor(program, restored); candidate.updateFrame(restored);
+          const restored = rebindProgramHitFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version), transform);
+          candidateKeyboard = keyboardFrameFor(program, restored); candidate.updateFrame(restored); frame = restored;
         }
-        bridge.dispose(); bridge = candidate; adoptKeyboardFrame(candidateKeyboard); mounted = lease; rootTransform = transform; lastHit = null;
+        bridge.dispose(); bridge = candidate; displayed = frame; adoptKeyboardFrame(candidateKeyboard); mounted = lease; rootTransform = transform; lastHit = null;
         try { publish("mount"); } catch (error) { failure ??= error; }
         if (failure) throw failure;
         return outcome("applied");
@@ -739,9 +785,9 @@ export function createInteractionSession(input) {
         perform(() => {
           if (mounted !== lease) return outcome("stale");
           const version = nextInteger(bridge.getState().version);
-          let frame = rebindProgramHitFrame(base, bridge.getState().scene, version), failure;
+          let frame = rebindProgramHitFrame(displayed, bridge.getState().scene, version), failure;
           try { detach(lease); } catch (error) { failure = error; }
-          if (frame.scene !== bridge.getState().scene) frame = rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version));
+          if (frame.scene !== bridge.getState().scene) frame = rebindProgramHitFrame(displayed, bridge.getState().scene, nextInteger(bridge.getState().version));
           setFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
           try { publish("unmount"); } catch (error) { failure ??= error; }
           if (failure) throw failure;
