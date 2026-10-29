@@ -41,8 +41,9 @@ export function validateWeightedBlendSources(sources, validateProperties) {
     const required = source.type === "image" ? ["image", "x", "y", "width", "height"]
       : source.type === "text" ? ["x", "y", "text", "fontSize", "fontFamily", "textAlign", "textBaseline", "fill"]
         : source.type === "line" ? ["x1", "y1", "x2", "y2", "stroke", "strokeWidth"]
-          : source.type === "path" ? ["commands", "fill", "stroke", "strokeWidth"]
-            : [...(source.type === "circle" ? ["x", "y", "radius"] : ["x", "y", "width", "height"]), "fill", "stroke", "strokeWidth"];
+          : source.type === "path" ? ["commands", ...(Object.hasOwn(source.properties, "stroke") ? ["strokeWidth"] : ["fill"])]
+            : source.type === "circle" ? ["x", "y", "radius", "fill", ...(Object.hasOwn(source.properties, "stroke") ? ["strokeWidth"] : [])]
+              : ["x", "y", "width", "height", "fill", "stroke", "strokeWidth"];
     if (required.some(key => !Object.hasOwn(source.properties, key))) throw new TypeError("Weighted blend sources require fully materialized primitive properties.");
     ownArray(source.offset, "Weighted blend offset");
     if (source.offset.length !== 2 || !source.offset.every(Number.isFinite)) throw new TypeError("Weighted blend offset requires two finite numbers.");

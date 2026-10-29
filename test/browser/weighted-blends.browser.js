@@ -25,7 +25,7 @@ for (const ratio of [1, 2]) test(`browser weighted source colors, topology and r
   const bytes = await readFile(new URL("../fixtures/fonts/metric-fixture.ttf", import.meta.url));
   const font = { contentHash: createHash("sha256").update(bytes).digest("hex"), mimeType: "font/ttf", byteLength: bytes.length,
     family: "ggaction Metric Fixture", style: "normal", weight: 400, metricsProviderVersion: "fixture@1", payload: { encoding: "base64", data: bytes.toString("base64") } };
-  const fixtures = ["opaque", "translucent", "topology", "endpoint", "many", "unequal", "text"].map(kind => weightedBlendFixture(kind, font));
+  const fixtures = ["native-circle", "native-fill-path", "native-stroke-path", "opaque", "translucent", "topology", "endpoint", "many", "unequal", "text"].map(kind => weightedBlendFixture(kind, font));
   const imageFixture = weightedBlendFixture("image"), c = createCanvas(2, 2);c.getContext("2d").fillStyle = "blue";c.getContext("2d").fillRect(0, 0, 2, 2);
   const imageBytes = await c.encode("png"), image = { contentHash: createHash("sha256").update(imageBytes).digest("hex"), mimeType: "image/png", byteLength: imageBytes.length,
     width: 2, height: 2, payload: { encoding: "base64", data: imageBytes.toString("base64") } };

@@ -43,7 +43,7 @@ export function resolveRowReference(program, ref) {
   return dataset;
 }
 
-export function resolveGraphicLineage(program, identity) {
+export function resolveGraphicScope(program, identity) {
   let scope = program;
   for (const namespace of JSON.parse(identity.key)[0]) {
     const children = (scope.compositionSpec?.children ?? []).filter(id => `${scope.compositionSpec.id}-${id}` === namespace);
@@ -52,6 +52,11 @@ export function resolveGraphicLineage(program, identity) {
     }
     scope = scope.children[children[0]];
   }
+  return scope;
+}
+
+export function resolveGraphicLineage(program, identity) {
+  const scope = resolveGraphicScope(program, identity);
   if (identity.lineage.kind === "screen") {
     const [, owner, grain, value] = JSON.parse(identity.key), layer = requireLayer(scope, owner);
     if (layer.mark.type !== "text" || layer.annotationAnchor?.space !== "screen" || grain !== "item" ||
