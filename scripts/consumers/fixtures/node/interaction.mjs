@@ -78,6 +78,16 @@ export const cases = [
     assert.equal(linked.getState().linkedSelections[0].keys.length,1);
     linked.dispatch({type:'clearSelection',target:{childPath:['left'],id:'points'},payload:{id:'picked'}});
     assert.equal(linked.getState().linkedSelections[0].keys.length,0);linked.destroy();
+    const filtered = createInteractionSession({ program: joined, bindings: [{type:'linkFilter',id:'filterRows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}] });
+    for (const select of [{items:[first]}, {items:[]}, {items:[],empty:'all'}]) {
+      filtered.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select}});
+      const current=deserializeProgram(serializeProgram(filtered.getState().program));
+      assert.equal(getMarkItems(current.children.right,{target:'points'}).length,select.empty==='all'?2:select.items.length);
+    }
+    assert.equal(filtered.getState().linkedSelections[0].effect,'filter');
+    const accepted=filtered.getState().program;
+    assert.throws(()=>filtered.dispatch({type:'filter',target:{childPath:['right'],id:'points'},payload:{clear:true}}),/owned by its binding/);
+    assert.equal(filtered.getState().program,accepted);filtered.destroy();
     const p = make(chart), session = createInteractionSession({ program: p }), state = session.getState();
     const scene = structuredClone(state.scene);
     for (const node of scene.nodes.filter(node => node.type === "circle")) node.properties.x += 30;

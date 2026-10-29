@@ -1196,6 +1196,11 @@ export interface LinkedSelectionBinding {
   /** global requires exactly one source owner. */
   readonly resolve: 'union' | 'intersection' | 'global';
 }
+/** Exclusively controls the target's native filter after source transactions.
+ * Existing filters are retained at initialization and replaced on propagation. */
+export interface LinkedFilterBinding extends Omit<LinkedSelectionBinding, 'type'> {
+  readonly type: 'linkFilter';
+}
 export type SelectionPolicy = 'keep-hidden' | 'drop';
 export interface SelectionChange {
   readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
@@ -1207,6 +1212,7 @@ export interface SelectionChange {
   readonly droppedKeys: readonly string[];
 }
 export interface LinkedSelectionState {
+  readonly effect?: 'filter';
   readonly id: string;
   readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
   readonly selection: string;
@@ -1344,7 +1350,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 

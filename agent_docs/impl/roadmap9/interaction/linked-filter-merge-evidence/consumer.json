@@ -1,0 +1,56 @@
+{
+  "node": "v20.20.2",
+  "artifact": "fc102cb817414653dce626088879cc82830dec137cf2821e906ebf5f75706ee1",
+  "sourceFree": true,
+  "runtime": [
+    "interaction/full-basic-immutable-inspection PASS",
+    "interaction/current-frame-and-restored-program PASS",
+    "interaction/guide-and-host-cleanup PASS"
+  ],
+  "types": "passed",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 859,
+      "minifiedBytes": 2415390,
+      "gzipBytes": 688226
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 546,
+      "minifiedBytes": 1293085,
+      "gzipBytes": 377519
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 174,
+      "minifiedBytes": 335375,
+      "gzipBytes": 109145
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 80,
+      "minifiedBytes": 145387,
+      "gzipBytes": 43572
+    }
+  ],
+  "verifiedCeilings": {
+    "ggaction": 688300,
+    "ggaction/basic": 378000,
+    "ggaction/svg": 25000,
+    "ggaction/interaction": 109200,
+    "ggaction/graph": 44000
+  },
+  "note": "Initial consumer runtime/types/bundle measurements completed; initial cap assertion failed. Same measured output passes minimally adjusted caps; source and archive unchanged."
+}
