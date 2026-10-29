@@ -1,0 +1,12 @@
+{
+  "previousArchive": ".artifacts/release/ggaction-0.0.26.tgz",
+  "newArchive": ".artifacts/table-cell-package-22/ggaction-0.0.26.tgz",
+  "previousSha256": "aa6d3ef2e7c28849f1f2ceb88b6151fe6bcef461af07cb3abfd76efe827d9fbe",
+  "newSha256": "a13b5bd6feb9232544e50eb1ad80fcfec45b7d942e32a21da54b2d5e554e3a26",
+  "unchanged": 1029,
+  "modified": [],
+  "added": [
+    "package/src/grammar/cells.js"
+  ],
+  "removed": []
+}
