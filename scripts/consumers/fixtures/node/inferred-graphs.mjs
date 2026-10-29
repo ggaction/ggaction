@@ -34,6 +34,18 @@ export const cases = [{ id: "data/inferred-graph-lifecycle", run() {
   assert.equal(graph(edited.children.left).revision, 1); assert.equal(edited.children.right, source);
   const backbone = source.createInferredGraphData({ id: "backbone", data: "points", nodeKey: "id", ruleId: "minimum", rule: "mst", candidateGraph: "network" });
   assert.equal(graph(backbone, "backbone").result.diagnostics.cost, 10);
+  for (const method of ["fixed", "force"]) {
+    const positions = values.map((row, index) => ({ key: row.id, x: index * 20, y: index * 10 }));
+    const laidOut = chart().createData({ id: "points", values, keyField: "id" }).createInferredGraphData({
+      id: "network", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean"
+    }).layoutGraph({ id: "placement", method, options: method === "fixed" ? { positions }
+      : { initialPositions: positions, iterations: 0, pinned: [{ key: "b", fx: 20, fy: 10 }] } });
+    const reduced = laidOut.reviseData({ source: "points", id: "reduced", values: [values[0], values[2]] });
+    const returning = deserializeProgram(serializeProgram(reduced)).reviseData({ source: "reduced", id: "returned", values });
+    const layout = p => p.semanticSpec.resources.find(resource => resource.kind === "layout");
+    assert.deepEqual(layout(reduced).options, layout(laidOut).options);
+    assert.deepEqual(layout(returning).result, layout(laidOut).result);
+  }
   assert.equal(typeof basicChart().createInferredGraphData, "undefined");
   assert.equal(typeof basicChart().editInferredGraphData, "undefined");
 } }];

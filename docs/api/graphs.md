@@ -10,6 +10,8 @@ Create [observed graph data and a layout](data/source-and-derived.md#observed-gr
 
 {% include chart-example.html id="graph-plots" %}
 
+A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
+
 ## createGraphPlot
 
 ```typescript

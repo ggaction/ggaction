@@ -31,7 +31,7 @@ function materializeLayouts(program, ids) {
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
-import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
+import { normalizeGraphLayout, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
 export const layoutGraph = /* @__PURE__ */ closedAction(
@@ -50,6 +50,7 @@ export function editGraphLayout(program, args, previous) {
   if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
     graph: resolveInputReference(program, previous.inputs[0]),
+    retainedCoordinates: GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field)),
     intent: { method: previous.options.method, options: { ...previous.options.options, ...args.options } } });
   preflightLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
   return materializeLayouts(program.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
@@ -72,7 +73,7 @@ export function writeGraphResource(program, resource) {
       graphs.set(previous.id, replacement);
     } else if (previous.kind === "layout" && previous.inputs.length === 1 && previous.inputs[0].kind === "graph" && graphs.has(previous.inputs[0].id)) {
       replacement = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
-        graph: graphs.get(previous.inputs[0].id), intent: previous.options });
+        graph: graphs.get(previous.inputs[0].id), intent: previous.options, retainedCoordinates: GRAPH_COORDINATE_FIELDS });
       nextLayouts.set(previous.id, replacement);
     }
     if (replacement) replacements.push({ previous: { kind: previous.kind, id: previous.id, revision: previous.revision }, resource: replacement });

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:5ccc2e7b38b3b94a5139ba17e588464884c047c90e0fa03c7264158b18551971. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4565a33eb9ef4c5aac2f25a9cd0d2aa5dcefc7f04340fcaa95a05137e303ecac. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -40022,6 +40022,7 @@ Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsour
 
 ```typescript
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 ```
 
 Related types: [`GraphLayoutLimits`](./reference/types/#type-graphlayoutlimits).
@@ -40104,6 +40105,7 @@ Related types: [`GraphLabelPaint`](./reference/types/#type-graphlabelpaint) · [
 
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 ```
 
 ### `GraphMetricDefinition` {#type-graphmetricdefinition}
@@ -49035,7 +49037,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5ccc2e7b38b3b94a5139ba17e588464884c047c90e0fa03c7264158b18551971` |
+| Contract fingerprint | `sha256:4565a33eb9ef4c5aac2f25a9cd0d2aa5dcefc7f04340fcaa95a05137e303ecac` |
 | Example and dataset source | `525cf6276f108a52e430cc64540f22f2b2299113` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -50016,6 +50018,8 @@ Removing a mark keeps its reusable layout. Remove the layout before its hierarch
 # Graph plots
 
 Create [observed graph data and a layout](./api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](./tutorials/graphs/) uses the same program as the browser and renderer examples.
+
+A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
 
 ## createGraphPlot
 

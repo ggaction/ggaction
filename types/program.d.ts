@@ -1828,8 +1828,10 @@ export interface GraphPlotOptions {
 export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 export interface GraphForceOptions extends GraphLayoutLimits {
   readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
   readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];

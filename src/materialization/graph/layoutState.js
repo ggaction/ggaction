@@ -1,9 +1,8 @@
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
-import { encodeRowKey } from "../../core/itemIdentity.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
+import { normalizeGraphLayout, graphLayoutKernelOptions, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { polarToCartesian } from "../../grammar/polar.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { validateGraphPlotDefinition } from "../../grammar/graph/plot.js";
@@ -87,13 +86,14 @@ function validateBindings(program, resource) {
     }
   }
   const byKey = new Map(nodes.map(node => [node.key, node]));
+  const activeOptions = graphLayoutKernelOptions(resource.options, { nodeKeys: byKey.keys(), retainedCoordinates: GRAPH_COORDINATE_FIELDS });
   const completePositions = positions => {
-    if (positions.length !== nodes.length || positions.some(position => !byKey.has(encodeRowKey(position.key)))) throw new TypeError("Graph layout initial positions must cover current nodes.");
+    if (positions.length !== nodes.length) throw new TypeError("Graph layout initial positions must cover current nodes.");
   };
   if (method === "fixed") {
-    completePositions(options.positions);
-    for (const position of options.positions) {
-      const node = byKey.get(encodeRowKey(position.key));
+    completePositions(activeOptions.positions);
+    for (const position of activeOptions.positions) {
+      const node = byKey.get(position.key);
       if (node.x !== position.x || node.y !== position.y) throw new TypeError("Fixed graph coordinates disagree with stored intent.");
     }
   } else if (method === "circular") {
@@ -104,10 +104,10 @@ function validateBindings(program, resource) {
       if (node.x !== expected.x || node.y !== expected.y) throw new TypeError("Circular graph coordinates disagree with stored intent.");
     });
   } else {
-    if (options.initialPositions) completePositions(options.initialPositions);
+    if (activeOptions.initialPositions) completePositions(activeOptions.initialPositions);
     const pins = new Set();
-    for (const pin of options.pinned) {
-      const key = encodeRowKey(pin.key), node = byKey.get(key); pins.add(key);
+    for (const pin of activeOptions.pinned) {
+      const key = pin.key, node = byKey.get(key); pins.add(key);
       if (!node || node.x !== pin.fx || node.y !== pin.fy) throw new TypeError("Force graph pins disagree with stored coordinates.");
     }
     const indices = new Map(nodes.map((node, index) => [node.key, index]));

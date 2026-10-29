@@ -1,1 +1,2 @@
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */

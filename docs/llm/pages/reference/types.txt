@@ -7065,6 +7065,7 @@ Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgr
 
 ```typescript
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 ```
 
 Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits).
@@ -7147,6 +7148,7 @@ Related types: [`GraphLabelPaint`](../../../reference/types/#type-graphlabelpain
 
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 ```
 
 ### `GraphMetricDefinition` {#type-graphmetricdefinition}

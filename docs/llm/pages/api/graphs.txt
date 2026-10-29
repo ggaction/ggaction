@@ -2,6 +2,8 @@
 
 Create [observed graph data and a layout](../../../api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](../../../tutorials/graphs/) uses the same program as the browser and renderer examples.
 
+A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
+
 ## createGraphPlot
 
 ```typescript

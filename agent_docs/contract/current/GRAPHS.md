@@ -32,7 +32,7 @@
 - 전체 편집이 비어 있거나 undefined/null/unknown option, 잘못된 key/endpoint/weight/limit을 포함하면 거부한다. 정의의 ID나 graph origin은 바꾸지 않는다.
 - 원본 table을 다시 읽어 graph model과 provenance를 만들고 revision을 1 올린다. 관측 explicit key 또는 살아 있는 persisted row key는 행 재정렬 후에도 유지한다. 원본 program, 입력, trace와 graphics는 불변이다.
 - DATA의 `reviseData`와 derived revision 계획은 등록된 graph owner를 명시적으로 호출해 입력 역할을 새 dataset revision으로 갱신한다. 한 dataset이 nodes/edges를 함께 소유하면 graph revision은 한 번만 갱신한다. 유효하지 않은 endpoint/값을 만드는 source revision은 전체적으로 실패한다. 참조 중인 dataset 제거는 기존 restrict 정책으로 거부한다.
-- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed positions나 pinned/initial coverage를 깨뜨리는 source 변경은 전체적으로 거부한다. 연결된 graph plot이 있으면 그 geometry와 label을 preflight하고 layout 반영 뒤 명시 materialize한다. Plot이 없으면 graphics는 그대로다.
+- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed/initial positions에 없는 새 node를 만드는 source 변경은 전체적으로 거부한다. 사라진 node의 기존 좌표와 pin은 아래 layout 계약대로 보존한다. 연결된 graph plot이 있으면 그 geometry와 label을 preflight하고 layout 반영 뒤 명시 materialize한다. Plot이 없으면 graphics는 그대로다.
 
 ### Formal values — `editGraphData`
 
@@ -52,9 +52,12 @@
 - method는 fixed/circular/force다. fixed의 positions는 `{key,x,y}` 배열이며 모든 node를 정확히 한 번 덮는다. key는 원본 typed RowKey이며 compound tuple도 허용한다. x/y는 finite다.
 - circular 기본은 center `[0,0]`, radius `100`, startAngle `0`이다. Radius는 nonnegative finite, angle은 finite degree이며 0은 위쪽, 양수는 시계 방향이다. Empty graph는 빈 결과, single node 또는 radius0은 center에 배치한다.
 - force 기본은 seed1, iterations300, linkDistance30, repulsion100, collisionRadius4, damping0.9, center `[0,0]`, componentGap16, pinned `[]`다. Seed는 uint32, iterations는 nonnegative safe integer, 나머지 숫자는 finite nonnegative이며 damping은 1 이하다. initialPositions는 optional complete `{key,x,y}` 배열이고 pinned는 unique existing key의 `{key,fx,fy}` subset이다. Pins는 packing 뒤에도 exact 좌표를 유지한다. Disconnected components는 저장된 horizontal packing 정책으로 배치한다.
+- Source revision으로 사라진 node의 positions/initialPositions/pinned는 dormant intent로 저장하며 계산에서는 현재 typed key만 사용한다. 같은 key가 다시 나타나면 그 좌표를 재사용한다. Edit에서 생략한 배열은 dormant 항목을 보존하고, 명시적으로 교체한 배열은 현재 node만 허용하는 생성 규칙으로 검증한다. Empty graph도 intent를 보존한다. 저장 복원은 dormant 좌표도 unique/finite로 검증한다.
 - maxNodes/maxEdges 기본은 각각10000이며 positive safe integer다. 공통 work 한도를 계산 전에 검사한다. 옵션은 닫힌 own-data record이며 accessors, unknown/null/undefined fields와 invalid coordinates는 오류다.
 - 저장된 authored layout은 exact graph input 한 개, next revision, resolved options, concrete node 좌표, algorithm version, optional force packing과 exact source-row provenance를 가진다. Renderer와 Canvas를 호출하지 않는다. `editSemantic`을 명시 child로 호출한다.
 - 공개 수정은 [editLayout](LAYOUTS.md#editlayout)이 소유한다. Graph/source revision은 연결된 layout을 명시적으로 다시 계산한다. 저장 복원은 exact node membership/order, fixed/circular coordinates, force pins/component membership/bounds와 provenance를 검증하며 force solver를 실행하지 않는다.
+
+- Coordinate revision evidence: `test/unit/resources/graph-coordinate-revisions.test.js`.
 
 ### Formal values — `layoutGraph`
 
