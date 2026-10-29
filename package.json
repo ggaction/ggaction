@@ -97,6 +97,10 @@
     "./graph": {
       "types": "./types/graph.d.ts",
       "default": "./src/graph.js"
+    },
+    "./animation": {
+      "types": "./types/animation.d.ts",
+      "default": "./src/animation.js"
     }
   },
   "scripts": {

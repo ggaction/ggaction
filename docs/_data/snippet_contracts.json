@@ -1,5 +1,45 @@
 [
   {
+    "file": "api/animation.md",
+    "block": 1,
+    "heading": "Prepare, save, and sample",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"rows\""
+    ],
+    "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
+    "sha256": "c0fca538e59f2d5bd064b0f409e2577f25d2e1ba5af1f071c6a0c030a9e916a7",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 2,
+    "heading": "Render the same frame",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "26a9f09fb97fb8488b209de42d800aa60d449631d334c1eeb6d207517fbbfaf3",
+    "executable": false
+  },
+  {
+    "file": "api/animation.md",
+    "block": 3,
+    "heading": "Play with an explicit clock",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [
+      "performance"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ca79a2c86c14397f823ca1702a66c95996d919157c7e5d3e9aabb0c9350f91bd",
+    "executable": false
+  },
+  {
     "file": "api/appearance/mark-style.md",
     "block": 1,
     "heading": "Outlines and text halos",

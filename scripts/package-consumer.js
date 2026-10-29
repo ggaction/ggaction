@@ -79,7 +79,8 @@ export async function testPackageConsumer(options) {
       { id: "bundle-basic", run: () => bundle("ggaction/basic") },
       { id: "bundle-svg", run: () => bundle("ggaction/svg") },
       { id: "bundle-interaction", run: () => bundle("ggaction/interaction") },
-      { id: "bundle-graph", run: () => bundle("ggaction/graph") }
+      { id: "bundle-graph", run: () => bundle("ggaction/graph") },
+      { id: "bundle-animation", run: () => bundle("ggaction/animation") }
     ], path.join(root, ".artifacts/consumers/qualification.json"));
     const mcp = results.mcp;
     const fullBundle = results["bundle-full"];
@@ -88,7 +89,7 @@ export async function testPackageConsumer(options) {
     return {
       ...consumer,
       mcp,
-      browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle, interaction: results["bundle-interaction"], graph: results["bundle-graph"] }
+      browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle, interaction: results["bundle-interaction"], graph: results["bundle-graph"], animation: results["bundle-animation"] }
     };
   } finally {
     await consumer.cleanup();

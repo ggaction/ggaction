@@ -48,6 +48,14 @@
       {
         "type": "prefix",
         "path": "unit/animation/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/animation-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-offline.browser.js"
       }
     ],
     "architecture": [
