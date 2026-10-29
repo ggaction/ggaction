@@ -154,3 +154,8 @@ Source pin 뒤built links/4width/Axe/수동화면 증거는 qualification record
 Generator완료후에는 size2만 남았으며 실제1,030,081bytes의최소cap을적용해55/55가 통과했다.
 초기preflight는시스템Ruby2.6PATH를사용해실패했으며기존Ruby3.2PATH로수리해통과했다.
 신규installedcase의manifest누락1개는정확case등록으로수리했고owning2/2가통과했다.
+
+C source `4931f38f3`를 고정한 뒤 docs49/49, built172pages/1531LLM,
+320/390/768/1440px Axe0·overflow0을 통과했다. 320px와1440px 화면도 직접 확인했다.
+동일 tar 세Node검증 및 최초실패·최종한도·명령·fingerprint는
+[resize qualification](resize-evidence/qualification.json)에 보존한다. Camera와 player 후행 의무는 유지한다.
