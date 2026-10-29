@@ -1,0 +1,140 @@
+{
+  "status": "qualified",
+  "base": "e5e7f3987",
+  "merged": "6c95fb858",
+  "source": "3a9901e92",
+  "routeCrossTest": "ffa85f9a8",
+  "qualificationBase": "eed107a7f",
+  "scope": "STEP059 region gestures with Routes and nested responsive layouts",
+  "checks": {
+    "focused": 85,
+    "angularNested": 11,
+    "graphRouteCross": 6,
+    "criticalUnit": 159,
+    "contracts": 35,
+    "finalContracts": 35,
+    "inventory": 7,
+    "realistic": 16,
+    "browser": 6,
+    "rendererPairs": 2,
+    "docs": 190,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "sourceHashes": {
+    "src/actions/selection/actions.js": "ee5b0e75c83a1773c4071804092298fe21b9a81668ea5b7e155d658e988dfb3f",
+    "src/actions/selection/index.js": "7374b31a287a5078f013e490822e76effdf67c39b5883c1b1d7561bac4b6dab8",
+    "src/actions/selection/preview.js": "a49dd2ac36ed0115d3254e1e026ae7284da9ef3d7730ae8ac7f008f97a93e1a2",
+    "src/actions/selection/resources.js": "c741da6dc1f6ed359b185fba98430849d14662eb88284c3ac4864b6938e8381a",
+    "src/grammar/arcs.js": "006ce64871695533c3841bcec048ce5b19c1eb5e9cc4f7a1a4fa44b3cef44a1b",
+    "src/grammar/lassoSelection.js": "b807859a1108f5458ee7bf4003462cceb1a67f4892772247f2084a68a8506384",
+    "src/grammar/polar.js": "44a8569d4870e86d3a37df2c28a40ac301e89cd622bc04ec9832fff3cc36f249",
+    "src/grammar/scales/angularInversion.js": "929f21cfc5f6051d74c64152867bc8203087c4b8d4b5817de90aa00105daa63b",
+    "src/grammar/scales/inversion.js": "f2d6410b25c13dd3e5279e8231197594f58a9b71f98f672b85d97b0294f1286e",
+    "src/grammar/selectionExpression.js": "ef956dbc719ff55c52118e5f747d12e66aa4a7d5dc38d4b60b363070e264046e",
+    "src/grammar/selectionRegion.js": "9d6683f2ec853cb769fabb879ea8c2409e4e568e61d74de8b75acf8e852d25d5",
+    "src/inspectionDescriptors.js": "1c6e31580d0a16811035d7459472640dc654a245b20de9fd115985a1fe93b637",
+    "src/interaction/hitProgram.js": "5d945b642d3e7af44af07cd793b514a9b9c15fd676f29e5e364eb7eea185af59",
+    "src/interaction/pointerCapture.js": "73e2812e51b735606020fce0ced4b3ec94d1306baef94ac795a4e83fc5a0e177",
+    "src/interaction/regionSelection.js": "833e47bfeab0685d019252fa16fd647f1289ebff82b9b601d2def226e691427c",
+    "src/interaction/session.js": "f65ad6c8e7f155525878c91dde0d0012518d3ee51ff8acc34f1223b8d67aaae4",
+    "src/materialization/conditionalArcStructure.js": "adfe96398d2d4c30fc229b4d7f7b976f94cc897669a3e40b4c8108594f76d138",
+    "src/materialization/resourceState.js": "8a543cfa5d703671ba6e7127c7fa7f7600ccbf6ea7144b794d32117b47f48cdf",
+    "src/materialization/selection/expression.js": "3cbe698726219771ed3863c30d40d18682db4b296bdab27e48e5c777faafcb06",
+    "src/materialization/selection/itemSelection.js": "4cda7cbb2aec43ecef2d86b5136c0d2868b675fa30a7a9430d73a18675ab9188",
+    "src/renderers/transitionScene.js": "e20c537923307ba3a1bff3256f615dddd0965dd44e9ec15900ad3effd1c67804",
+    "src/sceneSnapshot.js": "ee1b04769e7fc50511ef3c6a6ea6e0ee5d37f873d664fa9911db26827e71d954",
+    "src/selectors/selectionResources.js": "ec381ab21b3eae0a1d8fdb330512fb6d66981020a635c7d82b37b0854dd7ecf9",
+    "types/index.d.ts": "f509231e8df2565a65b1b23ff6c26e925d50fe3f5e83ea865cfe1dc47b8c9de6",
+    "types/interaction.d.ts": "b3afa4582e69a821244c59e498144de8ec866085c929f99aa9f0f17a423f27a0",
+    "types/program.d.ts": "d27c64594deeff2004d09c0c78186cd9bb17c9086b6995cd04140e85c95e60f6"
+  },
+  "unchangedIncomingCriticalOwners": {
+    "src/grammar/selectionRegion.js": "9d6683f2ec853cb769fabb879ea8c2409e4e568e61d74de8b75acf8e852d25d5",
+    "src/grammar/lassoSelection.js": "b807859a1108f5458ee7bf4003462cceb1a67f4892772247f2084a68a8506384",
+    "src/grammar/scales/angularInversion.js": "929f21cfc5f6051d74c64152867bc8203087c4b8d4b5817de90aa00105daa63b",
+    "src/interaction/regionSelection.js": "833e47bfeab0685d019252fa16fd647f1289ebff82b9b601d2def226e691427c",
+    "src/actions/selection/preview.js": "a49dd2ac36ed0115d3254e1e026ae7284da9ef3d7730ae8ac7f008f97a93e1a2"
+  },
+  "criticalFloors": {
+    "allNewOwners": "existing 95/90/100 floors passed",
+    "actual": {
+      "lines": 100,
+      "branches": 97.86,
+      "functions": 100
+    },
+    "minimumIndividualBranches": 94.92
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/brush-integration-final/ggaction-0.0.26.tgz",
+    "entries": 980,
+    "packedBytes": 1404154,
+    "unpackedBytes": 6401161,
+    "sha256": "1471237d07cfca69f6b23862516e7bc69c38afdf1ddb2718187c4e6e95f19f45"
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 687919,
+        "ggaction/basic": 377255,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 108204,
+        "ggaction/graph": 43572
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 686123,
+        "ggaction/basic": 376436,
+        "ggaction/svg": 20055,
+        "ggaction/interaction": 107564,
+        "ggaction/graph": 43411
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 687919,
+        "ggaction/basic": 377255,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 108204,
+        "ggaction/graph": 43572
+      }
+    }
+  ],
+  "limits": {
+    "entries": 980,
+    "packedBytes": 1405000,
+    "unpackedBytes": 6402000,
+    "ggaction": 688000,
+    "ggaction/basic": 378000,
+    "ggaction/svg": 25000,
+    "ggaction/interaction": 109000,
+    "ggaction/graph": 44000,
+    "searchBytes": 982000
+  },
+  "limitsOfEvidence": [
+    "Not whole-library coverage or final STEP074/077 qualification.",
+    "The common 27 tests were run on preceding main e5e7f3987; new gestures have separate 5 real-dataset x 3-grain tests and their AT36 matrix.",
+    "Initial test-only failures and generated-import race remain in the evidence. No runtime source correction was needed during this gesture integration."
+  ]
+}

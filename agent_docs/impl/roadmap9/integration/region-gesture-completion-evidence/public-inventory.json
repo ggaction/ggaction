@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "publicActions": 338,
+    "topLevelOptionPaths": 3197,
+    "nestedOptionPaths": 28271,
+    "optionPaths": 31468,
+    "requiredOptionPaths": 21026,
+    "excludedOptionPaths": 10442,
+    "topLevelCategoricalPaths": 1119,
+    "topLevelLiteralValues": 4130,
+    "literalFamilies": 262,
+    "pathLiteralRequirements": 15175,
+    "familyLiteralRequirements": 535,
+    "pathDiversityRequirements": 508
+  },
+  "ledger": 37080
+}
