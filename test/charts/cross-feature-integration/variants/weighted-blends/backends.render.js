@@ -5,10 +5,10 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { renderToPNGBuffer } from "../../../src/renderers/png.js";
-import { renderToPDFBuffer } from "../../../src/renderers/pdf.js";
-import { weightedBlendFixture } from "../../support/weighted-blends.js";
-const directory = new URL("../../../.artifacts/test/png/charts/weighted-blends/", import.meta.url);
+import { renderToPNGBuffer } from "../../../../../src/renderers/png.js";
+import { renderToPDFBuffer } from "../../../../../src/renderers/pdf.js";
+import { weightedBlendFixture } from "../../../../support/weighted-blends.js";
+const directory = new URL("../../../../../.artifacts/test/png/charts/weighted-blends/", import.meta.url);
 async function samples(buffer, checks, opaque = false) {
   const image = await loadImage(buffer), canvas = createCanvas(image.width, image.height), context = canvas.getContext("2d");context.drawImage(image, 0, 0);
   return checks.map(({ point: [x, y], rgba, tolerance }) => {
@@ -20,7 +20,7 @@ async function samples(buffer, checks, opaque = false) {
 }
 for (const kind of ["opaque", "translucent", "topology", "many", "unequal", "endpoint", "text", "image"]) test(`weighted ${kind} keeps literal colors in PNG and per-item PDF lowering`, async () => {
   await mkdir(directory, { recursive: true });
-  const bytes = kind === "text" ? await readFile(new URL("../../fixtures/fonts/metric-fixture.ttf", import.meta.url)) : undefined;
+  const bytes = kind === "text" ? await readFile(new URL("../../../../fixtures/fonts/metric-fixture.ttf", import.meta.url)) : undefined;
   const font = bytes && { contentHash: createHash("sha256").update(bytes).digest("hex"), mimeType: "font/ttf", byteLength: bytes.length,
     family: "ggaction Metric Fixture", style: "normal", weight: 400, metricsProviderVersion: "fixture@1",
     payload: { encoding: "base64", data: bytes.toString("base64") } };

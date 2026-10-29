@@ -300,4 +300,4 @@ filter extent를 제한한다. PDF는 중간 weighted item만 논리1px raster�
 
 Evidence: `test/unit/weighted-blend.test.js`, `test/unit/renderers/weighted-blend.test.js`,
 `test/unit/renderers/weighted-blend-assets.test.js`, `test/browser/weighted-blends.browser.js`,
-`test/charts/weighted-blends/backends.render.js`, `test/contracts/weighted-blend-types.test.js`.
+`test/charts/cross-feature-integration/variants/weighted-blends/backends.render.js`, `test/contracts/weighted-blend-types.test.js`.

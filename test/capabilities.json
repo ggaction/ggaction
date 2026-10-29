@@ -1999,7 +1999,7 @@
       },
       {
         "type": "prefix",
-        "path": "charts/weighted-blends/"
+        "path": "charts/cross-feature-integration/variants/weighted-blends/"
       }
     ]
   },
