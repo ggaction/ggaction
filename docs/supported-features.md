@@ -29,6 +29,23 @@ and data grain. The [canonical channel tables](./api/encodings.md) own mark, fie
 scale-family, and item-grain compatibility. A facade's convenient default is not the
 complete support limit of its underlying mark.
 
+## Native chart scope
+
+[Pyramid](./api/pyramid.md) represents ordered stages with explicit values; stage
+labels do not replace row identity. [Marginal](./recipes/marginal.md),
+[Bullet](./recipes/bullet.md), and [Combo](./recipes/combo.md) are recipes built
+from public actions, not separate chart constructors. Use independent panels
+for different Y measures and one shared Y mapping for overlays in a frame.
+
+Dedicated KPI and Gauge charts are excluded from the built-in API.
+Set-intersection visualizations are outside the current chart API. Public
+extension primitives remain available for custom compositions.
+
+ggaction does not require an external chart engine, translation adapter, or
+reference-chart matching service. Its native actions produce the concrete
+output consumed by every renderer. Optional raster/font providers and geographic
+mathematics serve those native operations.
+
 ## Shared foundations
 
 | Area | Supported now |

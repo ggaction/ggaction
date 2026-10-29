@@ -1,0 +1,93 @@
+{
+  "requirements": 30,
+  "groups": {
+    "total": 79,
+    "passed": 0,
+    "failed": 0,
+    "pending": 79,
+    "notApplicable": 0
+  },
+  "consumers": {
+    "total": 577,
+    "passed": 0,
+    "failed": 0,
+    "pending": 577,
+    "notApplicable": 0
+  },
+  "status": "pending",
+  "candidate": null,
+  "updatedOwners": [
+    {
+      "id": "AT-83",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/PYRAMID.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/unit/pyramid-plot.test.js",
+          "test/charts/pyramid/primitive.test.js",
+          "test/charts/pyramid/public.test.js"
+        ]
+      }
+    },
+    {
+      "id": "AT-84",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/AXES.md"
+        ],
+        "tests": [
+          "test/contracts/composition-recipes.test.js",
+          "test/unit/composition-recipes.test.js",
+          "test/contracts/realistic-composition-recipes.test.js",
+          "test/charts/marginal/renderer.render.js",
+          "test/browser/composition-recipes.browser.js"
+        ]
+      }
+    },
+    {
+      "id": "AT-87",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js"
+        ]
+      }
+    },
+    {
+      "id": "AT-88",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/native-api-policy.test.js"
+        ]
+      }
+    },
+    {
+      "id": "AT-92",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/package-boundaries.test.js"
+        ]
+      }
+    }
+  ]
+}
