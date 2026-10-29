@@ -4390,3 +4390,7 @@ interaction127,988gzip에 각각772,400/128,000 한도를 적용하고 나머지
 이전1,074,700 한도 실패를 보존하고 최소100byte 한도1,075,900으로 조정한다.
 일반 문서와 source-free tutorial은 같은 실제 Chromium 실행 owner를 공유하며
 JavaScript와 HTML의 독립 hash를 보존한다. Runtime archive ecbd493d…는 그대로다.
+
+Native control host 예제의 합산 검색 payload는1,076,418bytes다.
+이전1,075,900 한도 실패를 보존하고 최소100byte 한도1,076,500을 적용한다.
+정적 native 제어는 기존 command/history reducer를 사용하며 runtime archive는 ecbd493d…로 유지한다.
