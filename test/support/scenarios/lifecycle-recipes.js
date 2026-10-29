@@ -1354,6 +1354,10 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: rows.map(row => [row.x, row.positive]) } })
     .createGeoLineMark({ id: "directGeoLinesMark", coordinate: "directGeoPlane", geometry: "directGeoLines", strokeWidth: 1 })
     .editGeoLineMark({ target: "directGeoLinesMark", opacity: .6 })
+    .createGeometryData({ id: "directGeoWinding", format: "geojson", coordinateKind: "geographic", polygonWinding: factors.includeEmpty ? "right-hand" : "left-hand", featureKey: "id",
+      values: { type: "FeatureCollection", features: rows.map((row, index) => ({ type: "Feature", id: row.id,
+        properties: { category: row.category }, geometry: { type: "Point", coordinates: [index % 180, row.positive % 80] } })) } })
+    .editGeometryData({ target: "directGeoWinding", polygonWinding: factors.includeEmpty ? "left-hand" : "right-hand" })
     .createProjection({ id: "directGeoSphere", type: "equirectangular", translatePx: [200, 150] })
     .createCoordinate({ id: "directGeoGridFrame", type: "geo", projection: "directGeoSphere" })
     .createGraticule({ id: "directGeoGrid", coordinate: "directGeoGridFrame", extentDeg: [[-40, -20], [40, 20]], stepDeg: [20, 20] })
@@ -1419,6 +1423,8 @@ function buildDirectDataResources(factors) {
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
     .encodeY({ target: "resourcePoints", field: "positive", scale: { id: "directContours-y" } })
+    .createAnnotation({ id: "resourceNote", space: "screen", x: 20, y: 20, text: rows[0].category })
+    .editAnnotation({ target: "resourceNote", dx: 4 })
     .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"});
   const panel = () => chart().createCanvas(cartesianCanvas(factors))
     .createData({ id: "directSource", values: rows });
@@ -2321,7 +2327,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
+      "createAnnotation", "editAnnotation", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2579,6 +2585,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createAnnotation", "editAnnotation",
   "createProjection", "editProjection", "navigateProjection",
   "createGeoAnnotation", "editGeoAnnotation",
   "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",

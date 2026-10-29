@@ -2234,20 +2234,27 @@ export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
 export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
 export type GeometryFeatureKey = string | readonly string[];
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 export interface GeometrySourceResource {
   readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly [];
   readonly options: { readonly method: "geo"; readonly format: "geojson" | "topojson"; readonly coordinateKind: "geographic" | "planar";
-    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits> };
+    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits>;
+    readonly polygonWinding?: "right-hand" | "left-hand" };
   readonly result: {
     readonly features: readonly { readonly id?: string | number; readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
       readonly geometry: GeographicGeometry | null; readonly sourcePath: readonly (string | number)[]; readonly drawable: boolean }[];

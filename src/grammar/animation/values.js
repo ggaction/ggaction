@@ -39,6 +39,7 @@ export function interpolatePositiveScale(from, to, progress) {
   validateUnitInterval(progress, "Animation progress");
   if (progress === 0) return from;
   if (progress === 1) return to;
+  if (from === to) return from;
   return Math.exp(interpolateNumber(Math.log(from), Math.log(to), progress));
 }
 

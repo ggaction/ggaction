@@ -1,4 +1,6 @@
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }

@@ -3395,10 +3395,14 @@ Related types: [`GeoLODLevels`](#type-geolodlevels).
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -6675,6 +6679,8 @@ Related types: [`GeoShapeMarkOptions`](#type-geoshapemarkoptions).
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 

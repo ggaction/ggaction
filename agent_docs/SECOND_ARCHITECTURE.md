@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 771,000 bytes |
+| `ggaction` | 771,400 bytes |
 | `ggaction/basic` | 421,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
@@ -4137,6 +4137,15 @@ geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는
 초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
 않는다. 공개 action/session/player 통합은 별도 후행 경계다.
 
+동일 camera interpolation owner의 private prepare/sample 경계는 정규화된 두 projection
+endpoint와 version·호환 판정만 불변 plain data로 보존한다. 복원 샘플은 닫힌 shape와
+정합성을 검사하며 geometry fit·데이터 inference·pixel inverse를 수행하지 않는다.
+현재 camera frame의 parameters를 다음 준비의 from으로 전달하여 재기준하고, projection
+또는 clip이 호환되지 않는 경우 양 endpoint를 유지하는 crossfade 결정을 반환한다.
+private camera 준비값 추가 후 동일 package는1,048entries/6,761,201unpacked,
+Node22 packed1,484,277 및 Node20·24 packed1,487,978bytes다. unpacked cap만
+6,763,000으로 올리고 기존 entries1,048/packed1,489,000은 유지한다.
+
 공개 Geo camera는 `actions/geo/camera.js`의 `navigateProjection` facade가 기존 Canvas와
 projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
 읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
@@ -4299,3 +4308,24 @@ package는1113entries/1,584,135packed/7,212,723unpacked bytes다. 최소 한도�
 SVG24,765 / graph43,923은 기존 한도 안이며 interaction122,074는 이전121,200을
 초과하여 최소100byte 한도122,100으로 조정한다. private pointer arbitration만
 1모듈 추가하며 native action/renderer/package export 경계는 그대로다.
+
+명시 geographic polygon winding은 기존 모듈을 확장하며 source resource의
+options 한 곳만 정책을 소유한다. Join/LOD의 exact input traversal과 transient
+projection/centroid 변환은 기존 materialization feature owner가 공유한다.
+retained source의 좌표/순서/hash와 기존 기본 right-hand 및 보완 영역은 유지한다.
+Node20/24 packed1,487,545bytes, Node22 packed1,483,856bytes,
+unpacked6,759,508bytes, entries1,048을 측정해 cap을1,489,000 / 6,761,000 /
+1,048로 갱신했다. 기존 unpacked cap 실패는 최초 증거로 보존한다.
+
+Geo winding·private camera를 합친 Node22 canonical staging은1113entries/1,585,560packed/
+7,218,612unpacked bytes다. 기존 entries 한도는 유지하고 최소1,000byte 단위로
+1,586,000/7,219,000을 적용한다. 원 winding의 source options와 native camera의
+quaternion/log scale 수치 owner를 재사용하며 private camera track은 새 public entry가 아니다.
+
+동일 Geo 합산 archive(6c3d3fb3…)의 Node22 설치 bundle은 Full771,345 / Basic421,200 /
+SVG24,765 / graph43,923 / interaction122,074gzip이다. Full만 최소100byte 단위
+771,400으로 조정하고 나머지 네 한도는 유지한다. 위 package·bundle 실측은 최종077
+clean candidate qualification을 대신하지 않는다.
+
+Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 payload는1,066,690bytes다.
+이전1,066,100 한도 실패를 보존하고 최소100byte 단위1,066,700을 적용한다.

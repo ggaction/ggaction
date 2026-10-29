@@ -62,7 +62,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
           : createFlowResource({ ...inputs, definition: flowSourceDefinition(previous) });
       }
     } else if (previous.kind === "projection") {
-      resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]) });
+      resource = createProjectionResource({ ...identity, options: previous.options, geometry: resourceInput(previous.inputs[0]), input: resourceInput });
     } else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ ...identity, geometry: resourceInput(previous.inputs[0]), dataset: source(previous.inputs[1]), definition });

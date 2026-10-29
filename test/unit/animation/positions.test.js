@@ -34,6 +34,16 @@ test("logarithmic values retain their meaning while domain endpoints morph geome
   close(negative.position, 200 - mid.position);
   const tiny = endpoint(Number.MIN_VALUE, { type: "log", domain: [Number.MIN_VALUE, 4 * Number.MIN_VALUE] });
   assert.equal(sample(prepare(tiny, tiny), .5).value, Number.MIN_VALUE);
+  const stationary = endpoint(150, { type: "log", domain: [150, 150.00000000000003] });
+  const stationaryPlan = prepare(stationary, stationary);
+  const exact = sample(stationaryPlan, 0);
+  for (const t of [.25, .5, .75]) {
+    const frame = sample(stationaryPlan, t);
+    assert.equal(frame.kind, "position");
+    assert.equal(frame.value, 150);
+    assert.deepEqual(frame.scale, exact.scale);
+    assert.equal(frame.position, exact.position);
+  }
 });
 
 test("all admitted continuous transforms agree with independent value-space formulas", () => {

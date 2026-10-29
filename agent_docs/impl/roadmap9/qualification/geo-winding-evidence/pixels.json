@@ -1,0 +1,368 @@
+{
+  "Canvas": [
+    {
+      "region": "Pacific Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Atlantic Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Indian Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "North America",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Africa",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Asia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Australia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Antarctica",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    }
+  ],
+  "PNG": [
+    {
+      "region": "Pacific Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Atlantic Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Indian Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "North America",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Africa",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Asia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Australia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Antarctica",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    }
+  ],
+  "PDF": [
+    {
+      "region": "Pacific Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Atlantic Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "Indian Ocean",
+      "actual": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "expected": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "region": "North America",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Africa",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Asia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Australia",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    },
+    {
+      "region": "Antarctica",
+      "actual": [
+        219,
+        228,
+        238,
+        255
+      ],
+      "expected": [
+        219,
+        228,
+        238,
+        255
+      ]
+    }
+  ]
+}

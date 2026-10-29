@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c170ba8b0c2f39f4a30fda663a6b8c37c3d37b7ccb5f4c4d7f943d337f4c4822",
+    "contractId": "sha256:346c9a6fa023562a1fa7563d9342e298b954097b4e6fcd9bafe0c71930eda3df",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1263,10 +1263,11 @@
         "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
         "edit-existing-annotations",
-        "prepare-native-work-before-replacing-the-program"
+        "prepare-native-work-before-replacing-the-program",
+        "combine-editing-gestures"
       ],
-      "bytes": 71987,
-      "sha256": "9881c4a27e1f4a29108f5b24fb9ebafee62b65820cc1ce6fa58da87c5b5558bd"
+      "bytes": 75591,
+      "sha256": "4ebfc0fbe2c93a2b2671f814c852d551230729db81a1c7a6b3a37fbace8a980c"
     },
     {
       "order": 74,
@@ -2207,8 +2208,8 @@
         "removemarkvisibility",
         "related"
       ],
-      "bytes": 269096,
-      "sha256": "3d65dbff3c0aa2e677c9b17094f3289e3acec0f1987f929e2b3db51bbc7c6904"
+      "bytes": 269288,
+      "sha256": "8b3a1e3303ba32353e885025069b14575756816fdf6c66b38027c2554abac177"
     },
     {
       "order": 121,
@@ -2569,8 +2570,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 71072,
-      "sha256": "4bce98ef0b4bde6057d53ce18e07e867fbcff0f0f1658388fa0278de40f826b3"
+      "bytes": 71571,
+      "sha256": "c196ab14764e5184be5a5c70a41c3fdd6f73cf5baa758e0961ec436040206c2b"
     },
     {
       "order": 128,
@@ -3502,8 +3503,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 512568,
-      "sha256": "f697202419fe83e3264ba2056904e5d106f686490b46d32ad44dde327ed493b5"
+      "bytes": 512938,
+      "sha256": "02f3517d5c10ceb39e42adc7ef2f46322004cd3bd3805ac02217a80cab4c3cdc"
     },
     {
       "order": 129,
@@ -3880,7 +3881,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "561cd2d8344d83c5ed96579384d588ef76f026657afb7c8e407d989db3af305b"
+      "sha256": "e93f5534ce5d85a9ad559f1b1b10384c23bafa209376bb3c4ca9fdf4ff7c662a"
     },
     {
       "order": 152,
@@ -4115,8 +4116,8 @@
         "editgeoannotation",
         "label-feature-fields-and-graticules"
       ],
-      "bytes": 29230,
-      "sha256": "4cec0679d1299ffc9698b23c064aa6afebcba5a6fb7cf749b16fa0013e479dba"
+      "bytes": 29818,
+      "sha256": "4e3c50e4973b6be0425cfe380366013df2cc9c22ed59b28cb329d52331d63481"
     },
     {
       "order": 166,
