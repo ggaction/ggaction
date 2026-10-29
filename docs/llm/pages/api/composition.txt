@@ -30,7 +30,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-single-y/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -96,7 +96,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-single-y/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -172,3 +172,22 @@ Child guide definitions remain intact, so disabling color sharing restores their
 local legends. Combined legends that also explain unshared channels (such as
 shape or size) remain local. Nested shared color guides are collected once.
 Legend reservation and parent titles are included in the final Canvas bounds.
+
+## Nested responsive panels
+
+A facet inside a named concatenation keeps its resolved shared or independent
+scale domains when responsive guides, descendant themes or prepared font metrics
+change the child plot ranges. Full-grid empty cells retain their shared scales
+without producing marks. Content spacing reserves rotated headers, visible
+strokes, shared legends and a common trailing footer across ragged rows.
+
+Resize the retained unit with `editCanvas({ target: { childPath: ["panels"],
+facetSource: true }, width: 420 })`; the complete child and every ancestor
+snapshot refreshes. A composition root is not a unit Canvas resize target.
+Unknown measurements and unsatisfied layout fail atomically. See the
+[nested panel tutorial](../../../tutorials/nested-responsive/) for the complete flow.
+
+Resource-only inferred graphs attached to the facet's native-mark source are
+projected into each cell along with their dependent candidate graphs and layouts.
+Their input references use that cell's exact derived dataset identity. This does
+not add GraphPlot facet support.

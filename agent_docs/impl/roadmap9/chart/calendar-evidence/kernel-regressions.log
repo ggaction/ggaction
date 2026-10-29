@@ -1,0 +1,496 @@
+TAP version 13
+# Subtest: public day completion includes all leap-year dates with explicit missing values and no input contribution
+ok 1 - public day completion includes all leap-year dates with explicit missing values and no input contribution
+  ---
+  duration_ms: 30.250792
+  type: 'test'
+  ...
+# Subtest: public calendar completion reuses literal DST boundaries rather than fixed day milliseconds
+ok 2 - public calendar completion reuses literal DST boundaries rather than fixed day milliseconds
+  ---
+  duration_ms: 9.71
+  type: 'test'
+  ...
+# Subtest: completion keeps duplicate observations, group order, zero and null distinct
+ok 3 - completion keeps duplicate observations, group order, zero and null distinct
+  ---
+  duration_ms: 0.40375
+  type: 'test'
+  ...
+# Subtest: empty grouped calendars retain numeric key, nullable fill and member schema without inventing groups
+ok 4 - empty grouped calendars retain numeric key, nullable fill and member schema without inventing groups
+  ---
+  duration_ms: 7.45925
+  type: 'test'
+  ...
+# Subtest: calendar calls reject unaligned keys, invalid dates, zones and conflicting modes atomically
+ok 5 - calendar calls reject unaligned keys, invalid dates, zones and conflicting modes atomically
+  ---
+  duration_ms: 54.219917
+  type: 'test'
+  ...
+# Subtest: calendar completion rejects invalid grouping and source shape without repairing rows
+ok 6 - calendar completion rejects invalid grouping and source shape without repairing rows
+  ---
+  duration_ms: 1.881792
+  type: 'test'
+  ...
+# Subtest: calendar completion bounds days, groups, duplicates and cumulative cell work before expansion
+ok 7 - calendar completion bounds days, groups, duplicates and cumulative cell work before expansion
+  ---
+  duration_ms: 91.485167
+  type: 'test'
+  ...
+# Subtest: time bucketing, explicit sum and calendar completion retain exact contributing row references
+ok 8 - time bucketing, explicit sum and calendar completion retain exact contributing row references
+  ---
+  duration_ms: 29.087125
+  type: 'test'
+  ...
+# Subtest: calendar edits replace whole domains and clean up the prior mode while preserving snapshots
+ok 9 - calendar edits replace whole domains and clean up the prior mode while preserving snapshots
+  ---
+  duration_ms: 29.028584
+  type: 'test'
+  ...
+# Subtest: source revisions rederive daily sums and empty schemas, while out-of-range revisions fail atomically
+ok 10 - source revisions rederive daily sums and empty schemas, while out-of-range revisions fail atomically
+  ---
+  duration_ms: 27.930375
+  type: 'test'
+  ...
+# Subtest: calendar completion feeds existing temporal marks, selections, facets, composition and scenes
+ok 11 - calendar completion feeds existing temporal marks, selections, facets, composition and scenes
+  ---
+  duration_ms: 55.233792
+  type: 'test'
+  ...
+# Subtest: public calendar completion is independent of the process timezone
+ok 12 - public calendar completion is independent of the process timezone
+  ---
+  duration_ms: 1094.104917
+  type: 'test'
+  ...
+# Subtest: explicit week starts retain their year-boundary behavior beside day completion
+ok 13 - explicit week starts retain their year-boundary behavior beside day completion
+  ---
+  duration_ms: 0.868334
+  type: 'test'
+  ...
+# Subtest: explicit UTC date formats preserve day/month order and reject calendar rollover
+ok 14 - explicit UTC date formats preserve day/month order and reject calendar rollover
+  ---
+  duration_ms: 0.941791
+  type: 'test'
+  ...
+# Subtest: typed parsing retains original rows and lets a public filter remove missing timestamps
+ok 15 - typed parsing retains original rows and lets a public filter remove missing timestamps
+  ---
+  duration_ms: 24.326625
+  type: 'test'
+  ...
+# Subtest: rejects an unrepresentable bucket without changing source data or trace
+ok 16 - rejects an unrepresentable bucket without changing source data or trace
+  ---
+  duration_ms: 6.158708
+  type: 'test'
+  ...
+# Subtest: creates immutable UTC time-unit provenance and materialized values
+ok 17 - creates immutable UTC time-unit provenance and materialized values
+  ---
+  duration_ms: 2.783125
+  type: 'test'
+  ...
+# Subtest: uses explicit or current source and feeds an ordinary temporal encoding
+ok 18 - uses explicit or current source and feeds an ordinary temporal encoding
+  ---
+  duration_ms: 17.483709
+  type: 'test'
+  ...
+# Subtest: replays the canonical materializer and rederives after facet partitioning
+ok 19 - replays the canonical materializer and rederives after facet partitioning
+  ---
+  duration_ms: 18.208625
+  type: 'test'
+  ...
+# Subtest: rejects invalid calls atomically and owns caller options
+ok 20 - rejects invalid calls atomically and owns caller options
+  ---
+  duration_ms: 1.756084
+  type: 'test'
+  ...
+# Subtest: creates UTC and regional calendar weeks and nominal weekdays
+ok 21 - creates UTC and regional calendar weeks and nominal weekdays
+  ---
+  duration_ms: 9.659583
+  type: 'test'
+  ...
+# Subtest: resolves DST gaps, folds, non-hour offsets, and skipped dates
+ok 22 - resolves DST gaps, folds, non-hour offsets, and skipped dates
+  ---
+  duration_ms: 3.222791
+  type: 'test'
+  ...
+# Subtest: keeps explicit zones in provenance and rejects week-policy conflicts
+ok 23 - keeps explicit zones in provenance and rejects week-policy conflicts
+  ---
+  duration_ms: 1.002084
+  type: 'test'
+  ...
+# Subtest: infers a collision-checked time-unit output with three options
+ok 24 - infers a collision-checked time-unit output with three options
+  ---
+  duration_ms: 2.985583
+  type: 'test'
+  ...
+# Subtest: Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+ok 25 - Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+  ---
+  duration_ms: 1.256458
+  type: 'test'
+  ...
+# Subtest: all week starts place leap-year cells against independent Gregorian arithmetic
+ok 26 - all week starts place leap-year cells against independent Gregorian arithmetic
+  ---
+  duration_ms: 63.8075
+  type: 'test'
+  ...
+# Subtest: month polygons exactly cover emitted cells with independent area and perimeter
+ok 27 - month polygons exactly cover emitted cells with independent area and perimeter
+  ---
+  duration_ms: 8.657042
+  type: 'test'
+  ...
+# Subtest: explicit omission preserves separate islands and a missing-day hole
+ok 28 - explicit omission preserves separate islands and a missing-day hole
+  ---
+  duration_ms: 4.609333
+  type: 'test'
+  ...
+# Subtest: partial multi-year ranges keep calendar ordering and 54-week frames
+ok 29 - partial multi-year ranges keep calendar ordering and 54-week frames
+  ---
+  duration_ms: 0.289
+  type: 'test'
+  ...
+# Subtest: empty and zero-valued inputs retain their distinct explicit completion semantics
+ok 30 - empty and zero-valued inputs retain their distinct explicit completion semantics
+  ---
+  duration_ms: 0.634
+  type: 'test'
+  ...
+# Subtest: duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+ok 31 - duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+  ---
+  duration_ms: 36.949042
+  type: 'test'
+  ...
+# Subtest: spring and fall transitions group instants by civil day without adding 24-hour durations
+ok 32 - spring and fall transitions group instants by civil day without adding 24-hour durations
+  ---
+  duration_ms: 1.451959
+  type: 'test'
+  ...
+# Subtest: invalid dates, nonexistent local time and skipped civil boundaries fail closed
+ok 33 - invalid dates, nonexistent local time and skipped civil boundaries fail closed
+  ---
+  duration_ms: 79.528792
+  type: 'test'
+  ...
+# Subtest: calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+ok 34 - calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+  ---
+  duration_ms: 31.789917
+  type: 'test'
+  ...
+# Subtest: calendar results isolate caller data and freeze every shared cell and boundary
+ok 35 - calendar results isolate caller data and freeze every shared cell and boundary
+  ---
+  duration_ms: 3.865542
+  type: 'test'
+  ...
+# Subtest: two-dimensional Gaussian estimates match literal analytic density and anisotropic bandwidth
+ok 36 - two-dimensional Gaussian estimates match literal analytic density and anisotropic bandwidth
+  ---
+  duration_ms: 1.424958
+  type: 'test'
+  ...
+# Subtest: shared compact kernels preserve literal support, nonnegativity and unit mass
+ok 37 - shared compact kernels preserve literal support, nonnegativity and unit mass
+  ---
+  duration_ms: 3.448
+  type: 'test'
+  ...
+# Subtest: histogram grid uses shared half-open bins with a final inclusive endpoint and density units
+ok 38 - histogram grid uses shared half-open bins with a final inclusive endpoint and density units
+  ---
+  duration_ms: 1.031
+  type: 'test'
+  ...
+# Subtest: empty and zero-mass estimators remain zero and KDE admits distant source contributions
+ok 39 - empty and zero-mass estimators remain zero and KDE admits distant source contributions
+  ---
+  duration_ms: 0.540958
+  type: 'test'
+  ...
+# Subtest: KDE rescales overflowing coordinate differences and anisotropic products before division
+ok 40 - KDE rescales overflowing coordinate differences and anisotropic products before division
+  ---
+  duration_ms: 0.166375
+  type: 'test'
+  ...
+# Subtest: density input errors and budgets fail before estimation and preserve caller data
+ok 41 - density input errors and budgets fail before estimation and preserve caller data
+  ---
+  duration_ms: 2.431375
+  type: 'test'
+  ...
+# Subtest: density refuses oversized point and bandwidth arrays before reading their elements
+ok 42 - density refuses oversized point and bandwidth arrays before reading their elements
+  ---
+  duration_ms: 0.173167
+  type: 'test'
+  ...
+# Subtest: a literal hill has a closed interpolated diamond and shared nested bands
+ok 43 - a literal hill has a closed interpolated diamond and shared nested bands
+  ---
+  duration_ms: 3.740834
+  type: 'test'
+  ...
+# Subtest: the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+ok 44 - the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+  ---
+  duration_ms: 0.501375
+  type: 'test'
+  ...
+# Subtest: donut holes, missing quads and disconnected islands keep separate winding and topology
+ok 45 - donut holes, missing quads and disconnected islands keep separate winding and topology
+  ---
+  duration_ms: 0.931916
+  type: 'test'
+  ...
+# Subtest: constant and all-missing grids retain empty levels and assign the last upper endpoint once
+ok 46 - constant and all-missing grids retain empty levels and assign the last upper endpoint once
+  ---
+  duration_ms: 0.421458
+  type: 'test'
+  ...
+# Subtest: an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+ok 47 - an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+  ---
+  duration_ms: 0.480709
+  type: 'test'
+  ...
+# Subtest: linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+ok 48 - linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+  ---
+  duration_ms: 1.944125
+  type: 'test'
+  ...
+# Subtest: invalid grid descriptors, scalar values, precision and work fail without reading accessors
+ok 49 - invalid grid descriptors, scalar values, precision and work fail without reading accessors
+  ---
+  duration_ms: 80.960375
+  type: 'test'
+  ...
+# Subtest: deterministic varied grids conserve band area with exactly one region at each sampled point
+ok 50 - deterministic varied grids conserve band area with exactly one region at each sampled point
+  ---
+  duration_ms: 49.57375
+  type: 'test'
+  ...
+# Subtest: ring assembly rejects open boundaries and orphan holes instead of inventing connections
+ok 51 - ring assembly rejects open boundaries and orphan holes instead of inventing connections
+  ---
+  duration_ms: 0.327041
+  type: 'test'
+  ...
+# Subtest: masked scalar grids conserve exactly the area of complete quads
+ok 52 - masked scalar grids conserve exactly the area of complete quads
+  ---
+  duration_ms: 28.33375
+  type: 'test'
+  ...
+# Subtest: oversized contour arrays are rejected before element descriptors are traversed
+ok 53 - oversized contour arrays are rejected before element descriptors are traversed
+  ---
+  duration_ms: 0.222709
+  type: 'test'
+  ...
+# Subtest: calendar domain includes both endpoints and all 366 Gregorian leap-year days
+ok 54 - calendar domain includes both endpoints and all 366 Gregorian leap-year days
+  ---
+  duration_ms: 21.896541
+  type: 'test'
+  ...
+# Subtest: calendar domain preserves literal IANA boundaries across gaps, folds and non-hour offsets
+ok 55 - calendar domain preserves literal IANA boundaries across gaps, folds and non-hour offsets
+  ---
+  duration_ms: 4.321208
+  type: 'test'
+  ...
+# Subtest: a repeated clock hour still belongs to one civil-day domain cell
+ok 56 - a repeated clock hour still belongs to one civil-day domain cell
+  ---
+  duration_ms: 1.012625
+  type: 'test'
+  ...
+# Subtest: calendar domains reject a civil date removed by a timezone transition
+ok 57 - calendar domains reject a civil date removed by a timezone transition
+  ---
+  duration_ms: 0.893541
+  type: 'test'
+  ...
+# Subtest: calendar domains preserve years zero through 99 without Date.UTC remapping
+ok 58 - calendar domains preserve years zero through 99 without Date.UTC remapping
+  ---
+  duration_ms: 0.875166
+  type: 'test'
+  ...
+# Subtest: calendar domain rejects malformed closed input, dates, zones and reversed ranges
+ok 59 - calendar domain rejects malformed closed input, dates, zones and reversed ranges
+  ---
+  duration_ms: 0.455875
+  type: 'test'
+  ...
+# Subtest: calendar domain owns normalized inputs and returns immutable arrays without running getters
+ok 60 - calendar domain owns normalized inputs and returns immutable arrays without running getters
+  ---
+  duration_ms: 2.07125
+  type: 'test'
+  ...
+# Subtest: calendar preflights inclusive day and boundary work limits before allocating output
+ok 61 - calendar preflights inclusive day and boundary work limits before allocating output
+  ---
+  duration_ms: 60.14975
+  type: 'test'
+  ...
+# Subtest: calendar domain is independent of the process timezone
+ok 62 - calendar domain is independent of the process timezone
+  ---
+  duration_ms: 259.157333
+  type: 'test'
+  ...
+# Subtest: line and filled contours keep opposite hole winding and stable level or band identities
+ok 63 - line and filled contours keep opposite hole winding and stable level or band identities
+  ---
+  duration_ms: 98.157542
+  type: 'test'
+  ...
+# Subtest: contour guide scales and selected final items refresh after grid and Canvas edits
+ok 64 - contour guide scales and selected final items refresh after grid and Canvas edits
+  ---
+  duration_ms: 75.704167
+  type: 'test'
+  ...
+# Subtest: contour source updates deduplicate shared scale consumers and preserve unrelated native marks
+ok 65 - contour source updates deduplicate shared scale consumers and preserve unrelated native marks
+  ---
+  duration_ms: 22.948
+  type: 'test'
+  ...
+# Subtest: contour mark edits support fixed paints and scoped composition while rejecting invalid changes atomically
+ok 66 - contour mark edits support fixed paints and scoped composition while rejecting invalid changes atomically
+  ---
+  duration_ms: 236.37625
+  type: 'test'
+  ...
+# Subtest: empty contour metadata retains valid scale domains without placeholder paths
+ok 67 - empty contour metadata retains valid scale domains without placeholder paths
+  ---
+  duration_ms: 7.383041
+  type: 'test'
+  ...
+# Subtest: density contour item lineage is bounded before graphics or selections allocate row references
+ok 68 - density contour item lineage is bounded before graphics or selections allocate row references
+  ---
+  duration_ms: 418.790292
+  type: 'test'
+  ...
+# Subtest: contour restore rejects foreign encodings and unresolved style while selection rejects stale concrete identity
+ok 69 - contour restore rejects foreign encodings and unresolved style while selection rejects stale concrete identity
+  ---
+  duration_ms: 23.140209
+  type: 'test'
+  ...
+# Subtest: contour vertical composition keeps child edits scoped and rejects implicit data partitioning
+ok 70 - contour vertical composition keeps child edits scoped and rejects implicit data partitioning
+  ---
+  duration_ms: 9.744584
+  type: 'test'
+  ...
+# Subtest: contour effects share role normalization, preserve geometry and reset before concrete materialization
+ok 71 - contour effects share role normalization, preserve geometry and reset before concrete materialization
+  ---
+  duration_ms: 41.32175
+  type: 'test'
+  ...
+# Subtest: prepared source and computed parameter closures update density contours and reject negative weights atomically
+ok 72 - prepared source and computed parameter closures update density contours and reject negative weights atomically
+  ---
+  duration_ms: 34.616167
+  type: 'test'
+  ...
+# Subtest: contour scale reassignment preserves guide ownership and fixed color removes its legend
+ok 73 - contour scale reassignment preserves guide ownership and fixed color removes its legend
+  ---
+  duration_ms: 30.54175
+  type: 'test'
+  ...
+# Subtest: one source revision preflights both geometries and materializes their shared consumers once
+ok 74 - one source revision preflights both geometries and materializes their shared consumers once
+  ---
+  duration_ms: 21.516166
+  type: 'test'
+  ...
+# Subtest: inline contours store one authoritative grid and preserve exact rings through offline restore
+ok 75 - inline contours store one authoritative grid and preserve exact rings through offline restore
+  ---
+  duration_ms: 17.78925
+  type: 'test'
+  ...
+# Subtest: density contours retain all row keys and source revisions recompute their scalar values
+ok 76 - density contours retain all row keys and source revisions recompute their scalar values
+  ---
+  duration_ms: 25.737167
+  type: 'test'
+  ...
+# Subtest: density and inline edits preserve source kind and fail without changing data or traces
+ok 77 - density and inline edits preserve source kind and fail without changing data or traces
+  ---
+  duration_ms: 14.813875
+  type: 'test'
+  ...
+# Subtest: contour restore rejects consistent-looking finite rings and grids that disagree with their source
+ok 78 - contour restore rejects consistent-looking finite rings and grids that disagree with their source
+  ---
+  duration_ms: 16.738291
+  type: 'test'
+  ...
+# Subtest: contour target inference uses current or unique eligible resources and inline removal stays local
+ok 79 - contour target inference uses current or unique eligible resources and inline removal stays local
+  ---
+  duration_ms: 2.626917
+  type: 'test'
+  ...
+# Subtest: density field and bounded-row preflight rejects missing values without invoking accessors
+ok 80 - density field and bounded-row preflight rejects missing values without invoking accessors
+  ---
+  duration_ms: 2.292916
+  type: 'test'
+  ...
+# Subtest: stored contour verification rejects structural expansion and malformed bounded rings
+ok 81 - stored contour verification rejects structural expansion and malformed bounded rings
+  ---
+  duration_ms: 17.721584
+  type: 'test'
+  ...
+1..81
+# tests 81
+# suites 0
+# pass 81
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2181.791708

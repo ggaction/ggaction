@@ -24,6 +24,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`applyTextMetrics`](../../../reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](../../../reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](../../../reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
+| [`bundleGraphEdges`](../../../reference/actions/charts-data/#bundlegraphedges) | H2 | user-facing | core |
 | [`createAdjacentPlot`](../../../reference/actions/charts-data/#createadjacentplot) | H0 | user-facing | composition |
 | [`createAnnotation`](../../../reference/actions/marks/#createannotation) | H1, H2 | user-facing | marks |
 | [`createArcMark`](../../../reference/actions/marks/#createarcmark) | H2 | user-facing | marks |
@@ -36,6 +37,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBin2DData`](../../../reference/actions/charts-data/#createbin2ddata) | H2 | user-facing | core |
 | [`createBinData`](../../../reference/actions/statistics/#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](../../../reference/actions/statistics/#createboxplot) | H0, H1 | user-facing | statistics |
+| [`createCalendarLayout`](../../../reference/actions/charts-data/#createcalendarlayout) | H2 | user-facing | core |
+| [`createCalendarPlot`](../../../reference/actions/marks/#createcalendarplot) | H2 | user-facing | marks |
 | [`createCanvas`](../../../reference/actions/charts-data/#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](../../../reference/actions/statistics/#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](../../../reference/actions/statistics/#createcomputeddata) | H1 | user-facing | statistics |
@@ -59,6 +62,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](../../../reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](../../../reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](../../../reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
+| [`createGeometryData`](../../../reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
 | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](../../../reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](../../../reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
@@ -95,6 +99,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](../../../reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](../../../reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](../../../reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
+| [`createProjection`](../../../reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
 | [`createRadarPlot`](../../../reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](../../../reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](../../../reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -158,6 +163,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](../../../reference/actions/charts-data/#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](../../../reference/actions/statistics/#editbindata) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](../../../reference/actions/statistics/#editboxplot) | H1, H3 | user-facing | statistics |
+| [`editCalendarPlot`](../../../reference/actions/marks/#editcalendarplot) | H3 | user-facing | marks |
 | [`editCanvas`](../../../reference/actions/charts-data/#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](../../../reference/actions/charts-data/#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](../../../reference/actions/statistics/#editcompletedata) | H1, H3 | user-facing | statistics |
@@ -172,6 +178,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editDerivedData`](../../../reference/actions/charts-data/#editderiveddata) | H2 | user-facing | core |
 | [`editECDFData`](../../../reference/actions/statistics/#editecdfdata) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](../../../reference/actions/charts-data/#editecdfplot) | H1, H3 | user-facing | charts |
+| [`editEdgeRoute`](../../../reference/actions/charts-data/#editedgeroute) | H3 | user-facing | core |
 | [`editEndpointPlot`](../../../reference/actions/charts-data/#editendpointplot) | H1, H3 | user-facing | charts |
 | [`editErrorBand`](../../../reference/actions/statistics/#editerrorband) | H1, H3 | user-facing | statistics |
 | [`editErrorBandBoundary`](../../../reference/actions/statistics/#editerrorbandboundary) | H1, H3 | user-facing | statistics |
@@ -186,6 +193,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](../../../reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](../../../reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](../../../reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeometryData`](../../../reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
 | [`editGradientPlot`](../../../reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](../../../reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](../../../reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
@@ -220,6 +228,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPartitionPlot`](../../../reference/actions/charts-data/#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](../../../reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
+| [`editProjection`](../../../reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
 | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](../../../reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](../../../reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |

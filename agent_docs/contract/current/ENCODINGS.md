@@ -997,6 +997,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   assignment를 동시에 두어 precedence를 추측하지 않는다.
 - Shared scales: 같은 dataset/field를 읽는 consumer만 assignment를 공유할 수 있다. Facet shared policy는 base
   resolved order를 모든 셀에 적용하고 independent policy는 각 cell dataset에서 computed intent를 다시 푼다.
+- Active final-item filtering은 원 source에서 explicit stored order를 검증하고 현재 visible category로만 투영한다. 필터 해제는 authored order를 복원한다. 새 order 입력은 현재 관측 dataset에 없는 값을 여전히 거부한다.
 - Reassignment: 같은 target/channel 호출은 stored intent를 교체한다. Earlier program과 caller-owned arrays 및
   objects는 변경하지 않는다.
 

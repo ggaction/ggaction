@@ -1,0 +1,1 @@
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 340,
+  "count": 349,
   "cards": [
     {
       "schemaVersion": 3,
@@ -98,6 +98,11 @@
           "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
         },
         {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveCanvasOptions | undefined"
+        },
+        {
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
@@ -114,7 +119,7 @@
         }
       ],
       "callPatterns": [
-        "createCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
+        "createCanvas({ target?, width?, height?, background?, margin?, responsive?, plot?, plotBorder? })"
       ],
       "snippet": "program.createCanvas({})",
       "errors": [],
@@ -217,6 +222,11 @@
           "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
         },
         {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveCanvasOptions | undefined"
+        },
+        {
           "name": "plot",
           "required": false,
           "type": "false | { width: number; height: number; } | undefined"
@@ -233,7 +243,7 @@
         }
       ],
       "callPatterns": [
-        "editCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
+        "editCanvas({ target?, width?, height?, background?, margin?, responsive?, plot?, plotBorder? })"
       ],
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],
@@ -512,6 +522,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ],
       "editableVia": [
@@ -588,6 +601,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ],
       "editableVia": [
@@ -19281,6 +19297,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveLabelOptions | undefined"
+        },
+        {
           "name": "align",
           "required": false,
           "type": "\"center\" | \"left\" | \"right\" | undefined"
@@ -19514,6 +19535,11 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveLabelOptions | undefined"
+        },
+        {
           "name": "align",
           "required": false,
           "type": "\"center\" | \"left\" | \"right\" | undefined"
@@ -19704,6 +19730,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveLabelOptions | undefined"
         },
         {
           "name": "align",
@@ -19921,6 +19952,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "responsive",
+          "required": false,
+          "type": "false | ResponsiveLabelOptions | undefined"
         },
         {
           "name": "align",
@@ -27614,6 +27650,16 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "items",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "empty",
+          "required": false,
+          "type": "\"all\" | \"none\" | undefined"
+        },
+        {
           "name": "rows",
           "required": false,
           "type": "{ data: string; indices: readonly number[]; }"
@@ -27649,21 +27695,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -27677,11 +27708,37 @@
           "name": "ties",
           "required": false,
           "type": "\"all\" | \"first\" | undefined"
+        },
+        {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
         "filterMarks({ field | channel | property, op, ...operands })",
-        "filterMarks({ target?, mode: replace | compose, ...selector })"
+        "filterMarks({ target?, mode: replace | compose, ...selector })",
+        "filterMarks({ target?, items: logicalKeys, empty?: none | all })"
       ],
       "snippet": "program.filterMarks({ field: \"value\", op: \"gt\", value: 0 })",
       "errors": [],
@@ -27835,6 +27892,36 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
+        },
+        {
+          "name": "items",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "empty",
+          "required": false,
+          "type": "\"all\" | \"none\" | undefined"
+        },
+        {
+          "name": "region",
+          "required": false,
+          "type": "SelectionRegion | undefined"
+        },
+        {
+          "name": "screenPolygon",
+          "required": false,
+          "type": "readonly { readonly x: number; readonly y: number; }[] | undefined"
+        },
+        {
+          "name": "screenAngles",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
           "name": "rows",
           "required": false,
           "type": "{ data: string; indices: readonly number[]; }"
@@ -27870,21 +27957,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -27898,11 +27970,37 @@
           "name": "ties",
           "required": false,
           "type": "\"all\" | \"first\" | undefined"
+        },
+        {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
         "selectMarks({ id?, field | channel | property, op, ...operands })",
-        "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+        "selectMarks({ id?, target?, grain?, op: min | max, count? })",
+        "selectMarks({ id?, target?, items: logicalKeys, empty?: none | all })"
       ],
       "snippet": "program.selectMarks({ field: \"category\", op: \"eq\", value: \"A\" })",
       "errors": [],
@@ -27913,7 +28011,7 @@
       "name": "editMarkSelection",
       "layer": "advanced",
       "domain": "mark-selection",
-      "summary": "Replace the complete selector while preserving the stored selection ID and mark target.",
+      "summary": "Replace the complete selector by default, or combine its logical item keys with add, toggle, subtract, or intersect.",
       "signature": "editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;",
       "intents": [
         "edit mark selection",
@@ -27983,9 +28081,44 @@
           "type": "string | undefined"
         },
         {
+          "name": "mode",
+          "required": false,
+          "type": "\"add\" | \"intersect\" | \"replace\" | \"subtract\" | \"toggle\" | undefined"
+        },
+        {
           "name": "grain",
           "required": false,
           "type": "\"item\" | \"stack\" | undefined"
+        },
+        {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
+        },
+        {
+          "name": "items",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "empty",
+          "required": false,
+          "type": "\"all\" | \"none\" | undefined"
+        },
+        {
+          "name": "region",
+          "required": false,
+          "type": "SelectionRegion | undefined"
+        },
+        {
+          "name": "screenPolygon",
+          "required": false,
+          "type": "readonly { readonly x: number; readonly y: number; }[] | undefined"
+        },
+        {
+          "name": "screenAngles",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
         },
         {
           "name": "rows",
@@ -28023,21 +28156,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -28053,6 +28171,31 @@
           "type": "\"all\" | \"first\" | undefined"
         },
         {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "ActionTargetList | ScopedActionTarget"
@@ -28060,7 +28203,8 @@
       ],
       "callPatterns": [
         "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
-        "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+        "editMarkSelection({ selection?, grain?, op: min | max, count? })",
+        "editMarkSelection({ selection?, mode: add | toggle | subtract | intersect, items: logicalKeys })"
       ],
       "snippet": "program.editMarkSelection({ field: \"category\", op: \"eq\", value: \"A\" })",
       "errors": [],
@@ -28320,7 +28464,7 @@
         {
           "name": "select",
           "required": false,
-          "type": "MarkSelector | undefined"
+          "type": "MarkSelectionSelector | undefined"
         },
         {
           "name": "selection",
@@ -39700,7 +39844,7 @@
         {
           "name": "options",
           "required": false,
-          "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
+          "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<GraphFixedOptions> | ... 4 more ... | undefined"
         }
       ],
       "callPatterns": [
@@ -40319,6 +40463,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "routes",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
           "name": "origin",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
@@ -40350,7 +40499,7 @@
         }
       ],
       "callPatterns": [
-        "createGraphPlot({ id?, target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+        "createGraphPlot({ id?, target?, layout?, routes?, origin?, clip?, nodes?, edges? })"
       ],
       "snippet": "program.createGraphPlot({ id: \"networkPlot\", layout: \"network-layout\", labels: {} })",
       "errors": [],
@@ -40430,6 +40579,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "routes",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
           "name": "origin",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
@@ -40456,7 +40610,7 @@
         }
       ],
       "callPatterns": [
-        "editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+        "editGraphPlot({ target?, layout?, routes?, origin?, clip?, nodes?, edges?, labels? })"
       ],
       "snippet": "program.editGraphPlot({ target: \"networkPlot\", nodes: { radius: 8 } })",
       "errors": [],
@@ -42342,6 +42496,1168 @@
       "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
       "errors": [],
       "route": "/reference/actions/marks/#editcontourmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createCalendarLayout",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Store civil-day aggregates, week/weekday cells and month boundaries.",
+      "signature": "createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;",
+      "intents": [
+        "create calendar layout",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "calendar layout",
+        "civil-day aggregation"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized civil-day observations"
+        ],
+        "owns": [
+          "calendar layout resource"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized civil-day observations"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "start",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "end",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "timeZone",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "weekStartsOn",
+          "required": true,
+          "type": "0 | 1 | 2 | 3 | 4 | 5 | 6"
+        },
+        {
+          "name": "missing",
+          "required": true,
+          "type": "\"empty\" | \"omit\""
+        },
+        {
+          "name": "date",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "aggregate",
+          "required": true,
+          "type": "\"count\" | \"max\" | \"mean\" | \"median\" | \"min\" | \"sum\""
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createCalendarLayout({ start, end, timeZone, weekStartsOn, missing, date, aggregate, id? })"
+      ],
+      "snippet": "program.createCalendarLayout({ id: \"days\", date: \"date\", value: \"value\", start: \"2024-01-01\", end: \"2024-12-31\", timeZone: \"UTC\", weekStartsOn: 1, aggregate: \"sum\", missing: \"empty\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createcalendarlayout"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Draw a stored calendar layout with explicit day, month and label roles.",
+      "signature": "createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;",
+      "intents": [
+        "create calendar plot",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "calendar plot",
+        "day cells and month boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "owns": [
+          "calendar mark"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createCoordinate",
+        "createScale"
+      ],
+      "editableVia": [
+        "editCalendarPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "CalendarCellPaint | undefined"
+        },
+        {
+          "name": "monthBoundary",
+          "required": false,
+          "type": "false | CalendarBoundaryPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createCalendarPlot({ id?, coordinate?, target?, layout?, clip?, color?, cells?, monthBoundary? })"
+      ],
+      "snippet": "program.createCalendarPlot({ layout: \"days\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createcalendarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit a calendar plot while preserving day identities and source lineage.",
+      "signature": "editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit calendar plot",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "calendar plot",
+        "day cells and month boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "owns": [
+          "calendar mark"
+        ],
+        "idOptions": [
+          "target",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editCalendarPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "CalendarCellPaint | undefined"
+        },
+        {
+          "name": "monthBoundary",
+          "required": false,
+          "type": "false | CalendarBoundaryPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editCalendarPlot({ target?, coordinate?, layout?, clip?, color?, cells?, monthBoundary?, labels? })"
+      ],
+      "snippet": "program.editCalendarPlot({ target: \"calendar\", cells: { opacity: 0.5 } })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editcalendarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "bundleGraphEdges",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling.",
+      "signature": "bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;",
+      "intents": [
+        "bundle graph edges",
+        "layout",
+        "avoid overlap",
+        "chart setup",
+        "data and scales",
+        "graph edges",
+        "bundled connections"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph and compatible node layout"
+        ],
+        "owns": [
+          "edge-route resource"
+        ],
+        "idOptions": [
+          "id",
+          "graph",
+          "layout"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editEdgeRoute",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph and compatible node layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedGraphEdgeRoutes"
+        },
+        {
+          "name": "requestToken",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "\"hierarchical\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "HierarchicalEdgeRouteOptions"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "graph",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinateSpace",
+          "required": false,
+          "type": "\"screen\" | \"world\" | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "bundleGraphEdges({ id?, target?, prepared?, requestToken?, method?, options?, graph?, layout? })"
+      ],
+      "snippet": "program.bundleGraphEdges({ id: \"routes\", method: \"edge-path\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#bundlegraphedges"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editEdgeRoute",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once.",
+      "signature": "editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;",
+      "intents": [
+        "edit edge route",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "edge route",
+        "bundled connection geometry"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph and compatible node layout"
+        ],
+        "owns": [
+          "edge-route resource"
+        ],
+        "idOptions": [
+          "target",
+          "graph",
+          "layout"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editEdgeRoute",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph and compatible node layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedGraphEdgeRoutes"
+        },
+        {
+          "name": "requestToken",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "graph",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "EdgeRouteMethod | undefined"
+        },
+        {
+          "name": "coordinateSpace",
+          "required": false,
+          "type": "\"screen\" | \"world\" | undefined"
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "EdgePathRouteOptions | EdgeRouteCommonOptions | ForceDirectedEdgeRouteOptions | Partial<HierarchicalEdgeRouteOptions> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editEdgeRoute({ target?, prepared?, requestToken?, graph?, layout?, method?, coordinateSpace?, options? })"
+      ],
+      "snippet": "program.editEdgeRoute({ target: \"routes\", options: { exponent: 3 } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editedgeroute"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values.",
+      "signature": "createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "create geometry data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "geographic source"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "coordinateKind",
+          "required": true,
+          "type": "\"geographic\" | \"planar\""
+        },
+        {
+          "name": "featureKey",
+          "required": false,
+          "type": "GeometryFeatureKey | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        },
+        {
+          "name": "format",
+          "required": true,
+          "type": "\"geojson\" | \"topojson\""
+        },
+        {
+          "name": "values",
+          "required": true,
+          "type": "TopoJSONInput | GeoJSONInput"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeometryData({ id, coordinateKind, format, values, target?, featureKey?, limits?, topoObject? })"
+      ],
+      "snippet": "program.createGeometryData({ id: \"geometry\", format: \"geojson\", coordinateKind: \"geographic\", featureKey: \"id\", values: { type: \"Feature\", id: \"place\", properties: {}, geometry: { type: \"Point\", coordinates: [12.6, 55.7] } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise a geometry source atomically while preserving its format and feature-key policy.",
+      "signature": "editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geometry data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "TopoJSONInput | GeoJSONInput | undefined"
+        },
+        {
+          "name": "coordinateKind",
+          "required": false,
+          "type": "\"geographic\" | \"planar\" | undefined"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })"
+      ],
+      "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a named projection, optionally fitted to one exact geometry source and explicit viewport.",
+      "signature": "createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;",
+      "intents": [
+        "create projection",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit native projection type"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit native projection type"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "required": true,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createProjection({ id, type, target?, fit?, scalePx?, translatePx?, precisionPx?, reflectX? })"
+      ],
+      "snippet": "program.createProjection({ id: \"projection\", type: \"mercator\", centerDeg: [0, 0] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createprojection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edit a projection atomically.",
+      "signature": "editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;",
+      "intents": [
+        "edit projection",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named projection"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named projection"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editProjection({ target?, type?, fit?, scalePx?, translatePx?, precisionPx?, reflectX?, reflectY? })"
+      ],
+      "snippet": "program.editProjection({ target: \"projection\", scalePx: 200 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editprojection"
     }
   ]
 }

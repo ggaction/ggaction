@@ -505,6 +505,12 @@
 - title: Graph Tutorial
   url: /tutorials/graphs/
   parent: /tutorials/
+- title: Edge Routes
+  url: /api/edge-routes/
+  parent: /api/graphs/
+- title: Edge Route Tutorial
+  url: /tutorials/edge-routes/
+  parent: /tutorials/
 
 - title: Partition Plots
   url: /api/partition/
@@ -520,10 +526,29 @@
   url: /tutorials/flows/
   parent: /tutorials/
 
+- title: Geometry and Projections
+  url: /api/geometry/
+  parent: /api/
+
 - title: Contours and Two-Dimensional Density
   url: /api/contours/
   parent: /api/
 
 - title: Draw Levels, Bands and Density
   url: /tutorials/contours/
+  parent: /tutorials/
+
+- title: Fit Labels Inside a Fixed Canvas
+  url: /tutorials/responsive-guides/
+  parent: /tutorials/
+
+- title: Calendar Plots
+  url: /api/calendar/
+  parent: /api/
+- title: Place Observations on a Calendar
+  url: /tutorials/calendar/
+  parent: /tutorials/
+
+- title: Arrange Nested Panels with Shared Guides
+  url: /tutorials/nested-responsive/
   parent: /tutorials/

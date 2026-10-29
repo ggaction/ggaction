@@ -1,0 +1,101 @@
+{
+  "sourceCommit": "3df72643e",
+  "scope": "STEP057 B1 range endpoints only; B2/C/D remain open",
+  "sourceHashes": {
+    "src/grammar/orderedRange.js": "0940df326af41a5ea4222212b5ad309137de34bf9c951f70edbe429a175027b9",
+    "src/grammar/markSelection.js": "d4d311ca7713555528a02f6ec21879397ff771f3508e799654ea062e78ae7397",
+    "src/grammar/filter.js": "0b9995923e2dee4dd17de8829b513d77c799e40cf759f10edc833cf68627e5d9",
+    "types/program.d.ts": "efe30797912e64511b3d6f26346a953ed303380454b8c4ee27d18132ffa115bc"
+  },
+  "checks": {
+    "firstFocused": 26,
+    "finalFocused": 21,
+    "regression": 138,
+    "contracts": 46,
+    "finalBoundaries": 27,
+    "packageContracts": 7,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "rangesPerRecipe": 4,
+      "runnerHeapMB": 512,
+      "runnerConcurrency": 2
+    },
+    "coverage": {
+      "orderedRange": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100,
+        "floor": [
+          95,
+          90,
+          100
+        ]
+      },
+      "markSelection": {
+        "lines": 95.16,
+        "branches": 95,
+        "functions": 100,
+        "floor": [
+          90,
+          90,
+          100
+        ]
+      }
+    },
+    "installed": {
+      "sameArchive": "2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036",
+      "nodes": [
+        "v20.20.2",
+        "v22.23.1",
+        "v24.22.1"
+      ],
+      "runtimePerNode": 2,
+      "strictTypes": true,
+      "browserBundlesPerNode": 4,
+      "fullSweep": false
+    },
+    "docs": {
+      "sourceTests": 180,
+      "builtPages": 164,
+      "selectiveArtifacts": 1410,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualInspection": "390px range paragraph reviewed"
+    }
+  },
+  "budgets": {
+    "entries": 909,
+    "packedNode22": 1307103,
+    "packedNode20": 1309847,
+    "unpacked": 6003484,
+    "limits": [
+      909,
+      1310000,
+      6004000
+    ],
+    "fullBundleNode20": 650587,
+    "basicBundleNode20": 365437,
+    "bundleLimitsUnchanged": [
+      651000,
+      366000,
+      25000,
+      83000
+    ]
+  },
+  "reused": "Unchanged all-page UI and renderer suites from prior source checkpoints; no rendering algorithm changed",
+  "remaining": [
+    "Predicate AST and parameter revision closure",
+    "linked targets union/intersection/global",
+    "nearest and orphan/drop event handling",
+    "session selection commands/bindings",
+    "STEP077 whole roadmap"
+  ]
+}

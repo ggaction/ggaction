@@ -24,6 +24,9 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
+export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
+export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
@@ -38,6 +41,7 @@ export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
 export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
+export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -98,6 +102,8 @@ export type {
   BindMarkDataOptions,
   RemoveResourceOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   FitCanvasOptions,
   PivotColumn,
   PivotNumericOperation,
@@ -481,6 +487,9 @@ export type {
   SemanticScale,
   SemanticSpec,
   SelectMarksOptions,
+  MarkSelectionSelector,
+  SelectionRegionAxis,
+  SelectionRegion,
   StrokeDashEncodingOptions,
   StrokeWidthEncodingOptions,
   StrokeWidthScaleOptions,
@@ -602,6 +611,8 @@ export type {
   Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   ColorEncodingOptions,
   CompleteAxisOptions,
   NamedCompleteAxis,
@@ -985,8 +996,37 @@ export interface PartitionNavigation {
   readonly key: string; readonly parent: string | null; readonly firstChild: string | null;
   readonly previousSibling: string | null; readonly nextSibling: string | null; readonly root: string | null;
 }
-export interface OwnerInspection { readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
-export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
+export type AppearanceSource =
+  | { readonly kind: "defaults" | "family"; readonly action?: string }
+  | { readonly kind: "theme"; readonly owner: string; readonly name: "light" | "dark"; readonly token: keyof import("./program.js").ThemeTokens }
+  | { readonly kind: "style"; readonly action?: string; readonly key?: string }
+  | { readonly kind: "explicit"; readonly action: string; readonly channel?: string }
+  | { readonly kind: "interaction"; readonly selection: string; readonly token?: "highlight"; readonly complement?: true }
+  | { readonly kind: "unknown" };
+export interface AppearanceProvenance {
+  readonly owner: ResourceRef; readonly itemKey?: string; readonly component: string;
+  readonly primitive?: number; readonly property: string; readonly value: unknown; readonly source: AppearanceSource;
+}
+export interface OwnerInspection { readonly appearance: readonly AppearanceProvenance[]; readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export interface ResponsiveLayoutInspection {
+  readonly childPath: readonly string[];
+  readonly policy: Readonly<{ minPlotSize: Readonly<{ width: number; height: number }> }>;
+  readonly result: Readonly<{
+    status: "satisfied"; reason: "converged"; iterations: number; change: number;
+    requiredBounds: ResponsiveBounds;
+    requiredPlotSize: Readonly<{ width: number; height: number }>;
+    snapshot: Readonly<{ plot: ResponsiveBounds; occupied: ResponsiveBounds;
+      lanes: readonly Readonly<{ id: string; bounds: ResponsiveBounds }>[] }>;
+  }>;
+  readonly labels: readonly Readonly<{ id: string;
+    policy: Readonly<{ sequence: readonly ["wrap", "skip", "rotate"]; maxLines: number; skipStride: number; rotationCandidates: readonly number[] }>;
+    result: Readonly<{ stage: "native" | "wrap" | "skip" | "rotate";
+      reason: "native-fit" | "label-overlap" | "label-lines" | "label-size";
+      indices: readonly number[]; rotation: number; maxWidth?: number; wrap?: "word" | "character" }>;
+  }>[];
+}
+export interface ResponsiveBounds { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number; }
+export interface ProgramInspection { readonly version: 1; readonly layouts?: readonly ResponsiveLayoutInspection[]; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
@@ -1017,6 +1057,7 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  readonly appearance: readonly AppearanceProvenance[];
   readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
@@ -1085,7 +1126,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1117,20 +1158,180 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export interface ClickSelectionBinding {
+  readonly type: 'select';
+  /** Existing authored selection on an explicit root or concat mark owner. */
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'toggle';
+  readonly onMiss?: 'clear' | 'ignore';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
+interface RegionSelectionBindingOptions {
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+}
+export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly type: 'brush' } & (
+  { readonly axis?: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
+  | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
+  | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
+);
+export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
+  readonly type: 'lasso';
+}
+export type SelectionProjection = {
+  readonly type: 'rows';
+  readonly sourceData: string;
+  readonly targetData: string;
+} | {
+  readonly type: 'fields';
+  readonly sourceFields: readonly string[];
+  readonly targetFields: readonly string[];
+};
+export interface LinkedSelectionSource {
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly projection: SelectionProjection;
+}
+export interface LinkedSelectionBinding {
+  readonly type: 'linkSelection';
+  readonly id: string;
+  readonly sources: readonly LinkedSelectionSource[];
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  /** global requires exactly one source owner. */
+  readonly resolve: 'union' | 'intersection' | 'global';
+}
+/** Exclusively controls the target's native filter after source transactions.
+ * Existing filters are retained at initialization and replaced on propagation. */
+export interface LinkedFilterBinding extends Omit<LinkedSelectionBinding, 'type'> {
+  readonly type: 'linkFilter';
+}
+export type SelectionPolicy = 'keep-hidden' | 'drop';
+export interface SelectionChange {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly policy: SelectionPolicy;
+  readonly ownerMissing: boolean;
+  readonly hiddenKeys: readonly string[];
+  readonly restoredKeys: readonly string[];
+  readonly droppedKeys: readonly string[];
+}
+export interface LinkedSelectionState {
+  readonly effect?: 'filter';
+  readonly id: string;
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly resolve: 'union' | 'intersection' | 'global';
+  readonly targetAvailable: boolean;
+  readonly sources: readonly {
+    readonly available: boolean;
+    readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+    readonly selection: string;
+    /** Logical keys projected into the target owner, with its child namespace. */
+    readonly keys: readonly string[];
+  }[];
+  readonly keys: readonly string[];
+}
 export interface InteractionState {
   readonly program: InteractionProgram;
+  /** Separate transient selection rendering. Null outside an active preview. */
+  readonly previewProgram: InteractionProgram | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
+  /** Session-local committed program revision; inspection and frames do not increment it. */
+  readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly linkedSelections: readonly LinkedSelectionState[];
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
-export interface InteractionEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
+export interface InteractionLifecycleEvent {
+  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
-export type InteractionCommand = {
+/** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
+export type InteractionTarget = string | (Readonly<ScopedActionTarget> & { readonly id: string });
+export interface InteractionTransaction {
+  readonly transactionId?: string;
+  readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type NearestSelection = {
+  readonly space: 'screen';
+  /** CSS-local point in the current accepted frame. */
+  readonly point: InteractionPoint;
+  readonly maxDistance: number;
+  readonly hitInvisible?: boolean;
+} | {
+  readonly space: 'data';
+  readonly fields: readonly string[];
+  readonly values: readonly number[];
+  readonly metric: 'euclidean' | 'manhattan';
+  readonly maxDistance: number;
+};
+export type InteractionSelectionPayload = {
+  readonly id: string;
+  /** Creation requires replace; other modes require an existing selection. */
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+} & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
+  | { readonly nearest: NearestSelection; readonly select?: never });
+export type InteractionFilterPayload = {
+  readonly select: MarkSelector;
+  readonly mode?: 'replace' | 'compose';
+  readonly recompute?: boolean;
+  readonly clear?: never;
+} | { readonly clear: true; readonly select?: never; readonly mode?: never; readonly recompute?: never };
+export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' } & (
+  (CategoryOrder & { readonly clear?: never })
+  | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
+);
+export type InteractionEditCommand = InteractionTransaction & ({
+  readonly type: 'select';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionSelectionPayload;
+} | {
+  readonly type: 'clearSelection';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly id: string };
+} | {
+  readonly type: 'setParameter';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly value: number | string | boolean | null };
+} | {
+  readonly type: 'filter';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionFilterPayload;
+} | {
+  readonly type: 'reorder';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionReorderPayload;
+});
+export interface InteractionTransactionEvent {
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+  readonly phase: 'preview' | 'commit' | 'settled' | 'cancel' | 'error';
+  readonly revision: number;
+  readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
+  readonly previous: InteractionProgram;
+  readonly current: InteractionProgram;
+  readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly selectionChanges: readonly SelectionChange[];
+  readonly state: InteractionState;
+}
+export interface InteractionProgramEvent {
+  readonly type: 'program';
+  readonly state: InteractionState;
+  readonly selectionChanges: readonly SelectionChange[];
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
+export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -1144,7 +1345,7 @@ export type InteractionCommand = {
   readonly version: number;
   readonly generation: number;
 };
-export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale'; }
+export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
   updateProgram(program: InteractionProgram): InteractionDispatchResult;
@@ -1155,9 +1356,51 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Removed final items remain selected by default; drop snapshots surviving membership. */
+  readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly InspectBinding[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
+```
+
+#### `ggaction/graph`
+
+[Complete declaration and relative dependencies](../types/graph.d.ts)
+
+```typescript
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, EdgeRouteResult, InputRef } from "./program.js";
+export type { PreparedGraphEdgeRoutes } from "./program.js";
+
+declare const graphRouteJob: unique symbol;
+/** Immutable structured-clone job supplied to the worker by prepareGraphEdgeRoutes. */
+export interface GraphRouteJob {
+  readonly [graphRouteJob]: true; readonly schemaVersion: 1; readonly algorithmVersion: string;
+  readonly inputHash: string; readonly inputs: readonly InputRef[];
+}
+export interface GraphRouteCompletion {
+  readonly inputHash: string; readonly resultHash: string;
+  readonly result: EdgeRouteResult & { readonly options: Readonly<Record<string, unknown>> };
+}
+/** A browser Worker satisfies this protocol. One request owns one worker until completion, error or cancellation. */
+export interface GraphRouteWorker {
+  postMessage(message: { readonly job: GraphRouteJob }): void;
+  addEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
+  addEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
+  removeEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
+  removeEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
+  terminate(): void;
+}
+export interface GraphRouteExecutor {
+  compute(job: GraphRouteJob, options?: { readonly signal?: AbortSignal }): Promise<GraphRouteCompletion>;
+  evict(inputHash?: string): void;
+  dispose(): void;
+}
+export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
+  | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
+export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor?: GraphRouteExecutor; }
+export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
+export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
 ```
 
 <!-- END GENERATED RUNTIME SIGNATURES -->

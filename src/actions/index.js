@@ -1,6 +1,12 @@
+import { registerGeometryActions } from "./geo/resources.js";
+import { registerProjectionActions } from "./geo/projections.js";
+import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
+import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
+import { registerCalendarPlotActions } from "./calendar/plots.js";
 import { registerImageResourceActions } from "./images/index.js";
 import { registerLayoutActions } from "./layouts/index.js";
 import { registerGraphPlotActions } from "./graphs/plots.js";
+import { registerEdgeRouteActions } from "./graphs/edgeRoutes.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
@@ -25,7 +31,7 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
-import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
+import { registerGraphActions, reviseGraphInputs, projectGraphInputs } from "./graphs/resources.js";
 import { registerFlowActions } from "./flow/resources.js";
 import { registerFlowPlotActions } from "./flow/plots.js";
 import { registerContourResourceActions, reviseContourInputs } from "./contours/resources.js";
@@ -72,14 +78,21 @@ export function registerActions(ProgramClass) {
   registerResourceActions(ProgramClass);
   registerGraphActions(ProgramClass);
   registerGraphPlotActions(ProgramClass);
+  registerEdgeRouteActions(ProgramClass);
   registerFlowActions(ProgramClass);
   registerFlowPlotActions(ProgramClass);
+  registerCalendarResourceActions(ProgramClass);
+  registerCalendarPlotActions(ProgramClass);
+  registerGeometryActions(ProgramClass);
+  registerProjectionActions(ProgramClass);
   registerContourResourceActions(ProgramClass);
   registerContourMarkActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
   registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
-  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry"],
-    revise: (program, replacements) => reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements) });
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout", "edge-route"],
+    revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
+    project: (program, replacements) => reviseCalendarInputs(reviseContourInputs(projectGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
+    reviseSource: reviseSourceResourceInputs });
   registerTextMetricActions(ProgramClass);
 }

@@ -1,0 +1,48 @@
+{
+  "node": "v20.20.2",
+  "sha256": "de5a74c9c8e73671c744c14ea6fe26e668157660e1a9ba6334aedf65d9880c44",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "results": {
+    "responsive-public": [
+      {
+        "id": "responsive/full-basic-resize-restore",
+        "status": "passed"
+      },
+      {
+        "id": "responsive/renderers-scene-codec",
+        "status": "passed"
+      }
+    ],
+    "bundle:ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 812,
+      "minifiedBytes": 2311994,
+      "gzipBytes": 655491
+    },
+    "bundle:ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 534,
+      "minifiedBytes": 1269762,
+      "gzipBytes": 370907
+    },
+    "bundle:ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    "bundle:ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 140,
+      "minifiedBytes": 250221,
+      "gzipBytes": 82986
+    }
+  }
+}

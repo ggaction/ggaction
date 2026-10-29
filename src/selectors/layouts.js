@@ -1,9 +1,10 @@
 import { annotateError } from "../core/diagnostics.js";
 import { requireStoredResource } from "./resources.js";
 
-export function resolveLayoutResource(program, requested, inputKind, method) {
+export function resolveLayoutResource(program, requested, inputKind, method, inputId) {
   const eligible = resource => resource.kind === "layout" && resource.inputs.length === 1 &&
     (inputKind === undefined || resource.inputs[0].kind === inputKind) &&
+    (inputId === undefined || resource.inputs[0].id === inputId) &&
     (method === undefined || (Array.isArray(method) ? method.includes(resource.options.method) : resource.options.method === method));
   if (requested !== undefined) {
     const resource = requireStoredResource(program, { kind: "layout", id: requested });

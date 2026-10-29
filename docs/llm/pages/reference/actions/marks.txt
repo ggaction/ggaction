@@ -1939,6 +1939,77 @@ editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?,
 
 Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](../../../../api/contours/#editcontourmark).
 
+## `createCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CalendarPlotOptions`](../../../../reference/types/#type-calendarplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarPlot({ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? } = {})
+```
+
+Draw a stored calendar layout with explicit day, month and label roles. See [Calendar plots](../../../../api/calendar/#createcalendarplot).
+
+## `editCalendarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditCalendarPlotOptions`](../../../../reference/types/#type-editcalendarplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `color` | Optional / branch-dependent | `false \| ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
+| `cells` | Optional / branch-dependent | `CalendarCellPaint \| undefined` |
+| `monthBoundary` | Optional / branch-dependent | `false \| CalendarBoundaryPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Readonly<Partial<Record<CalendarLabelRole, false \| CalendarLabelPaint>>> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? })
+```
+
+Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../../../../api/calendar/#editcalendarplot).
+
 ## Related
 
 [Action Reference](../../../../reference/actions/) · [Chart API](../../../../api/) · [Supported Features](../../../../supported-features/)

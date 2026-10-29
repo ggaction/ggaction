@@ -7,7 +7,7 @@ function opaqueKey(value) {
   return (hash >>> 0).toString(36);
 }
 
-export function collectTransitionGraphics(graphicSpec, identities, { onNode } = {}) {
+export function collectTransitionGraphics(graphicSpec, identities, { onNode, onCanvas } = {}) {
   const { id: root, object: canvas } = requireSingleOrderedGraphicByType(graphicSpec, "canvas");
   const { width, height } = canvas.properties ?? {};
   if (![width, height].every(n => Number.isFinite(n) && n >= 0)) throw new TypeError('Scene requires finite nonnegative Canvas dimensions.');
@@ -37,6 +37,7 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode } = 
       stroke: "none", strokeWidth: 0
     } });
   };
+  onCanvas?.(root, stack[0]);
   background(root, canvas);
   walkGraphicTreeEvents(graphicSpec, {
     enter({ id, object }) {
@@ -49,6 +50,7 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode } = 
         stack.push({ x, y, clips: [...parent.clips, [x, y, p.width, p.height]], clip: [left, top,
           Math.max(0, Math.min(x + p.width, parent.clip[0] + parent.clip[2]) - left),
           Math.max(0, Math.min(y + p.height, parent.clip[1] + parent.clip[3]) - top)] });
+        onCanvas?.(id, stack.at(-1));
         background(id, object);
       } else {
         if (object.clip !== undefined) {

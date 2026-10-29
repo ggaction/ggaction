@@ -1,0 +1,39 @@
+{
+  "node": "v20.20.2",
+  "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-completion/package/ggaction-0.0.26.tgz",
+  "fixtures": [
+    "theme-guide-defaults",
+    "theme-item-identity",
+    "theme-resource-plots",
+    "theme-typography",
+    "theme-flow",
+    "theme-guide-geometry",
+    "theme-spacing",
+    "theme-palettes",
+    "theme-provenance",
+    "theme-paint-consumers"
+  ],
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 779,
+      "minifiedBytes": 2261703,
+      "gzipBytes": 639557
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 518,
+      "minifiedBytes": 1248151,
+      "gzipBytes": 364372
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    }
+  }
+}

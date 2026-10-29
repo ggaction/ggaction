@@ -1,0 +1,32 @@
+{
+  "scope": "Private force-directed route kernel",
+  "baseline": "54372cc60",
+  "runtime": "v22.23.1",
+  "checks": {
+    "canonicalRouteUnit": 26,
+    "routeCoverage": {
+      "tests": 26,
+      "owners": 7,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "architectureDiscoveryAndPolicy": 34,
+    "package": 7
+  },
+  "requiredRouteFloor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "bundles": {
+    "reusedFrom": "../hierarchical/bundles.json",
+    "reason": "Only unreachable private modules were added; no public import or existing runtime changed."
+  },
+  "remaining": "Public route resources, async preparation, rendering and all consumer closure remain open.",
+  "hashes": {
+    "src/grammar/graph/routes/compatibility.js": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+    "src/grammar/graph/routes/forceDirected.js": "a3d3aa92d5887ee6db95b7d8a9f112e6ddaf4e5df624b93889292df3966e2459",
+    "test/unit/grammar/graph/routes/force-directed.test.js": "f8b03e81e813dad5c71053335c4c9e98d18055ce2afb728752be02f76157b284"
+  }
+}

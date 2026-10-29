@@ -1,0 +1,93 @@
+{
+  "node": "v22.23.1",
+  "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/selection-integration-final/ggaction-0.0.26.tgz",
+  "fixtures": [
+    "theme-guide-defaults",
+    "theme-item-identity",
+    "theme-resource-plots",
+    "theme-typography",
+    "theme-flow",
+    "theme-guide-geometry",
+    "theme-spacing",
+    "theme-palettes",
+    "theme-provenance",
+    "theme-paint-consumers"
+  ],
+  "records": [
+    {
+      "id": "data/observed-graph-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "contour/full-basic-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "contour/fresh-process-source-revision",
+      "status": "passed"
+    },
+    {
+      "id": "contour/renderers-scene-codec",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/full-basic-immutable-inspection",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/current-frame-and-restored-program",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/guide-and-host-cleanup",
+      "status": "passed"
+    },
+    {
+      "id": "selection/logical-item-update",
+      "status": "passed"
+    },
+    {
+      "id": "selection/logical-scoped-update",
+      "status": "passed"
+    }
+  ],
+  "types": "passed",
+  "optionalPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 811,
+      "minifiedBytes": 2307381,
+      "gzipBytes": 652658
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 533,
+      "minifiedBytes": 1262346,
+      "gzipBytes": 367520
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20055
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 139,
+      "minifiedBytes": 249543,
+      "gzipBytes": 82243
+    }
+  }
+}

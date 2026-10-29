@@ -1,0 +1,378 @@
+# STEP057 — 영속 선택 상태 연결
+
+## 진행 상태
+
+- [x] 원 카드·interaction/core 계약과 기존 selection 리소스 owner 확인
+- [x] 전체 잔여 구현 사용자 승인 [AUTHORIZATION](../AUTHORIZATION.json) 재사용
+- [x] A: logical item keys, 다섯 집합 update mode, empty 정책, scoped identity 구현
+- [x] A: 조건부 인코딩·라벨·필터·복합 하이라이트·resize·revision·codec 회귀
+- [x] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
+- [x] B1: typed range의 독립 endpoint inclusive flags 및 단일 경계 구현
+- [x] B1: focused/realistic/타입·패키지·Current·문서 qualification
+- [x] B2: 이름 있는 AST predicate/parameter closure 및 qualification
+- [x] C: linked targets의 union/intersection/global와 명시 owner/child projection
+- [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
+- [x] D2: nearest screen/data metric 및 qualification
+- [x] D3: delete/hidden reconciliation·event 및 dormant linked endpoint qualification
+- [x] D4: 자동 click/toggle bindings 및 실제 host/package qualification
+- [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
+
+STEP050–056은 다른 원안 카드이며 이 기록의 완료 범위가 아니다. STEP077 전체 목표는 계속 진행 중이다.
+
+## A 최소 공개 통합 설계
+
+새 createSelection API 또는 resource 종류 없이 기존 `selectMarks`와 `editMarkSelection`을 확장한다.
+`MarkSelector`는 `{items: logicalKey[], empty?: "none"|"all", grain?}`를 추가한다. Existing predicates와
+row keys는 기존 live 동작을 보존한다. `editMarkSelection.mode`의 replace는 complete replacement,
+add/toggle/subtract/intersect는 명시한 시점의 effective set 조합 뒤 logical key 집합을 저장한다.
+
+`empty`는 명시 빈 items에만 적용한다. Zero-match predicate나 숨긴 nonempty keys를 all로 바꾸지 않는다.
+숨긴 key 보존이 기본이며 drop/event는 D의 명시 후속이다. 연산 중 기존 set의 순서를 유지하고 새 key를
+incoming 순서대로 뒤에 붙인다. 각 입력의 중복은 첫 출현으로 정규화하며 count+UTF-16 length 총 작업은
+기존 10,000,000 한도다. Logical keys의 실제 문법은 공개하지 않는다.
+
+Stored resource는 algorithmVersion1의 추가 closed mode `item-keys`만 사용한다. Exact key list와 empty
+정책은 resource.options에 저장하고 target/grain/ref는 기존 materializationConfigs owner를 유지한다.
+Selectors는 resource lookup만 담당하고 grammar import를 추가하지 않는다.
+
+현재 검사에서 public inspection key와 hit itemKey가 같음을 확인했다. Nested composition key는 부모
+namespace를 포함하므로 action dispatch가 명시 childPath와 일치하는 prefix만 제거한다. Local key 저장과
+snapshot namespace 재적용은 기존 identity 정책이다. Root/child facade 조합은 row projection owner를 재사용한다.
+
+## 현재 검증과 남은 의무
+
+- 최초 focused16/16, 기존 selection/conditional/revision/legacy codec 포함139/139 통과.
+- 타입·source boundary12/12 통과. Source hash가 고정된 최종 qualification은 별도 evidence에 기록한다.
+- realistic 최초 실행은 캐시 환경변수 미지정으로 실패했고 `.artifacts/selection-items-realistic.log`를 보존했다.
+  정본 cache를 read-only로 지정한 canonical runner 재실행으로 결과를 판정한다.
+- A는 selection 저장/연산 개념만 완료하며 session selection command, parameter binding,
+  linked resolve, orphan/drop events, transaction/history를 구현했다고 주장하지 않는다.
+
+## A 검증 checkpoint
+
+Source `e40f9fba0`를 고정한 [qualification](selection-evidence/qualification.json)과 압축 원본 로그를 보존했다.
+신규 19, 기존 회귀 139, 계약 53, 실제 데이터 5종×3 recipe 및 ledger 16, 기존 selection 액션 owning coverage 151 검사가 통과했다.
+새 집합 owner는 100/100/100, 선택 액션은 96.38/88/100으로 해당 floor를 유지했다.
+
+동일 SHA256 `c1a37425c4bbdd5143f0564d4fb42bfa18304d4ecfa7c95cab5c0dcb60d219e4` tar의 Node20/22/24 각각 새 실행2·strict 타입·4 entry browser bundle을 확인했다.
+전체 설치 sweep은 이 checkpoint에서 반복하지 않았다. 최초 Node20/24 Full/Basic bundle cap 실패를 원본 로그에 보존하고,
+실제 최대635,846/360,009를 근거로636,000/361,000으로만 높였다. Package 최대880 entries·1,282,975 packed·5,887,693 unpacked에
+880/1,283,000/5,888,000 한도를 적용했다. Search 실제946,372에947,000 한도다. 변경은 신규1파일과 확장된 선택 타입/문서/공유 selector 경로다.
+
+문서179/179, Jekyll162페이지·1,392 selective artifacts, 해당 수정 페이지320/390/768/1440의 containment 및 Axe0 통과.
+모바일390px 결과를 시각 확인했다. 전체 UI/CSS가 그대로인 페이지의 이전 전수 browser 증거는 `121acb6c6`에서 재사용한다.
+초기 캐시·snippet·metadata 동시변경·임시 browser probe 오류와 수정 결과를 분리했으며 전체 suite green으로 확대 보고하지 않는다.
+B/C/D 및 다른 STEP 인수 조건은 계속 남아 있다.
+
+### 최신 통합본 반영
+
+`c078f06db`와의 source 병합은 `46272ba30`이다. Graph recompute의 필터 옵션과 공통 selector 목록을 함께 유지했고,
+기존 state에서 분리된 `resolveItemSelection` owner로 logical item 분기만 옮겼다.
+59 focused와 graph/recompute 동작 검사가 통과했다. 두 브랜치가 각각 추가한 realistic 파일 수를 41로 합치고
+discovery owning 검사를 다시 통과시켰다. 합산 docs는 source commit 고정 후 180/180 통과했다.
+[병합 qualification](selection-evidence/merged/qualification.json)은 Node20 최소 설치·타입·4 bundles 실측,
+초기 한도 실패와 최소 조정, 이전 두 checkpoint에서 재사용한 검증 범위를 구분한다.
+
+## B1 개별 범위 endpoint
+
+Source `3df72643e`는 기존 data FilterRange를 MarkSelector에도 적용한다. 하나 이상 endpoint를 요구하며
+minInclusive/maxInclusive 또는 기존 inclusive shorthand를 받는다. 새 계산 owner는 data filter의 기존 정책을
+추출해 재사용한다. 기존 양끝 inclusive selector의 normalized 저장 형태를 보존하여 legacy codec 의미를 바꾸지 않는다.
+Immutable final-item selection과 기존 resource revision·label·conditional·filter·child scope 경로를 유지한다.
+
+[B1 qualification](range-evidence/qualification.json): final focused21, legacy/graph/selection 회귀138,
+계약46 및 경계27, package7, 실제 데이터5종×3 recipe에서 네 endpoint 형태와 ledger16 통과.
+Ordered range owner는100/100/100, 기존 selector는95.16/95/100이며 floor는95/90/100와90/90/100을 유지했다.
+동일 archive `2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036`의
+Node20/22/24에서 실행2·strict 타입·4 browser entry가 모두 통과했다. Package909entries/최대1,309,847packed/
+6,003,484unpacked로909/1,310,000/6,004,000을 적용하며 browser/search 한도는 올리지 않았다.
+문서180, build164페이지/1,410 selective artifacts, 수정 페이지4폭 containment·Axe0 및390px 시각 확인을 마쳤다.
+전체 runtime/renderer/installed sweep 완료로 확대하지 않는다. B2 및 C/D는 계속 구현 대상이다.
+
+
+## B2 이름 있는 AST 선택
+
+기존 포괄 승인 AUTHORIZATION을 재사용한다. 구체 public shape는 `selectMarks`/`editMarkSelection`의
+`where: ComputedExpressionV2`와 persistent selection을 생성하는 `highlightMarks.select`다.
+`MarkSelectionSelector`를 별도 union으로 두어 inline label/markFilter/graph view의 기존 MarkSelector에
+추적되지 않은 parameter 의존성을 열지 않는다. 해당 인라인 확장은 원 카드의 이름 있는 predicate state 요구에
+포함하지 않으며, 라벨은 기존 `selection: id`를 통해 같은 AST 선택을 사용한다.
+
+Pure grammar는 최종 item.fields만 평가하고 모든 AST branch의 parameter refs를 첫 출현 순서로 저장한다.
+기존 persistent-selection resource revision 전파를 재사용하고 parameter action이 조건부·data·mark·label·highlight
+후속을 명시적으로 호출한다. Full resolver는 class별 once-only private registration으로 연결하여 Basic import를
+보존한다. 소비자가 없는 nullable predicate도 editParameter에서 원자 평가 오류로 거부한다.
+
+첫 focused 검사 오류 세 개는 테스트 fixture의 존재하지 않는 bar facade명, codec payload 경로,
+diagnostic WeakMap accessor 오용이었다. 그 다음 bar fixture가 기존 point linear scale을 상속하는 오류는
+독립 bar program으로 바꿔 집계 grain 반례를 명시했다. 이 최초 로그와 최종 검증을 별도 evidence로 보존한다.
+현재 새 owner 두 개는100/100/100이다. 최종 installed/docs/source qualification은 진행 중이다.
+C/D, linked target resolve·nearest·orphan/drop·session command 및 STEP077은 완료하지 않았다.
+
+마감 중 실제 파생 데이터 edit 반례를 추가 발견했다. 시각 소비자가 없는 AST 선택이 읽는 computed field를
+number→string으로 바꾸면 edit 자체는 성공하고 이후 선택 조회만 실패했다. 기존 reviseData는 final selection을
+검증하므로 정상 거부했다. Shared derived revision 종료에도 같은 private final-item resolver로 영향받는 AST
+선택을 검사하도록 연결해 원자 실패와 유효한 변경 후 membership을 검증했다. 최초 source 후보 be214bab1와
+그 tar는 최종 qualification과 구분한다.
+
+
+### B2 검증 checkpoint
+
+최종 source `6a581f204`의 [qualification](expression-evidence/qualification.json)과
+[독립 expected/actual/diff](expression-evidence/expected-actual-diff.json)를 저장했다.
+새 owner 두 개100/100/100, 기존 selection action96.44/87.90/100을 유지한다. 기존 선택/parameter104,
+조건부127, 최종 derived-revision hook 후58 검사와 실제 데이터5종×3 grain/ledger16이 통과했다.
+문서181, Jekyll164페이지/1411 selective artifacts, 모바일 포함4폭 Axe0·overflow0와390px 시각 확인을 마쳤다.
+
+동일 최종 archive `a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25`의
+Node20/22/24에서 각각2개 실행·strict 타입·4 entry bundle이 통과했다. 전수 설치 sweep은 반복하지 않았다.
+실측 최대 package911entries/1,312,374packed/6,013,768unpacked에911/1,313,000/6,014,000 한도,
+Full651,656/Basic366,102에652,000/367,000 bundle 한도를 적용했다. 최초 실패와 후보 tar는 최종 증거와 분리했다.
+최종 수정과 무관한 기존 source/renderer/UI 증거만 명시적으로 재사용했으며 전체 suite green으로 보고하지 않는다.
+C/D와 모든 후행 인수 조건은 계속 남아 있다.
+
+
+## D1 원자 session command 선행 연결
+
+C linked target이 같은 commit 경계를 사용해야 하므로 원안 승인 AUTHORIZATION 범위에서 D의 최소 공통
+경로를 먼저 구현한다. 공개 select(target,payload{id,select,mode}), setParameter(target,payload{value}),
+clearSelection(target,payload{id})를 기존 domain action에 위임한다. 기존 선택 resource 및 codec를 재사용하고
+선택 clear는 제거가 아니라 empty:none 집합으로 대체해 dependent label/highlight/conditional을 유지한다.
+
+하나의 immutable candidate와 hit frame을 모두 준비한 뒤 program/frame/revision을 교체한다.
+성공은 commit→settled, action 실패는 error만이며 이전 program/scene/revision을 보존한다.
+세션은 그림을 그리지 않고 host가 commit의 current를 renderer에 제공한다. 동기 settled는 host asset 준비를
+완료했다고 주장하지 않는다. 최초 검사는 fixture의 잘못된 hconcat 호출과 Basic editor 지원 추정을 찾았다.
+기존 hconcat public shape로 바로잡고 Basic은 createParameter만 가능하므로 세 편집명령을 모두 명시 거부한다.
+
+Focused20, 기존+신규 interaction owner4개100 lines/최저94.59 branches/100 functions 통과했다.
+추가 타입/discovery/browser/installed/docs qualification은 진행 중이다. C linked resolve와 D의 nearest,
+orphan/drop, 자동 selection binding·gesture·history는 이 선행 checkpoint에 포함하지 않으며 계속 남아 있다.
+
+
+D1 qualification 중 최초 metadata 검사는 신규 test capability 등록 누락과 stale provenance만 실패했다.
+각 소유 manifest/generator를 갱신했다. Package는 신규 input/selection owner2개 때문에913>911 entry로
+실패했다. 최초 실측 Node20 1,314,968packed/6,024,076unpacked에913/1,315,000/6,025,000 한도를 적용한다.
+Interaction bundle은 같은 archive에서 Node22 88,360, Node20 88,433으로83,000을 넘어89,000으로만 높인다.
+Full/Basic/SVG 한도와 모든 기존 critical coverage floor는 유지한다. 최종 고정 archive는 아래 evidence에서 구분한다.
+
+
+### D1 검증 checkpoint
+
+Source `4959ad7ce`의 [qualification](command-evidence/qualification.json)과 독립
+[expected/actual/diff](command-evidence/expected-actual-diff.json)를 보존했다. 최종21 focused에서
+4 owner 모두100 lines/100 functions, selection98.65·session96.90 branch이며 floor95/90/100을 유지한다.
+타입·source boundary·discovery28, package13, 실제 데이터5종×3 recipe/ledger16, 실제 browser4가 통과했다.
+문서182, build164페이지/1411 selective artifacts, 수정 페이지4폭 Axe0·overflow0와390px 시각 확인을 완료했다.
+
+동일 최종 archive `48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef`의
+Node20/22/24 각각3 runtime·strict public types·4 entry browser bundle을 검증했다. Package최대
+913entries/1,314,971packed/6,024,096unpacked, interaction88,433gzip이며 위의 최소 한도를 충족한다.
+전체 sweep이나 C/D 잔여 기능 완료로 확대 보고하지 않는다. 최초 실패와 final metadata 재패킹은 구분했다.
+
+
+## C 연결 선택의 구체 최소 설계
+
+기존 포괄 승인과 parent의 방향 확인을 재사용한다. 기존 `bindings` 배열에
+`{type:"linkSelection",id,sources:[{target,selection,projection}],target,selection,resolve}`를 추가한다.
+Endpoint는 기존 이름 있는 selection과 일치하는 명시 mark/child target이다. `resolve`는
+union/intersection 또는 정확히 한 source를 갖는 global(owner scope)이다. Target selection은
+binding이 소유하므로 같은 session의 직접 select/clear로 덮어쓰지 않는다.
+
+각 source의 projection은 `{type:"rows",sourceData,targetData}` 또는
+`{type:"fields",sourceFields,targetFields}`다. Rows는 명시한 두 원본 dataset의 logicalId가 같고
+실제 final-item lineage가 그 원본에 닿아야 한다. 이름·행 index·item key의 우연한 일치로 연결하지 않는다.
+Fields는 길이가 같은 1~64개 명시 필드의 typed tuple이며 모든 final item에서 고유하게 정의되어야 한다.
+null/undefined/nonfinite 또는 모호한 aggregate field는 거부하고 string/number/boolean/bigint/date의
+기존 row-key 인코더를 재사용한다. 서로 다른 item이 같은 tuple을 가지는 many-to-many 연결은 허용한다.
+
+Session은 초기화/updateProgram에서 DAG·모든 endpoint·source별 projection set을 검증하며 authoring하지 않는다.
+성공한 편집의 후보 상태에서 영향받은 DAG를 순서대로 실행하고 target owner마다 한 번 기존 editMarkSelection을
+호출한다. 기존 source별 투영 집합과 최종 logical target key 집합을 runtime state에 명시 보관한다.
+원본 command와 모든 linked changes 및 hit frame은 하나의 atomic commit이며 실패 시 모두 이전 참조로 남는다.
+Bindings와 투영 cache는 codec에 저장하지 않으며, 복원된 selection resource에 host가 같은 bindings를 다시 설치한다.
+
+순환·같은 target owner의 중복 writer·unknown/ambiguous dataset·missing selection/field·지원하지 않는 Basic은
+사전 거부한다. B2의 class-scoped frozen resolver 등록을 재사용하여 interaction에서 Full mark policy를
+static import하지 않는다. 256 binding/source 및 누적 10M work 한도로 configuration/계산을 제한한다.
+자동 click/gesture/nearest/orphan/drop는 후속 D에 그대로 남긴다.
+
+
+C 구현 중 명시 DAG 밖의 실제 feedback 반례를 확인했다. A의 opacity property 선택이 B selection에
+연결되고, A의 conditional opacity가 B를 읽으면 A→B binding은 DAG이지만 후보 materialization 후
+A 선택이 바뀐다. 같은 누적 work budget으로 최종 projection을 다시 검사하고 달라지면 전체 candidate를
+거부한다. 고정점 반복·숨은 transaction 없이 old program/scene/cache identity를 보존하는 public 회귀를 추가했다.
+FacetSource는 기존 source-only grain resolver를 사용하므로 concrete-property endpoint만 명시 거부한다.
+
+
+C 소스 후보는 최종 focused/기존 선택 회귀121개를 통과했다. Pure projection100/97.50/100,
+link owner100/95.83/100, session100/97.01/100, expression resolver100/96.67/100,
+selection state100/100/100이며 기존보다 낮은 floor를 만들지 않았다. Source boundary/types/discovery28,
+package13, 실제 데이터5종×3 recipe/ledger16, browser5를 통과했다. 마지막 nested namespace work-accounting의
+보수적 상계 조정 후 owning121을 재검증했다. 최종 동일 tar 설치와 문서 qualification은 아직 진행 중이다.
+최초 callback 인자 오류와 nested fixture cardinality 오류, entry/bundle cap·snippet 등록/provenance 실패를 보존한다.
+
+
+### C 검증 checkpoint
+
+Source `c3c55c11b`의 [qualification](link-evidence/qualification.json)과 독립
+[expected/actual/diff](link-evidence/expected-actual-diff.json)를 보존했다. 최종 owning121, 계약28,
+package13, 실제 데이터5종×3 recipe/ledger16, 실제 browser5 및 문서183 검사를 통과했다.
+새 owner와 변경 resolver의 critical floor는 유지되며 source state는100/100/100이다.
+문서164페이지/1411 selective artifacts, 수정 페이지4폭 Axe0·overflow0 및390px 시각 확인을 완료했다.
+
+동일 archive `3124a6cc81d385e0b3d3220a22deb588c908f1f4c722af51a4d3258594470963`의
+Node20/22/24 각각3 runtime·strict 타입·4 entry browser bundle이 통과했다. 최종 최대
+915entries/1,319,191packed/6,040,713unpacked, interaction91,706gzip으로 최소 cap을 충족한다.
+최초 실패와 마지막 namespace work-accounting 수정 전 archive를 별도 보존했다. 전체 sweep이나
+STEP057 D/AT37·STEP077 전체 완료로 확대 보고하지 않는다. 다음은 nearest·orphan/drop 및 자동 binding이다.
+
+
+## D2 nearest 구현
+
+AUTHORIZATION의 포괄 승인과 parent의 동일 범위 확인을 재사용한다. 기존 select payload에서
+select와 상호배타적인 nearest를 추가한다. 화면은 현재 accepted frame의 CSS painted footprint,
+데이터는 final item의 명시 numeric tuple와 euclidean/manhattan이다. 필수 finite maxDistance와
+stable logical key tie, 기존 owner/grain/mode 및 linked closure를 재사용한다. FacetSource는 화면
+geometry가 다중 cell이므로 data만 지원한다. Ordinary inspect의 기존 slop/overlap 계약은 그대로다.
+
+초기 focused92/92 이후 검토에서 clip 밖에 완전히 숨겨진 도형이 단순 boundary distance 후보가 될 수
+있는 반례를 찾았다. 기존 flattened path/segment distance를 재사용해 clip 교차점에서 painted
+boundary를 분할하고 허용된 구간만 계산한다. Clip work도 같은 query 예산에 합산한다. 열린 fill
+path의 암시적 닫힘과 zero-size rect/circle을 별도 회귀로 검증한다. 초기 fixture의 잘못된 hconcat
+cardinality/repeatCharts by 옵션은 기존 public API로 수정했고 최초 실패 로그는 보존한다.
+
+Nearest command의 소스/타입/current/문서와 실제 데이터·browser·설치 qualification은 진행 중이다.
+D의 hidden/orphan/drop 및 자동 binding, gesture/history와 STEP077 전체 의무는 계속 남아 있다.
+
+
+D2 focused96개와 독립 rectangle-distance oracle, 실제 데이터16, browser6이 통과했다. 새 numeric,
+nearest adapter와 clipped boundary owner는100/100/100, 변경 shape는100/95.21/100이며 기존
+floor를 유지한다. 최초 discovery 등록 누락과 문서 result에 scalar 배열을 Program으로 등록한 오류,
+stale provenance를 소유 metadata에서 바로잡았다. Package entries918/최대packed1,322,667/
+unpacked6,053,713 및 최초 interaction gzip94,603을 보존하고 최소 한도만 올린다. 최종 동일 archive
+Node20/22/24 및 문서 source/build/browser qualification 완료 전의 소스 후보임을 구분한다.
+
+
+### D2 검증 checkpoint
+
+Source `7e6854182`의 [qualification](nearest-evidence/qualification.json)과 독립
+[expected/actual/diff](nearest-evidence/expected-actual-diff.json)를 보존했다. 집중96,
+경계·타입·discovery28, package13, 실제 데이터16 및 browser6 검사가 통과했다. 새 owner3개의
+coverage는100/100/100이며 기존95/90/100 floor를 유지했다. 다른 변경 owner의 상세 수치는
+qualification에 기록했다. 일반 inspect overlap/slop 결과와 nearest 선택 정렬을 분리해 검증했다.
+
+최종 archive `b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64` 하나로
+Node20/22/24 각각3runtime·strict public types·4 browser entry bundles가 통과했다. 최종 package
+918entries/최대1,322,665packed/6,053,712unpacked, interaction 최대94,951gzip으로 한도 안이다.
+문서184, build164페이지/1411 selective artifacts와 수정 페이지4폭 Axe0/overflow0,390px 시각
+확인을 완료했다. 최초 실패·초기 archive와 최종 metadata archive는 구분했다. 전체 suite나
+D의 잔여 hidden/drop/자동 bindings, STEP057 AT37 및 STEP077 완료로 확대 보고하지 않는다.
+
+## D3 삭제·숨김 선택 수명 설계
+
+D2 뒤 원 계약의 삭제된 child/row/edge에 대한 keep-hidden/drop과 event를 연결한다. 기존
+Partition `prunedSelection` owner를 확인했고, 동일한 명시 membership pruning 의미를 재사용한다.
+Session 옵션 `selectionPolicy`는 `keep-hidden`(기본) 또는 `drop`이다. 새로운 selection resource나
+semantic schema를 만들지 않고 기존 `editMarkSelection`으로만 dropped membership을 저장한다.
+
+각 authored selection의 명시 owner/child/grain, 기존 options signature, 현재 item key 집합과
+효과 membership을 bounded runtime snapshot으로 비교한다. Keep-hidden은 item keys와 live
+predicate/range를 보존한다. Drop은 이전에 선택되어 있었으나 현재 final-item universe에서 사라진
+keys가 있을 때 이전 membership∩현재 universe를 기존 key selector로 저장한다. Source replacement가
+selection options 자체를 명시 변경했다면 그 새 authoring intent를 우선하며 과거 snapshot으로 덮지 않는다.
+Opacity0 같은 paint 설정과 sampled animation frame은 final-item 삭제로 취급하지 않는다.
+
+삭제된 owner/child는 keep-hidden의 bounded runtime tombstone으로 남기고 같은 선택/키가 돌아올 때
+restored를 보고한다. 임의로 삭제된 mark/selection resource를 재생성하지 않는다. Drop은 제거된
+membership을 보고하고 tombstone을 해제한다. Commit/settled와 external program event에
+selectionChanges를 붙여 hidden/restored/dropped와 owner missing 상태를 명시한다. Runtime cache는
+codec에 넣지 않으며 program의 기존 key resource만 저장된다.
+
+Linked endpoint가 삭제된 뒤에는 생성 때의 unknown endpoint 오류와 달리 기존 binding이 dormant가
+되어야 한다. Missing source의 keep-hidden은 이전 source별 projection을 보존하고 drop은 빈 기여를
+사용한다. Missing target은 재생성하지 않는다. Endpoint가 복귀하면 동일한 explicit projection을
+다시 검증하고 owner/data identity와 명시 field projection이 맞지 않으면 전체 replacement를 거부한다. 현재 C의
+initialization/updateProgram validation 및 source DAG ordering을 이 수명 규칙으로 확장할 필요가 있다.
+
+검증은 direct data revision/filter와 원본복원, child remove/reinsert, graph node/edge induced filter,
+partition focus, 명시 selector 교체, 조건식 parameter membership, malformed/stale replacement의 원자
+실패, linked missing source/target와 재등장, codec의 runtime 분리를 포함한다. 아직 D3 구현 완료가
+아니며 automatic click/toggle binding과 후행 gesture/history도 그대로 남아 있다.
+
+
+D3 source는 세션 생성 시 기존 숨김을 기록하고 다음 commit/update에서 availability를 비교한다.
+Partition focus의 `visible:false`는 숨김이며 opacity·clip·sampled frame은 semantic 삭제가 아니다.
+Linked target pruning은 DAG에 위임해 단일 editor revision을 보존한다. Missing source는 마지막
+projection을 보존하거나 empty로 기여하고, present source는 현재 effective membership을 투영한다.
+초기 missing endpoint 오류는 유지한다. Legacy facet concrete-property predicate는 source-only
+geometry가 없으므로 keep-hidden 보존만 지원하고 명시 drop은 닫힌 오류다.
+
+새15 lifecycle 회귀와 기존 selection/link/nearest/session, source/type/discovery28, 실제 데이터
+5종×3grain16 및 Canvas/SVG browser7의 검증을 진행했다. 최종 coverage·installed tar·문서와
+증거를 닫기 전이며 automatic click/toggle, 후행 gesture/history 및077 전체 완료는 아니다.
+
+
+### D3 검증 checkpoint
+
+Source `7980936d7`의 [qualification](reconciliation-evidence/qualification.json)과
+[독립 expected/actual/diff](reconciliation-evidence/expected-actual-diff.json)를 보존했다.
+새15 lifecycle 회귀 포함 focused106, source/type/discovery28, package13, 실제 데이터16
+(5종×3grain 각각 두 정책) 및 실제 Canvas/SVG browser7이 통과했다. 신규 reconciliation은
+100/100/100, 변경 bindings100/96.30/100·selection100/98.78/100·session100/97.12/100이며
+95/90/100 critical floor를 유지했다. Graph node/edge, Partition focus, 원본 data revision,
+child remove/return, native pruning revision, dormant union/intersection 및 원자 실패를 검증했다.
+
+같은 archive `99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5`로
+Node20/22/24 각각3runtime·strict types·4 entry bundles가 통과했다. Archive의 Node22packed는
+1,322,981, Node20 동일 source의 dry measurement는1,325,924, entries919/unpacked6,066,891이다.
+최대 interaction97,221gzip과 search959,574bytes의 최소 cap 조정을 기록했다. 최초 caps 실패에서
+runtime/type는 통과했음을 구분하고, 최종 whole consumer exit0 로그도 별도 보존했다.
+
+문서 source184, 최종 source provenance regeneration 뒤 owning29, build164페이지/1411 artifacts가
+통과했다. 동일 prose/CSS의320/390/768/1440 검사 Axe0/overflow0와390px 시각 확인을 재사용한다.
+잘못된 임시 heading locator·없는 개별 provenance test 경로의 실패와 실제 owning 검사 수정 결과를
+함께 남겼다. 전체 unit/coverage/installed/render sweep 또는 자동 bindings·history·STEP077 완료로
+확대하지 않는다. 다음은 기존 selection owner를 재사용하는 자동 click/toggle binding이다.
+
+## D4 자동 click binding 설계
+
+AUTHORIZATION의 잔여 설계 승인을 재사용한다. Session은 선택적으로 하나의
+`{type:"select",target,selection,mode?:"replace"|"toggle",onMiss?:"clear"|"ignore",slop?,hitInvisible?}`를
+받는다. 기본은 replace/clear이며 기존 authored selection의 명시 owner와 grain을 재사용한다.
+현재 accepted frame의 전체 hit 후보 중 해당 owner·child·selection grain에 속한 첫 항목을 고른다.
+별도 inspect binding이 없으면 transient inspect event는 만들지 않는다. 실제 pointer click은 기존
+select/clearSelection의 원자 경로와 origin:user를 사용하고, 명시 동일 key snapshot은 no-op이다.
+
+Click binding은 자신의 selection을 소유하는 linked writer와 충돌할 수 없다. Basic은 기존 Full
+resolver 경계에서 거부하고 facetSource의 다중 화면 geometry를 추론하지 않는다. 기존 root/concat
+owner 및 해당 facade의 실제 final logical item은 지원한다. Missing endpoint는 세션 수명 내 no-op이고
+돌아온 authored endpoint는 다시 검증한다. Listener 추가 실패·remount·destroy·subscriber 오류와
+queued dispatch 수명은 기존 controller가 소유한다. 같은 binding에서 반복 click해도 중복 listener나
+transaction이 생기면 실패다. 새 public low-level pointer command는 추가하지 않는다.
+
+다중 경쟁 binding·modifier·3px drag arbitration·capture/cancel·keyboard activation은 후행 STEP058+의
+별도 의무이며 이 click checkpoint의 완료 범위로 표시하지 않는다. 새 시각 primitive는 없다.
+
+### D4 검증 checkpoint
+
+Source `c999932b0`의 [qualification](click-evidence/qualification.json)과
+[독립 expected/actual/diff](click-evidence/expected-actual-diff.json)를 보존했다. Focused117
+(새11), source/type/discovery28, package13, 실제5데이터×3recipe16 및 Canvas/SVG browser8이
+통과했다. 새 click owner100/97.87/100, 기존 변경 owner 모두95/90/100 critical floor를
+충족했다. 원본 불변, exact snapshot no-op, linked 단일 writer, child 수명과 current frame을 포함한다.
+
+Archive `83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9` 하나로
+Node20/22/24 각각3runtime·strict types·4entry bundle 검사를 완료했다. Entries920,
+Node20 dry packed1,327,105/unpacked6,072,371 및 interaction97,595gzip의 실측에 맞춰
+각 cap을 최소 조정했다. 최초 package·bundle·search 초과를 최종 통과와 분리 보존한다.
+
+문서 source185, 최종 provenance owning+package truth32, built164페이지/1411 artifacts가
+통과했다. 실제 실행 complete browser-module은 host click으로 선택을 바꾸며, 문서 host mock도
+명시 EventTarget을 제공한다. 320/390/768/1440 Axe0/overflow0와390px 시각 확인은 변경 없는
+페이지/CSS 결과를 재사용한다. 별도 package truth 검사에서 발견한 기존 architecture의
+interaction heading과 오래된 bundle 표를 정본에 맞췄다. 실행 스크립트의 잘못된 selection
+state 조회 및 destroy 기대값 누락은 증거 스크립트만 수정했고 최초 로그를 남겼다.
+
+다음 STEP058은 capture·3px threshold·priority/modifier arbitration 및 cancel 수명이다.
+D4는 drag/pinch/keyboard·brush/lasso/history 또는 STEP057 AT37/STEP077 전체 완료가 아니다.

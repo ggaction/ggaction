@@ -1,0 +1,170 @@
+{
+  "cases": [
+    {
+      "expected": [
+        [
+          "a"
+        ],
+        [
+          "a"
+        ]
+      ],
+      "actual": [
+        [
+          "a"
+        ],
+        [
+          "a"
+        ]
+      ],
+      "diff": [],
+      "codecEqual": true
+    },
+    {
+      "expected": [
+        [
+          "c"
+        ],
+        [
+          "c"
+        ]
+      ],
+      "actual": [
+        [
+          "c"
+        ],
+        [
+          "c"
+        ]
+      ],
+      "diff": [],
+      "codecEqual": true
+    },
+    {
+      "expected": [
+        [],
+        []
+      ],
+      "actual": [
+        [],
+        []
+      ],
+      "diff": [],
+      "codecEqual": true
+    },
+    {
+      "expected": [
+        [
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "a",
+          "b",
+          "c"
+        ]
+      ],
+      "actual": [
+        [
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "a",
+          "b",
+          "c"
+        ]
+      ],
+      "diff": [],
+      "codecEqual": true
+    }
+  ],
+  "events": [
+    {
+      "phase": "commit",
+      "revision": 1,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "settled",
+      "revision": 1,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "commit",
+      "revision": 2,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "settled",
+      "revision": 2,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "commit",
+      "revision": 3,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "settled",
+      "revision": 3,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "commit",
+      "revision": 4,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    {
+      "phase": "settled",
+      "revision": 4,
+      "owners": [
+        "a",
+        "b",
+        "c"
+      ]
+    }
+  ],
+  "expectedPhases": [
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled"
+  ],
+  "sourceImmutable": true,
+  "revision": 4
+}

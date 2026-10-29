@@ -1,0 +1,17 @@
+export interface GeometrySourceResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly [];
+  readonly options: { readonly method: "geo"; readonly format: "geojson" | "topojson"; readonly coordinateKind: "geographic" | "planar";
+    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits> };
+  readonly result: {
+    readonly features: readonly { readonly id?: string | number; readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+      readonly geometry: GeographicGeometry | null; readonly sourcePath: readonly (string | number)[]; readonly drawable: boolean }[];
+    readonly identity: { readonly logicalId: string; readonly revision: number; readonly allocationId: string;
+      readonly keySpec: { readonly mode: "generated" | "explicit" }; readonly rowKeys: readonly string[]; readonly nextGeneratedKey: number };
+    readonly source: { readonly kind: "values"; readonly hashKind: "encoded-values"; readonly contentHash: string; readonly values: GeoJSONInput | TopoJSONInput };
+    readonly topology?: { readonly object: string; readonly arcs: readonly (readonly GeometryPosition[])[]; readonly references: TopologyGeometry;
+      readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] } };
+    readonly diagnostics: { readonly features: number; readonly positions: number; readonly arcs: number; readonly values: number; readonly work: number };
+  };
+  readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
+}

@@ -37,7 +37,9 @@
     "types/",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "THIRD_PARTY_NOTICES",
+    "licenses/"
   ],
   "bin": {
     "ggaction-mcp": "./src/mcp/cli.js"
@@ -91,6 +93,10 @@
     "./interaction": {
       "types": "./types/interaction.d.ts",
       "default": "./src/interaction.js"
+    },
+    "./graph": {
+      "types": "./types/graph.d.ts",
+      "default": "./src/graph.js"
     }
   },
   "scripts": {
@@ -196,5 +202,8 @@
     "@napi-rs/canvas": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "geographic-math": "npm:d3-geo@3.1.1"
   }
 }

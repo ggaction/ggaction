@@ -1,9 +1,10 @@
 # Examples
 
 This index is generated from the canonical public chart catalog. Serve the
-repository root over HTTP, then open any linked directory:
+repository root over HTTP after installing the locked dependencies, then open any linked directory:
 
 ```bash
+npm ci
 python3 -m http.server 8000
 ```
 
@@ -767,6 +768,42 @@ Representative actions: `createContourData`, `createDensityContourData`, `create
 Inspect the same final chart items through Canvas, SVG, or headless CSS points.
 
 Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
+
+### [Labels inside a fixed Canvas](./responsive-guides/)
+
+Reserve guide space and explicitly resize an immutable chart without changing its margins.
+
+Representative actions: `createCanvas`, `createBarPlot`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/responsive-guides/).
+
+### [A leap year, one cell per civil day](./calendar/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Weeks begin on Monday](./calendar-monday/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Omit unobserved days](./calendar-omitted/)
+
+Place civil-day aggregates in stable week and weekday cells.
+
+Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Nested panels with shared guides](./nested-responsive/)
+
+Compose a three-row facet with an overview and resize its source through a scoped target.
+
+Representative actions: `facet`, `hconcat`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/nested-responsive/).
+
+### [Edge routes](./edge-routes/)
+
+Follow existing graph edges with a bounded detour and explicit stored route.
+
+Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
 
 ## Development fixtures
 

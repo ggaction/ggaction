@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 340,
+  "actionCount": 349,
   "relationships": [
     {
       "name": "createCanvas",
@@ -41,12 +41,18 @@
     {
       "name": "applyTheme",
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ]
     },
     {
       "name": "removeTheme",
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ]
     },
@@ -2133,10 +2139,10 @@
     {
       "name": "createLayerPlot",
       "wraps": [
-        "editScale",
-        "createBoxPlot",
         "createScatterPlot",
-        "editGraphics"
+        "editGraphics",
+        "editScale",
+        "createBoxPlot"
       ]
     },
     {
@@ -2261,8 +2267,8 @@
     {
       "name": "createPartitionPlot",
       "wraps": [
-        "createCoordinate",
-        "editSemantic"
+        "editSemantic",
+        "createCoordinate"
       ]
     },
     {
@@ -2336,9 +2342,9 @@
     {
       "name": "createContourMark",
       "wraps": [
-        "createCoordinate",
         "editSemantic",
-        "createScale"
+        "createScale",
+        "createCoordinate"
       ]
     },
     {
@@ -2346,6 +2352,63 @@
       "wraps": [
         "editSemantic",
         "createScale"
+      ]
+    },
+    {
+      "name": "createCalendarLayout",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createCalendarPlot",
+      "wraps": [
+        "editSemantic",
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editCalendarPlot",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "bundleGraphEdges",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editEdgeRoute",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeometryData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeometryData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createProjection",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editProjection",
+      "wraps": [
+        "editSemantic"
       ]
     }
   ]

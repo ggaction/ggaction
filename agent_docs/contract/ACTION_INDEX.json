@@ -4041,7 +4041,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Stable create-only",
-      "update": "Create a new selection ID",
+      "update": "Create a new selection ID with a final-item predicate, live AST, or logical keys",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4059,7 +4059,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replace a stored selector while preserving its ID and target",
+      "update": "Replace a stored selector or live AST, or combine resolved logical item keys while preserving its ID and target",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -6158,6 +6158,168 @@
         "file": "agent_docs/contract/current/CONTOURS.md",
         "anchor": "editcontourmark"
       }
+    },
+    {
+      "name": "createCalendarLayout",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CALENDAR.md",
+        "anchor": "createcalendarlayout"
+      }
+    },
+    {
+      "name": "createCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editCalendarPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CALENDAR.md",
+        "anchor": "createcalendarplot"
+      }
+    },
+    {
+      "name": "editCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editCalendarPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CALENDAR.md",
+        "anchor": "editcalendarplot"
+      }
+    },
+    {
+      "name": "bundleGraphEdges",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editEdgeRoute`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/EDGE_ROUTES.md",
+        "anchor": "bundlegraphedges"
+      }
+    },
+    {
+      "name": "editEdgeRoute",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editEdgeRoute`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/EDGE_ROUTES.md",
+        "anchor": "editedgeroute"
+      }
+    },
+    {
+      "name": "createGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeometryData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "creategeometrydata"
+      }
+    },
+    {
+      "name": "editGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeometryData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editgeometrydata"
+      }
+    },
+    {
+      "name": "createProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "createprojection"
+      }
+    },
+    {
+      "name": "editProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editprojection"
+      }
     }
   ],
   "plannedActions": [],
@@ -6251,7 +6413,9 @@
       "materializePartitionPlot",
       "materializeFlowNodes",
       "materializeFlowLinks",
-      "materializeContourMark"
+      "materializeContourMark",
+      "materializeSelectionPreview",
+      "materializeCalendarPlot"
     ],
     "guideComponents": [
       "createLegendBackground",
@@ -6289,7 +6453,8 @@
       "setQuantitativeColorScale",
       "useProgram",
       "filterGraphPlotView",
-      "restoreGraphPlotView"
+      "restoreGraphPlotView",
+      "refreshScreenEdgeRoutes"
     ],
     "aggregateComponents": [
       "createBoxMedian",

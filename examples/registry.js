@@ -1,6 +1,10 @@
+import { createNestedResponsive } from "./nested-responsive/program.js";
+import { createCalendar } from "./calendar/program.js";
+import { createResponsiveGuides } from "./responsive-guides/program.js";
 import { createContours } from "./contours/program.js";
 import { createInspectionChart } from "./inspect-chart/program.js";
 import { createGraph } from "./graph-plots/program.js";
+import { createEdgeRoutes } from "./edge-routes/program.js";
 import { createTextShadowExample } from "./text-shadows/program.js";
 import { createMarkShadowExample } from "./mark-shadows/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
@@ -303,6 +307,29 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  example({ id: "calendar", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("year"),
+    browser: { path: "browser-host/?chart=calendar", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar", width: 1080, height: 360 } } }
+  }),
+  example({ id: "calendar-monday", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("monday"),
+    browser: { path: "browser-host/?chart=calendar-monday", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar-monday", width: 1080, height: 360 } } }
+  }),
+  example({ id: "calendar-omitted", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("omitted"),
+    browser: { path: "browser-host/?chart=calendar-omitted", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar-omitted", width: 1080, height: 360 } } }
+  }),
+  example({ id: "nested-responsive", data: {}, width: 1047, height: 942, docsGroup: "tutorials", createProgram: createNestedResponsive,
+    browser: { path: "nested-responsive/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "nested-responsive", width: 1047, height: 942 } } }
+  }),
+  example({ id: "responsive-guides", data: {}, width: 400, height: 320, docsGroup: "tutorials", createProgram: () => createResponsiveGuides(),
+    browser: { path: "responsive-guides/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "responsive-guides", width: 400, height: 320 } } }
+  }),
   example({ id: "contours", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
     createProgram: () => createContours("line"),
     browser: { path: "browser-host/?chart=contours", canvas: "#chart",
@@ -327,6 +354,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createContours("kde"),
     browser: { path: "browser-host/?chart=contour-density", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "contour-density", width: 640, height: 480 } } }
+  }),
+  example({ id: "edge-routes", programDirectory: "edge-routes", testDirectory: "edge-routes", data: {}, width: 320, height: 240, docsGroup: "tutorials",
+    createProgram: () => createEdgeRoutes(),
+    browser: { path: "browser-host/?chart=edge-routes", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edge-routes", width: 320, height: 240 } } }
   }),
   example({ id: "graph-plots", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
     createProgram: () => createGraph("directed"),

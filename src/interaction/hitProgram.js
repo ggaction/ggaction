@@ -12,7 +12,7 @@ import { guideHitMetadata } from "./hitGuides.js";
 
 const frameSources = new WeakMap();
 
-function requireProgram(program) {
+export function requireProgram(program) {
   if (!(program instanceof ChartProgram) || !Object.isFrozen(program)) throw new TypeError("Hit preparation requires an immutable ChartProgram.");
   for (const key of ["graphicSpec", "semanticSpec", "materializationConfigs", "resolvedScales", "children", "compositionSpec", "actionStack"]) {
     const descriptor = Object.getOwnPropertyDescriptor(program, key);
@@ -103,8 +103,23 @@ export function prepareProgramHitFrame(program, version = 0) {
     entries.push(freezeOwned({ nodeKey: source.nodeKey, zIndex: i, metadata: itemMetadata, shape }));
   }
   const frame = freezeOwned({ scene: snapshot.scene, entries: freezeOwned(entries), version });
-  frameSources.set(frame, { profiles, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  const placements = new Map();
+  for (const canvas of snapshot.canvases) {
+    const context = owners.get(canvas.graphicId);
+    if (context?.program.graphicSpec.order.includes(context.localId)) placements.set(JSON.stringify(context.childPath), canvas);
+  }
+  frameSources.set(frame, { profiles, placements, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
+}
+
+// Read the concrete owner placement from the same scene traversal. Empty marks
+// still have an unambiguous Canvas; no first-item or first-dataset fallback.
+export function programHitOwnerPlacement(base, childPath) {
+  const source = frameSources.get(base);
+  if (!source) throw new TypeError("Owner placement requires an authentic program hit frame.");
+  const placement = source.placements.get(JSON.stringify(childPath));
+  if (!placement) throw new Error("Interaction owner has no materialized Canvas placement.");
+  return placement;
 }
 
 /** Bind a sampled concrete frame only to the exact program's known node identities. */

@@ -14,7 +14,7 @@ import { visualVariants } from "./manifest.js";
 import { startStaticServer } from "../../../../support/static-server.js";
 import { openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence } from "../../../../support/browser.js";
 import { ensureVariantMetadata } from "../../../../support/artifact-metadata.js";
-const root=fileURLToPath(new URL("../../../../../",import.meta.url)), directory=new URL("../../../../../.artifacts/test/png/charts/mark-shadows/text/",import.meta.url);
+const root=fileURLToPath(new URL("../../../../../",import.meta.url)), directory=new URL("../../../../../.artifacts/test/png/charts/mark-shadows/text-shadows/",import.meta.url);
 const bytes=url=>Buffer.from(url.split(",")[1],"base64");
 async function rgba(buffer){const image=await loadImage(buffer),canvas=createCanvas(image.width,image.height);canvas.getContext("2d").drawImage(image,0,0);return canvas.getContext("2d").getImageData(0,0,image.width,image.height).data;}
 function visibleLayers(data,style,ratio=1){

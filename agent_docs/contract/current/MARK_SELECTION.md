@@ -46,7 +46,7 @@ type MarkSelector =
   & (
     | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
     | { op: "oneOf"; values: readonly unknown[] }
-    | { op: "range"; min: Finite | string; max: Finite | string; inclusive?: boolean }
+    | ({ op: "range" } & FilterRange)
     | {
         op: "min" | "max";
         count?: PositiveInteger;
@@ -61,8 +61,12 @@ type MarkSelector =
   scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다. Rect도 공통 channel resolver를 사용하여
   temporal field/datum과 color/stroke를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
   근거: `test/unit/actions/marks/rect-span.test.js`.
-- `range`의 `inclusive` 기본값은 `true`다. Ordered comparison은 같은 type의 finite number 또는 string만
-  비교하고 missing/incompatible item은 제외한다.
+- `range`는 `min` 또는 `max`를 하나 이상 받는다. 두 endpoint는 같은 type의 finite number 또는 string이어야 한다.
+  기본은 양끝 포함이다. `inclusive`로 양끝을 한 번에 지정하거나 `minInclusive`/`maxInclusive`로 각 끝을 지정한다.
+  두 표기를 함께 쓰거나 없는 endpoint의 flag를 주면 거부한다. 한쪽 경계만 있으면 반대쪽은 제한하지 않는다.
+  Ordered comparison은 타입을 변환하지 않으며 missing/nonfinite/incompatible item은 제외한다.
+  기존 양끝+inclusive selector의 저장 형태는 유지하고, 새로운 표기는 normalized endpoint flags만 저장한다.
+  Data filter와 final-item selector는 같은 ordered-range 계산 owner를 사용한다. Date는 기존 channel의 epoch ms로 비교한다.
 - `min | max`의 `count` 기본값은 `1`, `ties` 기본값은 `"first"`다. `"first"`는 stable source order로
   정확히 count개를 고르고 `"all"`은 boundary tie를 모두 포함할 수 있다. `groupBy`는 extrema에만 유효하다.
 - `grain` 기본값은 `"item"`이다. Item grain은 point symbol, final bar segment/rectangle, observed rect cell, line/area series path,
@@ -83,6 +87,16 @@ type MarkSelector =
   직전 resolved domain을 유지하며 mark items, source labels와 highlight graphics를 비운다. 처음부터 domain을
   정할 수 없는 empty chart와 이미 materialized된 chart의 empty filter 결과는 구분한다. Ambiguous
   field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에 실패한다.
+
+## Logical item selection and set updates
+
+- `MarkSelector` also accepts `{ items: readonly string[], empty?: "none" | "all", grain? }`, exclusively of row or value selectors. Keys are the opaque `getMarkItems(...).key` or interaction hit `itemKey` at the same target/grain. Duplicates normalize by first occurrence; malformed, sparse, accessor or non-string key arrays fail. The cumulative key count plus UTF-16 key length is bounded by the shared 10,000,000 work limit.
+- Default `empty: "none"` selects nothing for an explicit empty key list. `empty: "all"` selects every current item only when the stored key list itself is empty. A nonempty list whose keys are hidden or deleted selects nothing; it never expands to all items. Absent keys are retained and can reappear after filtering or source revision. This checkpoint has no automatic drop policy or orphan event.
+- Selection resources add normalized `options: { mode: "item-keys", itemKeys, empty }` with unchanged algorithm version `"1"`; the existing resource/config ownership and exact revision binding remain. Row-key and predicate resources retain their current storage and behavior. Input indices are never stored as logical item keys.
+- `editMarkSelection` accepts `mode?: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default `"replace"`. Replace stores the supplied complete selector, retaining live predicate and row-key behavior. Other modes require the existing grain and store the resulting logical key set. Add preserves previous keys and appends new keys in incoming order; toggle removes common keys and appends previously absent keys; subtract/intersect preserve previous key order. An incoming predicate or row selector resolves once at update time. Existing and incoming nonempty item lists retain hidden keys. An explicit empty-all list is evaluated against current items for set operations. The resulting empty policy preserves the existing policy unless `empty` is supplied with an items selector.
+- Logical keys are relative to the owning program. Scoped actions accept namespaced keys from inspection of that exact explicit child path, remove only those ancestor namespaces, and reject keys from another scope. Nested snapshots add namespaces back through the existing identity owner. A composite inspection may report several component targets; use each item's reported target when selecting that component.
+- `selectMarks`, `editMarkSelection`, inline/named `highlightMarks`, mark labels and `filterMarks` share this selector. Compound highlights project root membership through existing source-row lineage. Conditional encodings rebind the updated resource revision before rematerializing. Resize, filter removal, compatible source revision and editable snapshot restoration preserve key meaning. Full authors these actions; Basic authoring support is unchanged.
+- Evidence: `test/unit/grammar/selection-set.test.js`, `test/unit/actions/selection/logical-item-selection.test.js`, `test/contracts/logical-selection-types.test.js`, `test/contracts/realistic-logical-selection.test.js`.
 
 ## `filterMarks`
 
@@ -171,6 +185,7 @@ type MarkSelector =
   program and explicit layer rebind.
 - ✅ Covered: point scale/axis/grid rematerialization, histogram boundary retention, stack grain, line/area series,
   density provenance, arc sectors, rule/Tick endpoints and categorical legend convergence.
+- Empty active filters expose an empty final-item array to selection, source-only membership and inspection, including aggregate and path marks. Native empty-filter domain preservation remains unchanged.
 - ✅ Covered: empty domain preservation and stale graphic cleanup, removal/source restoration, histogram bin restoration,
   dependent filtered snapshot preservation and invalid mode/missing owner failure.
 - ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.
@@ -202,6 +217,17 @@ type MarkSelector =
   retention, owner/context cleanup and missing owner failure.
 - Evidence: `test/unit/actions/data/filter-marks.test.js`.
 
+## Expression selection
+
+- `selectMarks`, `editMarkSelection`, and `highlightMarks({ select })` also accept `{ where: ComputedExpressionV2, grain?: "item" | "stack" }` as the separate `MarkSelectionSelector` union. It cannot mix with item keys, row references, value selectors, or `empty`.
+- `where` uses the existing version 2 boolean predicate AST and `standard@1` registry. Field nodes read fields uniquely defined at the final selected item grain. A line series or aggregate is never selected merely because one contributing raw row matches. An absent field across every nonempty item is an error; a field missing on some items follows the existing AST missing-value policy. Empty item arrays use unknown optional field types while still validating every AST branch and parameter.
+- The persistent selection keeps `{ mode: "predicate", predicate: { where } }`; its `inputs` are exact parameter references in first AST occurrence order, including inactive branches. Parameter IDs and types must resolve at creation. Stored vectors must match the entire AST exactly, and restoration rejects missing, reordered, stale or forged bindings without recalculating graphics.
+- `editParameter` revises dependent selection resources, rebinds conditional selection inputs, revises computed data, and explicitly rematerializes affected marks, named labels and highlights in dependency order. The final predicates are checked even when no visual consumer exists. Derived-data edits also preflight affected AST selections against their revised final item fields, including selections with no highlight or label consumer. Failure leaves the receiver and its trace unchanged. Existing facet/repeat adoption and explicit concat child scope preserve the parameter closure.
+- Non-`replace` selection updates evaluate incoming expressions once and store the resulting logical key set; this intentionally removes predicate/parameter dependencies. `replace` retains the supplied AST for live reevaluation.
+- Work is bounded before constructing rows: `itemCount * (AST nodeCount + referencedFieldCount) <= 10,000,000`, plus the existing AST depth, node, operand and value limits. Referenced data accessors are rejected without execution, and caller inputs remain unchanged.
+- Inline `createMarkLabels({ select })`, `editMarkLabelSelection({ select })`, `filterMarks`, and graph view selectors keep `MarkSelector` and reject `where`. Use `selection: id` for labels and highlights. The highlight facade creates the same persistent selection when given an AST inline. Basic authoring remains unsupported; renderer contracts do not change.
+- Evidence: `test/unit/grammar/selection-expression.test.js`, `test/unit/actions/selection/expression-selection.test.js`, `test/contracts/logical-selection-types.test.js`, and the five-dataset/three-grain `test/contracts/realistic-logical-selection.test.js`.
+
 ## `selectMarks`
 
 - Signature: `selectMarks({ id?, target?, ...selector })`
@@ -209,7 +235,7 @@ type MarkSelector =
   area, arc, rule과 Tick의 final semantic item resolver를 제공한다.
 - `id`: 생략한 첫 selection은 `${target}Selection`을 사용한다. 같은 role의 두 번째 selection은 explicit
   ID가 필요하며 기존 ID를 교체하지 않는다.
-- Effect: normalized predicate or row-key meaning is stored once in `semanticSpec.resources` as a persistent-selection resource.
+- Effect: normalized predicate, row-key or logical item-key meaning is stored once in `semanticSpec.resources` as a persistent-selection resource.
   `materializationConfigs.selections` stores target, grain, projection, exact resource ref and optional composite sourceSelection.
   `currentSelection` is updated; graphics stay unchanged. Input row indices are immediately resolved to stable row keys.
 - Rematerialization: stored selector는 현재 semantic point item에 다시 평가되므로 Canvas/scale/encoding/data
@@ -217,7 +243,7 @@ type MarkSelector =
 
 ### Formal values — `selectMarks`
 
-- Implemented: `selectMarks({ id?: UserId; target?: UserId } & MarkSelector)` for point/bar/line/area/arc/rule/Tick item grain,
+- Implemented: `selectMarks({ id?: UserId; target?: UserId } & MarkSelectionSelector)` for point/bar/line/area/arc/rule/Tick item grain,
   stacked bar grain, the three explicit value sources, and every comparison, set, range and grouped/ungrouped extrema
   mode above.
 - Proposed (NOT IMPLEMENTED): —.
@@ -247,9 +273,9 @@ type MarkSelector =
 
 ## `editMarkSelection`
 
-- Signature: `editMarkSelection({ selection?, ...selector })`.
+- Signature: `editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })`.
 - `selection`: explicit ID, current selection, unique stored selection 순으로 resolve한다. Existing ID와 target은
-  유지하며 supplied selector는 partial merge가 아니라 complete replacement다. Target replacement는
+  유지하며 default replace는 supplied selector의 complete replacement다. Explicit set update modes follow the logical item contract above. Target replacement는
   `removeMarkSelection` 뒤 `selectMarks`가 소유한다.
 - Effect: 새 selector 전체를 normalize하고 current target의 final item grain에서 compatibility를 preflight한 뒤
   the persistent-selection resource at its next revision and rebinds all dependent selection references atomically.
@@ -263,7 +289,7 @@ type MarkSelector =
 
 ### Formal values — `editMarkSelection`
 
-- Implemented: `editMarkSelection({ selection?: UserId } & MarkSelector)` with the complete shared selector algebra.
+- Implemented: `editMarkSelection({ selection?: UserId; mode?: "replace" | "add" | "toggle" | "subtract" | "intersect" } & MarkSelectionSelector)` with the complete shared selector algebra.
 - Proposed (NOT IMPLEMENTED): target/ID replacement and partial selector merge.
 
 ### Value coverage — `editMarkSelection`
@@ -341,7 +367,7 @@ type MarkSelector =
 
 ### Formal values — `highlightMarks`
 
-- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | readonly NonNegativeFinite[]; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point/bar/line/area/arc/rule/Tick with mark-specific option applicability.
+- Implemented: `highlightMarks({ id?: UserId; target?: UserId; select?: MarkSelectionSelector; selection?: UserId; color?: NonEmptyString; opacity?: UnitInterval; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | readonly NonNegativeFinite[]; shape?: PointShape; size?: PositiveFinite; offset?: { x?: Finite; y?: Finite }; dimOthers?: boolean | { opacity?: UnitInterval }; bringToFront?: boolean })` for point/bar/line/area/arc/rule/Tick with mark-specific option applicability.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `highlightMarks`
@@ -389,3 +415,56 @@ keys so moving between child paths enters/exits. SVG scene v1 and Canvas scene v
 
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/core/resource-state.test.js`,
 `test/unit/persistence/legacy-selection.test.js`, `test/unit/persistence/legacy-derived.test.js`.
+
+
+## Typed regions and screen polygon metadata
+
+Named `MarkSelectionSelector` additionally accepts `{region,grain?}`. Region has one or more of
+`x`, `y`, `x2`, `y2`, or `theta` alone. Each axis has exactly `{ranges:[...]}` or `{values:[...]}`.
+Numeric ranges require finite min/max and reuse endpoint inclusion flags, default inclusive. At most
+two ordered, non-overlapping ranges form a union within an axis; axes intersect. Categories are
+finite number/string/boolean values, deduplicated by first occurrence with strict typed equality.
+Empty arrays mean no members. Missing or incompatible per-item values are excluded; a nonempty
+owner with no such final-grain channel rejects the selector. Aggregate channels retain their existing
+endpoint meaning; raw member rows never substitute for unavailable final-item values. Full region
+shape validation occurs even for empty data. Category count is at most 10,000, item count at most
+50,000, and cumulative key/category comparisons and UTF-16 work at most 10,000,000.
+
+An items selector may additionally contain `screenPolygon:[{x,y},...]`. Points are finite CSS-local
+coordinates, bounded to 10,000 input points; consecutive duplicates and a repeated closing point
+normalize away. Polygons with fewer than three points are valid metadata. Item keys alone determine
+membership through resize, filtering, source revisions and codec restoration. An item-key resource
+stores optional normalized `options.screenPolygon`; it is never interpreted as a data-space polygon.
+Set updates retain only the incoming polygon metadata when present. Replacing with another selector
+or editing without polygon metadata removes it. Predicate resources store normalized `region` in
+their existing predicate options; algorithm version remains `"1"`. Malformed/noncanonical stored
+ranges, points or mixed selector forms fail load rather than being repaired.
+
+Native select/edit, inline or named highlights, named labels, conditional encodings and scoped
+composition edits share the updated resource revision. Inline mark filters and inline label selectors
+retain `MarkSelector` and reject region/polygon additions. Basic does not author these selections.
+The theta selector reads semantic theta values in their existing units. Angular pointer bindings are
+owned by Current INTERACTION. Evidence: `test/unit/actions/selection/region-selection.test.js`,
+`test/unit/selection-region.test.js`, `test/contracts/logical-selection-types.test.js`.
+
+## Appearance inspection
+
+`ggaction/inspection`의 `getMarkItems`와 `inspectProgram().views`는 immutable `appearance` 배열을 반환한다.
+각 entry는 semantic `owner`와 optional scoped `itemKey`, component role, property, 실제 resolved `value`,
+winning `source`를 담는다. Source kind는 `defaults`, `family`, `theme`, `style`, `explicit`, `interaction`,
+`unknown`이다. Theme는 frame owner/name/token, authored option은 action, named highlight는 selection ID를 보존한다.
+Guide offset/length/itemGap은 저장된 실제 배치 설정을 보고하며 inferred title 보정 후의 값을 유지한다.
+명시한 값이 기본값과 같아도 authored source다. Source는 canonical trace/reset과 stored binding/style에서 파생하며
+별도 mutable provenance 상태를 저장하지 않는다. Inspection은 action, solver 또는 재배치를 실행하지 않는다.
+Trace 없는 legacy/extension item 교체 또는 pre-highlight property selector의 baseline을 입증할 수 없으면
+`unknown`이며 default라고 추측하지 않는다. Property source는 glyph 자체의 pixel visibility를 주장하지 않는다.
+Coverage: `test/unit/actions/theme-provenance.test.js`와 existing inspection/selection tests.
+
+
+A theta-region selector or item-key selector may include `screenAngles:[startRadians,endRadians]`.
+Both finite values are in `[0,2π)` and exactly two endpoints are required, even for empty selections.
+The tuple is clockwise pointer metadata; equal endpoints are empty and do not imply a full turn.
+It cannot accompany a Cartesian region, `where`, raw value selectors or `screenPolygon`. Predicate
+resources retain it beside `region`; item-key resources retain `options.screenAngles`. Membership
+continues to use native domain values or logical keys. Incoming set updates retain only their incoming
+metadata; ordinary replacement removes it. Codec rejects malformed angle metadata without repair.

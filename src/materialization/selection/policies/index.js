@@ -1,3 +1,4 @@
+import { calendarSelectionPolicy } from "./calendar.js";
 import { imageSelectionPolicy } from "./image.js";
 import { contourSelectionPolicy } from "./contour.js";
 import { graphSelectionPolicy } from "./graph.js";
@@ -24,6 +25,7 @@ import { resolveOverlayItems } from "../items/overlay.js";
 const POLICIES = Object.freeze({
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
+  calendar: calendarSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
   "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,
@@ -77,6 +79,8 @@ function resolveItems(program, target, grain, identityOnly, options) {
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }
+  policy.validateGrain?.(layer, grain);
+  if (emptyFilteredItems(program, layer, dataset)) return [];
   const items = policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, resolvers);
   return identityOnly ? items : withConditionalChannels(program, layer, items, options);
 }
@@ -88,6 +92,8 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
   if (!policy.supportedGrains.includes(grain)) throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
   if (layer.derivedBindings?.overlay && grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
+  policy.validateGrain?.(layer, grain);
+  if (emptyFilteredItems(program, layer, dataset)) return [];
   const definitions = layer.derivedBindings?.overlay ? resolveOverlayItems(program, layer, { sourceOnly: true, resolveMarkItems, resolveMarkSourceItems })
     : policy.resolveSourceItems ? policy.resolveSourceItems(program, layer, dataset, grain, { resolveMarkItems, resolveMarkSourceItems })
     : policy.resolveItems(program, layer, dataset, grain, resolveMarkItems, { sourceOnly: true, resolveMarkItems, resolveMarkSourceItems });
@@ -96,6 +102,10 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
     ...item, properties: item.properties ?? {},
     rows: item.rows ?? memberRowReferences(program, item.members, layer.data, item.memberKeys)
   })), options);
+}
+
+function emptyFilteredItems(program, layer, dataset) {
+  return program.markConfigs[layer.id]?.markFilter?.empty === true && dataset?.values?.length === 0;
 }
 
 function withConditionalChannels(program, layer, items, { channels, active = new Set() } = {}) {

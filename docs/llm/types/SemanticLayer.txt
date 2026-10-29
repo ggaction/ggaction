@@ -2,13 +2,16 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly calendarBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly calendarLabels?: Readonly<Record<CalendarLabelRole, boolean>>;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
-  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number };
+    readonly routes?: { readonly kind: "edge-route"; readonly id: string; readonly revision: number } };
   readonly graphLabels?: false | { readonly field?: string; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;

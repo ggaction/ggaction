@@ -22,6 +22,18 @@ test("subdivision budgets diagnose failure and queries cannot consume incomplete
   assert.throws(()=>pathStrokeDistance(cubicCommands,{x:5,y:2},{maxDepth:0}),/budget/);
   for(const options of [{tolerance:0},{tolerance:NaN},{maxDepth:21},{maxDepth:-1},{maxDepth:0.5},{transform:[1,0]},{transform:[1e308,0,0,1e308,0,0]}]) assert.throws(()=>flattenPathCommands(cubicCommands,options));
 });
+test("caller point budgets stop every primitive and subpath without returning partial geometry", () => {
+  const line = [{ op: "M", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }];
+  assert.equal(flattenPathCommands(line, { maxPoints: 2 }).subpaths[0].points.length, 2);
+  for (const [commands, maxPoints] of [[line, 1], [[...line, { op: "Z" }], 2], [[...line, { op: "M", x: 4, y: 5 }], 2], [cubicCommands, 2]]) {
+    const result = flattenPathCommands(commands, { maxPoints });
+    assert.deepEqual(result.subpaths, []);
+    assert.equal(result.diagnostics[0].code, "path-point-limit");
+    assert.equal(result.diagnostics[0].limit, maxPoints);
+  }
+  for (const maxPoints of [0, -1, 1.5, Infinity, 1000001]) assert.throws(() => flattenPathCommands(line, { maxPoints }), /maxPoints/);
+  assert.throws(() => pathStrokeDistance(line, { x: 0, y: 0 }, { maxPoints: 1 }), /budget/);
+});
 test("nonzero and evenodd keep literal holes, islands and implicit open closure",()=>{
   for(const fillRule of ["nonzero","evenodd"]){
     const commands=[...outerCommands,...(fillRule==="nonzero"?reversedHoleCommands:holeCommands),...islandCommands];

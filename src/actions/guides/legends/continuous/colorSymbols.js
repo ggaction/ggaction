@@ -1,3 +1,5 @@
+import { nativeLegendItemGap } from "../../../../theme/defaults.js";
+import { legendThemeGap } from "../../../theme/state.js";
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { validateOptionObject, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString } from "../../../../core/validation.js";
@@ -20,14 +22,13 @@ export function normalizeColorSymbol(value) {
   return symbol;
 }
 
-export function normalizeColorSymbols(args, previous, operation = "create") {
+export function normalizeColorSymbols(args, previous, operation = "create", theme) {
   if (args.gradient !== undefined) throw new Error("Symbol color legends do not accept gradient dimensions.");
   const { representation: _representation, values: _values, count: _count, symbol: _symbol,
     columns: _columns, direction: _direction, itemGap: _itemGap, layout: _layout,
     titlePosition: _titlePosition, ...common } = args;
   const base = normalizeContinuousLegend(common, "gradient");
-  const side = ["left", "right", "top-left", "top-right", "bottom-left", "bottom-right"].includes(args.position ?? "right");
-  const item = normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? (side ? 18 : 20) }, { multiColumnSide: true });
+  const item = normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? legendThemeGap(theme) ?? nativeLegendItemGap("sampled", { position: args.position }) }, { multiColumnSide: true });
   const { count: _legacyCount, ...normalized } = base;
   return { ...normalized, ...item, representation: "symbols",
     sampling: normalizeLegendSampling(args, { previous, operation, label: "Sampled color legend" }),

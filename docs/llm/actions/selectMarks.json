@@ -78,6 +78,36 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "where",
+      "required": false,
+      "type": "ComputedExpressionV2 | undefined"
+    },
+    {
+      "name": "items",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"all\" | \"none\" | undefined"
+    },
+    {
+      "name": "region",
+      "required": false,
+      "type": "SelectionRegion | undefined"
+    },
+    {
+      "name": "screenPolygon",
+      "required": false,
+      "type": "readonly { readonly x: number; readonly y: number; }[] | undefined"
+    },
+    {
+      "name": "screenAngles",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
       "name": "rows",
       "required": false,
       "type": "{ data: string; indices: readonly number[]; }"
@@ -113,21 +143,6 @@
       "type": "readonly unknown[]"
     },
     {
-      "name": "min",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "max",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "inclusive",
-      "required": false,
-      "type": "boolean | undefined"
-    },
-    {
       "name": "count",
       "required": false,
       "type": "number | undefined"
@@ -141,11 +156,37 @@
       "name": "ties",
       "required": false,
       "type": "\"all\" | \"first\" | undefined"
+    },
+    {
+      "name": "min",
+      "required": false,
+      "type": "FilterBound"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "FilterBound | undefined"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "minInclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "maxInclusive",
+      "required": false,
+      "type": "boolean | undefined"
     }
   ],
   "callPatterns": [
     "selectMarks({ id?, field | channel | property, op, ...operands })",
-    "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+    "selectMarks({ id?, target?, grain?, op: min | max, count? })",
+    "selectMarks({ id?, target?, items: logicalKeys, empty?: none | all })"
   ],
   "snippet": "program.selectMarks({ field: \"category\", op: \"eq\", value: \"A\" })",
   "errors": [],

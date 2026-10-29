@@ -1,0 +1,115 @@
+{
+  "expected": [
+    {
+      "policy": "keep-hidden",
+      "events": [
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 1,
+              "restored": 0,
+              "dropped": 0,
+              "ownerMissing": false
+            }
+          ]
+        },
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 0,
+              "restored": 1,
+              "dropped": 0,
+              "ownerMissing": false
+            }
+          ]
+        }
+      ],
+      "selected": [
+        "b"
+      ],
+      "revision": 2
+    },
+    {
+      "policy": "drop",
+      "events": [
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 0,
+              "restored": 0,
+              "dropped": 1,
+              "ownerMissing": false
+            }
+          ]
+        },
+        {
+          "type": "program",
+          "changes": []
+        }
+      ],
+      "selected": [],
+      "revision": 2
+    }
+  ],
+  "actual": [
+    {
+      "policy": "keep-hidden",
+      "events": [
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 1,
+              "restored": 0,
+              "dropped": 0,
+              "ownerMissing": false
+            }
+          ]
+        },
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 0,
+              "restored": 1,
+              "dropped": 0,
+              "ownerMissing": false
+            }
+          ]
+        }
+      ],
+      "selected": [
+        "b"
+      ],
+      "revision": 2
+    },
+    {
+      "policy": "drop",
+      "events": [
+        {
+          "type": "program",
+          "changes": [
+            {
+              "hidden": 0,
+              "restored": 0,
+              "dropped": 1,
+              "ownerMissing": false
+            }
+          ]
+        },
+        {
+          "type": "program",
+          "changes": []
+        }
+      ],
+      "selected": [],
+      "revision": 2
+    }
+  ],
+  "diff": [],
+  "sourceUnchanged": true,
+  "sourceHash": "60a193d9f1d060b6590ef63c5a2ae341bcf2ed6c2653ed581861a143348e1b95"
+}

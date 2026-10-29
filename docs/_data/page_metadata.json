@@ -586,7 +586,7 @@
     "title": "Selection and Highlighting",
     "source": "docs/api/appearance/selection-and-highlighting.md",
     "editSource": "docs/api/appearance/selection-and-highlighting.md",
-    "description": "selectMarks is the advanced reusable selection action. Selection by itself does not alter semanticSpec or graphicSpec:",
+    "description": "selectMarks is the advanced reusable selection action. Selection by itself stores its meaning in semanticSpec.resources and leaves graphicSpec unchanged:",
     "image": "/assets/images/mark-selection-points.png"
   },
   "/api/appearance/point/": {
@@ -1059,6 +1059,20 @@
     "description": "Keep observed connections separate from the positions used to draw them.",
     "image": "/assets/images/graph-plots.png"
   },
+  "/api/edge-routes/": {
+    "title": "Edge Routes",
+    "source": "docs/api/edge-routes.md",
+    "editSource": "docs/api/edge-routes.md",
+    "description": "Bundle existing graph edges, retain their identities, and prepare bounded vector routes in a worker.",
+    "image": "/assets/images/edge-routes.png"
+  },
+  "/tutorials/edge-routes/": {
+    "title": "Edge Route Tutorial",
+    "source": "docs/tutorials/edge-routes.md",
+    "editSource": "examples/edge-routes/program.js",
+    "description": "Route A–C along existing A–B–C connections without adding a junction or changing graph identity.",
+    "image": "/assets/images/edge-routes.png"
+  },
   "/api/partition/": {
     "title": "Partition Plots",
     "source": "docs/api/partition.md",
@@ -1087,6 +1101,12 @@
     "description": "Start with a node table and an edge table whose values have one shared unit.",
     "image": "/assets/images/flow-layouts.png"
   },
+  "/api/geometry/": {
+    "title": "Geometry and Projections",
+    "source": "docs/api/geometry.md",
+    "editSource": "docs/api/geometry.md",
+    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity."
+  },
   "/api/contours/": {
     "title": "Contours and Two-Dimensional Density",
     "source": "docs/api/contours.md",
@@ -1100,5 +1120,33 @@
     "editSource": "examples/contours/program.js",
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
     "image": "/assets/images/contours.png"
+  },
+  "/tutorials/responsive-guides/": {
+    "title": "Fit Labels Inside a Fixed Canvas",
+    "source": "docs/tutorials/responsive-guides.md",
+    "editSource": "examples/responsive-guides/program.js",
+    "description": "Use a fixed outer size when a chart must fit an existing panel. The Canvas policy reserves space for guides, and the label policy decides how much text can fit.",
+    "image": "/assets/images/responsive-guides.png"
+  },
+  "/api/calendar/": {
+    "title": "Calendar Plots",
+    "source": "docs/api/calendar.md",
+    "editSource": "docs/api/calendar.md",
+    "description": "Aggregate observations by civil day and place each date in a week/weekday cell. These chart authoring actions require the Full ggaction entry point.",
+    "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/calendar/": {
+    "title": "Place Observations on a Calendar",
+    "source": "docs/tutorials/calendar.md",
+    "editSource": "examples/calendar/program.js",
+    "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
+    "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/nested-responsive/": {
+    "title": "Arrange Nested Panels with Shared Guides",
+    "source": "docs/tutorials/nested-responsive.md",
+    "editSource": "examples/nested-responsive/program.js",
+    "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
+    "image": "/assets/images/nested-responsive.png"
   }
 }

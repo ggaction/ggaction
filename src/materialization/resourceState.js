@@ -5,11 +5,13 @@ import { annotateError } from "../core/diagnostics.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { canonicalJSON, contentDigest } from "../core/contentDigest.js";
-import { normalizeMarkSelector } from "../grammar/markSelection.js";
+import { normalizeSelectionSelector, validateSelectionExpression } from "../grammar/selectionExpression.js";
+import { inspectPredicateExpression } from "../grammar/expressionAst.js";
+import { validateExpressionParameterInputs } from "../grammar/expressionInputs.js";
 import { encodeValue } from "../core/valueEncoding.js";
 import { resolveInputReference, resolveRowReference } from "../selectors/resources.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
-import { validateParameterResource } from "../grammar/parameter.js";
+import { validateParameterResource, parameterEnvironment } from "../grammar/parameter.js";
 import { validateDataSourceResource } from "./dataSourceState.js";
 import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../core/resourceReference.js";
 import { getBuiltinResourceKindHandler } from "./resourceKinds.js";
@@ -55,11 +57,20 @@ export function validateStoredResource(resource, ProgramClass) {
   }
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
-  if (options?.mode === "predicate") {
+  if (options?.mode === "item-keys") {
+    exact(options, ["mode", "itemKeys", "empty", ...(Object.hasOwn(options, "screenPolygon") ? ["screenPolygon"] : []), ...(Object.hasOwn(options, "screenAngles") ? ["screenAngles"] : [])], "Logical item selection");
+    const selector = { items: options.itemKeys, empty: options.empty, ...(Object.hasOwn(options, "screenPolygon") ? { screenPolygon: options.screenPolygon } : {}), ...(Object.hasOwn(options, "screenAngles") ? { screenAngles: options.screenAngles } : {}) };
+    const { grain: _grain, ...normalized } = normalizeSelectionSelector(selector);
+    if (canonicalJSON(normalized) !== canonicalJSON(selector)) {
+      throw error("Selection item keys and empty policy must be normalized.");
+    }
+  } else if (options?.mode === "predicate") {
     exact(options, ["mode", "predicate"], "Predicate selection");
-    if (Object.hasOwn(options.predicate, "grain") || Object.hasOwn(options.predicate, "rows")) throw error("Selection projection belongs to its target configuration.");
-    const { grain: _grain, ...normalized } = normalizeMarkSelector(options.predicate);
+    if (Object.hasOwn(options.predicate, "grain") || Object.hasOwn(options.predicate, "rows") || Object.hasOwn(options.predicate, "items") || Object.hasOwn(options.predicate, "empty")) throw error("Selection projection belongs to its target configuration.");
+    const { grain: _grain, ...normalized } = normalizeSelectionSelector(options.predicate);
     if (canonicalJSON(normalized) !== canonicalJSON(options.predicate)) throw error("Selection predicate must be normalized.");
+    if (Object.hasOwn(normalized, "where")) validateExpressionParameterInputs(resource.inputs,
+      inspectPredicateExpression(normalized.where).parameters, "Selection expression");
   } else if (options?.mode === "row-keys") {
     exact(options, ["mode", "logicalDataId", "rowKeys"], "Row-key selection");
     if (typeof options.logicalDataId !== "string" || !options.logicalDataId || !Array.isArray(options.rowKeys) ||
@@ -100,6 +111,13 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
   for (const resource of resources) for (const ref of resourceDependencies(resource)) {
     validateWorkLimit(++work, "Resource dependency work");
     resolveInputReference(program, ref);
+  }
+  for (const resource of resources) {
+    if (resource.kind === "persistent-selection" && resource.options.mode === "predicate" &&
+        Object.hasOwn(resource.options.predicate, "where")) {
+      validateSelectionExpression(resource.options.predicate.where, parameterEnvironment(resource.inputs.map(ref =>
+        resolveInputReference(program, ref))));
+    }
   }
   orderResourceDependencies(resources);
   for (const layer of program.semanticSpec.layers ?? []) for (const { kind, ref } of layerResourceBindings(layer)) {

@@ -1,4 +1,4 @@
-import { withGraphSourceRevisions } from "./sourceRevisionContext.js";
+import { withGraphSourceRevisions, withGraphSourceProjection } from "./sourceRevisionContext.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { createInferredGraphData, editInferredGraphData } from "./inference.js";
 import { closedAction } from "../../core/action.js";
@@ -41,13 +41,21 @@ export function registerGraphActions(ProgramClass) {
 }
 
 export function reviseGraphInputs(program, replacements) {
+  return replaceGraphInputs(program, replacements, withGraphSourceRevisions);
+}
+
+export function projectGraphInputs(program, replacements) {
+  return replaceGraphInputs(program, replacements, withGraphSourceProjection);
+}
+
+function replaceGraphInputs(program, replacements, withSources) {
   let next = program;
   for (const original of orderResourceDependencies(program.semanticSpec.resources)) {
     if (original.kind !== "graph") continue;
     const resource = findStoredResource(next, "graph", original.id);
     const nodes = replacements.get(resource.inputs[resource.options.roles.nodes].id);
     const edges = replacements.get(resource.inputs[resource.options.roles.edges].id);
-    if (nodes !== undefined || edges !== undefined) next = withGraphSourceRevisions(next, replacements, () =>
+    if (nodes !== undefined || edges !== undefined) next = withSources(next, replacements, () =>
       resource.provenance.origin === "inferred" ? next.editInferredGraphData({ target: resource.id, data: nodes }) : next[resource.options.flow ? "editFlowData" : "editGraphData"]({ target: resource.id,
         ...(nodes === undefined ? {} : { nodes }), ...(edges === undefined ? {} : { edges }) }));
   }

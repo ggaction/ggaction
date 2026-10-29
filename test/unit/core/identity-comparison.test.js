@@ -3,6 +3,26 @@ import test from "node:test";
 import { withoutAllocatedIdentity } from "../../support/identity-equivalence.js";
 import { chart } from "../../../src/index.js";
 
+test("meaning comparison normalizes allocated geometry namespaces while retaining feature identity and source changes", () => {
+  for (const keyed of [false, true]) {
+    const create = () => chart().createGeometryData({ id: "shape", format: "geojson", coordinateKind: "planar",
+      ...(keyed ? { featureKey: "id" } : {}), values: { type: "FeatureCollection", features: [1, 2].map(id => ({
+        type: "Feature", id, properties: { label: String(id) }, geometry: { type: "Point", coordinates: [id, 0] }
+      })) } }).semanticSpec;
+    const a = create(), b = create(), saved = structuredClone(b);
+    assert.deepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(b));
+    for (const mutate of [
+      r => { r.result.identity.revision++; }, r => { r.result.identity.rowKeys.reverse(); },
+      r => { r.result.identity.rowKeys[0] = "forged"; }, r => { r.result.features[0].properties.label = "different"; },
+      r => { r.result.features[0].geometry.coordinates[0]++; }, r => { r.result.source.contentHash = "different"; }
+    ]) {
+      const changed = structuredClone(b); mutate(changed.resources[0]);
+      assert.notDeepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(changed));
+    }
+    assert.deepEqual(b, saved);
+  }
+});
+
 function state(namespace) {
   return { datasets: [{ id: "rows", values: [{ x: 1 }], logicalId: namespace, revision: 0,
     keySpec: { mode: "generated" }, rowKeys: [JSON.stringify(["generated", namespace, 0])] }],

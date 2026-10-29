@@ -15,10 +15,15 @@ import {
   selectMarks
 } from "./actions.js";
 import { registerThemeHighlightReconciler } from "../theme/reconcile.js";
+import { registerSelectionExpressionResolver } from "../../materialization/selection/expression.js";
+import { resolveStoredSelection } from "../../materialization/selection/state.js";
+import { materializeSelectionPreview } from "./preview.js";
 
 export function registerSelectionActions(ProgramClass) {
+  registerSelectionExpressionResolver(ProgramClass, resolveStoredSelection, materializeSelectionPreview);
   registerThemeHighlightReconciler(rematerializeThemeHighlights);
   ProgramClass.prototype.selectMarks = selectMarks;
+  ProgramClass.prototype.materializeSelectionPreview = materializeSelectionPreview;
   ProgramClass.prototype.editMarkSelection = editMarkSelection;
   ProgramClass.prototype.removeMarkHighlight = removeMarkHighlight;
   ProgramClass.prototype.removeMarkSelection = removeMarkSelection;

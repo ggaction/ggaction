@@ -1,0 +1,176 @@
+{
+  "cases": [
+    {
+      "case": "brush",
+      "expected": {
+        "preview": [
+          "b"
+        ],
+        "committed": [
+          "b"
+        ],
+        "restored": [
+          "b"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "previewCleared": true,
+        "captureReleased": true,
+        "baselineUnchanged": true,
+        "region": {
+          "x": {
+            "ranges": [
+              {
+                "min": 2.5,
+                "max": 7.5,
+                "minInclusive": true,
+                "maxInclusive": true
+              }
+            ]
+          },
+          "y": {
+            "ranges": [
+              {
+                "min": 2.5,
+                "max": 7.5,
+                "minInclusive": true,
+                "maxInclusive": true
+              }
+            ]
+          }
+        }
+      },
+      "actual": {
+        "preview": [
+          "b"
+        ],
+        "committed": [
+          "b"
+        ],
+        "restored": [
+          "b"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "previewCleared": true,
+        "captureReleased": true,
+        "baselineUnchanged": true,
+        "region": {
+          "x": {
+            "ranges": [
+              {
+                "min": 2.5,
+                "minInclusive": true,
+                "max": 7.5,
+                "maxInclusive": true
+              }
+            ]
+          },
+          "y": {
+            "ranges": [
+              {
+                "min": 2.5,
+                "minInclusive": true,
+                "max": 7.5,
+                "maxInclusive": true
+              }
+            ]
+          }
+        }
+      },
+      "diff": []
+    },
+    {
+      "case": "lasso",
+      "expected": {
+        "preview": [
+          "b"
+        ],
+        "committed": [
+          "b"
+        ],
+        "restored": [
+          "b"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "previewCleared": true,
+        "captureReleased": true,
+        "baselineUnchanged": true,
+        "polygon": [
+          {
+            "x": 50,
+            "y": 50
+          },
+          {
+            "x": 150,
+            "y": 50
+          },
+          {
+            "x": 150,
+            "y": 150
+          },
+          {
+            "x": 50,
+            "y": 150
+          }
+        ]
+      },
+      "actual": {
+        "preview": [
+          "b"
+        ],
+        "committed": [
+          "b"
+        ],
+        "restored": [
+          "b"
+        ],
+        "phases": [
+          "preview",
+          "preview",
+          "commit",
+          "settled"
+        ],
+        "revision": 1,
+        "previewCleared": true,
+        "captureReleased": true,
+        "baselineUnchanged": true,
+        "polygon": [
+          {
+            "x": 50,
+            "y": 50
+          },
+          {
+            "x": 150,
+            "y": 50
+          },
+          {
+            "x": 150,
+            "y": 150
+          },
+          {
+            "x": 50,
+            "y": 150
+          }
+        ]
+      },
+      "diff": []
+    }
+  ]
+}

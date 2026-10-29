@@ -1,0 +1,8 @@
+export interface CalendarLayoutResult {
+  readonly algorithm: "civil-day-cells@1";
+  readonly years: readonly { readonly year: number; readonly yearIndex: number; readonly weeks: number }[];
+  readonly cells: readonly CalendarCell[];
+  readonly months: readonly { readonly key: string; readonly year: number; readonly month: number; readonly yearIndex: number;
+    readonly cells: readonly string[]; readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    readonly polygons: readonly ContourPolygon[] }[];
+}

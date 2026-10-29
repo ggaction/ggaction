@@ -506,5 +506,58 @@
       "exported": "createInspectionChart"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/calendar.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its civil-day observations.",
+    "canonical": {
+      "file": "examples/calendar/program.js",
+      "exported": "createCalendar"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/edge-routes.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Install ggaction and run this ES module in Node.js 20 or later.",
+    "canonical": {
+      "file": "examples/edge-routes/program.js",
+      "exported": "createEdgeRoutes"
+    },
+    "rendering": "authoring-only"
+  },
+  "api/geometry.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "values",
+    "result": "program",
+    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
+  "tutorials/responsive-guides.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its category rows.",
+    "canonical": {
+      "file": "examples/responsive-guides/program.js",
+      "exported": "createResponsiveGuides"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/nested-responsive.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares all regional rows.",
+    "canonical": {
+      "file": "examples/nested-responsive/program.js",
+      "exported": "createNestedResponsive"
+    },
+    "rendering": "authoring-only"
   }
 }

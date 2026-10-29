@@ -61,12 +61,21 @@ interface ChartProgramActions {
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+  bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+  editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -564,6 +573,19 @@ declare const preparedTextMetricsBrand: unique symbol;
 </details>
 
 Related types: [`PreparedFontResource`](#type-preparedfontresource).
+
+### `ApplyGraphEdgeRoutesOptions` {#type-applygraphedgeroutesoptions}
+
+<details markdown="1">
+<summary>Expand ApplyGraphEdgeRoutesOptions</summary>
+
+```typescript
+export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+```
+
+</details>
+
+Related types: [`PreparedGraphEdgeRoutes`](#type-preparedgraphedgeroutes).
 
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
@@ -1577,6 +1599,20 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 
 </details>
 
+### `BundleGraphEdgesOptions` {#type-bundlegraphedgesoptions}
+
+<details markdown="1">
+<summary>Expand BundleGraphEdgesOptions</summary>
+
+```typescript
+export type BundleGraphEdgesOptions = { readonly id: string; readonly graph?: string; readonly layout?: string; readonly coordinateSpace?: "world" | "screen" } & EdgeRouteDefinition;
+/** Same-method options patch existing values; changing method starts from that method's defaults. */
+```
+
+</details>
+
+Related types: [`EdgeRouteDefinition`](#type-edgeroutedefinition).
+
 ### `CAxes` {#type-caxes}
 
 <details markdown="1">
@@ -1653,6 +1689,37 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions) · [`CAxes`](#type-caxes).
 
+### `CalendarBoundaryPaint` {#type-calendarboundarypaint}
+
+<details markdown="1">
+<summary>Expand CalendarBoundaryPaint</summary>
+
+```typescript
+export interface CalendarBoundaryPaint {
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `CalendarCellPaint` {#type-calendarcellpaint}
+
+<details markdown="1">
+<summary>Expand CalendarCellPaint</summary>
+
+```typescript
+export interface CalendarCellPaint {
+  readonly fill?: FillPaint; readonly emptyFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly gap?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
 ### `CalendarDayDomain` {#type-calendardaydomain}
 
 <details markdown="1">
@@ -1671,6 +1738,94 @@ export interface CalendarDayDomain {
 
 </details>
 
+### `CalendarDayOptions` {#type-calendardayoptions}
+
+<details markdown="1">
+<summary>Expand CalendarDayOptions</summary>
+
+```typescript
+export interface CalendarDayOptions {
+  readonly start: string; readonly end: string; readonly timeZone: string;
+  readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; readonly missing: "empty" | "omit";
+}
+```
+
+</details>
+
+### `CalendarDefinition` {#type-calendardefinition}
+
+<details markdown="1">
+<summary>Expand CalendarDefinition</summary>
+
+```typescript
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });
+```
+
+</details>
+
+Related types: [`CalendarDayOptions`](#type-calendardayoptions).
+
+### `CalendarLabelPaint` {#type-calendarlabelpaint}
+
+<details markdown="1">
+<summary>Expand CalendarLabelPaint</summary>
+
+```typescript
+export interface CalendarLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `CalendarLabelRole` {#type-calendarlabelrole}
+
+<details markdown="1">
+<summary>Expand CalendarLabelRole</summary>
+
+```typescript
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+```
+
+</details>
+
+### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
+
+<details markdown="1">
+<summary>Expand CalendarLayoutPatch</summary>
+
+```typescript
+export type CalendarLayoutPatch = Partial<CalendarDayOptions> & { readonly date?: string; readonly value?: string;
+  readonly aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" };
+```
+
+</details>
+
+Related types: [`CalendarDayOptions`](#type-calendardayoptions).
+
+### `CalendarPlotOptions` {#type-calendarplotoptions}
+
+<details markdown="1">
+<summary>Expand CalendarPlotOptions</summary>
+
+```typescript
+export interface CalendarPlotOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly cells?: CalendarCellPaint; readonly monthBoundary?: false | CalendarBoundaryPaint;
+  readonly labels?: false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>>;
+}
+```
+
+</details>
+
+Related types: [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`CalendarCellPaint`](#type-calendarcellpaint) · [`CalendarBoundaryPaint`](#type-calendarboundarypaint) · [`CalendarLabelRole`](#type-calendarlabelrole) · [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
 ### `CanvasOptions` {#type-canvasoptions}
 
 <details markdown="1">
@@ -1682,6 +1837,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Preserve outer dimensions and authored margins while reserving guide lanes. False disables. */
+  responsive?: false | ResponsiveCanvasOptions;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
   /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
@@ -1697,6 +1854,8 @@ export interface CanvasOptions {
 ```
 
 </details>
+
+Related types: [`ResponsiveCanvasOptions`](#type-responsivecanvasoptions).
 
 ### `CartesianAxesOptions` {#type-cartesianaxesoptions}
 
@@ -1739,6 +1898,8 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Opt-in measured fallback; requires responsive Canvas mode. False removes the policy. */
+  responsive?: false | ResponsiveLabelOptions;
   /** Local text alignment before rotation; omitted edits retain existing intent. */
   align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
@@ -1754,7 +1915,7 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
 
 </details>
 
-Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`CartesianAxisLabelColorMap`](#type-cartesianaxislabelcolormap).
+Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`ResponsiveLabelOptions`](#type-responsivelabeloptions) · [`CartesianAxisLabelColorMap`](#type-cartesianaxislabelcolormap).
 
 ### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
 
@@ -2928,6 +3089,19 @@ export type CreateBeeswarmPlotOptions = {
 
 Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
 
+### `CreateCalendarLayoutOptions` {#type-createcalendarlayoutoptions}
+
+<details markdown="1">
+<summary>Expand CreateCalendarLayoutOptions</summary>
+
+```typescript
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };
+```
+
+</details>
+
+Related types: [`CalendarDefinition`](#type-calendardefinition).
+
 ### `CreateContourDataOptions` {#type-createcontourdataoptions}
 
 <details markdown="1">
@@ -3133,6 +3307,24 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 </details>
 
 Related types: [`FlowDefinition`](#type-flowdefinition).
+
+### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGeometryDataOptions</summary>
+
+```typescript
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+```
+
+</details>
+
+Related types: [`GeometryFeatureKey`](#type-geometryfeaturekey) · [`GeometryLimits`](#type-geometrylimits) · [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput).
 
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
@@ -3552,6 +3744,19 @@ export interface CreatePolarScatterPlotOptions {
 </details>
 
 Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`PolarPointGuideOptions`](#type-polarpointguideoptions).
+
+### `CreateProjectionOptions` {#type-createprojectionoptions}
+
+<details markdown="1">
+<summary>Expand CreateProjectionOptions</summary>
+
+```typescript
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFittedOptions`](#type-projectionfittedoptions).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -5478,6 +5683,73 @@ export interface ECDFOutputFields {
 
 </details>
 
+### `EdgePathRouteOptions` {#type-edgepathrouteoptions}
+
+<details markdown="1">
+<summary>Expand EdgePathRouteOptions</summary>
+
+```typescript
+export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
+### `EdgeRouteCommonOptions` {#type-edgeroutecommonoptions}
+
+<details markdown="1">
+<summary>Expand EdgeRouteCommonOptions</summary>
+
+```typescript
+export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+```
+
+</details>
+
+Related types: [`EdgeRouteLimits`](#type-edgeroutelimits).
+
+### `EdgeRouteDefinition` {#type-edgeroutedefinition}
+
+<details markdown="1">
+<summary>Expand EdgeRouteDefinition</summary>
+
+```typescript
+export type EdgeRouteDefinition =
+  { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
+  | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
+  | { readonly method: "density"; readonly options?: EdgeRouteCommonOptions }
+  | { readonly method: "edge-path"; readonly options?: EdgePathRouteOptions };
+```
+
+</details>
+
+Related types: [`HierarchicalEdgeRouteOptions`](#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](#type-edgepathrouteoptions).
+
+### `EdgeRouteLimits` {#type-edgeroutelimits}
+
+<details markdown="1">
+<summary>Expand EdgeRouteLimits</summary>
+
+```typescript
+export interface EdgeRouteLimits {
+  readonly maxNodes?: number; readonly maxEdges?: number; readonly maxCandidatePairs?: number; readonly maxSamples?: number;
+}
+```
+
+</details>
+
+### `EdgeRouteMethod` {#type-edgeroutemethod}
+
+<details markdown="1">
+<summary>Expand EdgeRouteMethod</summary>
+
+```typescript
+export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
+```
+
+</details>
+
 ### `EditAxesOptions` {#type-editaxesoptions}
 
 <details markdown="1">
@@ -5601,6 +5873,19 @@ export interface EditBoxPlotOptions {
 </details>
 
 Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
+
+### `EditCalendarPlotOptions` {#type-editcalendarplotoptions}
+
+<details markdown="1">
+<summary>Expand EditCalendarPlotOptions</summary>
+
+```typescript
+export interface EditCalendarPlotOptions extends Omit<CalendarPlotOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`CalendarPlotOptions`](#type-calendarplotoptions).
 
 ### `EditColorScaleOptions` {#type-editcolorscaleoptions}
 
@@ -5833,6 +6118,25 @@ export type EditECDFPlotOptions = { target?: string } & Partial<Pick<
 </details>
 
 Related types: [`CreateECDFPlotOptions`](#type-createecdfplotoptions).
+
+### `EditEdgeRouteOptions` {#type-editedgerouteoptions}
+
+<details markdown="1">
+<summary>Expand EditEdgeRouteOptions</summary>
+
+```typescript
+export interface EditEdgeRouteOptions {
+  readonly target?: string; readonly graph?: string; readonly layout?: string; readonly method?: EdgeRouteMethod;
+  readonly coordinateSpace?: "world" | "screen";
+  readonly options?: Partial<HierarchicalEdgeRouteOptions> | ForceDirectedEdgeRouteOptions | EdgeRouteCommonOptions | EdgePathRouteOptions;
+}
+declare const preparedGraphEdgeRoutes: unique symbol;
+/** Opaque, exact-receiver preparation. Obtain it from ggaction/graph. */
+```
+
+</details>
+
+Related types: [`EdgeRouteMethod`](#type-edgeroutemethod) · [`HierarchicalEdgeRouteOptions`](#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](#type-edgepathrouteoptions).
 
 ### `EditEndpointPlotOptions` {#type-editendpointplotoptions}
 
@@ -6072,6 +6376,22 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
+### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand EditGeometryDataOptions</summary>
+
+```typescript
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+```
+
+</details>
+
+Related types: [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput) · [`GeometryLimits`](#type-geometrylimits).
+
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
 <details markdown="1">
@@ -6273,12 +6593,12 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
 ```
 
 </details>
 
-Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions).
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions) · [`CalendarLayoutPatch`](#type-calendarlayoutpatch).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -6521,12 +6841,13 @@ Related types: [`MarkSelector`](#type-markselector).
 ```typescript
 export type EditMarkSelectionOptions = {
   selection?: string;
-} & MarkSelector;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
+} & MarkSelectionSelector;
 ```
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector).
 
 ### `EditNormalizedDataOptions` {#type-editnormalizeddataoptions}
 
@@ -6685,6 +7006,20 @@ export interface EditPolarGridOptions {
 </details>
 
 Related types: [`AxisValue`](#type-axisvalue).
+
+### `EditProjectionOptions` {#type-editprojectionoptions}
+
+<details markdown="1">
+<summary>Expand EditProjectionOptions</summary>
+
+```typescript
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionEditFittedOptions`](#type-projectioneditfittedoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -8340,6 +8675,111 @@ export interface FoldDataOutputFields {
 
 </details>
 
+### `ForceDirectedEdgeRouteOptions` {#type-forcedirectededgerouteoptions}
+
+<details markdown="1">
+<summary>Expand ForceDirectedEdgeRouteOptions</summary>
+
+```typescript
+export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
+### `GeoJSONInput` {#type-geojsoninput}
+
+<details markdown="1">
+<summary>Expand GeoJSONInput</summary>
+
+```typescript
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+```
+
+</details>
+
+Related types: [`GeographicGeometry`](#type-geographicgeometry) · [`GeometryFeature`](#type-geometryfeature).
+
+### `GeographicGeometry` {#type-geographicgeometry}
+
+<details markdown="1">
+<summary>Expand GeographicGeometry</summary>
+
+```typescript
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+```
+
+</details>
+
+Related types: [`GeometryPosition`](#type-geometryposition).
+
+### `GeometryFeature` {#type-geometryfeature}
+
+<details markdown="1">
+<summary>Expand GeometryFeature</summary>
+
+```typescript
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeographicGeometry`](#type-geographicgeometry).
+
+### `GeometryFeatureKey` {#type-geometryfeaturekey}
+
+<details markdown="1">
+<summary>Expand GeometryFeatureKey</summary>
+
+```typescript
+export type GeometryFeatureKey = string | readonly string[];
+```
+
+</details>
+
+### `GeometryJSONValue` {#type-geometryjsonvalue}
+
+<details markdown="1">
+<summary>Expand GeometryJSONValue</summary>
+
+```typescript
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+```
+
+</details>
+
+### `GeometryLimits` {#type-geometrylimits}
+
+<details markdown="1">
+<summary>Expand GeometryLimits</summary>
+
+```typescript
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+```
+
+</details>
+
+### `GeometryPosition` {#type-geometryposition}
+
+<details markdown="1">
+<summary>Expand GeometryPosition</summary>
+
+```typescript
+export type GeometryPosition = readonly [number, number, ...number[]];
+```
+
+</details>
+
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
 <details markdown="1">
@@ -8668,7 +9108,7 @@ Related types: [`RowKey`](#type-rowkey).
 
 ```typescript
 export interface GraphPlotOptions {
-  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
 }
@@ -8897,6 +9337,23 @@ export type HeatmapCategoryPositionChannel =
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
 
+### `HierarchicalEdgeRouteOptions` {#type-hierarchicaledgerouteoptions}
+
+<details markdown="1">
+<summary>Expand HierarchicalEdgeRouteOptions</summary>
+
+```typescript
+export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+  readonly hierarchy?: string; readonly hierarchyLayout?: string;
+  readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
+  readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
+}
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`RowKey`](#type-rowkey) · [`RowKeyScalar`](#type-rowkeyscalar).
+
 ### `HierarchyBodyPaint` {#type-hierarchybodypaint}
 
 <details markdown="1">
@@ -9038,7 +9495,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -9056,7 +9513,7 @@ export interface HighlightMarksOptions {
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`PointShape`](#type-pointshape).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern) · [`PointShape`](#type-pointshape).
 
 ### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
 
@@ -10267,13 +10724,52 @@ export interface MarkOutline { color: string; width: number; }
 
 </details>
 
+### `MarkSelectionSelector` {#type-markselectionselector}
+
+<details markdown="1">
+<summary>Expand MarkSelectionSelector</summary>
+
+```typescript
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never; screenAngles?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never; screenAngles?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  /** Normalized clockwise start/end radians; theta-region metadata only. */
+  screenAngles?: readonly [number, number];
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  screenAngles?: never;
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
+} | {
+  grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all";
+  /** Normalized clockwise start/end radians; keys define persistent membership. */
+  screenAngles: readonly [number, number];
+  screenPolygon?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
+};
+```
+
+</details>
+
+Related types: [`MarkSelector`](#type-markselector) · [`ComputedExpressionV2`](#type-computedexpressionv2) · [`SelectionRegion`](#type-selectionregion).
+
 ### `MarkSelector` {#type-markselector}
 
 <details markdown="1">
 <summary>Expand MarkSelector</summary>
 
 ```typescript
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -10282,12 +10778,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -10299,7 +10790,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 
 </details>
 
-Related types: [`MarkGraphicProperty`](#type-markgraphicproperty).
+Related types: [`MarkGraphicProperty`](#type-markgraphicproperty) · [`FilterRange`](#type-filterrange).
 
 ### `MarkShadow` {#type-markshadow}
 
@@ -11957,6 +12448,20 @@ export interface PreparedFontResource<Kind extends "create" | "replace" = "creat
 
 </details>
 
+### `PreparedGraphEdgeRoutes` {#type-preparedgraphedgeroutes}
+
+<details markdown="1">
+<summary>Expand PreparedGraphEdgeRoutes</summary>
+
+```typescript
+export interface PreparedGraphEdgeRoutes {
+  readonly [preparedGraphEdgeRoutes]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+```
+
+</details>
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
 <details markdown="1">
@@ -11982,6 +12487,106 @@ export interface PreparedTextMetrics {
   readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
   readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
 }
+```
+
+</details>
+
+### `ProjectionEditFittedOptions` {#type-projectioneditfittedoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionEditFittedOptions</summary>
+
+```typescript
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFitOptions`](#type-projectionfitoptions).
+
+### `ProjectionFitOptions` {#type-projectionfitoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionFitOptions</summary>
+
+```typescript
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+```
+
+</details>
+
+### `ProjectionFittedOptions` {#type-projectionfittedoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionFittedOptions</summary>
+
+```typescript
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFitOptions`](#type-projectionfitoptions).
+
+### `ProjectionParameters` {#type-projectionparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionParameters</summary>
+
+```typescript
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+```
+
+</details>
+
+Related types: [`ProjectionPlaneParameters`](#type-projectionplaneparameters) · [`ProjectionType`](#type-projectiontype) · [`ProjectionSphereParameters`](#type-projectionsphereparameters).
+
+### `ProjectionPlaneParameters` {#type-projectionplaneparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionPlaneParameters</summary>
+
+```typescript
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+```
+
+</details>
+
+### `ProjectionSphereParameters` {#type-projectionsphereparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionSphereParameters</summary>
+
+```typescript
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+```
+
+</details>
+
+Related types: [`ProjectionPlaneParameters`](#type-projectionplaneparameters).
+
+### `ProjectionType` {#type-projectiontype}
+
+<details markdown="1">
+<summary>Expand ProjectionType</summary>
+
+```typescript
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
 ```
 
 </details>
@@ -13111,6 +13716,42 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 
 </details>
 
+### `ResponsiveCanvasOptions` {#type-responsivecanvasoptions}
+
+<details markdown="1">
+<summary>Expand ResponsiveCanvasOptions</summary>
+
+```typescript
+export interface ResponsiveCanvasOptions {
+  /** Required final inner size. Defaults to 160 by 120 CSS pixels. */
+  minPlotSize?: { width: number; height: number };
+}
+```
+
+</details>
+
+### `ResponsiveLabelOptions` {#type-responsivelabeloptions}
+
+<details markdown="1">
+<summary>Expand ResponsiveLabelOptions</summary>
+
+```typescript
+export interface ResponsiveLabelOptions {
+  /** The declared fallback order. Defaults to wrap, skip, rotate. */
+  sequence?: readonly ["wrap", "skip", "rotate"];
+  /** Maximum physical lines per retained label; never truncates text. Defaults to 2. */
+  maxLines?: number;
+  /** Retain source indices 0, stride, 2*stride. Defaults to 2. */
+  skipStride?: number;
+  /** Tried in order after skipping. Defaults to -45 and -90 degrees. */
+  rotationCandidates?: readonly RotationInput[];
+}
+```
+
+</details>
+
+Related types: [`RotationInput`](#type-rotationinput).
+
 ### `ReviseDataOptions` {#type-revisedataoptions}
 
 <details markdown="1">
@@ -13477,12 +14118,41 @@ Related types: [`RulePositionEncodingBase`](#type-rulepositionencodingbase) · [
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector).
+Related types: [`MarkSelectionSelector`](#type-markselectionselector).
+
+### `SelectionRegion` {#type-selectionregion}
+
+<details markdown="1">
+<summary>Expand SelectionRegion</summary>
+
+```typescript
+export type SelectionRegion = ({ x?: SelectionRegionAxis; y?: SelectionRegionAxis; x2?: SelectionRegionAxis; y2?: SelectionRegionAxis; theta?: never } &
+  ({ x: SelectionRegionAxis } | { y: SelectionRegionAxis } | { x2: SelectionRegionAxis } | { y2: SelectionRegionAxis }))
+  | { theta: SelectionRegionAxis; x?: never; y?: never; x2?: never; y2?: never };
+```
+
+</details>
+
+Related types: [`SelectionRegionAxis`](#type-selectionregionaxis).
+
+### `SelectionRegionAxis` {#type-selectionregionaxis}
+
+<details markdown="1">
+<summary>Expand SelectionRegionAxis</summary>
+
+```typescript
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };
+```
+
+</details>
+
+Related types: [`FilterRange`](#type-filterrange).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 
@@ -13842,7 +14512,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 ```
 
 </details>
@@ -14323,6 +14993,11 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisLabelGap?: number;
+  axisTitleGap?: number;
+  legendItemGap?: number;
+  palette?: readonly string[];
+  patternPalette?: readonly PatternPaint[];
   axisStrokeWidth?: number;
   tickStrokeWidth?: number;
   tickSize?: number;
@@ -14356,6 +15031,8 @@ export interface ThemeTokens {
 ```
 
 </details>
+
+Related types: [`PatternPaint`](#type-patternpaint).
 
 ### `ThetaAxisLabelOptions` {#type-thetaaxislabeloptions}
 
@@ -14582,6 +15259,43 @@ export interface TitleTextStyleOptions {
 ```
 
 </details>
+
+### `TopoJSONInput` {#type-topojsoninput}
+
+<details markdown="1">
+<summary>Expand TopoJSONInput</summary>
+
+```typescript
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+```
+
+</details>
+
+Related types: [`TopologyGeometry`](#type-topologygeometry) · [`GeometryPosition`](#type-geometryposition).
+
+### `TopologyGeometry` {#type-topologygeometry}
+
+<details markdown="1">
+<summary>Expand TopologyGeometry</summary>
+
+```typescript
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeometryPosition`](#type-geometryposition).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

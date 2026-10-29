@@ -1,0 +1,1 @@
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;

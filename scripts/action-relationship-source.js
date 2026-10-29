@@ -554,6 +554,9 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ values: [{ day: "2024-02-29", value: 1 }] })
+      .createCalendarLayout({ date: "day", value: "value", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
+      .createCalendarPlot().editCalendarPlot({ cells: { opacity: .5 } }).editLayout({ options: { missing: "omit" } }),
     chart().createCanvas().createContourData({ id: "surface", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2, values: [0, 1, 1, 2] }, thresholds: [0, 1, 2] })
       .createContourMark().editContourMark({ opacity: .5 }).editContourData({ target: "surface", thresholds: [0, .5, 2] }),
     chart().createData({ id: "samples", values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
@@ -570,9 +573,18 @@ export function buildActionRelationshipPrograms() {
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
       .layoutGraph({ id: "network-layout", method: "circular" })
-      .createGraphPlot({ labels: {} }).editGraphPlot({ nodes: { radius: 8 } })
+      .bundleGraphEdges({ id: "edge-routes", method: "edge-path", coordinateSpace: "screen" })
+      .createGraphPlot({ labels: {}, routes: "edge-routes" }).editGraphPlot({ nodes: { radius: 8 } })
+      .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
+      values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
+      .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })
+      .editProjection({ reflectX: true }).editGeometryData({ target: "fitShape", values: { type: "LineString", coordinates: [[0, 0], [20, 20]] } }),
+    chart().createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "geographic", featureKey: "id",
+      values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [12.6, 55.7] } } })
+      .editGeometryData({ coordinateKind: "planar" }),
     chart().createCanvas().createData({ id: "features", values: [{ id: "a", x: 0 }, { id: "b", x: 1 }, { id: "c", x: 3 }] })
       .createInferredGraphData({ id: "neighbors", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean" })
       .layoutGraph({ id: "neighbor-layout", method: "circular" }).createGraphPlot({ labels: {} })

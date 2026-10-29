@@ -1,7 +1,7 @@
 import { createInferredGraphResource } from "../../materialization/graph/inferredResource.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
-import { graphSourceRevisions } from "./sourceRevisionContext.js";
+import { graphSourceRevisions, graphSourceProjection } from "./sourceRevisionContext.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -9,15 +9,17 @@ import { ownRecord } from "../../core/ownData.js";
 import { findStoredResource, resolveInputReference, dataInputReference } from "../../selectors/resources.js";
 import { resolveGraphResource } from "../../selectors/graphs.js";
 import { createGraphLayoutResource } from "../../materialization/graph/layoutResource.js";
-import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
+import { withPreparedResourceResults, withPreparedProjectedResourceResults } from "../primitives/preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
+import { prepareEdgeRouteRevisions } from "./routeClosure.js";
 
 export function previewGraphLayouts(program, resources, layouts) {
   preflightFlowLayouts(program, resources, layouts);
   const replacements = new Map(layouts.map(layout => [layout.id, layout]));
+  const routes = new Map(resources.filter(resource => resource.kind === "edge-route").map(resource => [resource.id, resource]));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
-    const replacement = ref.kind === "layout" ? replacements.get(ref.id) : undefined;
+    const replacement = ref.kind === "layout" ? replacements.get(ref.id) : ref.kind === "edge-route" ? routes.get(ref.id) : undefined;
     return replacement === undefined ? ref : { ...ref, revision: replacement.revision };
   });
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources, layers } };
@@ -27,9 +29,9 @@ export function previewGraphLayouts(program, resources, layouts) {
   return preview;
 }
 
-function materializeLayouts(program, ids) {
+function materializeLayouts(program, ids, routeIds = new Set()) {
   let next = materializeFlowLayouts(program, ids);
-  for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id)) next = next.materializeGraphPlot({ id: layer.id });
+  for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id) || routeIds.has(layer.graphBinding?.routes?.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
 import { normalizeGraphLayout, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
@@ -53,8 +55,10 @@ export function editGraphLayout(program, args, previous) {
     graph: resolveInputReference(program, previous.inputs[0]),
     retainedCoordinates: GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field)),
     intent: { method: previous.options.method, options: { ...previous.options.options, ...args.options } } });
-  previewGraphLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
-  return materializeLayouts(program.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
+  const routes = prepareEdgeRouteRevisions(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate));
+  previewGraphLayouts(program, routes.resources, [resource]);
+  const next = withPreparedResourceResults(program, { property: `resource[layout:${resource.id}]`, value: resource }, routes.entries, args => program.editSemantic(args));
+  return materializeLayouts(next, new Set([resource.id]), routes.ids);
 }
 
 export function prepareGraphResource(program, resource, sources) {
@@ -80,18 +84,20 @@ export function prepareGraphResource(program, resource, sources) {
   }
   const resources = supplied.map(previous => previous.kind === "graph" ? graphs.get(previous.id) ?? previous
     : previous.kind === "layout" ? nextLayouts.get(previous.id) ?? previous : previous);
-  const preview = previewGraphLayouts(program, resources, [...nextLayouts.values()]);
-  return { resource, replacements, sources, layoutIds: new Set(nextLayouts.keys()), preview };
+  const routes = prepareEdgeRouteRevisions(program, resources);
+  const preview = previewGraphLayouts(program, routes.resources, [...nextLayouts.values()]);
+  return { resource, replacements: [...replacements, ...routes.entries], sources, layoutIds: new Set(nextLayouts.keys()), routeIds: routes.ids, preview };
 }
 
-export function writePreparedGraphResource(program, { resource, replacements, sources, layoutIds }) {
-  const next = withPreparedResourceResults(program, { property: `resource[graph:${resource.id}]`, value: resource }, replacements,
+export function writePreparedGraphResource(program, { resource, replacements, sources, layoutIds, routeIds }, projected = false) {
+  const bind = projected ? withPreparedProjectedResourceResults : withPreparedResourceResults;
+  const next = bind(program, { property: `resource[graph:${resource.id}]`, value: resource }, replacements,
     args => program.editSemantic(args), [...(sources ?? [])].map(([from, to]) => ({
       previous: dataInputReference(requireDataset(program, from)), next: dataInputReference(requireDataset(program, to))
     })));
-  return materializeLayouts(next, layoutIds);
+  return materializeLayouts(next, layoutIds, routeIds);
 }
 
 export function writeGraphResource(program, resource) {
-  return writePreparedGraphResource(program, prepareGraphResource(program, resource, graphSourceRevisions(program)));
+  return writePreparedGraphResource(program, prepareGraphResource(program, resource, graphSourceRevisions(program)), graphSourceProjection(program));
 }

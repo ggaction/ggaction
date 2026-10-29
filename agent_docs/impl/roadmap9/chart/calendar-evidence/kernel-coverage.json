@@ -1,0 +1,41 @@
+{
+  "floors": {
+    "grammar/calendar/layout.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/calendar/options.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/gridBoundary.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "grammar/calendar/layout.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/calendar/options.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/gridBoundary.js": {
+      "lines": 100,
+      "branches": 96.72,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 98.15,
+      "functions": 100
+    }
+  }
+}

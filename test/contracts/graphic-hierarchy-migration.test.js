@@ -25,6 +25,12 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "nested-responsive": [],
+  "responsive-guides": ["canvas", "horizontalGridLines", "barPlot", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle", "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
+  "edge-routes": ["canvas", "routesPlot"],
+  "calendar": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
+  "calendar-monday": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
+  "calendar-omitted": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
   "contours": ["canvas", "contour", "chartTitle", "chartSubtitle"],
   "contour-bands": ["canvas", "contour", "chartTitle", "chartSubtitle"],
   "contour-holes": ["canvas", "contour", "chartTitle", "chartSubtitle"],
@@ -405,6 +411,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
+  "nested-responsive": 73,
   "shared-adjacent": 27,
   "combined-legends": 13,
   "program-composition": 9,
@@ -416,6 +423,7 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "nested-responsive": 2,
   "shared-adjacent": 2,
   "combined-legends": 2,
   "program-composition": 2,

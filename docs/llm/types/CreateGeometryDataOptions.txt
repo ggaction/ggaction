@@ -1,0 +1,6 @@
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });

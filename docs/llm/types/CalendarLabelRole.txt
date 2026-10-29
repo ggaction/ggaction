@@ -1,0 +1,1 @@
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";

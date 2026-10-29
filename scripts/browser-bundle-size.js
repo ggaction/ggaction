@@ -5,13 +5,15 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 650_000, // Combined resource and inspection owners: Node20 649,557 gzip bytes.
-  "ggaction/basic": 365_000, // Combined guide owners: Node20 364,927 gzip bytes.
+  ggaction: 706_000, // Geographic projections integrated with native routes and region controls; final measurement required.
+  "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
-  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
+  "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
+  "ggaction/interaction": 109_200 // Linked filter plus routes baseline: Node20 109,145 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `

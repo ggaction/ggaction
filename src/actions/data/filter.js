@@ -1,3 +1,5 @@
+import { findMarkFilterDataset } from "../../selectors/datasets.js";
+import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
 import { activeGraphFilter } from "../../selectors/graphFilters.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
@@ -43,10 +45,6 @@ import {
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls", "where"
-]);
-const MARK_SELECTOR_KEYS = Object.freeze([
-  "rows", "grain", "field", "channel", "property", "op", "value", "values",
-  "min", "max", "inclusive", "count", "groupBy", "ties"
 ]);
 const MARK_OPTIONS = Object.freeze(["target", "mode", "recompute", ...MARK_SELECTOR_KEYS]);
 const REMOVE_MARK_FILTER_OPTIONS = Object.freeze(["target"]);
@@ -210,15 +208,9 @@ export const materializeEmptyMark = /* @__PURE__ */ closedAction(
 
 function activeMarkFilter(program, layer) {
   const configured = program.markConfigs[layer.id]?.markFilter;
-  const dataset = findDataset(program, layer.data);
-  const transform = dataset?.transform?.[0];
-  if (
-    dataset?.source === undefined ||
-    transform?.type !== "markFilter" ||
-    transform.target !== layer.id
-  ) {
-    return undefined;
-  }
+  const dataset = findMarkFilterDataset(program, layer);
+  if (dataset === undefined) return undefined;
+  const transform = dataset.transform[0];
   return {
     dataset: dataset.id,
     source: dataset.source,

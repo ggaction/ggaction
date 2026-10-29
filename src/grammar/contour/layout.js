@@ -1,7 +1,7 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { normalizeContourGrid, normalizeContourThresholds, contourCells } from "./grid.js";
 import { contourCellSegments, contourBandBoundary } from "./marching.js";
-import { stitchContourRings } from "./rings.js";
+import { stitchGridRings } from "../gridBoundary.js";
 
 export function contourGrid(input, thresholds) {
   const grid = normalizeContourGrid(input), levels = normalizeContourThresholds(thresholds, grid);
@@ -12,7 +12,7 @@ export function contourGrid(input, thresholds) {
       const { boundary, interior } = contourCellSegments(cell, value, true, cache);
       segments.push(...boundary, ...interior);
     }
-    return { value, polygons: stitchContourRings(segments, grid) };
+    return { value, polygons: stitchGridRings(segments, grid) };
   });
   const bands = levels.slice(0, -1).map((lower, index) => {
     const upper = levels[index + 1], upperInclusive = index === levels.length - 2, segments = [];
@@ -22,7 +22,7 @@ export function contourGrid(input, thresholds) {
       segments.push(...contourBandBoundary(cell, lower, upper, upperInclusive, cache), ...low.interior,
         ...high.interior.map(([a, b]) => [b, a]));
     }
-    return { lower, upper, upperInclusive, polygons: stitchContourRings(segments, grid) };
+    return { lower, upper, upperInclusive, polygons: stitchGridRings(segments, grid) };
   });
   return cloneAndFreeze({ algorithm: "marching-squares@1", grid, thresholds: regions, bands });
 }

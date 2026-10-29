@@ -36,6 +36,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
+| [`bundleGraphEdges`](./actions/charts-data.md#bundlegraphedges) | H2 | user-facing | core |
 | [`createAdjacentPlot`](./actions/charts-data.md#createadjacentplot) | H0 | user-facing | composition |
 | [`createAnnotation`](./actions/marks.md#createannotation) | H1, H2 | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | H2 | user-facing | marks |
@@ -48,6 +49,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | H2 | user-facing | core |
 | [`createBinData`](./actions/statistics.md#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | H0, H1 | user-facing | statistics |
+| [`createCalendarLayout`](./actions/charts-data.md#createcalendarlayout) | H2 | user-facing | core |
+| [`createCalendarPlot`](./actions/marks.md#createcalendarplot) | H2 | user-facing | marks |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](./actions/statistics.md#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./actions/statistics.md#createcomputeddata) | H1 | user-facing | statistics |
@@ -71,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./actions/marks.md#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./actions/charts-data.md#createfontresource) | H3 | user-facing | core |
+| [`createGeometryData`](./actions/charts-data.md#creategeometrydata) | H2 | user-facing | core |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
@@ -107,6 +111,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./actions/charts-data.md#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./actions/charts-data.md#createpolarscatterplot) | H0 | user-facing | charts |
+| [`createProjection`](./actions/charts-data.md#createprojection) | H2 | user-facing | core |
 | [`createRadarPlot`](./actions/charts-data.md#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | H3 | user-facing | axes |
@@ -170,6 +175,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | H1, H3 | user-facing | statistics |
+| [`editCalendarPlot`](./actions/marks.md#editcalendarplot) | H3 | user-facing | marks |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](./actions/charts-data.md#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](./actions/statistics.md#editcompletedata) | H1, H3 | user-facing | statistics |
@@ -184,6 +190,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editDerivedData`](./actions/charts-data.md#editderiveddata) | H2 | user-facing | core |
 | [`editECDFData`](./actions/statistics.md#editecdfdata) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | H1, H3 | user-facing | charts |
+| [`editEdgeRoute`](./actions/charts-data.md#editedgeroute) | H3 | user-facing | core |
 | [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | H1, H3 | user-facing | charts |
 | [`editErrorBand`](./actions/statistics.md#editerrorband) | H1, H3 | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorbandboundary) | H1, H3 | user-facing | statistics |
@@ -198,6 +205,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./actions/marks.md#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./actions/marks.md#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeometryData`](./actions/charts-data.md#editgeometrydata) | H3 | user-facing | core |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
@@ -232,6 +240,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPartitionPlot`](./actions/charts-data.md#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
+| [`editProjection`](./actions/charts-data.md#editprojection) | H3 | user-facing | core |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |

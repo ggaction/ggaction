@@ -1,0 +1,44 @@
+{
+  "scope": "Private geometric shortest-path edge bundling",
+  "baseline": "17c646406",
+  "runtime": "v22.23.1",
+  "checks": {
+    "canonicalRouteUnit": 41,
+    "routeCoverage": {
+      "tests": 41,
+      "owners": 11,
+      "edgePath": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "shortestPath": {
+        "lines": 98.41,
+        "branches": 92.31,
+        "functions": 100
+      },
+      "otherOwners": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    },
+    "architectureDiscoveryAndPolicy": 34,
+    "package": 7
+  },
+  "requiredRouteFloor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "bundles": {
+    "reusedFrom": "../hierarchical/bundles.json",
+    "reason": "Only unreachable private modules were added; no public import or existing runtime changed."
+  },
+  "remaining": "Public resource/actions, async workers, renderer and all consumer closure remain open.",
+  "hashes": {
+    "src/grammar/graph/routes/edgePath.js": "163f17f6cbd7198eaf46b397a11d254c7590427dc11dc7c0885102511336af03",
+    "src/grammar/graph/routes/shortestPath.js": "be15ecd80bee6f3895f9c7a709afedfc4cc01148a06d67d18a3b47c88364d99e",
+    "test/unit/grammar/graph/routes/edge-path.test.js": "0cd0f0b90884c72074c4ef6800bb71354ff7b71add32a06bdfb4052dd7cbee84"
+  }
+}

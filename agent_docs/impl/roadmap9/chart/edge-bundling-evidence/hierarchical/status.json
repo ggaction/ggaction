@@ -1,0 +1,37 @@
+{
+  "scope": "Private hierarchical edge bundling and shared bounded path subdivision",
+  "baseline": "230fcc3ef",
+  "runtime": "v22.23.1",
+  "checks": {
+    "canonicalRouteUnit": 17,
+    "routeAndPathCoverage": {
+      "tests": 25,
+      "routeOwners": 5,
+      "routeLines": 100,
+      "routeBranches": 100,
+      "routeFunctions": 100,
+      "pathLines": 92.28,
+      "pathBranches": 91.3,
+      "pathFunctions": 100
+    },
+    "architectureDiscoveryAndPolicy": 34,
+    "existingPathConsumers": 36,
+    "package": 7
+  },
+  "requiredRouteFloor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "artifact": "5936754b59c0645205d8e01b6af4ae4c1fcfc74137f9ca9515ff69e4be652c88",
+  "remaining": "Public resource/actions/codec/prepared workers and multi-method renderer consumers remain open; not a claim of STEP037 or AT76 completion.",
+  "hashes": {
+    "src/grammar/pathGeometry.js": "3e684891ebe21ed4a67f62a8674fc3835ef0d513eae1d1458a72cd0d5e817821",
+    "src/grammar/graph/routes/common.js": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4",
+    "src/grammar/graph/routes/polyline.js": "3308e5de9a05fe7567cd6ae5bedb000cdd857fe3b7866850a57fcbc63babd63b",
+    "src/grammar/graph/routes/hierarchical.js": "ad88b41ffb8217f196f32c72f85f2c68548062adcbe9e9af2315e33b6c45f0c4",
+    "src/grammar/graph/routes/spline.js": "3a977183e32e6b185fc83e0245b9271252c909dcdd0f70f0215afd0fba45bcef",
+    "test/oracles/edge-routes.js": "56d864883b69b4896d50212b44b866d2a81ba492f284cad418617b4ca86ede38",
+    "test/unit/grammar/graph/routes/hierarchical.test.js": "5926757a501609a0fca4e3eba042c0fcdc4150fb967fc7a5c85e007938d8c69d"
+  }
+}

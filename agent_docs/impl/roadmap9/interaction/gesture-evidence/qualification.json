@@ -1,0 +1,141 @@
+{
+  "baseCommit": "b2413b71ccff0c9d00067289b8aa7414f6eac026",
+  "scope": "Private gesture reducer only; no public capture, preview, history or STEP058 completion claim",
+  "sourceHashes": {
+    "src/interaction/gestures.js": "3b863c916b81797462666436cae37c494848dd08de7e09ba9af3639a7f1bbe4f",
+    "test/unit/gesture-controller.test.js": "e188cb9373bce01755aee8decc3f5ccd025f2259ba05e9216d52888828846151"
+  },
+  "checks": {
+    "focused": 10,
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "coverage": {
+      "interaction/gestures.js": [
+        100,
+        100,
+        100
+      ]
+    },
+    "criticalFloor": [
+      95,
+      90,
+      100
+    ],
+    "sourceBoundaryDiscovery": 27,
+    "packageContracts": 13
+  },
+  "packageMeasurement": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 921,
+    "packedBytes": 1329320,
+    "unpackedBytes": 6080779
+  },
+  "limits": {
+    "entries": 921,
+    "packedBytes": 1330000,
+    "unpackedBytes": 6081000
+  },
+  "unchanged": "Public exports/types/current behavior, runtime entry import graphs and browser bundle caps remain unchanged",
+  "notRun": [
+    "Public gesture browser/installed consumers; host adapter still pending",
+    "Full repository tests/coverage",
+    "Actual program/history OR24 closure"
+  ],
+  "logs": {
+    "gesture-controller-final.log": {
+      "sha256": "af206950834ba192705f48c31ff3ace009f0e6ca3fdffbf3b1e7e39f369a20b3",
+      "bytes": 6022,
+      "gzip": "gesture-controller-final.log.gz"
+    },
+    "gesture-controller-initial.log": {
+      "sha256": "13629cb75b5cf7d285e624cffd239dc65b42c2d8f39f97a92bd6d7675b6489c8",
+      "bytes": 6026,
+      "gzip": "gesture-controller-initial.log.gz"
+    },
+    "gesture-kernel-boundaries.log": {
+      "sha256": "b73adb733ad7624bd53fadd1c684a201cb4116a19725ba244bde6d42e0139861",
+      "bytes": 5484,
+      "gzip": "gesture-kernel-boundaries.log.gz"
+    },
+    "gesture-kernel-expected-actual-diff.json": {
+      "sha256": "0940158f8895943413bf4e4c502b986915f174df19aa9938bc0885d117ebde12",
+      "bytes": 1145,
+      "gzip": "gesture-kernel-expected-actual-diff.json.gz"
+    },
+    "gesture-kernel-measure-node20.json": {
+      "sha256": "bd4ac35a27310d443b084d61210c761c3872e2dd52fe74c1103ddd31e02b677a",
+      "bytes": 160,
+      "gzip": "gesture-kernel-measure-node20.json.gz"
+    },
+    "gesture-kernel-measure-node20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "gesture-kernel-measure-node20.log.gz"
+    },
+    "gesture-kernel-measure-node22.json": {
+      "sha256": "46bbab4e58ca6c2be5b5ca059a1ec01acd52a1a0bff6ee81152190c3b4134d80",
+      "bytes": 160,
+      "gzip": "gesture-kernel-measure-node22.json.gz"
+    },
+    "gesture-kernel-measure-node22.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "gesture-kernel-measure-node22.log.gz"
+    },
+    "gesture-kernel-node20-final.log": {
+      "sha256": "d668119a060b66c260805f65920d9105b72f1a6d6079f7879f8d4f9f6c689162",
+      "bytes": 2251,
+      "gzip": "gesture-kernel-node20-final.log.gz"
+    },
+    "gesture-kernel-node20.log": {
+      "sha256": "86f4e8eaafbdde8d020f29fda6425e9c50744e007402c351a6873222be83fa10",
+      "bytes": 2254,
+      "gzip": "gesture-kernel-node20.log.gz"
+    },
+    "gesture-kernel-node24-final.log": {
+      "sha256": "367ff7b079a644511349ac38776102a666ccb956c5cee798f01b3f98e9572cf8",
+      "bytes": 1080,
+      "gzip": "gesture-kernel-node24-final.log.gz"
+    },
+    "gesture-kernel-node24.log": {
+      "sha256": "816b780972fdc831f922f86db37273ffb765a67d1f2517c869f7db3080a183a9",
+      "bytes": 1078,
+      "gzip": "gesture-kernel-node24.log.gz"
+    },
+    "gesture-kernel-oracle.mjs": {
+      "sha256": "723e722ab56de708642c8d6c0144137b3ddd9c7d98f051d63a81a4eba87db0c3",
+      "bytes": 1322,
+      "gzip": "gesture-kernel-oracle.mjs.gz"
+    },
+    "gesture-kernel-package-contracts.log": {
+      "sha256": "66b83b4479e5d7b201f2bc6abe7ef4b12b67b6f7b8aa82e47577edf08a4f4ded",
+      "bytes": 2769,
+      "gzip": "gesture-kernel-package-contracts.log.gz"
+    },
+    "gesture-kernel-package-final.log": {
+      "sha256": "c3529891b11aea5380397eb3461bcd5458bfd609cb087fac3e478078ef6cb02b",
+      "bytes": 368,
+      "gzip": "gesture-kernel-package-final.log.gz"
+    },
+    "gesture-kernel-package-initial.log": {
+      "sha256": "df13ba54ae243869555247ee66b56b3ac0f43a2e6d768f5479b04689cf3d544b",
+      "bytes": 1127,
+      "gzip": "gesture-kernel-package-initial.log.gz"
+    },
+    "gesture-kernel-package-node20-final.json": {
+      "sha256": "dbbd87f3c821b8493d6a4c71b3b290d21aeea12b999981ca3d9274ffbafca36d",
+      "bytes": 160,
+      "gzip": "gesture-kernel-package-node20-final.json.gz"
+    },
+    "gesture-kernel-package-node20-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "gesture-kernel-package-node20-final.log.gz"
+    }
+  }
+}

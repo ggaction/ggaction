@@ -1057,6 +1057,34 @@
     "ContourMark": [
       "contour bands",
       "level boundaries"
+    ],
+    "CalendarLayout": [
+      "calendar layout",
+      "civil-day aggregation"
+    ],
+    "CalendarPlot": [
+      "calendar plot",
+      "day cells and month boundaries"
+    ],
+    "GraphEdges": [
+      "graph edges",
+      "bundled connections"
+    ],
+    "EdgeRoute": [
+      "edge route",
+      "bundled connection geometry"
+    ],
+    "GeometryData": [
+      "geographic source",
+      "planar shapes",
+      "GeoJSON features",
+      "TopoJSON shared arcs"
+    ],
+    "Projection": [
+      "geographic projection",
+      "map projection",
+      "planar projection",
+      "geometry fit"
     ]
   },
   "summaryOverrides": {
@@ -2099,6 +2127,70 @@
     "editContourMark": {
       "target": "contour",
       "opacity": 0.5
+    },
+    "createCalendarLayout": {
+      "id": "days",
+      "date": "date",
+      "value": "value",
+      "start": "2024-01-01",
+      "end": "2024-12-31",
+      "timeZone": "UTC",
+      "weekStartsOn": 1,
+      "aggregate": "sum",
+      "missing": "empty"
+    },
+    "createCalendarPlot": {
+      "layout": "days"
+    },
+    "editCalendarPlot": {
+      "target": "calendar",
+      "cells": {
+        "opacity": 0.5
+      }
+    },
+    "bundleGraphEdges": {
+      "id": "routes",
+      "method": "edge-path"
+    },
+    "editEdgeRoute": {
+      "target": "routes",
+      "options": {
+        "exponent": 3
+      }
+    },
+    "createGeometryData": {
+      "id": "geometry",
+      "format": "geojson",
+      "coordinateKind": "geographic",
+      "featureKey": "id",
+      "values": {
+        "type": "Feature",
+        "id": "place",
+        "properties": {},
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            12.6,
+            55.7
+          ]
+        }
+      }
+    },
+    "editGeometryData": {
+      "target": "geometry",
+      "coordinateKind": "planar"
+    },
+    "createProjection": {
+      "id": "projection",
+      "type": "mercator",
+      "centerDeg": [
+        0,
+        0
+      ]
+    },
+    "editProjection": {
+      "target": "projection",
+      "scalePx": 200
     }
   },
   "callPatternOverrides": {
@@ -2180,18 +2272,21 @@
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
-      "filterMarks({ target?, mode: replace | compose, ...selector })"
+      "filterMarks({ target?, mode: replace | compose, ...selector })",
+      "filterMarks({ target?, items: logicalKeys, empty?: none | all })"
     ],
     "removeMarkFilter": [
       "removeMarkFilter({ target? })"
     ],
     "selectMarks": [
       "selectMarks({ id?, field | channel | property, op, ...operands })",
-      "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+      "selectMarks({ id?, target?, grain?, op: min | max, count? })",
+      "selectMarks({ id?, target?, items: logicalKeys, empty?: none | all })"
     ],
     "editMarkSelection": [
       "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
-      "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+      "editMarkSelection({ selection?, grain?, op: min | max, count? })",
+      "editMarkSelection({ selection?, mode: add | toggle | subtract | intersect, items: logicalKeys })"
     ],
     "editMarkLabelSelection": [
       "editMarkLabelSelection({ target, select | selection | all: true })"

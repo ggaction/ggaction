@@ -515,3 +515,30 @@ For individual lines, ticks, labels, and titles, see
 Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
 
 An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.
+
+## Responsive labels
+
+Cartesian label options accept `responsive: {}` when the Canvas has an active
+responsive policy. Full and Basic use the same defaults:
+
+| Option | Value | Default |
+| --- | --- | --- |
+| `sequence` | `['wrap', 'skip', 'rotate']` in this order | That sequence |
+| `maxLines` | Integer from 1 through 10000 | `2` |
+| `skipStride` | Integer from 2 through 10000 | `2` |
+| `rotationCandidates` | Nonempty, distinct finite rotation inputs | `[-Math.PI / 4, -Math.PI / 2]` |
+
+The materializer first tries native labels, then wrapping, retaining every kth
+label, then each declared angle. It retains raw indices `0, k, 2k, …`; ticks,
+scale domains and rows are unchanged. Empty display labels remain suppressed.
+An explicit `maxWidth` is preserved. Otherwise X labels use the actual spacing
+of selected anchors and Y labels use the space left by the minimum plot and
+opposite margin. Wrapping preserves Unicode grapheme clusters and never
+truncates text. `flush: true` excludes nonzero rotation candidates.
+
+The policy can be used in `createXAxisLabels`, `editYAxisLabels`, complete axes,
+`ticksAndLabels.labels`, and chart `guides.axes` options. Omission preserves
+intent; `responsive: false` removes it. Turning off Canvas responsiveness keeps
+label intent dormant until re-enabled. `inspectProgram().layouts[].labels`
+reports the chosen stage, reason, raw indices, measured width and angle. This
+option does not apply to Polar or Parallel labels.

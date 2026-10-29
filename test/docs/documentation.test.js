@@ -492,7 +492,7 @@ test("keeps task pages visual and chart figures canonical", async () => {
   );
   assert.deepEqual(
     [...exceptions.keys()],
-    ["/reference/actions/", "/supported-features/", "/troubleshooting/", "/inspection/"]
+    ["/reference/actions/", "/supported-features/", "/troubleshooting/", "/inspection/", "/api/geometry/"]
   );
   for (const reason of exceptions.values()) assert.equal(reason.length > 30, true);
 

@@ -1,0 +1,9 @@
+export interface EdgeRouteResource {
+  readonly kind: "edge-route"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Exclude<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: EdgeRouteMethod; readonly coordinateSpace: "world" | "screen";
+    readonly options: Readonly<Record<string, unknown>> & { readonly limits: Readonly<Required<EdgeRouteLimits>> } };
+  readonly result: EdgeRouteResult & { readonly inputHash: string; readonly resultHash: string;
+    readonly viewport: null | { readonly x: number; readonly y: number; readonly width: number; readonly height: number } };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}

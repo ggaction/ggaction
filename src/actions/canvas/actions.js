@@ -1,8 +1,11 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { action } from "../../core/action.js";
 import { hasPlotUnderlays } from "../../materialization/plotDrawOrder.js";
 import { findLayer } from "../../selectors/layers.js";
+import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../../materialization/canvasResourceRevision.js";
 import {
   DEFAULT_CANVAS,
+  createGraphicBounds,
   DEFAULT_MARGIN,
   normalizeMargin,
   normalizePlotBorder,
@@ -11,6 +14,8 @@ import {
 } from "../../layout/canvas.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateOptionObject } from "../../core/validation.js";
+import { normalizeResponsiveCanvas } from "../../grammar/responsiveCanvas.js";
+import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
 import {
   applyMaterializationPlan,
   planCanvasRematerialization
@@ -28,7 +33,8 @@ const CANVAS_OPTIONS = Object.freeze([
   "background",
   "margin",
   "plot",
-  "plotBorder"
+  "plotBorder",
+  "responsive"
 ]);
 
 function validateOptions(args, operation, { allowEmpty = false } = {}) {
@@ -60,7 +66,17 @@ function resolveCanvasState(properties, args, config = {}) {
     }
   };
   delete state.plot;
+  delete state.responsive;
+  const responsive = Object.hasOwn(args, "responsive")
+    ? normalizeResponsiveCanvas(args.responsive) : config.responsive;
   const plot = resolveCanvasPlot(args, config.plot);
+  if (responsive !== undefined && plot !== undefined) {
+    throw new Error("Canvas responsive cannot be combined with exact inner plot dimensions.");
+  }
+  if (responsive !== undefined) {
+    state.responsive = responsive;
+    if (config.responsiveResult !== undefined) state.responsiveResult = config.responsiveResult;
+  }
   if (plot !== undefined) {
     state.plot = plot;
     state.width = plot.width + state.margin.left + state.margin.right;
@@ -78,9 +94,22 @@ function applyCanvasState(program, args, state) {
       next = next.editGraphics({ target: CANVAS_GRAPHIC_ID, property, value: state[property] });
     }
   }
-  return next._withCanvasConfig({ margin: state.margin, size: state.size,
+  return next._withCanvasConfig(canvasConfig(state));
+}
+
+function canvasConfig(state) {
+  return { margin: state.margin, size: state.size,
+    ...(state.responsive === undefined ? {} : { responsive: state.responsive,
+      ...(state.responsiveResult === undefined ? {} : { responsiveResult: state.responsiveResult }) }),
     ...(state.plot === undefined ? {} : { plot: state.plot, requestedMargin: state.requestedMargin }),
-    ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) });
+    ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) };
+}
+
+function previewCanvasState(program, state) {
+  const canvas = program.graphicSpec.objects[CANVAS_GRAPHIC_ID];
+  return { ...program, constructor: program.constructor, graphicSpec: { ...program.graphicSpec, objects: { ...program.graphicSpec.objects,
+    [CANVAS_GRAPHIC_ID]: { ...canvas, properties: { ...canvas.properties, width: state.width, height: state.height, background: state.background } } } },
+    materializationConfigs: { ...program.materializationConfigs, canvas: canvasConfig(state) } };
 }
 
 function assertBorderAvailable(program, state) {
@@ -109,21 +138,30 @@ export const editCanvas = /* @__PURE__ */ action(
     validateOptions(args, "editCanvas");
     const state = resolveCanvasState(requireCanvas(this).properties, args, this.materializationConfigs.canvas);
     assertBorderAvailable(this, state);
+    const changesLayout = ["width", "height", "margin", "plot", "responsive"].some(key => Object.hasOwn(args, key));
+    const preview = previewCanvasState(this, state);
+    if (changesLayout) {
+      const plot = state.responsive === undefined ? undefined : createGraphicBounds(state);
+      const prospective = plot === undefined ? preview : { ...preview,
+        context: { ...preview.context, responsivePlot: { left: plot.x, right: plot.x + plot.width,
+          top: plot.y, bottom: plot.y + plot.height } } };
+      assertProgramSingleY(prospective, { materialized: true, allowIncomplete: true });
+    }
+    const resources = changesLayout && state.responsive === undefined
+      ? prepareCanvasResourceRevision(preview) : undefined;
     let next = this;
     if (state.plotBorder === false && this.materializationConfigs.canvas?.plotBorder !== undefined) {
       next = next.editGraphics({ target: "plotBorder", remove: true });
     }
     next = applyCanvasState(next, args, state);
+    next = applyCanvasResourceRevision(next, resources);
 
     if (
-      Object.hasOwn(args, "width") ||
-      Object.hasOwn(args, "height") ||
-      Object.hasOwn(args, "margin") || Object.hasOwn(args, "plot")
+      changesLayout
     ) {
-      next = applyMaterializationPlan(
-        next,
-        planCanvasRematerialization(next)
-      );
+      next = withGuideLayoutTransaction(next, candidate => candidate.materializationConfigs.canvas?.responsive === undefined
+        ? applyMaterializationPlan(candidate, planCanvasRematerialization(candidate)) : candidate,
+        { validateCandidate: candidate => assertProgramSingleY(candidate, { materialized: true, allowIncomplete: true }) });
     } else if (state.plotBorder !== false && Object.hasOwn(args, "plotBorder")) {
       next = next.rematerializePlotBorder();
     }
@@ -164,6 +202,8 @@ export const createBasicCanvas = /* @__PURE__ */ action(
     const state = resolveCanvasState(DEFAULT_CANVAS, args, { size: initialSize(args) });
     assertBorderAvailable(this, state);
     const next = applyCanvasState(createHierarchy(this), state, state);
-    return state.plotBorder === false ? next : next.rematerializePlotBorder();
+    const configured = state.plotBorder === false ? next : next.rematerializePlotBorder();
+    return state.responsive === undefined ? configured
+      : withGuideLayoutTransaction(configured, candidate => candidate);
   }
 );

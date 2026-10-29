@@ -1,3 +1,4 @@
+import { ownRecord } from "../core/ownData.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateOptionObject } from "../core/validation.js";
 import { validatePair } from "./scales/validation.js";
@@ -185,4 +186,19 @@ export function polarToCartesian({ theta, radius, frame }) {
     x: resolvedFrame.centerX + radius * direction.x,
     y: resolvedFrame.centerY + radius * direction.y
   });
+}
+
+// Inverse direction only: radius remains the caller's explicit policy.
+// Zero is at the top and positive angles follow the existing clockwise owner.
+export function polarThetaAtPoint(point, frame) {
+  ownRecord(point, "Polar angle point"); ownRecord(frame, "Polar angle frame");
+  if (!["x", "y"].every(key => Object.hasOwn(point, key)) || !["centerX", "centerY"].every(key => Object.hasOwn(frame, key)) ||
+    ![point.x, point.y, frame.centerX, frame.centerY].every(Number.isFinite)) {
+    throw new TypeError("Polar angle requires finite point and center coordinates.");
+  }
+  const x = point.x - frame.centerX, y = point.y - frame.centerY;
+  if (!Number.isFinite(x) || !Number.isFinite(y)) throw new RangeError("Polar angle exceeds finite coordinates.");
+  if (x === 0 && y === 0) return null;
+  const degrees = Math.atan2(x, -y) * 180 / Math.PI;
+  return degrees < 0 ? (degrees + 360) % 360 : degrees === 0 ? 0 : degrees;
 }

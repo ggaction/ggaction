@@ -86,6 +86,11 @@ export interface FontRenderingHost {
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
+  axisLabelGap?: number;
+  axisTitleGap?: number;
+  legendItemGap?: number;
+  palette?: readonly string[];
+  patternPalette?: readonly PatternPaint[];
   axisStrokeWidth?: number;
   tickStrokeWidth?: number;
   tickSize?: number;
@@ -1415,7 +1420,8 @@ export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
   | "fill" | "stroke" | "strokeWidth" | "opacity";
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -1424,12 +1430,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -1437,13 +1438,45 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
       ties?: "first" | "all";
     }
 );
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };
+export type SelectionRegion = ({ x?: SelectionRegionAxis; y?: SelectionRegionAxis; x2?: SelectionRegionAxis; y2?: SelectionRegionAxis; theta?: never } &
+  ({ x: SelectionRegionAxis } | { y: SelectionRegionAxis } | { x2: SelectionRegionAxis } | { y2: SelectionRegionAxis }))
+  | { theta: SelectionRegionAxis; x?: never; y?: never; x2?: never; y2?: never };
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never; screenAngles?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never; screenAngles?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  /** Normalized clockwise start/end radians; theta-region metadata only. */
+  screenAngles?: readonly [number, number];
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  screenAngles?: never;
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
+} | {
+  grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all";
+  /** Normalized clockwise start/end radians; keys define persistent membership. */
+  screenAngles: readonly [number, number];
+  screenPolygon?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
+};
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 export type EditMarkSelectionOptions = {
   selection?: string;
-} & MarkSelector;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
+} & MarkSelectionSelector;
 export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
@@ -1461,7 +1494,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -1827,11 +1860,63 @@ export interface GraphLabelsOptions extends GraphLabelPaint {
   field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
 }
 export interface GraphPlotOptions {
-  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
 }
 export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
+export interface EdgeRouteLimits {
+  readonly maxNodes?: number; readonly maxEdges?: number; readonly maxCandidatePairs?: number; readonly maxSamples?: number;
+}
+export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+  readonly hierarchy?: string; readonly hierarchyLayout?: string;
+  readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
+  readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
+}
+export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgeRouteDefinition =
+  { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
+  | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
+  | { readonly method: "density"; readonly options?: EdgeRouteCommonOptions }
+  | { readonly method: "edge-path"; readonly options?: EdgePathRouteOptions };
+export type BundleGraphEdgesOptions = { readonly id: string; readonly graph?: string; readonly layout?: string; readonly coordinateSpace?: "world" | "screen" } & EdgeRouteDefinition;
+/** Same-method options patch existing values; changing method starts from that method's defaults. */
+export interface EditEdgeRouteOptions {
+  readonly target?: string; readonly graph?: string; readonly layout?: string; readonly method?: EdgeRouteMethod;
+  readonly coordinateSpace?: "world" | "screen";
+  readonly options?: Partial<HierarchicalEdgeRouteOptions> | ForceDirectedEdgeRouteOptions | EdgeRouteCommonOptions | EdgePathRouteOptions;
+}
+declare const preparedGraphEdgeRoutes: unique symbol;
+/** Opaque, exact-receiver preparation. Obtain it from ggaction/graph. */
+export interface PreparedGraphEdgeRoutes {
+  readonly [preparedGraphEdgeRoutes]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+export interface EdgeRoutePoint { readonly x: number; readonly y: number; }
+export interface EdgeRouteVector {
+  readonly edgeKey: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly controlPoints: readonly EdgeRoutePoint[];
+  readonly commands: readonly (EdgeRoutePoint & { readonly op: "M" | "L" })[];
+  readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+  readonly provenance: Readonly<Record<string, unknown>> & { readonly algorithmVersion: string; readonly reason?: string };
+}
+export interface EdgeRouteResult {
+  readonly complete: true; readonly routes: readonly EdgeRouteVector[];
+  readonly diagnostics: Readonly<Record<string, unknown>> & { readonly work: number; readonly candidatePairs: number; readonly peakSamples: number };
+}
+export interface EdgeRouteResource {
+  readonly kind: "edge-route"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Exclude<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: EdgeRouteMethod; readonly coordinateSpace: "world" | "screen";
+    readonly options: Readonly<Record<string, unknown>> & { readonly limits: Readonly<Required<EdgeRouteLimits>> } };
+  readonly result: EdgeRouteResult & { readonly inputHash: string; readonly resultHash: string;
+    readonly viewport: null | { readonly x: number; readonly y: number; readonly width: number; readonly height: number } };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 /** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
@@ -1932,6 +2017,143 @@ export interface FlowLinksOptions {
 export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
 /** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */
+export interface CalendarDayOptions {
+  readonly start: string; readonly end: string; readonly timeZone: string;
+  readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; readonly missing: "empty" | "omit";
+}
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };
+export type CalendarLayoutPatch = Partial<CalendarDayOptions> & { readonly date?: string; readonly value?: string;
+  readonly aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" };
+export interface CalendarCell {
+  readonly key: string; readonly instant: number; readonly year: number; readonly month: number; readonly day: number;
+  readonly yearIndex: number; readonly week: number; readonly weekday: number; readonly value: number | null; readonly sourceIndices: readonly number[];
+}
+export interface CalendarLayoutResult {
+  readonly algorithm: "civil-day-cells@1";
+  readonly years: readonly { readonly year: number; readonly yearIndex: number; readonly weeks: number }[];
+  readonly cells: readonly CalendarCell[];
+  readonly months: readonly { readonly key: string; readonly year: number; readonly month: number; readonly yearIndex: number;
+    readonly cells: readonly string[]; readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    readonly polygons: readonly ContourPolygon[] }[];
+}
+export interface CalendarLayoutResource {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: "calendar"; readonly fields: { readonly date: string; readonly value?: string };
+    readonly options: CalendarDayOptions & { readonly aggregate: "count" | "sum" | "mean" | "median" | "min" | "max" } };
+  readonly result: CalendarLayoutResult; readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface CalendarCellPaint {
+  readonly fill?: FillPaint; readonly emptyFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly gap?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface CalendarBoundaryPaint {
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface CalendarLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+export interface CalendarPlotOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly cells?: CalendarCellPaint; readonly monthBoundary?: false | CalendarBoundaryPaint;
+  readonly labels?: false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>>;
+}
+export interface EditCalendarPlotOptions extends Omit<CalendarPlotOptions, "id"> { readonly target?: string; }
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+export type GeometryPosition = readonly [number, number, ...number[]];
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+export type GeometryFeatureKey = string | readonly string[];
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+export interface GeometrySourceResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly [];
+  readonly options: { readonly method: "geo"; readonly format: "geojson" | "topojson"; readonly coordinateKind: "geographic" | "planar";
+    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits> };
+  readonly result: {
+    readonly features: readonly { readonly id?: string | number; readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+      readonly geometry: GeographicGeometry | null; readonly sourcePath: readonly (string | number)[]; readonly drawable: boolean }[];
+    readonly identity: { readonly logicalId: string; readonly revision: number; readonly allocationId: string;
+      readonly keySpec: { readonly mode: "generated" | "explicit" }; readonly rowKeys: readonly string[]; readonly nextGeneratedKey: number };
+    readonly source: { readonly kind: "values"; readonly hashKind: "encoded-values"; readonly contentHash: string; readonly values: GeoJSONInput | TopoJSONInput };
+    readonly topology?: { readonly object: string; readonly arcs: readonly (readonly GeometryPosition[])[]; readonly references: TopologyGeometry;
+      readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] } };
+    readonly diagnostics: { readonly features: number; readonly positions: number; readonly arcs: number; readonly values: number; readonly work: number };
+  };
+  readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
+}
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+export interface ProjectionResource {
+  readonly kind: "projection"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: ProjectionParameters | (Omit<ProjectionSphereParameters, "scalePx" | "translatePx"> & {
+    readonly type: ProjectionType; readonly parallelsDeg?: readonly [number, number]; readonly fit: Required<Omit<ProjectionFitOptions, "geometry">> });
+  readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
+  readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
+}
 export interface ContourGridFrame {
   readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
   readonly width: number; readonly height: number;
@@ -1974,7 +2196,7 @@ export interface ContourMarkOptions {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
 }
 export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1983,6 +2205,7 @@ export interface PersistentSelectionResource {
   readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
   readonly inputs: readonly InputRef[];
   readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
+    | { readonly mode: "item-keys"; readonly itemKeys: readonly string[]; readonly empty: "none" | "all"; readonly screenPolygon?: readonly { readonly x: number; readonly y: number }[]; readonly screenAngles?: readonly [number, number] }
     | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
   readonly result: Readonly<Record<string, never>>;
   readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };
@@ -2011,7 +2234,7 @@ export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: H
 /** The method remains fixed; supplied options patch its existing layout intent. */
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
 export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
 export interface HierarchyNode {
   readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
@@ -2132,13 +2355,16 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly calendarBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly calendarLabels?: Readonly<Record<CalendarLabelRole, boolean>>;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
-  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number };
+    readonly routes?: { readonly kind: "edge-route"; readonly id: string; readonly revision: number } };
   readonly graphLabels?: false | { readonly field?: string; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;
@@ -2202,7 +2428,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -2252,11 +2478,27 @@ export interface GraphicSpec {
   readonly order: readonly string[];
 }
 
+export interface ResponsiveCanvasOptions {
+  /** Required final inner size. Defaults to 160 by 120 CSS pixels. */
+  minPlotSize?: { width: number; height: number };
+}
+export interface ResponsiveLabelOptions {
+  /** The declared fallback order. Defaults to wrap, skip, rotate. */
+  sequence?: readonly ["wrap", "skip", "rotate"];
+  /** Maximum physical lines per retained label; never truncates text. Defaults to 2. */
+  maxLines?: number;
+  /** Retain source indices 0, stride, 2*stride. Defaults to 2. */
+  skipStride?: number;
+  /** Tried in order after skipping. Defaults to -45 and -90 degrees. */
+  rotationCandidates?: readonly RotationInput[];
+}
 export interface CanvasOptions {
   width?: number;
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Preserve outer dimensions and authored margins while reserving guide lanes. False disables. */
+  responsive?: false | ResponsiveCanvasOptions;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
   /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
@@ -2337,6 +2579,8 @@ export type CartesianAxisLabelColorMap = ReadonlyArray<Readonly<{
   color: string;
 }>>;
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Opt-in measured fallback; requires responsive Canvas mode. False removes the policy. */
+  responsive?: false | ResponsiveLabelOptions;
   /** Local text alignment before rotation; omitted edits retain existing intent. */
   align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
@@ -6261,12 +6505,21 @@ export class ChartProgram {
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+  bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+  editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;

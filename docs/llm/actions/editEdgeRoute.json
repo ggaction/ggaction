@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 3,
+  "name": "editEdgeRoute",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once.",
+  "signature": "editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;",
+  "intents": [
+    "edit edge route",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "edge route",
+    "bundled connection geometry"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing graph and compatible node layout"
+    ],
+    "owns": [
+      "edge-route resource"
+    ],
+    "idOptions": [
+      "target",
+      "graph",
+      "layout"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editEdgeRoute",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing graph and compatible node layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": false,
+      "type": "PreparedGraphEdgeRoutes"
+    },
+    {
+      "name": "requestToken",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "graph",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "EdgeRouteMethod | undefined"
+    },
+    {
+      "name": "coordinateSpace",
+      "required": false,
+      "type": "\"screen\" | \"world\" | undefined"
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "EdgePathRouteOptions | EdgeRouteCommonOptions | ForceDirectedEdgeRouteOptions | Partial<HierarchicalEdgeRouteOptions> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editEdgeRoute({ target?, prepared?, requestToken?, graph?, layout?, method?, coordinateSpace?, options? })"
+  ],
+  "snippet": "program.editEdgeRoute({ target: \"routes\", options: { exponent: 3 } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editedgeroute"
+}

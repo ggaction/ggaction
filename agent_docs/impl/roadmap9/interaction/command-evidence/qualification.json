@@ -1,0 +1,438 @@
+{
+  "sourceCommit": "4959ad7cea41fddbf714d2ab59d16887229ec2e8",
+  "scope": "STEP057 D1 atomic selection and parameter commands; C/D remainder and STEP077 remain open",
+  "sourceHashes": {
+    "src/interaction/input.js": "9d311526e9b4d596d18703ed630c1afc529ba39511aa5d130f03a97e59d9915f",
+    "src/interaction/sceneFrame.js": "81e6dfbffc9876c30ab0619a88099618f9d691b40acd83dc3230e010ed316ad6",
+    "src/interaction/selection.js": "6eda138d4f7806449615122b5899194bba80fd2d4c734d0d3c6a35646b6f105d",
+    "src/interaction/session.js": "508da4b02c80e4f1a535d39b08ef801d41549a09410baf54776267a9d96a6f7f",
+    "types/interaction.d.ts": "dbca85a575b071cc4bd0f69acd7bd5b05f98bd96ff2420b273bde6f126c3217a"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 21,
+      "owners": {
+        "interaction/input.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/sceneFrame.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/selection.js": [
+          100,
+          98.65,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          96.9,
+          100
+        ]
+      },
+      "floor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "typesSourceBoundaryDiscovery": 28,
+    "packageContracts": 13,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "expected": "Independent final category equality, item key replacement and empty clear with exact commit/settled phases"
+    },
+    "browser": {
+      "tests": 4,
+      "scope": "Existing Canvas/SVG inspection at DPR1/2/3 plus host click toggle and commit redraw at DPR2"
+    },
+    "docs": {
+      "sourceTests": 182,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "horizontalOverflow": false,
+      "visualInspection": "390px screenshot reviewed; final metadata-only provenance rebuild leaves page content unchanged."
+    },
+    "installed": {
+      "artifactSha256": "48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef",
+      "sourceFree": true,
+      "perNode": [
+        {
+          "node": "v20.20.2",
+          "artifact": "48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef",
+          "sourceFree": true,
+          "runtime": [
+            "interaction/full-basic-immutable-inspection PASS",
+            "interaction/current-frame-and-restored-program PASS",
+            "interaction/guide-and-host-cleanup PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 651656
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 366102
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 149,
+              "minifiedBytes": 270832,
+              "gzipBytes": 88433
+            }
+          ]
+        },
+        {
+          "node": "v22.23.1",
+          "artifact": "48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef",
+          "sourceFree": true,
+          "runtime": [
+            "interaction/full-basic-immutable-inspection PASS",
+            "interaction/current-frame-and-restored-program PASS",
+            "interaction/guide-and-host-cleanup PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 650834
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 365369
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20055
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 149,
+              "minifiedBytes": 270832,
+              "gzipBytes": 88360
+            }
+          ]
+        },
+        {
+          "node": "v24.22.1",
+          "artifact": "48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef",
+          "sourceFree": true,
+          "runtime": [
+            "interaction/full-basic-immutable-inspection PASS",
+            "interaction/current-frame-and-restored-program PASS",
+            "interaction/guide-and-host-cleanup PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 651656
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 366102
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 149,
+              "minifiedBytes": 270832,
+              "gzipBytes": 88433
+            }
+          ]
+        }
+      ],
+      "scope": "Three current-frame/inspection/authoring runtime cases, strict public types and four browser entry bundles. No full installed sweep."
+    }
+  },
+  "artifact": {
+    "sha256": "48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef",
+    "entries": 913,
+    "packedNode22": 1312214,
+    "packedMaximum": 1314971,
+    "unpacked": 6024096,
+    "caps": {
+      "entries": 913,
+      "packed": 1315000,
+      "unpacked": 6025000
+    },
+    "bundleMaximum": {
+      "ggaction": 651656,
+      "ggaction/basic": 366102,
+      "ggaction/svg": 20196,
+      "ggaction/interaction": 88433
+    },
+    "interactionCap": 89000,
+    "existingOtherCapsUnchanged": true
+  },
+  "initialFailures": [
+    "Fixture used an array hconcat signature; corrected to existing option object.",
+    "Basic createParameter was incorrectly assumed to imply editParameter; runtime and same-value no-op both reject its missing editor.",
+    "New unit file lacked its capability registration; owning manifest updated.",
+    "Provenance became stale during implementation; regenerated from fixed source.",
+    "Package 913 entries exceeded 911; two new owners and expanded declarations measured before raising limits.",
+    "Interaction bundle 88360/88433 exceeded 83000; runtime and types already passed, final narrow cap is 89000.",
+    "Final README Basic ceiling was stale from prior selection checkpoints; synchronized to existing 367000 and repacked the same runtime."
+  ],
+  "verificationLimits": [
+    "No full repository, renderer or installed sweep repeated.",
+    "No built-in click selection binding, automatic linked propagation, nearest, orphan/drop policy, gesture preview, history or async asset settlement implemented by this checkpoint.",
+    "No new persisted schema or direct authoring method added."
+  ],
+  "remaining": [
+    "STEP057 C linked union/intersection/global projections",
+    "STEP057 D nearest, hidden/delete reconciliation and automatic bindings",
+    "AT37 and later gesture/history integration",
+    "Overall STEP077 completion"
+  ],
+  "logHashEncoding": "sha256 of decompressed original log bytes; gzip mtime 0",
+  "logs": [
+    {
+      "file": "browser.log.gz",
+      "sha256": "a2f858cc1e7902c8c205c7d13233cd9338d8975f67e0b2f3fba9b13b9bc78217"
+    },
+    {
+      "file": "consumer-20-initial.log.gz",
+      "sha256": "8a64b058e05a326cc00e7ed9298d27c79962f749ab6e0d7321b44c112984e174"
+    },
+    {
+      "file": "consumer-20-qualified.log.gz",
+      "sha256": "4796e58dc41f03c9e807ed2595cc270f5bbf5258451095a6da87758955661fbf"
+    },
+    {
+      "file": "consumer-22-final.log.gz",
+      "sha256": "a371d000e4551ade67d61a1b7d94c807374fbb25552dea8d9566c5fc3e3ded4f"
+    },
+    {
+      "file": "consumer-22-initial.log.gz",
+      "sha256": "b1c64e30f5d6eb9055cd5bbb24d2cb7c0e8502716135cab6c6838b73f88ec067"
+    },
+    {
+      "file": "consumer-22-qualified.log.gz",
+      "sha256": "5b9e3666bb32d46c3332b3724380e5413dd876dd193dc4ee5366339f9335a2ae"
+    },
+    {
+      "file": "consumer-24-qualified.log.gz",
+      "sha256": "5ef9a33f82426e7a96f42b330c40d4d7be95137b1dc9350640a7c06010e30c00"
+    },
+    {
+      "file": "contracts-final.log.gz",
+      "sha256": "fdaf6a3b46515423110fcc4929ed8eb9ef895bd9716b96563c425e723b8262bb"
+    },
+    {
+      "file": "contracts.log.gz",
+      "sha256": "ea20a48b9d83caea9a1aa1bfb6e39cc9403017648273995c0e70269be87aa5c9"
+    },
+    {
+      "file": "coverage-final.log.gz",
+      "sha256": "6de92f190cc6ab5fd81523a4933f76f26127036f41dc40879b15f17da9f61110"
+    },
+    {
+      "file": "coverage.log.gz",
+      "sha256": "f571a788699f7be1c0302eb9f6c8f59f24e145015ff0cc503a8852be49d8827e"
+    },
+    {
+      "file": "docs-browser.log.gz",
+      "sha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50"
+    },
+    {
+      "file": "docs-build-qualified.log.gz",
+      "sha256": "533719195653b2496dfa86b47bebe670f2233ce1ba44077ddeb92b7d7b1ef6e3"
+    },
+    {
+      "file": "docs-build.log.gz",
+      "sha256": "3b6548ba4cfaecf4afd44df22b06c630bf5f0de0b5b32ea41bcfa501cd07bfbd"
+    },
+    {
+      "file": "docs-built-qualified.log.gz",
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71"
+    },
+    {
+      "file": "docs-built.log.gz",
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71"
+    },
+    {
+      "file": "docs-closure.log.gz",
+      "sha256": "b2377454159de979d9186762a1dc875e00f0cbfeaf002444ed813706b64a76d6"
+    },
+    {
+      "file": "docs-final.log.gz",
+      "sha256": "78801f617ca2f96d5fcc4ebf06c002a68ba6069b50188ecb8dfd25f81310436f"
+    },
+    {
+      "file": "docs-initial.log.gz",
+      "sha256": "17169d4221e1920ecc28c22ff862861cd2a4ead2bb61d739fdf81b47faf76297"
+    },
+    {
+      "file": "docs-preflight.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "file": "docs-qualified.log.gz",
+      "sha256": "b5576a25745a4a5033ebc88354224bd231d12f437929e4d380b00b01195ed2ec"
+    },
+    {
+      "file": "focused.log.gz",
+      "sha256": "9bf4f07ad5878c1f27b1a18986c699e20f2cd5e86e8fe3ac09b88a973240831b"
+    },
+    {
+      "file": "initial.log.gz",
+      "sha256": "3904124db080fdf00b9917307240939e296744e81e537e264366457a31811b48"
+    },
+    {
+      "file": "llms-closure.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "llms-final.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "llms-qualified.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "machine-closure.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "machine-final.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "machine-qualified.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "machine.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "metadata.log.gz",
+      "sha256": "9a8fab1e4a5654800a52cba344ff5e1ce97961fe208ff4ed39ee6c1fe3461580"
+    },
+    {
+      "file": "pack-final.log.gz",
+      "sha256": "79fec7beeb01f205b738c4f9a0e441409ca43f18cae15a2ee7072714678d1b1d"
+    },
+    {
+      "file": "pack-qualified.log.gz",
+      "sha256": "31263bbbcb546f87effe07f0ec2e5b91eb6b77ce4adb8aef23cf652d71b3c085"
+    },
+    {
+      "file": "package-contracts.log.gz",
+      "sha256": "e948dc367d7a5aec12a7463b3e7335a8d4e2fad540e04d29133187efc0c4f3d7"
+    },
+    {
+      "file": "package-final-20.log.gz",
+      "sha256": "8426b0c1d08787e4bb7ba3a904cea99c2fb042d3c5883850b02b586037bb0e7c"
+    },
+    {
+      "file": "package-initial.log.gz",
+      "sha256": "03e441a332841651df41ee92a15f4036e92aea9d987dae72b28864e5ba29c4a3"
+    },
+    {
+      "file": "package-measure-20.log.gz",
+      "sha256": "414035b407e8c3d179bfc8356bc773fc8782518ed3be388f1b95df161c34ce8f"
+    },
+    {
+      "file": "package-measure-22.log.gz",
+      "sha256": "f3e2e09563c0f5a797f575b38f7d4042ca365f69c11a3a684d5cb825d91edb55"
+    },
+    {
+      "file": "package-qualified-24.log.gz",
+      "sha256": "8426b0c1d08787e4bb7ba3a904cea99c2fb042d3c5883850b02b586037bb0e7c"
+    },
+    {
+      "file": "provenance-final.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "provenance-qualified.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "realistic.log.gz",
+      "sha256": "9e3244abe323a60aeb9197b30ec11f48f52f580a695f8c0df47d8963167e3dee"
+    },
+    {
+      "file": "search-final.log.gz",
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
+    },
+    {
+      "file": "search.log.gz",
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
+    },
+    {
+      "file": "signatures-final.log.gz",
+      "sha256": "41885648d98c50f49d3bbb2747a30c7f46555e03f38f895df0441a52891d1885"
+    },
+    {
+      "file": "signatures.log.gz",
+      "sha256": "41885648d98c50f49d3bbb2747a30c7f46555e03f38f895df0441a52891d1885"
+    },
+    {
+      "file": "snippets.log.gz",
+      "sha256": "7ab651e51563bec6fa2a5e7453f21c7b2fc022ed973e92ac701aa9c155a50147"
+    }
+  ]
+}

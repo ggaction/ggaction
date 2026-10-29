@@ -28,6 +28,9 @@
     "H3"
   ],
   "wraps": [
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisTitle",
     "editGraphics"
   ],
   "editableVia": [

@@ -43,7 +43,10 @@
     "contracts/realistic-mark-blends.test.js": 18646,
     "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-flow-layouts.test.js": 1611,
-    "contracts/realistic-contours.test.js": 3379
+    "contracts/realistic-contours.test.js": 3379,
+    "contracts/realistic-calendar-plots.test.js": 9353,
+    "contracts/realistic-logical-selection.test.js": 2181,
+    "contracts/realistic-edge-routes.test.js": 6263
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -97,6 +100,10 @@
     "contracts/realistic-contours.test.js": {
       "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
       "measurement": "Sum of 16 successful canonical realistic per-test durations 3378.905418ms, rounded upward. Five pinned sources, three contour recipes each, explicit density formula and all five public action witnesses. Scheduling estimate only."
+    },
+    "contracts/realistic-logical-selection.test.js": {
+      "environment": "macOS arm64, Node22.23.1, canonical realistic runner",
+      "measurement": "Successful file duration 2180.84525ms rounded up. Five pinned datasets and observations/categories/series recipes, all five set modes plus empty policy and codec. Scheduling estimate only."
     }
   },
   "localMeasurements": {
@@ -129,6 +136,10 @@
       "environment": "macOS arm64, Node 22.23.1; concurrent repository verification jobs",
       "source": "Canonical realistic runner, 2026-10-28; five pinned datasets, three recipes (two owners each, six total), ten paint variants including linear gradient; 15/15 passed.",
       "measuredDurationMs": 184875.629333
+    },
+    "contracts/realistic-edge-routes.test.js": {
+      "source": "canonical scripts/run-tests.js realistic on macOS arm64, Node 22.23.1",
+      "measurement": "Successful whole-file duration_ms 6262.479167, rounded upward; five pinned datasets with three observed-membership route recipes each; no coverage instrumentation."
     }
   },
   "measurementOverrides": {

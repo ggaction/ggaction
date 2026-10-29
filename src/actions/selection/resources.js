@@ -1,3 +1,4 @@
+import { selectionExpressionInputs } from "../../materialization/selection/expression.js";
 import { findStoredResource, dataInputReference } from "../../selectors/resources.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { prepareResourceResult, validatePreparedResource } from "../../materialization/resourceState.js";
@@ -9,8 +10,8 @@ export function prepareSelectionState(program, id, target, selector) {
   const resource = {
     kind: "persistent-selection", id, revision: previous === undefined ? 0 : previous.revision + 1,
     algorithmVersion: "1", ownership: { mode: "authored" },
-    inputs: dataset === undefined ? [] : [dataInputReference(dataset)],
-    options: dataset === undefined ? { mode: "predicate", predicate }
+    inputs: dataset === undefined ? selectionExpressionInputs(program, selector) : [dataInputReference(dataset)],
+    options: selector.items !== undefined ? { mode: "item-keys", itemKeys: selector.items, empty: selector.empty, ...(Object.hasOwn(selector, "screenPolygon") ? { screenPolygon: selector.screenPolygon } : {}), ...(Object.hasOwn(selector, "screenAngles") ? { screenAngles: selector.screenAngles } : {}) } : dataset === undefined ? { mode: "predicate", predicate }
       : { mode: "row-keys", logicalDataId: dataset.logicalId, rowKeys: selector.rows.indices.map(index => dataset.rowKeys[index]) },
     result: {}, provenance: { origin: "authored" }
   };

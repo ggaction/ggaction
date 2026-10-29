@@ -1,3 +1,4 @@
+import { guideCanvasProperties } from "../../../materialization/guides/canvas.js";
 import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import { translateGraphic } from "../../../materialization/graphicTranslation.js";
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
@@ -21,8 +22,6 @@ import {
   resolveSideLegendLane,
   resolveSingleSideLegendPlacement
 } from "../../../layout/legendLane.js";
-import { findCanvasGraphic } from
-  "../../../materialization/graphicHierarchy.js";
 import { legendResourcePolicy } from
   "../../../materialization/guides/resources.js";
 
@@ -350,7 +349,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
     noOptions(args, "rematerializeSideLegendLane");
     const intrinsic = this.context.facetLegendIntrinsic === true;
     const plot = resolveGraphicBounds(this);
-    const canvas = findCanvasGraphic(this)?.properties;
+    const canvas = guideCanvasProperties(this);
     if (plot === undefined || canvas === undefined) {
       throw new Error("Legend lane requires resolved Canvas and plot bounds.");
     }
@@ -479,7 +478,7 @@ export const rematerializeHorizontalLegendLane = /* @__PURE__ */ action(
     noOptions(args, "rematerializeHorizontalLegendLane");
     if (this.context.facetLegendIntrinsic === true) return this;
     const plot = resolveGraphicBounds(this);
-    const canvas = findCanvasGraphic(this)?.properties;
+    const canvas = guideCanvasProperties(this);
     if (plot === undefined || canvas === undefined) {
       throw new Error("Legend lane requires resolved Canvas and plot bounds.");
     }
@@ -546,7 +545,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     if (this.context.facetLegendIntrinsic === true) return this;
     let next = this;
     const plot = resolveGraphicBounds(next);
-    const canvas = findCanvasGraphic(next)?.properties;
+    const canvas = guideCanvasProperties(next);
     for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
       const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && (localLegendPosition(config) === undefined || retainsLegendSlot(config, group.placement.position ?? null)))
         .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
@@ -578,7 +577,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
           const ids = existingIds(next, kind), bounds = unionLegendBounds(next, ids);
           const dx = horizontal ? along : 0, dy = horizontal ? 0 : along;
           const shifted = { left: bounds.left + dx, right: bounds.right + dx, top: bounds.top + dy, bottom: bounds.bottom + dy };
-          if (!next.context.compositionCollectedLegends?.includes(kind) && (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height))
+          if (!canvas.deferCanvasFit && !next.context.compositionCollectedLegends?.includes(kind) && (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height))
             throw canvasOverflowError("Legend group requires more Canvas space.", [shifted], canvas);
           for (const id of ids) next = translateGraphic(next, id, dx, dy);
         }

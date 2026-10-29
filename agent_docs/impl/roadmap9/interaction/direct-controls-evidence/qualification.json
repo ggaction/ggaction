@@ -1,0 +1,500 @@
+{
+  "sourceCommit": "c6cff82ab8eae918053d729703fa512480ddcf8f",
+  "baseCommit": "6c95fb858",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "STEP060 A: filter and reorder commands using existing native actions, plus explicit category order preservation under active final-item filters",
+  "sourceHashes": {
+    "src/interaction/selection.js": "a70f9bdb63e3e424078d6a50b1996877188a809cb60dbc2e2b954fdfa6c57e4b",
+    "src/materialization/scales/consumers/index.js": "0a8cf60249b8d5d0ba231462fb54bab79f9129b9304d0716b831da8876d1efe8",
+    "types/interaction.d.ts": "37da30a418dfbb81d16cb05609603da1b86836e67166223690676178aa714ee2",
+    "test/unit/interaction-direct-controls.test.js": "4ac1cfc56464df08813c12b62f7adbd55d5e3eaa07c5d4cce2fa6dbf89f15def",
+    "test/unit/actions/encodings/category-order.test.js": "f3780cfdc8869ffbe81cb5641d664a78ce60f4672db1cc05615c81b32397c746",
+    "test/support/scenarios/region-interaction.js": "76429fd8079e3851f0719089889903df57ed3129ba65c1e717899f7e79cadbb7",
+    "test/browser/interaction-session.browser.js": "941be7978681e96356d8e50d05a190a05aef7b7cfa5bd3b1eabe421f5012415c",
+    "scripts/consumers/fixtures/node/interaction.mjs": "cb9dac216fda029dd1c52352e099057fe52e9ad6e760906503d11d125e4fff2f"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "passed": 134,
+      "selection": {
+        "lines": 100,
+        "branches": 99.12,
+        "functions": 100
+      },
+      "scaleConsumers": {
+        "lines": 98.17,
+        "branches": 93.48,
+        "functions": 100
+      }
+    },
+    "boundariesTypesDiscovery": 34,
+    "realistic": {
+      "passed": 16,
+      "witness": "five pinned datasets times three existing final-grain recipes; six control commands per witness"
+    },
+    "browser": {
+      "passed": 1,
+      "witness": "real click/Enter/Space with five native transactions, Canvas+SVG at DPR2, retained DOM button focus"
+    },
+    "docs": {
+      "initialPassed": 186,
+      "initialTotal": 189,
+      "correctedOwningPassed": 50,
+      "pinnedPassed": 21,
+      "newSnippetPassed": 1,
+      "builtPages": 168,
+      "selectiveLLM": 1435,
+      "responsiveAxeCells": 4
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357547,
+            "gzipBytes": 669714
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289763,
+            "gzipBytes": 376439
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 333075,
+            "gzipBytes": 108372
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357547,
+            "gzipBytes": 668138
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289763,
+            "gzipBytes": 375615
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 333075,
+            "gzipBytes": 107735
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357547,
+            "gzipBytes": 669714
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289763,
+            "gzipBytes": 376439
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 333075,
+            "gzipBytes": 108372
+          }
+        ]
+      }
+    ],
+    "installedPublicSnippet": [
+      {
+        "node": "v20.20.2",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "case": "interaction-direct-controls",
+        "codeHash": "35c473e8a21748e2b4ad96494ff5fa8e81411000df58eb5903c9a9b39c33401d",
+        "sourceFree": true,
+        "passed": true
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "case": "interaction-direct-controls",
+        "codeHash": "35c473e8a21748e2b4ad96494ff5fa8e81411000df58eb5903c9a9b39c33401d",
+        "sourceFree": true,
+        "passed": true
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8",
+        "case": "interaction-direct-controls",
+        "codeHash": "35c473e8a21748e2b4ad96494ff5fa8e81411000df58eb5903c9a9b39c33401d",
+        "sourceFree": true,
+        "passed": true
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 951,
+    "packedBytes": 1370824,
+    "unpackedBytes": 6274003,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/direct-controls-ee8c7d3c.tgz",
+    "sha1": "1d27dc9d35c0e1398eb5a6430922f254a376e24d",
+    "sha256": "ee8c7d3c6ad8f8b60b06f84eaa2b40333c99a0cecb62feb8e9a07dfa199238f8"
+  },
+  "limits": {
+    "entries": 951,
+    "packedBytes": 1371000,
+    "unpackedBytes": 6275000,
+    "fullGzip": 669800,
+    "basicGzip": 376500,
+    "interactionGzip": 108400,
+    "svgGzip": 25000,
+    "searchBytes": 975000
+  },
+  "measuredSearchBytes": 974604,
+  "preservedFailures": [
+    "Initial fixture guide overlap corrected with explicit margins/title policy; no runtime workaround.",
+    "Initial invalid-input test assumed missing field should throw; native predicate legitimately selects empty. Replaced with unsupported operator.",
+    "Initial docs186/189: search974604 exceeded974000 and new public snippet was not registered; measured975000 and executable registration corrected.",
+    "Package uncompressed6273409 exceeded6272000; after native projection repair6274003 exceeded6274000. Final cap6275000.",
+    "Native explicit category order followed by hiding a listed value threw Unknown category. Source-owner validation plus visible projection fixes the root cause.",
+    "Initial interaction gzip108372 exceeded108200; after native fix Full669714/Basic376439 exceeded669700/376400. Caps minimally raised."
+  ],
+  "supersededArtifact": "abc5fc7781f3675a2e50ec41f6d80ec0d389d4d9f7d95226c7638929fe667ca1 passed three-node controls checks before native order/filter repair; not final source evidence",
+  "globalCoverage": "Not rerun; final changed owners were instrumented with134 focused consumers and unchanged critical floors.",
+  "remaining": [
+    "STEP060 linked filter/legend visibility/parameter controls/context/annotation/drag/focus/navigation/keyboard",
+    "STEP074 integrated qualification",
+    "STEP077 overall completion"
+  ],
+  "commands": {
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/selection.js --test-coverage-include=src/materialization/scales/consumers/index.js test/unit/interaction-direct-controls.test.js test/unit/interaction-selection.test.js test/unit/interaction-links.test.js test/unit/interaction-reconciliation.test.js test/unit/interaction-nearest.test.js test/unit/actions/encodings/category-order.test.js test/unit/actions/data/filter-domains.test.js test/unit/actions/guides/legend-order.test.js test/unit/actions/scales/scale-consumers.test.js test/unit/actions/conditional-bar-position.test.js test/unit/actions/conditional-area-position.test.js test/unit/actions/conditional-arc-position.test.js test/unit/actions/marks/text-datum-position.test.js test/unit/actions/encodings/ranged-datum-encodings.test.js test/unit/actions/encodings/rule-position-encodings.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test --test-name-pattern=\"host buttons\" test/browser/interaction-session.browser.js",
+    "pack": "node scripts/package-artifact.js --pack",
+    "installed": "Node20/22/24: node .artifacts/direct-controls-consumer.mjs; node .artifacts/direct-controls-doc-consumer.mjs",
+    "docs": "npm run docs:preflight; npm run docs:generate; npm run test:docs; corrected owning docs50; source-pinned docs21; npm run docs:build; npm run test:docs:built; node .artifacts/direct-controls-doc-browser.mjs"
+  },
+  "evidenceFiles": {
+    "direct-controls-browser-final.log": {
+      "sha256": "817b1d3629b65c3c52e2679d09d64f7a7f78abea81aa2efb1a3e93d5b0c9b4af",
+      "bytes": 360
+    },
+    "direct-controls-browser.log": {
+      "sha256": "2a23148943b9bd3677141b9ac17c84c0fe213965f978d37919e37af5eb52e752",
+      "bytes": 360
+    },
+    "direct-controls-build-final.log": {
+      "sha256": "205cdce136a801ea6f0352cee3fb57c1fb97416ba5c5bcc62d73378287230639",
+      "bytes": 420
+    },
+    "direct-controls-build.log": {
+      "sha256": "4d9dabb280f86831e5bf4b89b1457d7137b9b9f9988da0251b66f8812f163d66",
+      "bytes": 420
+    },
+    "direct-controls-built.log": {
+      "sha256": "b40b472fa134f3c1743c6fe627024adaf48a0adb95efc32ec09530d45aaa6bb0",
+      "bytes": 179
+    },
+    "direct-controls-consumer-initial20.log": {
+      "sha256": "e9628a15ad305823cbd85ccbad538100ce8fd0945f8dd13adcd189e816d13b98",
+      "bytes": 1483
+    },
+    "direct-controls-consumer.mjs": {
+      "sha256": "573824fd2720e07de58084f9bd01a36e78bc93f407578c4fabbaa17460b43208",
+      "bytes": 2007
+    },
+    "direct-controls-consumer20.log": {
+      "sha256": "f1062a94b468bec8a93a35c21e0823437fe3b382c5c76721c2619208577fe4e7",
+      "bytes": 939
+    },
+    "direct-controls-consumer22.log": {
+      "sha256": "36991b7e46d4360394512b313ad9880f02e06c1c01bbc1919bcb747d66b80025",
+      "bytes": 939
+    },
+    "direct-controls-consumer24.log": {
+      "sha256": "0ac2d0dbb4a102c3c2e5baa2f8ea59861a9ecfd5075e5f4786193965fcbba168",
+      "bytes": 939
+    },
+    "direct-controls-contracts-final.log": {
+      "sha256": "5aa14e561802d895749a308e1fc18c6049f0b9042b69f091b1513bb252f12dc4",
+      "bytes": 6804
+    },
+    "direct-controls-contracts.log": {
+      "sha256": "a5a9656806b8f0b0d3c8ee6bee34af24e6a7c2d0d14577a5001bd603fd017a93",
+      "bytes": 6806
+    },
+    "direct-controls-coverage-final.log": {
+      "sha256": "ab24394fafa4eed4a45834f7ebddec0bda6c8105f580b6d9d8775be041be9bc9",
+      "bytes": 22311
+    },
+    "direct-controls-coverage-owners.log": {
+      "sha256": "25642f21d8ef827d6d7cbba0971c5a271eaae541969ec75edc1e90fdbc50db4e",
+      "bytes": 32653
+    },
+    "direct-controls-coverage.log": {
+      "sha256": "7145f645a122c1ff08b811ad4a6543cf0cd77e931c5ca5fd1816d106e51c4e29",
+      "bytes": 15914
+    },
+    "direct-controls-doc-browser.log": {
+      "sha256": "07939018cd9422d718774729dc48cb72dfd1daa4e6eebbdaeaefa0917ae5f160",
+      "bytes": 305
+    },
+    "direct-controls-doc-browser.mjs": {
+      "sha256": "1f699e1ab5a42518515c75f8eeb53343ee44c30ea84fd5e20ff66a0f3ffb9723",
+      "bytes": 2828
+    },
+    "direct-controls-doc-consumer.mjs": {
+      "sha256": "615f551e0cfb59b04cea15e3a6332a4bb06a7e6ad1339169486c64cd99684064",
+      "bytes": 1005
+    },
+    "direct-controls-doc-consumer20.log": {
+      "sha256": "602b1c51df8be91db48631e6099074f4d1f281773a6ba9657778ccb3fffe916b",
+      "bytes": 245
+    },
+    "direct-controls-doc-consumer22.log": {
+      "sha256": "3660decb50ab155f88330eb986289fe9a0189c1dc19b73760b74cc2a3a24ec92",
+      "bytes": 245
+    },
+    "direct-controls-doc-consumer24.log": {
+      "sha256": "fbdf183c4b740f92341f92131bfe7b4113d2dddf86c9befe401f73af33b7d928",
+      "bytes": 245
+    },
+    "direct-controls-doc-example.log": {
+      "sha256": "e0eb55f716bd5851b205fda09890eff2e8edf9211cdfb52c009034c4e007726a",
+      "bytes": 380
+    },
+    "direct-controls-doc-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "direct-controls-docs-corrected.log": {
+      "sha256": "2fab11bd6eb2d9f086d4a4efaf425053822ee061f54d8c88b8759f53863cb31d",
+      "bytes": 10480
+    },
+    "direct-controls-docs-final.log": {
+      "sha256": "52b397fbc685fee28d91b2f69f7a7ffa820fd1b37baecd0b61a7da61ca045e22",
+      "bytes": 10479
+    },
+    "direct-controls-docs.log": {
+      "sha256": "9abd82a911299df50a3d7fb4938d56fb877767e2f42899209ef6e21c8caca390",
+      "bytes": 46200
+    },
+    "direct-controls-expected-actual-diff.json": {
+      "sha256": "eccd0b3be8d7b009d05b798d972b1da23bd5432dc3f354bf19e79ca4bde8b9e0",
+      "bytes": 1488
+    },
+    "direct-controls-final-consumer20.log": {
+      "sha256": "50aed91e44410c2b1b148bdef70d4ab6394d86642e4b8b0aaa90dda474252fe7",
+      "bytes": 939
+    },
+    "direct-controls-final-consumer22.log": {
+      "sha256": "390ba1b720e8e28b7c62918e49afb07636b9f09963fb1bd2e4caa4dcb6609153",
+      "bytes": 939
+    },
+    "direct-controls-final-consumer24.log": {
+      "sha256": "1a0faf9d8e9a679bd9b25ef194dd14ac5123b797cbb3cbc5e1457ec87273b232",
+      "bytes": 939
+    },
+    "direct-controls-final-focused.log": {
+      "sha256": "339c541d7f512a1fc45ed0b06d0eda91f14404fa88a4eb4497f702009be8fe61",
+      "bytes": 1627
+    },
+    "direct-controls-fixed.json": {
+      "sha256": "110638097a872504b94e75da34cfe0d621b871b2e37de37150749e8e6c9e1793",
+      "bytes": 422
+    },
+    "direct-controls-focused.log": {
+      "sha256": "42b8b49c62c58eb1a6ae0faad0b5c7cd5698e2f32713ee42a1c262b0758f4066",
+      "bytes": 12431
+    },
+    "direct-controls-generation-final.log": {
+      "sha256": "7dd43625db21caf625ca0db3e814e4671306337a92a6afbf30edf924c23a6a27",
+      "bytes": 12047
+    },
+    "direct-controls-generation.log": {
+      "sha256": "7dd43625db21caf625ca0db3e814e4671306337a92a6afbf30edf924c23a6a27",
+      "bytes": 12047
+    },
+    "direct-controls-initial.log": {
+      "sha256": "a0b7eedc60a7bf17c99e6f14866ab8feabc3c1fb9d55b12ede07ee68fd294d39",
+      "bytes": 11741
+    },
+    "direct-controls-invalid.log": {
+      "sha256": "593f4fa967149bb899af3afac5c1d9c96cf88a04ab895097573435acd969ef7e",
+      "bytes": 1148
+    },
+    "direct-controls-native-order-final.log": {
+      "sha256": "80e7cb8f0c893c4ae68e38d53411d36c4787674b7541c26fcf3d4ac903e7f4a3",
+      "bytes": 1711
+    },
+    "direct-controls-native.log": {
+      "sha256": "0f1dd4cb84a43cf392848b2a3a11873ebaaeb1c1b3afeaec9d6a25bd267d2b74",
+      "bytes": 5851
+    },
+    "direct-controls-next.log": {
+      "sha256": "77305352b069fb01362c804cd99eaf14a2d3c30fb4380c72f6648034eb0eafd9",
+      "bytes": 2445
+    },
+    "direct-controls-oracle-final.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "direct-controls-oracle.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "direct-controls-oracle.mjs": {
+      "sha256": "366f3d1f7d79258e3897fafe3d93cdec3544632825c4b0c8323a46f00a073d1b",
+      "bytes": 2822
+    },
+    "direct-controls-order-build.log": {
+      "sha256": "74e9bcd7af20685e97693ae74eb16921ccd2faf23c228fe985791a5bf9be0e5c",
+      "bytes": 420
+    },
+    "direct-controls-order-built.log": {
+      "sha256": "b40b472fa134f3c1743c6fe627024adaf48a0adb95efc32ec09530d45aaa6bb0",
+      "bytes": 179
+    },
+    "direct-controls-order-consumer20.log": {
+      "sha256": "0ee1d131c48cc136656edab14cfd68d57a8fe85a1f212b9230aef325e79f01d9",
+      "bytes": 1472
+    },
+    "direct-controls-order-doc-browser.log": {
+      "sha256": "07939018cd9422d718774729dc48cb72dfd1daa4e6eebbdaeaefa0917ae5f160",
+      "bytes": 305
+    },
+    "direct-controls-order-filter-fixed.log": {
+      "sha256": "ebb59a7ed04a8734ff4ff4e4c2087b6b056bdaa9478c1f34541fa5308e2b7a2e",
+      "bytes": 7451
+    },
+    "direct-controls-order-filter-initial.log": {
+      "sha256": "f5c26c8a673d1880dda6b7eba2dad231d04ca8bb9c8cc2d209a48aa332ea7caa",
+      "bytes": 1928
+    },
+    "direct-controls-order-package-initial.log": {
+      "sha256": "883f89d5292ff3d9479a7730543df783c403e81aa8cc72560fe724362f8ec6a3",
+      "bytes": 821
+    },
+    "direct-controls-order-package.log": {
+      "sha256": "34b4a296b16517c45af8296367ebf28be463f7f31dfea669798ce3e6b37c848b",
+      "bytes": 621
+    },
+    "direct-controls-package-final.log": {
+      "sha256": "5f7e8bab007eb598ccfc3193f96e9f6e553523b9a969d0a8f0cfc890d4fb1b21",
+      "bytes": 621
+    },
+    "direct-controls-package-initial.log": {
+      "sha256": "edc487f5973d54d7d8257599272d322ebcb7a077ffa71d622631465ed0068214",
+      "bytes": 821
+    },
+    "direct-controls-package.log": {
+      "sha256": "5f7e8bab007eb598ccfc3193f96e9f6e553523b9a969d0a8f0cfc890d4fb1b21",
+      "bytes": 621
+    },
+    "direct-controls-pinned-build.log": {
+      "sha256": "6d2893302a9e245e4b9f0dc71618425890f66de4babaf8bce1eb2b21b13c1c99",
+      "bytes": 418
+    },
+    "direct-controls-pinned-built.log": {
+      "sha256": "b40b472fa134f3c1743c6fe627024adaf48a0adb95efc32ec09530d45aaa6bb0",
+      "bytes": 179
+    },
+    "direct-controls-pinned-docs.log": {
+      "sha256": "210349b5285f0f7b43738ce27b5f93f84bc52653c2453370324d67761e566960",
+      "bytes": 4950
+    },
+    "direct-controls-pinned-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335
+    },
+    "direct-controls-qualify.py": {
+      "sha256": "5741208bc29152752e0cabecdaf7bbb7704a2c53f84f198b2319c31fd8bd7f2d",
+      "bytes": 5550
+    },
+    "direct-controls-realistic-final.log": {
+      "sha256": "688d0d962be30bcf869f6eb5a150dbcab52e37aa4c9298e87d7823d07fe5e881",
+      "bytes": 4274
+    },
+    "direct-controls-realistic.log": {
+      "sha256": "8d04cd4a5016af8ebc58ccffd174099129a9a68dc40b1b4e4c3c280d286b9ca3",
+      "bytes": 4270
+    },
+    "direct-controls-snippet-generation.log": {
+      "sha256": "8fd87f8cfc15635f9fe0dadee28b88282473836dfb3c66cd71d620cf08bfca1d",
+      "bytes": 349
+    },
+    "direct-controls-superseded-fixed.json": {
+      "sha256": "1207bc3f8ac680ee0868d3bfbae6996b6712da36067fa8d59112374d043d65a8",
+      "bytes": 422
+    }
+  }
+}

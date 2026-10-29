@@ -1,0 +1,6 @@
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a319dc22b4e4c53c7e470da214863b0bc3f27f781a123c92159abfdc1100ffbd",
+    "contractId": "sha256:83296cf463f8708d14b5e58e077b142c5bd2cad9ca32b66c5f916599e6dd3f4e",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 164,
+  "sectionCount": 171,
   "sections": [
     {
       "order": 1,
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6179,
-      "sha256": "747ce0fc6beaa6a7d5da71f8de801e75e51d5e1a22ff59c1e85a41663db67fa6"
+      "bytes": 6213,
+      "sha256": "3806cb2df9eb379ab74967bfc02a4b104b34f1700615d856aa5258747930b9f1"
     },
     {
       "order": 3,
@@ -109,8 +109,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5405,
-      "sha256": "0daed4fa590b3cea43da2b9e757d72357980b913ab8338c575bd4f0bac42436d"
+      "bytes": 5473,
+      "sha256": "585bb5bd6a807575ae7da65788b47be59b5b72f77c106b13c08ec6e7e5fe2bd9"
     },
     {
       "order": 7,
@@ -125,8 +125,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3545,
-      "sha256": "0234953381bcde02097ddcf6f8278bc862d6dff6b046174b4dcbc466b24c7e9a"
+      "bytes": 3562,
+      "sha256": "41bcef575500439054b204f5483d30f648cdaf1670d59ce6c7fef59601febb9a"
     },
     {
       "order": 8,
@@ -140,8 +140,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3432,
-      "sha256": "69cc034c86dc516ec12652b67f7f0e61617f7d89c0347115d4df5e5a23771863"
+      "bytes": 3449,
+      "sha256": "a956c2351ad49af3db0f8f84eb32661cabea37734a986037e2ef2ac6d5ec86c3"
     },
     {
       "order": 9,
@@ -161,8 +161,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9969,
-      "sha256": "47f7ac784f205907e4c3c4c1f86ed543e0da32488082377dd0b02f308842baac"
+      "bytes": 9986,
+      "sha256": "c9b2c0a67a06487b2456c3e63c0ed31f844f12fdffad7eedab6869c976ad89e9"
     },
     {
       "order": 10,
@@ -178,8 +178,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4713,
-      "sha256": "3f80cde61624e1919ced10432626d088c1168dadb57c76b293da54f15e31f957"
+      "bytes": 4781,
+      "sha256": "0f0d07a926f480a2126fba22097d17628f5332e43366694fb718555a23b6875b"
     },
     {
       "order": 11,
@@ -193,8 +193,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4312,
-      "sha256": "ae791dd03aeb20b131707d48c68ca4249c790f842ce1a3d2ab1e34ab29270812"
+      "bytes": 4380,
+      "sha256": "c1eed4137221892384204d0c77e8e17edd02b88b4c23a712ceed10fcea93b514"
     },
     {
       "order": 12,
@@ -209,8 +209,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4085,
-      "sha256": "6faf3901697dc8ed1cbe39ca1d9c4a15662b30220ead3f7aad32c6dfd79a2176"
+      "bytes": 4153,
+      "sha256": "b4d59e80e7cab7eed5e3bfb7cb9a5c9ab13f981d736490f181888a00c128dbb2"
     },
     {
       "order": 13,
@@ -224,8 +224,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4165,
-      "sha256": "dd30bd8bb0f4096dc23d82cf94ae9c91dcab81f6fc801aa2db7f5333eea267e5"
+      "bytes": 4216,
+      "sha256": "1cb43a82459713344705c21b9af350e52be1c7fc28f9db83d83923377b134476"
     },
     {
       "order": 14,
@@ -239,8 +239,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3510,
-      "sha256": "45dd3ee4c19c41b7b2a2af773589f86bc71948f62fa3e9bd8786219ffa6cd71e"
+      "bytes": 3527,
+      "sha256": "e51dc51bc9735e37219d9be01fb5625ad47965ced8b759f50658595620dde80e"
     },
     {
       "order": 15,
@@ -256,8 +256,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6182,
-      "sha256": "f958176b30e10c08391c7b484d37b9fb02bdf6486e8de6ed2296c47559a12718"
+      "bytes": 6267,
+      "sha256": "ce4b6c1b75c1f61ee750e34a0fede9834f99742592d2674db76944df54a8354d"
     },
     {
       "order": 16,
@@ -272,8 +272,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4599,
-      "sha256": "69d33212df4d78113ce519860f0d47cfdd35f8fcee875fdc2ce7d8554d602611"
+      "bytes": 4650,
+      "sha256": "4024cb75c4f0d2a705c1f6e70b63a5690da827a04391f079094e6e75d8c579f3"
     },
     {
       "order": 17,
@@ -288,8 +288,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3536,
-      "sha256": "63b5fe56078d5087e278c3ad86e82415d552a7072af5c6ed0cd58982d4a645a0"
+      "bytes": 3587,
+      "sha256": "93b2a98e66e60e46b4776ddd064360151badb3962a3397dc4fcf4dafeb8d7cbf"
     },
     {
       "order": 18,
@@ -304,8 +304,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3760,
-      "sha256": "dc611fe2d90e4b42a02896b3ec89c8d6ee29a3172a42832cd610721d43e08d22"
+      "bytes": 3811,
+      "sha256": "9e2b4c122e5f14b32298e60001291b3f11a1105d424c583cf59d97a8df081e17"
     },
     {
       "order": 19,
@@ -321,8 +321,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6321,
-      "sha256": "d763f6a63a9d3db7af6e3977ccd2fa4f3170622ff463723983c4160d4dc29836"
+      "bytes": 6372,
+      "sha256": "986bf08177d4795a5d637f204d9a76b7e5464131e44ed42b4687c0e7be6d2c84"
     },
     {
       "order": 20,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3941,
-      "sha256": "a955cfbad6ce1e0da937abf14934f6fff98541a039bd77eb25a59440b507d5e0"
+      "bytes": 3958,
+      "sha256": "b84b87d506aa55190a2818c9eac9be3325f220d64c2be5bafefcf3ce2c602744"
     },
     {
       "order": 22,
@@ -766,10 +766,11 @@
         "editcanvasoptions",
         "fitcanvasoptions",
         "errors-and-limitations",
+        "keep-the-outer-canvas-fixed",
         "related"
       ],
-      "bytes": 7432,
-      "sha256": "59df7fd600b1b4532676a59e49dd123dc84e221d618410608dc7abe8b14bd011"
+      "bytes": 8885,
+      "sha256": "f739cd5fd78f141db3bff62a87af25dbb9c84b453840e12edee6d72a55739043"
     },
     {
       "order": 49,
@@ -873,8 +874,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5870,
-      "sha256": "f36158dba53ac45c14bbc68e6580210d6d4f483a3e910a3a3061ee9df54cc4a6"
+      "bytes": 5887,
+      "sha256": "55171b19e7e544ffbe301c182bf5f741436b2f28260499bee5c0d526db4e1ea7"
     },
     {
       "order": 55,
@@ -1238,10 +1239,18 @@
         "create-and-mount",
         "inspect-without-a-dom",
         "replace-a-program-or-sampled-frame",
-        "state-and-cleanup"
+        "state-and-cleanup",
+        "commit-selections-and-parameters",
+        "filter-and-reorder-a-view",
+        "link-named-selections",
+        "filter-another-view-from-a-selection",
+        "select-the-nearest-item",
+        "keep-or-drop-hidden-selections",
+        "automatic-click-selection",
+        "brush-or-lasso-an-existing-selection"
       ],
-      "bytes": 6788,
-      "sha256": "b9babbe8c065fc07dd93678f1d4a1cf061558771536f75f033368c62556e4270"
+      "bytes": 32573,
+      "sha256": "f799db5b927be78d01e64082f9f4d4e84ecb85d248d8e73db69e803da2487c35"
     },
     {
       "order": 74,
@@ -1277,10 +1286,11 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope",
         "path-layer-color",
-        "shared-color-legends"
+        "shared-color-legends",
+        "nested-responsive-panels"
       ],
-      "bytes": 8465,
-      "sha256": "70941ba17e0a7e80d82db1eda14b02149c65d44a0013ebf2b6fb27f63dd0f7ab"
+      "bytes": 9565,
+      "sha256": "d77fa339c146559b10cef1134c425f07e973b70f65331e5d2b23272ed705492e"
     },
     {
       "order": 76,
@@ -1314,8 +1324,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2850,
-      "sha256": "12266f37b966bbf8b7189a035d9ab2843c3f71a99d6775f3a2498806ef371cf0"
+      "bytes": 2257,
+      "sha256": "42fab213883d515a40e3190ef126a2233a0ba3878f3e8e0a975398d33463868a"
     },
     {
       "order": 78,
@@ -1331,8 +1341,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7282,
-      "sha256": "c82f942898c659af2992305e907bc28e8ff2a8fb5dc65d0eff31f362b4ab3960"
+      "bytes": 7299,
+      "sha256": "1d8df8a39a5a425e40751492f5c21b5d58c76045feccda2db27b6675b0e7416c"
     },
     {
       "order": 79,
@@ -1363,8 +1373,8 @@
         "polar-categories-and-legend-order",
         "related"
       ],
-      "bytes": 4122,
-      "sha256": "9ac73855cbb172a571bf7460d7fa3d82f6228d510faab73f7955f88061375326"
+      "bytes": 4359,
+      "sha256": "7920ebcb7f89369ea799a55ec04c673ab78c2daa94a9db67d25d7cb8fd5cb732"
     },
     {
       "order": 81,
@@ -1413,8 +1423,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5777,
-      "sha256": "750b0b927b9426b70eb88b5287e37ac6bb09e85744989fe64361e4fa7a8d5da3"
+      "bytes": 5794,
+      "sha256": "e8a70b0cca55e734da8168d1568011b0dba99b26b55327c4c03ea72d1c0b07f4"
     },
     {
       "order": 84,
@@ -1471,11 +1481,14 @@
       "headings": [
         "selection-and-highlighting",
         "mark-selection-and-highlighting",
+        "selecting-stable-item-keys",
         "editing-and-removing-stored-intent",
+        "selections-from-expressions",
+        "select-a-typed-region",
         "related"
       ],
-      "bytes": 11206,
-      "sha256": "58ef3b2d5023e08359e272dbe17d7e3422837bba74781344b2fbc82fa1c4c834"
+      "bytes": 18563,
+      "sha256": "917ca1606552899871aa7688bb53b219e2d709dd94c7740bfa0cb44ee6e02eec"
     },
     {
       "order": 88,
@@ -1834,8 +1847,8 @@
         "compatibility-checklist",
         "related"
       ],
-      "bytes": 4151,
-      "sha256": "ccc1631bce23e7629cdbc4d3a08954eafe43a754dee7c0768f6356c3772922ed"
+      "bytes": 4261,
+      "sha256": "b8cff24a923e617c4be31bad77ff34828af0c7d01c5ac7038b22fe623dfef85a"
     },
     {
       "order": 109,
@@ -1904,10 +1917,12 @@
         "preflight-an-action",
         "compare-immutable-revisions",
         "inspect-concrete-results",
+        "appearance-provenance",
+        "responsive-layout-decisions",
         "related"
       ],
-      "bytes": 6800,
-      "sha256": "a637942bcace965389d408ca361f5bafc927837bc5ef4eaf674c6d296803254a"
+      "bytes": 8272,
+      "sha256": "3f7bdb03ad67be54de803b34e930290854405feb3c73294c7769277c7c5ae3ee"
     },
     {
       "order": 113,
@@ -2020,8 +2035,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36315,
-      "sha256": "b6a5040e5788995791c5e73490d8d5ba2ae85f7e10d28c50351dfbba07b45f5b"
+      "bytes": 37229,
+      "sha256": "f05ba92ae85ade1a5d82c9e8218796df0cbd764c948bb28f74d6a4c585244f1a"
     },
     {
       "order": 120,
@@ -2156,12 +2171,19 @@
         "createcontourdata",
         "createdensitycontourdata",
         "editcontourdata",
+        "createcalendarlayout",
+        "bundlegraphedges",
+        "editedgeroute",
+        "creategeometrydata",
+        "editgeometrydata",
+        "createprojection",
+        "editprojection",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 247771,
-      "sha256": "53b947ae1d03c432fcc2f3af5b9aa717fae58a2c04a3b3be045f5cd5fa1d486c"
+      "bytes": 261675,
+      "sha256": "d10a02bdaa7c38d43ab328adc494a6308f2e95efdf73cee4f53c9ff7eb158860"
     },
     {
       "order": 121,
@@ -2214,10 +2236,12 @@
         "editflowlinks",
         "createcontourmark",
         "editcontourmark",
+        "createcalendarplot",
+        "editcalendarplot",
         "related"
       ],
-      "bytes": 109208,
-      "sha256": "665347819c76d9013f238977e6c3cf01b57a1611024da1722a3964988eef8d26"
+      "bytes": 112801,
+      "sha256": "4925d246536d5bca60ec2b28ae8af488c4f8edb2d3166e57ca50959d7d2da022"
     },
     {
       "order": 122,
@@ -2428,8 +2452,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 156660,
-      "sha256": "9bf51611236228ac171932b9e080d1fecbf43ee386d7e42e8663019a25bd682e"
+      "bytes": 157044,
+      "sha256": "8f1abe9793aed6f4e043ae6b1a0f00d8bdcccccae200a4b827aa971cb8bc24dd"
     },
     {
       "order": 125,
@@ -2453,8 +2477,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10927,
-      "sha256": "08044c231bf3535a3759dbb8802b5f2736eb082f5ad1c60f85465ab0ae421575"
+      "bytes": 13467,
+      "sha256": "55a67c391887d91bdb3dbe8051577d3a7fb13b37646da3ba7bd4e19192b34b07"
     },
     {
       "order": 126,
@@ -2493,11 +2517,12 @@
         "ggactioninspection",
         "ggactionscene",
         "ggactioninteraction",
+        "ggactiongraph",
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 46858,
-      "sha256": "01f97490cbee4d2eb2cc09bbabb9bafb199e7e00175522b1f755afffa88452df"
+      "bytes": 59973,
+      "sha256": "9aac9546c455eae9f89efc209e5e810821aa08b5f23ed7aa6a767398c7341510"
     },
     {
       "order": 128,
@@ -2517,6 +2542,7 @@
         "type-annotationbaseoptions",
         "type-applydataupdateoptions",
         "type-applyfontresourceoptions",
+        "type-applygraphedgeroutesoptions",
         "type-applyimageresourceoptions",
         "type-applytextmetricsoptions",
         "type-applythemeoptions",
@@ -2573,12 +2599,21 @@
         "type-boxplotsummaryfields",
         "type-boxplotwhisker",
         "type-boxplotwidth",
+        "type-bundlegraphedgesoptions",
         "type-caxes",
         "type-caxis",
         "type-caxisticks",
         "type-ccategoricalguides",
         "type-cpathguides",
+        "type-calendarboundarypaint",
+        "type-calendarcellpaint",
         "type-calendardaydomain",
+        "type-calendardayoptions",
+        "type-calendardefinition",
+        "type-calendarlabelpaint",
+        "type-calendarlabelrole",
+        "type-calendarlayoutpatch",
+        "type-calendarplotoptions",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
         "type-cartesianaxislabelcolormap",
@@ -2646,6 +2681,7 @@
         "type-createaxesoptions",
         "type-createbarplotoptions",
         "type-createbeeswarmplotoptions",
+        "type-createcalendarlayoutoptions",
         "type-createcontourdataoptions",
         "type-createcoordinateoptions",
         "type-createdataoptions",
@@ -2657,6 +2693,7 @@
         "type-createdumbbellplotoptions",
         "type-createecdfplotoptions",
         "type-createflowdataoptions",
+        "type-creategeometrydataoptions",
         "type-creategraphdataoptions",
         "type-creategridoptions",
         "type-createguidesoptions",
@@ -2678,6 +2715,7 @@
         "type-createpieplotoptions",
         "type-createpolarlineplotoptions",
         "type-createpolarscatterplotoptions",
+        "type-createprojectionoptions",
         "type-createradarplotoptions",
         "type-createradialaxislabelsoptions",
         "type-createradialaxislineoptions",
@@ -2773,11 +2811,17 @@
         "type-dynamicreferencebinding",
         "type-ecdfdataoptions",
         "type-ecdfoutputfields",
+        "type-edgepathrouteoptions",
+        "type-edgeroutecommonoptions",
+        "type-edgeroutedefinition",
+        "type-edgeroutelimits",
+        "type-edgeroutemethod",
         "type-editaxesoptions",
         "type-editaxisoptions",
         "type-editbin2ddataoptions",
         "type-editbindataoptions",
         "type-editboxplotoptions",
+        "type-editcalendarplotoptions",
         "type-editcolorscaleoptions",
         "type-editcompletedataoptions",
         "type-editcompositionlayoutoptions",
@@ -2792,6 +2836,7 @@
         "type-editderiveddataoptions",
         "type-editecdfdataoptions",
         "type-editecdfplotoptions",
+        "type-editedgerouteoptions",
         "type-editendpointplotoptions",
         "type-editerrorbandboundaryoptions",
         "type-editerrorbandoptions",
@@ -2804,6 +2849,7 @@
         "type-editflowlinksoptions",
         "type-editflownodesoptions",
         "type-editfolddataoptions",
+        "type-editgeometrydataoptions",
         "type-editgradientplotoptions",
         "type-editgraphdataoptions",
         "type-editgraphplotoptions",
@@ -2838,6 +2884,7 @@
         "type-editpivotdataoptions",
         "type-editpolaraxisoptions",
         "type-editpolargridoptions",
+        "type-editprojectionoptions",
         "type-editrscaleoptions",
         "type-editradarplotoptions",
         "type-editradialaxisoptions",
@@ -2935,6 +2982,14 @@
         "type-focusedweightedderiveddataedit",
         "type-folddataoptions",
         "type-folddataoutputfields",
+        "type-forcedirectededgerouteoptions",
+        "type-geojsoninput",
+        "type-geographicgeometry",
+        "type-geometryfeature",
+        "type-geometryfeaturekey",
+        "type-geometryjsonvalue",
+        "type-geometrylimits",
+        "type-geometryposition",
         "type-gradientplotappearanceoptions",
         "type-gradientplotcenteroptions",
         "type-gradientplotdensitylegendoptions",
@@ -2971,6 +3026,7 @@
         "type-heatmapbaseoptions",
         "type-heatmapbinoptions",
         "type-heatmapcategorypositionchannel",
+        "type-hierarchicaledgerouteoptions",
         "type-hierarchybodypaint",
         "type-hierarchylabelpaint",
         "type-hierarchylabelsoptions",
@@ -3047,6 +3103,7 @@
         "type-marklabelplacementleaderoptions",
         "type-marklabelselectionoptions",
         "type-markoutline",
+        "type-markselectionselector",
         "type-markselector",
         "type-markshadow",
         "type-meanconfidenceintervalmethod",
@@ -3141,8 +3198,16 @@
         "type-pregriddedheatmapoptions",
         "type-prepareddataupdate",
         "type-preparedfontresource",
+        "type-preparedgraphedgeroutes",
         "type-preparedimageresource",
         "type-preparedtextmetrics",
+        "type-projectioneditfittedoptions",
+        "type-projectionfitoptions",
+        "type-projectionfittedoptions",
+        "type-projectionparameters",
+        "type-projectionplaneparameters",
+        "type-projectionsphereparameters",
+        "type-projectiontype",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3209,6 +3274,8 @@
         "type-replacecompositionchildoptions",
         "type-requesteddatasettransform",
         "type-requestedtransform",
+        "type-responsivecanvasoptions",
+        "type-responsivelabeloptions",
         "type-revisedataoptions",
         "type-revisedataupdaterequest",
         "type-rotationinput",
@@ -3231,6 +3298,8 @@
         "type-secondarypositionencodingoptions",
         "type-secondaryrulepositionencodingoptions",
         "type-selectmarksoptions",
+        "type-selectionregion",
+        "type-selectionregionaxis",
         "type-separatefilledlegendoptions",
         "type-serieslayoutoptions",
         "type-shapeencodingoptions",
@@ -3287,6 +3356,8 @@
         "type-timeunitdataoptions",
         "type-titleoptions",
         "type-titletextstyleoptions",
+        "type-topojsoninput",
+        "type-topologygeometry",
         "type-treeplotoptions",
         "type-treemapplotoptions",
         "type-utcformatstring",
@@ -3318,8 +3389,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 449578,
-      "sha256": "0227772d457c6d1f8e07537d7a467c9061874e661dc4e8494790cc3b3427418c"
+      "bytes": 474983,
+      "sha256": "20cb878ccf1f521b458d81ebe8a6e300ed8f9286232edc81673d4219c081c7be"
     },
     {
       "order": 129,
@@ -3353,8 +3424,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20874,
-      "sha256": "5a7ea06bea11ffe983b327a8c99f8795afbabb6ba8b704cf90661ac8897799be"
+      "bytes": 20908,
+      "sha256": "a7676fbcba76499baef0a4f33aa55aec1230a14a0770f19557d7a58143405e28"
     },
     {
       "order": 131,
@@ -3437,8 +3508,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 29956,
-      "sha256": "8236de21ad19c86e8603751051e67af5eb2863bab8f126a162db1ba2d7e56b45"
+      "bytes": 30024,
+      "sha256": "5857b90e55491c11152f50bceccf4574506a0e7b640667c4d866d076a1fca171"
     },
     {
       "order": 136,
@@ -3484,8 +3555,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2597,
-      "sha256": "9e3a0f305cead2f0f2e20702182c38492df11df63a6abc6cf98cec94f807f4e0"
+      "bytes": 2614,
+      "sha256": "e7bc61fc415f042cf940fb9e90be43795703108931ed73dbdf79e769b75eb539"
     },
     {
       "order": 139,
@@ -3580,8 +3651,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 4026,
-      "sha256": "f6c57297ec3ac3883d54063476a9cbf467ad5d465bdbdffd67f1e6e18006e3e2"
+      "bytes": 5004,
+      "sha256": "20b9847c73db938708908425a4053e75d20e1465b7c1e0afed97e9e0ce8b1f18"
     },
     {
       "order": 145,
@@ -3612,8 +3683,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 2532,
-      "sha256": "bd52808145b2b978ece405b20eecac4eba4f230520ae45ad0e9b26af27097e99"
+      "bytes": 2539,
+      "sha256": "e2b12fe0fff8caa8d96a76d137a49eda83e4351e01551c8be4437b31835590a8"
     },
     {
       "order": 147,
@@ -3693,8 +3764,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 2983,
-      "sha256": "21a321bf6057ce1c3fd286692f222f8602762c06d258f1d860cc31f7ce09544d"
+      "bytes": 3000,
+      "sha256": "46fd52fd83497746605fdf3cbeb2efdcc7d3d593938c756a521edb7bf93b6dd3"
     },
     {
       "order": 152,
@@ -3708,10 +3779,11 @@
         "moving-a-complete-axis-and-refining-its-text",
         "styling-native-tick-dashes",
         "createaxesoptions",
-        "intentional-title-label-overlap"
+        "intentional-title-label-overlap",
+        "responsive-labels"
       ],
-      "bytes": 26344,
-      "sha256": "6bd104407a60d74d08dd8b62f30918a1b63af62002eef96d1ec3ea98149f64c7"
+      "bytes": 27478,
+      "sha256": "a342ea39c6ca96c24a6f8b0b34addf46d4e48314faa5e093a39ec10148d234ed"
     },
     {
       "order": 153,
@@ -3725,8 +3797,8 @@
         "complete-program",
         "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 6639,
-      "sha256": "8bc36ed58c3f5d858cb668dbc2014ee97c1c707032c6d6d54e7b11b416234892"
+      "bytes": 6673,
+      "sha256": "cee5d49142429d63e0b4945709f1cc6efc7ac5888be69854bae37dc0c2d243ea"
     },
     {
       "order": 154,
@@ -3739,8 +3811,8 @@
         "draw-the-prepared-text",
         "change-labels-or-fonts"
       ],
-      "bytes": 3336,
-      "sha256": "502deb52f498b009ce56a75dd7eb4a5c1ccc182123c2653aebaac8a439940f7b"
+      "bytes": 3387,
+      "sha256": "1ce52895b71308df72a23740064cdf2e8c7130b072cd3ccf16b980dd3d6a1462"
     },
     {
       "order": 155,
@@ -3777,8 +3849,8 @@
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 5452,
-      "sha256": "b6fa9ab21cc5770fd129582d182fbc4ef4f2a53a3b8575c9e8576054577198ec"
+      "bytes": 5486,
+      "sha256": "59a627f6aa54bd435fda1b872bfb6c56f911880e86843720f50013f5de7b40a4"
     },
     {
       "order": 157,
@@ -3789,13 +3861,14 @@
         "graph-plots",
         "creategraphplot",
         "editgraphplot",
+        "stored-edge-routes",
         "labels-and-identity",
         "updates-removal-and-outputs",
         "graph-inference",
         "outlines-and-shadows"
       ],
-      "bytes": 10268,
-      "sha256": "529c21b29eac9197c1c0fb8c59e51b4a77392ea422a54344a23558eef0d4c4fd"
+      "bytes": 10608,
+      "sha256": "55b549db6ce58150b85469c53eee3cd60558006a1a485513473a2d2264133333"
     },
     {
       "order": 158,
@@ -3812,6 +3885,32 @@
     },
     {
       "order": 159,
+      "title": "Edge Routes",
+      "route": "/api/edge-routes/",
+      "source": "api/edge-routes.md",
+      "headings": [
+        "edge-routes",
+        "bundlegraphedges",
+        "editedgeroute",
+        "bind-revise-and-inspect",
+        "prepare-in-a-worker"
+      ],
+      "bytes": 5995,
+      "sha256": "fab99e97e331614fbc697048d682a27dfbc0c4e9db21ce59d694728371280574"
+    },
+    {
+      "order": 160,
+      "title": "Edge Route Tutorial",
+      "route": "/tutorials/edge-routes/",
+      "source": "tutorials/edge-routes.md",
+      "headings": [
+        "bundle-existing-graph-edges"
+      ],
+      "bytes": 1812,
+      "sha256": "424d7e32d6665d10b281cc77263d304054c97883f0f45634af00f3036ea6e88a"
+    },
+    {
+      "order": 161,
       "title": "Partition Plots",
       "route": "/api/partition/",
       "source": "api/partition.md",
@@ -3826,7 +3925,7 @@
       "sha256": "f111d0c6a023adbb2b4c61603d959b081a5aa86915f6482ede3a9bdd37ca163a"
     },
     {
-      "order": 160,
+      "order": 162,
       "title": "Partition Tutorial",
       "route": "/tutorials/partition/",
       "source": "tutorials/partition.md",
@@ -3836,11 +3935,11 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 4369,
-      "sha256": "6564718edc5772dcde17a3822bad6bad149e1ae0466f43f5f3a7cd8144d96fdc"
+      "bytes": 4386,
+      "sha256": "34e46683362bd174b50955cd4a5856865ca424a822f5d858dd5affcad4161a04"
     },
     {
-      "order": 161,
+      "order": 163,
       "title": "Flow Data and Sankey Layouts",
       "route": "/api/flows/",
       "source": "api/flows.md",
@@ -3860,18 +3959,33 @@
       "sha256": "5e0c431409b1a37b93c9fd534ab079eb0706eeaf7b4df65492ca1030e8888bb4"
     },
     {
-      "order": 162,
+      "order": 164,
       "title": "Draw Conserved Flows",
       "route": "/tutorials/flows/",
       "source": "tutorials/flows.md",
       "headings": [
         "draw-conserved-flows"
       ],
-      "bytes": 3675,
-      "sha256": "4d25398592b1446f070387f81561965a9813bd3b02ec82babd59bb79fb21dac2"
+      "bytes": 3692,
+      "sha256": "538d82c7b409fbafe2292cace37b733a9cc8cc373736b34914401245c268c6b2"
     },
     {
-      "order": 163,
+      "order": 165,
+      "title": "Geometry and Projections",
+      "route": "/api/geometry/",
+      "source": "api/geometry.md",
+      "headings": [
+        "geometry-and-projections",
+        "creategeometrydata",
+        "editgeometrydata",
+        "createprojection",
+        "editprojection"
+      ],
+      "bytes": 7554,
+      "sha256": "5aad308b6b0726b4b2b2294a3f44a8705a7869e4a198d5f68dcdf3fd7a3f8996"
+    },
+    {
+      "order": 166,
       "title": "Contours and Two-Dimensional Density",
       "route": "/api/contours/",
       "source": "api/contours.md",
@@ -3887,15 +4001,63 @@
       "sha256": "128a153ec10839098b3da6a365473ca0bc741a05d64fff0f7536d3c61cc52243"
     },
     {
-      "order": 164,
+      "order": 167,
       "title": "Draw Levels, Bands and Density",
       "route": "/tutorials/contours/",
       "source": "tutorials/contours.md",
       "headings": [
         "draw-levels-bands-and-density"
       ],
-      "bytes": 2891,
-      "sha256": "ddce4c589dbf1087f9aee7bd6d930130bbe5942e6eb1053bd7a4a12a646c3159"
+      "bytes": 2908,
+      "sha256": "62906828a04aaf3015ce807ca8318d574a89f8e2bef0ec1049d6e5cfb9923dcd"
+    },
+    {
+      "order": 168,
+      "title": "Fit Labels Inside a Fixed Canvas",
+      "route": "/tutorials/responsive-guides/",
+      "source": "tutorials/responsive-guides.md",
+      "headings": [
+        "fit-labels-inside-a-fixed-canvas"
+      ],
+      "bytes": 1546,
+      "sha256": "2e6aeeccd9db4e2ba9f7432c2c3bc35f5034935b62342df518cb810a08e25b94"
+    },
+    {
+      "order": 169,
+      "title": "Calendar Plots",
+      "route": "/api/calendar/",
+      "source": "api/calendar.md",
+      "headings": [
+        "calendar-plots",
+        "createcalendarlayout",
+        "createcalendarplot",
+        "editcalendarplot",
+        "update-the-calendar-data-and-layout"
+      ],
+      "bytes": 6758,
+      "sha256": "5394529c61cb226787b7723aa56d3e2d17082957b8f7812c0daf1c6065a53078"
+    },
+    {
+      "order": 170,
+      "title": "Place Observations on a Calendar",
+      "route": "/tutorials/calendar/",
+      "source": "tutorials/calendar.md",
+      "headings": [
+        "place-observations-on-a-calendar"
+      ],
+      "bytes": 2879,
+      "sha256": "f72158eab1e7293d099ebb6ff320ed9a2d6148f4a6e52eccb7c78ca5292c3a40"
+    },
+    {
+      "order": 171,
+      "title": "Arrange Nested Panels with Shared Guides",
+      "route": "/tutorials/nested-responsive/",
+      "source": "tutorials/nested-responsive.md",
+      "headings": [
+        "arrange-nested-panels-with-shared-guides"
+      ],
+      "bytes": 2880,
+      "sha256": "326058c95ba85706eaa479e9833030c26d8df6153633263e902e0065882a9419"
     }
   ]
 }

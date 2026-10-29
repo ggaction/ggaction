@@ -92,6 +92,11 @@ edits, and facet replay preserve the border setting and update its bounds.
 
 ## `editCanvas(options)`
 
+Resizing preserves the single-Y rule for each Cartesian plot region. A change
+that makes independent frames overlap is rejected. Separate facet or concat
+panels, plot-space annotations and normalized Rug/Strip anchors retain their
+existing resize behavior.
+
 Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
 The `plotBorder` object replaces its complete style as described above.
@@ -169,6 +174,31 @@ margins must leave positive plot bounds. `fitCanvas` is a Full unit action;
 Basic does not expose it and compositions reject it.
 An enabled plot border must fit strictly inside both plot dimensions, including
 after Canvas edits. `plotBorder: true` and unknown border style keys are rejected.
+
+## Keep the outer Canvas fixed
+
+Set `responsive: {}` on `createCanvas` to reserve space for guides inside the
+chosen width and height. Authored margins remain unchanged; the available plot
+can become smaller. `minPlotSize` defaults to `{ width: 160, height: 120 }` and
+accepts a complete pair of positive finite dimensions. This mode is available
+in Full and Basic and cannot be combined with exact inner `plot` dimensions.
+
+Full `editCanvas` preserves the policy when omitted. `responsive: false` removes
+it and returns to native margin layout. Background-only edits preserve the
+settled layout. Resizing, scale or source changes, and text measurement updates
+recompute the affected geometry. Exact font profiles must contain the required
+queries; missing measurements are preparation errors, never estimated widths.
+
+A solve uses at most four measured passes and requires every plot, occupied and
+guide boundary to change by at most 0.1 logical pixel. Insufficient space,
+oscillation or failure to converge rejects the action without changing the
+original program. It never enlarges the Canvas or reduces the font size.
+`inspectProgram(program).layouts` reports the settled plot and chosen label
+fallbacks. Enable [responsive Cartesian labels](axes/complete.md#responsive-labels)
+separately to allow wrapping, skipping and rotation.
+
+See the [fixed Canvas tutorial](../tutorials/responsive-guides.md) for a complete
+program and an immutable resize.
 
 ## Related
 

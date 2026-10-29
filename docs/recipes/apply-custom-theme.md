@@ -65,6 +65,12 @@ Use `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, and `gridStrokeWidth` for 
 
 Optional `fontSize` and `fontWeight` tokens set text defaults across marks, labels, guides, titles, and facet headers. Axis-specific size tokens override the global size. Authored role styles and named highlights keep priority, including an explicit numeric zero where the original style option accepts it. Removing or replacing a theme restores the native role defaults for omitted tokens. If an exact font profile is active, prepare the required font and measurements before changing typography; missing preparation rejects the whole change.
 
+Use `axisLabelGap` and `axisTitleGap` for the existing axis offsets. Automatic Cartesian titles still adjust their preferred gap to fit labels and the Canvas. Explicit offsets, including zero and label-relative gaps, take priority. `legendItemGap` sets the spacing of item and sampled legends and must be positive; continuous gradient bars keep their existing geometry.
+
+Optional `palette: ["red", "blue"]` changes automatic categorical color and stroke ranges. Explicit ranges and continuous scales keep their settings. `patternPalette` accepts pattern paint objects and cycles them by the typed category domain for filled marks and categorical legend symbols. For example, use `[{ type: "pattern", style: "diagonal" }, { type: "pattern", style: "dots" }]`. Existing pattern origins, alpha and clipping apply; named highlights remain on top.
+
+Read [appearance provenance](../inspection.md#appearance-provenance) to see which theme, option or selection supplied a resolved value.
+
 ## Related
 
 [Authoring conventions](../concepts/authoring-conventions.md) · [Data policies](../api/data/policies.md) ·

@@ -99,7 +99,7 @@ export function collectCartesianFrames(program, { materialized = false, geometry
     const parent = materialized && scope.length > 0 ? resolveGraphicParentOffset(program.graphicSpec, canvasId) : [0, 0];
     const dx = parent[0] + (scope.length > 0 && materialized ? concrete.properties.x ?? 0 : 0);
     const dy = parent[1] + (scope.length > 0 && materialized ? concrete.properties.y ?? 0 : 0);
-    const view = hasCanvas ? { semanticSpec: unit.semanticSpec, materializationConfigs: unit.materializationConfigs,
+    const view = hasCanvas ? { semanticSpec: unit.semanticSpec, context: unit.context, materializationConfigs: unit.materializationConfigs,
       resolvedScales: unit.resolvedScales, graphicSpec: { ...unit.graphicSpec, objects: { ...unit.graphicSpec.objects, canvas: concrete } } } : unit;
     for (const [id, value] of local) {
       const region = hasCanvas ? resolveCoordinateBounds(view, id) : { x: 0, y: 0, width: 0, height: 0 };

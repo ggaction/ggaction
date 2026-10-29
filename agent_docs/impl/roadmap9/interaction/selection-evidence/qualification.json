@@ -1,0 +1,144 @@
+{
+  "sourceCommit": "e40f9fba0",
+  "scope": "STEP057 A logical item keys/set updates only; B/C/D and full integration remain open",
+  "sourceHashes": {
+    "src/actions/composition/targets.js": "bcfe4b6fb435e7870616bdab7662a301073abd833bc7923f4b9d1f91ef3ac7ba",
+    "src/actions/data/filter.js": "16adc7860fb7bb302258eddb8da456887a7feb45374c4056cb4e7051e3c06b82",
+    "src/actions/selection/actions.js": "b415b4abe5e6e883856bfd5ce633068c4e856fa89eaa83c802edc67b3d6221aa",
+    "src/actions/selection/resources.js": "7dee04ba2cf6a466f2efa662d0f4e98282efaa2535646abfb825167a360155ec",
+    "src/grammar/markSelection.js": "424d9b8fdb47cb1421a3e21d2db8617ec9938223af52da241b5f3edfc470a4fb",
+    "src/grammar/schemas/graphicIdentity.js": "da0adff3328410a6d60fc0b0e2f830a08e97d81868aff1f97e4e1bf763d395ce",
+    "src/grammar/selectionSet.js": "baad96179cfe5301d737c0ce95e050cd3dc772d33358c35140e6089047b120ec",
+    "src/inspectionDescriptors.js": "606234b1c90772b68577ffa1d0c4a0ffad63f655fb7a3831a63afa7130672b83",
+    "src/materialization/resourceState.js": "cf38bd39a11d6c872106aac09c161adf08d2e85b8a76682f3b3317330a463e33",
+    "src/materialization/selection/state.js": "a97c0e03360e7e2915c79f39bd894db1832f1b2d141ca40edc9e596ba2b739e9",
+    "src/selectors/selectionResources.js": "40ff6ee98f5af518d15278eb3fcef963c7d70383eea6672cd7372910f6083871",
+    "types/program.d.ts": "3a47772d3f451166d2ebd698a0d09eebd5a0466ea729fefb5b2ea35f4b959759"
+  },
+  "checks": {
+    "newFocused": {
+      "passed": 19
+    },
+    "legacyRegression": {
+      "passed": 139
+    },
+    "contracts": {
+      "passed": 53
+    },
+    "realistic": {
+      "passed": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "cache": "canonical pinned TidyTuesday cache, read-only",
+      "separateFromSourceCoverage": true
+    },
+    "realisticInventory": {
+      "passed": 1,
+      "scope": "only owning fixed inventory assertion; runner heap/concurrency retained"
+    },
+    "selectionActionsCoverage": {
+      "tests": 151,
+      "lines": 96.38,
+      "branches": 88,
+      "functions": 100,
+      "floor": [
+        90,
+        75,
+        100
+      ]
+    },
+    "selectionSetCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "markSelectionCoverage": {
+      "lines": 94.84,
+      "branches": 94.63,
+      "functions": 100
+    },
+    "docs": {
+      "sourceTests": 179,
+      "builtPages": 162,
+      "selectiveArtifacts": 1392,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualInspection": "390px screenshot reviewed; full unchanged UI sweep reused from 121acb6c6"
+    },
+    "installed": {
+      "artifactSha256": "c1a37425c4bbdd5143f0564d4fb42bfa18304d4ecfa7c95cab5c0dcb60d219e4",
+      "nodes": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "runtimeCasesPerNode": 2,
+      "strictTypesPerNode": 1,
+      "browserEntriesPerNode": 4,
+      "fullSweep": false
+    },
+    "finalOwningContracts": {
+      "passed": 19,
+      "scope": "package artifact, source boundaries, logical selection types after budget changes"
+    }
+  },
+  "budgets": {
+    "packageEntries": {
+      "measured": 880,
+      "limit": 880,
+      "previous": 879
+    },
+    "packagePacked": {
+      "node22": 1280515,
+      "node20and24": 1282975,
+      "limit": 1283000,
+      "previous": 1282000
+    },
+    "packageUnpacked": {
+      "measured": 5887693,
+      "limit": 5888000,
+      "previous": 5880000
+    },
+    "browserGzip": {
+      "fullMeasuredMax": 635846,
+      "fullLimit": 636000,
+      "previousFull": 635000,
+      "basicMeasuredMax": 360009,
+      "basicLimit": 361000,
+      "previousBasic": 360000,
+      "svgMax": 20196,
+      "interactionMax": 82316
+    },
+    "search": {
+      "measured": 946372,
+      "limit": 947000,
+      "previous": 946000
+    }
+  },
+  "originalFailures": [
+    "realistic first run missing configured shared cache; canonical rerun 16 passed",
+    "package initial old entry count limit879 versus actual880",
+    "docs first run new snippet registry and old search limit; corrected, final179 passed",
+    "docs during metadata regeneration stale provenance; source freeze and canonical regeneration then179 passed",
+    "one malformed one-child composition test fixture; fixed before source commit; new19 passed",
+    "temporary browser probe used wrong heading and browser.newPage instead of explicit context; corrected before final4 widths passed",
+    "Node20/24 measured bundles exceeded old Full/Basic limits; runtime/types passed; final12 measured bundles asserted against bounded new limits without source changes"
+  ],
+  "notClaimed": [
+    "full repository coverage",
+    "full installed or renderer suite",
+    "STEP057 B/C/D",
+    "STEP077 completion"
+  ]
+}

@@ -571,6 +571,22 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `bundleGraphEdges`
+
+```javascript
+bundleGraphEdges({ id, graph?, layout?, method, options?, coordinateSpace? })
+```
+
+Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling. Graph topology and item identity remain unchanged. The [Edge routes API](../api/edge-routes.md) owns method options, exact input binding, bounded computation and worker preparation. Bind the result with `createGraphPlot({routes:id})`. Prepared application accepts only `{prepared,requestToken}` on the exact original receiver.
+
+### `editEdgeRoute`
+
+```javascript
+editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
+```
+
+Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
+
 ### `createGraphData`
 
 ```javascript
@@ -3505,6 +3521,62 @@ layoutGraph({ id, graph?, method, options? })
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
 
+### `createCalendarLayout`
+
+```javascript
+createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate, missing })
+```
+
+Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
+
+### `createCalendarPlot`
+
+```javascript
+createCalendarPlot({ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? } = {})
+```
+
+Draw a stored calendar layout with explicit day, month and label roles. See [Calendar plots](../api/calendar.md#createcalendarplot).
+
+### `editCalendarPlot`
+
+```javascript
+editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? })
+```
+
+Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../api/calendar.md#editcalendarplot).
+
+### `createGeometryData`
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
+
+### `editGeometryData`
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
+
+### `createProjection`
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../api/geometry.md#createprojection).
+
+### `editProjection`
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
+
 ### `createContourData`
 
 ```javascript
@@ -3632,24 +3704,39 @@ Use these actions for explicit semantic resources or focused axis control.
 ### Reusable mark selections
 
 ```javascript
-selectMarks({ id?, target?, grain?, field | channel | property, op, ...operatorOptions })
+selectMarks({ id?, target?, ...selector })
 ```
 
 Store a reusable semantic final-item selection without changing graphics.
+Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
+`getMarkItems` or interaction inspection; `empty` defaults to `"none"`.
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
-values, and properties are concrete graphical values.
+values, and properties are concrete graphical values. A range requires `min` or
+`max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
+or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
+
+Native `region` selectors use final position channels. A theta region or item-key selection
+may retain normalized clockwise `screenAngles: [startRadians, endRadians]` metadata;
+domain ranges or keys continue to determine membership.
+
+Named selections also accept exclusive `where: ComputedExpressionV2` boolean
+predicates over fields uniquely defined at final item grain. Parameter edits
+refresh their named labels, highlights and conditional consumers together.
+The inline highlight facade stores the same live selection. Inline label
+selectors and mark filters keep their existing comparison grammar.
+[Expression selections](../api/appearance/selection-and-highlighting.md#selections-from-expressions)
 
 ### `editMarkSelection`
 
 ```javascript
-editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
+editMarkSelection({ selection?, mode?: "replace" | "add" | "toggle" | "subtract" | "intersect", ...selector })
 ```
 
-Replace the complete selector while preserving the stored selection ID and
-mark target. Dependent highlights and exact categorical legend reflection are
+Replace the complete selector by default, or combine its logical item keys with
+`add`, `toggle`, `subtract`, or `intersect`. The selection ID and mark target remain. Dependent highlights and exact categorical legend reflection are
 replayed from a clean baseline.
 [Selection lifecycle](../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 

@@ -1,4 +1,6 @@
 import { assertProgramSingleY } from "../materialization/frameState.js";
+import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
+import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
@@ -64,6 +66,7 @@ import { STORED_RESOURCE_KINDS } from "../core/resourceReference.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
+import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
 import { highlightTargets } from "../selectors/selectionTargets.js";
 import { parseSemanticPath } from "../grammar/schemas/semanticPath.js";
 import { validateStoredSemanticValue } from "../actions/primitives/semantic.js";
@@ -285,6 +288,9 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     for (const [name, value] of Object.entries(semantic[key])) validateSemanticProperties(program, value, `${prefix}.${name}`);
   }
   for (const key of ["resolvedScales", "materializationConfigs", "context"]) requireObject(program[key], `${path}.${key}`);
+  for (const key of ["responsivePlot", "responsiveMeasuring"]) {
+    if (Object.hasOwn(program.context, key)) throw invalidSnapshot("Responsive calculation context cannot be persisted.", path);
+  }
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
   if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
     validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
@@ -310,8 +316,13 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   }
+  validateResponsiveCanvasState(program.materializationConfigs.canvas, program.graphicSpec.objects.canvas?.properties);
   const cartesianOwners = cartesianAxisOwners(program);
   for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    validateResponsiveLabelState(axis?.labels);
+    if (axis?.labels?.responsive !== undefined && !cartesianOwners.some(owner => owner.id === id)) {
+      throw invalidSnapshot("Responsive labels require a Cartesian axis owner.", path);
+    }
     if (isPlainObject(axis?.title?.offset)) {
       if (!cartesianOwners.some(owner => owner.id === id)) throw invalidSnapshot("Relative title offset requires a Cartesian axis owner.", path);
       validateAxisTextPlacement(axis.title, { title: true });
@@ -576,7 +587,8 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       exactKeys(selection.projection, Object.hasOwn(selection.projection, "data") ? ["data"] : [], path);
       if (resource.options.mode === "row-keys" && !selection.projection.data) throw invalidSnapshot("Row-key selection requires a data projection.", path);
     }
-    normalizeMarkSelector(legacy ? selection.selector : storedSelectionSelector(program, selection));
+    if (legacy) normalizeMarkSelector(selection.selector);
+    else normalizeSelectionSelector(storedSelectionSelector(program, selection));
     if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));

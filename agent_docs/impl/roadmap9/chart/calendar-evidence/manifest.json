@@ -1,0 +1,46 @@
+{
+  "stage": "private-calendar-kernel",
+  "files": {
+    "boundaries-repaired.log": {
+      "sha256": "eb88b2a50c87487578a9cbc74fa0cfa0f5fd85679b6e383cec3c077abf2b9162",
+      "bytes": 5477
+    },
+    "boundaries.log": {
+      "sha256": "80cc0994bb9883e46a8f207d7ef1bd348ee83196e936931f03fd9f1bea9572aa",
+      "bytes": 6461
+    },
+    "contour-render.log": {
+      "sha256": "f69263f339c9bb3b49030333476d83217cdd02da4304188d7fd873b054af012e",
+      "bytes": 1848
+    },
+    "kernel-1.log": {
+      "sha256": "78a7d4621fd97550fd7e2c925e3e03506c17d33e8b970fff13bba385129cd9d6",
+      "bytes": 8166
+    },
+    "kernel-coverage.json": {
+      "sha256": "6cc33d13f8c5f75b64f76c49744f856c5f5c12c3d3de2a7fa50f73fb5e8b3168",
+      "bytes": 779
+    },
+    "kernel-coverage.log": {
+      "sha256": "c3200708dd7fc57e4216c07282e85eadbf153ee38bc6ad721e05ce08b997593b",
+      "bytes": 6098
+    },
+    "kernel-regressions.log": {
+      "sha256": "cd96e62311011765a3f5eb973bae0a17298173c372ef124c47a48143f7e18575",
+      "bytes": 19468
+    },
+    "package-size-v20.20.2.json": {
+      "sha256": "a91ecf33354b999fee021aa8fee7a27581a73a966d86c65d22a8db49aa745054",
+      "bytes": 124
+    },
+    "package-size-v22.23.1.json": {
+      "sha256": "21f36346e16918e11156db7fed9f4f767eab5df77ca4aed349918c1c7679d84b",
+      "bytes": 117
+    },
+    "package-size-v24.22.1.json": {
+      "sha256": "3f32410347b0d5bc657af04ff4e3343df49b933e2b7d9fe1772982c49704ce4c",
+      "bytes": 133
+    }
+  },
+  "publicIntegration": "pending; final installed/docs build deferred to same Calendar public checkpoint"
+}

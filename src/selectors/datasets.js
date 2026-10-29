@@ -40,6 +40,12 @@ export function hasDataset(program, id) {
   return findDataset(program, id) !== undefined;
 }
 
+// The active final-item filter is identified by its canonical derived dataset.
+export function findMarkFilterDataset(program, layer) {
+  const dataset = findDataset(program, layer.data), transform = dataset?.transform?.[0];
+  return dataset?.source !== undefined && transform?.type === "markFilter" && transform.target === layer.id ? dataset : undefined;
+}
+
 export function findDatasetConsumer(program, source) {
   return program.semanticSpec.datasets.find(dataset => dataset.source === source);
 }

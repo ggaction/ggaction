@@ -1,3 +1,6 @@
+import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
+import { getMarkMaterializationStep } from "./materialization/marks/index.js";
+import { appearanceContext, markAppearance, guideAppearance } from "./actions/theme/provenance.js";
 import { layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";
@@ -483,15 +486,20 @@ function itemBounds(properties, type) {
   return null;
 }
 
-function inspectMark(program, layer, childPath) {
+function inspectMark(program, layer, childPath, appearance, scopedKey) {
   const graphic = program.graphicSpec.objects[layer.id];
   const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
   const network = layer.graphBinding === undefined ? undefined : resolveGraphPlot(program, layer, program.markConfigs[layer.id].graphPlot);
   const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
   const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
-  const dataset = hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
+  const calendar = layer.calendarBinding === undefined ? undefined : resolveCalendarPlot(program, layer, program.markConfigs[layer.id].calendarPlot);
+  const dataset = calendar?.dataset ?? hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
+  const itemByGraphic = new Map();
+  if (graphic && findSelectionPolicy(layer.mark.type) && getMarkMaterializationStep(program, layer)) {
+    for (const item of resolveMarkItems(program, layer.id)) for (const id of item.graphicIds) itemByGraphic.set(id, item);
+  }
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
   const logicalSupported = graphic !== undefined && concreteTypes.every(type =>
     boundedTypes.has(type) || type === "text"
@@ -517,8 +525,9 @@ function inspectMark(program, layer, childPath) {
   const grain = ["line", "area"].includes(layer.mark?.type) ? "series" : "item";
   return {
     owner: resourceRef("mark", layer.id, childPath), grain,
+    appearance: items.flatMap((item, index) => { const logical = itemByGraphic.get(item.id); return markAppearance(appearance, layer, logical, item, resourceRef("mark", layer.id, childPath), logical ? scopedKey(logical.key) : undefined, String(index)); }),
     rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
-    logicalDataItems: logicalSupported ? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -559,7 +568,7 @@ function inspectMark(program, layer, childPath) {
   };
 }
 
-function inspectGuide(program, id, childPath) {
+function inspectGuide(program, id, childPath, appearance) {
   const markIds = new Set(program.semanticSpec.layers.map(layer => layer.id));
   const pattern = id === "axis" ? /axis/iu
     : id === "grid" ? /grid/iu
@@ -588,6 +597,7 @@ function inspectGuide(program, id, childPath) {
   collectRefs(semantic);
   return {
     owner: resourceRef("guide", id, childPath),
+    appearance: guideAppearance(appearance, graphicIds, resourceRef("guide", id, childPath)),
     grain: "unknown",
     rawRows: null,
     logicalDataItems: items.length,
@@ -611,8 +621,8 @@ function inspectGuide(program, id, childPath) {
 export function inspectProgram(program, { target } = {}) {
   requireProgram(program);
   if (target !== undefined) validateTarget(target);
-  const views = [];
-  function visit(current, path = []) {
+  const views = [], layouts = [];
+  function visit(current, path = [], namespaces = []) {
     const visited = new Set();
     const active = new Set();
     function validateGraphic(id) {
@@ -625,14 +635,23 @@ export function inspectProgram(program, { target } = {}) {
       active.delete(id);
     }
     for (const id of current.graphicSpec.order) validateGraphic(id);
-    for (const layer of current.semanticSpec.layers) views.push(inspectMark(current, layer, path));
+    if (current.materializationConfigs.canvas?.responsive !== undefined &&
+        (target === undefined || canonical(path) === canonical(target.childPath ?? []))) {
+      layouts.push({ childPath: path, policy: current.materializationConfigs.canvas.responsive,
+        result: current.materializationConfigs.canvas.responsiveResult,
+        labels: Object.entries(current.guideConfigs.axis ?? {}).flatMap(([id, axis]) =>
+          axis.labels?.responsiveResult === undefined ? [] : [{ id, policy: axis.labels.responsive, result: axis.labels.responsiveResult }]) });
+    }
+    const appearance = appearanceContext(current, ACTION_DESCRIPTORS);
+    const scopedKey = key => namespaces.reduceRight((result, namespace) => namespaceItemKey(result, namespace), key);
+    for (const layer of current.semanticSpec.layers) views.push(inspectMark(current, layer, path, appearance, scopedKey));
     for (const id of Object.keys(current.semanticSpec.guides)) {
-      views.push(inspectGuide(current, id, path));
+      views.push(inspectGuide(current, id, path, appearance));
     }
     if (Object.keys(current.semanticSpec.title).length > 0) {
-      views.push(inspectGuide(current, "title", path));
+      views.push(inspectGuide(current, "title", path, appearance));
     }
-    for (const [id, child] of Object.entries(current.children)) visit(child, [...path, id]);
+    for (const [id, child] of Object.entries(current.children)) visit(child, [...path, id], [...namespaces, `${current.compositionSpec.id}-${id}`]);
   }
   visit(program);
   let filtered = views;
@@ -671,6 +690,7 @@ export function inspectProgram(program, { target } = {}) {
   const unsupported = filtered.filter(view => view.logicalDataItems === null).map(view => view.owner);
   return cloneAndFreeze({
     version: 1, views: filtered,
+    ...(layouts.length === 0 ? {} : { layouts }),
     calculations,
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
     findings: filtered.flatMap(view => view.flags.filter(flag => flag.reason === "orphan-style" && flag.count > 0).map(flag => ({ severity: "info", code: "orphan-style", reason: "missing-node", message: `${flag.count} resource-backed style targets are dormant until their exact items return.`, resource: view.owner }))), coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
@@ -692,10 +712,11 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
   const namespaces = path.map(id => { const namespace = `${parent.compositionSpec.id}-${id}`; parent = parent.children[id]; return namespace; });
   const scopedKey = key => namespaces.reduceRight((result, namespace) => namespaceItemKey(result, namespace), key);
   if (stored.has(key)) return stored.get(key);
+  const appearance = appearanceContext(view, ACTION_DESCRIPTORS);
   const graphics = new Map();
   for (const [id, object] of Object.entries(view.graphicSpec.objects)) {
     graphics.set(id, object);
-    for (const child of object.items ?? []) graphics.set(child.id, { type: child.type ?? object.type, properties: child.properties });
+    for (const child of object.items ?? []) graphics.set(child.id, { type: child.type ?? object.type, properties: child.properties, identity: child.identity });
   }
   const result = cloneAndFreeze(highlightTargets(view, layer).flatMap(id => resolveMarkItems(view, id, grain).map(item => {
     const geometry = item.graphicIds.map(id => graphics.get(id)).filter(Boolean).map(g => ({ type:g.type, properties:g.properties }));
@@ -711,6 +732,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
       ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }),
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
+      appearance:item.graphicIds.flatMap((graphicId, index) => { const graphic = graphics.get(graphicId); return graphic ? markAppearance(appearance, findLayer(view, item.layer), item, graphic, resourceRef("mark", item.layer, path), scopedKey(item.key), String(index)) : []; }),
       bounds:visible ?? (bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null) };
   })));
   stored.set(key,result); return result;

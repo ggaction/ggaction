@@ -11,6 +11,22 @@ session.dispatch({ type: "inspect", point: { x: 5, y: 6 }, pointerType: "touch",
 declare const element: HTMLCanvasElement;
 const unmount = session.mount(element, { rootTransform: [1, 0, 0, 1, 0, 0] });
 const unsubscribe = session.subscribe((event: InteractionEvent) => { const key: string | undefined = event.state.hit?.target?.itemKey; });
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:10,y:20},maxDistance:8,hitInvisible:true}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x','y'],values:[1,2],metric:'euclidean',maxDistance:5},mode:'toggle'}});
+// @ts-expect-error nearest and ordinary selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},nearest:{space:'screen',point:{x:1,y:2},maxDistance:3}}});
+// @ts-expect-error screen and data distances must be explicit
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x'],values:[1],metric:'cosine',maxDistance:5}}});
+// @ts-expect-error no implicit unbounded nearest search
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
+session.dispatch({type:'setParameter',target:{childPath:['left'],id:'threshold'},payload:{value:2},origin:'user'});
+session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},transactionId:'clear'});
+session.subscribe(event=>{if ('phase' in event) {const previous=event.previous;const next=event.current;const revision:number=event.revision;}});
+// @ts-expect-error explicit owner required
+session.dispatch({type:'select',payload:{id:'picked',select:{items:[]}}});
+// @ts-expect-error invalid selection update mode
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},mode:'union'}});
 session.updateProgram(program); unsubscribe(); unmount(); session.destroy();
 // @ts-expect-error unsupported controller binding
 createInteractionSession({ program, bindings: [{ type: "drag" }] });
@@ -20,3 +36,47 @@ session.mount(element, { pixelRatio: 2 });
 session.dispatch({ type: "frame", scene: createTransitionScene(program), version: 1, generation: 0 });
 // @ts-expect-error inspection metadata is immutable
 session.getState().hit!.target!.itemKey = "change";
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'rows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
+createInteractionSession({program,bindings:[{type:'linkSelection',id:'tuple',target:'points',selection:'picked',resolve:'union',sources:[{target:'other',selection:'otherPicked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}]}]});
+createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+// @ts-expect-error click bindings use existing named selections
+createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
+// @ts-expect-error drag and additive gestures have no automatic click binding
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',mode:'add'}]});
+// @ts-expect-error miss policy differs from selection empty semantics
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',onMiss:'all'}]});
+const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
+const available:boolean=session.getState().linkedSelections[0].targetAvailable;
+session.subscribe(event=>{if(event.type==='program'||'phase' in event){const changes:readonly string[]=event.selectionChanges.flatMap(change=>change.droppedKeys);}});
+// @ts-expect-error lifecycle policy is explicit and closed
+createInteractionSession({program,selectionPolicy:'forget'});
+
+// @ts-expect-error projection results are immutable
+session.getState().linkedSelections[0].keys.push('change');
+
+session.subscribe(event => { if ('phase' in event && event.phase === 'cancel') { const sameRevision: number = event.revision; } });
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
+// @ts-expect-error one-axis brush cannot select the other axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
+// @ts-expect-error screen lasso has no domain axis
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
+
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'theta'}]});
+program.editMarkSelection({selection:'picked',region:{theta:{ranges:[]}},screenAngles:[0,Math.PI/2]});
+session.dispatch({type:'filter',target:'points',payload:{select:{field:'x',op:'gte',value:2},mode:'compose'}});
+session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['B','A']}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',by:'count',direction:'descending'}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+// @ts-expect-error clear cannot also set a filter
+session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
+// @ts-expect-error clear cannot also set an order
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,values:['A']}});
+
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
+ {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
+]}]});

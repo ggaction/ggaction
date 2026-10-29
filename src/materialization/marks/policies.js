@@ -13,6 +13,8 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  calendar: Object.freeze({ canMaterialize: (_program, layer) => layer.calendarBinding !== undefined,
+    op: "materializeCalendarPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   contour: Object.freeze({ canMaterialize: (_program, layer) => layer.contourBinding !== undefined,
     op: "materializeContourMark", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   graph: Object.freeze({ canMaterialize: (_program, layer) => layer.graphBinding !== undefined, op: "materializeGraphPlot", scaleApplication: Object.freeze({ default: "defer" }) }),

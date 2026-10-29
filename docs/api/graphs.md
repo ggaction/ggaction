@@ -34,6 +34,10 @@ editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram
 
 Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge appearance, or labels. Omitted target selects the current eligible mark, then a unique graph plot; ambiguity fails. Omitted fields preserve stored intent. Override arrays replace their previous array. Null, undefined, unknown fields and invalid values fail before changing the program.
 
+## Stored edge routes
+
+Set `routes` to an [edge route resource](edge-routes.md) from the same graph and layout. Omission preserves an edited plot’s binding; `routes:false` restores native curves. Bundled paths retain original edge identities and row membership. Native `parallelGap` and `loopRadius` apply after routes are detached.
+
 ## Labels and identity
 
 Labels are disabled by default. `labels:{}` displays original node keys; `labels:false` removes them. Defaults are fill #0f172a, 12px sans-serif normal, and offset `[0,14]`. Set `field` to one retained node attribute. Scalar values become strings, null/undefined become empty strings, and object/array values fail. Label overrides accept a typed key, optional text, and optional fill/font style; offset is shared by the plot.

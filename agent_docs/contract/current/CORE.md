@@ -13,7 +13,7 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
 
 ## `createCanvas`
 
-- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
+- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
 - 목적과 필수 state: Canvas가 없는 program에 logical Canvas와 plot bounds를 만든다.
 - `width`
   - Status: Implemented. 양의 finite number이며 기본값은 `640`이다.
@@ -79,9 +79,26 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
 - Evidence: `test/unit/actions/canvas/create-canvas.test.js`,
   `test/unit/grammar/layout/canvas-layout.test.js`.
 
+### Responsive fixed Canvas
+
+`createCanvas`(Full/Basic)와 `editCanvas`(Full)는 `responsive: false | { minPlotSize?: { width: PositiveFinite, height: PositiveFinite } }`를 지원한다. 기본 minimum은 기존 fitCanvas와 같은160×120이다. Omission은 intent 보존, false는 policy/result 제거다. Exact-inner `plot`과 함께 쓰지 않는다. Outer width/height와 authored margin은 고정이며 `materializationConfigs.canvas.responsiveResult.snapshot.plot`에 derived reservation을 저장한다. 최종 bounds는 공통 `resolveGraphicBounds`만 읽는다.
+
+기존 guide transaction과 scale/source/font dependency plan이 명시적으로 최대4회 측정한다. 최초 후보는 authored margin에서 시작하고 필요한 reservation은 기존0.25px 격자로 위쪽 반올림한다. 인접 plot·occupied·guide 경계의 최대 차이가0.1px 이내이고 minimum 및 containment를 만족해야 성공한다. Containment에는 계산 roundoff용16ULP만 허용하며 crop tolerance는 없다. A-B-A 반복,4회 미수렴, 공간 부족은 `layout-unsatisfied`와 reason/required bounds를 반환하고 이전 program/trace를 보존한다. 중간 측정 context는 반환·저장되지 않는다. Background-only edit는 결과를 보존한다.
+
+`inspectProgram().layouts`는 childPath별 policy/result와 Cartesian label 선택을 read-only로 반환하며 layout을 실행하지 않는다. Editable restore는 closed shape·finite geometry·minimum·bounds를 검사하고 renderer는 저장된 concrete output만 읽는다. 정확 font profile의 누락 query는 기존 `metrics-required`이며 준비 closure가 bounded replay로 수집한다. Polar/Parallel은 기존 label 의미를 유지하고 Canvas의 예약 공간 계산에 참여한다. Concat child는 명시적으로 편집한 child를 `replaceCompositionChild`로 교체한다.
+
+Evidence: `test/unit/actions/canvas/responsive-layout.test.js`, `responsive-lifecycle.test.js`, `test/unit/grammar/responsive-state.test.js`, `test/unit/layout/responsive-policy.test.js`, `test/contracts/responsive-layout-types.test.js`, `test/charts/responsive-guides/`, `test/browser/responsive-guides.browser.js`.
+
 ## `editCanvas`
 
-- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
+Canvas의 prospective size/margin이 독립 Cartesian frames를 겹치게 하면 첫 graphical child
+전에 같은 단일 Y frame 검증으로 거부한다. Responsive에서는 stale 이전 reservation 대신
+현재 후보 plot을 검사하고 각 measured retry도 같은 read-only 검증을 거친다. Native 경로
+viewport 준비와 실제 rematerialization은 이 후보와 기존 의존 계획을 사용한다. 생성 중의
+정규화 anchor/snapshot 임시 assignment는 outer owner가 완성한 뒤 검사한다.
+증거: `test/unit/actions/canvas/frame-admission.test.js`와 기존 responsive/route lifecycle tests.
+
+- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
 - `width`, `height`, `background`, `margin`
   - Status: Implemented. 값 계약은 `createCanvas`와 같다. 생략한 property는 기존 값을 유지한다.
@@ -215,15 +232,26 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
     `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
     `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`, `axisLabelFontFamily`,
     `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`, `fontSize`, `fontWeight`,
-    `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`의 closed vocabulary다.
+    `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`, `axisLabelGap`, `axisTitleGap`,
+    `legendItemGap`, `palette`, `patternPalette`의 closed vocabulary다.
     FontSize token은 positive finite number이고, fontWeight는 finite number 또는 non-empty string이며
-    guide geometry 4개 token은 nonnegative finite number, 나머지는 non-empty string이다.
+    guide geometry 및 axis gap token은 nonnegative finite number다. `legendItemGap`은 native legend 계약대로 positive finite number다.
+    `palette`는 비어 있지 않은 color string 배열, `patternPalette`는 비어 있지 않은 PatternPaint 배열이며
+    최대 길이는 기존 generated item budget(10000)이다. 나머지는 non-empty string이다.
     `fontWeight: 0` 및 guide geometry의 0도 명시값으로 보존한다.
   - Guide geometry token은 각 native axis line/tick/grid의 lineWidth와 tick length 기본값을 CSS px로
     지정한다. Cartesian/named/Polar/Parallel 및 Basic의 기존 소비자에만 적용하며 새로운 guide를 만들지 않는다.
     명시한 direct/facade guide 값은 같은 기본값이나 0이어도 우선한다. 제거 또는 partial token 생략 시
     각 family 기본값을 복원한다. 기존 wrapped guide materializer와 전체 guide layout 검증을 거치고
     Canvas dimensions/margins와 scale domain을 바꾸지 않는다. 부족한 공간은 원자적으로 거부한다.
+  - `axisLabelGap`과 `axisTitleGap`은 기존 guide offset 기본값이다. Cartesian 자동 title은 gap을 preferred offset으로
+    사용하고 기존 collision 보정을 유지한다. 직접 지정한 0 또는 `{from:"labels",gap}`은 우선한다.
+    `legendItemGap`은 categorical, item, sampled/interval 및 opacity 범례의 기존 간격에 적용하며
+    연속 gradient bar의 geometry에는 적용하지 않는다. 모든 값은 초기 생성과 재배치에서 같은 owner를 쓴다.
+  - `palette`는 ordinal categorical color/stroke의 자동 range만 바꾼다. 명시 range, literal color와 continuous scale은 유지한다.
+    `patternPalette`는 Point/Bar/Area/Arc/Rect/Text의 자동 categorical fill과 categorical legend symbol에 적용한다.
+    typed scale domain 순서로 순환하며 scalar color range에 pattern을 저장하지 않는다. Native pattern의 origin,
+    alpha, bounds와 work budget을 공유한다. 선택 강조는 패턴 baseline 뒤 재적용한다.
   - Axis 전용 token은 Cartesian/Polar/Parallel 축에만 적용한다. Role font family 미지정은
     global fontFamily, size 미지정은 global fontSize, 그것도 없으면 family 기본값(label 12/11/11, title 13)으로 돌아간다.
     axisLabel 미지정은 Cartesian/Polar text, Parallel axis 색을 사용한다.
@@ -239,7 +267,7 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
 - 우선순위와 상호작용: explicit user style > newest applicable theme request > earlier request >
   built-in light다. 같은 값으로 직접 지정한 style도 explicit이다. Parent theme은 child-local frame을
   덮어쓰지 않고 아래에 보존하므로 parent removal 뒤 newest child frame이 복원된다. Field-driven
-  palette, categorical legend symbol, semantic state, resolved scale, grouping, 통계와 order는 보존한다.
+  palette는 위 optional palette token이 없으면 유지한다. Semantic state, position scales, grouping, 통계와 order는 보존한다.
   기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
   `fontFamily`, `fontSize`, `fontWeight` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
   composition layout을 검증한다. Global size/weight는 optional이며 생략하거나 마지막 frame을 제거하면
@@ -275,13 +303,13 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
 ### Formal values — `applyTheme`
 
 - Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
-- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property, 5개 optional axis role property, optional global `fontSize`/`fontWeight`다.
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property, 5개 optional axis role property, optional global `fontSize`/`fontWeight`, 7개 guide geometry/gap 및 `palette`/`patternPalette`다.
 - Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
 - Theme definition
-  - ✅ Covered: built-in light/dark, custom partial, closed 25-token vocabulary, input ownership/freeze,
+  - ✅ Covered: built-in light/dark, custom partial, closed token vocabulary, input ownership/freeze,
     replacement without partial merge, malformed/unknown values와 atomic rejection.
 - Scope와 lifecycle
   - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
@@ -298,6 +326,7 @@ assignment는 concrete mark가 생기기 전까지 coordinate reference를 지�
     resolved scales, statistics, ordering과 caller program immutability.
   - ✅ Covered: collection 색상 교체는 기존 item identity/key/lineage/topology와 owner clip을 보존하며,
     codec 복원·Canvas/SVG transition scene·named highlight에서도 유지한다. `test/unit/actions/theme-item-identity.test.js`.
+  - ✅ Covered: guide spacing family 초기생성/복원, categorical typed palette/conditional/highlight/codec와 read-only winning provenance. `test/unit/actions/theme-spacing.test.js`, `theme-palettes.test.js`, `theme-provenance.test.js`.
   - ✅ Covered: native guide family 색 복원, theme-before-create, stroke samples, named axes, Basic,
     nested concat/facet/shared legend와 offline 복원. `test/unit/actions/theme-guide-defaults.test.js`.
   - ✅ Covered: DAG/cyclic Flow body/link/label 색·font, exact preparation 오류 원자성,
@@ -848,6 +877,7 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - 값 변경은 해당 parameter를 읽는 모든 저장 computed snapshot을 시작점으로 dataset DAG 전체 closure를 stable topological order로 갱신한다. Lookup diamond는 한 번만 재계산하며 영향 없는 sibling은 공유한다. 같은 결과라도 다른 parameter revision을 읽으면 새 data provenance를 만든다.
 - Graph는 호출 스택에 의존하지 않는 bounded iterative 순회다. 전체 재계산 비용은 각 transform의 실제 새 source 행 수를 합산하며 computed는 AST node 수를 곱한다. 합계 10,000,000을 넘으면 resource-limit으로 거부한다. Filter 확장/축소 이후의 행 수를 사용하고 기존 snapshot의 행 수로 추정하지 않는다.
 - 새 immutable dataset revision에 exact parameterInputs를 결합하고 logical owners/layer/selection/statistical references를 재결합한 뒤 기존 scales→marks→guides→layout→highlights materialization을 수행한다. Speculative immutable branch의 전 과정을 검증한 뒤 반환하므로 실패 시 기존 program/trace/graphics는 유지된다. Dependents/force/cascade 옵션은 없다.
+- Named AST selection inputs also receive the exact new parameter revision. The action rebinds conditional selection inputs, refreshes affected marks/named labels/highlights, and checks predicates even without visual consumers. The selection contract owns final-item field meaning and expression limits.
 - Facet/repeat parent는 retained source를 수정한 뒤 children/shared guides/layout을 재생성한다. Concat는 명시 childPath가 필요하며 같은 ID의 sibling에 전파하지 않는다. Full 전용이다.
 
 ### Formal values — `editParameter`

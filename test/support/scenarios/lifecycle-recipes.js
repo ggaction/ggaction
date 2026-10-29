@@ -1276,6 +1276,7 @@ function buildDirectDataResources(factors) {
   );
   const rows = sourceRows.map(row => ({
     ...row,
+    calendarDate: "2024-02-29",
     endpointStart: row.positive - 1,
     intervalLower: row.x - intervalHalfSpan,
     intervalCenter: row.x,
@@ -1306,10 +1307,12 @@ function buildDirectDataResources(factors) {
   program = program
     .createData({ id: "directGraphNodes", values: [...new Set(rows.map(row => row.category))].map(category => ({ category })) })
     .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
-      source: "category", target: "category", weight: "positive", selfLoops: true })
+      source: "category", target: "category", edgeKey: "id", weight: "positive", selfLoops: true })
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
+    .bundleGraphEdges({ id: "directEdgeRoutes", layout: "directGraphLayout", method: "edge-path" })
+    .editEdgeRoute({ target: "directEdgeRoutes", options: { exponent: 3 } })
     .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
-    .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
+    .editGraphPlot({ target: "directGraphPlot", routes: false, nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
     .editGraphData({ target: "directGraph", definition: { directed: true } })
     .createInferredGraphData({ id: "directInferredGraph", data: "directSource", nodeKey: "id", ruleId: "source-order",
@@ -1325,6 +1328,15 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createCalendarLayout({ id: "directCalendarLayout", data: "directSource", date: "calendarDate", value: "positive", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
+    .createCalendarPlot({ id: "directCalendar", layout: "directCalendarLayout", color: false, labels: false, cells: { opacity: .2 } })
+    .editCalendarPlot({ target: "directCalendar", cells: { gap: .1 }, monthBoundary: false })
+    .createGeometryData({ id: "directGeometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
+      values: { type: "FeatureCollection", features: rows.map(row => ({ type: "Feature", id: row.id,
+        properties: { category: row.category }, geometry: { type: "Point", coordinates: [row.x, row.positive] } })) } })
+    .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
+    .editProjection({ target: "directProjection", reflectX: true })
+    .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })
     .createContourData({ id: "directContourGrid", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2,
       values: rows.slice(0, 4).map(row => row.positive) }, thresholds: [0, Math.max(...rows.map(row => row.positive)) + 1] })
     .createDensityContourData({ id: "directContourDensity", data: "directSource", x: "x", y: "positive", estimator: "kde", normalization: "unit",
@@ -2524,6 +2536,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createProjection", "editProjection",
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",

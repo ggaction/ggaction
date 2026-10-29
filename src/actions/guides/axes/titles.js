@@ -6,7 +6,7 @@ import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
 import { axisTitleTextLines as titleLines, validateAxisTextPlacement, axisTitleAllowsLabelOverlap,
   isLabelRelativeTitleOffset, axisLabelHasText } from "../../../grammar/axisTextPlacement.js";
-import { axisThemeTypography } from "../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -94,7 +94,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
   const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[2], program.materializationConfigs.textMetrics)
     : undefined;
-  const preferred = channel === "x" ? 42 : 52;
+  const preferred = axisThemeOffset(program.materializationConfigs.theme, "title") ?? (channel === "x" ? 42 : 52);
   if (!plot || !canvas || !labels) return preferred;
   const horizontal = channel === "x";
   const positive = config.position === (horizontal ? "bottom" : "right");
@@ -119,7 +119,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
   const inkClearance = channel === "y" &&
     Math.abs(Math.cos(config.rotation)) < 1e-10
     ? config.fontSize / 4 : 0;
-  if (program.materializationConfigs.canvas?.plot !== undefined) {
+  if (program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined) {
     return preferred + Math.max(0, needed);
   }
   const legacyAdjustment = Math.min(available, Math.max(0, needed));
@@ -281,7 +281,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
     program.semanticSpec.guides.axis?.[axisId]?.title ?? ""
   , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
-  if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
+  if (!canvas || program.context.responsiveMeasuring !== true && !textBoundsFitCanvas(resolvedBounds, canvas)) {
     if (isLabelRelativeTitleOffset(config.offset)) {
       throw canvasOverflowError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`, [resolvedBounds], canvas);
     }

@@ -222,9 +222,16 @@ requirements after resolving each part.
 - Hierarchy Tutorial: ./tutorials/hierarchy/
 - Graph Plots: ./api/graphs/
 - Graph Tutorial: ./tutorials/graphs/
+- Edge Routes: ./api/edge-routes/
+- Edge Route Tutorial: ./tutorials/edge-routes/
 - Partition Plots: ./api/partition/
 - Partition Tutorial: ./tutorials/partition/
 - Flow Data and Sankey Layouts: ./api/flows/
 - Draw Conserved Flows: ./tutorials/flows/
+- Geometry and Projections: ./api/geometry/
 - Contours and Two-Dimensional Density: ./api/contours/
 - Draw Levels, Bands and Density: ./tutorials/contours/
+- Fit Labels Inside a Fixed Canvas: ./tutorials/responsive-guides/
+- Calendar Plots: ./api/calendar/
+- Place Observations on a Calendar: ./tutorials/calendar/
+- Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/

@@ -1,0 +1,5 @@
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}

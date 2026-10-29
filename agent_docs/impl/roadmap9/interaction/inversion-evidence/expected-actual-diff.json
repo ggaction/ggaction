@@ -1,0 +1,142 @@
+{
+  "cases": [
+    {
+      "name": "linear-reversed",
+      "scale": {
+        "type": "linear",
+        "domain": [
+          100,
+          0
+        ],
+        "range": [
+          200,
+          0
+        ]
+      },
+      "input": [
+        50,
+        150
+      ],
+      "expected": {
+        "kind": "range",
+        "bounds": [
+          25,
+          75
+        ]
+      },
+      "actual": {
+        "kind": "range",
+        "bounds": [
+          25,
+          75
+        ]
+      },
+      "diff": [],
+      "immutable": true
+    },
+    {
+      "name": "log",
+      "scale": {
+        "type": "log",
+        "domain": [
+          1,
+          1000
+        ],
+        "range": [
+          0,
+          300
+        ]
+      },
+      "input": [
+        100,
+        200
+      ],
+      "expected": {
+        "kind": "range",
+        "bounds": [
+          10,
+          100
+        ]
+      },
+      "actual": {
+        "kind": "range",
+        "bounds": [
+          10,
+          100
+        ]
+      },
+      "diff": [],
+      "immutable": true
+    },
+    {
+      "name": "epoch",
+      "scale": {
+        "type": "time",
+        "domain": [
+          1709078400000,
+          1709337600000
+        ],
+        "range": [
+          0,
+          300
+        ]
+      },
+      "input": [
+        100,
+        200
+      ],
+      "expected": {
+        "kind": "range",
+        "bounds": [
+          1709164800000,
+          1709251200000
+        ]
+      },
+      "actual": {
+        "kind": "range",
+        "bounds": [
+          1709164800000,
+          1709251200000
+        ]
+      },
+      "diff": [],
+      "immutable": true
+    },
+    {
+      "name": "band-gap",
+      "scale": {
+        "type": "band",
+        "domain": [
+          "a",
+          1,
+          "1",
+          false
+        ],
+        "range": [
+          0,
+          400
+        ],
+        "step": 100,
+        "start": 20,
+        "bandwidth": 60,
+        "paddingInner": 0.4,
+        "paddingOuter": 0.2,
+        "align": 0.5
+      },
+      "input": [
+        90,
+        110
+      ],
+      "expected": {
+        "kind": "categories",
+        "values": []
+      },
+      "actual": {
+        "kind": "categories",
+        "values": []
+      },
+      "diff": [],
+      "immutable": true
+    }
+  ]
+}

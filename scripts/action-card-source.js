@@ -80,6 +80,7 @@ function unique(values) {
 }
 
 function operationAndSubject(name) {
+  if (name === "bundleGraphEdges") return { operation: "layout", subject: "GraphEdges" };
   if (name === "facet") return { operation: "compose", subject: "facet" };
   if (name === "facetGrid") return { operation: "compose", subject: "FacetGrid" };
   if (name === "repeatCharts") return { operation: "compose", subject: "RepeatedCharts" };
@@ -186,6 +187,18 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createProjection", "editProjection"].includes(action.name)) return {
+    prerequisites: action.name === "editProjection" ? ["existing named projection"] : ["explicit native projection type"],
+    owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]
+  };
+  if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {
+    prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
+    idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
+  };
+  if (action.name === "createCalendarLayout") return { prerequisites: ["materialized civil-day observations"], owns: ["calendar layout resource"], idOptions: ["id", "data"] };
+  if (["createCalendarPlot", "editCalendarPlot"].includes(action.name)) return {
+    prerequisites: ["stored calendar layout", "Canvas"], owns: ["calendar mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
+  };
   if (["createContourData", "createDensityContourData", "editContourData"].includes(action.name)) return {
     prerequisites: action.name === "createDensityContourData" ? ["materialized point dataset"] : action.name === "editContourData" ? ["stored contour geometry"] : ["explicit scalar grid"],
     owns: ["geometry resource"], idOptions: (action.name.startsWith("create") ? ["id", "data"] : ["target", "data"]).filter(name => optionNames.includes(name))
@@ -356,7 +369,8 @@ export async function declaredActionMetadata(actions) {
             // Keep the exact named public payload instead of an expanded,
             // truncated Omit union for conditional branches.
             type: conditional && ["conditions", "otherwise"].includes(property.name)
-              ? `${conditional}["${property.name}"]` : checker.typeToString(
+              ? `${conditional}["${property.name}"]` : ["createProjection", "editProjection"].includes(action.name) && property.name === "type"
+              ? "ProjectionType" : checker.typeToString(
               checker.getTypeOfSymbolAtLocation(commonProperty ?? property, propertyDeclaration)
             )
           });
@@ -643,7 +657,8 @@ export function compactActionCardByteLimit(name) {
   // Shadow inheritance measures ReferenceBand 3807, MarkLabels 4063,
   // Annotation 4057 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
-  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
+  // Angular pointer metadata measures editMarkSelection at 3606 bytes.
+  return 180 + ({editMarkSelection: 3430, editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
     createAnnotation: 3880, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
 }
 

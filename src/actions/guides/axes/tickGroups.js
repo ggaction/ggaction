@@ -41,7 +41,8 @@ const LABEL_OPTIONS = Object.freeze([
   "alongOffset",
   "flush", "flushThreshold",
   "colorMap",
-  "align"
+  "align",
+  "responsive"
 ]);
 const SHARED_CREATE = Object.freeze(["target", "scale", "position", "count", "values", "rounding"]);
 const SHARED_EDIT = Object.freeze(["target", "position", "count", "values", "rounding"]);

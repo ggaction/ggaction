@@ -31,6 +31,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -69,6 +70,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -2191,6 +2193,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -2198,12 +2202,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 </details>
 
@@ -2322,7 +2328,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelectionSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
@@ -4653,7 +4659,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
-| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<GraphFixedOptions> \| ... 4 more ... \| undefined` |
 
 </details>
 
@@ -4881,6 +4887,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `layout` | Optional / branch-dependent | `string \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| false \| undefined` |
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
@@ -4916,6 +4923,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `layout` | Optional / branch-dependent | `string \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| false \| undefined` |
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
@@ -5333,6 +5341,291 @@ editContourData({ target?, grid?, thresholds?, data?, definition? })
 ```
 
 Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](../../api/contours.md#editcontourdata).
+
+
+## `createCalendarLayout`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateCalendarLayoutOptions`](./../types.md#type-createcalendarlayoutoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `start` | Required | `string` |
+| `end` | Required | `string` |
+| `timeZone` | Required | `string` |
+| `weekStartsOn` | Required | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` |
+| `missing` | Required | `"empty" \| "omit"` |
+| `date` | Required | `string` |
+| `aggregate` | Required | `"count" \| "max" \| "mean" \| "median" \| "min" \| "sum"` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate, missing })
+```
+
+Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../../api/calendar.md#createcalendarlayout).
+
+
+## `bundleGraphEdges`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`BundleGraphEdgesOptions`](./../types.md#type-bundlegraphedgesoptions) · [`ApplyGraphEdgeRoutesOptions`](./../types.md#type-applygraphedgeroutesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedGraphEdgeRoutes` |
+| `requestToken` | Optional / branch-dependent | `string` |
+| `method` | Optional / branch-dependent | `"hierarchical"` |
+| `options` | Optional / branch-dependent | `HierarchicalEdgeRouteOptions` |
+| `id` | Optional / branch-dependent | `string` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinateSpace` | Optional / branch-dependent | `"screen" \| "world" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+bundleGraphEdges({ id, graph?, layout?, method, options?, coordinateSpace? })
+```
+
+Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling. Graph topology and item identity remain unchanged. The [Edge routes API](../../api/edge-routes.md) owns method options, exact input binding, bounded computation and worker preparation. Bind the result with `createGraphPlot({routes:id})`. Prepared application accepts only `{prepared,requestToken}` on the exact original receiver.
+
+
+## `editEdgeRoute`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditEdgeRouteOptions`](./../types.md#type-editedgerouteoptions) · [`ApplyGraphEdgeRoutesOptions`](./../types.md#type-applygraphedgeroutesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Optional / branch-dependent | `PreparedGraphEdgeRoutes` |
+| `requestToken` | Optional / branch-dependent | `string` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `method` | Optional / branch-dependent | `EdgeRouteMethod \| undefined` |
+| `coordinateSpace` | Optional / branch-dependent | `"screen" \| "world" \| undefined` |
+| `options` | Optional / branch-dependent | `EdgePathRouteOptions \| EdgeRouteCommonOptions \| ForceDirectedEdgeRouteOptions \| Partial<HierarchicalEdgeRouteOptions> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
+```
+
+Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
+
+
+## `createGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeometryDataOptions`](./../types.md#type-creategeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `format` | Required | `"geojson" \| "topojson"` |
+| `values` | Required | `TopoJSONInput \| GeoJSONInput` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../../api/geometry.md#creategeometrydata).
+
+
+## `editGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeometryDataOptions`](./../types.md#type-editgeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `values` | Optional / branch-dependent | `TopoJSONInput \| GeoJSONInput \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
+
+
+## `createProjection`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateProjectionOptions`](./../types.md#type-createprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Required | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../../api/geometry.md#createprojection).
+
+
+## `editProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditProjectionOptions`](./../types.md#type-editprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `type` | Optional / branch-dependent | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../../api/geometry.md#editprojection).
 
 
 ## Focused core data editing

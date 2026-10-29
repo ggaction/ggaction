@@ -1,0 +1,156 @@
+TAP version 13
+# Subtest: Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+ok 1 - Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+  ---
+  duration_ms: 1.901458
+  type: 'test'
+  ...
+# Subtest: all week starts place leap-year cells against independent Gregorian arithmetic
+ok 2 - all week starts place leap-year cells against independent Gregorian arithmetic
+  ---
+  duration_ms: 58.001083
+  type: 'test'
+  ...
+# Subtest: month polygons exactly cover emitted cells with independent area and perimeter
+ok 3 - month polygons exactly cover emitted cells with independent area and perimeter
+  ---
+  duration_ms: 11.851
+  type: 'test'
+  ...
+# Subtest: explicit omission preserves separate islands and a missing-day hole
+ok 4 - explicit omission preserves separate islands and a missing-day hole
+  ---
+  duration_ms: 3.029917
+  type: 'test'
+  ...
+# Subtest: partial multi-year ranges keep calendar ordering and 54-week frames
+ok 5 - partial multi-year ranges keep calendar ordering and 54-week frames
+  ---
+  duration_ms: 0.367834
+  type: 'test'
+  ...
+# Subtest: empty and zero-valued inputs retain their distinct explicit completion semantics
+ok 6 - empty and zero-valued inputs retain their distinct explicit completion semantics
+  ---
+  duration_ms: 0.600084
+  type: 'test'
+  ...
+# Subtest: duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+ok 7 - duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+  ---
+  duration_ms: 40.070292
+  type: 'test'
+  ...
+# Subtest: spring and fall transitions group instants by civil day without adding 24-hour durations
+ok 8 - spring and fall transitions group instants by civil day without adding 24-hour durations
+  ---
+  duration_ms: 1.487292
+  type: 'test'
+  ...
+# Subtest: invalid dates, nonexistent local time and skipped civil boundaries fail closed
+ok 9 - invalid dates, nonexistent local time and skipped civil boundaries fail closed
+  ---
+  duration_ms: 63.121708
+  type: 'test'
+  ...
+# Subtest: calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+ok 10 - calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+  ---
+  duration_ms: 27.830334
+  type: 'test'
+  ...
+# Subtest: calendar results isolate caller data and freeze every shared cell and boundary
+ok 11 - calendar results isolate caller data and freeze every shared cell and boundary
+  ---
+  duration_ms: 3.054333
+  type: 'test'
+  ...
+# Subtest: a literal hill has a closed interpolated diamond and shared nested bands
+ok 12 - a literal hill has a closed interpolated diamond and shared nested bands
+  ---
+  duration_ms: 2.686166
+  type: 'test'
+  ...
+# Subtest: the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+ok 13 - the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+  ---
+  duration_ms: 0.763167
+  type: 'test'
+  ...
+# Subtest: donut holes, missing quads and disconnected islands keep separate winding and topology
+ok 14 - donut holes, missing quads and disconnected islands keep separate winding and topology
+  ---
+  duration_ms: 0.567916
+  type: 'test'
+  ...
+# Subtest: constant and all-missing grids retain empty levels and assign the last upper endpoint once
+ok 15 - constant and all-missing grids retain empty levels and assign the last upper endpoint once
+  ---
+  duration_ms: 0.625291
+  type: 'test'
+  ...
+# Subtest: an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+ok 16 - an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+  ---
+  duration_ms: 1.824291
+  type: 'test'
+  ...
+# Subtest: linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+ok 17 - linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+  ---
+  duration_ms: 2.588167
+  type: 'test'
+  ...
+# Subtest: invalid grid descriptors, scalar values, precision and work fail without reading accessors
+ok 18 - invalid grid descriptors, scalar values, precision and work fail without reading accessors
+  ---
+  duration_ms: 75.765917
+  type: 'test'
+  ...
+# Subtest: deterministic varied grids conserve band area with exactly one region at each sampled point
+ok 19 - deterministic varied grids conserve band area with exactly one region at each sampled point
+  ---
+  duration_ms: 52.235958
+  type: 'test'
+  ...
+# Subtest: ring assembly rejects open boundaries and orphan holes instead of inventing connections
+ok 20 - ring assembly rejects open boundaries and orphan holes instead of inventing connections
+  ---
+  duration_ms: 0.1645
+  type: 'test'
+  ...
+# Subtest: masked scalar grids conserve exactly the area of complete quads
+ok 21 - masked scalar grids conserve exactly the area of complete quads
+  ---
+  duration_ms: 32.31475
+  type: 'test'
+  ...
+# Subtest: oversized contour arrays are rejected before element descriptors are traversed
+ok 22 - oversized contour arrays are rejected before element descriptors are traversed
+  ---
+  duration_ms: 0.214709
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 312.919583
+# start of coverage report
+# -------------------------------------------------------------------
+# file               | line % | branch % | funcs % | uncovered lines
+# -------------------------------------------------------------------
+# src                |        |          |         | 
+#  grammar           |        |          |         | 
+#   calendar         |        |          |         | 
+#    layout.js       | 100.00 |   100.00 |  100.00 | 
+#    options.js      | 100.00 |   100.00 |  100.00 | 
+#   gridBoundary.js  | 100.00 |    96.72 |  100.00 | 
+# -------------------------------------------------------------------
+# all files          | 100.00 |    98.15 |  100.00 | 
+# -------------------------------------------------------------------
+# end of coverage report

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 3,
+  "name": "editProjection",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edit a projection atomically.",
+  "signature": "editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;",
+  "intents": [
+    "edit projection",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "geographic projection",
+    "map projection"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing named projection"
+    ],
+    "owns": [
+      "projection resource"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editProjection",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "scalePx",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "translatePx",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "precisionPx",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "clipExtentPx",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "centerDeg",
+      "unit": "degree"
+    },
+    {
+      "path": "rotateDeg",
+      "unit": "degree"
+    },
+    {
+      "path": "clipAngleDeg",
+      "unit": "degree"
+    },
+    {
+      "path": "parallelsDeg",
+      "unit": "degree"
+    },
+    {
+      "path": "fit.width",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fit.height",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fit.padding",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fit.pointScale",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing named projection"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "ProjectionType"
+    },
+    {
+      "name": "fit",
+      "required": false,
+      "type": "ProjectionFitOptions | undefined"
+    },
+    {
+      "name": "scalePx",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "translatePx",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "precisionPx",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "reflectX",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reflectY",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clipExtentPx",
+      "required": false,
+      "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+    },
+    {
+      "name": "centerDeg",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "rotateDeg",
+      "required": false,
+      "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+    },
+    {
+      "name": "clipAngleDeg",
+      "required": false,
+      "type": "number | null | undefined"
+    },
+    {
+      "name": "parallelsDeg",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editProjection({ target?, type?, fit?, scalePx?, translatePx?, precisionPx?, reflectX?, reflectY? })"
+  ],
+  "snippet": "program.editProjection({ target: \"projection\", scalePx: 200 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editprojection"
+}
