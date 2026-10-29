@@ -1,4 +1,6 @@
 import { ChartProgram } from "./core/ChartProgram.js";
+import { ownRecord } from "./core/ownData.js";
+import { accessibleItemViews } from "./accessibilityItems.js";
 import { cloneAndFreeze } from "./core/immutable.js";
 import { validateOptionObject } from "./core/validation.js";
 import { validateUserId } from "./core/identifiers.js";
@@ -172,9 +174,14 @@ function alternative(program, target) {
 }
 
 export function exportAccessibleData(program, options = {}) {
-  validateOptionObject(options, ["target"], "exportAccessibleData");
+  ownRecord(options, "exportAccessibleData options");
+  validateOptionObject(options, ["target", "format"], "exportAccessibleData");
+  options = Object.assign(Object.create(null), options);
+  if (options.format !== undefined && options.format !== "table" && options.format !== "items") throw new TypeError("Accessible data format must be table or items.");
   if (!(program instanceof ChartProgram)) throw new TypeError("exportAccessibleData requires an editable chart program.");
   if (program.actionStack.length !== 0) throw new Error("exportAccessibleData requires a closed action stack.");
   if (options.target !== undefined) validateUserId(options.target, "Accessible data target");
-  return cloneAndFreeze({ schemaVersion: 1, ...alternative(program, options.target) });
+  return cloneAndFreeze(options.format === "items"
+    ? { schemaVersion: 1, format: "items", ...accessibleItemViews(program, options.target) }
+    : { schemaVersion: 1, ...alternative(program, options.target) });
 }

@@ -744,7 +744,7 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 ### `ggaction/accessibility`
 
-`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 항목 모드는 `accessibilityItems.js`가 같은 native policy 및 Full의 고정 selection resolver를 읽어 중첩 namespace·선택 membership·논리적 visibility를 투영한다. DOM/renderer/Full action import 없이 bounded read-only adapter를 유지한다. 결과의 정확한 schema와 제한은 [ACCESSIBILITY](contract/current/ACCESSIBILITY.md)가 소유하며 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 공개 사용 예를 제공한다.
 
 ### `ggaction/inspection`
 

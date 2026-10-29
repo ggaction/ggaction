@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "accessible-items": { prefix: "accessibilityItems.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Accessible snapshots must preserve native item identity, scoped selection membership and bounded immutable traversal." },
   "screen-annotation": { prefix: "grammar/screenAnnotation.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit screen anchors must retain finite local Canvas coordinates and rowless identity without implicit data." },
   "mark-visibility": { prefix: "grammar/markVisibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Visibility decisions require bounded typed categories and explicit domain ownership." },
   "visibility-materialization": { prefix: "materialization/markVisibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Visibility must preserve user filtering, control mappings and exact restored ownership." },

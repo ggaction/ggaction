@@ -1402,5 +1402,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "accessible-items.mjs",
+    "cases": [
+      {
+        "id": "accessible-items/native-grain-and-basic",
+        "statements": 8
+      },
+      {
+        "id": "accessible-items/nested-scoped-membership",
+        "statements": 7
+      },
+      {
+        "id": "accessible-items/fresh-process-filter-and-selection",
+        "statements": 5
+      }
+    ]
   }
 ]

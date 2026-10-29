@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39. Status: development. Runtime source: d74d66a6a3266cc10ee81a1648af24777f60ba63. Release baseline: v0.0.13.
+Contract: sha256:53f77c387952ba95d3e61011e8f9e0223db34a4334141389e61b42a8e4e7cdde. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/d74d66a6a3266cc10ee81a1648af24777f60ba63/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10294,10 +10294,10 @@ remain unchanged.
 
 ## Accessible data alternatives
 
-`exportAccessibleData(program, { target? })` from `ggaction/accessibility` works in
+`exportAccessibleData(program, { format?, target? })` from `ggaction/accessibility` works in
 Browser and Node with Full or Basic editable programs. It returns a deeply frozen
 `{ schemaVersion: 1, title, views }` without changing the program or its trace.
-`title` is the semantic title string or `null`.
+`title` is the semantic title string or `null`. Omit `format` or use `format: "table"` for this table schema.
 
 > **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -10354,6 +10354,56 @@ The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
 DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
+
+### Native item alternatives
+
+Use `format: "items"` for stable logical identities and current selection state.
+The result is `{schemaVersion:1,format:"items",title,views}`. Each view is
+`{kind:"items",ownerId,markType,childPath,items}`. Unlike table mode, these views
+are flat: composition child order first, then each leaf's semantic owner order.
+An empty `childPath` identifies the root. Repeated mark and selection names remain
+local to their exact child path.
+
+Each item contains its opaque `key`, `component`, `markType`, optional native
+`role`, final `fields` and `channels`, `selectedBy` selection IDs, and logical
+`visible` flag. Composite components share their stable owner view. Attached and
+standalone Text use the existing native Text items in this mode. A path remains
+one native series item rather than becoming a row per source observation.
+
+> **Executable complete.** Use an ES module. The example prints native aggregate values and their named selection membership.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas().createData({ values: [
+  { group: "A", value: 2 }, { group: "A", value: 4 }, { group: "B", value: 6 }
+] }).createBarPlot({ id: "bars", x: "group",
+  y: { field: "value", aggregate: "mean" }, guides: false })
+  .selectMarks({ id: "chosen", target: "bars", field: "group", op: "eq", value: "A" });
+const alternative = exportAccessibleData(program, { format: "items", target: "bars" });
+console.log(alternative.views[0].items.map(item => ({
+  group: item.channels.x, value: item.channels.y2, selectedBy: item.selectedBy
+})));
+// [{group:"A",value:3,selectedBy:["chosen"]},{group:"B",value:6,selectedBy:[]}]
+```
+
+`selectedBy` uses the native stored selection results. Linked composite assignments
+report the original authored selection ID. The exporter does not infer an absent
+assignment from another component. Optional `representationKeys` retain scoped
+logical aliases, for example when a geographic level represents finer features.
+Optional hierarchy `navigation` contains native node keys for `key`, `parent`,
+`firstChild`, `previousSibling`, `nextSibling` and `root`, with null for absent
+links. These keys are local to the view's child path and component; they are not
+graphic item keys.
+
+Native filters remove items. Hierarchy focus can retain hidden logical nodes with
+`visible:false`. This flag describes native logical eligibility and does not
+measure clipping, opacity or the current animation frame. Use exact current-frame
+interaction results when deciding which rendered targets can receive focus.
+Item mode rejects exports exceeding 100,000 items or 10,000,000 cumulative work
+units; it never returns partial output. Both formats reject accessor options.
+Re-export after edits and selection changes, and use DOM `textContent` for values.
 
 ## Explicit whole-glyph opacity
 
@@ -35755,7 +35805,37 @@ export interface AccessibleData {
   readonly title: string | null;
   readonly views: readonly AccessibleView[];
 }
-export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options?: { readonly target?: string }): AccessibleData;
+
+/** One final native logical item. Visibility does not infer opacity or clipping. */
+export interface AccessibleItem {
+  readonly key: string;
+  readonly component: string;
+  readonly markType: string;
+  readonly role?: string;
+  readonly fields: Readonly<Record<string, unknown>>;
+  readonly channels: Readonly<Record<string, unknown>>;
+  readonly selectedBy: readonly string[];
+  readonly visible: boolean;
+  readonly representationKeys?: readonly string[];
+  /** Native hierarchy node keys, local to this view's childPath and component. */
+  readonly navigation?: Readonly<Record<"key" | "parent" | "firstChild" | "previousSibling" | "nextSibling" | "root", string | null>>;
+}
+export interface AccessibleItemView {
+  readonly kind: "items";
+  readonly ownerId: string;
+  readonly markType: string;
+  readonly childPath: readonly string[];
+  readonly items: readonly AccessibleItem[];
+}
+export interface AccessibleItemData {
+  readonly schemaVersion: 1;
+  readonly format: "items";
+  readonly title: string | null;
+  readonly views: readonly AccessibleItemView[];
+}
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options: { readonly format: "items"; readonly target?: string }): AccessibleItemData;
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options?: { readonly format?: "table"; readonly target?: string }): AccessibleData;
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options: { readonly format?: "table" | "items"; readonly target?: string }): AccessibleData | AccessibleItemData;
 ```
 
 #### `ggaction/inspection`
@@ -50469,12 +50549,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d74d66a6a3266cc10ee81a1648af24777f60ba63/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53557,9 +53637,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6a6d0756a752ada6f1906527c8e2b0962c9f3ab1a3303d70d5e804241070ea39` |
+| Contract fingerprint | `sha256:53f77c387952ba95d3e61011e8f9e0223db34a4334141389e61b42a8e4e7cdde` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `d74d66a6a3266cc10ee81a1648af24777f60ba63` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |
