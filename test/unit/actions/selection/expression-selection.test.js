@@ -151,3 +151,16 @@ test("removing an expression selection releases its parameter dependency and pre
   assert.deepEqual(ids(q, "all"), ["a", "b", "c"]);
   assert.deepEqual(ids(p), ["b", "c"]);
 });
+
+test("derived-data edits preflight unconsumed AST selections against the resulting final item fields", () => {
+  const p = chart().createCanvas().createData({ id: "rows", values: rows, keyField: "id" })
+    .createComputedData({ id: "scores", as: "score", expression: expression(field("x")) })
+    .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+    .selectMarks({ id: "picked", where: expression(binary("gt", field("score"), literal(1))) });
+  const before = serializeProgram(p), trace = p.trace;
+  assert.throws(() => p.editComputedData({ target: "scores", expression: expression(literal("word")), dependents: "recompute" }), /matching scalar types/);
+  assert.throws(() => p.reviseData({ source: "rows", id: "bad", values: rows.map(row => ({ ...row, x: "word" })) }));
+  assert.equal(serializeProgram(p), before); assert.equal(p.trace, trace);
+  const q = p.editComputedData({ target: "scores", expression: expression(binary("subtract", field("x"), literal(1))), dependents: "recompute" });
+  assert.deepEqual(ids(q), ["c"]);
+});

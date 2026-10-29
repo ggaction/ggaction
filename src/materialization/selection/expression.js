@@ -25,6 +25,16 @@ export function validateSelectionExpressionConsumers(program, resourceIds) {
   }
 }
 
+export function validateSelectionExpressionTargets(program, targets) {
+  const changed = new Set(targets);
+  const expressions = new Set(program.semanticSpec.resources.filter(resource =>
+    resource.kind === "persistent-selection" && resource.options.mode === "predicate" &&
+    Object.hasOwn(resource.options.predicate, "where")).map(resource => resource.id));
+  const ids = Object.values(program.materializationConfigs.selections ?? {}).filter(definition =>
+    changed.has(definition.target) && expressions.has(definition.resource.id)).map(definition => definition.resource.id);
+  validateSelectionExpressionConsumers(program, ids);
+}
+
 export function selectionExpressionInputs(program, selector) {
   if (!Object.hasOwn(selector, "where")) return [];
   return inspectPredicateExpression(selector.where).parameters.map(id => {

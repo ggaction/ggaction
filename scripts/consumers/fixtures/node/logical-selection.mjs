@@ -28,6 +28,14 @@ export const cases=[
   assert.deepEqual(getMarkItems(expressionEdit,{target:"points"}).filter(i=>i.properties.fill==="red").map(i=>i.fields.id),["b"]);
   assert.deepEqual(getMarkItems(expressionEdit,{target:"labels"}).map(i=>i.fields.id),["b"]);
   assert.equal(expressionEdit.semanticSpec.resources.find(r=>r.id==="picked").revision,1);
+  const exp=root=>({version:2,registry:"standard@1",root});
+  const derived=chart().createCanvas().createData({id:"raw",values:[{x:1,y:2}]})
+   .createComputedData({id:"scores",as:"score",expression:exp({type:"field",name:"x"})})
+   .createScatterPlot({id:"points",x:"x",y:"y",guides:false})
+   .selectMarks({id:"picked",where:exp({type:"binary",op:"gt",left:{type:"field",name:"score"},right:{type:"literal",value:0}})});
+  const old=serializeProgram(derived);
+  assert.throws(()=>derived.editComputedData({target:"scores",expression:exp({type:"literal",value:"word"}),dependents:"recompute"}),/matching scalar types/);
+  assert.equal(serializeProgram(derived),old);
   session.updateProgram(r);session.destroy();
   assert.equal(renderToSVG(deserializeProgram(serializeProgram(r))),renderToSVG(r));
   assert.equal(q.semanticSpec.resources[0].revision,0);assert.equal(r.semanticSpec.resources[0].revision,1);

@@ -105,3 +105,9 @@ diagnostic WeakMap accessor 오용이었다. 그 다음 bar fixture가 기존 po
 독립 bar program으로 바꿔 집계 grain 반례를 명시했다. 이 최초 로그와 최종 검증을 별도 evidence로 보존한다.
 현재 새 owner 두 개는100/100/100이다. 최종 installed/docs/source qualification은 진행 중이다.
 C/D, linked target resolve·nearest·orphan/drop·session command 및 STEP077은 완료하지 않았다.
+
+마감 중 실제 파생 데이터 edit 반례를 추가 발견했다. 시각 소비자가 없는 AST 선택이 읽는 computed field를
+number→string으로 바꾸면 edit 자체는 성공하고 이후 선택 조회만 실패했다. 기존 reviseData는 final selection을
+검증하므로 정상 거부했다. Shared derived revision 종료에도 같은 private final-item resolver로 영향받는 AST
+선택을 검사하도록 연결해 원자 실패와 유효한 변경 후 membership을 검증했다. 최초 source 후보 be214bab1와
+그 tar는 최종 qualification과 구분한다.
