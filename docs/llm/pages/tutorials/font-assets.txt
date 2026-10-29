@@ -1,13 +1,13 @@
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-paints/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -18,7 +18,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text

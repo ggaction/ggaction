@@ -9,9 +9,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0aeef546fa270376dff6a58e0c25680b13739e198acffce60dc47f327d3e0447` |
-| Example and dataset source | `codex/roadmap9-paints` |
-| Runtime source commit | `current` |
+| Contract fingerprint | `sha256:8cc8e3d088d01ef8075c9a9cd21992088afa58686cbefe3bc324f15c96c4c4e0` |
+| Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
+| Runtime source commit | `04137a355524b82ab225d8ab8743bcb7d49bc6d2` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |

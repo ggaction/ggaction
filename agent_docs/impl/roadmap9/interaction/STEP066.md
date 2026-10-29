@@ -177,3 +177,11 @@ InteractionProgram이 Basic도 포함하므로 Full guard를 fixture에 추가�
 Docs55의 최초3실패는 검색크기2와 아직mergecommit에없는example source-link1이다. 검색실측으로
 수리하고 source commit 뒤 provenance를 고정해 해당 링크를 검증한다. 전체coverage/normal/077
 완료를 주장하지 않으며 native camera gesture·player·최종matrix는 후행으로 유지한다.
+
+합산 source `04137a355`를 원격에 고정했고 최종 tar `10758e56…`의 Node20/22/24 각각
+runtime24 + strict types + five-entry bundle 검증이 종료0이다. 이전 tar `5313f0df…`는
+소스 말미 공백 한 바이트 제거 전이며 archive 비교에서 다른1058파일은 byte-identical이다.
+현재 tar를 독립 재검증하여 그 차이를 숨기지 않았다. Source-pinned docs55, built172pages/
+1535LLM, interaction/geometry/labels 세 경로×네 폭의 overflow0/Axe0도 통과했다.
+원본 실패와 두 archive, 정확 명령·측정·그림은
+[camera merge qualification](camera-merge-evidence/qualification.json)에 보존한다.

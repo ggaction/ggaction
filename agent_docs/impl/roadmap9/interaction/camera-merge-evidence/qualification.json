@@ -1,0 +1,506 @@
+{
+  "sourceCommit": "04137a355524b82ab225d8ab8743bcb7d49bc6d2",
+  "parents": [
+    "5f6c94a2398e5823a5b483d124914945c813b3a1",
+    "295283729c4526b12bc8be7512ecb79c418a3f27"
+  ],
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Merge stable native Geo camera/labels with interaction preparation, resize observation and screen annotation. No camera gesture API or new rendering state.",
+  "runtimeAndTypesFingerprint": "b0de950598addf250e2daf40dd782c0055b9ed0f5b5d26635ba00bb7949f9fba",
+  "checks": {
+    "focused": 330,
+    "viewportMixed": {
+      "total": 5,
+      "new": 2
+    },
+    "realistic": 32,
+    "browser": {
+      "total": 4,
+      "geo": 3,
+      "resizeObserver": 1,
+      "geoDpr": [
+        1,
+        2
+      ],
+      "resizeDpr": 2
+    },
+    "docsAndBoundaries": 55,
+    "manifestPolicy": 2,
+    "built": {
+      "pages": 172,
+      "llmArtifacts": 1535,
+      "routes": [
+        "api/interaction/",
+        "api/geometry/",
+        "api/marks/labels/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "manualInspection": "Geometry320 and geographic labels1440 inspected: readable prose, contained horizontally scrolling code/table, correct linked source example."
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "10758e565d89c56d8177be1f3ce8cdbad4de8f4999f034b640a1220b0b3201e1",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-label-screen-history PASS",
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS",
+          "geographic-camera/explicit-native-view-lifecycle PASS",
+          "geographic-camera/fresh-process-restored-native-navigation PASS",
+          "geographic-camera/four-renderer-anchored-view-parity PASS",
+          "geographic-labels/native-source-and-selection PASS",
+          "geographic-labels/offline-restored-source-revision PASS",
+          "geographic-labels/four-renderer-native-text-parity PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 732356
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 386042
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363111,
+            "gzipBytes": 116619
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "10758e565d89c56d8177be1f3ce8cdbad4de8f4999f034b640a1220b0b3201e1",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-label-screen-history PASS",
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS",
+          "geographic-camera/explicit-native-view-lifecycle PASS",
+          "geographic-camera/fresh-process-restored-native-navigation PASS",
+          "geographic-camera/four-renderer-anchored-view-parity PASS",
+          "geographic-labels/native-source-and-selection PASS",
+          "geographic-labels/offline-restored-source-revision PASS",
+          "geographic-labels/four-renderer-native-text-parity PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 730834
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 384958
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363111,
+            "gzipBytes": 116133
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 43886
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "10758e565d89c56d8177be1f3ce8cdbad4de8f4999f034b640a1220b0b3201e1",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-label-screen-history PASS",
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS",
+          "geographic-camera/explicit-native-view-lifecycle PASS",
+          "geographic-camera/fresh-process-restored-native-navigation PASS",
+          "geographic-camera/four-renderer-anchored-view-parity PASS",
+          "geographic-labels/native-source-and-selection PASS",
+          "geographic-labels/offline-restored-source-revision PASS",
+          "geographic-labels/four-renderer-native-text-parity PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 973,
+            "minifiedBytes": 2557066,
+            "gzipBytes": 732356
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 567,
+            "minifiedBytes": 1323164,
+            "gzipBytes": 386042
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363111,
+            "gzipBytes": 116619
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44045
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1059,
+    "packedBytes": 1500878,
+    "unpackedBytes": 6826645,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-camera-merge-10758e56.tgz",
+    "sha1": "71c53ec9d02d6d94a4983fd94a025359cfa950ae",
+    "sha256": "10758e565d89c56d8177be1f3ce8cdbad4de8f4999f034b640a1220b0b3201e1"
+  },
+  "previousArtifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1059,
+    "packedBytes": 1500878,
+    "unpackedBytes": 6826646,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-camera-merge-5313f0df.tgz",
+    "sha1": "7619fb24e758f4c31fddd32be8829009e28ca307",
+    "sha256": "5313f0dfdeb21910d6bb216ba03d816ebde67d7b841c88fd6a989f4f2175f3ec"
+  },
+  "artifactDifference": {
+    "previous": "5313f0dfdeb21910d6bb216ba03d816ebde67d7b841c88fd6a989f4f2175f3ec",
+    "current": "10758e565d89c56d8177be1f3ce8cdbad4de8f4999f034b640a1220b0b3201e1",
+    "changed": [
+      "package/src/materialization/geo/labelAnchors.js"
+    ],
+    "onlyTrailingNewlineRemoved": true,
+    "otherEntriesByteIdentical": 1058
+  },
+  "limits": {
+    "entries": 1059,
+    "packedBytes": 1501000,
+    "unpackedBytes": 6827000,
+    "fullGzip": 732400,
+    "basicGzip": 386100,
+    "interactionGzip": 116700,
+    "graphGzip": 44100,
+    "searchBytes": 1036900
+  },
+  "preservedFailures": [
+    "Initial merged package exceeded previous1059-vs1049 entry cap; exact measurement sets the bounded combined limit.",
+    "Original installed Node20 harness omitted canonical optional peer installation; interaction18 passed before Geo Canvas peer failed. Fixed harness uses testOptionalDependencies.",
+    "Next original archive runtime24 passed but strict types required a Full guard for navigateProjection on InteractionProgram including Basic; fixture guard fixed without widening Basic.",
+    "Original archive Node20 runtime24+strict types+5measurements passed then old Full bundle cap failed; same measurements rechecked and Node22/24 completed.",
+    "Initial docs55 had search-size2 and incoming uncommitted source-link1 failures; measured cap and source-pinned provenance produce55passes.",
+    "Source commit removed one extra EOF newline in labelAnchors.js after original archive qualification. All other1058files byteidentical. New exact archive reruns24runtime+strict types+5bundles on eachNode20/22/24."
+  ],
+  "reusedEvidence": "Source behavior unchanged after focused330 and mixed2. Whitespace-only source change explicitly compared at archive level and final archive independently requalified. No fullnormal, fullcoverage or fullinstalled sweep claimed.",
+  "remaining": [
+    "setViewport exclusive native operation branch and camera gestures/history",
+    "Public animation player/current-frame preparation integration",
+    "Final AT32/AT40/AT41 and STEP074\u2013077 combined qualification"
+  ],
+  "commands": {
+    "focused": "node --test test/unit/interaction-*.test.js test/unit/geo/{labels,camera-actions,encodings,conditional-encodings,encoding-lifecycle}.test.js test/contracts/{interaction-types,geo-camera-types,geo-mark-types,geo-label-boundaries,source-boundaries,test-discovery}.test.js",
+    "mixed": "node --test test/unit/interaction-viewport.test.js",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js contracts/realistic-geographic-camera.test.js with pinned cache",
+    "browser": "node --test --test-name-pattern=\"canonical observed resize|geographic (camera|labels|graticule-labels|conditional)\" test/browser/interaction-session.browser.js test/browser/geographic-marks.browser.js",
+    "installed": "Node20/22/24 node .artifacts/session-camera-merge-consumer.mjs using final10758e56 archive",
+    "docs": "docs:generate; source-pinned provenance/machine/llms; owning49+packageboundaries6; docs:build; test:docs:built; targeted3routes\u00d74width browser/Axe"
+  },
+  "evidenceFiles": [
+    {
+      "path": "session-camera-merge-artifact-diff.json.gz",
+      "sha256": "47441cf3b5a3a298e09bf2c9af940937c6f5f8dd0b19073f92d5e3885a4d3763"
+    },
+    {
+      "path": "session-camera-merge-browser.log.gz",
+      "sha256": "3ddb31af74b80379933447e50a6a4cd4d435483fb5d26222b42eb4a2447a5f33"
+    },
+    {
+      "path": "session-camera-merge-build.log.gz",
+      "sha256": "f17f6dc35dde0f4bdc250d1046ca7bc53741e8707d29b7efdd11a4641d697702"
+    },
+    {
+      "path": "session-camera-merge-built.log.gz",
+      "sha256": "6fe65601e0b9ee3f1d9ce918cb8faea92d2d8d8b14fb39721c4047b7e1fccb43"
+    },
+    {
+      "path": "session-camera-merge-cap-recheck.mjs.gz",
+      "sha256": "d07b4d97e94792f059a047c424581519d292e7a35ee836ea361f1dda604cb7d3"
+    },
+    {
+      "path": "session-camera-merge-cap-recheck20.log.gz",
+      "sha256": "8dab963454047c0a1a2645427ae74ed9244861a39483c853aa76e7c727b94732"
+    },
+    {
+      "path": "session-camera-merge-consumer-final20.log.gz",
+      "sha256": "25e90b823da54db29596e1895294a8d11114f1134113249807b94cdfe52d5a5f"
+    },
+    {
+      "path": "session-camera-merge-consumer-fixed20.log.gz",
+      "sha256": "4d977e0743df298b60d7392fb194a1f680a55802404b173434aa8f5253e02881"
+    },
+    {
+      "path": "session-camera-merge-consumer.mjs.gz",
+      "sha256": "10814c5d553481b86ee5884d927a7d0571d1382727f46aaf7d5b2447f6af5015"
+    },
+    {
+      "path": "session-camera-merge-consumer20.log.gz",
+      "sha256": "2886d80a2825eb57855cbe03bd1f5cf9d9c46c14147190fc77422f14fb819e14"
+    },
+    {
+      "path": "session-camera-merge-consumer22.log.gz",
+      "sha256": "abccb9a64d8e655bf28dd341edf509d09613ac0b8776d65b0f9d45cfd26c6a43"
+    },
+    {
+      "path": "session-camera-merge-consumer24.log.gz",
+      "sha256": "586d40329e1e4573fe847cbee77390ac8e518ef0b51472f3bf9b0251f2946c18"
+    },
+    {
+      "path": "session-camera-merge-cross.log.gz",
+      "sha256": "fad1594ab9b7050b9f5047fde7bf49f4e8cd254077ed11556ba0df68d097aaa0"
+    },
+    {
+      "path": "session-camera-merge-descriptors.log.gz",
+      "sha256": "eb429e5f0cc69194423f30ba671837db40b5fb5ae990338ba8de46fd7fec7abc"
+    },
+    {
+      "path": "session-camera-merge-doc-browser.log.gz",
+      "sha256": "feb7833793de6eb95ef5903d596cd10827ef471bf2c4dfeea5f30a9e729c28e3"
+    },
+    {
+      "path": "session-camera-merge-doc-browser.mjs.gz",
+      "sha256": "d7f448d9bb1d13aaa396e4db75770351db724b774ddedf694180c7d9fe503489"
+    },
+    {
+      "path": "session-camera-merge-docs-pinned.log.gz",
+      "sha256": "a2750a8963a1b989f8665e5f2a91a4e873a59fbfa2d26e3cdf40d0f293fc1d67"
+    },
+    {
+      "path": "session-camera-merge-docs.log.gz",
+      "sha256": "9e66e07fa82d66fe4227bf5646bc389802491772614398a4f2ec9eee1a0eb8df"
+    },
+    {
+      "path": "session-camera-merge-final-archive20.log.gz",
+      "sha256": "395abea9b92e26f305a720552738a9a9575071b9fc765f739838d37c85be0372"
+    },
+    {
+      "path": "session-camera-merge-final-archive22.log.gz",
+      "sha256": "649934a3edbc9f3ddf6381278ba08cff8bc9b891e32d928087b67f8abdc43684"
+    },
+    {
+      "path": "session-camera-merge-final-archive24.log.gz",
+      "sha256": "ab432719368638f2cab637ec7916e4d1b52df3405f40810752e7e81779652382"
+    },
+    {
+      "path": "session-camera-merge-fixed.json.gz",
+      "sha256": "7c9619ebaa7b0734552b4bf077d6c528bdb8c9b5b415bd22338f38ab891f8d3e"
+    },
+    {
+      "path": "session-camera-merge-focused.log.gz",
+      "sha256": "1a25fffece8d540c296b247af282e5a1d44063c7b1847878d17f2d08b6d571a2"
+    },
+    {
+      "path": "session-camera-merge-generation.log.gz",
+      "sha256": "35cd22d9dffa676de4187d6b3d6881006f58ecbbad40966683c72af19972d161"
+    },
+    {
+      "path": "session-camera-merge-manifest.log.gz",
+      "sha256": "a10f5364a24cb0cf9ef2ac73bb46e2c59d023ca71e709dc19d0769b95b51bc5e"
+    },
+    {
+      "path": "session-camera-merge-measure.json.gz",
+      "sha256": "8fcf5bcf13510e252b378452cd254b553785390930eef1f5ebc6b0bb56a08330"
+    },
+    {
+      "path": "session-camera-merge-measure.mjs.gz",
+      "sha256": "642c30cf3b0457a21b2894fd4e98f0ff599203bcb62b118c4222bedefe3863d8"
+    },
+    {
+      "path": "session-camera-merge-package-initial.log.gz",
+      "sha256": "49bc4f44f3228857837a611c7751479f0fbe841985aa03fffdce671ac7e61189"
+    },
+    {
+      "path": "session-camera-merge-package-recheck.log.gz",
+      "sha256": "5b8a65ad52050d70d4539bf742e688c662788d40f7cbc9d03652b6f581aaca1a"
+    },
+    {
+      "path": "session-camera-merge-package.log.gz",
+      "sha256": "4eebf6949d9beaf6989d400280f17c7ec19a4d5972d46ac1dbd1fe194afe61ed"
+    },
+    {
+      "path": "session-camera-merge-previous-fixed.json.gz",
+      "sha256": "cb308864cf66633f57a6ce0132ce3ac214176dc457504174bfa264d4327d8811"
+    },
+    {
+      "path": "session-camera-merge-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "session-camera-merge-qualify.py.gz",
+      "sha256": "37d7e084bd19a96197bd0cabae83a72d4d2b44540fd1782b7fc1e91029bcb3c9"
+    },
+    {
+      "path": "session-camera-merge-realistic.log.gz",
+      "sha256": "51ab0d5fabd6c66622b3dc92818e3df22ecd0821770f79ecf4084d3a40386e33"
+    },
+    {
+      "path": "api-geometry-1440.png",
+      "sha256": "108c0d9e123b1a47caab55db17d40637135ef61a245379607ceb4187ff0bb186"
+    },
+    {
+      "path": "api-geometry-320.png",
+      "sha256": "0e6933322f7ebf25ad8b49ba49642d1fc361744e86cb9673ea5d1098cca6a6e6"
+    },
+    {
+      "path": "api-geometry-390.png",
+      "sha256": "8d1d5c9b94d9306b43d177d4f1eb724fe2b1d064c7b13de161d7da1fadf52f84"
+    },
+    {
+      "path": "api-geometry-768.png",
+      "sha256": "33da6e9819c672baf594fe38f5dab427729093a3109301633dcf887d59e276a5"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "be73adb56143a6a0bdcf0f7bbf08f9a2c9e6d634bb32e092a75b09ae74c72d46"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "f9397d5fc74ccb710221c6efcd6853f9c741e5686505fc36c541dff671f5ff98"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "326ca29ef700e732b7ce2791da2bcc85c89a86af2e841796a6bb08b345f58984"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "6dab4f23b76fddd5161939b7380b75a407bc9d2ebb229dd889009ad6836f79c7"
+    },
+    {
+      "path": "api-marks-labels-1440.png",
+      "sha256": "4ce1f8d4d4f7ba4d1b6f64b06991f46409abe1f5dc38563e2901e5ee84ed3d6d"
+    },
+    {
+      "path": "api-marks-labels-320.png",
+      "sha256": "1ddc94f53b1cb619c3b98a81d341bd5e4334a57a89c43286ffa643a0e0376861"
+    },
+    {
+      "path": "api-marks-labels-390.png",
+      "sha256": "d233a9f05e22e39fd31ae682cfa278c15252f634c9a25ca3d811df1ced4647a3"
+    },
+    {
+      "path": "api-marks-labels-768.png",
+      "sha256": "1f196e042b9969e4a4b642e4136a334f5b1375184821fff667056450c7af85f4"
+    }
+  ]
+}
