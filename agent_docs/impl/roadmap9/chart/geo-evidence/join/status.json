@@ -1,5 +1,6 @@
 {
   "sourceBase": "7ee7821f9",
+  "sourceCommit": "8f19d5a42",
   "scope": "Typed geographic joins: exact geometry/table correspondence, immutable revision closure, field inspection and offline restoration",
   "approval": "AUTHORIZATION.json remainingApproval",
   "checks": {
@@ -69,6 +70,11 @@
       "fail": 3
     },
     "docs-2": {
+      "tests": 197,
+      "pass": 197,
+      "fail": 0
+    },
+    "docs-postcommit": {
       "tests": 197,
       "pass": 197,
       "fail": 0

@@ -444,3 +444,7 @@ Node20/22/24에서 각 runtime 3개, strict Full/Basic 타입, runnable docs 1�
 [geo-evidence/join/status.json](./geo-evidence/join/status.json)이다. 전체 unit/global coverage나
 전체 installed corpus를 재실행한 것으로 요약하지 않는다. Source commit 후 provenance만
 동기화하는 최종 proof는 별도로 기록한다.
+
+Join source `8f19d5a42`의 postcommit 문서 197/197, built 172페이지/1,511 machine artifacts와
+전체 페이지 320/390/768px 검증이 완료됐다. 런타임과 1,020 packed inputs는 검증한 tar와
+변경 없이 유지했다. 이 후속 기록은 provenance와 증거만 갱신하며 LOD 구현은 다음 개념이다.

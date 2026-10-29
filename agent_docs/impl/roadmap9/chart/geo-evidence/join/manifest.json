@@ -55,12 +55,27 @@
     "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
   },
   {
+    "file": "docs-browser-postcommit.log.gz",
+    "sourceBytes": 79,
+    "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+  },
+  {
     "file": "docs-build-first.log.gz",
     "sourceBytes": 418,
     "sourceSha256": "d018b75ddb7445bff2ce87fcf6d23b7b6615517327e27be7b0ff3b65bd976f7b"
   },
   {
+    "file": "docs-build-postcommit.log.gz",
+    "sourceBytes": 420,
+    "sourceSha256": "e824b3915270a76afb937da4d90a561a9f466c233a7d8063687d2417a3dd8181"
+  },
+  {
     "file": "docs-built-first.log.gz",
+    "sourceBytes": 102,
+    "sourceSha256": "5f00ed623b3e7588c68cc24449e668837b3ea763524cdcab4f9b992fe88eb116"
+  },
+  {
+    "file": "docs-built-postcommit.log.gz",
     "sourceBytes": 102,
     "sourceSha256": "5f00ed623b3e7588c68cc24449e668837b3ea763524cdcab4f9b992fe88eb116"
   },
@@ -70,14 +85,24 @@
     "sourceSha256": "0ca6edd96648b56cb8f43c0f3424aad5e4a2def7f466f24b535c25126660d8d9"
   },
   {
+    "file": "docs-postcommit.log.gz",
+    "sourceBytes": 46078,
+    "sourceSha256": "a616c91e7242380891baf4ba4d11c91d7908fc5b8b90b43cd9728a709b45b407"
+  },
+  {
     "file": "docs-preflight.log.gz",
     "sourceBytes": 257,
     "sourceSha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
   },
   {
-    "file": "evidence-record.log.gz",
+    "file": "evidence-record-final.log.gz",
     "sourceBytes": 0,
     "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "file": "evidence-record.log.gz",
+    "sourceBytes": 1321,
+    "sourceSha256": "62d19e03ad69b2b463ab89fbfbc3f27129c0a5bd0b1b28484018e79fc3e0891e"
   },
   {
     "file": "generate-1.log.gz",
@@ -101,6 +126,11 @@
   },
   {
     "file": "generate-5.log.gz",
+    "sourceBytes": 12239,
+    "sourceSha256": "1c48398e8b56e3dab9445bfa709fbb7dee99499902995d9d732f0174a6cc1590"
+  },
+  {
+    "file": "generate-postcommit.log.gz",
     "sourceBytes": 12239,
     "sourceSha256": "1c48398e8b56e3dab9445bfa709fbb7dee99499902995d9d732f0174a6cc1590"
   },
@@ -255,6 +285,16 @@
     "sourceSha256": "964de24e2a8a506262cce46681e0c8a3a70e2ab906cb5045b208e3750a25362f"
   },
   {
+    "file": "source-commit.log.gz",
+    "sourceBytes": 6856,
+    "sourceSha256": "e3113229fb043ebe325c0352efc537cd76780ecf5f971f39b63d94a4cb8da296"
+  },
+  {
+    "file": "source-push.log.gz",
+    "sourceBytes": 331,
+    "sourceSha256": "1bc785b8c76c2cfe76fad6fe2b2837cbacab11abe2fc340079bd1a41e9780f98"
+  },
+  {
     "file": "types-boundaries-1.log.gz",
     "sourceBytes": 2796,
     "sourceSha256": "7803822a13bb4ccc5ba3b2512e5222d611f7370e22b70a04db9d8c181d0431b2"
@@ -286,7 +326,7 @@
   },
   {
     "file": "record-join-evidence.mjs.gz",
-    "sourceBytes": 4777,
-    "sourceSha256": "9754168b566195665a780e540eecd175e1ff7ea401e6fa5b5beff76d29c11ef5"
+    "sourceBytes": 4820,
+    "sourceSha256": "240ce6fc9ece9f356661ba58ec217255cb975c407d6476fd035ff868b53117b6"
   }
 ]
