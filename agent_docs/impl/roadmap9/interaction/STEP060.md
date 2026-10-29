@@ -12,6 +12,7 @@
 - [x] D: 기존 setParameter host controls와 context semantic targets
 - [ ] annotation anchor/offset 편집
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
+- [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [ ] node drag, geo navigation 및 일반 session keyboard/focus·coordinate morph
 - [ ] AT35/38/65/80 consumer matrix와 STEP074/077 전달
 
@@ -380,3 +381,42 @@ Source commit 뒤 provenance를 고정해 닫는다. Built172pages/1509LLM과 �
 Geo merge source `0e8c8c093` push 후 source-pinned docs50과 built172pages/1509LLM을 통과해
 incoming example source-link를 닫았다. Runtime/타입·최종 archive는 그대로이며 source provenance만
 고정했으므로 앞선 네 폭Axe/화면을 재사용한다.
+
+## E2 projection viewport 직접 명령 최소 계약
+
+전체 승인을 재사용하여 `dispatch({type:"setViewport",target,payload,transactionId?,origin?,causeTransactionId?})`를
+기존 Full `editProjection`에 연결한다. Target은 명시 projection ID 또는 기존 scoped target이며 mark/coordinate를
+보고 임의로 projection을 선택하지 않는다. Payload는 nonempty `{scalePx?,translatePx?,centerDeg?,rotateDeg?}`이며
+값·타입별 applicability·fit 해제/유지·exact revision과 consumer rematerialization은 기존 projection owner가 검증한다.
+Native type/fit/clip/precision이나 geometry/LOD zoom을 이 명령에서 변경·추론하지 않는다.
+
+Pixel 값은 native projection 출력 좌표로, child-local composition/element 변환 이전의 CSS logical px다.
+Scale은 절대 scalePx이고 zoom ratio가 아니다. Degree 값은 native spherical parameters다. Identity나 복합 projection에
+inapplicable인 angular 옵션은 native 오류이며 Basic도 editor 부재로 거부한다. 성공은 기존 candidate→selection
+reconcile→linked closure→current hit frame→commit1/settled1을 따르고 실패 시 원 program/trace/frame/revision을 유지한다.
+
+Host button/keyboard control과 headless 명령을 먼저 연결한다. Pointer pan/pinch·camera scene coupling·LOD의 명시 zoom
+binding·일반 focus/history/AT32/65 전체는 별도 후행 의무다. Geo LOD 동료와 projection/geometry owner를 수정하지 않는
+책임 경계를 확인했으며 LOD representation mapping은 그 소유자가 구현한다.
+
+### E2 검증 체크포인트
+
+Native identity literal affine, geographic center/rotation, fitted transform detach와 angular retain,
+selection·geometry identity·codec·stale frame·nested sibling·잘못된 입력 원자성을 검증했다.
+집중167/167과 변경 owner100/99.21/100, strict native/type4, source/catalog/discovery39,
+package/vocabulary/cards21, 실제5datasets×3recipes+inventory16이 통과했다.
+
+Canonical host button 예제로 Enter/Space/pointer의 동일 Canvas/SVG 좌표와 실제 point ink를 검사했다.
+같은 tar `f3dc5e71`에서 Node20/22/24 각각 runtime7·strictTS·5bundles가 통과했고,
+설치된 동일 공개 문서 예제도 keyboard/pointer/cleanup을 통과했다. Node20 packed1,459,127와
+unpacked6,637,912/1024entries에 최소 cap1,460,000을 적용했다. Browser bundle 상한은 그대로다.
+
+최초 docs49/50은 search1,013,771이 이전 cap1,013,200을 넘은 실패이며 보존했다.
+최소 cap1,013,800 적용 후50/50, built172pages/1509LLM,320/390/768/1440px Axe0이다.
+[실행 기록](viewport-evidence/qualification.json)에 원본 로그·정확 archive·커버리지·명령을 함께 둔다.
+Renderer/Geo projection owner는 변경하지 않아 기존 네 backend 증거를 재사용하며 전수 normal/coverage를
+재실행했다고 주장하지 않는다. Pointer pan/pinch, cursor anchoring, camera/LOD 결합, node drag,
+annotation, 일반 focus/history/coordinate morph 및 전체060/074/077은 계속 남아 있다.
+
+E2 source `c9d3bccca`를 push한 뒤 provenance를 고정해 docs50과 built172pages/1509LLM을
+다시 통과했다. Runtime·타입·동일 최종 tar와 시각입력은 그대로라 네 폭Axe/화면을 재사용한다.

@@ -1,4 +1,4 @@
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -195,6 +195,8 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
 );
+/** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
+export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
@@ -216,6 +218,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: { readonly focus: HierarchyNodeTarget | null };
 } | {
+  readonly type: 'setViewport';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionViewportPayload;
+} | {
   readonly type: 'setVisibility';
   readonly target: InteractionTarget;
   readonly payload: InteractionVisibilityPayload;
@@ -225,7 +231,7 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;

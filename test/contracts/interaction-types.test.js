@@ -51,6 +51,14 @@ session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
 session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:{key:1}}});
 session.dispatch({type:'focusHierarchy',target:{childPath:['left'],id:'partition'},payload:{focus:{path:['A',2]}}});
 session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null}});
+session.dispatch({type:'setViewport',target:'map',payload:{scalePx:180,translatePx:[100,100]}});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{centerDeg:[10,0],rotateDeg:[5,0,0]}});
+// @ts-expect-error viewport commands preserve the projection type
+session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
+// @ts-expect-error zoom is not an implicit scale ratio
+session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+// @ts-expect-error an absolute translation requires two coordinates
+session.dispatch({type:'setViewport',target:'map',payload:{translatePx:[1]}});
 // @ts-expect-error focus is explicit and cannot be omitted
 session.dispatch({type:'focusHierarchy',target:'partition',payload:{}});
 // @ts-expect-error the focus command does not edit styles or coordinate mappings

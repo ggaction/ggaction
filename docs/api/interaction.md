@@ -865,3 +865,68 @@ const disposeFocus = () => {
 Native buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
 partition's explicit `{childPath,id}` target. This command does not change Tree or Treemap views, create
 an animation, or infer a focused keyboard item.
+
+
+## Adjust a geographic view from host controls
+
+Send `setViewport` to the explicit projection resource. `scalePx` is an absolute projection scale;
+`translatePx` is in logical output pixels before composition or host transforms. Geographic projections
+also accept their native `centerDeg` and `rotateDeg` options. The command uses the existing projection
+edit rules: a scale or translation patch detaches a fitted projection, while an angular patch retains
+and recomputes its fit. It preserves the geometry resource and feature selection identities.
+
+This browser module expects `<canvas id="chart" aria-label="Map points"></canvas>`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const nav = document.createElement("nav");
+nav.setAttribute("aria-label", "Map navigation");
+nav.innerHTML = '<button id="map-right">Pan right</button> <button id="map-zoom">Zoom in</button> <button id="map-home">Original view</button> <output aria-live="polite"></output>';
+canvas.before(nav);
+const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [["a", 60, 70], ["b", 120, 110]].map(([id, x, y]) => ({
+      type: "Feature", id, properties: { name: id }, geometry: { type: "Point", coordinates: [x, y] }
+    }))
+  } })
+  .createProjection({ id: "map", type: "identity", scalePx: 1, translatePx: [0, 0] })
+  .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 });
+const viewportSession = createInteractionSession({ program, bindings: [] });
+const transform = current => {
+  const projection = current.semanticSpec.resources.find(resource => resource.kind === "projection" && resource.id === "map");
+  return { ...projection.options, ...projection.result };
+};
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const { scalePx, translatePx } = transform(current);
+  nav.querySelector("output").textContent = `Scale ${scalePx}; translation ${translatePx.join(", ")}`;
+};
+const move = payload => viewportSession.dispatch({ type: "setViewport", target: "map", payload, origin: "user" });
+const pan = () => { const { translatePx: [x, y] } = transform(viewportSession.getState().program); move({ translatePx: [x + 20, y] }); };
+const zoom = () => move({ scalePx: transform(viewportSession.getState().program).scalePx * 2 });
+const home = () => move({ scalePx: 1, translatePx: [0, 0] });
+const controls = [["#map-right", pan], ["#map-zoom", zoom], ["#map-home", home]];
+for (const [selector, handler] of controls) nav.querySelector(selector).addEventListener("click", handler);
+const unsubscribe = viewportSession.subscribe(event => {
+  if (event.type === "program" || ("phase" in event && event.phase === "commit")) draw(event.state.program);
+});
+draw(program);
+const disposeViewport = () => {
+  for (const [selector, handler] of controls) nav.querySelector(selector).removeEventListener("click", handler);
+  unsubscribe(); viewportSession.destroy(); nav.remove();
+};
+```
+
+For a projection in a composed child, use `{childPath,id}`. The nonempty patch accepts only the four
+transform fields above; it does not change projection type, clipping, geometry or level of detail.
+Native buttons keep focus and their usual keyboard behavior. This direct command does not install
+pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.

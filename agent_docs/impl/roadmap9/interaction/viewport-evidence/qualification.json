@@ -1,0 +1,408 @@
+{
+  "base": "2b12743ec7c6ff6ad2ae37081f0e4e989e41658b",
+  "sourceCommit": "c9d3bccca07570ed8c02453d349283cbb9adc5e1",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Full-only setViewport direct command invokes native editProjection with explicit projection target and nonempty scalePx/translatePx/centerDeg/rotateDeg patch. Host pointer and keyboard buttons share immutable commit/frame lifecycle.",
+  "runtimeAndTypesFingerprint": "fe04a47e0bc78a4e918e6b08bbc11fd3015e11acb5b75532d0af93367b2cf119",
+  "checks": {
+    "focusedInteraction": 167,
+    "ownerCoverage": {
+      "file": "src/interaction/selection.js",
+      "lines": 100,
+      "branches": 99.21,
+      "functions": 100
+    },
+    "nativeAndTypes": 4,
+    "sourceTypesDiscoveryCatalog": 39,
+    "packageBoundariesVocabularyCards": 21,
+    "realistic": {
+      "datasets": 5,
+      "recipes": 3,
+      "tests": 16
+    },
+    "browser": 1,
+    "docs": {
+      "initial": {
+        "pass": 49,
+        "total": 50,
+        "failure": "Search bytes1013771 exceeded the old1013200 cap; bounded cap1013800 applied, owning checks50/50 pass."
+      },
+      "final": 50,
+      "builtPages": 172,
+      "llmArtifacts": 1509,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "sourcePinned": 50,
+      "sourcePinnedBuiltPages": 172
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "f3dc5e71f50a442ea95818d42f1fa4cfdb205e019705fd7ef61bc6b651e700d6",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 716101
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 381341
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344661,
+            "gzipBytes": 112073
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "f3dc5e71f50a442ea95818d42f1fa4cfdb205e019705fd7ef61bc6b651e700d6",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 714444
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 380491
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344661,
+            "gzipBytes": 111378
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "f3dc5e71f50a442ea95818d42f1fa4cfdb205e019705fd7ef61bc6b651e700d6",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 716101
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 381341
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344661,
+            "gzipBytes": 112073
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ],
+    "installedBrowserExample": {
+      "node": "v22.23.1",
+      "archive": "f3dc5e71f50a442ea95818d42f1fa4cfdb205e019705fd7ef61bc6b651e700d6",
+      "id": "interaction-viewport",
+      "sourceFree": true,
+      "viewportRevision": 3,
+      "transform": {
+        "scalePx": 1,
+        "translatePx": [
+          0,
+          0
+        ]
+      },
+      "keyboard": true,
+      "disposed": true,
+      "errors": []
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-viewport-f3dc5e71.tgz",
+    "sha256": "f3dc5e71f50a442ea95818d42f1fa4cfdb205e019705fd7ef61bc6b651e700d6"
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 1024,
+    "packedBytes": 1459127,
+    "unpackedBytes": 6637912
+  },
+  "packageMeasurementNode22": {
+    "node": "v22.23.1",
+    "entries": 1024,
+    "packedBytes": 1455548,
+    "unpackedBytes": 6637912
+  },
+  "limits": {
+    "entries": 1024,
+    "packedBytes": 1460000,
+    "unpackedBytes": 6638000,
+    "fullGzip": 716200,
+    "basicGzip": 381400,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "interactionGzip": 112100,
+    "searchBytes": 1013800
+  },
+  "preservedFailures": [
+    "Initial docs49/50 search budget assertion; source checks passed.",
+    "Node20 package packed1459127 exceeded old1459000 measured cap by127; new minimum1000-unit cap1460000. No runtime change or waived limit."
+  ],
+  "globalQualification": "Affected checks only. No full normal/coverage suite or full installed matrix claimed. Native projection and renderer owners are unchanged; existing Geo four-backend proofs are reused, new browser Canvas/SVG coordinates and actual non-background ink are tested.",
+  "remaining": [
+    "Pointer pan/pinch and cursor anchoring",
+    "Explicit camera/LOD binding and AT32",
+    "Node drag and annotation editing",
+    "Session history/general keyboard focus and coordinate morph",
+    "Full AT35/38/65/80 and STEP074/077"
+  ],
+  "commands": {
+    "focused": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/selection.js test/unit/interaction*.test.js",
+    "contracts": "node --test test/contracts/{source-boundaries,test-discovery,interaction-types,action-catalog}.test.js plus package-boundaries/action-value-vocabulary/compact-action-cards",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned corpus cache",
+    "browser": "node --test --test-name-pattern=\"host viewport\" test/browser/interaction-session.browser.js",
+    "installed": "Node20/22/24 node .artifacts/viewport-consumer.mjs; Node22 node .artifacts/viewport-doc-consumer.mjs",
+    "docs": "docs:generate; docs:preflight; owning docs50; docs:build; test:docs:built; node .artifacts/viewport-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "viewport-browser-final.log.gz",
+      "sha256": "e09a3b9c8fba23c8e19ad84ba765cd02df3634b0bad6e0a8c4bc42b16afe3efd"
+    },
+    {
+      "path": "viewport-browser.log.gz",
+      "sha256": "1f9127a7896c3abb1c13a9efa5a7f92a8f44fb2486516b3a6fd9ab90faf72b38"
+    },
+    {
+      "path": "viewport-build.log.gz",
+      "sha256": "41a95adb18ade852038ab8c8bcc84a59838780a0f3cf1204697668acf0fb61ec"
+    },
+    {
+      "path": "viewport-built-links.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
+    },
+    {
+      "path": "viewport-consumer.mjs.gz",
+      "sha256": "02c3b74d0dd50ebb3f3f4d244221208c588b8296e98d8b3e2cd5bb6db3be8250"
+    },
+    {
+      "path": "viewport-consumer20.log.gz",
+      "sha256": "e374629afd068caa5563ed4a5c1e0dc613bfc43046e38e05bbc3c3e1e373a536"
+    },
+    {
+      "path": "viewport-consumer22.log.gz",
+      "sha256": "0249a5e123065cf0e38a3a367d6850ae45dca58f653a2f1e352a09040bed0150"
+    },
+    {
+      "path": "viewport-consumer24.log.gz",
+      "sha256": "fedb1b85346604ef39a8e1d14681cfdc6a6c4bc2a6ee01b4adf4eedc8ac2dbd9"
+    },
+    {
+      "path": "viewport-contracts.log.gz",
+      "sha256": "675439de49230e932c770f7d448a7f6a216c6c8a39cf2443f730066fc6f3f93d"
+    },
+    {
+      "path": "viewport-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "viewport-doc-browser.mjs.gz",
+      "sha256": "f354e531f12ef55f47a5541dc6ba1cf38c27d777bce5488c239acf58146d5dd0"
+    },
+    {
+      "path": "viewport-doc-consumer.log.gz",
+      "sha256": "aefbb5f2c9949983add5f2236225071c8cfd927d8867b258a068d4b05587140e"
+    },
+    {
+      "path": "viewport-doc-consumer.mjs.gz",
+      "sha256": "b2181d82d043df7398763fa0746bddfb9ec6e91e17d0a9c410870076821d3033"
+    },
+    {
+      "path": "viewport-docs-final.log.gz",
+      "sha256": "9db95a490e770bd6138037ec4fd11db265edb14479b2f3e48953457e482b5046"
+    },
+    {
+      "path": "viewport-docs-initial.log.gz",
+      "sha256": "1feca3481df81a0c6aa21cf737a63d1f0b9417d3453d5be19b00f1cfa4e64466"
+    },
+    {
+      "path": "viewport-fixed.json.gz",
+      "sha256": "f575ee485491b1a8e7301866769e10e5dc5722de91eb0d6102b63ad50d0c2777"
+    },
+    {
+      "path": "viewport-focused-coverage.log.gz",
+      "sha256": "74fcef5f3e4e6f3b43fcd1b53f8c65f7fc950dfa4cb25e86706577dcf6791479"
+    },
+    {
+      "path": "viewport-generate.log.gz",
+      "sha256": "824754e1b8f7a603c4b274dd24e60d6030db482139d7fe50f1369bbcb8ed5a67"
+    },
+    {
+      "path": "viewport-initial.log.gz",
+      "sha256": "902e6add3381aaf85a48bbe2a0180b55d2ab9eed7ad8c26f6a6a66a68e97681d"
+    },
+    {
+      "path": "viewport-measure20-initial.json.gz",
+      "sha256": "8b3f9c4dad6af07cae93b356df4e852edc53b3e964e14b69c540fd83a26b997b"
+    },
+    {
+      "path": "viewport-measure22-initial.json.gz",
+      "sha256": "453d0357796b30d4e94bb2e842562b870fd4e33c713a960fc2dc9b69c35618c5"
+    },
+    {
+      "path": "viewport-native-types.log.gz",
+      "sha256": "eaec7b8b7572b792008cbba5ac081e78b80d26d246066cfe1fb3bd7abc2cb8ff"
+    },
+    {
+      "path": "viewport-pack.log.gz",
+      "sha256": "fa54704e8fadfc862ca35ec1b7f4ec6f0b01688fbea9d2b44157934c750f9ce4"
+    },
+    {
+      "path": "viewport-package-contracts.log.gz",
+      "sha256": "8c5e4db23acad53103531b8670e55209378d4f3e79dccd74f760ca4361c2b4ed"
+    },
+    {
+      "path": "viewport-preflight.log.gz",
+      "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "viewport-qualify.py.gz",
+      "sha256": "04b0ea87a9cd0b94005bcdc210a8eaa709798e24d349e0f577b8ef5a04e71476"
+    },
+    {
+      "path": "viewport-realistic.log.gz",
+      "sha256": "0c8844a173512a8a007e8e3afefb7aa138efb15aa9c92f9aad30fcdafffcb695"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "963162afbdf63beeaaef9a266de289a195b6529406bea9524629989a2585a9d2"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "ec17d163177c1996a9541f510b5298e34f58fe576dd587303d0501da8f65a482"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "69cb8252104a4c535b57f98ced6c88c85b47131f45dba6974a98e1ddea2707cd"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "ee2a7e3ac66fcf3d747710670cec4ce8b0bf4a0af714d59166b55bde7e7b3164"
+    },
+    {
+      "path": "viewport-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "viewport-pinned-docs.log.gz",
+      "sha256": "8162da818607352bfb8e429fd05e3b2c7d4b67c3df03264f70758f6a92a399da"
+    },
+    {
+      "path": "viewport-pinned-build.log.gz",
+      "sha256": "7c8119cbc129aa967f5774562dde51b3eaf1f5afb0556817d297a0d288015abc"
+    },
+    {
+      "path": "viewport-pinned-built-links.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
+    }
+  ]
+}

@@ -107,3 +107,10 @@ session.dispatch({type:'contextMenu',point:{x:50,y:60}});
 session.subscribe(event=>{if(event.type==='contextMenu'){const owner: string|undefined=event.state.hit?.target?.ownerId;}});
 // @ts-expect-error context binding does not pick a target or action for the host
 createInteractionSession({program,bindings:[{type:'contextMenu',target:'points'}]});
+
+session.dispatch({type:'setViewport',target:'map',payload:{scalePx:2,translatePx:[10,-20]}});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{centerDeg:[10,0],rotateDeg:[0,20,5]}});
+// @ts-expect-error viewport commands do not change projection type
+session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
+// @ts-expect-error viewport commands do not infer LOD zoom
+session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});

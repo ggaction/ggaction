@@ -545,3 +545,47 @@ test("host partition buttons and breadcrumbs follow native focus with pointer an
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+
+test("host viewport buttons apply native projection transforms to Canvas and SVG with keyboard focus", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-viewport"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Map points"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__viewportSession=viewportSession;window.__disposeViewport=disposeViewport;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__viewportPhases = [];
+      const vector = current => { document.querySelector("#vector").innerHTML = renderToSVG(current); };
+      window.__viewportSession.subscribe(event => { if (event.phase) window.__viewportPhases.push(event.phase);
+        if (event.phase === "commit") vector(event.current); });
+      vector(window.__viewportSession.getState().program);
+    }, snippet.code);
+    const inspect = () => page.evaluate(() => {
+      const state = window.__viewportSession.getState();
+      const circles = state.scene.nodes.filter(node => node.type === "circle").map(node => [node.properties.x, node.properties.y]);
+      const vector = [...document.querySelectorAll("#vector circle")].map(node => [Number(node.getAttribute("cx")), Number(node.getAttribute("cy"))]);
+      const context = document.querySelector("canvas").getContext("2d");
+      return { circles, vector, painted: circles.every(([x, y]) => { const pixel = context.getImageData(x, y, 1, 1).data; return pixel[3] > 0 && pixel.slice(0, 3).some(channel => channel < 250); }),
+        revision: state.revision, focus: document.activeElement.id };
+    });
+    assert.equal(await page.locator("output").textContent(), "Scale 1; translation 0, 0");
+    await page.getByRole("button", { name: "Pan right", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual(await inspect(), { circles: [[80,70],[140,110]], vector: [[80,70],[140,110]], painted: true, revision: 1, focus: "map-right" });
+    await page.getByRole("button", { name: "Zoom in", exact: true }).focus(); await page.keyboard.press("Space");
+    assert.deepEqual(await inspect(), { circles: [[140,140],[260,220]], vector: [[140,140],[260,220]], painted: true, revision: 2, focus: "map-zoom" });
+    await page.getByRole("button", { name: "Original view", exact: true }).click();
+    assert.deepEqual(await inspect(), { circles: [[60,70],[120,110]], vector: [[60,70],[120,110]], painted: true, revision: 3, focus: "map-home" });
+    assert.deepEqual(await page.evaluate(() => window.__viewportPhases), ["commit","settled","commit","settled","commit","settled"]);
+    await page.evaluate(() => window.__disposeViewport()); assert.equal(await page.getByRole("navigation").count(), 0);
+    assertNoBrowserErrors(errors, "projection viewport host controls"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

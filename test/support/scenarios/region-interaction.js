@@ -52,6 +52,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertLegendSelection(source);
   assertLegendVisibility(source);
   assertHierarchyFocusSource(rows, recipe);
+  assertViewportSource(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -205,5 +206,28 @@ function assertHierarchyFocusSource(rows, recipe) {
   assert.ok(visible.every(item => item.rows.some(row => row.data === "focus-rows")));
   session.dispatch({ type: "focusHierarchy", target: "focus", payload: { focus: null } });
   assert.deepEqual(getMarkItems(session.getState().program, { target: "focus" }).map(item => item.key), original.map(item => item.key));
+  assert.equal(serializeProgram(p), before); session.destroy();
+}
+
+
+function assertViewportSource(rows, recipe) {
+  const features = rows.map(row => ({ type: "Feature", id: row.key, properties: { category: row.category, value: row.value },
+    geometry: { type: "Point", coordinates: [row.order, row.value] } }));
+  const p = chart().createCanvas({ width: 500, height: 400, margin: 0 })
+    .createGeometryData({ id: "source-places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: { type: "FeatureCollection", features } })
+    .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+    .createGeoPointMark({ id: "places", geometry: "source-places" });
+  const before = serializeProgram(p), original = getMarkItems(p, { target: "places" });
+  const session = createInteractionSession({ program: p, bindings: [] });
+  const [scalePx, translatePx] = recipe === "observations" ? [2, [10, 20]] : recipe === "categories" ? [0.5, [-20, 10]] : [3, [0, -10]];
+  session.dispatch({ type: "setViewport", target: "map", payload: { scalePx, translatePx } });
+  const next = deserializeProgram(serializeProgram(session.getState().program)), items = getMarkItems(next, { target: "places" });
+  assert.deepEqual(items.map(item => item.key), original.map(item => item.key));
+  for (const [index, item] of items.entries()) {
+    assert.equal(item.properties.x, rows[index].order * scalePx + translatePx[0]);
+    assert.equal(item.properties.y, rows[index].value * scalePx + translatePx[1]);
+    assert.equal(item.fields.category, rows[index].category);
+    assert.equal(item.fields.value, rows[index].value);
+  }
   assert.equal(serializeProgram(p), before); session.destroy();
 }

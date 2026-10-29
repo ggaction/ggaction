@@ -43,11 +43,12 @@ The following advanced controller commands require an explicit `target` and `pay
 - `dispatch({type:"select", target, payload:{id,select,mode?}, transactionId?,origin?,causeTransactionId?})` creates a missing selection with mode `replace` (default) or updates the same ID and owner. `select` is the existing `MarkSelectionSelector`, including item keys, typed ranges and parameter-backed boolean ASTs. `add`, `toggle`, `subtract`, and `intersect` require an existing selection and reuse its native set semantics.
 - `dispatch({type:"clearSelection", target, payload:{id}, transactionId?,origin?,causeTransactionId?})` replaces an existing selection with an empty item set, `empty:"none"`, and its existing grain. The resource, highlight, label and conditional consumers remain valid. It does not remove the resource or reset the chart.
 - `dispatch({type:"focusHierarchy",target,payload:{focus},transactionId?,origin?,causeTransactionId?})` invokes the existing Full partition editor. `focus` is the native typed `HierarchyNodeTarget` or null for the current root. Only an explicit partition owner is accepted; other hierarchy marks and Basic reject. Coordinate, layout, paint and pruning policy remain unchanged. Native source recovery, selection pruning and subsequent session reconciliation/linked closure retain their existing meaning. No new hierarchy calculation or stored schema is introduced.
+- `dispatch({type:"setViewport",target,payload:{scalePx?,translatePx?,centerDeg?,rotateDeg?},transactionId?,origin?,causeTransactionId?})` invokes the existing Full projection editor with a nonempty patch. The target identifies the projection itself. Values and projection-type applicability use `editProjection`; absolute scale/translation detach a prior fit, while angular changes retain and recompute it. Pixel units are native projection output coordinates before child composition and host transforms. The command preserves type, clipping, precision and geometry. Basic rejects it.
 - `dispatch({type:"setParameter", target, payload:{value}, transactionId?,origin?,causeTransactionId?})` invokes the existing parameter editor and its entire dependency closure. An unchanged scalar value returns `{status:"unchanged"}` without a trace, revision or event. Basic lacks these editors and rejects them even for unchanged values.
 - `dispatch({type:"filter",target,payload:{select,mode?,recompute?},transactionId?,origin?,causeTransactionId?})` invokes `filterMarks` with the existing inline `MarkSelector`. `mode` is native replace/compose; `recompute` retains the existing inferred-graph restriction. Named-selection AST, region and screen metadata are not inline filter selectors. `{clear:true}` replaces the entire payload to invoke `removeMarkFilter`. Clear removes only that filter; it does not reset other state. Missing active filters and invalid native options reject atomically.
 - `dispatch({type:"reorder",target,payload:{channel,values}|{channel,by,direction?}|{channel,clear:true},transactionId?,origin?,causeTransactionId?})` invokes `orderCategories` or `removeCategoryOrder`. Channel is x/y/theta and all values, computed ordering, shared-scale compatibility and automatic-domain rules are the existing category-order contract. Source rows stay in their original order; mark geometry, axes, linked legends and selection items follow the native order. Clear requires an active order. A clear payload cannot contain replacement options and clear accepts only true. Basic rejects both direct-control editors.
 
-A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter, reorder and hierarchy-focus commands identify the mark owner; parameter commands identify the parameter. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
+A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter, reorder and hierarchy-focus commands identify the mark owner; parameter commands identify the parameter and viewport commands identify the projection. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
 
 Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision, generation and frameVersion once, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
 
@@ -496,3 +497,18 @@ keyboard focus remain separate capabilities.
 
 Evidence: `test/unit/interaction-hierarchy-focus.test.js`, the canonical partition-focus browser snippet
 and existing partition resource/renderer tests.
+
+## Host projection viewport
+
+`setViewport` delegates validation and materialization to `editProjection`, retaining geometry identity,
+feature selection keys and native projection revision semantics. Its payload accepts only `scalePx`,
+`translatePx`, `centerDeg` and `rotateDeg`; at least one must be present. Invalid values, unsupported
+projection parameters, unknown targets and later dependent failures preserve the previous program,
+trace, scene and revision. The command does not derive level-of-detail zoom or cursor anchoring.
+
+Host buttons or typed controls may send absolute transform patches and redraw the committed program.
+They retain native keyboard activation and focus. Existing scope routing permits explicit child
+projection targets. No navigation listeners, animation or camera state are installed.
+
+Evidence: `test/unit/interaction-viewport.test.js`, the canonical viewport browser snippet,
+`test/support/scenarios/region-interaction.js` and the installed interaction consumer.

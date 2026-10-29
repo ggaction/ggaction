@@ -6,6 +6,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 
+- Interaction viewport commands reuse named projection edits with absolute transforms and exact feature identity.
 - Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
 - Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
 

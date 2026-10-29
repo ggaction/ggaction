@@ -1251,10 +1251,11 @@
         "automatic-click-selection",
         "brush-or-lasso-an-existing-selection",
         "connect-parameter-inputs-and-a-context-action",
-        "navigate-a-partition-view-from-host-controls"
+        "navigate-a-partition-view-from-host-controls",
+        "adjust-a-geographic-view-from-host-controls"
       ],
-      "bytes": 44988,
-      "sha256": "ceb842137d1fc2ad4ca992876bcb9d8a3a89956a57ee15b7f0ad54ddd43ed8cb"
+      "bytes": 48789,
+      "sha256": "26776065e5131196d3fe2526cb6796b2ea804dea4fe9be8320c7433726f394fa"
     },
     {
       "order": 74,

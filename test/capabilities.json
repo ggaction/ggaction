@@ -1392,6 +1392,10 @@
       {
         "type": "file",
         "path": "unit/interaction-geo-controls.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-viewport.test.js"
       }
     ],
     "selectors": [
