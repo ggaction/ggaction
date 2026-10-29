@@ -1,6 +1,7 @@
 import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties } from "../core/validation.js";
 import { advancePlayback } from "../grammar/animation/timing.js";
+import { normalizePlaybackOptions } from "../grammar/animation/playbackOptions.js";
 
 const MAX_QUEUED_CONTROLS = 256;
 const option = (input, key, fallback) => Object.hasOwn(input, key) ? input[key] : fallback;
@@ -28,9 +29,10 @@ export function createPlaybackController(input) {
   let commit = option(input, "commit");
   if (commit !== undefined) callable(commit, "Animation commit");
   let sample = callable(option(input, "sample"), "Animation sample");
-  let { durationMs, rate, repeat } = configuration(option(input, "durationMs"), option(input, "rate", 1), option(input, "repeat", 0));
-  let reducedMotion = option(input, "reducedMotion", false);
-  if (typeof reducedMotion !== "boolean") throw new TypeError("Animation reducedMotion must be boolean.");
+  const playback = normalizePlaybackOptions(Object.fromEntries(["rate", "repeat", "reducedMotion"]
+    .filter(key => Object.hasOwn(input, key)).map(key => [key, input[key]])));
+  let { durationMs, rate, repeat } = configuration(option(input, "durationMs"), playback.rate, playback.repeat);
+  let reducedMotion = playback.reducedMotion;
   let status = "idle", timeMs = rate < 0 ? durationMs : 0, iteration = 0, frame;
   let anchor, scheduled = false, handle, generation = 0, requesting = false;
   let busy = false, queue = [], settled, resolveFinished, finished;

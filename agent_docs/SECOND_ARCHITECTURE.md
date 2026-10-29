@@ -3130,6 +3130,12 @@ semanticSpec·trace·authoring config는 읽지 않으며, 실제 저장된 item
 대응 근거로 사용한다. scene의 anonymous fallback key는 correspondence가 아니다.
 lineage·topology·namespace·offset·clip과 실제 graphic payload를 보존한다. 이는 private
 planner의 입력 준비이며 typed compatibility·중간 장면·offline animation schema는 후속 의무다.
+오프라인 준비의 내부 `animation/envelopeCodec.js`는 기존 tagged codec과 digest를 사용하며
+직접 계획 의미나 kernel 호환성을 승인하지 않는다. 의미 payload의 export/restore는 planner의
+단일 검증 경계에 남는다. frame 시각 계산과 playback 기본값·저장 표현은 각각 순수 grammar
+owner에 두며, 기존 controller가 같은 playback 옵션 정규화를 재사용한다. 공개 entry와
+실제 typed offline replay는 이 내부 준비 뒤의 결합 의무이며 정확 범위는
+[STEP064 기록](impl/roadmap9/animation/STEP064.md)을 따른다.
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
