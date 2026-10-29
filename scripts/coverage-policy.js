@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "animation-values": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics must preserve exact endpoints, bounded interpolation and immutable linear-light color values." },
   "native-text-item": { prefix: "materialization/textItem.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared native Text construction must preserve missing position, offsets, multiline and exact prepared font binding." },
   "ohlc-values": { prefix: "grammar/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "High-low and open-close roles require finite inequalities and whole-row eligibility with exact typed identity." },
   "waterfall-values": { prefix: "grammar/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered signed contributions, explicit total/subtotal roles and reset must retain exact finite accumulation." },
