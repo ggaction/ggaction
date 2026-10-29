@@ -3,7 +3,7 @@ import test from "node:test";
 import { normalizeObservedGraph } from "../../../../../src/grammar/graph/normalize.js";
 import { prepareRouteInput, finalizeRouteResult } from "../../../../../src/grammar/graph/routes/common.js";
 import { createRouteBudget, normalizeRouteLimits, ROUTE_LIMITS } from "../../../../../src/grammar/graph/routes/budget.js";
-import { resampleRoute, routeLength } from "../../../../../src/grammar/graph/routes/polyline.js";
+import { MAX_ROUTE_POINTS, resampleRoute, routeLength } from "../../../../../src/grammar/graph/routes/polyline.js";
 import { getErrorDetails } from "../../../../../src/core/diagnostics.js";
 
 const point = (x, y) => ({ x, y });
@@ -137,7 +137,7 @@ test("route finalization rejects partial, duplicate, moved or nonfinite geometry
   const context = prepareRouteInput(graph()), routes = straight(context), before = structuredClone(routes);
   for (const version of [null, "", 1]) assert.throws(() => finalizeRouteResult(context, version, routes));
   for (const candidates of [null, [], [{}, routes[1]], [routes[0], routes[0]], [{ ...routes[0], edgeKey: "missing" }, routes[1]], [{ ...routes[0], complete: false }, routes[1]], [{ ...routes[0], reason: "" }, routes[1]]]) assert.throws(() => finalizeRouteResult(context, "v1", candidates));
-  for (const points of [[], [point(0, 0)], [point(0, 0), point(Infinity, 1)], [point(99, 99), routes[0].points[1]], Array(4098).fill(point(0, 0)), [point(0, 0), { x: 1, y: 1, extra: true }]]) assert.throws(() => finalizeRouteResult(context, "v1", [{ ...routes[0], points }, routes[1]]));
+  for (const points of [[], [point(0, 0)], [point(0, 0), point(Infinity, 1)], [point(99, 99), routes[0].points[1]], Array(MAX_ROUTE_POINTS + 1), [point(0, 0), { x: 1, y: 1, extra: true }]]) assert.throws(() => finalizeRouteResult(context, "v1", [{ ...routes[0], points }, routes[1]]));
   const controlPoints = [routes[0].points[0], point(0.2, 0.3), routes[0].points[1]];
   const result = finalizeRouteResult(context, "v1", [{ ...routes[0], controlPoints }, routes[1]]);
   assert.equal(result.routes[1].controlPoints.length, 3);
@@ -150,7 +150,7 @@ test("route finalization rejects partial, duplicate, moved or nonfinite geometry
 
 test("resampling rejects malformed, sparse, unsafe and overflowing paths without normalizing invalid input", () => {
   for (const points of [null, [], Array(2), [point(0, 0), { x: 1 }], [point(0, 0), point(NaN, 1)], [point(-Number.MAX_VALUE, 0), point(Number.MAX_VALUE, 0)]]) assert.throws(() => routeLength(points));
-  for (const count of [0, 1, 2.5, Infinity, 4098]) assert.throws(() => resampleRoute([point(0, 0), point(1, 1)], count));
+  for (const count of [0, 1, 2.5, Infinity, MAX_ROUTE_POINTS + 1]) assert.throws(() => resampleRoute([point(0, 0), point(1, 1)], count));
   let calls = 0;
   assert.throws(() => routeLength([point(0, 0), { get x() { calls++; return 1; }, y: 1 }]), /accessors/);
   assert.equal(calls, 0);

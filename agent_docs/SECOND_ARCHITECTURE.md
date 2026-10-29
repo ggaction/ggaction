@@ -72,6 +72,11 @@ Theme 통합 기준과 이 private kernel의 합산 package는 927 entries/6,105
 Node20/22/24 packed 최대1,331,298 bytes다. 상한은927/1,332,000/6,106,000으로 최소 올림한다.
 동일 tar의 합산 theme baseline bundle은 Full660,081/Basic369,582 gzip bytes로, 상한을
 661,000/370,000으로 맞춘다. Route kernel은 아직 public entry에서 import되지 않는다.
+Hierarchy bundling은 같은 private boundary에서 기존 hierarchy model·명시 node mapping·layout
+anchor를 소비한다. `routes/spline.js`가 de Boor와 knot-span cubic 변환을 맡고 기존
+`pathGeometry`의 convex-hull 분할에 호출별 point budget을 전달한다. Partial geometry는 완료
+결과로 반환하지 않는다. 이후 HEB 합산 package는929 entries/6,117,831 unpacked bytes,
+packed 최대1,334,664 bytes로 상한929/1,335,000/6,118,000을 적용한다.
 
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를

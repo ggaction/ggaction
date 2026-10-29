@@ -5,7 +5,7 @@
 - [x] STEP036–041 및 선행 Graph/Layout/Calendar 계약 대조
 - [x] 전체 잔여 승인 재사용 및 public/state/consumer 경계 구체화
 - [x] 공통 입력·타입 순서·정규화·길이 재표본화·budget·완료 결과 private kernel
-- [ ] Hierarchical LCA + clamped B-spline
+- [x] Hierarchical LCA + clamped B-spline private kernel
 - [ ] Force-directed compatibility + double buffer
 - [ ] Density field + vector advection
 - [ ] Edge-path Dijkstra + skip/lock
@@ -100,3 +100,36 @@ Node20/22/24의 실제 npm child runtime을 명시하여 package를 측정했고
 구분한다. Private kernel은 어느 public entry에서도 아직 도달하지 않으며 API/type/Current
 추가는 이 checkpoint의 범위가 아니다. 이후 공개 연결에서 실제 type/docs/renderer 소비자를
 모두 연결하고 검증한다.
+
+## Hierarchical 계산 checkpoint
+
+`hierarchical.js`는 기존 hierarchy model 검증과 source adapter가 명시한 mapping/anchor를
+사용한다. Graph의 모든 node를 정확히 한 번 mapping하고 hierarchy 내부 node를 포함한 모든
+anchor를 제공해야 한다. Mapping한 endpoint anchor는 원 graph position과 같아야 한다.
+서로 다른 root는 기존 hierarchy owner의 명시 synthetic root가 있을 때만 연결된다. Endpoint
+평균으로 내부 anchor를 만들거나 별도 가짜 graph node를 만들지 않는다.
+
+`strength` 기본.85, 범위0–1; `tolerance` 기본.001 normalized units의 양수 finite 값;
+`maxSubdivisions` 기본4096, 1–4096 정수; `zeroLength`는 명시 정규화 값 `point`다.
+조상 경로는 depth를 맞춰 LCA를 한 번만 포함하고, straightening한 controls를
+`spline.js`에서 de Boor로 계산한다. 각 knot span을 끝값·미분값으로 cubic으로 정확히 바꾼
+뒤 기존 path convex-hull 분할 owner를 호출한다. 저장 vector는 허용 오차 안의 polyline이며
+원 endpoint는 정확히 보존한다. 부분 분할 진단이 있으면 canonical 완료 결과를 만들지 않는다.
+
+`pathGeometry.flattenPathCommands`의 호출별 `maxPoints`는 기본1,000,000을 유지한다.
+Line/close/new subpath/cubic 모두 이 한도를 검사하며 정확히 한도인 결과는 허용한다.
+HEB의4096 subdivision은 해당 method의 sampled geometry에만 적용한다. 공통 vector는 기존
+30,000 path command 한도를, hierarchy control polygon은 총sample guard를 사용하므로
+strength0에서5000-depth ancestry를 정확한 직선으로 만들 때 provenance를 잃지 않는다.
+
+독립 Cox-de Boor basis oracle와 literal midpoint를 de Boor 구현의 비교 기준으로 사용한다.
+5-node 경유 경로, 같은 subtree, strength0/1, forest/self/empty, 키 순서 변경, 좌표 이동·배율,
+정규화 tolerance, 빠진 내부 anchor, 타입/getter, budget/abort 및 deep ancestry를 검증한다.
+공개 resource/codec/worker/renderer 연결은 위 소비자 표의 열린 의무 그대로다.
+
+[고정 검증 증거](edge-bundling-evidence/hierarchical/status.json): route canonical unit17/17,
+route+path coverage25/25(새 route5owner100/100/100, 기존 pathGeometry92.28/91.30/100),
+architecture/discovery/policy34/34, 기존 hit/compound path 소비자36/36, package7/7 통과.
+동일 tar의 네 entry를 세 Node/zlib에서 비교했으며 Full660,081/Basic369,582/SVG20,196/
+interaction82,859 gzip bytes로 기존 상한 안이다. Full coverage/전체 renderer suite 완료를
+뜻하지 않으며 public checkpoint에서 필요한 해당 검증을 계속한다.

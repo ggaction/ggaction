@@ -75,8 +75,8 @@ export function prepareRouteInput(input, signal) {
 
 function samePoint(a, b) { return a.x === b.x && a.y === b.y; }
 
-function restorePoints(points, context, edge) {
-  validateRoutePoints(points);
+function restorePoints(points, context, edge, maximum) {
+  validateRoutePoints(points, maximum);
   if (!samePoint(points[0], edge.source) || !samePoint(points.at(-1), edge.target)) throw new Error("Route endpoints must match their original anchors.");
   const { frame } = context;
   return points.map(point => {
@@ -104,11 +104,11 @@ export function finalizeRouteResult(context, algorithmVersion, routes) {
     if (edge === undefined || result[edge.index] !== undefined) throw new Error("Route results require unique original edge keys.");
     if (route.reason !== undefined && (typeof route.reason !== "string" || !route.reason)) throw new TypeError("Route fallback reason must be a non-empty string.");
     validateRoutePoints(route.points);
-    validateRoutePoints(route.controlPoints ?? route.points);
+    validateRoutePoints(route.controlPoints ?? route.points, context.budget.limits.maxSamples);
     const count = route.points.length + (route.controlPoints ?? route.points).length;
     samples += count; context.budget.samples(samples); context.budget.charge(count * 4);
     const points = restorePoints(route.points, context, edge);
-    const controls = restorePoints(route.controlPoints ?? route.points, context, edge);
+    const controls = restorePoints(route.controlPoints ?? route.points, context, edge, context.budget.limits.maxSamples);
     const original = context.model.edges[edge.index];
     const source = anchors.get(original.sourceKey), target = anchors.get(original.targetKey);
     for (const values of [points, controls]) {

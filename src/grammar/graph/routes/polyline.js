@@ -1,12 +1,14 @@
 import { ownArray, ownRecord } from "../../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../../core/validation.js";
 import { interpolateNumber } from "../../numeric.js";
+import { MAX_PATH_COMMANDS } from "../../pathCommands.js";
 
-// A hierarchy spline may use 4096 subdivisions, hence 4097 endpoints.
-export const MAX_ROUTE_POINTS = 4097;
+// Method-specific sampling limits are stricter; common vector output shares the
+// existing concrete command limit. Control polygons use the total sample guard.
+export const MAX_ROUTE_POINTS = MAX_PATH_COMMANDS;
 
-export function validateRoutePoints(points) {
-  if (Array.isArray(points)) validateGeneratedItemLimit(points.length, "Route points", MAX_ROUTE_POINTS);
+export function validateRoutePoints(points, maximum = MAX_ROUTE_POINTS) {
+  if (Array.isArray(points)) validateGeneratedItemLimit(points.length, "Route points", maximum);
   ownArray(points, "Route points");
   if (points.length < 2) throw new TypeError("Route points require at least two endpoints.");
   for (const point of points) {
