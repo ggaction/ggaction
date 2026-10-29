@@ -1,33 +1,11 @@
-import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { source, localSource, palette, repositoryRoot } from "./data.js";
+import { nativeDataCharts } from "./native-programs.js";
 import { chart, vconcat } from "../../src/index.js";
-import { tidyTuesdaySourceRows } from "../../test/support/datasets/tidytuesday.js";
 import { createCarsOriginScatterplotFacet } from "../../examples/cars-origin-scatterplot-facet/program.js";
 import { createCarsOriginHistogramFacet } from "../../examples/cars-origin-histogram-facet/program.js";
 import { createCarsRegressionScatterplot } from "../../examples/cars-regression-scatterplot/program.js";
 
-const root = new URL("../../", import.meta.url);
-const corpus = JSON.parse(readFileSync(new URL("data/corpus/manifest.json", root)));
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const palette = ["#2563eb", "#f97316", "#10b981", "#a855f7", "#e11d48", "#0891b2", "#ca8a04", "#64748b", "#db2777", "#84cc16", "#7c3aed"];
-
-function source(id, name, origin) {
-  const definition = corpus.datasets.find(item => item.id === id);
-  if (!definition) throw new Error(`Unknown gallery dataset: ${id}`);
-  return { rows: tidyTuesdaySourceRows(id), provenance: {
-    name, origin, url: definition.blobUrl, sha256: definition.sha256,
-    sourceRows: definition.rows, snapshot: corpus.tidyTuesday.commit
-  } };
-}
-
-function localSource(filename, name) {
-  const bytes = readFileSync(new URL(`data/${filename}`, root));
-  const rows = JSON.parse(bytes);
-  return { rows, provenance: { name, sourceRows: rows.length,
-    sha256: createHash("sha256").update(bytes).digest("hex"),
-    repositoryPath: `data/${filename}` } };
-}
 
 function temperature() {
   const { rows, provenance } = source("tt-global-temperatures", "NASA GISS · TidyTuesday 2023-07-11", "https://data.giss.nasa.gov/gistemp/");
@@ -167,10 +145,11 @@ function cars() {
 }
 
 export function* realDataCharts() {
+  yield* nativeDataCharts();
   for (const build of [temperature, coffee, penguins, food, gapminder]) {
     try { yield build(); } catch (error) { throw new Error(`Gallery chart ${build.name}: ${error.message}`, { cause: error }); }
   }
   yield* cars();
 }
 
-export const repositoryRoot = fileURLToPath(root);
+export { repositoryRoot };
