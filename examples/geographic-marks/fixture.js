@@ -38,7 +38,11 @@ export const cameraOperations = [
   { type: "zoom", anchorPx: [320, 240], factor: .75, scaleExtent: [.5, 4] },
   { type: "pan", deltaPx: [15, -10] }
 ];
+export const featureLabels = { source: "geo-point", field: "name", dy: -16, baseline: "alphabetic", fontSize: 18, fill: "#0f172a" };
+export const gridLabels = { source: "graticule", field: "value", format: ".0f", select: { field: "axis", op: "eq", value: "longitude" }, dy: -14, fontSize: 18, fill: "#0f172a" };
 export const variants = [
+  { id: "labels", chart: "geographic-annotations", title: "Feature names share one label layer" },
+  { id: "grid-labels", chart: "geographic-grid", title: "Longitude labels follow generated graticules" },
   { id: "conditional", chart: "geographic-fields", title: "Conditions emphasize the busiest stops" },
   { id: "camera", chart: "geographic-marks", title: "A centered zoom preserves stop size" },
   { id: "fields", chart: "geographic-fields", title: "Stop area follows visitor counts" },

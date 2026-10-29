@@ -1,3 +1,4 @@
+import { geoLabelSource, validateGeoLabelBinding } from "./labels.js";
 import { geoScaleValues } from "./appearance.js";
 import { resolveGeoMark } from "./mark.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -31,6 +32,7 @@ function validateBindings(program, resource) {
   }
   const coordinates = new Set(program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && coordinate.projection.id === resource.id).map(coordinate => coordinate.id));
   for (const layer of program.semanticSpec.layers) if (coordinates.has(layer.coordinate)) {
+    if (geoLabelSource(program, layer) !== undefined) { validateGeoLabelBinding(program, layer); continue; }
     resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id]?.geo, program.resolvedScales, { appearance: false });
     const bindings = [...Object.entries(layer.encoding ?? {}), ...Object.entries(layer.conditionals ?? {})
       .flatMap(([channel, definition]) => conditionalValues(definition).filter(value => value.scale !== undefined).map(value => [channel, value]))];

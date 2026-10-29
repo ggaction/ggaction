@@ -1,3 +1,4 @@
+import { geoLabelDataset } from "./geo/labels.js";
 import { normalizeMarkLabelContent } from "../grammar/markLabels.js";
 import { geoFeatureDataset } from "./geo/featureDataset.js";
 import { validateGeoEncodingChannel, validateGeoEncodingScale } from "../grammar/geo/encoding.js";
@@ -37,7 +38,7 @@ export function resolveConditionalEnvironment(program, layer, channel, definitio
   if (["dx", "dy"].includes(channel) && layer.source !== undefined) throw new Error("Numeric text offsets require independent Text marks.");
   if (channel === "pointRadius" && (layer.encoding?.size !== undefined || layer.conditionals?.size !== undefined)) throw new Error("Conditional point radius cannot be combined with a size encoding.");
   if (layer.mark.type === "geo") validateGeoEncodingChannel(layer, channel);
-  const source = layer.mark.type === "geo" ? geoFeatureDataset(program, layer) : requireDataset(program, layer.data);
+  const source = layer.mark.type === "geo" ? geoFeatureDataset(program, layer) : geoLabelDataset(program, layer) ?? requireDataset(program, layer.data);
   const environment = expressionEnvironment(program, source, definition.parameterInputs);
   normalizeConditionalEncoding(normalized.definition, { environment });
   limit(source.values.length * (normalized.nodes + definition.conditions.length + 1), EXPRESSION_LIMITS.rowWork, "conditionalWork");

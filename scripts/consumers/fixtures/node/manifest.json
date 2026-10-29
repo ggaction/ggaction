@@ -1313,5 +1313,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "geographic-labels.mjs",
+    "cases": [
+      {
+        "id": "geographic-labels/native-source-and-selection",
+        "statements": 9
+      },
+      {
+        "id": "geographic-labels/offline-restored-source-revision",
+        "statements": 4
+      },
+      {
+        "id": "geographic-labels/four-renderer-native-text-parity",
+        "statements": 5
+      }
+    ]
   }
 ]

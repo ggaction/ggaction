@@ -25,6 +25,12 @@ p.encodeColor({target:'districts',field:'category',scale:{id:'categories',unknow
  .encodeSize({target:{childPath:['left'],id:'places'},value:100});
 p.encodeColor({target:'places',conditions:[{when:{version:2,registry:'standard@1',root:{type:'literal',value:true}},value:{field:'category',scale:{id:'categories'}}}],otherwise:{value:'gray'}})
  .encodeSize({target:'places',conditions:[{when:{selection:'chosen'},value:{value:0}}],otherwise:{field:'population',scale:{id:'areas'}}});
+p.createMarkLabels({source:'places',field:'category',inheritColor:'fill',layout:{axis:'y'}})
+ .createMarkLabels({source:'graticule',field:'value',format:'.0f',select:{field:'axis',op:'eq',value:'longitude'}})
+ .createTextMark({id:'names',source:'places'}).encodeText({target:'names',field:'category'})
+ .editTextMark({target:'names',dx:4,fill:'blue'}).removeMarkLabels({source:'places'});
+// @ts-expect-error Source-owned label positions come from their source.
+p.createMarkLabels({source:'places',field:'category',data:'table'});
 basic().createCoordinate({type:'polar'});
 declare const coordinate:SemanticCoordinate;
 if(coordinate.type==='geo') { const id:string=coordinate.projection.id; void id; }

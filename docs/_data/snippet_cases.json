@@ -511,5 +511,19 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "geographic-source-labels",
+    "file": "api/marks/labels.md",
+    "contains": "const featureLabels = createGeographicMarks(\"labels\");",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "gridLabels",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
   }
 ]

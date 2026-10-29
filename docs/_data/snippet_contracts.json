@@ -3245,6 +3245,18 @@
     "executable": false
   },
   {
+    "file": "api/marks/labels.md",
+    "block": 6,
+    "heading": "Geographic sources",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "sha256": "046ccef36756369b5bb4f98e8864836afc5105a5079669fc046fe563b945ed34",
+    "executable": true
+  },
+  {
     "file": "api/marks/line-area.md",
     "block": 1,
     "heading": "`createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",

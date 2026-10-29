@@ -1,12 +1,14 @@
-import { canvas, shapes, cities, routes, projection, grid, variants, annotations, measuredCities, fieldMappings, cameraOperations, conditionalMappings } from "../../../examples/geographic-marks/fixture.js";
+import { canvas, shapes, cities, routes, projection, grid, variants, annotations, measuredCities, fieldMappings, cameraOperations, conditionalMappings, featureLabels, gridLabels } from "../../../examples/geographic-marks/fixture.js";
 import { createGeographicMarks } from "../../../examples/geographic-marks/program.js";
 import { createGeographicPrimitive } from "./primitive.program.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 export const visualVariants = variants.map(variant => {
-  const calls = variant.id === "graticule" ? [["createCanvas", canvas], ["createProjection", projection], ["createCoordinate", { type: "geo" }], ["createGraticule", grid]]
+  const calls = ["graticule", "grid-labels"].includes(variant.id) ? [["createCanvas", canvas], ["createProjection", projection], ["createCoordinate", { type: "geo" }], ["createGraticule", grid]]
     : [["createCanvas", canvas], ...[["districts", shapes], ["stops", ["fields", "conditional"].includes(variant.id) ? measuredCities : cities], ["services", routes]].map(([id, values]) => ["createGeometryData", { id, format: "geojson", coordinateKind: "planar", featureKey: "id", values }]),
       ["createProjection", { id: "map", type: "identity" }], ["createCoordinate", { type: "geo" }], ["createGeoShapeMark", { geometry: "districts", fill: "#93c5fd", stroke: "#1e40af", strokeWidth: 2 }],
       ["createGeoLineMark", { geometry: "services", stroke: "#475569", strokeWidth: 3 }], ["createGeoPointMark", { geometry: "stops", fill: "#dc2626", radiusPx: 8 }]];
+  if (variant.id === "labels") calls.push(["createMarkLabels", featureLabels]);
+  if (variant.id === "grid-labels") calls.push(["createMarkLabels", gridLabels]);
   if (variant.id === "camera") calls.push(["navigateProjection", { target: "map", operation: cameraOperations[0] }], ["navigateProjection", { operation: cameraOperations[1] }]);
   if (["fields", "conditional"].includes(variant.id)) calls.push(...fieldMappings);
   if (variant.id === "conditional") calls.push(...conditionalMappings);
@@ -15,6 +17,6 @@ export const visualVariants = variants.map(variant => {
     primitive: () => createGeographicPrimitive(variant.id), userFacing: () => createGeographicMarks(variant.id),
     programEquivalence: "render", compareSemanticSpec: false,
     callChain: "chart()" + calls.map(([op, args]) => `\n  .${op}(${JSON.stringify(args)})`).join("") + ";",
-    artifact: { scope: "charts", capability: "geographic-marks" }, colors: [variant.id === "graticule" ? "#475569" : ["fields", "conditional"].includes(variant.id) ? "#bfdbfe" : "#93c5fd"],
+    artifact: { scope: "charts", capability: "geographic-marks" }, colors: [["graticule", "grid-labels"].includes(variant.id) ? "#475569" : ["fields", "conditional"].includes(variant.id) ? "#bfdbfe" : "#93c5fd"],
     regions: [{ name: "geographic output", x: 40, y: 40, width: 560, height: 400, minimumInkPixels: 1000 }] });
 });

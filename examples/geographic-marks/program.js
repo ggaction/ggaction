@@ -1,6 +1,8 @@
 import { chart } from "../../src/index.js";
-import { canvas, shapes, cities, routes, projection, grid, annotations, measuredCities, fieldMappings, cameraOperations, conditionalMappings } from "./fixture.js";
+import { canvas, shapes, cities, routes, projection, grid, annotations, measuredCities, fieldMappings, cameraOperations, conditionalMappings, featureLabels, gridLabels } from "./fixture.js";
 export function createGeographicMarks(variant = "planar") {
+  if (variant === "labels") return createGeographicMarks("planar").createMarkLabels(featureLabels);
+  if (variant === "grid-labels") return createGeographicMarks("graticule").createMarkLabels(gridLabels);
   if (variant === "conditional") return createGeographicMarks("fields")
     .encodeColor(conditionalMappings[0][1]).encodeSize(conditionalMappings[1][1]);
   if (variant === "camera") return createGeographicMarks("planar")

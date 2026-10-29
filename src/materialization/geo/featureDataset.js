@@ -7,10 +7,14 @@ import { requireLayer } from "../../selectors/layers.js";
 // Geometry keeps its own identity; no dataset or source rows are synthesized.
 export function geoFeatureDataset(program, layer) {
   validateGeoEncodingChannel(layer, "color");
+  return geoSourceDataset(program, layer);
+}
+
+export function geoSourceDataset(program, layer) {
   // Legend adapters expose a transient chosen ordinary binding. Read geometry
   // from the authoritative layer instead of validating that inspection view.
   const source = geoMarkSource(program, requireLayer(program, layer.id), program.materializationConfigs.marks[layer.id].geo);
   const features = source.drawableFeatures;
-  const values = features.map(feature => feature.fields);
+  const values = features.map(feature => feature.fields ?? feature.properties);
   return { values, features, schema: inferDatasetSchema(values) };
 }

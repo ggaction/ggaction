@@ -36,3 +36,9 @@ export const cameraPoints = points.map(point => ({ ...point, properties: { ...po
 // First matching visitor condition keeps Central teal, East red, and dims West.
 export const conditionalPoints = measuredPoints.map((point, i) => ({ ...point, properties: { ...point.properties,
   fill: ["#64748b", "#0d9488", "#dc2626"][i] } }));
+
+// Three longitude meridians have latitude-zero centroids; the fixture scale is 4 px/degree.
+export const gridLabelText = [-40, 0, 40].map(value => ({ type: "text", properties: {
+  x: 320 + value * 4, y: 226, text: String(value), fill: "#0f172a", opacity: 1, fontSize: 18,
+  fontFamily: "sans-serif", fontWeight: "normal", textAlign: "center", textBaseline: "middle", rotation: 0
+} }));

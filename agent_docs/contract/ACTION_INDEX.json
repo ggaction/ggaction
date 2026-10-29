@@ -1287,7 +1287,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels; Full Geo feature/graticule sources share native Text content, placement, resource identity and source revisions",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",

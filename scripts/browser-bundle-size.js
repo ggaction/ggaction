@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 728_000, // Native geographic camera: Node20/24 727,394 gzip bytes.
-  "ggaction/basic": 384_000, // Native Text and theme owner reuse: Node20 382,896 gzip bytes.
+  ggaction: 730_000, // Geographic source Text: Node20/24 728,161 gzip bytes.
+  "ggaction/basic": 386_000, // Shared source Text boundary: Node20/24 384,468 gzip bytes.
   "ggaction/svg": 25_000,
-  "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
+  "ggaction/graph": 46_000, // Closed geographic Text source binding: Node20/24 44,044 gzip bytes.
   "ggaction/interaction": 109_200 // Linked filter plus routes baseline: Node20 109,145 gzip bytes.
 });
 

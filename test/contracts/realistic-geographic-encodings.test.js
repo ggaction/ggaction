@@ -99,3 +99,45 @@ for (const dataset of datasets) for (const recipe of ["first-match", "parameter"
 test("geographic conditional color and size each execute five authentic datasets and three direct recipes", () => {
   assert.equal(conditionalWitnesses.size, 5); for (const observed of conditionalWitnesses.values()) assert.equal(observed.size, 3);
 });
+
+
+const labelWitnesses = new Map();
+for (const dataset of datasets) for (const recipe of ["feature-fields", "selected-fields", "joined-fields"]) {
+  test(`${dataset} ${recipe} geographic labels retain authentic values and source membership`, () => {
+    try {
+      const view = realisticRecordView(dataset, { rowLimit: 16, groupLimit: 3 });
+      const rows = view.rows.filter(row => Number.isFinite(row.orderNumeric) && Number.isFinite(row.value));
+      assert.ok(rows.length >= 4); assert.equal(view.provenance.sourceDataset, dataset);
+      const features = rows.map(row => ({ type: "Feature", id: row.key,
+        properties: { category: row.category, value: row.value, sourceRowIndex: row.sourceRowIndex },
+        geometry: { type: "Point", coordinates: [row.orderNumeric, row.value] } }));
+      let p = chart().createCanvas({ width: 800, height: 600, margin: 20 })
+        .createGeometryData({ id: "points", format: "geojson", coordinateKind: "planar", featureKey: "id", values: { type: "FeatureCollection", features } })
+        .createProjection({ id: "map", type: "identity", fit: { geometry: "points", width: 500, height: 500, padding: 20 } })
+        .createCoordinate({ type: "geo" });
+      if (recipe === "joined-fields") p = p.createData({ id: "table", values: rows, keyField: "key" })
+        .createGeoJoinData({ id: "joined", geometry: "points", data: "table", geometryKey: "id", dataKey: "key" });
+      p = p.createGeoPointMark({ id: "places", geometry: recipe === "joined-fields" ? "joined" : "points" });
+      const threshold = (Math.min(...rows.map(row => row.value)) + Math.max(...rows.map(row => row.value))) / 2;
+      if (recipe === "selected-fields") p = p.selectMarks({ id: "chosen", target: "places", field: "value", op: "gte", value: threshold });
+      p = p.createMarkLabels({ source: "places", field: "value", ...(recipe === "selected-fields" ? { selection: "chosen" } : {}), dy: -6 });
+      const selected = rows.filter(row => recipe !== "selected-fields" || row.value >= threshold);
+      const children = p.graphicSpec.objects['places-labels'].items;
+      assert.deepEqual(children.map(item => item.properties.text), selected.map(row => String(row.value)));
+      const items = getMarkItems(p, { target: "places-labels" });
+      assert.deepEqual(items.map(item => item.fields.sourceRowIndex), selected.map(row => row.sourceRowIndex));
+      assert.ok(items.every(item => recipe !== "joined-fields" || item.rows.some(row => row.data === "table")));
+      const saved = serializeProgram(p);
+      const q = p.editGeometryData({ target: "points", values: { type: "FeatureCollection", features: [...features].reverse() } });
+      assert.deepEqual(getMarkItems(q, { target: "places-labels" }).map(item => item.key), items.map(item => item.key).reverse());
+      assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item => item.properties.text), selected.map(row => String(row.value)).reverse());
+      assert.equal(renderToSVG(deserializeProgram(serializeProgram(q))), renderToSVG(q));
+      assert.equal(serializeProgram(p), saved);
+      assert.equal(p.trace.children.filter(node => node.op === "createMarkLabels").length, 1);
+      if (!labelWitnesses.has(dataset)) labelWitnesses.set(dataset, new Set()); labelWitnesses.get(dataset).add(recipe);
+    } finally { releaseTidyTuesdaySourceCache(dataset); }
+  });
+}
+test("geographic labels use five authentic datasets and three direct source recipes", () => {
+  assert.equal(labelWitnesses.size, 5); for (const observed of labelWitnesses.values()) assert.equal(observed.size, 3);
+});

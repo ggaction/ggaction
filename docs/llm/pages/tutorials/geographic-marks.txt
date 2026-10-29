@@ -41,7 +41,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](../../../api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/cc5e6f75289aec3e01e1879102801d437d151bb6/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -99,3 +99,17 @@ The executable `createGeographicMarks("camera")` variant in the same example app
 stop remains eight CSS pixels in radius. Use `navigateProjection` for these view changes; save
 `getProjectionView(program).parameters` before navigation when you want an explicit reset target.
 The [camera reference](../../../api/geometry/#navigateprojection) lists pinch, fit and resize options.
+
+## Label feature fields and graticules
+
+Use `createGeographicMarks("labels")` from the same shared example module for one
+Text label layer reading each stop's `name`. Its `createMarkLabels` call selects
+`source: "geo-point"`, applies an eighteen-pixel font and a negative sixteen-pixel
+vertical offset. This produces the same West, Central and East labels as the fixed
+annotation example, with content now read from the source features.
+
+The `createGeographicMarks("grid-labels")` variant labels the existing graticule's
+`value` field with `format: ".0f"`. Its inline selector chooses `axis: "longitude"`,
+so only −40, 0 and 40 appear above the meridian centroids. Both variants preserve
+source feature identity through projection edits and reuse the native Text
+style, font and collision-layout actions. See [geographic label rules](../../../api/marks/labels/#geographic-sources).

@@ -1,6 +1,12 @@
 import { chart } from "../../../src/index.js";
-import { canvas, region, route, points, graticule, annotationText, measuredRegion, measuredRoute, measuredPoints, cameraRegion, cameraRoute, cameraPoints, conditionalPoints } from "./reference-values.js";
+import { canvas, region, route, points, graticule, annotationText, measuredRegion, measuredRoute, measuredPoints, cameraRegion, cameraRoute, cameraPoints, conditionalPoints, gridLabelText } from "./reference-values.js";
 export function createGeographicPrimitive(variant = "planar") {
+  if (variant === "labels") return createGeographicPrimitive("planar")
+    .createGraphics({ id: "labels", type: "text", length: 0, parent: "plot-main" })
+    .editGraphics({ target: "labels", property: "items", value: annotationText });
+  if (variant === "grid-labels") return createGeographicPrimitive("graticule")
+    .createGraphics({ id: "labels", type: "text", length: 0, parent: "plot-main" })
+    .editGraphics({ target: "labels", property: "items", value: gridLabelText });
   if (variant === "conditional") return createGeographicPrimitive("fields")
     .editGraphics({ target: "cities", property: "items", value: conditionalPoints });
   if (variant === "camera") return chart().createCanvas(canvas)

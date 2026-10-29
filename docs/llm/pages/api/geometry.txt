@@ -610,3 +610,10 @@ current or unique annotation. The patch must be nonempty; omitted fields retain 
 A supplied anchor replaces its intent. Switching to a position detaches the geometry reference.
 Feature geometry omission retains the existing feature source; an omitted level captures the current
 LOD level. Invalid anchors, missing keys or unprepared font queries leave the original chart unchanged.
+
+## Label feature fields and graticules
+
+Use the existing [attached Text labels](../../../api/marks/labels/#geographic-sources) with
+a geographic shape, point, line or graticule source. They share source feature
+identity and revisions while native Text owns content, style and collision layout.
+Graticules expose their existing axis names and numeric values.

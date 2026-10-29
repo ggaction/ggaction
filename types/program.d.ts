@@ -5479,6 +5479,8 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type TextFormat = ValueFormat;
 
+/** Source-owned Text also accepts Full geographic feature/graticule marks without a dataset.
+ * Geographic anchors use the source centroid; field/value text, native styles and label layout retain their existing contracts. */
 export interface TextMarkOptions extends StrokeStyleDetails {
   blend?: BlendMode;
   shadow?: MarkShadow | false;

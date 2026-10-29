@@ -1,3 +1,4 @@
+import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { selectionPredicate } from "../../../materialization/selection/state.js";
@@ -55,7 +56,7 @@ const EDIT_OPTIONS = Object.freeze(["blend", "target", "missing", "textOverrides
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
 
 function sourceMatchesData(program, layer, requestedData) {
-  if (requestedData === undefined || layer?.data === requestedData) return true;
+  if (isGeoLabelSource(layer) || requestedData === undefined || layer?.data === requestedData) return true;
   return program.markConfigs[layer.id]?.gradientPlot?.source === requestedData;
 }
 
@@ -64,6 +65,7 @@ function eligibleSource(program, layer, requestedData) {
     !isTextSource(layer) ||
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
+  if (isGeoLabelSource(layer)) return canMaterializeTextSource(program, layer);
   if (["x", "y", "theta", "radius"].some(channel => layer.conditionals?.[channel] !== undefined)) return canMaterializeTextSource(program, layer);
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
   if (
@@ -115,7 +117,7 @@ function textInheritance(program, source) {
     source: source.id,
     data: source.data,
     coordinate: source.coordinate,
-    encoding: source.mark.type === "arc" ||
+    encoding: isGeoLabelSource(source) || source.mark.type === "arc" ||
       (source.mark.type === "point" &&
         findCoordinate(program, source.coordinate)?.type === "polar")
       ? {}
@@ -151,17 +153,16 @@ const createTextMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "missing") && inherited?.source !== undefined) {
       throw new Error("Text missing policy requires a row-backed text mark, not source-owned labels.");
     }
-    const { data } = resolveMarkData(this, {
+    const data = inherited?.source !== undefined && inherited.data === undefined ? undefined : resolveMarkData(this, {
       ...args,
       ...(args.data === undefined && inherited?.data !== undefined
         ? { data: inherited.data }
         : {})
-    });
+    }).data;
     assertMarkAvailable(this, id);
 
-    let next = this
-      .editSemantic({ property: `layer[${id}].mark.type`, value: "text" })
-      .editSemantic({ property: `layer[${id}].data`, value: data });
+    let next = this.editSemantic({ property: `layer[${id}].mark.type`, value: "text" });
+    if (data !== undefined) next = next.editSemantic({ property: `layer[${id}].data`, value: data });
     if (Object.hasOwn(args, "missing")) {
       next = next.editSemantic({
         property: `layer[${id}].mark.missing`,

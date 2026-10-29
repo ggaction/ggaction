@@ -5,15 +5,15 @@
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/cc5e6f75289aec3e01e1879102801d437d151bb6/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/cc5e6f75289aec3e01e1879102801d437d151bb6/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/cc5e6f75289aec3e01e1879102801d437d151bb6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -111,7 +111,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/cc5e6f75289aec3e01e1879102801d437d151bb6/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-histogram/program.js).
 - Continue with [Encodings](../../../api/encodings/),
  [Guides](../../../api/guides/), [Titles](../../../api/titles/), and the
  [Basic Chart contract](../../../api/basic-charts/#createhistogram).

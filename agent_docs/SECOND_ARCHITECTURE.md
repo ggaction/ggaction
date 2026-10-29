@@ -862,11 +862,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 728,000 bytes |
-| `ggaction/basic` | 384,000 bytes |
+| `ggaction` | 730,000 bytes |
+| `ggaction/basic` | 386,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/graph` | 43,000 bytes |
-| `ggaction/interaction` | 102,000 bytes |
+| `ggaction/graph` | 46,000 bytes |
+| `ggaction/interaction` | 109,200 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3899,3 +3899,25 @@ Geo 조건부 feature adapter 한 파일을 추가한 source 측정은1,040entri
 기존 package 한도를 넘은 파일 수와 byte 한도만1,040 /1,478,000 /6,723,000으로 변경했다.
 동일 minified bytes의 gzip 최댓값 Full727,574 / Basic383,848 / SVG20,200 /
 interaction101,352 / graph43,764는 기존 bundle 한도 안에 있어 이를 유지한다.
+
+### Geo source-owned Text anchors
+
+기존 Text source/encoding/config/layout owner를 그대로 유지하며 `materialization/geo/labels.js`가
+resource-backed feature identity·실제 rows·transient field view와 저장 소유권 검증을 연결한다.
+Full assembly가 `textSourceAnchors.js`의 constructor별 private Geo resolver에
+`geo/labelAnchors.js`를 한 번 등록한다. 이 math-only adapter는 기존 centroid/projection을
+재사용하며 Basic의 import graph에는 들어오지 않는다. Callback과 계산 anchor는 저장하지 않는다.
+공통 final-item reconciliation은 이미 식별된 resource Text의 exact lineage/rows를 보존하고
+기존 markOutput이 native Text effects와 concrete identity를 작성한다. 원 Geo annotation의
+단일 anchor 의미와 renderer의 graphicSpec 전용 입력은 바뀌지 않는다. 정확한 계약은
+[current/MARKS.md](contract/current/MARKS.md#createmarklabels)가 소유한다.
+
+Geo Text의 저장 content 검증은 Full의 기존 projection resource handler에 두어 graph 준비용
+패키지가 Text formatter·Geo 수학을 가져오지 않게 한다. Generic resource graph는 closed
+coordinate/source shape만 확인하고 등록된 kind handler에 의미 검증을 위임한다.
+
+Geo source labels는1043개 package entries이며 Node20·24 packed1,479,001,
+unpacked6,729,227bytes를 측정했다. 캡은1043/1,481,000/6,731,000으로 둔다.
+동일 minified bytes의 Node20·24 gzip은 Full728,161/Basic384,468/Graph44,044이며
+각각730,000/386,000/46,000으로 최소1,000bytes 여유를 둔다. SVG·interaction은
+기존 한도를 유지한다. Graph 입력 검증은 Full 등록 handler 분리 뒤 측정했다.

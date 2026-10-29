@@ -797,3 +797,26 @@ artifact, desktop 검색과320·390·768px 모든 페이지 containment를 통�
 [조건부 증거](geo-evidence/conditional/status.json)에 별도로 보존한다. 전체 unit/global coverage나
 전수 installed 결과를 대신 주장하지 않는다. 다음 feature/graticule labels 및 후행session/player
 연계 의무는 계속 유지한다.
+
+## Feature·graticule 레이블 연결 계약
+
+사용자 전체 승인과 root의 구체 설계 승인에 따라 새 공개 API 없이 기존
+`createMarkLabels({source,field|value,format?,select|selection?,style...,layout?})` 및
+`createTextMark({source}).encodeText(...)`를 Geo shape/point/line/graticule에 연결한다.
+Text의 `source`, `encoding.text`, 기존 mark config와 label layout이 각각 의미·내용·표현·배치를
+단독 소유한다. Dataset이나 별도 Geo label resource를 합성하지 않는다. 고정 단일 anchor인
+기존 Geo annotation은 그대로 유지한다.
+
+원 source의 최종 eligible feature가 레이블 grain이며 multipart도 하나의 label이다. 위치는 기존
+geometry centroid와 projection forward owner로 계산하고 null/비가시 anchor는 제외한다. 원 feature
+key와 실제 joined rows를 source item에서 전달하며 LOD representation aliases는 label namespace로
+변환한다. Graticule은 기존 생성 feature의 axis/value와 typed feature key를 그대로 읽는다. Field와
+constant는 기존 Text formatting을 사용하고 semantic value/category/share는 기존 Bar/Arc 제한을
+유지한다. Center placement와 dx/dy, 기존 collision layout을 재사용하며 새로운 geographic boundary
+inside/outside policy는 만들지 않는다. FillPaint/font/outline/shadow/selection/highlight는 native Text
+owner가 처리한다.
+
+Geometry/join/LOD/projection/source/parameter/selection/Canvas 수정의 후보 검증과 최종 source→Text
+한 번 실행, codec·제거·concat을 검증한다. 레이블에 별도 data/좌표/위치 intent를 넣는 malformed
+snapshot은 거부한다. 대표 primitive·네 renderer·DPR1/2·실데이터와 설치 소비자까지 같은 checkpoint로
+닫으며 source-neutral renderer 경계는 바꾸지 않는다.

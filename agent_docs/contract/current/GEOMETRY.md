@@ -617,3 +617,11 @@ conditional recipes), and the geographic field renderer/installed consumers.
 - ✅ Covered: explicit/current target, partial style edits, original feature anchoring, text omission,
   font/theme rematerialization, immutable failed edit, resource lifecycle and exact restoration.
 - Evidence: `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.
+
+### Attached feature and graticule labels
+
+Full geographic Shape/Point/Line/Graticule marks are eligible existing Text sources. Use the canonical
+[`createMarkLabels`](MARKS.md#createmarklabels) and [`createTextMark`](MARKS.md#createtextmark) contract
+for field/constant content, centroid anchors, native styles, membership, collision layout and removal.
+This source relationship follows geometry/join/LOD/projection revisions without a synthesized dataset.
+Graticules expose `axis` and numeric `value`. Fixed geographic annotations remain single-anchor resources.

@@ -1,3 +1,4 @@
+import { geoLabelSource } from "./geo/labels.js";
 export { validateConditionalDependencies } from "./conditionalState.js";
 import { validateRowReference } from "../core/rowReference.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
@@ -138,7 +139,7 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
     geographicCoordinates.add(coordinate.id);
   }
   for (const layer of program.semanticSpec.layers ?? []) {
-    if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo")) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
+    if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo" || geoLabelSource(program, layer) !== undefined)) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
   }
   for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
 }
