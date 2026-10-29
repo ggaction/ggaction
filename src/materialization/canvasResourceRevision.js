@@ -1,4 +1,4 @@
-import { ownRecord } from "../../core/ownData.js";
+import { ownRecord } from "../core/ownData.js";
 
 // Full-only resource computation stays outside the shared Canvas/Basic import
 // graph. Like data revision, assembly registers one exact constructor owner.

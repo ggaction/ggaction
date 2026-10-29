@@ -1,0 +1,478 @@
+{
+  "sourceCommit": "7e6854182161abb9c5ce96403238a65997da8d4b",
+  "scope": "STEP057 D2 explicit screen/data nearest; hidden/drop reconciliation, automatic bindings and STEP077 remain open",
+  "sourceHashes": {
+    "src/grammar/hitClipDistance.js": "771c6836e042ff5a83e91242ec058a7fa1ce8c8869aac7dd78ff55d5c2be722c",
+    "src/grammar/hitIndex.js": "49550ab1ac089fd721aec4986bd50171f2e46aefda7c2a33a1a1082c3e7f6de5",
+    "src/grammar/hitShapes.js": "79ba570cfaf20960068b46f4c90093b43acc970e47fc37eca05f573b30f569d9",
+    "src/grammar/nearestSelection.js": "a1245700b193d8a71343ecb7ecb06409f1d9ace3ad5c1aa5b168d55188ace3d0",
+    "src/interaction/bindings.js": "97e607f74a916c5073f5771f9617cbcf17fb620837374818672be4696f2c887f",
+    "src/interaction/hitFrame.js": "4194ac7144827d53c982f37bcd7ddc0bb0a14118f3830549938d271a45d435e2",
+    "src/interaction/nearest.js": "a4fa50ebceda081915550acddde5b408d8a040a8db488439fe17fec3cbd5228c",
+    "src/interaction/selection.js": "489b358f1fc262cb56e674b3d204c28855028515d44040caf1b9379881b9cddd",
+    "src/interaction/session.js": "0b53f12dddc5a953865a0fcc436b76d0b5be83ed8443b14a8f7f6b70c6d8d9a0",
+    "types/interaction.d.ts": "d228a09c97742e2f72b72a8f2317d28a33bf15c1563b6a5690783cfc68ce35dc"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 96,
+      "newOwners": {
+        "grammar/nearestSelection.js": [
+          100,
+          100,
+          100
+        ],
+        "grammar/hitClipDistance.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/nearest.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "changedOwners": {
+        "grammar/hitIndex.js": [
+          100,
+          100,
+          100
+        ],
+        "grammar/hitShapes.js": [
+          100,
+          95.21,
+          100
+        ],
+        "interaction/hitFrame.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/selection.js": [
+          100,
+          98.72,
+          100
+        ],
+        "interaction/bindings.js": [
+          100,
+          95.59,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          97.01,
+          100
+        ]
+      },
+      "newOwnerFloor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "typesBoundaryDiscovery": 28,
+    "packageContracts": 13,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "tests": 6,
+      "scope": "Canvas/SVG current frame, commands, linked selection and actual nearest click"
+    },
+    "docs": {
+      "sourceTests": 184,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualReviewed": ".artifacts/interaction-nearest-docs/nearest-390.png",
+      "ruby": "3.2 on explicit PATH"
+    },
+    "sameArchiveConsumers": {
+      "20": {
+        "node": "v20.20.2",
+        "artifact": "b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 158,
+            "minifiedBytes": 291089,
+            "gzipBytes": 94951
+          }
+        ]
+      },
+      "22": {
+        "node": "v22.23.1",
+        "artifact": "b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 650908
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 365369
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 158,
+            "minifiedBytes": 291089,
+            "gzipBytes": 94603
+          }
+        ]
+      },
+      "24": {
+        "node": "v24.22.1",
+        "artifact": "b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 158,
+            "minifiedBytes": 291089,
+            "gzipBytes": 94951
+          }
+        ]
+      }
+    }
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 918,
+    "packedBytes": 1319657,
+    "unpackedBytes": 6053712,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-nearest-qualified.tgz",
+    "sha1": "de7bef86e6f165873c4c2ae253436781c3c17466",
+    "sha256": "b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64"
+  },
+  "initialArtifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 918,
+    "packedBytes": 1319659,
+    "unpackedBytes": 6053713,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-nearest-initial.tgz",
+    "sha1": "e0c2d0005380473e6a13854a6072815d97953f32",
+    "sha256": "969973c958d76d4c6ec3e1cae7213c308003821a3fb602c64d3ebcdab2e39c46"
+  },
+  "packageFinalMaximum": {
+    "entries": 918,
+    "packedBytes": 1322665,
+    "unpackedBytes": 6053712
+  },
+  "limits": {
+    "entries": 918,
+    "packedBytes": 1323000,
+    "unpackedBytes": 6054000,
+    "interactionGzip": 95000
+  },
+  "preservedFailures": [
+    "Initial test fixtures used one-child hconcat and unsupported repeatCharts by; corrected to existing APIs.",
+    "Discovery registration, stale provenance and docs snippet result array were corrected in owning metadata.",
+    "Initial package entry count 918 exceeded 915; initial Node22 interaction gzip94603 exceeded92000.",
+    "Initial docs preflight used default Ruby2.6; rerun with existing Ruby3.2 PATH passed."
+  ],
+  "evidenceReuse": [
+    "No new chart image target; existing image manifests verified by source docs checks.",
+    "No full repository, renderer or all-installed sweep claimed.",
+    "Source hash freeze after7e6854182; final realistic/browser/docs and same archive checks refer to this source."
+  ],
+  "logs": {
+    "nearest-boundaries-final.log": {
+      "path": "logs/nearest-boundaries-final.log.gz",
+      "rawSha256": "7d615d7eae01b72bc9d6861351683f43d8117ef709b659dd4bda56db259a18d7",
+      "bytes": 5735
+    },
+    "nearest-boundaries.log": {
+      "path": "logs/nearest-boundaries.log.gz",
+      "rawSha256": "ebda4ffa27b881a785e250f6cc3542d6b97ec63c90267aada24fd3cb8534a242",
+      "bytes": 6737
+    },
+    "nearest-browser-final.log": {
+      "path": "logs/nearest-browser-final.log.gz",
+      "rawSha256": "a2f670cf9117d7b0345dc2b56cce4b943154c5c28b0f00aa8f95dca7d7f75336",
+      "bytes": 1405
+    },
+    "nearest-browser.log": {
+      "path": "logs/nearest-browser.log.gz",
+      "rawSha256": "aaa6d072d0c1e78ba2ad957c6c57d9ffe9e45dbfefbfe19438278ca1e2fd04f5",
+      "bytes": 1405
+    },
+    "nearest-build.log": {
+      "path": "logs/nearest-build.log.gz",
+      "rawSha256": "1a37beee2832642dd84a8b65070b96cdd7f9cd6573bbc0df7111818aebdb72b8",
+      "bytes": 419
+    },
+    "nearest-built.log": {
+      "path": "logs/nearest-built.log.gz",
+      "rawSha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179
+    },
+    "nearest-clips.log": {
+      "path": "logs/nearest-clips.log.gz",
+      "rawSha256": "62bfe8449a94dcd2cfd1e5fa4497605dc8d16e4eb3ec432536bfa5166251aa7a",
+      "bytes": 2326
+    },
+    "nearest-consumer-check.mjs": {
+      "path": "logs/nearest-consumer-check.mjs.gz",
+      "rawSha256": "48f61f0ee5bb3996cf32b64802860e075d4bcc9ec115694815125f60b556803e",
+      "bytes": 1999
+    },
+    "nearest-consumer-initial22.log": {
+      "path": "logs/nearest-consumer-initial22.log.gz",
+      "rawSha256": "3a7d0ee35b283a1b71e45eeb3f36f33d55e6f026a5977bf39875b500bd6d9cb4",
+      "bytes": 1498
+    },
+    "nearest-consumer20.log": {
+      "path": "logs/nearest-consumer20.log.gz",
+      "rawSha256": "78444aa6516c5b58113df975aa87e9155b58178c9b39f05e18ec74bb89c5a2c2",
+      "bytes": 938
+    },
+    "nearest-consumer22.log": {
+      "path": "logs/nearest-consumer22.log.gz",
+      "rawSha256": "24eab1e79541198f4d83e2e316bb6504119bce7ebeee9ec10527296c6f717678",
+      "bytes": 938
+    },
+    "nearest-consumer24.log": {
+      "path": "logs/nearest-consumer24.log.gz",
+      "rawSha256": "6558214c87fbf72a622e9dac7f557e27aa5035d38dd824f8aacee2a3d3b4583b",
+      "bytes": 938
+    },
+    "nearest-coverage-clips.log": {
+      "path": "logs/nearest-coverage-clips.log.gz",
+      "rawSha256": "15ee21bb7dfea104b3bd25fe72548c8059de88b7b4b5b4ffcaabeba9591f76e1",
+      "bytes": 23750
+    },
+    "nearest-coverage-final.log": {
+      "path": "logs/nearest-coverage-final.log.gz",
+      "rawSha256": "13204ce6d3e595d6abe0898f3f2dbb993584f444e48dbc8ed8b1aac74e582247",
+      "bytes": 23984
+    },
+    "nearest-coverage-initial.log": {
+      "path": "logs/nearest-coverage-initial.log.gz",
+      "rawSha256": "3ff9b0f936a86835b54eef8ccf4ee10b896f48910275f9adc8bb2051aa1bb9dc",
+      "bytes": 23471
+    },
+    "nearest-coverage-qualified.log": {
+      "path": "logs/nearest-coverage-qualified.log.gz",
+      "rawSha256": "5f87a4829e29cce640b1fc9cc6d824edd621ee711bfdff10e757d3db7491492c",
+      "bytes": 24447
+    },
+    "nearest-doc-browser.log": {
+      "path": "logs/nearest-doc-browser.log.gz",
+      "rawSha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50",
+      "bytes": 197
+    },
+    "nearest-doc-browser.mjs": {
+      "path": "logs/nearest-doc-browser.mjs.gz",
+      "rawSha256": "e6eb731dcfc5e1d2cec457f4f574318df69990cdc55ace11ee845f1937fee58a",
+      "bytes": 2800
+    },
+    "nearest-docs-final.log": {
+      "path": "logs/nearest-docs-final.log.gz",
+      "rawSha256": "267f862232437b7f59791c1d3c798d70d6e7ed1bd91d4856bb247cc24edf0a2e",
+      "bytes": 42881
+    },
+    "nearest-docs-initial.log": {
+      "path": "logs/nearest-docs-initial.log.gz",
+      "rawSha256": "c6058d57232169e896567a80fbb5cea8bd8c0a94bb8e0e0a693e2df17d08acc9",
+      "bytes": 44148
+    },
+    "nearest-existing.log": {
+      "path": "logs/nearest-existing.log.gz",
+      "rawSha256": "ea536901fa908306e12e279e79f68787920a54c9349c63e253e09f360be69ebe",
+      "bytes": 14247
+    },
+    "nearest-expected-actual-diff.json": {
+      "path": "logs/nearest-expected-actual-diff.json.gz",
+      "rawSha256": "38db062b4e2f9952b822582ad23fa00d49dff2bdad5f987a180e2010f7a0a0d3",
+      "bytes": 625
+    },
+    "nearest-final-package.json": {
+      "path": "logs/nearest-final-package.json.gz",
+      "rawSha256": "ff5a864ef7cb4a1a9d25301dd4bf34ea132f63a4e79da406204587732ff8a249",
+      "bytes": 413
+    },
+    "nearest-fixed.json": {
+      "path": "logs/nearest-fixed.json.gz",
+      "rawSha256": "2f59a202eba395ebd78de8f7c92bf4b1142bd3989b1708b8ee9068cf32fb77a7",
+      "bytes": 427
+    },
+    "nearest-generators.log": {
+      "path": "logs/nearest-generators.log.gz",
+      "rawSha256": "7c7749f9ce278d1c9529fe46397b00d73ef22e4e2b908c5027657b114380a37b",
+      "bytes": 726
+    },
+    "nearest-initial.json": {
+      "path": "logs/nearest-initial.json.gz",
+      "rawSha256": "e3a6624060f5b2f27e3b8979f026258b799f73626664815b6d6729081012d23e",
+      "bytes": 425
+    },
+    "nearest-initial.log": {
+      "path": "logs/nearest-initial.log.gz",
+      "rawSha256": "0751966c4f9ee5f6b1e766f0e12bec0dc47a2f03140e39be3d03c56e21c71ffa",
+      "bytes": 4499
+    },
+    "nearest-measure.mjs": {
+      "path": "logs/nearest-measure.mjs.gz",
+      "rawSha256": "86fe342f6c34d2b4ce83aa997da04d46661bf2fc5343fa8f019686087440c6ad",
+      "bytes": 9479
+    },
+    "nearest-measure20.json": {
+      "path": "logs/nearest-measure20.json.gz",
+      "rawSha256": "2815ba5a8b7829700187be2581dc2a5a92c1814497563abf6104c184fd745840",
+      "bytes": 160
+    },
+    "nearest-measure24.json": {
+      "path": "logs/nearest-measure24.json.gz",
+      "rawSha256": "7151bcfa662ad14c50603e7c591b48dcfa767793e1d08c0a974d29ee68b35a0d",
+      "bytes": 160
+    },
+    "nearest-oracle.mjs": {
+      "path": "logs/nearest-oracle.mjs.gz",
+      "rawSha256": "613c4b30611aa891f6050b71ef407c5c3deee5a75f3f3bebd6bc7cf535f398f8",
+      "bytes": 1916
+    },
+    "nearest-package-contracts.log": {
+      "path": "logs/nearest-package-contracts.log.gz",
+      "rawSha256": "1610ce8f3f5a58fa4c9dd3c6a88a671abf89625fe0926051aeab843da9eb19f1",
+      "bytes": 2766
+    },
+    "nearest-package-final-check.json": {
+      "path": "logs/nearest-package-final-check.json.gz",
+      "rawSha256": "017df847737a8a77b8e7183919381ace08f9556819a883e8cb4ed63d5087dd62",
+      "bytes": 160
+    },
+    "nearest-package-final20.json": {
+      "path": "logs/nearest-package-final20.json.gz",
+      "rawSha256": "7151bcfa662ad14c50603e7c591b48dcfa767793e1d08c0a974d29ee68b35a0d",
+      "bytes": 160
+    },
+    "nearest-package-final24.json": {
+      "path": "logs/nearest-package-final24.json.gz",
+      "rawSha256": "7151bcfa662ad14c50603e7c591b48dcfa767793e1d08c0a974d29ee68b35a0d",
+      "bytes": 160
+    },
+    "nearest-package-initial.log": {
+      "path": "logs/nearest-package-initial.log.gz",
+      "rawSha256": "4e54b1ddb97a5ee135f55c662c9084e15c35a8e95efe8d17fda9093bd100965d",
+      "bytes": 894
+    },
+    "nearest-preflight.log": {
+      "path": "logs/nearest-preflight.log.gz",
+      "rawSha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "nearest-realistic-final.log": {
+      "path": "logs/nearest-realistic-final.log.gz",
+      "rawSha256": "8a91ef565bb0f02c0771d225d9c0607bf3e31b18c145db6873d558760cd3e0dd",
+      "bytes": 4268
+    },
+    "nearest-realistic.log": {
+      "path": "logs/nearest-realistic.log.gz",
+      "rawSha256": "1c7a059271c038962f521a652f5e8caae48f5c34e1a1fa137c8c4f6fb3d9cdaa",
+      "bytes": 4272
+    },
+    "nearest-snippets-final.log": {
+      "path": "logs/nearest-snippets-final.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "nearest-types.log": {
+      "path": "logs/nearest-types.log.gz",
+      "rawSha256": "f3b6c5a419f7342755c82f908a6d620fc93ae6137e9f7911185bd62c6e51879e",
+      "bytes": 376
+    }
+  }
+}

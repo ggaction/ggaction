@@ -42,7 +42,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology

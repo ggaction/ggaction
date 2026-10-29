@@ -1,0 +1,100 @@
+{
+  "status": "qualified",
+  "base": "487b9a434",
+  "merged": "6b21bf8a2",
+  "scope": "STEP057 D2 nearest, D3 lifecycle, D4 click and STEP058 captured-click integration",
+  "checks": {
+    "focused": 112,
+    "gestures": 10,
+    "realistic": 16,
+    "browser": 10,
+    "calendarCrossFeatureAndContracts": 36,
+    "docs": 186,
+    "builtPages": 166,
+    "selectiveLLMArtifacts": 1429,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "sourceHashes": {
+    "src/interaction/nearest.js": "4c40922886c8befabab34d68d21e1848e103c7f56e9059b279fe50ba7c8743db",
+    "src/interaction/reconciliation.js": "de514279ce959d0fc21ff3a228d24f4383721d2afc15748db696904529ef12d9",
+    "src/interaction/clickSelection.js": "9c742666b2a92d865214af6686eb71db0b04caf84dcbfea0120107d331be5a7d",
+    "src/interaction/gestures.js": "3b863c916b81797462666436cae37c494848dd08de7e09ba9af3639a7f1bbe4f",
+    "src/interaction/pointerCapture.js": "8d343237583b374ed86847aec054e18770511b3eb4440d35ce6307561499b887",
+    "src/interaction/session.js": "7211aec556125deb64e438a5a73453caf70702c8b62f2a48356ee2d8e943a66a",
+    "src/grammar/nearestSelection.js": "a1245700b193d8a71343ecb7ecb06409f1d9ace3ad5c1aa5b168d55188ace3d0",
+    "types/interaction.d.ts": "62ed6ebfce8dfd78522b43dd584e83a03b69e46148ecab64787e848726f85a1a"
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/interaction-capture-integration-final/ggaction-0.0.26.tgz",
+    "entries": 939,
+    "packedBytes": 1348950,
+    "unpackedBytes": 6188354,
+    "sha256": "7f1643b1f87758c582d50f4c02dc3006253d7509546a3cd24a48ba7d012c5447"
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "themeTests": 90,
+      "runtimeCases": 14,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 662747,
+        "ggaction/basic": 370736,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 100884
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "themeTests": 90,
+      "runtimeCases": 14,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 661265,
+        "ggaction/basic": 369979,
+        "ggaction/svg": 20055,
+        "ggaction/interaction": 100413
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "themeTests": 90,
+      "runtimeCases": 14,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 662747,
+        "ggaction/basic": 370736,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 100884
+      }
+    }
+  ],
+  "caps": {
+    "entries": 939,
+    "packedBytes": 1349000,
+    "unpackedBytes": 6189000,
+    "gzip": {
+      "ggaction": 663000,
+      "ggaction/basic": 371000,
+      "ggaction/svg": 25000,
+      "ggaction/interaction": 101000
+    },
+    "search": 969000
+  },
+  "searchBytes": 968887,
+  "criticalCoverage": "Reused unchanged incoming owner hashes and focused coverage from each nearest/reconciliation/click/capture evidence; no whole-coverage rerun claimed",
+  "notClaimed": [
+    "STEP058 full domain preview/arbitration matrix",
+    "STEP059 brush/lasso",
+    "whole source coverage rerun",
+    "full realistic corpus rerun",
+    "STEP077 completion"
+  ]
+}

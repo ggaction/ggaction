@@ -26,7 +26,22 @@ export const cases = [
         assert.equal(getMarkItems(session.getState().program, {target:'points'}).filter(i=>i.properties.fill==='red').length,0);
         assert.deepEqual(events.map(e=>e.phase),['commit','settled','commit','settled']);
         assert.equal(events[0].previous,p); assert.equal(events[0].transactionId,'pick');
+        const firstKey=getMarkItems(session.getState().program,{target:'points'}).map(item=>item.key).sort()[0];
+        for(const nearest of [{space:'screen',point:{x:63,y:60},maxDistance:6},{space:'data',fields:['x','y'],values:[50,60],metric:'euclidean',maxDistance:0}]) {
+          session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest}});
+          assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.key),[firstKey]);
+        }
         stop();
+        for (const selectionPolicy of ['keep-hidden','drop']) {
+          const original=session.getState().program, lifecycle=createInteractionSession({program:original,selectionPolicy,bindings:[]}), events=[];
+          lifecycle.subscribe(event=>events.push(event));
+          lifecycle.updateProgram(original.filterMarks({target:'points',field:'x',op:'gt',value:100}));
+          assert.equal(events[0].selectionChanges[0][selectionPolicy==='drop'?'droppedKeys':'hiddenKeys'].length,1);
+          const current=deserializeProgram(serializeProgram(lifecycle.getState().program)).removeMarkFilter({target:'points'});
+          lifecycle.updateProgram(current);
+          assert.equal(getMarkItems(lifecycle.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,selectionPolicy==='drop'?0:1);
+          lifecycle.destroy();
+        }
       } else assert.throws(()=>session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}}),/does not support/);
 
       assert.equal(hit.candidates.length, 2); assert.equal(hit.target.role, "point");
@@ -63,6 +78,20 @@ export const cases = [
     session.destroy();
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
+    const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+    const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();
+    const host={getBoundingClientRect:()=>({left:10,top:20,width:200,height:160}),addEventListener:(event,listener)=>clicks.set(event,listener),removeEventListener:(event,listener)=>{if(clicks.get(event)===listener)clicks.delete(event)}};
+    automatic.mount(host);clicks.get('click')({clientX:60,clientY:80});
+    assert.equal(getMarkItems(automatic.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,1);
+    clicks.get('click')({clientX:60,clientY:80});assert.equal(getMarkItems(automatic.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,0);
+    const captures=new Set();host.setPointerCapture=id=>captures.add(id);host.releasePointerCapture=id=>captures.delete(id);host.hasPointerCapture=id=>captures.has(id);
+    automatic.mount(host);const phases=[];automatic.subscribe(event=>{if(event.phase)phases.push(event.phase)});
+    const pointer={clientX:60,clientY:80,pointerId:1,pointerType:'mouse',button:0};
+    clicks.get('pointerdown')(pointer);assert.equal(captures.size,1);clicks.get('pointerup')(pointer);clicks.get('click')({...pointer,detail:1});
+    assert.deepEqual(phases,['commit','settled']);assert.equal(getMarkItems(automatic.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,1);
+    const accepted=automatic.getState().program;clicks.get('pointerdown')(pointer);clicks.get('keydown')({key:'Escape'});clicks.get('pointerup')(pointer);clicks.get('click')({...pointer,detail:1});
+    assert.equal(automatic.getState().program,accepted);assert.equal(phases.at(-1),'cancel');assert.equal(captures.size,0);
+    automatic.destroy();assert.equal(clicks.size,0);
     const p = make(chart);
     const session = createInteractionSession({ program: p }), active = new Map();
     const element = { addEventListener(type, listener) { active.set(type, listener); },

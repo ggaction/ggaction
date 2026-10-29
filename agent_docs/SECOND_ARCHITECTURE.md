@@ -78,6 +78,11 @@ Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한
 materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
 screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
 Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Shared materialization의 `canvasResourceRevision` registry가 Canvas와 guide transaction의
+명시 resource adapter 경계를 소유한다. Responsive와 exact-plot guide transaction도 이를 호출한다. Responsive pass의
+domain action이 먼저 현재 후보 bounds로 source resource union을 닫고, guide-only viewport
+변경은 최종 graphical rematerialization 전에 갱신한다. Source union은 같은 Canvas를 쓰는
+독립 screen route까지 검증하며 viewport-only sibling의 원 intent와 input vector를 보존한다.
 
 아래 package 수치는 공개 연결 이전 private checkpoint의 보존 기록이다.
 Theme 통합 기준과 이 private kernel의 합산 package는 927 entries/6,105,931 unpacked bytes,
@@ -753,7 +758,10 @@ Worker 결과와 저장 route는 같은 exact ref·hash·결과 validator를 거
 
 ### `ggaction/interaction`
 
-Browser-safe controller entry는 materialized scene의 hit geometry와 명시적인 host event binding을 사용한다. Full/Basic authoring을 import하거나 저장 의미를 변경하지 않는다. 정확한 공개 계약은 [Interaction](../docs/api/interaction.md)이 소유한다.
+Browser-safe session/controller entry다. Explicit current scene inspection과 Full native selection·parameter
+commands를 연결하고 runtime bindings·event·listener 수명을 소유한다. Default authoring entry나
+renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
+[Current INTERACTION](contract/current/INTERACTION.md)이 소유한다.
 
 ### `ggaction/scene`
 
@@ -791,6 +799,7 @@ src/persistence.js       ↔ types/persistence.d.ts
 src/accessibility.js     ↔ types/accessibility.d.ts
 src/diagnostics.js       ↔ types/diagnostics.d.ts
 src/scene.js             ↔ types/scene.d.ts
+src/interaction.js       ↔ types/interaction.d.ts
 ChartProgram contract    ↔ types/program.d.ts
 src/mcp/cli.js           ↔ package `ggaction-mcp` executable
 ```
@@ -853,11 +862,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 701,000 bytes |
-| `ggaction/basic` | 372,000 bytes |
+| `ggaction` | 706,000 bytes |
+| `ggaction/basic` | 376,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
-| `ggaction/interaction` | 93,000 bytes |
+| `ggaction/interaction` | 102,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3545,6 +3554,21 @@ SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked
 Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
 Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
 
+### Bounded fixed-Canvas guide layout
+
+Canvas responsive intent와 derived plot reservation은 기존 Canvas materialization config 한 곳이
+소유한다. `grammar/responsiveCanvas.js`/`responsiveLabels.js`는 closed own-data 정책과 저장
+결과를 검증하며, `layout/responsivePolicy.js`는 명시적으로 측정된 최대4회 snapshot만 비교한다.
+`materialization/responsiveLayout.js`가 기존 guide transaction 안에서 scale→mark→guide→title
+계획을 실행하고 최종 concrete occupied bounds를 측정한다. 전역 action hook이나 semantic
+compiler는 없으며 renderer의 입력 경계도 바뀌지 않는다. 반환 시 측정 context를 제거하고
+`layout/canvas.js resolveGraphicBounds`가 settled plot의 단일 읽기 owner로 남는다.
+
+축 fallback intent와 result는 기존 guide config에 분리하여 저장한다. Actual text, hit metadata,
+inspection이 동일 선택을 읽고 font/source 갱신은 기존 explicit dependency 경계를 사용한다.
+정확 옵션·수렴·실패·복원 계약은 [CORE](contract/current/CORE.md)와
+[AXES](contract/current/AXES.md)가 소유한다. Nested composition의 root reservation 및 ancestor
+closure는 별도 composition owner의 후속 연결 의무이며 unit solver에 자동 재귀를 넣지 않는다.
 ### Ordered range 계산 owner
 
 `grammar/orderedRange.js`는 data filter와 final-item mark selector의 숫자·문자열 endpoint 검증 및 포함 판정을 함께 소유한다.
@@ -3644,3 +3668,98 @@ Node20 초기 packed1,319,185/unpacked6,040,680 bytes에 cap915/1,320,000/6,041,
 Interaction gzip91,705는89,000을 초과해92,000으로만 올렸고 Full651,735/Basic366,102/SVG20,196은
 기존 cap을 유지한다. Search958,319bytes에는959,000 최소 cap을 적용한다. 최종 archive의 이후
 작은 work-accounting 수정 측정은 개념 checkpoint evidence에서 구분하며 최초 실패를 지우지 않는다.
+
+
+### Nearest 선택 계산 경계
+
+`grammar/nearestSelection.js`는 final-item 명시 numeric tuple을 검증하고 기존 graph metric 계산을
+재사용한다. `interaction/nearest.js`는 기존 Full resolver 등록·owner namespace·현재 hit bridge를
+사용해 ordinary select payload로 바꾼다. Session의 기존 atomic candidate/linked closure 경계와
+codec는 유지되며 별도 semantic predicate나 authoring action을 만들지 않는다.
+`grammar/hitClipDistance.js`는 기존 flattened path와 segment distance를 재사용한 clip 경계 분할만
+소유한다. 기존 hit index가 nearest query의 거리 우선 정렬과 누적 work를 소유하고 ordinary inspect
+순서는 유지한다. 정확한 공개 옵션/실패/수명은 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+
+D2 source 후보의 package 실측은918entries/6,053,713unpacked/Node20 최대1,322,667packed bytes로
+한도918/1,323,000/6,054,000을 적용한다. Interaction의 초기 Node22 gzip94,603에95,000 한도를
+적용하며 Full/Basic/SVG와 기존 critical floor는 유지한다. 최종 metadata tar의 검증은 STEP057 증거에
+별도로 구분한다. 최초 package entry 및 interaction bundle 초과 실패는 삭제하지 않는다.
+
+
+### Selection의 runtime availability 수명
+
+`interaction/reconciliation.js`가 authored selection의 exact final-item membership과 explicit view
+visibility를 bounded session snapshot으로 비교한다. Keep-hidden tombstone은 runtime에만 남기고
+Drop의 저장 변경은 기존 wrapped selection editor로 위임한다. Linked target의 pruning은 기존
+DAG owner에 위임해 동일 target을 두 번 edit하지 않는다. Missing endpoint는 기존 binding cache를
+유지하거나 empty contribution으로 바꾸며 임의 resource를 재생성하지 않는다. 최종 selection
+검증과 hit-frame 준비가 끝나야 program·projection·lifecycle cache를 함께 교체한다. Renderer와
+codec의 기존 경계는 바뀌지 않는다. 정확 정책과 event는 Current INTERACTION을 따른다.
+
+
+D3 초기 package919entries/Node20packed1,325,924/unpacked6,066,891를 측정해 cap을
+919/1,326,000/6,067,000으로 최소 올림했다. 초기 Node22 interaction96,601gzip에는97,000을
+적용한 뒤 Node20의97,221gzip으로97,500까지 최소 증분했다. Full/Basic/SVG floor와 cap은 유지한다.
+Search959,574bytes는960,000으로 최소 올림했다.
+최초 초과 실패와 동일 archive의 후속3Node 검증 결과는 D3 증거에서 구분한다.
+
+
+### Host click의 native selection 위임
+
+`interaction/clickSelection.js`는 설정된 explicit owner의 기존 final-item grain과 current hit 후보를
+연결해 ordinary select/clear command만 만든다. Owner·authored selection 검증은 기존
+`interaction/selection.js`의 shared resolver로 모아 nearest/linked/click이 재사용한다. Session이
+listener 수명과 FIFO·원자 commit을 소유하고 렌더러는 계속 accepted graphicSpec/scene만 읽는다.
+새 selection resource나 low-level pointer command는 없다. 정확한 단일 binding 범위·miss/no-op
+정책과 후행 gesture 경계는 Current INTERACTION에 둔다.
+
+D4 click owner 추가로 entries920, Node20packed1,327,105/unpacked6,072,371를 측정했다.
+Package cap은920/1,328,000/6,073,000, interaction97,595gzip은97,600,
+search960,195bytes는961,000으로 최소 올림한다. 최초 한도 초과와 동일 archive의
+Node20/22/24 검증은 click evidence에서 구분하며 기존 다른 entry cap은 유지한다.
+
+### Private gesture state와 host effect 분리
+
+`interaction/gestures.js`가 bounded candidate arbitration과 immutable pointer transition/effects를
+소유한다. DOM capture·RAF·program baseline은 이 pure owner에 넣지 않는다. 기존 session과
+후속 domain adapter가 효과를 명시 소비하며 새 public export나 persisted state는 없다.
+Private 계산 검증은 capture/preview의 public 통합 완료를 의미하지 않는다.
+
+Private gesture module1개로 entries921, Node20 packed1,329,320/unpacked6,080,779를 측정했다.
+Package cap만921/1,330,000/6,081,000으로 최소 올림하며 public entry import graph와 bundle은
+변하지 않는다. 최초 package entry 초과를 별도 보존한다.
+
+### Captured click의 DOM 효과 경계
+
+`interaction/pointerCapture.js`는 기존 pure gesture reducer의 state/effects를 실제 host capture와
+listener 수명에 연결한다. Session은 같은 native command/FIFO와 immutable program reference를
+소유하며 capture adapter에 authoring 로직을 넣지 않는다. Terminal state를 먼저 받아 capture를
+풀고 subscriber를 호출하여 lostcapture와 SVG remount의 중복 commit을 막는다. Exact public
+cancel/host fallback 의미는 Current INTERACTION이 소유한다. Domain drag preview는 후행이다.
+
+Captured click의 공개 import 연결 후 Node20 package922entries/packed1,331,459/unpacked6,089,158,
+interaction100,541gzip을 측정했다. Package922/1,332,000/6,090,000과 interaction100,600으로
+한도만 최소 올림하며 다른 entry 한도와 search961,000은 유지한다. 최초 package·bundle 초과와
+잘못된 단일 callback host mock의 remount 수리는 pointer-capture evidence에 별도 보존한다.
+
+### Nested facet responsive and projection closure
+
+`materialization/facetScaleContext.js`는 명시적인 facet/typography/theme 작업 동안
+이미 결정된 child domain을 유지한다. Responsive pass는 범위만 다시 계산하며,
+임시 `context.facetMaterialization`은 반환 전에 복구된다. 저장 schema나 자동
+컴파일 경계는 추가하지 않는다. 최종 bounds는 `layout/canvas.js`의
+`resolveGraphicBounds`를 계속 사용한다.
+
+Facet의 새 derived dataset identity는 같은 logicalId의 후속 source revision과
+구분한다. `actions/data/resourceRevision.js`의 class-local project 경로는 기존
+각 resource owner를 재사용하며 graph만 별도 prepared projection 권한을 쓴다.
+이 권한은 exact receiver/args, old/new dataset refs와 전체 graph/layout 결과
+closure를 primitive가 확인한 뒤 소멸한다. 상세 동작은
+[Current composition](contract/current/COMPOSITION.md#responsive-nested-reflow)이 소유한다.
+
+
+Nested closure의 동일 staged source는 Node20/24에서934entries,
+1,341,753packed/6,149,683unpackedbytes, minimal browser Full667,284gzip을
+기록했다. 한도는934/1,342,000/6,150,000 및 Full668,000으로 교정하며
+Basic375,000/SVG25,000/interaction83,000은 유지한다.

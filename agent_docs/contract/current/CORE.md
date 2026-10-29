@@ -4,7 +4,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createCanvas`
 
-- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
+- Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
 - 목적과 필수 state: Canvas가 없는 program에 logical Canvas와 plot bounds를 만든다.
 - `width`
   - Status: Implemented. 양의 finite number이며 기본값은 `640`이다.
@@ -70,9 +70,19 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/canvas/create-canvas.test.js`,
   `test/unit/grammar/layout/canvas-layout.test.js`.
 
+### Responsive fixed Canvas
+
+`createCanvas`(Full/Basic)와 `editCanvas`(Full)는 `responsive: false | { minPlotSize?: { width: PositiveFinite, height: PositiveFinite } }`를 지원한다. 기본 minimum은 기존 fitCanvas와 같은160×120이다. Omission은 intent 보존, false는 policy/result 제거다. Exact-inner `plot`과 함께 쓰지 않는다. Outer width/height와 authored margin은 고정이며 `materializationConfigs.canvas.responsiveResult.snapshot.plot`에 derived reservation을 저장한다. 최종 bounds는 공통 `resolveGraphicBounds`만 읽는다.
+
+기존 guide transaction과 scale/source/font dependency plan이 명시적으로 최대4회 측정한다. 최초 후보는 authored margin에서 시작하고 필요한 reservation은 기존0.25px 격자로 위쪽 반올림한다. 인접 plot·occupied·guide 경계의 최대 차이가0.1px 이내이고 minimum 및 containment를 만족해야 성공한다. Containment에는 계산 roundoff용16ULP만 허용하며 crop tolerance는 없다. A-B-A 반복,4회 미수렴, 공간 부족은 `layout-unsatisfied`와 reason/required bounds를 반환하고 이전 program/trace를 보존한다. 중간 측정 context는 반환·저장되지 않는다. Background-only edit는 결과를 보존한다.
+
+`inspectProgram().layouts`는 childPath별 policy/result와 Cartesian label 선택을 read-only로 반환하며 layout을 실행하지 않는다. Editable restore는 closed shape·finite geometry·minimum·bounds를 검사하고 renderer는 저장된 concrete output만 읽는다. 정확 font profile의 누락 query는 기존 `metrics-required`이며 준비 closure가 bounded replay로 수집한다. Polar/Parallel은 기존 label 의미를 유지하고 Canvas의 예약 공간 계산에 참여한다. Concat child는 명시적으로 편집한 child를 `replaceCompositionChild`로 교체한다.
+
+Evidence: `test/unit/actions/canvas/responsive-layout.test.js`, `responsive-lifecycle.test.js`, `test/unit/grammar/responsive-state.test.js`, `test/unit/layout/responsive-policy.test.js`, `test/contracts/responsive-layout-types.test.js`, `test/charts/responsive-guides/`, `test/browser/responsive-guides.browser.js`.
+
 ## `editCanvas`
 
-- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })`
+- Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
 - `width`, `height`, `background`, `margin`
   - Status: Implemented. 값 계약은 `createCanvas`와 같다. 생략한 property는 기존 값을 유지한다.

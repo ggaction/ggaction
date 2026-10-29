@@ -1,3 +1,4 @@
+import { resolveGraphicBounds } from "../../../src/layout/canvas.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, hconcat } from "../../../src/index.js";
@@ -10,7 +11,7 @@ import { trimGraphRoute } from "../../../src/materialization/graph/routeGeometry
 
 const get = (p, id = "routes") => p.semanticSpec.resources.find(r => r.kind === "edge-route" && r.id === id);
 const nodes = [{ key: "a", group: "one" }, { key: "b", group: "one" }, { key: "c", group: "two" }];
-const source = () => chart().createCanvas({ width: 400, height: 300 }).createData({ id: "nodes", values: nodes, keyField: "key" })
+const source = (rows = nodes) => chart().createCanvas({ width: 400, height: 300 }).createData({ id: "nodes", values: rows, keyField: "key" })
   .createData({ id: "edges", values: [{ key: "ac", source: "a", target: "c" }, { key: "ab", source: "a", target: "b" }, { key: "bc", source: "b", target: "c" }], keyField: "key" })
   .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "key", source: "source", target: "target", edgeKey: "key", directed: true })
   .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 0, y: 0 }, { key: "b", x: 50, y: 50 }, { key: "c", x: 100, y: 0 }] } });
@@ -132,4 +133,66 @@ test("scoped route edits refresh the selected composition child without changing
   const child = plot(), p = hconcat({ programs: [{ id: "left", program: child }, { id: "right", program: child }] });
   const next = p.editEdgeRoute({ target: { childPath: ["left"], id: "routes" }, options: { exponent: 3 } });
   assert.equal(get(next.children.left).revision, 1); assert.equal(next.children.right, p.children.right);
+});
+
+
+test("responsive screen routes follow settled guide bounds with one revision per edit", () => {
+  const p = source().editCanvas({ width: 900, height: 600, margin: 100 })
+    .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" })
+    .createGraphPlot({ id: "network", routes: "routes" })
+    .createData({ id: "measurements", values: [{ x: 1, y: 1000 }, { x: 2, y: 2000 }, { x: 3, y: 3000 }] })
+    .createScatterPlot({ id: "points", data: "measurements", x: "x", y: "y", guides: false })
+    .createYAxis({ ticksAndLabels: { values: [1000, 2000, 3000] }, title: { text: "Observation value" } })
+    .editCanvas({ responsive: {} });
+  const saved = serializeProgram(p), first = get(p).revision;
+  const q = p.editYAxisLabels({ fontSize: 48 });
+  assert.deepEqual(get(q).result.viewport, resolveGraphicBounds(q));
+  assert.equal(get(q).revision, first + 1);
+  assert.equal(count(q.trace.children.at(-1), "refreshScreenEdgeRoutes"), 1);
+  const r = q.editCanvas({ width: 760, height: 520 });
+  assert.deepEqual(get(r).result.viewport, resolveGraphicBounds(r));
+  assert.equal(get(r).revision, get(q).revision + 1);
+  assert.equal(count(r.trace.children.at(-1), "refreshScreenEdgeRoutes"), 1);
+  assert.deepEqual(deserializeProgram(serializeProgram(r)).graphicSpec, r.graphicSpec);
+  assert.equal(serializeProgram(p), saved);
+});
+
+test("a responsive source revision recomputes routes once against the same pass's final viewport", () => {
+  const rows = nodes.map((row, index) => ({ ...row, x: index, y: (index + 1) * 1000 }));
+  const base = source(rows).editCanvas({ width: 1000, height: 700, margin: 100 })
+    .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" })
+    .createGraphPlot({ id: "network", routes: "routes" })
+    .createScatterPlot({ id: "points", data: "nodes", x: "x", y: "y", guides: false })
+    .createYAxis({ title: false })
+    .editCanvas({ responsive: {} })
+    .editYAxisLabels({ fontSize: 32 });
+  const p = base.createData({ id: "other-nodes", values: nodes, keyField: "key" })
+    .createGraphData({ id: "other-graph", nodes: "other-nodes", edges: "edges", nodeKey: "key", source: "source", target: "target", edgeKey: "key" })
+    .layoutGraph({ id: "other-layout", graph: "other-graph", method: "circular" })
+    .bundleGraphEdges({ id: "other-routes", graph: "other-graph", layout: "other-layout", method: "edge-path", coordinateSpace: "screen" });
+  const saved = serializeProgram(p);
+  const next = p.reviseData({ source: "nodes", id: "updated", values: rows.map(row => ({ ...row, y: row.y * 100000 })) });
+  assert.notDeepEqual(resolveGraphicBounds(next), resolveGraphicBounds(p));
+  assert.deepEqual(get(next).result.viewport, resolveGraphicBounds(next));
+  assert.equal(get(next).revision, get(p).revision + 1);
+  assert.deepEqual(get(next, "other-routes").result.viewport, resolveGraphicBounds(next));
+  assert.equal(get(next, "other-routes").revision, get(p, "other-routes").revision + 1);
+  assert.equal(count(next.trace.children.at(-1), "refreshScreenEdgeRoutes"), 0);
+  assert.deepEqual(deserializeProgram(serializeProgram(next)).graphicSpec, next.graphicSpec);
+  assert.equal(serializeProgram(p), saved);
+});
+
+test("guide margin growth keeps exact plot screen routes bound to the enlarged Canvas", () => {
+  const p = source().editCanvas({ plot: { width: 600, height: 400 }, margin: 100 })
+    .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" })
+    .createGraphPlot({ id: "network", routes: "routes" })
+    .createData({ id: "measurements", values: [{ x: 1, y: 1000 }, { x: 2, y: 2000 }, { x: 3, y: 3000 }] })
+    .createScatterPlot({ id: "points", data: "measurements", x: "x", y: "y", guides: false })
+    .createYAxis({ title: false });
+  const next = p.editYAxisLabels({ fontSize: 64 });
+  assert.notDeepEqual(resolveGraphicBounds(next), resolveGraphicBounds(p));
+  assert.deepEqual(get(next).result.viewport, resolveGraphicBounds(next));
+  assert.equal(get(next).revision, get(p).revision + 1);
+  assert.equal(count(next.trace.children.at(-1), "refreshScreenEdgeRoutes"), 1);
+  assert.deepEqual(deserializeProgram(serializeProgram(next)).graphicSpec, next.graphicSpec);
 });

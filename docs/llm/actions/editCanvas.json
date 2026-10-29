@@ -95,6 +95,11 @@
       "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
     },
     {
+      "name": "responsive",
+      "required": false,
+      "type": "false | ResponsiveCanvasOptions | undefined"
+    },
+    {
       "name": "plot",
       "required": false,
       "type": "false | { width: number; height: number; } | undefined"
@@ -111,7 +116,7 @@
     }
   ],
   "callPatterns": [
-    "editCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
+    "editCanvas({ target?, width?, height?, background?, margin?, responsive?, plot?, plotBorder? })"
   ],
   "snippet": "program.editCanvas({ width: 640 })",
   "errors": [],

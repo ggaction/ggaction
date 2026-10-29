@@ -22,7 +22,7 @@ import { previewGraphLayouts } from "../graphs/layouts.js";
 import { preflightContourConsumers } from "../contours/closure.js";
 import { preflightCalendarConsumers } from "../calendar/closure.js";
 import { withPreparedDataResourceResults } from "../primitives/preparedResourceContext.js";
-import { reviseEdgeRouteResource } from "../graphs/routeClosure.js";
+import { reviseEdgeRouteResource, needsScreenRouteRevision } from "../graphs/routeClosure.js";
 
 const key = ref => JSON.stringify([ref.kind, ref.id]);
 
@@ -34,7 +34,8 @@ export function planSourceResourceRevision(program, dataReplacements) {
     ? requireMaterializedDataset(program, dataReplacements.get(ref.id)) : resolveInputReference(program, ref);
   const resourceInput = ref => revised.get(key(ref)) ?? resolveInputReference(program, ref);
   for (const previous of orderResourceDependencies(program.semanticSpec.resources)) {
-    const changed = previous.inputs.some(ref => ref.kind === "data" ? dataReplacements.has(ref.id) : revised.has(key(ref)));
+    const changed = previous.inputs.some(ref => ref.kind === "data" ? dataReplacements.has(ref.id) : revised.has(key(ref))) ||
+      needsScreenRouteRevision(program, previous);
     if (!changed || !["hierarchy", "graph", "geometry", "layout", "edge-route"].includes(previous.kind)) continue;
     const identity = { id: previous.id, revision: previous.revision + 1 };
     let resource;

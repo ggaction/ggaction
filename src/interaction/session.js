@@ -1,3 +1,7 @@
+import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
+import { prepareClickCapture } from "./pointerCapture.js";
+import { normalizeSelectionPolicy, reconcileSelections } from "./reconciliation.js";
+import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
@@ -8,21 +12,22 @@ import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordina
 import { normalizeHitQuery } from "../grammar/hitShapes.js";
 import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
-import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks } from "./bindings.js";
+import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksChangedAvailability } from "./bindings.js";
 
 const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
 function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
-  if (!Array.isArray(value) || value.length > 257) throw new TypeError("Interaction bindings exceed the binding limit.");
+  if (!Array.isArray(value) || value.length > 258) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], linked = [];
+  const inspect = [], linked = [], selected = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve"], "Interaction binding");
-    (head.type === "linkSelection" ? linked : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss"], "Interaction binding");
+    (head.type === "linkSelection" ? linked : head.type === "select" ? selected : inspect).push(head);
   }
-  if (inspect.length > 1) throw new TypeError("Interaction bindings support at most one inspect binding.");
-  return { linked: normalizeSelectionLinks(program, linked), inspect: freezeOwned(inspect.map(binding => {
+  if (inspect.length > 1 || selected.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select binding.");
+  const links = normalizeSelectionLinks(program, linked);
+  return { linked: links, select: selected.length ? normalizeClickSelection(program, selected[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
     const events = request.events === undefined ? ["pointermove", "click"] : request.events;
@@ -35,6 +40,12 @@ function bindings(program, value) {
     return cloneAndFreeze({ type: "inspect", events, ...(request.slop === undefined ? {} : { slop: query.slop }), hitInvisible: query.hitInvisible });
   })) };
 }
+function pointerCoordinates(element, event, transform) {
+  const bounds = element.getBoundingClientRect();
+  return resolveHitCoordinates({ point: { x: event.clientX, y: event.clientY },
+    rect: { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
+    rootTransform: transform, childTransforms: [] });
+}
 function nextInteger(value) {
   if (value === Number.MAX_SAFE_INTEGER) throw new RangeError("Interaction frame counter is exhausted.");
   return value + 1;
@@ -45,12 +56,13 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings"], "Interaction session");
-  const configured = bindings(request.program, request.bindings);
+  const request = options(input, ["program"], ["bindings", "selectionPolicy"], "Interaction session");
+  const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
+  let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
-  let state, revision = 0, transactionSequence = 0;
+  let state, revision = 0, transactionSequence = 0, ignoredClick;
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
   const snapshot = () => state = freezeOwned({ program, scene: bridge.getState().scene,
@@ -81,30 +93,42 @@ export function createInteractionSession(input) {
     lastHit = bridge.hit(point, query); publish("inspect"); return outcome("applied");
   };
   const clear = () => { lastHit = null; publish("leave"); return outcome("applied"); };
-  const detach = lease => {
-    for (const [event, listener] of lease.listeners) lease.element.removeEventListener(event, listener);
-    lease.listeners.length = 0; lease.element = undefined;
+  const detach = (lease, reason = "unmount") => {
+    let failure;
+    try { lease.capture?.dispose(reason); } catch (error) { failure = error; }
+    for (const [event, listener] of lease.listeners) {
+      try { lease.element.removeEventListener(event, listener); } catch (error) { failure ??= error; }
+    }
+    lease.listeners.length = 0; lease.element = undefined; lease.capture = undefined;
+    if (failure) throw failure;
   };
   const close = () => {
-    if (mounted !== undefined) detach(mounted);
+    let failure;
+    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
     mounted = undefined; lastHit = null; destroyed = true;
-    try { publish("destroy"); } finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; }
+    try { publish("destroy"); } catch (error) { failure ??= error; }
+    finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
+    if (failure) throw failure;
     return outcome("applied");
   };
   const edit = command => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
     const previous = program;
-    let prepared, version, nextGeneration, nextRevision, candidate, frame;
+    let prepared, version, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
       ...(command.causeTransactionId === undefined ? {} : { causeTransactionId: command.causeTransactionId }),
-      phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics)
+      phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics), selectionChanges: cloneAndFreeze(phase === "error" ? [] : selectionChanges)
     });
     try {
-      prepared = prepareInteractionEdit(program, command);
+      prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
       if (prepared.program === program) return outcome("unchanged");
-      prepared = applySelectionLinks(prepared.program, configured.linked, linkedSelections, prepared.affectedOwners, command);
+      reconciled = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: configured.linked });
+      prepared = applySelectionLinks(reconciled.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...reconciled.affectedOwners], command, selectionPolicy);
+      const verified = reconcileSelections(prepared.program, reconciled.records, selectionPolicy, { verify: true });
+      selectionChanges = [...reconciled.changes, ...verified.changes];
+      reconciled = verified;
       version = nextInteger(bridge.getState().version); nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
       candidate = prepareProgramHitFrame(prepared.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
@@ -112,8 +136,9 @@ export function createInteractionSession(input) {
       publish(command.type, details("error", Object.freeze([]), [{ code: getErrorDetails(error)?.code ?? "interaction-command-failed", message: error.message }]));
       throw error;
     }
+    mounted?.capture?.cancel("updateProgram");
     bridge.updateFrame(frame); base = candidate; program = prepared.program;
-    linkedSelections = prepared.projections;
+    linkedSelections = prepared.projections; selectionRecords = reconciled.records;
     generation = nextGeneration; revision = nextRevision; lastHit = null;
     publish(command.type, details("commit", prepared.affectedOwners));
     publish(command.type, details("settled", prepared.affectedOwners));
@@ -156,12 +181,20 @@ export function createInteractionSession(input) {
     updateProgram(next) {
       return perform(() => {
         const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-        const candidate = prepareProgramHitFrame(next, version);
+        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: configured.linked });
+        let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
+        if (reconciled.affectedOwners.length || selectionLinksChangedAvailability(linked.projections, linkedSelections)) {
+          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy);
+        }
+        if (configured.select) resolveClickSelection(linked.program, configured.select.target, configured.select.selection, true);
+        const verified = reconcileSelections(linked.program, reconciled.records, selectionPolicy, { verify: true });
+        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...verified.changes]);
+        const candidate = prepareProgramHitFrame(linked.program, version);
         const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-        const projections = inspectSelectionLinks(next, configured.linked);
-        bridge.updateFrame(frame); base = candidate; program = next; generation = nextGeneration; revision = nextRevision; lastHit = null;
-        linkedSelections = projections;
-        publish("program"); return outcome("applied");
+        mounted?.capture?.cancel("updateProgram");
+        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        linkedSelections = linked.projections; selectionRecords = verified.records;
+        publish("program", { selectionChanges }); return outcome("applied");
       });
     },
     subscribe(listener) {
@@ -187,10 +220,7 @@ export function createInteractionSession(input) {
             const listener = event === "pointerleave" ? () => { if (!destroyed && mounted === lease) dispatch({ type: "leave" }); }
               : eventObject => {
                 if (destroyed || mounted !== lease) return;
-                const bounds = element.getBoundingClientRect();
-                const coordinates = resolveHitCoordinates({ point: { x: eventObject.clientX, y: eventObject.clientY },
-                  rect: { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
-                  rootTransform: transform, childTransforms: [] });
+                const coordinates = pointerCoordinates(element, eventObject, transform);
                 const query = { pointerType: eventObject.pointerType || "mouse", hitInvisible: binding.hitInvisible,
                   ...(binding.slop === undefined ? {} : { slop: binding.slop }) };
                 if (coordinates.localPoint === null) perform(() => {
@@ -200,9 +230,56 @@ export function createInteractionSession(input) {
               };
             lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: true });
           }
+          if (configured.select) {
+            const binding = configured.select;
+            const select = (point, pointerType, transactionId) => {
+              const query = normalizeHitQuery({ pointerType, hitInvisible: binding.hitInvisible,
+                ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
+              const command = clickSelectionCommand(program, binding, bridge.hit(point, query));
+              if (!command) return outcome("unchanged");
+              if (transactionId === undefined) { transactionSequence = nextInteger(transactionSequence); transactionId = `interaction-${transactionSequence}`; }
+              return edit(interactionTransaction(command, transactionId));
+            };
+            lease.capture = prepareClickCapture(element, {
+              current: () => !destroyed && mounted === lease,
+              perform,
+              point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
+              begin: () => {
+                if (!resolveClickSelection(program, binding.target, binding.selection, true)) return null;
+                transactionSequence = nextInteger(transactionSequence);
+                return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
+              },
+              select: (token, point, pointerType) => select(point, pointerType, token.transactionId),
+              cancel: (token, reason) => publish("select", {
+                transactionId: token.transactionId, origin: "user", phase: "cancel", revision,
+                affectedOwners: freezeOwned([binding.target]), previous: token.previous, current: program,
+                diagnostics: freezeOwned([freezeOwned({ code: "gesture-cancelled", message: reason })]), selectionChanges: Object.freeze([])
+              }),
+              error: (token, error) => publish("select", {
+                transactionId: token.transactionId, origin: "user", phase: "error", revision,
+                affectedOwners: Object.freeze([]), previous: token.previous, current: program,
+                diagnostics: freezeOwned([freezeOwned({ code: "pointer-capture-failed", message: String(error?.message ?? error) })]), selectionChanges: Object.freeze([])
+              }),
+              blockClick: pointerId => { ignoredClick = pointerId; }
+            });
+            const listener = event => {
+              if (destroyed || mounted !== lease || (event.button !== undefined && event.button !== 0)) return;
+              if (event.detail !== 0 && ignoredClick !== undefined && (event.pointerId === undefined || event.pointerId === ignoredClick)) { ignoredClick = undefined; return; }
+              const coordinates = pointerCoordinates(element, event, transform);
+              const pointerType = event.pointerType || "mouse";
+              perform(() => {
+                if (mounted !== lease || coordinates.localPoint === null) return outcome("unchanged");
+                return select(coordinates.screenPoint, pointerType);
+              });
+            };
+            lease.listeners.push(["click", listener]); element.addEventListener("click", listener, { passive: true });
+          }
         } catch (error) { detach(lease); candidate.dispose(); throw error; }
-        if (mounted !== undefined) detach(mounted);
-        bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null; publish("mount");
+        let failure;
+        try { if (mounted !== undefined) detach(mounted); } catch (error) { failure = error; }
+        bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null;
+        try { publish("mount"); } catch (error) { failure ??= error; }
+        if (failure) throw failure;
         return outcome("applied");
       });
       return () => {
@@ -210,7 +287,11 @@ export function createInteractionSession(input) {
         perform(() => {
           if (mounted !== lease) return outcome("stale");
           const version = nextInteger(bridge.getState().version), frame = rebindProgramHitFrame(base, bridge.getState().scene, version);
-          bridge.updateFrame(frame); detach(lease); mounted = undefined; rootTransform = IDENTITY; lastHit = null; publish("unmount");
+          let failure;
+          try { detach(lease); } catch (error) { failure = error; }
+          bridge.updateFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
+          try { publish("unmount"); } catch (error) { failure ??= error; }
+          if (failure) throw failure;
           return outcome("applied");
         });
         return true;

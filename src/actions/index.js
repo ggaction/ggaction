@@ -31,7 +31,7 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
-import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
+import { registerGraphActions, reviseGraphInputs, projectGraphInputs } from "./graphs/resources.js";
 import { registerFlowActions } from "./flow/resources.js";
 import { registerFlowPlotActions } from "./flow/plots.js";
 import { registerContourResourceActions, reviseContourInputs } from "./contours/resources.js";
@@ -92,6 +92,7 @@ export function registerActions(ProgramClass) {
   registerHierarchyPlotActions(ProgramClass);
   registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry", "layout", "edge-route"],
     revise: (program, replacements) => reviseCalendarInputs(reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
+    project: (program, replacements) => reviseCalendarInputs(reviseContourInputs(projectGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements), replacements),
     reviseSource: reviseSourceResourceInputs });
   registerTextMetricActions(ProgramClass);
 }

@@ -105,7 +105,7 @@ test("external replacement revalidates all links atomically without implicit aut
   const original=composition(),session=createInteractionSession({program:original,bindings:[link("row",["a"],"b","global",rowProjection)]});
   const next=original.editParameter({target:{childPath:["a"],id:"threshold"},value:3});
   session.updateProgram(next);assert.equal(session.getState().program,next);assert.deepEqual(ids(next,"b"),[]);
-  const state=session.getState();assert.throws(()=>session.updateProgram(base()),/Unknown target child/);
+  const state=session.getState();assert.throws(()=>session.updateProgram({}),/immutable/);
   assert.equal(session.getState(),state);session.destroy();
 });
 

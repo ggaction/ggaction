@@ -2,8 +2,15 @@ import { createEdgeRouteResource } from "../../materialization/graph/routeResour
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 import { resolveInputReference } from "../../selectors/resources.js";
+import { routeValueHash } from "../../grammar/graph/routes/job.js";
+import { resolveGraphicBounds } from "../../layout/canvas.js";
 
 const key = ref => JSON.stringify([ref.kind, ref.id]);
+
+export function needsScreenRouteRevision(program, resource) {
+  return resource.kind === "edge-route" && resource.options.coordinateSpace === "screen" &&
+    routeValueHash(resource.result.viewport) !== routeValueHash(resolveGraphicBounds(program));
+}
 
 export function reviseEdgeRouteResource(program, previous, inputs) {
   const [graph, layout, hierarchy, hierarchyLayout] = inputs;
@@ -16,7 +23,8 @@ export function reviseEdgeRouteResource(program, previous, inputs) {
 export function prepareEdgeRouteRevisions(program, resources) {
   const candidates = new Map(resources.map(resource => [key(resource), resource])), entries = [];
   for (const previous of program.semanticSpec.resources) {
-    if (previous.kind !== "edge-route" || !previous.inputs.some(ref => candidates.get(key(ref))?.revision !== ref.revision)) continue;
+    if (previous.kind !== "edge-route" || !previous.inputs.some(ref => candidates.get(key(ref))?.revision !== ref.revision) &&
+        !needsScreenRouteRevision(program, previous)) continue;
     const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources } };
     const inputs = previous.inputs.map(ref => resolveInputReference(preview, { ...ref, revision: candidates.get(key(ref))?.revision ?? ref.revision }));
     const resource = reviseEdgeRouteResource(preview, previous, inputs);

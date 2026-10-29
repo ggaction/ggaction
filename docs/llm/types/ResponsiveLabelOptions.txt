@@ -1,0 +1,10 @@
+export interface ResponsiveLabelOptions {
+  /** The declared fallback order. Defaults to wrap, skip, rotate. */
+  sequence?: readonly ["wrap", "skip", "rotate"];
+  /** Maximum physical lines per retained label; never truncates text. Defaults to 2. */
+  maxLines?: number;
+  /** Retain source indices 0, stride, 2*stride. Defaults to 2. */
+  skipStride?: number;
+  /** Tried in order after skipping. Defaults to -45 and -90 degrees. */
+  rotationCandidates?: readonly RotationInput[];
+}

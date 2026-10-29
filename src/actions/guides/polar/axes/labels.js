@@ -60,6 +60,7 @@ function labelGeometry(program, kind, config, angle = resolveAngle(program, kind
   if (config.align !== undefined) geometry.textAlign = geometry.textAlign.map(() => config.align);
   assertPolarTextLayout({
     canvas: program.graphicSpec.objects.canvas,
+    deferCanvasFit: program.context.responsiveMeasuring === true,
     label: `${prefix(kind)} axis labels`,
     items: text.map((value, index) => ({
       x: geometry.x[index],

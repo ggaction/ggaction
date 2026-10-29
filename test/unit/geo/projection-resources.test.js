@@ -6,6 +6,7 @@ import { serializeProgram, deserializeProgram } from "../../../src/persistence.j
 import { decodeValue, encodeValue } from "../../../src/persistence/codec.js";
 import { inspectProgram, comparePrograms } from "../../../src/inspection.js";
 import { PROJECTION_DESCRIPTORS } from "../../../src/grammar/geo/projectionOptions.js";
+import { resolveGraphicBounds } from "../../../src/layout/canvas.js";
 
 const line = (x = 10, y = 20) => ({ type: "LineString", coordinates: [[0, 0], [x, y]] });
 const source = (kind = "planar", values = line()) => chart().createGeometryData({ id: "shape", format: "geojson", coordinateKind: kind, values });
@@ -140,4 +141,33 @@ test("restored projection inputs cannot substitute an existing contour for a geo
   state.semanticSpec.resources.find(resource => resource.kind === "projection").inputs[0].id = "contour";
   envelope.payload = encodeValue(state);
   assert.throws(() => deserializeProgram(JSON.stringify(envelope)), /geographic or planar geometry source/);
+});
+
+test("explicit projection fits and responsive graph routes retain independent revision closures", () => {
+  const rows = [{ key: "a", x: 0, y: 1000 }, { key: "b", x: 1, y: 2000 }];
+  const base = fitted().createCanvas({ width: 1000, height: 700, margin: 100 })
+    .createData({ id: "nodes", values: rows, keyField: "key" })
+    .createData({ id: "edges", values: [{ source: "a", target: "b" }] })
+    .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "key", source: "source", target: "target" })
+    .layoutGraph({ id: "layout", graph: "graph", method: "circular" })
+    .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" })
+    .createGraphPlot({ id: "network", routes: "routes" })
+    .createScatterPlot({ id: "points", data: "nodes", x: "x", y: "y", guides: false })
+    .createYAxis({ title: false }).editCanvas({ responsive: {} }).editYAxisLabels({ fontSize: 32 });
+  const saved = serializeProgram(base);
+  const revised = base.reviseData({ source: "nodes", id: "updated", values: rows.map(row => ({ ...row, y: row.y * 100000 })) });
+  assert.notDeepEqual(resolveGraphicBounds(revised), resolveGraphicBounds(base));
+  assert.deepEqual(stored(revised, "routes").result.viewport, resolveGraphicBounds(revised));
+  assert.equal(stored(revised, "routes").revision, stored(base, "routes").revision + 1);
+  assert.equal(stored(revised), stored(base));
+  const reshaped = revised.editGeometryData({ target: "shape", values: line(20, 20) });
+  assert.equal(stored(reshaped).revision, stored(revised).revision + 1);
+  assert.deepEqual(stored(reshaped).result.bounds, [0, 0, 100, 100]);
+  assert.equal(stored(reshaped, "routes"), stored(revised, "routes"));
+  const resized = reshaped.editCanvas({ width: 1200 });
+  assert.equal(stored(resized, "routes").revision, stored(reshaped, "routes").revision + 1);
+  assert.deepEqual(stored(resized, "routes").result.viewport, resolveGraphicBounds(resized));
+  assert.equal(stored(resized), stored(reshaped));
+  assert.deepEqual(deserializeProgram(serializeProgram(resized)).graphicSpec, resized.graphicSpec);
+  assert.equal(serializeProgram(base), saved);
 });

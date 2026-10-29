@@ -41,7 +41,9 @@ work budget and 30,000 commands per route also apply. Invalid values, overflow o
 exhausted budgets fail without storing partial results.
 
 `coordinateSpace` defaults to `"world"`. `"screen"` also binds the current plot
-bounds: resizing the Canvas recomputes each screen route once. World routes retain
+bounds: Canvas resizing, responsive guide layout and exact-plot margin growth
+recompute each affected screen route once. Source and viewport changes share one
+revision, including other screen routes on the same Canvas. World routes retain
 their result. GraphPlot currently translates stored layout coordinates in either
 case.
 

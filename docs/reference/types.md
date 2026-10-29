@@ -1837,6 +1837,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Preserve outer dimensions and authored margins while reserving guide lanes. False disables. */
+  responsive?: false | ResponsiveCanvasOptions;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
   /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
@@ -1852,6 +1854,8 @@ export interface CanvasOptions {
 ```
 
 </details>
+
+Related types: [`ResponsiveCanvasOptions`](#type-responsivecanvasoptions).
 
 ### `CartesianAxesOptions` {#type-cartesianaxesoptions}
 
@@ -1894,6 +1898,8 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Opt-in measured fallback; requires responsive Canvas mode. False removes the policy. */
+  responsive?: false | ResponsiveLabelOptions;
   /** Local text alignment before rotation; omitted edits retain existing intent. */
   align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
@@ -1909,7 +1915,7 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
 
 </details>
 
-Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`CartesianAxisLabelColorMap`](#type-cartesianaxislabelcolormap).
+Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`ResponsiveLabelOptions`](#type-responsivelabeloptions) · [`CartesianAxisLabelColorMap`](#type-cartesianaxislabelcolormap).
 
 ### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
 
@@ -13689,6 +13695,42 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
 </details>
+
+### `ResponsiveCanvasOptions` {#type-responsivecanvasoptions}
+
+<details markdown="1">
+<summary>Expand ResponsiveCanvasOptions</summary>
+
+```typescript
+export interface ResponsiveCanvasOptions {
+  /** Required final inner size. Defaults to 160 by 120 CSS pixels. */
+  minPlotSize?: { width: number; height: number };
+}
+```
+
+</details>
+
+### `ResponsiveLabelOptions` {#type-responsivelabeloptions}
+
+<details markdown="1">
+<summary>Expand ResponsiveLabelOptions</summary>
+
+```typescript
+export interface ResponsiveLabelOptions {
+  /** The declared fallback order. Defaults to wrap, skip, rotate. */
+  sequence?: readonly ["wrap", "skip", "rotate"];
+  /** Maximum physical lines per retained label; never truncates text. Defaults to 2. */
+  maxLines?: number;
+  /** Retain source indices 0, stride, 2*stride. Defaults to 2. */
+  skipStride?: number;
+  /** Tried in order after skipping. Defaults to -45 and -90 degrees. */
+  rotationCandidates?: readonly RotationInput[];
+}
+```
+
+</details>
+
+Related types: [`RotationInput`](#type-rotationinput).
 
 ### `ReviseDataOptions` {#type-revisedataoptions}
 

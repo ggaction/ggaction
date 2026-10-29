@@ -1,3 +1,4 @@
+import { withResponsiveLayout } from "../responsiveLayout.js";
 import { restoreGuideVisibilityPaint, applyGuideVisibilityPaint } from "./visibility.js";
 import { restoreLegendItemsOffset, applyLegendItemsOffset } from "../legendItemsOffset.js";
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
@@ -9,6 +10,7 @@ import { applyMaterializationPlan } from "../planner.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "./resources.js";
 import { hasPlotUnderlays } from "../plotDrawOrder.js";
+import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../canvasResourceRevision.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
 // Whole-axis edits can replace label and relative-title siblings together.
@@ -22,10 +24,55 @@ export function withPendingRelativeAxisTitle(program, axisId, apply) {
   return result._clone({ context });
 }
 
+function applyGuidePass(program, apply) {
+  let result = apply(program);
+  if (hasLegendClipGraphics(program) && !hasLegendClipGraphics(result) &&
+      Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
+    result = result.rematerializeLegend();
+  }
+  if (result.compositionSpec === undefined && needsSideLegendAxisReflow(program, result)) {
+    // Rebuild the native anchor before applying the current axis clearance.
+    // Axis removal must also discard any previously inferred displacement.
+    result = result.rematerializeLegend();
+  }
+  if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
+    ["left", "right"].includes(config.position))) {
+    result = result.rematerializeSideLegendLane();
+  }
+  if (result.compositionSpec === undefined && needsLegendAxisReflow(program, result)) {
+    result = result.rematerializeHorizontalLegendLane();
+  }
+  if (result.compositionSpec === undefined && (Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0 || Object.values(result.guideConfigs.legend ?? {}).some(config=>localLegendPosition(config)!==undefined))) {
+    result = result.rematerializeLegendGroups();
+  }
+  if ((program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined) && result.titleConfig !== undefined) result = result.rematerializeTitle();
+  if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
+  result = applyLegendItemsOffset(result);
+  return result;
+}
+
+function validateFinalGuideLayout(program) {
+  const hidden = program.context.compositionCollectedLegends;
+  const guides = hidden ? { ...program.guideConfigs, legend: Object.fromEntries(Object.entries(program.guideConfigs.legend ?? {})
+    .filter(([kind]) => !hidden.includes(kind))) } : program.guideConfigs;
+  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(program.graphicSpec, guides, program.titleConfig, program.materializationConfigs.textMetrics));
+  return applyGuideVisibilityPaint(program);
+}
+
 // Defer cross-guide checks while sibling materializers still carry old
 // coordinates. The scope is transient and never survives a returned program.
 export function withGuideLayoutTransaction(program, apply) {
   if (program.context.deferGuideLayoutValidation === true) return apply(program);
+  if (program.materializationConfigs.canvas?.responsive !== undefined) {
+    const result = withResponsiveLayout(program, candidate => applyGuidePass(candidate, current => {
+      const applied = apply(resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(current))));
+      // A source action already computes its route closure against this pass's
+      // bounds. Guide-only edits still need their viewport-dependent results.
+      const settled = applyCanvasResourceRevision(applied, prepareCanvasResourceRevision(applied));
+      return applyMaterializationPlan(settled, planCanvasRematerialization(settled));
+    }));
+    return validateFinalGuideLayout(result);
+  }
   const plot = program.materializationConfigs.canvas?.plot;
   let margin = program.materializationConfigs.canvas?.margin;
   let result;
@@ -39,29 +86,12 @@ export function withGuideLayoutTransaction(program, apply) {
           ._withCanvasConfig({ ...candidate.materializationConfigs.canvas, margin });
         candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate));
       }
-      result = apply(candidate);
-      if (hasLegendClipGraphics(program) && !hasLegendClipGraphics(result) &&
-          Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
-        result = result.rematerializeLegend();
+      result = applyGuidePass(candidate, apply);
+      const resources = prepareCanvasResourceRevision(result);
+      if (resources !== undefined) {
+        result = applyCanvasResourceRevision(result, resources);
+        result = applyMaterializationPlan(result, planCanvasRematerialization(result));
       }
-      if (result.compositionSpec === undefined && needsSideLegendAxisReflow(program, result)) {
-        // Rebuild the native anchor before applying the current axis clearance.
-        // Axis removal must also discard any previously inferred displacement.
-        result = result.rematerializeLegend();
-      }
-      if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
-        ["left", "right"].includes(config.position))) {
-        result = result.rematerializeSideLegendLane();
-      }
-      if (result.compositionSpec === undefined && needsLegendAxisReflow(program, result)) {
-        result = result.rematerializeHorizontalLegendLane();
-      }
-      if (result.compositionSpec === undefined && (Object.keys(result.guideConfigs.legendGroups ?? {}).length > 0 || Object.values(result.guideConfigs.legend ?? {}).some(config=>localLegendPosition(config)!==undefined))) {
-        result = result.rematerializeLegendGroups();
-      }
-      if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
-      if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
-      result = applyLegendItemsOffset(result);
       break;
     } catch (error) {
       const details = getErrorDetails(error), overflow = details?.canvasOverflow;
@@ -74,11 +104,7 @@ export function withGuideLayoutTransaction(program, apply) {
     context.deferGuideLayoutValidation = program.context.deferGuideLayoutValidation;
   }
   const next = result._clone({ context });
-  const hidden = next.context.compositionCollectedLegends;
-  const guides = hidden ? { ...next.guideConfigs, legend: Object.fromEntries(Object.entries(next.guideConfigs.legend ?? {})
-    .filter(([kind]) => !hidden.includes(kind))) } : next.guideConfigs;
-  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, guides, next.titleConfig, next.materializationConfigs.textMetrics));
-  return applyGuideVisibilityPaint(next);
+  return validateFinalGuideLayout(next);
 }
 
 export function withGuideLayoutValidation(implementation) {

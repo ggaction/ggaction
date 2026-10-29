@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { registerCanvasResourceRevision, prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../../../src/actions/canvas/resourceRevision.js";
+import { registerCanvasResourceRevision, prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../../../src/materialization/canvasResourceRevision.js";
 
 test("Canvas resource revision dispatch is exact-class, one-time and isolated from caller-owned handler edits", () => {
   class Registered {}

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b. Status: development. Runtime source: f52d5c5f4e2f423214c687ff9961d5adb93607c8. Release baseline: v0.0.13.
+Contract: sha256:d51e9e8eb9c482b2db33d3012aa455f237f99b66e016e43eb09f47fb5e6ec378. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f52d5c5f4e2f423214c687ff9961d5adb93607c8/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f52d5c5f4e2f423214c687ff9961d5adb93607c8/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/a491a8b8e421ace56be22a83296e163e2315be70/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -4929,6 +4929,31 @@ Basic does not expose it and compositions reject it.
 An enabled plot border must fit strictly inside both plot dimensions, including
 after Canvas edits. `plotBorder: true` and unknown border style keys are rejected.
 
+## Keep the outer Canvas fixed
+
+Set `responsive: {}` on `createCanvas` to reserve space for guides inside the
+chosen width and height. Authored margins remain unchanged; the available plot
+can become smaller. `minPlotSize` defaults to `{ width: 160, height: 120 }` and
+accepts a complete pair of positive finite dimensions. This mode is available
+in Full and Basic and cannot be combined with exact inner `plot` dimensions.
+
+Full `editCanvas` preserves the policy when omitted. `responsive: false` removes
+it and returns to native margin layout. Background-only edits preserve the
+settled layout. Resizing, scale or source changes, and text measurement updates
+recompute the affected geometry. Exact font profiles must contain the required
+queries; missing measurements are preparation errors, never estimated widths.
+
+A solve uses at most four measured passes and requires every plot, occupied and
+guide boundary to change by at most 0.1 logical pixel. Insufficient space,
+oscillation or failure to converge rejects the action without changing the
+original program. It never enlarges the Canvas or reduces the font size.
+`inspectProgram(program).layouts` reports the settled plot and chosen label
+fallbacks. Enable [responsive Cartesian labels](./api/axes/complete/#responsive-labels)
+separately to allow wrapping, skipping and rotation.
+
+See the [fixed Canvas tutorial](./tutorials/responsive-guides/) for a complete
+program and an immutable resize.
+
 ## Related
 
 [Rendering](./api/rendering/) · [Coordinates](./api/coordinates/) ·
@@ -6099,7 +6124,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10798,7 +10823,7 @@ other session methods reject further work.
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Editing
-gestures, keyboard navigation, history, and asset loading
+brush/lasso gestures, keyboard navigation, history, and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
@@ -10923,13 +10948,160 @@ by a direct session selection command. Other named selections stay independent.
 Facet links address `facetSource: true` and use semantic source items; concrete
 property predicates are unavailable there. Generated cells remain read-only.
 
-Initialization and external `updateProgram` validate links without changing
-selection membership. Subsequent authoring changes update affected links in
+Initialization and ordinary external `updateProgram` replacements validate links without changing
+selection membership. Missing endpoints and pruning use the lifecycle policy below. Authoring changes update affected links in
 source-to-target order, once per target. `linkedSelections` exposes immutable
 source-specific projection sets and their resolved keys. Bindings allow at most
 256 links and 256 total source references, with bounded configuration and
 projection work. They remain runtime state: serialize the committed chart as
 usual and attach the bindings again after restoring it.
+
+## Select the nearest item
+
+Use `nearest` instead of `select` in a selection command. The selection must already exist on the
+explicit mark owner. This complete headless example chooses the observation nearest to `[2, 3]`
+in raw data units:
+
+> **Executable complete.** Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+const original = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "picked", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", bringToFront: false, dimOthers: false });
+const session = createInteractionSession({ program: original, bindings: [] });
+session.dispatch({ type: "select", target: "points", payload: {
+  id: "picked", nearest: { space: "data", fields: ["x", "y"], values: [2, 3],
+    metric: "euclidean", maxDistance: 1 }
+} });
+const program = session.getState().program;
+const selected = getMarkItems(program, { target: "points" })
+  .filter(item => item.properties.fill === "red").map(item => item.fields.id);
+session.destroy();
+// selected is ["b"].
+```
+
+For screen distance, supply `nearest: { space: "screen", point: { x, y }, maxDistance: 12 }`.
+The point and distance use CSS-local pixels in the current accepted frame. Filled interiors have
+zero distance; outside points measure the nearest painted fill edge or stroke, including dash gaps.
+Clipped-out intervals are excluded, and the query point must itself be inside every clip. Opacity-zero
+items require `hitInvisible: true`. Text uses its metric rectangles, images their placed viewport,
+and shadows do not enlarge the target. Path approximation remains 0.25 CSS pixels.
+
+Data distance requires `euclidean` or `manhattan`, 1–64 explicit numeric fields and an equal-length
+query tuple. It does not normalize units. Missing, null, nonnumeric, ambiguous aggregate values and
+distance overflow reject the whole command, including linked changes. Facet sources support data
+nearest; screen nearest requires a root or explicit concat child owner with one concrete frame.
+
+The finite non-negative `maxDistance` is required and inclusive. Ties choose the smallest opaque
+logical item key, independently of draw order. A miss supplies an empty set to the existing `mode`:
+`replace` clears, and add/toggle/subtract/intersect retain their normal set behavior. The resulting
+selection stores keys and survives serialization; nearest is not a continuously evaluated predicate.
+It commits with the same transaction, linked-selection and failure behavior as ordinary selection.
+
+## Keep or drop hidden selections
+
+Pass `selectionPolicy: "keep-hidden"` (the default) to preserve selections when a filter,
+partition focus or removed child hides their logical items. Matching selected keys can become visible
+again. Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
+A live range or predicate becomes a key snapshot only when items must be dropped. Explicitly authored
+replacement selection options take precedence. Opacity zero and sampled animation frames do not count
+as removed items.
+
+Program replacement events and transaction events expose `event.selectionChanges`, with each change
+containing `target`, `selection`, `policy`, `ownerMissing`, `hiddenKeys`, `restoredKeys` and `droppedKeys`.
+The arrays use opaque logical keys in the owner's child scope. Unchanged hidden state does not repeat
+an event. Render the session's accepted program after replacement: drop may add native selection edits.
+Failures preserve the previously accepted program and frame.
+
+A removed linked endpoint becomes dormant. Inspect `linkedSelections[].targetAvailable` and
+`sources[].available`. Missing sources retain their last projected set under keep-hidden or contribute
+an empty set under drop; present sources project their current effective membership. Missing targets
+are never recreated. Returning endpoints are validated again before their linked changes commit.
+A new session still requires all configured endpoints to exist.
+
+The controller stores this history only for its current lifetime. Serialization saves the existing
+selection resources; recreate the session and links after loading. A fresh replacement program retains
+the selection intent authored in that program. Legacy concrete-property predicates on facet sources
+have no source-only geometry: keep-hidden preserves them, while explicit drop rejects them. Prefer
+item keys, data fields or AST predicates for source selections.
+
+## Automatic click selection
+
+Use a `select` binding when the session should turn clicks into selection commands. The named
+selection must already exist on the explicit Full mark owner. Add an `inspect` binding separately
+if you also want hover or click inspection events.
+
+Place `<canvas id="chart" aria-label="Selectable observations"></canvas>` in the page, then run:
+
+> **Executable complete.** Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+
+const canvas = document.querySelector("#chart");
+const context = canvas.getContext("2d");
+render(program, context);
+const clickSession = createInteractionSession({ program, bindings: [
+  { type: "select", target: "points", selection: "picked", mode: "toggle", onMiss: "clear" }
+] });
+clickSession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+clickSession.mount(canvas);
+```
+
+`mode` defaults to `replace`; `toggle` adds or removes the clicked key. `onMiss` defaults to `clear`;
+`ignore` keeps the selection on a miss. Picking uses the first current-frame candidate belonging to
+the stated owner, child path and selection grain. Other marks and guide items cannot become that
+selection. Overlapping eligible items retain inspection's frontmost ordering. `slop` and
+`hitInvisible` have the same meaning as inspection.
+
+Selection commits have `origin: "user"` and update linked selections atomically. A repeated replace
+of the same explicit key snapshot, or clearing an already empty key snapshot, produces no commit.
+Only primary-button click events are used; modifier keys do not change the configured mode. The
+binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
+
+At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+target cannot also be its click-selection writer. Root and explicit concat owners are supported;
+facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
+The controller does not yet arbitrate dragging, competing bindings, keyboard activation or modifiers.
+
+For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
+remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
+Headless applications use the same explicit `select` and `clearSelection` commands.
+
+The browser captures the primary pointer from down to up. Moving less than 3 CSS pixels remains a
+click; reaching 3 pixels cancels the click selection. This threshold does not change with device pixel
+ratio or the root transform. Escape, pointer cancellation, lost capture and window blur also cancel.
+A cancelled gesture leaves the committed program unchanged and emits one `select` event with
+`phase: "cancel"`; it has no commit or settled event. The final up position is always checked.
+
+Successful external edits, program replacement, remount, unmount and destroy cancel an active click
+before accepting their new state. Release happens before subscribers run. The browser's following
+click is suppressed, so remounting an SVG during commit cannot toggle twice. An independent click
+inspection runs after this up commit. Host controls may still send an activation click with `detail: 0`;
+the controller does not assign Enter/Space behavior or a focused item.
+
+Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
+Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
+history are not supported by this binding.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -11023,7 +11195,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -11089,7 +11261,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -11165,6 +11337,25 @@ Child guide definitions remain intact, so disabling color sharing restores their
 local legends. Combined legends that also explain unshared channels (such as
 shape or size) remain local. Nested shared color guides are collected once.
 Legend reservation and parent titles are included in the final Canvas bounds.
+
+## Nested responsive panels
+
+A facet inside a named concatenation keeps its resolved shared or independent
+scale domains when responsive guides, descendant themes or prepared font metrics
+change the child plot ranges. Full-grid empty cells retain their shared scales
+without producing marks. Content spacing reserves rotated headers, visible
+strokes, shared legends and a common trailing footer across ragged rows.
+
+Resize the retained unit with `editCanvas({ target: { childPath: ["panels"],
+facetSource: true }, width: 420 })`; the complete child and every ancestor
+snapshot refreshes. A composition root is not a unit Canvas resize target.
+Unknown measurements and unsatisfied layout fail atomically. See the
+[nested panel tutorial](./tutorials/nested-responsive/) for the complete flow.
+
+Resource-only inferred graphs attached to the facet's native-mark source are
+projected into each cell along with their dependent candidate graphs and layouts.
+Their input references use that cell's exact derived dataset identity. This does
+not add GraphPlot facet support.
 
 <!-- Source: /api/position-encodings/ -->
 
@@ -11491,7 +11682,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -12089,7 +12280,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -17729,12 +17920,6 @@ Theme sources include the frame owner, theme name and token. Authored options in
 
 Legacy state without authoring evidence, extension replacement of complete graphic items, or a property selection whose pre-highlight baseline cannot be proven reports `unknown`. The inspection does not infer a source from a matching color alone or claim pixel visibility.
 
-## Related
-
-[Data updates and snapshots](./data-updates/) ·
-[ChartProgram and immutability](./concepts/chart-program/) ·
-[Errors and recovery](./errors-and-recovery/)
-
 A facet parent retains source semantics, while its drawable marks belong to the
 child panels. The parent's retained mark template reports concrete structure as
 `not_applicable`; inspection still checks each actual child graphic.
@@ -17743,6 +17928,21 @@ Facet preflight also checks partition ancestry and supported transform replay
 using the same pure dependency planner as facet creation. Aggregate output fields
 that are not valid partition ancestors return a `facet-partition` finding before
 any chart action executes.
+
+## Responsive layout decisions
+
+Responsive unit charts additionally expose `layouts`: a read-only array with
+each child's `childPath`, Canvas policy, settled plot/occupied/guide bounds,
+iteration count, and chosen Cartesian label fallbacks. A label result records
+its stage (`native`, `wrap`, `skip`, or `rotate`), reason, raw retained indices,
+angle, and optional wrap width. Programs without an active responsive Canvas
+omit this field. Inspection does not run another layout pass.
+
+## Related
+
+[Data updates and snapshots](./data-updates/) ·
+[ChartProgram and immutability](./concepts/chart-program/) ·
+[Errors and recovery](./errors-and-recovery/)
 
 <!-- Source: /errors-and-recovery/ -->
 
@@ -18876,6 +19076,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -18910,6 +19111,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -29989,6 +30191,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveLabelOptions \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
@@ -30033,6 +30236,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveLabelOptions \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
@@ -30071,6 +30275,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveLabelOptions \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
@@ -30114,6 +30319,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveLabelOptions \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
@@ -32946,6 +33152,8 @@ export type {
   BindMarkDataOptions,
   RemoveResourceOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   FitCanvasOptions,
   PivotColumn,
   PivotNumericOperation,
@@ -33451,6 +33659,8 @@ export type {
   Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   ColorEncodingOptions,
   CompleteAxisOptions,
   NamedCompleteAxis,
@@ -33846,7 +34056,25 @@ export interface AppearanceProvenance {
   readonly primitive?: number; readonly property: string; readonly value: unknown; readonly source: AppearanceSource;
 }
 export interface OwnerInspection { readonly appearance: readonly AppearanceProvenance[]; readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
-export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
+export interface ResponsiveLayoutInspection {
+  readonly childPath: readonly string[];
+  readonly policy: Readonly<{ minPlotSize: Readonly<{ width: number; height: number }> }>;
+  readonly result: Readonly<{
+    status: "satisfied"; reason: "converged"; iterations: number; change: number;
+    requiredBounds: ResponsiveBounds;
+    requiredPlotSize: Readonly<{ width: number; height: number }>;
+    snapshot: Readonly<{ plot: ResponsiveBounds; occupied: ResponsiveBounds;
+      lanes: readonly Readonly<{ id: string; bounds: ResponsiveBounds }>[] }>;
+  }>;
+  readonly labels: readonly Readonly<{ id: string;
+    policy: Readonly<{ sequence: readonly ["wrap", "skip", "rotate"]; maxLines: number; skipStride: number; rotationCandidates: readonly number[] }>;
+    result: Readonly<{ stage: "native" | "wrap" | "skip" | "rotate";
+      reason: "native-fit" | "label-overlap" | "label-lines" | "label-size";
+      indices: readonly number[]; rotation: number; maxWidth?: number; wrap?: "word" | "character" }>;
+  }>[];
+}
+export interface ResponsiveBounds { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number; }
+export interface ProgramInspection { readonly version: 1; readonly layouts?: readonly ResponsiveLayoutInspection[]; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
@@ -33978,6 +34206,16 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export interface ClickSelectionBinding {
+  readonly type: 'select';
+  /** Existing authored selection on an explicit root or concat mark owner. */
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'toggle';
+  readonly onMiss?: 'clear' | 'ignore';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -34001,12 +34239,24 @@ export interface LinkedSelectionBinding {
   /** global requires exactly one source owner. */
   readonly resolve: 'union' | 'intersection' | 'global';
 }
+export type SelectionPolicy = 'keep-hidden' | 'drop';
+export interface SelectionChange {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly policy: SelectionPolicy;
+  readonly ownerMissing: boolean;
+  readonly hiddenKeys: readonly string[];
+  readonly restoredKeys: readonly string[];
+  readonly droppedKeys: readonly string[];
+}
 export interface LinkedSelectionState {
   readonly id: string;
   readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
   readonly selection: string;
   readonly resolve: 'union' | 'intersection' | 'global';
+  readonly targetAvailable: boolean;
   readonly sources: readonly {
+    readonly available: boolean;
     readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
     readonly selection: string;
     /** Logical keys projected into the target owner, with its child namespace. */
@@ -34027,7 +34277,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -34037,15 +34287,29 @@ export interface InteractionTransaction {
   readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
+export type NearestSelection = {
+  readonly space: 'screen';
+  /** CSS-local point in the current accepted frame. */
+  readonly point: InteractionPoint;
+  readonly maxDistance: number;
+  readonly hitInvisible?: boolean;
+} | {
+  readonly space: 'data';
+  readonly fields: readonly string[];
+  readonly values: readonly number[];
+  readonly metric: 'euclidean' | 'manhattan';
+  readonly maxDistance: number;
+};
+export type InteractionSelectionPayload = {
+  readonly id: string;
+  /** Creation requires replace; other modes require an existing selection. */
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+} & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
+  | { readonly nearest: NearestSelection; readonly select?: never });
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
-  readonly payload: {
-    readonly id: string;
-    readonly select: MarkSelectionSelector;
-    /** Creation requires replace; other modes require an existing selection. */
-    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
-  };
+  readonly payload: InteractionSelectionPayload;
 } | {
   readonly type: 'clearSelection';
   readonly target: InteractionTarget;
@@ -34060,15 +34324,21 @@ export interface InteractionTransactionEvent {
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
-  readonly phase: 'commit' | 'settled' | 'error';
+  readonly phase: 'commit' | 'settled' | 'cancel' | 'error';
   readonly revision: number;
   readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
   readonly previous: InteractionProgram;
   readonly current: InteractionProgram;
   readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly selectionChanges: readonly SelectionChange[];
   readonly state: InteractionState;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionTransactionEvent;
+export interface InteractionProgramEvent {
+  readonly type: 'program';
+  readonly state: InteractionState;
+  readonly selectionChanges: readonly SelectionChange[];
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -34094,8 +34364,10 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Removed final items remain selected by default; drop snapshots surviving membership. */
+  readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LinkedSelectionBinding)[];
 }): InteractionSession;
 ```
 
@@ -35765,6 +36037,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Preserve outer dimensions and authored margins while reserving guide lanes. False disables. */
+  responsive?: false | ResponsiveCanvasOptions;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
   /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
@@ -35778,6 +36052,8 @@ export interface CanvasOptions {
   };
 }
 ```
+
+Related types: [`ResponsiveCanvasOptions`](./reference/types/#type-responsivecanvasoptions).
 
 ### `CartesianAxesOptions` {#type-cartesianaxesoptions}
 
@@ -35813,6 +36089,8 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Opt-in measured fallback; requires responsive Canvas mode. False removes the policy. */
+  responsive?: false | ResponsiveLabelOptions;
   /** Local text alignment before rotation; omitted edits retain existing intent. */
   align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */
@@ -35826,7 +36104,7 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
 }
 ```
 
-Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`CartesianAxisLabelColorMap`](./reference/types/#type-cartesianaxislabelcolormap).
+Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`ResponsiveLabelOptions`](./reference/types/#type-responsivelabeloptions) · [`CartesianAxisLabelColorMap`](./reference/types/#type-cartesianaxislabelcolormap).
 
 ### `CartesianAxisTickStyleOptions` {#type-cartesianaxistickstyleoptions}
 
@@ -45639,6 +45917,36 @@ Related types: [`RequestedTransform`](./reference/types/#type-requestedtransform
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 ```
 
+### `ResponsiveCanvasOptions` {#type-responsivecanvasoptions}
+
+ Expand ResponsiveCanvasOptions
+
+```typescript
+export interface ResponsiveCanvasOptions {
+  /** Required final inner size. Defaults to 160 by 120 CSS pixels. */
+  minPlotSize?: { width: number; height: number };
+}
+```
+
+### `ResponsiveLabelOptions` {#type-responsivelabeloptions}
+
+ Expand ResponsiveLabelOptions
+
+```typescript
+export interface ResponsiveLabelOptions {
+  /** The declared fallback order. Defaults to wrap, skip, rotate. */
+  sequence?: readonly ["wrap", "skip", "rotate"];
+  /** Maximum physical lines per retained label; never truncates text. Defaults to 2. */
+  maxLines?: number;
+  /** Retain source indices 0, stride, 2*stride. Defaults to 2. */
+  skipStride?: number;
+  /** Tried in order after skipping. Defaults to -45 and -90 degrees. */
+  rotationCandidates?: readonly RotationInput[];
+}
+```
+
+Related types: [`RotationInput`](./reference/types/#type-rotationinput).
+
 ### `ReviseDataOptions` {#type-revisedataoptions}
 
  Expand ReviseDataOptions
@@ -47746,9 +48054,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -47814,12 +48122,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f52d5c5f4e2f423214c687ff9961d5adb93607c8/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f52d5c5f4e2f423214c687ff9961d5adb93607c8/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -48931,7 +49239,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -48984,7 +49292,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -49230,7 +49538,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -49282,7 +49590,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/repeat-charts).
 
 ## Space between plots
 
@@ -49957,7 +50265,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -50870,9 +51178,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4b7afeb91959c12b2b27e7c6ffb7b88006b34be44187923ee422d5f5ab93046b` |
-| Example and dataset source | `a491a8b8e421ace56be22a83296e163e2315be70` |
-| Runtime source commit | `f52d5c5f4e2f423214c687ff9961d5adb93607c8` |
+| Contract fingerprint | `sha256:d51e9e8eb9c482b2db33d3012aa455f237f99b66e016e43eb09f47fb5e6ec378` |
+| Example and dataset source | `codex/roadmap9-geo` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 349 |
 | Declared actions in that release | 234 |
@@ -51373,17 +51681,44 @@ Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.1
 
 An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.
 
+## Responsive labels
+
+Cartesian label options accept `responsive: {}` when the Canvas has an active
+responsive policy. Full and Basic use the same defaults:
+
+| Option | Value | Default |
+| --- | --- | --- |
+| `sequence` | `['wrap', 'skip', 'rotate']` in this order | That sequence |
+| `maxLines` | Integer from 1 through 10000 | `2` |
+| `skipStride` | Integer from 2 through 10000 | `2` |
+| `rotationCandidates` | Nonempty, distinct finite rotation inputs | `[-Math.PI / 4, -Math.PI / 2]` |
+
+The materializer first tries native labels, then wrapping, retaining every kth
+label, then each declared angle. It retains raw indices `0, k, 2k, …`; ticks,
+scale domains and rows are unchanged. Empty display labels remain suppressed.
+An explicit `maxWidth` is preserved. Otherwise X labels use the actual spacing
+of selected anchors and Y labels use the space left by the minimum plot and
+opposite margin. Wrapping preserves Unicode grapheme clusters and never
+truncates text. `flush: true` excludes nonzero rotation candidates.
+
+The policy can be used in `createXAxisLabels`, `editYAxisLabels`, complete axes,
+`ticksAndLabels.labels`, and chart `guides.axes` options. Omission preserves
+intent; `responsive: false` removes it. Turning off Canvas responsiveness keeps
+label intent dormant until re-enabled. `inspectProgram().layouts[].labels`
+reports the chosen stage, reason, raw indices, measured width and angle. This
+option does not apply to Polar or Parallel labels.
+
 <!-- Source: /tutorials/image-assets/ -->
 
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -51488,13 +51823,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -51505,7 +51840,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -51672,7 +52007,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -52130,7 +52465,9 @@ work budget and 30,000 commands per route also apply. Invalid values, overflow o
 exhausted budgets fail without storing partial results.
 
 `coordinateSpace` defaults to `"world"`. `"screen"` also binds the current plot
-bounds: resizing the Canvas recomputes each screen route once. World routes retain
+bounds: Canvas resizing, responsive guide layout and exact-plot margin growth
+recompute each affected screen route once. Source and viewport changes share one
+revision, including other screen routes on the same Canvas. World routes retain
 their result. GraphPlot currently translates stored layout coordinates in either
 case.
 
@@ -52204,7 +52541,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -52282,7 +52619,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -52812,7 +53149,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -53261,10 +53598,46 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
+
+<!-- Source: /tutorials/responsive-guides/ -->
+
+# Fit labels inside a fixed Canvas
+
+Use a fixed outer size when a chart must fit an existing panel. The Canvas
+policy reserves space for guides, and the label policy decides how much text
+can fit. This example wraps four category labels without changing the data,
+ticks, font size or outer dimensions.
+
+```javascript
+import { chart } from "ggaction";
+
+const responsiveRows = ["A long alpha category", "A long beta category", "A long gamma category", "A long delta category"]
+  .map((x, index) => ({ x, y: index + 1 }));
+
+const program = chart()
+  .createCanvas({ width: 400, height: 320, margin: 20, responsive: {} })
+  .createData({ values: responsiveRows })
+  .createBarPlot({ x: "x", y: "y", guides: {
+    axes: { x: { ticksAndLabels: { labels: { responsive: {} } } }, y: {} },
+    legend: false
+  } });
+```
+
+The four category labels become eight text lines. The plot remains at least
+160 × 120 logical pixels. A wider immutable copy, `program.editCanvas({ width:
+800 })`, returns to unwrapped labels when they fit. The original remains 400 ×
+320. No browser resize observer is installed; the host explicitly requests a
+new logical width.
+
+For dense categories, the policy tries wrapping, every second label, then
+−45° and −90° rotation. A failed solve reports `layout-unsatisfied` and required
+bounds. Choose a larger Canvas or different declared policy and retry. See
+[Canvas](./api/canvas/) and [Cartesian labels](./api/axes/complete/#responsive-labels)
+for exact options. [Inspection](./inspection/) explains the retained decision.
 
 <!-- Source: /api/calendar/ -->
 
@@ -53491,7 +53864,72 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
+
+<!-- Source: /tutorials/nested-responsive/ -->
+
+# Arrange nested panels with shared guides
+
+Compare five regional panels with an overview. Each child keeps a fixed Canvas;
+content spacing accounts for rotated headers, long labels, strokes and shared
+guides. The last row has one panel, while the two retained bottom axes share one
+footer. Every regional bar uses the common 0–20 value range.
+
+```javascript
+import { chart, hconcat } from "ggaction";
+
+const nestedRows = Array.from({ length: 5 }, (_, group) =>
+  Array.from({ length: 4 }, (_, index) => ({
+    panel: `Region ${group + 1}`, category: `Category ${index + 1} long caption`,
+    value: (index + 1) * (group + 1), series: index % 2 ? "B" : "A"
+  }))).flat();
+
+function createNestedResponsiveSource() {
+  return chart()
+    .createCanvas({ width: 340, height: 300, margin: 20,
+      responsive: { minPlotSize: { width: 100, height: 100 } },
+      plotBorder: { color: "#334155", lineWidth: 2 } })
+    .createData({ id: "rows", values: nestedRows })
+    .createBarPlot({ id: "bars", x: "category", y: "value", color: "series", guides: {
+      axes: { x: { ticksAndLabels: { labels: { responsive: { maxLines: 2 } } } }, y: {} },
+      legend: false
+    } });
+}
+
+function createNestedResponsive() {
+  const source = createNestedResponsiveSource();
+  const panels = source.facet({ field: "panel", columns: 2, spacing: "content",
+    gap: { x: 24, y: 32 }, headers: { anchor: "view", rotation: 0.2 },
+    guides: { axes: "outer", legend: { position: "right", border: { color: "#334155", lineWidth: 1 } } }
+  }).createTitle({ text: "Regional detail" });
+  return hconcat({ id: "report", programs: [
+    { id: "panels", program: panels },
+    { id: "overview", program: source.createTitle({ text: "All regions" }) }
+  ], gap: 32, align: "start" });
+}
+
+const program = createNestedResponsive();
+```
+
+The report is 1047 × 942 logical pixels. The regional children remain 340 × 300,
+and the shared legend appears once beside them. `spacing: "content"` measures
+the visible child content rather than only the mark bounds.
+
+To widen only the regional panels, use the existing scoped source target:
+
+`program.editCanvas({ target: { childPath: ["panels"], facetSource: true },
+width: 420 })`.
+
+The parent snapshots and placement update, and the overview is retained.
+Changing data, a descendant theme or prepared text metrics also refreshes the
+relevant ancestors. Shared scale domains remain shared during that layout work.
+An insufficient width fails without changing the original report or its trace.
+Font-bound labels require exact prepared measurements; a new unmeasured label
+requires another preparation before it can be authored.
+
+See [composition](./api/composition/) for scoped editing and guide policies,
+and [font assets](./tutorials/font-assets/) for explicit host preparation. Renderers consume
+the same resolved output; they do not measure or relayout the panels.

@@ -25,6 +25,36 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/responsive-source-and-guide-closure", run() {
+    const rows = [{ id: "a", x: 0, y: 1000 }, { id: "b", x: 1, y: 2000 }, { id: "c", x: 2, y: 3000 }];
+    const initial = source().editCanvas({ width: 1000, height: 700, margin: 100 })
+      .reviseData({ source: "nodes", id: "observations", values: rows });
+    const p = plot(initial.bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "screen" }))
+      .createScatterPlot({ id: "points", data: "observations", x: "x", y: "y", guides: false })
+      .createYAxis({ title: false }).editCanvas({ responsive: {} }).editYAxisLabels({ fontSize: 32 })
+      .createGraphData({ id: "other-graph", nodes: "nodes", edges: "edges", nodeKey: "id", source: "s", target: "t", edgeKey: "id" })
+      .layoutGraph({ id: "other-layout", graph: "other-graph", method: "circular" })
+      .bundleGraphEdges({ id: "other-routes", graph: "other-graph", layout: "other-layout", method: "edge-path", coordinateSpace: "screen" });
+    const bounds = program => {
+      const plot = program.materializationConfigs.canvas.responsiveResult.snapshot.plot;
+      return { x: plot.left, y: plot.top, width: plot.right - plot.left, height: plot.bottom - plot.top };
+    };
+    const saved = serializeProgram(p);
+    const next = p.reviseData({ source: "observations", id: "updated", values: rows.map(row => ({ ...row, y: row.y * 100000 })) });
+    assert.notDeepEqual(bounds(next), bounds(p));
+    for (const resource of next.semanticSpec.resources.filter(resource => resource.kind === "edge-route")) {
+      assert.deepEqual(resource.result.viewport, bounds(next));
+      assert.equal(resource.revision, p.semanticSpec.resources.find(previous => previous.kind === "edge-route" && previous.id === resource.id).revision + 1);
+    }
+    const guides = p.editYAxisLabels({ fontSize: 64 });
+    assert.deepEqual(route(guides).result.viewport, bounds(guides));
+    assert.equal(route(guides).revision, route(p).revision + 1);
+    const resized = guides.editCanvas({ width: 900, height: 650 });
+    assert.deepEqual(route(resized).result.viewport, bounds(resized));
+    assert.equal(route(resized).revision, route(guides).revision + 1);
+    assert.deepEqual(deserializeProgram(serializeProgram(next)).graphicSpec, next.graphicSpec);
+    assert.equal(serializeProgram(p), saved);
+  } },
   { id: "edge-routes/worker-authority-and-cache", async run() {
     const base = source(), saved = serializeProgram(base); let created = 0, terminated = 0;
     const executor = createGraphRouteExecutor({ createWorker() {

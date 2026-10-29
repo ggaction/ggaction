@@ -1,12 +1,10 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { validateUserId } from "../core/identifiers.js";
-import { namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { normalizeSelectionProjection, projectSelectionKeys, selectionProjectionBudget } from "../grammar/selectionProjection.js";
-import { resolveRegisteredSelection } from "../materialization/selection/expression.js";
 import { requireMaterializedDataset } from "../selectors/datasets.js";
 import { interactionOptions as options, snapshotInteractionInput } from "./input.js";
-import { interactionOwner, prepareInteractionEdit } from "./selection.js";
+import { interactionOwner, prepareInteractionEdit, scopeSelectionKeys, resolveInteractionSelection } from "./selection.js";
 
 const ownerKey = target => JSON.stringify([target.childPath, target.id, target.facetSource === true]);
 const same = (left, right) => {
@@ -58,66 +56,66 @@ export function normalizeSelectionLinks(program, input) {
   return cloneAndFreeze(ordered);
 }
 
-function endpoint(program, target, selection) {
-  const { view } = interactionOwner(program, target);
-  const resolved = resolveRegisteredSelection(view, selection, { sourceOnly: target.facetSource === true });
-  if (resolved.definition.target !== target.id) throw new Error("Linked selection must match its explicit owner target.");
-  if (resolved.definition.sourceSelection) throw new Error("A linked endpoint requires an authored selection owner, not a generated projection.");
-  return { view, resolved };
-}
-
-function scopedKeys(program, target, keys, spend) {
-  const namespaces = [];
-  for (const child of target.childPath) {
-    namespaces.push(`${program.compositionSpec.id}-${child}`); program = program.children[child];
-  }
-  const prefixWork = JSON.stringify(namespaces).length;
-  spend(keys.length * prefixWork * Math.max(1, namespaces.length));
-  return keys.map(key => {
-    spend(key.length * Math.max(1, namespaces.length));
-    return namespaces.reduceRight((local, namespace) => namespaceItemKey(local, namespace), key);
-  });
-}
-
-function projectLink(program, link, spend) {
-  const target = endpoint(program, link.target, link.selection);
-  const sources = link.sources.map(source => {
-    const selected = endpoint(program, source.target, source.selection);
-    const datasets = source.projection.type === "rows" ? {
-      sourceData: requireMaterializedDataset(selected.view, source.projection.sourceData),
-      targetData: requireMaterializedDataset(target.view, source.projection.targetData)
-    } : {};
-    return { target: source.target, selection: source.selection,
-      keys: projectSelectionKeys({ sourceItems: selected.resolved.items, sourceKeys: selected.resolved.keys,
-        targetItems: target.resolved.items, projection: source.projection, ...datasets }, spend) };
+function projectLink(program, link, spend, before, policy) {
+  const target = resolveInteractionSelection(program, link.target, link.selection, before !== undefined);
+  const sources = link.sources.map((source, index) => {
+    const selected = resolveInteractionSelection(program, source.target, source.selection, before !== undefined);
+    let keys;
+    if (!target || !selected) {
+      keys = policy === "drop" ? [] : [...before.sources[index].keys];
+      spend(keys.length); for (const key of keys) spend(key.length);
+      // A cached set belongs to the exact target namespace, never a replacement scope.
+      if (target) keys = scopeSelectionKeys(program, link.target, keys, spend, true);
+    } else {
+      const datasets = source.projection.type === "rows" ? {
+        sourceData: requireMaterializedDataset(selected.view, source.projection.sourceData),
+        targetData: requireMaterializedDataset(target.view, source.projection.targetData)
+      } : {};
+      keys = projectSelectionKeys({ sourceItems: selected.resolved.items, sourceKeys: selected.resolved.keys,
+        targetItems: target.resolved.items, projection: source.projection, ...datasets }, spend);
+      const visible = new Set(target.resolved.items.filter(item => item.visible !== false).map(item => item.key));
+      spend(target.resolved.items.length + keys.length); keys = keys.filter(key => visible.has(key));
+    }
+    return { target: source.target, selection: source.selection, available: selected !== null, keys };
   });
   const sets = sources.map(source => new Set(source.keys));
-  spend(target.resolved.items.length * sets.length);
-  const keys = target.resolved.items.filter(item => link.resolve === "intersection"
-    ? sets.every(set => set.has(item.key)) : sets.some(set => set.has(item.key))).map(item => item.key);
+  // A missing target has no item universe and is never recreated by a link.
+  const candidates = target ? [...new Set([...target.resolved.items.map(item => item.key), ...sources.flatMap(source => source.keys)])] : before.keys;
+  spend(candidates.length * sets.length);
+  const keys = candidates.filter(key => link.resolve === "intersection" ? sets.every(set => set.has(key)) : sets.some(set => set.has(key)));
+  const scope = keys => target ? scopeSelectionKeys(program, link.target, keys, spend) : keys;
   return { target, projection: { id: link.id, target: link.target, selection: link.selection, resolve: link.resolve,
-    sources: sources.map(source => ({ ...source, keys: scopedKeys(program, link.target, source.keys, spend) })),
-    keys: scopedKeys(program, link.target, keys, spend) }, keys };
+    targetAvailable: target !== null, sources: sources.map(source => ({ ...source, keys: scope(source.keys) })), keys: scope(keys) }, keys };
 }
 
-export function inspectSelectionLinks(program, links, spend = selectionProjectionBudget()) {
-  return cloneAndFreeze(links.map(link => projectLink(program, link, spend).projection));
+export function inspectSelectionLinks(program, links, spend = selectionProjectionBudget(), previous, policy = "keep-hidden") {
+  return cloneAndFreeze(links.map((link, index) => projectLink(program, link, spend, previous?.[index], policy).projection));
 }
 
-export function applySelectionLinks(program, links, previous, affectedOwners, command) {
-  if (command.type !== "setParameter") {
+const availabilityChanged = (current, before) => current.targetAvailable !== before.targetAvailable ||
+  current.sources.some((source, index) => source.available !== before.sources[index].available);
+
+export function selectionLinksChangedAvailability(current, previous) {
+  return current.some((link, index) => availabilityChanged(link, previous[index]));
+}
+
+export function applySelectionLinks(program, links, previous, affectedOwners, command, policy = "keep-hidden") {
+  if (["select", "clearSelection"].includes(command.type)) {
     const { target } = interactionOwner(program, command.target);
     if (links.some(link => ownerKey(link.target) === ownerKey(target) && link.selection === command.payload.id)) {
       throw new Error("A linked target selection is owned by its binding.");
     }
   }
-  const changed = new Set(affectedOwners.map(ownerKey)), owners = [...affectedOwners], projections = [];
+  const changed = new Set(affectedOwners.map(ownerKey)), owners = [...new Map(affectedOwners.map(owner => [ownerKey(owner), owner])).values()], projections = [];
   const spend = selectionProjectionBudget();
   for (const [index, link] of links.entries()) {
-    const projected = projectLink(program, link, spend), before = previous[index];
-    const affected = link.sources.some(source => changed.has(ownerKey(source.target))) ||
+    const before = previous[index], projected = projectLink(program, link, spend, before, policy);
+    const affected = changed.has(ownerKey(link.target)) || availabilityChanged(projected.projection, before) ||
+      link.sources.some(source => changed.has(ownerKey(source.target))) ||
       projected.projection.sources.some((source, position) => !same(source.keys, before.sources[position].keys));
-    if (affected && !same(projected.keys, projected.target.resolved.keys)) {
+    const stored = projected.target?.resolved.selector;
+    const currentKeys = stored?.items?.length ? stored.items : projected.target?.resolved.keys;
+    if (projected.target && affected && !same(projected.keys, currentKeys)) {
       const prepared = prepareInteractionEdit(program, { type: "select", target: link.target,
         payload: { id: link.selection, select: { items: projected.projection.keys, empty: "none", grain: projected.target.resolved.definition.grain } } });
       program = prepared.program;
@@ -127,8 +125,8 @@ export function applySelectionLinks(program, links, previous, affectedOwners, co
     }
     projections.push(projected.projection);
   }
-  const settled = inspectSelectionLinks(program, links, spend);
-  if (settled.some((link, index) => link.sources.some((source, position) => !same(source.keys, projections[index].sources[position].keys)))) {
+  const settled = inspectSelectionLinks(program, links, spend, projections, policy);
+  if (settled.some((link, index) => availabilityChanged(link, projections[index]) || link.sources.some((source, position) => !same(source.keys, projections[index].sources[position].keys)))) {
     throw new Error("Linked selection effects changed an earlier projection; a cyclic materialization dependency is unsupported.");
   }
   return { program, affectedOwners: cloneAndFreeze(owners), projections: settled };

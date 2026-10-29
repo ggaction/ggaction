@@ -22,7 +22,7 @@ export function resolveSingleHorizontalLegendPlacement({ plot, canvas, config, b
   const dy = config.position === "top" ? plot.y - config.offset - bounds.bottom
     : plot.y + plot.height + config.offset - bounds.top;
   const occupied = translateBounds(bounds, dx, dy);
-  if (occupied.left < 0 || occupied.right > canvas.width || occupied.top < 0 || occupied.bottom > canvas.height) {
+  if (!canvas.deferCanvasFit && (occupied.left < 0 || occupied.right > canvas.width || occupied.top < 0 || occupied.bottom > canvas.height)) {
     throw canvasOverflowError(`Legend layout requires more ${config.position}-margin or Canvas space.`, [occupied], canvas);
   }
   return { dx, dy, occupied };
@@ -171,7 +171,7 @@ export function resolveSideLegendLane({
   const dy = plot.y - intrinsic.top;
   const occupied = translateBounds(intrinsic, 0, dy);
   if (
-    !allowOverflow && (occupied.left < 0 || occupied.right > canvas.width ||
+    !canvas.deferCanvasFit && !allowOverflow && (occupied.left < 0 || occupied.right > canvas.width ||
     occupied.top < 0 || occupied.bottom > canvas.height)
   ) {
     throw canvasOverflowError(`Legend lane requires more ${side}-margin or vertical Canvas space.`, [occupied], canvas);
@@ -197,8 +197,8 @@ export function resolveSingleSideLegendPlacement({ side, plot, canvas, bounds })
   }
   const dy = plot.y - bounds.top;
   const occupied = translateBounds(bounds, 0, dy);
-  if (occupied.left < 0 || occupied.right > canvas.width ||
-    occupied.top < 0 || occupied.bottom > canvas.height) {
+  if (!canvas.deferCanvasFit && (occupied.left < 0 || occupied.right > canvas.width ||
+    occupied.top < 0 || occupied.bottom > canvas.height)) {
     throw canvasOverflowError(`Legend layout requires more ${side}-margin or Canvas space.`, [occupied], canvas);
   }
   return { dy, occupied };
@@ -356,7 +356,7 @@ export function resolveHorizontalLegendLane({
     previousRowBounds = unionBounds(translated.map(item => item.occupied));
   }
   const occupied = unionBounds(placements.map(item => item.occupied));
-  if (placements.some(placement =>
+  if (!canvas.deferCanvasFit && placements.some(placement =>
     placement.occupied.left < 0 || placement.occupied.right > canvas.width ||
     placement.occupied.top < 0 || placement.occupied.bottom > canvas.height
   )) {
@@ -421,8 +421,8 @@ export function resolveHorizontalLegendGroup({ edge, plot, canvas, groups,
   const dy = edge === "top" ? plot.y - offset - occupied.bottom
     : plot.y + plot.height + offset - occupied.top;
   const finalBounds = translateBounds(occupied, dx, dy);
-  if (finalBounds.left < 0 || finalBounds.right > canvas.width ||
-    finalBounds.top < 0 || finalBounds.bottom > canvas.height) {
+  if (!canvas.deferCanvasFit && (finalBounds.left < 0 || finalBounds.right > canvas.width ||
+    finalBounds.top < 0 || finalBounds.bottom > canvas.height)) {
     throw canvasOverflowError(`Combined legend requires more ${edge}-margin or Canvas space.`, [finalBounds], canvas);
   }
   if (collisionBounds.some(bounds => overlap(finalBounds, bounds))) {

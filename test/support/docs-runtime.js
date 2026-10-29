@@ -3,6 +3,11 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 export function documentationEnvironment(example, data) {
   const canvas = createCanvas(1, 1);
+  const events = new EventTarget();
+  canvas.addEventListener = events.addEventListener.bind(events);
+  canvas.removeEventListener = events.removeEventListener.bind(events);
+  canvas.dispatchEvent = events.dispatchEvent.bind(events);
+  canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: canvas.width, height: canvas.height });
   return { canvas,
     document: example.environment === "browser-module" ? {
       createElement(tag) {

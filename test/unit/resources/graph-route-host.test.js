@@ -8,7 +8,8 @@ import { serializeProgram, deserializeProgram } from "../../../src/persistence.j
 import { edgeRouteJob } from "../../../src/materialization/graph/routeResource.js";
 import { normalizeRouteIntent } from "../../../src/grammar/graph/routes/options.js";
 import { getErrorDetails } from "../../../src/core/diagnostics.js";
-import { withPreparedScreenRouteResults } from "../../../src/actions/primitives/preparedResourceContext.js";
+import { withPreparedScreenRouteResults, withPreparedDataResourceResults } from "../../../src/actions/primitives/preparedResourceContext.js";
+import { dataInputReference } from "../../../src/selectors/resources.js";
 
 const get = (p, kind, id) => p.semanticSpec.resources.find(r => r.kind === kind && r.id === id);
 const source = () => chart().createCanvas({ width: 400, height: 300 })
@@ -190,4 +191,27 @@ test("private screen revision authority rejects incomplete unions and changes to
   assert.throws(() => withPreparedScreenRouteResults(canvasOnly, { property: "resource[edge-route:first]", value: first }, replacements,
     args => p.editSemantic(args)), /different receiver/);
   assert.equal(serializeProgram(p), snapshot);
+});
+
+test("source result unions admit viewport-only siblings with exact unchanged route inputs and intent", () => {
+  const original = source().bundleGraphEdges({ id: "first", method: "edge-path", coordinateSpace: "screen" })
+    .bundleGraphEdges({ id: "second", method: "edge-path", coordinateSpace: "screen" });
+  const rows = original.semanticSpec.datasets.find(data => data.id === "nodes").values;
+  const p = original.reviseData({ source: "nodes", id: "updated", values: rows });
+  const complete = p.editCanvas({ width: 500 }), canvasOnly = p.editGraphics({ target: "canvas", property: "width", value: 500 });
+  const first = get(complete, "edge-route", "first"), second = get(complete, "edge-route", "second");
+  const refs = [{ previous: dataInputReference(p.semanticSpec.datasets.find(data => data.id === "nodes")),
+    next: dataInputReference(p.semanticSpec.datasets.find(data => data.id === "updated")) }];
+  const replacements = [{ previous: { kind: "edge-route", id: "second", revision: 1 }, resource: second }];
+  const apply = (value = first, siblings = replacements, data = refs) => withPreparedDataResourceResults(canvasOnly,
+    { property: "resource[edge-route:first]", value }, siblings, args => canvasOnly.editSemantic(args), data);
+  const next = apply();
+  assert.deepEqual(get(next, "edge-route", "second"), second);
+  assert.throws(() => apply(first, [], refs), /every affected/);
+  assert.throws(() => apply(first, replacements, []), /rooted|does not belong/);
+  const changedIntent = resource => ({ ...resource, options: { ...resource.options,
+    options: { ...resource.options.options, exponent: 3 } } });
+  assert.throws(() => apply(changedIntent(first)), /preserve.*intent and inputs/);
+  assert.throws(() => apply(first, [{ ...replacements[0], resource: changedIntent(second) }]), /preserve.*intent and inputs/);
+  assert.deepEqual(get(p, "edge-route", "first").result.viewport, get(original, "edge-route", "first").result.viewport);
 });

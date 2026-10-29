@@ -21,7 +21,10 @@ import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
   resolveConsumerValues, resolveSeriesLayoutScaleValues } from "../../materialization/scales/consumers/index.js";
 
 function resolveScalePreviewAtBounds(program, id, bounds) {
-  const scale = findScale(program, id);
+  const stored = findScale(program, id);
+  const facet = program.context?.facetMaterialization;
+  const domain = Object.hasOwn(facet?.domains ?? {}, id) ? facet.domains[id] : undefined;
+  const scale = domain === undefined ? stored : { ...stored, domain };
   const consumers = findScaleConsumers(program, id);
   const axes = axisScaleBindings(program, id);
   if (consumers.length === 0 && axes.length === 0) throw new Error(`Scale "${id}" has no supported consumers.`);
@@ -43,6 +46,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
     : families.values().next().value;
   const valuesByConsumer = consumers.map(consumer => {
     if (
+      facet?.empty === true ||
       program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true ||
       (program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined &&
         ["x", "y", "x2", "y2"].includes(consumer.channel))
@@ -59,7 +63,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
     }
     return { consumer,
       values: resolveConsumerValues(program, consumer),
-      categoryOrder: resolveConsumerCategoryOrder(program, consumer),
+      categoryOrder: domain === undefined ? resolveConsumerCategoryOrder(program, consumer) : undefined,
       seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) };
   });
   const polarFrame = channel === "radius"

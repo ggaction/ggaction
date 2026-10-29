@@ -23,7 +23,7 @@
       },
       {
         "type": "file",
-        "path": "unit/support/test-sharding.test.js"
+        "path": "unit/graphic-lookup-reuse.test.js"
       },
       {
         "type": "file",
@@ -35,11 +35,11 @@
       },
       {
         "type": "file",
-        "path": "unit/graphic-lookup-reuse.test.js"
+        "path": "unit/render-work-reuse.test.js"
       },
       {
         "type": "file",
-        "path": "unit/render-work-reuse.test.js"
+        "path": "unit/support/test-sharding.test.js"
       }
     ],
     "area-layout": [
@@ -69,31 +69,15 @@
     "blend-paints": [
       {
         "type": "file",
-        "path": "unit/grammar/png-encoding.test.js"
-      },
-      {
-        "type": "file",
-        "path": "browser/png-byte-encoding.browser.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/compositing.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/bar-blend.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/conditional-bar-blend.test.js"
-      },
-      {
-        "type": "file",
         "path": "browser/bar-blend.browser.js"
       },
       {
         "type": "file",
         "path": "browser/conditional-rendering.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/png-byte-encoding.browser.js"
       },
       {
         "type": "prefix",
@@ -105,15 +89,11 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/paint-image-preparation.test.js"
+        "path": "contracts/bar-blend.test.js"
       },
       {
         "type": "file",
-        "path": "unit/grammar/mark-blend.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/marks/mark-blend.test.js"
+        "path": "contracts/conditional-bar-blend.test.js"
       },
       {
         "type": "file",
@@ -122,9 +102,33 @@
       {
         "type": "file",
         "path": "contracts/realistic-mark-blends.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/compositing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/png-encoding.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
       }
     ],
     "calendar": [
+      {
+        "type": "file",
+        "path": "browser/calendar.browser.js"
+      },
       {
         "type": "prefix",
         "path": "charts/calendar/"
@@ -135,15 +139,11 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/calendar-plots.test.js"
+        "path": "contracts/calendar-types.test.js"
       },
       {
         "type": "file",
-        "path": "unit/calendar-layout.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/calendar-days.test.js"
+        "path": "contracts/realistic-calendar-plots.test.js"
       },
       {
         "type": "file",
@@ -155,23 +155,23 @@
       },
       {
         "type": "file",
-        "path": "contracts/calendar-types.test.js"
+        "path": "unit/actions/theme-calendar.test.js"
       },
       {
         "type": "file",
-        "path": "browser/calendar.browser.js"
+        "path": "unit/calendar-layout.test.js"
       },
       {
         "type": "file",
-        "path": "contracts/realistic-calendar-plots.test.js"
+        "path": "unit/grammar/calendar-days.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/calendar-plots.test.js"
       },
       {
         "type": "file",
         "path": "unit/resources/source-resource-plan.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/theme-calendar.test.js"
       }
     ],
     "center-stack": [
@@ -189,23 +189,7 @@
     "contour": [
       {
         "type": "file",
-        "path": "unit/contour-layouts.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/contour-density.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/contour-resources.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/contour-marks.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/contour-types.test.js"
+        "path": "browser/contours.browser.js"
       },
       {
         "type": "prefix",
@@ -213,21 +197,29 @@
       },
       {
         "type": "file",
-        "path": "browser/contours.browser.js"
+        "path": "contracts/contour-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/contour-density.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/contour-layouts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/contour-marks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/contour-resources.test.js"
       }
     ],
     "data": [
       {
         "type": "prefix",
-        "path": "unit/actions/data/"
-      },
-      {
-        "type": "prefix",
         "path": "charts/airline-passenger-moving-windows/"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/time-unit-data/"
       },
       {
         "type": "prefix",
@@ -236,6 +228,14 @@
       {
         "type": "prefix",
         "path": "charts/cars-window-rank-scatterplot/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/lookup-data/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/time-unit-data/"
       },
       {
         "type": "file",
@@ -247,53 +247,37 @@
       },
       {
         "type": "prefix",
-        "path": "charts/lookup-data/"
+        "path": "unit/actions/data/"
       }
     ],
     "data-sources": [
       {
-        "type": "prefix",
-        "path": "unit/resources/"
-      },
-      {
         "type": "file",
         "path": "unit/grammar/data-source-parsing.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/resources/"
       }
     ],
     "documentation": [
       {
-        "type": "prefix",
-        "path": "docs/"
-      },
-      {
         "type": "file",
         "path": "contracts/documentation-truth.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "docs/"
       }
     ],
     "edge-routes": [
       {
-        "type": "prefix",
-        "path": "unit/grammar/graph/routes/"
+        "type": "file",
+        "path": "browser/edge-routes.browser.js"
       },
       {
         "type": "prefix",
         "path": "charts/edge-routes/"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-route-input.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-routes.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-route-lifecycle.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-route-host.test.js"
       },
       {
         "type": "file",
@@ -304,14 +288,30 @@
         "path": "contracts/realistic-edge-routes.test.js"
       },
       {
+        "type": "prefix",
+        "path": "unit/grammar/graph/routes/"
+      },
+      {
         "type": "file",
-        "path": "browser/edge-routes.browser.js"
+        "path": "unit/resources/graph-route-host.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-input.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-routes.test.js"
       }
     ],
     "expressions": [
       {
         "type": "file",
-        "path": "unit/expression-registry.test.js"
+        "path": "contracts/parameter-expression-types.test.js"
       },
       {
         "type": "file",
@@ -323,45 +323,45 @@
       },
       {
         "type": "file",
-        "path": "contracts/parameter-expression-types.test.js"
+        "path": "unit/expression-registry.test.js"
       }
     ],
     "facet-field-titles": [
       {
-        "type": "file",
-        "path": "unit/actions/composition/facet-field-titles.test.js"
+        "type": "prefix",
+        "path": "charts/facet-field-titles/"
       },
       {
         "type": "file",
         "path": "contracts/facet-field-title-types.test.js"
       },
       {
-        "type": "prefix",
-        "path": "charts/facet-field-titles/"
+        "type": "file",
+        "path": "unit/actions/composition/facet-field-titles.test.js"
       }
     ],
     "facet-header-rotation": [
       {
-        "type": "file",
-        "path": "unit/actions/composition/facet-header-rotation.test.js"
+        "type": "prefix",
+        "path": "charts/facet-header-rotation/"
       },
       {
         "type": "file",
         "path": "contracts/facet-header-rotation-types.test.js"
       },
       {
-        "type": "prefix",
-        "path": "charts/facet-header-rotation/"
+        "type": "file",
+        "path": "unit/actions/composition/facet-header-rotation.test.js"
       }
     ],
     "facet-top-lane": [
       {
-        "type": "file",
-        "path": "unit/layout/facet-top-lane.test.js"
+        "type": "prefix",
+        "path": "charts/facet-shared-top-lane/"
       },
       {
         "type": "file",
-        "path": "unit/layout/facet-top-lane-concrete.test.js"
+        "path": "contracts/facet-top-lane-types.test.js"
       },
       {
         "type": "file",
@@ -369,11 +369,11 @@
       },
       {
         "type": "file",
-        "path": "contracts/facet-top-lane-types.test.js"
+        "path": "unit/layout/facet-top-lane-concrete.test.js"
       },
       {
-        "type": "prefix",
-        "path": "charts/facet-shared-top-lane/"
+        "type": "file",
+        "path": "unit/layout/facet-top-lane.test.js"
       },
       {
         "type": "file",
@@ -383,7 +383,7 @@
     "flow": [
       {
         "type": "file",
-        "path": "unit/flow-layouts.test.js"
+        "path": "browser/flow-layouts.browser.js"
       },
       {
         "type": "prefix",
@@ -391,15 +391,15 @@
       },
       {
         "type": "file",
-        "path": "browser/flow-layouts.browser.js"
-      },
-      {
-        "type": "file",
         "path": "contracts/flow-types.test.js"
       },
       {
         "type": "file",
-        "path": "unit/resources/flow-resources.test.js"
+        "path": "unit/flow-layouts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-consumers.test.js"
       },
       {
         "type": "file",
@@ -407,7 +407,7 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/flow-consumers.test.js"
+        "path": "unit/resources/flow-resources.test.js"
       },
       {
         "type": "file",
@@ -421,15 +421,7 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/font-public-preparation.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/font-layout-lifecycle.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/font-outline-integration.test.js"
+        "path": "contracts/font-types.test.js"
       },
       {
         "type": "file",
@@ -437,7 +429,15 @@
       },
       {
         "type": "file",
-        "path": "contracts/font-types.test.js"
+        "path": "unit/resources/font-layout-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-metrics-profile.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-outline-integration.test.js"
       },
       {
         "type": "file",
@@ -445,7 +445,15 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/font-metrics-profile.test.js"
+        "path": "unit/resources/font-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-public-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-labels.test.js"
       },
       {
         "type": "file",
@@ -454,14 +462,6 @@
       {
         "type": "file",
         "path": "unit/resources/font-work-budget.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/font-preparation.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/font-resource-labels.test.js"
       }
     ],
     "geo": [
@@ -485,14 +485,46 @@
     "grammar": [
       {
         "type": "prefix",
-        "path": "unit/grammar/"
+        "path": "charts/compound-path/"
       },
       {
         "type": "prefix",
-        "path": "charts/compound-path/"
+        "path": "unit/grammar/"
       }
     ],
     "graph": [
+      {
+        "type": "file",
+        "path": "browser/graph-output.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/graph-plots/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inferred-graph-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-observed-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
       {
         "type": "file",
         "path": "unit/grammar/graph-layout.test.js"
@@ -511,51 +543,15 @@
       },
       {
         "type": "prefix",
-        "path": "charts/graph-plots/"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-plots.test.js"
-      },
-      {
-        "type": "prefix",
         "path": "unit/materialization/graph/"
       },
       {
         "type": "file",
-        "path": "contracts/realistic-observed-graphs.test.js"
-      },
-      {
-        "type": "file",
-        "path": "browser/graph-output.browser.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/inferred-graph.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/inferred-graph-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/inferred-graph-state.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/core/graph-prepared-revisions.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/realistic-inferred-graphs.test.js"
+        "path": "unit/resources/graph-coordinate-revisions.test.js"
       },
       {
         "type": "file",
         "path": "unit/resources/graph-filter.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/graph-recompute.test.js"
       },
       {
         "path": "unit/resources/graph-hit.test.js",
@@ -563,10 +559,34 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/graph-coordinate-revisions.test.js"
+        "path": "unit/resources/graph-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-recompute.test.js"
       }
     ],
     "guides": [
+      {
+        "type": "prefix",
+        "path": "charts/axis-owners/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/polar-guides/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/shared-facet-owner/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facade-legend-combination-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facade-legend-owner-capabilities.test.js"
+      },
       {
         "type": "prefix",
         "path": "unit/actions/guides/"
@@ -578,32 +598,24 @@
       {
         "type": "file",
         "path": "unit/layout/legend-policy.test.js"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/polar-guides/"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/axis-owners/"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/shared-facet-owner/"
-      },
-      {
-        "type": "file",
-        "path": "contracts/facade-legend-owner-capabilities.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/facade-legend-combination-types.test.js"
       }
     ],
     "hierarchy": [
       {
+        "type": "prefix",
+        "path": "charts/tree-layouts/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/treemap-layouts/"
+      },
+      {
         "type": "file",
-        "path": "unit/grammar/hierarchy-normalize.test.js"
+        "path": "contracts/hierarchy-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/facet-source-identity.test.js"
       },
       {
         "type": "file",
@@ -615,11 +627,11 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/hierarchy-validation.test.js"
+        "path": "unit/grammar/hierarchy-normalize.test.js"
       },
       {
         "type": "file",
-        "path": "unit/grammar/hierarchy-tree.test.js"
+        "path": "unit/grammar/hierarchy-order.test.js"
       },
       {
         "type": "file",
@@ -627,27 +639,15 @@
       },
       {
         "type": "file",
+        "path": "unit/grammar/hierarchy-tree.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/hierarchy-treemap.test.js"
       },
       {
         "type": "file",
-        "path": "unit/grammar/hierarchy-order.test.js"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/tree-layouts/"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/treemap-layouts/"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/hierarchy-resources.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/hierarchy-plots.test.js"
+        "path": "unit/grammar/hierarchy-validation.test.js"
       },
       {
         "type": "file",
@@ -655,61 +655,21 @@
       },
       {
         "type": "file",
+        "path": "unit/resources/hierarchy-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-resources.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/resources/hierarchy-validation.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/facet-source-identity.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/hierarchy-types.test.js"
       }
     ],
     "hit-testing": [
       {
         "type": "file",
-        "path": "unit/grammar/hit-coordinates.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/hit-stroke.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/hit-shapes.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/hit-index.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/hit-frame.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/hit-program.test.js"
-      },
-      {
-        "path": "unit/resources/graph-hit.test.js",
-        "type": "file"
-      },
-      {
-        "type": "file",
-        "path": "unit/hit-guides.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/interaction-session.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/interaction-selection.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/interaction-links.test.js"
+        "path": "browser/interaction-session.browser.js"
       },
       {
         "type": "file",
@@ -717,13 +677,73 @@
       },
       {
         "type": "file",
-        "path": "browser/interaction-session.browser.js"
+        "path": "unit/gesture-controller.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-coordinates.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-index.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-shapes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-stroke.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-frame.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-guides.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-program.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-click-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-links.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-nearest.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-pointer-capture.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-reconciliation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-session.test.js"
+      },
+      {
+        "path": "unit/resources/graph-hit.test.js",
+        "type": "file"
       }
     ],
     "horizon": [
       {
-        "type": "file",
-        "path": "unit/grammar/horizon.test.js"
+        "type": "prefix",
+        "path": "charts/gapminder-horizon/"
       },
       {
         "type": "file",
@@ -731,15 +751,15 @@
       },
       {
         "type": "file",
+        "path": "unit/actions/encodings/edit-horizon.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/encodings/encode-horizon.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/encodings/edit-horizon.test.js"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/gapminder-horizon/"
+        "path": "unit/grammar/horizon.test.js"
       }
     ],
     "image-assets": [
@@ -749,27 +769,7 @@
       },
       {
         "type": "file",
-        "path": "unit/resources/image-preparation.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/svg-images.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/materialization/image-placement.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/paint-image-preparation.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/resources/image-resource-lifecycle.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/renderers/image-rendering.test.js"
+        "path": "contracts/image-types.test.js"
       },
       {
         "type": "file",
@@ -777,11 +777,31 @@
       },
       {
         "type": "file",
-        "path": "contracts/image-types.test.js"
+        "path": "unit/materialization/image-placement.test.js"
       },
       {
         "type": "file",
         "path": "unit/persistence/image-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/image-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-resource-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/svg-images.test.js"
       }
     ],
     "inspection": [
@@ -812,8 +832,12 @@
     ],
     "legend-content-spacing": [
       {
+        "type": "prefix",
+        "path": "charts/legend-content-spacing/"
+      },
+      {
         "type": "file",
-        "path": "unit/layout/legend-content-spacing.test.js"
+        "path": "contracts/legend-spacing-types.test.js"
       },
       {
         "type": "file",
@@ -821,11 +845,7 @@
       },
       {
         "type": "file",
-        "path": "contracts/legend-spacing-types.test.js"
-      },
-      {
-        "type": "prefix",
-        "path": "charts/legend-content-spacing/"
+        "path": "unit/layout/legend-content-spacing.test.js"
       }
     ],
     "legend-layout": [
@@ -834,19 +854,23 @@
         "path": "charts/cars-multi-legend-layout/"
       },
       {
-        "type": "file",
-        "path": "unit/layout/legend-policy.test.js"
+        "type": "prefix",
+        "path": "unit/actions/guides/"
       },
       {
         "type": "file",
         "path": "unit/layout/legend-lane.test.js"
       },
       {
-        "type": "prefix",
-        "path": "unit/actions/guides/"
+        "type": "file",
+        "path": "unit/layout/legend-policy.test.js"
       }
     ],
     "loess": [
+      {
+        "type": "file",
+        "path": "contracts/interval-regression-facade-types.test.js"
+      },
       {
         "type": "file",
         "path": "unit/actions/data/loess-degree.test.js"
@@ -862,20 +886,16 @@
       {
         "type": "file",
         "path": "unit/grammar/local-quadratic.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/interval-regression-facade-types.test.js"
       }
     ],
     "lookup-data": [
       {
-        "type": "file",
-        "path": "unit/grammar/lookup.test.js"
+        "type": "prefix",
+        "path": "charts/lookup-data/"
       },
       {
         "type": "file",
-        "path": "unit/grammar/dataset-dependencies.test.js"
+        "path": "unit/actions/composition/lookup-facets.test.js"
       },
       {
         "type": "file",
@@ -883,27 +903,57 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/composition/lookup-facets.test.js"
+        "path": "unit/grammar/dataset-dependencies.test.js"
       },
       {
-        "type": "prefix",
-        "path": "charts/lookup-data/"
+        "type": "file",
+        "path": "unit/grammar/lookup.test.js"
       }
     ],
     "marks": [
       {
         "type": "prefix",
-        "path": "charts/named-shapes/"
+        "path": "charts/directional-tick-plot/"
       },
       {
         "type": "prefix",
-        "path": "charts/directional-tick-plot/"
+        "path": "charts/named-shapes/"
       }
     ],
     "materialization": [
       {
         "type": "prefix",
         "path": "unit/materialization/"
+      }
+    ],
+    "nested-composition": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/nested-responsive-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-resource-projection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/data-resource-revision.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/facet-scale-context.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/nested-responsive.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/nested-responsive/"
       }
     ],
     "oracles": [
@@ -919,14 +969,6 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/mark-outline.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/marks/mark-outline.test.js"
-      },
-      {
-        "type": "file",
         "path": "contracts/mark-outline-rendering.test.js"
       },
       {
@@ -936,20 +978,28 @@
       {
         "type": "file",
         "path": "contracts/realistic-mark-outlines.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-outline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-outline.test.js"
       }
     ],
     "package": [
       {
-        "type": "prefix",
-        "path": "contracts/package-"
+        "type": "file",
+        "path": "browser/backend-compatibility.browser.js"
       },
       {
         "type": "file",
         "path": "browser/package-consumer.browser.js"
       },
       {
-        "type": "file",
-        "path": "browser/backend-compatibility.browser.js"
+        "type": "prefix",
+        "path": "contracts/package-"
       },
       {
         "type": "file",
@@ -958,12 +1008,12 @@
     ],
     "partition": [
       {
-        "type": "file",
-        "path": "unit/grammar/hierarchy-partition.test.js"
+        "type": "prefix",
+        "path": "charts/partition-layouts/"
       },
       {
         "type": "file",
-        "path": "unit/grammar/hierarchy-partition-view.test.js"
+        "path": "unit/grammar/hierarchy-partition-bend.test.js"
       },
       {
         "type": "file",
@@ -971,21 +1021,21 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/hierarchy-partition-bend.test.js"
+        "path": "unit/grammar/hierarchy-partition-view.test.js"
       },
       {
-        "type": "prefix",
-        "path": "charts/partition-layouts/"
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
       }
     ],
     "pattern-paints": [
       {
-        "type": "file",
-        "path": "unit/grammar/patterns.test.js"
-      },
-      {
         "type": "prefix",
         "path": "charts/structured-paints/variants/pattern-paints/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/patterns.test.js"
       }
     ],
     "persistence": [
@@ -997,11 +1047,7 @@
     "pivot": [
       {
         "type": "file",
-        "path": "unit/grammar/pivot.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/pivot-data.test.js"
+        "path": "contracts/pivot-types.test.js"
       },
       {
         "type": "file",
@@ -1009,25 +1055,21 @@
       },
       {
         "type": "file",
-        "path": "contracts/pivot-types.test.js"
+        "path": "unit/actions/data/pivot-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pivot.test.js"
       }
     ],
     "plot-guide-underlays": [
       {
-        "type": "file",
-        "path": "unit/actions/primitives/graphic-child-order.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/layout/plot-draw-order.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/guides/plot-underlays.test.js"
-      },
-      {
         "type": "prefix",
         "path": "charts/plot-guide-underlays/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/plot-underlay-types.test.js"
       },
       {
         "type": "file",
@@ -1035,7 +1077,15 @@
       },
       {
         "type": "file",
-        "path": "contracts/plot-underlay-types.test.js"
+        "path": "unit/actions/guides/plot-underlays.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/primitives/graphic-child-order.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/plot-draw-order.test.js"
       }
     ],
     "polar": [
@@ -1044,26 +1094,26 @@
         "path": "charts/polar-"
       },
       {
-        "type": "prefix",
-        "path": "unit/actions/coordinates/"
+        "type": "file",
+        "path": "contracts/composition-integration.test.js"
       },
       {
         "type": "prefix",
         "path": "contracts/visual-capability-"
       },
       {
-        "type": "file",
-        "path": "contracts/composition-integration.test.js"
+        "type": "prefix",
+        "path": "unit/actions/coordinates/"
       }
     ],
     "radial-gradient": [
       {
-        "type": "file",
-        "path": "unit/grammar/radial-gradient.test.js"
-      },
-      {
         "type": "prefix",
         "path": "charts/structured-paints/variants/radial-gradient/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/radial-gradient.test.js"
       }
     ],
     "realistic": [
@@ -1072,12 +1122,12 @@
         "path": "contracts/dataset-fixtures.test.js"
       },
       {
-        "type": "prefix",
-        "path": "contracts/generated-scenario"
-      },
-      {
         "type": "file",
         "path": "contracts/generated-lifecycle-scenarios.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "contracts/generated-scenario"
       },
       {
         "type": "prefix",
@@ -1085,7 +1135,7 @@
       },
       {
         "type": "file",
-        "path": "contracts/realistic-legend-option-witness.test.js"
+        "path": "contracts/realistic-edge-routes.test.js"
       },
       {
         "type": "file",
@@ -1093,13 +1143,17 @@
       },
       {
         "type": "file",
-        "path": "contracts/realistic-edge-routes.test.js"
+        "path": "contracts/realistic-legend-option-witness.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "rendering": [
       {
-        "type": "prefix",
-        "path": "unit/renderers/"
+        "type": "file",
+        "path": "browser/public-examples.browser.js"
       },
       {
         "type": "file",
@@ -1107,25 +1161,55 @@
       },
       {
         "type": "file",
-        "path": "browser/public-examples.browser.js"
+        "path": "unit/canvas-scene.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/renderers/"
       },
       {
         "type": "file",
         "path": "unit/scene.test.js"
+      }
+    ],
+    "responsive-layout": [
+      {
+        "type": "file",
+        "path": "unit/layout/responsive-policy.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/canvas/responsive-"
       },
       {
         "type": "file",
-        "path": "unit/canvas-scene.test.js"
+        "path": "unit/grammar/responsive-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/responsive-layout-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/responsive-guides/"
+      },
+      {
+        "type": "file",
+        "path": "browser/responsive-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "scales": [
       {
-        "type": "prefix",
-        "path": "unit/actions/scales/"
-      },
-      {
         "type": "file",
         "path": "contracts/scale-capability-contract.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/scales/"
       }
     ],
     "selection": [
@@ -1134,20 +1218,20 @@
         "path": "charts/mark-selection-"
       },
       {
-        "type": "prefix",
-        "path": "unit/actions/selection/"
-      },
-      {
-        "type": "prefix",
-        "path": "unit/selectors/"
-      },
-      {
         "type": "file",
         "path": "contracts/selection-policy.test.js"
       },
       {
         "type": "file",
         "path": "contracts/selectors.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/selection/"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/selectors/"
       }
     ],
     "selectors": [
@@ -1163,11 +1247,19 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/mark-shadow.test.js"
+        "path": "contracts/mark-shadow-types.test.js"
       },
       {
         "type": "file",
-        "path": "unit/grammar/shadow.test.js"
+        "path": "contracts/realistic-mark-shadows.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-shadow.test.js"
       },
       {
         "type": "file",
@@ -1175,7 +1267,7 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/marks/mark-shadow.test.js"
+        "path": "unit/grammar/shadow.test.js"
       },
       {
         "type": "file",
@@ -1184,28 +1276,44 @@
       {
         "type": "file",
         "path": "unit/renderers/text-shadow.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/mark-shadow-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/realistic-mark-shadows.test.js"
       }
     ],
     "statistical-fixtures": [
       {
         "type": "file",
-        "path": "unit/actions/data/statistical-fixtures.test.js"
+        "path": "contracts/advanced-authoring-integration.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/summary-data.test.js"
+        "path": "contracts/bin2d-lifecycle-render.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/summary-capacity.test.js"
+        "path": "contracts/calendar-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/derived-editing-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/ecdf-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inspection-descriptors.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/interval-regression-facade-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/pivot-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/public-state-inspection.test.js"
       },
       {
         "type": "file",
@@ -1213,23 +1321,35 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/data/bin2d-data.test.js"
-      },
-      {
-        "type": "file",
         "path": "unit/actions/data/bin2d-assignment.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/stack-data.test.js"
+        "path": "unit/actions/data/bin2d-data.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/window-data.test.js"
+        "path": "unit/actions/data/calendar-completion.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/fold-data.test.js"
+        "path": "unit/actions/data/calendar-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/complete-impute-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/density-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/derived-editing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/ecdf-data.test.js"
       },
       {
         "type": "file",
@@ -1237,11 +1357,27 @@
       },
       {
         "type": "file",
+        "path": "unit/actions/data/fold-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-degree.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-lifecycle.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/data/lookup-data.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/complete-impute-data.test.js"
+        "path": "unit/actions/data/pivot-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/pivot-data.test.js"
       },
       {
         "type": "file",
@@ -1261,27 +1397,27 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/data/loess-degree.test.js"
+        "path": "unit/actions/data/row-lineage.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/loess-lifecycle.test.js"
+        "path": "unit/actions/data/source-revision.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/density-data.test.js"
+        "path": "unit/actions/data/stack-data.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/ecdf-data.test.js"
+        "path": "unit/actions/data/statistical-fixtures.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/pivot-data.test.js"
+        "path": "unit/actions/data/summary-capacity.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/pivot-consumers.test.js"
+        "path": "unit/actions/data/summary-data.test.js"
       },
       {
         "type": "file",
@@ -1293,39 +1429,11 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/data/calendar-completion.test.js"
+        "path": "unit/actions/data/window-data.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/data/calendar-lifecycle.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/row-lineage.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/derived-editing.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/data/source-revision.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/transforms/quantile-policies.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/transforms/window.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/transforms/ecdf.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/grammar/transforms/bin2d.test.js"
+        "path": "unit/grammar/calendar-days.test.js"
       },
       {
         "type": "file",
@@ -1337,7 +1445,15 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/calendar-days.test.js"
+        "path": "unit/grammar/transforms/bin2d.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/ecdf.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/quantile-policies.test.js"
       },
       {
         "type": "file",
@@ -1345,45 +1461,13 @@
       },
       {
         "type": "file",
-        "path": "contracts/derived-editing-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/ecdf-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/interval-regression-facade-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/bin2d-lifecycle-render.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/advanced-authoring-integration.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/calendar-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/pivot-types.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/inspection-descriptors.test.js"
-      },
-      {
-        "type": "file",
-        "path": "contracts/public-state-inspection.test.js"
+        "path": "unit/grammar/transforms/window.test.js"
       }
     ],
     "statistics": [
       {
         "type": "prefix",
-        "path": "unit/actions/statistics/"
+        "path": "charts/cars-box-plot/"
       },
       {
         "type": "prefix",
@@ -1391,13 +1475,13 @@
       },
       {
         "type": "prefix",
-        "path": "charts/cars-box-plot/"
+        "path": "unit/actions/statistics/"
       }
     ],
     "structured-paints": [
       {
         "type": "file",
-        "path": "unit/renderers/structured-fill-contours.test.js"
+        "path": "browser/structured-paint.browser.js"
       },
       {
         "type": "prefix",
@@ -1405,7 +1489,7 @@
       },
       {
         "type": "file",
-        "path": "browser/structured-paint.browser.js"
+        "path": "contracts/realistic-structured-paints.test.js"
       },
       {
         "type": "file",
@@ -1417,15 +1501,15 @@
       },
       {
         "type": "file",
-        "path": "unit/grammar/structured-paint.test.js"
-      },
-      {
-        "type": "file",
         "path": "unit/actions/marks/structured-fill.test.js"
       },
       {
         "type": "file",
-        "path": "contracts/realistic-structured-paints.test.js"
+        "path": "unit/grammar/structured-paint.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/structured-fill-contours.test.js"
       }
     ],
     "support": [
@@ -1437,11 +1521,11 @@
     "text-metrics": [
       {
         "type": "file",
-        "path": "unit/actions/text-metrics.test.js"
+        "path": "contracts/text-metrics-types.test.js"
       },
       {
         "type": "file",
-        "path": "contracts/text-metrics-types.test.js"
+        "path": "unit/actions/text-metrics.test.js"
       },
       {
         "type": "file",
@@ -1451,27 +1535,7 @@
     "theme": [
       {
         "type": "file",
-        "path": "unit/actions/theme-guide-defaults.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/theme-item-identity.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/theme-typography.test.js"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/theme-resource-plots.test.js"
-      },
-      {
-        "type": "prefix",
-        "path": "unit/theme/"
-      },
-      {
-        "type": "file",
-        "path": "unit/actions/theme.test.js"
+        "path": "contracts/theme.test.js"
       },
       {
         "type": "file",
@@ -1479,11 +1543,11 @@
       },
       {
         "type": "file",
-        "path": "contracts/theme.test.js"
+        "path": "unit/actions/theme-flow.test.js"
       },
       {
         "type": "file",
-        "path": "unit/actions/theme-flow.test.js"
+        "path": "unit/actions/theme-guide-defaults.test.js"
       },
       {
         "type": "file",
@@ -1491,7 +1555,11 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/theme-spacing.test.js"
+        "path": "unit/actions/theme-item-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-paint-consumers.test.js"
       },
       {
         "type": "file",
@@ -1503,7 +1571,23 @@
       },
       {
         "type": "file",
-        "path": "unit/actions/theme-paint-consumers.test.js"
+        "path": "unit/actions/theme-resource-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-typography.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/theme/"
       }
     ]
   },

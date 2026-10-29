@@ -1,7 +1,7 @@
 import { bindLegendHitMetadata } from "./hitLegends.js";
 import { encodeValue } from "../core/valueEncoding.js";
 import { cartesianAxisOwners, axisGraphicIds } from "../selectors/axes.js";
-import { axisLabelTexts, axisLabelLines } from "../materialization/axisLabelText.js";
+import { axisLabelTexts, axisLabelLines, axisLabelValues } from "../materialization/axisLabelText.js";
 import { facetHeaderGraphicId, facetHeaderTextEntries } from "../materialization/facetHeaders.js";
 import { valuesFromTickConfig } from "../actions/guides/tickValues.js";
 import { resolvePolarTickValues } from "../actions/guides/polar/resolve.js";
@@ -29,7 +29,8 @@ export function guideHitMetadata(program, spend) {
     for (const [part, id] of [["ticks", ticks], ["labels", labels]]) {
       const config = owner.config?.[part];
       if (config === undefined || objects[id] === undefined) continue;
-      const values = valuesFromTickConfig(program, config);
+      const raw = valuesFromTickConfig(program, config);
+      const values = part === "labels" ? axisLabelValues(raw, config) : raw;
       spend(values.length);
       let entries = values.map(value => token(owner.id, "axis-tick", ["axis", value]));
       if (part === "labels") {

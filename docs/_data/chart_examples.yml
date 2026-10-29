@@ -2092,6 +2092,22 @@
   url: /recipes/inspect-chart/
   recipe_url: /recipes/inspect-chart/
   recipe_order: 209
+- id: responsive-guides
+  tutorial_order: 260
+  example: /examples/responsive-guides/
+  title: Labels inside a fixed Canvas
+  image: /assets/images/responsive-guides.png
+  alt: Four bars with long category names wrapped onto two lines
+  width: 800
+  height: 640
+  thumbnail: /assets/images/responsive-guides-thumb.png
+  thumbnail_width: 400
+  thumbnail_height: 320
+  caption: Four categories retain every tick while their labels wrap inside a fixed Canvas.
+  summary: Reserve guide space and explicitly resize an immutable chart without changing its margins.
+  actions: createCanvas · createBarPlot · editCanvas
+  tasks: responsive labels
+  url: /tutorials/responsive-guides/
 
 - id: calendar
   tutorial_order: 230
@@ -2139,6 +2155,23 @@
   actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
   tasks: calendar dates
   url: /tutorials/calendar/
+
+- id: nested-responsive
+  tutorial_order: 270
+  example: /examples/nested-responsive/
+  title: Nested panels with shared guides
+  image: /assets/images/nested-responsive.png
+  alt: Five regional bar panels in three rows share aligned bottom axes and a legend beside an overview
+  width: 2094
+  height: 1884
+  thumbnail: /assets/images/nested-responsive-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 576
+  caption: Shared scales and a common footer survive nested layout and long labels.
+  summary: Compose a three-row facet with an overview and resize its source through a scoped target.
+  actions: facet · hconcat · editCanvas
+  tasks: nested panels
+  url: /tutorials/nested-responsive/
 - id: edge-routes
   example: /examples/edge-routes/
   title: Edge routes

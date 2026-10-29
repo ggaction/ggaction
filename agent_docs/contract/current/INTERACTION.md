@@ -2,9 +2,9 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. No action, renderer or persisted schema is added. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. No action, renderer or persisted schema is added. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including gesture bindings, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection binding, plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including gesture bindings, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -13,7 +13,7 @@
 - `dispatch({ type: "leave" })` clears the transient hit.
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations, schedule RAF, or infer geometry from endpoints.
 - `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
-- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, leave, frame, program, mount, unmount, or destroy. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
 - `getState()` returns `{program,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
@@ -31,7 +31,7 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
-Editing gestures, navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+Brush/lasso gestures, navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
@@ -48,7 +48,7 @@ A target is a root owner ID string or `{childPath,id,facetSource?}` using existi
 
 Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision, generation and frameVersion once, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
 
-Transaction events contain `{type,transactionId,origin,causeTransactionId?,phase,revision,affectedOwners,previous,current,diagnostics,state}`. The type is the command type. `previous` and `current` are immutable program references. `affectedOwners` contains the explicitly addressed owner and changed linked target owners, each with its child path; it is not an inventory of every rematerialized dependency. Origin defaults to `programmatic`, with `user`, `replay`, and `linked` also accepted. IDs are nonempty strings of at most 1,024 characters; an omitted ID is generated within the session. A cause ID records provenance without enabling automatic linked propagation.
+Transaction events contain `{type,transactionId,origin,causeTransactionId?,phase,revision,affectedOwners,previous,current,diagnostics,selectionChanges,state}`. The type is the command type. `previous` and `current` are immutable program references. `affectedOwners` contains the explicitly addressed owner and changed linked target owners, each with its child path; it is not an inventory of every rematerialized dependency. Origin defaults to `programmatic`, with `user`, `replay`, and `linked` also accepted. IDs are nonempty strings of at most 1,024 characters; an omitted ID is generated within the session. A cause ID records provenance without enabling automatic linked propagation.
 
 Successful commands publish `commit` then `settled` at one revision. A valid envelope whose payload, target, action or frame preparation fails publishes one `error` with unchanged program/frame/revision, empty affectedOwners and a diagnostic, then throws. Malformed envelopes and unsafe snapshots are rejected before a transaction begins. Subscriber errors propagate and stop further delivery, preserve an already committed state, and discard pending work; they are not reported as action rejections.
 
@@ -91,8 +91,9 @@ initialization. Facet source links read the existing final semantic item grain w
 new source chart. They accept fields/rows/keys/AST selectors but reject concrete-property selectors,
 whose full-source geometry is unavailable. Generated facet cells remain read-only.
 
-Construction and `updateProgram` validate all bindings and compute runtime projection sets without
-editing the program. After a successful authoring command, changed source owners or changed projected
+Construction validates all endpoints and computes runtime projection sets without editing the program.
+Ordinary `updateProgram` replacements retain that behavior; endpoint availability changes and selection
+pruning follow the explicit lifecycle policy below. After a successful authoring command, changed source owners or changed projected
 sets trigger the dependency closure. Each changed target is edited once through its existing domain
 action, in dependency order. Unchanged effective membership creates no target revision. The original
 command, linked edits, projection cache and hit frame commit together at one session revision; a failure
@@ -101,7 +102,7 @@ projection check also rejects implicit materialization feedback, such as a sourc
 whose conditional opacity changes when its linked target selection changes; there is no fixed-point loop.
 
 `getState().linkedSelections` is a frozen topological-order array of
-`{id,target,selection,resolve,sources:[{target,selection,keys}],keys}`. Source keys are the respective
+`{id,target,selection,resolve,targetAvailable,sources:[{target,selection,available,keys}],keys}`. Source keys are the respective
 projected target sets, and final keys are their resolved result. Keys carry the target child namespace.
 They are inspection snapshots, not setters. Configuration snapshots and cumulative projection/key
 expansion have a 10,000,000-unit work limit. Full final-item resolvers retain their existing limits.
@@ -111,3 +112,163 @@ selection resources use the existing program codec; reattach bindings explicitly
 Links do not install DOM listeners or synthesize additional transactions. A cause ID alone never
 creates a link. Evidence includes `test/unit/interaction-links.test.js`, the logical-selection realistic
 corpus, public interaction type checks and source-free interaction consumers.
+
+
+## Nearest selection commands
+
+`dispatch({type:"select",target,payload:{id,nearest,mode?},transactionId?,origin?,causeTransactionId?})`
+updates an existing authored selection. Exactly one of `select` and `nearest` is required. The selection
+must match the explicit owner and retain its stored grain. Generated projection IDs are not editable
+nearest owners. Basic rejects nearest commands. There is no inferred selection ID or new resource kind.
+
+`nearest` is one of:
+
+- `{space:"screen",point:{x,y},maxDistance,hitInvisible?}` measures CSS-pixel distance to the current
+  accepted frame's painted footprint. A filled interior has distance zero; an outside point measures
+  the nearest fill edge or painted stroke footprint, including dash gaps, caps and joins. Clipped-out
+  boundary intervals do not contribute. As with inspection, the query point must be inside every clip;
+  nearest does not search through a clip from an outside point. Opacity zero is excluded unless
+  `hitInvisible:true` (default false). Text uses its concrete metric rectangles and images their placed
+  viewport; shadows do not expand targeting. Curves retain the existing 0.25 CSS-pixel approximation.
+  Only items in the selection's exact owner/path/grain are eligible, and guides remain inspection-only.
+  A facet source has multiple cell geometries and rejects screen nearest; use data space for that source.
+- `{space:"data",fields,values,metric,maxDistance}` uses 1–64 distinct bounded field names and an
+  equal-length finite numeric query tuple. `metric` is explicitly `euclidean` or `manhattan`, in raw
+  field units without inferred normalization or scale mapping. Every final item, including unselected
+  items, must have a unique finite numeric value for every field. Missing, null, nonnumeric, ambiguous
+  aggregate fields and overflowing distances reject the complete transaction. Empty owners have no
+  candidate. Explicit facet-source semantic item grain is supported.
+
+`maxDistance` is required, finite and non-negative; the boundary is inclusive. Nearest chooses minimum
+distance then lexicographically smallest opaque logical item key, independently of drawing order.
+Decorations collapse to their owner item. A miss supplies an empty key set with `empty:"none"` to the
+existing set update mode; `replace` clears, while add/toggle/subtract/intersect retain native semantics.
+The chosen key is a snapshot selection, not a stored distance predicate. Codec restoration therefore
+requires no nearest-specific preparation or schema.
+
+Resolution occurs when the queued command executes against the current program and accepted sampled
+frame, including its root transform. Candidate program, linked-selection closure, frame and counters
+commit together, with the same commit/settled/error lifecycle as ordinary select. The command does not
+replace inspection candidate ordering or synthesize an inspect event. After a commit, native
+materialization replaces any sampled frame as for every authoring command. Data tuple work and
+namespace expansion share a 10,000,000-unit bound; screen queries retain the 2,000,000-unit bound,
+including clip intersections and comparisons. Evidence: `test/unit/interaction-nearest.test.js`, the
+logical-selection realistic corpus, browser interaction tests and installed interaction consumers.
+
+
+## Hidden and removed selection membership
+
+`selectionPolicy` is `"keep-hidden"` by default or explicitly `"drop"`. The session snapshots authored
+selection membership at initialization, after committed commands, and after `updateProgram`.
+Initialization records existing hidden keys without authoring or emitting changes. Changes compare
+exact logical keys at the final item grain. An absent item, removed child/owner, or explicit
+`visible:false` item (such as partition focus) is unavailable. Opacity zero, clipping, and a sampled
+animation frame do not remove semantic membership.
+
+Keep-hidden preserves stored item keys and live range/predicate intent. A missing owner's selected keys
+remain in a session-local record; the session never recreates a mark, child or selection. Matching keys
+selected again after return produce a restoration event. An explicitly replaced selector supersedes
+old membership. Drop prunes vanished membership by invoking the existing selection editor with the
+previous selected keys intersected with the current available universe, `empty:"none"`, and the stored
+grain. It snapshots a live range/predicate only when pruning is needed. If new options were explicitly
+authored, they take precedence over the previous membership. Removed owners produce drop events and
+release their record without being recreated. Freshly supplied immutable programs retain whatever
+selection intent their caller authored; drop does not permanently blacklist a key.
+
+`program` events and transaction `commit`/`settled` events include frozen `selectionChanges` arrays of
+`{target,selection,policy,ownerMissing,hiddenKeys,restoredKeys,droppedKeys}`. Keys use the owner's exact
+child namespace. Repeated unchanged hidden states produce no duplicate change. Error events contain
+an empty array. Pruning, linked edits, final validation and hit-frame preparation commit atomically;
+failed replacements leave program, frame, counters and runtime caches unchanged. Use the session's
+accepted program after a drop replacement, which may include native pruning actions.
+
+Existing links can become dormant after an endpoint disappears. `targetAvailable` and each source's
+`available` report existence. Missing sources retain their last projected target-key set under
+keep-hidden; drop contributes an empty set. Present sources continue to project their current effective
+membership, so a present but filtered source does not invent values for hidden rows. A missing target
+is never recreated. Returning endpoints revalidate their explicit owner, fields and original data
+identity before commit. Initialization still rejects missing endpoints. Endpoint disappearance/return
+or explicit pruning runs the existing dependency closure; each linked target is edited at most once,
+including pruning. Cached keys must belong to the current exact target child namespace.
+
+Runtime records are limited to 100,000 and cumulative reconciliation/key work to 10,000,000 units.
+They are discarded on destroy and are not serialized. Restore the existing immutable program and
+explicitly recreate the session and bindings. Legacy concrete-property predicates on a retained facet
+source have no source-only geometry: keep-hidden preserves them without inferring per-item membership,
+and explicit drop rejects such a session. Data fields, item keys, ranges and AST facet selectors use
+the existing source-only semantic owner. Basic inspection remains supported; Full-only authored
+selection resolution and editors do not become Basic capabilities.
+
+Evidence: `test/unit/interaction-reconciliation.test.js`, linked-selection tests, the logical-selection
+realistic corpus, browser interaction tests and installed interaction consumers.
+
+
+## Automatic click binding
+
+Full accepts one `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` binding. The target
+is one explicit root or concat mark owner and `selection` must be an existing authored selection on
+that owner. Root/concat facade items follow their native final grain. Basic, generated selection IDs,
+facet-source geometry, duplicate click bindings and conflicting linked target writers are rejected.
+A replacement program revalidates the endpoint before commit; a removed endpoint remains inactive.
+
+`mode` is `replace` (default) or `toggle`. `onMiss` is `clear` (default) or `ignore`. Both option sets
+are closed and explicit null is invalid. `slop` and `hitInvisible` reuse inspect validation/defaults.
+Mounted primary-button selection events map client coordinates through the existing CSS/root transform
+and query the current accepted frame. Among all hit candidates, the first exact owner/path key in the
+selection's final available item grain is selected. Inspect z-order is retained, and decorative
+geometry still collapses to its item. A missing owner or singular/empty viewport causes no edit.
+
+The binding dispatches native `select` or `clearSelection` commands with `origin:"user"` through the
+same queued transaction, linked closure, reconciliation and frame commit boundary. It retains the
+selection's grain, using `empty:"none"` for explicit keys. Replacing an identical singleton key
+snapshot or clearing an existing empty-none key snapshot is a no-op without revision or event.
+Live predicates/ranges are converted to key snapshots when clicked, even if effective membership
+happens to match. Clearing also removes retained hidden intent. Toggle uses the native set operation.
+
+The binding alone emits no inspect/leave events. Inspection is independent; subscriber work follows
+the existing FIFO lifecycle. Captured up commits before the subsequent click inspection. Remount/destroy
+release listeners, and a captured old listener is inactive. All successful selection event consumers
+must render the accepted program; the controller never renders. SVG hosts remount after replacing
+the root element. Headless authors use explicit select/clear commands instead of a new low-level
+click command. No automatic modifier, brush/lasso, competing binding, keyboard focus or history policy is
+inferred. Existing count/work limits apply; candidate and key expansion additionally share a
+10,000,000-unit click-selection budget.
+
+Evidence: `test/unit/interaction-click-selection.test.js`, `test/browser/interaction-session.browser.js`,
+the logical-selection realistic corpus, documentation module and source-free interaction consumers.
+
+
+## Captured click lifecycle
+
+On an Element with both `setPointerCapture` and `releasePointerCapture`, select bindings capture the
+primary pointer on down and commit the eligible click on up. Movement is measured in CSS pixels,
+independent of root scale and DPR: below 3 Euclidean pixels remains a click; reaching 3 cancels this
+click-only binding. The final up position is checked even without a preceding move. Crossing the
+threshold and returning to the start does not restore click eligibility. Secondary pointers cannot
+claim or end the active selection. Modifier keys still do not change its configured selection mode.
+
+Escape, pointercancel, lostpointercapture, window blur, successful external program/command replacement,
+remount, unmount and destroy cancel an active click. Cancellation emits one `select` transaction event
+with `phase:"cancel"`, `origin:"user"`, unchanged committed revision and immutable previous/current
+references. Diagnostics contain `code:"gesture-cancelled"` and the reason in `message`. Cancel does not
+produce commit/settled, and late up cannot commit. Down itself does not modify the program or emit a
+transaction phase. A successful up uses one generated transaction ID for commit and settled.
+
+Capture is released before terminal subscribers run. The subsequent browser click is suppressed,
+including when an up subscriber replaces the SVG root and remounts it. An explicit activation click
+with `detail:0` remains available to host keyboard controls. The controller does not add Enter/Space
+behavior or guess a focused item. An independent click-inspection binding receives the later click;
+on capture-capable hosts selection commits on up before that click inspection.
+
+Custom event surfaces without either capture method retain click-only handling. Supplying exactly one
+capture method is an error. Registration failure removes partially installed listeners and leaves the
+old lease active. Capture acquisition failure retains the program, releases any acquired pointer and emits one
+error transaction with diagnostic code `pointer-capture-failed`; no commit/cancel follows.
+Cancel/release/subscriber failures still clear the terminal state; unmount/remount/destroy finish their
+listener cleanup. Failed authoring preflight retains the active capture and original program. A singular
+or empty viewport cannot acquire capture; one arising during a gesture cancels it.
+
+DOM events, capture IDs and armed program references are runtime-only. Codec, static PNG/PDF and
+renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
+brush/lasso preview, RAF coalescing, navigation pinch and history remain unsupported public options.
+Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.

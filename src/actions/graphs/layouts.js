@@ -1,7 +1,7 @@
 import { createInferredGraphResource } from "../../materialization/graph/inferredResource.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
-import { graphSourceRevisions } from "./sourceRevisionContext.js";
+import { graphSourceRevisions, graphSourceProjection } from "./sourceRevisionContext.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -9,7 +9,7 @@ import { ownRecord } from "../../core/ownData.js";
 import { findStoredResource, resolveInputReference, dataInputReference } from "../../selectors/resources.js";
 import { resolveGraphResource } from "../../selectors/graphs.js";
 import { createGraphLayoutResource } from "../../materialization/graph/layoutResource.js";
-import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
+import { withPreparedResourceResults, withPreparedProjectedResourceResults } from "../primitives/preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 import { prepareEdgeRouteRevisions } from "./routeClosure.js";
@@ -89,8 +89,9 @@ export function prepareGraphResource(program, resource, sources) {
   return { resource, replacements: [...replacements, ...routes.entries], sources, layoutIds: new Set(nextLayouts.keys()), routeIds: routes.ids, preview };
 }
 
-export function writePreparedGraphResource(program, { resource, replacements, sources, layoutIds, routeIds }) {
-  const next = withPreparedResourceResults(program, { property: `resource[graph:${resource.id}]`, value: resource }, replacements,
+export function writePreparedGraphResource(program, { resource, replacements, sources, layoutIds, routeIds }, projected = false) {
+  const bind = projected ? withPreparedProjectedResourceResults : withPreparedResourceResults;
+  const next = bind(program, { property: `resource[graph:${resource.id}]`, value: resource }, replacements,
     args => program.editSemantic(args), [...(sources ?? [])].map(([from, to]) => ({
       previous: dataInputReference(requireDataset(program, from)), next: dataInputReference(requireDataset(program, to))
     })));
@@ -98,5 +99,5 @@ export function writePreparedGraphResource(program, { resource, replacements, so
 }
 
 export function writeGraphResource(program, resource) {
-  return writePreparedGraphResource(program, prepareGraphResource(program, resource, graphSourceRevisions(program)));
+  return writePreparedGraphResource(program, prepareGraphResource(program, resource, graphSourceRevisions(program)), graphSourceProjection(program));
 }

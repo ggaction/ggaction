@@ -265,3 +265,22 @@ card override 한도, realistic discovery count 누락은 각각 owning check로
 전체 coverage/render/browser 완료로 주장하지 않고 Geo marks 통합에서 수행한다. 이 checkpoint는
 아직 화면 graphic을 만들지 않으므로 새로운 visual target은 없다. 원본 실패와 수리 검증은
 `geo-evidence/projection-public/`에 구분 보존한다.
+
+## Responsive Routes 통합 checkpoint
+
+Public projection `17cf6a85a`에 main `26676b8e1`을 병합한다. Geometry/projection 후보
+proof와 main의 projected dataset·dataRooted viewport-only sibling proof를 모두 보존했다.
+Geo 및 route focused 75개, 새 혼합 closure를 포함한 projection 12개, 경계 계약 46개,
+canonical 실제 데이터/inventory 26개, package artifact 계약 7개가 통과했다. 혼합 회귀는
+source 수정 시 screen route만 한 번, geometry 수정 시 fit만 한 번, Canvas 수정 시 route만
+한 번 바뀌며 이전 프로그램과 trace가 보존됨을 검증한다.
+
+고정 tar `3dca83706effc478384e42574e1e6d9c8f35160b67cccc282e76ad50b0475a67`의
+Node20/22/24 소비자 각17개, 타입, runnable snippet, 3 dependency 서명/라이선스 검증을
+완료했다. 998 packed input 전부 source와 일치한다. Full gzip 최대705090 bytes의 최소
+1000단위 상한706000을 적용했다. 합산 package 최대1423435/6468509 bytes에는
+1424000/6469000 상한을 적용한다. 검색 index990509 bytes의 상한은991000이다.
+
+최초 문서191개 중3실패는 검색 상한2개와 아직 merge commit에 없는 새 예제 provenance
+ref1개다. 검색 owner29개는 수리 후 통과했고 provenance는 merge commit 뒤 전체 문서와
+built/browser를 재검증한다. 전체 Geo coverage/renderer 완료로 주장하지 않는다.

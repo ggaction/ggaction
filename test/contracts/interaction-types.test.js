@@ -22,7 +22,21 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
+createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+// @ts-expect-error click bindings use existing named selections
+createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
+// @ts-expect-error drag and additive gestures have no automatic click binding
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',mode:'add'}]});
+// @ts-expect-error miss policy differs from selection empty semantics
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',onMiss:'all'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='cancel'){const revision:number=event.revision;}});
 const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
+const available:boolean=session.getState().linkedSelections[0].targetAvailable;
+session.subscribe(event=>{if(event.type==='program'||'phase' in event){const changes:readonly string[]=event.selectionChanges.flatMap(change=>change.droppedKeys);}});
+// @ts-expect-error lifecycle policy is explicit and closed
+createInteractionSession({program,selectionPolicy:'forget'});
+
 // @ts-expect-error runtime projection sets are immutable
 session.getState().linkedSelections[0].keys.push('change');
 // @ts-expect-error row and tuple options cannot be mixed
@@ -36,6 +50,14 @@ session.updateProgram(program);session.subscribe(event=>{const key:string|undefi
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[],empty:'none'}}});
 session.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select:{field:'x',op:'range',min:2,minInclusive:false},mode:'toggle'},origin:'user'});
 session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{where:{version:2,registry:'standard@1',root:{type:'literal',value:true}}}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:10,y:20},maxDistance:8,hitInvisible:true}}});
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x','y'],values:[1,2],metric:'euclidean',maxDistance:5},mode:'toggle'}});
+// @ts-expect-error nearest and ordinary selectors are exclusive
+session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]},nearest:{space:'screen',point:{x:1,y:2},maxDistance:3}}});
+// @ts-expect-error screen and data distances must be explicit
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'data',fields:['x'],values:[1],metric:'cosine',maxDistance:5}}});
+// @ts-expect-error no implicit unbounded nearest search
+session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
 session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
 session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
 session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});

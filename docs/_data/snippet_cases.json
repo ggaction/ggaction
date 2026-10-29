@@ -371,5 +371,25 @@
     "prerequisites": "Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].",
     "rendering": "authoring-only",
     "resultKind": "semantic"
+  },
+  {
+    "id": "interaction-nearest-selection",
+    "file": "api/interaction.md",
+    "contains": "nearest: { space: \"data\", fields: [\"x\", \"y\"], values: [2, 3]",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with its inline keyed observations and public imports. Explicit Euclidean data distance selects observation b.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-click-selection",
+    "file": "api/interaction.md",
+    "contains": "const clickSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection."
   }
 ]

@@ -768,6 +768,12 @@ Inspect the same final chart items through Canvas, SVG, or headless CSS points.
 
 Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
 
+### [Labels inside a fixed Canvas](./responsive-guides/)
+
+Reserve guide space and explicitly resize an immutable chart without changing its margins.
+
+Representative actions: `createCanvas`, `createBarPlot`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/responsive-guides/).
+
 ### [A leap year, one cell per civil day](./calendar/)
 
 Place civil-day aggregates in stable week and weekday cells.
@@ -785,6 +791,12 @@ Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalen
 Place civil-day aggregates in stable week and weekday cells.
 
 Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
+
+### [Nested panels with shared guides](./nested-responsive/)
+
+Compose a three-row facet with an overview and resize its source through a scoped target.
+
+Representative actions: `facet`, `hconcat`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/nested-responsive/).
 
 ### [Edge routes](./edge-routes/)
 

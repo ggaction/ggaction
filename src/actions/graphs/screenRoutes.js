@@ -5,13 +5,14 @@ import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 import { validateResourceGraph } from "../../materialization/resourceState.js";
-import { registerCanvasResourceRevision } from "../canvas/resourceRevision.js";
+import { registerCanvasResourceRevision } from "../../materialization/canvasResourceRevision.js";
 import { withPreparedScreenRouteResults } from "../primitives/preparedResourceContext.js";
 import { reviseEdgeRouteResource } from "./routeClosure.js";
 
 const plans = new WeakMap(), calls = new WeakMap();
 
 function prepare(program) {
+  if (!program.semanticSpec.resources.some(resource => resource.kind === "edge-route" && resource.options.coordinateSpace === "screen")) return undefined;
   const viewport = resolveGraphicBounds(program), entries = [];
   for (const previous of program.semanticSpec.resources) {
     if (previous.kind !== "edge-route" || previous.options.coordinateSpace !== "screen" ||

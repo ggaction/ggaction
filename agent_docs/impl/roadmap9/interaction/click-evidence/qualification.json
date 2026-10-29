@@ -1,0 +1,459 @@
+{
+  "sourceCommit": "c999932b098c95d186a9b9af1cf88c4126dd7636",
+  "scope": "STEP057 D4 single explicit automatic click selection; STEP058 gestures and later history/composition/077 remain open",
+  "sourceHashes": {
+    "src/interaction/clickSelection.js": "9c742666b2a92d865214af6686eb71db0b04caf84dcbfea0120107d331be5a7d",
+    "src/interaction/selection.js": "0eccae5dab49c07c17fbcb54fea73f7d6326f18905a36de90a2b6c8d2be4b8c5",
+    "src/interaction/session.js": "f3b6a2a76383f876b34c2238f8b5c35c22a793493fcd52c71624f463126d3ff1",
+    "src/interaction/bindings.js": "78b8ed3ebc772506b04cdbe49b1cae096e46e1fbd6b49c439307bd724e2c17b1",
+    "src/interaction/nearest.js": "4c40922886c8befabab34d68d21e1848e103c7f56e9059b279fe50ba7c8743db",
+    "types/interaction.d.ts": "717c2687913c5fdb5277b2a0da3366f88736a3a8fc89447f74ec44c746af2960"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 117,
+      "newTests": 11,
+      "criticalFloor": [
+        95,
+        90,
+        100
+      ],
+      "owners": {
+        "interaction/clickSelection.js": [
+          100,
+          97.87,
+          100
+        ],
+        "interaction/bindings.js": [
+          100,
+          98.98,
+          100
+        ],
+        "interaction/nearest.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/selection.js": [
+          100,
+          98.91,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          97.53,
+          100
+        ]
+      }
+    },
+    "typesBoundaryDiscovery": 28,
+    "packageContracts": 13,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "modes": [
+        "replace",
+        "toggle"
+      ],
+      "onMiss": [
+        "clear",
+        "ignore"
+      ],
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "tests": 8,
+      "scope": "Actual Canvas/SVG click binding, single commit, SVG remount and existing current-frame consumers"
+    },
+    "docs": {
+      "sourceTests": 185,
+      "finalProvenanceOwningTests": 32,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false,
+      "visualReviewed": ".artifacts/interaction-click-selection-docs/click-selection-390.png",
+      "environment": "Explicit Ruby3.2/Node22 PATH",
+      "reused": "Responsive page checked before metadata-only provenance regeneration; prose/CSS/runtime unchanged"
+    },
+    "sameArchive": [
+      {
+        "node": "v20.20.2",
+        "artifact": "83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 160,
+            "minifiedBytes": 299806,
+            "gzipBytes": 97595
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 650908
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 365369
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 160,
+            "minifiedBytes": 299806,
+            "gzipBytes": 97318
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 808,
+            "minifiedBytes": 2301573,
+            "gzipBytes": 651735
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 531,
+            "minifiedBytes": 1256443,
+            "gzipBytes": 366102
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 160,
+            "minifiedBytes": 299806,
+            "gzipBytes": 97595
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 920,
+    "packedBytes": 1324240,
+    "unpackedBytes": 6072371,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-click-selection-qualified.tgz",
+    "sha1": "9cf081a9428989d4d9cb2461cac32c55d8c8fb29",
+    "sha256": "83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9"
+  },
+  "budgets": {
+    "node20DryMeasurement": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 920,
+      "packedBytes": 1327105,
+      "unpackedBytes": 6072371
+    },
+    "packageLimits": {
+      "entries": 920,
+      "packedBytes": 1328000,
+      "unpackedBytes": 6073000
+    },
+    "interactionGzipLimit": 97600,
+    "interactionGzipMaximum": 97595,
+    "searchBytes": 960195,
+    "searchLimit": 961000
+  },
+  "initialFailures": [
+    "Package entry count 920 exceeded prior919; retained initial failure and Node20 canonical-equivalent staging measurement.",
+    "Node20 interaction gzip97595 exceeded97500 after runtime and strict types passed; same archive final whole consumer passes.",
+    "Docs search960195 exceeded960000; source checks185 pass after measured961000 limit.",
+    "Facet test initially used insufficient margins; explicit facet source error was then moved before native final item resolution to preserve closed diagnostic.",
+    "Additional documentation-truth check found preexisting missing interaction package heading and stale92000 budget table; canonical architecture synchronized, combined owning32 passed.",
+    "Evidence script initially read nonexistent state.selections, then omitted destroy event; corrected only evidence reader/expected lifecycle, runtime unchanged."
+  ],
+  "consumerMatrix": {
+    "publicEntry": "browser-safe existing interaction entry; Full selection resolver registration reused, Basic closed failure",
+    "nativeActions": "ordinary selectMarks/editMarkSelection/clear through existing command transaction",
+    "revision": "one edit commit; same exact key/empty snapshot no-op; linked target single writer",
+    "scene": "current accepted sampled frame and one CSS transform",
+    "composition": "explicit concat child; missing endpoint dormant, return revalidated; facets explicit rejection",
+    "codec": "existing selection resources only; runtime bindings rebuilt after load",
+    "renderers": "existing graphic output; actual Canvas/SVG host listener integration; no new renderer geometry",
+    "DOM": "mount/remount/destroy and failure cleanup; primary button only",
+    "remaining": "capture, threshold, priority/modifiers, pinch, keyboard, brush/lasso, history remain STEP058+"
+  },
+  "notClaimed": [
+    "Full repository unit or coverage sweep",
+    "All installed-package cases",
+    "New visual geometry or renderer support",
+    "STEP057 acceptance closure, STEP058 or STEP077 completion"
+  ],
+  "logs": {
+    "click-selection-browser.log": {
+      "sha256": "1be4fd4f545010d22d4adc500908f53a18f0d3a5c734a4142210c88800df62c6",
+      "bytes": 1913,
+      "gzip": "click-selection-browser.log.gz"
+    },
+    "click-selection-consumer-check.mjs": {
+      "sha256": "b3f1e87c860eb7587b974ce11662cac2d49d21a3295545338a5f41c2c8108c4e",
+      "bytes": 2007,
+      "gzip": "click-selection-consumer-check.mjs.gz"
+    },
+    "click-selection-consumer-node20-initial.log": {
+      "sha256": "ff432d3f3641790b0123b4b09b1ba5c77ca9c0081c561e9e29c0fe1e9878a3c6",
+      "bytes": 1487,
+      "gzip": "click-selection-consumer-node20-initial.log.gz"
+    },
+    "click-selection-consumer-node20.log": {
+      "sha256": "01acbe36ed971cd8a56dffd71dae6aefe0e0c62b9b782edf46595670df64defe",
+      "bytes": 938,
+      "gzip": "click-selection-consumer-node20.log.gz"
+    },
+    "click-selection-consumer-node22-initial.log": {
+      "sha256": "f6610b9bda6f0c3180bd04ca8639d0cba404ba85697fe9c057c3d5e859afc958",
+      "bytes": 938,
+      "gzip": "click-selection-consumer-node22-initial.log.gz"
+    },
+    "click-selection-consumer-node24.log": {
+      "sha256": "5ded6e16100ae1641c61f8a8ac88ff58013c861203a0e579ff784324cf38a761",
+      "bytes": 938,
+      "gzip": "click-selection-consumer-node24.log.gz"
+    },
+    "click-selection-contracts.log": {
+      "sha256": "3c745fe51db844f18944bbaf4891b3b96858a3bad73a7ce16c9b0f649a0a9ffe",
+      "bytes": 5743,
+      "gzip": "click-selection-contracts.log.gz"
+    },
+    "click-selection-doc-browser.mjs": {
+      "sha256": "dc9e1292662b08f8eb293f7abd62df6b913dcd9aa17bcb985a6e27fe9d9113a2",
+      "bytes": 2818,
+      "gzip": "click-selection-doc-browser.mjs.gz"
+    },
+    "click-selection-docs-browser.log": {
+      "sha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50",
+      "bytes": 197,
+      "gzip": "click-selection-docs-browser.log.gz"
+    },
+    "click-selection-docs-build.log": {
+      "sha256": "f37e48ac06f343e99caed6ae119df278789bfc62fd20643172b4a5de984d4d5e",
+      "bytes": 420,
+      "gzip": "click-selection-docs-build.log.gz"
+    },
+    "click-selection-docs-built.log": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179,
+      "gzip": "click-selection-docs-built.log.gz"
+    },
+    "click-selection-docs-final-build.log": {
+      "sha256": "0dc6ff5bbda5153fbc2ab00c739810547ec2007f2003b5543ad791fc9f45f809",
+      "bytes": 419,
+      "gzip": "click-selection-docs-final-build.log.gz"
+    },
+    "click-selection-docs-final-built.log": {
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71",
+      "bytes": 179,
+      "gzip": "click-selection-docs-final-built.log.gz"
+    },
+    "click-selection-docs-final-owning.log": {
+      "sha256": "c52b3e9f9c7cf30bd63296cd0e45e475f2b3209c202d9c89a13fcf9c1f72f342",
+      "bytes": 6282,
+      "gzip": "click-selection-docs-final-owning.log.gz"
+    },
+    "click-selection-docs-source-fixed.log": {
+      "sha256": "068074005bc45a0d8dea909b68644c3d55e8ac96d2ce60761df2bf1ad5db984e",
+      "bytes": 43138,
+      "gzip": "click-selection-docs-source-fixed.log.gz"
+    },
+    "click-selection-docs-source.log": {
+      "sha256": "8ef7203b2f4697b5e8b6283c0b4623b195f157fe3a5b36e255506006b8eae844",
+      "bytes": 44469,
+      "gzip": "click-selection-docs-source.log.gz"
+    },
+    "click-selection-docs-truth-initial.log": {
+      "sha256": "a8998aa6eefdea9d579909b2c533ead48f8c46cd64472d4216e2dbcbe8f23873",
+      "bytes": 3772,
+      "gzip": "click-selection-docs-truth-initial.log.gz"
+    },
+    "click-selection-existing.log": {
+      "sha256": "acf0721b326990c89a8632b0025e5ffb6d1db247cbe845a47454e640ac380b36",
+      "bytes": 13153,
+      "gzip": "click-selection-existing.log.gz"
+    },
+    "click-selection-final-coverage.log": {
+      "sha256": "9b016065827bac62cdf0236e4a49f7973ba50e6ad5ee14d804fc8d0ceebb3cfa",
+      "bytes": 140021,
+      "gzip": "click-selection-final-coverage.log.gz"
+    },
+    "click-selection-final-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335,
+      "gzip": "click-selection-final-generation.log.gz"
+    },
+    "click-selection-fixed.json": {
+      "sha256": "60a75b3755ecea7d1e91202657ea7760015edad201efc606c7f81773d75d9e32",
+      "bytes": 434,
+      "gzip": "click-selection-fixed.json.gz"
+    },
+    "click-selection-focused-coverage.log": {
+      "sha256": "d44f01c1e92a30082959716dba6ef4a8a081d3a9eb766233f9ddab5e62a81742",
+      "bytes": 126852,
+      "gzip": "click-selection-focused-coverage.log.gz"
+    },
+    "click-selection-initial.log": {
+      "sha256": "8b33cc2112580c95b35aa9b28c8f6e403a0744a6494b4a80e5b07ed440af27f8",
+      "bytes": 4879,
+      "gzip": "click-selection-initial.log.gz"
+    },
+    "click-selection-lifecycle-fixed.log": {
+      "sha256": "66a0916afd3d671526f89a5c2c35b1670cc426045efbba31061b7c6c742ec432",
+      "bytes": 2900,
+      "gzip": "click-selection-lifecycle-fixed.log.gz"
+    },
+    "click-selection-lifecycle.log": {
+      "sha256": "886927f5f417789029351bbb288ca75293de586765a26640c64abf90d529887a",
+      "bytes": 5394,
+      "gzip": "click-selection-lifecycle.log.gz"
+    },
+    "click-selection-measure-node20.json": {
+      "sha256": "492fef63dabd138508f06479cb3bd9178f869f6f87ee136df21e36c5c7d86f34",
+      "bytes": 160,
+      "gzip": "click-selection-measure-node20.json.gz"
+    },
+    "click-selection-measure-node20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "click-selection-measure-node20.log.gz"
+    },
+    "click-selection-measure.mjs": {
+      "sha256": "023c8d7f5bc76a4da911fc2316a61fdeb7b215eb02383a6d3a06cdcceaeeb91c",
+      "bytes": 9479,
+      "gzip": "click-selection-measure.mjs.gz"
+    },
+    "click-selection-oracle-destroy-initial.log": {
+      "sha256": "c65e5902bf1e07c0bd5f387a3daac9ac42d1a454827f1c8ea3b71f02517226c4",
+      "bytes": 3213,
+      "gzip": "click-selection-oracle-destroy-initial.log.gz"
+    },
+    "click-selection-oracle-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzip": "click-selection-oracle-initial.json.gz"
+    },
+    "click-selection-oracle-initial.log": {
+      "sha256": "8cffa85d9499a4746482f76f9502af461fe5c57dd7d4813e1a8b694565c4d874",
+      "bytes": 779,
+      "gzip": "click-selection-oracle-initial.log.gz"
+    },
+    "click-selection-oracle.log": {
+      "sha256": "f9d2e9e3e23c25c19e375ec755bd63015ce58deedbfc31d900403dd61a5d02aa",
+      "bytes": 68,
+      "gzip": "click-selection-oracle.log.gz"
+    },
+    "click-selection-oracle.mjs": {
+      "sha256": "7354bcda7d41211386d0724512e564dd3493dfcb5c3b50d056a6190dd3c4357e",
+      "bytes": 2820,
+      "gzip": "click-selection-oracle.mjs.gz"
+    },
+    "click-selection-pack.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzip": "click-selection-pack.log.gz"
+    },
+    "click-selection-package-contracts.log": {
+      "sha256": "9ce34f975fec59ebc87c5b96405a5d04c41902f4005cff04088c7deb9fdab81e",
+      "bytes": 2770,
+      "gzip": "click-selection-package-contracts.log.gz"
+    },
+    "click-selection-package-initial.log": {
+      "sha256": "1fc8e18006941c951e18a31473e1796844e8bdcec103074618dd30cec4c2cfc7",
+      "bytes": 1127,
+      "gzip": "click-selection-package-initial.log.gz"
+    },
+    "click-selection-packed-initial.json": {
+      "sha256": "c1ba097b80b5fd043219ff59766fdff1b6ac989d1b69f49bee019ad44a7633d4",
+      "bytes": 413,
+      "gzip": "click-selection-packed-initial.json.gz"
+    },
+    "click-selection-realistic.log": {
+      "sha256": "c989af1c25a243cb61ecaccb53a3b492b6c8894d97ada5f74ec5b483ebecef1e",
+      "bytes": 4273,
+      "gzip": "click-selection-realistic.log.gz"
+    }
+  }
+}

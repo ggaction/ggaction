@@ -68,7 +68,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 

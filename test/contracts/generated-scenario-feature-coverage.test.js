@@ -217,11 +217,11 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 342);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3231);
-  assert.equal(inventory.counts.nestedOptionPaths, 27987);
-  assert.equal(inventory.counts.optionPaths, 31218);
-  assert.equal(inventory.counts.requiredOptionPaths, 20943);
-  assert.equal(inventory.counts.excludedOptionPaths, 10275);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3237);
+  assert.equal(inventory.counts.nestedOptionPaths, 28329);
+  assert.equal(inventory.counts.optionPaths, 31566);
+  assert.equal(inventory.counts.requiredOptionPaths, 21104);
+  assert.equal(inventory.counts.excludedOptionPaths, 10462);
   for (const action of ["createGeometryData", "editGeometryData", "createProjection", "editProjection"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
@@ -251,10 +251,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 1122);
-  assert.equal(inventory.counts.topLevelLiteralValues, 4169);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 1128);
+  assert.equal(inventory.counts.topLevelLiteralValues, 4175);
   assert.equal(inventory.counts.literalFamilies, 266);
-  assert.equal(inventory.counts.pathLiteralRequirements, 15126);
+  assert.equal(inventory.counts.pathLiteralRequirements, 15193);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
   assert.equal(inventory.counts.pathDiversityRequirements, 512);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
@@ -526,8 +526,14 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10275 }
+    { "redacted-array": 10462 }
   );
+  for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
+    "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
+    assert.equal(optionById.get(`option-path:${id}`)?.required, true, id);
+    assert.equal(optionById.get(`option-path:${id}`)?.evidence, "direct-trace", id);
+  }
+  assert.equal(optionById.has("option-path:createThetaAxisLabels.responsive"), false);
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -636,7 +642,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 36978);
+  assert.equal(ledger.requirements.length, 37206);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

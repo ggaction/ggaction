@@ -46,4 +46,3 @@ export function resolveEdgeRouteRequest(program, args, previous) {
   return { id: previous?.id ?? args.id, revision: previous === undefined ? 0 : previous.revision + 1,
     program, graph, layout, hierarchy, hierarchyLayout, intent };
 }
-

@@ -30,6 +30,16 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export interface ClickSelectionBinding {
+  readonly type: 'select';
+  /** Existing authored selection on an explicit root or concat mark owner. */
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'toggle';
+  readonly onMiss?: 'clear' | 'ignore';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -53,12 +63,24 @@ export interface LinkedSelectionBinding {
   /** global requires exactly one source owner. */
   readonly resolve: 'union' | 'intersection' | 'global';
 }
+export type SelectionPolicy = 'keep-hidden' | 'drop';
+export interface SelectionChange {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly policy: SelectionPolicy;
+  readonly ownerMissing: boolean;
+  readonly hiddenKeys: readonly string[];
+  readonly restoredKeys: readonly string[];
+  readonly droppedKeys: readonly string[];
+}
 export interface LinkedSelectionState {
   readonly id: string;
   readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
   readonly selection: string;
   readonly resolve: 'union' | 'intersection' | 'global';
+  readonly targetAvailable: boolean;
   readonly sources: readonly {
+    readonly available: boolean;
     readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
     readonly selection: string;
     /** Logical keys projected into the target owner, with its child namespace. */
@@ -79,7 +101,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -89,15 +111,29 @@ export interface InteractionTransaction {
   readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
+export type NearestSelection = {
+  readonly space: 'screen';
+  /** CSS-local point in the current accepted frame. */
+  readonly point: InteractionPoint;
+  readonly maxDistance: number;
+  readonly hitInvisible?: boolean;
+} | {
+  readonly space: 'data';
+  readonly fields: readonly string[];
+  readonly values: readonly number[];
+  readonly metric: 'euclidean' | 'manhattan';
+  readonly maxDistance: number;
+};
+export type InteractionSelectionPayload = {
+  readonly id: string;
+  /** Creation requires replace; other modes require an existing selection. */
+  readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
+} & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
+  | { readonly nearest: NearestSelection; readonly select?: never });
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
-  readonly payload: {
-    readonly id: string;
-    readonly select: MarkSelectionSelector;
-    /** Creation requires replace; other modes require an existing selection. */
-    readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
-  };
+  readonly payload: InteractionSelectionPayload;
 } | {
   readonly type: 'clearSelection';
   readonly target: InteractionTarget;
@@ -112,15 +148,21 @@ export interface InteractionTransactionEvent {
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
-  readonly phase: 'commit' | 'settled' | 'error';
+  readonly phase: 'commit' | 'settled' | 'cancel' | 'error';
   readonly revision: number;
   readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
   readonly previous: InteractionProgram;
   readonly current: InteractionProgram;
   readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly selectionChanges: readonly SelectionChange[];
   readonly state: InteractionState;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionTransactionEvent;
+export interface InteractionProgramEvent {
+  readonly type: 'program';
+  readonly state: InteractionState;
+  readonly selectionChanges: readonly SelectionChange[];
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -146,6 +188,8 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Removed final items remain selected by default; drop snapshots surviving membership. */
+  readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LinkedSelectionBinding)[];
 }): InteractionSession;

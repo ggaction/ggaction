@@ -5,7 +5,8 @@ import { needsCanvasScaleRematerialization, planScaleGuideRematerialization } fr
 
 export function planCanvasRematerialization(program) {
   const marks = [];
-  for (const layer of program.semanticSpec.layers) {
+  const emptyFacet = program.context?.facetMaterialization?.empty === true;
+  for (const layer of emptyFacet ? [] : program.semanticSpec.layers) {
     const step = getMarkMaterializationStep(program, layer);
     if (step !== undefined) marks.push(step);
   }
@@ -20,7 +21,7 @@ export function planCanvasRematerialization(program) {
         canDeferScaleConsumerApplication(layer) &&
         getLayerScaleIds(layer).includes(scale.id)
       );
-      const canDeferMarks = deferredConsumers.length === 0 ||
+      const canDeferMarks = emptyFacet || deferredConsumers.length === 0 ||
         deferredConsumers.every(layer => deferredMarkIds.has(layer.id));
       scales.push({
         op: "rematerializeScale",

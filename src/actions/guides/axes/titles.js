@@ -118,7 +118,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
   const inkClearance = channel === "y" &&
     Math.abs(Math.cos(config.rotation)) < 1e-10
     ? config.fontSize / 4 : 0;
-  if (program.materializationConfigs.canvas?.plot !== undefined) {
+  if (program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined) {
     return preferred + Math.max(0, needed);
   }
   const legacyAdjustment = Math.min(available, Math.max(0, needed));
@@ -280,7 +280,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
     program.semanticSpec.guides.axis?.[axisId]?.title ?? ""
   , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
-  if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
+  if (!canvas || program.context.responsiveMeasuring !== true && !textBoundsFitCanvas(resolvedBounds, canvas)) {
     if (isLabelRelativeTitleOffset(config.offset)) {
       throw canvasOverflowError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`, [resolvedBounds], canvas);
     }

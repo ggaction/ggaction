@@ -1,0 +1,110 @@
+{
+  "base": "0aae2f639",
+  "sourceCommit": "647cdbac821cf3b0d485e9513bd477224cde4b77",
+  "state": "private-kernel-verified",
+  "publicImplementation": false,
+  "sourceFiles": {
+    "agent_docs/impl/roadmap9/phase7/theme/RESPONSIVE.md": "cedaa50a05ffddb19d4541c6c727b0d2c62b1f7d6155981ec4a54e7b121ee513",
+    "scripts/coverage-policy.js": "7a1901945ed68acf6ecc7bf73d941e161abe785de40840a0114e2cce200a1baf",
+    "scripts/package-artifact.js": "6bb551d2c8d50055e2be2a4bcfe88bb885578b0b96c1cebad5d77f82a211a0ce",
+    "src/grammar/responsiveLabels.js": "cf1dc8d449438968c035639eb9087cc3d580bb7627ef70364dc31c5a25c421d0",
+    "src/layout/responsivePolicy.js": "0142d992cb7fe463789ca45881f0c631a949c69a69332856d2971d9208b9ee80",
+    "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-034-layout-solver.ko.md": "d125058cce9c14553b1e8a5bee49b66daef84cb17bef4f929d47f1e416c3b0ca",
+    "test/capabilities.json": "506adb8f25b644bf391e15d1aa42d9e6b8c474cc7a23268e0243ad7476acb703",
+    "test/unit/layout/responsive-policy.test.js": "fc5e9818b28d7c223b42aa86037784401a0538c0621361fa8168e4d91ccc5262"
+  },
+  "tests": {
+    "numeric": 14,
+    "boundaryDiscoveryPolicy": 41,
+    "packageContracts": 13
+  },
+  "coverage": {
+    "floors": {
+      "grammar/responsiveLabels.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "layout/responsivePolicy.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "grammar/responsiveLabels.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "layout/responsivePolicy.js": {
+        "lines": 100,
+        "branches": 97.18,
+        "functions": 100
+      },
+      "all files": {
+        "lines": 100,
+        "branches": 98,
+        "functions": 100
+      }
+    }
+  },
+  "packageMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 871,
+      "packedBytes": 1275533,
+      "unpackedBytes": 5860433
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 871,
+      "packedBytes": 1273124,
+      "unpackedBytes": 5860433
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 871,
+      "packedBytes": 1275533,
+      "unpackedBytes": 5860433
+    }
+  },
+  "limits": {
+    "entries": 871,
+    "packed": 1276000,
+    "unpacked": 5861000
+  },
+  "commands": {
+    "numeric": "node --test --experimental-test-coverage --test-coverage-include='src/layout/responsivePolicy.js' --test-coverage-include='src/grammar/responsiveLabels.js' test/unit/layout/responsive-policy.test.js",
+    "boundaryDiscoveryPolicy": "node --test test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/agent-docs-navigation.test.js test/unit/support/coverage-policy.test.js",
+    "packageContracts": "node --test test/contracts/package-artifact.test.js test/contracts/package-boundaries.test.js",
+    "canonicalPackage": "node scripts/package-artifact.js"
+  },
+  "measurementMethod": "Temporary copy of canonical package-artifact.js with validatePackageManifest returning the manifest to measure values before limits. Same staging code and each Node PATH. Removed temporary copy, set smallest 1000-byte ceiling, then ran canonical validator successfully. These measurements are not described as validation passes.",
+  "preservedFailures": {
+    "boundaries.log": "Initial layout import of grammar rotation and unsorted capability name were rejected. Split grammar normalization from core-only layout reduction; preserved boundary rules.",
+    "package-initial.log": "New private owner files exceed old869 entry cap; measured exact871 and bytes before adjusting."
+  },
+  "notRun": [
+    "public action lifecycle",
+    "renderer pixels",
+    "installed public consumers",
+    "full coverage",
+    "whole realistic suite"
+  ],
+  "logs": {
+    "boundaries-final.log": "5556986ce05c31c984c27d90e544413b0fb1d0cf710afdf26576c30bd69820ad",
+    "boundaries.log": "83240d36861f89b968f9ab3fef72a1d123aae13978c827e3136cdd7b0aecb898",
+    "coverage-final.log": "b8241052fb95eccf0a47b61d73a6ba4f84fc1b94f5f45f3a744674bb73655d32",
+    "coverage.log": "ba462bf181479d2d868cfb44d89efd571c47bf26edca0275481f31c92379f1c6",
+    "package-contracts.log": "89d2c1a12c8d2a877e88e05d5901ad9551d65d25de0d6e3b26bfadc65759cb70",
+    "package-final.log": "12d4e8d6b41c216d08e6d0a9f11be87949bd9002ad24c47b2c987b813c126437",
+    "package-initial.log": "dc44a5b316b8bd690377e41e10b6c42f0bdc9b03739be07a415c002127fef36a"
+  }
+}

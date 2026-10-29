@@ -1,3 +1,4 @@
+import { withRetainedFacetDomains } from "../../materialization/facetScaleContext.js";
 import { freezeOwned } from "../../core/immutable.js";
 import { materializeCompositionGraphics } from
   "../../materialization/composition.js";
@@ -101,7 +102,7 @@ function applyInheritedFrame(program, frame) {
     const children = Object.fromEntries(
       next.compositionSpec.children.map(id => [
         id,
-        applyInheritedFrame(next.children[id], frame)
+        withRetainedFacetDomains(next, id, child => applyInheritedFrame(child, frame))
       ])
     );
     next = next._withCompositionState({
@@ -130,7 +131,7 @@ function removeInheritedFrame(program, frame) {
     const children = Object.fromEntries(
       next.compositionSpec.children.map(id => [
         id,
-        removeInheritedFrame(next.children[id], frame)
+        withRetainedFacetDomains(next, id, child => removeInheritedFrame(child, frame))
       ])
     );
     next = next._withCompositionState({
@@ -163,7 +164,7 @@ export function applyCompositionTheme(program, definition, scope) {
   const children = Object.fromEntries(
     next.compositionSpec.children.map(childId => [
       childId,
-      applyInheritedFrame(next.children[childId], frame)
+      withRetainedFacetDomains(next, childId, child => applyInheritedFrame(child, frame))
     ])
   );
   next = next._withCompositionState({
@@ -198,7 +199,7 @@ export function removeCompositionTheme(program) {
   const children = Object.fromEntries(
     next.compositionSpec.children.map(id => [
       id,
-      removeInheritedFrame(next.children[id], frame)
+      withRetainedFacetDomains(next, id, child => removeInheritedFrame(child, frame))
     ])
   );
   next = next._withCompositionState({
@@ -216,7 +217,7 @@ export function replayCompositionThemeState(program, storedState) {
     const children = Object.fromEntries(
       next.compositionSpec.children.map(id => [
         id,
-        applyInheritedFrame(next.children[id], frame)
+        withRetainedFacetDomains(next, id, child => applyInheritedFrame(child, frame))
       ])
     );
     next = next._withCompositionState({
