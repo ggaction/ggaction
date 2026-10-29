@@ -6,7 +6,7 @@
 - [x] STEP059 `f37dcdfa1`과 후속 중첩 angular test 연결
 - [x] 집중85개·추가 angular11개·계약35개·실제데이터16개·browser6개·renderer2개
 - [x] routed graph lasso·Canvas/source revision 교차6개
-- [ ] 같은 tar Node20·22·24의 runtime/types/peers/5bundles
+- [x] 같은 tar Node20·22·24 각각 theme90개·runtime23개·strict types/peers/5bundles
 - [ ] 최종 public inventory·문서 source pin·built browser 검증
 - [ ] STEP074·077 통합 인수
 

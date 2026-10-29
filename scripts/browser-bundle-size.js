@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 689_000, // Combined routes and nested responsive closure; measured across supported Node runtimes.
+  ggaction: 688_000, // Combined routes, nested responsive layout and region gestures: 687,919 gzip bytes.
   "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
-  "ggaction/graph": 43_000,
+  "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
   "ggaction/interaction": 109_000 // Nested responsive hit metadata with captured click: Node20/24 101,103 gzip bytes.
 });
 
