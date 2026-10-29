@@ -13,6 +13,7 @@ import {
   describeAction,
   getDatasetSchema,
   getPlotComposition,
+  getProjectionView,
   inspectProgram
 } from "../../src/inspection.js";
 
@@ -64,7 +65,7 @@ const PUBLIC_ENTRIES = Object.freeze({
     runtime: "./src/inspection.js",
     types: "./types/inspection.d.ts",
     values: Object.freeze([
-      "comparePrograms", "describeAction", "getDatasetSchema", "getExpressionFunctions", "getMarkItems", "getPlotComposition", "inspectProgram"
+      "comparePrograms", "describeAction", "getDatasetSchema", "getExpressionFunctions", "getMarkItems", "getPlotComposition", "getProjectionView", "inspectProgram"
     ])
   }),
   "./svg": Object.freeze({
@@ -96,6 +97,7 @@ test("exports the public module boundaries", () => {
   assert.equal(typeof describeAction, "function");
   assert.equal(typeof getDatasetSchema, "function");
   assert.equal(typeof getPlotComposition, "function");
+  assert.equal(typeof getProjectionView, "function");
   assert.equal(typeof inspectProgram, "function");
 });
 

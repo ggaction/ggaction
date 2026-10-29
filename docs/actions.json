@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 363,
+  "count": 364,
   "cards": [
     {
       "schemaVersion": 3,
@@ -44007,6 +44007,83 @@
       "snippet": "program.editProjection({ target: \"projection\", scalePx: 200 })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editprojection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "navigateProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize.",
+      "signature": "navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;",
+      "intents": [
+        "navigate projection",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named projection"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editProjection",
+        "editCanvas"
+      ],
+      "editableVia": [
+        "editProjection",
+        "navigateProjection"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named projection"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "operation",
+          "required": true,
+          "type": "GeoCameraOperation"
+        }
+      ],
+      "callPatterns": [
+        "navigateProjection({ operation, target? })"
+      ],
+      "snippet": "program.navigateProjection({ operation: { type: \"pan\", deltaPx: [10, 0] } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#navigateprojection"
     },
     {
       "schemaVersion": 3,

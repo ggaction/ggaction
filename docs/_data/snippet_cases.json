@@ -487,5 +487,15 @@
     "result": "program",
     "prerequisites": "The two inline places supply their own population measurements.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-camera-reset",
+    "file": "api/geometry.md",
+    "contains": "const saved = getProjectionView(initial);",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "reset",
+    "resultKind": "semantic"
   }
 ]

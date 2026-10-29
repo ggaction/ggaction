@@ -2298,6 +2298,15 @@
     "editGeoAnnotation": {
       "text": "Updated location",
       "dx": 4
+    },
+    "navigateProjection": {
+      "operation": {
+        "type": "pan",
+        "deltaPx": [
+          10,
+          0
+        ]
+      }
     }
   },
   "callPatternOverrides": {

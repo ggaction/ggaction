@@ -24,3 +24,11 @@ export const measuredRegion = { ...region, properties: { ...region.properties, f
 export const measuredRoute = { ...route, properties: { ...route.properties, stroke: "#7c3aed" } };
 export const measuredPoints = points.map((point, i) => ({ ...point, properties: { ...point.properties,
   fill: ["#2563eb", "#0d9488", "#dc2626"][i], radius: [8, 16, 24][i] } }));
+
+// Independent affine fixture: anchored .75 zoom then [15,-10] pan gives [95,50] translation.
+const cameraCommands = values => values.map(command => command.op === "Z" ? command :
+  { ...command, x: command.x * .75 + 95, y: command.y * .75 + 50 });
+export const cameraRegion = { ...region, properties: { ...region.properties, commands: cameraCommands(region.properties.commands) } };
+export const cameraRoute = { ...route, properties: { ...route.properties, commands: cameraCommands(route.properties.commands) } };
+export const cameraPoints = points.map(point => ({ ...point, properties: { ...point.properties,
+  x: point.properties.x * .75 + 95, y: point.properties.y * .75 + 50 } }));

@@ -2057,6 +2057,18 @@
   {
     "file": "api/geometry.md",
     "block": 5,
+    "heading": "`navigateProjection`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 6,
     "heading": "Draw through a Geo coordinate",
     "mode": "complete",
     "environment": "node-esm",
@@ -2068,7 +2080,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 6,
+    "block": 7,
     "heading": "Map feature fields to color and size",
     "mode": "complete",
     "environment": "node-esm",
@@ -2080,7 +2092,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 7,
+    "block": 8,
     "heading": "`createGeoAnnotation`",
     "mode": "complete",
     "environment": "node-esm",

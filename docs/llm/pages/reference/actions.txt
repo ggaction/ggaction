@@ -345,6 +345,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutHierarchy`](../../../reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](../../../reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](../../../reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |
+| [`navigateProjection`](../../../reference/actions/charts-data/#navigateprojection) | H3 | user-facing | core |
 | [`orderCategories`](../../../reference/actions/encodings/#ordercategories) | H2 | user-facing | encodings |
 | [`packPoints`](../../../reference/actions/marks/#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](../../../reference/actions/encodings/#removecategoryorder) | H2, H3 | user-facing | encodings |

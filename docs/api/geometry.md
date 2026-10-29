@@ -302,6 +302,60 @@ Remove authored fit projections explicitly before removing their geometry.
 Geometry cascade does not delete a reusable authored projection. Projection
 resources and their exact fit inputs survive offline serialization.
 
+## `navigateProjection`
+
+Chart authoring · Full.
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Navigate the current or explicitly named projection. `operation` chooses pan, anchored zoom,
+pinch, absolute spherical rotation, fit, explicit reset or Canvas resize. All distances are
+logical CSS pixels; rotations are degrees. Operations return a new program and update existing
+Geo marks through the native projection edit.
+
+| Operation | Required fields |
+| --- | --- |
+| `pan` | `deltaPx:[x,y]` |
+| `zoom` | `anchorPx:[x,y]`, positive `factor`, positive ordered `scaleExtent:[min,max]` |
+| `pinch` | `fromPx:[[x,y],[x,y]]`, `toPx:[[x,y],[x,y]]`, `scaleExtent` |
+| `rotate` | absolute `rotateDeg:[longitude,latitude,roll?]` for a non-composite spherical projection |
+| `fit` | `fit:{geometry?,width,height,padding?,pointScale?}` using the existing live geometry fit |
+| `reset` | `initial` projection parameters, for example from a saved inspection snapshot |
+| `resize` | `canvas:{width?,height?,plot?}`, `scaling:"preserve"|"fit"` |
+
+Zoom clamps scale while keeping the visible inverse anchor fixed. A clipped or non-invertible
+anchor fails; pinch requires distinct pointers. Resize keeps the previous plot center at the new
+center. `preserve` keeps pixel scale; `fit` uses the smaller settled plot dimension ratio. Native
+Canvas size rules still apply: exact plot dimensions conflict with outer width/height unless you
+explicitly include `plot:false`. Authored projection clipping stays unchanged.
+
+> **Executable complete.** Run as an ES module. This resource-only example creates no graphics; the initial frozen view is explicit caller state.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { getProjectionView } from "ggaction/inspection";
+const initial = chart().createProjection({ id: "map", type: "identity" });
+const saved = getProjectionView(initial);
+const zoomed = initial.navigateProjection({
+  operation: { type: "zoom", anchorPx: [200, 150], factor: 2, scaleExtent: [0.5, 8] }
+});
+const reset = zoomed.navigateProjection({ operation: { type: "reset", initial: saved.parameters } });
+console.log(getProjectionView(reset).parameters.scalePx); // 1
+```
+
+Reset restores view parameters, not an old revision or live fit policy. Fit retains a geometry
+dependency; other camera operations detach an earlier fit. The command stores no hidden baseline,
+DOM listeners or renderer camera. Projection navigation does not choose a geographic detail level.
+Use explicit `editGeoLODData` when changing detail.
+
 ## Draw through a Geo coordinate
 
 A Geo coordinate owns one projection. A geometry mark names that coordinate and

@@ -17,6 +17,7 @@ function operation(name) {
   if (["facet", "facetGrid", "repeatCharts"].includes(name)) return "compose";
   if (["layoutHierarchy", "layoutGraph", "layoutFlow", "bundleGraphEdges"].includes(name)) return "create";
   if (
+    name === "navigateProjection" ||
     name === "reviseData" ||
     name === "bindMarkData" ||
     name === "jitterPoints" ||

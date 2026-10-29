@@ -2207,6 +2207,18 @@ type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters
 /** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
 export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
   | ProjectionEditFittedOptions);
+export interface ProjectionViewport { readonly x: number; readonly y: number; readonly width: number; readonly height: number; }
+/** Logical CSS pixels; zoom and pinch require an explicit positive scale interval. */
+export type GeoCameraOperation =
+  | { readonly type: "pan"; readonly deltaPx: readonly [number, number] }
+  | { readonly type: "zoom"; readonly anchorPx: readonly [number, number]; readonly factor: number; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "pinch"; readonly fromPx: readonly [readonly [number, number], readonly [number, number]]; readonly toPx: readonly [readonly [number, number], readonly [number, number]]; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "rotate"; readonly rotateDeg: readonly [number, number] | readonly [number, number, number] }
+  | { readonly type: "reset"; readonly initial: ProjectionParameters }
+  | { readonly type: "fit"; readonly fit: ProjectionFitOptions }
+  | { readonly type: "resize"; readonly canvas: { readonly width?: number; readonly height?: number; readonly plot?: false | { readonly width: number; readonly height: number } }; readonly scaling: "preserve" | "fit" };
+/** Native projection edits; reset restores explicit view parameters, without restoring a prior fit policy. */
+export interface NavigateProjectionOptions { readonly target?: string; readonly operation: GeoCameraOperation; }
 export interface ProjectionResource {
   readonly kind: "projection"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
@@ -6639,6 +6651,7 @@ export class ChartProgram {
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
 
   /** Join geographic features to a materialized table without changing feature identity or source properties. */

@@ -3613,6 +3613,14 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
 
+### `navigateProjection`
+
+```javascript
+navigateProjection({ target?, operation })
+```
+
+Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize. Use a saved `getProjectionView` snapshot for reset parameters. Existing projection/Canvas children retain exact resources, consumer refresh and immutable failure.
+
 ### `createGeoShapeMark`
 
 ```javascript

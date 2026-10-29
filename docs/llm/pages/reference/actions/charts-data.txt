@@ -5197,6 +5197,35 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../../../../api/geometry/#editprojection).
 
+## `navigateProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`NavigateProjectionOptions`](../../../../reference/types/#type-navigateprojectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `operation` | Required | `GeoCameraOperation` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+navigateProjection({ target?, operation })
+```
+
+Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize. Use a saved `getProjectionView` snapshot for reset parameters. Existing projection/Canvas children retain exact resources, consumer refresh and immutable failure.
+
 ## Focused core data editing
 
 ```javascript

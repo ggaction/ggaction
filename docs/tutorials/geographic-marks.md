@@ -93,3 +93,11 @@ Use `encodeColor({ field, scale })` after a shape, point or line mark, and
 existing color and size blocks. A join exposes the matching table fields and
 LOD exposes the active level. See [field mapping rules](../api/geometry.md#map-feature-fields-to-color-and-size)
 for unknown values, geographic radii and explicit constant transitions.
+
+## Keep stops stable while navigating
+
+The executable `createGeographicMarks("camera")` variant in the same example applies an anchored
+0.75 zoom followed by a small pan. Its district and route move with the projection, while each
+stop remains eight CSS pixels in radius. Use `navigateProjection` for these view changes; save
+`getProjectionView(program).parameters` before navigation when you want an explicit reset target.
+The [camera reference](../api/geometry.md#navigateprojection) lists pinch, fit and resize options.

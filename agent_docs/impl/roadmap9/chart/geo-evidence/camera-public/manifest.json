@@ -1,0 +1,372 @@
+[
+  {
+    "file": "camera-actions-1.log.gz",
+    "sourceBytes": 3348,
+    "sourceSha256": "e6383c81d44e728a7ab9e41a91407a5295a4f8ac190b60ed9aa1d2f7cd899375"
+  },
+  {
+    "file": "camera-actions-2.log.gz",
+    "sourceBytes": 2505,
+    "sourceSha256": "7f782bcbb0434194ec8ed04d21b7b049682501804ce8c6d08f258755865b7930"
+  },
+  {
+    "file": "camera-boundaries.log.gz",
+    "sourceBytes": 5483,
+    "sourceSha256": "12902c70a891bd0e82f94d57851076c82c974464f4cfb9866c0916d24f01cfaf"
+  },
+  {
+    "file": "camera-browser-2.log.gz",
+    "sourceBytes": 1257,
+    "sourceSha256": "107a205431bf94b6fed5f087989b49d55ae037bda4830f34d8f26b2f875ca0a9"
+  },
+  {
+    "file": "camera-browser.log.gz",
+    "sourceBytes": 2621,
+    "sourceSha256": "3fbd90202674222e3627d59f6e887cdefe5257e2edd66fdd04770cb7188f89a2"
+  },
+  {
+    "file": "camera-build.log.gz",
+    "sourceBytes": 420,
+    "sourceSha256": "4007c4f94f10bc228efe273d38802548b61934d1431c08b7d01aa34339ee923d"
+  },
+  {
+    "file": "camera-built-browser.log.gz",
+    "sourceBytes": 79,
+    "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+  },
+  {
+    "file": "camera-built.log.gz",
+    "sourceBytes": 102,
+    "sourceSha256": "609ac22e81ef5f18a4d13247a04f1ffd994d46314d2bafde1babc10981d5102e"
+  },
+  {
+    "file": "camera-catalog.log.gz",
+    "sourceBytes": 80,
+    "sourceSha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0"
+  },
+  {
+    "file": "camera-chart-2.log.gz",
+    "sourceBytes": 1255,
+    "sourceSha256": "2a9a6ea8017bc00fa669d89bb524181137d898b23a9f9f380bb3b961be498a9d"
+  },
+  {
+    "file": "camera-chart.log.gz",
+    "sourceBytes": 2621,
+    "sourceSha256": "e32669b06bcba56412b5ade5de0fbfd91279a15cbbf8e929aba5538e80ed8bb4"
+  },
+  {
+    "file": "camera-contracts-1.log.gz",
+    "sourceBytes": 10384,
+    "sourceSha256": "15dc56a3cf108e999433c1f03c493a7d1be062c5ad6a845254c7e8db494bf62e"
+  },
+  {
+    "file": "camera-contracts-2.log.gz",
+    "sourceBytes": 10627,
+    "sourceSha256": "8fd5a97cb9dcf44370e203468fac414a128dd8dddbaa6fba4d92d38e5aaddf8c"
+  },
+  {
+    "file": "camera-docs-1.log.gz",
+    "sourceBytes": 55637,
+    "sourceSha256": "525ec13673af3b33b8ec8f6a5d6dc06565cb89e7ddf2852476aa9cf002971b33"
+  },
+  {
+    "file": "camera-docs-2.log.gz",
+    "sourceBytes": 53640,
+    "sourceSha256": "20a6d2197547f2683bc43243ef5e45530bacfe8efec290517200915859613aa3"
+  },
+  {
+    "file": "camera-final-packaged-snippet.log.gz",
+    "sourceBytes": 375,
+    "sourceSha256": "184fb93d36ca1983f7a0ec27f342dfa74436c9865072e33c94f70bff301cad0f"
+  },
+  {
+    "file": "camera-final-snippet-generate.log.gz",
+    "sourceBytes": 470,
+    "sourceSha256": "47b81ee75b0cd98d1e10ac8d0c5b1f1eb3c76a948643e4f3aaa04e2ef6520a2d"
+  },
+  {
+    "file": "camera-generate-1.log.gz",
+    "sourceBytes": 1447,
+    "sourceSha256": "bedff82a0148cb05595d2c842ac94e1d885973ecc269495e4d919094c9b93c65"
+  },
+  {
+    "file": "camera-generate-2.log.gz",
+    "sourceBytes": 2626,
+    "sourceSha256": "acad899812e4b8fe4a96e7cc427d77faab6bfb15af6540370bf227979c629853"
+  },
+  {
+    "file": "camera-generate-3.log.gz",
+    "sourceBytes": 12389,
+    "sourceSha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+  },
+  {
+    "file": "camera-generate-4.log.gz",
+    "sourceBytes": 12389,
+    "sourceSha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+  },
+  {
+    "file": "camera-geo-unit-final.log.gz",
+    "sourceBytes": 43413,
+    "sourceSha256": "3f30a5e03d5e3a52f0847e1d2a8a41df1252fbbe01d0f497b55b574124206ede"
+  },
+  {
+    "file": "camera-geo-unit.log.gz",
+    "sourceBytes": 43420,
+    "sourceSha256": "8bb681353321b0824b7b7f58520a937704919624109657e3ac10304ab7184fb6"
+  },
+  {
+    "file": "camera-inventory-1.log.gz",
+    "sourceBytes": 3961,
+    "sourceSha256": "7a5291917b405c6e89d6d7641388620dfbe6d1dd954461f0fe815bdc92d6d7ee"
+  },
+  {
+    "file": "camera-inventory-2.log.gz",
+    "sourceBytes": 2360,
+    "sourceSha256": "0ec92b11a72b076cf7a407eb1fa7a7b2db00e3ac608cfe374e3c35ed9126495a"
+  },
+  {
+    "file": "camera-inventory-measure.log.gz",
+    "sourceBytes": 361,
+    "sourceSha256": "1f0c5e17192bdc1e99ac585b5721759a9dc8b6f59f9e1ff54c58808f2323fbcb"
+  },
+  {
+    "file": "camera-inventory.json.gz",
+    "sourceBytes": 23216,
+    "sourceSha256": "056498150d1ae5f8fb81527eb8d9e4d0776fa375ed70e208c654fe67bdbca034"
+  },
+  {
+    "file": "camera-owner-coverage-final.log.gz",
+    "sourceBytes": 6508,
+    "sourceSha256": "ef83b31e544405701fe4eb626f33e03558dedbf56d2362a4c91614943fe44b99"
+  },
+  {
+    "file": "camera-owner-coverage.log.gz",
+    "sourceBytes": 6501,
+    "sourceSha256": "3ecb01608b8a47c8974e7cdb28162f24b4a5cd6456da39e0364e51e038c033cb"
+  },
+  {
+    "file": "camera-package-contract.log.gz",
+    "sourceBytes": 1716,
+    "sourceSha256": "306a8775f4708e90b1ad5c77f11731ff72d489f559ff2a9836900042127cf9d9"
+  },
+  {
+    "file": "camera-package.log.gz",
+    "sourceBytes": 1713,
+    "sourceSha256": "dbc727b4e84a8be5e3a80b9e67c0e46a96982a05d61abb5a6062bb3e7753fbd6"
+  },
+  {
+    "file": "camera-public-installed.log.gz",
+    "sourceBytes": 75,
+    "sourceSha256": "87275db8595fa93f7ea3c6aab1a2ca08f40c0887d17769e28432ca26d2e52501"
+  },
+  {
+    "file": "camera-public-installed.mjs.gz",
+    "sourceBytes": 3546,
+    "sourceSha256": "8dce9e8a05f7a061c17e428c4f097d94ad0acc7c04a34a82b018dc824ea6f7cf"
+  },
+  {
+    "file": "camera-public-package-parity.mjs.gz",
+    "sourceBytes": 1616,
+    "sourceSha256": "d4585ef964ac40d7563184d7dbcc0e5550a2b5330eb9089971e8f56a67568d10"
+  },
+  {
+    "file": "camera-realistic.log.gz",
+    "sourceBytes": 3795,
+    "sourceSha256": "8e66aa1a7df239b52f0293b1e203bd4b158598fecd16846e27d7e85af720c42b"
+  },
+  {
+    "file": "camera-render-2.log.gz",
+    "sourceBytes": 1962,
+    "sourceSha256": "5b92dc8425651d3551e9eac3e4b6dc29783adedf829309b1ecb3a22312da1537"
+  },
+  {
+    "file": "camera-render.log.gz",
+    "sourceBytes": 4679,
+    "sourceSha256": "039fe00e2470eeda228ee3fdf301ab52f725aec5750bc49e0c161e2caf1e2454"
+  },
+  {
+    "file": "camera-snapshot-boundaries.log.gz",
+    "sourceBytes": 3574,
+    "sourceSha256": "155502ed6c93080b43624a6d921278f0f91311d4d66c2aeccda6db0db3afb058"
+  },
+  {
+    "file": "camera-snippet-verify.mjs.gz",
+    "sourceBytes": 1324,
+    "sourceSha256": "91f38389091cf48253ba39c7e59e7c576bb334a69410116ca51bb3f49d90aa7e"
+  },
+  {
+    "file": "camera-snippets-final.log.gz",
+    "sourceBytes": 28103,
+    "sourceSha256": "bf3a3df0dea2625c4f9069ce29369a2229c3257334e6f44c992999961f496490"
+  },
+  {
+    "file": "camera-types.log.gz",
+    "sourceBytes": 376,
+    "sourceSha256": "cec3f915a6f11932de280eb82b0aedb9ec60fe3ffab53bbdb3c6940fb21663be"
+  },
+  {
+    "file": "bundle-measure-20.log.gz",
+    "sourceBytes": 836,
+    "sourceSha256": "b30880c1a8b63cd715b5889db94a85a7eb6cd5b4f4fe4d988df8f4aff2a1c4ba"
+  },
+  {
+    "file": "bundle-measure-22.log.gz",
+    "sourceBytes": 829,
+    "sourceSha256": "884a7e380a8f4e340168d85b4a4560b7080cfc05718467e6e74a9d505e90d84f"
+  },
+  {
+    "file": "bundle-measure-24.log.gz",
+    "sourceBytes": 845,
+    "sourceSha256": "925ccb79a5145cae182731108fe1cebca40f2791a6537208705626b72dcd37c6"
+  },
+  {
+    "file": "final-snippet.json.gz",
+    "sourceBytes": 522,
+    "sourceSha256": "d7c5b3bdbdf292e954e5b9cec8e000530fa247fa8969cc3fb512d9b885af3705"
+  },
+  {
+    "file": "installed-20-missing-archive.log.gz",
+    "sourceBytes": 578,
+    "sourceSha256": "18754dec5dc6c4105e04e913ee3442da4bc72b3401b1a479f6c6ed5ba375a81c"
+  },
+  {
+    "file": "installed-20.exit.json.gz",
+    "sourceBytes": 90,
+    "sourceSha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437"
+  },
+  {
+    "file": "installed-20.json.gz",
+    "sourceBytes": 1427,
+    "sourceSha256": "99a5473199f284e318844576301ed9cd100b59fdad55334940804061f5cd7039"
+  },
+  {
+    "file": "installed-20.log.gz",
+    "sourceBytes": 1428,
+    "sourceSha256": "8e83e31dc6236178ee6d19e5fc123886808c593d07dbeedba2887611ce041451"
+  },
+  {
+    "file": "installed-22.exit.json.gz",
+    "sourceBytes": 65,
+    "sourceSha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e"
+  },
+  {
+    "file": "installed-22.json.gz",
+    "sourceBytes": 1420,
+    "sourceSha256": "94a253b4463c3a6a0b97d6dd672b89cb1312c5785d2e628bcb0225f16cb42476"
+  },
+  {
+    "file": "installed-22.log.gz",
+    "sourceBytes": 1421,
+    "sourceSha256": "f667f623d9003c910b3f31cbfac84b96342a7c0bf30a97943587a8f74b6ecb11"
+  },
+  {
+    "file": "installed-24.exit.json.gz",
+    "sourceBytes": 90,
+    "sourceSha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a"
+  },
+  {
+    "file": "installed-24.json.gz",
+    "sourceBytes": 1436,
+    "sourceSha256": "e3eba95906ed7a843f50958175910ea1c17acd1d9db00ebb0e5e84d4196d436f"
+  },
+  {
+    "file": "installed-24.log.gz",
+    "sourceBytes": 1437,
+    "sourceSha256": "db3cf34138d35f688d417cdd61d8ea8b34ca0c43798d658210debce8843f6a3e"
+  },
+  {
+    "file": "package-final.log.gz",
+    "sourceBytes": 472,
+    "sourceSha256": "44b9691a68c8b09c11ced6197b2bf26e1ddd576dac313448a7b4a2cd4ed7d458"
+  },
+  {
+    "file": "package-input-parity.json.gz",
+    "sourceBytes": 157,
+    "sourceSha256": "832acaeb7eb9aba5db4c32f69d9b325e33897d668b13c7736ed3e58119ece1eb"
+  },
+  {
+    "file": "package-inputs.json.gz",
+    "sourceBytes": 142957,
+    "sourceSha256": "5c7eefd3c28b64cc2bc9fc7ffa8b54da699966000117d7d2c720f9ce8ec4c96b"
+  },
+  {
+    "file": "package-measure-20.log.gz",
+    "sourceBytes": 323,
+    "sourceSha256": "ff94dcbe5382f046e401a8701925d376a54330ca3a534ea63ad98c1d4d707f12"
+  },
+  {
+    "file": "package-measure-22.log.gz",
+    "sourceBytes": 316,
+    "sourceSha256": "676e0e9d6fc20e5e1f02be904356730ff19f0a3e241f56227e402c90324e8d86"
+  },
+  {
+    "file": "package-measure-24.log.gz",
+    "sourceBytes": 332,
+    "sourceSha256": "80f699a862a6596fbbed2b9f48b882bd7234759ecc984f7d52663a9377f05b65"
+  },
+  {
+    "file": "package-relative-path-failure.log.gz",
+    "sourceBytes": 4749,
+    "sourceSha256": "7f4d676701c237886b1aa1b33f5ffe05c9a0f788ac2cac4d9500f169f4cdc03f"
+  },
+  {
+    "file": "package-size-20.json.gz",
+    "sourceBytes": 124,
+    "sourceSha256": "005c98ad3b1a82f3a0a1068df45b36b8f221eb7bc5b6dc2cb80359bdc8635d0b"
+  },
+  {
+    "file": "package-size-22.json.gz",
+    "sourceBytes": 117,
+    "sourceSha256": "f0f8b0e931410feee8146c7b7c465d935cb61d9478855adb199f0502cf5d7fa1"
+  },
+  {
+    "file": "package-size-24.json.gz",
+    "sourceBytes": 133,
+    "sourceSha256": "9f6c36d74c3f8754adb0d178b0888c4cdbb7990661b6b0ac8131cc6cb775c7f8"
+  },
+  {
+    "file": "package-source-inputs.json.gz",
+    "sourceBytes": 142956,
+    "sourceSha256": "b37f516cf9eb2239caae2ec8b96ef7c112a663ede310c62530fe0b004cbd382d"
+  },
+  {
+    "file": "package.json.gz",
+    "sourceBytes": 105145,
+    "sourceSha256": "91ed1220049d9b8f97085f535a9e769b74eda75e03c8498e021d705d04d1892b"
+  },
+  {
+    "file": "source-bundles-20.json.gz",
+    "sourceBytes": 893,
+    "sourceSha256": "9f5a9be2ffd9a6713fe1caf2db70ce1aa457a0e62aec1183e10dc750836c6a92"
+  },
+  {
+    "file": "source-bundles-22.json.gz",
+    "sourceBytes": 886,
+    "sourceSha256": "3d50e5a9a50ed3e839b97733c835db6ae220cad8c452dcdc03a29d9b4633b321"
+  },
+  {
+    "file": "source-bundles-24.json.gz",
+    "sourceBytes": 902,
+    "sourceSha256": "8cfd929155e2385aeb86140104fc0b9483ddce7ef4fe56fe99ca3f2058f850f2"
+  },
+  {
+    "file": "record-camera-public-evidence.mjs.gz",
+    "sourceBytes": 5911,
+    "sourceSha256": "5806095e1391449c6a6d9c0e79b626aef8b123da826a34aee5c7fbcc0c8f4be8"
+  },
+  {
+    "file": "run-camera-public-installed.mjs.gz",
+    "sourceBytes": 876,
+    "sourceSha256": "55c761c59e3765e54b09b6935ee855fc96e6941a61af0f1fbc19a14532585b9e"
+  },
+  {
+    "file": "measure-camera-public-package.mjs.gz",
+    "sourceBytes": 854,
+    "sourceSha256": "f193be5285ccdb85fa25e70d9b5caefc6447cdc7ca9ac3aa45229d9fc4344605"
+  },
+  {
+    "file": "measure-camera-public-bundles.mjs.gz",
+    "sourceBytes": 621,
+    "sourceSha256": "37c773a906dde9e355813f916b545d70437aed59a7e348740facdf4b605627b7"
+  }
+]

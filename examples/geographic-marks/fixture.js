@@ -22,7 +22,12 @@ export const fieldMappings = [
   ["encodeColor", { target: "geo-point", field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }],
   ["encodeSize", { target: "geo-point", field: "visitors", scale: { id: "stop-size", domain: [1, 9], range: [64 * Math.PI, 576 * Math.PI] } }]
 ];
+export const cameraOperations = [
+  { type: "zoom", anchorPx: [320, 240], factor: .75, scaleExtent: [.5, 4] },
+  { type: "pan", deltaPx: [15, -10] }
+];
 export const variants = [
+  { id: "camera", chart: "geographic-marks", title: "A centered zoom preserves stop size" },
   { id: "fields", chart: "geographic-fields", title: "Stop area follows visitor counts" },
   { id: "annotations", chart: "geographic-annotations", title: "Labels stay attached to the original stops" },
   { id: "planar", chart: "geographic-marks", title: "A district, stops and service route" },

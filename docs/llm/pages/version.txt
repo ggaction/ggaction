@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:aa5fdab50129bc775a4d25c4474a38bed35f54b5b4bd59168c7ba46f43fe3962` |
-| Example and dataset source | `bff4d29eb0366a048259109dab009a1fe878afb5` |
-| Runtime source commit | `bff4d29eb0366a048259109dab009a1fe878afb5` |
+| Contract fingerprint | `sha256:115373e74f649cde34a78a423b7e3b192416fcb731f564f9c751d8b80d72f170` |
+| Example and dataset source | `codex/roadmap9-geo` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 363 |
+| Declared actions here | 364 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

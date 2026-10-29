@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:aa5fdab50129bc775a4d25c4474a38bed35f54b5b4bd59168c7ba46f43fe3962",
-  "sourceCommit": "bff4d29eb0366a048259109dab009a1fe878afb5",
-  "sourceRef": "bff4d29eb0366a048259109dab009a1fe878afb5",
-  "exampleSourceRef": "bff4d29eb0366a048259109dab009a1fe878afb5",
+  "contractId": "sha256:115373e74f649cde34a78a423b7e3b192416fcb731f564f9c751d8b80d72f170",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-geo",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 363,
+  "actionCount": 364,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -219,6 +219,10 @@
       "status": "development"
     },
     "editProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "navigateProjection": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

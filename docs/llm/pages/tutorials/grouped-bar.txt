@@ -5,15 +5,15 @@
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/bff4d29eb0366a048259109dab009a1fe878afb5/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/bff4d29eb0366a048259109dab009a1fe878afb5/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/bff4d29eb0366a048259109dab009a1fe878afb5/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -122,7 +122,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/bff4d29eb0366a048259109dab009a1fe878afb5/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](../../../api/position-encodings/),
  [Series encodings](../../../api/series-encodings/), and
  [Constant appearance](../../../api/appearance/), or review the

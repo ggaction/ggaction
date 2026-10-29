@@ -711,3 +711,40 @@ public renderer/type/설치 전체 corpus를 재실행했다고 주장하지 않
 1038 entries/최대1474207 packed/6710451 unpacked를 근거로 ceiling을1038/1475000/6711000으로
 갱신했다. [Kernel evidence](geo-evidence/camera-kernel/status.json)에 원본실패·수리와 공개연결
 미완료 범위를 구분한다.
+
+## Camera 공개 action 계약
+
+전체 STEP077 설계 승인(`AUTHORIZATION.json`)과 위 순수 계산 계약을 재사용한다.
+`navigateProjection({target?,operation})`은 새 camera resource 없이 기존 projection을 한 번
+수정하는 Full domain facade다. target은 기존 projection selector의 explicit/current/unique
+규칙을 따른다. Pan/zoom/pinch/rotate/reset의 operation shape는 순수 계산과 같고 reset의
+initial은 caller가 보존한 명시 parameters다. Fit은 `{type:'fit',fit:{geometry?,width,height,
+padding?,pointScale?}}`로 기존 live geometry fit을 그대로 작성한다. 다른 camera 조작은
+명시 scale/translation 결과를 저장하므로 기존 fit dependency를 분리한다.
+
+Resize는 `{type:'resize',canvas:{width?,height?,plot?:false|{width,height}},scaling:'preserve'|'fit'}`다.
+Canvas option을 새로 해석하지 않고 native editCanvas에 위임한다. 따라서 정확 plot과 바깥
+width/height의 충돌도 동일하게 실패하며, 바깥 크기로 전환하려면 caller가 `plot:false`를
+명시한다. Native responsive guide layout이 정착한 이전/이후 plot bounds로 camera를 계산한다.
+기존 parameter aggregate와 같은 immutable speculative branch에서 전체 native child chain을
+검증하고 같은 입력에서 최종 chain을 작성한다. 실패 시 이전 program/trace는 그대로이며,
+성공 trace에는 navigateProjection 아래 editCanvas(Resize일 때)와 editProjection이 남는다.
+추가 전역 pending state, callback 저장, renderer camera는 없다.
+
+`ggaction/inspection`의 `getProjectionView(program,{target?,childPath?})`는 exact projection ref,
+resolved normalized parameters와 현재 plot viewport를 frozen snapshot으로 반환한다.
+Canvas가 없는 resource-only program은 viewport:null이다. Snapshot의 parameters로 reset하며,
+예전 live fit policy나 revision을 되살리는 권한은 주지 않는다. 저장/restore는 기존 projection
+resource schema만 사용한다. 초기 baseline과 generic player/session gesture는 후행 consumer가
+명시 보존하며 이 facade에 숨겨 저장하지 않는다.
+
+Camera 공개 소스 후보는 Geo 178개, camera 소유 코드 23개와 100/100/100 커버리지,
+source/package/type/card 52개, 실제 5개 데이터 × 3개 recipe와 ledger 16개,
+인벤토리 10개를 통과했다. 기존 95/90/100 기준은 낮추지 않았다. Primitive 5개,
+Canvas/SVG/PNG/PDF 10개, Canvas/SVG DPR 1·2 브라우저 5개도 통과했다.
+고정 archive `63df5876f4ba396a317cd2d5aac13b379355d3097106a4e2cce5bc9c66f8dc54`의
+Node 20·22·24 설치에서 각각 새 runtime 3개·strict types·5개 browser bundle을 확인했다.
+같은 archive의 1039개 파일은 canonical packaging 변환 후 현재 입력과 모두 일치한다.
+원래 실패한 fixture/metadata와 수리 검증, source pin 이후 문서 최종 상태는
+[공개 camera 증거](geo-evidence/camera-public/status.json)에서 구분한다.
+전체 normal/global coverage 및 공통 realistic 3개 파일의 새 합산 결과를 대신 주장하지 않는다.

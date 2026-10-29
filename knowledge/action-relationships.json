@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 363,
+  "actionCount": 364,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2394,6 +2394,13 @@
       "name": "editProjection",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "navigateProjection",
+      "wraps": [
+        "editProjection",
+        "editCanvas"
       ]
     },
     {

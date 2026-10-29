@@ -41,7 +41,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](../../../api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/bff4d29eb0366a048259109dab009a1fe878afb5/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -80,3 +80,11 @@ Use `encodeColor({ field, scale })` after a shape, point or line mark, and
 existing color and size blocks. A join exposes the matching table fields and
 LOD exposes the active level. See [field mapping rules](../../../api/geometry/#map-feature-fields-to-color-and-size)
 for unknown values, geographic radii and explicit constant transitions.
+
+## Keep stops stable while navigating
+
+The executable `createGeographicMarks("camera")` variant in the same example applies an anchored
+0.75 zoom followed by a small pan. Its district and route move with the projection, while each
+stop remains eight CSS pixels in radius. Use `navigateProjection` for these view changes; save
+`getProjectionView(program).parameters` before navigation when you want an explicit reset target.
+The [camera reference](../../../api/geometry/#navigateprojection) lists pinch, fit and resize options.

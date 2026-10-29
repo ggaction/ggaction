@@ -510,6 +510,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-geographic-encodings.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-camera.test.js"
       }
     ],
     "grammar": [

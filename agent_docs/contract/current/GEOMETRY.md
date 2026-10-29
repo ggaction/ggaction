@@ -285,6 +285,48 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 - ✅ Covered: exact revision closure, shape edits, explicit transform override, type defaults, fit source rebind, current/unique/ambiguous resolution, removal protection and atomic failure.
 - Evidence: `test/unit/geo/projection-resources.test.js`.
 
+## `navigateProjection`
+
+- Signature: `navigateProjection({target?,operation})`. Full chart authoring; target uses the same
+  explicit/current/unique projection inference as editProjection. Every operation is closed and requires
+  its stated parameters; invalid input, clipped anchors or incompatible consumers fail atomically.
+- `pan`: `{type:"pan",deltaPx:[x,y]}` translates in logical CSS pixels.
+- `zoom`: `{type:"zoom",anchorPx:[x,y],factor,scaleExtent:[minimum,maximum]}` requires a finite positive
+  factor and positive ordered extent. Clamp the resulting scale and preserve the visible inverse anchor
+  to within0.25px, including its composite component. Hidden/non-invertible anchors fail.
+- `pinch`: `{type:"pinch",fromPx:[[x,y],[x,y]],toPx:[[x,y],[x,y]],scaleExtent}` combines the two centers'
+  translation and distance ratio. Coincident pointers fail. `rotate`: `{type:"rotate",rotateDeg:[x,y,z?]}`
+  sets the native absolute spherical rotation; identity and composite projections reject it.
+- `reset`: `{type:"reset",initial:ProjectionParameters}` restores explicitly supplied view parameters.
+  A frozen `getProjectionView` snapshot supplies these parameters; there is no implicit initial baseline.
+  Reset does not restore historical revision numbers or previous live fit policies.
+- `fit`: `{type:"fit",fit:ProjectionFitOptions}` delegates the existing live geometry fit contract.
+  Other operations commit complete resolved parameters and detach a previous fit dependency.
+- `resize`: `{type:"resize",canvas:{width?,height?,plot?},scaling:"preserve"|"fit"}` delegates the nonempty
+  Canvas size patch. Native exact-plot/outer-size conflicts remain errors: use explicit `plot:false`
+  when switching to outer width/height. Scaling preserve keeps pixel scale; fit multiplies it by the
+  smaller settled plot width/height ratio. Both move the previous plot center to the new center.
+  Responsive guides settle through editCanvas first. Authored projection clipExtentPx stays unchanged.
+- Success advances the chosen projection exactly once and updates its coordinates/marks through
+  editProjection. Resize also uses editCanvas and its existing screen-route revision closure.
+  The command is one top-level trace node with meaningful native child actions. No camera state,
+  callback, DOM handler or renderer-global state is persisted. LOD zoom remains an independent decision.
+- `getProjectionView(program,{target?,childPath?})` from `ggaction/inspection` is read-only. It returns
+  frozen `{projection:{kind:"projection",id,revision},parameters,viewport}`. Parameters are normalized
+  and fit-resolved; viewport is the current logical plot rectangle or null before Canvas creation.
+  Child paths address explicit concat children. The query requires a closed program and adds no trace.
+
+### Formal values — `navigateProjection`
+
+- Implemented: `navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram`.
+- Planned: no additional operation values.
+- Proposed (NOT IMPLEMENTED): implicit renderer-owned camera state.
+
+### Value coverage — `navigateProjection`
+
+- ✅ Covered: explicit pan/zoom/pinch/rotate/fit/reset/resize, native Canvas/plot/responsive layout, exact revisions, concat scope, unchanged identity, offline restoration, invalid/unsafe/ambiguous inputs and immutable failure.
+- Evidence: `test/unit/geo/camera-actions.test.js`, `test/unit/geo/camera.test.js`, `test/contracts/geo-camera-types.test.js`.
+
 ## Geographic mark rules
 
 The Full actions below require a Canvas and a Geo coordinate created with

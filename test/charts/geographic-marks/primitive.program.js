@@ -1,6 +1,13 @@
 import { chart } from "../../../src/index.js";
-import { canvas, region, route, points, graticule, annotationText, measuredRegion, measuredRoute, measuredPoints } from "./reference-values.js";
+import { canvas, region, route, points, graticule, annotationText, measuredRegion, measuredRoute, measuredPoints, cameraRegion, cameraRoute, cameraPoints } from "./reference-values.js";
 export function createGeographicPrimitive(variant = "planar") {
+  if (variant === "camera") return chart().createCanvas(canvas)
+    .createGraphics({ id: "regions", type: "collection", parent: "plot-main" })
+    .editGraphics({ target: "regions", property: "items", value: [cameraRegion] })
+    .createGraphics({ id: "routes", type: "collection", parent: "plot-main" })
+    .editGraphics({ target: "routes", property: "items", value: [cameraRoute] })
+    .createGraphics({ id: "cities", type: "collection", parent: "plot-main" })
+    .editGraphics({ target: "cities", property: "items", value: cameraPoints });
   if (variant === "fields") return chart().createCanvas(canvas)
     .createGraphics({ id: "regions", type: "collection", parent: "plot-main" })
     .editGraphics({ target: "regions", property: "items", value: [measuredRegion] })

@@ -6394,6 +6394,24 @@
       }
     },
     {
+      "name": "navigateProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editProjection`, `navigateProjection`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "navigateprojection"
+      }
+    },
+    {
       "name": "createGeoShapeMark",
       "layer": "user-facing",
       "domain": "marks",

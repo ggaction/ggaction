@@ -574,6 +574,8 @@ export function buildActionRelationshipPrograms() {
       .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas({ width: 400, height: 300, margin: 0 }).createProjection({ id: "camera", type: "identity" })
+      .navigateProjection({ operation: { type: "resize", canvas: { width: 800, height: 600 }, scaling: "fit" } }),
     chart().createCanvas().createGeometryData({ id: "geoPoints", format: "geojson", coordinateKind: "planar", values: { type: "MultiPoint", coordinates: [[10, 10], [30, 20]] } })
       .createProjection({ id: "geoPlane", type: "identity" }).createCoordinate({ id: "geo", type: "geo", projection: "geoPlane" })
       .createGeoShapeMark({ id: "geoShape", coordinate: "geo", geometry: "geoPoints" }).editGeoShapeMark({ opacity: .8 })

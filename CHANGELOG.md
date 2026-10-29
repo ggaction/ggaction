@@ -1,5 +1,7 @@
 # Changelog
 
+- Add Full `navigateProjection` camera commands and `getProjectionView` inspection snapshots for anchored zoom, pinch, rotation, explicit reset, fit and native Canvas resize.
+
 - Add `createGeoLODData` and `editGeoLODData` with shared topology simplification, detail hysteresis and original selection representation mapping.
 
 All notable changes to `ggaction` are recorded in this file.

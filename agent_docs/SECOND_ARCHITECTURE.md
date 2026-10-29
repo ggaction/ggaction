@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 727,000 bytes |
+| `ggaction` | 728,000 bytes |
 | `ggaction/basic` | 384,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
@@ -3886,3 +3886,8 @@ geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는
 호환성 판단을 소유하고 숫자·양수 scale 보간은 `grammar/animation/values.js`를 재사용한다.
 초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
 않는다. 공개 action/session/player 통합은 별도 후행 경계다.
+
+공개 Geo camera는 `actions/geo/camera.js`의 `navigateProjection` facade가 기존 Canvas와
+projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
+읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
+정확 operation과 resize/fit 수명은 [GEOMETRY.md](contract/current/GEOMETRY.md#navigateprojection)를 따른다.

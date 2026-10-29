@@ -1284,5 +1284,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "geographic-camera.mjs",
+    "cases": [
+      {
+        "id": "geographic-camera/explicit-native-view-lifecycle",
+        "statements": 10
+      },
+      {
+        "id": "geographic-camera/fresh-process-restored-native-navigation",
+        "statements": 6
+      },
+      {
+        "id": "geographic-camera/four-renderer-anchored-view-parity",
+        "statements": 10
+      }
+    ]
   }
 ]
