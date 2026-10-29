@@ -6,7 +6,7 @@
 - [x] 기존 승인 및 원본 불변성·방향 선택 경계 기록
 - [x] source/stream/fit/centroid/labels/LOD 공통 연결
 - [x] 실제 자료·literal·renderer·restore·원자성 검증
-- [ ] Current/types/docs/evidence 및 안정 checkpoint
+- [x] Current/types/docs/evidence 및 안정 checkpoint
 
 ## 감사 결과
 
@@ -84,3 +84,24 @@ right-hand/left-hand를 서로 바꿔 각 공개 경로의 두 literal을 직접
 `realistic-scenario-generation-isolation` 전체 합산은 부모 최종 candidate에서
 한 번 실행할 의무로 남긴다. 갤러리의 공개 실제 land 호출에 명시 left-hand를
 추가하고 fill을 되돌리는 적용도 부모 통합에서 담당한다.
+
+## 고정 source와 인계
+
+구현·선언 source는 `ee40f42760da2dd50b4a5177ce03b5d9e0f73967`이다.
+동일 Node22 archive SHA-256은
+`6ffdb3dc41b3409f6c380016f3b3103826b9635e746b6f3a51c70850d79fa5c7`이며
+1,048개의 packed entry 전체가 canonical JSON/JavaScript compaction을 거친
+현재 source와 일치한다. 이 archive 하나로 세 Node 설치를 실행했다.
+
+최종 docs source 205개, built 172페이지와 1,531 machine artifacts, 전체 페이지의
+320/390/768px browser 검사가 통과했다. Lifecycle owning 3개는 통과했고
+인벤토리 총계의 초기 누락 1개(2 paths + 4 literal requirements)를 수정한 뒤
+해당 owner 7개도 통과했다. 최초 실패 9/10과 수정 후 7/7을 합쳐 새 전체 실행처럼
+표현하지 않는다. 공통 evidence helper의 기존 1MiB child-process 제한은 부모가
+별도 수리한다. 이 기록은 기존 hash/file 검증과 실제 byte 길이로 제한한 Git blob
+검증을 사용해 큰 source의 exact commit 일치를 보존했다.
+
+실제 로그·입력 hash·원 실패·설치 보고서·literal pixel·PNG는
+[qualification](geo-winding-evidence/qualification.json)이 소유한다.
+이 문서의 완료는 이 좁은 winding 변경에 한정하며, 위 공통 통합 검사와
+전체 Roadmap/최종 release 완료를 뜻하지 않는다.
