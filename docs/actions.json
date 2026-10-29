@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 364,
+  "count": 366,
   "cards": [
     {
       "schemaVersion": 3,
@@ -45436,6 +45436,429 @@
       "snippet": "program.editGeoLineMark({ target: \"routes\", opacity: 0.7 })",
       "errors": [],
       "route": "/reference/actions/marks/#editgeolinemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Creates geographic annotation for feature anchor.",
+      "signature": "createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;",
+      "intents": [
+        "create geo annotation",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "geographic annotation",
+        "feature anchor"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "explicit position or keyed geographic feature"
+        ],
+        "owns": [
+          "geographic annotation"
+        ],
+        "idOptions": [
+          "id",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoAnnotation",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "rotation",
+          "unit": "angle"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "explicit position or keyed geographic feature"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "anchor",
+          "required": true,
+          "type": "GeoAnnotationAnchor"
+        },
+        {
+          "name": "text",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "dx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoAnnotation({ anchor, text, coordinate?, id?, target?, lineCap?, lineJoin?, miterLimit? })"
+      ],
+      "snippet": "program.createGeoAnnotation({ anchor: { type: \"position\", position: [10, 20] }, text: \"Location\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#creategeoannotation"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edits geographic annotation, including settings for feature anchor.",
+      "signature": "editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;",
+      "intents": [
+        "edit geo annotation",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "geographic annotation",
+        "feature anchor"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "explicit position or keyed geographic feature"
+        ],
+        "owns": [
+          "geographic annotation"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoAnnotation",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "rotation",
+          "unit": "angle"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "explicit position or keyed geographic feature"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "anchor",
+          "required": false,
+          "type": "GeoAnnotationAnchor | undefined"
+        },
+        {
+          "name": "text",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "dx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoAnnotation({ coordinate?, target?, lineCap?, lineJoin?, miterLimit?, anchor?, text?, blend? })"
+      ],
+      "snippet": "program.editGeoAnnotation({ text: \"Updated location\", dx: 4 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editgeoannotation"
     },
     {
       "schemaVersion": 3,

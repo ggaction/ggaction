@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 364,
+  "actionCount": 366,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2449,6 +2449,18 @@
     },
     {
       "name": "editGeoLineMark",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeoAnnotation",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoAnnotation",
       "wraps": [
         "editSemantic"
       ]

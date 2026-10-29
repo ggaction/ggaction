@@ -24,6 +24,20 @@ if(coordinate.type==='geo') { const id:string=coordinate.projection.id; void id;
 declare const binding:GeoMarkBinding;
 if(binding.mode==='graticule') { const step:number=binding.graticule.stepDeg[0]; void step; }
 const circle:GeoPointMarkOptions={radiusPx:4}; void circle;
+p.createGeoAnnotation({anchor:{type:'position',position:[10,20]},text:'Here',rotation:20,fill:'red'})
+ .editGeoAnnotation({target:{childPath:['left'],id:'note'},anchor:{type:'feature',geometry:'world',key:['county',1],level:'county'},text:'Moved'});
+if(binding.mode==='annotation' && binding.anchor.type==='feature') { const key = binding.anchor.key; void key; }
+// @ts-expect-error Text content is a required semantic string.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:1});
+// @ts-expect-error Feature anchors use a key, not an explicit position.
+p.createGeoAnnotation({anchor:{type:'feature',position:[0,0]},text:'Bad'});
+// @ts-expect-error Position anchors cannot bind an unrelated geometry.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0],geometry:'world'},text:'Bad'});
+// @ts-expect-error Geographic annotation is not a data text encoding.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:'Bad',data:'data'});
+// @ts-expect-error Geographic annotation is Full only.
+basic().createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:'Bad'});
+
 // @ts-expect-error Pixel and geographic radii are exclusive.
 p.editGeoPointMark({radiusDeg:3,radiusPx:5});
 // @ts-expect-error Line marks do not draw point radii.

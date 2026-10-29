@@ -11,7 +11,8 @@
 - [ ] continuous/interval legend 조작의 원 카드 후행 범위
 - [x] D: 기존 setParameter host controls와 context semantic targets
 - [x] E5: 기존 Text annotation의 datum anchor/offset/content/placement 원자 편집
-- [ ] Geo annotation 연결·screen anchor·item membership/drag 후행 인수
+- [x] E6: native Geo annotation의 명시 command 연결
+- [ ] screen anchor·item membership/drag 후행 인수
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -530,3 +531,24 @@ Built172pages/1525LLM 및320/390/768/1440px overflow0/Axe0을 통과했다.
 
 E5 source `895517eb7` push 뒤 provenance를 고정해 owning docs32와 built172pages/1525LLM을
 다시 통과했다. Runtime·타입·최종 archive와 시각 입력은 같으므로 앞선 설치/4backend/네 폭Axe를 재사용한다.
+
+## E6 geographic annotation command 연결
+
+전체 승인을 재사용하고 검증된 Geo79d72577를 E57b6df990a에 병합한다. Runtime owner 충돌은 없다.
+`annotate`는 명시 target의 native layer가 geo annotation이면 editGeoAnnotation을 호출하고 일반 Text는
+editAnnotation을 유지한다. 별도 registry/schema/renderer/Full static import는 없다. Payload는 두 native editor의
+target 제외 union이며 선택된 target kind가 실제 닫힌 옵션을 검증한다. Geo anchor·typed feature·원 LOD level과
+projection/source revision, source grain 및 immutable one-commit lifecycle은 기존 owner를 재사용한다.
+
+E6 초기 interaction+Geo204/204, named selector 보강 뒤 interaction+source boundary203/203 및
+변경 owner100/98.52/100을 통과했다. 최초 contracts59/60의 직접조회 위반을 기존 findLayer 재사용으로
+고쳤으며 해당11 boundary는 최종203에 포함된다. 실제5datasets×3recipes16은 native source와 typed
+feature key를 검증했고, 마지막 lookup 추출 후 browser1 및4backend session/native/codec exact를 재확인했다.
+
+동일 최종 taref611d30에서3Node 각각11runtime·strictTS·5bundles를 검증했다. 최초 cce9e084는
+selector 추출 전 archive로 보존한다. Node20에서 유입 branch의 낡은 interaction cap109200 실패를
+보존하고 실측112841→112900로 수리해 숫자 재검증했다. Node22/24 명령은 exit0이다.
+Docs 최초203/207 중 상대link1·fingerprint2는 owning3으로 확인했고, 남은 canonical example source link는
+source commit 뒤 고정한다. Built172pages/1531LLM 및 네 폭overflow0/Axe0이 통과했다.
+[정확 archive·원본 실패·명령](geographic-annotation-evidence/qualification.json)을 보존한다.
+전체 normal/coverage·전체 installed matrix 및060/077 완료는 주장하지 않는다.

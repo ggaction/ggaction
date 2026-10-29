@@ -13,7 +13,8 @@
 - [ ] Geo guide·label 공개 연결
 - [x] Typed geometry/table join 및 exact source revision closure
 - [x] Shared-arc/hierarchy LOD resource와 명시적 selection representation
-- [ ] LOD semantic feature/geographic annotation와 interaction availability 연결
+- [x] LOD semantic feature/geographic annotation 공개 연결
+- [ ] Interaction availability의 별도 checkpoint 합산 검증
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 기준은
@@ -547,3 +548,62 @@ field/label/guide 및 camera 소비자는 후행 구현이며 AT31/32 전체 완
 공개 LOD source는 `6ea274544`로 고정했다. 이후 provenance/LLM source pin만 갱신하고
 문서 source 전체 198/198 및 package dry check(1026 entries, 1460317/6659038 bytes)를
 다시 확인했다. Runtime/declaration/packed entry bytes는 설치 검증 tar와 동일하다.
+
+
+## Semantic geographic annotation 계약
+
+기존 전체 승인(`remainingApproval`) 범위에서 `createGeoAnnotation`/`editGeoAnnotation`을
+resource-backed Geo annotation mode로 연결한다. 별도 renderer나 annotation registry는 만들지
+않고 기존 Text primitive·font binder·FillPaint·outline/shadow·selection owner를 사용한다.
+
+공개 anchor는 `{type:"position",position:[x,y]}` 또는
+`{type:"feature",geometry?,key,level?}`이다. Position은 geo coordinate의 geographic degrees 또는
+identity projection의 planar unit을 보존한다. Feature는 explicit typed featureKey가 있는 source나
+join, LOD의 원 level geometry를 식별한다. Geometry는 기존 explicit/current/unique inference를
+재사용하고, LOD level 생략은 현재 activeLevel을 한 번 저장한다. 이후 coarse/fine 전환에서
+그 level/key를 바꾸지 않는다. 원 geometry의 planar 또는 spherical centroid를 공통 math adapter로
+계산하며, null/empty feature는 semantic identity를 보존하고 Text 출력 0개다. 미정의/overflow
+centroid는 실패한다. Source geometry 이동은 해당 centroid를 다시 계산한다.
+
+Text는 명시 string이며 빈 문자열은 출력 0개다. Native Text style을 공유하되 source mark
+appearance가 없는 `inheritColor`는 허용하지 않는다. Default id는 geo-annotation, style은 기존
+Text 기본값이고 clip:false다. `coordinate?`, `anchor?`, `text?`, native style의 edit는 빈 patch를
+거부한다. Geometry ref는 기존 `layer.geoBinding.geometry` 경로 한 곳에 저장하고 anchor에는
+ref를 중복 저장하지 않는다. Position annotation은 geometry를 만들지 않는다. Projection ref는
+기존 geo coordinate가 계속 단일 소유한다.
+
+Feature mapping, projection/geometry revision, null/clipped output, removal, restore, inspection,
+hconcat/vconcat scoped editing, selection/highlight, font/theme 및 네 renderer를 같은 checkpoint의
+소비자로 검증한다. Centroid 수치 kernel은 Point/Line/Polygon/hole/collection/dateline과
+입력 불변·descriptor·finite budget 경계를 독립 literal로 확인한다. 새 visual은 승인된 Text와
+Geo primitive를 재사용하며 명시 planar/orthographic primitive pair로 좌표와 clipping을 비교한다.
+
+
+### Semantic annotation checkpoint 검증
+
+주석 create/edit를 native Text로 연결하고 feature centroid, 명시 geographic/planar 위치,
+LOD 원본 level/key 보존, source/projection 수정, null/clipped/빈 text, 실패 원자성을 검증했다.
+Geometry ref는 기존 binding에만 저장하고 metadata에서는 수치 projection dependency를 가져오지
+않는다. 이로써 Basic import는 기존 경계를 유지하며 Full materializer만 centroid를 계산한다.
+Planar hole의 ring 방향이 달라도 exterior/hole 역할에 따라 contribution을 계산한다.
+
+Geo 관련 139개와 새 7 owner coverage 100/97.48/100, native Text 관련 107개와 추출 owner
+100/100/100을 통과했다. 신규 owner에 기존 95/90/100 floor를 그대로 적용했다. 현재 카탈로그·
+타입·source/package 경계 46개, 실제 5 dataset×3 recipe/증인 16개, 3 variant의 네 renderer와
+PNG 9개, Canvas/SVG DPR1/2 browser 3개가 통과했다. 같은 archive
+`5ea008140f4512cba0e6d3e6c053550bd3acdf82d016c7411ef5aff1adee940f`를 Node20/22/24에
+설치하여 각각 runtime3·strict Full/Basic 타입·문서 snippet·5 browser bundle을 검증했다.
+현재 1033개 packed entry는 배포용 canonical 변환 후 해당 archive와 모두 같다.
+
+첫 inventory와 문서/카드 fixture 실패는 원본과 owning 수리를 구분해
+[annotations/status.json](geo-evidence/annotations/status.json)에 보존한다. Source pin과 built
+문서 최종 검증은 같은 source checkpoint 후속 기록으로 닫는다. 새 전체 normal/global coverage
+통과를 주장하지 않는다. 공통 realistic 생성 3파일은 최종 합산에서 parent가 한 번 검증한다.
+Field encodings·Geo labels/guides·camera와 별도 session availability 합산은 남은 작업이다.
+
+
+주석 source는 `d665f6bbc`로 고정·push했다. 이후 source provenance/LLM pin과 evidence만
+갱신해 문서 source 전체 200/200, 수정된 inventory owning 7/7, package contract 7/7을
+확인했다. Built172페이지/1525 selective artifacts와 전체320/390/768px containment,
+검색·접근성도 통과했다. Source pin만 갱신한 최종 build에서 링크·hash를 다시 확인하며,
+새 runtime이나 타입 변경 없이 동일 qualified tar의1033개 entry byte parity를 유지한다.

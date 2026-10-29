@@ -449,3 +449,66 @@ scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
 Automatic row facet/repeat, field encodings, joins, geographic labels and camera
 controls are not accepted by these mark options. Generated output is bounded at
 10,000 points/items and 10,000,000 work units per materialization.
+
+## `createGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+```
+
+Place text at a source position or at the centroid of a named feature. A Geo coordinate determines
+how the anchor projects. The default ID is `geo-annotation`; give additional annotations explicit IDs.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 400, height: 250 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "Feature", id: "port", properties: {},
+      geometry: { type: "Point", coordinates: [120, 90] } } })
+  .createProjection({ id: "map", type: "identity" })
+  .createCoordinate({ type: "geo" })
+  .createGeoAnnotation({ anchor: { type: "feature", geometry: "places", key: "port" },
+    text: "Port", dy: -12, align: "center", fontSize: 16 });
+```
+
+Use `{type:"position",position:[x,y]}` for an explicit anchor: identity projections use source planar
+units, while spherical projections use longitude/latitude degrees. Use
+`{type:"feature",geometry?,key,level?}` for a keyed source or join. Geometry omission follows the
+current/unique eligible geometry; a feature source must declare `featureKey`. Numeric and string keys
+are distinct. Polygons use an area centroid with holes, lines a length centroid, and points an average;
+geographic geometry uses spherical centroids. A centroid can fall outside a concave feature.
+
+For LOD geometry, `level` chooses an original level, or captures the current level when omitted.
+The annotation continues to follow that original feature when the visible map changes detail.
+Editing source geometry moves its annotation; deleting its key rejects the whole edit. Empty/null
+geometry, clipped anchors and empty text produce no placeholder text.
+
+`text` is a required string. Native Text styles apply: `fill`, `opacity`, `fontSize`, `fontFamily`,
+`fontWeight`, `align`, `baseline`, `rotation`, `dx`, `dy`, `lineHeight`, `blockAlign`, `lineCap`,
+`lineJoin`, `miterLimit`, `outline`, `shadow` and `blend`. Offsets are logical pixels after projection.
+`clip` defaults to false. Theme text/font tokens, explicit style overrides and prepared fonts follow
+[Text](marks/text.md#createtextmarkoptions). Shadow rendering requires the usual explicit host preparation.
+Selections and highlights use the annotation item; stroke highlighting does not add a Text stroke.
+
+## `editGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
+```
+
+Change `target?`, `coordinate?`, `anchor?`, `text?` or native Text styles. An omitted target resolves the
+current or unique annotation. The patch must be nonempty; omitted fields retain their current values.
+A supplied anchor replaces its intent. Switching to a position detaches the geometry reference.
+Feature geometry omission retains the existing feature source; an omitted level captures the current
+LOD level. Invalid anchors, missing keys or unprepared font queries leave the original chart unchanged.

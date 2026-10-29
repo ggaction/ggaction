@@ -21,6 +21,7 @@ chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 const program = chart(); const session = createInteractionSession({ program });
 chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
 session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
+session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
 // @ts-expect-error annotation patches do not rebind or create sources
 chart().editAnnotation({target:'note',source:'points'});
 // @ts-expect-error annotation command target cannot be redirected in its payload

@@ -2,7 +2,7 @@ import { cloneAndFreeze } from "../../../core/immutable.js";
 import { geoFeatureKey, geoMarkSource } from "../../geo/source.js";
 import { concreteProperties } from "../items/common.js";
 import { normalizeAreaHighlightStyle } from "../styles.js";
-import { transformPathHighlightProperties } from "../path.js";
+import { transformPathHighlightProperties, transformLabeledPathHighlightChild } from "../path.js";
 
 function items(program, layer, concrete) {
   const config = program.markConfigs[layer.id].geo;
@@ -30,6 +30,7 @@ export const geoSelectionPolicy = Object.freeze({ resourceBacked: true, supporte
   resolveItems: (program, layer) => items(program, layer, true), resolveSourceItems: (program, layer) => items(program, layer, false),
   normalizeHighlightStyle: args => normalizeAreaHighlightStyle(args, "Geographic mark"), applyHighlightOp: "applyPathHighlight", rematerializeOp: "materializeGeoMark",
   transformHighlightChild(child, style) {
+    if (child.identity?.role === "label") return transformLabeledPathHighlightChild(child, style);
     const { fill, ...rest } = style;
     const mapped = child.type === "path" && child.properties.fill === "none" ? { ...rest, ...(style.stroke === undefined && fill !== undefined ? { stroke: fill } : {}) } : style;
     return { ...child, properties: transformPathHighlightProperties(child.properties, mapped) };

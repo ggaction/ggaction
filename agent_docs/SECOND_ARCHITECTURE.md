@@ -862,10 +862,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 723,800 bytes |
-| `ggaction/basic` | 382,000 bytes |
+| `ggaction` | 728,200 bytes |
+| `ggaction/basic` | 384,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 112,800 bytes |
+| `ggaction/interaction` | 112,900 bytes |
 | `ggaction/graph` | 44,000 bytes |
 
 
@@ -3917,3 +3917,21 @@ E5 편집/명령의 별도 source-free 측정은 Node20 Full723,738 / Basic381,8
 새 Full owner 한 개를 더해1037entries이며 이전1036 한도 실패를 보존하고1037로 맞췄다.
 Node20 packed1,475,547/unpacked6,716,141 최종 측정에 맞춰
 최소 cap1,476,000/6,717,000을 적용한다. Full cap723,800만 조정하고 나머지 browser 한도는 유지한다.
+
+Geographic annotation은 기존 Geo layer의 닫힌 mode와 native Text primitive를 재사용한다.
+`grammar/geo/centroid.js`는 명시 source geometry의 bounded planar/spherical centroid만 계산하고,
+`materialization/geo/annotationSource.js`는 exact geometry 및 원 LOD level/key를 해석한다.
+공통 feature metadata 조회는 `materialization/geo/features.js`, native Text/font 구성은
+`materialization/textItem.js`가 단일 소유한다. Projection ref는 coordinate에만 존재하며
+annotation은 원 feature 의미와 literal text를 보존한다. Typography/theme/selection/복원은
+기존 owner를 사용하고 renderer에는 concrete Text만 전달한다. 정확한 API는
+[GEOMETRY.md](contract/current/GEOMETRY.md#creategeoannotation)를 따른다.
+
+Geographic annotation의 interaction 연결은 명시 owner layer의 native mode를 읽어 기존 editGeoAnnotation을
+호출한다. 일반 Text editor와 저장 의미를 합치지 않고 controller의 기존 single-transaction closure를 재사용한다.
+Feature centroid·원 LOD level·projection revision은 Geo owner가 유지한다. Basic에는 새 authoring 경로가 없다.
+
+E6 합산 source-free Node20 최대는 Full728,182/Basic383,679/interaction112,841 gzip이고
+한도728,200/384,000/112,900을 적용했다. 1044entries/packed1,481,470/unpacked6,744,953에
+최소 package cap1,482,000/6,745,000을 적용했다. Basic 증분은 기존 native Text 공통 owner 추출에서
+발생하며 geographic authoring assembly 또는 interaction Full import를 추가하지 않는다.

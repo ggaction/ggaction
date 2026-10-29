@@ -1,0 +1,1 @@
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };

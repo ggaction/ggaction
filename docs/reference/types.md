@@ -93,6 +93,8 @@ interface ChartProgramActions {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -6460,6 +6462,19 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
+### `EditGeoAnnotationOptions` {#type-editgeoannotationoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoAnnotationOptions</summary>
+
+```typescript
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+```
+
+</details>
+
+Related types: [`GeoAnnotationOptions`](#type-geoannotationoptions).
+
 ### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
 
 <details markdown="1">
@@ -8853,6 +8868,35 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 </details>
 
 Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
+### `GeoAnnotationAnchor` {#type-geoannotationanchor}
+
+<details markdown="1">
+<summary>Expand GeoAnnotationAnchor</summary>
+
+```typescript
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+```
+
+</details>
+
+Related types: [`RowKey`](#type-rowkey).
+
+### `GeoAnnotationOptions` {#type-geoannotationoptions}
+
+<details markdown="1">
+<summary>Expand GeoAnnotationOptions</summary>
+
+```typescript
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+```
+
+</details>
+
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`GeoAnnotationAnchor`](#type-geoannotationanchor).
 
 ### `GeoEditOptions` {#type-geoeditoptions}
 

@@ -496,6 +496,10 @@
       {
         "type": "file",
         "path": "browser/geographic-marks.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-annotations.test.js"
       }
     ],
     "grammar": [

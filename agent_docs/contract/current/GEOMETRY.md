@@ -458,3 +458,73 @@ source normalization retains its separate configured limits.
 
 - ✅ Covered: default/explicit targeting, compatible geometry, clips/holes/hidden members, style, revisions, atomic errors, immutable restore and scoped composition.
 - Evidence: `test/unit/geo/marks.test.js`, `test/unit/geo/mark-consumers.test.js`, `test/contracts/geo-mark-types.test.js`, `test/contracts/realistic-geographic-marks.test.js` (five authentic datasets × three direct recipes), `test/charts/geographic-marks/public.test.js`, `test/charts/geographic-marks/renderer.render.js`, `test/browser/geographic-marks.browser.js`.
+
+## `createGeoAnnotation`
+
+- Signature: `createGeoAnnotation({id?,coordinate?,anchor,text,...textStyle})`.
+- Full chart authoring. Requires Canvas and a Geo coordinate resolved by explicit ID, current eligible
+  coordinate, then unique eligible coordinate. The deterministic default mark ID is `geo-annotation`;
+  a second annotation requires another explicit ID. Text is a required string; an empty string retains
+  semantic intent and produces no concrete Text. No data/text encodings are accepted.
+- Anchor is exactly `{type:"position",position:[x,y]}` or
+  `{type:"feature",geometry?,key,level?}`. Position uses planar source units for identity, or longitude/
+  latitude degrees for spherical projections. Feature keys use the shared typed row-key grammar;
+  numeric1 and string"1" differ. Feature anchors require a geometry source with explicit `featureKey`.
+  Geometry uses explicit/current/unique eligible source inference. Joins retain their table fields/rows.
+- Feature positions are computed from the original feature: area-weighted polygon centroid (holes
+  subtract), otherwise length-weighted line centroid, otherwise point average. Geographic geometry
+  uses the spherical equivalent. Mixed collections use their highest nonempty dimension. Null/empty
+  geometry produces no Text; an ambiguous or nonfinite centroid fails before writes. A centroid is a
+  semantic center, not a guarantee that the label lies inside a concave polygon.
+- For direct or joined LOD, level is an explicit existing level ID or the active level at creation.
+  That resolved level is stored once. Later display transitions retain the original feature anchor;
+  they do not move a county annotation to its parent centroid. Changing source geometry recomputes
+  the original centroid. Missing keys, stale refs, incompatible coordinate kind or invalid levels fail
+  atomically. A source/projection revision rematerializes each dependent annotation once.
+- Text style shares native Text fill/opacity, fontSize/fontFamily/fontWeight, align/baseline, rotation,
+  dx/dy, lineHeight/blockAlign, lineCap/lineJoin/miterLimit, outline/shadow and blend. Defaults are
+  native Text defaults (fill#334155, opacity1, fontSize12, sans-serif, normal, left/alphabetic,
+  rotation0, dx/dy0), clip:false. Offsets are logical pixels after projection. Native paint/effect/font
+  preparation applies. Theme text/font roles update unoverridden values; explicit default-valued
+  styles remain explicit. `inheritColor`, data/source fields and positional encodings are unsupported.
+- Stored layer mark.type is geo; geoBinding owns mode:annotation, normalized anchor, string text and
+  an exact geometry ref for feature anchors. The coordinate owns the sole projection ref. Native Text
+  output, resource lineage, item selection, highlight, accessibility, scoped concatenation and offline
+  restore use existing owners. Stroke highlight is excluded from Text while fill/opacity apply.
+  Clipped features and empty text keep source identity without placeholder graphics. Removal uses
+  removeMark before referenced geometry/projection resources can be removed.
+
+### Formal values — `createGeoAnnotation`
+
+- Implemented: `createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): automatic collision placement and screen-coordinate anchors.
+
+### Value coverage — `createGeoAnnotation`
+
+- ✅ Covered: explicit/source centroids, spherical/planar/null, typed keys, LOD anchor retention,
+  joined lineage, fonts/themes/effects, selection, immutable errors, composition and offline restore.
+- Evidence: `test/unit/geo/annotation-anchor.test.js`, `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.
+
+## `editGeoAnnotation`
+
+- Signature: `editGeoAnnotation({target?,coordinate?,anchor?,text?,...textStyle})`.
+- Target resolves explicit, current eligible annotation, then unique annotation. Requires a nonempty
+  patch. Omitted fields retain previous values; undefined/null values are invalid. A supplied anchor
+  replaces its complete intent. Feature geometry omission retains a previous feature geometry or uses
+  the ordinary eligible-resource inference; omitted LOD level captures the then-active level. Switching
+  to a position removes the geometry binding. Text/style and source changes preflight the final Text,
+  including prepared font queries, before semantic or graphic child writes. Item key remains stable
+  for style/text/projection edits; changing feature key/level changes the annotation's item key.
+
+### Formal values — `editGeoAnnotation`
+
+- Implemented: `editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram`.
+- Planned: no additional values in this signature.
+- Proposed (NOT IMPLEMENTED): automatic feature matching when original keys disappear.
+
+### Value coverage — `editGeoAnnotation`
+
+- ✅ Covered: explicit/current target, partial style edits, original feature anchoring, text omission,
+  font/theme rematerialization, immutable failed edit, resource lifecycle and exact restoration.
+- Evidence: `test/unit/geo/annotations.test.js`, `test/contracts/geo-mark-types.test.js`.

@@ -121,3 +121,52 @@ test("annotation edits preserve selected logical rows and source revision replay
   assert.ok(changed.graphicSpec.objects.note.items.every(item => item.properties.text === "New"));
   s.destroy();
 });
+
+const geoBase = () => chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" });
+const geoValues = (key, x, y) => ({ type: "FeatureCollection", features: [{ type: "Feature", id: key,
+  properties: {}, geometry: { type: "Point", coordinates: [x, y] } }] });
+
+test("annotate routes geographic anchors to the native editor with one scoped commit and exact projection replay", () => {
+  const child = geoBase().createGeoAnnotation({ id: "note", anchor: { type: "position", position: [30,40] }, text: "Old" });
+  const parent = hconcat({ programs: [{ id: "left", program: child }, { id: "right", program: child }] });
+  const s = createInteractionSession({ program: parent, bindings: [] }), events = []; s.subscribe(event => events.push(event));
+  const target = { childPath: ["left"], id: "note" }, payload = { anchor: { type: "position", position: [80,90] }, text: "New", dx: 3, dy: -4 };
+  s.dispatch({ type: "annotate", target, payload });
+  const next = s.getState().program, expected = parent.editGeoAnnotation({ target, ...payload });
+  assert.deepEqual(next.graphicSpec, expected.graphicSpec); assert.equal(next.children.right, child);
+  assert.deepEqual([item(next.children.left).x, item(next.children.left).y, item(next.children.left).text], [83,86,"New"]);
+  assert.deepEqual(events.map(event => event.phase), ["commit","settled"]);
+  assert.deepEqual(events[0].affectedOwners, [{ childPath: ["left"], id: "note" }]);
+  const restored = deserializeProgram(serializeProgram(next)).editProjection({ target: { childPath: ["left"], id: "map" }, scalePx: 2 });
+  assert.deepEqual([item(restored.children.left).x, item(restored.children.left).y], [163,176]);
+  assert.deepEqual(child.semanticSpec.layers[0].geoBinding.anchor.position, [30,40]);
+  const before = serializeProgram(next), trace = next.trace;
+  for (const patch of [{x:2},{layout:false},{anchor:{type:"position",position:[NaN,1]}},{anchor:{type:"feature",key:"missing"}},{target:"other",text:"Bad"}]) {
+    assert.throws(() => s.dispatch({ type: "annotate", target, payload: {text:"Partial",...patch} }));
+    assert.equal(s.getState().program, next); assert.equal(next.trace, trace); assert.equal(serializeProgram(next), before);
+  }
+  assert.deepEqual(events.map(event => event.phase), ["commit","settled","error","error","error","error","error"]); s.destroy();
+});
+
+test("geographic annotation commands retain original feature level and selection through detail and source revisions", () => {
+  const p = geoBase()
+    .createGeometryData({ id: "states", format: "geojson", coordinateKind: "planar", featureKey: "id", values: geoValues("s",100,100) })
+    .createGeometryData({ id: "counties", format: "geojson", coordinateKind: "planar", featureKey: "id", values: geoValues(1,10,20) })
+    .createGeoLODData({ id: "regions", levels: [{id:"state",geometry:"states"},{id:"county",geometry:"counties",enterZoom:4.2,exitZoom:3.8,parents:[{key:1,parent:"s"}]}], zoom: 5 })
+    .createGeoAnnotation({ id: "note", anchor: {type:"feature",geometry:"regions",key:1}, text: "County" });
+  const key = getMarkItems(p,{target:"note"})[0].key;
+  const selected = p.selectMarks({id:"picked",target:"note",items:[key]}).highlightMarks({selection:"picked",color:"red",dimOthers:false});
+  const s = createInteractionSession({program:selected,bindings:[]}), events=[];s.subscribe(e=>events.push(e));
+  s.dispatch({type:"annotate",target:"note",payload:{text:"County one",dx:4,dy:-3}});
+  let next=s.getState().program;
+  assert.equal(next.semanticSpec.layers[0].geoBinding.anchor.level,"county"); assert.deepEqual(events[0].selectionChanges,[]);
+  next=next.editGeoLODData({target:"regions",zoom:0}).editGeometryData({target:"counties",values:geoValues(1,15,25)});
+  s.updateProgram(deserializeProgram(serializeProgram(next)));
+  assert.deepEqual([item(s.getState().program).x,item(s.getState().program).y],[19,22]);
+  assert.equal(getMarkItems(s.getState().program,{target:"note"})[0].key,key);
+  assert.equal(item(s.getState().program).fill,"red");assert.deepEqual(events.at(-1).selectionChanges,[]);
+  const saved=s.getState().program;
+  assert.throws(()=>s.dispatch({type:"annotate",target:"note",payload:{anchor:{type:"feature",geometry:"regions",key:"1",level:"county"}}}),/feature key/);
+  assert.equal(s.getState().program,saved);s.destroy();
+});

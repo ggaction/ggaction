@@ -8,6 +8,7 @@ import { normalizeMarkSelector } from "../grammar/markSelection.js";
 import { SELECTION_SET_MODES } from "../grammar/selectionSet.js";
 import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
+import { findLayer } from "../selectors/layers.js";
 import { interactionOptions as options } from "./input.js";
 
 export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode", "annotate"]);
@@ -74,7 +75,9 @@ export function prepareInteractionEdit(program, command) {
     // The wrapped native editor owns the closed payload and complete preflight.
     // The host may not redirect its explicit command target through the payload.
     if (Object.hasOwn(command.payload ?? {}, "target")) throw new TypeError("Annotation payload cannot contain target.");
-    return { program: invoke(program, "editAnnotation", { ...command.payload, ...address(target, true) }), affectedOwners };
+    const layer = findLayer(view, target.id);
+    const method = layer?.mark.type === "geo" && layer.geoBinding.mode === "annotation" ? "editGeoAnnotation" : "editAnnotation";
+    return { program: invoke(program, method, { ...command.payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "filter" || command.type === "reorder") {
     const filter = command.type === "filter";

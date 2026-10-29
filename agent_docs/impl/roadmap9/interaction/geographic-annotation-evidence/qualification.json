@@ -1,0 +1,428 @@
+{
+  "parents": [
+    "7b6df990a0964ea866f269fb65f56e2726878384",
+    "79d72577da02c66654fc69745a9a26a5d829fa1f"
+  ],
+  "sourceCommit": null,
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Merge native geographic annotation and route explicit annotate targets to editGeoAnnotation through the named layer selector. Preserve ordinary Text editor, scoped target, original feature level, native projection/source replay and atomic session closure. No new schema or renderer.",
+  "runtimeAndTypesFingerprint": "9368a06226bdfe5497b5f612f20eace0e75d84faf2b54b594f9424497931172c",
+  "checks": {
+    "initialInteractionAndGeo": 204,
+    "finalInteractionAndSourceBoundary": 203,
+    "ownerCoverage": {
+      "interaction/selection.js": [
+        100,
+        98.52,
+        100
+      ]
+    },
+    "contracts": {
+      "initialPassed": 59,
+      "initialTotal": 60,
+      "correctedBoundaryIncludedInFinal203": 11
+    },
+    "newUnitRegressions": 2,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "inputChangeAfterRun": "Only direct layer lookup replaced with canonical findLayer; final203 covers same route."
+    },
+    "browserFinal": 1,
+    "renderersFinal": "Session/native/codec exact Canvas calls, SVG, decoded PNG and rasterized PDF pixels",
+    "docs": {
+      "initialPassed": 203,
+      "initialTotal": 207,
+      "correctedOwningChecks": 3,
+      "pendingUntilSourceCommit": "Canonical example source link requires checked-in merged example source.",
+      "builtPages": 172,
+      "llmArtifacts": 1531,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "ef611d3080cfa6b87c62c4d231e9acc91cbada3a5b92fb2c1cba35ad2dde80c4",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2539514,
+            "gzipBytes": 728182
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 383679
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112841
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "ef611d3080cfa6b87c62c4d231e9acc91cbada3a5b92fb2c1cba35ad2dde80c4",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2539514,
+            "gzipBytes": 726585
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 382895
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112332
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "ef611d3080cfa6b87c62c4d231e9acc91cbada3a5b92fb2c1cba35ad2dde80c4",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2539514,
+            "gzipBytes": 728182
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 383679
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112841
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-geo-ef611d30.tgz",
+    "sha256": "ef611d3080cfa6b87c62c4d231e9acc91cbada3a5b92fb2c1cba35ad2dde80c4"
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-geo-cce9e084.tgz",
+    "sha256": "cce9e0840b8907435c19b755fdd04ee7fa193ed0c5b428ba5d5c892ff0d82271"
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 1044,
+    "packedBytes": 1481470,
+    "unpackedBytes": 6744953
+  },
+  "limits": {
+    "entries": 1044,
+    "packedBytes": 1482000,
+    "unpackedBytes": 6745000,
+    "fullGzip": 728200,
+    "basicGzip": 384000,
+    "svgGzip": 25000,
+    "interactionGzip": 112900,
+    "graphGzip": 44000,
+    "searchBytes": 1027400
+  },
+  "preservedFailures": [
+    "Initial2-new-unit run19/20 used an incorrect expectation that rejected commands emit no event; contract correctly emits one error each, program and trace remained unchanged. Corrected test preserves the five error events.",
+    "Initial contract59/60 detected direct layer lookup outside selectors. Replaced with canonical findLayer; final203 includes all11 source boundaries.",
+    "Initial archivecce9 used direct lookup; superseded by finalef611 with selector reuse. Final installed3Node use onlyef611.",
+    "Node20 runtime11/strictTS passed but incoming branch interaction cap109200 was stale; final112841 measured under112900. Full728182 uses728200. Original failure and independent numeric cap recheck preserved; Node22/24 full commands exit0.",
+    "Docs203/207 before source checkpoint: example link points to pre-merge checked-in source, two fingerprints changed after named selector correction, and one relative URL used unsupported template syntax. Corrected owning3 passed; source-pinned example link is verified after source commit."
+  ],
+  "remaining": [
+    "Screen anchor creation, item membership editing and pointer anchor drag",
+    "Pointer navigation, general keyboard focus/history and coordinate morph",
+    "Full AT35/38/65/80 and STEP074/077"
+  ],
+  "reusedEvidence": "Native Geo79d72577 owns centroid/math/anchor/type and all-renderer qualification. Final named-selector correction reuses realistic16 since only the shared lookup is substituted; final unit203 and actual browser1/render parity rerun cover that path. No full normal/coverage or complete installed suite claimed.",
+  "commands": {
+    "focused": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/selection.js all test/unit/interaction-*.test.js test/contracts/source-boundaries.test.js",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned corpus cache",
+    "browser": "node --test --test-name-pattern=\"annotation controls\" test/browser/interaction-session.browser.js",
+    "render": "node .artifacts/annotation-geo-render-check.mjs",
+    "installed": "Node20/22/24 node .artifacts/annotation-geo-consumer.mjs; node .artifacts/annotation-geo-cap-check.mjs",
+    "docs": "docs:generate; test:docs (203/207); corrected owning3; docs:build; test:docs:built; node .artifacts/annotation-geo-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "annotation-geo-browser-final.log.gz",
+      "sha256": "422ee2c310fe77bcf450ece4210fd275cd8e9ec86da3f0698eb5e75a86a2e7ff"
+    },
+    {
+      "path": "annotation-geo-browser.log.gz",
+      "sha256": "4827204f46c9af0fa4e567bb6ce9c790c40baba825b1a0ce5c92d093be50dde9"
+    },
+    {
+      "path": "annotation-geo-build.log.gz",
+      "sha256": "19f59472873e0fbbdc9c049005003a89230a5ef224a79cce7d93afd47c99895d"
+    },
+    {
+      "path": "annotation-geo-built.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
+      "path": "annotation-geo-cap-check.json.gz",
+      "sha256": "af5671b549d57983ff7fb1c5dd5d6aa00eecf6cceb61cc858d73bd1d6434d967"
+    },
+    {
+      "path": "annotation-geo-cap-check.log.gz",
+      "sha256": "5ca2dcf49f9d45fe8285200b45664c5ccc2cc63288706ce6374dd609b03bb616"
+    },
+    {
+      "path": "annotation-geo-cap-check.mjs.gz",
+      "sha256": "0985e7a050009e30357b065bb6353596e4730509ecb0fb4b7d33b38572f03be4"
+    },
+    {
+      "path": "annotation-geo-consumer.mjs.gz",
+      "sha256": "50af6accd96cbbbc5ba276340db6e1a704d069beb447be08364b483af5939b2a"
+    },
+    {
+      "path": "annotation-geo-consumer20-final.log.gz",
+      "sha256": "1973016d56e79c940448c3b983ccf36d12d6ed3e067caaabf38f6dcb2cd9aaed"
+    },
+    {
+      "path": "annotation-geo-consumer20.log.gz",
+      "sha256": "e515bae89fac34045072c28a2a48a95aed7dd9b4e903b65509351ba237e98609"
+    },
+    {
+      "path": "annotation-geo-consumer22-final.log.gz",
+      "sha256": "b7c2939bbd16b0b46bc51eb32f9a5af7f28a0d0cad4cdd80b7ce8e4e7b27a6d7"
+    },
+    {
+      "path": "annotation-geo-consumer24-final.log.gz",
+      "sha256": "dbd2aad46389ca683418a8434734dbc49b5c23ba6a2d0f2ec4a0715bf0a59aa7"
+    },
+    {
+      "path": "annotation-geo-contracts.log.gz",
+      "sha256": "84642ee21750916bf8ba6658cca9ef816ef1893f0e0713fb507f229495c02de1"
+    },
+    {
+      "path": "annotation-geo-coverage-final.log.gz",
+      "sha256": "e9960956f9f53c270e2b8da029110bd50aa5c6b26f7c0f24e58f55b4a6473dbd"
+    },
+    {
+      "path": "annotation-geo-coverage.log.gz",
+      "sha256": "d82610318652e848daa3c92cfccb19f75ddcd94271d2a8460fd06ce56cd74ffb"
+    },
+    {
+      "path": "annotation-geo-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "annotation-geo-doc-browser.mjs.gz",
+      "sha256": "a3921aae6872945159e3eefc682d22b048f9e544baaf40ce78599dc7da1b77c2"
+    },
+    {
+      "path": "annotation-geo-docs-owning.log.gz",
+      "sha256": "e0dbb292c330e1e8ec59f8bbf91a0094dcf4222540d576752616d70dfd5f7c23"
+    },
+    {
+      "path": "annotation-geo-docs.log.gz",
+      "sha256": "44e9fce639ff3f5a876bb64e93e52939a5dfc62a2e4fe52d730bd073ee09011e"
+    },
+    {
+      "path": "annotation-geo-fixed-initial.json.gz",
+      "sha256": "35dd37a5f83d5c2de829b59645da9c0dff5db52ceae37db5f860023bf40e0b20"
+    },
+    {
+      "path": "annotation-geo-fixed.json.gz",
+      "sha256": "87e60d35bf5c727630e3b1ed9d9ed5afdfd86d62cda75e84fbecf8a30b282ed4"
+    },
+    {
+      "path": "annotation-geo-focused.log.gz",
+      "sha256": "46ca1d056321c0bb1bb47b075822d4104b4bfbd2b56490380e2ea7d6d229fd16"
+    },
+    {
+      "path": "annotation-geo-generation.log.gz",
+      "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "annotation-geo-measure20-final.json.gz",
+      "sha256": "3e2c147181436096a3f39b02b0af10d1c08d965c2736f3052bed441b75dbd2bc"
+    },
+    {
+      "path": "annotation-geo-measure20.json.gz",
+      "sha256": "efe0fe4db36416dc55de0116facb154e4ee0bae4e156ab994d08922c39b2a59d"
+    },
+    {
+      "path": "annotation-geo-merge-generation.log.gz",
+      "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "annotation-geo-merge.py.gz",
+      "sha256": "8da7927e20311a40dcd6d757a2757e7fe9c247d8c41c8bc0cfbc1bc3b7842f92"
+    },
+    {
+      "path": "annotation-geo-owner-final.log.gz",
+      "sha256": "6e5265a688e62952b5b9e45a8eb354ee2ed6945870b97d2fb8113c2bb5c6356d"
+    },
+    {
+      "path": "annotation-geo-pack-final.log.gz",
+      "sha256": "127ef9a6487fe1d848c6c9062844fb0041b0d17339b244d2775e76158d219797"
+    },
+    {
+      "path": "annotation-geo-pack.log.gz",
+      "sha256": "35f79870c61c4dde5e2d926456ed639a4b475fa0df8c358f05e664bc22c0a8e0"
+    },
+    {
+      "path": "annotation-geo-qualify.py.gz",
+      "sha256": "85a140ce33934c06ebf8b3e5a49a1d8ef67edda1d26cb0f58f660303085e5423"
+    },
+    {
+      "path": "annotation-geo-realistic.log.gz",
+      "sha256": "e25b602344a73ea31189d30448ed56b632b440a433fc5a85f593ec9853b7f16a"
+    },
+    {
+      "path": "annotation-geo-regenerate.log.gz",
+      "sha256": "1f550ebfa934ff419bfd5e32364cd81d077bc9a3ff479ad8f8ceca971710e72b"
+    },
+    {
+      "path": "annotation-geo-render-check.mjs.gz",
+      "sha256": "f7cc45406606233a8f6419fd4f2e259ed4ebe243fec265779aea69fdcb21a69d"
+    },
+    {
+      "path": "annotation-geo-render-final.log.gz",
+      "sha256": "bdae0f503ce58a785d93710b524f00fd6fdcf0d65a178579a2d14374a551b3a2"
+    },
+    {
+      "path": "annotation-geo-render.log.gz",
+      "sha256": "bdae0f503ce58a785d93710b524f00fd6fdcf0d65a178579a2d14374a551b3a2"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "f67453c6b652fbc8d165dad5dbca5b529908b7860729c79f53e161e0745d062c"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "c822236238461eab7874956adf179c0f1d6f94adadd9d2fd4f3f786e22665020"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "017df807db1b331b0031a6ebd4b221f4077f545f9c62fb5c34f666782062f1db"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "757325e7c563622b86a04a21e968b8a412101c285428678d6d3a5946210f61ac"
+    }
+  ]
+}

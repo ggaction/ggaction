@@ -523,5 +523,29 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor."
+  },
+  {
+    "id": "geographic-annotation",
+    "file": "api/geometry.md",
+    "contains": "text: \"Port\", dy: -12",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed planar port feature.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-annotation-example",
+    "file": "tutorials/geographic-marks.md",
+    "contains": "const labeled = createGeographicMarks()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "labeled",
+    "prerequisites": "Copy the linked geographic-marks program.js and fixture.js into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
   }
 ]

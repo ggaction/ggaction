@@ -1,4 +1,4 @@
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, EditAnnotationOptions, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -200,8 +200,8 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
 );
 /** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
 export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
-/** Nonempty existing Text/label patch; the command target owns the address. Full-only. */
-export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'>;
+/** Nonempty native Text/label or geographic annotation patch; target kind selects its editor. Full-only. */
+export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'> | Omit<EditGeoAnnotationOptions, 'target'>;
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'annotate';
   readonly target: InteractionTarget;

@@ -32,4 +32,15 @@ export function assertAnnotationInteraction(rows, recipe) {
   const reset = labels.editAnnotation({ target: "totals", placement: "auto" });
   assert.equal(reset.markConfigs.totals.labelAuthoring.placement, undefined);
   assert.equal(serializeProgram(p), saved); session.destroy();
+  const geo = chart().createCanvas({width:500,height:360,margin:0})
+    .createGeometryData({id:"places",format:"geojson",coordinateKind:"planar",featureKey:"id",values:{type:"FeatureCollection",features:rows.map(row=>({type:"Feature",id:row.key,properties:{sourceRowIndex:row.sourceRowIndex},geometry:{type:"Point",coordinates:[row.order,row.value]}}))}})
+    .createProjection({id:"map",type:"identity"}).createCoordinate({type:"geo"})
+    .createGeoAnnotation({id:"note",anchor:{type:"feature",geometry:"places",key:first.key},text:first.category});
+  const map = createInteractionSession({program:geo,bindings:[]});
+  map.dispatch({type:"annotate",target:"note",payload:{anchor:{type:"feature",key:last.key},text:last.category,dx:offset[0],dy:offset[1]}});
+  const edited = deserializeProgram(serializeProgram(map.getState().program)), feature = getMarkItems(edited,{target:"note"})[0];
+  assert.deepEqual([feature.geometry[0].properties.x,feature.geometry[0].properties.y],[last.order+offset[0],last.value+offset[1]]);
+  assert.equal(feature.geometry[0].properties.text,last.category);
+  assert.equal(feature.fields.sourceRowIndex,last.sourceRowIndex);
+  assert.deepEqual(geo.semanticSpec.layers[0].geoBinding.anchor.key,first.key); map.destroy();
 }

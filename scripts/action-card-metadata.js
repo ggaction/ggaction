@@ -81,6 +81,8 @@ const explicitLifecycleEditors = Object.freeze({
   editGeoPointMark: ["editGeoPointMark", "removeMark"],
   createGeoLineMark: ["editGeoLineMark", "removeMark"],
   editGeoLineMark: ["editGeoLineMark", "removeMark"],
+  createGeoAnnotation: ["editGeoAnnotation", "removeMark"],
+  editGeoAnnotation: ["editGeoAnnotation", "removeMark"],
   createGraticule: ["editGraticule", "removeMark"],
   editGraticule: ["editGraticule", "removeMark"],
   createProjection: ["editProjection", "removeResource"],
@@ -197,6 +199,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeoAnnotation", "editGeoAnnotation",
   "createGeoLODData", "editGeoLODData",
   "createGeoJoinData", "editGeoJoinData",
   "createGeometryData", "editGeometryData",

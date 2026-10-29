@@ -41,5 +41,29 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](../../../api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/0a217a83b217d228b6a17dc73e1d5979544acdcb/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
+
+## Keep labels attached to their features
+
+The annotation variant of the shared example adds West, Central and East using each stop's typed
+feature key. This module imports the shared example program shown above; keep its `program.js` and
+`fixture.js` together in a `geographic-marks` folder. A negative `dy` places the text sixteen logical
+pixels above its projected anchor.
+
+```javascript
+import { createGeographicMarks } from "./geographic-marks/program.js";
+
+const labeled = createGeographicMarks()
+  .createGeoAnnotation({ id: "west-label", anchor: { type: "feature", geometry: "stops", key: 0 },
+    text: "West", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" })
+  .createGeoAnnotation({ id: "central-label", anchor: { type: "feature", geometry: "stops", key: 1 },
+    text: "Central", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" })
+  .createGeoAnnotation({ id: "east-label", anchor: { type: "feature", geometry: "stops", key: 2 },
+    text: "East", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" });
+```
+
+The anchor follows the original feature when its geometry or projection changes. For an LOD source,
+the annotation remembers the selected original level and key even while a coarser feature represents
+it. Use a position anchor when the location is meaningful without a named feature. Empty text and
+clipped anchors keep their semantic intent while producing no visible text.

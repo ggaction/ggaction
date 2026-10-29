@@ -461,7 +461,7 @@ function recolorConfig(
     if (property === "background" && value === "transparent") {
       return { changed: false, value };
     }
-    const resource = resourcePlotThemeProperty(path, path[0] === "marks" && path[2] === "flowPlot" ? findLayer(program, path[1]) : undefined);
+    const resource = resourcePlotThemeProperty(path, path[0] === "marks" ? findLayer(program, path[1]) : undefined);
     if (resource?.explicit) return { changed: false, value };
     if (resource !== undefined) {
       const target = themeActive ? targetTokens[resource.token] ?? resource.defaultValue : resource.defaultValue;

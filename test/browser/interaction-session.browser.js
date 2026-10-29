@@ -682,3 +682,37 @@ test("canonical annotation buttons preserve data anchors and exact Canvas SVG te
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("geographic annotation controls reuse native feature anchors through keyboard touch and projection changes", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 900, height: 650 } });
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL("examples/inspect-chart/",server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async()=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());
+      const {chart,render}=await import('/src/index.js'),{createInteractionSession}=await import('/src/interaction.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+      document.body.innerHTML='<button id="anchor">Move note</button><button id="project">Change viewport</button><canvas id="map"></canvas><div id="vector"></div>';
+      const program=chart().createCanvas({width:300,height:200,margin:0})
+        .createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'FeatureCollection',features:[{type:'Feature',id:1,properties:{},geometry:{type:'Point',coordinates:[30,40]}},{type:'Feature',id:'1',properties:{},geometry:{type:'Point',coordinates:[80,90]}}]}})
+        .createProjection({id:'projection',type:'identity'}).createCoordinate({type:'geo'})
+        .createGeoAnnotation({id:'note',anchor:{type:'feature',geometry:'places',key:1},text:'Port'});
+      const session=createInteractionSession({program,bindings:[]});window.__geoNote=session;window.__geoNotePhases=[];
+      const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+      session.subscribe(e=>{if(e.phase)window.__geoNotePhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(program);
+      document.querySelector('#anchor').onclick=()=>session.dispatch({type:'annotate',target:'note',payload:{anchor:{type:'feature',key:'1'},text:'Harbor',dx:4,dy:-8}});
+      document.querySelector('#project').onclick=()=>session.dispatch({type:'setViewport',target:'projection',payload:{scalePx:2}});
+    });
+    await page.getByRole('button',{name:'Move note'}).focus();await page.keyboard.press('Enter');
+    const inspect=()=>page.evaluate(()=>{
+      const state=window.__geoNote.getState(),p=state.program.graphicSpec.objects.note.items[0].properties,t=document.querySelector('#vector text');
+      const rgba=document.querySelector('canvas').getContext('2d').getImageData(p.x*2,(p.y-14)*2,100,32).data;
+      return {point:[p.x,p.y],svg:[Number(t.getAttribute('x')),Number(t.getAttribute('y'))],text:t.textContent,key:state.program.semanticSpec.layers[0].geoBinding.anchor.key,ink:[...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)};
+    });
+    assert.deepEqual(await inspect(),{point:[84,82],svg:[84,82],text:'Harbor',key:'1',ink:true});
+    await page.getByRole('button',{name:'Change viewport'}).tap();
+    assert.deepEqual(await inspect(),{point:[164,172],svg:[164,172],text:'Harbor',key:'1',ink:true});
+    await page.getByRole('button',{name:'Move note'}).focus();await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'anchor');
+    assert.deepEqual(await page.evaluate(()=>window.__geoNotePhases),['commit','settled','commit','settled','commit','settled']);
+    await page.evaluate(()=>window.__geoNote.destroy());assertNoBrowserErrors(errors,'geographic annotation controls');await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});

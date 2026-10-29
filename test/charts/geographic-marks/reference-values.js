@@ -13,3 +13,8 @@ const lines = [
 ];
 export const graticule = lines.map(coordinates => ({ type: "path", properties: { fill: "none", stroke: grid.stroke, strokeWidth: 2, opacity: 1, ...stroke,
   commands: commands(coordinates.map(([x, y]) => [x * Math.PI / 180 * projection.scalePx + 320, 240 - y * Math.PI / 180 * projection.scalePx])) } }));
+
+export const annotationText = [
+  { x: 120, y: 114, text: "West" }, { x: 400, y: 204, text: "Central" }, { x: 520, y: 314, text: "East" }
+].map(position => ({ type: "text", properties: { ...position, fill: "#0f172a", opacity: 1, fontSize: 18,
+  fontFamily: "sans-serif", fontWeight: "normal", textAlign: "center", textBaseline: "alphabetic", rotation: 0 } }));

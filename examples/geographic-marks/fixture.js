@@ -9,7 +9,13 @@ export const cities = { type: "FeatureCollection", features: [[120, 130], [400, 
 export const routes = { type: "Feature", id: "service", properties: { name: "Service route" }, geometry: { type: "LineString", coordinates: cities.features.map(feature => feature.geometry.coordinates) } };
 export const projection = { id: "map", type: "equirectangular", scalePx: 180 / Math.PI * 4, translatePx: [320, 240] };
 export const grid = { stepDeg: [40, 20], extentDeg: [[-40, -20], [40, 20]], precisionDeg: 5, stroke: "#475569", strokeWidth: 2 };
+export const annotations = [
+  { id: "west-label", anchor: { type: "feature", geometry: "stops", key: 0 }, text: "West", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" },
+  { id: "central-label", anchor: { type: "feature", geometry: "stops", key: 1 }, text: "Central", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" },
+  { id: "east-label", anchor: { type: "feature", geometry: "stops", key: 2 }, text: "East", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" }
+];
 export const variants = [
+  { id: "annotations", chart: "geographic-annotations", title: "Labels stay attached to the original stops" },
   { id: "planar", chart: "geographic-marks", title: "A district, stops and service route" },
   { id: "graticule", chart: "geographic-grid", title: "Longitude and latitude on one projection" }
 ];

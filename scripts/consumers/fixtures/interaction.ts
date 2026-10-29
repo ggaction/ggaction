@@ -125,6 +125,7 @@ createInteractionSession({program,bindings:[{type:'moveNode',target:'network',se
 
 program.editAnnotation({target:'note',text:'Revised',x:2,y:3,dx:8,layout:false});
 session.dispatch({type:'annotate',target:'note',payload:{text:'Revised',format:'auto',placement:'auto'}});
+session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
 // @ts-expect-error annotation commands do not redirect the native target
 session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'No'}});
 // @ts-expect-error native annotation edit preserves its existing source
