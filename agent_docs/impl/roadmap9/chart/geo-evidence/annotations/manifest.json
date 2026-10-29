@@ -71,8 +71,8 @@
   },
   {
     "file": "annotation-docs-browser-1.log.gz",
-    "sourceBytes": 0,
-    "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "sourceBytes": 79,
+    "sourceSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
   },
   {
     "file": "annotation-docs-build-1.log.gz",
@@ -80,9 +80,29 @@
     "sourceSha256": "337175052f7027a63718dae9d83ae8ae6cb4dab9f9c4d3a1bfc12f8dad0ed018"
   },
   {
+    "file": "annotation-docs-build-final.log.gz",
+    "sourceBytes": 307,
+    "sourceSha256": "8fe72b863856bc9dca5e89a838375d7fe12b5546b975cc8b9bd13fb3dffcd2ed"
+  },
+  {
     "file": "annotation-docs-built-1.log.gz",
     "sourceBytes": 102,
     "sourceSha256": "d987c74fd72089183c88ef51bcc585b346521a83fccb77ebbadce371cc43c67a"
+  },
+  {
+    "file": "annotation-docs-built-final.log.gz",
+    "sourceBytes": 102,
+    "sourceSha256": "d987c74fd72089183c88ef51bcc585b346521a83fccb77ebbadce371cc43c67a"
+  },
+  {
+    "file": "annotation-docs-final.log.gz",
+    "sourceBytes": 46919,
+    "sourceSha256": "5819560efe4f34aae3bc78823a01538339b779ff8433d4913ff8bebe21926ef8"
+  },
+  {
+    "file": "annotation-docs-final.receipt.json.gz",
+    "sourceBytes": 3263,
+    "sourceSha256": "d25456a8c52cfd3e8a0ad57adae74ab721bb3b348f5ed0e22597eb648f956dcd"
   },
   {
     "file": "annotation-docs-preflight.log.gz",
@@ -121,8 +141,13 @@
   },
   {
     "file": "annotation-inventory-repair.log.gz",
-    "sourceBytes": 471,
-    "sourceSha256": "0cfbf46af288893b8943ff14d2648051ea6f7b2291f1d1c01c79dedbd4380184"
+    "sourceBytes": 1721,
+    "sourceSha256": "7f1f1c0a532026bd94acf8a64701a68c059a6722756b001b9ec8df5c5d41435a"
+  },
+  {
+    "file": "annotation-inventory-repair.receipt.json.gz",
+    "sourceBytes": 1464,
+    "sourceSha256": "945a1b5c66766329fbfe2c6fdf5102ec15e8d9b521a4c79fc0fe587e0cdb4eac"
   },
   {
     "file": "annotation-inventory.json.gz",
@@ -145,9 +170,19 @@
     "sourceSha256": "33fc51951bd73c71a1783d97f26f9508ba421ac35c439f962639169563c4e963"
   },
   {
+    "file": "annotation-package-parity-final.log.gz",
+    "sourceBytes": 150,
+    "sourceSha256": "758c5df6711fa1d8dc1c81d3b05ae12ee038c5addad72e4cfaa9b0d2478ebbef"
+  },
+  {
     "file": "annotation-package-parity.mjs.gz",
     "sourceBytes": 1604,
     "sourceSha256": "9f74a72721f7e184c54d73628ea6128b3d356c7bba3f76954d2e78df5a9bcf0d"
+  },
+  {
+    "file": "annotation-provenance-final.log.gz",
+    "sourceBytes": 335,
+    "sourceSha256": "c6c663a2e5976e9a1fc6af86b352ad01241bf169816f94d36584c8d1e8e98058"
   },
   {
     "file": "annotation-public-1.log.gz",
@@ -183,6 +218,16 @@
     "file": "annotation-render-1.log.gz",
     "sourceBytes": 1924,
     "sourceSha256": "fc69acbc4b40afd31c0c1e291ef23c2ccfd7f380c5243cb508684b75cd8311b6"
+  },
+  {
+    "file": "annotation-source-commit.log.gz",
+    "sourceBytes": 9149,
+    "sourceSha256": "5b0471dd51ac89632bedc17cd2f8c98a6c5a9252a835a43569ea7e6e54047d7b"
+  },
+  {
+    "file": "annotation-source-push.log.gz",
+    "sourceBytes": 317,
+    "sourceSha256": "dabc4d866a46242e6c54099b360b74b692f13b5917f558d23a75640b9ae1da4e"
   },
   {
     "file": "annotation-text-owner-1.log.gz",

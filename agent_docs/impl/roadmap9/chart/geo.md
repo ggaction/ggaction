@@ -600,3 +600,10 @@ PNG 9개, Canvas/SVG DPR1/2 browser 3개가 통과했다. 같은 archive
 문서 최종 검증은 같은 source checkpoint 후속 기록으로 닫는다. 새 전체 normal/global coverage
 통과를 주장하지 않는다. 공통 realistic 생성 3파일은 최종 합산에서 parent가 한 번 검증한다.
 Field encodings·Geo labels/guides·camera와 별도 session availability 합산은 남은 작업이다.
+
+
+주석 source는 `d665f6bbc`로 고정·push했다. 이후 source provenance/LLM pin과 evidence만
+갱신해 문서 source 전체 200/200, 수정된 inventory owning 7/7, package contract 7/7을
+확인했다. Built172페이지/1525 selective artifacts와 전체320/390/768px containment,
+검색·접근성도 통과했다. Source pin만 갱신한 최종 build에서 링크·hash를 다시 확인하며,
+새 runtime이나 타입 변경 없이 동일 qualified tar의1033개 entry byte parity를 유지한다.

@@ -66,7 +66,10 @@
         "pass": 9,
         "failure": "Stale ledger expected 37761; canonical requirements count is 37978."
       },
-      "repair": "pending canonical owning file"
+      "repair": {
+        "tests": 7,
+        "pass": 7
+      }
     },
     "sourceDocs": {
       "initial": {
@@ -83,12 +86,18 @@
         "pass": 29,
         "remaining": "Generated machine/LLM outputs were stale after card example repair; regenerated before final source-pinned run."
       },
-      "final": "pending source pin"
+      "final": {
+        "tests": 200,
+        "pass": 200,
+        "sourcePinned": true
+      }
     },
     "builtDocs": {
       "pages": 172,
       "selectiveArtifacts": 1525,
-      "browser": "pending"
+      "browser": "passed desktop search/accessibility and all pages at 320/390/768px",
+      "final": true,
+      "provenanceFollowup": "Browser inspected unchanged content before source-pin-only generation; final rebuild and link/hash checks validate updated provenance."
     },
     "packageContracts": {
       "tests": 7,
@@ -307,5 +316,7 @@
     "Field encodings, geographic labels/guides and native camera consumers remain subsequent STEP045/046 scope.",
     "Interaction original-key availability is implemented independently in 41621fb78 and remains a parent integration obligation.",
     "Parent will run shared realistic-lifecycle-factor-effects, realistic-scenario-generator and realistic-scenario-generation-isolation once on final integrated sources."
-  ]
+  ],
+  "sourceCommit": "d665f6bbcdd97ed5e5d22ce63c73d5b3afdbfaa4",
+  "metadataFollowup": "Generated source provenance and LLM pins plus evidence only; packed runtime/declaration bytes remain identical to the qualified artifact."
 }
