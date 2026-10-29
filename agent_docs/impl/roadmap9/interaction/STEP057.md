@@ -13,7 +13,8 @@
 - [x] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
 - [x] D2: nearest screen/data metric 및 qualification
-- [ ] D: delete/hidden reconciliation·event, 자동 bindings
+- [x] D3: delete/hidden reconciliation·event 및 dormant linked endpoint qualification
+- [ ] D4: 자동 click/toggle bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
 
 STEP050–056은 다른 원안 카드이며 이 기록의 완료 범위가 아니다. STEP077 전체 목표는 계속 진행 중이다.
@@ -310,3 +311,26 @@ geometry가 없으므로 keep-hidden 보존만 지원하고 명시 drop은 닫�
 새15 lifecycle 회귀와 기존 selection/link/nearest/session, source/type/discovery28, 실제 데이터
 5종×3grain16 및 Canvas/SVG browser7의 검증을 진행했다. 최종 coverage·installed tar·문서와
 증거를 닫기 전이며 automatic click/toggle, 후행 gesture/history 및077 전체 완료는 아니다.
+
+
+### D3 검증 checkpoint
+
+Source `7980936d7`의 [qualification](reconciliation-evidence/qualification.json)과
+[독립 expected/actual/diff](reconciliation-evidence/expected-actual-diff.json)를 보존했다.
+새15 lifecycle 회귀 포함 focused106, source/type/discovery28, package13, 실제 데이터16
+(5종×3grain 각각 두 정책) 및 실제 Canvas/SVG browser7이 통과했다. 신규 reconciliation은
+100/100/100, 변경 bindings100/96.30/100·selection100/98.78/100·session100/97.12/100이며
+95/90/100 critical floor를 유지했다. Graph node/edge, Partition focus, 원본 data revision,
+child remove/return, native pruning revision, dormant union/intersection 및 원자 실패를 검증했다.
+
+같은 archive `99537cec5c914366279ffdcf85197f6b549712b2ff8d371f20c1ea12f87367d5`로
+Node20/22/24 각각3runtime·strict types·4 entry bundles가 통과했다. Archive의 Node22packed는
+1,322,981, Node20 동일 source의 dry measurement는1,325,924, entries919/unpacked6,066,891이다.
+최대 interaction97,221gzip과 search959,574bytes의 최소 cap 조정을 기록했다. 최초 caps 실패에서
+runtime/type는 통과했음을 구분하고, 최종 whole consumer exit0 로그도 별도 보존했다.
+
+문서 source184, 최종 source provenance regeneration 뒤 owning29, build164페이지/1411 artifacts가
+통과했다. 동일 prose/CSS의320/390/768/1440 검사 Axe0/overflow0와390px 시각 확인을 재사용한다.
+잘못된 임시 heading locator·없는 개별 provenance test 경로의 실패와 실제 owning 검사 수정 결과를
+함께 남겼다. 전체 unit/coverage/installed/render sweep 또는 자동 bindings·history·STEP077 완료로
+확대하지 않는다. 다음은 기존 selection owner를 재사용하는 자동 click/toggle binding이다.
