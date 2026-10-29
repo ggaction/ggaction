@@ -786,3 +786,14 @@ Primitive는 기존 field 예제의 세 원 크기를 유지하고 첫 조건의
 East 빨강만 바꾼다. 기존 전체 시각 승인 아래 같은 4backend primitive parity와 browser DPR1/2를
 검증했으며 새 renderer policy는 없다. Source-only schema adapter는 기존 geo critical family의
 95/90/100 하한을 그대로 적용한다. 전체 unit/global coverage를 새로 통과했다고 주장하지 않는다.
+
+조건부 source `cc5e6f752`를 푸시한 뒤 문서203/203, built172페이지·1529개 selective LLM
+artifact, desktop 검색과320·390·768px 모든 페이지 containment를 통과했다. Geo owner190개와
+19개 기존 critical floor95/90/100, native conditional116개, 실제5dataset×3새recipe를 포함한
+32개 realistic, 네 renderer12개 및 browser6개를 확인했다. 고정 archive
+`590ebcff51ae88ce9d029478d42e6a8655383579a8f8357a96f0794ec4a72d68`의 Node20·22·24
+설치에서 각각6개 geographic encoding case, strict types와5개 browser bundle이 통과했고
+1040개 canonical package input parity는 불일치가 없었다. 최초실패와 수리 결과는
+[조건부 증거](geo-evidence/conditional/status.json)에 별도로 보존한다. 전체 unit/global coverage나
+전수 installed 결과를 대신 주장하지 않는다. 다음 feature/graticule labels 및 후행session/player
+연계 의무는 계속 유지한다.
