@@ -214,8 +214,11 @@ function smallPolicy(overrides = {}) {
   };
 }
 
+let publicInventoryPromise;
+const publicInventory = () => publicInventoryPromise ??= buildPublicOptionInventory(actionCards);
+
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
-  const inventory = await buildPublicOptionInventory(actionCards);
+  const inventory = await publicInventory();
 
   assert.equal(inventory.counts.publicActions, 360);
   assert.equal(inventory.counts.topLevelOptionPaths, 3495);
@@ -531,7 +534,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10977 }
+    { "redacted-array": 11376 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -740,7 +743,7 @@ test("passes only trace-backed action and recursive option evidence plus observe
 });
 
 test("observes collection and named-axis array parents through recursive trace count aliases", async () => {
-  const inventory = await buildPublicOptionInventory(actionCards);
+  const inventory = await publicInventory();
   const ledger = createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: ["renderer:svg"],

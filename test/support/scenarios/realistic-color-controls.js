@@ -62,9 +62,10 @@ export function appendRealisticColorControls(program) {
     const color={field:"category",fieldType:"nominal",scale:{type:"ordinal",range:realisticPaletteRange(ordinal)}};
     for (const action of ["createBoxPlot", "createGradientPlot"]) {
       const owner=`color-control-${action}-${ordinal}`;
-      next=next[action]({id:owner,...(action === "createGradientPlot" ? {target:`color-control-createBoxPlot-${ordinal}`} : {}),data:"analysisRows",coordinate:`${owner}-coordinate`,
-        x:{field:"category",fieldType:"nominal",scale:{id:`${owner}-x`,type:"band"}},
-        y:{field:"positiveY",fieldType:"quantitative",scale:{id:`${owner}-y`,type:"linear"}},
+      const frameOwner = `color-control-createBoxPlot-${ordinal}`;
+      next=next[action]({id:owner,...(action === "createGradientPlot" ? {target:frameOwner} : {}),data:"analysisRows",coordinate:`${frameOwner}-coordinate`,
+        x:{field:"category",fieldType:"nominal",scale:{id:`${frameOwner}-x`,type:"band"}},
+        y:{field:"positiveY",fieldType:"quantitative",scale:{id:`${frameOwner}-y`,type:"linear"}},
         color:{...color,scale:{...color.scale,id:`${owner}-color`}},guides:false});
       if(action === "createGradientPlot")next=next.removeMark({target:owner}).removeMark({target:`color-control-createBoxPlot-${ordinal}`});
     }

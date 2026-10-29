@@ -1,4 +1,4 @@
-import { directProgramOperations, directProgramTrace } from "../support/program-traces.js";
+import { directProgramOperations, directProgramTrace, programTraceOwners } from "../support/program-traces.js";
 import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -44,7 +44,8 @@ import {
   realisticDirectLifecycleCoverageFactors,
   realisticDirectLifecycleErrorBandFailure,
   realisticDirectLifecycleReplayCorrectedRequirementIds,
-  realisticDirectLifecycleRequirementTargets
+  realisticDirectLifecycleRequirementTargets,
+  realisticDirectPaletteRangeProgram
 } from "../support/scenarios/realistic-direct-lifecycle-coverage-recipes.js";
 
 const WITNESS_DATASETS = Object.freeze([
@@ -142,10 +143,12 @@ const ALTERNATE_POLAR_FORMAT_PATHS = Object.freeze([
   ["editThetaAxis", "ticksAndLabels.labels.format"],
   ["editThetaAxisLabels", "format"]
 ]);
-let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
-  new URL("../../knowledge/action-cards.json", import.meta.url),
-  "utf8"
-)));
+let inventoryPromise;
+function publicInventory() {
+  return inventoryPromise ??= buildPublicOptionInventory(JSON.parse(readFileSync(
+    new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"
+  )));
+}
 const baselineAuditUrl = new URL(
   "../../.artifacts/scenarios/realistic/audits/" +
   "2026-08-15T07-51-53-862Z-80731-9bd4261e/report.json",
@@ -491,7 +494,7 @@ async function buildProjection() {
   if (projectionPromise !== undefined) return projectionPromise;
   projectionPromise = (async () => {
     assert.notEqual(baselineAudit, undefined, "the corrected baseline audit is available");
-    const inventory = await inventoryPromise;
+    const inventory = await publicInventory();
     const targetIds = realisticDirectLifecycleRequirementTargets(
       inventory,
       baselineAudit.requirements
@@ -689,7 +692,7 @@ test(CARTESIAN_GUIDE_SWEEP_TEST_NAME, () => {
       const directTrace = program.trace.children ?? [];
       assert.ok(directTrace.some(entry =>
         entry.op === "createCoordinate" &&
-        entry.args.id === "cartesianWitness"
+        entry.args.id === "main" && entry.args.layersCount === 1
       ), `${dataset} createCoordinate witness trace`);
       assert.ok(directTrace.some(entry =>
         entry.op === "encodeX" &&
@@ -789,6 +792,181 @@ test("materializes every alternate direct coverage-tail witness", () => {
   }
 });
 
+test("preflights independent selection witness panels on three authentic datasets", () => {
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-selection-coverage"
+  );
+  for (const dataset of ["tt-penguins", "tt-christmas-songs", "tt-spiders"]) {
+    try {
+      const factors = { dataset, profile: recipe.factorsForDataset(dataset).profile[0] };
+      const program = recipe.build(factors), metadata = recipe.describe(factors);
+      const owners = programTraceOwners(program).slice(1);
+      assert.equal(owners.length, 28, dataset);
+      const rows = program.children.selectionPoints.semanticSpec.datasets[0].values;
+      for (const owner of owners) {
+        assert.equal(owner.semanticSpec.layers.length, 1, dataset);
+        assert.deepEqual(owner.semanticSpec.datasets[0].values, rows, dataset);
+        const yScales = new Set(owner.semanticSpec.layers.flatMap(layer =>
+          [layer.encoding?.y?.scale, layer.encoding?.y2?.scale].filter(Boolean)
+        ));
+        assert.ok(yScales.size <= 1, dataset);
+      }
+      const direct = directProgramTrace(program);
+      assert.equal(direct.filter(entry => entry.op === "filterMarks").length, 9);
+      assert.equal(direct.filter(entry => entry.op === "highlightMarks").length, 45);
+      assert.equal(direct.filter(entry => entry.op === "removeMarkHighlight").length, 45);
+      assert.equal(direct.filter(entry => entry.op === "selectMarks").length, 1);
+      assert.ok(direct.some(entry => entry.op === "createHistogram"));
+      assert.ok(direct.some(entry => entry.op === "encodeYOffset"));
+      assert.ok(direct.some(entry => entry.op === "encodeTheta"));
+      assertTruthfulMetadata(recipe, factors, program, metadata, dataset);
+      assertGraphicIntegrity(program, dataset);
+      assertAnalyticLayerIntegrity(program, dataset);
+      assertSvgIntegrity(renderToSVG(program), dataset);
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+});
+
+const INDEPENDENT_LIFECYCLE_PANELS = [
+  { family: "data-mark", owner: "numericMarks", count: 3, operations: {
+    createTextMark: 25, createAreaMark: 10,
+    createLineMark: 11, createBarMark: 1, createRuleMark: 1
+  } },
+  { family: "statistical", owner: "error-x-stat-0", count: 43, operations: {
+    createErrorBar: 21, editErrorBar: 4, createErrorBand: 20,
+    editErrorBand: 1, editBoxPlot: 10, editGradientPlot: 10
+  } },
+  { family: "derived-encoding", owner: "horizonOwner", count: 15, operations: {
+    encodeHorizon: 6, editHorizon: 6, encodeHistogram: 5,
+    encodeDensity: 8, editDensity: 7
+  } },
+  { family: "regression", owner: "regressionOwner", count: 12, operations: {
+    createRegression: 11, editRegression: 12, createRegressionData: 6,
+    createRegressionBand: 10, createRegressionLine: 10,
+    editRegressionBand: 10, editRegressionLine: 9
+  } },
+  { family: "miscellaneous", owner: "bindingPoints", count: 9, operations: {
+    createTimeUnitData: 45, bindMarkData: 1, orderCategories: 1
+  } }
+];
+
+for (const witness of INDEPENDENT_LIFECYCLE_PANELS) {
+  for (const dataset of ["tt-penguins", "tt-global-temperatures", "tt-nuclear-explosions"]) {
+    test(`preflights independent ${witness.family} witness panels on ${dataset}`, () => {
+      const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+        value.id === `realistic-direct-lifecycle-${witness.family}-coverage`
+      );
+        try {
+          const factors = { dataset, profile: recipe.factorsForDataset(dataset).profile[0] };
+          const program = recipe.build(factors), metadata = recipe.describe(factors);
+          const owners = Object.values(program.children);
+          assert.equal(owners.length, witness.count, `${dataset}/${witness.family}`);
+          const rows = program.children[witness.owner].semanticSpec.datasets.find(value =>
+            value.id === "analysisRows"
+          ).values;
+          assert.equal(rows.length, metadata.provenance.sourceRowCount);
+          for (const owner of owners) {
+            assert.deepEqual(owner.semanticSpec.datasets.find(value =>
+              value.id === "analysisRows"
+            ).values, rows, `${dataset}/${witness.family} source rows`);
+            const yScales = new Set(owner.semanticSpec.layers.flatMap(layer => {
+              const coordinate = owner.semanticSpec.coordinates.find(value => value.id === layer.coordinate);
+              if (coordinate?.type !== "cartesian" ||
+                  (layer.mark.type === "text" && layer.source !== undefined)) return [];
+              return ["y", "y2"].flatMap(channel => {
+                const binding = layer.encoding?.[channel];
+                return binding?.field !== undefined &&
+                    layer.derivedBindings?.plotSnapshot?.[channel] === undefined
+                  ? [binding.scale] : [];
+              });
+            }));
+            assert.ok(yScales.size <= 1, `${dataset}/${witness.family} one local data Y`);
+          }
+          const direct = directProgramTrace(program);
+          for (const [op, count] of Object.entries(witness.operations)) {
+            assert.equal(direct.filter(entry => entry.op === op).length, count,
+              `${dataset}/${witness.family}/${op}`);
+          }
+          const actions = directProgramOperations(program);
+          assert.ok(recipe.expectedDirectActions.every(action => actions.has(action)));
+          if (witness.family === "regression") {
+            const owner = program.children.directComponentSource;
+            assert.equal(owner.semanticSpec.layers.length, 21);
+            assert.ok(owner.semanticSpec.layers.every(layer =>
+              layer.encoding.y.scale === "direct-regression-y"));
+          }
+          if (witness.family === "data-mark") {
+            for (const owner of owners) {
+              assert.equal(owner.trace.children.filter(entry =>
+                entry.op === "createDensityData").length, 8);
+            }
+            assert.ok(program.children.numericMarks.semanticSpec.layers.every(layer =>
+              ["positiveY", "baseline"].includes(layer.encoding.y.field)));
+            assert.ok(program.children.intervalPositions.semanticSpec.layers.every(layer =>
+              layer.encoding.y.field === "position"));
+            assert.equal(program.children.aggregateBars.semanticSpec.layers[0].encoding.y.scale,
+              "maximal-bar-y");
+          }
+          if (witness.family === "miscellaneous") {
+            assert.deepEqual([...new Set(rows.map(row => row.horizonGroup))], ["All observations"]);
+            assert.ok(metadata.provenance.transformations.some(value =>
+              value.op === "overall-horizon-cohort-projection" && value.derivedField === "horizonGroup"));
+            const horizons = direct.filter(entry => entry.op === "createHorizonPlot");
+            assert.ok(horizons.every(entry =>
+              entry.args.groupBy === false || entry.args.groupBy === "horizonGroup"));
+            if (dataset === "tt-nuclear-explosions") {
+              assert.equal(rows.length, 160);
+              assert.deepEqual(Object.fromEntries([...new Set(rows.map(row => row.group))].map(group =>
+                [group, rows.filter(row => row.group === group).length]
+              )), { WR: 117, WE: 20, SE: 6, FMS: 3, SAM: 1, "PNE:PLO": 4, PNE: 8, "WR/SE": 1 });
+            }
+          }
+          assertTruthfulMetadata(recipe, factors, program, metadata, dataset);
+          assertGraphicIntegrity(program, dataset);
+          assertAnalyticLayerIntegrity(program, dataset);
+          assertSvgIntegrity(renderToSVG(program), dataset);
+        } finally {
+          releaseTidyTuesdaySourceCache(dataset);
+          collectGarbage();
+        }
+    });
+  }
+}
+
+test("finishes temporary palette consumers before retaining the original scatter observations", () => {
+  const dataset = "tt-penguins";
+  try {
+    const { program, provenance } = realisticDirectPaletteRangeProgram(dataset);
+    const direct = directProgramTrace(program);
+    assert.equal(direct.at(-1).op, "createScatterPlot");
+    assert.deepEqual(direct.at(-1).args, {
+      id: "paletteObservations", data: "analysisRows",
+      coordinate: "palette-observations-coordinate",
+      x: "positiveX", y: "positiveY", guides: false
+    });
+    assert.ok(direct.some(entry =>
+      entry.op === "createBarPlot" && entry.args.id === "color-control-position-bar"));
+    assert.ok(direct.some(entry =>
+      entry.op === "removeMark" && entry.args.target === "color-control-position-bar"));
+    assert.ok(direct.some(entry => entry.op === "createDensityPlot"));
+    assert.deepEqual(program.semanticSpec.layers.map(layer => layer.id), ["paletteObservations"]);
+    const rows = program.semanticSpec.datasets.find(value => value.id === "analysisRows").values;
+    const createData = direct.find(entry => entry.op === "createData" && entry.args.id === "analysisRows");
+    assert.equal(rows.length, provenance.sourceRowCount);
+    assert.equal(createData.args.valuesCount, rows.length);
+    assert.equal(new Set(rows.map(row => row.sourceRowIndex)).size, rows.length);
+    assertGraphicIntegrity(program, dataset);
+    assertAnalyticLayerIntegrity(program, dataset);
+    assertSvgIntegrity(renderToSVG(program), dataset);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
 test("keeps authentic Christmas Song selection lines materially continuous", () => {
   const dataset = "tt-christmas-songs";
   const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
@@ -799,7 +977,7 @@ test("keeps authentic Christmas Song selection lines materially continuous", () 
   try {
     const program = recipe.build(factors);
     const metadata = recipe.describe(factors);
-    const rows = program.semanticSpec.datasets.find(value =>
+    const rows = program.children.selectionPoints.semanticSpec.datasets.find(value =>
       value.id === "analysisRows"
     ).values;
     assert.equal(rows.length, 124);
@@ -838,10 +1016,10 @@ test("keeps authentic Christmas Song selection lines materially continuous", () 
       "channel-selection-strokeDash",
       "selectionLine"
     ]);
-    const grouped = program.trace.children.filter(value =>
+    const grouped = directProgramTrace(program).filter(value =>
       value.op === "encodeGroup" && continuousTargets.has(value.args.target)
     );
-    const ordered = program.trace.children.filter(value =>
+    const ordered = directProgramTrace(program).filter(value =>
       value.op === "encodeX" && continuousTargets.has(value.args.target)
     );
     assert.equal(grouped.length, continuousTargets.size);
@@ -870,7 +1048,7 @@ test("falls back to authentic source order for one-measure Spiders selection", (
   try {
     const program = recipe.build(factors);
     const metadata = recipe.describe(factors);
-    const rows = program.semanticSpec.datasets.find(value =>
+    const rows = program.children.selectionPoints.semanticSpec.datasets.find(value =>
       value.id === "analysisRows"
     ).values;
     assert.equal(rows.length, 160);
@@ -926,7 +1104,7 @@ test("locks the disjoint corrected hard-requirement partition at 918", async () 
   assert.equal(new Set(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS).size, 28);
   if (baselineAudit === undefined) return;
 
-  const inventory = await inventoryPromise;
+  const inventory = await publicInventory();
   const targets = realisticDirectLifecycleRequirementTargets(
     inventory,
     baselineAudit.requirements
@@ -1155,7 +1333,7 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
         captured = true;
         const metadata = recipe.describe(factors);
         const provenance = metadata.provenance;
-        const rows = program.semanticSpec.datasets.find(value =>
+        const rows = program.children.regressionOwner.semanticSpec.datasets.find(value =>
           value.id === "analysisRows"
         ).values;
         const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset).map(entry => [
@@ -1236,7 +1414,9 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
         assertAnalyticLayerIntegrity(program, dataset);
         assertSvgIntegrity(renderToSVG(program), dataset);
         semanticDigest = createHash("sha256")
-          .update(JSON.stringify(withoutAllocatedIdentity(program.semanticSpec)))
+          .update(JSON.stringify(withoutAllocatedIdentity(
+            programTraceOwners(program).map(owner => owner.semanticSpec)
+          )))
           .digest("hex");
         provenanceSnapshot = provenance;
       }
@@ -1252,7 +1432,9 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
     const repeated = recipe.build(factors);
     const repeatedMetadata = recipe.describe(factors);
     assert.equal(
-      createHash("sha256").update(JSON.stringify(withoutAllocatedIdentity(repeated.semanticSpec))).digest("hex"),
+      createHash("sha256").update(JSON.stringify(withoutAllocatedIdentity(
+        programTraceOwners(repeated).map(owner => owner.semanticSpec)
+      ))).digest("hex"),
       semanticDigest
     );
     assert.deepEqual(repeatedMetadata.provenance, provenanceSnapshot);
@@ -1695,7 +1877,7 @@ test("uses one truthful horizon cohort for sparse Nuclear Explosion purposes", (
       captureProgram(program) {
         captured = true;
         const metadata = recipe.describe(factors);
-        const rows = program.semanticSpec.datasets.find(value =>
+        const rows = program.children["horizonOwner"].semanticSpec.datasets.find(value =>
           value.id === "analysisRows"
         ).values;
         const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset).map(entry => [
@@ -1752,10 +1934,10 @@ test("uses one truthful horizon cohort for sparse Nuclear Explosion purposes", (
             .digest("hex"),
           metadata.provenance.sourceSelectionSha256
         );
-        const encodedHorizons = program.trace.children.filter(value =>
+        const encodedHorizons = directProgramTrace(program).filter(value =>
           value.op === "encodeHorizon"
         );
-        const editedHorizons = program.trace.children.filter(value =>
+        const editedHorizons = directProgramTrace(program).filter(value =>
           value.op === "editHorizon"
         );
         assert.equal(encodedHorizons.length, 6);
@@ -1847,7 +2029,7 @@ test(DERIVED_SWEEP_TEST_NAME, () => {
         captureProgram(program) {
           captured = true;
           const metadata = recipe.describe(factors);
-          const rows = program.semanticSpec.datasets.find(value =>
+          const rows = program.children["horizonOwner"].semanticSpec.datasets.find(value =>
             value.id === "analysisRows"
           ).values;
           const horizonGroups = new Map();
@@ -1885,10 +2067,10 @@ test(DERIVED_SWEEP_TEST_NAME, () => {
             metadata.provenance.sourceSelectionSha256,
             dataset
           );
-          const encodedHorizons = program.trace.children.filter(value =>
+          const encodedHorizons = directProgramTrace(program).filter(value =>
             value.op === "encodeHorizon"
           );
-          const editedHorizons = program.trace.children.filter(value =>
+          const editedHorizons = directProgramTrace(program).filter(value =>
             value.op === "editHorizon"
           );
           assert.equal(encodedHorizons.length, 6, `${dataset} encoded horizons`);
@@ -1909,7 +2091,7 @@ test(DERIVED_SWEEP_TEST_NAME, () => {
             `${dataset} ungrouped edit witness`
           );
           assert.equal(
-            program.trace.children.filter(value =>
+            directProgramTrace(program).filter(value =>
               value.op === "encodeHistogram"
             ).length,
             5,
@@ -1981,7 +2163,7 @@ test("uses one truthful statistical cohort for sparse Nuclear Explosion bands", 
       captureProgram(program) {
         captured = true;
         const metadata = recipe.describe(factors);
-        const rows = program.semanticSpec.datasets.find(value =>
+        const rows = program.children["error-x-stat-0"].semanticSpec.datasets.find(value =>
           value.id === "analysisRows"
         ).values;
         assert.equal(rows.length, 160);
@@ -2028,13 +2210,13 @@ test("uses one truthful statistical cohort for sparse Nuclear Explosion bands", 
             .digest("hex"),
           metadata.provenance.sourceSelectionSha256
         );
-        const bands = program.trace.children.filter(value =>
+        const bands = directProgramTrace(program).filter(value =>
           value.op === "createErrorBand"
         );
         assert.equal(bands.length, 20);
         assert.equal(bands.filter(value => value.args.groupBy === "bandGroup").length, 12);
         assert.equal(bands.filter(value => value.args.groupBy === undefined).length, 8);
-        const intervalBars = program.trace.children.filter(value =>
+        const intervalBars = directProgramTrace(program).filter(value =>
           value.op === "createErrorBar" && /error-[xy]-stat-/u.test(value.args.id)
         );
         assert.equal(intervalBars.length, 8);
@@ -2127,7 +2309,7 @@ test(STATISTICAL_SWEEP_TEST_NAME, () => {
         captureProgram(program) {
           captured = true;
           const metadata = recipe.describe(factors);
-          const rows = program.semanticSpec.datasets.find(value =>
+          const rows = program.children["error-x-stat-0"].semanticSpec.datasets.find(value =>
             value.id === "analysisRows"
           ).values;
           const bandGroups = new Map();
@@ -2143,7 +2325,7 @@ test(STATISTICAL_SWEEP_TEST_NAME, () => {
             value.op === "overall-statistical-cohort-projection"
           );
           assert.notEqual(cohort, undefined, `${dataset} cohort provenance`);
-          const bands = program.trace.children.filter(value =>
+          const bands = directProgramTrace(program).filter(value =>
             value.op === "createErrorBand"
           );
           assert.equal(bands.length, 20, `${dataset} error bands`);
@@ -2235,7 +2417,7 @@ test(REGRESSION_SWEEP_TEST_NAME, () => {
       const factors = { dataset, profile };
       const program = recipe.build(factors);
       const metadata = recipe.describe(factors);
-      const rows = program.semanticSpec.datasets.find(value =>
+      const rows = program.children.regressionOwner.semanticSpec.datasets.find(value =>
         value.id === "analysisRows"
       ).values;
       const groups = new Map();

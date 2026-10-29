@@ -2235,7 +2235,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
     "action-facet-grid-lifecycle": ["create", "edit", "compose"],
     "action-repeat-charts-lifecycle": ["create", "compose"],
-    "action-direct-data-resources": ["create", "edit", "filter", "remove"],
+    "action-direct-data-resources": ["create", "edit", "filter", "remove", "compose"],
     "action-direct-point-text": ["create", "edit", "remove"],
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
@@ -2245,7 +2245,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-direct-guide-aggregates": ["create", "edit"],
     "action-direct-axis-facades": ["create"],
     "action-direct-axis-parts": ["create"],
-    "action-direct-polar-parts": ["create", "edit", "remove"]
+    "action-direct-polar-parts": ["create", "edit", "remove", "compose"]
   }[base.id];
   const unit = measure?.unit === undefined ? "" : ` (${measure.unit})`;
   const sampleText = view.sample === undefined

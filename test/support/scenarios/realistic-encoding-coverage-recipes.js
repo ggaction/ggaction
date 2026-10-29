@@ -214,10 +214,10 @@ function positionPanelCollection(base) {
       active = id;
       return programs.get(id) ?? base;
     },
-    finish(program) {
+    finish(program, { id = "positionPanels", extra = [] } = {}) {
       save(program);
-      return encodingPanelGrid("positionPanels", [...programs].map(([id, value]) =>
-        ({ id, program: value })));
+      return encodingPanelGrid(id, [...[...programs].map(([id, value]) =>
+        ({ id, program: value })), ...extra]);
     }
   };
 }
@@ -599,7 +599,8 @@ function buildPositionCoverage(factors) {
   return finish(panels.finish(program), factors, "direct-position-encoding-options");
 }
 
-function positionedPoint(program, id, shape = "circle") {
+function positionedPoint(program, id, shape = "circle", panels) {
+  program = panels.start(program, id);
   return program.createPointMark({ id, data: "analysisRows", shape })
     .encodeX({
       target: id, coordinate: "appearance",
@@ -611,12 +612,12 @@ function positionedPoint(program, id, shape = "circle") {
     });
 }
 
-function addColorScales(program) {
+function addColorScales(program, panels) {
   let next = program;
   for (const [index, interpolate] of INTERPOLATIONS.entries()) {
     const id = `sequential-${slug(interpolate)}`;
     const type = index === 0 ? "log" : index === 1 ? "symlog" : index === 2 ? "sqrt" : "sequential";
-    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
+    next = conditionalEncoding(positionedPoint(next, id, "circle", panels), "encodeColor", {
       target: id,
       field: "y",
       fieldType: "quantitative",
@@ -638,7 +639,7 @@ function addColorScales(program) {
       }
     });
   }
-  next = conditionalEncoding(positionedPoint(next, "powered-color"), "encodeColor", {
+  next = conditionalEncoding(positionedPoint(next, "powered-color", "circle", panels), "encodeColor", {
     target:"powered-color",field:"y",fieldType:"quantitative",
     scale:{id:"powered-color-scale",type:"pow",exponent:2,interpolate:"lab",whitePoint:"d50",range:realisticPaletteRange(0)}
   }).editColorScale({target:"powered-color",whitePoint:"d50",range:realisticPaletteRange(1)})
@@ -655,7 +656,7 @@ function addColorScales(program) {
   ];
   for (const [index, range] of rangePalettes.entries()) {
     const id = `range-palette-color-${index}`;
-    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
+    next = conditionalEncoding(positionedPoint(next, id, "circle", panels), "encodeColor", {
       target: id, field: "y", fieldType: "quantitative",
       scale: { id: `${id}-scale`, type: "sequential", range }
     });
@@ -667,7 +668,7 @@ function addColorScales(program) {
   ];
   for (const [index, scale] of discrete.entries()) {
     const id = `discretized-${scale.type}`;
-    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
+    next = conditionalEncoding(positionedPoint(next, id, "circle", panels), "encodeColor", {
       target: id, field: "y", fieldType: "quantitative",
       scale: {
         id: `${id}-color`, ...scale,
@@ -677,11 +678,11 @@ function addColorScales(program) {
       }
     });
   }
-  next = conditionalEncoding(positionedPoint(next, "categorical-color"), "encodeColor", {
+  next = conditionalEncoding(positionedPoint(next, "categorical-color", "circle", panels), "encodeColor", {
     target: "categorical-color", field: "category", fieldType: "nominal",
     palette: { name: "tableau20", count: 8 }
   });
-  next = conditionalEncoding(positionedPoint(next, "top-level-sequential-palette"), "encodeColor", {
+  next = conditionalEncoding(positionedPoint(next, "top-level-sequential-palette", "circle", panels), "encodeColor", {
     target: "top-level-sequential-palette", field: "y", fieldType: "quantitative",
     palette: { name: "viridis", extent: [0.1, 0.9] },
     scale: {
@@ -690,7 +691,7 @@ function addColorScales(program) {
       unknown: "#94a3b8"
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "ordinal-color"), "encodeColor", {
+  next = conditionalEncoding(positionedPoint(next, "ordinal-color", "circle", panels), "encodeColor", {
     target: "ordinal-color", field: "group", fieldType: "ordinal",
     palette: "accent",
     scale: {
@@ -698,7 +699,7 @@ function addColorScales(program) {
       unknown: "#94a3b8"
     }
   });
-  return conditionalEncoding(positionedPoint(next, "temporal-color"), "encodeColor", {
+  return conditionalEncoding(positionedPoint(next, "temporal-color", "circle", panels), "encodeColor", {
     target: "temporal-color", field: "time", fieldType: "temporal",
     palette: "cividis",
     scale: {
@@ -722,7 +723,8 @@ function completeBar(program, id, field = "y", data = "analysisRows") {
     .encodeBarWidth({ target: id, band: 0.72 });
 }
 
-function positionedLine(program, id) {
+function positionedLine(program, id, panels) {
+  program = panels.start(program, id);
   return program.createLineMark({ id, data: "analysisRows" })
     .encodeX({
       target: id,
@@ -833,108 +835,108 @@ function addColorAggregatesAndLayouts(program) {
   return panels;
 }
 
-function addAppearanceEncodings(program) {
-  let next = conditionalEncoding(positionedPoint(program, "opacity-false"), "encodeOpacity", {
+function addAppearanceEncodings(program, panels) {
+  let next = conditionalEncoding(positionedPoint(program, "opacity-false", "circle", panels), "encodeOpacity", {
     target: "opacity-false", field: "opacity", fieldType: "quantitative",
     scale: {
       id: "opacity-false-scale", type: "linear", domain: "auto", range: "auto",
       nice: false, zero: false, clamp: false, reverse: false, unknown: 0.25
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "opacity-true"), "encodeOpacity", {
+  next = conditionalEncoding(positionedPoint(next, "opacity-true", "circle", panels), "encodeOpacity", {
     target: "opacity-true", field: "opacity", fieldType: "quantitative",
     scale: {
       id: "opacity-true-scale", type: "linear", domain: "auto", range: "auto",
       nice: true, zero: true, clamp: true, reverse: true, unknown: 0.3
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size", "circle", panels), "encodeSize", {
     target: "size", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-scale", type: "linear", domain: "auto", range: "auto",
       clamp: false, reverse: false, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-log"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-log", "circle", panels), "encodeSize", {
     target: "size-log", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-log-scale", type: "log", domain: "auto", range: "auto",
       base: 2, clamp: false, reverse: true, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-pow"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-pow", "circle", panels), "encodeSize", {
     target: "size-pow", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-pow-scale", type: "pow", domain: "auto", range: "auto",
       exponent: 2, clamp: true, reverse: false, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-sqrt"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-sqrt", "circle", panels), "encodeSize", {
     target: "size-sqrt", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-sqrt-scale", type: "sqrt", domain: "auto", range: "auto",
       clamp: true, reverse: true, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-quantize"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-quantize", "circle", panels), "encodeSize", {
     target: "size-quantize", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-quantize-scale", type: "quantize", domain: "auto",
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-quantile"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-quantile", "circle", panels), "encodeSize", {
     target: "size-quantile", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-quantile-scale", type: "quantile", domain: "auto",
       range: [4, 9, 16], reverse: true, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-threshold"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-threshold", "circle", panels), "encodeSize", {
     target: "size-threshold", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-threshold-scale", type: "threshold", domain: [2, 4],
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-nominal"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-nominal", "circle", panels), "encodeSize", {
     target: "size-nominal", field: "group", fieldType: "nominal",
     scale: {
       id: "size-nominal-scale", type: "ordinal", domain: "auto",
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "size-ordinal"), "encodeSize", {
+  next = conditionalEncoding(positionedPoint(next, "size-ordinal", "circle", panels), "encodeSize", {
     target: "size-ordinal", field: "category", fieldType: "ordinal",
     scale: {
       id: "size-ordinal-scale", type: "ordinal", domain: "auto",
       range: [4, 9, 16], reverse: true, unknown: 4
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "shape-circle"), "encodeShape", {
+  next = conditionalEncoding(positionedPoint(next, "shape-circle", "circle", panels), "encodeShape", {
     target: "shape-circle", field: "group", fieldType: "nominal",
     scale: {
       id: "shape-scale", type: "ordinal", domain: "auto", range: "auto", unknown: "circle"
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "shape-diamond", "diamond"), "encodeShape", {
+  next = conditionalEncoding(positionedPoint(next, "shape-diamond", "diamond", panels), "encodeShape", {
     target: "shape-diamond", field: "group", fieldType: "nominal",
     scale: {
       id: "shape-diamond-scale", type: "ordinal", domain: "auto", range: "auto",
       unknown: "diamond"
     }
   });
-  next = conditionalEncoding(positionedPoint(next, "opacity-value"), "encodeOpacity", {
+  next = conditionalEncoding(positionedPoint(next, "opacity-value", "circle", panels), "encodeOpacity", {
     target: "opacity-value", value: 0.55
   });
   for (const [index, type] of QUANTITATIVE_TYPES.entries()) {
     const id = `stroke-width-${type}`;
-    next = conditionalEncoding(positionedLine(next, id), "encodeStrokeWidth", {
+    next = conditionalEncoding(positionedLine(next, id, panels), "encodeStrokeWidth", {
       target: id, field: "seriesWidth", fieldType: "quantitative",
       scale: { ...quantitativeScale(type, `${id}-scale`, index, { point: false }), nice: type === "log" ? false : index % 2 === 0 }
     });
   }
-  next = conditionalEncoding(conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id: "stroke-width-value", data: "analysisRows" }), "encodeX", {
+  next = conditionalEncoding(conditionalWitness(conditionalWitness(conditionalWitness(panels.start(next, "stroke-width-value").createRuleMark({ id: "stroke-width-value", data: "analysisRows" }), "encodeX", {
       target: "stroke-width-value",
       coordinate: "appearance",
       field: "lowerX",
@@ -952,7 +954,7 @@ function addAppearanceEncodings(program) {
       scale: { id: "appearance-y", zero: false }
     }), "encodeStrokeWidth", { target: "stroke-width-value", value: 2.5 });
   const dashField = "stroke-dash-field";
-  next = conditionalEncoding(conditionalWitness(conditionalWitness(next.createLineMark({ id: dashField, data: "analysisRows" }), "encodeX", {
+  next = conditionalEncoding(conditionalWitness(conditionalWitness(panels.start(next, dashField).createLineMark({ id: dashField, data: "analysisRows" }), "encodeX", {
       target: dashField, coordinate: "appearance",
       field: "x", scale: { id: `${dashField}-x`, zero: false }
     }), "encodeY", {
@@ -964,7 +966,7 @@ function addAppearanceEncodings(program) {
     });
   for (const value of ["solid", "dashed", "dotted", "dashdot"]) {
     const id = `stroke-dash-${value}`;
-    next = conditionalEncoding(conditionalWitness(conditionalWitness(next.createLineMark({ id, data: "analysisRows" }), "encodeX", {
+    next = conditionalEncoding(conditionalWitness(conditionalWitness(panels.start(next, id).createLineMark({ id, data: "analysisRows" }), "encodeX", {
         target: id, coordinate: "appearance",
         field: "x", scale: { id: `${id}-x`, zero: false }
       }), "encodeY", {
@@ -972,16 +974,16 @@ function addAppearanceEncodings(program) {
         field: "y", scale: { id: "appearance-y", zero: false }
       }), "encodeStrokeDash", { target: id, value });
   }
-  next = conditionalEncoding(positionedPoint(next, "angle-field", "square"), "encodeAngle", { target: "angle-field", field: "angle", fieldType: "quantitative" });
-  next = conditionalEncoding(positionedPoint(next, "angle-value", "diamond"), "encodeAngle", { target: "angle-value", value: 35 });
-  next = conditionalWitness(conditionalWitness(conditionalWitness(next.createTextMark({ id: "text-field", data: "analysisRows", fontSize: 10 }), "encodeX", {
+  next = conditionalEncoding(positionedPoint(next, "angle-field", "square", panels), "encodeAngle", { target: "angle-field", field: "angle", fieldType: "quantitative" });
+  next = conditionalEncoding(positionedPoint(next, "angle-value", "diamond", panels), "encodeAngle", { target: "angle-value", value: 35 });
+  next = conditionalWitness(conditionalWitness(conditionalWitness(panels.start(next, "text-field").createTextMark({ id: "text-field", data: "analysisRows", fontSize: 10 }), "encodeX", {
       target: "text-field", coordinate: "appearance",
       field: "x", scale: { id: "text-field-x", zero: false }
     }), "encodeY", {
       target: "text-field", coordinate: "appearance",
       field: "y", scale: { id: "appearance-y", zero: false }
     }), "encodeText", { target: "text-field", field: "label", format: "auto" });
-  next = conditionalWitness(conditionalWitness(conditionalWitness(next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 }), "encodeX", {
+  next = conditionalWitness(conditionalWitness(conditionalWitness(panels.start(next, "text-value").createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 }), "encodeX", {
       target: "text-value", coordinate: "appearance",
       field: "x", scale: { id: "text-value-x", zero: false }
     }), "encodeY", {
@@ -989,12 +991,13 @@ function addAppearanceEncodings(program) {
       field: "y", scale: { id: "appearance-y", zero: false }
     }), "encodeText", { target: "text-value", value: 42.25, format: ".2f" });
   for (const action of ["encodeDx", "encodeDy"]) {
+    next = panels.start(next, "text-field");
     next = conditionalWitness(next, action, { target: "text-field", field: "seriesWidth" });
     next = conditionalWitness(next, action, { target: "text-field", value: 4 });
   }
   for (const action of ["encodeRadius", "encodePointRadius"]) {
     const id = action === "encodeRadius" ? "radius-alias" : "point-radius";
-    next = conditionalWitness(positionedPoint(next, id), action, { target: id, value: 4 });
+    next = conditionalWitness(positionedPoint(next, id, "circle", panels), action, { target: id, value: 4 });
   }
   return next;
 }
@@ -1110,31 +1113,32 @@ function buildAppearanceCoverage(factors) {
     { op: "kernel-density-estimate", field: "x", groupBy: "group", steps: 32 }
   ]);
   const base = programFor(view, true);
-  let program = addColorScales(base);
-  const panels = addColorAggregatesAndLayouts(base);
-  program = addAppearanceEncodings(program);
+  const panels = positionPanelCollection(base);
+  let program = addColorScales(base, panels);
+  const aggregatePanels = addColorAggregatesAndLayouts(base);
+  program = addAppearanceEncodings(program, panels);
   for (const mode of TEMPORAL_MODES) {
     const id = `color-input-${mode.temporalUnit}`;
-    program = conditionalEncoding(positionedPoint(program, id), "encodeColor", {
+    program = conditionalEncoding(positionedPoint(program, id, "circle", panels), "encodeColor", {
       target: id, field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
       scale: { id: `${id}-scale`, type: "sequential", palette: "viridis" }
     });
   }
-  program = conditionalEncoding(conditionalEncoding(positionedPoint(program, "constant-color-size"), "encodeColor", { target: "constant-color-size", value: "#2563eb" }), "encodeSize", { target: "constant-color-size", value: 25 });
+  program = conditionalEncoding(conditionalEncoding(positionedPoint(program, "constant-color-size", "circle", panels), "encodeColor", { target: "constant-color-size", value: "#2563eb" }), "encodeSize", { target: "constant-color-size", value: 25 });
   for (const value of ["circle", "diamond"]) {
     const id = `constant-shape-${value}`;
-    program = conditionalEncoding(positionedPoint(program, id), "encodeShape", { target: id, value });
+    program = conditionalEncoding(positionedPoint(program, id, "circle", panels), "encodeShape", { target: id, value });
   }
   for (const normalization of ["area", "radius"]) {
     const constantId = `constant-polygon-${normalization}`;
-    program = conditionalEncoding(positionedPoint(program, constantId), "encodeShape", {
+    program = conditionalEncoding(positionedPoint(program, constantId, "circle", panels), "encodeShape", {
       target: constantId,
       value: {
         polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
       }
     });
     const id = `polygon-unknown-${normalization}`;
-    program = conditionalEncoding(positionedPoint(program, id), "encodeShape", {
+    program = conditionalEncoding(positionedPoint(program, id, "circle", panels), "encodeShape", {
       target: id, field: "group", fieldType: "nominal",
       scale: {id: `${id}-scale`, type: "ordinal", domain: "auto", unknown: {
         polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
@@ -1144,12 +1148,12 @@ function buildAppearanceCoverage(factors) {
   const dashDomain = [...new Set(view.rows.map(row => row.group))];
   for (const unknown of ["solid", "dashed", "dotted", "dashdot"]) {
     const id = `dash-unknown-${unknown}`;
-    program = conditionalEncoding(positionedLine(program, id), "encodeStrokeDash", {
+    program = conditionalEncoding(positionedLine(program, id, panels), "encodeStrokeDash", {
       target: id, field: "group", fieldType: unknown === "solid" ? "nominal" : "ordinal",
       scale: { id: `${id}-scale`, type: "ordinal", domain: dashDomain, range: "auto", unknown }
     });
   }
-  program = positionedLine(program, "atomic-order")
+  program = positionedLine(program, "atomic-order", panels)
     .encodeChannels({ target: "atomic-order", channels: {
       group: { fields: ["category", "group"], fieldType: "nominal" },
       pathOrder: { field: "order", fieldType: "quantitative", order: "ascending" }
@@ -1158,10 +1162,9 @@ function buildAppearanceCoverage(factors) {
       group: { field: "group", fieldType: "nominal" },
       pathOrder: { field: "order", fieldType: "quantitative", order: "descending" }
     } });
-  return finish(encodingPanelGrid("appearancePanels", [
-    { id: "observations", program }, ...panels,
-    { id: "labels", program: textContentPanel(base) }
-  ]), factors, "direct-appearance-encoding-options");
+  return finish(panels.finish(program, { id: "appearancePanels", extra: [
+    ...aggregatePanels, { id: "labels", program: textContentPanel(base) }
+  ] }), factors, "direct-appearance-encoding-options");
 }
 
 function polarPoint(program, id, theta, radius) {

@@ -1687,7 +1687,7 @@ function buildScaleVocabulary(factors) {
       .encodeY({
         target: "positionComparisonPoints",
         field: "center",
-        scale: { id: "yComparison", nice: true, zero: false }
+        scale: { id: "y" }
       })
       .encodePointRadius({ target: "positionComparisonPoints", value: 3.5 });
   }
@@ -2466,7 +2466,17 @@ function buildFacetGuides(factors) {
     });
   }
   function offsetPanel(panel, x, y, offset) {
-    return resolveFacets(panel.createGuides({
+    return resolveFacets(panel.createLegend({
+      target: offset === "xOffset" ? "xOffsetBars" : "yOffsetBars",
+      channels: ["color"],
+      position: "right",
+      align: "center",
+      direction: "vertical",
+      offset: FACET_SIDE_LEGEND.offset,
+      title: `${context.dimensionText} subgroup`,
+      labels: FACET_SIDE_LEGEND.labels,
+      titleStyle: FACET_SIDE_LEGEND.titleStyle
+    }).createGuides({
       axes: {
         x: { scale: x, title: { text: x === "barX" ? context.dimensionText : "Observation count" } },
         y: { scale: y, title: { text: y === "barY" ? "Observation count" : context.dimensionText } }

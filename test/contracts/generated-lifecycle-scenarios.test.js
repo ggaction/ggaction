@@ -415,7 +415,9 @@ test("retains direct action effects in final semantic and graphic state", () => 
     assertRenderedItems(axisGroups, id);
   }
 
-  const polar = buildLifecycleRecipe("action-direct-polar-parts");
+  const polarComposition = buildLifecycleRecipe("action-direct-polar-parts");
+  const polar = polarComposition.children.polar;
+  assert.ok(polar, "polar assertions require the explicit polar panel");
   assert.equal(renderedObject(polar, "thetaAxisLine").properties.strokeWidth, 2);
   for (const id of [
     "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle",
