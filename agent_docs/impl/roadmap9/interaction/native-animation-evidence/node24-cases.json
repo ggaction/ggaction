@@ -1,0 +1,12 @@
+[
+  {
+    "id": "static-delivery/interacted-native-offline-four-formats",
+    "status": "passed",
+    "durationMs": 1189.4241670000001
+  },
+  {
+    "id": "static-delivery/native-endpoints-animation-replay",
+    "status": "passed",
+    "durationMs": 1245.974666
+  }
+]

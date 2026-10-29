@@ -12,6 +12,7 @@
 - [x] 실제 Canvas/SVG 현재 프레임, reduced motion, source-free 설치 교차
 - [x] AT34 대표 overlap: enter/exit/weighted 후보와 native activation의 단일 commit
 - [x] Offline replay와 native 편집 권한의 원안·Current·manifest 감사
+- [x] AT55: 별도 저장한 native from/to 재계획과 5시점·동일 assets·네 renderer 복원 비교
 - [ ] 원 카드 AT34/65/80/81/82의 나머지 partition/routes/Geo/LOD/worker 통합
 
 원본은 [STEP-070 카드](../../../../study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-070-cross-feature-integration.ko.md)다.
@@ -117,3 +118,31 @@ AT34 대표 셀과 최종 STEP074 전수 qualification, 나머지 STEP070 domain
 [Geo 원본 metadata 경계](GEO_SOURCE_HIT.md)는 양 endpoint picture에 없는 중간 feature를
 가짜 index 없이 exact native source membership으로 검증한다. 공개 Geo typed sampler와의
 합산은 별도 후행이며 현재 keyboard/native activation 교집합은 유지한다.
+
+
+## D4 — AT55 native endpoint 저장·재계획
+
+기존 remainingApproval과 root의 AT55 강화 지시를 재사용한다. 변경은 설치 소비자와
+manifest·증거뿐이다. Runtime·타입·공개 API·저장 schema는 추가하거나 바꾸지 않는다.
+`static-delivery/native-endpoints-animation-replay`는 nested partition/graph/Geo와 실제 image/font를
+포함한 원본 from/to를 각각 `serializeProgram`으로 저장한다. 두 번째 endpoint는 기존 native
+focusHierarchy/moveNode/setViewport/select 명령의 결과다. Fresh process는 public module import 전에
+fetch/http/https/net/tls/dns guard를 설치하고, 각각 `deserializeProgram`한 실제 객체로 새 plan을 만든다.
+
+두 native snapshot과 animation envelope는 저장 문자열까지 동일하다. 시각0/25/50/75/100의
+scene·graphicSpec, 두 asset의 실제 bytes/hash, Canvas와 PNG의 decoded RGBA, SVG 문자열 및 PDF의
+압축 해제 stream digests가 parent process의 원 계획과 일치한다. PDF pixel 비교로 확대하지 않는다.
+같은 native plan을 animation envelope로 복원해도 모든 시각의 renderer 입력은 동일하다.
+그 envelope frame은 native session 권한이 없으므로 거부되고 기존 session 상태는 유지한다.
+Native from/to에서 새로 만든 frame은 scoped graph focus/hit를 허용하고 history를 만들지 않는다.
+
+같은 `e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11` tar를
+Node20.20.2/22.23.1/24.22.1에서 각각 사용했다. 새 사례와 공통 helper 변경의 영향을 받는 기존
+static delivery 사례 두 개 및 optional peers가 모두 통과했다. source-free 위치에서 public
+imports만 실행했고 network 호출은0이다. Package·types·6entry bundle 입력이 불변이므로 D3의
+동일 tar 검증을 재사용했다. Discovery/package 경계22개와 manifest1개가 통과했다.
+
+첫 Node22 시도는 keyboard 첫 항목인 edge의 anchor가 앞쪽 node와 겹쳐 topmost hit와 같다는
+잘못된 fixture 가정으로 실패했다. 명시 numeric node key를 focus하도록 수정했고 원본 실패를
+보존했다. Runtime 수정이나 hit 우선순위 변경은 없었다. `native-animation-evidence/summary.json`
+및 압축 로그·receipt가 근거다. 전체 repository suite나 STEP069/070/077 완료를 주장하지 않는다.

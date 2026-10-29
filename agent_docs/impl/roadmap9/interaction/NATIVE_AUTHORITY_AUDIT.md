@@ -38,6 +38,7 @@ envelope만으로 편집 가능한 ChartProgram이나 그 exact 객체 권한까
 |---|---|---|
 | `static-delivery/interacted-native-offline-four-formats` | `serializeProgram`의 nested partition/graph/geo, selection, viewport, image/font | import 전 network guard, fresh process load→native edit→undo/redo, scoped keys·revision·lineage, 네 renderer |
 | `animation/offline-fresh-process`, `animation/embedded-assets-fresh-process` | `serializeAnimation`의 endpoint graphics/typed 의미와 playback 정책 | 같은 시각 scene/hash, 실제 font/image bytes, 네 renderer, network0 |
+| `static-delivery/native-endpoints-animation-replay` | 별도로 저장한 native from/to를 fresh process에서 각각 복원한 새 plan; 같은 plan의 animation envelope도 별도 복원 | 5시점 scene·graphicSpec·동일 font/image bytes, Canvas/PNG pixels·SVG·PDF streams, native focus/hit와 envelope 권한 거부 |
 | `interaction-animation/fresh-offline-native-scope` | native program을 복원하고 명시 action으로 목표를 만든 새 native plan; 별도로 그 plan의 animation envelope | 두 경로의 같은 시각 scene equality, native frame은 session hit 허용, animation envelope frame은 exact native authority 부재로 거부, 이전 frame/version 유지 |
 
 마지막 사례는 D2에서 same-time equality를 보강했다. Runtime과 archive는 D1과 같으며
@@ -59,3 +60,5 @@ native 의미·정확한 연결 검증·용량·retention 및 stale/edit 수명�
 
 AT34 overlap의 한정된 검증과 domain별 AT65/80/81/82, 최종 STEP074 qualification을 구분한다.
 이 감사는 원래 요구를 삭제하거나 전체 STEP069/070/077을 완료 처리하지 않는다.
+
+AT55의 추가 동일 tar3Node 근거는 [STEP070 D4](STEP070.md#d4--at55-native-endpoint-저장재계획)와 `native-animation-evidence/summary.json`에 고정한다.

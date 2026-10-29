@@ -1582,7 +1582,11 @@
     "cases": [
       {
         "id": "static-delivery/interacted-native-offline-four-formats",
-        "statements": 16
+        "statements": 15
+      },
+      {
+        "id": "static-delivery/native-endpoints-animation-replay",
+        "statements": 20
       }
     ]
   },

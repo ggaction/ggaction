@@ -1,0 +1,60 @@
+{
+  "status": "qualified-native-endpoints-animation-replay",
+  "testSourceBase": "ec691f3d1",
+  "runtimeSource": "a9cc561e84538c4918fae4b4981efb31d4522612",
+  "archiveSha256": "e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11",
+  "runtimeTypesPublicSchemaChanges": false,
+  "sourceSha256": {
+    "scripts/consumers/fixtures/node/static-delivery.mjs": "e91a9ff5f4972224f55e2094c43d84402153cc3f23bb2a6309294edf7df9f749",
+    "scripts/consumers/fixtures/node/manifest.json": "1a11a58c75a62fe45440f34861491845a4c1d43ced8446b841375ec2afc248ef"
+  },
+  "nodes": [
+    "v20.20.2",
+    "v22.23.1",
+    "v24.22.1"
+  ],
+  "perNode": {
+    "installedCases": 2,
+    "freshProcessCases": 2,
+    "networkCalls": 0,
+    "optionalPeers": true,
+    "sampleTimesMs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ]
+  },
+  "checks": {
+    "sourceFreeImports": true,
+    "originalAndRestoredNativePlanEnvelopeEqual": true,
+    "sceneAndGraphicSpecEqual": true,
+    "sameEmbeddedImageFontBytes": true,
+    "canvasAndPngDecodedPixelsExact": true,
+    "svgExact": true,
+    "pdfDecompressedStreamDigestsExact": true,
+    "pdfPixelsCompared": false,
+    "animationEnvelopeNativeAuthorityRejected": true,
+    "nativePlanFocusAndHit": true,
+    "unchangedNativePrograms": true,
+    "contracts": 22,
+    "manifest": 1,
+    "fullSuiteRerun": false,
+    "architecturePaths": 1
+  },
+  "initialFailure": {
+    "log": "native-animation-node22-first.log.gz",
+    "kind": "fixture-focus-order-assumption",
+    "detail": "first keyboard item is the edge, whose anchor overlaps a frontmost node; choose the explicit numeric node key for focus/hit equality."
+  },
+  "reuse": {
+    "packageAndSixEntryBundles": "geo-source-hit-evidence/summary.json",
+    "reason": "only installed fixture and evidence changed; same exact archive reused"
+  },
+  "remaining": [
+    "public typed Geo sampler and mid-only source activation",
+    "remaining STEP070 domain matrix",
+    "final STEP074 qualification and STEP077"
+  ]
+}
