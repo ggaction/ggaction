@@ -1,0 +1,104 @@
+{
+  "rows": [
+    {
+      "id": "a",
+      "category": "A",
+      "value": 2
+    },
+    {
+      "id": "b",
+      "category": "B",
+      "value": 5
+    },
+    {
+      "id": "c",
+      "category": "C",
+      "value": 3
+    }
+  ],
+  "cases": [
+    {
+      "name": "filter",
+      "expected": [
+        "B"
+      ],
+      "actual": [
+        "B"
+      ],
+      "diff": []
+    },
+    {
+      "name": "clear-filter",
+      "expected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "actual": [
+        "A",
+        "B",
+        "C"
+      ],
+      "diff": []
+    },
+    {
+      "name": "reorder",
+      "expected": [
+        "C",
+        "A",
+        "B"
+      ],
+      "actual": [
+        "C",
+        "A",
+        "B"
+      ],
+      "diff": []
+    },
+    {
+      "name": "filter-authored-order",
+      "expected": [
+        "C",
+        "B"
+      ],
+      "actual": [
+        "C",
+        "B"
+      ],
+      "diff": []
+    },
+    {
+      "name": "clear-order",
+      "expected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "actual": [
+        "A",
+        "B",
+        "C"
+      ],
+      "diff": []
+    }
+  ],
+  "phases": [
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled",
+    "commit",
+    "settled"
+  ],
+  "revision": 6,
+  "sourceImmutable": true,
+  "codecExact": true,
+  "destroyed": true,
+  "sourceHash": "a70f9bdb63e3e424078d6a50b1996877188a809cb60dbc2e2b954fdfa6c57e4b"
+}

@@ -68,3 +68,9 @@ rows로 검증한 원인이며, 공통 scale consumer가 원 source에서 검증
 Source qualification은 집중134, source/type/discovery34, 실제5datasets×3recipes16,
 브라우저1이며 selection.js100/99.12/100, scale consumers98.17/93.48/100이다.
 전수 coverage를 다시 실행하거나 전체 STEP060/074/077을 완료했다고 주장하지 않는다.
+
+
+A source는 `c6cff82ab`이고 [최종 qualification](direct-controls-evidence/qualification.json)에
+동일 archive `ee8c7d3c`의 Node20/22/24 runtime3·strict TS·4bundle 및 공개 snippet1씩을 기록했다.
+Source docs 최초186/189 실패를 보존했고 owning50·source-pinned21·snippet1·built168pages/1435LLM·4폭
+Axe가 통과했다. 새로운 시각 target이나 API action inventory 증가는 없으며 기존 rendered primitive를 사용한다.
