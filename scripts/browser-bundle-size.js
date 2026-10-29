@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 635_000, // Integrated inference, Flow and role effects, Node20: 634,881 gzip bytes.
-  "ggaction/basic": 360_000, // Integrated shared effect preparation, Node20: 359,550 gzip bytes.
+  ggaction: 636_000, // Induced graph views, Node20: 635,805 gzip bytes.
+  "ggaction/basic": 361_000, // Shared item selection and graph view dispatch, Node20: 360,127 gzip bytes.
   "ggaction/svg": 25_000
 });
 

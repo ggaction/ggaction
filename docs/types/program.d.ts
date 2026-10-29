@@ -1442,6 +1442,7 @@ export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
 export type FilterMarksOptions = {
+  /** Graph plots retain matching nodes and their induced edges without recomputing the stored graph or layout. */
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;

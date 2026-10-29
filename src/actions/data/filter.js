@@ -1,4 +1,5 @@
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
+import { activeGraphFilter, filterGraphPlot, removeGraphFilter } from "./graphFilter.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
@@ -294,8 +295,9 @@ export const removeMarkFilter = /* @__PURE__ */ closedAction(
     const layer = resolveEligibleLayer(this, {
       target,
       label: "mark filter",
-      predicate: candidate => activeMarkFilter(this, candidate) !== undefined
+      predicate: candidate => activeMarkFilter(this, candidate) !== undefined || activeGraphFilter(this, candidate) !== undefined
     });
+    if (activeGraphFilter(this, layer) !== undefined) return removeGraphFilter(this, layer);
     return removeActiveMarkFilter(this, layer, activeMarkFilter(this, layer));
   }
 );
@@ -321,7 +323,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
       target,
       label: "filter mark",
       predicate: candidate =>
-        candidate.data !== undefined && (target !== undefined || !isSourceOwnedText(candidate)) &&
+        (candidate.data !== undefined || candidate.mark?.type === "graph") && (target !== undefined || !isSourceOwnedText(candidate)) &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
     assertIndependentOverlayGeometry(layer, "filterMarks");
@@ -336,6 +338,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
         Object.hasOwn(args, key) ? [[key, args[key]]] : []
       )
     );
+    if (layer.mark.type === "graph") return filterGraphPlot(this, layer, selector, args.mode);
     const resolved = resolveMarkFilterSelection(this, layer.id, selector);
     const previousSelector = owner?.selectors.at(-1);
     if (previousSelector !== undefined && sameSelector(previousSelector, resolved.selector)) {

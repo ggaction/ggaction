@@ -4005,7 +4005,7 @@
       "domain": "mark-selection",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Create, replace, or compose selected-item data and rebind one mark",
+      "update": "Create, replace, or compose a final-item filter or induced graph view",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

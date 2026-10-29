@@ -19,6 +19,12 @@ export const cases = [{ id: "data/inferred-graph-lifecycle", run() {
   assert.equal(items.length, 7); assert.ok(items.every(item => item.fields.origin === "inferred" && item.fields.rule === "knn" && item.fields.metric === "euclidean"));
   const accessible = exportAccessibleData(source).views[0];
   assert.equal(accessible.rows.length, 7);
+  const filtered = source.filterMarks({ field: "key", op: "oneOf", values: ["a", "b"] });
+  assert.equal(graph(filtered), graph(source));
+  assert.equal(getMarkItems(filtered).length, 3);
+  assert.equal(exportAccessibleData(filtered).views[0].rows.length, 3);
+  assert.equal(renderToSVG(deserializeProgram(serializeProgram(filtered))), renderToSVG(filtered));
+  assert.deepEqual(filtered.removeMarkFilter().graphicSpec, source.graphicSpec);
   assert.ok(accessible.rows.every(row => row.values["graphPlot:origin"] === "inferred" && row.values["graphPlot:rule"] === "knn"));
   const changed = source.reviseData({ source: "points", id: "updated", values: values.map(row => ({ ...row, x: row.x * 2 })) });
   assert.equal(graph(changed).revision, 1); assert.deepEqual(graph(changed).result.model.edges.map(edge => edge.weight), [2, 4, 14]);

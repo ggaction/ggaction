@@ -23,7 +23,7 @@ for (const ratio of [1, 2]) test(`graph Canvas and SVG preserve primitive pixels
       const { render } = await import("/src/index.js");
       const { renderToSVG } = await import("/src/renderers/svg.js");
       const results = [];
-      for (const id of ["directed", "parallel", "self-loop"]) {
+      for (const id of ["directed", "parallel", "self-loop", "induced"]) {
         const programs = [createGraph(id), createGraphPrimitive(id)];
         for (const backend of ["Canvas", "SVG"]) {
           const pixels = [];

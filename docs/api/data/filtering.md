@@ -155,6 +155,14 @@ mark when possible, creates a namespaced immutable dataset such as
 `pointsFilteredData`, rebinds only that mark, and rematerializes its scales,
 graphics, and connected guides.
 
+Graph plots use an induced view: select node items and retain each original edge
+whose two endpoints are visible. The stored graph and layout remain unchanged,
+including full-graph degree values and node positions. Node fields, source rows
+and pre-highlight body properties are supported; encoding channels and stack grain
+do not apply. Replace and compose use the same recipe rules below. Source,
+layout, paint and Canvas edits replay the recipe. `removeMarkFilter` restores all
+nodes and edges. See [graph plots](../graphs.md) for node and edge fields.
+
 <!-- snippet-context:start -->
 
 > **Executable complete.** Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.

@@ -6,6 +6,9 @@ p.createInferredGraphData({ id: "mst", nodeKey: "id", ruleId: "backbone", rule: 
 p.createInferredGraphData({ id: "groups", nodeKey: ["family", "id"], ruleId: "groups", rule: "group", options: { fields: ["group"], mode: "star", hubKey: ["a", 1] } });
 p.createInferredGraphData({ id: "sequence", nodeKey: "id", ruleId: "ordered", rule: "sequence", options: { orderField: "year", temporalUnit: "year", lag: 2 } });
 p.editInferredGraphData({ candidateGraph: null, definition: { rule: "mst", features: ["x"], metric: "manhattan" } });
+p.filterMarks({ target: "graphPlot", field: "key", op: "oneOf", values: ["a", "b"] })
+  .filterMarks({ target: { childPath: ["left"], id: "graphPlot" }, mode: "replace", rows: { data: "nodes", indices: [0] } })
+  .removeMarkFilter({ target: "graphPlot" });
 const r = p.semanticSpec.resources.find((value): value is InferredGraphResource => value.kind === "graph" && value.provenance.origin === "inferred");
 if (r) {
   const origin: "inferred" = r.result.model.edges[0].origin;

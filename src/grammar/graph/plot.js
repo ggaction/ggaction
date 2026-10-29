@@ -1,4 +1,5 @@
 import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js";
+import { normalizeMarkSelector } from "../markSelection.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
@@ -101,7 +102,17 @@ export function validateGraphPlotDefinition(config, labels) {
       if (text && typeof content !== "string") throw new TypeError("Stored graph label text must be a string.");
     }
   };
-  exact(config, ["origin", "clip", "nodes", "edges"], ["labels"], "Stored graph plot");
+  exact(config, ["origin", "clip", "nodes", "edges"], ["labels", "view"], "Stored graph plot");
+  if (config.view !== undefined) {
+    exact(config.view, ["selectors"], [], "Stored graph view");
+    ownArray(config.view.selectors, "Stored graph view selectors");
+    validateGeneratedItemLimit(config.view.selectors.length, "Graph view selector count");
+    if (!config.view.selectors.length) throw new TypeError("Graph view requires at least one selector.");
+    for (const selector of config.view.selectors) {
+      if (normalizeMarkSelector(selector).grain !== "item") throw new TypeError("Graph views support node item grain only.");
+      if (selector.channel !== undefined) throw new TypeError("Graph views select node fields, rows or concrete properties; graph nodes have no encoding channels.");
+    }
+  }
   if (config.origin !== "auto") pair(config.origin, "Stored graph origin");
   if (typeof config.clip !== "boolean") throw new TypeError("Stored graph clip must be boolean.");
   exact(config.nodes, [...NODE_FIELDS.filter(key => !MARK_EFFECT_PROPERTIES.includes(key)), "overrides"], MARK_EFFECT_PROPERTIES, "Stored graph node style");

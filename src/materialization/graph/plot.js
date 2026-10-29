@@ -1,4 +1,5 @@
 import { materializeMarkEffectProperties } from "../markEffects.js";
+import { applyGraphView } from "./view.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -90,6 +91,6 @@ export function resolveGraphPlot(program, layer, config) {
   const targets = new Set([...nodeStyles.keys(), ...labelStyles.keys(), ...(labels === false ? [] : labels.overrides.map(entry => entry.key))]);
   const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
-  return { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
-    diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };
+  return applyGraphView(program, { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
+    diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) }, config.view);
 }

@@ -780,8 +780,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 635,000 bytes |
-| `ggaction/basic` | 360,000 bytes |
+| `ggaction` | 636,000 bytes |
+| `ggaction/basic` | 361,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3206,6 +3206,12 @@ family로 필터링하며, exact font binding의 준비된 별칭은 이 경로�
 ## Graph layout ownership
 
 `actions/graphs/layouts.js`는 명시 graph layout 계산과 graph revision의 dependent layout closure를 소유한다. `actions/layouts/index.js`의 공통 editLayout은 source domain의 편집 body로 전달한다. Pure fixed/circular/force kernel은 topology를 보존하며, `materialization/graph/layoutResource.js`가 exact graph input과 resolved intent·결과를 저장한다. 복원 validator는 stored coordinates·node membership·pins·component bounds와 provenance만 검사하며 force solver를 재실행하지 않는다. Source revision은 계산한 모든 layout 결과를 기존 prepared primitive 경계로 원자적으로 교체한다. 정확 API는 [GRAPHS](contract/current/GRAPHS.md)와 [LAYOUTS](contract/current/LAYOUTS.md)가 소유한다.
+
+Graph plot의 필터는 기존 mark appearance config의 view recipe를 명시적으로 소비한다.
+`actions/data/graphFilter`가 완전 후보를 preflight한 뒤 기존 wrapped graph materializer를 호출하고,
+`materialization/graph/view`가 원래 node·edge geometry에서 induced subset을 선택한다. 공통
+item selector 검증은 `selection/itemSelection`이 소유한다. Graph/layout resource와 renderer 경계는
+유지하며 정확한 재평가·제거 계약은 [MARK_SELECTION](contract/current/MARK_SELECTION.md)이 소유한다.
 
 공개 graph layout 추가 뒤 Node20 실측은803entries/1,183,611packed/5,437,539unpacked bytes다.
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만

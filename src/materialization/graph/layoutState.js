@@ -7,6 +7,8 @@ import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
 import { polarToCartesian } from "../../grammar/polar.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { validateGraphPlotDefinition } from "../../grammar/graph/plot.js";
+import { validateRowSelectionDataset } from "../../grammar/markSelection.js";
+import { findDataset } from "../../selectors/datasets.js";
 
 const same = (a, b) => canonicalJSON(encodeValue(a)) === canonicalJSON(encodeValue(b));
 function exact(value, fields, label) {
@@ -75,6 +77,9 @@ function validateBindings(program, resource) {
     const config = program.materializationConfigs.marks?.[layer.id];
     exact(config, ["graphPlot"], "Graph mark configuration");
     validateGraphPlotDefinition(config.graphPlot, layer.graphLabels);
+    for (const selector of config.graphPlot.view?.selectors ?? []) {
+      if (selector.rows !== undefined) validateRowSelectionDataset(selector.rows, findDataset(program, selector.rows.data));
+    }
     if (layer.graphLabels !== false && Object.hasOwn(layer.graphLabels, "field")) {
       const field = layer.graphLabels.field;
       if (!graph.options.definition.attributes.includes(field) || model.nodes.some(node => node.attributes[field] !== null &&

@@ -2223,6 +2223,9 @@ and recomputes all enabled components. It accepts comparisons, sets, ranges, and
 grouped ranks; rendered channel/property selectors still require a child ID.
 Raincloud source filters retain the nonempty input requirements of their enabled
 statistical components; named-child empty filters remain supported.
+Graph plots retain selected nodes and their induced edges while preserving the
+stored graph, layout, degree values and item identities. Use node fields, rows
+or pre-highlight body properties; the recipe follows source and appearance edits.
 [Data](../../api/data.md)
 
 
@@ -2257,6 +2260,7 @@ removeMarkFilter({ target? })
 
 Restore a filtered mark to its canonical source, recover its prior Histogram bin
 policy, and retain any filtered dataset snapshot that still has downstream users.
+For a graph plot, clear the view recipe and restore its full stored graph.
 [Data](../../api/data.md)
 
 

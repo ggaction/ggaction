@@ -102,6 +102,16 @@ type MarkSelector =
   selector algebra. The recipe is retained across appearance/component edits; explicit source
   replacement clears it. Parent filters require nonempty input for enabled statistics. Named
   child IDs retain display-only filtering, including empty views.
+- Graph plot: retain selected node items and every original edge whose two endpoints remain visible.
+  The node-only item grain accepts fields (including `attribute:<name>`), rows and pre-highlight concrete
+  body properties. Encoding channels and stack grain are inapplicable. The view stores its ordered
+  normalized recipe in `markConfigs[id].graphPlot.view.selectors`; it creates no dataset and changes no
+  graph or layout resource. Degree/incoming/outgoing describe the full stored graph. Node placement,
+  parallel routes, loop geometry and automatic origin retain the full-layout frame. Labels and arrows
+  follow their node/edge identity. Replace starts with all nodes; compose applies each selector in order.
+  Source/layout/paint/Canvas edits replay this recipe. Rebinding the plot to a different layout applies
+  the same recipe to that layout's nodes. Invalid field or source lineage fails during preflight.
+  Removal clears the recipe and rematerializes the full graph. Other plots remain unchanged.
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
@@ -130,7 +140,8 @@ type MarkSelector =
 
 - Implemented: `filterMarks({ target?: UserId; mode?: "replace" | "compose" } & MarkSelector)` for
   point/bar/rect/line/area/arc/rule/Tick item grain and stacked-bar grain using field, channel or concrete property with
-  comparison, set, range and grouped/ungrouped rank modes.
+  comparison, set, range and grouped/ungrouped rank modes; graph node item grain accepts fields,
+  rows and concrete properties and retains induced edges without recomputing inference.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `filterMarks`
@@ -146,6 +157,7 @@ type MarkSelector =
 - ✅ Covered: histogram/집계 bar의 자동 domain과 guide 축소, endpoint threshold, 내부 빈 구간,
   explicit domain/zero 보존, overlay/facet/병치 공유 범위, resize/replace/compose/remove 이후 유지.
 - Evidence: `test/unit/actions/data/filter-marks.test.js`,
+  `test/unit/resources/graph-filter.test.js`,
   `test/unit/actions/data/filter-domains.test.js`,
   `test/charts/cars-regression-scatterplot/variants/primitive.test.js`.
 
@@ -157,6 +169,7 @@ type MarkSelector =
   the filtered dataset only when no downstream dataset still references that snapshot.
 - Missing/ambiguous owner and unknown options fail without changing the earlier program. Stored selections and highlights
   remain as intent and are reevaluated against the restored source.
+- A graph plot clears its node-view recipe and restores all nodes/edges from the unchanged graph/layout resources.
 
 ### Formal values — `removeMarkFilter`
 

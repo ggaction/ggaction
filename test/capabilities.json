@@ -430,6 +430,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-filter.test.js"
       }
     ],
     "guides": [
