@@ -33,6 +33,7 @@ test("linear interpolation preserves exact signed endpoints and bounded extreme 
   assert.ok(Object.is(interpolateNumber(-0, 3, 0), -0));
   assert.ok(Object.is(interpolateNumber(3, -0, 1), -0));
   assert.equal(interpolateNumber(-Number.MAX_VALUE, Number.MAX_VALUE, .5), 0);
+  assert.equal(interpolateNumber(Number.MIN_VALUE, Number.MIN_VALUE, .5), Number.MIN_VALUE);
   for (const from of [-Number.MAX_VALUE, -1, 0, 1, Number.MAX_VALUE]) {
     for (const to of [-Number.MAX_VALUE, -1, 0, 1, Number.MAX_VALUE]) {
       for (const t of [.01, .25, .5, .75, .99]) {
@@ -50,6 +51,9 @@ test("positive scale interpolation follows logarithmic distance without ratio ov
   assert.equal(interpolatePositiveScale(Number.MIN_VALUE, Number.MAX_VALUE, 0), Number.MIN_VALUE);
   assert.equal(interpolatePositiveScale(Number.MIN_VALUE, Number.MAX_VALUE, 1), Number.MAX_VALUE);
   assert.ok(Number.isFinite(interpolatePositiveScale(Number.MIN_VALUE, Number.MAX_VALUE, .5)));
+  for (const value of [Number.MIN_VALUE, 150, 150.00000000000003, Number.MAX_VALUE]) {
+    for (const t of [.01, .5, .99]) assert.equal(interpolatePositiveScale(value, value, t), value);
+  }
   for (const t of [0, .1, .25, .5, .75, 1]) close(interpolatePositiveScale(4, 64, t) * interpolatePositiveScale(64, 4, t), 256, 1e-10);
 });
 

@@ -3899,6 +3899,15 @@ geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는
 초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
 않는다. 공개 action/session/player 통합은 별도 후행 경계다.
 
+동일 camera interpolation owner의 private prepare/sample 경계는 정규화된 두 projection
+endpoint와 version·호환 판정만 불변 plain data로 보존한다. 복원 샘플은 닫힌 shape와
+정합성을 검사하며 geometry fit·데이터 inference·pixel inverse를 수행하지 않는다.
+현재 camera frame의 parameters를 다음 준비의 from으로 전달하여 재기준하고, projection
+또는 clip이 호환되지 않는 경우 양 endpoint를 유지하는 crossfade 결정을 반환한다.
+private camera 준비값 추가 후 동일 package는1,048entries/6,761,201unpacked,
+Node22 packed1,484,277 및 Node20·24 packed1,487,978bytes다. unpacked cap만
+6,763,000으로 올리고 기존 entries1,048/packed1,489,000은 유지한다.
+
 공개 Geo camera는 `actions/geo/camera.js`의 `navigateProjection` facade가 기존 Canvas와
 projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
 읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
