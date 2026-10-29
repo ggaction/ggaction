@@ -1,6 +1,6 @@
 # Pyramid 공개 수직 구현
 
-공개 source 검증을 마쳤고 문서 source pin 및 최종 사이트 검증을 마감 중이다. [전체 승인](../AUTHORIZATION.json)의 `remainingApproval`을 적용한다.
+Pyramid 공개 수직 구현의 집중 인수를 마쳤다. STEP050 합산 및 남은 카드의 전체 완료를 뜻하지 않는다. [전체 승인](../AUTHORIZATION.json)의 `remainingApproval`을 적용한다.
 사용자가 STEP077까지 남은 API·저장·시각 결정을 구현자에게 위임했으므로 별도 질문 없이
 아래 구체안을 구현하고 실행 증거를 보존한다. 승인은 검증 성공을 뜻하지 않는다.
 
@@ -11,7 +11,7 @@
 - [x] geometry/label·selection·source/Canvas·theme/font·codec 소비자 집중 검증
 - [x] primitive/public 6개·4 renderer·browser 1×/2× 및 실제 데이터 15개 recipe
 - [x] 같은 archive의 Node20/22/24 공개 소비자·strict 타입·optional peers·5 bundle
-- [ ] source pin 후 최종 문서·built browser 인수
+- [x] source pin 후 최종 문서·built browser 인수
 - [ ] STEP050 합산 frame admission 및 STEP051/052 후행 정책 감사
 - [ ] OHLC/waterfall·Trail·Table 및 STEP074/077 전체 인수
 
@@ -70,3 +70,26 @@ Pyramid는 단계형 의미의 공개 명칭이다. 외부 alias는 필수 의�
 Marginal/Bullet/Combo는 공통 action recipe이며 전용 facade를 추가하지 않는다.
 KPI/Gauge는 제외, set은 deferred다. Native active30요구/79시험군을 유지하며 외부2279참조를
 필수 검사나 통과 분모로 세지 않는다. STEP051/052의 후행 native inventory 감사는 별도 pending이다.
+
+## 검증 결과
+
+Source `c7b5d21a9`(Pyramid `cd48a0118` + null 입력 사전 거부)와 같은 archive
+`817d57bc43332a5b6adbde0a10c2af70eafd8fc281a75a49a9974fa3e64b4c14`를 고정했다.
+28개 unit/critical의 line/branch/function은100/99.73/100이며 label helper는100/100/100이다.
+독립 primitive6·renderer12·browser6×2 density·prepared font/effect9소비자·realistic16개와
+새 공개 action344개 합산 authoring inventory7개를 확인했다. source/경계39, renderer/package9 및
+최종 fixture7개가 통과했다. 같은 tar의 Node20/22/24마다 공개3case(immutable·selection·hit·renderer·
+scene·offline fresh-process·facet·concat 및 null 오류)와 strict types·optional peers·5bundle을 확인했다.
+
+문서195, Jekyll173페이지/1491LLM, 전체페이지320/390/768px·검색·접근성 검사가 통과했다.
+마지막 null 거부는 valid 출력에 영향이 없어 기존 visual/realistic 증거를 재사용하고, 문구가 바뀐
+Pyramid API/tutorial 및 공유 site controls는 최종 source에서 별도 재검증했다.
+패키지1012entries/최대1446117packed/6567269unpacked, bundle 최대Full712481/Basic380833이다.
+Node20/24 gzip 차이를 실제 측정해 상한1447000/6570000 및712600/380900으로 맞췄다.
+
+최초 label·empty formatter·source-free fixture·browser bootstrap·gzip 한도 실패를 덮지 않고
+[실행 기록](pyramid-evidence/summary.json)에 보존했다. source-free fixture의 중첩 호출은 공개
+`hconcat({programs:[...]})`이며 highlight 검사는 graphic index 대신 exact item key를 사용한다.
+현재 Cartesian x/y encodings·axes는 자체 stage layout이므로 N/A다. source-backed data/appearance,
+color scale/legend, labels·selection/hit, Canvas/coordinate, facet/concat, codec/scene, 네 출력 소비자는
+현재 정본의 실제 지원이다. STEP050 및051/052/054–056/074/077은 별도 남은 의무다.
