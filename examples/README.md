@@ -805,6 +805,18 @@ Follow existing graph edges with a bounded detour and explicit stored route.
 
 Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
 
+### [A district, stops and service route](./geographic-marks/)
+
+Draw geographic shapes, points, lines and graticules with stable feature identity.
+
+Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Longitude and latitude on one projection](./geographic-grid/)
+
+Draw geographic shapes, points, lines and graticules with stable feature identity.
+
+Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

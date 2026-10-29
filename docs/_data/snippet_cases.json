@@ -393,6 +393,16 @@
     "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection."
   },
   {
+    "id": "geographic-coordinate-mark",
+    "file": "api/geometry.md",
+    "contains": "const map = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "map",
+    "prerequisites": "Import the Full package and run this complete planar polygon-with-hole example.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "selection-typed-region",
     "file": "api/appearance/selection-and-highlighting.md",
     "contains": "id: \"window\", target: \"points\"",

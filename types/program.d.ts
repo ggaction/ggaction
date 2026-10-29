@@ -2154,6 +2154,39 @@ export interface ProjectionResource {
   readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
   readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
 }
+export interface GeoMarkStyleOptions {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
+}
+export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
+  readonly interpolation?: "source-segment" | "great-circle";
+  /** Explicit false removes a previous hint. */
+  readonly routeHint?: readonly [number, number] | false;
+}
+export interface GeoShapeMarkOptions extends GeoSourceMarkOptions { readonly radiusPx?: number; }
+export type GeoPointMarkOptions = GeoSourceMarkOptions & (
+  | { readonly radiusPx?: number; readonly radiusDeg?: never }
+  | { readonly radiusDeg: number; readonly radiusPx?: never }
+);
+export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> { readonly fill?: "none"; }
+export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
+  readonly stepDeg?: readonly [number, number];
+  readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
+  readonly precisionDeg?: number;
+}
+export type EditGeoShapeMarkOptions = Omit<GeoShapeMarkOptions, "id"> & { readonly target?: string };
+type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & { readonly target?: string } : never;
+export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
+export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
+export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
+export type GeoMarkBinding = {
+  readonly mode: "shape" | "point" | "line";
+  readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
+  readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;
+} | { readonly mode: "graticule"; readonly graticule: Required<Pick<GraticuleOptions, "stepDeg" | "extentDeg" | "precisionDeg">> };
 export interface ContourGridFrame {
   readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
   readonly width: number; readonly height: number;
@@ -2357,6 +2390,7 @@ export interface SemanticLayer {
   readonly alt?: string;
   readonly calendarBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly calendarLabels?: Readonly<Record<CalendarLabelRole, boolean>>;
+  readonly geoBinding?: GeoMarkBinding;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
@@ -2418,7 +2452,7 @@ export interface SemanticScale {
   readonly [key: string]: unknown;
 }
 
-export interface SemanticCoordinate {
+export interface SemanticNativeCoordinate {
   readonly id: string;
   readonly type?: "cartesian" | "polar" | "parallel";
   readonly aspect?: CoordinateAspect;
@@ -2426,6 +2460,13 @@ export interface SemanticCoordinate {
   readonly layers?: readonly string[];
   readonly [key: string]: unknown;
 }
+
+export interface SemanticGeoCoordinate {
+  readonly id: string; readonly type: "geo";
+  readonly projection: { readonly kind: "projection"; readonly id: string; readonly revision: number };
+  readonly aspect?: never; readonly polarFrame?: never;
+}
+export type SemanticCoordinate = SemanticNativeCoordinate | SemanticGeoCoordinate;
 
 export interface SemanticSpec {
   readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
@@ -2992,11 +3033,15 @@ type ParallelGuideOptions = {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 
-export interface CreateCoordinateOptions {
+export interface CreateNativeCoordinateOptions {
   id?: string;
   type?: "cartesian" | "polar" | "parallel";
   layers?: readonly string[];
 }
+
+export type CreateCoordinateOptions = CreateNativeCoordinateOptions | {
+  id?: string; type: "geo"; projection?: string; layers?: readonly string[];
+};
 
 export type CoordinateAspectAlign = "start" | "center" | "end";
 export type CoordinateAspect = "auto" | {
@@ -3024,8 +3069,9 @@ type EditCoordinateTarget = {
   target: string;
 };
 export type EditCoordinateOptions = EditCoordinateTarget & (
-  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
-  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions; projection?: never }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions; projection?: never }
+  | { projection: string; aspect?: never; polarFrame?: never }
 );
 
 export type RadialMapping = "area" | "radius-length";
@@ -6523,6 +6569,14 @@ export class ChartProgram {
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+  editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+  createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+  editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+  createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+  editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+  createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+  editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;

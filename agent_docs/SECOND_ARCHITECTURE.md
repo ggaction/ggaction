@@ -862,8 +862,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 707,700 bytes |
-| `ggaction/basic` | 378,000 bytes |
+| `ggaction` | 715,000 bytes |
+| `ggaction/basic` | 381,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 44,000 bytes |
 | `ggaction/interaction` | 109,200 bytes |
@@ -3665,8 +3665,11 @@ InputRef 하나를 보존하고, `projectionState.js`가 복원 시 같은 bound
 `actions/geo/closure.js`는 geometry와 모든 fitted projection 후보를 먼저 검증하여 private
 prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명시·현재·유일 후보만
 허용하고 Basic에는 이 handler/action을 등록하지 않는다. 정확한 공개 계약은
-[current/GEOMETRY.md](contract/current/GEOMETRY.md)가 소유한다. Geometry marks는 후속 owner이며
-renderer 입력은 여전히 concrete graphicSpec만이다.
+[current/GEOMETRY.md](contract/current/GEOMETRY.md)가 소유한다. Geo coordinate가 projection InputRef를 단일 소유하고 mark는 coordinate ID와 geometry ref를 저장한다.
+`materialization/geo/source.js`의 feature metadata 조회는 선택/접근성이 재투영이나 math dependency 없이
+concrete identity를 읽도록 분리되어 있다. `materialization/geo/mark.js`는 동일 stream을 명시 실행하여
+collection의 point/path와 exact source lineage를 생성한다. 기존 data/coordinate materialization planner가
+geometry→fitted projection→mark union을 중복 없이 실행한다. Renderer 입력은 계속 concrete graphicSpec만이다.
 
 ### Interaction의 원자 authoring command 경계
 

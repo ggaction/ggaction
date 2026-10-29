@@ -77,6 +77,7 @@ const ENTITY_PATHS = Object.freeze({
       "calendarBinding",
       "calendarLabels",
       "contourBinding",
+      "geoBinding",
       "mark.missing",
       "mark.orientation",
       "mark.blend",
@@ -99,7 +100,7 @@ const ENTITY_PATHS = Object.freeze({
   },
   coordinate: {
     collection: "coordinates",
-    properties: new Set(["type", "aspect", "polarFrame"])
+    properties: new Set(["type", "aspect", "polarFrame", "projection"])
   }
 });
 

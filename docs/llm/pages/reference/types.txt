@@ -72,6 +72,14 @@ interface ChartProgramActions {
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+  editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+  createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+  editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+  createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+  editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+  createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+  editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -2663,12 +2671,12 @@ Related types: [`ContourGrid`](../../../reference/types/#type-contourgrid).
  Expand CreateCoordinateOptions
 
 ```typescript
-export interface CreateCoordinateOptions {
-  id?: string;
-  type?: "cartesian" | "polar" | "parallel";
-  layers?: readonly string[];
-}
+export type CreateCoordinateOptions = CreateNativeCoordinateOptions | {
+  id?: string; type: "geo"; projection?: string; layers?: readonly string[];
+};
 ```
+
+Related types: [`CreateNativeCoordinateOptions`](../../../reference/types/#type-createnativecoordinateoptions).
 
 ### `CreateDataOptions` {#type-createdataoptions}
 
@@ -3060,6 +3068,18 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
 ```
 
 Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions) · [`MarkLabelPlacement`](../../../reference/types/#type-marklabelplacement) · [`TextEncodingOptions`](../../../reference/types/#type-textencodingoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`MarkLabelSelectionOptions`](../../../reference/types/#type-marklabelselectionoptions).
+
+### `CreateNativeCoordinateOptions` {#type-createnativecoordinateoptions}
+
+ Expand CreateNativeCoordinateOptions
+
+```typescript
+export interface CreateNativeCoordinateOptions {
+  id?: string;
+  type?: "cartesian" | "polar" | "parallel";
+  layers?: readonly string[];
+}
+```
 
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
@@ -5105,8 +5125,9 @@ Related types: [`ContourMarkOptions`](../../../reference/types/#type-contourmark
 
 ```typescript
 export type EditCoordinateOptions = EditCoordinateTarget & (
-  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
-  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions; projection?: never }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions; projection?: never }
+  | { projection: string; aspect?: never; polarFrame?: never }
 );
 ```
 
@@ -5421,6 +5442,36 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](../../../reference/types/#type-folddataoptions).
 
+### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
+
+ Expand EditGeoLineMarkOptions
+
+```typescript
+export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GeoLineMarkOptions`](../../../reference/types/#type-geolinemarkoptions).
+
+### `EditGeoPointMarkOptions` {#type-editgeopointmarkoptions}
+
+ Expand EditGeoPointMarkOptions
+
+```typescript
+export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
+```
+
+Related types: [`GeoEditOptions`](../../../reference/types/#type-geoeditoptions) · [`GeoPointMarkOptions`](../../../reference/types/#type-geopointmarkoptions).
+
+### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
+
+ Expand EditGeoShapeMarkOptions
+
+```typescript
+export type EditGeoShapeMarkOptions = Omit<GeoShapeMarkOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GeoShapeMarkOptions`](../../../reference/types/#type-geoshapemarkoptions).
+
 ### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
 
  Expand EditGeometryDataOptions
@@ -5485,6 +5536,16 @@ export type EditGraphicsOptions =
   | { target: string; property: string; value: unknown; remove?: false }
   | { target: string | readonly string[]; remove: true; property?: never; value?: never };
 ```
+
+### `EditGraticuleOptions` {#type-editgraticuleoptions}
+
+ Expand EditGraticuleOptions
+
+```typescript
+export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GraticuleOptions`](../../../reference/types/#type-graticuleoptions).
 
 ### `EditGridDirectionsOptions` {#type-editgriddirectionsoptions}
 
@@ -7331,6 +7392,14 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
 
+### `GeoEditOptions` {#type-geoeditoptions}
+
+ Expand GeoEditOptions
+
+```typescript
+type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & { readonly target?: string } : never;
+```
+
 ### `GeoJSONInput` {#type-geojsoninput}
 
  Expand GeoJSONInput
@@ -7340,6 +7409,68 @@ export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Reco
 ```
 
 Related types: [`GeographicGeometry`](../../../reference/types/#type-geographicgeometry) · [`GeometryFeature`](../../../reference/types/#type-geometryfeature).
+
+### `GeoLineMarkOptions` {#type-geolinemarkoptions}
+
+ Expand GeoLineMarkOptions
+
+```typescript
+export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> { readonly fill?: "none"; }
+```
+
+Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
+
+### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
+
+ Expand GeoMarkStyleOptions
+
+```typescript
+export interface GeoMarkStyleOptions {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow) · [`BlendMode`](../../../reference/types/#type-blendmode).
+
+### `GeoPointMarkOptions` {#type-geopointmarkoptions}
+
+ Expand GeoPointMarkOptions
+
+```typescript
+export type GeoPointMarkOptions = GeoSourceMarkOptions & (
+  | { readonly radiusPx?: number; readonly radiusDeg?: never }
+  | { readonly radiusDeg: number; readonly radiusPx?: never }
+);
+```
+
+Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
+
+### `GeoShapeMarkOptions` {#type-geoshapemarkoptions}
+
+ Expand GeoShapeMarkOptions
+
+```typescript
+export interface GeoShapeMarkOptions extends GeoSourceMarkOptions { readonly radiusPx?: number; }
+```
+
+Related types: [`GeoSourceMarkOptions`](../../../reference/types/#type-geosourcemarkoptions).
+
+### `GeoSourceMarkOptions` {#type-geosourcemarkoptions}
+
+ Expand GeoSourceMarkOptions
+
+```typescript
+export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
+  readonly interpolation?: "source-segment" | "great-circle";
+  /** Explicit false removes a previous hint. */
+  readonly routeHint?: readonly [number, number] | false;
+}
+```
+
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -7754,6 +7885,21 @@ export type GraphicType =
   | "path"
   | "image";
 ```
+
+### `GraticuleOptions` {#type-graticuleoptions}
+
+ Expand GraticuleOptions
+
+```typescript
+export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
+  readonly stepDeg?: readonly [number, number];
+  readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
+  readonly precisionDeg?: number;
+}
+```
+
+Related types: [`GeoMarkStyleOptions`](../../../reference/types/#type-geomarkstyleoptions).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 

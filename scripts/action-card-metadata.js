@@ -73,6 +73,14 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createGeoShapeMark: ["editGeoShapeMark", "removeMark"],
+  editGeoShapeMark: ["editGeoShapeMark", "removeMark"],
+  createGeoPointMark: ["editGeoPointMark", "removeMark"],
+  editGeoPointMark: ["editGeoPointMark", "removeMark"],
+  createGeoLineMark: ["editGeoLineMark", "removeMark"],
+  editGeoLineMark: ["editGeoLineMark", "removeMark"],
+  createGraticule: ["editGraticule", "removeMark"],
+  editGraticule: ["editGraticule", "removeMark"],
   createProjection: ["editProjection", "removeResource"],
   editProjection: ["editProjection", "removeResource"],
   createGeometryData: ["editGeometryData", "removeResource"],

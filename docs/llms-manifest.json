@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 171,
+  "sectionCount": 172,
   "sections": [
     {
       "order": 1,
@@ -1626,14 +1626,14 @@
       "headings": [
         "coordinates",
         "at-a-glance",
-        "createcoordinate-id-type-layers",
-        "editcoordinate-target-aspect-polarframe",
+        "createcoordinate-id-type-layers-projection",
+        "editcoordinate-target-aspect-polarframe-projection",
         "removecoordinate-id",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 8234,
-      "sha256": "8ce87584c965cd0c4dce69ee9412c1f8ca10608665b2a8dd6081185dce8ec1e9"
+      "bytes": 8760,
+      "sha256": "49ea007cab7468a4a943018733694281744c3f7230aa9a08036bee2b2070fd85"
     },
     {
       "order": 97,
@@ -2035,8 +2035,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 37229,
-      "sha256": "f05ba92ae85ade1a5d82c9e8218796df0cbd764c948bb28f74d6a4c585244f1a"
+      "bytes": 38005,
+      "sha256": "7bf4e311b6c0ba58d7db51858c6fa993a60ce42a336d0201108806a368960c2e"
     },
     {
       "order": 120,
@@ -2182,8 +2182,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 261675,
-      "sha256": "d10a02bdaa7c38d43ab328adc494a6308f2e95efdf73cee4f53c9ff7eb158860"
+      "bytes": 261826,
+      "sha256": "6c5a4d5811180c25194fd49a62225203f4c3de255b9bc140420d720767f210aa"
     },
     {
       "order": 121,
@@ -2238,10 +2238,18 @@
         "editcontourmark",
         "createcalendarplot",
         "editcalendarplot",
+        "creategeoshapemark",
+        "editgeoshapemark",
+        "creategeopointmark",
+        "editgeopointmark",
+        "creategeolinemark",
+        "editgeolinemark",
+        "creategraticule",
+        "editgraticule",
         "related"
       ],
-      "bytes": 112801,
-      "sha256": "4925d246536d5bca60ec2b28ae8af488c4f8edb2d3166e57ca50959d7d2da022"
+      "bytes": 131537,
+      "sha256": "49d3e47feb563e5aa30dabaf78800e1cc2908c44f4c14cb8d44cbedae6dac524"
     },
     {
       "order": 122,
@@ -2521,8 +2529,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 59973,
-      "sha256": "9aac9546c455eae9f89efc209e5e810821aa08b5f23ed7aa6a767398c7341510"
+      "bytes": 60461,
+      "sha256": "5f540ec9a1150abc3f0d4307ca9a3b6eb7fa9079084699a8182164719b15f505"
     },
     {
       "order": 128,
@@ -2708,6 +2716,7 @@
         "type-createlineplotoptions",
         "type-createlollipopplotoptions",
         "type-createmarklabelsoptions",
+        "type-createnativecoordinateoptions",
         "type-createoverlayoptions",
         "type-createparallelaxisoptions",
         "type-createparallelcoordinatesoptions",
@@ -2849,11 +2858,15 @@
         "type-editflowlinksoptions",
         "type-editflownodesoptions",
         "type-editfolddataoptions",
+        "type-editgeolinemarkoptions",
+        "type-editgeopointmarkoptions",
+        "type-editgeoshapemarkoptions",
         "type-editgeometrydataoptions",
         "type-editgradientplotoptions",
         "type-editgraphdataoptions",
         "type-editgraphplotoptions",
         "type-editgraphicsoptions",
+        "type-editgraticuleoptions",
         "type-editgriddirectionsoptions",
         "type-editgridoptions",
         "type-edithierarchydataoptions",
@@ -2983,7 +2996,13 @@
         "type-folddataoptions",
         "type-folddataoutputfields",
         "type-forcedirectededgerouteoptions",
+        "type-geoeditoptions",
         "type-geojsoninput",
+        "type-geolinemarkoptions",
+        "type-geomarkstyleoptions",
+        "type-geopointmarkoptions",
+        "type-geoshapemarkoptions",
+        "type-geosourcemarkoptions",
         "type-geographicgeometry",
         "type-geometryfeature",
         "type-geometryfeaturekey",
@@ -3020,6 +3039,7 @@
         "type-graphicclippath",
         "type-graphiccliprect",
         "type-graphictype",
+        "type-graticuleoptions",
         "type-griddirectionoptions",
         "type-groupencodingoptions",
         "type-guidevisibilityoptions",
@@ -3389,8 +3409,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 474983,
-      "sha256": "20cb878ccf1f521b458d81ebe8a6e300ed8f9286232edc81673d4219c081c7be"
+      "bytes": 480297,
+      "sha256": "c01b9fe1223758b90eb5d555991879d2fb161db578fd2600189c4e3ec44848ce"
     },
     {
       "order": 129,
@@ -3979,10 +3999,19 @@
         "creategeometrydata",
         "editgeometrydata",
         "createprojection",
-        "editprojection"
+        "editprojection",
+        "draw-through-a-geo-coordinate",
+        "creategeoshapemark",
+        "editgeoshapemark",
+        "creategeopointmark",
+        "editgeopointmark",
+        "creategeolinemark",
+        "editgeolinemark",
+        "creategraticule",
+        "editgraticule"
       ],
-      "bytes": 7554,
-      "sha256": "5aad308b6b0726b4b2b2294a3f44a8705a7869e4a198d5f68dcdf3fd7a3f8996"
+      "bytes": 13234,
+      "sha256": "7ea7c49160c8c2bea93a82ec3689c3adfc884081f7249dc3295ef32568f5da79"
     },
     {
       "order": 166,
@@ -4058,6 +4087,18 @@
       ],
       "bytes": 2880,
       "sha256": "326058c95ba85706eaa479e9833030c26d8df6153633263e902e0065882a9419"
+    },
+    {
+      "order": 172,
+      "title": "Draw Geometry on a Map",
+      "route": "/tutorials/geographic-marks/",
+      "source": "tutorials/geographic-marks.md",
+      "headings": [
+        "draw-geometry-on-a-map",
+        "complete-program"
+      ],
+      "bytes": 3268,
+      "sha256": "b79354fce06c56f100907fa40fba10469af2453599b43adf12356c8b831e084d"
     }
   ]
 }

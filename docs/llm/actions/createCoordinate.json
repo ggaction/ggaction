@@ -66,12 +66,17 @@
     {
       "name": "type",
       "required": false,
-      "type": "\"cartesian\" | \"parallel\" | \"polar\" | undefined"
+      "type": "\"cartesian\" | \"geo\" | \"parallel\" | \"polar\" | undefined"
     },
     {
       "name": "layers",
       "required": false,
       "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "projection",
+      "required": false,
+      "type": "string | undefined"
     },
     {
       "name": "target",
@@ -80,7 +85,7 @@
     }
   ],
   "callPatterns": [
-    "createCoordinate({ id?, target?, type?, layers? })"
+    "createCoordinate({ id?, target?, type?, layers?, projection? })"
   ],
   "snippet": "program.createCoordinate({})",
   "errors": [],

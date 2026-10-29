@@ -14697,7 +14697,7 @@ encodeParallelCoordinates -> parallel / parallel
 The resolved coordinate definition and layer reference are stored in
 `semanticSpec` before guide creation.
 
-## `createCoordinate({ id?, type?, layers? })`
+## `createCoordinate({ id?, type?, layers?, projection? })`
 
 Use this advanced chart action when a named semantic coordinate must be created
 or attached explicitly.
@@ -14705,8 +14705,9 @@ or attached explicitly.
 | Option | Type | Default |
 | --- | --- | --- |
 | `id` | valid user-defined ID | `"main"` |
-| `type` | `"cartesian"`, `"polar"`, or `"parallel"` | `"cartesian"` |
+| `type` | `"cartesian"`, `"polar"`, `"parallel"`, or Full-only `"geo"` | `"cartesian"` |
 | `layers` | array of existing layer IDs | `[]` |
+| `projection` | existing projection ID for Geo | existing binding, current or unique eligible projection |
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -14731,7 +14732,13 @@ the complete ordered dimension assignment on one line layer. Each dimension
 uses its own namespaced scale and axis. Use the complete
 [Parallel Coordinates API](./api/parallel-coordinates/) for that contract.
 
-## `editCoordinate({ target, aspect?, polarFrame? })`
+Geo coordinates own one exact projection reference. Only geographic marks attach
+to them. Projection output uses CSS pixels without implicit Canvas fitting. Change
+a binding with `editCoordinate({target, projection})`; native aspect/polarFrame
+options cannot mix with that edit. See [Geometry and projections](./api/geometry/).
+Basic accepts only native coordinate types.
+
+## `editCoordinate({ target, aspect?, polarFrame?, projection? })`
 
 Use this complete-entry action to constrain the shape of an existing coordinate
 without changing the Canvas or its allocated plot rectangle.
@@ -18962,11 +18969,15 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
+| [`createGeoLineMark`](./reference/actions/marks/#creategeolinemark) | H2 | user-facing | marks |
 | [`createGeometryData`](./reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
+| [`createGeoPointMark`](./reference/actions/marks/#creategeopointmark) | H2 | user-facing | marks |
+| [`createGeoShapeMark`](./reference/actions/marks/#creategeoshapemark) | H2 | user-facing | marks |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGraphPlot`](./reference/actions/charts-data/#creategraphplot) | H0, H1 | user-facing | charts |
+| [`createGraticule`](./reference/actions/marks/#creategraticule) | H2 | user-facing | marks |
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 | user-facing | charts |
@@ -19093,11 +19104,15 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeoLineMark`](./reference/actions/marks/#editgeolinemark) | H3 | user-facing | marks |
 | [`editGeometryData`](./reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
+| [`editGeoPointMark`](./reference/actions/marks/#editgeopointmark) | H3 | user-facing | marks |
+| [`editGeoShapeMark`](./reference/actions/marks/#editgeoshapemark) | H3 | user-facing | marks |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
 | [`editGraphPlot`](./reference/actions/charts-data/#editgraphplot) | H1, H3 | user-facing | charts |
+| [`editGraticule`](./reference/actions/marks/#editgraticule) | H3 | user-facing | marks |
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](./reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
@@ -20588,8 +20603,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `type` | Optional / branch-dependent | `"cartesian" \| "parallel" \| "polar" \| undefined` |
+| `type` | Optional / branch-dependent | `"cartesian" \| "geo" \| "parallel" \| "polar" \| undefined` |
 | `layers` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 Behavior, inference, resets, and errors: [Semantic resources and regression layers](./reference/actions/statistics/#semantic-resources-and-regression-layers).
@@ -20615,6 +20631,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `aspect` | Optional / branch-dependent | `CoordinateAspect \| undefined` |
 | `polarFrame` | Optional / branch-dependent | `PolarFrameOptions \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 
 Behavior, inference, resets, and errors: [Semantic resources and regression layers](./reference/actions/statistics/#semantic-resources-and-regression-layers).
 
@@ -26423,6 +26440,360 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 ```
 
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](./api/calendar/#editcalendarplot).
+
+## `createGeoShapeMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GeoShapeMarkOptions`](./reference/types/#type-geoshapemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeoshapemark).
+
+## `editGeoShapeMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoShapeMarkOptions`](./reference/types/#type-editgeoshapemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeoshapemark).
+
+## `createGeoPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GeoPointMarkOptions`](./reference/types/#type-geopointmarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `radiusDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeopointmark).
+
+## `editGeoPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoPointMarkOptions`](./reference/types/#type-editgeopointmarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `radiusDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeopointmark).
+
+## `createGeoLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GeoLineMarkOptions`](./reference/types/#type-geolinemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](./api/geometry/#creategeolinemark).
+
+## `editGeoLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoLineMarkOptions`](./reference/types/#type-editgeolinemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeolinemark).
+
+## `createGraticule`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GraticuleOptions`](./reference/types/#type-graticuleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `extentDeg` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| undefined` |
+| `precisionDeg` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Create projected geographic Graticule geometry with native style. See [Geometry and projections](./api/geometry/#creategraticule).
+
+## `editGraticule`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGraticuleOptions`](./reference/types/#type-editgraticuleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `extentDeg` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| undefined` |
+| `precisionDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Edit projected geographic Graticule geometry with native style. See [Geometry and projections](./api/geometry/#editgraticule).
 
 ## Related
 
@@ -33306,6 +33677,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
@@ -33871,7 +34243,7 @@ export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./progra
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
   DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
   DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+import type { CreateNativeCoordinateOptions, ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
   CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
@@ -34002,7 +34374,8 @@ type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
 
 export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
-  { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
+  { readonly [Key in Exclude<BasicMethodKey, "createData" | "createCoordinate">]: RebindMethod<ChartProgram[Key]> } &
+  { createCoordinate(options?: CreateNativeCoordinateOptions): BasicChartProgram } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
   { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
@@ -34797,6 +35170,14 @@ interface ChartProgramActions {
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+  editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+  createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+  editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+  createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+  editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+  createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+  editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -37388,12 +37769,12 @@ Related types: [`ContourGrid`](./reference/types/#type-contourgrid).
  Expand CreateCoordinateOptions
 
 ```typescript
-export interface CreateCoordinateOptions {
-  id?: string;
-  type?: "cartesian" | "polar" | "parallel";
-  layers?: readonly string[];
-}
+export type CreateCoordinateOptions = CreateNativeCoordinateOptions | {
+  id?: string; type: "geo"; projection?: string; layers?: readonly string[];
+};
 ```
+
+Related types: [`CreateNativeCoordinateOptions`](./reference/types/#type-createnativecoordinateoptions).
 
 ### `CreateDataOptions` {#type-createdataoptions}
 
@@ -37785,6 +38166,18 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
 ```
 
 Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions) · [`MarkLabelPlacement`](./reference/types/#type-marklabelplacement) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`MarkLabelSelectionOptions`](./reference/types/#type-marklabelselectionoptions).
+
+### `CreateNativeCoordinateOptions` {#type-createnativecoordinateoptions}
+
+ Expand CreateNativeCoordinateOptions
+
+```typescript
+export interface CreateNativeCoordinateOptions {
+  id?: string;
+  type?: "cartesian" | "polar" | "parallel";
+  layers?: readonly string[];
+}
+```
 
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
@@ -39830,8 +40223,9 @@ Related types: [`ContourMarkOptions`](./reference/types/#type-contourmarkoptions
 
 ```typescript
 export type EditCoordinateOptions = EditCoordinateTarget & (
-  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
-  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions; projection?: never }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions; projection?: never }
+  | { projection: string; aspect?: never; polarFrame?: never }
 );
 ```
 
@@ -40146,6 +40540,36 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](./reference/types/#type-folddataoptions).
 
+### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
+
+ Expand EditGeoLineMarkOptions
+
+```typescript
+export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GeoLineMarkOptions`](./reference/types/#type-geolinemarkoptions).
+
+### `EditGeoPointMarkOptions` {#type-editgeopointmarkoptions}
+
+ Expand EditGeoPointMarkOptions
+
+```typescript
+export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
+```
+
+Related types: [`GeoEditOptions`](./reference/types/#type-geoeditoptions) · [`GeoPointMarkOptions`](./reference/types/#type-geopointmarkoptions).
+
+### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
+
+ Expand EditGeoShapeMarkOptions
+
+```typescript
+export type EditGeoShapeMarkOptions = Omit<GeoShapeMarkOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GeoShapeMarkOptions`](./reference/types/#type-geoshapemarkoptions).
+
 ### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
 
  Expand EditGeometryDataOptions
@@ -40210,6 +40634,16 @@ export type EditGraphicsOptions =
   | { target: string; property: string; value: unknown; remove?: false }
   | { target: string | readonly string[]; remove: true; property?: never; value?: never };
 ```
+
+### `EditGraticuleOptions` {#type-editgraticuleoptions}
+
+ Expand EditGraticuleOptions
+
+```typescript
+export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
+```
+
+Related types: [`GraticuleOptions`](./reference/types/#type-graticuleoptions).
 
 ### `EditGridDirectionsOptions` {#type-editgriddirectionsoptions}
 
@@ -42056,6 +42490,14 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 
 Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions).
 
+### `GeoEditOptions` {#type-geoeditoptions}
+
+ Expand GeoEditOptions
+
+```typescript
+type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & { readonly target?: string } : never;
+```
+
 ### `GeoJSONInput` {#type-geojsoninput}
 
  Expand GeoJSONInput
@@ -42065,6 +42507,68 @@ export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Reco
 ```
 
 Related types: [`GeographicGeometry`](./reference/types/#type-geographicgeometry) · [`GeometryFeature`](./reference/types/#type-geometryfeature).
+
+### `GeoLineMarkOptions` {#type-geolinemarkoptions}
+
+ Expand GeoLineMarkOptions
+
+```typescript
+export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> { readonly fill?: "none"; }
+```
+
+Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkoptions).
+
+### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
+
+ Expand GeoMarkStyleOptions
+
+```typescript
+export interface GeoMarkStyleOptions {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow) · [`BlendMode`](./reference/types/#type-blendmode).
+
+### `GeoPointMarkOptions` {#type-geopointmarkoptions}
+
+ Expand GeoPointMarkOptions
+
+```typescript
+export type GeoPointMarkOptions = GeoSourceMarkOptions & (
+  | { readonly radiusPx?: number; readonly radiusDeg?: never }
+  | { readonly radiusDeg: number; readonly radiusPx?: never }
+);
+```
+
+Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkoptions).
+
+### `GeoShapeMarkOptions` {#type-geoshapemarkoptions}
+
+ Expand GeoShapeMarkOptions
+
+```typescript
+export interface GeoShapeMarkOptions extends GeoSourceMarkOptions { readonly radiusPx?: number; }
+```
+
+Related types: [`GeoSourceMarkOptions`](./reference/types/#type-geosourcemarkoptions).
+
+### `GeoSourceMarkOptions` {#type-geosourcemarkoptions}
+
+ Expand GeoSourceMarkOptions
+
+```typescript
+export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
+  readonly interpolation?: "source-segment" | "great-circle";
+  /** Explicit false removes a previous hint. */
+  readonly routeHint?: readonly [number, number] | false;
+}
+```
+
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
 
 ### `GeographicGeometry` {#type-geographicgeometry}
 
@@ -42479,6 +42983,21 @@ export type GraphicType =
   | "path"
   | "image";
 ```
+
+### `GraticuleOptions` {#type-graticuleoptions}
+
+ Expand GraticuleOptions
+
+```typescript
+export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
+  readonly stepDeg?: readonly [number, number];
+  readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
+  readonly precisionDeg?: number;
+}
+```
+
+Related types: [`GeoMarkStyleOptions`](./reference/types/#type-geomarkstyleoptions).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 
@@ -51499,7 +52018,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Example and dataset source | `4191986ce68922a20d9d4a08552ba89737754849` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 349 |
+| Declared actions here | 357 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -53649,6 +54168,150 @@ Remove authored fit projections explicitly before removing their geometry.
 Geometry cascade does not delete a reusable authored projection. Projection
 resources and their exact fit inputs survive offline serialization.
 
+## Draw through a Geo coordinate
+
+A Geo coordinate owns one projection. A geometry mark names that coordinate and
+its geometry source; it does not copy the projection settings. Projection pixels
+are Canvas-local CSS pixels. Fit explicitly with the intended viewport when needed.
+Canvas resizing preserves that transform; `clip: true` clips at the current plot.
+
+> **Executable complete.** Import the Full package and run this complete planar polygon-with-hole example.
+
+```javascript
+import { chart } from "ggaction";
+
+const map = chart().createCanvas({ width: 400, height: 300, margin: 0 })
+  .createGeometryData({ id: "regions", format: "geojson", coordinateKind: "planar",
+    values: { type: "Polygon", coordinates: [
+      [[20,20],[280,20],[280,220],[20,220],[20,20]],
+      [[80,80],[80,140],[160,140],[160,80],[80,80]]
+    ] } })
+  .createProjection({ id: "plane", type: "identity" })
+  .createCoordinate({ type: "geo" })
+  .createGeoShapeMark({ fill: "#93c5fd", stroke: "#1e40af", clip: true });
+```
+
+## `createGeoShapeMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+```
+
+Draw mixed points, lines, polygons or collections. `geometry` and `coordinate`
+resolve an explicit ID, the current eligible resource, or one unique eligible
+candidate. Default ID is `geo-shape`; another creation needs another ID. Planar
+sources require identity; geographic sources require a spherical projection.
+
+Each feature is one logical item, even when a seam or collection splits it into
+several primitives. Holes stay unfilled. Null, empty and hidden-backside features
+retain source identity and draw no placeholder. Selection and accessibility read
+feature properties and the actual materialized pieces.
+
+Style options are `fill` (including structured paints), `stroke`, `strokeWidth`,
+`opacity`, `clip`, `lineCap`, `lineJoin`, `miterLimit`, `outline`, `shadow` and
+`blend`. Defaults are blue fill, dark stroke of width 1, opacity 1, clip false,
+butt caps and miter joins with limit 10. Shape points use `radiusPx: 3`.
+Line pieces always have fill none. Outline and shadow accept false to reset;
+blend accepts normal, multiply, screen or difference.
+
+## `editGeoShapeMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+```
+
+Use a nonempty patch of the same options with `target` instead of `id`. The target
+resolves the explicit, current or unique shape mark. Omitted options remain.
+
+## `createGeoPointMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+```
+
+Draw Point/MultiPoint features or collections containing only points. Default ID
+is `geo-point`, stroke none and strokeWidth 0. `radiusPx` defaults to 3 and stays
+constant under projection scale changes. Explicit `radiusDeg` draws a geographic
+spherical disk and requires geographic source units. Do not combine both radius
+options. All other shape styling and source/coordinate inference rules apply.
+
+## `editGeoPointMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+```
+
+Patch a point mark. A later radiusPx edit removes a previous geographic radius.
+
+## `createGeoLineMark`
+
+**Chart authoring.**
+
+```typescript
+createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+```
+
+Draw LineString/MultiLineString features or collections containing only lines.
+Default ID is `geo-line`; fill must be none. Interpolation defaults to
+`source-segment`, following the source longitude/latitude path. `great-circle`
+uses the short spherical path. An exactly antipodal segment needs a non-antipodal
+`routeHint: [longitude, latitude]`. Both use the same seam/clip/projection stream.
+
+## `editGeoLineMark`
+
+**Chart authoring.**
+
+```typescript
+editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+```
+
+Patch a line mark. `routeHint: false` explicitly removes a hint, for example when
+switching to source-segment interpolation.
+
+## `createGraticule`
+
+**Chart authoring.**
+
+```typescript
+createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+```
+
+Draw longitude/latitude lines on the current or explicit spherical Geo coordinate.
+No geometry source is created. Default ID is `graticule`, `stepDeg: [10, 10]`,
+`extentDeg: [[-180, -80], [180, 80]]` and `precisionDeg: 2.5`. Steps are positive
+and at most 180 degrees; precision is positive and at most 10 degrees. Extent
+corners must increase within longitude ±180 and latitude ±90. Lines use integer
+step multiples, with no duplicate 180-degree meridian for a full world.
+The line style rules apply.
+
+## `editGraticule`
+
+**Chart authoring.**
+
+```typescript
+editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+```
+
+Patch grid parameters or style. Invalid geometry, incompatible projections, unsafe
+values and excessive generated work reject atomically. Geometry edits update all
+fitted projections and affected marks once. Projection or coordinate edits refresh
+their mark consumers; old programs and traces remain unchanged.
+
+All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
+scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
+`removeMark`; live marks/coordinates restrict resource removal, including cascade.
+Automatic row facet/repeat, field encodings, joins, geographic labels and camera
+controls are not accepted by these mark options. Generated output is bounded at
+10,000 points/items and 10,000,000 work units per materialization.
+
 <!-- Source: /api/contours/ -->
 
 # Contours and two-dimensional density
@@ -54254,3 +54917,51 @@ requires another preparation before it can be authored.
 See [composition](./api/composition/) for scoped editing and guide policies,
 and [font assets](./tutorials/font-assets/) for explicit host preparation. Renderers consume
 the same resolved output; they do not measure or relayout the panels.
+
+<!-- Source: /tutorials/geographic-marks/ -->
+
+# Draw geometry on a map
+
+A geometry resource preserves source features. A projection maps their coordinates,
+and one Geo coordinate shares that projection among shapes, points and lines.
+This example uses local planar coordinates, so an identity projection preserves
+the district outline, its courtyard, the three stops and their service route.
+
+## Complete program
+
+The Full package contains the geographic actions. This complete example declares
+its own geometry and uses pixel radii for the stop symbols.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({"width":640,"height":480,"margin":40})
+  .createGeometryData({"id":"districts","format":"geojson","coordinateKind":"planar","featureKey":"id","values":{"type":"Feature","id":"district","properties":{"name":"District"},"geometry":{"type":"Polygon","coordinates":[[[80,90],[360,90],[360,370],[80,370],[80,90]],[[160,170],[160,290],[280,290],[280,170],[160,170]]]}}})
+  .createGeometryData({"id":"stops","format":"geojson","coordinateKind":"planar","featureKey":"id","values":{"type":"FeatureCollection","features":[{"type":"Feature","id":0,"properties":{"name":"West"},"geometry":{"type":"Point","coordinates":[120,130]}},{"type":"Feature","id":1,"properties":{"name":"Central"},"geometry":{"type":"Point","coordinates":[400,220]}},{"type":"Feature","id":2,"properties":{"name":"East"},"geometry":{"type":"Point","coordinates":[520,330]}}]}})
+  .createGeometryData({"id":"services","format":"geojson","coordinateKind":"planar","featureKey":"id","values":{"type":"Feature","id":"service","properties":{"name":"Service route"},"geometry":{"type":"LineString","coordinates":[[120,130],[400,220],[520,330]]}}})
+  .createProjection({"id":"map","type":"identity"})
+  .createCoordinate({"type":"geo"})
+  .createGeoShapeMark({"geometry":"districts","fill":"#93c5fd","stroke":"#1e40af","strokeWidth":2})
+  .createGeoLineMark({"geometry":"services","stroke":"#475569","strokeWidth":3})
+  .createGeoPointMark({"geometry":"stops","fill":"#dc2626","radiusPx":8});
+```
+
+For longitude and latitude, choose a spherical projection instead of identity.
+A graticule uses the same projection and coordinate binding as other geographic
+marks. Its spacing and precision are explicit angular values.
+
+Changing the projection updates every bound mark together. Pixel-sized points
+keep their radius; an explicit radiusDeg represents a geographic disk whose
+screen size changes with the projection. Feature selection keeps the original
+feature key when a line splits at the date line or a feature moves out of view.
+
+A feature with null geometry remains a source feature but has no graphic or hit
+target. Polygon holes remain empty in Canvas, SVG, PNG, PDF and hit testing.
+Use a projection fit when you want a stored geometry resource to determine scale
+and translation; Canvas resizing alone does not silently fit the geometry.
+
+See [Geometry and projections](./api/geometry/) for exact options, revisions,
+selection, coordinate compatibility and current limitations. The
+[shared example source](https://github.com/ggaction/ggaction/blob/0a217a83b217d228b6a17dc73e1d5979544acdcb/examples/geographic-marks/program.js)
+is used by this tutorial, the browser examples and the primitive comparisons.

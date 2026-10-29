@@ -1997,20 +1997,20 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `createCoordinate`
 
-- Signature: `createCoordinate({ id?, type?, layers? })`.
+- Signature: `createCoordinate({ id?, type?, layers?, projection? })`.
 - `id`: valid user ID, 기본 `"main"`.
-- `type`: `"cartesian" | "polar" | "parallel"`, 기본 cartesian.
+- `type`: `"cartesian" | "polar" | "parallel" | "geo"`, 기본 cartesian.
 - `layers`: existing unique layer ID array, 기본 `[]`.
 - Effect: named semantic coordinate를 만들고 coordinate가 없는 selected layers에 reference를 저장한다.
   equivalent repeated definition은 idempotent이고 기존 layer를 다른 coordinate로 이동시키지 않는다.
-- Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`와 Parallel chart contract가 all three types, attachments,
+- Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`와 Parallel chart contract가 native types, attachments,
   idempotence, conflicts와 validation을 검증한다.
 - Cartesian, Polar와 Parallel resources는 모두 current materialized consumers와 guides를 가진다.
 - Direct coordinate attachment admits the final selected layer bindings through the [single-Y frame policy](AXES.md#single-y-per-cartesian-frame) before a semantic child writes them, including unfinished extension layers.
 
 ### Formal values — `createCoordinate`
 
-- Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar" | "parallel"; layers?: readonly UserId[] } = {})`.
+- Implemented: `createCoordinate({ id?: UserId; type?: "cartesian" | "polar" | "parallel" | "geo"; layers?: readonly UserId[] } = {})`.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `createCoordinate`
@@ -2022,9 +2022,13 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - ✅ Covered: omission/empty, one/multiple existing IDs, duplicates, unknown layer, reattachment conflict.
 - Evidence: `test/unit/actions/coordinates/create-coordinate.test.js`.
 
+- Full `type:"geo"` stores one exact projection ref. Projection resolves explicit, existing coordinate binding, current eligible or one unique resource. Different bindings require editCoordinate. Native consumers/policies reject Geo, and Basic accepts only native coordinate types.
+- Geo evidence: `test/unit/geo/coordinates.test.js`, `test/unit/geo/marks.test.js`.
+
 ## `editCoordinate`
 
-- Signature: `editCoordinate({ target, aspect?, polarFrame? })`; at least one patch is required.
+- Signature: `editCoordinate({ target, aspect?, polarFrame?, projection? })`; at least one patch is required.
+- For an existing Geo coordinate, projection is the only patch. It is an explicit existing projection ID and cannot mix with aspect/polarFrame. The complete consumer union is validated and rematerialized atomically.
 - `target`: required existing coordinate ID. The action does not infer a coordinate.
 - Direct edits validate the final Cartesian frame geometry before a semantic child, so an aspect change cannot overlay independent frames. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - `aspect`: `"auto"` or `{ mode, ratio, alignX?, alignY? }`.
@@ -2057,7 +2061,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ### Formal values — `editCoordinate`
 
-- Implemented: `editCoordinate({ target: UserId; aspect?: CoordinateAspect; polarFrame?: PolarFrameOptions })`, with at
+- Implemented: `editCoordinate(options: TargetedOptions<EditCoordinateOptions>)`, with at
   least one patch required by the public type union.
 - Proposed (NOT IMPLEMENTED): coordinate type, attached-layer, viewport, clipping, and transpose edits.
 

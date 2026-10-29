@@ -480,6 +480,22 @@
       {
         "type": "file",
         "path": "contracts/realistic-projections.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/geo-mark-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-marks.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/geographic-marks/"
+      },
+      {
+        "type": "file",
+        "path": "browser/geographic-marks.browser.js"
       }
     ],
     "grammar": [

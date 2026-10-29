@@ -37,7 +37,7 @@ encodeParallelCoordinates -> parallel / parallel
 The resolved coordinate definition and layer reference are stored in
 `semanticSpec` before guide creation.
 
-## `createCoordinate({ id?, type?, layers? })`
+## `createCoordinate({ id?, type?, layers?, projection? })`
 
 Use this advanced chart action when a named semantic coordinate must be created
 or attached explicitly.
@@ -45,8 +45,9 @@ or attached explicitly.
 | Option | Type | Default |
 | --- | --- | --- |
 | `id` | valid user-defined ID | `"main"` |
-| `type` | `"cartesian"`, `"polar"`, or `"parallel"` | `"cartesian"` |
+| `type` | `"cartesian"`, `"polar"`, `"parallel"`, or Full-only `"geo"` | `"cartesian"` |
 | `layers` | array of existing layer IDs | `[]` |
+| `projection` | existing projection ID for Geo | existing binding, current or unique eligible projection |
 
 <!-- snippet-context:start -->
 
@@ -75,7 +76,13 @@ the complete ordered dimension assignment on one line layer. Each dimension
 uses its own namespaced scale and axis. Use the complete
 [Parallel Coordinates API](./parallel-coordinates.md) for that contract.
 
-## `editCoordinate({ target, aspect?, polarFrame? })`
+Geo coordinates own one exact projection reference. Only geographic marks attach
+to them. Projection output uses CSS pixels without implicit Canvas fitting. Change
+a binding with `editCoordinate({target, projection})`; native aspect/polarFrame
+options cannot mix with that edit. See [Geometry and projections](geometry.md).
+Basic accepts only native coordinate types.
+
+## `editCoordinate({ target, aspect?, polarFrame?, projection? })`
 
 Use this complete-entry action to constrain the shape of an existing coordinate
 without changing the Canvas or its allocated plot rectangle.

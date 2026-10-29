@@ -1148,5 +1148,12 @@
     "editSource": "examples/nested-responsive/program.js",
     "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
     "image": "/assets/images/nested-responsive.png"
+  },
+  "/tutorials/geographic-marks/": {
+    "title": "Draw Geometry on a Map",
+    "source": "docs/tutorials/geographic-marks.md",
+    "editSource": "examples/geographic-marks/program.js",
+    "description": "A geometry resource preserves source features. A projection maps their coordinates, and one Geo coordinate shares that projection among shapes, points and lines.",
+    "image": "/assets/images/geographic-marks.png"
   }
 }

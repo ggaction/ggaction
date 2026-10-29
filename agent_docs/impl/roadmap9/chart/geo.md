@@ -9,7 +9,8 @@
 - [x] 15 projection private registry·raw/visible/inverse·explicit bounds fit 검증
 - [x] Geometry stream·split/clip/resample·geometry fit 순수 kernel 검증
 - [x] Projection resource·명시 fit·geometry revision closure 공개 checkpoint 검증
-- [ ] Geometry stream의 native geo mark/guide 공개 연결
+- [x] Geometry stream의 native geo mark 공개 연결과 소비자 검증
+- [ ] Geo guide·label 공개 연결
 - [ ] Native geo marks/guide/typed join/shared-arc LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
@@ -289,3 +290,106 @@ built/browser를 재검증한다. 전체 Geo coverage/renderer 완료로 주장�
 desktop search 및 전체 페이지320/390/768px 브라우저 검증이 통과했다. 고정 tar와 현재
 998개 입력은 여전히 차이0이다. 명령 로그·3Node실측·최초 실패/회복은
 `geo-evidence/responsive-merge/status.json`에 보존했다.
+
+## Geo coordinate 구체 계약
+
+전체 남은 Gate 승인 `AUTHORIZATION.json.remainingApproval` 및 root의 같은 owner 승인으로
+기존 `createCoordinate` Full facade에 `{id?,type:"geo",projection?,layers?}`를 연결한다.
+Projection은 explicit/current/unique 순서로 해석하여 coordinate의 `projection` exact InputRef
+한 곳에 저장한다. 기본 id는 다른 coordinate와 동일한 main이며 서로 다른 type의 동일 id는
+충돌한다. 같은 ref의 반복 정의는 기존 idempotence를 유지하고 다른 projection은 edit로 변경한다.
+`editCoordinate({target,projection})`는 Geo에만 유효하고 aspect/polarFrame과 혼합하지 않는다.
+Geo projection 평면은 Canvas CSS pixel 좌표이며 이 단계는 Canvas fit나 viewport 정책을
+추가하지 않는다. Shape/point/line/graticule은 후속 동일 좌표를 소비한다.
+
+Basic은 native coordinate 생성만 유지한다. Full facade는 native plain action body를
+재사용하며 Basic import graph에 geographic math를 추가하지 않는다. Exact coordinate ref는
+공통 typed collector·primitive revision rebinder·removal·codec 검증에 연결한다. Projection
+편집과 geometry→fitted projection revision은 coordinate ref도 한 번 갱신하며 raw primitive는
+graphics를 자동 생성하지 않는다. Domain edit는 기존 deterministic coordinate plan을 명시
+실행한다. Geo에 native Cartesian/Polar/Parallel layer를 붙이는 요청, 다른 family constraint,
+없는 projection, 잘못된 ref 또는 복원 시 stale revision은 원자적으로 거부한다.
+
+## Geo mark 구체 계약
+
+승인된 shared stream의 path/circle primitive를 그대로 재사용한다. 공개 facades는
+`createGeoShapeMark/editGeoShapeMark`, `createGeoPointMark/editGeoPointMark`,
+`createGeoLineMark/editGeoLineMark`, `createGraticule/editGraticule`이며 internal
+`materializeGeoMark`가 하나의 concrete owner다. Semantic mark type은 geo이며 binding의
+mode가 shape/point/line/graticule을 구분한다. 일반 mark는 geometry exact ref와 coordinate ID를
+가지고 projection ref는 복제하지 않는다. Graticule은 저장된 stepDeg/extentDeg/precisionDeg
+요청으로 생성하므로 별도 source resource를 합성하지 않는다.
+
+Shape는 mixed GeometryCollection의 polygon/line/point를 모두 출력하며 Point와 Line은 각각
+해당 primitive geometry만 허용한다. geometry:null 및 clipped invisible part는 그림을 만들지
+않아도 source feature identity를 보존한다. feature item key는 geometry logicalId+rowKey, part
+role은 source member path+component+part index이며 screen topology 변경과 구분한다.
+
+기본 point radiusPx3은 camera scale과 독립이다. GeoPoint의 명시 radiusDeg는 geographic source에만
+허용하며 spherical circle을 같은 projection stream으로 보낸다. Line interpolation은
+source-segment 기본/great-circle 명시이며 antipodal routeHint를 기존 stream과 공유한다.
+Shape fill·stroke 및 Point fill은 공통 FillPaint/materialization을 쓰고 outline/blend/shadow를
+기존 P2 owner로 전달한다. Line과 Graticule fill은 none이다. Optional clip은 기존 plot clip이며
+기본 false로 projection clipping과 별개다. Resource scalar appearance는 기존 defaults를 사용한다.
+
+선택은 최종 feature item grain, highlight는 전체 visible parts이며 opacity0도 유효하다. Resource
+edit는 모든 geometry/projection 후보를 검증하고 scale/mark/guide union을 한 번 명시 실행한다.
+Canvas는 explicit projection transform을 바꾸지 않지만 plot clip과 layer placement를 갱신한다.
+양쪽 label/font 일반 파생, field color/size 및 join/LOD mapping은 후속 STEP045 consumer cell에
+남기며 이 단계가 전체 Geo 완료라는 뜻은 아니다. hconcat/vconcat와 scoped edits를 지원하고
+row facet/repeat는 geometry resource의 명시 partition 정책 없이는 거부한다.
+
+### Geo mark 소비자 검증 중 발견과 구체화
+
+- source metadata 조회를 `materialization/geo/source.js`로 분리했다. selection/accessibility는 이미 materialized된 identity/parts와 보존 feature metadata를 읽고 math adapter를 import하지 않는다.
+- radiusDeg 생성 ring은 dependency의 부동소수 끝점을 그대로 source로 넘기지 않고 생성 소유자가 정확히 닫고 GeoJSON exterior winding으로 명시 생성한다. 원본 source ring 자동수리와는 다르다.
+- routeHint:false는 기존 hint 명시 제거다. source-segment로 되돌릴 때 숨은 제거 없이 함께 작성한다.
+- removal은 기존 geometry/contour 계약대로 live mark restrict다. generic cascade가 authored consumers를 임의 삭제하지 않는다. removeMark→removeCoordinate→removeResource가 명시 순서다.
+
+### Geo mark source checkpoint와 검증 경계
+
+Geo source·projection·coordinate·mark의 집중 검사81개와 실제 pinned dataset5종의
+15 recipes 및 inventory 검사1개가 통과했다. 새 source owner들은 기존 family floor를
+그대로 적용했고 집중 범위 line/function100%, branch98.27%를 확인했다. Primitive/public
+동일성2개, Canvas/SVG/PNG/PDF4개, Canvas/SVG DPR1/2 browser2개도 통과했다.
+
+전체 unit 원본은6471개 중6467개 통과다. 실패4개는 새 Geo lineage와 vocabulary 기대값,
+브라우저의 승인된 순수 math dependency 경계, 현실 데이터 timing inventory 누락이었다.
+Runtime 변경 없이 해당 owner 검사6개와7개를 각각 다시 통과했다. 원본 전체 결과를 green으로
+바꾸어 기록하지 않으며 전역 coverage 완료로 주장하지 않는다.
+
+동일 tar `b095b300987e6216c17588a83e686311f8278f933d89d09312980ee55a50067a`의
+Node20/22/24 각 runtime8개, strict Full/Basic 타입, runnable docs2개와5browser bundle을
+검증했다.1007개 packed input이 현재 source와 모두 일치한다. Source commit 후 문서 예제
+provenance를 재생성하고 최종 docs/built/browser 기록을 별도 evidence commit으로 보존한다.
+
+공통 lifecycle builder가 바뀐3개 realistic 파일은 root가 최종 통합에서 한 번 실행한다:
+`realistic-lifecycle-factor-effects.test.js`, `realistic-scenario-generator.test.js`,
+`realistic-scenario-generation-isolation.test.js`. 이 checkpoint 이후 typed join, shared-arc LOD,
+guide/labels, camera 및 current-frame 통합을 계속 진행하며 전체 STEP042–046 완료로 선언하지 않는다.
+
+최종 source `f55f12db2`의 postcommit 문서193/193, built172페이지/1503machine artifacts와
+desktop search 및 전체 페이지320/390/768px 검증이 통과했다. 현재1007개 packed input은
+동일 tar와 차이0이다. 최초 전체 unit4실패와 owning13개 수리, inventory·문서 원본실패와
+최종 통과를 구분한 증거는 `geo-evidence/marks/status.json`에 보존한다. 이 기록 commit은
+source를 바꾸지 않으며 source checkpoint와 최종 proof checkpoint는 별개다.
+
+## Native mark와 linked interaction 합산
+
+Mark source `f55f12db2`와 proof `7f55cc930`에 main `576f07e5d`를 병합했다.
+Runtime 소스는 양쪽 변경을 보존했고, 필수 browser `#status` 완료 신호 및 region/linked-filter
+경계도 유지했다. 기존 Geo unit79개, 추가 session frame·feature selection·offline 복원1개,
+interaction/direct controls/linked filter/region35개와 browser13개, 경계·타입 계약26개가
+통과했다. 공통 realistic3개와 전역 coverage를 여기서 반복하지 않는다.
+
+합산 option inventory는350actions/31999paths/37723requirements이며 기존 의미 assertion을
+유지해 canonical 검증한다. Package는1016entries이고 Full/Basic gzip을 지원 Node에서
+다시 측정했다. 합산 tar·문서 provenance·최종 browser 증거는 source merge commit 이후
+`geo-evidence/marks-merge/`에 별도로 기록한다.
+
+합산 source `0a217a83b`는 canonical inventory7/7와 package7/7, 동일 tar
+`f96999b130e6af40bc4d917c33773f03d5b2c6028af982d9b844a414de53fac3`의 Node20/22/24
+각 runtime8개·strict 타입·docs2개·browser bundle5개를 통과했다.1016개 packed input은
+현재 source와 차이0이다. Postcommit 문서196/196, built172페이지/1505machine artifacts와
+전체 페이지320/390/768px 검증도 통과했다. 합산 증거는 `geo-evidence/marks-merge/status.json`이다.
+이후 join 변경은 별도 개념 commit으로 진행한다.

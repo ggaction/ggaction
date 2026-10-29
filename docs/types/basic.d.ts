@@ -8,7 +8,7 @@ export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./progra
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
   DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
   DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+import type { CreateNativeCoordinateOptions, ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
   CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
@@ -139,7 +139,8 @@ type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
 
 export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
-  { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
+  { readonly [Key in Exclude<BasicMethodKey, "createData" | "createCoordinate">]: RebindMethod<ChartProgram[Key]> } &
+  { createCoordinate(options?: CreateNativeCoordinateOptions): BasicChartProgram } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
   { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };

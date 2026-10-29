@@ -67,6 +67,11 @@
       "name": "polarFrame",
       "required": false,
       "type": "PolarFrameOptions | undefined"
+    },
+    {
+      "name": "projection",
+      "required": false,
+      "type": "string | undefined"
     }
   ],
   "callPatterns": [

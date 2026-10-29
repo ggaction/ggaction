@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 3,
+  "name": "createGeoPointMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create projected geographic GeoPointMark geometry with native style.",
+  "signature": "createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;",
+  "intents": [
+    "create geo point mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "geographic points",
+    "map symbols"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "Canvas",
+      "Geo coordinate",
+      "compatible geometry source"
+    ],
+    "owns": [
+      "geographic mark"
+    ],
+    "idOptions": [
+      "id",
+      "coordinate",
+      "geometry"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoPointMark",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "Canvas",
+      "Geo coordinate",
+      "compatible geometry source"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "interpolation",
+      "required": false,
+      "type": "\"great-circle\" | \"source-segment\" | undefined"
+    },
+    {
+      "name": "routeHint",
+      "required": false,
+      "type": "false | readonly [number, number] | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "radiusPx",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "radiusDeg",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createGeoPointMark({ id?, coordinate?, target?, geometry?, interpolation?, routeHint?, fill?, stroke? })"
+  ],
+  "snippet": "program.createGeoPointMark({ id: \"cities\", geometry: \"geometry\", coordinate: \"main\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#creategeopointmark"
+}

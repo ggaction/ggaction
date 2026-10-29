@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 349,
+  "actionCount": 357,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -235,6 +235,38 @@
       "status": "development"
     },
     "editContourData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoShapeMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoShapeMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoPointMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoPointMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoLineMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoLineMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGraticule": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraticule": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

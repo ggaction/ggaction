@@ -4,6 +4,7 @@ export interface SemanticLayer {
   readonly alt?: string;
   readonly calendarBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly calendarLabels?: Readonly<Record<CalendarLabelRole, boolean>>;
+  readonly geoBinding?: GeoMarkBinding;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };

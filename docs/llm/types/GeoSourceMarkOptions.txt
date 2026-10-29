@@ -1,0 +1,6 @@
+export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
+  readonly interpolation?: "source-segment" | "great-circle";
+  /** Explicit false removes a previous hint. */
+  readonly routeHint?: readonly [number, number] | false;
+}

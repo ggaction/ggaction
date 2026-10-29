@@ -1,3 +1,4 @@
+import { resolveGeoMark } from "./mark.js";
 import { ownRecord } from "../../core/ownData.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
@@ -21,9 +22,13 @@ function validateStored(resource) {
   }
 }
 function validateBindings(program, resource) {
-  if (resource.options.fit === undefined) return;
-  const expected = createProjectionResource({ id: resource.id, revision: resource.revision, options: resource.options,
-    geometry: resolveInputReference(program, resource.inputs[0]) });
-  if (!same(resource.result, expected.result)) throw new TypeError("Stored projection fit disagrees with its geometry and options.");
+  if (resource.options.fit !== undefined) {
+    const expected = createProjectionResource({ id: resource.id, revision: resource.revision, options: resource.options,
+      geometry: resolveInputReference(program, resource.inputs[0]) });
+    if (!same(resource.result, expected.result)) throw new TypeError("Stored projection fit disagrees with its geometry and options.");
+  }
+  const coordinates = new Set(program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && coordinate.projection.id === resource.id).map(coordinate => coordinate.id));
+  for (const layer of program.semanticSpec.layers) if (coordinates.has(layer.coordinate)) resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id]?.geo);
 }
+
 export const projectionResourceHandler = Object.freeze({ validateStored, validateBindings });

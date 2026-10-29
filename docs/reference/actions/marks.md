@@ -2201,6 +2201,392 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../../api/calendar.md#editcalendarplot).
 
 
+## `createGeoShapeMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GeoShapeMarkOptions`](./../types.md#type-geoshapemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeoshapemark).
+
+
+## `editGeoShapeMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoShapeMarkOptions`](./../types.md#type-editgeoshapemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeoshapemark).
+
+
+## `createGeoPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GeoPointMarkOptions`](./../types.md#type-geopointmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `radiusDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeopointmark).
+
+
+## `editGeoPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoPointMarkOptions`](./../types.md#type-editgeopointmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `radiusPx` | Optional / branch-dependent | `number \| undefined` |
+| `radiusDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeopointmark).
+
+
+## `createGeoLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GeoLineMarkOptions`](./../types.md#type-geolinemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#creategeolinemark).
+
+
+## `editGeoLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoLineMarkOptions`](./../types.md#type-editgeolinemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `interpolation` | Optional / branch-dependent | `"great-circle" \| "source-segment" \| undefined` |
+| `routeHint` | Optional / branch-dependent | `false \| readonly [number, number] \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../../api/geometry.md#editgeolinemark).
+
+
+## `createGraticule`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GraticuleOptions`](./../types.md#type-graticuleoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `extentDeg` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| undefined` |
+| `precisionDeg` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Create projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#creategraticule).
+
+
+## `editGraticule`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGraticuleOptions`](./../types.md#type-editgraticuleoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `"none" \| undefined` |
+| `stepDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `extentDeg` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| undefined` |
+| `precisionDeg` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#editgraticule).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

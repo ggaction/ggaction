@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
+
 - Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
 
 - Add Full-only `createGeometryData` and `editGeometryData` for geographic or planar GeoJSON/TopoJSON sources. Retain shared arcs, immutable feature keys and source provenance through bounded validation, edits, inspection and offline restoration.

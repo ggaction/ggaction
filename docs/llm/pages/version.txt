@@ -13,7 +13,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Example and dataset source | `4191986ce68922a20d9d4a08552ba89737754849` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 349 |
+| Declared actions here | 357 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

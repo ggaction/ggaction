@@ -1337,6 +1337,18 @@ function buildDirectDataResources(factors) {
     .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
     .editProjection({ target: "directProjection", reflectX: true })
     .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })
+    .createCoordinate({ id: "directGeoPlane", type: "geo", projection: "directProjection" })
+    .createGeoShapeMark({ id: "directGeoShape", coordinate: "directGeoPlane", geometry: "directGeometry", opacity: .3 })
+    .editGeoShapeMark({ target: "directGeoShape", fill: "#2563eb" })
+    .createGeoPointMark({ id: "directGeoPoints", coordinate: "directGeoPlane", geometry: "directGeometry", radiusPx: 3 })
+    .editGeoPointMark({ target: "directGeoPoints", radiusPx: 4 })
+    .createGeometryData({ id: "directGeoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: rows.map(row => [row.x, row.positive]) } })
+    .createGeoLineMark({ id: "directGeoLinesMark", coordinate: "directGeoPlane", geometry: "directGeoLines", strokeWidth: 1 })
+    .editGeoLineMark({ target: "directGeoLinesMark", opacity: .6 })
+    .createProjection({ id: "directGeoSphere", type: "equirectangular", translatePx: [200, 150] })
+    .createCoordinate({ id: "directGeoGridFrame", type: "geo", projection: "directGeoSphere" })
+    .createGraticule({ id: "directGeoGrid", coordinate: "directGeoGridFrame", extentDeg: [[-40, -20], [40, 20]], stepDeg: [20, 20] })
+    .editGraticule({ target: "directGeoGrid", opacity: .2 })
     .createContourData({ id: "directContourGrid", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2,
       values: rows.slice(0, 4).map(row => row.positive) }, thresholds: [0, Math.max(...rows.map(row => row.positive)) + 1] })
     .createDensityContourData({ id: "directContourDensity", data: "directSource", x: "x", y: "positive", estimator: "kde", normalization: "unit",
@@ -2537,6 +2549,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createProjection", "editProjection",
+  "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",

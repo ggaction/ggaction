@@ -559,5 +559,16 @@
       "exported": "createNestedResponsive"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/geographic-marks.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its own planar geometry.",
+    "canonical": {
+      "file": "examples/geographic-marks/program.js",
+      "exported": "createGeographicMarks"
+    },
+    "rendering": "authoring-only"
   }
 }

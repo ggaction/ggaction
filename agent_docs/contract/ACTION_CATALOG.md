@@ -357,6 +357,14 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editGeometryData`](current/GEOMETRY.md#editgeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createProjection`](current/GEOMETRY.md#createprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editProjection`](current/GEOMETRY.md#editprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeoShapeMark`](current/GEOMETRY.md#creategeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeoShapeMark`](current/GEOMETRY.md#editgeoshapemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeoPointMark`](current/GEOMETRY.md#creategeopointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeoPointMark`](current/GEOMETRY.md#editgeopointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeoLineMark`](current/GEOMETRY.md#creategeolinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeoLineMark`](current/GEOMETRY.md#editgeolinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGraticule`](current/GEOMETRY.md#creategraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGraticule`](current/GEOMETRY.md#editgraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

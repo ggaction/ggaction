@@ -347,5 +347,13 @@
   "createGeometryData": "/reference/actions/charts-data/#creategeometrydata",
   "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
   "createProjection": "/reference/actions/charts-data/#createprojection",
-  "editProjection": "/reference/actions/charts-data/#editprojection"
+  "editProjection": "/reference/actions/charts-data/#editprojection",
+  "createGeoShapeMark": "/reference/actions/marks/#creategeoshapemark",
+  "editGeoShapeMark": "/reference/actions/marks/#editgeoshapemark",
+  "createGeoPointMark": "/reference/actions/marks/#creategeopointmark",
+  "editGeoPointMark": "/reference/actions/marks/#editgeopointmark",
+  "createGeoLineMark": "/reference/actions/marks/#creategeolinemark",
+  "editGeoLineMark": "/reference/actions/marks/#editgeolinemark",
+  "createGraticule": "/reference/actions/marks/#creategraticule",
+  "editGraticule": "/reference/actions/marks/#editgraticule"
 }

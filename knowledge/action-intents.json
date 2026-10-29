@@ -1085,6 +1085,22 @@
       "map projection",
       "planar projection",
       "geometry fit"
+    ],
+    "GeoShapeMark": [
+      "geographic shapes",
+      "projected feature geometry"
+    ],
+    "GeoPointMark": [
+      "geographic points",
+      "map symbols"
+    ],
+    "GeoLineMark": [
+      "geographic lines",
+      "projected routes"
+    ],
+    "Graticule": [
+      "graticule",
+      "longitude and latitude grid"
     ]
   },
   "summaryOverrides": {
@@ -2191,6 +2207,44 @@
     "editProjection": {
       "target": "projection",
       "scalePx": 200
+    },
+    "createGeoShapeMark": {
+      "id": "regions",
+      "geometry": "geometry",
+      "coordinate": "main"
+    },
+    "editGeoShapeMark": {
+      "target": "regions",
+      "opacity": 0.7
+    },
+    "createGeoPointMark": {
+      "id": "cities",
+      "geometry": "geometry",
+      "coordinate": "main"
+    },
+    "editGeoPointMark": {
+      "target": "cities",
+      "opacity": 0.7
+    },
+    "createGeoLineMark": {
+      "id": "routes",
+      "geometry": "geometry",
+      "coordinate": "main"
+    },
+    "editGeoLineMark": {
+      "target": "routes",
+      "opacity": 0.7
+    },
+    "createGraticule": {
+      "id": "grid",
+      "stepDeg": [
+        20,
+        20
+      ]
+    },
+    "editGraticule": {
+      "target": "grid",
+      "opacity": 0.7
     }
   },
   "callPatternOverrides": {

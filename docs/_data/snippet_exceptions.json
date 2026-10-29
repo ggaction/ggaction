@@ -560,39 +560,39 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Compose Cartesian, Polar, and Parallel charts\" on docs/api/composition.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/coordinates.md#-createcoordinate-id-type-layers-:1",
+    "id": "docs/api/coordinates.md#-createcoordinate-id-type-layers-projection-:1",
     "sha256": "c56595dcf03d00e9056d75787582b93c207fca46e6aa4243d02e2d86022381c3",
     "mode": "contextual-fragment",
     "owner": "docs/api/coordinates.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createCoordinate({ id?, type?, layers? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createCoordinate({ id?, type?, layers?, projection? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-:1",
+    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-projection-:1",
     "sha256": "a46a47d37bc44bc627f05b955cc359fc38c27d48f5632fc87d11d05857c01dfb",
     "mode": "contextual-fragment",
     "owner": "docs/api/coordinates.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame?, projection? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-:2",
+    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-projection-:2",
     "sha256": "62abb312d8fc0ff662a01158294f55a0d025e205f3d2b63ec57321bd1f44803d",
     "mode": "contextual-fragment",
     "owner": "docs/api/coordinates.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame?, projection? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-:3",
+    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-projection-:3",
     "sha256": "0c69690326a5ae27ad55393c83f95909215505d862f68b5480f055200ac91648",
     "mode": "contextual-fragment",
     "owner": "docs/api/coordinates.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame?, projection? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-:4",
+    "id": "docs/api/coordinates.md#-editcoordinate-target-aspect-polarframe-projection-:4",
     "sha256": "d85365abaaed9128a8dbfb6fa201b90ec8511024c956f183aba9e1950c0de551",
     "mode": "contextual-fragment",
     "owner": "docs/api/coordinates.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editCoordinate({ target, aspect?, polarFrame?, projection? })`\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
     "id": "docs/api/coordinates.md#-removecoordinate-id-removecoordinate-id-:1",

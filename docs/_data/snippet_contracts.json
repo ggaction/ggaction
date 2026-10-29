@@ -1081,7 +1081,7 @@
   {
     "file": "api/coordinates.md",
     "block": 1,
-    "heading": "`createCoordinate({ id?, type?, layers? })`",
+    "heading": "`createCoordinate({ id?, type?, layers?, projection? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1095,7 +1095,7 @@
   {
     "file": "api/coordinates.md",
     "block": 2,
-    "heading": "`editCoordinate({ target, aspect?, polarFrame? })`",
+    "heading": "`editCoordinate({ target, aspect?, polarFrame?, projection? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1111,7 +1111,7 @@
   {
     "file": "api/coordinates.md",
     "block": 3,
-    "heading": "`editCoordinate({ target, aspect?, polarFrame? })`",
+    "heading": "`editCoordinate({ target, aspect?, polarFrame?, projection? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1127,7 +1127,7 @@
   {
     "file": "api/coordinates.md",
     "block": 4,
-    "heading": "`editCoordinate({ target, aspect?, polarFrame? })`",
+    "heading": "`editCoordinate({ target, aspect?, polarFrame?, projection? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1143,7 +1143,7 @@
   {
     "file": "api/coordinates.md",
     "block": 5,
-    "heading": "`editCoordinate({ target, aspect?, polarFrame? })`",
+    "heading": "`editCoordinate({ target, aspect?, polarFrame?, projection? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2028,6 +2028,18 @@
     "resources": [],
     "prerequisites": "Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].",
     "sha256": "78a61f37e91416784f8cf0964388c3d656ac81831b84026133f02655ef559848",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 3,
+    "heading": "Draw through a Geo coordinate",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import the Full package and run this complete planar polygon-with-hole example.",
+    "sha256": "0c596832f0ec26235c50a6c2ff7b343992f5f0c08ed4b683e169e5ac36970f98",
     "executable": true
   },
   {

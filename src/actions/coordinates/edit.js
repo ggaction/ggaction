@@ -1,5 +1,4 @@
 import { assertProgramSingleY } from "../../materialization/frameState.js";
-import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { normalizeCoordinateAspect } from "../../grammar/coordinates.js";
@@ -28,60 +27,51 @@ function applyCoordinatePatch(program, target, property, value) {
   });
 }
 
-export const editCoordinate = /* @__PURE__ */ action(
-  {
-    op: "editCoordinate",
-    description: "Edit coordinate layout constraints and rematerialize its consumers."
-  },
-  function (args = {}) {
-    validateOptionObject(args, EDIT_COORDINATE_OPTIONS, "editCoordinate", {
-      allowEmpty: false,
-      emptyMessage: "editCoordinate requires aspect or polarFrame changes.",
-      emptyError: Error
-    });
-    const target = validateUserId(args.target, "Coordinate id");
-    const coordinate = requireCoordinate(this, target);
-    const hasAspect = Object.hasOwn(args, "aspect");
-    const hasPolarFrame = Object.hasOwn(args, "polarFrame");
-    if (!hasAspect && !hasPolarFrame) {
-      throw new Error("editCoordinate requires aspect or polarFrame changes.");
-    }
-    const aspect = hasAspect ? normalizeCoordinateAspect(args.aspect) : undefined;
-    if (hasPolarFrame && coordinate.type !== "polar") {
-      throw new Error("editCoordinate polarFrame requires a Polar coordinate.");
-    }
-    const polarFrame = hasPolarFrame
-      ? normalizePolarFrameOptions(args.polarFrame)
-      : undefined;
-    if (this.actionStack.length === 1) {
-      const updated = { ...coordinate };
-      for (const [property, value] of [["aspect", aspect], ["polarFrame", polarFrame]]) {
-        if (value === "auto") delete updated[property];
-        else if (value !== undefined) updated[property] = value;
-      }
-      assertProgramSingleY({ ...this, markConfigs: this.markConfigs, guideConfigs: this.guideConfigs,
-        semanticSpec: { ...this.semanticSpec, coordinates: this.semanticSpec.coordinates.map(value =>
-          value.id === target ? updated : value) } }, { allowIncomplete: true });
-    }
-    let proposed = this;
-    if (hasAspect) {
-      proposed = applyCoordinatePatch(proposed, target, "aspect", aspect);
-    }
-    if (hasPolarFrame) {
-      proposed = applyCoordinatePatch(
-        proposed,
-        target,
-        "polarFrame",
-        polarFrame
-      );
-    }
-    const plan = planCoordinateRematerialization(proposed, target);
-    // Validate the complete dependent geometry on a discarded immutable branch.
-    applyMaterializationPlan(proposed, plan);
-    return applyMaterializationPlan(proposed, plan);
+export function editNativeCoordinate(program, args = {}) {
+  validateOptionObject(args, EDIT_COORDINATE_OPTIONS, "editCoordinate", {
+    allowEmpty: false,
+    emptyMessage: "editCoordinate requires aspect or polarFrame changes.",
+    emptyError: Error
+  });
+  const target = validateUserId(args.target, "Coordinate id");
+  const coordinate = requireCoordinate(program, target);
+  if (coordinate.type === "geo") throw new TypeError("Geo coordinates require a projection edit.");
+  const hasAspect = Object.hasOwn(args, "aspect");
+  const hasPolarFrame = Object.hasOwn(args, "polarFrame");
+  if (!hasAspect && !hasPolarFrame) {
+    throw new Error("editCoordinate requires aspect or polarFrame changes.");
   }
-);
-
-export function registerCoordinateEditActions(ProgramClass) {
-  ProgramClass.prototype.editCoordinate = editCoordinate;
+  const aspect = hasAspect ? normalizeCoordinateAspect(args.aspect) : undefined;
+  if (hasPolarFrame && coordinate.type !== "polar") {
+    throw new Error("editCoordinate polarFrame requires a Polar coordinate.");
+  }
+  const polarFrame = hasPolarFrame
+    ? normalizePolarFrameOptions(args.polarFrame)
+    : undefined;
+  if (program.actionStack.length === 1) {
+    const updated = { ...coordinate };
+    for (const [property, value] of [["aspect", aspect], ["polarFrame", polarFrame]]) {
+      if (value === "auto") delete updated[property];
+      else if (value !== undefined) updated[property] = value;
+    }
+    assertProgramSingleY({ ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs,
+      semanticSpec: { ...program.semanticSpec, coordinates: program.semanticSpec.coordinates.map(value =>
+        value.id === target ? updated : value) } }, { allowIncomplete: true });
+  }
+  let proposed = program;
+  if (hasAspect) {
+    proposed = applyCoordinatePatch(proposed, target, "aspect", aspect);
+  }
+  if (hasPolarFrame) {
+    proposed = applyCoordinatePatch(
+      proposed,
+      target,
+      "polarFrame",
+      polarFrame
+    );
+  }
+  const plan = planCoordinateRematerialization(proposed, target);
+  // Validate the complete dependent geometry on a discarded immutable branch.
+  applyMaterializationPlan(proposed, plan);
+  return applyMaterializationPlan(proposed, plan);
 }
