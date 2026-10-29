@@ -1,5 +1,5 @@
 {
-  "status": "source-qualified-final-docs-and-common-realistic-pending",
+  "status": "qualified",
   "base": "e21e40cca",
   "mergedCalendar": "c966374951afec293106d34bd0f9dd9ed0261976",
   "focused": {
@@ -40,5 +40,34 @@
     "full realistic corpus rerun",
     "STEP057 completion",
     "Roadmap9 completion"
-  ]
+  ],
+  "sourceCommit": "9289b595a",
+  "commonRealistic": {
+    "passed": 27,
+    "failed": 0,
+    "files": [
+      "realistic-lifecycle-factor-effects.test.js",
+      "realistic-scenario-generator.test.js",
+      "realistic-scenario-generation-isolation.test.js"
+    ]
+  },
+  "docs": {
+    "passed": 182,
+    "failed": 0
+  },
+  "built": {
+    "pages": 166,
+    "selectiveLLM": 1429,
+    "browser": "passed desktop search and every page at widths 320,390,768"
+  },
+  "caps": {
+    "entries": 928,
+    "packedBytes": 1333000,
+    "unpackedBytes": 6113000,
+    "FullGzip": 663000,
+    "BasicGzip": 371000,
+    "SVGGzip": 25000,
+    "interactionGzip": 83000,
+    "searchIndex": 966000
+  }
 }
