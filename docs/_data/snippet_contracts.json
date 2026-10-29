@@ -4398,6 +4398,20 @@
   {
     "file": "api/rendering.md",
     "block": 10,
+    "heading": "Native item alternatives",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"bars\""
+    ],
+    "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership.",
+    "sha256": "22bea3dcafaec9b10404d3fe8d1d08ee98eaa8e7f177488c8228a30c102ef34e",
+    "executable": true
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 11,
     "heading": "Transition scenes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4411,7 +4425,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 11,
+    "block": 12,
     "heading": "Canvas transition scenes",
     "mode": "fragment",
     "environment": "browser-module",
@@ -4425,7 +4439,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 12,
+    "block": 13,
     "heading": "Measured text layout",
     "mode": "fragment",
     "environment": "browser-module",
@@ -4437,7 +4451,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 13,
+    "block": 14,
     "heading": "Embedded images",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4452,7 +4466,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 14,
+    "block": 15,
     "heading": "Prepared shadows",
     "mode": "complete",
     "environment": "browser-module",

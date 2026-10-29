@@ -4,6 +4,14 @@
       {
         "type": "prefix",
         "path": "unit/accessibility/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/accessibility-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-data.browser.js"
       }
     ],
     "actions": [
@@ -1208,6 +1216,18 @@
       {
         "type": "file",
         "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-adapter.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/partition-frames.test.js"
       }
     ],
     "pattern-paints": [

@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified-private-kernel",
+  "sourceCommit": "7d76901c435cb3ae25e2938366deb790d7a02dfe",
+  "executionProvenance": "Checks ran on the working candidate. Declared source bytes were then compared with this committed source; these are not clean release execution receipts.",
+  "sources": [
+    {
+      "path": "src/grammar/hierarchy/partitionInterpolation.js",
+      "sha256": "9ffb3b8b00b74d005826aebc94c58be586dee1b89feed090cbdb487b76cb8d64"
+    },
+    {
+      "path": "src/grammar/hierarchy/partitionBend.js",
+      "sha256": "9f0429c03b309eaeb8e1f25e19a2eb889b15e6ac991b23393f5c168430c7acce"
+    },
+    {
+      "path": "src/grammar/hierarchy/partitionAdapter.js",
+      "sha256": "fe04f4e580a5bc445d3975ed8a8076bb0be5a7cc3d2576da70a6b1a9aab95a71"
+    },
+    {
+      "path": "src/grammar/hierarchy/partitionMapping.js",
+      "sha256": "ac0c0658a1f3472940ca7cc32fa473e990c721c4ec8094d218d465040c23ae86"
+    },
+    {
+      "path": "src/materialization/hierarchy/partitionFrames.js",
+      "sha256": "5d5fd8d994ef64a06586ac3acca56ed09350eeabe4b09bc2472c8b1ef6c385b4"
+    },
+    {
+      "path": "src/grammar/animation/values.js",
+      "sha256": "169b8e32e9c367602d09db4550de0dbd9114d4286fd13ca916cd62be1dab6a82"
+    },
+    {
+      "path": "test/unit/animation/partition.test.js",
+      "sha256": "a2f872a7e64c5ac375619df455784787a1bccf214ea300c765027f326aa72f63"
+    },
+    {
+      "path": "test/unit/resources/partition-frames.test.js",
+      "sha256": "f3aa7499125864f2657cff3c8f075cd7ca0991ecb5ec853d334ef8bd770f1570"
+    },
+    {
+      "path": "test/support/partition-frames.js",
+      "sha256": "16b270c1c74e76159a1de5cac3c814e37be90fb202a7beca1504f711e6481758"
+    },
+    {
+      "path": "test/charts/partition-layouts/reference.js",
+      "sha256": "1e03eb6230bfe72669bb7b7fb169d3d425e61e5942938c7c4f892df03c7d3cfc"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-adapter.test.js",
+      "sha256": "0825ae60af45082c525bef67615021630eb34b912a1f68ae93f4c5211870ab87"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-bend.test.js",
+      "sha256": "7667494ff233ebc3715d9d13c1db7a5da99f024265b296b5f4d8576878da2528"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-mapping.test.js",
+      "sha256": "af1cf7d60c6e437a9fb2bfb0f9453a0aa74bd4ba5ac0b40790eea075d62dd6ec"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition-view.test.js",
+      "sha256": "c721f279a45c5e6aa7d00cb95d6c0409f5492df63f3bee7e43439ccc26f59ea6"
+    },
+    {
+      "path": "test/unit/resources/partition-plots.test.js",
+      "sha256": "cb923d81c628b73405d621f26c4733695c780fdbaeb2915fc3c379b423799d8c"
+    },
+    {
+      "path": "test/unit/resources/hierarchy-paints.test.js",
+      "sha256": "4c1bdf3e76bcfa07238541d2252d0805d90d69e2d33d2322b8ccc3a6f69e59d9"
+    },
+    {
+      "path": "test/unit/grammar/hierarchy-partition.test.js",
+      "sha256": "098f0a38f204250da735246375624e6cf1380fd0efc7c1cca0415236eee5f38b"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "35180208201057c2704abd579ee3e81ceaf7d36874c8f5eaf79837e71f6790ac"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "9980a9a11cbc14dcda861a10b45750f11548a17149c4d5f04b355e6aa210bbc7"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "8c61e87b3ca13246a8df870e85ce4082a2ead2250f6dd13391ea149e20f6ff51"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/first.log.gz",
+      "sha256": "6c3a9076140d5a6fc31c3ad0f68b5ff9f92947099f407857f55e97959d62f6d4",
+      "decodedSha256": "a1a98de43e6092c00658db1cadbdd327f72f31aa364f9d629f7aac38d0b3276c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/coverage-1.log.gz",
+      "sha256": "30220818e0738ab6b9f99356457dd3a87f41d61b7abe524b63f61380669ea3b0",
+      "decodedSha256": "2c6165de125542126c02d352910fca1864d38d160075c57a5943ea19d596b2c7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/coverage-2.log.gz",
+      "sha256": "ce85b576412ae31dbda1f8d67f95e6418902e780a548379ee665cd6ca3873574",
+      "decodedSha256": "15d1abb9efbdf8f8cd9bf156493e8a281037350631bdde3a73b24edb366c5af2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/coverage-3.log.gz",
+      "sha256": "640d7bf99f14cb061913ddc41080475a07be554bd930824c3176a5ffbd74149f",
+      "decodedSha256": "1e73ab3e74ed9a6580a90b7e38b5b7ee8deec95356412fadd5300af77a458a73"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/node20.log.gz",
+      "sha256": "279ddc732139df4eb6bdc36eaa3d1e61bc3b024764c1d4a321a689123a8e3263",
+      "decodedSha256": "d61e4af954f9e9280d242135193bc27b4b3b7aa06b570b6156e83837b4dc9612"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/node24.log.gz",
+      "sha256": "71cf98ccde8462299ff945fd584662e9230febc70f5c035e43e88d3f2cc16611",
+      "decodedSha256": "8a04a99946acd05735db2868be12cfaeaa5cb2f542dadccc7fd975f104bbc42d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/regressions.log.gz",
+      "sha256": "d9d3cbe6fc58a021e828f16afb256109af2cb33112a1fb38ff394ef0753f5a38",
+      "decodedSha256": "2745a0d270fa6baefed73c34c67e408e829bbdf4d271f928db291485c89c2a3c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/boundaries.log.gz",
+      "sha256": "44026c1f48963d9a4e272514d37faa8bdb433334f5ff92ea7603851806aa8220",
+      "decodedSha256": "6ca63e54fd9882e0c4b01395f41bcfbaed951d9f8a2cf61b6084d9271bf4f1b3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-contract.log.gz",
+      "sha256": "1d6d206b5709f324b0d88d19f79b494a4c7a94441a2cdc60a6ab47c203a4287f",
+      "decodedSha256": "70f479b2d3289efa3117f3b7a3b7e05478aae9b8387ba913483046a00c81f5ab"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-size-20.log.gz",
+      "sha256": "edeeaa87d0a9fe587ba367ff4443a8232ef567dfaaa06f6f2a8fcf5a3d80097d",
+      "decodedSha256": "5329e71e18a3473378ab878b1da91695772b246a5003a962c59f9dd6768996c0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-size-24.log.gz",
+      "sha256": "97f8da4b301260a660964fea79599f916433690feb8ef70bdfa459e19f71ab54",
+      "decodedSha256": "85b122038ea6b8eb7255fbf4349b3e9b499035c1980a85491b5280e950aa9cce"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-size-20.json.gz",
+      "sha256": "149130306c5a952a94868348ed2cf0e1a6ae492ccfeaf1a407404eb62f72d931",
+      "decodedSha256": "84f14e7ecf6bd1d72687cc6653098a0143999b0a78d58b739bd4433c9be2f578"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-size-22.json.gz",
+      "sha256": "ee843c1930e4342906809cf2cf54ad7b9239624acfbf58d2f96e9cbe3165b061",
+      "decodedSha256": "c9546379183e121faf227a5abad41c9342c5fc31c49cf788951406f9638a7969"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/package-size-24.json.gz",
+      "sha256": "9fce54112a93dc9515963f9c341219e9b4ade866ac83cbff8eab27f55fe88668",
+      "decodedSha256": "37f0fa973ce3f7ab072dedd80039dc8629fbad44a2b6096e20f5255c9909eccf"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/coverage.json.gz",
+      "sha256": "923c3598f8b1ab1f13e77d01f1422617fcf3ca7acda2a5932a3aa9d4fd655d83",
+      "decodedSha256": "d752fc5c9e0adba2e1a1ac3c40ee405208d5dcfa2f51fa214691aebc21ce8f0d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/partition-animation-evidence/measure-package.mjs.gz",
+      "sha256": "8b2aea3409e922da48ecba01f30db04b379b03a45ca60bb47b887dd86255d45d",
+      "decodedSha256": "58ea3412344a97ad337441aa904e63aa8b54deb0ee34e0ce7fe5e0a0fc0dbaff"
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "--experimental-test-coverage",
+        "--test-coverage-include=src/grammar/hierarchy/partitionInterpolation.js",
+        "--test-coverage-include=src/grammar/hierarchy/partitionBend.js",
+        "--test-coverage-include=src/grammar/hierarchy/partitionAdapter.js",
+        "--test-coverage-include=src/grammar/hierarchy/partitionMapping.js",
+        "--test-coverage-include=src/materialization/hierarchy/partitionFrames.js",
+        "--test-coverage-lines=95",
+        "--test-coverage-branches=90",
+        "--test-coverage-functions=100",
+        "test/unit/animation/partition.test.js",
+        "test/unit/resources/partition-frames.test.js",
+        "test/unit/grammar/hierarchy-partition-adapter.test.js",
+        "test/unit/grammar/hierarchy-partition-bend.test.js",
+        "test/unit/grammar/hierarchy-partition-mapping.test.js",
+        "test/unit/grammar/hierarchy-partition-view.test.js"
+      ],
+      "tests": 37,
+      "log": "coverage-3.log.gz",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "test/unit/animation/partition.test.js",
+        "test/unit/resources/partition-frames.test.js",
+        "test/unit/grammar/hierarchy-partition-adapter.test.js",
+        "test/unit/grammar/hierarchy-partition-bend.test.js",
+        "test/unit/grammar/hierarchy-partition-mapping.test.js",
+        "test/unit/grammar/hierarchy-partition-view.test.js"
+      ],
+      "tests": 37,
+      "log": "node20.log.gz",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--test",
+        "--test-concurrency=2",
+        "test/unit/animation/partition.test.js",
+        "test/unit/resources/partition-frames.test.js",
+        "test/unit/grammar/hierarchy-partition-adapter.test.js",
+        "test/unit/grammar/hierarchy-partition-bend.test.js",
+        "test/unit/grammar/hierarchy-partition-mapping.test.js",
+        "test/unit/grammar/hierarchy-partition-view.test.js"
+      ],
+      "tests": 37,
+      "log": "node24.log.gz",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=2",
+        "test/unit/resources/partition-plots.test.js",
+        "test/unit/resources/hierarchy-paints.test.js",
+        "test/unit/grammar/hierarchy-partition.test.js"
+      ],
+      "tests": 24,
+      "log": "regressions.log.gz",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=2",
+        "test/contracts/source-boundaries.test.js",
+        "test/contracts/package-boundaries.test.js",
+        "test/contracts/test-discovery.test.js"
+      ],
+      "tests": 33,
+      "log": "boundaries.log.gz",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=2",
+        "test/contracts/package-artifact.test.js"
+      ],
+      "tests": 7,
+      "log": "package-contract.log.gz",
+      "exitCode": 0
+    }
+  ],
+  "coverage": {
+    "lines": 99.75,
+    "branches": 97.35,
+    "functions": 100,
+    "floors": {
+      "grammar/hierarchy/partitionInterpolation.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionAdapter.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionBend.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionMapping.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/hierarchy/partitionFrames.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "grammar/hierarchy/partitionAdapter.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionBend.js": {
+        "lines": 98.18,
+        "branches": 96.61,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionInterpolation.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionMapping.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "materialization/hierarchy/partitionFrames.js": {
+        "lines": 100,
+        "branches": 93.53,
+        "functions": 100
+      }
+    }
+  },
+  "packageMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1049,
+      "packedBytes": 1489945,
+      "unpackedBytes": 6769256
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1049,
+      "packedBytes": 1486310,
+      "unpackedBytes": 6769256
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1049,
+      "packedBytes": 1489945,
+      "unpackedBytes": 6769256
+    }
+  ],
+  "limits": {
+    "entries": 1049,
+    "packedBytes": 1491000,
+    "unpackedBytes": 6771000
+  },
+  "initialFailures": [
+    {
+      "log": "first.log.gz",
+      "tests": 17,
+      "failed": 1,
+      "reason": "Existing focus assertion expected topology; corrected to visibility."
+    },
+    {
+      "log": "coverage-1.log.gz",
+      "tests": 36,
+      "failed": 1,
+      "reason": "New native reparenting fixture used target instead of source/id in reviseData."
+    },
+    {
+      "log": "coverage-2.log.gz",
+      "tests": 37,
+      "failed": 1,
+      "reason": "New gap fixture used labels.field instead of labels.content."
+    }
+  ],
+  "openIntegrationObligations": [
+    "Public planner binding to exact hierarchy/layout revision and retained endpoint graphics/assets.",
+    "Same-family native adapter and focus enter/exit behavior.",
+    "Per-item weighted incompatible or interrupted-frame capture.",
+    "Scene/current-frame hit, keyboard/selection, four renderers and offline animation envelope."
+  ],
+  "notClaimed": [
+    "Public animation API",
+    "Installed consumer qualification",
+    "Full release or native completion",
+    "Whole roadmap completion"
+  ]
+}

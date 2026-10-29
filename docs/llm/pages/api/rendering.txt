@@ -294,10 +294,10 @@ remain unchanged.
 
 ## Accessible data alternatives
 
-`exportAccessibleData(program, { target? })` from `ggaction/accessibility` works in
+`exportAccessibleData(program, { format?, target? })` from `ggaction/accessibility` works in
 Browser and Node with Full or Basic editable programs. It returns a deeply frozen
 `{ schemaVersion: 1, title, views }` without changing the program or its trace.
-`title` is the semantic title string or `null`.
+`title` is the semantic title string or `null`. Omit `format` or use `format: "table"` for this table schema.
 
 > **alternative.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -331,7 +331,7 @@ guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parall
 coordinate dimensions use their field names as column roles.
 
 Omitting `target` exports every stable chart owner in semantic order. An explicit
-target must name a stable owner; requesting an owned component reports its owner.
+target must name a stable owner; requesting an owned component fails with an error naming its owner.
 A composition returns child views in composition order, each with `ownerId`,
 `kind: "composition-child"`, `title`, and nested `views`. Facet children also have
 a `facet` field/value record. Grid facets contain both row and column fields;
@@ -354,6 +354,56 @@ The host supplies meaningful captions, HTML tables, and ARIA relationships. Use
 DOM `textContent` for user-controlled titles, column labels, and values; do not
 insert them as HTML. Keep the alternative synchronized by exporting the updated
 program after an edit.
+
+### Native item alternatives
+
+Use `format: "items"` for stable logical identities and current selection state.
+The result is `{schemaVersion:1,format:"items",title,views}`. Each view is
+`{kind:"items",ownerId,markType,childPath,items}`. Unlike table mode, these views
+are flat: composition child order first, then each leaf's semantic owner order.
+An empty `childPath` identifies the root. Repeated mark and selection names remain
+local to their exact child path.
+
+Each item contains its opaque `key`, `component`, `markType`, optional native
+`role`, final `fields` and `channels`, `selectedBy` selection IDs, and logical
+`visible` flag. Composite components share their stable owner view. Attached and
+standalone Text use the existing native Text items in this mode. A path remains
+one native series item rather than becoming a row per source observation.
+
+> **Executable complete.** Use an ES module. The example prints native aggregate values and their named selection membership.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas().createData({ values: [
+  { group: "A", value: 2 }, { group: "A", value: 4 }, { group: "B", value: 6 }
+] }).createBarPlot({ id: "bars", x: "group",
+  y: { field: "value", aggregate: "mean" }, guides: false })
+  .selectMarks({ id: "chosen", target: "bars", field: "group", op: "eq", value: "A" });
+const alternative = exportAccessibleData(program, { format: "items", target: "bars" });
+console.log(alternative.views[0].items.map(item => ({
+  group: item.channels.x, value: item.channels.y2, selectedBy: item.selectedBy
+})));
+// [{group:"A",value:3,selectedBy:["chosen"]},{group:"B",value:6,selectedBy:[]}]
+```
+
+`selectedBy` uses the native stored selection results. Linked composite assignments
+report the original authored selection ID. The exporter does not infer an absent
+assignment from another component. Optional `representationKeys` retain scoped
+logical aliases, for example when a geographic level represents finer features.
+Optional hierarchy `navigation` contains native node keys for `key`, `parent`,
+`firstChild`, `previousSibling`, `nextSibling` and `root`, with null for absent
+links. These keys are local to the view's child path and component; they are not
+graphic item keys.
+
+Native filters remove items. Hierarchy focus can retain hidden logical nodes with
+`visible:false`. This flag describes native logical eligibility and does not
+measure clipping, opacity or the current animation frame. Use exact current-frame
+interaction results when deciding which rendered targets can receive focus.
+Item mode rejects exports exceeding 100,000 items or 10,000,000 cumulative work
+units; it never returns partial output. Both formats reject accessor options.
+Re-export after edits and selection changes, and use DOM `textContent` for values.
 
 ## Explicit whole-glyph opacity
 

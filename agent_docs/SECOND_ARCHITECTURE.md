@@ -247,10 +247,18 @@ Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning
 자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
 
 `partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+`partitionInterpolation.js`는 stable node/parent preorder와 원 normalized u/depth, bend,
+frame basis·hole·CSS gap을 가진 versioned private track을 검증·보간한다. 원 구간을 bend한 뒤
+`partitionBend.js`가 현재 CSS 거리로 inset하며, 현재 sample을 새 track의 시작점으로 사용할 수 있다.
+이 숫자 track의 복원 검증은 public planner나 semantic schema를 만들지 않는다.
 Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
 compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
 이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
 AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
+Private typed track 추가 후 package 실측은1,049entries/6,769,256unpacked, Node22
+packed1,486,310 및 Node20·24 packed1,489,945bytes다. 현재 한도는1,049entries,
+packed1,491,000/unpacked6,771,000으로 측정값에 최소1,000bytes 여유를 둔다.
+기존95/90/100 hierarchy owner floors와 공개 entry 경계는 유지한다.
 
 ## 내부 expression kernel 경계
 
@@ -744,7 +752,7 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 ### `ggaction/accessibility`
 
-`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 항목 모드는 `accessibilityItems.js`가 같은 native policy 및 Full의 고정 selection resolver를 읽어 중첩 namespace·선택 membership·논리적 visibility를 투영한다. DOM/renderer/Full action import 없이 bounded read-only adapter를 유지한다. 결과의 정확한 schema와 제한은 [ACCESSIBILITY](contract/current/ACCESSIBILITY.md)가 소유하며 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 공개 사용 예를 제공한다.
 
 ### `ggaction/inspection`
 
@@ -4333,3 +4341,16 @@ Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 pay
 Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합산 검색 payload는
 1,073,688bytes다. 독립 recipe 한도1,072,000을 넘으므로 최소100byte 단위1,073,700을
 적용한다. 새 authoring API·runtime 모듈·저장 구조는 추가하지 않고 기존 domain action을 조합한다.
+
+논리적 native item 대체 값은 기존 selection/identity owner를 재사용하는 browser-safe
+accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한다. 합산 Node22 package는
+1114entries/1,587,160packed/7,225,523unpacked bytes다. 최소 한도
+1114/1,588,000/7,226,000을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.
+
+Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,243bytes다.
+이전1,073,700 한도를 넘으므로 최소100byte 단위1,074,300을 적용한다. 같은 package의
+기존5개 browser entry는 앞선 합산과 byte 단위로 같으며 새 accessibility owner를 import하지 않는다.
+
+Private partition typed track과 native frame의 raw→bend→CSS gap 순서를 합친 Node22
+package는1115entries/1,589,127packed/7,233,578unpacked bytes다. 새 grammar owner1개와
+기존 adapter/bend/mapping/frame의 재사용에 최소 한도1115/1,590,000/7,234,000을 적용한다.

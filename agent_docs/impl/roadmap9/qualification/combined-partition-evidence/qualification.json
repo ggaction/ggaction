@@ -1,0 +1,80 @@
+{
+  "status": "focused-verified-private-integration",
+  "sourceRevision": "7eb3ef71e",
+  "mergedRevision": "b67ec6ef2b5da41cd2e14b2513cb81495696d8be",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning": 60,
+    "boundaries": 40,
+    "fourBackendRenderCases": 2,
+    "docs": 227,
+    "builtPages": 185,
+    "selectiveLlmArtifacts": 1597,
+    "browserWidths": [
+      320,
+      390,
+      768,
+      1440
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1115,
+    "packedBytes": 1589127,
+    "unpackedBytes": 7233578,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-animation/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "c808a261851e8ba79c7959547c6e9eb1a245959a",
+    "sha256": "09059ba70b4dd45bf081d74fa23ad3ac62fb7c8eb5173a4603305d0dae822fdc"
+  },
+  "browserBundles": {
+    "node": "v22.23.1",
+    "archive": "09059ba70b4dd45bf081d74fa23ad3ac62fb7c8eb5173a4603305d0dae822fdc",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1023,
+        "minifiedBytes": 2701141,
+        "gzipBytes": 771345
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 607,
+        "minifiedBytes": 1440570,
+        "gzipBytes": 421200
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73895,
+        "gzipBytes": 24765
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 194,
+        "minifiedBytes": 381868,
+        "gzipBytes": 122074
+      }
+    }
+  },
+  "preservedFailures": [
+    "The first two browser render fixtures lacked the repository dependency import map for geographic-math. Both fixture servers now explicitly use dependencies:repository. The same native frame cases pass after repair; renderer behavior was unchanged."
+  ],
+  "remaining": [
+    "Public typed animation planner and sampler integration",
+    "Offline timeline and current-frame interruption",
+    "Final STEP077 complete qualification"
+  ]
+}
