@@ -9,6 +9,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "selection-lasso": { prefix: "grammar/lassoSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Lasso membership must use finite CSS polygons, exact logical keys and bounded geometry work." },
   "interaction-region": { prefix: "interaction/regionSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region gestures must share exact committed scales, current-frame anchors and scoped identities." },
   "selection-preview": { prefix: "actions/selection/preview", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Preview materialization must remain immutable, traceable and separate from committed state." },
+  "angular-scale-inversion": { prefix: "grammar/scales/angularInversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Angular inverse must preserve periodic seam unions, resolved theta units and cumulative category bounds." },
   "brush-scale-inversion": { prefix: "grammar/scales/inversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Brush inverse values must preserve resolved scale geometry, typed keys and bounded immutable input." },
 
   "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },

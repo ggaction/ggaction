@@ -280,12 +280,12 @@ Full sessions accept one `{type:"brush",target,selection,axis?,channels?,mode?}`
 `{type:"lasso",target,selection,mode?}` instead of the click-selection binding. The existing authored
 selection must match the explicit root or concat owner; facet-source geometry and linked target
 writers are rejected. A missing endpoint after program replacement remains dormant. Brush axis
-is `"x"`, `"y"` or default `"xy"`. Optional `channels` maps each active axis to its same-axis semantic
+is `"x"`, `"y"`, `"theta"` or default `"xy"`. Optional `channels` maps each active axis to its same-axis semantic
 channel (`x`/`x2`, `y`/`y2`); omitted entries use the primary channel. Bar end values use explicit
 `channels:{y:"y2"}` or `{x:"x2"}` and the stored primary scale. Other secondary channels require their
 own stored binding. Conditional positions require one identical binding across every branch.
 
-Brush accepts Cartesian coordinates and resolved linear/log/time/ordinal/band/point scales.
+Cartesian brush accepts resolved linear/log/time/ordinal/band/point scales.
 It intersects finite scale ranges, preserves already resolved reversal, and stores the native named
 `region` selector: numeric domain ranges or typed category values, intersected across active axes.
 Time ranges use epoch milliseconds. Bands that touch the closed screen interval are included;
@@ -320,7 +320,34 @@ The prior program and trace remain exact; late up/RAF callbacks cannot commit. T
 FIFO guarantees as captured click apply. For SVG previews keep the captured host stable (for example,
 a correctly sized wrapper containing the replaced SVG); replacing the capture element cancels it.
 The host owns touch-action and rendering, and must redraw the committed program after cancel.
-No keyboard, multi-binding arbitration, angular gesture, pinch or history support is implied.
+No keyboard, multi-binding arbitration, pinch or history support is implied.
 
 Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
+
+
+### Angular brush
+
+`{type:"brush",axis:"theta",target,selection,channels?:{theta:"theta"},mode?}` requires the explicit owner's
+Polar coordinate and one identical stored theta binding across all conditional branches. Existing theta
+scale authoring supports linear/time/discrete positions; this binding does not add scale families.
+The owner's resolved Polar frame supplies center and radius. Down must lie in its disc and plot clip;
+the exact center is inapplicable. A final center point has no angle and atomically fails with capture
+cleanup. Positive angles run clockwise from the top. The directed start-to-end interval crosses zero
+as `[start,2π) ∪ [0,end]`; equal angles mean empty, never an inferred full turn.
+
+The adapter explicitly converts radians to the existing degree-based theta range and then inverts it
+into native `region.theta` domain ranges or typed categories. Reversal is already resolved and is not
+applied twice; shifted and partial degree ranges intersect the same periodic interval. Categories
+retain domain order and include touched bands. If two domain endpoints project to the same seam
+position, both are selected when that position is included. At most two sorted native ranges remain.
+Proportional/weighted Arc sectors have no position-scale inverse and reject this binding; equal-band
+radial sectors retain their existing category scale. A differing sampled animation frame also rejects
+before capture. The ordinary Cartesian/lasso lifecycle and bounded cumulative category work apply.
+
+`screenAngles:[startRadians,endRadians]` records normalized `[0,2π)` pointer metadata alongside native
+theta regions or resulting item keys. Domain/keys alone define persistent membership through resize,
+revision and restoration. The preview is an exact existing Polar sector path, clipped to the owner
+plot, in the separate preview program; Canvas/SVG/PNG/PDF consume it identically.
+Evidence: `test/unit/angular-brush-inversion.test.js`, `test/unit/interaction-angular-selection.test.js`,
+`test/browser/interaction-region.browser.js`, and the interaction selection-preview renderer pair.

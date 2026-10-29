@@ -14,7 +14,7 @@ domain action을 통해서만 실행한다.
 
 | Internal action | Owning domain |
 | --- | --- |
-| `materializeSelectionPreview` | Interaction brush/lasso transient overlay on a separate immutable program |
+| `materializeSelectionPreview` | Interaction Cartesian/angular brush and lasso transient overlay on a separate immutable program |
 | `rematerializeImageMark` | Image placement, clipping, resource identity and highlight replay |
 | `rematerializeOverlay` | `createOverlay`, `editOverlay`, and explicit source result dependencies |
 | `materializeBoxSummaryData` | `createBoxPlot` summary data |

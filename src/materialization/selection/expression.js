@@ -19,7 +19,7 @@ export function registerSelectionExpressionResolver(ProgramClass, resolveSelecti
 export function materializeRegisteredSelectionPreview(program, points) {
   const preview = resolvers.get(program.constructor)?.preview;
   if (preview === undefined) throw new Error("Selection preview requires the Full selection owner.");
-  return preview.call(program, { points });
+  return preview.call(program, Array.isArray(points) ? { points } : points);
 }
 
 export function validateSelectionExpressionConsumers(program, resourceIds) {

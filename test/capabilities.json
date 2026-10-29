@@ -701,6 +701,14 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-angular-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/angular-brush-inversion.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/interaction-region.browser.js"
       },
       {

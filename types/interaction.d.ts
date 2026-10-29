@@ -49,6 +49,7 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
   { readonly axis?: 'xy'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: 'y' | 'y2' } }
   | { readonly axis: 'x'; readonly channels?: { readonly x?: 'x' | 'x2'; readonly y?: never } }
   | { readonly axis: 'y'; readonly channels?: { readonly y?: 'y' | 'y2'; readonly x?: never } }
+  | { readonly axis: 'theta'; readonly channels?: { readonly theta?: 'theta'; readonly x?: never; readonly y?: never } }
 );
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';

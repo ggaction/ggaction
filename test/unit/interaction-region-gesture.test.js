@@ -149,7 +149,12 @@ test("categorical bands, reversed log and temporal intervals retain typed domain
     const p = chart().createCanvas({ width: 300, height: 200, margin: 0 }).createData({ id: "rows", values: scenario.values }).createPointMark({ id: "points" })
       .encodeX(scenario.encoding).encodeY({ field: "y", scale: { domain: [0, 200], range: [0, 200] } }).selectMarks({ id: "picked", items: [] });
     const session = create(p, { axis: "x" }), host = surface(); session.mount(host);
-    host.fire("pointerdown", scenario.from, 100); host.fire("pointerup", scenario.to, 100);
+    const phases = [], before = serializeProgram(p); session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+    host.fire("pointerdown", scenario.from, 100); host.fire("pointermove", scenario.to, 100); host.flush(); host.fire("pointercancel"); host.fire("pointerup", scenario.to, 100);
+    assert.equal(session.getState().program, p); assert.equal(serializeProgram(p), before); assert.deepEqual(phases, ["preview", "cancel"]);
+    assert.equal(host.captures.size, 0); assert.equal(host.frames.size, 0);
+    host.fire("pointerdown", scenario.from, 100); host.fire("pointermove", scenario.to, 100); host.flush(); host.fire("pointerup", scenario.to, 100);
+    assert.deepEqual(phases, ["preview", "cancel", "preview", "preview", "commit", "settled"]);
     const next = session.getState().program, axis = next.semanticSpec.resources.find(resource => resource.id === "picked").options.predicate.region.x;
     assert.deepEqual(ids(next), scenario.ids); if (scenario.expected) assert.deepEqual(axis, scenario.expected);
     else { assert.ok(Math.abs(axis.ranges[0].min - Math.sqrt(10)) < 1e-12); assert.ok(Math.abs(axis.ranges[0].max - Math.sqrt(1000)) < 1e-12); }

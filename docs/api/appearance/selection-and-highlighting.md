@@ -401,6 +401,12 @@ inline filters and inline label selectors retain their existing grammar. Region 
 polygon inputs are bounded to 10,000 entries and all selection work is bounded.
 See [brush and lasso interaction](../interaction.md#brush-or-lasso-an-existing-selection) for pointer input.
 
+Angular brushing writes a theta region in the existing data units and records optional
+`screenAngles: [startRadians, endRadians]` pointer metadata. The two finite angles are normalized to
+`[0, 2π)` and run clockwise from the top. Native domain ranges or item keys continue to determine
+membership after resize and load. Angle metadata cannot be combined with a Cartesian region or
+`screenPolygon`. See [interaction](../interaction.md#brush-or-lasso-an-existing-selection) for the binding.
+
 ## Related
 
 [Appearance overview](../appearance.md) · [Mark-selection tutorial](../../tutorials/mark-selection.md) · [Data filtering](../data/filtering.md)

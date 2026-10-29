@@ -478,12 +478,21 @@ brush.subscribe(event => {
 brush.mount(canvas);
 ```
 
-`axis` is x, y, or default xy. Brush uses the stored position scale and writes a typed domain region;
+`axis` is x, y, theta, or default xy. Brush uses the stored position scale and writes a typed domain region;
 x/y conditions intersect. Linear, log, time, ordinal, band and point scales are supported. Bands that
 touch the brush interval are included, while padding gaps select no nearest category. Time endpoints
 are epoch milliseconds. Set `channels: {y: "y2"}` for an aggregated Bar's ending y value, or x2 for its
-ending x value. Other secondary channels require an explicit stored binding. Polar/angular brushing
-and arbitrary animation-scale inversion are rejected; brush starts from committed owner geometry.
+ending x value. Other secondary channels require an explicit stored binding. Arbitrary animation-scale
+inversion is rejected; brush starts from committed owner geometry.
+
+For a Polar owner use `axis: "theta"`. Drag clockwise from the top-zero direction; 350° to 10°
+selects both sides of the zero seam. Equal endpoints select nothing. The stored theta scale determines
+the data units and typed categories, including reversed, shifted and partial ranges. A category is
+selected when its band touches the interval. Proportional pie sectors have no position-scale inverse
+and reject angular brushing. Start inside the owner's Polar disc, away from its exact center; ending
+at the center cancels with an error because no angle exists. The temporary overlay is a clipped sector.
+The selection also records `screenAngles: [startRadians, endRadians]` in `[0, 2π)` as pointer metadata.
+Its native domain ranges or item keys preserve the selection after resizing or loading.
 
 Use `{type: "lasso", target: "points", selection: "picked"}` for a freehand screen polygon.
 Lasso selects the centers of current logical-item hit bounds, respecting clipping and opacity. It

@@ -442,8 +442,8 @@ ranges, points or mixed selector forms fail load rather than being repaired.
 Native select/edit, inline or named highlights, named labels, conditional encodings and scoped
 composition edits share the updated resource revision. Inline mark filters and inline label selectors
 retain `MarkSelector` and reject region/polygon additions. Basic does not author these selections.
-The theta selector reads semantic theta values in their existing units; this does not introduce an
-angular pointer gesture. Evidence: `test/unit/actions/selection/region-selection.test.js`,
+The theta selector reads semantic theta values in their existing units. Angular pointer bindings are
+owned by Current INTERACTION. Evidence: `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/selection-region.test.js`, `test/contracts/logical-selection-types.test.js`.
 
 ## Appearance inspection
@@ -458,3 +458,12 @@ Guide offset/length/itemGap은 저장된 실제 배치 설정을 보고하며 in
 Trace 없는 legacy/extension item 교체 또는 pre-highlight property selector의 baseline을 입증할 수 없으면
 `unknown`이며 default라고 추측하지 않는다. Property source는 glyph 자체의 pixel visibility를 주장하지 않는다.
 Coverage: `test/unit/actions/theme-provenance.test.js`와 existing inspection/selection tests.
+
+
+A theta-region selector or item-key selector may include `screenAngles:[startRadians,endRadians]`.
+Both finite values are in `[0,2π)` and exactly two endpoints are required, even for empty selections.
+The tuple is clockwise pointer metadata; equal endpoints are empty and do not imply a full turn.
+It cannot accompany a Cartesian region, `where`, raw value selectors or `screenPolygon`. Predicate
+resources retain it beside `region`; item-key resources retain `options.screenAngles`. Membership
+continues to use native domain values or logical keys. Incoming set updates retain only their incoming
+metadata; ordinary replacement removes it. Codec rejects malformed angle metadata without repair.

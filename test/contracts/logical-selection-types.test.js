@@ -18,6 +18,10 @@ const p=chart(), items=getMarkItems(p,{target:'points'}).map(item=>item.key);
 p.selectMarks({target:'points',id:'picked',items,empty:'all'});
 p.editMarkSelection({selection:'picked',mode:'toggle',items:[]});
 p.selectMarks({target:'points',region:{x:{ranges:[{min:0,max:4,minInclusive:false}]},y:{values:[true,'a',1]}}});
+p.editMarkSelection({selection:'picked',region:{theta:{ranges:[]}},screenAngles:[0,1]});
+p.editMarkSelection({selection:'picked',items,screenAngles:[0,1]});
+// @ts-expect-error angle metadata has exactly two radians
+p.editMarkSelection({selection:'picked',items,screenAngles:[0,1,2]});
 p.editMarkSelection({selection:'picked',items,screenPolygon:[{x:0,y:0},{x:10,y:0},{x:5,y:10}]});
 // @ts-expect-error region modes cannot mix with expression or items
 p.selectMarks({region:{x:{ranges:[]}},items:[]});

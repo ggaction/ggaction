@@ -51,3 +51,35 @@ test("selection preview and explicit primitive overlay retain exact Canvas, SVG,
   assert.deepEqual(await pixels(await readFile(new URL("public-pdf.png", output))), await pixels(await readFile(new URL("primitive-pdf.png", output))));
   session.destroy(); assert.equal(session.getState().program, p); assert.equal(session.getState().previewProgram, null);
 });
+
+test("angular sector preview preserves exact primitive pixels across four renderers and offline codec", async () => {
+  const { createAngularSelectionChart } = await import("../../../../../examples/polar-points/program.js");
+  const { createAngularPreviewPrimitive } = await import("./primitive.program.js"), { angularPreviewVariant: variant } = await import("./manifest.js");
+  const p = createAngularSelectionChart(variant.rows), session = createInteractionSession({ program: p, bindings: [{ type: "brush", axis: "theta", target: "points", selection: "picked" }] });
+  const listeners = new Map(), captures = new Set(); let pending;
+  const host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 200, height: 200 }),
+    addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type),
+    setPointerCapture: id => captures.add(id), releasePointerCapture: id => captures.delete(id), hasPointerCapture: id => captures.has(id),
+    requestAnimationFrame: fn => { pending = fn; return 1; }, cancelAnimationFrame: () => { pending = undefined; } };
+  session.mount(host); listeners.get("pointerdown")({ pointerId: 1, pointerType: "mouse", clientX: 100, clientY: 20 });
+  listeners.get("pointermove")({ pointerId: 1, pointerType: "mouse", clientX: 180, clientY: 100 }); pending();
+  const actual = session.getState().previewProgram, primitive = createAngularPreviewPrimitive(p);
+  assert.deepEqual(actual.graphicSpec, primitive.graphicSpec);
+  const a = createCanvas(1, 1), b = createCanvas(1, 1); render(actual, a.getContext("2d")); render(primitive, b.getContext("2d"));
+  assert.deepEqual(await a.encode("png"), await b.encode("png")); assert.equal(renderToSVG(actual), renderToSVG(primitive));
+  const png = (await renderToPNGBuffer(actual)).buffer;
+  assert.deepEqual(png, (await renderToPNGBuffer(primitive)).buffer);
+  assert.deepEqual((await renderToPNGBuffer(deserializeGraphic(serializeGraphic(actual)))).buffer, png);
+  const data = await pixels(png), inside = (40 * 200 + 125) * 4, outside = (140 * 200 + 150) * 4;
+  assert.ok(data[inside + 2] > data[inside] && data[inside] < 255, "Upper-right sector has blue interior ink");
+  assert.deepEqual([...data.slice(outside, outside + 4)], [255, 255, 255, 255]);
+  const directory = new URL("angular/", output); await mkdir(directory, { recursive: true });
+  await writeFile(new URL("variant.json", directory), JSON.stringify(variant, null, 2) + "\n");
+  for (const [name, value] of [["public", actual], ["primitive", primitive]]) {
+    await writeFile(new URL(`${name}.png`, directory), (await renderToPNGBuffer(value)).buffer);
+    await writeFile(new URL(`${name}.pdf`, directory), (await renderToPDFBuffer(value)).buffer);
+    execFileSync("pdftoppm", ["-r", "72", "-singlefile", "-png", fileURLToPath(new URL(`${name}.pdf`, directory)), fileURLToPath(new URL(`${name}-pdf`, directory))], { stdio: "pipe" });
+  }
+  assert.deepEqual(await pixels(await readFile(new URL("public-pdf.png", directory))), await pixels(await readFile(new URL("primitive-pdf.png", directory))));
+  session.destroy(); assert.equal(session.getState().program, p);
+});

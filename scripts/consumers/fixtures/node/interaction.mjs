@@ -93,6 +93,20 @@ export const cases = [
     const accepted=automatic.getState().program;clicks.get('pointerdown')(pointer);clicks.get('keydown')({key:'Escape'});clicks.get('pointerup')(pointer);clicks.get('click')({...pointer,detail:1});
     assert.equal(automatic.getState().program,accepted);assert.equal(phases.at(-1),'cancel');assert.equal(captures.size,0);
     automatic.destroy();assert.equal(clicks.size,0);
+    {
+      const angular = chart().createCanvas({width:200,height:160,margin:0}).createData({values:[{id:'a',angle:355,radius:1},{id:'b',angle:180,radius:1},{id:'c',angle:5,radius:1}],keyField:'id'})
+        .createPolarScatterPlot({id:'points',theta:{field:'angle',scale:{domain:[0,360]}},radius:{field:'radius',scale:{domain:[0,2]}},guides:false})
+        .selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+      const session=createInteractionSession({program:angular,bindings:[{type:'brush',axis:'theta',target:'points',selection:'picked'}]}), pending=new Map();let frameId=0;
+      host.requestAnimationFrame=fn=>{pending.set(++frameId,fn);return frameId;};host.cancelAnimationFrame=id=>pending.delete(id);session.mount(host);
+      const pointer=angle=>({pointerId:1,pointerType:'mouse',clientX:110+64*Math.sin(angle*Math.PI/180),clientY:100-64*Math.cos(angle*Math.PI/180)});
+      clicks.get('pointerdown')(pointer(350));clicks.get('pointermove')(pointer(10));const callbacks=[...pending.values()];pending.clear();callbacks.forEach(fn=>fn());
+      assert.equal(session.getState().program,angular);assert.ok(session.getState().previewProgram);clicks.get('pointerup')(pointer(10));
+      const restored=deserializeProgram(serializeProgram(session.getState().program));
+      assert.deepEqual(getMarkItems(restored,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id),['a','c']);
+      assert.equal(restored.semanticSpec.resources.find(resource=>resource.id==='picked').options.predicate.screenAngles.length,2);
+      assert.equal(captures.size,0);assert.equal(pending.size,0);session.destroy();assert.equal(clicks.size,0);
+    }
     for (const type of ["brush", "lasso"]) {
       const source = autoProgram, session = createInteractionSession({ program: source, bindings: [{ type, target: "points", selection: "picked" }] });
       const pending = new Map(); let frameId = 0;

@@ -82,3 +82,16 @@ test('malformed region and polygon snapshots fail atomically without repairing s
  assert.throws(()=>p.filterMarks({target:'points',region}));
  assert.throws(()=>p.createMarkLabels({source:'points',field:'g',select:{region}}));
 });
+
+test('angular metadata remains own-data and malformed stored endpoint tuples fail load',()=>{
+ const p=base(), k=keys(p), input=[0,Math.PI], q=p.selectMarks({id:'picked',items:[k[0]],screenAngles:input});
+ input[0]=2;assert.deepEqual(resource(q).options.screenAngles,[0,Math.PI]);
+ assert.deepEqual(selected(deserializeProgram(serializeProgram(q))),[k[0]]);
+ assert.equal(resource(q.editMarkSelection({selection:'picked',items:[]})).options.screenAngles,undefined);
+ let reads=0;const bad=[0,1];Object.defineProperty(bad,'0',{get(){reads++;return 0;},enumerable:true});
+ assert.throws(()=>q.editMarkSelection({selection:'picked',items:[],screenAngles:bad}),/own data/);assert.equal(reads,0);
+ for(const mutate of [o=>{o.screenAngles=[0,2*Math.PI];},o=>{o.screenAngles=[0];},o=>{o.screenPolygon=[];}]){
+  const envelope=JSON.parse(serializeProgram(q)),state=decodeValue(envelope.payload);mutate(state.semanticSpec.resources.find(r=>r.id==='picked').options);
+  envelope.payload=encodeValue(state);assert.throws(()=>deserializeProgram(JSON.stringify(envelope)));
+ }
+});

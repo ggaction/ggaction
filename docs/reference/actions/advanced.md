@@ -90,6 +90,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `region` | Optional / branch-dependent | `SelectionRegion \| undefined` |
 | `screenPolygon` | Optional / branch-dependent | `readonly { readonly x: number; readonly y: number; }[] \| undefined` |
+| `screenAngles` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -124,6 +125,10 @@ values, and properties are concrete graphical values. A range requires `min` or
 `max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
 or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
+
+Native `region` selectors use final position channels. A theta region or item-key selection
+may retain normalized clockwise `screenAngles: [startRadians, endRadians]` metadata;
+domain ranges or keys continue to determine membership.
 
 Named selections also accept exclusive `where: ComputedExpressionV2` boolean
 predicates over fields uniquely defined at final item grain. Parameter edits
@@ -160,6 +165,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `region` | Optional / branch-dependent | `SelectionRegion \| undefined` |
 | `screenPolygon` | Optional / branch-dependent | `readonly { readonly x: number; readonly y: number; }[] \| undefined` |
+| `screenAngles` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |

@@ -7,7 +7,7 @@
 - [x] 첫 linear/log/time/category bounded inverse와 독립 수치 검증
 - [x] x/y/xy typed domain·category native selection 연결
 - [x] screen lasso metadata·keys 연결
-- [ ] angular seam union 공개 pointer adapter 연결
+- [x] angular seam union 공개 pointer adapter 연결
 - [x] 실제 capture/RAF preview/final-up/cancel lifecycle 연결
 - [x] Cartesian/lasso types/Current/docs/codec/installed/browser 소비자 검증
 - [ ] AT36 closure와 후행 history/077 종료
@@ -139,3 +139,33 @@ SVG 상한25,000은 유지한다. 이전 각 branch cap 통과를 합산 cap 통
 Built166pages/1431LLM와 변경3페이지의
 320/390/768/1440 responsive+Axe(12cells)는 통과했다. Runtime 및 내용이 같은 upstream 전체 화면과
 059 전체 화면 증거를 보존하며 이번 integration의 전역 coverage 또는077 전체 완료를 주장하지 않는다.
+
+
+## Angular 공개 adapter 구현 중
+
+전체 승인 AUTHORIZATION을 재사용한다. `brush`의 `axis:"theta"`(channels는theta만)를 기존 Polar
+coordinate·theta binding에 연결하며 새 command/export는 없다. 화면 각도는 위쪽0, 시계방향 양수이고
+원래 theta scale은 degrees이므로 한 번만 단위를 변환해 inverse한다. Shift/reverse/partial 범위와
+카테고리 band는 같은 scale 소유자를 쓴다. Weighted/proportional Arc는 위치 역함수가 없으므로 거부하고
+radial/equal-band Arc만 기존theta 의미를 사용한다. Theta의 기존 공개 scale type 정책을 확장하지 않는다.
+
+Native `region.theta`는 기존 데이터 단위를 저장한다. Optional `screenAngles:[start,end]`는 [0,2π)의
+정규화 radians metadata이며 기존items selector에도 붙일 수 있다. 화면 seam은 `[start,2π)∪[0,end]`이나
+scale domain의 두끝이 같은화면0에 겹치면 양쪽 데이터값을 선택한다(0/360과 같은 경우). Metadata는
+membership을 재평가하지 않으며 resize/revision은 저장domain 또는keys가 소유한다. Set update는
+incoming metadata만 보존하고 보통 edit은 제거한다. Cartesian region과 섞거나 polygon과 동시에 쓰면거부한다.
+
+기존 polar frame이 원의 중심·반경을 소유한다. Center/outside-disc down은 비적용, center endpoint는
+원자오류와capture정리, 같은각도는empty다. Sector preview는 기존 polar Bézier path 소유자와 wrapped
+preview action을 사용하고 root/child placement 및 plotclip을 적용한다. 새renderer명령이나font준비는없다.
+공개binding·typed저장·codec·conditional·child·실제pointer6개 검증을 진행했으며 최종qualification전이므로
+STEP059/AT36/077 전체완료로 표시하지 않는다.
+
+
+Angular source 검증은 focused45, native/계약156, 기존Polar/타입/경계69, 실제5datasets×3grain16,
+BrowserCanvas/SVG×DPR1/2 6, 네backend+codec primitive pair2, vertical/baseline4가 통과했다.
+새 inverse/metadata/preview는100/100/100, regionadapter100/94.83/100이다. Nested frame getter5회
+실행의 실제결함을 own-data 사전검사로 고쳐0회 회귀를 포함했고 2π 직전 반올림이360이 되지 않도록했다.
+동일 archive634cd1db…(945/1,363,336/6,234,504)로 Node20/22/24 각각3 runtime+TS+4bundle 검사를
+통과했다. 문서 전체187중186은 통과했고 새예제함수의미커밋 source link1건은 sourcecommit뒤pin하여
+소유검사로닫는다. 이 단계는 source candidate이며 최종 AT36 증거·현재 main 통합·074/077 완료는 아니다.

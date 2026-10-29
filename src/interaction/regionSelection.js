@@ -4,7 +4,10 @@ import { validateWorkLimit } from "../core/validation.js";
 import { requireLayer } from "../selectors/layers.js";
 import { requireCoordinate } from "../selectors/coordinates.js";
 import { requireResolvedScale } from "../selectors/scales.js";
-import { resolveCoordinateBounds } from "../materialization/coordinateBounds.js";
+import { resolveCoordinateBounds, resolveCoordinatePolarFrame } from "../materialization/coordinateBounds.js";
+import { invertAngularInterval } from "../grammar/scales/angularInversion.js";
+import { polarThetaAtPoint } from "../grammar/polar.js";
+import { usesProportionalArcTheta } from "../grammar/arcs.js";
 import { invertPositionInterval } from "../grammar/scales/inversion.js";
 import { selectScreenPolygonKeys } from "../grammar/lassoSelection.js";
 import { nearestHitShape } from "../grammar/hitShapes.js";
@@ -21,13 +24,20 @@ const inside = (point, b) => point.x >= b.x && point.x <= b.x + b.width && point
 function scalesFor(owner, binding) {
   if (binding.type !== "brush") return {};
   const layer = requireLayer(owner.view, owner.target.id);
-  if (requireCoordinate(owner.view, layer.coordinate).type !== "cartesian") throw new Error("Cartesian brush requires a Cartesian owner coordinate.");
+  const angular = Object.hasOwn(binding.channels, "theta");
+  if (requireCoordinate(owner.view, layer.coordinate).type !== (angular ? "polar" : "cartesian")) throw new Error(angular ? "Angular brush requires a Polar owner coordinate." : "Cartesian brush requires a Cartesian owner coordinate.");
   return Object.fromEntries(Object.entries(binding.channels).map(([axis, channel]) => {
     // Generated end channels use the stored primary binding for their scale.
     const encoding = uniquePositionBinding(layer, channel) ?? (layer.mark.type === "bar" && channel.endsWith("2") ? uniquePositionBinding(layer, axis) : undefined);
     if (encoding?.scale === undefined) throw new Error(`Brush ${channel} requires one explicit resolved position scale.`);
     const scale = requireResolvedScale(owner.view, encoding.scale);
-    invertPositionInterval(scale, scale.range);
+    if (angular) {
+      const radius = layer.mark.type === "arc" ? uniquePositionBinding(layer, "radius") : undefined;
+      if (layer.mark.type === "arc" && usesProportionalArcTheta(encoding, radius?.scale === undefined ? undefined : requireResolvedScale(owner.view, radius.scale))) {
+        throw new Error("Angular brush requires a position-mapped theta scale; proportional sectors do not have that inverse.");
+      }
+      invertAngularInterval(scale, 0, 0);
+    } else invertPositionInterval(scale, scale.range);
     return [axis, scale];
   }));
 }
@@ -43,10 +53,10 @@ export function normalizeRegionBinding(program, value, links) {
   let channels;
   if (request.type === "brush") {
     const axis = request.axis === undefined ? "xy" : request.axis;
-    if (!["x", "y", "xy"].includes(axis)) throw new TypeError("Brush axis requires x, y or xy.");
-    const axes = [...axis], requested = options(request.channels === undefined ? {} : request.channels, [], axes, "Brush channels");
+    if (!["x", "y", "xy", "theta"].includes(axis)) throw new TypeError("Brush axis requires x, y, xy or theta.");
+    const axes = axis === "theta" ? ["theta"] : [...axis], requested = options(request.channels === undefined ? {} : request.channels, [], axes, "Brush channels");
     channels = Object.fromEntries(axes.map(key => [key, requested[key] ?? key]));
-    for (const [key, channel] of Object.entries(channels)) if (![key, `${key}2`].includes(channel)) throw new TypeError("Brush channels must use their matching position axis.");
+    for (const [key, channel] of Object.entries(channels)) if (!(key === "theta" ? ["theta"] : [key, `${key}2`]).includes(channel)) throw new TypeError("Brush channels must use their matching position axis.");
   }
   const result = cloneAndFreeze({ type: request.type, target, selection: request.selection, mode, ...(channels === undefined ? {} : { channels }) });
   scalesFor(owner, result);
@@ -72,6 +82,9 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
   const layer = requireLayer(owner.view, owner.target.id), bounds = resolveCoordinateBounds(owner.view, layer.coordinate);
   const localStart = map(start);
   if (!inside(localStart, bounds)) return null;
+  const polarFrame = binding.channels?.theta === undefined ? undefined : resolveCoordinatePolarFrame(owner.view, layer.coordinate);
+  if (polarFrame !== undefined && (polarThetaAtPoint(localStart, polarFrame) === null || polarFrame.availableRadius === 0 ||
+    Math.hypot(localStart.x - polarFrame.centerX, localStart.y - polarFrame.centerY) > polarFrame.availableRadius)) return null;
   let work = 0;
   const spend = count => validateWorkLimit(work += count, "Region gesture work");
   const allowed = new Set(scopeSelectionKeys(program, owner.target, owner.resolved.items.filter(item => item.visible !== false).map(item => item.key), spend));
@@ -102,7 +115,7 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
     const b = item.bounds, point = { x: b.left / 2 + b.right / 2, y: b.top / 2 + b.bottom / 2 };
     if (item.shapes.some(shape => Number.isFinite(nearestHitShape(shape, point, { slop: 0 }, spend).distance))) anchors.push({ key, point });
   }
-  return freezeOwned({ binding, owner, start: localStart, map, bounds, scales: scalesFor(owner, binding), anchors: cloneAndFreeze(anchors),
+  return freezeOwned({ binding, owner, start: localStart, map, bounds, polarFrame, scales: scalesFor(owner, binding), anchors: cloneAndFreeze(anchors),
     toRoot: point => transformHitPoint([1, 0, 0, 1, ...offset], point),
     screenToRoot: point => resolveHitCoordinates({ point, rect: { left: 0, top: 0, width: scene.width, height: scene.height }, rootTransform, childTransforms: [] }).localPoint });
 }
@@ -114,6 +127,15 @@ export function regionGestureCommand(context, points) {
     const result = selectScreenPolygonKeys(context.anchors, points);
     select = { items: result.keys, screenPolygon: result.polygon, empty: "none", grain: owner.resolved.definition.grain };
     overlay = result.polygon.map(context.screenToRoot);
+  } else if (context.polarFrame !== undefined) {
+    const frame = context.polarFrame, end = polarThetaAtPoint(context.map(points.at(-1)), frame);
+    if (end === null) throw new Error("Angular brush endpoint cannot be the Polar center.");
+    const start = polarThetaAtPoint(context.start, frame), screenAngles = [start * Math.PI / 180, end * Math.PI / 180];
+    select = { region: { theta: invertAngularInterval(context.scales.theta, ...screenAngles) }, screenAngles, grain: owner.resolved.definition.grain };
+    const center = context.toRoot({ x: frame.centerX, y: frame.centerY }), origin = context.toRoot({ x: context.bounds.x, y: context.bounds.y });
+    overlay = start === end ? [] : { sector: { frame: { ...frame, centerX: center.x, centerY: center.y },
+      startTheta: start, endTheta: end > start ? end : end + 360, outerRadius: frame.availableRadius,
+      clip: { x: origin.x, y: origin.y, width: context.bounds.width, height: context.bounds.height } } };
   } else {
     const end = context.map(points.at(-1)), region = {}, b = context.bounds;
     const extent = { x: [b.x, b.x + b.width], y: [b.y, b.y + b.height] };

@@ -3662,3 +3662,17 @@ Calendar와 영역 선택을 합친 source/resource union은 기존 Full final-t
 재사용한다. 새 macro owner는 없다. 합산 측정은 package944/1,360,688/6,224,525와
 Full664,335/Basic372,044/interaction106,140gzip이며 기존 두 branch의 cap을 합격으로 재사용하지 않는다.
 통합 상한은944/1,361,000/6,225,000 및664,400/372,100/106,200, search971,000이다.
+
+
+Angular brush는 기존 domain inverse/Polar frame/sector path 소유자를 결합하고 새macro owner를 만들지
+않는다. Existing selection predicate/items resource가 native theta domain 또는 keys를 소유하며
+`screenAngles`는 원래 normalized pointer metadata다. Renderer는 transient preview의 같은 concrete
+sector path만 읽는다. Current INTERACTION/MARK_SELECTION이 정확 동작을 소유한다.
+최초 Node20 측정은 package945/1,363,260/6,234,129, Full664,885/Basic372,376/interaction107,875gzip이다.
+상한은945/1,364,000/6,235,000과664,900/372,400/107,900으로 최소 올림했다. Basic의 증가는 공유
+selection metadata 검증이며 Full import가 아니다. Search970,470은 기존971,000 상한을 유지한다.
+Source final rounding fix 이후 동일 archive 검증은 STEP059의 별도qualification이 소유한다.
+
+Angular preview의 실제 nested getter5회 재현을 수리해 own-data 사전 검증과 caller input불변을
+고정했다. 그 최종 archive는945/1,363,336/6,234,504, Full664,966/Basic372,376/interaction107,879gzip이다.
+Full만665,000으로 최소추가하며 나머지상한은유지한다. 초기cap실패와수리전archive는최종통과와구분한다.

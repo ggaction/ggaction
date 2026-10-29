@@ -39,7 +39,7 @@ import {
   resolveEffectiveThemeTokens
 } from "../theme/state.js";
 
-const NAMED_SELECTOR_KEYS = Object.freeze([...MARK_SELECTOR_KEYS, "where", "region", "screenPolygon"]);
+const NAMED_SELECTOR_KEYS = Object.freeze([...MARK_SELECTOR_KEYS, "where", "region", "screenPolygon", "screenAngles"]);
 const SELECT_OPTIONS = Object.freeze(["id", "target", ...NAMED_SELECTOR_KEYS]);
 const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", "mode", ...NAMED_SELECTOR_KEYS]);
 const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
@@ -332,7 +332,8 @@ export const editMarkSelection = /* @__PURE__ */ closedAction(
         mode
       ),
       empty: Object.hasOwn(args, "empty") ? replacement.selector.empty : current.selector.empty ?? "none",
-      ...(replacement.selector.screenPolygon === undefined ? {} : { screenPolygon: replacement.selector.screenPolygon })
+      ...(replacement.selector.screenPolygon === undefined ? {} : { screenPolygon: replacement.selector.screenPolygon }),
+      ...(replacement.selector.screenAngles === undefined ? {} : { screenAngles: replacement.selector.screenAngles })
     };
     let next = writeSelectionState(this, current.id, current.definition.target, selector)
       ._withContext({ currentSelection: current.id });

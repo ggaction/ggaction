@@ -149,7 +149,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/80b84bac1fae87eaa1a1eaf90cffb70ca86f4896/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](../../../api/flows/) for exact options, selection

@@ -33,7 +33,8 @@ createInteractionSession({program,bindings:[{type:'brush',target:'points',select
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',channels:{x:'y'}}]});
 // @ts-expect-error screen lasso has no domain axis
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
-// @ts-expect-error angular bindings are not yet public
+createInteractionSession({program,bindings:[{type:"brush",target:"points",selection:"picked",axis:"theta",channels:{theta:"theta"}}]});
+// @ts-expect-error theta is the exact supported angular axis name
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'angular'}]});
 // @ts-expect-error click bindings use existing named selections
 createInteractionSession({program,bindings:[{type:'select',target:'points'}]});

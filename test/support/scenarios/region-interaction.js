@@ -1,3 +1,4 @@
+import { chart } from "../../../src/index.js";
 import assert from "node:assert/strict";
 import { createInteractionSession } from "../../../src/interaction.js";
 import { getMarkItems } from "../../../src/inspection.js";
@@ -41,5 +42,33 @@ export function assertRegionInteraction(source, recipe, rows) {
     assert.deepEqual(phases, ["preview", "preview", "commit", "settled"]);
     assert.equal(capture.size, 0); assert.equal(scheduled, undefined); session.destroy(); assert.equal(listeners.size, 0);
   }
+  const metadata = p.editMarkSelection({ selection: "region-picked", items: [chosen.key], screenAngles: [Math.PI * 35 / 18, Math.PI / 18] });
+  const restoredMetadata = deserializeProgram(serializeProgram(metadata));
+  assert.deepEqual(restoredMetadata.semanticSpec.resources.find(resource => resource.id === "region-picked").options.screenAngles, [Math.PI * 35 / 18, Math.PI / 18]);
+  assert.deepEqual(getMarkItems(restoredMetadata, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), [chosen.key]);
+  assertAngularSource(rows);
   assert.equal(serializeProgram(p), original);
+}
+
+function assertAngularSource(rows) {
+  const min = Math.min(...rows.map(row => row.value)), max = Math.max(...rows.map(row => row.value));
+  const p = chart().createCanvas({ width: 300, height: 300, margin: 0 }).createData({ values: rows, keyField: "key" })
+    .createPolarScatterPlot({ id: "angular", theta: { field: "value", scale: { domain: [min, max], nice: false, zero: false } },
+      radius: { field: "order", scale: { domain: [0, rows.length] } }, guides: false })
+    .selectMarks({ id: "angular-picked", target: "angular", items: [] }).highlightMarks({ selection: "angular-picked", color: "#d11a2a", bringToFront: false, dimOthers: false });
+  const session = createInteractionSession({ program: p, bindings: [{ type: "brush", axis: "theta", target: "angular", selection: "angular-picked" }] });
+  const listeners = new Map(), captures = new Set(); let scheduled;
+  const host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 300, height: 300 }),
+    addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type),
+    setPointerCapture: id => captures.add(id), releasePointerCapture: id => captures.delete(id), hasPointerCapture: id => captures.has(id),
+    requestAnimationFrame: fn => { scheduled = fn; return 1; }, cancelAnimationFrame: () => { scheduled = undefined; } };
+  session.mount(host); const phases = []; session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+  const pointer = degrees => ({ pointerId: 1, pointerType: "mouse", clientX: 150 + 120 * Math.sin(degrees * Math.PI / 180), clientY: 150 - 120 * Math.cos(degrees * Math.PI / 180) });
+  listeners.get("pointerdown")(pointer(350)); listeners.get("pointermove")(pointer(10)); const flush = scheduled; scheduled = undefined; flush();
+  assert.equal(session.getState().program, p); listeners.get("pointerup")(pointer(10));
+  const expected = rows.filter(row => row.value <= min + (max - min) / 36 || row.value >= max - (max - min) / 36).map(row => row.key);
+  const next = deserializeProgram(serializeProgram(session.getState().program));
+  assert.deepEqual(getMarkItems(next, { target: "angular" }).filter(item => item.properties.fill === "#d11a2a").map(item => item.fields.key), expected);
+  assert.deepEqual(phases, ["preview", "preview", "commit", "settled"]); assert.equal(captures.size, 0); assert.equal(scheduled, undefined);
+  session.destroy(); assert.equal(listeners.size, 0);
 }

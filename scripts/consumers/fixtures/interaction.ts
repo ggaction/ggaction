@@ -64,3 +64,6 @@ session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const pr
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
 // @ts-expect-error screen lasso has no domain axis
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
+
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'theta'}]});
+program.editMarkSelection({selection:'picked',region:{theta:{ranges:[]}},screenAngles:[0,Math.PI/2]});

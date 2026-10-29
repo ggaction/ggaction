@@ -94,3 +94,12 @@ export function normalizeScreenPolygon(value) {
   return Object.freeze(points);
 }
 
+
+// Pointer angles are replay metadata. Native domain ranges or item keys remain
+// authoritative for membership after scale/size revisions.
+export function normalizeScreenAngles(value) {
+  array(value, "Screen angles", 2);
+  if (value.length !== 2) throw new TypeError("Screen angles require start and end radians.");
+  angularBrushIntervals(...value);
+  return cloneAndFreeze(value);
+}
