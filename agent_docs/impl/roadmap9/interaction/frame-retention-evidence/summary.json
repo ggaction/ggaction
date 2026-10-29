@@ -1,6 +1,6 @@
 {
-  "status": "runtime-qualified-documentation-pin-pending",
-  "sourceCommit": null,
+  "status": "qualified-private-provenance-checkpoint",
+  "sourceCommit": "60a4c20c6",
   "archiveSha256": "a6ae8226645cd5c5a0b5e3c783a547ca0bc392241693d6312e2ad705e4c2ee9e",
   "checks": {
     "owningCoverageTests": 205,
@@ -19,7 +19,8 @@
       "executableAnimationDocument": true,
       "fourRenderers": true,
       "node20": "Runtime/types/snippet passed; initial cap failure retained, exact-archive bundle-only supplement passed."
-    }
+    },
+    "owningDocumentation": 34
   },
   "coverage": {
     "frameEndpoint": [
