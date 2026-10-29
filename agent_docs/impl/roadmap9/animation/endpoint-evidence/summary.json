@@ -3,14 +3,15 @@
   "status": "private-graphic-endpoint-projection-verified",
   "authorization": "../../AUTHORIZATION.json#remainingApproval",
   "publicPlannerComplete": false,
-  "runtimeSource": "recorded-by-exact-input-sha256",
+  "runtimeSource": "ed6dc1c2b00fcd6f9b30f5ae84c0cac6db46aea1",
   "tests": {
     "node20": 54,
     "node22": 54,
     "node24": 54,
     "endpointProjection": 8,
     "sceneBoundariesAndDiscovery": 32,
-    "packageArtifact": 7
+    "packageArtifact": 7,
+    "sourcePinnedDocs": 21
   },
   "coverage": {
     "scope": "six private animation owners",
@@ -78,6 +79,11 @@
       "file": "animation-endpoints-package-measure-final.log.gz",
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
       "uncompressedBytes": 208
+    },
+    {
+      "file": "animation-endpoints-final-docs.log.gz",
+      "sha256": "dda34043e41827cca1e0c1764cbcf6d0e6af9d5212d12e7b88991cf65489dc71",
+      "uncompressedBytes": 4953
     }
   ],
   "preservedFailures": [
