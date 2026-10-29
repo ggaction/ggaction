@@ -1348,6 +1348,10 @@
       {
         "type": "file",
         "path": "unit/interaction-annotation-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-history.test.js"
       }
     ],
     "selectors": [

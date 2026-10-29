@@ -18,7 +18,17 @@ import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/sc
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
-const program = chart(); const session = createInteractionSession({ program });
+const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
+session.dispatch({type:'undo',origin:'user',transactionId:'back'});
+session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
+session.updateProgram(program,{history:'record',origin:'replay'});
+const undoCount:number=session.getState().history.undoCount;
+// @ts-expect-error whole-session history has no owner or payload
+session.dispatch({type:'undo',target:'points',payload:{}});
+// @ts-expect-error only record/reset are supported for external updates
+session.updateProgram(program,{history:'append'});
+// @ts-expect-error history counts are immutable
+session.getState().history.undoCount=5;
 chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
 session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
 session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});

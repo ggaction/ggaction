@@ -816,6 +816,13 @@ test("canonical annotation dragging preserves anchors across mouse touch keyboar
     assert.deepEqual(await inspect(), { xy: [124, 182], vector: [124, 182], anchor: [2, 3], revision: 3, ink: true });
     assert.deepEqual(await page.evaluate(() => ({ commits: window.__annotationDragPhases.filter(phase => phase === "commit").length,
       cancels: window.__annotationDragPhases.filter(phase => phase === "cancel").length })), { commits: 3, cancels: 1 });
+    assert.equal(await page.evaluate(() => window.__annotationDrag.getState().history.undoCount), 3);
+    await page.getByRole("button", { name: "Undo", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual((await inspect()).xy, [104, 172]);
+    await page.getByRole("button", { name: "Redo", exact: true }).tap(); assert.deepEqual((await inspect()).xy, [124, 182]);
+    await page.getByRole("button", { name: "Reset", exact: true }).click(); assert.deepEqual((await inspect()).xy, [100, 180]);
+    await page.getByRole("button", { name: "Undo", exact: true }).click(); assert.deepEqual((await inspect()).xy, [124, 182]);
+    assert.equal(await page.evaluate(() => window.__annotationDragPhases.filter(phase => phase === "commit").length), 7);
     await page.evaluate(() => window.__disposeAnnotationDrag()); assertNoBrowserErrors(errors, "annotation dragging"); await page.close();
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }

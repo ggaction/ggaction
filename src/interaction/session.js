@@ -11,7 +11,8 @@ import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
-import { interactionOptions as options, snapshotInteractionInput } from "./input.js";
+import { createInteractionHistory, INTERACTION_HISTORY_TYPES } from "./history.js";
+import { interactionOptions as options, snapshotInteractionInput, interactionOrigin, interactionTransactionMetadata } from "./input.js";
 import { prepareInteractionEdit, interactionTransaction, INTERACTION_EDIT_TYPES } from "./selection.js";
 import { getErrorDetails } from "../core/diagnostics.js";
 import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordinates.js";
@@ -69,7 +70,7 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings", "selectionPolicy"], "Interaction session");
+  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit"], "Interaction session");
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
@@ -77,10 +78,12 @@ export function createInteractionSession(input) {
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
   let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null;
+  const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
+  const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
   const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene,
-    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, mounted: mounted !== undefined, destroyed });
+    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
   const publish = (type, details) => {
@@ -119,7 +122,7 @@ export function createInteractionSession(input) {
   const close = () => {
     let failure;
     try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
-    mounted = undefined; lastHit = null; destroyed = true;
+    mounted = undefined; lastHit = null; destroyed = true; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
     finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
@@ -140,7 +143,7 @@ export function createInteractionSession(input) {
   const edit = (command, draft) => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
-    const previous = program;
+    const previous = program, previousSnapshot = committedSnapshot();
     let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
@@ -163,14 +166,53 @@ export function createInteractionSession(input) {
     bridge.updateFrame(frame); base = candidate; program = prepared.program;
     linkedSelections = prepared.projections; selectionRecords = reconciled.records;
     generation = nextGeneration; revision = nextRevision; lastHit = null;
+    history.record(previousSnapshot, prepared.affectedOwners);
     publish(command.type, details("commit", prepared.affectedOwners));
     publish(command.type, details("settled", prepared.affectedOwners));
+    return outcome("applied");
+  };
+  const restore = command => {
+    if (drainedTransactions.has(command.transactionId)) return outcome("stale");
+    drainedTransactions.add(command.transactionId);
+    const previous = program, previousSnapshot = committedSnapshot(), entry = history.target(command.type);
+    if (!entry || entry.state.program === program) {
+      mounted?.capture?.cancel("updateProgram");
+      return outcome("unchanged");
+    }
+    const details = (phase, diagnostics = []) => freezeOwned({ ...interactionTransactionMetadata(command), phase,
+      revision, previous, current: program, affectedOwners: phase === "error" ? Object.freeze([]) : entry.affectedOwners,
+      diagnostics: cloneAndFreeze(diagnostics), selectionChanges: Object.freeze([]) });
+    let candidate, frame, nextGeneration, nextRevision;
+    try {
+      const version = nextInteger(bridge.getState().version);
+      nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
+      candidate = prepareProgramHitFrame(entry.state.program, version);
+      frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+    } catch (error) {
+      publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "interaction-history-failed", message: error.message }]));
+      throw error;
+    }
+    mounted?.capture?.cancel("updateProgram");
+    previewProgram = null;
+    if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+    bridge.updateFrame(frame); base = candidate;
+    ({ program, selectionRecords, linkedSelections } = entry.state);
+    generation = nextGeneration; revision = nextRevision; lastHit = null;
+    history.accept(command.type, previousSnapshot, entry.affectedOwners);
+    publish(command.type, details("commit")); publish(command.type, details("settled"));
     return outcome("applied");
   };
   const dispatch = command => {
     live();
     // Inspect the envelope before reading type; queued edits snapshot all payload data.
     const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId"], "Interaction command");
+    if (INTERACTION_HISTORY_TYPES.includes(envelope.type)) {
+      const owned = options(envelope, ["type"], ["transactionId", "origin", "causeTransactionId"], "History command");
+      transactionSequence = nextInteger(transactionSequence);
+      const command = freezeOwned({ type: owned.type, ...interactionTransactionMetadata(owned, `interaction-${transactionSequence}`) });
+      return perform(() => restore(command));
+    }
     if (INTERACTION_EDIT_TYPES.includes(envelope.type)) {
       const owned = snapshotInteractionInput(envelope, "Interaction command");
       transactionSequence = nextInteger(transactionSequence);
@@ -204,8 +246,13 @@ export function createInteractionSession(input) {
   return Object.freeze({
     getState() { return state; },
     dispatch,
-    updateProgram(next) {
+    updateProgram(next, configuration = {}) {
+      live();
+      const config = options(configuration, [], ["history", "origin"], "Interaction update");
+      const policy = config.history === undefined ? "reset" : config.history, origin = interactionOrigin(config.origin);
+      if (!["reset", "record"].includes(policy)) throw new TypeError("Unknown interaction update history policy.");
       return perform(() => {
+        const previousSnapshot = committedSnapshot();
         const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
         const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
         let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
@@ -225,7 +272,9 @@ export function createInteractionSession(input) {
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
         bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
         linkedSelections = linked.projections; selectionRecords = verified.records;
-        publish("program", { selectionChanges }); return outcome("applied");
+        if (policy === "reset") history.clear();
+        else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
+        publish("program", { origin, history: policy, selectionChanges }); return outcome("applied");
       });
     },
     subscribe(listener) {

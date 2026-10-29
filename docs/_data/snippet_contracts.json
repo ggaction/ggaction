@@ -2351,6 +2351,20 @@
   {
     "file": "api/interaction.md",
     "block": 2,
+    "heading": "Undo, redo and reset",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"note\""
+    ],
+    "prerequisites": "Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload.",
+    "sha256": "c913f2cabba99cdc4e4b270c208e0312a221f6f7828e76efb04c78b6a8818bf9",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 3,
     "heading": "Inspect without a DOM",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2364,7 +2378,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 3,
+    "block": 4,
     "heading": "Replace a program or sampled frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2378,7 +2392,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 4,
+    "block": 5,
     "heading": "State and cleanup",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2392,7 +2406,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 5,
+    "block": 6,
     "heading": "Commit selections and parameters",
     "mode": "complete",
     "environment": "node-esm",
@@ -2407,7 +2421,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 6,
+    "block": 7,
     "heading": "Filter and reorder a view",
     "mode": "complete",
     "environment": "node-esm",
@@ -2421,7 +2435,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 7,
+    "block": 8,
     "heading": "Link named selections",
     "mode": "complete",
     "environment": "node-esm",
@@ -2436,7 +2450,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 8,
+    "block": 9,
     "heading": "Filter another view from a selection",
     "mode": "complete",
     "environment": "node-esm",
@@ -2451,7 +2465,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 9,
+    "block": 10,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2466,7 +2480,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 10,
+    "block": 11,
     "heading": "Select categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2481,7 +2495,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 11,
+    "block": 12,
     "heading": "Hide and restore categories from a legend",
     "mode": "complete",
     "environment": "browser-module",
@@ -2495,7 +2509,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 12,
+    "block": 13,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2510,7 +2524,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 13,
+    "block": 14,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2527,7 +2541,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 14,
+    "block": 15,
     "heading": "Connect parameter inputs and a context action",
     "mode": "complete",
     "environment": "browser-module",
@@ -2544,7 +2558,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 15,
+    "block": 16,
     "heading": "Navigate a partition view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2558,7 +2572,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 16,
+    "block": 17,
     "heading": "Adjust a geographic view from host controls",
     "mode": "complete",
     "environment": "browser-module",
@@ -2574,7 +2588,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 17,
+    "block": 18,
     "heading": "Move graph nodes with pointer or keyboard",
     "mode": "complete",
     "environment": "browser-module",
@@ -2589,7 +2603,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 18,
+    "block": 19,
     "heading": "Edit existing annotations",
     "mode": "complete",
     "environment": "browser-module",
@@ -2598,7 +2612,7 @@
       "target: \"note\""
     ],
     "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.",
-    "sha256": "3853a390bdf6e541535b0360f320612c3c94fe795ed8aa2245ef3c6ff9eac01b",
+    "sha256": "0f3d988a8ae550e78fbc9c5c8db23faeb776f541057ffab50851702b2896aca1",
     "executable": true
   },
   {

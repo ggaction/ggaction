@@ -1287,6 +1287,8 @@ export interface InteractionState {
   readonly revision: number;
   readonly hit: InteractionHit | null;
   readonly linkedSelections: readonly LinkedSelectionState[];
+  /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
+  readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   readonly mounted: boolean;
   readonly destroyed: boolean;
 }
@@ -1382,8 +1384,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: InteractionReorderPayload;
 });
+/** Whole-session restore, without a target or editing payload. */
+export type InteractionHistoryCommand = InteractionTransaction & { readonly type: 'undo' | 'redo' | 'reset' };
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode' | 'annotate';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode' | 'annotate' | 'undo' | 'redo' | 'reset';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -1398,11 +1402,13 @@ export interface InteractionTransactionEvent {
 }
 export interface InteractionProgramEvent {
   readonly type: 'program';
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly history: 'reset' | 'record';
   readonly state: InteractionState;
   readonly selectionChanges: readonly SelectionChange[];
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
-export type InteractionCommand = InteractionEditCommand | {
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -1419,7 +1425,8 @@ export type InteractionCommand = InteractionEditCommand | {
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
-  updateProgram(program: InteractionProgram): InteractionDispatchResult;
+  /** External replacement cancels previews. Default clears history; record retains the previous snapshot. */
+  updateProgram(program: InteractionProgram, options?: { readonly history?: 'reset' | 'record'; readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked' }): InteractionDispatchResult;
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
@@ -1427,6 +1434,8 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Integer 0..10000, default 100. Zero disables undo/redo, but preserves the initial reset baseline. */
+  readonly historyLimit?: number;
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */

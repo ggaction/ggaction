@@ -1072,6 +1072,50 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/history",
+        "statements": 19
+      },
+      {
+        "id": "interaction/annotation-drag",
+        "statements": 22
+      },
+      {
+        "id": "interaction/screen-annotation",
+        "statements": 14
+      },
+      {
+        "id": "interaction/geographic-annotation-edit",
+        "statements": 11
+      },
+      {
+        "id": "interaction/annotation-edit",
+        "statements": 29
+      },
+      {
+        "id": "interaction/geographic-representation",
+        "statements": 5
+      },
+      {
+        "id": "interaction/node-movement",
+        "statements": 27
+      },
+      {
+        "id": "interaction/geographic-context",
+        "statements": 23
+      },
+      {
+        "id": "interaction/partition-host-focus",
+        "statements": 16
+      },
+      {
+        "id": "interaction/context-host-request",
+        "statements": 1
+      },
+      {
+        "id": "interaction/legend-visibility-filter-composition",
+        "statements": 13
+      },
+      {
         "id": "interaction/full-basic-immutable-inspection",
         "statements": 1
       },

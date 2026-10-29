@@ -84,5 +84,9 @@ function assertOffsetDrag(program,target,delta) {
   const final=getMarkItems(deserializeProgram(serializeProgram(session.getState().program)),{target})[0];
   assert.deepEqual([final.geometry[0].properties.x,final.geometry[0].properties.y],[point.x+10+delta,point.y+delta]);
   assert.equal(final.key,initial.key);assert.deepEqual(final.rows,initial.rows);assert.deepEqual(events,["preview","preview","commit","settled"]);
-  session.destroy();assert.equal(captures.size,0);assert.equal(handlers.size,0);
+  assert.equal(session.getState().history.undoCount,1);const committed=session.getState().program;
+  session.dispatch({type:"undo",origin:"user"});assert.equal(session.getState().program,program);
+  session.dispatch({type:"redo",origin:"user"});assert.equal(session.getState().program,committed);
+  session.dispatch({type:"reset"});assert.equal(session.getState().program,program);
+  session.destroy();assert.equal(session.getState().history.undoCount,0);assert.equal(captures.size,0);assert.equal(handlers.size,0);
 }

@@ -9,21 +9,15 @@ import { SELECTION_SET_MODES } from "../grammar/selectionSet.js";
 import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { findLayer } from "../selectors/layers.js";
-import { interactionOptions as options } from "./input.js";
+import { interactionOptions as options, interactionTransactionMetadata } from "./input.js";
 
 export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode", "annotate"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
     ["transactionId", "origin", "causeTransactionId"], "Editing command");
-  const transactionId = request.transactionId === undefined ? generatedId : request.transactionId;
-  for (const id of [transactionId, request.causeTransactionId].filter(id => id !== undefined)) {
-    if (typeof id !== "string" || !id.length || id.length > 1024) throw new TypeError("Transaction IDs require 1 to 1024 characters.");
-  }
-  const origin = request.origin === undefined ? "programmatic" : request.origin;
-  if (!["user", "programmatic", "replay", "linked"].includes(origin)) throw new TypeError("Unknown interaction command origin.");
   if (!INTERACTION_EDIT_TYPES.includes(request.type)) throw new TypeError("Unsupported editing command type.");
-  return cloneAndFreeze({ ...request, transactionId, origin });
+  return cloneAndFreeze({ ...request, ...interactionTransactionMetadata(request, generatedId) });
 }
 
 export function interactionOwner(program, requested, allowMissing = false) {

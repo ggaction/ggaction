@@ -35,6 +35,51 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Undo, redo and reset
+
+The session retains up to `historyLimit` committed snapshots (default 100; integer 0–10000).
+A drag with many preview frames adds one entry on release. Cancellation, failed commands,
+inspection and unchanged native commands add none. Set `historyLimit: 0` to disable undo/redo.
+
+Use the same dispatch path from host buttons, keyboard controls or headless code:
+
+> **Executable complete.** Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const initial = chart().createCanvas()
+  .createAnnotation({ id: "note", space: "screen", x: 40, y: 60, text: "Original" });
+const historySession = createInteractionSession({ program: initial, bindings: [], historyLimit: 20 });
+historySession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised" } });
+historySession.dispatch({ type: "undo", origin: "user" });
+historySession.dispatch({ type: "redo", origin: "user" });
+historySession.dispatch({ type: "reset", origin: "user" });
+const program = historySession.getState().program; // The original immutable program.
+const { undoCount, redoCount, limit } = historySession.getState().history; // 2, 0, 20.
+historySession.destroy();
+```
+
+Undo and redo restore the exact committed program and its selection state, including hidden
+membership and linked selections. Bindings stay mounted. Reset restores the program supplied when
+the session was created, even after external replacements; it is distinct from `clearSelection`.
+A changed reset is itself undoable. An empty undo/redo or an already-initial reset cancels an active
+preview without creating a commit. New commits discard the redo branch.
+
+`updateProgram(nextProgram, { history: "record", origin: "programmatic" })` records the previous
+snapshot when the program reference changes. Omit the options, or use `history: "reset"`, to clear
+undo and redo on external replacement. Neither changes the initial reset baseline. The `program`
+event reports the chosen `history` policy and origin. Every successful replacement cancels an active
+preview. Runtime history is not serialized; recreate a session after loading a saved program.
+
+History commands use the same transaction IDs, origins, FIFO reentry and commit/settled events as
+native edits. Each restore advances revision and generation, rejecting earlier frame results.
+The event's `previous` and `current` are immutable snapshot references. Reset and recorded external
+replacements affect the whole program and report `affectedOwners: []`; undo/redo of native edits
+retain that transition's owners. A restore has `selectionChanges: []` because it restores saved
+selection state; read `state.linkedSelections` or inspect `current` for its exact membership.
+
 ## Inspect without a DOM
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -124,7 +169,7 @@ other session methods reject further work.
 
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
-comparisons. The session does not persist host objects or hover state. Keyboard navigation, history, angular gestures, and asset loading
+comparisons. The session does not persist host objects or hover state. Keyboard navigation and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
@@ -595,8 +640,7 @@ inspection runs after this up commit. Host controls may still send an activation
 the controller does not assign Enter/Space behavior or a focused item.
 
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
-Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
-history are not supported by this binding.
+Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch are not supported by this binding. History commands operate on the whole session.
 
 ## Brush or lasso an existing selection
 
@@ -658,7 +702,7 @@ replacing the captured element cancels the gesture. Canvas/SVG use the same prog
 PNG/PDF exports can render a preview snapshot without running a controller.
 
 Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
-bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
+bindings and navigation are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
 
@@ -901,7 +945,7 @@ const disposeNodeControls = () => {
 The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
 flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
-when delivering external frames. General keyboard item navigation, unpin controls and history are not
+when delivering external frames. General keyboard item navigation and unpin controls are not
 installed by this binding.
 
 ## Edit existing annotations
@@ -924,7 +968,7 @@ import { createInteractionSession } from "ggaction/interaction";
 
 const canvas = document.querySelector("#chart");
 const controls = document.createElement("div");
-controls.innerHTML = '<button id="revise-note">Revise note</button> <button id="offset-note">Offset note</button> <output aria-live="polite"></output>';
+controls.innerHTML = '<button id="revise-note">Revise note</button> <button id="offset-note">Offset note</button> <button id="undo-note">Undo</button> <button id="redo-note">Redo</button> <button id="reset-note">Reset</button> <output aria-live="polite"></output>';
 canvas.before(controls);
 const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
   .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
@@ -937,17 +981,26 @@ canvas.style.touchAction = "none";
 const draw = current => {
   render(current, canvas.getContext("2d"));
   controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
+  controls.querySelector("#undo-note").disabled = annotationSession.getState().history.undoCount === 0;
+  controls.querySelector("#redo-note").disabled = annotationSession.getState().history.redoCount === 0;
 };
 const revise = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised", x: 8, y: 7 }, origin: "user" });
 const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
 controls.querySelector("#revise-note").addEventListener("click", revise);
 controls.querySelector("#offset-note").addEventListener("click", offset);
+const historyButtons = ["undo", "redo", "reset"].map(type => {
+  const button = controls.querySelector(`#${type}-note`);
+  const activate = () => annotationSession.dispatch({ type, origin: "user" });
+  button.addEventListener("click", activate);
+  return () => button.removeEventListener("click", activate);
+});
 const unsubscribe = annotationSession.subscribe(event => { if (event.phase) draw(event.state.previewProgram ?? event.state.program); });
 draw(program);
 const unmountAnnotation = annotationSession.mount(canvas);
 const disposeAnnotationControls = () => {
   controls.querySelector("#revise-note").removeEventListener("click", revise);
   controls.querySelector("#offset-note").removeEventListener("click", offset);
+  historyButtons.forEach(remove => remove());
   unmountAnnotation(); unsubscribe(); annotationSession.destroy(); controls.remove();
   canvas.style.touchAction = previousTouchAction;
 };

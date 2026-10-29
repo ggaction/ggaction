@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add bounded interaction undo/redo/reset with exact program and selection snapshots and explicit external update history policy.
+
 - Added Full `editAnnotation` and the `annotate` interaction command for atomic edits to existing text, datum anchors, offsets, source-item membership, data-less screen anchors, native offset dragging and label placement while preserving native source ownership.
 
 - Added explicit graph node movement and captured pointer dragging with native fixed/force layout edits, typed identities, dormant-coordinate preservation and atomic previews.

@@ -3,7 +3,7 @@ import { chart as basic } from "ggaction/basic";
 import { createInteractionSession, type InteractionCommand, type InteractionEvent } from "ggaction/interaction";
 import { createTransitionScene } from "ggaction/scene";
 const program = chart();
-const session = createInteractionSession({ program, bindings: [{ type: "inspect", events: ["click"] }] });
+const session = createInteractionSession({ program, historyLimit: 20, bindings: [{ type: "inspect", events: ["click"] }] });
 createInteractionSession({ program: basic(), bindings: [] });
 const command: InteractionCommand = { type: "frame", scene: createTransitionScene(program, { format: "canvas" }), version: 1, generation: 0 };
 session.dispatch(command);
@@ -142,3 +142,11 @@ chart().editAnnotation({select:{items:[]},all:true});
 session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'No'}});
 // @ts-expect-error native annotation edit preserves its existing source
 program.editAnnotation({target:'note',source:'new-source'});
+
+session.dispatch({type:'undo',origin:'user'});session.dispatch({type:'redo'});session.dispatch({type:'reset'});
+session.updateProgram(program,{history:'record',origin:'replay'});
+const historyCount:number=session.getState().history.undoCount;
+// @ts-expect-error history commands address the complete session
+session.dispatch({type:'undo',target:'points',payload:{}});
+// @ts-expect-error external history policy is closed
+session.updateProgram(program,{history:'keep'});

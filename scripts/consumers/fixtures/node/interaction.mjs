@@ -10,6 +10,19 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/history", run() {
+    const p=make(chart).createParameter({id:"level",value:1}),s=createInteractionSession({program:p,historyLimit:2});
+    const events=[];s.subscribe(e=>events.push(e));
+    s.dispatch({type:"setParameter",target:"level",payload:{value:2}});const next=s.getState().program;
+    assert.deepEqual(s.getState().history,{undoCount:1,redoCount:0,limit:2});
+    s.dispatch({type:"undo",origin:"user"});assert.equal(s.getState().program,p);
+    s.dispatch({type:"redo"});assert.equal(s.getState().program,next);
+    const external=deserializeProgram(serializeProgram(next));s.updateProgram(external,{history:"record",origin:"replay"});
+    s.dispatch({type:"undo"});assert.equal(s.getState().program,next);
+    s.dispatch({type:"reset"});assert.equal(s.getState().program,p);
+    assert.deepEqual(events.filter(e=>e.phase).map(e=>e.phase),Array.from({length:5},()=>["commit","settled"]).flat());
+    s.destroy();assert.equal(s.getState().history.undoCount,0);
+  } },
   { id: "interaction/annotation-drag", run() {
     const p=chart().createCanvas({width:300,height:200,margin:0}).createAnnotation({id:'note',space:'screen',x:40,y:60,text:'Move',align:'center',baseline:'middle'});
     const listeners=new Map(),frames=new Map(),captures=new Set();let id=0;

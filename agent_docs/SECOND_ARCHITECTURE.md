@@ -3974,3 +3974,20 @@ E9의 Full/Basic renderer/authoring bundle은 E8과 동일하며 interaction만 
 늘어 최소 cap113,500을 적용한다. 새 private frame/annotation owner2개로 package1047entries이며
 packed1,484,961/unpacked6,759,342를 최소 cap1,485,000/6,760,000으로 제한한다. 최초 Node20
 runtime13/strict TypeScript 통과 뒤 interaction ceiling 실패와 같은 archive의 cap 재검사를 분리 보존한다.
+
+
+### Session snapshot history ownership
+
+`interaction/history.js`는 controller만 사용하는 bounded immutable snapshot reference와 초기 reset
+baseline을 소유한다. `session.js`가 native materialization/reconciliation/link closure와 hit frame을
+모두 준비한 뒤 한 commit에 한 항목을 기록하며, preview는 기록하지 않는다. 복원은 기존 program과
+private selection records/projection을 함께 바꾸어 숨겨진 membership을 재해석하지 않는다.
+Program schema/codec/renderers/authoring package 경계는 바뀌지 않는다. 구체 limit·external update·event
+의미는 [Current INTERACTION](contract/current/INTERACTION.md#bounded-session-history)이 소유한다.
+
+
+History source-free Node20의 interaction은114,086gzip이므로 최소cap114,100이며 Full729,256 /
+Basic384,464 / SVG20,196 / graph43,759는 E9와 같다. Package는1048entries,
+packed1,486,675 / unpacked6,765,752로 최소cap1048/1,487,000/6,766,000이다.
+새 helper는 interaction entry만 소비하고 authoring/renderer bundle에는 유입되지 않는다.
+최초 기존 entry/bundle cap 실패와 동일 archive 측정·재검증은 STEP065 qualification에 보존한다.

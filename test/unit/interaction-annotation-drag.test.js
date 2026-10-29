@@ -33,6 +33,7 @@ test("annotation dragging coalesces native offsets, keeps its screen anchor and 
   host.fire("pointerdown", 42, 57);
   for (let i = 1; i <= 100; i++) host.fire("pointermove", 42 + i / 2, 57 + i);
   assert.equal(host.pending.size, 1); host.flush();
+  assert.equal(session.getState().history.undoCount, 0);
   assert.equal(session.getState().program, p); assert.equal(session.getState().revision, 0);
   assert.deepEqual([props(session.getState().previewProgram).x, props(session.getState().previewProgram).y], [92, 157]);
   session.dispatch({ type: "inspect", point: { x: 92, y: 157 }, slop: 0 });
@@ -40,6 +41,7 @@ test("annotation dragging coalesces native offsets, keeps its screen anchor and 
   assert.deepEqual(session.getState().hit.target.rowKeys, []);
   host.fire("pointerup", 102, 147);
   const next = session.getState().program;
+  assert.equal(session.getState().history.undoCount, 1);
   assert.deepEqual([props(next).x, props(next).y], [102, 147]);
   assert.deepEqual(next.semanticSpec.layers[0].annotationAnchor, { space: "screen", x: 40, y: 60 });
   assert.deepEqual(next.graphicSpec, p.editAnnotation({ dx: 62, dy: 87 }).graphicSpec);
@@ -85,6 +87,7 @@ test("annotation cancellations restore exact baseline, trace, hit frame and host
     host.fire("pointerup", 92, 157);
     assert.equal(session.getState().program, p); assert.equal(serializeProgram(p), saved);
     assert.equal(session.getState().previewProgram, null); assert.deepEqual(phases.map(event => event.phase), ["preview", "cancel"]);
+    assert.equal(session.getState().history.undoCount, 0);
     assert.equal(host.captures.size, 0); assert.equal(host.pending.size, 0);
     if (reason !== "destroy") { session.dispatch({ type: "inspect", point: { x: 42, y: 57 }, slop: 0 }); assert.equal(session.getState().hit.target.ownerId, "note"); session.destroy(); }
   }
@@ -100,6 +103,10 @@ test("annotation nested transforms preserve the other child and logical namespac
   assert.equal(next.children.left, child);
   assert.deepEqual(next.children.right.graphicSpec, child.editAnnotation({ dx: 22, dy: 27 }).graphicSpec);
   assert.equal(getMarkItems(next, { target })[0].key, getMarkItems(p, { target })[0].key);
+  session.dispatch({ type: "undo" }); assert.equal(session.getState().program, p);
+  session.dispatch({ type: "inspect", point: { x, y }, slop: 0 });
+  assert.equal(session.getState().hit.target.itemKey, getMarkItems(p, { target })[0].key);
+  session.dispatch({ type: "redo" }); assert.equal(session.getState().program, next);
   session.destroy();
 });
 
@@ -134,4 +141,24 @@ test("annotation coordinate overflow and native edits release capture without ex
   assert.equal(session.getState().previewProgram, null); assert.equal(host.captures.size, 0);
   assert.deepEqual(session.getState().program.graphicSpec, p.editAnnotation({ text: "Keyboard", dx: 10 }).graphicSpec);
   session.destroy();
+});
+
+
+test("history commands cancel active annotation previews and only actual restores produce commits", () => {
+  for (const type of ["undo", "redo", "reset"]) {
+    const p = note(), { session, host, phases } = mounted(p);
+    host.fire("pointerdown", 42, 57); host.fire("pointermove", 92, 157); host.flush();
+    assert.equal(session.dispatch({ type }).status, "unchanged");
+    host.fire("pointerup", 92, 157);
+    assert.equal(session.getState().program, p); assert.equal(session.getState().previewProgram, null);
+    assert.equal(session.getState().history.undoCount, 0); assert.equal(host.pending.size, 0); assert.equal(host.captures.size, 0);
+    assert.deepEqual(phases.map(event => event.phase), ["preview", "cancel"]); session.destroy();
+  }
+  const p = note(), { session, host, phases } = mounted(p);
+  session.dispatch({ type: "annotate", target: "note", payload: { dx: 12 } });
+  host.fire("pointerdown", 52, 57); host.fire("pointermove", 102, 157); host.flush();
+  session.dispatch({ type: "undo" }); host.fire("pointerup", 102, 157);
+  assert.equal(session.getState().program, p); assert.equal(session.getState().history.redoCount, 1);
+  assert.deepEqual(phases.map(event => event.phase), ["commit", "settled", "preview", "cancel", "commit", "settled"]);
+  session.dispatch({ type: "inspect", point: { x: 42, y: 57 }, slop: 0 }); assert.equal(session.getState().hit.target.ownerId, "note"); session.destroy();
 });

@@ -2,7 +2,7 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
 `bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, lasso, node-movement, or annotation-offset binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
@@ -12,9 +12,9 @@
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
-- `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
-- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
-- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
+- `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
+- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,history,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
 Dispatch and updateProgram return `{status:"applied"|"queued"|"stale"|"unchanged"}`. Reentrant calls return queued; invalid operations throw. No inspection creates a selection resource, persistent hover, authoring transaction, history entry or asset request.
@@ -31,7 +31,7 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
-Navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+Navigation gestures, keyboard focus and async assets have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
@@ -277,7 +277,7 @@ the existing FIFO lifecycle. Captured up commits before the subsequent click ins
 release listeners, and a captured old listener is inactive. All successful selection event consumers
 must render the accepted program; the controller never renders. SVG hosts remount after replacing
 the root element. Headless authors use explicit select/clear commands instead of a new low-level
-click command. No automatic modifier, brush/lasso, competing binding, keyboard focus or history policy is
+click command. No automatic modifier, brush/lasso, competing binding, keyboard focus is
 inferred. Existing count/work limits apply; candidate and key expansion additionally share a
 10,000,000-unit click-selection budget.
 
@@ -317,7 +317,7 @@ or empty viewport cannot acquire capture; one arising during a gesture cancels i
 
 DOM events, capture IDs and armed program references are runtime-only. Codec, static PNG/PDF and
 renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
-brush/lasso preview, RAF coalescing, navigation pinch and history remain unsupported public options.
+Navigation pinch remains an unsupported public option; region preview and session history are specified below.
 Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.
 
 
@@ -367,7 +367,7 @@ The prior program and trace remain exact; late up/RAF callbacks cannot commit. T
 FIFO guarantees as captured click apply. For SVG previews keep the captured host stable (for example,
 a correctly sized wrapper containing the replaced SVG); replacing the capture element cancels it.
 The host owns touch-action and rendering, and must redraw the committed program after cancel.
-No keyboard, multi-binding arbitration, pinch or history support is implied.
+No keyboard, multi-binding arbitration or pinch support is implied.
 
 Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
@@ -542,7 +542,7 @@ frameVersion when producing the next external frame. Session revision still chan
 A sampled moving node must return to its committed concrete geometry before a new drag can start.
 
 The host supplies capture, RAF and its touch-action policy. Keyboard controls may send `moveNode`
-with explicit typed key and layout coordinates. General keyboard focus, undo/redo, unpinning and
+with explicit typed key and layout coordinates. General keyboard focus, unpinning and
 automatic-origin dragging are separate capabilities. Evidence: `test/unit/interaction-node-move.test.js`,
 the canonical node-drag browser example and the installed interaction consumer.
 
@@ -562,6 +562,43 @@ without DPR inference. Preview uses the same native editor, reconciliation/link 
 hit frame; immutable committed state changes only once on final release. Escape/cancel/lost capture/blur/
 update/frame/unmount/destroy restore the committed frame and discard preview. Under-threshold clicks are
 no-ops. Coordinate overflow cancels; native preflight errors release capture and publish error without commit.
-Keyboard hosts dispatch the same annotate command. General history/focus and multi-binding arbitration
+Keyboard hosts dispatch the same annotate command. General focus and multi-binding arbitration
 are separate remaining session capabilities. Evidence: `test/unit/interaction-annotation-drag.test.js`,
 `test/browser/interaction-session.browser.js`, and installed `interaction/annotation-drag`.
+
+
+## Bounded session history
+
+`historyLimit` is an integer from 0 through 10000, default 100. `getState().history` is a frozen
+`{undoCount,redoCount,limit}` summary. Runtime history retains immutable program references and the
+corresponding private reconciliation records and linked-selection projections, never DOM or host objects.
+It is not part of program serialization. Zero disables undo/redo retention but keeps the initial reset baseline.
+
+`dispatch({type:"undo"|"redo"|"reset",transactionId?,origin?,causeTransactionId?})` restores a whole snapshot.
+Target, payload and other options reject. The existing transaction metadata vocabulary, bounded FIFO and
+same-drain loop guard apply. Successful native commits record one previous snapshot and clear redo;
+preview/cancel/error and native no-ops record none. At the limit the oldest undo snapshot is evicted.
+Undo/redo move between exact saved snapshots without authoring, cloning or selection reconciliation.
+Runtime bindings remain active. Subsequent native edits reconcile from the restored selection records.
+
+Reset restores the session-creation snapshot, independently of later external replacements, and records
+one undoable transition if the program differs. Empty undo/redo and already-initial reset return unchanged,
+cancelling active capture/preview with reason updateProgram but emitting no history commit. Successful
+restores preflight counters, current host transform and hit frame before changing program or history;
+failure publishes error and preserves committed program/trace/history. Success advances revision and
+generation, clears transient hit, cancels active preview, and publishes commit then settled once.
+
+Undo/redo preserve their transition's affectedOwners. Reset and external replacement transitions use []
+for whole-program scope. `previous`/`current` identify exact snapshots. History restoration reports
+selectionChanges [] because it restores stored selection state; current/state.linkedSelections carry
+that state rather than new reconciliation diagnostics.
+
+`updateProgram(program,{history?:"reset"|"record",origin?}={})` defaults to reset/programmatic.
+Reset clears both stacks after successful preflight. Record adds the previous snapshot only when the
+committed program reference changes. Both retain the session's original reset baseline and existing
+external replacement/capture behavior. The program event adds origin and the resolved history policy.
+Invalid options and failed replacements preserve program and history. Destroy releases both stacks
+and the initial baseline; the public terminal state retains only the existing final committed snapshot.
+
+Evidence: test/unit/interaction-history.test.js, test/unit/interaction-annotation-drag.test.js,
+test/browser/interaction-session.browser.js and installed interaction fixtures.
