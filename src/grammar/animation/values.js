@@ -27,6 +27,7 @@ export function interpolateNumber(from, to, progress) {
   validateUnitInterval(progress, "Animation progress");
   if (progress === 0) return from;
   if (progress === 1) return to;
+  if (from === to) return from;
   // A convex combination avoids overflowing the endpoint difference.
   return from * (1 - progress) + to * progress;
 }
