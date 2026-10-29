@@ -612,7 +612,9 @@ function buildDataAndMarkCoverage(factors) {
     members: false
   });
 
-  program = program.createPointMark({ id: "encodedPoints", data: "directMaterialRows" })
+  const base = program;
+  const panels = [];
+  program = base.createPointMark({ id: "encodedPoints", data: "directMaterialRows" })
     .encodeX({ target: "encodedPoints", field: "positiveX", scale: { zero: false } })
     .encodeY({ target: "encodedPoints", field: "positiveY", scale: { zero: false } });
 
@@ -655,8 +657,9 @@ function buildDataAndMarkCoverage(factors) {
     .createTickMark({ id: "maximalTicks", data: "directMaterialRows", opacity: 0.75, stroke: "#334155", strokeWidth: 1.4 })
     .editTickMark({ target: "maximalTicks", opacity: 0.82, stroke: "#0f172a", strokeWidth: 2 })
     .encodeX({ target: "maximalTicks", field: "positiveX", scale: { id: "x" } })
-    .encodeY({ target: "maximalTicks", field: "positiveY", scale: { id: "y" } })
-    .createRectMark({ id: "maximalRects", data: "directMaterialRows", fill: "#93c5fd", stroke: "#1e3a8a", strokeWidth: 1, opacity: 0.16 })
+    .encodeY({ target: "maximalTicks", field: "positiveY", scale: { id: "y" } });
+  const numericMarks = program;
+  program = base.createRectMark({ id: "maximalRects", data: "directMaterialRows", fill: "#93c5fd", stroke: "#1e3a8a", strokeWidth: 1, opacity: 0.16 })
     .editRectMark({ target: "maximalRects", fill: "#bfdbfe", stroke: false, opacity: 0.12 })
     .encodeX({ target: "maximalRects", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "maximalRects", field: "upper" })
@@ -666,8 +669,9 @@ function buildDataAndMarkCoverage(factors) {
     .encodeX({ target: "strokeFreeRect", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "strokeFreeRect", field: "upper" })
     .encodeY({ target: "strokeFreeRect", field: "position", scale: { id: "y" } })
-    .encodeY2({ target: "strokeFreeRect", field: "positionEnd" })
-    .createAreaMark({ id: "maximalArea", data: "directMaterialRows", fill: "#bfdbfe", opacity: 0.25 })
+    .encodeY2({ target: "strokeFreeRect", field: "positionEnd" });
+  panels.push({ id: "intervalPositions", program });
+  program = numericMarks.createAreaMark({ id: "maximalArea", data: "directMaterialRows", fill: "#bfdbfe", opacity: 0.25 })
     .encodeX({ target: "maximalArea", field: "rowOrdinal", scale: { id: "lifecycle-path-x" } })
     .encodeYRange({
       target: "maximalArea", lower: "baseline", upper: "positiveY", scale: { id: "y" }
@@ -715,7 +719,8 @@ function buildDataAndMarkCoverage(factors) {
     });
     program = program.editLineMark({ target: "maximalLine", curve, closed: false, opacity: 0.65, stroke: "#7c3aed", strokeWidth: 1.5 });
   }
-  program = program
+  panels.push({ id: "numericMarks", program });
+  program = base
     .createBarMark({ id: "maximalBars", data: "directMaterialRows", fill: "#f59e0b", opacity: 0.55 })
     .editBarMark({ target: "maximalBars", fill: "#fbbf24", stroke: false, opacity: 0.6 })
     .encodeX({
@@ -729,12 +734,14 @@ function buildDataAndMarkCoverage(factors) {
     .editBarMark({ target: "maximalBars", blend: "normal" })
     .editBarMark({ target: "maximalBars", blend: "difference" });
 
-  program = program.createRuleMark({ id: "ranges", data: "directMaterialRows" })
+  panels.push({ id: "aggregateBars", program });
+  program = panels[0].program.createRuleMark({ id: "ranges", data: "directMaterialRows" })
     .encodeXRange({ target: "ranges", lower: "lower", upper: "upper" })
     .encodeYRange({ target: "ranges", lower: "position", upper: "positionEnd" })
     .editRuleMark({ target: "ranges", stroke: "#7c3aed", strokeWidth: 1.5, strokeDash: "dashed", opacity: 0.65 });
 
-  return finish(program, factors.dataset, "Data, mark, and encoding lifecycle coverage");
+  panels[0].program = program;
+  return finish(vconcat({ id: "dataMarkPanels", programs: panels }), factors.dataset, "Data, mark, and encoding lifecycle coverage");
 }
 
 function selectorOptions(kind, value, rows) {
@@ -770,6 +777,9 @@ function buildSelectionCoverage(factors) {
     .encodeShape({ target: "selectionPoints", field: "group" })
     .editPointMark({ target: "selectionPoints", stroke: "#1e3a8a", strokeWidth: 1 });
 
+  // Branch from one immutable source. Different units and selector geometries
+  // have independent frames; every authoring witness remains a child root.
+  const panels = [{ id: "selectionPoints", program }];
   const filterVariants = [
     selectorOptions("channel", "x", view.rows),
     selectorOptions("property", "x", view.rows),
@@ -783,6 +793,7 @@ function buildSelectionCoverage(factors) {
   ];
   for (const [index, selector] of filterVariants.entries()) {
     const target = `filter-points-${index}`;
+    program = initial;
     if (selector.grain === "stack") {
       program = program.createHistogram({
         id: target,
@@ -805,12 +816,14 @@ function buildSelectionCoverage(factors) {
         .encodeColor({ target, field: "group" });
     }
     program = program.filterMarks({ target, ...selector });
+    panels.push({ id: target, program });
   }
 
   let selectionOrdinal = 0;
   const highlight = (select, target = "selectionPoints", pointStyle = true) => {
+    const panel = panels.find(panel => panel.id === target);
     const id = `highlight-${selectionOrdinal++}`;
-    program = program.highlightMarks({
+    panel.program = panel.program.highlightMarks({
       id,
       target,
       select,
@@ -831,6 +844,7 @@ function buildSelectionCoverage(factors) {
   };
   for (const [index, channel] of SELECTOR_CHANNELS.entries()) {
     const target = `channel-selection-${channel}`;
+    program = initial;
     if (["x2", "y2"].includes(channel)) {
       program = program.createRuleMark({ id: target, data: "analysisRows" })
         .encodeX({ target, field: "lower", fieldType: "quantitative", scale: { id: `channel-x-${index}` } })
@@ -891,17 +905,20 @@ function buildSelectionCoverage(factors) {
       opacity: 0.9,
       bringToFront: false
     }).removeMarkHighlight({ selection: id });
+    panels.push({ id: target, program });
   }
-  program = program.createRectMark({ id: "propertyRect", data: "analysisRows" })
+  program = initial.createRectMark({ id: "propertyRect", data: "analysisRows" })
     .encodeX({ target: "propertyRect", field: "lower", scale: { id: "property-x" } })
     .encodeX2({ target: "propertyRect", field: "upper", scale: { id: "property-x" } })
     .encodeY({ target: "propertyRect", field: "position", scale: { id: "property-y" } })
     .encodeY2({ target: "propertyRect", field: "positionEnd", scale: { id: "property-y" } });
-  program = program.createRuleMark({ id: "propertyRule", data: "analysisRows" })
+  panels.push({ id: "propertyRect", program });
+  program = initial.createRuleMark({ id: "propertyRule", data: "analysisRows" })
     .encodeX({ target: "propertyRule", field: "lower", fieldType: "quantitative", scale: { id: "property-rule-x" } })
     .encodeX2({ target: "propertyRule", field: "upper", fieldType: "quantitative", scale: { id: "property-rule-x" } })
     .encodeY({ target: "propertyRule", field: "position", fieldType: "quantitative", scale: { id: "property-rule-y" } })
     .encodeY2({ target: "propertyRule", field: "positionEnd", fieldType: "quantitative", scale: { id: "property-rule-y" } });
+  panels.push({ id: "propertyRule", program });
   for (const property of GRAPHIC_PROPERTIES) {
     const target = ["width", "height"].includes(property)
       ? "propertyRect"
@@ -911,7 +928,7 @@ function buildSelectionCoverage(factors) {
     highlight(selectorOptions("property", property, view.rows), target, target === "selectionPoints");
   }
   for (const operator of SELECTOR_OPERATORS) highlight(selectorOptions("operator", operator, view.rows));
-  program = program.createLineMark({ id: "selectionLine", data: "analysisRows" })
+  program = initial.createLineMark({ id: "selectionLine", data: "analysisRows" })
     .encodeX({ target: "selectionLine", field: "rowOrdinal", scale: { id: "selection-line-x", zero: false } })
     .encodeY({ target: "selectionLine", field: "positiveY", scale: { id: "selection-line-y", zero: false } })
     .encodeGroup({ target: "selectionLine", field: "selectionSeries" });
@@ -932,7 +949,8 @@ function buildSelectionCoverage(factors) {
       bringToFront: false
     }).removeMarkHighlight({ selection: id });
   }
-  program = program.selectMarks({
+  panels.push({ id: "selectionLine", program });
+  program = panels[0].program.selectMarks({
     id: "persisted-selection", target: "selectionPoints",
     field: "positiveX", op: "max", count: 1
   }).highlightMarks({
@@ -951,8 +969,10 @@ function buildSelectionCoverage(factors) {
     fill: "#bfdbfe",
     opacity: 0.9
   }).removeMarkHighlight({ selection: "inclusive-highlight" });
+  panels[0].program = program;
   const stackTarget = `filter-points-${filterVariants.length - 1}`;
-  program = program.highlightMarks({
+  const stackPanel = panels.find(panel => panel.id === stackTarget);
+  stackPanel.program = stackPanel.program.highlightMarks({
     id: "stack-highlight",
     target: stackTarget,
     select: {
@@ -962,7 +982,7 @@ function buildSelectionCoverage(factors) {
     fill: "#fde68a",
     opacity: 0.88
   }).removeMarkHighlight({ selection: "stack-highlight" });
-  return finish(program, factors.dataset, "Selection, filtering, and highlight lifecycle coverage");
+  return finish(vconcat({ id: "selectionPanels", programs: panels }), factors.dataset, "Selection, filtering, and highlight lifecycle coverage");
 }
 
 function baseEncodingForRemoval(program, target, channel) {
@@ -1140,6 +1160,7 @@ function buildStatisticalCoverage(factors) {
     { statisticalProjection: true }
   );
   let program = initial;
+  const panels = new Map();
   const quantitativeTypes = ["linear", "log", "pow", "sqrt", "symlog"];
   const intervalVariants = [
     ["mean", "stderr"], ["mean", "stdev"], ["mean", "ci"], ["median", "iqr"]
@@ -1147,7 +1168,7 @@ function buildStatisticalCoverage(factors) {
   let errorIndex = 0;
   for (const [center, extent] of intervalVariants) {
     const id = `error-x-stat-${errorIndex}`;
-    program = program.createErrorBar({
+    program = initial.createErrorBar({
       id,
       ...errorAppearance(errorIndex),
       x: {
@@ -1161,8 +1182,9 @@ function buildStatisticalCoverage(factors) {
       },
       ...(errorIndex === 0 ? { groupBy: "bandGroup" } : {})
     });
+    panels.set(id, program);
     errorIndex += 1;
-    program = program.createErrorBar({
+    program = initial.createErrorBar({
       id: `error-y-stat-${errorIndex}`,
       ...errorAppearance(errorIndex),
       x: {
@@ -1175,10 +1197,11 @@ function buildStatisticalCoverage(factors) {
         scale: scale("linear", `error-y-interval-${errorIndex}`, errorIndex)
       }
     });
+    panels.set(`error-y-stat-${errorIndex}`, program);
     errorIndex += 1;
   }
   for (const [index, type] of quantitativeTypes.entries()) {
-    program = program.createErrorBar({
+    program = initial.createErrorBar({
       id: `error-x-scale-${type}`,
       ...errorAppearance(index),
       x: {
@@ -1189,7 +1212,9 @@ function buildStatisticalCoverage(factors) {
         field: "category", fieldType: "ordinal",
         scale: categoricalScale(`error-y-category-${type}`, "point")
       }
-    }).createErrorBar({
+    });
+    panels.set(`error-x-scale-${type}`, program);
+    program = initial.createErrorBar({
       id: `error-y-scale-${type}`,
       ...errorAppearance(index + 1),
       x: {
@@ -1201,19 +1226,23 @@ function buildStatisticalCoverage(factors) {
         scale: scale(type, `error-y-scale-${type}`, index + 1)
       }
     });
+    panels.set(`error-y-scale-${type}`, program);
   }
-  program = program.createErrorBar({
+  program = initial.createErrorBar({
     id: "error-temporal-x",
     ...errorAppearance(0),
     x: { field: "time", fieldType: "temporal", scale: scale("time", "error-time-x", 0) },
     y: { center: "center", lower: "lower", upper: "upper", scale: scale("linear", "error-time-y", 0) }
-  }).createErrorBar({
+  });
+  panels.set("error-temporal-x", program);
+  program = initial.createErrorBar({
     id: "error-temporal-y",
     ...errorAppearance(1),
     x: { center: "center", lower: "lower", upper: "upper", scale: scale("linear", "error-time-ix", 0) },
     y: { field: "time", fieldType: "temporal", scale: scale("time", "error-time-position-y", 1) }
   });
-  program = program.createPointMark({ id: "error-target-band", data: "analysisRows" })
+  panels.set("error-temporal-y", program);
+  program = initial.createPointMark({ id: "error-target-band", data: "analysisRows" })
     .encodeX({
       target: "error-target-band", field: "category", fieldType: "nominal",
       scale: categoricalScale("error-target-band-x", "band")
@@ -1236,7 +1265,9 @@ function buildStatisticalCoverage(factors) {
       scale: scale("linear", "error-target-band-y", 0)
     }
   });
+  panels.set("error-target-band", program);
   const editableError = "error-x-stat-0";
+  program = panels.get(editableError);
   for (const [index, [center, extent]] of intervalVariants.entries()) {
     program = program.editErrorBar({
       target: editableError,
@@ -1250,10 +1281,11 @@ function buildStatisticalCoverage(factors) {
     });
   }
 
+  panels.set(editableError, program);
   let bandIndex = 0;
   const createBand = options => {
     try {
-      program = program.createErrorBand({
+      program = initial.createErrorBand({
         id: `error-band-${bandIndex}`,
         data: "analysisRows",
         coordinate: "main",
@@ -1273,6 +1305,7 @@ function buildStatisticalCoverage(factors) {
     } catch (error) {
       throw realisticDirectLifecycleErrorBandFailure(bandIndex, error);
     }
+    panels.set(`error-band-${bandIndex}`, program);
     bandIndex += 1;
   };
   for (const [index, type] of quantitativeTypes.entries()) {
@@ -1319,7 +1352,7 @@ function buildStatisticalCoverage(factors) {
     x: { center: "center", lower: "lower", upper: "upper", scale: scale("linear", "band-time-position-x", 0) },
     y: { field: "timeUnique", fieldType: "temporal", scale: scale("time", "band-time-y-position", 0) }
   });
-  program = program.editErrorBand({
+  program = panels.get("error-band-0").editErrorBand({
     target: "error-band-0",
     fill: "#bfdbfe",
     opacity: 0.18,
@@ -1327,7 +1360,8 @@ function buildStatisticalCoverage(factors) {
     boundaries: false
   });
 
-  program = program.createBoxPlot({
+  panels.set("error-band-0", program);
+  program = initial.createBoxPlot({
     id: "boxOwner",
     data: "analysisRows",
     x: { field: "category", fieldType: "nominal" },
@@ -1361,7 +1395,8 @@ function buildStatisticalCoverage(factors) {
     });
   }
 
-  program = program.createGradientPlot({
+  panels.set("boxOwner", program);
+  program = initial.createGradientPlot({
     id: "gradientOwner",
     data: "analysisRows",
     x: { field: "category", fieldType: "nominal" },
@@ -1407,8 +1442,9 @@ function buildStatisticalCoverage(factors) {
     gradientIndex += 1;
   }
 
+  panels.set("gradientOwner", program);
   return finish(
-    program,
+    vconcat({ id: "statisticalPanels", programs: [...panels].map(([id, program]) => ({ id, program })) }),
     factors.dataset,
     "Statistical interval and distribution lifecycle coverage",
     STATISTICAL_ANALYSIS_QUESTION
@@ -1449,6 +1485,7 @@ function buildDerivedEncodingCoverage(factors) {
     { derivedEncodingProjection: true }
   );
   let program = initial;
+  const panels = new Map();
   const quantitativeTypes = ["linear", "log", "pow", "sqrt", "symlog"];
   const values = view.rows.map(row => row.positiveY).sort((left, right) => left - right);
   const minimum = values[0];
@@ -1461,7 +1498,7 @@ function buildDerivedEncodingCoverage(factors) {
 
   for (const [index, type] of quantitativeTypes.entries()) {
     const target = index === 0 ? "horizonOwner" : `horizon-${type}`;
-    program = program.createAreaMark({
+    program = initial.createAreaMark({
       id: target, data: "analysisRows", fill: "#60a5fa", opacity: 0.55
     });
     const common = {
@@ -1489,8 +1526,9 @@ function buildDerivedEncodingCoverage(factors) {
         : horizonPalette(index)
     };
     program = program.encodeHorizon(common);
+    panels.set(target, program);
   }
-  program = program.createAreaMark({
+  program = initial.createAreaMark({
     id: "horizon-time", data: "analysisRows", fill: "#93c5fd", opacity: 0.42
   }).encodeHorizon({
     target: "horizon-time",
@@ -1514,7 +1552,8 @@ function buildDerivedEncodingCoverage(factors) {
     overflow: "clip",
     palette: horizonPalette(2)
   });
-  program = program.editHorizon({
+  panels.set("horizon-time", program);
+  program = panels.get("horizonOwner").editHorizon({
     target: "horizonOwner",
     source: "analysisRows",
     x: {
@@ -1583,7 +1622,8 @@ function buildDerivedEncodingCoverage(factors) {
     palette: { positive: "purpleblue", negative: "goldred" }
   });
 
-  program = program.createBarMark({ id: "histogramOwner", data: "analysisRows" });
+  panels.set("horizonOwner", program);
+  program = initial.createBarMark({ id: "histogramOwner", data: "analysisRows" });
   const histogramTypes = ["log", "linear", "pow", "sqrt", "symlog"];
   for (const [index, type] of histogramTypes.entries()) {
     program = program.encodeHistogram({
@@ -1601,9 +1641,10 @@ function buildDerivedEncodingCoverage(factors) {
     });
   }
 
+  panels.set("histogramOwner", program);
   for (const [index, type] of quantitativeTypes.entries()) {
     const target = index === 0 ? "densityOwner" : `densityOwner-${type}`;
-    program = program.createAreaMark({
+    program = initial.createAreaMark({
       id: target, data: "analysisRows", fill: "#a78bfa",
       opacity: 0.38, stroke: "#6d28d9", strokeWidth: 1
     });
@@ -1637,8 +1678,9 @@ function buildDerivedEncodingCoverage(factors) {
             placement: { type: "baseline" }
           })
     });
+    panels.set(target, program);
   }
-  program = program.createAreaMark({
+  program = initial.createAreaMark({
     id: "density-vertical-top",
     data: "analysisRows",
     fill: "#c4b5fd",
@@ -1666,9 +1708,10 @@ function buildDerivedEncodingCoverage(factors) {
       scale: categoricalScale("density-category-vertical-top", "band")
     }
   });
+  panels.set("density-vertical-top", program);
   for (const [index, side] of ["left", "both"].entries()) {
     const target = `density-horizontal-${side}`;
-    program = program.createAreaMark({
+    program = initial.createAreaMark({
       id: target, data: "analysisRows", fill: "#ddd6fe", opacity: 0.24
     }).encodeDensity({
       target,
@@ -1691,7 +1734,9 @@ function buildDerivedEncodingCoverage(factors) {
         scale: categoricalScale(`density-horizontal-category-${index}`, "band")
       }
     });
+    panels.set(target, program);
   }
+  program = panels.get("densityOwner");
   const placements = [
     { type: "baseline" },
     {
@@ -1724,6 +1769,8 @@ function buildDerivedEncodingCoverage(factors) {
       placement
     });
   }
+  panels.set("densityOwner", program);
+  program = panels.get("densityOwner-symlog");
   const verticalPlacements = [
     {
       type: "category", side: "bottom",
@@ -1755,8 +1802,9 @@ function buildDerivedEncodingCoverage(factors) {
       placement
     });
   }
+  panels.set("densityOwner-symlog", program);
   return finish(
-    program,
+    vconcat({ id: "derivedEncodingPanels", programs: [...panels].map(([id, program]) => ({ id, program })) }),
     factors.dataset,
     "Horizon, histogram, and density lifecycle coverage",
     DERIVED_ENCODING_ANALYSIS_QUESTION
@@ -1791,10 +1839,12 @@ function regressionBandStyle(curve, index) {
 
 function buildRegressionCoverage(factors) {
   const { view, program: initial } = createBase(factors.dataset, "regression");
-  let program = initial.createData({ id: "directRows", values: view.rows });
+  const base = initial.createData({ id: "directRows", values: view.rows });
+  const panels = new Map();
+  let program;
   for (const [index, curve] of CURVES.entries()) {
     const target = index === 0 ? "regressionOwner" : `regression-owner-${curve}`;
-    program = addRegressionPoint(program, target, 0.12);
+    program = addRegressionPoint(base, target, 0.12);
     program = program.createRegression({
       target,
       x: "rowOrdinal",
@@ -1807,8 +1857,9 @@ function buildRegressionCoverage(factors) {
       band: regressionBandStyle(curve, index),
       line: { strokeWidth: 2 + index % 3 * 0.25, curve }
     });
+    panels.set(target, program);
   }
-  program = addRegressionPoint(program, "regression-loess", 0.1)
+  program = addRegressionPoint(base, "regression-loess", 0.1)
     .createRegression({
       target: "regression-loess",
       x: "rowOrdinal",
@@ -1820,6 +1871,8 @@ function buildRegressionCoverage(factors) {
       line: { strokeWidth: 2.2, curve: "linear" }
     });
 
+  panels.set("regression-loess", program);
+  program = panels.get("regressionOwner");
   for (const [index, curve] of CURVES.entries()) {
     program = program.editRegression({
       target: "regressionOwner",
@@ -1858,7 +1911,8 @@ function buildRegressionCoverage(factors) {
     line: { strokeWidth: 2.1, curve: "linear" }
   });
 
-  program = program.createPointMark({
+  panels.set("regressionOwner", program);
+  program = base.createPointMark({
     id: "directComponentSource", data: "directRows", opacity: 0.08
   }).encodeX({
     target: "directComponentSource", field: "rowOrdinal", fieldType: "quantitative",
@@ -1899,9 +1953,10 @@ function buildRegressionCoverage(factors) {
     span: 0.6
   });
 
+  panels.set("directComponentSource", program);
   // The positive response is an explicit absolute-value source projection;
   // exponential and linear coefficients describe the same retained observations.
-  program = addRegressionPoint(program, "regression-exponential", 0.08)
+  program = addRegressionPoint(base, "regression-exponential", 0.08)
     .createRegression({target:"regression-exponential",method:"exp",groupBy:"group",band:false})
     .editRegression({target:"regression-exponential",method:"exp",line:{strokeWidth:2.3}})
     .createRegressionData({id:"directExponentialFit",source:"directRows",x:"rowOrdinal",y:"positiveY",groupBy:"group",method:"exp"})
@@ -1910,6 +1965,8 @@ function buildRegressionCoverage(factors) {
     .createRegressionStatisticsData({id:"directFitStatistics",source:"directLinearFit"})
     .createRegressionData({id:"directAlternateFit",source:"directRows",x:"rowOrdinal",y:"positiveX",groupBy:"group",interval:false})
     .editRegressionStatisticsData({target:"directFitStatistics",source:"directAlternateFit"});
+  panels.set("regression-exponential", program);
+  program = panels.get("directComponentSource");
   for (const [index, curve] of CURVES.entries()) {
     program = program.createRegressionBand({
       id: `direct-regression-band-${curve}`,
@@ -1986,8 +2043,9 @@ function buildRegressionCoverage(factors) {
     target: "direct-regression-band-linear",
     stroke: false
   });
+  panels.set("directComponentSource", program);
   return finish(
-    program,
+    vconcat({ id: "regressionPanels", programs: [...panels].map(([id, program]) => ({ id, program })) }),
     factors.dataset,
     "Regression model and component lifecycle coverage",
     REGRESSION_ANALYSIS_QUESTION
@@ -1995,7 +2053,9 @@ function buildRegressionCoverage(factors) {
 }
 
 function buildMiscellaneousCoverage(factors) {
-  const { view, program: initial } = createBase(factors.dataset, "temporal");
+  const { view, program: initial } = createBase(
+    factors.dataset, "temporal", "analysisRows", { derivedEncodingProjection: true }
+  );
   let program = initial;
   for (const unit of ["day", "hour", "minute", "quarter", "second"]) {
     program = program.createTimeUnitData({
@@ -2025,7 +2085,9 @@ function buildMiscellaneousCoverage(factors) {
     as: { center: "sdCenter", lower: "sdLower", upper: "sdUpper" }
   });
 
-  program = program.createBarMark({ id: "orderedBars", data: "analysisRows" })
+  const base = program;
+  const panels = [];
+  program = base.createBarMark({ id: "orderedBars", data: "analysisRows" })
     .encodeX({
       target: "orderedBars", field: "category", fieldType: "nominal",
       scale: { id: "ordered-categories", type: "band" }
@@ -2041,11 +2103,12 @@ function buildMiscellaneousCoverage(factors) {
       direction: "descending"
     });
 
+  panels.push({ id: "orderedBars", program });
   const positiveY = view.rows.map(row => row.positiveY);
   const minimumY = Math.min(...positiveY);
   const maximumY = Math.max(...positiveY);
   const binStep = (maximumY - minimumY || 1) / 3;
-  program = program
+  program = base
     .createData({ id: "bindingRows", values: view.rows })
     .createSummaryData({
       id: "directSummary",
@@ -2143,7 +2206,8 @@ function buildMiscellaneousCoverage(factors) {
       fontWeight: 700
     });
 
-  program = program
+  panels.push({ id: "bindingPoints", program });
+  program = base
     .createPiePlot({
       id: "directPie",
       data: "analysisRows",
@@ -2155,8 +2219,9 @@ function buildMiscellaneousCoverage(factors) {
       value: "positiveY",
       aggregate: "sum",
       guides: false
-    })
-    .createRosePlot({
+    });
+  panels.push({ id: "directPie", program });
+  program = base.createRosePlot({
       id: "directRose",
       data: "analysisRows",
       coordinate: "directRoseCoordinate",
@@ -2168,8 +2233,9 @@ function buildMiscellaneousCoverage(factors) {
       aggregate: "sum",
       radiusScale: { id: "directRoseRadius", zero: true },
       guides: false
-    })
-    .createRadialBarPlot({
+    });
+  panels.push({ id: "directRose", program });
+  program = base.createRadialBarPlot({
       id: "directRadialBar",
       data: "analysisRows",
       coordinate: "directRadialBarCoordinate",
@@ -2181,8 +2247,9 @@ function buildMiscellaneousCoverage(factors) {
       aggregate: "sum",
       radiusScale: { id: "directRadialBarRadius", zero: true },
       guides: false
-    })
-    .createDensityPlot({
+    });
+  panels.push({ id: "directRadialBar", program });
+  program = base.createDensityPlot({
       id: "directDensityPlot",
       data: "analysisRows",
       coordinate: "directDensityCoordinate",
@@ -2192,8 +2259,9 @@ function buildMiscellaneousCoverage(factors) {
       densityScale: { id: "directDensityEstimate", zero: true },
       color: "category",
       guides: false
-    })
-    .createHorizonPlot({
+    });
+  panels.push({ id: "directDensityPlot", program });
+  program = base.createHorizonPlot({
       id: "directHorizonPlot",
       data: "analysisRows",
       coordinate: "directHorizonCoordinate",
@@ -2205,10 +2273,11 @@ function buildMiscellaneousCoverage(factors) {
         field: "positiveY", fieldType: "quantitative",
         scale: { id: "directHorizonY", type: "linear" }
       },
-      groupBy: "group",
+      groupBy: "horizonGroup",
       guides: false
-    })
-    .createViolinPlot({
+    });
+  panels.push({ id: "directHorizonPlot", program });
+  program = base.createViolinPlot({
       id: "directViolinPlot",
       data: "analysisRows",
       coordinate: "directViolinCoordinate",
@@ -2224,9 +2293,10 @@ function buildMiscellaneousCoverage(factors) {
     })
     .editViolinPlot({ target: "directViolinPlot", density: { steps: 32 } });
 
-  program = appendHierarchicalFacadeCoverage(program);
-
-  program = program.createCoordinate({ id: "parallelCoverage", type: "parallel" })
+  panels.push({ id: "directViolinPlot", program });
+  // Temporary facade witnesses are removed by their own lifecycle. Retain
+  // their trace with the real parallel plot rather than adding an empty panel.
+  program = appendHierarchicalFacadeCoverage(base, { horizonGroup: "horizonGroup" }).createCoordinate({ id: "parallelCoverage", type: "parallel" })
     .createLineMark({ id: "parallelCoverageLines", data: "analysisRows", opacity: 0.35 })
     .encodeParallelCoordinates({
       target: "parallelCoverageLines",
@@ -2244,12 +2314,15 @@ function buildMiscellaneousCoverage(factors) {
       grid: false,
       legend: false
     });
+  panels.push({ id: "parallelCoverage", program });
   program = finish(
-    program,
+    vconcat({ id: "miscellaneousPanels", programs: panels.map(({ id, program }) => ({
+      id, program: program.fitCanvas({ padding: 8, overflow: "report" })
+    })) }),
     factors.dataset,
     "Derived data, ordering, and parallel lifecycle coverage"
   ).applyTheme({ theme: "dark" }).removeTheme();
-  return program.fitCanvas({ padding: 8, overflow: "report" });
+  return program;
 }
 
 function facetCoverageLayout(rows) {
@@ -2363,7 +2436,7 @@ function metadataFor(recipe, factors) {
       ? REGRESSION_ANALYSIS_QUESTION
       : recipe.statisticalProjection
         ? STATISTICAL_ANALYSIS_QUESTION
-        : recipe.derivedEncodingProjection
+        : recipe.family === "direct-lifecycle-derived-encoding"
           ? DERIVED_ENCODING_ANALYSIS_QUESTION
           : recipe.removalProjection
             ? REMOVAL_ANALYSIS_QUESTION
@@ -2626,6 +2699,7 @@ const MISCELLANEOUS_RECIPE = makeRecipe({
   complexity: "intermediate",
   kind: "temporal",
   build: buildMiscellaneousCoverage,
+  derivedEncodingProjection: true,
   expectedDirectActions: [
     "createTimeUnitData", "createIntervalData", "orderCategories",
     "createSummaryData", "createBinData", "createFoldData", "createComputedData",
@@ -2907,17 +2981,17 @@ const CARTESIAN_GUIDE_RECIPE = makeDelegatedGuideRecipe({
       });
     next = next.createPointMark({ id: "cartesianCoordinateWitness", data: "analysisRows" })
       .createCoordinate({
-        id: "cartesianWitness",
+        id: "main",
         type: "cartesian",
         layers: ["cartesianCoordinateWitness"]
       })
       .encodeX({
         target: "cartesianCoordinateWitness", field: "rank",
-        fieldType: "quantitative", scale: { id: "cartesian-witness-x" }
+        fieldType: "quantitative", scale: { id: "x" }
       })
       .encodeY({
         target: "cartesianCoordinateWitness", field: "value",
-        fieldType: "quantitative", scale: { id: "cartesian-witness-y" }
+        fieldType: "quantitative", scale: { id: "y" }
       })
       .removeMark({ target: "cartesianCoordinateWitness" });
     return restoreReadableCartesianGuidePresentation(next, presentation);
@@ -3167,8 +3241,8 @@ export function realisticDirectLifecycleCoverageFactors(recipe, datasets = recip
 // selection, window and regression branches for a color-only witness.
 export function realisticDirectPaletteRangeProgram(dataset) {
   const {view,program}=createBase(dataset,"temporal");
-  const prepared=program.createScatterPlot({id:"paletteObservations",data:"analysisRows",
-    x:"positiveX",y:"positiveY",guides:false});
-  const result=appendHierarchicalPaletteRangeCoverage(appendRealisticColorControls(prepared));
+  const prepared=appendHierarchicalPaletteRangeCoverage(appendRealisticColorControls(program));
+  const result=prepared.createScatterPlot({id:"paletteObservations",data:"analysisRows",
+    coordinate:"palette-observations-coordinate",x:"positiveX",y:"positiveY",guides:false});
   return {program:result,provenance:view.provenance};
 }

@@ -1,0 +1,12 @@
+{
+  "exitCode": 0,
+  "command": [
+    "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "scripts/run-tests.js",
+    "realistic",
+    "contracts/realistic-scenario-generation-isolation.test.js",
+    "contracts/realistic-scenario-generator.test.js"
+  ],
+  "finishedAt": 1793301275.385462,
+  "changedInputs": []
+}

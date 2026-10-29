@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "status": "superseded-baseline",
+  "runtimeSource": "6f524495f",
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-statistics/ggactionnewbrand/.artifacts/release/combined-ea8c49c68ac376522223d033f84daace04bd835d0cc476406c1143767c386abb.tgz",
+    "sha256": "ea8c49c68ac376522223d033f84daace04bd835d0cc476406c1143767c386abb",
+    "entryCount": 1059,
+    "packedBytes": 1509016,
+    "unpackedBytes": 6885954,
+    "sourceCommit": "6f524495f"
+  },
+  "packageInputParity": {
+    "entries": 1059,
+    "delta": []
+  },
+  "coverage": {
+    "scope": "23 changed critical owners only; not whole-source release coverage",
+    "lines": 100,
+    "branches": 98.67,
+    "functions": 100
+  },
+  "installed": {
+    "archiveSha256": "ea8c49c68ac376522223d033f84daace04bd835d0cc476406c1143767c386abb",
+    "node20": 278,
+    "node22": 278,
+    "node24": 278
+  },
+  "docs": {
+    "pages": 178,
+    "llmArtifacts": 1557
+  },
+  "pending": [
+    "realistic-scenario-generator.test.js",
+    "realistic-scenario-generation-isolation.test.js",
+    "final metadata checks and promotion to main"
+  ],
+  "logs": [
+    {
+      "id": "unit",
+      "file": "single-y-combined-owning-coverage.log.gz",
+      "sha256": "55c52654a2560daadc8193be0e0e0c457182c64b61921befaaa1fd0d847796d5",
+      "count": 6786,
+      "status": "passed"
+    },
+    {
+      "id": "contracts",
+      "file": "single-y-final-contracts.log.gz",
+      "sha256": "33398eb65326360f240c67165c7285442f41d254315e95c4f4d251cb53759ce3",
+      "count": 758,
+      "status": "passed"
+    },
+    {
+      "id": "charts",
+      "file": "single-y-final-charts.log.gz",
+      "sha256": "c771b2fd2972acfc11713bdb723c3e5dcd116ab80102745b7d0655490eedd0ae",
+      "count": 977,
+      "status": "passed"
+    },
+    {
+      "id": "docs",
+      "file": "single-y-final-docs.log.gz",
+      "sha256": "ea675093c5c8a38f0a8db3420319db6ab56ed8e4a5866fe60b1eb7aadeb556af",
+      "count": 208,
+      "status": "passed"
+    },
+    {
+      "id": "browser",
+      "file": "single-y-final-browser.log.gz",
+      "sha256": "f6ee9df35fd9241b4b6263d6e8f53dc2d4add54a2d82aa961ecc6b876ff4f99b",
+      "count": 31,
+      "status": "passed"
+    },
+    {
+      "id": "lifecycle-repair",
+      "file": "single-y-final-lifecycle-owning-repair.log.gz",
+      "sha256": "aea27a5f5db3edf0c97d6f93f36698b5073303341c4fe61ee25e07427bf1b351",
+      "count": 3,
+      "status": "passed"
+    },
+    {
+      "id": "factor-repair",
+      "file": "single-y-final-factor-owning-repair.log.gz",
+      "sha256": "5e7c64e2e02b1480cb0672b5c563c77da8e4292e63b966f98291119032b8d2d4",
+      "count": 3,
+      "status": "passed"
+    },
+    {
+      "id": "option-inventory-repair",
+      "file": "single-y-final-option-owning-repair-2.log.gz",
+      "sha256": "9326d768263abe9e0096f90cc4d613a464158c5136e55c8173f0c377617a2471",
+      "count": 7,
+      "status": "passed"
+    },
+    {
+      "id": "guide-repair",
+      "file": "single-y-final-guide-owning-repair-3.log.gz",
+      "sha256": "120c5be25eca5acfa15106839e86dc3a15f17e31e73935047b79c354c9abeb31",
+      "count": 19,
+      "status": "passed"
+    },
+    {
+      "id": "direct-guide-repair",
+      "file": "single-y-direct-guide-owning-repair.log.gz",
+      "sha256": "26029c97a33644541e3888d364124c037805582cc3e54298980f4b72ed04f7da",
+      "count": 1,
+      "status": "passed"
+    },
+    {
+      "file": "single-y-final-docs-environment.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-final-docs-build.log.gz",
+      "sha256": "f05ea5afb974d8afd9d8992f6db2515254d8468e14775137712a1d4c72b0965f",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-final-docs-built.log.gz",
+      "sha256": "4d0fe3b2eb5f793766581d3365a759332b30466b3fbfdbae202c0a391df9f6f8",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-final-docs-browser.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "status": "passed"
+    },
+    {
+      "file": "combined-final-installed-20-repaired.log.gz",
+      "sha256": "3382bbc04575caacb6f7d8e596c9be92c1150579a22ca0c62e7b4e73f6c9800e",
+      "status": "passed"
+    },
+    {
+      "file": "combined-final-installed-22.log.gz",
+      "sha256": "c45774bc4675cd3a9b8f9a9efd7acef1faf82d61d519ac8b029378c2b8bd91ac",
+      "status": "passed"
+    },
+    {
+      "file": "combined-final-installed-24.log.gz",
+      "sha256": "ed1b646efc353787805e27448af0ec1ef05f403a3d2a6300c9b2d3203c8fb8b4",
+      "status": "passed"
+    }
+  ],
+  "supersededBy": "../../common-corpus-repair-evidence/status.json"
+}

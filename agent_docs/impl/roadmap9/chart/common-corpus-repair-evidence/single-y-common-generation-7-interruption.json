@@ -1,0 +1,12 @@
+{
+  "status": "interrupted-after-reproduced-invalid-feature-claim",
+  "root": 87877,
+  "pids": [
+    87877,
+    87884,
+    87886
+  ],
+  "time": 1793299909.7082188,
+  "cause": "Composed lifecycle repair adds compose observations; static claims omitted that observed feature. No runtime/source change.",
+  "logSha256": "e18f7e77e21cb0ff20144f356f28dc0181896d2f2e7e4af04c66e3817ecbd3ab"
+}

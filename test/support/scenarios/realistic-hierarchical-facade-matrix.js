@@ -1807,13 +1807,15 @@ function appendArea(program, index) {
 function appendDensity(program, index) {
   const suffix = `matrix-density-${index}`;
   const grouped = index !== 0;
+  const automaticBandwidth = index % 2 === 0 && (!grouped ||
+    everyGroupVaries(program, "analysisRows", "group", "positiveY"));
   const options = {
     id: suffix,
     data: "analysisRows",
     coordinate: `${suffix}-coordinate`,
     field: "positiveY",
     groupBy: grouped ? "group" : false,
-    bandwidth: index % 2 === 0 ? "auto" : 0.8,
+    bandwidth: automaticBandwidth ? "auto" : 0.8,
     extent: index % 3 === 0
       ? "auto"
       : [POSITION_TYPES[index % POSITION_TYPES.length] === "log" ? 1 : 0, 1000000],
@@ -1857,7 +1859,7 @@ function appendDensity(program, index) {
   return removeWitness(program.createDensityPlot(currentFacadeOptionWitnesses(options,{action:"createDensityPlot",index,program:program})), suffix);
 }
 
-function appendHorizon(program, index) {
+function appendHorizon(program, index, horizonGroup = "group") {
   const suffix = `matrix-horizon-${index}`;
   const temporalUnit = TEMPORAL_UNITS[index % 3];
   const bands = 2 + index % 3;
@@ -1878,7 +1880,7 @@ function appendHorizon(program, index) {
       field: "positiveY", fieldType: "quantitative",
       scale: numericScale(`${suffix}-y`, index, { horizon: true })
     },
-    groupBy: index % 5 === 0 ? false : "group",
+    groupBy: index % 5 === 0 ? false : horizonGroup,
     bands,
     baseline,
     extent: index % 3 === 0
@@ -1977,13 +1979,15 @@ function appendRadial(program, action, index) {
   return removeWitness(program[action](currentFacadeOptionWitnesses(options,{action,index,program})), suffix);
 }
 
-export function appendHierarchicalFacadeCoverage(program) {
+export function appendHierarchicalFacadeCoverage(program, { horizonGroup = "group" } = {}) {
   let next = appendRealisticColorControls(program);
   for (let index = 0; index < REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT; index += 1) {
     const steps = hierarchicalSteps();
     for (const [action, append] of steps) {
       try {
-        next = append(next, index);
+        next = action === "createHorizonPlot"
+          ? append(next, index, horizonGroup)
+          : append(next, index);
       } catch (error) {
         error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
         throw error;

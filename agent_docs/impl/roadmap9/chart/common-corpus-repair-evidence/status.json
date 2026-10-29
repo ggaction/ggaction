@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "status": "common-corpus-verified-awaiting-promotion",
+  "runtimeSource": "e56b8e4c16afe328947bd9840f3412a014874c98",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "qualificationSubject": "The qualified runtime plus the exact test-only fixture input hashes below. This is not Roadmap9 completion.",
+  "tests": {
+    "generatorAndIsolation": 24,
+    "strictDescriptorLimits": [
+      216,
+      360
+    ],
+    "dataColorContracts": 3,
+    "computedStatisticsColorBuilds": 100,
+    "paletteBuilds": 235,
+    "paletteRequiredPaths": 184,
+    "lifecycleFactorContracts": 3,
+    "lifecycleFamilies": 31,
+    "datasetsPerLifecycleFamily": 3,
+    "independentPanelContracts": 16,
+    "panelDatasetBuilds": 15,
+    "paletteOrderContract": 1,
+    "encodingOwningContracts": 4
+  },
+  "runtimeEvidence": "../conditional-domain-evidence/status.json",
+  "installed": {
+    "sameArchiveSha256": "3bb1d1e85d6e29a65f81b70760fc2dff2cf6a52335cbaa90b9a7afc16e35058d",
+    "node20RuntimeCases": 278,
+    "node22RuntimeCases": 278,
+    "node24RuntimeCases": 278,
+    "packedInputs": 1059,
+    "currentInputDelta": []
+  },
+  "isolation": {
+    "childHeapMiB": 224,
+    "maximumChildRssBytes": 295370752,
+    "maximumCombinedRssBytes": 380682240,
+    "referenceMaximumRssBytes": 381632512,
+    "childAndReferenceLimitMiB": 448,
+    "combinedLimitMiB": 512,
+    "inputChangesDuringSuccessfulRun": []
+  },
+  "inputSha256": {
+    "scripts/consumers/fixtures/node/guides.mjs": "3e2a102a1d6279a31ae2af2461f0677e010a41d56e7fdbe94f02100af8e56baa",
+    "test/contracts/generated-lifecycle-scenarios.test.js": "1ea63067de7ce0e8e1181d7053d625ef7329c7a271150b955c0426c2c5fa4f40",
+    "test/contracts/generated-scenario-feature-coverage.test.js": "d32cab3d3cdf33ff18def9416add06aa5c1d3e84ff51d3c6a03308ab18d5b38d",
+    "test/contracts/realistic-axis-facet-owner-witness.test.js": "e287191255e68ff9d2cb5d54ae2f334a0ac27fd343e57b2d6b8be2d64fe1f254",
+    "test/contracts/realistic-data-color-contracts.test.js": "8847b89279a6cd4d27a935b03d4898595cf26c4c4a97253697414b584afd1056",
+    "test/contracts/realistic-direct-lifecycle-coverage-recipes.test.js": "4bc33771efcaea50f75c57f5af67127024b6e14df04fd04c91a8e41a03b7594a",
+    "test/contracts/realistic-lifecycle-factor-effects.test.js": "9027acdcdf1641b7bd687880fb5dd3e769cb3931a096ed8ae3cafd1af7d105ee",
+    "test/support/scenarios/cartesian-axis-owner-witness.js": "6a65a0d113447407746b0abfd5c0dcd8a86789029766c8a066b0889efc600ad4",
+    "test/support/scenarios/lifecycle-recipes.js": "7a7fa85372afe1b8c69361f46d4ddba2296ed725de1f58476d630c30e344dc3e",
+    "test/support/scenarios/realistic-color-controls.js": "9316b8187422d1688f8ab5592016e92a8e05967b731209f43d3ac7866e357b68",
+    "test/support/scenarios/realistic-direct-lifecycle-coverage-recipes.js": "d5261daddf8678d2a173b0c85dd2e59a06dc4c69bc5c834a48ee2edd00bccfa9",
+    "test/support/scenarios/realistic-encoding-coverage-recipes.js": "b879a1af4ab995c249d85faa14817686fafd9b6b769378d6acf3ea49e5032713",
+    "test/support/scenarios/realistic-guide-scale-recipes.js": "a4d32bcf34092e1385eb8423995bb2ca2600a7d9365ab6c519bad967eecc0afe",
+    "test/support/scenarios/realistic-hierarchical-facade-matrix.js": "594c037d7db971d439b6c1184549ff394163449676df70827270aa7460d94567",
+    "test/support/scenarios/realistic-legend-combination-lifecycle.js": "9c88b231c3a80ebc59c61af87c8f14a68f8632217371dd9a47dc217173330d7e",
+    "test/support/scenarios/realistic-resource-palette.js": "70f8c888990b9345f4fd84583b4579781bdc2294cb1be7215540f60037d5ef6f"
+  },
+  "logs": [
+    {
+      "file": "single-y-common-generation-8.log.gz",
+      "sha256": "3b646d54b5c518fcbbf3fd54efa530c0632e3e1974a7e5625dedb7bc3e11babe",
+      "uncompressedBytes": 8999
+    },
+    {
+      "file": "single-y-data-color-owning-final-3.log.gz",
+      "sha256": "f88d5068ae0bf852cdcf3c4bb4966ca3816926ee189b4f4f96bc1f66b47f536b",
+      "uncompressedBytes": 1780
+    },
+    {
+      "file": "single-y-lifecycle-feature-claims-owning-3.log.gz",
+      "sha256": "903927fe5b8a18ea2a8443595a6e700cdb9b500555613d5e7b6dd8b15f1c5797",
+      "uncompressedBytes": 783
+    },
+    {
+      "file": "single-y-independent-panels-final.log.gz",
+      "sha256": "a4e2173c9eaa0588ded358c208aebbd72db514c74bdccb017511ad26cd806ca6",
+      "uncompressedBytes": 3597
+    },
+    {
+      "file": "single-y-final-generation-owning-repair-5.log.gz",
+      "sha256": "b86bbc81cbb6caeb728a590e2bb8ee6e8b21fbb88d7b0c9b28339240e8dfb355",
+      "uncompressedBytes": 26479
+    },
+    {
+      "file": "single-y-common-generation-7.log.gz",
+      "sha256": "d6a2714cc61ed456fe1420d9679211cc1979046482d178691db434da12df2f1c",
+      "uncompressedBytes": 17782
+    },
+    {
+      "file": "single-y-common-generation-6.log.gz",
+      "sha256": "7b83b0e153417c37e0d2dad4b7d721f82ede2c11826068a5d51a6ea36b957b89",
+      "uncompressedBytes": 46713
+    },
+    {
+      "file": "single-y-data-color-owning-final.log.gz",
+      "sha256": "4d679c2a5f94eb814198cb8ffc648590c54ad97c898fa9cd39cb49c6af759759",
+      "uncompressedBytes": 2297
+    },
+    {
+      "file": "single-y-palette-owning-final-2.log.gz",
+      "sha256": "a692f401a50cda9c2c74bb80d829298de21907d9529f77bc8b1c116220f2df00",
+      "uncompressedBytes": 2862
+    },
+    {
+      "file": "single-y-resource-palette-preflight-final.log.gz",
+      "sha256": "fdd798007a8265415255382455170639bc1b622dd28d99d2ac3a2195c1111dae",
+      "uncompressedBytes": 206
+    }
+  ],
+  "preservedFailures": [
+    "Generation repair5 passed the four encoding cases but failed old mixed-Y builders.",
+    "Generation6 omitted the cache environment; failed without runtime/input changes.",
+    "Generation7 exposed missing compose feature declarations and was stopped after reproduction.",
+    "Earlier palette tests exposed a shallow composition dataset lookup and missing third fallback palette; repaired without removing any requirement."
+  ],
+  "remaining": [
+    "Promotion to main and later native, Geo, interaction and animation integration.",
+    "Full release coverage, all native qualification and STEP077 remain separate obligations."
+  ]
+}

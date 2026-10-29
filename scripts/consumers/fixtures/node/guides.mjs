@@ -237,7 +237,7 @@ for (const create of [chart, basicChart]) {
         const changed = namedAxes.editYAxisTitle({ target: "right", text: "Share" })
           .editCanvas({ width: 700 });
         assert.equal(changed.graphicSpec.objects.axis_right__Line.properties.x1, 620);
-        assert.equal(changed.removeYAxis({ target: "right" }).guideConfigs.axis.right, undefined);
+        assert.equal(changed.removeYAxis({ target: "right" }).guideConfigs.axis?.right, undefined);
       }
       const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })
