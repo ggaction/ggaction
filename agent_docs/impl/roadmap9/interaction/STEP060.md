@@ -351,3 +351,7 @@ realistic16, canonical browser1, partition renderer1을 통과했다. Native ren
 올림했다. Interaction112,019gzip에112,100, search988,257bytes에988,300을 적용했다.
 최초 Node20 bundle 초과와 docs49/50을 보존하고, 보정 뒤 세 Node 전체 명령·owning search1 및
 source docs50을 확인했다. Built170pages/1458LLM·네 폭Axe0와 모바일 실제 화면을 확인했다.
+
+E1 source `e1924a6de` push 후 provenance→machine→LLM을 고정하고 source docs50 및
+built170pages/1458LLM을 통과했다. Runtime/타입·archive `440fe2ae`는 불변이며
+source revision 표기만 바뀌어 앞선 네 폭Axe0·화면 증거를 재사용한다.

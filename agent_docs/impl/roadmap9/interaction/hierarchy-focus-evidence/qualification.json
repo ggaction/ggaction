@@ -1,6 +1,6 @@
 {
   "baseCommit": "5942f4b25682eced4de43d17aabe79ced76cf8a3",
-  "sourceCommit": null,
+  "sourceCommit": "e1924a6debf4c8780472cf588af51e656b2fdfac",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "STEP060 E1 explicit partition focus command through the existing native editor, host buttons and breadcrumbs; no new layout, persistence schema or renderer",
   "sourceHashes": {
@@ -46,7 +46,14 @@
         768,
         1440
       ],
-      "axeViolations": 0
+      "axeViolations": 0,
+      "sourcePinnedPassed": 50,
+      "sourcePinnedBuilt": {
+        "pages": 170,
+        "llmArtifacts": 1458,
+        "runtimeAndArchiveUnchanged": true,
+        "responsiveEvidenceReused": "Only source revision provenance changed; the same four-width page/layout evidence is retained."
+      }
     },
     "installed": [
       {
@@ -392,6 +399,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "db42340256d6e777e8ed4eebd63b153e31997668cd74b53f0bacc81031cfa6f3"
+    },
+    {
+      "path": "hierarchy-focus-source-pin.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-docs.log.gz",
+      "sha256": "ef55db1bcce62d37ff234fa3b2ecbbf05327e89674d8bd1e0dc0f160928488b6"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-build.log.gz",
+      "sha256": "9300f3ce59af17535383ec0926cf4ee72605aa58ae94d3d1eeae9c04f2c6b1df"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
     }
   ]
 }
