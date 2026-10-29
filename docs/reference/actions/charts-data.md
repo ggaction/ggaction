@@ -5616,6 +5616,77 @@ Revise join inputs or key paths and refresh all dependent projections and geogra
 See [Geometry and projections](../../api/geometry.md#editgeojoindata).
 
 
+## `createGeoLODData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeoLODDataOptions`](./../types.md#type-creategeoloddataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `levels` | Required | `GeoLODLevels` |
+| `zoom` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoLODData({ id, levels, zoom? })
+```
+
+Create detail levels with explicit typed parent correspondence, shared topology simplification and hysteresis.
+See [Geometry and projections](../../api/geometry.md#creategeoloddata).
+
+
+## `editGeoLODData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoLODDataOptions`](./../types.md#type-editgeoloddataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `levels` | Optional / branch-dependent | `GeoLODLevels \| undefined` |
+| `zoom` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoLODData({ target?, levels?, zoom? })
+```
+
+Update detail intent and all geographic consumers while retaining original logical selection keys.
+See [Geometry and projections](../../api/geometry.md#editgeoloddata).
+
+
 ## `createProjection`
 
 **API layer:** user-facing. **Authoring roles:** H2.

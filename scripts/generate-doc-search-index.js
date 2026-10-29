@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1012000; // Typed geographic join documentation: 1011268 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1015000; // Geographic detail-level documentation: 1014928 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

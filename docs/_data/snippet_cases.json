@@ -442,5 +442,16 @@
     "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
     "rendering": "authoring-only",
     "resultKind": "semantic"
+  },
+  {
+    "id": "geographic-detail-levels",
+    "file": "api/geometry.md",
+    "contains": "const feature = (id, x)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
   }
 ]

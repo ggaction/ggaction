@@ -548,3 +548,5 @@ import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js"
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
+
+export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataOptions, EditGeoLODDataOptions, GeoLODResource } from "./program.js";

@@ -69,6 +69,8 @@ interface ChartProgramActions {
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+  createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+  editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -2843,6 +2845,16 @@ export interface CreateGeoJoinDataOptions extends GeoJoinKeyOptions {
 
 Related types: [`GeoJoinKeyOptions`](../../../reference/types/#type-geojoinkeyoptions).
 
+### `CreateGeoLODDataOptions` {#type-creategeoloddataoptions}
+
+ Expand CreateGeoLODDataOptions
+
+```typescript
+export interface CreateGeoLODDataOptions { readonly id: string; readonly levels: GeoLODLevels; readonly zoom?: number; }
+```
+
+Related types: [`GeoLODLevels`](../../../reference/types/#type-geolodlevels).
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -5468,6 +5480,16 @@ export interface EditGeoJoinDataOptions extends Partial<GeoJoinKeyOptions> {
 
 Related types: [`GeoJoinKeyOptions`](../../../reference/types/#type-geojoinkeyoptions).
 
+### `EditGeoLODDataOptions` {#type-editgeoloddataoptions}
+
+ Expand EditGeoLODDataOptions
+
+```typescript
+export interface EditGeoLODDataOptions { readonly target?: string; readonly levels?: GeoLODLevels; readonly zoom?: number; }
+```
+
+Related types: [`GeoLODLevels`](../../../reference/types/#type-geolodlevels).
+
 ### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
 
  Expand EditGeoLineMarkOptions
@@ -7449,6 +7471,43 @@ export interface GeoJoinKeyOptions {
 ```
 
 Related types: [`GeometryFeatureKey`](../../../reference/types/#type-geometryfeaturekey).
+
+### `GeoLODBaseLevel` {#type-geolodbaselevel}
+
+ Expand GeoLODBaseLevel
+
+```typescript
+export interface GeoLODBaseLevel {
+  readonly id: string;
+  /** Explicit geometry source or join with a stable featureKey; nested LOD is rejected. */
+  readonly geometry: string;
+  /** Maximum deviation in planar units or geographic degrees; positive values require shared topology. */
+  readonly tolerance?: number;
+}
+```
+
+### `GeoLODChildLevel` {#type-geolodchildlevel}
+
+ Expand GeoLODChildLevel
+
+```typescript
+export interface GeoLODChildLevel extends GeoLODBaseLevel {
+  readonly parents: readonly { readonly key: RowKey; readonly parent: RowKey }[];
+  readonly enterZoom: number; readonly exitZoom: number;
+}
+```
+
+Related types: [`GeoLODBaseLevel`](../../../reference/types/#type-geolodbaselevel) · [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GeoLODLevels` {#type-geolodlevels}
+
+ Expand GeoLODLevels
+
+```typescript
+export type GeoLODLevels = readonly [GeoLODBaseLevel, ...GeoLODChildLevel[]];
+```
+
+Related types: [`GeoLODBaseLevel`](../../../reference/types/#type-geolodbaselevel) · [`GeoLODChildLevel`](../../../reference/types/#type-geolodchildlevel).
 
 ### `GeoLineMarkOptions` {#type-geolinemarkoptions}
 

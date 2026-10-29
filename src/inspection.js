@@ -734,6 +734,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
     }).filter(Boolean);
     const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
+      ...(item.representationKeys === undefined ? {} : { representationKeys: item.representationKeys.map(scopedKey) }),
       ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }),
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
       appearance:item.graphicIds.flatMap((graphicId, index) => { const graphic = graphics.get(graphicId); return graphic ? markAppearance(appearance, findLayer(view, item.layer), item, graphic, resourceRef("mark", item.layer, path), scopedKey(item.key), String(index)) : []; }),

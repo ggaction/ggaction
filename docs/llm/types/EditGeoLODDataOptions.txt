@@ -1,0 +1,1 @@
+export interface EditGeoLODDataOptions { readonly target?: string; readonly levels?: GeoLODLevels; readonly zoom?: number; }

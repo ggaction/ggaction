@@ -2151,6 +2151,39 @@ export interface GeoJoinResource {
   };
   readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
 }
+export interface GeoLODBaseLevel {
+  readonly id: string;
+  /** Explicit geometry source or join with a stable featureKey; nested LOD is rejected. */
+  readonly geometry: string;
+  /** Maximum deviation in planar units or geographic degrees; positive values require shared topology. */
+  readonly tolerance?: number;
+}
+export interface GeoLODChildLevel extends GeoLODBaseLevel {
+  readonly parents: readonly { readonly key: RowKey; readonly parent: RowKey }[];
+  readonly enterZoom: number; readonly exitZoom: number;
+}
+export type GeoLODLevels = readonly [GeoLODBaseLevel, ...GeoLODChildLevel[]];
+export interface CreateGeoLODDataOptions { readonly id: string; readonly levels: GeoLODLevels; readonly zoom?: number; }
+export interface EditGeoLODDataOptions { readonly target?: string; readonly levels?: GeoLODLevels; readonly zoom?: number; }
+export interface GeoLODResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: { readonly method: "geo-lod"; readonly zoom: number; readonly activeLevel: string;
+    readonly levels: readonly ({ readonly id: string; readonly input: number; readonly tolerance: number;
+      readonly parents?: GeoLODChildLevel["parents"]; readonly enterZoom?: number; readonly exitZoom?: number })[] };
+  readonly result: {
+    readonly features: GeometrySourceResource["result"]["features"];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly topology?: GeometrySourceResource["result"]["topology"];
+    readonly coordinateKind: "planar" | "geographic";
+    readonly mapping: readonly { readonly level: string; readonly regions: readonly { readonly key: string; readonly representations: readonly string[] }[] }[];
+    readonly diagnostics: { readonly levelCount: number; readonly featureCount: number;
+      readonly simplification: null | { readonly inputPoints: number; readonly outputPoints: number; readonly maxDeviation: number;
+        readonly seamArcCount: number; readonly retainedForTopology: null | "ring-collapse" | "ring-winding" | "crossing" | "ring-containment"; readonly work: number } };
+  };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly [] };
+}
 export interface ProjectionPlaneParameters {
   readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
   readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
@@ -2497,7 +2530,7 @@ export interface SemanticGeoCoordinate {
 export type SemanticCoordinate = SemanticNativeCoordinate | SemanticGeoCoordinate;
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6596,6 +6629,8 @@ export class ChartProgram {
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
 
   /** Join geographic features to a materialized table without changing feature identity or source properties. */
+  createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+  editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   /** Edit join inputs or keys and refresh every dependent projection and mark atomically. */
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;

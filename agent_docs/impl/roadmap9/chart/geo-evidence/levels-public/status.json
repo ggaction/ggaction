@@ -1,0 +1,431 @@
+{
+  "scope": "Public geographic detail-level resources, explicit representation selection and shared-topology consumers; semantic annotation and camera remain follow-up work",
+  "base": "7b7170f86",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "resourceLifecycle": {
+      "tests": 10,
+      "pass": 10
+    },
+    "broadGeoAndSelection": {
+      "tests": 55,
+      "pass": 55
+    },
+    "newOwnerCoverage": {
+      "tests": 34,
+      "pass": 34,
+      "lines": 100,
+      "branches": 96.25,
+      "functions": 100
+    },
+    "selectionOwnerCoverage": {
+      "tests": 61,
+      "pass": 61,
+      "lines": 97.49,
+      "branches": 95.43,
+      "functions": 100
+    },
+    "typesAndBoundaries": {
+      "tests": 12,
+      "pass": 12
+    },
+    "finalPackageTypesSourceContracts": {
+      "tests": 25,
+      "pass": 25
+    },
+    "actionCardsAndDiscovery": {
+      "tests": 28,
+      "pass": 28
+    },
+    "actualData": {
+      "tests": 16,
+      "pass": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3
+    },
+    "directLifecycle": {
+      "tests": 3,
+      "pass": 3
+    },
+    "inventory": {
+      "initial": {
+        "tests": 10,
+        "pass": 9,
+        "failure": "Redacted-array expected count was 10593; actual canonical inventory has 10629."
+      },
+      "repair": {
+        "tests": 7,
+        "pass": 7
+      }
+    },
+    "sourceDocs": {
+      "initial": {
+        "tests": 198,
+        "pass": 196,
+        "failures": "Two bounded search-size assertions; measured 1014928 bytes."
+      },
+      "repair": {
+        "tests": 31,
+        "pass": 31,
+        "searchCeiling": 1015000
+      }
+    },
+    "builtDocs": {
+      "pages": 172,
+      "selectiveArtifacts": 1519,
+      "browser": "passed desktop search/accessibility and all pages at 320/390/768px"
+    }
+  },
+  "package": {
+    "sha256": "5b01080fd0c44ed5ee41d27b8f0824e0229bc6877e45ae41aa0e814058930268",
+    "entries": 1026,
+    "packedBytes": 1460317,
+    "unpackedBytes": 6659038,
+    "limits": {
+      "entries": 1026,
+      "packedBytes": 1464000,
+      "unpackedBytes": 6660000
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "5b01080fd0c44ed5ee41d27b8f0824e0229bc6877e45ae41aa0e814058930268",
+        "cases": [
+          {
+            "id": "geographic-levels/hysteresis-selection-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/four-renderer-current-level-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 944,
+            "minifiedBytes": 2515195,
+            "gzipBytes": 720817
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 553,
+            "minifiedBytes": 1305287,
+            "gzipBytes": 380965
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 109153
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        },
+        "types": "strict Full/Basic geographic level consumer passed",
+        "snippets": [
+          "geographic-detail-levels"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "5b01080fd0c44ed5ee41d27b8f0824e0229bc6877e45ae41aa0e814058930268",
+        "cases": [
+          {
+            "id": "geographic-levels/hysteresis-selection-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/four-renderer-current-level-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 944,
+            "minifiedBytes": 2515195,
+            "gzipBytes": 719162
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 553,
+            "minifiedBytes": 1305287,
+            "gzipBytes": 380141
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 108524
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        },
+        "types": "strict Full/Basic geographic level consumer passed",
+        "snippets": [
+          "geographic-detail-levels"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "5b01080fd0c44ed5ee41d27b8f0824e0229bc6877e45ae41aa0e814058930268",
+        "cases": [
+          {
+            "id": "geographic-levels/hysteresis-selection-and-atomicity",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/offline-fresh-process",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-levels/four-renderer-current-level-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 944,
+            "minifiedBytes": 2515195,
+            "gzipBytes": 720817
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 553,
+            "minifiedBytes": 1305287,
+            "gzipBytes": 380965
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335388,
+            "gzipBytes": 109153
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        },
+        "types": "strict Full/Basic geographic level consumer passed",
+        "snippets": [
+          "geographic-detail-levels"
+        ]
+      }
+    ]
+  },
+  "initialFailures": [
+    "A new highlight test combined id with named selection; corrected the fixture without runtime changes.",
+    "A new error test expected resource-limit wording instead of the existing RangeError contract; corrected the assertion.",
+    "Test discovery expected 47 realistic files before the new 48th file.",
+    "The first local package helper used a relative destination; corrected it to an absolute path before any installed runtime ran.",
+    "Documentation preflight initially used the system Ruby 2.6; rerun with the documented Ruby 3.2 toolchain passed."
+  ],
+  "limitations": [
+    "No claim of a fresh complete normal/coverage corpus run; this checkpoint uses affected owner checks and prior unchanged baselines.",
+    "Session availability reconciliation remains a coordinated interaction follow-up; original logical keys and current hit keys remain distinct.",
+    "Semantic feature/geographic annotation anchors, field encodings, labels/guides and native camera commands remain in STEP045/046.",
+    "Three shared realistic generation suites will run once in the parent final integration."
+  ],
+  "manifest": [
+    {
+      "file": "public-resource-1.log.gz",
+      "sha256": "ecd25a8685429a6b7f96eba5da77228efd29d5cb8f395a79a2cbd107d674158b"
+    },
+    {
+      "file": "public-resource-3.log.gz",
+      "sha256": "e8584c553519afd9d2bb1afd0dcfca3a34020270a8957241e37eb4b1e43c226c"
+    },
+    {
+      "file": "public-resource-4.log.gz",
+      "sha256": "0646b0f9f1dfd6281504bae8dbddd86f787d60434ad0c8c8a6454a3dc513f619"
+    },
+    {
+      "file": "public-resource-5.log.gz",
+      "sha256": "4782c47dc3dfbb3f9b0bc1ebdf812702d26a38400403611812f3c14e9d6db6e1"
+    },
+    {
+      "file": "public-types-boundaries-1.log.gz",
+      "sha256": "4cce674388ef3b8775c32cc136ac9670081603c2effd72fdd593fc3f6e39f3ae"
+    },
+    {
+      "file": "public-owner-coverage-1.log.gz",
+      "sha256": "46b67a89a515eaabcedd05f8bbcb9b9cdbb63a9c8561c2e5ef82fe83aeec5541"
+    },
+    {
+      "file": "selection-coverage.log.gz",
+      "sha256": "6e12d0c80a6f167168e9ba3b86b9c7f2e16609d53639b42aa696b09cce9297f9"
+    },
+    {
+      "file": "selection-coverage-2.log.gz",
+      "sha256": "2f84f53cd8b058168ee1f324adf7fd67e6301586663696866514886f4ddb3d3b"
+    },
+    {
+      "file": "selection-coverage-3.log.gz",
+      "sha256": "7e5f6ea1f0b28c22ede4175ea9ea4e7e3a51993940ca47ac509a6dc59e779699"
+    },
+    {
+      "file": "realistic.log.gz",
+      "sha256": "d9efa41ece9e067c44e9088432aaede8208a3f700a2f4132775224b419fd9aa5"
+    },
+    {
+      "file": "inventory-check.log.gz",
+      "sha256": "641ff0b39aa4b499b93f4ed41d55b6407634106f3d1e754166e81a6328697b43"
+    },
+    {
+      "file": "inventory-repair.log.gz",
+      "sha256": "ef1e99410910ea1464c22c8453669b6e75fcf4673e021befc34671699ef2cfd8"
+    },
+    {
+      "file": "inventory-repair.receipt.json.gz",
+      "sha256": "2d3ff80689d3dcc0f52da9ac305eae5c170c23d7d713b1aa22443a8f8ab86acf"
+    },
+    {
+      "file": "public-contracts-3.log.gz",
+      "sha256": "a38033c6b3504fa4323b520e6ac7213d2e40276469aa4f8539f7085b1b3dcc10"
+    },
+    {
+      "file": "public-contracts-4.log.gz",
+      "sha256": "623276393fdd1374ca1416104f0efaecd41249a6a48d4c85987df6c067fb8cf9"
+    },
+    {
+      "file": "final-contracts.log.gz",
+      "sha256": "6297228cc48a13e32521dca7a97da1594ecea87318b3a45b8359d57048246135"
+    },
+    {
+      "file": "docs-source-1.log.gz",
+      "sha256": "55568d6ab5ac39bbc927a40be242cbcfb2e080a4137269ef0b691583f298c135"
+    },
+    {
+      "file": "docs-source-1.receipt.json.gz",
+      "sha256": "1cf670ca446267c8f4a34f87e8de9b2debf053904bba3d593f37d83df1ab6e6d"
+    },
+    {
+      "file": "docs-repair-1.log.gz",
+      "sha256": "99c257c27f08c403bbe4ebecb3326aa65137307e11316a51e8bb3b35deecf4ce"
+    },
+    {
+      "file": "docs-build-1.log.gz",
+      "sha256": "f49d4c6c17e1b95b1020207c1a0c8d2b240da8a1b882c77306d5b89ad3b780ce"
+    },
+    {
+      "file": "docs-built-1.log.gz",
+      "sha256": "80de0fefcf12cb035d7e7453ee59b0af49330cd3ea3b127b576da715997aa219"
+    },
+    {
+      "file": "docs-built-2.log.gz",
+      "sha256": "db51890f3bec0202d97eb6049dc98beb9cdd7de973d687ebda0d754b719e91a0"
+    },
+    {
+      "file": "docs-environment.log.gz",
+      "sha256": "510bfb2cfccdd19e650689056551124f9a87079a5296ae8bc2368a004149e551"
+    },
+    {
+      "file": "docs-environment-2.log.gz",
+      "sha256": "8560848710109182ec1c1d542e2f46b22ebb0163aa4479ac03b640d78bb9eaf3"
+    },
+    {
+      "file": "installed-20-initial-harness.log.gz",
+      "sha256": "57b94b0cfd0f02ea72ac3759a0990122f6061b1380ba858b97f7d56770fddec6"
+    },
+    {
+      "file": "source-bundles-20.json.gz",
+      "sha256": "9db8e81e89cc572e664a7af7b614dbb799dbb637da94c40096ae0691fc860b25"
+    },
+    {
+      "file": "installed-20.json.gz",
+      "sha256": "bee24c27980cca219bf6b0afa3fc60e5ed4b5da844ba4fabd4620c914e14ef36"
+    },
+    {
+      "file": "installed-20.exit.json.gz",
+      "sha256": "bf4319ef9a3f7652b479cc4812da1074cc87c813c1a0803750773cb4c0f1e4d3"
+    },
+    {
+      "file": "package-size-20.json.gz",
+      "sha256": "0296127917f3398e5022d93c2faaa53a529d245b998cd29a3371231161f9c1b3"
+    },
+    {
+      "file": "installed-22.json.gz",
+      "sha256": "b7900b0907b8ed977a2dbd76e1d6541fe979f15b2550956a7ee286350b2581ef"
+    },
+    {
+      "file": "installed-22.exit.json.gz",
+      "sha256": "bd275e2ca55ff1b456432e930e19d1b2603835163f8e86d7769b27fb834b9a79"
+    },
+    {
+      "file": "package-size-22.json.gz",
+      "sha256": "20e3a50df895c2d5c046bc0523605d788aca23e11848349170e636c57ddd62ee"
+    },
+    {
+      "file": "installed-24.json.gz",
+      "sha256": "fd8fdba590eed7bb5907c1632f988db54077436cb191ce056562f7965d8f3ce3"
+    },
+    {
+      "file": "installed-24.exit.json.gz",
+      "sha256": "41db1bac82579f0543120d1c5463c1644de4ae6916a11d360f1ca7150a251a72"
+    },
+    {
+      "file": "package-size-24.json.gz",
+      "sha256": "b6fb0cbd121098211d480be1108c1f5052ebbeb0ae93077e3939f161d2cdeea9"
+    },
+    {
+      "file": "docs-browser-2.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85"
+    }
+  ]
+}

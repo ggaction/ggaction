@@ -2033,6 +2033,18 @@
   {
     "file": "api/geometry.md",
     "block": 3,
+    "heading": "`createGeoLODData`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
+    "sha256": "3cf7ba078a9d4f1b6d10470039f9ee6edb103380d46602d68eede6249b775e75",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 4,
     "heading": "`createProjection`",
     "mode": "complete",
     "environment": "node-esm",
@@ -2044,7 +2056,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 4,
+    "block": 5,
     "heading": "Draw through a Geo coordinate",
     "mode": "complete",
     "environment": "node-esm",

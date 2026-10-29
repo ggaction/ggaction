@@ -76,6 +76,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFontResource`](./actions/charts-data.md#createfontresource) | H3 | user-facing | core |
 | [`createGeoJoinData`](./actions/charts-data.md#creategeojoindata) | H2 | user-facing | core |
 | [`createGeoLineMark`](./actions/marks.md#creategeolinemark) | H2 | user-facing | marks |
+| [`createGeoLODData`](./actions/charts-data.md#creategeoloddata) | H2 | user-facing | core |
 | [`createGeometryData`](./actions/charts-data.md#creategeometrydata) | H2 | user-facing | core |
 | [`createGeoPointMark`](./actions/marks.md#creategeopointmark) | H2 | user-facing | marks |
 | [`createGeoShapeMark`](./actions/marks.md#creategeoshapemark) | H2 | user-facing | marks |
@@ -212,6 +213,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGeoJoinData`](./actions/charts-data.md#editgeojoindata) | H3 | user-facing | core |
 | [`editGeoLineMark`](./actions/marks.md#editgeolinemark) | H3 | user-facing | marks |
+| [`editGeoLODData`](./actions/charts-data.md#editgeoloddata) | H3 | user-facing | core |
 | [`editGeometryData`](./actions/charts-data.md#editgeometrydata) | H3 | user-facing | core |
 | [`editGeoPointMark`](./actions/marks.md#editgeopointmark) | H3 | user-facing | marks |
 | [`editGeoShapeMark`](./actions/marks.md#editgeoshapemark) | H3 | user-facing | marks |

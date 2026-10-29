@@ -34,6 +34,7 @@ const analysisChartEditorNames = new Set([
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
   "editGeoJoinData",
+  "editGeoLODData",
   "editProjection",
   "editGeometryData",
   "editEdgeRoute",
@@ -86,6 +87,8 @@ const explicitLifecycleEditors = Object.freeze({
   editProjection: ["editProjection", "removeResource"],
   createGeometryData: ["editGeometryData", "removeResource"],
   editGeometryData: ["editGeometryData", "removeResource"],
+  createGeoLODData: ["editGeoLODData", "removeResource"],
+  editGeoLODData: ["editGeoLODData", "removeResource"],
   createGeoJoinData: ["editGeoJoinData", "removeResource"],
   editGeoJoinData: ["editGeoJoinData", "removeResource"],
   bundleGraphEdges: ["editEdgeRoute", "removeResource"],
@@ -193,6 +196,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeoLODData", "editGeoLODData",
   "createGeoJoinData", "editGeoJoinData",
   "createGeometryData", "editGeometryData",
   "bundleGraphEdges", "editEdgeRoute",

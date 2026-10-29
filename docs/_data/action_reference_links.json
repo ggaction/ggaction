@@ -348,6 +348,8 @@
   "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
   "createGeoJoinData": "/reference/actions/charts-data/#creategeojoindata",
   "editGeoJoinData": "/reference/actions/charts-data/#editgeojoindata",
+  "createGeoLODData": "/reference/actions/charts-data/#creategeoloddata",
+  "editGeoLODData": "/reference/actions/charts-data/#editgeoloddata",
   "createProjection": "/reference/actions/charts-data/#createprojection",
   "editProjection": "/reference/actions/charts-data/#editprojection",
   "createGeoShapeMark": "/reference/actions/marks/#creategeoshapemark",

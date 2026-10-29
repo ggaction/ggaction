@@ -862,8 +862,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 716,000 bytes |
-| `ggaction/basic` | 381,000 bytes |
+| `ggaction` | 721,000 bytes |
+| `ggaction/basic` | 382,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
 | `ggaction/interaction` | 102,000 bytes |
@@ -3852,3 +3852,15 @@ STEP060 B와 qualified routes/direct-controls baseline 통합은 기존 소유�
 합산 package980entries/1,408,440packed/6,408,744unpacked와 Full688,226/Basic377,519/
 interaction109,145/graph43,572gzip bytes를 측정했다. Cap은980/1,409,000/6,409,000,
 Full688,300/Basic378,000/interaction109,200/graph44,000이며 최초 초과를 보존한다.
+
+
+### Geographic detail representation ownership
+
+`grammar/geo/levels.js`의 bounded typed hierarchy와 `simplify.js`의 shared arc 계산을
+`materialization/geo/lodResource.js`가 exact geometry inputs로 구체화한다. Options의 activeLevel은
+hysteresis의 유일한 현재 결정이며 원본 asset은 input resource에 남는다. 기존 geometry/source
+revision DAG가 LOD와 join, fitted projection, mark union을 명시 갱신한다.
+`materialization/geo/source.js`가 active feature의 fields/rows와 원 logical key의 representation을
+단일 조회하고 Geo selection adapter와 inspection이 재사용한다. Selector는 원 authored key를
+보존하며 현재 item key로 해석하고 hit/frame key는 바꾸지 않는다. 렌더러는 같은 concrete primitives만
+읽는다. 정확한 공개 옵션·제한은 [GEOMETRY](contract/current/GEOMETRY.md)가 소유한다.
