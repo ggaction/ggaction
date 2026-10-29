@@ -13,7 +13,7 @@ import { withPreparedResourceResults } from "../primitives/preparedResourceConte
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 
-function preflightLayouts(program, resources, layouts) {
+export function previewGraphLayouts(program, resources, layouts) {
   preflightFlowLayouts(program, resources, layouts);
   const replacements = new Map(layouts.map(layout => [layout.id, layout]));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
@@ -24,6 +24,7 @@ function preflightLayouts(program, resources, layouts) {
   for (const layer of layers) if (replacements.has(layer.graphBinding?.layout.id)) {
     resolveGraphPlot(preview, layer, program.materializationConfigs.marks[layer.id].graphPlot);
   }
+  return preview;
 }
 
 function materializeLayouts(program, ids) {
@@ -31,7 +32,7 @@ function materializeLayouts(program, ids) {
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
-import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
+import { normalizeGraphLayout, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
 export const layoutGraph = /* @__PURE__ */ closedAction(
@@ -50,14 +51,14 @@ export function editGraphLayout(program, args, previous) {
   if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
     graph: resolveInputReference(program, previous.inputs[0]),
+    retainedCoordinates: GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field)),
     intent: { method: previous.options.method, options: { ...previous.options.options, ...args.options } } });
-  preflightLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
+  previewGraphLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
   return materializeLayouts(program.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
 }
 
-export function writeGraphResource(program, resource) {
+export function prepareGraphResource(program, resource, sources) {
   const graphs = new Map([[resource.id, resource]]), replacements = [], nextLayouts = new Map();
-  const sources = graphSourceRevisions(program);
   // A candidate graph can feed another inferred graph. Resolve this DAG before
   // any semantic write so each dependent result is replaced exactly once.
   const supplied = program.semanticSpec.resources.map(previous => previous.kind === "graph" && previous.id === resource.id ? resource : previous);
@@ -66,23 +67,31 @@ export function writeGraphResource(program, resource) {
     if (previous.kind === "graph" && previous.id !== resource.id && previous.provenance.origin === "inferred" &&
         previous.inputs.length === 2 && graphs.has(previous.inputs[1].id)) {
       const source = sources?.get(previous.inputs[0].id);
-      replacement = createInferredGraphResource({ id: previous.id, revision: previous.revision + 1,
+      replacement = createInferredGraphResource({ program, id: previous.id, revision: previous.revision + 1,
         data: source === undefined ? resolveInputReference(program, previous.inputs[0]) : requireMaterializedDataset(program, source),
         candidate: graphs.get(previous.inputs[1].id), definition: previous.options.definition });
       graphs.set(previous.id, replacement);
     } else if (previous.kind === "layout" && previous.inputs.length === 1 && previous.inputs[0].kind === "graph" && graphs.has(previous.inputs[0].id)) {
       replacement = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
-        graph: graphs.get(previous.inputs[0].id), intent: previous.options });
+        graph: graphs.get(previous.inputs[0].id), intent: previous.options, retainedCoordinates: GRAPH_COORDINATE_FIELDS });
       nextLayouts.set(previous.id, replacement);
     }
     if (replacement) replacements.push({ previous: { kind: previous.kind, id: previous.id, revision: previous.revision }, resource: replacement });
   }
   const resources = supplied.map(previous => previous.kind === "graph" ? graphs.get(previous.id) ?? previous
     : previous.kind === "layout" ? nextLayouts.get(previous.id) ?? previous : previous);
-  preflightLayouts(program, resources, [...nextLayouts.values()]);
+  const preview = previewGraphLayouts(program, resources, [...nextLayouts.values()]);
+  return { resource, replacements, sources, layoutIds: new Set(nextLayouts.keys()), preview };
+}
+
+export function writePreparedGraphResource(program, { resource, replacements, sources, layoutIds }) {
   const next = withPreparedResourceResults(program, { property: `resource[graph:${resource.id}]`, value: resource }, replacements,
     args => program.editSemantic(args), [...(sources ?? [])].map(([from, to]) => ({
       previous: dataInputReference(requireDataset(program, from)), next: dataInputReference(requireDataset(program, to))
     })));
-  return materializeLayouts(next, new Set(nextLayouts.keys()));
+  return materializeLayouts(next, layoutIds);
+}
+
+export function writeGraphResource(program, resource) {
+  return writePreparedGraphResource(program, prepareGraphResource(program, resource, graphSourceRevisions(program)));
 }

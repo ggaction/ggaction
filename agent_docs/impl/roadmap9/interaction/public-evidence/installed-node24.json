@@ -1,0 +1,41 @@
+{
+  "node": "v24.22.1",
+  "artifact": "d5fedd309cffc6bb2e335406e65880dca9dca3079688dcef50b0d75bfe470039",
+  "sourceFree": true,
+  "runtime": [
+    "interaction/full-basic-immutable-inspection PASS",
+    "interaction/current-frame-and-restored-program PASS",
+    "interaction/guide-and-host-cleanup PASS"
+  ],
+  "types": "passed",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 776,
+      "minifiedBytes": 2246819,
+      "gzipBytes": 634879
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 512,
+      "minifiedBytes": 1232258,
+      "gzipBytes": 359568
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 138,
+      "minifiedBytes": 247766,
+      "gzipBytes": 82316
+    }
+  ]
+}

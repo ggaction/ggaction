@@ -1298,6 +1298,9 @@ and recomputes all enabled components. It accepts comparisons, sets, ranges, and
 grouped ranks; rendered channel/property selectors still require a child ID.
 Raincloud source filters retain the nonempty input requirements of their enabled
 statistical components; named-child empty filters remain supported.
+Graph plots retain selected nodes and their induced edges while preserving the
+stored graph, layout, degree values and item identities. Use node fields, rows
+or pre-highlight body properties; the recipe follows source and appearance edits.
 [Data](../api/data.md)
 
 ### `removeMarkFilter`
@@ -1308,6 +1311,7 @@ removeMarkFilter({ target? })
 
 Restore a filtered mark to its canonical source, recover its prior Histogram bin
 policy, and retain any filtered dataset snapshot that still has downstream users.
+For a graph plot, clear the view recipe and restore its full stored graph.
 [Data](../api/data.md)
 
 ### `highlightMarks`
@@ -3500,6 +3504,46 @@ layoutGraph({ id, graph?, method, options? })
 
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
+
+### `createContourData`
+
+```javascript
+createContourData({ id, grid, thresholds })
+```
+
+Create bounded contour geometry from an explicit scalar grid and thresholds. See [Contours and two-dimensional density](../api/contours.md#createcontourdata).
+
+### `createDensityContourData`
+
+```javascript
+createDensityContourData({ id, data?, x, y, weight?, grid, estimator, normalization, bandwidth?, kernel?, thresholds })
+```
+
+Create weighted two-dimensional histogram or kernel density contours with explicit grid and bandwidth policies. See [Contours and two-dimensional density](../api/contours.md#createdensitycontourdata).
+
+### `editContourData`
+
+```javascript
+editContourData({ target?, grid?, thresholds?, data?, definition? })
+```
+
+Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](../api/contours.md#editcontourdata).
+
+### `createContourMark`
+
+```javascript
+createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
+```
+
+Draw stored contour level boundaries or filled bands with shared position and color scales. See [Contours and two-dimensional density](../api/contours.md#createcontourmark).
+
+### `editContourMark`
+
+```javascript
+editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
+```
+
+Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](../api/contours.md#editcontourmark).
 
 ### `createPartitionPlot`
 

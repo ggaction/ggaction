@@ -1,0 +1,9 @@
+export interface ContourResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: "contour"; readonly thresholds: readonly number[] } &
+    ({ readonly source: "grid" } | { readonly source: "density"; readonly definition: ContourDensityDefinition });
+  readonly result: { readonly contours: ContourResult; readonly density: null | { readonly totalWeight: number; readonly sourceCount: number } };
+  readonly provenance: { readonly origin: "authored" | "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+/** Scales map intrinsic x/y coordinates and level or band-lower values. */

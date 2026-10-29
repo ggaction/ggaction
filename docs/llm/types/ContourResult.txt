@@ -1,0 +1,5 @@
+export interface ContourResult {
+  readonly algorithm: "marching-squares@1"; readonly grid: ContourGrid;
+  readonly thresholds: readonly { readonly value: number; readonly polygons: readonly ContourPolygon[] }[];
+  readonly bands: readonly { readonly lower: number; readonly upper: number; readonly upperInclusive: boolean; readonly polygons: readonly ContourPolygon[] }[];
+}

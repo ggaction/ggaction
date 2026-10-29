@@ -1453,6 +1453,9 @@ export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
 export type FilterMarksOptions = {
+  /** Inferred graphs only: rebuild topology and dependent layouts from selected source identities. Omission preserves an existing filter mode. */
+  recompute?: boolean;
+  /** Graph plots select node items; the default induced view preserves topology and layout. */
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
@@ -1836,8 +1839,10 @@ export interface GraphPlotOptions {
 export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 export interface GraphForceOptions extends GraphLayoutLimits {
   readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
   readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
@@ -1931,7 +1936,50 @@ export interface FlowLinksOptions {
 }
 export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
+/** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */
+export interface ContourGridFrame {
+  readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
+  readonly width: number; readonly height: number;
+}
+export interface ContourGrid extends ContourGridFrame { readonly values: readonly (number | null)[]; }
+export type ContourDensityDefinition = {
+  readonly x: string; readonly y: string; readonly weight?: string;
+  readonly grid: ContourGridFrame; readonly normalization: "unit" | "count";
+} & ({ readonly estimator: "histogram"; readonly bandwidth?: never; readonly kernel?: never }
+  | { readonly estimator: "kde"; readonly bandwidth: readonly [number, number]; readonly kernel: DensityKernel });
+export interface CreateContourDataOptions { readonly id: string; readonly grid: ContourGrid; readonly thresholds: readonly number[]; }
+export type CreateDensityContourDataOptions = ContourDensityDefinition & { readonly id: string; readonly data?: string; readonly thresholds: readonly number[]; };
+export interface EditContourDataOptions {
+  readonly target?: string; readonly grid?: ContourGrid; readonly thresholds?: readonly number[];
+  readonly data?: string; readonly definition?: Partial<ContourDensityDefinition>;
+}
+export interface ContourPolygon {
+  readonly outer: readonly (readonly [number, number])[];
+  readonly holes: readonly (readonly (readonly [number, number])[])[];
+}
+export interface ContourResult {
+  readonly algorithm: "marching-squares@1"; readonly grid: ContourGrid;
+  readonly thresholds: readonly { readonly value: number; readonly polygons: readonly ContourPolygon[] }[];
+  readonly bands: readonly { readonly lower: number; readonly upper: number; readonly upperInclusive: boolean; readonly polygons: readonly ContourPolygon[] }[];
+}
+export interface ContourResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: "contour"; readonly thresholds: readonly number[] } &
+    ({ readonly source: "grid" } | { readonly source: "density"; readonly definition: ContourDensityDefinition });
+  readonly result: { readonly contours: ContourResult; readonly density: null | { readonly totalWeight: number; readonly sourceCount: number } };
+  readonly provenance: { readonly origin: "authored" | "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+/** Scales map intrinsic x/y coordinates and level or band-lower values. */
+export interface ContourMarkOptions {
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+  readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
+  readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
+}
+export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -2089,6 +2137,7 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
@@ -2158,7 +2207,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -2169,7 +2218,7 @@ export interface SemanticSpec {
 
 export type GraphicLineageRef = {
   readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
-} | { readonly kind: "resource"; readonly resource: { readonly kind: "image" | "hierarchy" | "layout"; readonly id: string; readonly revision: number } };
+} | { readonly kind: "resource"; readonly resource: { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number } };
 
 export interface GraphicIdentity {
   readonly key: string; readonly topology: string; readonly role: string; readonly lineage: GraphicLineageRef;
@@ -6223,6 +6272,11 @@ export class ChartProgram {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
+  createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
+  editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
+  editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
   editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
   layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;

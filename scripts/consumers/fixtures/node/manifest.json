@@ -1050,5 +1050,39 @@
         "statements": 7
       }
     ]
+  },
+  {
+    "file": "contours.mjs",
+    "cases": [
+      {
+        "id": "contour/full-basic-lifecycle",
+        "statements": 12
+      },
+      {
+        "id": "contour/fresh-process-source-revision",
+        "statements": 10
+      },
+      {
+        "id": "contour/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "interaction.mjs",
+    "cases": [
+      {
+        "id": "interaction/full-basic-immutable-inspection",
+        "statements": 1
+      },
+      {
+        "id": "interaction/current-frame-and-restored-program",
+        "statements": 1
+      },
+      {
+        "id": "interaction/guide-and-host-cleanup",
+        "statements": 1
+      }
+    ]
   }
 ]

@@ -1,4 +1,5 @@
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
+import { activeGraphFilter } from "../../selectors/graphFilters.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
@@ -47,7 +48,7 @@ const MARK_SELECTOR_KEYS = Object.freeze([
   "rows", "grain", "field", "channel", "property", "op", "value", "values",
   "min", "max", "inclusive", "count", "groupBy", "ties"
 ]);
-const MARK_OPTIONS = Object.freeze(["target", "mode", ...MARK_SELECTOR_KEYS]);
+const MARK_OPTIONS = Object.freeze(["target", "mode", "recompute", ...MARK_SELECTOR_KEYS]);
 const REMOVE_MARK_FILTER_OPTIONS = Object.freeze(["target"]);
 const EMPTY_MARK_OPTIONS = Object.freeze(["id"]);
 
@@ -294,8 +295,9 @@ export const removeMarkFilter = /* @__PURE__ */ closedAction(
     const layer = resolveEligibleLayer(this, {
       target,
       label: "mark filter",
-      predicate: candidate => activeMarkFilter(this, candidate) !== undefined
+      predicate: candidate => activeMarkFilter(this, candidate) !== undefined || activeGraphFilter(this, candidate) !== undefined
     });
+    if (activeGraphFilter(this, layer) !== undefined) return this.restoreGraphPlotView({ target: layer.id });
     return removeActiveMarkFilter(this, layer, activeMarkFilter(this, layer));
   }
 );
@@ -306,6 +308,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
     description: "Retain selected final mark items through immutable derived data."
   }, MARK_OPTIONS,
   function (args = {}) {
+    if (Object.hasOwn(args, "recompute") && typeof args.recompute !== "boolean") throw new TypeError("filterMarks recompute must be boolean.");
     if (args.mode !== undefined && !["replace", "compose"].includes(args.mode)) {
       throw new Error(`Unknown mark filter mode "${args.mode}".`);
     }
@@ -314,6 +317,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
       : validateUserId(args.target, "Filter mark target id");
     const raincloud = findRaincloudParent(this, target);
     if (raincloud !== undefined) {
+      if (args.recompute === true) throw new TypeError("filterMarks recompute requires an inferred graph.");
       const selector = Object.fromEntries(MARK_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : []));
       return filterRaincloud(this, args, raincloud, selector);
     }
@@ -321,7 +325,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
       target,
       label: "filter mark",
       predicate: candidate =>
-        candidate.data !== undefined && (target !== undefined || !isSourceOwnedText(candidate)) &&
+        (candidate.data !== undefined || candidate.mark?.type === "graph") && (target !== undefined || !isSourceOwnedText(candidate)) &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
     assertIndependentOverlayGeometry(layer, "filterMarks");
@@ -336,6 +340,9 @@ export const filterMarks = /* @__PURE__ */ closedAction(
         Object.hasOwn(args, key) ? [[key, args[key]]] : []
       )
     );
+    if (layer.mark.type === "graph") return this.filterGraphPlotView({ target: layer.id, selector,
+      ...(args.mode === undefined ? {} : { mode: args.mode }), ...(args.recompute === undefined ? {} : { recompute: args.recompute }) });
+    if (args.recompute === true) throw new TypeError("filterMarks recompute requires an inferred graph.");
     const resolved = resolveMarkFilterSelection(this, layer.id, selector);
     const previousSelector = owner?.selectors.at(-1);
     if (previousSelector !== undefined && sameSelector(previousSelector, resolved.selector)) {

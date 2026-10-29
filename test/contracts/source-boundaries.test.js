@@ -73,6 +73,7 @@ const allowed = Object.freeze({
   actions: new Set([
     "actions", "core", "grammar", "layout", "materialization", "selectors", "theme"
   ]),
+  interaction: new Set(["interaction", "core", "grammar", "materialization", "selectors"]),
   core: new Set(["core"]),
   persistence: new Set(["persistence", "core", "grammar", "selectors"]),
   grammar: new Set(["core", "grammar"]),
@@ -93,6 +94,12 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
+          (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === "sceneSnapshot.js") ||
+          (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
+          (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
+            "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
+            "legends/sampling.js", "legends/size.js", "legends/colorSize.js", "legends/continuous/gradient.js"
+          ].some(name => path.relative(root, dependency) === path.join("actions", "guides", name))) ||
           (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
             path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||

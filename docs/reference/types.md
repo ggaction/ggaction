@@ -67,6 +67,11 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
+  createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
+  editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
+  editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
   editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
   layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
@@ -2680,6 +2685,69 @@ type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
 
 Related types: [`SizeScaleCommonOptions`](#type-sizescalecommonoptions) · [`ScaleFields`](#type-scalefields).
 
+### `ContourDensityDefinition` {#type-contourdensitydefinition}
+
+<details markdown="1">
+<summary>Expand ContourDensityDefinition</summary>
+
+```typescript
+export type ContourDensityDefinition = {
+  readonly x: string; readonly y: string; readonly weight?: string;
+  readonly grid: ContourGridFrame; readonly normalization: "unit" | "count";
+} & ({ readonly estimator: "histogram"; readonly bandwidth?: never; readonly kernel?: never }
+  | { readonly estimator: "kde"; readonly bandwidth: readonly [number, number]; readonly kernel: DensityKernel });
+```
+
+</details>
+
+Related types: [`ContourGridFrame`](#type-contourgridframe) · [`DensityKernel`](#type-densitykernel).
+
+### `ContourGrid` {#type-contourgrid}
+
+<details markdown="1">
+<summary>Expand ContourGrid</summary>
+
+```typescript
+export interface ContourGrid extends ContourGridFrame { readonly values: readonly (number | null)[]; }
+```
+
+</details>
+
+Related types: [`ContourGridFrame`](#type-contourgridframe).
+
+### `ContourGridFrame` {#type-contourgridframe}
+
+<details markdown="1">
+<summary>Expand ContourGridFrame</summary>
+
+```typescript
+export interface ContourGridFrame {
+  readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
+  readonly width: number; readonly height: number;
+}
+```
+
+</details>
+
+### `ContourMarkOptions` {#type-contourmarkoptions}
+
+<details markdown="1">
+<summary>Expand ContourMarkOptions</summary>
+
+```typescript
+export interface ContourMarkOptions {
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+  readonly id?: string; readonly geometry?: string; readonly coordinate?: string; readonly mode?: "line" | "filled";
+  readonly x?: QuantitativePositionScaleOptions; readonly y?: QuantitativePositionScaleOptions;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
+}
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`FillPaint`](#type-fillpaint).
+
 ### `CoordinateAspect` {#type-coordinateaspect}
 
 <details markdown="1">
@@ -2860,6 +2928,19 @@ export type CreateBeeswarmPlotOptions = {
 
 Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
 
+### `CreateContourDataOptions` {#type-createcontourdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateContourDataOptions</summary>
+
+```typescript
+export interface CreateContourDataOptions { readonly id: string; readonly grid: ContourGrid; readonly thresholds: readonly number[]; }
+```
+
+</details>
+
+Related types: [`ContourGrid`](#type-contourgrid).
+
 ### `CreateCoordinateOptions` {#type-createcoordinateoptions}
 
 <details markdown="1">
@@ -2906,6 +2987,19 @@ export type CreateDataUpdateRequest = DataSourceKeys & {
 </details>
 
 Related types: [`DataSourceKeys`](#type-datasourcekeys) · [`DataSource`](#type-datasource).
+
+### `CreateDensityContourDataOptions` {#type-createdensitycontourdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateDensityContourDataOptions</summary>
+
+```typescript
+export type CreateDensityContourDataOptions = ContourDensityDefinition & { readonly id: string; readonly data?: string; readonly thresholds: readonly number[]; };
+```
+
+</details>
+
+Related types: [`ContourDensityDefinition`](#type-contourdensitydefinition).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -5586,6 +5680,35 @@ export type EditComputedDataOptions = FocusedDerivedDataEdit<ComputedDataOptions
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`ComputedDataOptions`](#type-computeddataoptions).
 
+### `EditContourDataOptions` {#type-editcontourdataoptions}
+
+<details markdown="1">
+<summary>Expand EditContourDataOptions</summary>
+
+```typescript
+export interface EditContourDataOptions {
+  readonly target?: string; readonly grid?: ContourGrid; readonly thresholds?: readonly number[];
+  readonly data?: string; readonly definition?: Partial<ContourDensityDefinition>;
+}
+```
+
+</details>
+
+Related types: [`ContourGrid`](#type-contourgrid) · [`ContourDensityDefinition`](#type-contourdensitydefinition).
+
+### `EditContourMarkOptions` {#type-editcontourmarkoptions}
+
+<details markdown="1">
+<summary>Expand EditContourMarkOptions</summary>
+
+```typescript
+export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`ContourMarkOptions`](#type-contourmarkoptions).
+
 ### `EditCoordinateOptions` {#type-editcoordinateoptions}
 
 <details markdown="1">
@@ -5916,6 +6039,7 @@ Related types: [`FlowDefinition`](#type-flowdefinition).
 
 ```typescript
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+/** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */
 ```
 
 </details>
@@ -7873,6 +7997,9 @@ Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFil
 
 ```typescript
 export type FilterMarksOptions = {
+  /** Inferred graphs only: rebuild topology and dependent layouts from selected source identities. Omission preserves an existing filter mode. */
+  recompute?: boolean;
+  /** Graph plots select node items; the default induced view preserves topology and layout. */
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
@@ -8353,6 +8480,7 @@ Related types: [`InferredGraphSource`](#type-inferredgraphsource).
 
 ```typescript
 export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+/** Source revisions retain dormant initial positions and pins; explicit replacement arrays use current keys. */
 ```
 
 </details>
@@ -8459,6 +8587,7 @@ Related types: [`GraphLabelPaint`](#type-graphlabelpaint) · [`RowKey`](#type-ro
 
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+/** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
 ```
 
 </details>
@@ -13713,7 +13842,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
 ```
 
 </details>

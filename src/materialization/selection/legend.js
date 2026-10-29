@@ -26,4 +26,3 @@ export function legendLayerStyle(layer, style) {
     properties.flatMap(key => Object.hasOwn(style, key) ? [[key, style[key]]] : [])
   );
 }
-

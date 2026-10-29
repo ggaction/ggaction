@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "path": ".artifacts/test/png/charts/contours/contour-bands/filled/user-facing.png",
+      "sha256": "d4a8db7a36d4e2293743787235ba4b0716ced50757dffefac5e3f542263a8aaf"
+    },
+    {
+      "path": ".artifacts/test/png/charts/contours/contour-holes/holes/user-facing.png",
+      "sha256": "4305a139dcb400802cca819abbc2f6158e42de16616612fbfc1210f651c426e7"
+    }
+  ],
+  "observations": [
+    "Filled bands have distinct non-overlapping levels with the central diamond preserved.",
+    "The null-grid hole remains empty and the exterior border is separate from the title and margins."
+  ]
+}

@@ -1,3 +1,4 @@
+import { filterGraphPlotView, restoreGraphPlotView } from "../data/graphFilter.js";
 import { closedAction } from "../../core/action.js";
 import { normalizeGraphPlot, validateGraphPlotDefinition } from "../../grammar/graph/plot.js";
 import { resolveGraphPlotLayout } from "../../selectors/graphs.js";
@@ -46,5 +47,5 @@ function facade(editing) {
 export const createGraphPlot = /* @__PURE__ */ facade(false);
 export const editGraphPlot = /* @__PURE__ */ facade(true);
 export function registerGraphPlotActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createGraphPlot, editGraphPlot, materializeGraphPlot });
+  Object.assign(ProgramClass.prototype, { createGraphPlot, editGraphPlot, materializeGraphPlot, filterGraphPlotView, restoreGraphPlotView });
 }

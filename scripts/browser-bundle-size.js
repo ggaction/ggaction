@@ -5,12 +5,14 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 640_000, // Theme spacing and palettes, Node20: 639,557 gzip bytes.
-  "ggaction/basic": 365_000, // Theme spacing and palettes, Node20: 364,372 gzip bytes.
-  "ggaction/svg": 25_000
+  ggaction: 652_000, // Combined theme, resource and inspection owners: Node20 651,423 bytes.
+  "ggaction/basic": 368_000, // Combined theme and guide owners: Node20 367,130 bytes.
+  "ggaction/svg": 25_000,
+  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `
 import { renderToSVG } from "ggaction/svg";

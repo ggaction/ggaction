@@ -1,0 +1,113 @@
+# Draw levels, bands and density
+
+A scalar grid states where measurements were sampled. Contours interpolate the
+boundaries between those samples. This example has a center value of two and
+surrounding zeros, so level one crosses every adjoining edge halfway.
+
+The complete Full program uses explicit geometry before creating its mark.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    "width": 640,
+    "height": 480,
+    "margin": {
+      "left": 40,
+      "right": 40,
+      "top": 80,
+      "bottom": 40
+    },
+    "background": "#ffffff"
+  })
+  .createContourData({
+    "id": "surface",
+    "grid": {
+      "origin": [
+        0,
+        0
+      ],
+      "dx": 1,
+      "dy": 1,
+      "width": 3,
+      "height": 3,
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "thresholds": [
+      1
+    ]
+  })
+  .createContourMark({
+    "mode": "line",
+    "geometry": "surface",
+    "x": {
+      "domain": [
+        0,
+        2
+      ],
+      "zero": false,
+      "nice": false
+    },
+    "y": {
+      "domain": [
+        0,
+        2
+      ],
+      "zero": false,
+      "nice": false
+    },
+    "color": false,
+    "stroke": "#1d4ed8",
+    "strokeWidth": 2
+  })
+  .createTitle({
+    "text": "A level boundary",
+    "subtitle": "The line encloses grid values of at least one",
+    "align": "left",
+    "alongOffset": 0,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+```
+
+For filled bands, use thresholds such as [0, 1, 2] and mode: "filled". The lower
+band excludes its upper boundary; the final band includes the highest value.
+The maintained filled example uses a two-color quantitative scale to distinguish
+the bands.
+
+A null sample excludes every adjoining cell. The center below remains empty;
+it is not interpolated from its neighbors or treated as zero.
+
+For point data, create a materialized dataset and call createDensityContourData
+with x/y columns, an explicit grid, estimator and normalization. The histogram
+example uses one point of weight two. The kernel example uses the same point,
+a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
+values agree, while their estimation policies remain explicit.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/8e7582ff780415da5e7d7f553073b449fb637689/examples/contours/program.js)
+contains all five variants. Browser examples, primitive comparisons and images
+use that one program. See [Contours and two-dimensional density](../../../api/contours/)
+for exact options, limits, guide mappings, edits and source revision behavior.

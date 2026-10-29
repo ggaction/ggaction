@@ -1,0 +1,148 @@
+{
+  "scope": "private-contour-kernel",
+  "base": "9d59bafe44e26b76f3f784b741136a5f6ff42063",
+  "createdAt": "2026-10-28T23:08:09.127Z",
+  "inputs": [
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "e2b65dc2285b5b7eadc106169cc4e8bff7625fbfda642d1d801f8fd227365b0a"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "55d86b656d6d9fc171d2cf77392ca149c607aad9cd767dfe4355513f8c7955cd"
+    },
+    {
+      "path": "src/grammar/contour/density.js",
+      "sha256": "fd7189c3c836498690202412823361b25be7582dd8550b5aa9f41783f38abaf2"
+    },
+    {
+      "path": "src/grammar/contour/grid.js",
+      "sha256": "5377d6309da42ecf851f7347f77fb08ea27b48753d3f21a95131e7cbe8c6f781"
+    },
+    {
+      "path": "src/grammar/contour/layout.js",
+      "sha256": "4f290c7b79f98c9a5e7a7b5f2b221c47859cafc83093c4d12f3f4a48c1ebd0a2"
+    },
+    {
+      "path": "src/grammar/contour/marching.js",
+      "sha256": "acffd2b30027665eb6405d0f66e6acbfa50624f5970362fe14a8c4bdd01cd1c4"
+    },
+    {
+      "path": "src/grammar/contour/rings.js",
+      "sha256": "75ff11440f46bb13345743b089df68b76870f5faaf99967104fa411ca4a86ffa"
+    },
+    {
+      "path": "src/grammar/density.js",
+      "sha256": "1caccf87e0d05fe59c6ad88651bc496a871a8a27aba5992b0b32537a953f1d8c"
+    },
+    {
+      "path": "src/grammar/densityKernels.js",
+      "sha256": "0d5e0ef7466280dafd8abd83effdaa3332d6cdc9f8bffff21f68c516a7b4e555"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "6c785c1372782af82e09e5f576bbc7d1f06015fdc6bf160ce99115a3a3ff7d1e"
+    },
+    {
+      "path": "test/oracles/contour.js",
+      "sha256": "1973bb6fc445476632fd6e9d5cd0de699733e5e2d36b4c31801dcf4c151efe7c"
+    },
+    {
+      "path": "test/unit/contour-density.test.js",
+      "sha256": "564df13114f791dbc2c2323d53089861bd93217bf283fa0c7e1dbe2b50b8ffdf"
+    },
+    {
+      "path": "test/unit/contour-layouts.test.js",
+      "sha256": "935360d7d8e90e52e3a95431592ca566ccd445bc621ef154bd1bc2c267883848"
+    }
+  ],
+  "checks": [
+    {
+      "name": "focused-regressions",
+      "command": "node scripts/run-tests.js unit capability:contour unit/actions/data/density-data.test.js unit/grammar/categorical-density.test.js unit/actions/encodings/encode-density.test.js unit/actions/encodings/edit-density.test.js unit/actions/marks/density-area.test.js unit/actions/charts/density-plot.test.js unit/actions/guides/density-guides.test.js",
+      "log": ".artifacts/contour/regressions-final.log",
+      "sha256": "6aa5588c3bc94270185aca47f19ea0f06f0463a0d29370584a3005c0a1e1ea5a",
+      "passed": 103,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "name": "boundaries-discovery",
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js",
+      "log": ".artifacts/contour/contracts-3.log",
+      "sha256": "222fd0808d9bebea91752b06d6c0d32a0bf26d589827a293c60da0ecc52079eb",
+      "passed": 27,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "name": "focused-coverage",
+      "command": "node --experimental-test-coverage --test-coverage-include='src/grammar/contour/*.js' --test-coverage-include='src/grammar/densityKernels.js' --test test/unit/contour-layouts.test.js test/unit/contour-density.test.js",
+      "log": ".artifacts/contour/coverage-final.log",
+      "sha256": "926b6f21c3d6aea687d51b575d1b96aff366d36cf95cf9a0d695ae301ca20803",
+      "passed": 16,
+      "failed": 0,
+      "exitCode": 0
+    },
+    {
+      "name": "package-check",
+      "command": "node scripts/package-artifact.js",
+      "log": ".artifacts/contour/package-check.log",
+      "sha256": "bb3ad0b01e2fea6ed88a2f2ed26dcdfabe39baf73586b0ff1cc3fded61cc4da2",
+      "exitCode": 0
+    }
+  ],
+  "coverage": {
+    "lines": 100,
+    "branches": 97.92,
+    "functions": 100,
+    "criticalOwners": 6,
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "lowered": false
+  },
+  "notYetQualified": [
+    "public-resource-actions",
+    "persistence-and-revision",
+    "renderers-and-scenes",
+    "types-and-installed-consumers",
+    "realistic-corpus",
+    "full-library-coverage"
+  ],
+  "preservedFailures": [
+    ".artifacts/contour/kernel-1.log",
+    ".artifacts/contour/contracts-1.log",
+    ".artifacts/contour/contracts-2.log"
+  ],
+  "packageMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 825,
+      "packedBytes": 1206098,
+      "unpackedBytes": 5540055
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 825,
+      "packedBytes": 1203398,
+      "unpackedBytes": 5540055
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 825,
+      "packedBytes": 1206098,
+      "unpackedBytes": 5540055
+    }
+  ],
+  "packageLimits": {
+    "entries": 825,
+    "packedBytes": 1207000,
+    "unpackedBytes": 5541000
+  }
+}

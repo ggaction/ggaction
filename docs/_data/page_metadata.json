@@ -484,6 +484,20 @@
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/interaction/": {
+    "title": "Inspect Chart Items",
+    "source": "docs/api/interaction.md",
+    "editSource": "docs/api/interaction.md",
+    "description": "Inspect overlapping marks and guides in Canvas or SVG while preserving an immutable chart program.",
+    "image": "/assets/images/inspect-chart.png"
+  },
+  "/recipes/inspect-chart/": {
+    "title": "Inspect Overlapping Chart Items",
+    "source": "docs/recipes/inspect-chart.md",
+    "editSource": "examples/inspect-chart/program.js",
+    "description": "Create a chart with two observations at the same location, then inspect both through Canvas or SVG. Open the live example to compare the two surfaces.",
+    "image": "/assets/images/inspect-chart.png"
+  },
   "/api/composition/": {
     "title": "Program Composition",
     "source": "docs/api/composition.md",
@@ -1072,5 +1086,19 @@
     "editSource": "examples/flow-layouts/program.js",
     "description": "Start with a node table and an edge table whose values have one shared unit.",
     "image": "/assets/images/flow-layouts.png"
+  },
+  "/api/contours/": {
+    "title": "Contours and Two-Dimensional Density",
+    "source": "docs/api/contours.md",
+    "editSource": "docs/api/contours.md",
+    "description": "Create contour geometry from an explicit scalar grid or a point dataset, then draw level boundaries or filled bands.",
+    "image": "/assets/images/contour-bands.png"
+  },
+  "/tutorials/contours/": {
+    "title": "Draw Levels, Bands and Density",
+    "source": "docs/tutorials/contours.md",
+    "editSource": "examples/contours/program.js",
+    "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
+    "image": "/assets/images/contours.png"
   }
 }

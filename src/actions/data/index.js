@@ -36,6 +36,7 @@ import {
   materializeBin2DData
 } from "./bin2d.js";
 import { createData } from "./create.js";
+import { materializeGraphSubsetData } from "./graphSubset.js";
 import { createParameter } from "../parameters/create.js";
 import { editParameter, removeParameter } from "../parameters/edit.js";
 import { reviseData } from "./revise.js";
@@ -75,6 +76,7 @@ export function registerDataActions(ProgramClass) {
     createCategoricalDensityData,
     materializeFilteredData,
     materializeMarkFilteredData,
+    materializeGraphSubsetData,
     filterData,
     filterMarks,
     materializeEmptyMark,

@@ -1,10 +1,11 @@
+import { resolveGraphCandidateModel } from "./candidate.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { resolveInferredGraphInput } from "../../grammar/graph/input.js";
 import { dataInputReference } from "../../selectors/resources.js";
 import { graphRowReferences } from "./resources.js";
 
-export function createInferredGraphResource({ id, revision = 0, data, candidate, definition }) {
-  const resolved = resolveInferredGraphInput(data.values, definition, candidate?.result.model);
+export function createInferredGraphResource({ id, revision = 0, data, candidate, definition, program }) {
+  const resolved = resolveInferredGraphInput(data.values, definition, resolveGraphCandidateModel(program, data, candidate, definition));
   const { edges: _edges, preparation, ...diagnostics } = resolved.inference;
   if (preparation !== undefined) {
     const { vectors: _vectors, ...retained } = preparation;

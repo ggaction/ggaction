@@ -17,6 +17,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   interval: Object.freeze({ facetTopology: "statistical" }),
   impute: Object.freeze({ facetTopology: "statistical" }),
   markFilter: Object.freeze({ provenanceTransparent: true, facetTopology: "statistical" }),
+  graphSubset: Object.freeze({ provenanceTransparent: true, facetTopology: "rowPreserving" }),
   normalize: Object.freeze({ facetTopology: "statistical" }),
   regression: Object.freeze({ facetTopology: "statistical" }),
   regressionStatistics: Object.freeze({ facetTopology: "statistical" }),

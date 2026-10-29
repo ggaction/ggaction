@@ -4,9 +4,11 @@ import { layoutGraphFixed, layoutGraphCircular } from "../../grammar/graph/layou
 import { layoutGraphForce } from "../../grammar/graph/force.js";
 import { createFlowLayoutResource } from "../flow/layoutResource.js";
 
-export function createGraphLayoutResource({ id, revision = 0, graph, intent }) {
+export function createGraphLayoutResource({ id, revision = 0, graph, intent, retainedCoordinates = [] }) {
   if (["dag", "cyclic"].includes(intent.method)) return createFlowLayoutResource({ id, revision, graph, intent });
-  const normalized = normalizeGraphLayout(intent.method, intent.options), options = graphLayoutKernelOptions(normalized);
+  const normalized = normalizeGraphLayout(intent.method, intent.options), options = graphLayoutKernelOptions(normalized, {
+    nodeKeys: graph.result.model.nodes.map(node => node.key), retainedCoordinates
+  });
   const computed = normalized.method === "fixed"
     ? layoutGraphFixed(graph.result.model, options.positions, { maxNodes: options.maxNodes, maxEdges: options.maxEdges })
     : normalized.method === "circular" ? layoutGraphCircular(graph.result.model, options) : layoutGraphForce(graph.result.model, options);

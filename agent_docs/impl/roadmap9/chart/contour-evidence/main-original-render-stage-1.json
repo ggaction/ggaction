@@ -1,0 +1,32 @@
+{
+  "label": "render-stage-1",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "scripts/generate-artifact-gallery.js"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 280,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T00:20:11.027Z",
+  "finishedAt": "2026-10-29T00:20:11.307Z",
+  "source": {
+    "available": true,
+    "commit": "4732ea8e195ce1edfb9814c2f0e6130d2efa9282",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "4732ea8e195ce1edfb9814c2f0e6130d2efa9282",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "87c9678e3e6fbf54d740170d2a3ba6391c1917dcf9dd06e56ed7dc9703bfcda2",
+  "bytes": 1311,
+  "retainedBytes": 1311,
+  "truncated": false
+}

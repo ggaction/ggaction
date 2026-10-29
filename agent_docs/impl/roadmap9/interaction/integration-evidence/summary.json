@@ -1,0 +1,29 @@
+{
+  "status": "integrated-private-adapter-and-theme",
+  "sources": {
+    "graph": "b3330b70f",
+    "hitFrame": "63af304de",
+    "theme": "52207ed93",
+    "markAdapter": "a2294b96e"
+  },
+  "checks": {
+    "themeAndGraph": 74,
+    "hitGraphSceneBoundaries": 72,
+    "crossOwnerRegression": 2,
+    "finalBoundaries": 33,
+    "docs": 177,
+    "installedNode": "20.20.2",
+    "qualification": 7
+  },
+  "artifact": {
+    "sha256": "f3464134d5aa5453323d8411af79442af53a09809f7426345bba6e72614276a3",
+    "entries": 876,
+    "packed": 1275929,
+    "unpacked": 5868706
+  },
+  "limitations": [
+    "Public interaction session and guide roles remain in progress.",
+    "Combined full suite and full coverage were not rerun; affected suites and source branch coverage evidence were used.",
+    "Built browser evidence from b3330b70f remains applicable to unchanged UI assets/layout."
+  ]
+}

@@ -1,0 +1,171 @@
+TAP version 13
+# Subtest: creates a reusable selection without changing graphics
+ok 1 - creates a reusable selection without changing graphics
+  ---
+  duration_ms: 19.593583
+  type: 'test'
+  ...
+# Subtest: supports explicit targets, ids, and every point selector family
+ok 2 - supports explicit targets, ids, and every point selector family
+  ---
+  duration_ms: 5.642792
+  type: 'test'
+  ...
+# Subtest: selects final bar and series items without changing their graphics
+ok 3 - selects final bar and series items without changing their graphics
+  ---
+  duration_ms: 157.289708
+  type: 'test'
+  ...
+# Subtest: weighted histogram selections use positive-weight final members
+ok 4 - weighted histogram selections use positive-weight final members
+  ---
+  duration_ms: 3.527833
+  type: 'test'
+  ...
+# Subtest: highlights inline and reusable selections through wrapped point actions
+ok 5 - highlights inline and reusable selections through wrapped point actions
+  ---
+  duration_ms: 7.570458
+  type: 'test'
+  ...
+# Subtest: uses the default point recipe and can replace an existing assignment
+ok 6 - uses the default point recipe and can replace an existing assignment
+  ---
+  duration_ms: 4.721792
+  type: 'test'
+  ...
+# Subtest: keeps an empty point highlight graphical no-op unless complement dimming is requested
+ok 7 - keeps an empty point highlight graphical no-op unless complement dimming is requested
+  ---
+  duration_ms: 3.186209
+  type: 'test'
+  ...
+# Subtest: scales existing rect and path point geometry without changing shape
+ok 8 - scales existing rect and path point geometry without changing shape
+  ---
+  duration_ms: 6.114042
+  type: 'test'
+  ...
+# Subtest: reapplies selection and highlight intent after point rematerialization
+ok 9 - reapplies selection and highlight intent after point rematerialization
+  ---
+  duration_ms: 8.180959
+  type: 'test'
+  ...
+# Subtest: validates selection and point highlight options atomically
+ok 10 - validates selection and point highlight options atomically
+  ---
+  duration_ms: 3.218459
+  type: 'test'
+  ...
+# Subtest: highlights one bar item or one complete stack from the same y2 channel
+ok 11 - highlights one bar item or one complete stack from the same y2 channel
+  ---
+  duration_ms: 65.249875
+  type: 'test'
+  ...
+# Subtest: validates bar-specific highlight appearance before creating selection state
+ok 12 - validates bar-specific highlight appearance before creating selection state
+  ---
+  duration_ms: 29.111583
+  type: 'test'
+  ...
+# Subtest: highlights complete area paths and preserves logical offsets after resize
+ok 13 - highlights complete area paths and preserves logical offsets after resize
+  ---
+  duration_ms: 205.941833
+  type: 'test'
+  ...
+# Subtest: highlights rule items with stroke recipes and translated endpoints
+ok 14 - highlights rule items with stroke recipes and translated endpoints
+  ---
+  duration_ms: 2.538333
+  type: 'test'
+  ...
+# Subtest: rejects mark-incompatible path and rule highlight options atomically
+ok 15 - rejects mark-incompatible path and rule highlight options atomically
+  ---
+  duration_ms: 118.527542
+  type: 'test'
+  ...
+# Subtest: graph node filters preserve full topology, position, identity and induced multigraph edges
+ok 16 - graph node filters preserve full topology, position, identity and induced multigraph edges
+  ---
+  duration_ms: 29.527667
+  type: 'test'
+  ...
+# Subtest: graph filter replace, compose, idempotence and removal use the existing lifecycle
+ok 17 - graph filter replace, compose, idempotence and removal use the existing lifecycle
+  ---
+  duration_ms: 15.165375
+  type: 'test'
+  ...
+# Subtest: node row, grouped rank and body property selectors exclude edges before evaluation
+ok 18 - node row, grouped rank and body property selectors exclude edges before evaluation
+  ---
+  duration_ms: 12.464834
+  type: 'test'
+  ...
+# Subtest: induced views replay on source and layout edits without changing source graph meaning
+ok 19 - induced views replay on source and layout edits without changing source graph meaning
+  ---
+  duration_ms: 16.800708
+  type: 'test'
+  ...
+# Subtest: filtering inferred graphs keeps original inference and exact surviving edge metadata
+ok 20 - filtering inferred graphs keeps original inference and exact surviving edge metadata
+  ---
+  duration_ms: 6.725875
+  type: 'test'
+  ...
+# Subtest: graph highlights survive hidden items and restoration without neighbor reassignment
+ok 21 - graph highlights survive hidden items and restoration without neighbor reassignment
+  ---
+  duration_ms: 14.489041
+  type: 'test'
+  ...
+# Subtest: scoped filtering updates one composition child and renderer snapshots round trip
+ok 22 - scoped filtering updates one composition child and renderer snapshots round trip
+  ---
+  duration_ms: 21.206209
+  type: 'test'
+  ...
+# Subtest: graph filter errors and malformed stored views leave earlier programs untouched
+ok 23 - graph filter errors and malformed stored views leave earlier programs untouched
+  ---
+  duration_ms: 24.32075
+  type: 'test'
+  ...
+# Subtest: typed node keys remain distinct and compound-key nodes select through exact source rows
+ok 24 - typed node keys remain distinct and compound-key nodes select through exact source rows
+  ---
+  duration_ms: 6.070125
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1068.576375
+# start of coverage report
+# --------------------------------------------------------------------
+# file                | line % | branch % | funcs % | uncovered lines
+# --------------------------------------------------------------------
+# src                 |        |          |         | 
+#  actions            |        |          |         | 
+#   data              |        |          |         | 
+#    graphFilter.js   | 100.00 |    94.12 |  100.00 | 
+#  materialization    |        |          |         | 
+#   graph             |        |          |         | 
+#    view.js          | 100.00 |   100.00 |  100.00 | 
+#   selection         |        |          |         | 
+#    itemSelection.js | 100.00 |   100.00 |  100.00 | 
+# --------------------------------------------------------------------
+# all files           | 100.00 |    98.39 |  100.00 | 
+# --------------------------------------------------------------------
+# end of coverage report

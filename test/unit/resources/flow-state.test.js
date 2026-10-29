@@ -91,6 +91,18 @@ test("flow targets reject incompatible coordinates, layout families and stale se
   assert.throws(() => circle.editFlowLinks({ layout: "circle" }), /incompatible/);
   const layer = { ...p.semanticSpec.layers[0], flowBinding: { layout: { kind: "layout", id: "circle", revision: 0 } } };
   assert.throws(() => resolveFlowLayerResources(circle, layer), /DAG/);
+  // A layout reference alone does not establish its graph-input eligibility.
+  // Read-only consumers must reject malformed envelopes before resolving inputs.
+  for (const inputs of [[], [{ kind: "hierarchy", id: "flow", revision: 0 }]]) {
+    const malformed = { ...p, semanticSpec: { ...p.semanticSpec, resources: p.semanticSpec.resources.map(resource =>
+      resource.kind === "layout" ? { ...resource, inputs } : resource) } };
+    assert.throws(() => resolveFlowLayerResources(malformed, p.semanticSpec.layers[0]), /DAG or cyclic graph layout/);
+  }
+  for (const roles of [undefined, {}, { edges: 1 }]) {
+    const malformed = { ...p, semanticSpec: { ...p.semanticSpec, resources: p.semanticSpec.resources.map(resource =>
+      resource.kind === "graph" ? { ...resource, options: { ...resource.options, roles } } : resource) } };
+    assert.throws(() => resolveFlowLayerResources(malformed, p.semanticSpec.layers[0]));
+  }
   const stale = p._clone({ graphicSpec: { ...p.graphicSpec, objects: { ...p.graphicSpec.objects, flowLinks: { ...p.graphicSpec.objects.flowLinks, items: [] } } } });
   assert.throws(() => resolveMarkItems(stale, "flowLinks"), /stale/);
   const absent = { ...p.graphicSpec.objects }; delete absent.flowLinks;

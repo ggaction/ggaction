@@ -230,6 +230,12 @@
 - title: Rendering
   url: /api/rendering/
   parent: /api/
+- title: Inspect Chart Items
+  url: /api/interaction/
+  parent: /api/rendering/
+- title: Inspect Overlapping Chart Items
+  url: /recipes/inspect-chart/
+  parent: /recipes/
 - title: Program Composition
   url: /api/composition/
   parent: /api/
@@ -512,4 +518,12 @@
   parent: /api/
 - title: Draw Conserved Flows
   url: /tutorials/flows/
+  parent: /tutorials/
+
+- title: Contours and Two-Dimensional Density
+  url: /api/contours/
+  parent: /api/
+
+- title: Draw Levels, Bands and Density
+  url: /tutorials/contours/
   parent: /tutorials/

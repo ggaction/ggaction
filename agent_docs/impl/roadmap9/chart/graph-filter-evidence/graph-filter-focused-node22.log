@@ -1,0 +1,388 @@
+TAP version 13
+# Subtest: graph primitive directed keeps explicit routes, circles and labels
+ok 1 - graph primitive directed keeps explicit routes, circles and labels
+  ---
+  duration_ms: 6.563875
+  type: 'test'
+  ...
+# Subtest: graph primitive parallel keeps explicit routes, circles and labels
+ok 2 - graph primitive parallel keeps explicit routes, circles and labels
+  ---
+  duration_ms: 1.274958
+  type: 'test'
+  ...
+# Subtest: graph primitive self-loop keeps explicit routes, circles and labels
+ok 3 - graph primitive self-loop keeps explicit routes, circles and labels
+  ---
+  duration_ms: 1.909792
+  type: 'test'
+  ...
+# Subtest: graph primitive induced keeps explicit routes, circles and labels
+ok 4 - graph primitive induced keeps explicit routes, circles and labels
+  ---
+  duration_ms: 1.619584
+  type: 'test'
+  ...
+# Subtest: graph primitive rejects an unknown variant
+ok 5 - graph primitive rejects an unknown variant
+  ---
+  duration_ms: 0.229709
+  type: 'test'
+  ...
+# Subtest: public graph directed preserves primitive order and concrete geometry
+ok 6 - public graph directed preserves primitive order and concrete geometry
+  ---
+  duration_ms: 47.871875
+  type: 'test'
+  ...
+# Subtest: public graph parallel preserves primitive order and concrete geometry
+ok 7 - public graph parallel preserves primitive order and concrete geometry
+  ---
+  duration_ms: 16.581917
+  type: 'test'
+  ...
+# Subtest: public graph self-loop preserves primitive order and concrete geometry
+ok 8 - public graph self-loop preserves primitive order and concrete geometry
+  ---
+  duration_ms: 18.205791
+  type: 'test'
+  ...
+# Subtest: public graph induced preserves primitive order and concrete geometry
+ok 9 - public graph induced preserves primitive order and concrete geometry
+  ---
+  duration_ms: 24.869375
+  type: 'test'
+  ...
+# Subtest: graph inference declarations expose rule-specific options and preserve the Basic boundary
+ok 10 - graph inference declarations expose rule-specific options and preserve the Basic boundary
+  ---
+  duration_ms: 596.358583
+  type: 'test'
+  ...
+# Subtest: filters complete box categories with aligned medians, whiskers and outliers
+ok 11 - filters complete box categories with aligned medians, whiskers and outliers
+  ---
+  duration_ms: 226.670208
+  type: 'test'
+  ...
+# Subtest: supports the shortest call immediately after point creation
+ok 12 - supports the shortest call immediately after point creation
+  ---
+  duration_ms: 2.920625
+  type: 'test'
+  ...
+# Subtest: filters the current mark through an immutable derived dataset
+ok 13 - filters the current mark through an immutable derived dataset
+  ---
+  duration_ms: 5.682833
+  type: 'test'
+  ...
+# Subtest: supports explicit targets and comparison or range modes
+ok 14 - supports explicit targets and comparison or range modes
+  ---
+  duration_ms: 9.202875
+  type: 'test'
+  ...
+# Subtest: supports grouped rank, semantic channel, and concrete property selectors
+ok 15 - supports grouped rank, semantic channel, and concrete property selectors
+  ---
+  duration_ms: 9.679209
+  type: 'test'
+  ...
+# Subtest: filters histogram stacks without changing their approved bin boundaries
+ok 16 - filters histogram stacks without changing their approved bin boundaries
+  ---
+  duration_ms: 71.219542
+  type: 'test'
+  ...
+# Subtest: filters complete line and density-area series at native path grain
+ok 17 - filters complete line and density-area series at native path grain
+  ---
+  duration_ms: 187.210958
+  type: 'test'
+  ...
+# Subtest: filters individual rule items and rematerializes their endpoints
+ok 18 - filters individual rule items and rematerializes their endpoints
+  ---
+  duration_ms: 2.272083
+  type: 'test'
+  ...
+# Subtest: rematerializes connected axes and grids from the filtered scale domains
+ok 19 - rematerializes connected axes and grids from the filtered scale domains
+  ---
+  duration_ms: 11.706125
+  type: 'test'
+  ...
+# Subtest: validates mark selection and filter application atomically
+ok 20 - validates mark selection and filter application atomically
+  ---
+  duration_ms: 3.459875
+  type: 'test'
+  ...
+# Subtest: replaces, composes, and idempotently repeats one active filter
+ok 21 - replaces, composes, and idempotently repeats one active filter
+  ---
+  duration_ms: 6.5365
+  type: 'test'
+  ...
+# Subtest: keeps an empty view on the preceding domain and removes stale graphics
+ok 22 - keeps an empty view on the preceding domain and removes stale graphics
+  ---
+  duration_ms: 12.898333
+  type: 'test'
+  ...
+# Subtest: removes an active filter and restores source, domains, and histogram bins
+ok 23 - removes an active filter and restores source, domains, and histogram bins
+  ---
+  duration_ms: 69.18
+  type: 'test'
+  ...
+# Subtest: preserves downstream snapshots when an active filter is revised
+ok 24 - preserves downstream snapshots when an active filter is revised
+  ---
+  duration_ms: 5.840334
+  type: 'test'
+  ...
+# Subtest: supports empty views for every current final-item mark family
+ok 25 - supports empty views for every current final-item mark family
+  ---
+  duration_ms: 32.154875
+  type: 'test'
+  ...
+# Subtest: keeps a shared scale domain stable while one filtered consumer is empty
+ok 26 - keeps a shared scale domain stable while one filtered consumer is empty
+  ---
+  duration_ms: 3.256834
+  type: 'test'
+  ...
+# Subtest: keeps legacy selector provenance readable and rejects mixed recipes
+ok 27 - keeps legacy selector provenance readable and rejects mixed recipes
+  ---
+  duration_ms: 0.161125
+  type: 'test'
+  ...
+# Subtest: creates a reusable selection without changing graphics
+ok 28 - creates a reusable selection without changing graphics
+  ---
+  duration_ms: 42.655375
+  type: 'test'
+  ...
+# Subtest: supports explicit targets, ids, and every point selector family
+ok 29 - supports explicit targets, ids, and every point selector family
+  ---
+  duration_ms: 11.634375
+  type: 'test'
+  ...
+# Subtest: selects final bar and series items without changing their graphics
+ok 30 - selects final bar and series items without changing their graphics
+  ---
+  duration_ms: 212.080917
+  type: 'test'
+  ...
+# Subtest: weighted histogram selections use positive-weight final members
+ok 31 - weighted histogram selections use positive-weight final members
+  ---
+  duration_ms: 5.992292
+  type: 'test'
+  ...
+# Subtest: highlights inline and reusable selections through wrapped point actions
+ok 32 - highlights inline and reusable selections through wrapped point actions
+  ---
+  duration_ms: 12.136375
+  type: 'test'
+  ...
+# Subtest: uses the default point recipe and can replace an existing assignment
+ok 33 - uses the default point recipe and can replace an existing assignment
+  ---
+  duration_ms: 4.648333
+  type: 'test'
+  ...
+# Subtest: keeps an empty point highlight graphical no-op unless complement dimming is requested
+ok 34 - keeps an empty point highlight graphical no-op unless complement dimming is requested
+  ---
+  duration_ms: 3.171833
+  type: 'test'
+  ...
+# Subtest: scales existing rect and path point geometry without changing shape
+ok 35 - scales existing rect and path point geometry without changing shape
+  ---
+  duration_ms: 5.107458
+  type: 'test'
+  ...
+# Subtest: reapplies selection and highlight intent after point rematerialization
+ok 36 - reapplies selection and highlight intent after point rematerialization
+  ---
+  duration_ms: 8.730125
+  type: 'test'
+  ...
+# Subtest: validates selection and point highlight options atomically
+ok 37 - validates selection and point highlight options atomically
+  ---
+  duration_ms: 6.19725
+  type: 'test'
+  ...
+# Subtest: highlights one bar item or one complete stack from the same y2 channel
+ok 38 - highlights one bar item or one complete stack from the same y2 channel
+  ---
+  duration_ms: 64.383875
+  type: 'test'
+  ...
+# Subtest: validates bar-specific highlight appearance before creating selection state
+ok 39 - validates bar-specific highlight appearance before creating selection state
+  ---
+  duration_ms: 27.411
+  type: 'test'
+  ...
+# Subtest: highlights complete area paths and preserves logical offsets after resize
+ok 40 - highlights complete area paths and preserves logical offsets after resize
+  ---
+  duration_ms: 200.701583
+  type: 'test'
+  ...
+# Subtest: highlights rule items with stroke recipes and translated endpoints
+ok 41 - highlights rule items with stroke recipes and translated endpoints
+  ---
+  duration_ms: 3.0065
+  type: 'test'
+  ...
+# Subtest: rejects mark-incompatible path and rule highlight options atomically
+ok 42 - rejects mark-incompatible path and rule highlight options atomically
+  ---
+  duration_ms: 99.890083
+  type: 'test'
+  ...
+# Subtest: graph node filters preserve full topology, position, identity and induced multigraph edges
+ok 43 - graph node filters preserve full topology, position, identity and induced multigraph edges
+  ---
+  duration_ms: 49.120875
+  type: 'test'
+  ...
+# Subtest: graph filter replace, compose, idempotence and removal use the existing lifecycle
+ok 44 - graph filter replace, compose, idempotence and removal use the existing lifecycle
+  ---
+  duration_ms: 20.094417
+  type: 'test'
+  ...
+# Subtest: node row, grouped rank and body property selectors exclude edges before evaluation
+ok 45 - node row, grouped rank and body property selectors exclude edges before evaluation
+  ---
+  duration_ms: 14.615208
+  type: 'test'
+  ...
+# Subtest: induced views replay on source and layout edits without changing source graph meaning
+ok 46 - induced views replay on source and layout edits without changing source graph meaning
+  ---
+  duration_ms: 28.728917
+  type: 'test'
+  ...
+# Subtest: filtering inferred graphs keeps original inference and exact surviving edge metadata
+ok 47 - filtering inferred graphs keeps original inference and exact surviving edge metadata
+  ---
+  duration_ms: 14.449959
+  type: 'test'
+  ...
+# Subtest: graph highlights survive hidden items and restoration without neighbor reassignment
+ok 48 - graph highlights survive hidden items and restoration without neighbor reassignment
+  ---
+  duration_ms: 15.94875
+  type: 'test'
+  ...
+# Subtest: scoped filtering updates one composition child and renderer snapshots round trip
+ok 49 - scoped filtering updates one composition child and renderer snapshots round trip
+  ---
+  duration_ms: 33.411292
+  type: 'test'
+  ...
+# Subtest: graph filter errors and malformed stored views leave earlier programs untouched
+ok 50 - graph filter errors and malformed stored views leave earlier programs untouched
+  ---
+  duration_ms: 49.125709
+  type: 'test'
+  ...
+# Subtest: typed node keys remain distinct and compound-key nodes select through exact source rows
+ok 51 - typed node keys remain distinct and compound-key nodes select through exact source rows
+  ---
+  duration_ms: 7.046625
+  type: 'test'
+  ...
+# Subtest: graph plots retain distinct node, parallel-edge, loop and arrow identities
+ok 52 - graph plots retain distinct node, parallel-edge, loop and arrow identities
+  ---
+  duration_ms: 54.222584
+  type: 'test'
+  ...
+# Subtest: graph revisions rematerialize exact layout and row lineage while preserving old programs
+ok 53 - graph revisions rematerialize exact layout and row lineage while preserving old programs
+  ---
+  duration_ms: 25.791084
+  type: 'test'
+  ...
+# Subtest: graph highlights color a complete edge including its arrow and survive reorder
+ok 54 - graph highlights color a complete edge including its arrow and survive reorder
+  ---
+  duration_ms: 35.070167
+  type: 'test'
+  ...
+# Subtest: plot edits and Canvas reflow preserve the stored solver result
+ok 55 - plot edits and Canvas reflow preserve the stored solver result
+  ---
+  duration_ms: 11.235667
+  type: 'test'
+  ...
+# Subtest: scalar label and style failures preflight without mutating trace or state
+ok 56 - scalar label and style failures preflight without mutating trace or state
+  ---
+  duration_ms: 32.18925
+  type: 'test'
+  ...
+# Subtest: orphan node styles remain dormant and report their exact keys
+ok 57 - orphan node styles remain dormant and report their exact keys
+  ---
+  duration_ms: 14.116625
+  type: 'test'
+  ...
+# Subtest: graph plot restoration rejects tampered config, binding, labels and mark type
+ok 58 - graph plot restoration rejects tampered config, binding, labels and mark type
+  ---
+  duration_ms: 31.137542
+  type: 'test'
+  ...
+# Subtest: all public fixed examples have exact item counts and graph inspection refs
+ok 59 - all public fixed examples have exact item counts and graph inspection refs
+  ---
+  duration_ms: 8.67225
+  type: 'test'
+  ...
+# Subtest: scoped plot and layout edits update only the intended composition child
+ok 60 - scoped plot and layout edits update only the intended composition child
+  ---
+  duration_ms: 12.057041
+  type: 'test'
+  ...
+# Subtest: empty graphs retain empty views and source-only rows keep their own dataset role
+ok 61 - empty graphs retain empty views and source-only rows keep their own dataset role
+  ---
+  duration_ms: 7.347125
+  type: 'test'
+  ...
+# Subtest: typed compound keys and scalar labels preserve values instead of parsing identity strings
+ok 62 - typed compound keys and scalar labels preserve values instead of parsing identity strings
+  ---
+  duration_ms: 3.114542
+  type: 'test'
+  ...
+# Subtest: graph border highlights preserve label typography and reject unsupported dash
+ok 63 - graph border highlights preserve label typography and reject unsupported dash
+  ---
+  duration_ms: 4.0255
+  type: 'test'
+  ...
+1..63
+# tests 63
+# suites 0
+# pass 63
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1467.831

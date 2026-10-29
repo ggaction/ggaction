@@ -2187,6 +2187,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `recompute` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
@@ -2223,6 +2224,9 @@ and recomputes all enabled components. It accepts comparisons, sets, ranges, and
 grouped ranks; rendered channel/property selectors still require a child ID.
 Raincloud source filters retain the nonempty input requirements of their enabled
 statistical components; named-child empty filters remain supported.
+Graph plots retain selected nodes and their induced edges while preserving the
+stored graph, layout, degree values and item identities. Use node fields, rows
+or pre-highlight body properties; the recipe follows source and appearance edits.
 [Data](../../api/data.md)
 
 
@@ -2257,6 +2261,7 @@ removeMarkFilter({ target? })
 
 Restore a filtered mark to its canonical source, recover its prior Histogram bin
 policy, and retain any filtered dataset snapshot that still has downstream users.
+For a graph plot, clear the view recipe and restore its full stored graph.
 [Data](../../api/data.md)
 
 
@@ -5214,6 +5219,120 @@ layoutFlow({ id, graph?, method, options? })
 
 Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
 [Flow data and Sankey layouts](../../api/flows.md#layoutflow)
+
+
+## `createContourData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateContourDataOptions`](./../types.md#type-createcontourdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `grid` | Required | `ContourGrid` |
+| `thresholds` | Required | `readonly number[]` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createContourData({ id, grid, thresholds })
+```
+
+Create bounded contour geometry from an explicit scalar grid and thresholds. See [Contours and two-dimensional density](../../api/contours.md#createcontourdata).
+
+
+## `createDensityContourData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateDensityContourDataOptions`](./../types.md#type-createdensitycontourdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `x` | Required | `string` |
+| `y` | Required | `string` |
+| `weight` | Optional / branch-dependent | `string \| undefined` |
+| `grid` | Required | `ContourGridFrame` |
+| `normalization` | Required | `"count" \| "unit"` |
+| `estimator` | Required | `"histogram" \| "kde"` |
+| `bandwidth` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `kernel` | Optional / branch-dependent | `DensityKernel \| undefined` |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `thresholds` | Required | `readonly number[]` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createDensityContourData({ id, data?, x, y, weight?, grid, estimator, normalization, bandwidth?, kernel?, thresholds })
+```
+
+Create weighted two-dimensional histogram or kernel density contours with explicit grid and bandwidth policies. See [Contours and two-dimensional density](../../api/contours.md#createdensitycontourdata).
+
+
+## `editContourData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditContourDataOptions`](./../types.md#type-editcontourdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `grid` | Optional / branch-dependent | `ContourGrid \| undefined` |
+| `thresholds` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<ContourDensityDefinition> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editContourData({ target?, grid?, thresholds?, data?, definition? })
+```
+
+Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](../../api/contours.md#editcontourdata).
 
 
 ## Focused core data editing

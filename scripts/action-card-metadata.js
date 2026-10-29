@@ -31,7 +31,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
+  "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -68,6 +68,11 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createContourData: ["editContourData", "removeResource"],
+  createDensityContourData: ["editContourData", "removeResource"],
+  editContourData: ["editContourData", "removeResource"],
+  createContourMark: ["editContourMark", "removeMark"],
+  editContourMark: ["editContourMark", "removeMark"],
   createInferredGraphData: ["editInferredGraphData", "removeResource"],
   editInferredGraphData: ["editInferredGraphData", "removeResource"],
   createFlowData: ["editFlowData", "removeResource"],
@@ -163,6 +168,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark",
   "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",
   "layoutGraph",
   "createGraphData",

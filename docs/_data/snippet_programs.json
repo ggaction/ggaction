@@ -484,5 +484,27 @@
       "exported": "createFlow"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/contours.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its scalar grid.",
+    "canonical": {
+      "file": "examples/contours/program.js",
+      "exported": "createContours"
+    },
+    "rendering": "authoring-only"
+  },
+  "recipes/inspect-chart.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser setup and a canvas whose id is chart; all input rows are included.",
+    "canonical": {
+      "file": "examples/inspect-chart/program.js",
+      "exported": "createInspectionChart"
+    },
+    "rendering": "renders-canvas"
   }
 }

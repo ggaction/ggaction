@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 
-// Explicit example modules/assets accompany a displayed module entry unchanged.
-// Installed consumers receive only these public example files, never library src.
+// Keep example call chains and assets; map the canonical public entry to its
+// installed specifier. Installed consumers never receive library src files.
 export async function copyDocumentationSupportFiles(example, destination) {
   const files = Object.entries(example.supportFiles ?? {}).map(([relative, source]) => {
     const safe = value => typeof value === "string" && value.length > 0 &&
@@ -17,7 +17,8 @@ export async function copyDocumentationSupportFiles(example, destination) {
     return { relative, source };
   });
   for (const { relative, source } of files) {
-    const bytes = await readFile(path.join(root, source));
+    let bytes = await readFile(path.join(root, source));
+    if (/\.[cm]?js$/.test(source)) bytes = Buffer.from(bytes.toString("utf8").replace(/from (["\'])\.\.\/\.\.\/src\/index\.js\1/g, 'from "ggaction"'));
     if (/\.[cm]?js$/.test(source) && /(?:from\s*|import\s*\()["'][^"']*\bsrc\//.test(bytes.toString("utf8"))) {
       throw new Error("Documentation support modules must import the public installed package.");
     }

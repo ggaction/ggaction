@@ -1,0 +1,36 @@
+{
+  "status": "coordinate-revisions-qualified",
+  "baseline": "c5221e3f5",
+  "checks": {
+    "focusedNode20": 24,
+    "focusedNode22": 24,
+    "focusedNode24": 24,
+    "finalAffectedWithCoverage": 81,
+    "boundariesAndTypes": 34,
+    "docs": 177,
+    "sameArtifactInstalledGraphCasesPerNode": 2
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 94.15,
+    "functions": 100,
+    "allFourChangedOwnersMeet95_90_100": true
+  },
+  "artifact": {
+    "sha256": "570c134965331c5bc7419e5259ae2c924a50c62c2b6ef8cb75634d6cea2f587e",
+    "entries": 876,
+    "packed": 1276206,
+    "unpacked": 5869633
+  },
+  "budgets": {
+    "entries": 876,
+    "packed": 1279000,
+    "unpacked": 5870000,
+    "fullGzip": 639000,
+    "basicGzip": 363000
+  },
+  "limitations": [
+    "Explicit graph recompute:true remains unimplemented.",
+    "Full suite/coverage and built-browser were not repeated for this coordinate behavior change."
+  ]
+}

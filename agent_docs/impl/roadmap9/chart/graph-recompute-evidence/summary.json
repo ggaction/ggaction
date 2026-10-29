@@ -1,0 +1,87 @@
+{
+  "sourceCommit": "527977412d1b3f43f0c33edf9097068855e44516",
+  "approval": "../../AUTHORIZATION.json",
+  "status": "implemented-qualified",
+  "artifact": {
+    "sha256": "e172d731ec07f439f338fb8c0ec56985b47784e1de891b4802cfbe678fab9c96",
+    "entryCount": 882,
+    "packedBytes": 1279959,
+    "unpackedBytes": 5885200
+  },
+  "checks": {
+    "affectedCoverage": {
+      "tests": 228,
+      "failed": 0,
+      "files": 16,
+      "lines": 100,
+      "branches": 96.54,
+      "functions": 100,
+      "log": "coverage-final.log.gz"
+    },
+    "finalSourceContextSupplement": {
+      "tests": 11,
+      "failed": 0,
+      "log": "final-focus.log.gz"
+    },
+    "node20Focused": 25,
+    "node24Focused": 25,
+    "rendererAndPrimitive": 21,
+    "browser": {
+      "tests": 2,
+      "dpr": [
+        1,
+        2
+      ],
+      "variants": 5,
+      "backends": [
+        "canvas",
+        "svg"
+      ]
+    },
+    "realistic": {
+      "tests": 15,
+      "datasets": 5,
+      "rules": [
+        "knn",
+        "mst",
+        "sequence"
+      ]
+    },
+    "sourcePackageTypes": 14,
+    "inventoryRepair": 11,
+    "docs": {
+      "tests": 177,
+      "failed": 0
+    },
+    "installed": {
+      "node20": {
+        "runtime": 228,
+        "tutorials": 81,
+        "qualification": "6 initial checks passed; full bundle cap requalified separately on the same tar",
+        "initial": "qualification-initial.json",
+        "supplement": "bundles.json"
+      },
+      "node22": {
+        "comprehensiveGraphCases": 2
+      },
+      "node24": {
+        "comprehensiveGraphCases": 2
+      }
+    }
+  },
+  "limitations": [
+    "Full normal suite and whole-source coverage were not repeated.",
+    "Prior broad selection caught two stale native-theme expectation tests, owned by the concurrent theme checkpoint.",
+    "STEP032 drag/controller and the full STEP077 scope remain open.",
+    "No release, PR, or documentation deployment."
+  ],
+  "reproduction": [
+    "node --test test/unit/resources/graph-recompute.test.js test/unit/resources/graph-filter.test.js test/unit/resources/graph-coordinate-revisions.test.js",
+    "node --test test/charts/graph-plots/public.test.js test/charts/graph-plots/primitive.test.js test/charts/graph-plots/png.render.js test/charts/graph-plots/pdf.render.js",
+    "node --test test/browser/graph-output.browser.js",
+    "node scripts/run-tests.js realistic test/contracts/realistic-inferred-graphs.test.js",
+    "node scripts/run-tests.js docs",
+    "node scripts/package-consumer.js <absolute-tar-path>",
+    "node agent_docs/impl/roadmap9/chart/graph-recompute-evidence/installed-graphs.mjs <absolute-tar-path>"
+  ]
+}

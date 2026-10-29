@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 335,
+  "actionCount": 340,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2276,6 +2276,39 @@
       "name": "editFlowLinks",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "createContourData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createDensityContourData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editContourData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createContourMark",
+      "wraps": [
+        "editSemantic",
+        "createScale",
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editContourMark",
+      "wraps": [
+        "editSemantic",
+        "createScale"
       ]
     }
   ]

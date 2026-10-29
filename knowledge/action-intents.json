@@ -1045,6 +1045,18 @@
       "flow links",
       "flow ribbons",
       "feedback lanes"
+    ],
+    "ContourData": [
+      "contour geometry",
+      "scalar grid regions"
+    ],
+    "DensityContourData": [
+      "two-dimensional density",
+      "weighted point contours"
+    ],
+    "ContourMark": [
+      "contour bands",
+      "level boundaries"
     ]
   },
   "summaryOverrides": {
@@ -2026,6 +2038,67 @@
       "source": "from",
       "target": "to",
       "value": "amount"
+    },
+    "createContourData": {
+      "id": "surface",
+      "grid": {
+        "origin": [
+          0,
+          0
+        ],
+        "dx": 1,
+        "dy": 1,
+        "width": 2,
+        "height": 2,
+        "values": [
+          0,
+          1,
+          1,
+          2
+        ]
+      },
+      "thresholds": [
+        0,
+        1,
+        2
+      ]
+    },
+    "createDensityContourData": {
+      "id": "density",
+      "data": "points",
+      "x": "x",
+      "y": "y",
+      "grid": {
+        "origin": [
+          0,
+          0
+        ],
+        "dx": 1,
+        "dy": 1,
+        "width": 2,
+        "height": 2
+      },
+      "estimator": "histogram",
+      "normalization": "count",
+      "thresholds": [
+        0,
+        1
+      ]
+    },
+    "editContourData": {
+      "target": "surface",
+      "thresholds": [
+        0,
+        0.5,
+        2
+      ]
+    },
+    "createContourMark": {
+      "geometry": "surface"
+    },
+    "editContourMark": {
+      "target": "contour",
+      "opacity": 0.5
     }
   },
   "callPatternOverrides": {

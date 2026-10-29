@@ -1,0 +1,93 @@
+{
+  "status": "qualified",
+  "source": "96955f817",
+  "branches": [
+    "2a7549a0b",
+    "e3abd57d9",
+    "121acb6c6"
+  ],
+  "unit": {
+    "tests": 417,
+    "passed": 417,
+    "exit": 0,
+    "capture": "exec session 85228 output; exact 49-file selection in unit-files.json"
+  },
+  "smoke": {
+    "tests": 53,
+    "passed": 53
+  },
+  "regressionFixes": {
+    "tests": 12,
+    "passed": 12
+  },
+  "boundaries": {
+    "tests": 51,
+    "passed": 50,
+    "failed": 1,
+    "failure": "Initial pathLiteralRequirements snapshot 14778 vs14780; corrected final inventory 7/7 passed."
+  },
+  "docs": {
+    "tests": 179,
+    "passed": 179
+  },
+  "browser": {
+    "tests": 5,
+    "passed": 5
+  },
+  "builtDocs": {
+    "pages": 164,
+    "llmArtifacts": 1410,
+    "browser": "passed desktop search and every documentation page at widths 320,390,768"
+  },
+  "installed": {
+    "initialNode20": {
+      "runtime": 234,
+      "tutorials": 83,
+      "types": "passed",
+      "mcp": "passed",
+      "bundles": "initial Full/Basic limits failed; supplementary exact measured checks passed"
+    },
+    "finalNodeVersions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "eachFinalRuntime": 8,
+    "eachFinalTypes": "passed",
+    "eachFinalBundles": 4,
+    "byteEquivalence": "Only README budget text differs; source/types/knowledge byte-identical"
+  },
+  "artifact": {
+    "sha256": "a3ed52af614d4e3e5ad7720702bd9cf956dc6e9d259f50fc72c4d5faf4133937",
+    "entryCount": 907,
+    "size": 1304869,
+    "unpackedSize": 5994134
+  },
+  "pending": [],
+  "limitations": [
+    "No combined full coverage or all-suite claim.",
+    "This checkpoint does not close Roadmap9 or STEP077."
+  ],
+  "qualifiedSource": "2d92baea0",
+  "inventoryFinal": {
+    "tests": 7,
+    "passed": 7,
+    "durationMs": 247112.354917
+  },
+  "commonRealistic": {
+    "tests": 27,
+    "passed": 27,
+    "durationMs": 969911.423208,
+    "files": [
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-scenario-generator.test.js",
+      "test/contracts/realistic-scenario-generation-isolation.test.js"
+    ],
+    "initialFailure": "Filled Flow ribbon incorrectly classified as line in independent oracle; repaired and reran all three files."
+  },
+  "docsFinal": {
+    "tests": 25,
+    "passed": 25,
+    "scope": "documentation coverage/provenance and both README suites after budget text update"
+  }
+}

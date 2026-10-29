@@ -1,0 +1,16 @@
+{
+  "src/actions/guides/axes/labels.js": "052fc8ff9d83486aaa098a315d435607af5af45bf11d8ee942dbd77e9f566c0c",
+  "src/actions/guides/axes/policy.js": "c2a3f65b34eefeb91648b03ed3935e6a010a119dfc200a28f44186f987842613",
+  "src/actions/guides/legends/size.js": "4fa01d491b32a5b7bbe6c907d151b4557e88ec6abe708e9b533cebe4079b651b",
+  "src/grammar/axisFormat.js": "47ef21c35459e447170cb7722a1f5d28624cd9754da42cbb27d7ed67bf3ac8bc",
+  "src/interaction.js": "66709bdb2e02895e002cf65a2e29c92c2856b8698df40285aca704aa4b4ef666",
+  "src/interaction/hitConcrete.js": "7b797f62916c3d7eaabe7a6412247c7d4b60adc0cebe019fa01b0009350b989d",
+  "src/interaction/hitGuides.js": "f90004bc72133693304b7f8ab3c7a64e2c812a883b550c23b30a2914950205a4",
+  "src/interaction/hitLegends.js": "f39efe06be93f92afe473001a1df912cf59782ceffa9dee051c7abc90b920510",
+  "src/interaction/hitProgram.js": "42add9089af5db1c1038d38730e1c8caa76643e9e6d0522b5acef4bdf1f0971a",
+  "src/interaction/sceneFrame.js": "8f1b692e99bbc9f810948ccd154744c640a7b4a9d640daa0e8d9660891d31ae9",
+  "src/interaction/session.js": "050a402534cf7b43052a78b4b1ff78bcd0231656201fa0457afd952a2d0131a8",
+  "src/materialization/axisLabelText.js": "8225e9034d6fcd17e27d9d996138bd8935f625fe774ac0705cc1737cc83261ad",
+  "src/materialization/legendClip.js": "f851651e6428701aa9a7853e954e277d48b0c7dc7de9c295b837f4b01d2c0c49",
+  "types/interaction.d.ts": "91af46ab57bc05449761a55ced4513bd5a289a003957db3751275f99fd849d5e"
+}

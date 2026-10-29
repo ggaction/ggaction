@@ -10,6 +10,8 @@ Create [observed graph data and a layout](data/source-and-derived.md#observed-gr
 
 {% include chart-example.html id="graph-plots" %}
 
+A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
+
 ## createGraphPlot
 
 ```typescript
@@ -44,7 +46,18 @@ Highlight `color` or `stroke` changes node borders, edge paths and arrow fill; l
 
 ## Updates, removal and outputs
 
-Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat and induced filtering are not currently supported.
+Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat is not currently supported.
+
+By default, `filterMarks` selects node items by field, source rows or pre-highlight body properties.
+It retains the original edges whose two endpoints remain visible, including parallel
+edges, loops and arrows. Node positions, graph/layout resources, full-graph degree
+values and stable identities remain unchanged. Its ordered recipe follows source,
+layout, paint and Canvas edits. Use `mode: "replace"` to start from all nodes or
+`mode: "compose"` to narrow the current view. `removeMarkFilter` restores the full
+graph. On inferred graphs, add `recompute: true` to rebuild relationships and layouts
+from the selected node keys. All plots sharing the named graph update; replacing or
+composing the filter evaluates the original source recipe. Source revisions keep
+that exact key set, and removal restores the original source. The [filtering API](data/filtering.md#filter-marks) owns the shared selector rules.
 
 Remove a plot with `removeMark` before removing its bound layout or graph. Resource cascade does not silently remove live graph marks. Editable serialization validates stored data, layout and style without rerunning force simulation. Canvas, SVG, PNG and PDF consume the same concrete primitives. Inspection and accessible export count each node or edge once rather than counting its label or arrow again.
 
@@ -117,8 +130,9 @@ topology. `candidateGraph: null` removes a candidate input, so provide metric
 features in the same edit when switching to a complete metric MST.
 
 Inference supports the Full entry point. Resource-backed graph plots currently
-reject automatic facet partitioning and mark filtering. Create an explicitly
-filtered dataset and a separate inferred graph when you need recomputation.
+reject automatic facet partitioning. Mark filtering keeps the inferred topology;
+create an explicitly filtered dataset and a separate inferred graph when you need
+recomputation.
 
 ## Outlines and shadows
 

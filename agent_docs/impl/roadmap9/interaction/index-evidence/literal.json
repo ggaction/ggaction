@@ -1,0 +1,27 @@
+{
+  "expected": [
+    [
+      "front",
+      "legend-item",
+      2
+    ],
+    [
+      "back",
+      "axis-tick",
+      0
+    ]
+  ],
+  "actual": [
+    [
+      "front",
+      "legend-item",
+      2
+    ],
+    [
+      "back",
+      "axis-tick",
+      0
+    ]
+  ],
+  "diff": []
+}

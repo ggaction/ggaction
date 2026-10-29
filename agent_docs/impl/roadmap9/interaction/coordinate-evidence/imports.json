@@ -1,0 +1,14 @@
+{
+  "src/index.js": {
+    "localModules": 742,
+    "includesHitCoordinates": false
+  },
+  "src/basic.js": {
+    "localModules": 539,
+    "includesHitCoordinates": false
+  },
+  "src/renderers/svg.js": {
+    "localModules": 41,
+    "includesHitCoordinates": false
+  }
+}

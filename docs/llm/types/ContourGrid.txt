@@ -1,0 +1,1 @@
+export interface ContourGrid extends ContourGridFrame { readonly values: readonly (number | null)[]; }

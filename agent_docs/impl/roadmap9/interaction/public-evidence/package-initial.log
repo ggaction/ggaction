@@ -1,0 +1,22 @@
+
+> ggaction@0.0.26 package:check
+> node scripts/package-artifact.js --check
+
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-artifact.js:260
+    throw new Error(`Package entry count ${manifest.entryCount} exceeds ${PACKAGE_LIMITS.entries}.`);
+          ^
+
+Error: Package entry count 879 exceeds 871.
+    at validatePackageManifest (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-artifact.js:260:11)
+    at inspectPackageArtifact (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-artifact.js:274:10)
+    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-artifact.js:299:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.23.1

@@ -1,0 +1,46 @@
+{
+  "label": "suite-render",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/charts/flow-layouts/png.render.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/charts/flow-layouts/renderer.render.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 2411,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T00:41:05.314Z",
+  "finishedAt": "2026-10-29T00:41:07.725Z",
+  "source": {
+    "available": true,
+    "commit": "4c7ca8379649235cc282672b11fda4c74f7f628a",
+    "clean": false,
+    "statusSha256": "1171d2eb408a833da910c0c82472876271fee3926afb20a9ea2c635afdc8871f"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "4c7ca8379649235cc282672b11fda4c74f7f628a",
+    "clean": false,
+    "statusSha256": "1171d2eb408a833da910c0c82472876271fee3926afb20a9ea2c635afdc8871f"
+  },
+  "logSha256": "43e8b29a27f2b6bfca9648303b80d8fe5657c76e78457e4aad6090c0a43d1ccf",
+  "discovery": {
+    "suite": "render",
+    "selectors": [
+      "test/charts/flow-layouts/renderer.render.js",
+      "test/charts/flow-layouts/png.render.js"
+    ],
+    "files": [
+      "test/charts/flow-layouts/png.render.js",
+      "test/charts/flow-layouts/renderer.render.js"
+    ]
+  },
+  "bytes": 1519,
+  "retainedBytes": 1519,
+  "truncated": false
+}

@@ -25,6 +25,11 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "contours": ["canvas", "contour", "chartTitle", "chartSubtitle"],
+  "contour-bands": ["canvas", "contour", "chartTitle", "chartSubtitle"],
+  "contour-holes": ["canvas", "contour", "chartTitle", "chartSubtitle"],
+  "contour-histogram": ["canvas", "contour", "chartTitle", "chartSubtitle"],
+  "contour-density": ["canvas", "contour", "chartTitle", "chartSubtitle"],
   "graph-plots": ["canvas", "networkPlot"],
   "graph-parallel": ["canvas", "networkPlot"],
   "graph-self-loop": ["canvas", "networkPlot"],

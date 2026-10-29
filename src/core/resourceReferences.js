@@ -11,7 +11,8 @@ const LAYER_RESOURCE_BINDINGS = Object.freeze([
   Object.freeze({ path: Object.freeze(["image"]), kind: "image", marks: Object.freeze(["image"]) }),
   Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap", "partition"]) }),
   Object.freeze({ path: Object.freeze(["graphBinding", "layout"]), kind: "layout", marks: Object.freeze(["graph"]) }),
-  Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) })
+  Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) }),
+  Object.freeze({ path: Object.freeze(["contourBinding", "geometry"]), kind: "geometry", marks: Object.freeze(["contour"]) })
 ]);
 
 export function layerResourceBindings(layer) {
@@ -50,7 +51,7 @@ const DATA_VALUE_KEYS = new Set([
 ]);
 const DATA_SOURCE_CONFIGS = new Set([
   "boxPlot", "density", "ecdfPlot", "endpointPlot", "errorBand", "errorBar",
-  "gradientPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
+  "gradientPlot", "graphPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
   "regression", "violinPlot", "radarPlot"
 ]);
 const MARK_ID_KEYS = new Set([

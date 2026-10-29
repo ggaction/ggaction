@@ -1,0 +1,25 @@
+{
+  "owners": {
+    "interaction/hitConcrete.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "interaction/hitFrame.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "interaction/hitProgram.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "sceneSnapshot.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "passed": true
+}
