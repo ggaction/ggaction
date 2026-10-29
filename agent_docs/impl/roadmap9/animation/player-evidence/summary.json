@@ -8,7 +8,8 @@
     "node22": 46,
     "node24": 46,
     "controller": 16,
-    "boundariesAndDiscovery": 40
+    "boundariesAndDiscovery": 40,
+    "sourcePinnedDocs": 20
   },
   "coverage": {
     "scope": "controller and four pure animation owners",
@@ -58,6 +59,11 @@
       "file": "animation-player-second-coverage.log.gz",
       "sha256": "038f954ff0ab6eff6af9fa71dbdaeeba8f516fe017d22f32a6da5b42bbe192e6",
       "status": "passed"
+    },
+    {
+      "file": "animation-player-final-docs.log.gz",
+      "sha256": "a7f828c24cfcb8e81800c45838c5c8058665268065f45e8be8d2686f3ab15887",
+      "status": "passed"
     }
   ],
   "remaining": [
@@ -65,5 +71,6 @@
     "public entry and declarations",
     "actual browser RAF, current-frame hit and session integration",
     "offline envelope and four output adapters"
-  ]
+  ],
+  "sourceCommit": "5acddaae1c8bdaafbf2aa6fab425705d93a167af"
 }
