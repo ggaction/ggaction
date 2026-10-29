@@ -15,8 +15,11 @@ import {
   selectMarks
 } from "./actions.js";
 import { registerThemeHighlightReconciler } from "../theme/reconcile.js";
+import { registerSelectionExpressionResolver } from "../../materialization/selection/expression.js";
+import { resolveStoredSelection } from "../../materialization/selection/state.js";
 
 export function registerSelectionActions(ProgramClass) {
+  registerSelectionExpressionResolver(ProgramClass, resolveStoredSelection);
   registerThemeHighlightReconciler(rematerializeThemeHighlights);
   ProgramClass.prototype.selectMarks = selectMarks;
   ProgramClass.prototype.editMarkSelection = editMarkSelection;

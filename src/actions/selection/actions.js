@@ -1,4 +1,6 @@
 import { applyThemePatternPalette } from "../theme/palettes.js";
+import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
+import { combineSelectionKeys, SELECTION_SET_MODES } from "../../grammar/selectionSet.js";
 import { rebindConditionalInputs, orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 import { requireDataset } from "../../selectors/datasets.js";
@@ -37,12 +39,9 @@ import {
   resolveEffectiveThemeTokens
 } from "../theme/state.js";
 
-const SELECTOR_KEYS = Object.freeze([
-  "rows", "grain", "field", "channel", "property", "op", "value", "values", "min", "max",
-  "inclusive", "count", "groupBy", "ties"
-]);
-const SELECT_OPTIONS = Object.freeze(["id", "target", ...SELECTOR_KEYS]);
-const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", ...SELECTOR_KEYS]);
+const NAMED_SELECTOR_KEYS = Object.freeze([...MARK_SELECTOR_KEYS, "where"]);
+const SELECT_OPTIONS = Object.freeze(["id", "target", ...NAMED_SELECTOR_KEYS]);
+const EDIT_SELECTION_OPTIONS = Object.freeze(["selection", "mode", ...NAMED_SELECTOR_KEYS]);
 const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
 const HIGHLIGHT_OPTIONS = Object.freeze([
   "id", "target", "select", "selection", "color", "opacity", "fill",
@@ -56,7 +55,7 @@ const REMATERIALIZE_OPTIONS = Object.freeze(["target", "highlights"]);
 
 function selectorFrom(args) {
   return Object.fromEntries(
-    SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
+    NAMED_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : [])
   );
 }
 
@@ -159,6 +158,26 @@ export function rematerializeLabelsBeforeHighlights(
       ? program
       : rematerializeLabels(program, labels)
     : rebuildTargetHighlights(program, target, { labels });
+}
+
+// Resource revisions can change several named projections of the same
+// selection. Refresh each target and its named labels once, after conditionals.
+function rematerializeSelectionConsumers(program, resourceIds) {
+  const changed = new Set(resourceIds), byTarget = new Map();
+  const highlighted = new Set(Object.values(program.materializationConfigs.highlights ?? {}).map(config => config.selection));
+  for (const [id, definition] of Object.entries(program.materializationConfigs.selections ?? {})) {
+    if (!changed.has(definition.resource.id)) continue;
+    const consumer = byTarget.get(definition.target) ?? { labels: new Set(), highlight: false };
+    for (const label of namedLabelDependents(program, id)) consumer.labels.add(label);
+    consumer.highlight ||= highlighted.has(id);
+    byTarget.set(definition.target, consumer);
+  }
+  let next = program;
+  for (const [target, consumer] of byTarget) {
+    const labels = [...consumer.labels].sort();
+    next = consumer.highlight ? rematerializeLabelsBeforeHighlights(next, target, labels) : rematerializeLabels(next, labels);
+  }
+  return next;
 }
 
 function selectedKeys(args, resolved) {
@@ -291,29 +310,35 @@ export const selectMarks = /* @__PURE__ */ closedAction(
 export const editMarkSelection = /* @__PURE__ */ closedAction(
   {
     op: "editMarkSelection",
-    description: "Replace one stored mark selector while preserving its identity and target."
+    description: "Update one stored mark selection while preserving its identity and target."
   }, EDIT_SELECTION_OPTIONS,
   function (args = {}) {
+    const mode = Object.hasOwn(args, "mode") && args.mode !== undefined ? args.mode : "replace";
+    if (!SELECTION_SET_MODES.includes(mode)) throw new TypeError("Unknown selection update mode.");
     const current = resolveStoredSelection(this, args.selection);
     const replacement = resolveMarkSelection(
       this,
       current.definition.target,
       selectorFrom(args)
     );
-    let next = writeSelectionState(this, current.id, current.definition.target, replacement.selector)
+    if (mode !== "replace" && current.selector.grain !== replacement.selector.grain) {
+      throw new Error("Selection set updates require the existing grain.");
+    }
+    const selector = mode === "replace" ? replacement.selector : {
+      grain: current.selector.grain,
+      items: combineSelectionKeys(
+        current.selector.items?.length ? current.selector.items : current.keys,
+        replacement.selector.items?.length ? replacement.selector.items : replacement.keys,
+        mode
+      ),
+      empty: Object.hasOwn(args, "empty") ? replacement.selector.empty : current.selector.empty ?? "none"
+    };
+    let next = writeSelectionState(this, current.id, current.definition.target, selector)
       ._withContext({ currentSelection: current.id });
     const conditionals = rebindConditionalInputs(next, { selection: next.materializationConfigs.selections[current.id].resource.id });
     next = conditionals.program;
     for (const target of orderConditionalMarkIds(next, conditionals.targets)) next = applyLayerDataRematerialization(next, target);
-    const consumers = Object.entries(next.materializationConfigs.selections).filter(([, definition]) =>
-      definition.resource.kind === next.materializationConfigs.selections[current.id].resource.kind &&
-      definition.resource.id === next.materializationConfigs.selections[current.id].resource.id);
-    for (const [selectionId, definition] of consumers) {
-      const labels = namedLabelDependents(this, selectionId);
-      const highlighted = Object.values(next.materializationConfigs.highlights ?? {}).some(config => config.selection === selectionId);
-      next = highlighted ? rematerializeLabelsBeforeHighlights(next, definition.target, labels) : rematerializeLabels(next, labels);
-    }
-    return next;
+    return rematerializeSelectionConsumers(next, [next.materializationConfigs.selections[current.id].resource.id]);
   }
 );
 

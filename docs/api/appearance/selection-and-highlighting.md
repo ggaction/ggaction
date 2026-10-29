@@ -10,7 +10,7 @@ title: Selection and Highlighting
 ## Mark selection and highlighting
 
 `selectMarks` is the advanced reusable-selection action. Selection by itself
-does not alter `semanticSpec` or `graphicSpec`:
+stores its meaning in `semanticSpec.resources` and leaves `graphicSpec` unchanged:
 
 <!-- snippet-context:start -->
 
@@ -40,13 +40,13 @@ Choose exactly one value source:
 | --- | --- | --- |
 | `eq`, `neq`, `gt`, `gte`, `lt`, `lte` | `value` | Strict comparison without coercion |
 | `oneOf` | `values` array | Strict set membership |
-| `range` | `min`, `max`, optional `inclusive` | Both endpoints included by default |
+| `range` | At least one of `min`, `max`; optional endpoint flags | Both endpoints included by default |
 | `min`, `max` | optional `count`, `groupBy`, `ties` | `count: 1`, `ties: "first"` |
 
 Operators are strict
 `eq | neq | gt | gte | lt | lte`, set membership with
 `{ op: "oneOf", values }`, range selection with
-`{ op: "range", min, max, inclusive? }`, or ranked selection with
+`{ op: "range", min?, max?, minInclusive?, maxInclusive? }`, or ranked selection with
 `{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
 `ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
 values without coercion. The default `grain: "item"` selects one point symbol,
@@ -55,6 +55,14 @@ line/area series path, one arc sector, or one rule line.
 Stacked bars additionally accept `grain: "stack"` to treat all segments in one
 bin or category as a single item. A multi-row path field or channel must have
 one unique value at series grain.
+
+A range needs at least one endpoint. For example, `min: 10, max: 20,
+minInclusive: true, maxInclusive: false` selects values from 10 up to, but
+excluding, 20. Omit one endpoint for a one-sided range. The existing
+`inclusive` shorthand sets both ends together; do not combine it with endpoint
+flags. Each endpoint defaults to included, and a flag requires its endpoint.
+Numeric and string bounds compare only values of the same type. Use a temporal
+channel's epoch milliseconds for time ranges.
 
 Bar channel and graphical property names intentionally mean different things.
 For a vertical bar, semantic `y` is the lower/start endpoint and semantic `y2`
@@ -188,6 +196,52 @@ rematerialization, including Canvas changes and filtered data cardinality.
 Reapplying `highlightMarks` for the same selection replaces that appearance
 assignment.
 
+## Selecting stable item keys
+
+Use `items` when a picker or list already identifies complete visual items. Keys
+come from `getMarkItems` or the interaction hit result; array positions and raw
+graphic IDs are not keys.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect the immutable selection resource after toggling its sole key.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+
+const program = chart().createCanvas({ width: 300, height: 240, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+const items = getMarkItems(program, { target: "points" });
+const picked = program.selectMarks({
+  id: "picked", target: "points", items: [items[0].key]
+});
+const toggled = picked.editMarkSelection({
+  selection: "picked", mode: "toggle", items: [items[0].key]
+});
+```
+
+`items: []` selects nothing by default. Set `empty: "all"` explicitly to make an
+empty list select every current item. A nonempty list with no visible matches
+still selects nothing. Hidden keys remain stored, so removing a filter can make
+the same selection visible again. Duplicate keys are stored once.
+
+`editMarkSelection` defaults to `mode: "replace"`. Use `add`, `toggle`,
+`subtract`, or `intersect` to combine the current set with incoming items, rows,
+or a value selector. These four modes store the resulting item keys at the
+existing grain. Existing hidden keys survive unless the operation removes them.
+The empty policy is preserved unless explicitly supplied with an items selector.
+A replacement field/range selector keeps reevaluating against current values.
+
+The same items selector works in `highlightMarks({ select: ... })`,
+`createMarkLabels({ select: ... })`, and `filterMarks`. Use keys from the exact
+mark and grain being selected. In a composition, inspect and author with the
+same explicit `{ childPath, id }` target; a key from another child is rejected.
+Composite inspection reports each item's component `target`.
+
 ## Editing and removing stored intent
 
 Replace a stored selector while keeping its ID and mark target:
@@ -242,6 +296,65 @@ body and center-rule resource.
 
 See the complete [mark-selection tutorial](../../tutorials/mark-selection.md) for
 the approved point, stacked-bar, and line-series examples.
+
+## Selections from expressions
+
+Use `where` on `selectMarks` or `editMarkSelection` to retain a boolean version 2
+expression. Fields are read at the final item grain: a grouped path or aggregate
+must have one unique value for the referenced field. The expression does not
+match individual contributing rows behind that item.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline observations and public chart import. The parameter edit raises the highlight threshold from 100 to 150 without changing the original program.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas().createData({
+  id: "observations",
+  values: [
+    { Horsepower: 90, Weight: 1800 },
+    { Horsepower: 120, Weight: 2400 },
+    { Horsepower: 180, Weight: 3200 }
+  ]
+}).createScatterPlot({ id: "points", x: "Horsepower", y: "Weight" });
+
+const liveSelection = program
+  .createParameter({ id: "threshold", value: 100 })
+  .selectMarks({
+    id: "aboveThreshold",
+    target: "points",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "Horsepower" },
+        right: { type: "parameter", id: "threshold" }
+      }
+    }
+  })
+  .highlightMarks({ selection: "aboveThreshold", color: "red" });
+
+const changed = liveSelection.editParameter({ target: "threshold", value: 150 });
+```
+
+Parameter edits refresh the selection, its highlights, named labels and
+conditional encodings together. Saving and restoring retains exact parameter
+bindings. Every branch is validated, including inactive branches and empty
+selections. The result must be boolean; existing expression limits also apply.
+An absent field across all nonempty items is an error. Missing fields on some
+items follow the expression's missing-value rules.
+
+`where` is exclusive of other selector modes. The highlight facade also accepts
+`select: { where }` because it creates a persistent selection. For labels, use
+`selection: "aboveThreshold"`; inline label selectors and `filterMarks` retain
+their existing comparison grammar. A set update such as `mode: "add"` evaluates
+an incoming AST once and stores item keys. Use the default `replace` to keep a
+live expression.
 
 ## Related
 

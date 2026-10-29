@@ -5562,10 +5562,11 @@ Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
 ```typescript
 export type EditMarkSelectionOptions = {
   selection?: string;
-} & MarkSelector;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](../../../reference/types/#type-markselectionselector).
 
 ### `EditNormalizedDataOptions` {#type-editnormalizeddataoptions}
 
@@ -7617,7 +7618,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -7633,7 +7634,7 @@ export interface HighlightMarksOptions {
 }
 ```
 
-Related types: [`MarkSelector`](../../../reference/types/#type-markselector) · [`DashStyle`](../../../reference/types/#type-dashstyle) · [`DashPattern`](../../../reference/types/#type-dashpattern) · [`PointShape`](../../../reference/types/#type-pointshape).
+Related types: [`MarkSelectionSelector`](../../../reference/types/#type-markselectionselector) · [`DashStyle`](../../../reference/types/#type-dashstyle) · [`DashPattern`](../../../reference/types/#type-dashpattern) · [`PointShape`](../../../reference/types/#type-pointshape).
 
 ### `HistogramCategoricalColorChannel` {#type-histogramcategoricalcolorchannel}
 
@@ -8649,12 +8650,28 @@ Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
 export interface MarkOutline { color: string; width: number; }
 ```
 
+### `MarkSelectionSelector` {#type-markselectionselector}
+
+ Expand MarkSelectionSelector
+
+```typescript
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
+```
+
+Related types: [`MarkSelector`](../../../reference/types/#type-markselector) · [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2).
+
 ### `MarkSelector` {#type-markselector}
 
  Expand MarkSelector
 
 ```typescript
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -8663,12 +8680,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -8678,7 +8690,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 );
 ```
 
-Related types: [`MarkGraphicProperty`](../../../reference/types/#type-markgraphicproperty).
+Related types: [`MarkGraphicProperty`](../../../reference/types/#type-markgraphicproperty) · [`FilterRange`](../../../reference/types/#type-filterrange).
 
 ### `MarkShadow` {#type-markshadow}
 
@@ -11339,10 +11351,10 @@ Related types: [`RulePositionEncodingBase`](../../../reference/types/#type-rulep
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 ```
 
-Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
+Related types: [`MarkSelectionSelector`](../../../reference/types/#type-markselectionselector).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 

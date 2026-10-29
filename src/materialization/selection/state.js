@@ -1,11 +1,11 @@
 import { resolveItemSelection } from "./itemSelection.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { normalizeMarkSelector } from "../../grammar/markSelection.js";
+import { normalizeSelectionSelector } from "../../grammar/selectionExpression.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "./policies/index.js";
 import { selectionPredicate as resolveSelectionPredicate } from "./predicate.js";
 
 export function resolveMarkSelection(program, target, selector) {
-  const normalized = normalizeMarkSelector(selector);
+  const normalized = normalizeSelectionSelector(selector);
   return resolveItemSelection(program, resolveMarkItems(program, target, normalized.grain), normalized);
 }
 

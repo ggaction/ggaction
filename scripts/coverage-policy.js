@@ -261,6 +261,10 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "core/textMetrics.js": Object.freeze({ lines: 90, branches: 85, functions: 100 }),
   "grammar/areaSeries.js": Object.freeze({ lines: 75, branches: 75, functions: 100 }),
   "grammar/markFilter.js": Object.freeze({ lines: 75, branches: 60, functions: 100 }),
+  "grammar/orderedRange.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "grammar/selectionSet.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "grammar/selectionExpression.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "materialization/selection/expression.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "grammar/markSelection.js": Object.freeze({ lines: 90, branches: 90, functions: 100 }),
   "grammar/scales/definition.js": Object.freeze({
     lines: 90,

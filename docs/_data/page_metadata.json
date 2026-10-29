@@ -586,7 +586,7 @@
     "title": "Selection and Highlighting",
     "source": "docs/api/appearance/selection-and-highlighting.md",
     "editSource": "docs/api/appearance/selection-and-highlighting.md",
-    "description": "selectMarks is the advanced reusable selection action. Selection by itself does not alter semanticSpec or graphicSpec:",
+    "description": "selectMarks is the advanced reusable selection action. Selection by itself stores its meaning in semanticSpec.resources and leaves graphicSpec unchanged:",
     "image": "/assets/images/mark-selection-points.png"
   },
   "/api/appearance/point/": {

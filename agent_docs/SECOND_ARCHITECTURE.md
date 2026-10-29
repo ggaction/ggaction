@@ -790,8 +790,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 652,000 bytes |
-| `ggaction/basic` | 368,000 bytes |
+| `ggaction` | 654,000 bytes |
+| `ggaction/basic` | 369,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 83,000 bytes |
 
@@ -926,7 +926,7 @@ materializationConfigs = {
 아니라 이 canonical object에서 값을 읽는 getter다. `_actionSequence`처럼 serialization
 대상이 아닌 bookkeeping은 enumerable state가 아니다.
 
-`semanticSpec.resources`의 persistent-selection은 predicate 또는 stable row-key 집합을 소유한다. `selections`는 target mark, grain/projection, exact resource ref와 composite sourceSelection 관계를 저장한다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
+`semanticSpec.resources`의 persistent-selection은 predicate, stable row-key 또는 logical item-key 집합을 소유한다. `selections`는 target mark, grain/projection, exact resource ref와 composite sourceSelection 관계를 저장한다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
 `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete 값만 읽는다.
 Item resolver가 현재 semantic/materialization 계산에서 point row, final bar segment/stack, line/area series 또는
 rule row를 다시 만든 뒤 selection을 평가한다. Bar의 semantic position은 start `x`/`y`와 end `x2`/`y2`로
@@ -3458,6 +3458,20 @@ Node별 설치 근거는 interaction 공개 체크포인트 기록이 소유한�
 넘어 최소1,000bytes 올림946,000으로 조정했다. 검색 내용이나 기능을 제외하지 않았다.
 
 
+### Logical item selection의 집합 연산과 scoped identity
+
+`grammar/selectionSet.js`가 immutable key 집합의 normalize/replace/add/toggle/subtract/intersect와
+누적 key 작업 한도를 소유한다. 기존 `grammar/markSelection.js`의 final-grain 평가를 모든 selection,
+filter, labels, conditional 소비자가 공유한다. `actions/selection/resources.js`는 logical item set을
+기존 persistent-selection resource에 명시 저장하고, action editor가 기존 dependent rematerialization을
+실행한다. 새 자동 compiler나 renderer 상태는 추가하지 않는다.
+
+`grammar/schemas/graphicIdentity.js`가 composition namespace의 추가와 제거를 함께 소유한다.
+`actions/composition/targets.js`는 선택 관련 scoped action의 inspected key를 명시 childPath에 맞춰
+child-local identity로 바꾼다. Child resource는 local key만 저장하며 부모 graphic snapshot은 기존
+namespace를 재적용한다. 정확한 옵션/빈 집합/숨긴 키 정책은
+[Mark selection](contract/current/MARK_SELECTION.md#logical-item-selection-and-set-updates)이 소유한다.
+
 ### Resource·guide·inspection 통합 검증
 
 Contour·graph recompute·guide geometry·public inspection을 같은 source에 통합했다.
@@ -3481,3 +3495,23 @@ inspection이 동일 선택을 읽고 font/source 갱신은 기존 explicit depe
 정확 옵션·수렴·실패·복원 계약은 [CORE](contract/current/CORE.md)와
 [AXES](contract/current/AXES.md)가 소유한다. Nested composition의 root reservation 및 ancestor
 closure는 별도 composition owner의 후속 연결 의무이며 unit solver에 자동 재귀를 넣지 않는다.
+### Ordered range 계산 owner
+
+`grammar/orderedRange.js`는 data filter와 final-item mark selector의 숫자·문자열 endpoint 검증 및 포함 판정을 함께 소유한다.
+Mark selector는 기존 normalized inclusive 저장 형태를 보존하고 새로운 개별 endpoint 표기만 정규화한다.
+Resource lifecycle과 materializer는 그대로이며 정확한 공개 범위 옵션은 MARK_SELECTION과 data filter Current 계약을 따른다.
+
+
+### 최종 항목 AST 선택과 매개변수 폐쇄
+
+`grammar/selectionExpression.js`는 이름 있는 선택의 AST를 기존 predicate evaluator에 위임하고,
+최종 item.fields에서 참조된 필드만 bounded row로 만든다. 원본 행을 임의로 대신 평가하지 않는다.
+`materialization/selection/expression.js`는 명시 parameter resource를 resolve하며, exact refs는 기존
+persistent-selection.inputs 한 곳에 저장된다. 일반 inline selector의 owner와 저장 계약은 그대로 유지한다.
+
+기존 resource primitive가 parameter revision을 selection resource/config로 전파하고, parameter domain action이
+조건부 입력 재결합→데이터 revision→의존 순서의 mark/label/highlight materialization을 명시 호출한다.
+시각 소비자가 없는 selection도 최종 predicate를 검사한다. 이 마지막 검사만 Full의 기존 final-item resolver가
+필요하므로 Full assembly에서 constructor별 private resolver를 한 번 등록한다. Map의 handler는 frozen이고
+검증 중 교체·상속 fallback·외부 plugin API가 없다. Basic parameter entry가 Full mark policy를 import하지 않는다.
+정확한 값·제한·저장 형태와 지원은 [expression selection](contract/current/MARK_SELECTION.md#expression-selection)이 소유한다.

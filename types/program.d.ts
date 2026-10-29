@@ -1420,7 +1420,8 @@ export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
   | "fill" | "stroke" | "strokeWidth" | "opacity";
-export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all"; rows?: never; field?: never; channel?: never; property?: never; op?: never; } | { items?: never; empty?: never; grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
+  items?: never; empty?: never;
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -1429,12 +1430,7 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -1442,13 +1438,20 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
       ties?: "first" | "all";
     }
 );
+export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+  grain?: "item" | "stack";
+  /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
+  where: ComputedExpressionV2;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+};
 export type SelectMarksOptions = {
   id?: string;
   target?: string;
-} & MarkSelector;
+} & MarkSelectionSelector;
 export type EditMarkSelectionOptions = {
   selection?: string;
-} & MarkSelector;
+  mode?: "replace" | "add" | "toggle" | "subtract" | "intersect";
+} & MarkSelectionSelector;
 export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
@@ -1466,7 +1469,7 @@ export interface HighlightMarksOptions {
   fontSize?: number;
   id?: string;
   target?: string;
-  select?: MarkSelector;
+  select?: MarkSelectionSelector;
   selection?: string;
   color?: string;
   opacity?: number;
@@ -1988,6 +1991,7 @@ export interface PersistentSelectionResource {
   readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
   readonly inputs: readonly InputRef[];
   readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
+    | { readonly mode: "item-keys"; readonly itemKeys: readonly string[]; readonly empty: "none" | "all" }
     | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
   readonly result: Readonly<Record<string, never>>;
   readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };

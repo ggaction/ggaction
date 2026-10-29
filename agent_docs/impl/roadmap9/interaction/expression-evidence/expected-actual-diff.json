@@ -1,0 +1,15 @@
+{
+  "case": "threshold-final-items",
+  "expected": [
+    "c"
+  ],
+  "actual": [
+    "c"
+  ],
+  "labels": [
+    "c"
+  ],
+  "sourceUnchanged": true,
+  "diff": [],
+  "source": "6a581f204"
+}

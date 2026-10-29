@@ -3,7 +3,7 @@
   "name": "editMarkSelection",
   "layer": "advanced",
   "domain": "mark-selection",
-  "summary": "Replace the complete selector while preserving the stored selection ID and mark target.",
+  "summary": "Replace the complete selector by default, or combine its logical item keys with add, toggle, subtract, or intersect.",
   "signature": "editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;",
   "intents": [
     "edit mark selection",
@@ -73,9 +73,29 @@
       "type": "string | undefined"
     },
     {
+      "name": "mode",
+      "required": false,
+      "type": "\"add\" | \"intersect\" | \"replace\" | \"subtract\" | \"toggle\" | undefined"
+    },
+    {
       "name": "grain",
       "required": false,
       "type": "\"item\" | \"stack\" | undefined"
+    },
+    {
+      "name": "where",
+      "required": false,
+      "type": "ComputedExpressionV2 | undefined"
+    },
+    {
+      "name": "items",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"all\" | \"none\" | undefined"
     },
     {
       "name": "rows",
@@ -113,21 +133,6 @@
       "type": "readonly unknown[]"
     },
     {
-      "name": "min",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "max",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "inclusive",
-      "required": false,
-      "type": "boolean | undefined"
-    },
-    {
       "name": "count",
       "required": false,
       "type": "number | undefined"
@@ -143,6 +148,31 @@
       "type": "\"all\" | \"first\" | undefined"
     },
     {
+      "name": "min",
+      "required": false,
+      "type": "FilterBound"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "FilterBound | undefined"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "minInclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "maxInclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "ActionTargetList | ScopedActionTarget"
@@ -150,7 +180,8 @@
   ],
   "callPatterns": [
     "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
-    "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+    "editMarkSelection({ selection?, grain?, op: min | max, count? })",
+    "editMarkSelection({ selection?, mode: add | toggle | subtract | intersect, items: logicalKeys })"
   ],
   "snippet": "program.editMarkSelection({ field: \"category\", op: \"eq\", value: \"A\" })",
   "errors": [],
