@@ -820,3 +820,27 @@ Geometry/join/LOD/projection/source/parameter/selection/Canvas 수정의 후보 
 한 번 실행, codec·제거·concat을 검증한다. 레이블에 별도 data/좌표/위치 intent를 넣는 malformed
 snapshot은 거부한다. 대표 primitive·네 renderer·DPR1/2·실데이터와 설치 소비자까지 같은 checkpoint로
 닫으며 source-neutral renderer 경계는 바꾸지 않는다.
+
+레이블 source `369cc8ec6`에서 Geo owner206개와 측정20owner의 기존95/90/100 floor,
+기존 Text71개 및 selection/conditional Text108개, 실제5dataset×3신규recipe를 포함한48개,
+대표 primitive/types9개, PNG8개, 네 renderer8개 및 새 browser2개(DPR1/2)를 확인했다.
+Full/Basic static import graph와 Basic-first fresh process3개는 독립적으로 통과했다.
+행 선택 감사에서 발견한 Geo join의 누락된 transient index는 현재 rowMap으로 보충하되
+persisted sourceRows/shape는 바꾸지 않았으며 원 Geo·label 선택, bringToFront 및 stale row
+revision의 fail-closed 복원을 검증했다. 새 Text validator는 기존 Full projection handler에
+남겨 graph 준비 entry의 번들 경계를 보존한다.
+
+동일 archive `56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26`로
+Node20·22·24 각각 새 label 소비자3개, 엄격한 Full/Basic 타입, 문서 예제와5개 browser bundle을
+통과했다. Canonical package1043개 입력 parity는 불일치가 없다. Source pin 이후 문서204/204,
+built172페이지·1529개 selective LLM artifact, desktop 검색과 모든 페이지320·390·768px도
+통과했다. 최초실패와 수리/측정 결과는 [레이블 증거](geo-evidence/labels/status.json)에 보존한다.
+전체 unit/global coverage나 전수 installed를 새로 통과했다고 주장하지 않는다.
+
+Native Geo의 source/projection/stream/join/LOD/annotation/field·guide/camera/conditional/label
+각 checkpoint는 연결되었으나 Roadmap 전체를 완료한 것은 아니다. 원 계약의 실제
+camera drag/wheel/pinch/keyboard, reset/resize의 history command, generic current frame/player 및
+합산 consumer closure는 후행 session/animation owner에 전달했다. `navigateProjection`과
+`getProjectionView`를 재사용하며 수학이나 초기 baseline을 다른 owner에 복제하지 않는다.
+이번 labels는 common lifecycle builder를 바꾸지 않았고 이전 native camera builder의 common3
+최종 합산 실행은 root가 계속 소유한다.

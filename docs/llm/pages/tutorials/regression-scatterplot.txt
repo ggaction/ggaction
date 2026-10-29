@@ -6,15 +6,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-geo/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-geo/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-geo/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

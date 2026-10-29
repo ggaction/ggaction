@@ -1,0 +1,941 @@
+{
+  "scope": "Geo feature/graticule source를 기존 Text label·selection·identity·layout에 연결",
+  "base": "76a354a9e",
+  "source": "369cc8ec66d295eaade171d0a32a3c7a3d985cc8",
+  "approval": "AUTHORIZATION.json STEP077 전체 설계·시각 승인과 root 구체 설계 승인 재사용",
+  "checks": {
+    "geoOwnerCoverage": {
+      "tests": 206,
+      "pass": 206,
+      "fail": 0
+    },
+    "criticalFloors": {
+      "owners": 20,
+      "scope": "Only the instrumented Geo and Text anchor owners; no global floor claim",
+      "floors": {
+        "grammar/geo/mark.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/annotation.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/annotationSource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/appearance.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/coordinateState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/featureDataset.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/features.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/joinResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/joinState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/labelAnchors.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/labels.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/lodResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/lodState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/mark.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/projectionResource.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/projectionState.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/resources.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/source.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/geo/state.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "materialization/textSourceAnchors.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "actual": {
+        "grammar/geo/mark.js": {
+          "lines": 100,
+          "branches": 94.52,
+          "functions": 100
+        },
+        "materialization/geo/annotation.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/annotationSource.js": {
+          "lines": 100,
+          "branches": 93.94,
+          "functions": 100
+        },
+        "materialization/geo/appearance.js": {
+          "lines": 100,
+          "branches": 92.86,
+          "functions": 100
+        },
+        "materialization/geo/coordinateState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/featureDataset.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/features.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/joinResource.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/joinState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/labelAnchors.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/labels.js": {
+          "lines": 100,
+          "branches": 92.11,
+          "functions": 100
+        },
+        "materialization/geo/lodResource.js": {
+          "lines": 100,
+          "branches": 96.67,
+          "functions": 100
+        },
+        "materialization/geo/lodState.js": {
+          "lines": 100,
+          "branches": 95.65,
+          "functions": 100
+        },
+        "materialization/geo/mark.js": {
+          "lines": 100,
+          "branches": 97.37,
+          "functions": 100
+        },
+        "materialization/geo/projectionResource.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/projectionState.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/resources.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/source.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/geo/state.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/textSourceAnchors.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        }
+      }
+    },
+    "nativeText": {
+      "tests": 71,
+      "pass": 71,
+      "fail": 0
+    },
+    "nativeSelectionAndConditionalText": {
+      "tests": 108,
+      "pass": 108,
+      "fail": 0
+    },
+    "boundariesAndTypes": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0
+    },
+    "importOrder": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0
+    },
+    "discovery": {
+      "tests": 27,
+      "pass": 27,
+      "fail": 0
+    },
+    "primitiveAndTypes": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0
+    },
+    "renderers": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0
+    },
+    "png": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0
+    },
+    "browserNewVariants": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    "realistic": {
+      "tests": 48,
+      "pass": 48,
+      "fail": 0
+    },
+    "packageContracts": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0
+    },
+    "cardsAndOwners": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0
+    },
+    "sourceDocsInitial": {
+      "tests": 204,
+      "pass": 201,
+      "fail": 3
+    },
+    "sourceDocsFinal": {
+      "tests": 204,
+      "pass": 204,
+      "fail": 0
+    },
+    "builtDocs": {
+      "pages": 172,
+      "llmArtifacts": 1529,
+      "browser": "passed: desktop search and all pages at 320px, 390px, 768px"
+    }
+  },
+  "package": {
+    "sha256": "56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26",
+    "entries": 1043,
+    "packedBytes": 1475705,
+    "unpackedBytes": 6729205,
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1043,
+        "packedBytes": 1479025,
+        "unpackedBytes": 6729205
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1043,
+        "packedBytes": 1475705,
+        "unpackedBytes": 6729205
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1043,
+        "packedBytes": 1479025,
+        "unpackedBytes": 6729205
+      }
+    ],
+    "limits": {
+      "entries": 1043,
+      "packedBytes": 1481000,
+      "unpackedBytes": 6731000
+    },
+    "inputParity": {
+      "sha256": "56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26",
+      "files": 1043,
+      "canonicalPackageTransforms": true,
+      "mismatches": []
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26",
+        "cases": [
+          {
+            "id": "geographic-labels/native-source-and-selection",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/offline-restored-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 966,
+            "minifiedBytes": 2542859,
+            "gzipBytes": 728249
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 563,
+            "minifiedBytes": 1317837,
+            "gzipBytes": 384388
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 109133
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44047
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-source-labels"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26",
+        "cases": [
+          {
+            "id": "geographic-labels/native-source-and-selection",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/offline-restored-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 966,
+            "minifiedBytes": 2542859,
+            "gzipBytes": 726745
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 563,
+            "minifiedBytes": 1317837,
+            "gzipBytes": 383290
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 108504
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 43890
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-source-labels"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "56c5dd691df5b9ffa133e8367ae749a1b13d9365e542779adcc871cc73d98e26",
+        "cases": [
+          {
+            "id": "geographic-labels/native-source-and-selection",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/offline-restored-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-labels/four-renderer-native-text-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 966,
+            "minifiedBytes": 2542859,
+            "gzipBytes": 728249
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 563,
+            "minifiedBytes": 1317837,
+            "gzipBytes": 384388
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335400,
+            "gzipBytes": 109133
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 85,
+            "minifiedBytes": 146971,
+            "gzipBytes": 44047
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-source-labels"
+        ]
+      }
+    ]
+  },
+  "repairs": [
+    "Geo join의 저장 sourceRows에는 index가 없으므로 transient rows에 현재 rowMap index를 보충했다. 저장 shape는 유지하며 원 Geo와 label의 rows 선택, bringToFront, stale revision 복원을 회귀로 고정했다. 원 실패와 수리 로그는 별도로 보존한다.",
+    "Geo Text content validator를 generic graph에서 기존 Full projection resource handler로 옮겨 graph 준비 번들에 Text formatter가 유입되지 않게 했다. Full/Basic import 순서와 독립 복원 경계는 별도 검사한다.",
+    "초기 신규 owner branch coverage71/85%에서 도형 일부는 보이되 centroid가 clip 밖인 경계와 corrupted Text snapshot을 추가했다. 이미 drawable feature만 받는 null centroid와 resourceBacked identityOnly의 도달 불가 분기를 제거했다. 기존20owner의95/90/100 floor를 낮추지 않았다.",
+    "초기 docs201/204는 source pin과 검색 크기 초과 두 검사였다. 현재 검색값1,025,571bytes에 cap1,027,000을 적용하고 source369cc8ec6 push 후204/204를 확인했다. 기존 architecture 표의 graph/interaction cap도 canonical script와 동기화했다.",
+    "소비자 초기 fixture는 auto text가 object를 표현할 수 있는 기존 계약을 잘못 거부 기대했고 Text primitive type을 생략했다. missing field rejection 및 명시 Text type으로 고친 source3case와 동일 tar 설치3case를 확인했다. Basic-first 시험은 필수 geometry/projection id를 보완했다.",
+    "초기 package 보존 helper가 상대 outputDirectory를 staging cwd에 전달해 실패했다. 절대 경로로 고친 뒤 canonical archive를 생성했다. 초기 docs preflight의 시스템 Ruby2.6/기본Ruby4 의존성 실패는 설치된 Ruby3.2.11+locked bundle로 회복했다. CI Ruby3.2.6과 버전 차이는 기록한다."
+  ],
+  "limits": [
+    "전체 unit/global coverage 또는 전수 installed suite의 신규 통과를 주장하지 않는다. Geo owner·공통 Text/selection·affected package/docs 검증이다.",
+    "이번 labels는 common lifecycle builder를 바꾸지 않았다. 이전 native camera builder의 common3 합산 의무는 root 소유다.",
+    "Session camera/reset, generic frame/player 및 합산 consumer closure는 후행 owner와 통합 의무로 유지한다. Geo annotation의 고정 단일 anchor 의미는 바꾸지 않는다."
+  ],
+  "artifacts": [
+    {
+      "file": "labels-actions-1.log.gz",
+      "sha256": "b50320d1bb8e844e12b054fd183e4bec04103eb3742c3344578233f8b424ffb7"
+    },
+    {
+      "file": "labels-actions-2.log.gz",
+      "sha256": "90ccd96f2cba38157962666a47f17d2a5a66469cff24c9e62f8619674bee0120"
+    },
+    {
+      "file": "labels-actions-3.log.gz",
+      "sha256": "f080705cb8c0815e19b3c4c4d39a94d82fd6086a95953aa800df5281e36206d5"
+    },
+    {
+      "file": "labels-actions-4.log.gz",
+      "sha256": "0729b30b038065eb1f2976e58b99c54fc090fdb3989a71ab6a1e94b9148936df"
+    },
+    {
+      "file": "labels-actions-5.log.gz",
+      "sha256": "85711227e6df8efb05becb431b9ba239c47ef0a860ebca58b268c11331463838"
+    },
+    {
+      "file": "labels-actions-types-1.log.gz",
+      "sha256": "39eefa9e3db70657c868743bb708987d033068d460cc6262462e379d9d8f47f6"
+    },
+    {
+      "file": "labels-boundaries-1.log.gz",
+      "sha256": "9f99411adbbf66147e5d9beb0ce863775811d349dce0c3d6e6a7b544c96bc11a"
+    },
+    {
+      "file": "labels-boundaries-types-discovery.log.gz",
+      "sha256": "bedd92ab48d0b398c2212906aa9f21e40f365b1c164fc7814cdbb48487dbfa2b"
+    },
+    {
+      "file": "labels-browser-1.log.gz",
+      "sha256": "777162167b941d5e8a8e96d11663bf4483bfc9d26e351bf72cb939fed174bce3"
+    },
+    {
+      "file": "labels-browser-2.log.gz",
+      "sha256": "7a7c8a826120e778e0070129e18c2f6932d1661d236997acb680f2cc9a2c25d5"
+    },
+    {
+      "file": "labels-cards-truth-1.log.gz",
+      "sha256": "8e6e1ef4e45ad183e7c1bba2ba9270506f554f9582187f04ed6d9888a73fa5eb"
+    },
+    {
+      "file": "labels-docs-browser.log.gz",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "file": "labels-docs-build.log.gz",
+      "sha256": "b59152f13040f7e67821c5c7d64845e7fdc62ed5433f1bf378fba5ff97abff9d"
+    },
+    {
+      "file": "labels-docs-built.log.gz",
+      "sha256": "4bf3e0814dd9e793dd4301c6b1208f5737d405590c87c8a172417742165a8da0"
+    },
+    {
+      "file": "labels-docs-preflight-32.log.gz",
+      "sha256": "4264122012a6b28dea31f2560e823021bdb4c4da3a7f6db5a2c7e479fb8a3659"
+    },
+    {
+      "file": "labels-docs-preflight-ruby.log.gz",
+      "sha256": "d76b867413a4b783d7bb66c5c10f5833cecec1a7fa1c2db817ddd445c3067d57"
+    },
+    {
+      "file": "labels-docs-preflight.log.gz",
+      "sha256": "ea32269bb89e198bbe1350e08ccfb6bc57a34348da1fd3026aef4b50da134137"
+    },
+    {
+      "file": "labels-docs-search-repair.log.gz",
+      "sha256": "6baed12b3ac78135c77b3286e133bd51eeb343dc483e9d9fea249aa40ab0755d"
+    },
+    {
+      "file": "labels-docs-source-final.log.gz",
+      "sha256": "76e434d21fcd3a3d27ac6427d69d99b78b7153b865a7e9205e33c7dbae8e6088"
+    },
+    {
+      "file": "labels-docs-source-final.receipt.json.gz",
+      "sha256": "5654582d7d9b5f9cc75396472c8f58fec086efcdabf586ae26f1fb23d14f49c8"
+    },
+    {
+      "file": "labels-docs-source-initial.log.gz",
+      "sha256": "f99c2804e35b44003c3f1a313ff163274dab8aa6bc4fead805eecb6042d9f78f"
+    },
+    {
+      "file": "labels-docs-source-initial.receipt.json.gz",
+      "sha256": "e626545b651f9d0f472b03b0040dd766e0198514c9cfe42ad417362fa27ec93a"
+    },
+    {
+      "file": "labels-evidence.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "labels-final-boundaries-types.log.gz",
+      "sha256": "b424ec7382e748824688d9c8cfa607144cc12f1dff5a67a3e8d3f61704a6007f"
+    },
+    {
+      "file": "labels-final-content-types.log.gz",
+      "sha256": "a447d649ba3bbd5fa25240d36b2abac49c8dd931fe76c63d209ba00256b8364d"
+    },
+    {
+      "file": "labels-focused-1.log.gz",
+      "sha256": "0ead452554212289f6c3acf109aee98adef5da5561908f0ab01358238068a681"
+    },
+    {
+      "file": "labels-focused-2.log.gz",
+      "sha256": "c46d8bc42ab0694f5f250fd55589d27ad7ac7bfd210f6595e020f90e01cd26ef"
+    },
+    {
+      "file": "labels-generate-1.log.gz",
+      "sha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+    },
+    {
+      "file": "labels-generate-final.log.gz",
+      "sha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+    },
+    {
+      "file": "labels-generate-pinned.log.gz",
+      "sha256": "7c6e3618139a08aa4b20869d57855346d5a1d40211e324f7209b20ca75f60702"
+    },
+    {
+      "file": "labels-import-order-final.log.gz",
+      "sha256": "ccce9f3a95dac7b251e1bd3a14293fa6cbf898071d63a2269841ab4715f1fbd6"
+    },
+    {
+      "file": "labels-import-order-verified.log.gz",
+      "sha256": "0e97859b5c445843ad57d33bd834962aa80d2ddb67e130d9aaf802e9cb803640"
+    },
+    {
+      "file": "labels-installed-initial.log.gz",
+      "sha256": "1bf12e0242dc27a945e2a7281c098aa6c3fa1b4b428550b4936c35c78ab9bcd9"
+    },
+    {
+      "file": "labels-installed.log.gz",
+      "sha256": "87275db8595fa93f7ea3c6aab1a2ca08f40c0887d17769e28432ca26d2e52501"
+    },
+    {
+      "file": "labels-native-1.log.gz",
+      "sha256": "95d34ba72aa55edba4ea63d5f3db9ab42a5677cc913882851fa579d3175174ca"
+    },
+    {
+      "file": "labels-native-final.log.gz",
+      "sha256": "ace1d49a868bee40141d93247d48d068bfaff7831ef0fc36430603527a662886"
+    },
+    {
+      "file": "labels-owner-coverage-1.log.gz",
+      "sha256": "15eff636cf422f61ba623529e99a9012284f8d0f79536c15fb1f0ba16dc59d1b"
+    },
+    {
+      "file": "labels-owner-coverage-2.log.gz",
+      "sha256": "e4073502f053a165d6268d12a3c23b083d023740bb88015cad4ed07de8c94477"
+    },
+    {
+      "file": "labels-owner-coverage-3.log.gz",
+      "sha256": "2f4349eb7e95d5ac82f6e529fd3fbcd2337e5d63ed3c0aef973ad5a7b868801e"
+    },
+    {
+      "file": "labels-owner-coverage-4.log.gz",
+      "sha256": "683577cfb89bb70fc708608f19e4affd79f371c9adf428f8cf28aaccfc1b9e9c"
+    },
+    {
+      "file": "labels-owner-coverage-final.log.gz",
+      "sha256": "24dbb634de4d189b1ff0c336f0573139240cacd42752949ea6c7ca7d6fd6a20d"
+    },
+    {
+      "file": "labels-owner-coverage-verified.log.gz",
+      "sha256": "ccc9475d9bed25ee18b5bece0f8b03fe8fdf0024c89e1d0eabe0671d147831d5"
+    },
+    {
+      "file": "labels-owners-final.log.gz",
+      "sha256": "4299cfa4a41adcd4a76391aeec43fd5143c7775f876743bbee12e8b162801157"
+    },
+    {
+      "file": "labels-package-boundary-1.log.gz",
+      "sha256": "a3e06bc47ab3f7de8bd5370388e7f2ec1b87dd45afce83e1b06a8c6daffbc278"
+    },
+    {
+      "file": "labels-package-contracts-final.log.gz",
+      "sha256": "be2fd7bbcf4c1e693f4ab8181e6b6585253aa56cfba225256645014fc5f1e31a"
+    },
+    {
+      "file": "labels-package-final-initial.log.gz",
+      "sha256": "7848f5dd95a34d39715d8bbcc46a2fd6405c788feb98604d8599c7f66a7da6c5"
+    },
+    {
+      "file": "labels-package-final.log.gz",
+      "sha256": "ea16db6f1aed219e220bfbcc0a206c0d1fc0d9f0c2f0a5ed0d2b027177cd1032"
+    },
+    {
+      "file": "labels-package-parity-initial.log.gz",
+      "sha256": "02481a9ebfec12d944ec8e9572ed4678ddb6adc8ee41143351eeb51e74780e9c"
+    },
+    {
+      "file": "labels-package-parity-verified.log.gz",
+      "sha256": "60bf79a9ca30e006307e1a0f6aff786b8bd72fc9e9fa8ae7d9e78d7a1e767614"
+    },
+    {
+      "file": "labels-package-parity.log.gz",
+      "sha256": "60bf79a9ca30e006307e1a0f6aff786b8bd72fc9e9fa8ae7d9e78d7a1e767614"
+    },
+    {
+      "file": "labels-realistic-1.log.gz",
+      "sha256": "97f5633089fc2321c1c72f60ad2d82a13494410ad03b1af217299bf9284c3057"
+    },
+    {
+      "file": "labels-realistic-1.receipt.json.gz",
+      "sha256": "1fda6fdce0c02e545317eae6ed5a49e9c894adfd8321ebb34c6b217abefe44ed"
+    },
+    {
+      "file": "labels-realistic-1.receipt.log.gz",
+      "sha256": "97f5633089fc2321c1c72f60ad2d82a13494410ad03b1af217299bf9284c3057"
+    },
+    {
+      "file": "labels-realistic-final.check.log.gz",
+      "sha256": "d5cadbd91ceb71969f18826c4a0e02946a3ab3fa48e0b2de940dc77c7414baf6"
+    },
+    {
+      "file": "labels-realistic-final.log.gz",
+      "sha256": "d5cadbd91ceb71969f18826c4a0e02946a3ab3fa48e0b2de940dc77c7414baf6"
+    },
+    {
+      "file": "labels-realistic-final.receipt.json.gz",
+      "sha256": "11d7727163e4cf732e4ae24ed64adcf607f5f4da59a37bf24554651e81703ac0"
+    },
+    {
+      "file": "labels-registration-final.log.gz",
+      "sha256": "044cb02e6988f933af6b58a6bc3516547bec4858b7b657b668f9fbaa9590debd"
+    },
+    {
+      "file": "labels-render-1.log.gz",
+      "sha256": "e4b89c73dd5a1bfdbb7a4d4dd576ad4d900c5de04a96a38e1470af5247d9847a"
+    },
+    {
+      "file": "labels-renderers-2.log.gz",
+      "sha256": "6e38fbb7428c7b54e413a035eb47522bd938001d072196c82de4191c26ddf2ae"
+    },
+    {
+      "file": "labels-row-highlight-after.log.gz",
+      "sha256": "41af234f071c3fe88e9a3de58f87e06eee4862cb91e48677ad33c3047d0a2356"
+    },
+    {
+      "file": "labels-row-highlight-before.log.gz",
+      "sha256": "c50f79a4babbf4caefc127dc1950c46c5d415a9b10a3d55ec1c35feb3b8870bd"
+    },
+    {
+      "file": "labels-selection-regressions.log.gz",
+      "sha256": "16d63597e353f1e3dba9e315f48a8e87119e7f2c431cb2f52d55748e586b2e9d"
+    },
+    {
+      "file": "labels-source-consumer-fixed.log.gz",
+      "sha256": "06137544d3995ebad1c82f4796298a6f8e675bd9a3fd54d9e4020605818eb673"
+    },
+    {
+      "file": "labels-source-consumer-verified.log.gz",
+      "sha256": "c85c067453b3a19bcaf77374f6cda0e5a1ddabc0cf278b38f5754710211b5b4f"
+    },
+    {
+      "file": "labels-source-consumer.log.gz",
+      "sha256": "dfc389e7f0eeeb9a250e21977db367c1a554f217746f7cd7c741c34b5d99d5ce"
+    },
+    {
+      "file": "labels-visual-1.log.gz",
+      "sha256": "07527319d90d385b72f80d0add8e1c1d6c576a2128e772157866d927c1f759a5"
+    },
+    {
+      "file": "labels-visual-2.log.gz",
+      "sha256": "f230248d5536c11158bf3bb933d05f3c34868bb7301879e2da8a9d21e7560b9f"
+    },
+    {
+      "file": "bundle-measure-20-final.log.gz",
+      "sha256": "04158cdb7e11c60480a8e4f1dc7871f86d15faa8c1970eb7e084da9a6685607f"
+    },
+    {
+      "file": "bundle-measure-20.log.gz",
+      "sha256": "eca4cdc28474bd9933d93a1d78b300c802a75363763afb6b36d50e103c466c0e"
+    },
+    {
+      "file": "bundle-measure-22-final.log.gz",
+      "sha256": "9be19a037768e7515f3d0f598b97fb1f9a1f062a4ca5b36d6acbd21dc8d19591"
+    },
+    {
+      "file": "bundle-measure-22.log.gz",
+      "sha256": "3ad54f039af7b9d7d914f3dd604270164fb1024724d5c6aef40547e47b70cf79"
+    },
+    {
+      "file": "bundle-measure-24-final.log.gz",
+      "sha256": "71d9142ff57ade738cf4cdb5b0567c90e9c97263902490988a67065ba6eb46a3"
+    },
+    {
+      "file": "bundle-measure-24.log.gz",
+      "sha256": "087c2b5beec222999cc554f3ce9cb741767183b4a4523e16f96e66c8138b9871"
+    },
+    {
+      "file": "coverage-floors.json.gz",
+      "sha256": "5f056058432a368f6bfdabbe425390c39abedd35ec28b559d10b986e3457bd21"
+    },
+    {
+      "file": "installed-20.exit.json.gz",
+      "sha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437"
+    },
+    {
+      "file": "installed-20.json.gz",
+      "sha256": "8497e3d8e0f62ef2a0137f0eb768978a8250567073baf0a9753d9a1f46b89894"
+    },
+    {
+      "file": "installed-20.log.gz",
+      "sha256": "869a7d7f09cab32429d18f88f8986dffb5a351de1b42979058909217732e30c6"
+    },
+    {
+      "file": "installed-22.exit.json.gz",
+      "sha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e"
+    },
+    {
+      "file": "installed-22.json.gz",
+      "sha256": "8e5dcf77f8719a9fbb834413289eb1be815a6aef418ba6a85bb7c972e5813c53"
+    },
+    {
+      "file": "installed-22.log.gz",
+      "sha256": "3936d2f32d12ef585254c37220dd7bf7008564906e0dd8d38dd85e33cf345afd"
+    },
+    {
+      "file": "installed-24.exit.json.gz",
+      "sha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a"
+    },
+    {
+      "file": "installed-24.json.gz",
+      "sha256": "40632dc98da5b988e7b4992cb5e6a642c88a01a7048c3aa1707b8cbed11f349b"
+    },
+    {
+      "file": "installed-24.log.gz",
+      "sha256": "b8ded0e684fb64307c1da7e4799697302ce7ffbe43e4b2ef456d370537cd5b9b"
+    },
+    {
+      "file": "package-input-parity.json.gz",
+      "sha256": "275e29a5ff21b6e05b4ddcd8e3f21541590133e9ee4ba418e649e9b084b2a137"
+    },
+    {
+      "file": "package-inputs.json.gz",
+      "sha256": "d37dd475084b76d162efd17f7cf15b34c1d22b78778173b635fa8f58e8261ae4"
+    },
+    {
+      "file": "package-measure-20-final.log.gz",
+      "sha256": "9025f2ef8b459778166e9a1652f58f1587b90c6f88216fdccc6ab72fb9d1317f"
+    },
+    {
+      "file": "package-measure-20.log.gz",
+      "sha256": "5ff84ca52e402b0b85d6d9bf3e407513b39eadc8eb1b084f782225f7cf538a2c"
+    },
+    {
+      "file": "package-measure-22-final.log.gz",
+      "sha256": "a49252bb8512541533bdb067257935ce7124738b419a106387157d0f1f4e448e"
+    },
+    {
+      "file": "package-measure-22.log.gz",
+      "sha256": "50a4aeea1ba582c23fa3ade5eec5f6000245f61bac647dc32d8973b6edb57312"
+    },
+    {
+      "file": "package-measure-24-final.log.gz",
+      "sha256": "f479370dedd8b3562054715bd2de7092910ee3d29bcb4849e3c81430f25b2de7"
+    },
+    {
+      "file": "package-measure-24.log.gz",
+      "sha256": "161c119f30862092922dde33732255072deaeeedc3268e9d11a43a6805d4cb19"
+    },
+    {
+      "file": "package-size-20.json.gz",
+      "sha256": "747c765f8335f281b8d7825c7361686cb94bdf27ff8d10d628af7576e933ef49"
+    },
+    {
+      "file": "package-size-22.json.gz",
+      "sha256": "86194b7152ebb4cb606f4f8504c8e3bf4a309b3b1d1686f6048a186ca80bb03e"
+    },
+    {
+      "file": "package-size-24.json.gz",
+      "sha256": "1ad03ad5096c90431dd44cdb2d91cff5a0d3a4c1ac055918ea8db8c4a9b195cc"
+    },
+    {
+      "file": "package-source-inputs.json.gz",
+      "sha256": "96f62ac248d562052a1ffb8976765e9a503d4ddd8f2e5ada636126aa7559c2d7"
+    },
+    {
+      "file": "package.json.gz",
+      "sha256": "0d7f2dec709a49ebacd8f80f606782495b389a8fa388fa530383585a4b7a1c73"
+    },
+    {
+      "file": "source-bundles-20.json.gz",
+      "sha256": "63e93b6254a754c09247276e9a9deabec0565c64f2cc22cb0d3f91f5184fe09b"
+    },
+    {
+      "file": "source-bundles-22.json.gz",
+      "sha256": "cf3ab41b71f3bd4b86035c3cf579031e649b57731a0af9eff21baea222d562a0"
+    },
+    {
+      "file": "source-bundles-24.json.gz",
+      "sha256": "a46e4dc136b9d8fcea3999eaa18e5dfa44a83b901f03020239b8b38974bf54a6"
+    }
+  ],
+  "visual": [
+    {
+      "path": ".artifacts/test/png/charts/geographic-marks/geographic-annotations/labels/user-facing.png",
+      "sha256": "c9b1e048c5088335968959d2b9961107a5c397e6b13215816377d10376af8dad",
+      "review": "직접 이미지 확인: feature 이름 West/Central/East와 longitude -40/0/40이 independent primitive의 좌표·스타일과 일치."
+    },
+    {
+      "path": ".artifacts/test/png/charts/geographic-marks/geographic-grid/grid-labels/user-facing.png",
+      "sha256": "5f6bcbaebf3ef0e8c9257e6d931020c28ab1e911c5e2c2a5e8f15e519940d90e",
+      "review": "직접 이미지 확인: feature 이름 West/Central/East와 longitude -40/0/40이 independent primitive의 좌표·스타일과 일치."
+    }
+  ]
+}
