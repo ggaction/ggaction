@@ -12,3 +12,8 @@ p.editMarkSelection({target:{childPath:['left']},selection:'picked',items,mode:'
 p.selectMarks({items:[],field:'x',op:'eq',value:1});
 // @ts-expect-error selection update mode is closed
 p.editMarkSelection({items:[],mode:'compose'});
+
+p.selectMarks({field:'x',op:'range',min:0,minInclusive:false});
+p.editMarkSelection({field:'x',op:'range',max:4,maxInclusive:true});
+// @ts-expect-error closure forms cannot mix
+p.selectMarks({field:'x',op:'range',min:0,inclusive:true,minInclusive:false});

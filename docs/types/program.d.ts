@@ -1425,12 +1425,7 @@ export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[];
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;

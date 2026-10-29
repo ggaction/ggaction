@@ -7,7 +7,9 @@
 - [x] A: logical item keys, 다섯 집합 update mode, empty 정책, scoped identity 구현
 - [x] A: 조건부 인코딩·라벨·필터·복합 하이라이트·resize·revision·codec 회귀
 - [x] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
-- [ ] B: typed range의 독립 endpoint inclusive flags와 AST predicate/parameter closure
+- [x] B1: typed range의 독립 endpoint inclusive flags 및 단일 경계 구현
+- [ ] B1: focused/realistic/타입·패키지·Current·문서 qualification
+- [ ] B2: AST predicate/parameter closure
 - [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, session commands/bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료

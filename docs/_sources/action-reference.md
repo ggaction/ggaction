@@ -3641,7 +3641,9 @@ Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
-values, and properties are concrete graphical values.
+values, and properties are concrete graphical values. A range requires `min` or
+`max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
+or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 ### `editMarkSelection`

@@ -2200,12 +2200,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 </details>
 

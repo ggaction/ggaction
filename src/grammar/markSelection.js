@@ -1,3 +1,4 @@
+import { normalizeOrderedRange, orderedRangeContains } from "./orderedRange.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
 import { normalizeSelectionKeys, normalizeSelectionEmpty } from "./selectionSet.js";
@@ -56,7 +57,7 @@ export const MARK_SELECTOR_KEYS = Object.freeze([
   "values",
   "min",
   "max",
-  "inclusive",
+  "inclusive", "minInclusive", "maxInclusive",
   "count",
   "groupBy",
   "ties"
@@ -153,7 +154,7 @@ export function normalizeMarkSelector(selector) {
   const allowedByOperation = RANK_OPERATORS.has(op)
     ? new Set(["grain", source, "op", "count", "groupBy", "ties"])
     : op === "range"
-      ? new Set(["grain", source, "op", "min", "max", "inclusive"])
+      ? new Set(["grain", source, "op", "min", "max", "inclusive", "minInclusive", "maxInclusive"])
       : op === "oneOf"
         ? new Set(["grain", source, "op", "values"])
         : new Set(["grain", source, "op", "value"]);
@@ -182,24 +183,13 @@ export function normalizeMarkSelector(selector) {
   }
 
   if (op === "range") {
-    const min = validateOrderedValue(selector.min, "Selector range min");
-    const max = validateOrderedValue(selector.max, "Selector range max");
-    if (typeof min !== typeof max) {
-      throw new TypeError("Selector range endpoints must have one type.");
-    }
-    if (min > max) {
-      throw new RangeError("Selector range min must not exceed max.");
-    }
-    if (selector.inclusive !== undefined && typeof selector.inclusive !== "boolean") {
-      throw new TypeError("Selector range inclusive must be a boolean.");
-    }
-    return cloneAndFreeze({
-      grain,
-      [source]: sourceValue,
-      op,
-      min,
-      max,
-      inclusive: selector.inclusive ?? true
+    const range = Object.fromEntries(["min", "max", "inclusive", "minInclusive", "maxInclusive"]
+      .filter(key => Object.hasOwn(selector, key)).map(key => [key, selector[key]]));
+    const normalized = normalizeOrderedRange(range, "Selector range");
+    const legacy = Object.hasOwn(selector, "min") && Object.hasOwn(selector, "max") &&
+      selector.minInclusive === undefined && selector.maxInclusive === undefined;
+    return cloneAndFreeze({ grain, [source]: sourceValue, op,
+      ...(legacy ? { min: selector.min, max: selector.max, inclusive: selector.inclusive ?? true } : normalized)
     });
   }
 
@@ -278,14 +268,7 @@ function matches(value, selector) {
   if (selector.op === "eq") return value === selector.value;
   if (selector.op === "neq") return value !== selector.value;
   if (selector.op === "oneOf") return selector.values.includes(value);
-  if (selector.op === "range") {
-    if (!comparable(value, selector.min) || !comparable(value, selector.max)) {
-      return false;
-    }
-    return selector.inclusive
-      ? value >= selector.min && value <= selector.max
-      : value > selector.min && value < selector.max;
-  }
+  if (selector.op === "range") return orderedRangeContains(value, selector);
   if (!comparable(value, selector.value)) return false;
   if (selector.op === "gt") return value > selector.value;
   if (selector.op === "gte") return value >= selector.value;

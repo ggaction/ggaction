@@ -29,13 +29,13 @@ Choose exactly one value source:
 | --- | --- | --- |
 | `eq`, `neq`, `gt`, `gte`, `lt`, `lte` | `value` | Strict comparison without coercion |
 | `oneOf` | `values` array | Strict set membership |
-| `range` | `min`, `max`, optional `inclusive` | Both endpoints included by default |
+| `range` | At least one of `min`, `max`; optional endpoint flags | Both endpoints included by default |
 | `min`, `max` | optional `count`, `groupBy`, `ties` | `count: 1`, `ties: "first"` |
 
 Operators are strict
 `eq | neq | gt | gte | lt | lte`, set membership with
 `{ op: "oneOf", values }`, range selection with
-`{ op: "range", min, max, inclusive? }`, or ranked selection with
+`{ op: "range", min?, max?, minInclusive?, maxInclusive? }`, or ranked selection with
 `{ op: "min" | "max", count?, groupBy?, ties? }`. `count` defaults to `1`,
 `ties` to `"first"`, and `inclusive` to `true`. Values are semantic data
 values without coercion. The default `grain: "item"` selects one point symbol,
@@ -44,6 +44,14 @@ line/area series path, one arc sector, or one rule line.
 Stacked bars additionally accept `grain: "stack"` to treat all segments in one
 bin or category as a single item. A multi-row path field or channel must have
 one unique value at series grain.
+
+A range needs at least one endpoint. For example, `min: 10, max: 20,
+minInclusive: true, maxInclusive: false` selects values from 10 up to, but
+excluding, 20. Omit one endpoint for a one-sided range. The existing
+`inclusive` shorthand sets both ends together; do not combine it with endpoint
+flags. Each endpoint defaults to included, and a flag requires its endpoint.
+Numeric and string bounds compare only values of the same type. Use a temporal
+channel's epoch milliseconds for time ranges.
 
 Bar channel and graphical property names intentionally mean different things.
 For a vertical bar, semantic `y` is the lower/start endpoint and semantic `y2`

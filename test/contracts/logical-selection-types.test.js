@@ -23,6 +23,13 @@ p.highlightMarks({target:'points',select:{items},color:'red'});
 p.createMarkLabels({source:'points',field:'name',select:{items}});
 p.selectMarks({target:{childPath:['left'],id:'points'},items});
 p.editMarkSelection({target:{childPath:['left']},selection:'picked',items,mode:'subtract'});
+p.selectMarks({field:'x',op:'range',min:0,minInclusive:false});
+p.editMarkSelection({field:'x',op:'range',max:4,maxInclusive:true});
+p.filterMarks({field:'x',op:'range',min:0,max:4,minInclusive:false,maxInclusive:true});
+// @ts-expect-error shorthand and endpoint closure cannot mix
+p.selectMarks({field:'x',op:'range',min:0,max:1,inclusive:true,minInclusive:false});
+// @ts-expect-error a range needs at least one endpoint
+p.selectMarks({field:'x',op:'range'});
 // @ts-expect-error logical keys and value predicates are mutually exclusive
 p.selectMarks({items:[],field:"x",op:"gt",value:1});
 // @ts-expect-error row indices are not logical keys

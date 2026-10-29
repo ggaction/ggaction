@@ -3475,3 +3475,9 @@ Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,0
 SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
 Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
 Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
+
+### Ordered range 계산 owner
+
+`grammar/orderedRange.js`는 data filter와 final-item mark selector의 숫자·문자열 endpoint 검증 및 포함 판정을 함께 소유한다.
+Mark selector는 기존 normalized inclusive 저장 형태를 보존하고 새로운 개별 endpoint 표기만 정규화한다.
+Resource lifecycle과 materializer는 그대로이며 정확한 공개 범위 옵션은 MARK_SELECTION과 data filter Current 계약을 따른다.

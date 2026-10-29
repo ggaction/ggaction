@@ -27647,21 +27647,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -27675,6 +27660,31 @@
           "name": "ties",
           "required": false,
           "type": "\"all\" | \"first\" | undefined"
+        },
+        {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
@@ -27879,21 +27889,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -27907,6 +27902,31 @@
           "name": "ties",
           "required": false,
           "type": "\"all\" | \"first\" | undefined"
+        },
+        {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
@@ -28048,21 +28068,6 @@
           "type": "readonly unknown[]"
         },
         {
-          "name": "min",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "max",
-          "required": false,
-          "type": "string | number"
-        },
-        {
-          "name": "inclusive",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -28076,6 +28081,31 @@
           "name": "ties",
           "required": false,
           "type": "\"all\" | \"first\" | undefined"
+        },
+        {
+          "name": "min",
+          "required": false,
+          "type": "FilterBound"
+        },
+        {
+          "name": "max",
+          "required": false,
+          "type": "FilterBound | undefined"
+        },
+        {
+          "name": "inclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "minInclusive",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxInclusive",
+          "required": false,
+          "type": "boolean | undefined"
         },
         {
           "name": "target",

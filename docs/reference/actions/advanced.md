@@ -94,12 +94,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 </details>
 
@@ -115,7 +117,9 @@ Use `{ items: logicalKeys, empty?: "none" | "all" }` for opaque keys returned by
 Supported operators are `eq`, `neq`, `gt`, `gte`, `lt`, `lte`, `oneOf`,
 `range`, `min`, and `max`. `grain` defaults to `"item"`; stacked bars also
 support `"stack"`. Fields are data values, channels are pre-scale semantic
-values, and properties are concrete graphical values.
+values, and properties are concrete graphical values. A range requires `min` or
+`max` and accepts independent `minInclusive`/`maxInclusive` flags (default true),
+or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
 
@@ -150,12 +154,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>

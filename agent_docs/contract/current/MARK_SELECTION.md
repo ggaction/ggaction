@@ -46,7 +46,7 @@ type MarkSelector =
   & (
     | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
     | { op: "oneOf"; values: readonly unknown[] }
-    | { op: "range"; min: Finite | string; max: Finite | string; inclusive?: boolean }
+    | ({ op: "range" } & FilterRange)
     | {
         op: "min" | "max";
         count?: PositiveInteger;
@@ -61,8 +61,12 @@ type MarkSelector =
   scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다. Rect도 공통 channel resolver를 사용하여
   temporal field/datum과 color/stroke를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
   근거: `test/unit/actions/marks/rect-span.test.js`.
-- `range`의 `inclusive` 기본값은 `true`다. Ordered comparison은 같은 type의 finite number 또는 string만
-  비교하고 missing/incompatible item은 제외한다.
+- `range`는 `min` 또는 `max`를 하나 이상 받는다. 두 endpoint는 같은 type의 finite number 또는 string이어야 한다.
+  기본은 양끝 포함이다. `inclusive`로 양끝을 한 번에 지정하거나 `minInclusive`/`maxInclusive`로 각 끝을 지정한다.
+  두 표기를 함께 쓰거나 없는 endpoint의 flag를 주면 거부한다. 한쪽 경계만 있으면 반대쪽은 제한하지 않는다.
+  Ordered comparison은 타입을 변환하지 않으며 missing/nonfinite/incompatible item은 제외한다.
+  기존 양끝+inclusive selector의 저장 형태는 유지하고, 새로운 표기는 normalized endpoint flags만 저장한다.
+  Data filter와 final-item selector는 같은 ordered-range 계산 owner를 사용한다. Date는 기존 channel의 epoch ms로 비교한다.
 - `min | max`의 `count` 기본값은 `1`, `ties` 기본값은 `"first"`다. `"first"`는 stable source order로
   정확히 count개를 고르고 `"all"`은 boundary tie를 모두 포함할 수 있다. `groupBy`는 extrema에만 유효하다.
 - `grain` 기본값은 `"item"`이다. Item grain은 point symbol, final bar segment/rectangle, observed rect cell, line/area series path,

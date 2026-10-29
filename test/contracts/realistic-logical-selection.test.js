@@ -35,6 +35,22 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.ok(getMarkItems(all,{target:"mark"}).every(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")));
    assert.equal(serializeProgram(q),saved);
    assert.deepEqual(getMarkItems(q.editCanvas({width:600}),{target:"mark"}).map(item=>item.key),keys);
+   const domain=[...new Set(items.map(item=>item.fields.category))].sort();
+   assert.ok(domain.length>=2);
+   const min=domain[0],max=domain.at(-1);
+   for(const [range,predicate] of [
+    [{min,max,minInclusive:false,maxInclusive:true},value=>value>min&&value<=max],
+    [{min,max,minInclusive:true,maxInclusive:false},value=>value>=min&&value<max],
+    [{min,minInclusive:false},value=>value>min],
+    [{max,maxInclusive:false},value=>value<max]
+   ]) {
+    const ranged=p.highlightMarks({id:"rangePicked",target:"mark",select:{field:"category",op:"range",...range},color:"#ef4444",bringToFront:false});
+    const expected=items.filter(item=>predicate(item.fields.category)).map(item=>item.key);
+    const actual=getMarkItems(deserializeProgram(serializeProgram(ranged)),{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+    assert.deepEqual(actual,expected);
+    const edited=ranged.editMarkSelection({selection:"rangePicked",field:"category",op:"range",...range});
+    assert.equal(edited.semanticSpec.resources.find(r=>r.id==="rangePicked").revision,1);
+   }
    witnessed.add(`${dataset}/${recipe}`);
   } finally {releaseTidyTuesdaySourceCache(dataset);}
  });

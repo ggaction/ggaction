@@ -8659,12 +8659,7 @@ export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[];
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
   | { op: "oneOf"; values: readonly unknown[] }
-  | {
-      op: "range";
-      min: number | string;
-      max: number | string;
-      inclusive?: boolean;
-    }
+  | ({ op: "range" } & FilterRange)
   | {
       op: "min" | "max";
       count?: number;
@@ -8674,7 +8669,7 @@ export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[];
 );
 ```
 
-Related types: [`MarkGraphicProperty`](../../../reference/types/#type-markgraphicproperty).
+Related types: [`MarkGraphicProperty`](../../../reference/types/#type-markgraphicproperty) · [`FilterRange`](../../../reference/types/#type-filterrange).
 
 ### `MarkShadow` {#type-markshadow}
 
