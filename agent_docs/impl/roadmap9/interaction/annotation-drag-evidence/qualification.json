@@ -1,6 +1,6 @@
 {
   "parent": "af2891a016f4d39e64fb6eeb8d8d73ec668ad3d7",
-  "sourceCommit": null,
+  "sourceCommit": "df83023a491125dd68d3b2716e7133afdfe09e81",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Annotation pointer binding reuses native dx/dy editors while preserving screen/data/plot/item/feature anchors. The explicit layer is the edit unit. Node and annotation reuse one bounded committed-frame/coordinate owner; session preview and exact hit frame share the same native materialization. No stored schema or renderer changes.",
   "runtimeAndTypesFingerprint": "ffb2584e38f34ceb75b92f603ab4cf4e9baece0f866a8ac591deefcceef8e3f7",
@@ -59,7 +59,11 @@
         1440
       ],
       "axeViolations": 0,
-      "visualReuse": "Same documentation layout and controls; E8 mobile layout inspection remains valid. Current viewport screenshots and browser interactions are preserved."
+      "visualReuse": "Same documentation layout and controls; E8 mobile layout inspection remains valid. Current viewport screenshots and browser interactions are preserved.",
+      "finalOwning": 34,
+      "sourcePinned": 47,
+      "finalBuiltPages": 172,
+      "finalLlmArtifacts": 1531
     },
     "installed": [
       {
@@ -292,8 +296,16 @@
       "sha256": "39aa4724275b47b254597993a8cc3ec7cdb13b139ccdf2f472f4451d3ae4260e"
     },
     {
+      "path": "annotation-drag-build-final.log.gz",
+      "sha256": "1cd652023063ac29711d7bf2d218f67fe4d8dff51a4f3dc385af5f3b7bd79992"
+    },
+    {
       "path": "annotation-drag-build.log.gz",
       "sha256": "c767026aa86db4edfaebe1b32de49b7e31ec6b63bb880dc77094bf11f47f4b9e"
+    },
+    {
+      "path": "annotation-drag-built-final.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
     },
     {
       "path": "annotation-drag-built.log.gz",
@@ -340,6 +352,10 @@
       "sha256": "915f57ea7269e36cc03783ae18377b6e4f18441c15ed81ce51370dde99caa8e8"
     },
     {
+      "path": "annotation-drag-docs-pinned.log.gz",
+      "sha256": "e9dbb3b8ebf5a80fcfdd32a8fc96d88d836567153b40060b06de65079cff53c2"
+    },
+    {
       "path": "annotation-drag-docs.log.gz",
       "sha256": "8c6f33d71e92d65ca0618c5ad517fc61547608e39cb9ed5df3c9c6a28374a3bf"
     },
@@ -374,6 +390,10 @@
     {
       "path": "annotation-drag-pack.log.gz",
       "sha256": "891c04fc0da3af44776a00e208dcf4d9fe1d0505c4eb3ff95ee9ea3a495a3c54"
+    },
+    {
+      "path": "annotation-drag-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
     },
     {
       "path": "annotation-drag-qualify.py.gz",
