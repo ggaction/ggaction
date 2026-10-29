@@ -1,0 +1,765 @@
+{
+  "source": "f55f12db2",
+  "baseline": "49514367a",
+  "scope": "Native geographic coordinate and shape/point/line/graticule consumers",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "qualificationKind": "Focused conceptual checkpoint; whole Geo join/LOD/camera integration remains open",
+  "checks": {
+    "marks-focused-coverage-third": {
+      "tests": 81,
+      "pass": 81,
+      "fail": 0
+    },
+    "marks-all-unit": {
+      "tests": 6471,
+      "pass": 6467,
+      "fail": 4
+    },
+    "marks-row-lineage-repair": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "marks-unit-boundary-repair-qualified": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    "marks-contracts-current": {
+      "tests": 40,
+      "pass": 40,
+      "fail": 0
+    },
+    "marks-package-contracts": {
+      "tests": 35,
+      "pass": 35,
+      "fail": 0
+    },
+    "marks-action-contracts": {
+      "tests": 20,
+      "pass": 19,
+      "fail": 1
+    },
+    "marks-action-catalog-repair": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0
+    },
+    "marks-realistic-first": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0
+    },
+    "marks-projection-responsive": {
+      "tests": 31,
+      "pass": 31,
+      "fail": 0
+    },
+    "marks-inventory-first": {
+      "tests": 10,
+      "pass": 9,
+      "fail": 1
+    },
+    "marks-inventory-repair": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    "marks-visual-fourth": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    "marks-render-first": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0
+    },
+    "marks-browser-first": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    "marks-docs-first": {
+      "tests": 192,
+      "pass": 187,
+      "fail": 5
+    },
+    "marks-docs-postcommit": {
+      "tests": 193,
+      "pass": 193,
+      "fail": 0
+    }
+  },
+  "coverage": {
+    "scope": "28 Geo action/grammar/materialization/selection owners; not global source coverage",
+    "tests": 81,
+    "lines": 100,
+    "branches": 98.27,
+    "functions": 100,
+    "familyFloor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "floorChanges": "No existing family or global floor lowered."
+  },
+  "normalUnit": {
+    "original": {
+      "total": 6471,
+      "passed": 6467,
+      "failed": 4
+    },
+    "wholeSuiteRerun": false,
+    "owningRepairChecks": [
+      6,
+      7
+    ],
+    "runtimeChangedForRepairs": false,
+    "originalFailures": [
+      "row-lineage transformed-resource fixture assumed every resource was a layout",
+      "closed mark vocabulary expectation omitted geo",
+      "browser bundling allowlist omitted the approved pure math dependency manifest",
+      "realistic timing inventory omitted geographic marks and earlier projection/responsive test durations"
+    ]
+  },
+  "archive": {
+    "sha256": "b095b300987e6216c17588a83e686311f8278f933d89d09312980ee55a50067a",
+    "entries": 1007,
+    "packedBytes": 1431523,
+    "unpackedBytes": 6537812,
+    "inputParity": {
+      "entries": 1007,
+      "delta": []
+    }
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "b095b300987e6216c17588a83e686311f8278f933d89d09312980ee55a50067a",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/full-basic-coordinates-and-consumers",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/fresh-process-offline-edit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/four-renderers-scene-and-holes",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 931,
+          "minifiedBytes": 2483390,
+          "gzipBytes": 711598
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 550,
+          "minifiedBytes": 1297280,
+          "gzipBytes": 378601
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 164,
+          "minifiedBytes": 310241,
+          "gzipBytes": 101188
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 77,
+          "minifiedBytes": 141766,
+          "gzipBytes": 42573
+        }
+      },
+      "types": "strict Full/Basic geographic consumer passed",
+      "snippets": [
+        "tutorials/geographic-marks.md",
+        "geographic-coordinate-mark"
+      ]
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "b095b300987e6216c17588a83e686311f8278f933d89d09312980ee55a50067a",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/full-basic-coordinates-and-consumers",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/fresh-process-offline-edit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/four-renderers-scene-and-holes",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 931,
+          "minifiedBytes": 2483390,
+          "gzipBytes": 709758
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 550,
+          "minifiedBytes": 1297280,
+          "gzipBytes": 377748
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 164,
+          "minifiedBytes": 310241,
+          "gzipBytes": 100699
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 77,
+          "minifiedBytes": 141766,
+          "gzipBytes": 42417
+        }
+      },
+      "types": "strict Full/Basic geographic consumer passed",
+      "snippets": [
+        "tutorials/geographic-marks.md",
+        "geographic-coordinate-mark"
+      ]
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "b095b300987e6216c17588a83e686311f8278f933d89d09312980ee55a50067a",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/full-basic-coordinates-and-consumers",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/fresh-process-offline-edit",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-marks/four-renderers-scene-and-holes",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 931,
+          "minifiedBytes": 2483390,
+          "gzipBytes": 711598
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 550,
+          "minifiedBytes": 1297280,
+          "gzipBytes": 378601
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 164,
+          "minifiedBytes": 310241,
+          "gzipBytes": 101188
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 77,
+          "minifiedBytes": 141766,
+          "gzipBytes": 42573
+        }
+      },
+      "types": "strict Full/Basic geographic consumer passed",
+      "snippets": [
+        "tutorials/geographic-marks.md",
+        "geographic-coordinate-mark"
+      ]
+    }
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1007,
+      "packedBytes": 1434112,
+      "unpackedBytes": 6537812
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1007,
+      "packedBytes": 1431523,
+      "unpackedBytes": 6537813
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1007,
+      "packedBytes": 1434111,
+      "unpackedBytes": 6537812
+    }
+  },
+  "docs": {
+    "sourceTests": 193,
+    "builtPages": 172,
+    "selectiveArtifacts": 1503,
+    "responsiveBrowser": "passed: desktop search and every documentation page at 320, 390, 768 CSS px; exit 0"
+  },
+  "originalFailures": [
+    "Precommit documentation 187/192: search cap, example registration/freshness, uncommitted example provenance and snippet coverage; postcommit 193/193 passed.",
+    "Action contract 19/20: missing internal materializeGeoMark row; owning action-catalog 11/11 passed.",
+    "Realistic inventory 9/10: stale excluded-option count; owning inventory 7/7 passed.",
+    "Intermediate failed focused and visual runs are retained verbatim; only the final named passing runs qualify this source."
+  ],
+  "remaining": [
+    "Latest parent main merge and affected interaction/bootstrap closure checks.",
+    "Typed geometry-table join, hierarchy/shared-arc LOD, Geo field appearance/guide/labels, camera and current-frame integration.",
+    "Final Geo complete normal/global coverage/render/browser qualification.",
+    "Parent owns combined realistic lifecycle-factor-effects, scenario-generator, scenario-generation-isolation once after integration."
+  ],
+  "commands": {
+    "normal": "node scripts/run-tests.js unit",
+    "geoRealistic": "node scripts/run-tests.js realistic contracts/realistic-geographic-marks.test.js",
+    "inventoryRepair": "node scripts/run-tests.js realistic contracts/generated-scenario-feature-coverage.test.js",
+    "actionCatalogRepair": "node scripts/run-tests.js contracts contracts/action-catalog.test.js",
+    "docs": "npm run docs:generate && npm run test:docs",
+    "built": "PATH=/opt/homebrew/opt/ruby@3.2/bin:$PATH npm run docs:build && node scripts/check-built-docs.js _site && node scripts/test-built-docs.js _site",
+    "installed": "node .artifacts/geo/run-marks-installed.mjs"
+  },
+  "logs": [
+    {
+      "file": "marks-action-catalog-repair.log.gz",
+      "sha256": "b80fc8d7d672bae50c5a5cb854983b730fcdc2e5455b2965bf724c15a2caa03d"
+    },
+    {
+      "file": "marks-action-contracts.log.gz",
+      "sha256": "bd6cfc17a9b1a87819ad8cb6d2123c41e5f9216140b216121eaa179df7b0c399"
+    },
+    {
+      "file": "marks-all-unit.log.gz",
+      "sha256": "30dac8e55660e2dad33fba8846e8a23f459bcbc9529d75731aca0fd52823c241"
+    },
+    {
+      "file": "marks-browser-first.log.gz",
+      "sha256": "429696d3f2db80e4abb595e0bc7f9ced7d2f404895230069f5fb09a684fd1b7b"
+    },
+    {
+      "file": "marks-build-first.log.gz",
+      "sha256": "8c8c7543e76d1e8273b87a7ac84433310123b058de7374a16d22decd42de3d0a"
+    },
+    {
+      "file": "marks-build-postcommit.log.gz",
+      "sha256": "66149439809f64b1f97cadd100486c934a5e850c38d4a4d592fd944a4ce1e77c"
+    },
+    {
+      "file": "marks-built-browser-first.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85"
+    },
+    {
+      "file": "marks-built-browser-postcommit.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85"
+    },
+    {
+      "file": "marks-built-first.log.gz",
+      "sha256": "820601166d5118eaef727cfa0b7b65c75e0874c571d1238e24ae87281bc6fe93"
+    },
+    {
+      "file": "marks-built-postcommit.log.gz",
+      "sha256": "820601166d5118eaef727cfa0b7b65c75e0874c571d1238e24ae87281bc6fe93"
+    },
+    {
+      "file": "marks-contracts-3.log.gz",
+      "sha256": "7c044c72179778ae2efd672c7f0d8203ba98e77abfe3279a309d8175d59edffb"
+    },
+    {
+      "file": "marks-contracts-4.log.gz",
+      "sha256": "03a0daa4521707f70243106ca0b620067f5918d88054cea7a558c84cc4217bdf"
+    },
+    {
+      "file": "marks-contracts-current.log.gz",
+      "sha256": "8964ab243b6fda03233a4a9798b4e0a5271302ccb2733a101cac1d8f3204d31e"
+    },
+    {
+      "file": "marks-coordinate-unit-2.log.gz",
+      "sha256": "b3cbf8060610508b76b5bacee0cae90b9fc4283d24cb639386bb5bdabf4cefbf"
+    },
+    {
+      "file": "marks-coordinate-unit.log.gz",
+      "sha256": "fdec4dd1d2745b64e7fe4182abbec60b6fbb7fd4281bad815b837159de7bded8"
+    },
+    {
+      "file": "marks-docs-first.log.gz",
+      "sha256": "cc988b30386359ca8db23993390991b6fcbe393242021630dff34e879d25cc13"
+    },
+    {
+      "file": "marks-docs-postcommit.log.gz",
+      "sha256": "027b7f26569e006f518a73192cec01bb751d47614635ae74c9562ba0f92957de"
+    },
+    {
+      "file": "marks-final-browser.receipt.json.gz",
+      "sha256": "5765ba19a71edc60f5bd49f497fad52b08bdd061a3b8054cb75e5879f42b11d0"
+    },
+    {
+      "file": "marks-final-charts.receipt.json.gz",
+      "sha256": "1fb8c436ed2b1d2b6487f3324770fb4ccb245a9e77233d18e3aeaadac30b9e15"
+    },
+    {
+      "file": "marks-final-contracts.receipt.json.gz",
+      "sha256": "a500cc55d0deebb0bd378a7831717014beaf98e51a2f5eec0a9fccf662cba7df"
+    },
+    {
+      "file": "marks-final-docs.receipt.json.gz",
+      "sha256": "f09d7a15cf2a5542f64d82ea8cfcb701510ab5663d3438687b85c3a02a62ecca"
+    },
+    {
+      "file": "marks-final-realistic.receipt.json.gz",
+      "sha256": "aa12d8f4116ce33ac0e90728ee7e94727b3ecb8c85200f8d1ba0e22ea2f28108"
+    },
+    {
+      "file": "marks-final-render.receipt.json.gz",
+      "sha256": "2bd9a1e282e5a706553c8537127db205cebe7fbc522ae5c7918e76b24db38ffa"
+    },
+    {
+      "file": "marks-final-unit.receipt.json.gz",
+      "sha256": "c698f4c172f6dd8c966bb63fed5653edf3be9f33792d01531988c376377e08c0"
+    },
+    {
+      "file": "marks-first.log.gz",
+      "sha256": "a204b8b0bd7a77fe4064df3518039f824028b80bf00ab70d82ae835bb94eaf6c"
+    },
+    {
+      "file": "marks-focused-coverage-first.log.gz",
+      "sha256": "a6372a4f978784825658b4e5ae542a70c6cceb75bd24d08ed9192209592bf164"
+    },
+    {
+      "file": "marks-focused-coverage-metrics.json.gz",
+      "sha256": "665d158f04726ed4fc7faf048e117e85730e1b48ace8a967b37f8c324d743e8d"
+    },
+    {
+      "file": "marks-focused-coverage-second.log.gz",
+      "sha256": "ff0a39feffcc6fdcc93d39bca5e8d259f481ffeb51476223eb80cb74ba0b5968"
+    },
+    {
+      "file": "marks-focused-coverage-third.log.gz",
+      "sha256": "91f2db404af0c6036ee43080961917dcc2d2090b43e4f83ec6d02a035a95a2da"
+    },
+    {
+      "file": "marks-generation-final.log.gz",
+      "sha256": "46c4a36733e765e5b8a84184b3e1977c843bd462ebed2bd3117f83aafc523352"
+    },
+    {
+      "file": "marks-generation-first.log.gz",
+      "sha256": "12413030a201c4b7483e42b0e192d8de6d4e84976ce0176ffda3d6cb0d941147"
+    },
+    {
+      "file": "marks-generation-postcommit.log.gz",
+      "sha256": "46c4a36733e765e5b8a84184b3e1977c843bd462ebed2bd3117f83aafc523352"
+    },
+    {
+      "file": "marks-generation-second.log.gz",
+      "sha256": "46c4a36733e765e5b8a84184b3e1977c843bd462ebed2bd3117f83aafc523352"
+    },
+    {
+      "file": "marks-input-parity.json.gz",
+      "sha256": "917a3403a9808f2ab6a4cf83da4ad319c417b6de48da7317d8b8204a3180f625"
+    },
+    {
+      "file": "marks-installed-20.exit.json.gz",
+      "sha256": "bf4319ef9a3f7652b479cc4812da1074cc87c813c1a0803750773cb4c0f1e4d3"
+    },
+    {
+      "file": "marks-installed-20.json.gz",
+      "sha256": "bf054f61aa2c5833d0f6fc353c0814d6449f24ce71f5a93003600a3b71cbb8bb"
+    },
+    {
+      "file": "marks-installed-20.log.gz",
+      "sha256": "517b8bde1e1b0ebbcc1b88e15a24f39c4f6dc26bb9f8faeb8de266942b2e3487"
+    },
+    {
+      "file": "marks-installed-22.exit.json.gz",
+      "sha256": "bd275e2ca55ff1b456432e930e19d1b2603835163f8e86d7769b27fb834b9a79"
+    },
+    {
+      "file": "marks-installed-22.json.gz",
+      "sha256": "a9205bf21558f339eee1a53eee327b49472ac2862a95e773eac7dde255271b7d"
+    },
+    {
+      "file": "marks-installed-22.log.gz",
+      "sha256": "7c553265cffcc7322a72a08f01852939f929d1d827db85828f6fb6080236bb61"
+    },
+    {
+      "file": "marks-installed-24.exit.json.gz",
+      "sha256": "41db1bac82579f0543120d1c5463c1644de4ae6916a11d360f1ca7150a251a72"
+    },
+    {
+      "file": "marks-installed-24.json.gz",
+      "sha256": "2e7e5bead17dd8767088a95077145b1335418a8b9b51d3863bab7f9dfd44e0a4"
+    },
+    {
+      "file": "marks-installed-24.log.gz",
+      "sha256": "d5351ff4dd1b201d34a851d0b004042439322d64b505a4a16de63f98ac487884"
+    },
+    {
+      "file": "marks-installed.mjs.gz",
+      "sha256": "7c318eb921d5a5e5b226497ec674b5dea0341c9ed8a9757e72fd51448dad4bc0"
+    },
+    {
+      "file": "marks-inventory-first.log.gz",
+      "sha256": "68b308eb920b06c4e33c468c7a283645d00f95774da1a59abecf5e7565a3b0d0"
+    },
+    {
+      "file": "marks-inventory-repair.log.gz",
+      "sha256": "ade80679293c81b6d73167581f4cbb8ee52be8629b79303735636d44b8572dd2"
+    },
+    {
+      "file": "marks-package-contracts.log.gz",
+      "sha256": "0cd2d4acba4b895b0be5106845c4a776e2f23c6dc4e6ebb5d2c8bf6e8d9fc22b"
+    },
+    {
+      "file": "marks-package-size-20.json.gz",
+      "sha256": "6e010e4c2ba1cc0ee852357784ebbf6109d3fbcbe736201818db6514734cca28"
+    },
+    {
+      "file": "marks-package-size-24.json.gz",
+      "sha256": "d52a086c8f7cbd492208e783e78430d6085011b9a7ad19b458e3bcee5116a115"
+    },
+    {
+      "file": "marks-package-size.json.gz",
+      "sha256": "d8ac475a913ae1450b4e8be9e74a1256ae812a4ee2f18354e9d25ebd29d3e978"
+    },
+    {
+      "file": "marks-package.json.gz",
+      "sha256": "c557104f17cc33410ea2d9e9aecd3767736deef60729e0cfcfcfac7e716cd2b0"
+    },
+    {
+      "file": "marks-packed-inputs.json.gz",
+      "sha256": "a298c262475b9f40a8324068510088d27a3af51bf2f6261a65206c710f1b8301"
+    },
+    {
+      "file": "marks-projection-responsive.log.gz",
+      "sha256": "36bcec470b6c19fb2d3db9971f2d1e4414085a532f769119aef3b9073fb5fb5c"
+    },
+    {
+      "file": "marks-realistic-first.log.gz",
+      "sha256": "371d94a2eddf1f008218b84253de847072a1548f21f61646a7056882e6a1d5ee"
+    },
+    {
+      "file": "marks-render-first.log.gz",
+      "sha256": "cef2f32cbccbf523daa27b80b6c1d5740fa098987c11d12ede11f0f4525f21aa"
+    },
+    {
+      "file": "marks-row-lineage-repair.log.gz",
+      "sha256": "54da555e47a2b389d86a7c05742040f3672db46c5bbd158a10b40837f0b49bf7"
+    },
+    {
+      "file": "marks-second.log.gz",
+      "sha256": "48859466ec8d72ffc1e1783943e1f01eebae164ebd1d648503cc44bf0454e3ad"
+    },
+    {
+      "file": "marks-size-20.log.gz",
+      "sha256": "e569d67755fdb90b057823f8311e27d3d7e432847e46bf7f491facb41a7d9f1d"
+    },
+    {
+      "file": "marks-size-24.log.gz",
+      "sha256": "20de28d06d1d2093ceaa1633a09d568dad18795b36ff2d88944551bc40dbf71b"
+    },
+    {
+      "file": "marks-size-first.log.gz",
+      "sha256": "25e281714b822c40d293bf01e719c0b1aab2938fba133b57f1ff8a5d24a1db20"
+    },
+    {
+      "file": "marks-source-bundles-20.json.gz",
+      "sha256": "24a9f130da9dfbaaac02b8d573c6d187a7afbf9727df1b66532047591cac2bdd"
+    },
+    {
+      "file": "marks-source-bundles-20.log.gz",
+      "sha256": "f8b50c219c10a58f9dab36366b9f353c58923adf2f0ae251aebc1986f7606e4a"
+    },
+    {
+      "file": "marks-source-bundles-22.json.gz",
+      "sha256": "4eebcadd4ae659c4a6d00dd30d71510ef3ad2f6542c784f70e50be343891c25c"
+    },
+    {
+      "file": "marks-source-bundles-22.log.gz",
+      "sha256": "175e021ddfc198bb9fe0ec173e7795ff23a904c02cb6a36997ca19e0642d541a"
+    },
+    {
+      "file": "marks-types-boundaries-2.log.gz",
+      "sha256": "28efa114d582725d1324c52958b3e901765273026d9fa4c69dec47034b0885b6"
+    },
+    {
+      "file": "marks-types-boundaries.log.gz",
+      "sha256": "e9068de1629e8fe93730f95265860aebaa460e4c9101f437537266f8653b2b71"
+    },
+    {
+      "file": "marks-unit-boundary-repair-final.log.gz",
+      "sha256": "b50c652e25cf8ac9d1718bf62f5054cb7fd8abefafb2130a7805166138e7b5ec"
+    },
+    {
+      "file": "marks-unit-boundary-repair-qualified.log.gz",
+      "sha256": "aac78a124b4e682b266f30dd0aec2c1215871150cab4ef36d6db5ef09b20780c"
+    },
+    {
+      "file": "marks-unit-boundary-repair.log.gz",
+      "sha256": "38a6e806efaa4afeb90207a75769f2e9f1c4833dcd686d800f572535c03a3160"
+    },
+    {
+      "file": "marks-visual-first.log.gz",
+      "sha256": "fb27d5815efe48c6b3a87eab04573d3c9cc43f86f81d15dadd12c83582922201"
+    },
+    {
+      "file": "marks-visual-fourth.log.gz",
+      "sha256": "f89990e12f9d8ddb06b92ac8af3e3621032483ed9c083d9b4286cd25a1172998"
+    },
+    {
+      "file": "marks-visual-second.log.gz",
+      "sha256": "a8b2d4faecab0d14d2dd4926f36db5fc43ce0f9a7acfcc44e5ff12fd1aa500c5"
+    },
+    {
+      "file": "marks-visual-third.log.gz",
+      "sha256": "569e364f8bc5f16b5596820030e12aef017f1da7394887b417d3d8141f2b90cb"
+    },
+    {
+      "file": "run-marks-installed.mjs.gz",
+      "sha256": "10f7ad537e0f239a76b77569769a0a28e46ace0a5e1b7d775e16d6bea3487053"
+    },
+    {
+      "file": "measure-marks-package.mjs.gz",
+      "sha256": "de291126dc71686cfde30171d98b0cfd40ca35e0b9ff2050a8cab5749dcfc531"
+    },
+    {
+      "file": "measure-marks-bundles.mjs.gz",
+      "sha256": "32e3820ff2a4a8b7f77ae891dea5bb27619b41a1bc7a8abc6aa66251eabf4c8c"
+    },
+    {
+      "file": "marks-final-realistic.receipt.json.gz",
+      "sha256": "aa12d8f4116ce33ac0e90728ee7e94727b3ecb8c85200f8d1ba0e22ea2f28108"
+    },
+    {
+      "file": "marks-final-browser.receipt.json.gz",
+      "sha256": "5765ba19a71edc60f5bd49f497fad52b08bdd061a3b8054cb75e5879f42b11d0"
+    },
+    {
+      "file": "marks-final-charts.receipt.json.gz",
+      "sha256": "1fb8c436ed2b1d2b6487f3324770fb4ccb245a9e77233d18e3aeaadac30b9e15"
+    },
+    {
+      "file": "marks-final-render.receipt.json.gz",
+      "sha256": "2bd9a1e282e5a706553c8537127db205cebe7fbc522ae5c7918e76b24db38ffa"
+    },
+    {
+      "file": "marks-final-unit.receipt.json.gz",
+      "sha256": "c698f4c172f6dd8c966bb63fed5653edf3be9f33792d01531988c376377e08c0"
+    },
+    {
+      "file": "marks-final-contracts.receipt.json.gz",
+      "sha256": "a500cc55d0deebb0bd378a7831717014beaf98e51a2f5eec0a9fccf662cba7df"
+    },
+    {
+      "file": "marks-final-docs.receipt.json.gz",
+      "sha256": "f09d7a15cf2a5542f64d82ea8cfcb701510ab5663d3438687b85c3a02a62ecca"
+    }
+  ]
+}

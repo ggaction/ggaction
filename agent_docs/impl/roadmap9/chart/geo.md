@@ -367,3 +367,9 @@ provenance를 재생성하고 최종 docs/built/browser 기록을 별도 evidenc
 `realistic-lifecycle-factor-effects.test.js`, `realistic-scenario-generator.test.js`,
 `realistic-scenario-generation-isolation.test.js`. 이 checkpoint 이후 typed join, shared-arc LOD,
 guide/labels, camera 및 current-frame 통합을 계속 진행하며 전체 STEP042–046 완료로 선언하지 않는다.
+
+최종 source `f55f12db2`의 postcommit 문서193/193, built172페이지/1503machine artifacts와
+desktop search 및 전체 페이지320/390/768px 검증이 통과했다. 현재1007개 packed input은
+동일 tar와 차이0이다. 최초 전체 unit4실패와 owning13개 수리, inventory·문서 원본실패와
+최종 통과를 구분한 증거는 `geo-evidence/marks/status.json`에 보존한다. 이 기록 commit은
+source를 바꾸지 않으며 source checkpoint와 최종 proof checkpoint는 별개다.
