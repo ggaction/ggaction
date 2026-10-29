@@ -460,3 +460,6 @@ Docs 최초196/202에서 search cap2건과 기존 Canvas-only scaffold의 host c
 전수 normal/coverage나 전체 installed matrix는 주장하지 않는다. Geo representationKeys session 결합,
 annotation 편집, pointer pan/pinch, camera/LOD, 일반 keyboard focus/history, pin 해제/auto-origin 정책과
 전체060/074/077 인수는 계속 후행 의무다.
+
+E3 source `e422f9ebc` push 뒤 provenance를 고정해 owning docs30과 built172pages/1509LLM을
+다시 통과했다. Runtime/타입/최종 archive 및 시각 입력이 같으므로 앞선 설치·네 폭Axe를 재사용한다.

@@ -1,6 +1,6 @@
 {
   "base": "94f9e887bbcd7e97bc30073ca79d82b5b76cf4f8",
-  "sourceCommit": null,
+  "sourceCommit": "e422f9ebcad968eb21d096aaa136e9b3674704a5",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Full fixed/force native single-node layout editing; explicit GraphPlot pointer/touch capture; same-baseline geometry preview/current hit scene, cancel restoration, one immutable commit. No new stored schema or renderer.",
   "runtimeAndTypesFingerprint": "c1815b16f58dc4c39828e4da3e2dc57406748e39c052c012a4387be0ec4abc3b",
@@ -326,7 +326,8 @@
       "keyboard": true,
       "disposed": true,
       "errors": []
-    }
+    },
+    "sourcePinnedDocs": 30
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-node-move-4d4fcf8f.tgz",
@@ -560,6 +561,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "6830803820929f22431ec4b90410fb03b5632e75f8db262465fbd97c1dfae91a"
+    },
+    {
+      "path": "node-move-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "node-move-docs-pinned.log.gz",
+      "sha256": "44cd2f6c5ae32ebfdc8e6002810ae1b670a7c250681980a8c8bd15bb8be1feb6"
+    },
+    {
+      "path": "node-move-build-pinned.log.gz",
+      "sha256": "6979567e05307b091e428cf9500dfafa9ef54510b34ec7be2248a6cabd306238"
+    },
+    {
+      "path": "node-move-built-pinned.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
     }
   ]
 }
