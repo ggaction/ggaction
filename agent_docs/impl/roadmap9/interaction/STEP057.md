@@ -12,7 +12,8 @@
 - [x] B2: 이름 있는 AST predicate/parameter closure 및 qualification
 - [x] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
-- [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, 자동 bindings
+- [x] D2: nearest screen/data metric 및 qualification
+- [ ] D: delete/hidden reconciliation·event, 자동 bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
 
 STEP050–056은 다른 원안 카드이며 이 기록의 완료 범위가 아니다. STEP077 전체 목표는 계속 진행 중이다.
@@ -250,3 +251,19 @@ floor를 유지한다. 최초 discovery 등록 누락과 문서 result에 scalar
 stale provenance를 소유 metadata에서 바로잡았다. Package entries918/최대packed1,322,667/
 unpacked6,053,713 및 최초 interaction gzip94,603을 보존하고 최소 한도만 올린다. 최종 동일 archive
 Node20/22/24 및 문서 source/build/browser qualification 완료 전의 소스 후보임을 구분한다.
+
+
+### D2 검증 checkpoint
+
+Source `7e6854182`의 [qualification](nearest-evidence/qualification.json)과 독립
+[expected/actual/diff](nearest-evidence/expected-actual-diff.json)를 보존했다. 집중96,
+경계·타입·discovery28, package13, 실제 데이터16 및 browser6 검사가 통과했다. 새 owner3개의
+coverage는100/100/100이며 기존95/90/100 floor를 유지했다. 다른 변경 owner의 상세 수치는
+qualification에 기록했다. 일반 inspect overlap/slop 결과와 nearest 선택 정렬을 분리해 검증했다.
+
+최종 archive `b6c94ba99dc06fc3d28e5b89125a10d65d2d55130b89a36e66773b5de7217c64` 하나로
+Node20/22/24 각각3runtime·strict public types·4 browser entry bundles가 통과했다. 최종 package
+918entries/최대1,322,665packed/6,053,712unpacked, interaction 최대94,951gzip으로 한도 안이다.
+문서184, build164페이지/1411 selective artifacts와 수정 페이지4폭 Axe0/overflow0,390px 시각
+확인을 완료했다. 최초 실패·초기 archive와 최종 metadata archive는 구분했다. 전체 suite나
+D의 잔여 hidden/drop/자동 bindings, STEP057 AT37 및 STEP077 완료로 확대 보고하지 않는다.
