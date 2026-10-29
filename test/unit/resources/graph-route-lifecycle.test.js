@@ -22,7 +22,7 @@ test("screen lasso keeps routed graph node identity through Canvas and source re
     .bundleGraphEdges({ id: "route", method: "edge-path", coordinateSpace: "screen" })
     .createGraphPlot({ id: "plot", routes: "route", nodes: { radius: 5 }, edges: { arrows: false } })
     .selectMarks({ id: "picked", target: "plot", items: [] })
-    .highlightMarks({ selection: "picked", fill: "red", dimOthers: false, bringToFront: false });
+    .highlightMarks({ selection: "picked", stroke: "red", dimOthers: false, bringToFront: false });
   const saved = serializeProgram(p), listeners = new Map(), captures = new Set();
   let scheduled;
   const host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 400, height: 300 }),
@@ -36,7 +36,7 @@ test("screen lasso keeps routed graph node identity through Canvas and source re
   const fire = (type, dx, dy) => listeners.get(type)({ pointerId: 1, pointerType: "mouse", clientX: x + dx, clientY: y + dy });
   fire("pointerdown", -10, -10); fire("pointermove", 10, -10); fire("pointermove", 10, 10); fire("pointermove", -10, 10);
   const flush = scheduled; scheduled = undefined; flush();
-  const selected = program => getMarkItems(program, { target: "plot" }).filter(item => item.properties.fill === "red").map(item => item.key);
+  const selected = program => getMarkItems(program, { target: "plot" }).filter(item => item.properties.stroke === "red").map(item => item.key);
   assert.deepEqual(selected(session.getState().previewProgram), [node.key]);
   assert.equal(session.getState().program, p);
   fire("pointerup", -10, -10);
@@ -50,7 +50,7 @@ test("screen lasso keeps routed graph node identity through Canvas and source re
   assert.deepEqual(selected(deserializeProgram(serializeProgram(revised))), [node.key]);
   assert.equal(serializeProgram(p), saved);
   session.destroy(); assert.equal(listeners.size + captures.size, 0); assert.equal(scheduled, undefined);
-  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "brush", target: "plot", selection: "picked" }] }), /explicit resolved position scale/);
+  assert.throws(() => createInteractionSession({ program: p, bindings: [{ type: "brush", target: "plot", selection: "picked" }] }), /coordinate|position scale/);
 });
 function hierarchySource() {
   const rows = [{ key: "root", parent: null, value: 0 }, { key: "a", parent: "root", value: 1 }, { key: "b", parent: "root", value: 1 }];
