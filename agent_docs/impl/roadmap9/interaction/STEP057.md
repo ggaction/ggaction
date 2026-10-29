@@ -11,7 +11,8 @@
 - [x] B1: focused/realistic/타입·패키지·Current·문서 qualification
 - [x] B2: 이름 있는 AST predicate/parameter closure 및 qualification
 - [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
-- [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, session commands/bindings
+- [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
+- [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, 자동 bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
 
 STEP050–056은 다른 원안 카드이며 이 기록의 완료 범위가 아니다. STEP077 전체 목표는 계속 진행 중이다.
@@ -152,3 +153,17 @@ D1 qualification 중 최초 metadata 검사는 신규 test capability 등록 누
 실패했다. 최초 실측 Node20 1,314,968packed/6,024,076unpacked에913/1,315,000/6,025,000 한도를 적용한다.
 Interaction bundle은 같은 archive에서 Node22 88,360, Node20 88,433으로83,000을 넘어89,000으로만 높인다.
 Full/Basic/SVG 한도와 모든 기존 critical coverage floor는 유지한다. 최종 고정 archive는 아래 evidence에서 구분한다.
+
+
+### D1 검증 checkpoint
+
+Source `4959ad7ce`의 [qualification](command-evidence/qualification.json)과 독립
+[expected/actual/diff](command-evidence/expected-actual-diff.json)를 보존했다. 최종21 focused에서
+4 owner 모두100 lines/100 functions, selection98.65·session96.90 branch이며 floor95/90/100을 유지한다.
+타입·source boundary·discovery28, package13, 실제 데이터5종×3 recipe/ledger16, 실제 browser4가 통과했다.
+문서182, build164페이지/1411 selective artifacts, 수정 페이지4폭 Axe0·overflow0와390px 시각 확인을 완료했다.
+
+동일 최종 archive `48d4ef6a53782157cbdff09a6cef1960d64e510650535269a70e0922458b41ef`의
+Node20/22/24 각각3 runtime·strict public types·4 entry browser bundle을 검증했다. Package최대
+913entries/1,314,971packed/6,024,096unpacked, interaction88,433gzip이며 위의 최소 한도를 충족한다.
+전체 sweep이나 C/D 잔여 기능 완료로 확대 보고하지 않는다. 최초 실패와 final metadata 재패킹은 구분했다.
