@@ -1,0 +1,48 @@
+{
+  "status": "focused checks passed; full combined corpus remains root integration work",
+  "baseCommit": "c749a4f40bfa20503bc4ca3858b07908a834378a",
+  "runtimeDelta": 0,
+  "typeDelta": 0,
+  "packageInputDelta": 0,
+  "originalLifecycleRecipeDelta": 0,
+  "files": {
+    "test/contracts/realistic-data-color-contracts.test.js": "0cb66aa8db3a07ab08881d3216474dc1ca07c6c579aca6dcac5c9db0c50c5881",
+    "test/contracts/realistic-lifecycle-factor-effects.test.js": "1ff1e5e2f7a7c9b445765a407ef976da521de6207a4f5746b237ae298b11ed32",
+    "test/oracles/analytic-layer-integrity.js": "9fb4281fcee5dbff993c74e16c5299ad7fda693faa7e40ddaba2f7276cc8f7d2",
+    "test/support/scenarios/realistic-resource-palette.js": "141cecfbb33b7b9c2040ec12b6fcf5ec40bec7f811852a6b73695fd9fe20770a",
+    "test/unit/oracles/analytic-layer-integrity.test.js": "aedc0803d9385e7dae059306d0a16eef4ac01a9613c18e2e0a1e2300bf77a1ab"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/oracles/analytic-layer-integrity.test.js",
+      "passed": 9,
+      "failed": 0,
+      "exit": 0
+    },
+    {
+      "command": "node --import ./scripts/test-file-metrics.js --max-old-space-size=512 --test --test-concurrency=2 --test-name-pattern='scales explicit intervals to the authentic New Zealand name time span' test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "passed": 1,
+      "failed": 0,
+      "exit": 0
+    },
+    {
+      "command": "node --import ./scripts/test-file-metrics.js --max-old-space-size=512 --test --test-concurrency=2 --test-name-pattern='filled Trails preserve the authentic global-temperature cohort' test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "passed": 1,
+      "failed": 0,
+      "exit": 0
+    },
+    {
+      "command": "node --import ./scripts/test-file-metrics.js --max-old-space-size=512 --test --test-concurrency=2 --test-name-pattern='palette range objects have actual public 5/3 witnesses at every restored consumer' test/contracts/realistic-data-color-contracts.test.js",
+      "passed": 1,
+      "failed": 0,
+      "exit": 0,
+      "builds": 265,
+      "optionPaths": 200,
+      "optionDigest": "b3c9eb622b877a277f4b71834559776054419a497a0f0e74414be4748bd58a8f",
+      "minimumOccurrences": 5,
+      "minimumDatasets": 3,
+      "durationMs": 158407.2985
+    }
+  ],
+  "fullSuiteReceipt": false
+}

@@ -162,3 +162,27 @@ test("scales explicit intervals to the authentic New Zealand name time span", ()
     releaseTidyTuesdaySourceCache(dataset);
   }
 });
+
+test("filled Trails preserve the authentic global-temperature cohort with no outline stroke", () => {
+  const dataset = "tt-global-temperatures";
+  const recipe = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.find(candidate =>
+    candidate.id === "realistic-action-direct-data-resources"
+  );
+  try {
+    const factors = Object.freeze({ dataset, width: 920, background: "#ffffff",
+      bandwidth: 0.35, steps: 24, bins: 3, includeEmpty: false });
+    const program = recipe.build(factors);
+    assertGraphicIntegrity(program, `${dataset} direct data resources`);
+    assertAnalyticLayerIntegrity(program, `${dataset} direct data resources`);
+    const trailOwners = programTraceOwners(program).filter(owner =>
+      owner.graphicSpec.objects.directTrail !== undefined);
+    assert.equal(trailOwners.length, 1, "Trail geometry requires one explicit owner");
+    const trail = trailOwners[0].graphicSpec.objects.directTrail;
+    assert.ok(trail.items.length > 0);
+    assert.ok(trail.items.every(item => item.properties.strokeWidth === 0));
+    assert.equal(assertAnalyticLayerIntegrity(trailOwners[0]).nonDegenerateItemCount,
+      trail.items.length, "filled ribbons have positive two-dimensional geometry");
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});

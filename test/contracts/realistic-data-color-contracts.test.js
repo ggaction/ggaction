@@ -177,8 +177,12 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
   const {REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES:statisticalRecipes}=await import("../support/scenarios/realistic-statistical-facade-coverage-recipes.js");
   const inventory=await publicInventory();
   const options=inventory.optionPaths.filter(option=>option.required&&/(?:^|\.)range\.palette(?:\.|$)/u.test(option.path));
-  assert.equal(options.length,184);
-  assert.equal(digest(options.map(value=>value.id)),"f3f29624c6bc22f29b32febb5a14cda364e4079aeb549087351058f11245ee54");
+  assert.equal(options.length,200);
+  assert.equal(digest(options.map(value=>value.id)),"b3c9eb622b877a277f4b71834559776054419a497a0f0e74414be4748bd58a8f");
+  const nativeOptions=options.filter(option=>["createTrailPlot","editTrailPlot","createTablePlot","editTablePlot"].includes(option.action));
+  assert.deepEqual(nativeOptions.map(option=>option.id).sort(),
+    ["createTrailPlot","editTrailPlot","createTablePlot","editTablePlot"].flatMap(action=>
+      ["", ".count", ".extent", ".name"].map(suffix=>`option-path:${action}.color.scale.range.palette${suffix}`)).sort());
   const stats=new Map(options.map(option=>[option.id,{occurrences:0,datasets:new Set(),values:new Set()}]));
   let builds=0;
   function record(program,dataset,metadata){
@@ -265,7 +269,7 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
   }
   const missing=[...stats].filter(([id,value])=>value.occurrences<5||value.datasets.size<3||id.endsWith(".name")&&value.values.size<3).map(([id,value])=>({id,occurrences:value.occurrences,datasets:[...value.datasets],values:[...value.values]}));
   assert.deepEqual(missing,[]);
-  assert.equal(builds,235);
+  assert.equal(builds,265);
   console.log(JSON.stringify({paletteRequirementCount:options.length,paletteRequirementSha256:digest(options.map(value=>value.id)),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
 });
 
