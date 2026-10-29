@@ -32,3 +32,7 @@ export const cameraRegion = { ...region, properties: { ...region.properties, com
 export const cameraRoute = { ...route, properties: { ...route.properties, commands: cameraCommands(route.properties.commands) } };
 export const cameraPoints = points.map(point => ({ ...point, properties: { ...point.properties,
   x: point.properties.x * .75 + 95, y: point.properties.y * .75 + 50 } }));
+
+// First matching visitor condition keeps Central teal, East red, and dims West.
+export const conditionalPoints = measuredPoints.map((point, i) => ({ ...point, properties: { ...point.properties,
+  fill: ["#64748b", "#0d9488", "#dc2626"][i] } }));

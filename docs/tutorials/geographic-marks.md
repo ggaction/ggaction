@@ -94,6 +94,17 @@ existing color and size blocks. A join exposes the matching table fields and
 LOD exposes the active level. See [field mapping rules](../api/geometry.md#map-feature-fields-to-color-and-size)
 for unknown values, geographic radii and explicit constant transitions.
 
+## Emphasize stops with conditions
+
+The same public program's `createGeographicMarks("conditional")` variant keeps the
+visitor-area mapping while drawing West gray, Central teal and East red. A
+visitor count of at least eight matches the first color branch; a count of at
+least four matches the second. The required `otherwise` supplies West's color.
+Both color and size use the same original feature key, and their native scales
+still inspect all eligible features. The exact executable conditions live in
+that program's shared fixture. See [conditional feature mapping](../api/geometry.md#choose-color-or-size-with-conditions)
+for predicates, selections and legend ambiguity.
+
 ## Keep stops stable while navigating
 
 The executable `createGeographicMarks("camera")` variant in the same example applies an anchored

@@ -1,17 +1,11 @@
-import { geoMarkSource } from "./source.js";
+import { geoFeatureDataset } from "./featureDataset.js";
+import { geoFeatureKey } from "./source.js";
+import { requireStoredResource } from "../../selectors/resources.js";
+import { resolveConditionalValues } from "../conditionalValues.js";
 import { validateGeoEncodingChannel, validateGeoEncodingScale } from "../../grammar/geo/encoding.js";
 import { readScaleField } from "../../grammar/scales/fields.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
-
-// Transient feature rows share the native encoder readers; no dataset identity
-// or materialized data resource is synthesized for a geometry-backed layer.
-export function geoFeatureDataset(program, layer) {
-  validateGeoEncodingChannel(layer, "color");
-  const source = geoMarkSource(program, layer, program.materializationConfigs.marks[layer.id].geo);
-  const features = source.drawableFeatures;
-  return { values: features.map(feature => feature.fields), features };
-}
 
 export function geoScaleValues(program, { layer, encoding, channel }) {
   validateGeoEncodingChannel(layer, channel);
@@ -31,6 +25,15 @@ export function geoAppearanceValues(program, layer, features, resolvedScales = p
     const raw = readScaleField(features.map(feature => feature.fields), encoding.field, encoding.fieldType,
       { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit });
     result[channel] = mapScaleConsumerValues(raw, scale, channel);
+  }
+  if (layer.conditionals !== undefined) {
+    const resource = requireStoredResource(program, layer.geoBinding.geometry);
+    const items = features.map(feature => ({ key: geoFeatureKey(layer, resource, feature),
+      fields: feature.fields, members: [], rows: feature.rows ?? [] }));
+    const resolved = resolvedScales === program.resolvedScales ? program : { ...program, resolvedScales };
+    for (const channel of Object.keys(layer.conditionals)) {
+      result[channel] = resolveConditionalValues(resolved, layer, channel, items);
+    }
   }
   return result;
 }

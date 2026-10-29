@@ -497,5 +497,19 @@
     "mode": "complete",
     "result": "reset",
     "resultKind": "semantic"
+  },
+  {
+    "id": "geographic-feature-conditions",
+    "file": "api/geometry.md",
+    "contains": "const emphasized = createGeographicMarks(\"fields\")",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "emphasized",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
   }
 ]

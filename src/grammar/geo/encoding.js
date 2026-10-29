@@ -6,6 +6,7 @@ import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateNonEmptyString } from "../../core/validation.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateSemanticFieldType, validateTemporalUnit } from "../scales/fields.js";
+import { conditionalValues, validateStoredConditional } from "../conditionalState.js";
 
 export function validateGeoEncodingChannel(layer, channel) {
   const { mode, radiusDeg } = layer.geoBinding;
@@ -17,7 +18,18 @@ export function validateGeoEncodings(layer) {
   const encoding = layer.encoding ?? {};
   ownRecord(encoding, "Geographic encodings");
   rejectUnknownProperties(encoding, ["color", "size"], "geographic encodings");
-  for (const [channel, binding] of Object.entries(encoding)) {
+  const bindings = Object.entries(encoding);
+  if (layer.conditionals !== undefined) {
+    ownRecord(layer.conditionals, "Geographic conditionals");
+    rejectUnknownProperties(layer.conditionals, ["color", "size"], "geographic conditionals");
+    for (const [channel, definition] of Object.entries(layer.conditionals)) {
+      validateGeoEncodingChannel(layer, channel);
+      if (encoding[channel] !== undefined) throw new TypeError("Geographic channels cannot have both ordinary and conditional mappings.");
+      validateStoredConditional(channel, definition);
+      for (const branch of conditionalValues(definition)) if (branch.field !== undefined) bindings.push([channel, branch]);
+    }
+  }
+  for (const [channel, binding] of bindings) {
     validateGeoEncodingChannel(layer, channel);
     ownRecord(binding, "Geographic encoding");
     rejectUnknownProperties(binding, channel === "color" ? ["field", "fieldType", "scale", "temporalUnit"] : ["field", "fieldType", "scale"], "geographic encoding");

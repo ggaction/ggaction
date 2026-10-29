@@ -70,5 +70,5 @@ export function validateGeoMarkBinding(layer, config) {
   if (REQUIRED_STYLE.some(key => !Object.hasOwn(config, key))) throw new TypeError("Geographic style requires all resolved fields.");
   normalizeGeoStyle(binding.mode, config, undefined, true);
   validateGeoEncodings(layer);
-  if (layer.data !== undefined || layer.conditionals !== undefined) throw new TypeError("Geographic marks require their geometry resource and ordinary field mappings.");
+  if (layer.data !== undefined) throw new TypeError("Geographic marks require their geometry resource and native field mappings.");
 }

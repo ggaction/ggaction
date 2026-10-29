@@ -1257,7 +1257,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
-- Full Geo shape/point/line share ordinary field color and native scale/legend policies; line maps to stroke. Geo point shares ordinary equal-area `encodeSize`. Exact feature eligibility, join/LOD lifecycle and incompatible policies are owned by [Geographic feature mappings](GEOMETRY.md#feature-color-and-size). Conditional Geo encodings remain unsupported.
+- Full Geo shape/point/line share ordinary and conditional field color and native scale/legend policies; line maps to stroke. Geo point shares ordinary and conditional equal-area `encodeSize`. Exact feature eligibility, join/LOD lifecycle and incompatible policies are owned by [Geographic feature mappings](GEOMETRY.md#feature-color-and-size).
 
 - Tick의 quantitative/temporal color는 row 단위로 기존 scale mapper를 사용해 concrete segment stroke를 칠한다. Quantitative quantize/quantile/threshold와 기존 color gradient/interval/symbols 범례를 재사용한다. Color는 x/y/angle/length/strokeWidth/opacity를 바꾸지 않는다. Tick의 categorical color/aggregate/layout/point-only unknown은 지원하지 않는다.
 - Tick color와 field stroke는 동시에 보유할 수 없다. Color가 있으면 encodeStroke(field/value)와 editTickMark.stroke를 거부한다. 반대 방향도 기존 encoding을 먼저 removeEncoding으로 제거한다. Color assignment는 고정 stroke 설정을 지우며 제거 뒤 기본 Tick 색을 사용한다. 공유 pure color-consumer 정책이 action/rematerialization/persistence의 같은 제약을 소유한다.
@@ -1458,7 +1458,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeSize`
 
-- Full Geo point shares the same ordinary field and CSS-pixel area mapping. Geographic radiusDeg is incompatible; first switch to radiusPx. See [Geographic feature mappings](GEOMETRY.md#feature-color-and-size).
+- Full Geo point shares the same ordinary and conditional field and CSS-pixel area mapping. Geographic radiusDeg is incompatible; first switch to radiusPx. See [Geographic feature mappings](GEOMETRY.md#feature-color-and-size).
 
 - Signature: `encodeSize({ value, target? } | { field, target?, fieldType?, scale? })`
 - `value`: nonnegative finite graphical area in square pixels, including zero. Exactly one of value/field;

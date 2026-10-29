@@ -107,7 +107,7 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
 }
 
 function emptyFilteredItems(program, layer, dataset) {
-  return program.markConfigs[layer.id]?.markFilter?.empty === true && dataset?.values?.length === 0;
+  return program.materializationConfigs.marks[layer.id]?.markFilter?.empty === true && dataset?.values?.length === 0;
 }
 
 function withConditionalChannels(program, layer, items, { channels, active = new Set() } = {}) {

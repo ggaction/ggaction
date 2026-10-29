@@ -7,6 +7,7 @@ import { normalizeProjectionDefinition, projectionParameters } from "../../gramm
 import { normalizeProjectionOptions, projectionTuple } from "../../grammar/geo/projectionOptions.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { createProjectionResource } from "./projectionResource.js";
+import { conditionalValues } from "../../grammar/conditionalState.js";
 
 const same = (a, b) => canonicalJSON(encodeValue(a)) === canonicalJSON(encodeValue(b));
 function validateStored(resource) {
@@ -31,7 +32,9 @@ function validateBindings(program, resource) {
   const coordinates = new Set(program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && coordinate.projection.id === resource.id).map(coordinate => coordinate.id));
   for (const layer of program.semanticSpec.layers) if (coordinates.has(layer.coordinate)) {
     resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id]?.geo, program.resolvedScales, { appearance: false });
-    for (const [channel, encoding] of Object.entries(layer.encoding ?? {})) {
+    const bindings = [...Object.entries(layer.encoding ?? {}), ...Object.entries(layer.conditionals ?? {})
+      .flatMap(([channel, definition]) => conditionalValues(definition).filter(value => value.scale !== undefined).map(value => [channel, value]))];
+    for (const [channel, encoding] of bindings) {
       if (program.resolvedScales[encoding.scale] === undefined) throw new TypeError("Stored geographic mapping requires a resolved scale.");
       geoScaleValues(program, { layer, encoding, channel });
     }

@@ -53,8 +53,8 @@ function facade(mode, editing, name) {
         }
         if (radiusDeg !== undefined) binding.radiusDeg = radiusDeg; else delete binding.radiusDeg;
       }
-      if (previous?.encoding?.color !== undefined && Object.hasOwn(args, mode === "line" ? "stroke" : "fill")) throw new TypeError("Geographic color is field-bound; remove its encoding or use encodeColor with a constant value.");
-      if (previous?.encoding?.size !== undefined && ["radiusPx", "radiusDeg"].some(key => Object.hasOwn(args, key))) throw new TypeError("Geographic size is field-bound; remove its encoding or use encodeSize with a constant value.");
+      if ((previous?.encoding?.color !== undefined || previous?.conditionals?.color !== undefined) && Object.hasOwn(args, mode === "line" ? "stroke" : "fill")) throw new TypeError("Geographic color is field-bound; remove its encoding or use encodeColor with a constant value.");
+      if ((previous?.encoding?.size !== undefined || previous?.conditionals?.size !== undefined) && ["radiusPx", "radiusDeg"].some(key => Object.hasOwn(args, key))) throw new TypeError("Geographic size is field-bound; remove its encoding or use encodeSize with a constant value.");
       const style = Object.fromEntries(GEO_STYLE_FIELDS.filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]]));
       const config = normalizeGeoStyle(mode, style, previous === undefined ? undefined : this.markConfigs[id].geo);
       const layer = { ...previous, id, mark: { type: "geo" }, coordinate: coordinate.id, geoBinding: binding, encoding: previous?.encoding ?? {} };

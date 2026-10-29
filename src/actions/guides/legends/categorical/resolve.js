@@ -1,4 +1,4 @@
-import { geoFeatureDataset } from "../../../../materialization/geo/appearance.js";
+import { geoFeatureDataset } from "../../../../materialization/geo/featureDataset.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { resolveSizeShapeMapping } from "../../../../grammar/legendCombinations.js";
 import { requireDataset } from "../../../../selectors/datasets.js";

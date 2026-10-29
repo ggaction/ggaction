@@ -1,4 +1,4 @@
-import { geoFeatureDataset } from "../../materialization/geo/appearance.js";
+import { geoFeatureDataset } from "../../materialization/geo/featureDataset.js";
 import { editScaleForEncoding } from "../scales/edit.js";
 import { collectResourceReferences } from "../../core/resourceReferences.js";
 import { removeScale } from "../resources/remove.js";

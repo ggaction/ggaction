@@ -3648,9 +3648,11 @@ prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명
 concrete identity를 읽도록 분리되어 있다. `materialization/geo/mark.js`는 동일 stream을 명시 실행하여
 collection의 point/path와 exact source lineage를 생성한다. 기존 data/coordinate materialization planner가
 geometry→fitted projection→mark union을 중복 없이 실행한다. Renderer 입력은 계속 concrete graphicSpec만이다.
-`materialization/geo/appearance.js`는 source owner가 정한 drawable feature의 field만 transient row view로
-공유 encoder/scale mapper에 전달한다. Dataset resource나 새 field 문법을 만들지 않고 ordinary
-layer.encoding을 단일 소유자로 유지한다. 원본 source-only logical item은 null/empty feature도
+`materialization/geo/featureDataset.js`는 source owner가 정한 drawable feature의 field와 추론 schema를
+transient row view로 공유 encoder/scale/condition owner에 전달한다. `appearance.js`는 원본 feature
+key와 실제 row lineage를 같은 평가 grain으로 연결한다. Dataset resource나 새 field/조건 문법을
+만들지 않고 ordinary intent는 layer.encoding, 조건부 intent는 기존 layer.conditionals가 소유한다.
+Native Geo materialization은 atomic multi-channel preview 동안 유예하고 최종 union에서 한 번 실행한다. 원본 source-only logical item은 null/empty feature도
 보존하며 visual scale/item eligibility와 구분한다. Geo resource action의 final 후보 preflight는 모든
 공유 scale 후보를 먼저 계산하고 기존 planner가 scale→mark→guide union을 한 번 실행한다.
 선택 channel 값은 기존 semantic row reader와 temporal normalization owner를 공유한다.
@@ -3891,3 +3893,9 @@ geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는
 projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
 읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
 정확 operation과 resize/fit 수명은 [GEOMETRY.md](contract/current/GEOMETRY.md#navigateprojection)를 따른다.
+
+Geo 조건부 feature adapter 한 파일을 추가한 source 측정은1,040entries,
+6,721,113unpacked bytes와 Node22 packed1,473,594 / Node20·24 packed1,476,716bytes다.
+기존 package 한도를 넘은 파일 수와 byte 한도만1,040 /1,478,000 /6,723,000으로 변경했다.
+동일 minified bytes의 gzip 최댓값 Full727,574 / Basic383,848 / SVG20,200 /
+interaction101,352 / graph43,764는 기존 bundle 한도 안에 있어 이를 유지한다.

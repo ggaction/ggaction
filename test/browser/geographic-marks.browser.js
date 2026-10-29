@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 let server, browser;
 test.before(async () => { server = await startStaticServer(root); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
-for (const id of ["planar", "graticule", "annotations", "fields", "camera"]) test(`geographic ${id} matches primitive Canvas and SVG at both device densities`, async () => {
+for (const id of ["planar", "graticule", "annotations", "fields", "camera", "conditional"]) test(`geographic ${id} matches primitive Canvas and SVG at both device densities`, async () => {
   for (const ratio of [1, 2]) {
     const context = await browser.newContext({ deviceScaleFactor: ratio });
     try {

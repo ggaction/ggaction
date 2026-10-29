@@ -753,3 +753,36 @@ Source `c59dba999`를 푸시한 뒤 문서 202/202, built 172페이지·1529개 
 artifact, desktop 검색과 320·390·768px 모든 페이지 containment를 통과했다. 문서 provenance와
 증거 후속 변경 후에도 고정 archive의 1039개 package 입력 parity는 불일치가 없었다.
 Session/player 및 남은 Geo 소비자 의무는 위 구분대로 계속 유지한다.
+
+## Geo 조건부 field 소비자 계약
+
+기존 전체 승인과 STEP016의 `conditions`/필수 `otherwise` 계약을 Geo의 현재 ordinary
+color(Shape·Point·Line), size(pixel-radius Point)에 연결한다. 별도 AST·선택 문법·dataset을
+만들지 않고 같은 `layer.conditionals`가 유일한 조건부 결정 owner다. Native encoder가 모든
+branch payload를 먼저 검증하며, 첫 true branch를 선택하고 비활성 field/scale/reference도
+검증한다. Geometry 또는 join의 drawable feature 한 개가 평가 grain이고 여러 visible parts는
+같은 값과 identity를 공유한다. Projection clipping은 source feature domain을 바꾸지 않는다.
+
+Transient feature rows와 inferred field schema는 기존 schema owner를 사용한다. Geometry가
+완전히 비어 타입을 추론할 수 없는 field predicate는 기존 typed AST 규칙대로 오류다. Literal·
+parameter·명시 selection predicate는 빈 입력에서도 유효하며 scale의 명시 emptyDomain 정책을
+따른다. Null geometry의 field 값은 시각 domain이나 조건부 평가에 참여하지 않는다.
+
+원래 Geo config의 resolved 기본 style은 ordinary field와 동일하게 encoding 제거 후 fallback을
+맡는다. 조건부 channel이 있는 동안 direct fill/stroke/radius 편집은 거부하고, ordinary encoder
+재호출 또는 removeEncoding으로 결정 owner를 교체한다. Branch별 scale을 기존 dependency
+collector에 유지하며, 동일 binding으로 유일하게 정해지는 경우만 native legend를 파생한다.
+모호한 기존 legend는 먼저 명시 제거해야 하며 재할당 실패는 program/trace를 바꾸지 않는다.
+
+Parameter·selection·geometry/join/LOD·projection·scale 수정, 제거, codec restore, concat/scoped
+edit와 네 renderer를 같은 consumer contract로 검증한다. 선택된 field 조건은 semantic feature
+key를 읽고 실제 hit key를 다른 LOD key로 치환하지 않는다. Feature/graticule labels는 다음
+독립 개념으로 남긴다.
+
+조건부 source 검증은 원본 feature key/실제 joined row 관계를 보존한다. 일반 Point 선택→joined
+Geo 조건부 color/size, atomic encodeChannels, parameter/selection의 exact refs, LOD coarse/fine
+representation 복귀, prepared CSV source 실패 불변성과 mark union 한 번 실행을 회귀로 고정했다.
+Primitive는 기존 field 예제의 세 원 크기를 유지하고 첫 조건의 우선순위로 West 회색/Central 청록/
+East 빨강만 바꾼다. 기존 전체 시각 승인 아래 같은 4backend primitive parity와 browser DPR1/2를
+검증했으며 새 renderer policy는 없다. Source-only schema adapter는 기존 geo critical family의
+95/90/100 하한을 그대로 적용한다. 전체 unit/global coverage를 새로 통과했다고 주장하지 않는다.

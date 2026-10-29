@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Extend geographic color and point-area encodings with first-match conditions, typed expressions, named selections, exact parameter revisions and native scale/legend lifecycle. Validate every branch and preserve feature identity through joins, detail changes and offline restoration.
+
 - Extend ordinary `encodeColor` to Full geographic shape/point/line fields and `encodeSize` to geographic point area, with existing scales, legends, original feature identity and atomic join/LOD/source revisions. Preserve explicit quantitative color empty-domain policies.
 
 - Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes.

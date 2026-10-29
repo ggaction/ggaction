@@ -1,4 +1,6 @@
 import { normalizeMarkLabelContent } from "../grammar/markLabels.js";
+import { geoFeatureDataset } from "./geo/featureDataset.js";
+import { validateGeoEncodingChannel, validateGeoEncodingScale } from "../grammar/geo/encoding.js";
 import { conditionalPositionTemplate, commonPositionBinding } from "../core/encodingBindings.js";
 import { canonicalJSON } from "../core/contentDigest.js";
 import { resolveMarkPositionPolicy } from "./positionPolicy.js";
@@ -30,11 +32,12 @@ export function resolveConditionalEnvironment(program, layer, channel, definitio
   const normalized = validateStoredConditional(channel, definition);
   if (layer.encoding?.[channel] !== undefined) throw new Error("Conditional and ordinary encodings cannot own the same channel.");
   const property = channel === "color" ? (["line", "rule", "tick"].includes(layer.mark.type) ? "stroke" : "fill") : ["size", "pointRadius"].includes(channel) ? "radius" : channel;
-  const config = program.markConfigs[layer.id];
+  const config = program.materializationConfigs.marks[layer.id];
   if (!["text", "dx", "dy"].includes(channel) && getPositionChannelDefinition(channel) === undefined && (config?.[property] !== undefined || config?.barAppearance?.[property] !== undefined)) throw new Error("Conditional encoding cannot duplicate a constant mark configuration.");
   if (["dx", "dy"].includes(channel) && layer.source !== undefined) throw new Error("Numeric text offsets require independent Text marks.");
   if (channel === "pointRadius" && (layer.encoding?.size !== undefined || layer.conditionals?.size !== undefined)) throw new Error("Conditional point radius cannot be combined with a size encoding.");
-  const source = requireDataset(program, layer.data);
+  if (layer.mark.type === "geo") validateGeoEncodingChannel(layer, channel);
+  const source = layer.mark.type === "geo" ? geoFeatureDataset(program, layer) : requireDataset(program, layer.data);
   const environment = expressionEnvironment(program, source, definition.parameterInputs);
   normalizeConditionalEncoding(normalized.definition, { environment });
   limit(source.values.length * (normalized.nodes + definition.conditions.length + 1), EXPRESSION_LIMITS.rowWork, "conditionalWork");
@@ -45,10 +48,12 @@ export function resolveConditionalEnvironment(program, layer, channel, definitio
     const continuousTick = channel === "color" && layer.mark.type === "tick" && ["quantitative", "temporal"].includes(value.fieldType);
     if (!continuousTick && !types.includes(layer.mark.type)) throw new Error(`Conditional ${channel} is incompatible with mark "${layer.id}".`);
     if (channel === "text" && value.content !== undefined) normalizeMarkLabelContent(findLayer(program, layer.source), value);
-    if (value.field !== undefined && !Object.hasOwn(environment.fields, value.field)) throw new Error(`Unknown conditional field "${value.field}".`);
+    if (value.field !== undefined && !Object.hasOwn(environment.fields, value.field) &&
+        !(layer.mark.type === "geo" && source.values.length === 0)) throw new Error(`Unknown conditional field "${value.field}".`);
     if (value.scale !== undefined) {
       const scale = requireSemanticScale(program, value.scale);
       validateConditionalScale(channel, value, scale);
+      if (layer.mark.type === "geo") validateGeoEncodingScale(layer, channel, value, scale);
       if (position !== undefined && ["x", "y", "theta", "radius"].includes(channel)) {
         validatePositionSource(layer, value, `Conditional ${channel}`);
         const template = conditionalPositionTemplate(layer, ["x", "y", "x2", "y2", "theta", "radius"]);
@@ -89,6 +94,7 @@ const POINT_SHAPE_CHANNELS = Object.freeze(["size", "pointRadius", "shape", "ang
 function propertyChannels(program, layer, property) {
   if (APPEARANCE_PROPERTIES[property] !== undefined) return APPEARANCE_PROPERTIES[property];
   const type = layer.mark.type;
+  if (type === "geo" && ["radius", "width", "height"].includes(property)) return ["size"];
   if (["line", "area"].includes(type) && ["x", "y", "width", "height"].includes(property)) {
     return [...CARTESIAN_CHANNELS, ...POLAR_CHANNELS, "strokeWidth"];
   }

@@ -373,7 +373,7 @@ source normalization retains its separate configured limits.
 
 ## Feature color and size
 
-`encodeColor` accepts ordinary nominal/ordinal/quantitative/temporal fields on Geo shape, point and line.
+`encodeColor` accepts ordinary or conditional nominal/ordinal/quantitative/temporal fields on Geo shape, point and line.
 It uses the existing field/scale contract: shape/point fill or line stroke, native temporalUnit, continuous
 and discretized scales, explicit unknown and existing range/transform behavior. Aggregate and color
 layout are incompatible. Shape line parts keep fill none. `encodeSize` accepts quantitative, nominal
@@ -391,14 +391,32 @@ createLegend channels infer existing color and size as separate blocks. A consta
 removes its field binding and affected legend, restores the native mark style and preserves other
 channels. Direct mark fill (shape/point), stroke (line), or radius edits conflict with the corresponding
 field mapping; removeEncoding or a constant encoder resolves the conflict explicitly. Removing an
-encoding alone restores the dormant native style. Conditional resource-grain mapping is unsupported.
+encoding alone restores the dormant native style.
+
+Conditional color and size use the shared `conditions` array and required `otherwise`; the first matching
+branch wins. Predicates accept the existing typed expression AST and explicit named selections. Every
+branch is validated, including inactive fields, scales and values. Predicate fields read the same
+feature/table/active-level view as ordinary encodings. Each drawable feature is one evaluation item;
+all pieces share its selected value. Size zero is valid. Other conditional channels, graticules and
+annotations are incompatible. Native scales use the full drawable field values of every branch;
+predicate membership and projection clipping do not shrink their domains. A legend requires one
+unique field/scale binding for its channel. Multiple bindings reject an existing or requested legend
+atomically; remove that guide explicitly before changing to an ambiguous conditional mapping.
+
+Parameter and selection revisions update exact branch refs and rematerialize affected consumers.
+Selection membership across different marks follows shared source-row lineage; it does not equate
+unrelated feature IDs. Graphical feedback cycles reject before writes. Empty geometry can use literal,
+parameter or selection predicates, and field mappings retain their explicit native empty-domain policy.
+A field predicate on a completely empty feature view rejects because its field type cannot be inferred.
 
 Source geometry, join table and active LOD changes preflight all affected fields and shared scale
 candidates before primitive writes, then materialize the scale/mark/guide union once. Projection and
 Canvas changes retain pixel-area semantics. Selection channels expose semantic values, including
 normalized temporal values, while fields and original lineage stay intact. Scoped concat edits and
 offline restoration retain the same meaning. Evidence: `test/unit/geo/encodings.test.js`,
-`test/unit/geo/encoding-lifecycle.test.js` and the geographic field renderer/installed consumers.
+`test/unit/geo/encoding-lifecycle.test.js`, `test/unit/geo/conditional-encodings.test.js`,
+`test/contracts/realistic-geographic-encodings.test.js` (five authentic datasets × three ordinary and three
+conditional recipes), and the geographic field renderer/installed consumers.
 
 ## `createGeoShapeMark`
 

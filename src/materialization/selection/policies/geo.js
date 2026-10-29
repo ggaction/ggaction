@@ -5,7 +5,7 @@ import { normalizeAreaHighlightStyle } from "../styles.js";
 import { transformPathHighlightProperties, transformLabeledPathHighlightChild } from "../path.js";
 
 function items(program, layer, concrete) {
-  const config = program.markConfigs[layer.id].geo;
+  const config = program.materializationConfigs.marks[layer.id].geo;
   const { features, resource, projection } = geoMarkSource(program, layer, config);
   const graphics = program.graphicSpec.objects[layer.id]?.items;
   if (concrete && !Array.isArray(graphics)) throw new Error("Geographic selection requires materialized geometry.");

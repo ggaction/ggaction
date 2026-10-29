@@ -1272,6 +1272,18 @@
     "file": "geographic-encodings.mjs",
     "cases": [
       {
+        "id": "geographic-encodings/conditional-references-and-atomicity",
+        "statements": 9
+      },
+      {
+        "id": "geographic-encodings/fresh-process-conditional-source-revision",
+        "statements": 6
+      },
+      {
+        "id": "geographic-encodings/four-renderer-conditional-parity",
+        "statements": 10
+      },
+      {
         "id": "geographic-encodings/fields-guides-and-atomic-edits",
         "statements": 13
       },

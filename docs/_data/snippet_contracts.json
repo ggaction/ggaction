@@ -2093,6 +2093,18 @@
   {
     "file": "api/geometry.md",
     "block": 8,
+    "heading": "Choose color or size with conditions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "sha256": "fb1200d9c8f25a48aa1d3ce35d107f8bba51d1e8cbe06f63f452aa79d4c98a5e",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 9,
     "heading": "`createGeoAnnotation`",
     "mode": "complete",
     "environment": "node-esm",

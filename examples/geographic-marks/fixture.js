@@ -22,11 +22,24 @@ export const fieldMappings = [
   ["encodeColor", { target: "geo-point", field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }],
   ["encodeSize", { target: "geo-point", field: "visitors", scale: { id: "stop-size", domain: [1, 9], range: [64 * Math.PI, 576 * Math.PI] } }]
 ];
+const visitorsAtLeast = value => ({ version: 2, registry: "standard@1", root: {
+  type: "binary", op: "gte", left: { type: "field", name: "visitors" }, right: { type: "literal", value }
+} });
+export const conditionalMappings = [
+  ["encodeColor", { target: "geo-point", conditions: [
+    { when: visitorsAtLeast(8), value: { value: "#dc2626" } },
+    { when: visitorsAtLeast(4), value: { field: "name", scale: fieldMappings[2][1].scale } }
+  ], otherwise: { value: "#64748b" } }],
+  ["encodeSize", { target: "geo-point", conditions: [
+    { when: visitorsAtLeast(4), value: { field: "visitors", scale: fieldMappings[3][1].scale } }
+  ], otherwise: { value: 64 * Math.PI } }]
+];
 export const cameraOperations = [
   { type: "zoom", anchorPx: [320, 240], factor: .75, scaleExtent: [.5, 4] },
   { type: "pan", deltaPx: [15, -10] }
 ];
 export const variants = [
+  { id: "conditional", chart: "geographic-fields", title: "Conditions emphasize the busiest stops" },
   { id: "camera", chart: "geographic-marks", title: "A centered zoom preserves stop size" },
   { id: "fields", chart: "geographic-fields", title: "Stop area follows visitor counts" },
   { id: "annotations", chart: "geographic-annotations", title: "Labels stay attached to the original stops" },

@@ -410,7 +410,7 @@ blend accepts normal, multiply, screen or difference.
 
 ## Map feature fields to color and size
 
-Use ordinary `encodeColor` on shape, point or line marks. Filled shapes and points
+Use `encodeColor` on shape, point or line marks. Filled shapes and points
 map to fill; lines map to stroke. Use `encodeSize` on point marks to map values
 to CSS-pixel area. Native categorical, continuous and discrete scales apply.
 
@@ -445,8 +445,7 @@ Null/empty geometries stay inspectable but contribute no scale values or visible
 items. Projection clipping does not change scale domains.
 
 Size uses `sqrt(area / Math.PI)` for point radius. It does not mix with geographic
-`radiusDeg`; switch to `radiusPx` first. Aggregate and layout color policies and
-conditional encodings are not supported for these resource-backed marks.
+`radiusDeg`; switch to `radiusPx` first. Aggregate and layout color policies are incompatible with these resource-backed marks.
 
 Use `encodeColor({ value: "navy" })` or `encodeSize({ value: 100 })` to replace a
 field mapping with a constant and remove its dependent legend. Other channels
@@ -454,6 +453,46 @@ remain. Direct fill/stroke/radius edits reject an active conflicting field mappi
 `removeEncoding` restores its dormant native style. Data, geometry and LOD edits
 refresh shared scales, marks and legends together. Color and size legends appear
 as separate blocks when both channels are present.
+
+### Choose color or size with conditions
+
+Both channels accept the shared first-match `conditions` array and required
+`otherwise`. Each feature is evaluated once, including every part of a multipart
+feature. All branches must have valid fields, scales and values even when inactive.
+Use the existing typed expressions or an explicit `{ selection: "name" }` predicate.
+A zero size hides the circle without removing its logical item.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { createGeographicMarks } from "./geographic-marks/program.js";
+
+const emphasized = createGeographicMarks("fields").encodeColor({
+  conditions: [{
+    when: { version: 2, registry: "standard@1", root: {
+      type: "binary", op: "gte", left: { type: "field", name: "visitors" },
+      right: { type: "literal", value: 8 }
+    } },
+    value: { value: "#dc2626" }
+  }],
+  otherwise: { field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }
+});
+```
+
+A legend describes the unique field/scale binding across branches. If several
+bindings are present, remove that channel's legend before assigning the mapping;
+creating a new ambiguous legend also fails. Every branch contributes its full
+eligible field values to automatic domains, including inactive branches.
+Parameter and selection edits refresh conditional marks. Cross-mark selections
+follow actual shared table rows, not coincident feature IDs. A field predicate
+needs an inferable feature schema; a completely empty feature view can instead
+use a literal, parameter or named selection predicate. This does not change the
+scale's explicit empty-domain policy. Graticules and annotations have their own
+styles and do not accept conditional feature encodings.
 
 ## `editGeoShapeMark`
 
@@ -547,7 +586,7 @@ their mark consumers; old programs and traces remain unchanged.
 All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
 scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
 `removeMark`; live marks/coordinates restrict resource removal, including cascade.
-Automatic row facet/repeat, conditional feature mappings and camera controls are not enabled by these mark options. Ordinary color/size, table joins and semantic annotations use their dedicated actions. Generated output is bounded at
+Automatic row facet/repeat is incompatible with these resource-backed marks. Ordinary color/size, table joins and semantic annotations use their dedicated actions. Generated output is bounded at
 10,000 points/items and 10,000,000 work units per materialization.
 
 ## `createGeoAnnotation`
