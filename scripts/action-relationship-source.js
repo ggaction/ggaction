@@ -583,6 +583,12 @@ export function buildActionRelationshipPrograms() {
       .createProjection({ id: "geoSphere", type: "equirectangular", translatePx: [200, 150] })
       .createCoordinate({ id: "sphere", type: "geo", projection: "geoSphere" }).createGraticule({ id: "geoGrid", coordinate: "sphere" })
       .editGraticule({ opacity: .3 }).editProjection({ target: "geoPlane", scalePx: 2 }).editCoordinate({ target: "geo", projection: "geoPlane" }),
+    chart().createData({ id: "measurements", values: [{ code: "place", value: 10 }] })
+      .createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
+        values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } } })
+      .createGeoJoinData({ id: "joinedGeometry", geometry: "geometry", data: "measurements", geometryKey: "id", dataKey: "code" })
+      .createProjection({ id: "joinedFit", type: "identity", fit: { width: 100, height: 100 } })
+      .editGeoJoinData({ target: "joinedGeometry", dataKey: "code" }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

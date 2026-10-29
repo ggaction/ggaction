@@ -11,7 +11,8 @@
 - [x] Projection resource·명시 fit·geometry revision closure 공개 checkpoint 검증
 - [x] Geometry stream의 native geo mark 공개 연결과 소비자 검증
 - [ ] Geo guide·label 공개 연결
-- [ ] Native geo marks/guide/typed join/shared-arc LOD
+- [x] Typed geometry/table join 및 exact source revision closure
+- [ ] Shared-arc/hierarchy LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다. 기준은
@@ -393,3 +394,53 @@ interaction/direct controls/linked filter/region35개와 browser13개, 경계·�
 현재 source와 차이0이다. Postcommit 문서196/196, built172페이지/1505machine artifacts와
 전체 페이지320/390/768px 검증도 통과했다. 합산 증거는 `geo-evidence/marks-merge/status.json`이다.
 이후 join 변경은 별도 개념 commit으로 진행한다.
+
+## Typed join 구체 계약
+
+`AUTHORIZATION.json.remainingApproval`을 재사용한다. `createGeoJoinData({id,geometry?,data?,geometryKey,dataKey})`와
+`editGeoJoinData({target?,geometry?,data?,geometryKey?,dataKey?})`는 geometry kind의
+`method:"geo-join"` resource를 소유한다. Geometry와 materialized table을 exact InputRef 두 개로
+참조하며 source 변경은 geometry→join→fitted projection→mark 및 data→join closure를 한 번
+계산한다. 모든 후보를 검증한 뒤 단일 최종 mark/scale/guide union을 명시 실행한다.
+
+키 옵션은 비어 있지 않은 own-field 문자열 또는 최대128단계 own-property path다. 값은 공통
+`core/itemIdentity.js`의 scalar/tuple 인코더를 재사용하며 숫자1과 문자열"1"은 다르다.
+기존 `grammar/lookup.js`와 동일하게 null/없는 키는 서로 매칭하지 않는다. 일반 lookup의
+primary 중복 허용·field alias 복사와 달리 Geo는 승인된1:1 정책이므로 양쪽 nonmissing 키
+중복을 모두 세어 원자적으로 거부한다. 원본 lookup 의미는 변경하지 않는다.
+
+결과는 원래 geometry feature 순서·properties·null geometry·키를 그대로 보존하고 table
+rowMap과 diagnostics를 별도 소유한다. Unmatched geometry는 null rowMap으로 남는다.
+Inspection은 matched/duplicate count, unmatched geometry/data index 목록과 coverage를
+읽으며 empty geometry coverage는0이다. Duplicate 오류에도 양쪽 count를 제공한다.
+Geometry properties를 table 필드와 합쳐 덮어쓰지 않는다. Join의 field consumer는 매칭된
+table row 또는 빈 fields를 읽고 원본 geometry properties는 resource에 보존한다.
+
+Own descriptor를 읽기 전에 검증하고 tuple/깊이/feature/전체 작업량 제한을 적용한다.
+저장 복원에서는 exact inputs로 같은 correspondence를 검산하며 네트워크나 callback을 실행하지
+않는다. 본 개념 뒤 shared-arc LOD, field color/size, guide/label, camera와 AT31/32 후행
+통합을 계속한다. 본 join만으로 STEP045 전체 완료를 주장하지 않는다.
+
+
+## Typed join 검증 checkpoint
+
+새 join과 기존 Geo owner의 집중 coverage 99/99, 100/98.21/100 및 기존 critical 33개
+95/90/100 기준을 통과했다. 실제 pinned 데이터 5종×3 조합과 witness 16개, DATA/prepared/
+Canvas/graph 공통 회귀 27개, 추가 join→fit과 독립 screen-route sibling의 responsive source
+revision 검사 포함 33개가 통과했다. 각 resource revision은 한 번만 증가하며 이전 program과
+trace를 보존한다. 독립 replay의 allocation namespace 정규화는 geo-join에 한해 확장했고,
+잘못된 rowMap·source field·stale input·feature identity를 숨기지 않는 회귀 4개를 통과했다.
+
+Public inventory는 352 actions / 32,032 option paths이며 canonical 실제 direct-call 검사는
+10/10이다. 기본 ledger는 37,748 requirements, renderer 항목을 제외한 owning fixture는
+37,744다. 경계 계약 52개와 catalog 11개, source docs 197개, built 172페이지/1,511 machine
+artifacts, desktop search·accessibility 및 전체 페이지 320/390/768px 검증을 통과했다.
+
+동일 tar `6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11`의
+Node20/22/24에서 각 runtime 3개, strict Full/Basic 타입, runnable docs 1개와 browser bundle
+5개를 검증했다. 원본 도형과 join 결과의 concrete properties·Canvas·SVG·PNG·PDF draw stream이
+동일하다. 1,020 packed inputs는 source와 차이 0이며, size/gzip은 각 Node/zlib의 실제 측정값을
+기록했다. 최초 fixture/문서/coverage 부족과 owning 수리를 분리한 정본은
+[geo-evidence/join/status.json](./geo-evidence/join/status.json)이다. 전체 unit/global coverage나
+전체 installed corpus를 재실행한 것으로 요약하지 않는다. Source commit 후 provenance만
+동기화하는 최종 proof는 별도로 기록한다.

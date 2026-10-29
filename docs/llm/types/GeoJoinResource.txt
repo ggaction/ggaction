@@ -1,0 +1,17 @@
+export interface GeoJoinResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [{ readonly kind: "geometry"; readonly id: string; readonly revision: number }, Extract<InputRef, { readonly kind: "data" }>];
+  readonly options: { readonly method: "geo-join"; readonly geometryKey: readonly string[]; readonly dataKey: readonly string[] };
+  readonly result: {
+    readonly features: GeometrySourceResource["result"]["features"];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly topology?: GeometrySourceResource["result"]["topology"];
+    readonly coordinateKind: "geographic" | "planar";
+    readonly rowMap: readonly (number | null)[];
+    readonly diagnostics: { readonly geometryCount: number; readonly dataCount: number; readonly matchedCount: number;
+      readonly duplicateGeometryCount: 0; readonly duplicateDataCount: 0; readonly unmatchedGeometry: readonly number[];
+      readonly unmatchedData: readonly number[]; readonly coverage: number };
+  };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}

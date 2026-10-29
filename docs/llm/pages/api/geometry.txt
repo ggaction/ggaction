@@ -87,6 +87,60 @@ Invalid edits leave the original program and its trace unchanged. Inspect or
 compare geometry through [inspection](../../../inspection/), and remove it through
 [`removeResource`](../../../reference/actions/charts-data/#removeresource).
 
+## `createGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+```
+
+Join a geometry resource and materialized table with exact typed keys. Supply a new
+`id`, `geometryKey` and `dataKey`; `geometry` and `data` may be omitted when the
+current resource or one eligible input identifies each unambiguously. Key paths
+start at the feature or table row, respectively.
+
+> **Executable complete.** Run the complete module with its inline region features and population table. Both regions remain in the joined result.
+
+```javascript
+import { chart } from "ggaction";
+
+const joined = chart()
+  .createData({ id: "population", values: [{ code: "west", population: 120 }] })
+  .createGeometryData({
+    id: "regions", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } },
+      { type: "Feature", id: "east", properties: {}, geometry: null }
+    ] }
+  })
+  .createGeoJoinData({ id: "measured-regions", geometryKey: "id", dataKey: "code" });
+```
+
+The result retains both regions. West maps to table row0; East has a missing
+measurement, and its null geometry remains identifiable. Numeric1, string`"1"`
+and tuple`[1]` are distinct keys. Missing keys never match each other. Duplicate
+nonmissing keys on either input fail; aggregate duplicates explicitly beforehand.
+
+Use a string field or a nonempty property path such as`["properties","code"]`.
+Geometry properties stay intact. Joined mark fields read the matching table row;
+unmatched items have no table fields. Diagnostics expose match coverage, duplicate
+counts and unmatched source indices. An empty geometry has coverage0.
+
+## `editGeoJoinData`
+
+**Chart authoring.**
+
+```typescript
+editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
+```
+
+`editGeoJoinData` accepts `target?`, `geometry?`, `data?`, `geometryKey?` and
+`dataKey?`. Omitted values retain the current inputs and keys. Table or geometry
+revisions refresh the join, dependent fitted projections and marks atomically.
+Remove dependent joins before removing their source resources. Both actions are
+available in Full `ggaction`.
+
 ## `createProjection`
 
 **Chart authoring.**

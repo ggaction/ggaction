@@ -1,0 +1,404 @@
+{
+  "sourceBase": "7ee7821f9",
+  "scope": "Typed geographic joins: exact geometry/table correspondence, immutable revision closure, field inspection and offline restoration",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "unit-geo-1": {
+      "tests": 94,
+      "pass": 93,
+      "fail": 1
+    },
+    "unit-geo-2": {
+      "tests": 94,
+      "pass": 94,
+      "fail": 0
+    },
+    "types-boundaries-1": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0
+    },
+    "realistic-1": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0
+    },
+    "shared-resource-regressions": {
+      "tests": 27,
+      "pass": 27,
+      "fail": 0
+    },
+    "contracts-1": {
+      "tests": 30,
+      "pass": 30,
+      "fail": 0
+    },
+    "coverage-1": {
+      "tests": 96,
+      "pass": 96,
+      "fail": 0
+    },
+    "coverage-2": {
+      "tests": 99,
+      "pass": 98,
+      "fail": 1
+    },
+    "coverage-3": {
+      "tests": 99,
+      "pass": 99,
+      "fail": 0
+    },
+    "identity-equivalence": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0
+    },
+    "inventory-check": {
+      "tests": 10,
+      "pass": 8,
+      "fail": 2
+    },
+    "inventory-check-2": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0
+    },
+    "docs-first": {
+      "tests": 197,
+      "pass": 194,
+      "fail": 3
+    },
+    "docs-2": {
+      "tests": 197,
+      "pass": 197,
+      "fail": 0
+    },
+    "contracts-final": {
+      "tests": 52,
+      "pass": 52,
+      "fail": 0
+    },
+    "catalog-check": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0
+    },
+    "route-union": {
+      "tests": 33,
+      "pass": 32,
+      "fail": 1
+    },
+    "route-union-2": {
+      "tests": 33,
+      "pass": 33,
+      "fail": 0
+    }
+  },
+  "focusedCoverage": {
+    "tests": 99,
+    "pass": 99,
+    "lines": 100,
+    "branches": 98.21,
+    "functions": 100,
+    "criticalOwners": 33,
+    "floors": "Existing 95/90/100 Geo family floors unchanged; no global/full-suite coverage claim."
+  },
+  "archive": {
+    "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+    "entries": 1020,
+    "packedBytes": 1451086,
+    "unpackedBytes": 6621954,
+    "inputParity": {
+      "entries": 1020,
+      "delta": []
+    },
+    "sourceInputDigest": "36b1f6ff6365d9981bfd48526a1a6b8733cf5ed8820a93af96c63b3dd4eeb6b4"
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+      "cases": [
+        {
+          "id": "geographic-join/typed-fields-and-atomic-revision",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/offline-fresh-process",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/four-renderer-source-geometry-parity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 938,
+          "minifiedBytes": 2498240,
+          "gzipBytes": 715830
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 553,
+          "minifiedBytes": 1304223,
+          "gzipBytes": 380689
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 109153
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 146171,
+          "gzipBytes": 43759
+        }
+      },
+      "types": "strict Full/Basic geographic join consumer passed",
+      "snippets": [
+        "geographic-typed-join"
+      ]
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+      "cases": [
+        {
+          "id": "geographic-join/typed-fields-and-atomic-revision",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/offline-fresh-process",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/four-renderer-source-geometry-parity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 938,
+          "minifiedBytes": 2498240,
+          "gzipBytes": 714128
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 553,
+          "minifiedBytes": 1304223,
+          "gzipBytes": 379847
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 108524
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 146171,
+          "gzipBytes": 43599
+        }
+      },
+      "types": "strict Full/Basic geographic join consumer passed",
+      "snippets": [
+        "geographic-typed-join"
+      ]
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+      "cases": [
+        {
+          "id": "geographic-join/typed-fields-and-atomic-revision",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/offline-fresh-process",
+          "status": "passed"
+        },
+        {
+          "id": "geographic-join/four-renderer-source-geometry-parity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 938,
+          "minifiedBytes": 2498240,
+          "gzipBytes": 715830
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 553,
+          "minifiedBytes": 1304223,
+          "gzipBytes": 380689
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 109153
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 146171,
+          "gzipBytes": 43759
+        }
+      },
+      "types": "strict Full/Basic geographic join consumer passed",
+      "snippets": [
+        "geographic-typed-join"
+      ]
+    }
+  },
+  "packageMeasurement": {
+    "limits": {
+      "entries": 1020,
+      "packedBytes": 1456000,
+      "unpackedBytes": 6623000
+    },
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1020,
+        "packedBytes": 1454519,
+        "unpackedBytes": 6621954
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1020,
+        "packedBytes": 1451086,
+        "unpackedBytes": 6621954
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1020,
+        "packedBytes": 1454519,
+        "unpackedBytes": 6621954
+      }
+    ]
+  },
+  "bundleMeasurement": {
+    "limits": {
+      "ggaction": 716000,
+      "ggaction/basic": 381000,
+      "ggaction/svg": 25000,
+      "ggaction/graph": 44000,
+      "ggaction/interaction": 109200
+    },
+    "reports": [
+      {
+        "node": "v20.20.2",
+        "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+        "cases": 3,
+        "bundles": {
+          "ggaction": 715830,
+          "ggaction/basic": 380689,
+          "ggaction/svg": 20196,
+          "ggaction/interaction": 109153,
+          "ggaction/graph": 43759
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+        "cases": 3,
+        "bundles": {
+          "ggaction": 714128,
+          "ggaction/basic": 379847,
+          "ggaction/svg": 20055,
+          "ggaction/interaction": 108524,
+          "ggaction/graph": 43599
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "sha256": "6c38b274c48cd784e20eb95a412e6c68466bf7286ac45afbfc56c6f0c859dc11",
+        "cases": 3,
+        "bundles": {
+          "ggaction": 715830,
+          "ggaction/basic": 380689,
+          "ggaction/svg": 20196,
+          "ggaction/interaction": 109153,
+          "ggaction/graph": 43759
+        }
+      }
+    ]
+  },
+  "documentation": {
+    "source": {
+      "tests": 197,
+      "pass": 197
+    },
+    "build": "passed",
+    "built": {
+      "pages": 172,
+      "machineArtifacts": 1511
+    },
+    "browser": "Desktop search/accessibility plus all documentation pages at 320/390/768 passed"
+  },
+  "originalFailures": [
+    "unit-geo-1: existing invalid-projection error wording expectation; original message preserved before unit-geo-2.",
+    "coverage-1: all tests passed but topology branch absent; representative retained shared-arc join added.",
+    "coverage-2: fixture expected duplicate-key failure during asynchronous prepare; actual validation belongs to applyDataUpdate. Corrected owning test; runtime unchanged.",
+    "docs-first: missing new action CHANGELOG entries and measured search payload limit; docs-2 passed all 197.",
+    "inventory-check: geo-join allocated namespaces were not normalized by the independent replay helper; narrow method support and rowMap/source/identity mutation regression added. Renderer-free ledger has four fewer requirements than default ledger. inventory-check-2 passed 10.",
+    "route-union: responsive fixture fitted fixed Geo pixels outside the admitted plot. Explicit bounded projection viewport padding keeps them within the plot; runtime unchanged. route-union-2 passed 33."
+  ],
+  "integrationObligations": [
+    "Root executes common realistic-lifecycle-factor-effects.test.js, realistic-scenario-generator.test.js, realistic-scenario-generation-isolation.test.js once on combined integration.",
+    "Shared-arc/hierarchy LOD, geographic field encodings, guides/labels, camera and current-frame consumers remain assigned STEP045–046 scope."
+  ],
+  "checksNotRepeated": [
+    "No full unit/contracts/global coverage sweep; affected canonical checks plus focused coverage are recorded separately.",
+    "No repeated whole installed consumer corpus; same-tar focused new runtime, strict types, executable docs and five browser bundle qualifications."
+  ]
+}

@@ -71,3 +71,24 @@ test("meaning comparison normalizes proven graph occurrences and retains forged 
   assert.notDeepEqual(withoutAllocatedIdentity(userFirst), withoutAllocatedIdentity(userSecond));
   assert.deepEqual(first, snapshot);
 });
+
+test("meaning comparison retains geographic join correspondence and table changes", () => {
+  const create = () => chart()
+    .createData({ id: "table", values: [{ code: 1, value: 4 }, { code: 2, value: 8 }] })
+    .createGeometryData({ id: "shape", format: "geojson", coordinateKind: "planar", values: {
+      type: "FeatureCollection", features: [1, 2].map(id => ({ type: "Feature", id, properties: {}, geometry: { type: "Point", coordinates: [id, 0] } }))
+    } }).createGeoJoinData({ id: "joined", geometryKey: "id", dataKey: "code" }).semanticSpec;
+  const a = create(), b = create(), saved = structuredClone(b);
+  assert.deepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(b));
+  for (const mutate of [
+    r => { r.result.rowMap.reverse(); }, r => { r.result.diagnostics.coverage = 0; },
+    r => { r.inputs[1].revision++; }, r => { r.result.identity.rowKeys.reverse(); },
+    r => { r.result.identity.revision++; }, r => { r.result.features[0].geometry.coordinates[0]++; }
+  ]) {
+    const changed = structuredClone(b); mutate(changed.resources.find(r => r.id === "joined"));
+    assert.notDeepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(changed));
+  }
+  const changed = structuredClone(b); changed.datasets[0].values[0].value++;
+  assert.notDeepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(changed));
+  assert.deepEqual(b, saved);
+});

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 357,
+  "actionCount": 359,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2352,6 +2352,18 @@
     },
     {
       "name": "editGeometryData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeoJoinData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoJoinData",
       "wraps": [
         "editSemantic"
       ]

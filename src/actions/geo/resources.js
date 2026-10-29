@@ -23,7 +23,7 @@ export const createGeometryData = /* @__PURE__ */ closedAction(
 export const editGeometryData = /* @__PURE__ */ closedAction(
   { op: "editGeometryData", description: "Revise a geometry source while retaining its feature identity policy." },
   ["target", "values", "coordinateKind", "topoObject", "limits"], function (args = {}) {
-    const previous = resolveGeometryResource(this, args.target), { target, values, ...patch } = args;
+    const previous = resolveGeometryResource(this, args.target, { method: "geo" }), { target, values, ...patch } = args;
     if (Object.keys(args).every(key => key === "target") || Object.values(args).some(value => value === undefined)) throw new TypeError("Geometry edits require a nonempty patch without undefined values.");
     const { method, ...intent } = previous.options;
     const resource = createGeometryResource({ id: previous.id, options: normalizeGeometryOptions({ ...intent, ...patch,

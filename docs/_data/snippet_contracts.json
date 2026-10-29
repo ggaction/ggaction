@@ -2021,6 +2021,18 @@
   {
     "file": "api/geometry.md",
     "block": 2,
+    "heading": "`createGeoJoinData`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
+    "sha256": "45c6e04f04a847f139ff4a7df71ce6eb16032d2e59944ddc96fd3e4d5f46e83b",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 3,
     "heading": "`createProjection`",
     "mode": "complete",
     "environment": "node-esm",
@@ -2032,7 +2044,7 @@
   },
   {
     "file": "api/geometry.md",
-    "block": 3,
+    "block": 4,
     "heading": "Draw through a Geo coordinate",
     "mode": "complete",
     "environment": "node-esm",

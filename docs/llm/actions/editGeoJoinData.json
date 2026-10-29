@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 3,
+  "name": "editGeoJoinData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.",
+  "signature": "editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;",
+  "intents": [
+    "edit geo join data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "joined geographic geometry",
+    "typed geometry table join"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "geographic geometry resource",
+      "materialized table"
+    ],
+    "owns": [
+      "joined geometry resource"
+    ],
+    "idOptions": [
+      "target",
+      "geometry",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoJoinData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "geographic geometry resource",
+      "materialized table"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "geometryKey",
+      "required": false,
+      "type": "GeometryFeatureKey | undefined"
+    },
+    {
+      "name": "dataKey",
+      "required": false,
+      "type": "GeometryFeatureKey | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGeoJoinData({ target?, data?, geometry?, geometryKey?, dataKey? })"
+  ],
+  "snippet": "program.editGeoJoinData({ target: \"joinedGeometry\", dataKey: \"code\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgeojoindata"
+}

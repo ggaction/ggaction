@@ -5541,6 +5541,81 @@ editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
 Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
 
 
+## `createGeoJoinData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeoJoinDataOptions`](./../types.md#type-creategeojoindataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `geometryKey` | Required | `GeometryFeatureKey` |
+| `dataKey` | Required | `GeometryFeatureKey` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoJoinData({ id, geometry?, data?, geometryKey, dataKey })
+```
+
+Create an immutable one-to-one typed geometry-table join, retaining unmatched features and source identity.
+See [Geometry and projections](../../api/geometry.md#creategeojoindata) for exact keys, diagnostics and revision behavior.
+
+
+## `editGeoJoinData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoJoinDataOptions`](./../types.md#type-editgeojoindataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `geometry` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `geometryKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `dataKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
+```
+
+Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
+See [Geometry and projections](../../api/geometry.md#editgeojoindata).
+
+
 ## `createProjection`
 
 **API layer:** user-facing. **Authoring roles:** H2.

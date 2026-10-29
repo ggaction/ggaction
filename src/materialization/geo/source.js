@@ -1,4 +1,5 @@
-import { requireStoredResource } from "../../selectors/resources.js";
+import { requireStoredResource, resolveInputReference } from "../../selectors/resources.js";
+import { geographicCoordinateKind, isGeographicGeometry } from "../../selectors/geometry.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 import { validateGeoMarkBinding } from "../../grammar/geo/mark.js";
 import { graticuleFeatures } from "../../grammar/geo/graticule.js";
@@ -11,11 +12,17 @@ export function geoMarkSource(program, layer, config) {
   const projection = requireStoredResource(program, coordinate.projection), parameters = projectionParameters(projection);
   const binding = layer.geoBinding, generated = binding.mode === "graticule";
   const resource = generated ? undefined : requireStoredResource(program, binding.geometry);
-  if (resource !== undefined && resource.options.method !== "geo") throw new TypeError("Geographic marks require geographic or planar source geometry.");
-  const coordinateKind = resource?.options.coordinateKind ?? "geographic";
+  if (resource !== undefined && !isGeographicGeometry(resource)) throw new TypeError("Geographic marks require geographic or planar source geometry.");
+  const coordinateKind = resource === undefined ? "geographic" : geographicCoordinateKind(resource);
   if ((coordinateKind === "planar") !== (parameters.type === "identity")) throw new TypeError("Geometry coordinateKind and Geo projection are incompatible.");
   if (binding.radiusDeg !== undefined && coordinateKind !== "geographic") throw new TypeError("radiusDeg requires geographic source coordinates.");
-  const features = generated ? graticuleFeatures(binding.graticule) : resource.result.features.map((feature, index) => ({ ...feature, key: resource.result.identity.rowKeys[index] }));
+  const joined = resource?.options.method === "geo-join" ? resolveInputReference(program, resource.inputs[1]) : undefined;
+  const features = generated ? graticuleFeatures(binding.graticule) : resource.result.features.map((feature, index) => {
+    const rowIndex = joined === undefined ? undefined : resource.result.rowMap[index];
+    const rows = rowIndex === undefined || rowIndex === null ? [] : [resource.provenance.sourceRows[rowIndex]];
+    return { ...feature, key: resource.result.identity.rowKeys[index], rows,
+      fields: joined === undefined ? feature.properties ?? {} : rowIndex === null ? {} : joined.values[rowIndex] };
+  });
   return { binding, projection, resource, coordinateKind, parameters, features };
 }
 

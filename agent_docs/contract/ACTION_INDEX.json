@@ -6286,6 +6286,42 @@
       }
     },
     {
+      "name": "createGeoJoinData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoJoinData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "creategeojoindata"
+      }
+    },
+    {
+      "name": "editGeoJoinData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGeoJoinData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GEOMETRY.md",
+        "anchor": "editgeojoindata"
+      }
+    },
+    {
       "name": "createProjection",
       "layer": "user-facing",
       "domain": "core",

@@ -1101,6 +1101,10 @@
     "Graticule": [
       "graticule",
       "longitude and latitude grid"
+    ],
+    "GeoJoinData": [
+      "joined geographic geometry",
+      "typed geometry table join"
     ]
   },
   "summaryOverrides": {
@@ -2245,6 +2249,17 @@
     "editGraticule": {
       "target": "grid",
       "opacity": 0.7
+    },
+    "createGeoJoinData": {
+      "id": "joinedGeometry",
+      "geometry": "geometry",
+      "data": "measurements",
+      "geometryKey": "id",
+      "dataKey": "code"
+    },
+    "editGeoJoinData": {
+      "target": "joinedGeometry",
+      "dataKey": "code"
     }
   },
   "callPatternOverrides": {

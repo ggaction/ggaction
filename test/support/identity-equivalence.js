@@ -54,7 +54,7 @@ function normalizeObservedOccurrences(value, references) {
 }
 
 function normalizeGeometryIdentity(value) {
-  if (value.kind !== "geometry" || value.options?.method !== "geo" || !value.result?.identity) return value;
+  if (value.kind !== "geometry" || !["geo", "geo-join"].includes(value.options?.method) || !value.result?.identity) return value;
   const { logicalId, allocationId, ...identity } = value.result.identity;
   if (identity.keySpec?.mode === "generated" && Array.isArray(identity.rowKeys)) {
     const namespaces = new Map();
