@@ -3944,3 +3944,21 @@ source-owned Annotation facade만 native select/selection/all intent에 연결�
 유지한다. Package1044entries/packed1,481,747/unpacked6,746,635에 기존 packed1,482,000과
 최소 unpacked6,747,000 cap을 적용한다. 최초 cap 실패와 최종 같은 archive의 소비자 검증을
 [qualification](impl/roadmap9/interaction/annotation-membership-evidence/qualification.json)에 보존한다.
+
+
+### 데이터 없는 화면 좌표 Text 주석
+
+기존 native Text 생성·측정·효과 owner를 재사용하며 `annotationAnchor`가 명시 local Canvas pixel
+좌표만 소유한다. Grammar가 닫힌 저장값과 constant text 조건을 검증하고, materializer가 dataset 없이
+단일 native Text를 구체화한다. Selection의 private dataOptional 정책은 이 검증된 layer만 허용한다.
+기존 dataset Text의 data 요구는 유지한다. Item identity에는 닫힌 screen grain과 `lineage.kind:"screen"`을
+사용하며 rows/resource refs는 비어 있다. Codec은 child namespace 안의 정확한 screen Text owner와 key를
+검증한다. Interaction은 기존 native editor와 hit metadata adapter를 재사용하고 renderer는 변경하지 않는다.
+Full authoring만 추가되며 Basic은 shared concrete/schema 검증을 재사용한다. 정확한 공개 옵션은
+[MARKS](contract/current/MARKS.md#createannotation)와 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+E8 source-free Node20 실측은 Full729,256/Basic384,464/interaction112,934 gzip이며 최소
+cap729,300/384,500/113,000을 적용한다. Basic 증분은 screen Text의 공통 schema·native Text owner이고
+Full annotation facade를 가져오지 않는다. Package1045entries/packed1,483,625/unpacked6,754,572에
+cap1045/1,484,000/6,755,000을 적용한다. 최초 archive의 runtime12와 strict TypeScript는 통과했고
+bundle ceiling 실패는 원본 그대로 보존한다. Runtime 변경 없이 같은 archive를 다음 Node에서도 검증한다.

@@ -501,6 +501,8 @@ export type AngleEncodingOptions =
 
 ```typescript
 type AnnotationAnchor =
+  | { anchor?: never; space: "screen"; x: number; y: number; source?: never; data?: never;
+      coordinate?: never; select?: never; selection?: never; }
   | {
       anchor: "plot-center";
       select?: never;

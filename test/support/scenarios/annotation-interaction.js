@@ -9,6 +9,14 @@ export function assertAnnotationInteraction(rows, recipe) {
   const p = chart().createCanvas({ width: 500, height: 360, margin: 30 }).createData({ values: rows, keyField: "key" })
     .createPointMark({ id: "observations" }).encodeX({ field: "order" }).encodeY({ field: "value" })
     .createAnnotation({ id: "note", source: "observations", text: first.value, x: first.order, y: first.value });
+  const screen = p.createAnnotation({id:"screen-note",space:"screen",x:12,y:24,text:first.category});
+  const fixed = createInteractionSession({program:screen,bindings:[]});
+  fixed.dispatch({type:"annotate",target:"screen-note",payload:{x:18,y:30,text:last.category,dx:offsetFor(recipe)}});
+  const fixedProgram=deserializeProgram(serializeProgram(fixed.getState().program)).editCanvas({width:600,margin:50});
+  const fixedItem=getMarkItems(fixedProgram,{target:"screen-note"})[0];
+  assert.deepEqual([fixedItem.geometry[0].properties.x,fixedItem.geometry[0].properties.y],[18+offsetFor(recipe),30]);
+  assert.equal(fixedItem.geometry[0].properties.text,last.category);assert.deepEqual(fixedItem.rows,[]);
+  assert.equal(fixedProgram.semanticSpec.datasets.length,p.semanticSpec.datasets.length);fixed.destroy();
   const saved = serializeProgram(p), session = createInteractionSession({ program: p, bindings: [] });
   const offset = recipe === "observations" ? [8,-4] : recipe === "categories" ? [-4,8] : [5,5];
   session.dispatch({ type: "annotate", target: "note", payload: { text: last.value, format: ".2f", x: last.order, y: last.value,
@@ -57,3 +65,5 @@ export function assertAnnotationInteraction(rows, recipe) {
   assert.equal(feature.fields.sourceRowIndex,last.sourceRowIndex);
   assert.deepEqual(geo.semanticSpec.layers[0].geoBinding.anchor.key,first.key); map.destroy();
 }
+
+function offsetFor(recipe) { return recipe === "observations" ? 2 : recipe === "categories" ? 4 : 6; }

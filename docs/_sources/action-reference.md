@@ -1951,6 +1951,8 @@ complete Cartesian layer whose data, coordinate, scales, field types, and tempor
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
 
+With `space: "screen"`, x and y are finite logical pixels from the local Canvas top-left, increasing right/down. This branch needs no data, scale or coordinate. It rejects source/data/coordinate/membership and keeps its position across resize, margin, data and scale changes. Nested charts apply their existing child transform. `clip:true` clips to the local Canvas. Edit x/y with `editAnnotation`; field encodings and source placement do not apply.
+
 With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
 optional. Plot anchors reject `source` and use ordinary `<id>-x`/`<id>-y` linear
@@ -1979,7 +1981,7 @@ otherwise the current Text or one unique Text is used. An empty edit, ambiguous 
 without changing the program or its trace.
 
 `x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
-units. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+units. Existing screen anchors instead use finite local Canvas logical pixels. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
 `text` supplies constant content; `format` alone reformats existing constant content. Style options follow
 `editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
 

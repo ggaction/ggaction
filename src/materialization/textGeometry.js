@@ -1,3 +1,4 @@
+import { isScreenAnnotation, validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
 import { concreteTextItem } from "./textItem.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
@@ -474,6 +475,13 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members,
 }
 
 export function resolveTextGraphicEntries(program, layer, config, { identities = false, members = false, resolveMarkItems, resolveMarkSourceItems, sourceOnly = false, skipAppearance = false } = {}) {
+  if (isScreenAnnotation(layer)) {
+    validateScreenAnnotationLayer(layer);
+    const text = formatTextValue(layer.encoding.text.datum, layer.encoding.text.format);
+    const anchor = { x: layer.annotationAnchor.x, y: layer.annotationAnchor.y };
+    const graphic = concreteTextItem(program, config, anchor, text);
+    return graphic === undefined ? [] : [{ graphic, anchor, semanticIdentity: ["annotation", "screen"], members: [], fields: {}, channels: { text: layer.encoding.text.datum } }];
+  }
   return layer.source === undefined
     ? resolveRowTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems })
     : resolveSourceTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems, skipAppearance }, sourceOnly);

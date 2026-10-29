@@ -36,7 +36,8 @@
     "layoutLabels",
     "removeLabelLayout",
     "editMarkLabelPlacement",
-    "editMarkLabelSelection"
+    "editMarkLabelSelection",
+    "editSemantic"
   ],
   "editableVia": [
     "editAnnotation"

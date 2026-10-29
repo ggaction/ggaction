@@ -128,6 +128,9 @@ session.dispatch({type:'annotate',target:'note',payload:{text:'Revised',format:'
 session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
 session.dispatch({type:'annotate',target:'note',payload:{select:{items:['logical-item']}}});
 chart().createAnnotation({text:'Chosen',source:'bars',selection:'picked'}).editAnnotation({all:true});
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30});
+// @ts-expect-error screen annotations cannot bind a dataset
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen",data:"rows"});
 // @ts-expect-error coordinate annotations cannot own item membership
 chart().createAnnotation({text:'Bad',x:1,y:2,select:{items:[]}});
 // @ts-expect-error membership replacement chooses exactly one native mode

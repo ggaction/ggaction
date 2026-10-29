@@ -744,3 +744,29 @@ test("annotation membership buttons preserve item anchors and focus across point
   await page.evaluate(()=>window.__memberSession.destroy());assertNoBrowserErrors(errors,'annotation membership controls');await page.close();
  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
 });
+
+test("screen annotation controls keep Canvas pixel anchors through resize and keyboard editing", async () => {
+  const context=await browser.newContext({deviceScaleFactor:2,hasTouch:true,viewport:{width:900,height:650}});
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async()=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());
+      const {chart,render}=await import('/src/index.js'),{renderToSVG}=await import('/src/renderers/svg.js'),{createInteractionSession}=await import('/src/interaction.js');
+      document.body.innerHTML='<button id="move">Move screen note</button><button id="resize">Resize Canvas</button><canvas aria-label="Screen note"></canvas><div id="vector"></div>';
+      const p=chart().createCanvas({width:300,height:180,margin:30}).createAnnotation({id:'note',space:'screen',x:12,y:24,text:'Screen',fontSize:20});
+      const session=createInteractionSession({program:p,bindings:[]});window.__screenNote=session;window.__screenPhases=[];
+      const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+      session.subscribe(e=>{window.__screenPhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(p);
+      document.querySelector('#move').onclick=()=>session.dispatch({type:'annotate',target:'note',payload:{x:40,y:60,text:'Moved',dx:2,dy:-3}});
+      document.querySelector('#resize').onclick=()=>session.updateProgram(session.getState().program.editCanvas({width:500,height:240,margin:60}));
+    });
+    await page.getByRole('button',{name:'Move screen note'}).focus();await page.keyboard.press('Enter');
+    const inspect=()=>page.evaluate(()=>{const t=document.querySelector('#vector text'),p=window.__screenNote.getState().program;return {x:Number(t.getAttribute('x')),y:Number(t.getAttribute('y')),text:t.textContent,data:p.semanticSpec.datasets.length,scales:p.semanticSpec.scales.length}});
+    assert.deepEqual(await inspect(),{x:42,y:57,text:'Moved',data:0,scales:0});
+    await page.getByRole('button',{name:'Resize Canvas'}).tap();assert.deepEqual(await inspect(),{x:42,y:57,text:'Moved',data:0,scales:0});
+    await page.getByRole('button',{name:'Move screen note'}).click();await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'move');
+    assert.equal(await page.evaluate(()=>{const rgba=document.querySelector('canvas').getContext('2d').getImageData(80,75,130,45).data;return [...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)}),true);
+    await page.evaluate(()=>window.__screenNote.destroy());assertNoBrowserErrors(errors,'screen annotation controls');await page.close();
+  } catch(error) {await saveBrowserContextEvidence(context,error);throw error;} finally {await context.close();}
+});

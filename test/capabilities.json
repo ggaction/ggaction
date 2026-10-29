@@ -1340,6 +1340,10 @@
       {
         "type": "file",
         "path": "unit/interaction-annotation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/annotation-screen.test.js"
       }
     ],
     "selectors": [

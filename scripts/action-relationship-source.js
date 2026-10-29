@@ -434,7 +434,7 @@ function annotationEditingPrograms() {
   const attached = base.createAnnotation({id:'labels',text:'Old'})
     .editAnnotation({target:'labels',placement:{anchor:'center'},text:'New'})
     .editAnnotation({target:'labels',select:{items:[]}}).editAnnotation({target:'labels',all:true});
-  return [datum,attached];
+  return [datum,attached,chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30})];
 }
 
 async function imageResourcePrograms() {

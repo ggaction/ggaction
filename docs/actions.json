@@ -8339,10 +8339,10 @@
         ],
         "idOptions": [
           "id",
-          "selection",
           "source",
           "data",
           "coordinate",
+          "selection",
           "target"
         ]
       },
@@ -8356,6 +8356,8 @@
         "encodeX",
         "encodeY",
         "createMarkLabels",
+        "editSemantic",
+        "createGraphics",
         "createScale"
       ],
       "editableVia": [
@@ -8386,10 +8388,6 @@
       ],
       "inference": [
         {
-          "input": "selection",
-          "strategy": "explicit-current-unique-or-error"
-        },
-        {
           "input": "source",
           "strategy": "explicit-current-unique-or-error"
         },
@@ -8399,6 +8397,10 @@
         },
         {
           "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "selection",
           "strategy": "explicit-current-unique-or-error"
         },
         {
@@ -8549,14 +8551,9 @@
           "type": "\"plot-center\" | undefined"
         },
         {
-          "name": "select",
+          "name": "space",
           "required": false,
-          "type": "MarkSelector | undefined"
-        },
-        {
-          "name": "selection",
-          "required": false,
-          "type": "string | undefined"
+          "type": "\"data\" | \"plot\" | \"screen\" | undefined"
         },
         {
           "name": "x",
@@ -8567,11 +8564,6 @@
           "name": "y",
           "required": false,
           "type": "unknown"
-        },
-        {
-          "name": "space",
-          "required": false,
-          "type": "\"data\" | \"plot\" | undefined"
         },
         {
           "name": "source",
@@ -8585,6 +8577,16 @@
         },
         {
           "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "select",
+          "required": false,
+          "type": "MarkSelector | undefined"
+        },
+        {
+          "name": "selection",
           "required": false,
           "type": "string | undefined"
         },
@@ -8640,7 +8642,8 @@
         "layoutLabels",
         "removeLabelLayout",
         "editMarkLabelPlacement",
-        "editMarkLabelSelection"
+        "editMarkLabelSelection",
+        "editSemantic"
       ],
       "editableVia": [
         "editAnnotation"

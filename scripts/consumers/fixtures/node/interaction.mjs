@@ -10,6 +10,16 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/screen-annotation", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:20}).createAnnotation({id:'screen',space:'screen',x:12,y:23,text:'Screen'});
+    const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event.phase));
+    session.dispatch({type:'annotate',target:'screen',payload:{x:40,y:60,text:'Moved',dx:2,dy:-3}});
+    const next=deserializeProgram(serializeProgram(session.getState().program)).editCanvas({width:600,margin:40}),item=getMarkItems(next,{target:'screen'})[0];
+    assert.deepEqual([item.geometry[0].properties.x,item.geometry[0].properties.y],[42,57]);assert.deepEqual(item.rows,[]);
+    assert.deepEqual(next.semanticSpec.datasets,[]);assert.deepEqual(next.semanticSpec.scales,[]);assert.deepEqual(next.semanticSpec.coordinates,[]);
+    assert.deepEqual(events,['commit','settled']);session.destroy();
+    const parent=hconcat({programs:[{id:'a',program:p},{id:'b',program:next}]});assert.deepEqual(deserializeProgram(serializeProgram(parent)).graphicSpec,parent.graphicSpec);
+  } },
   { id: "interaction/geographic-annotation-edit", run() {
     const p=chart().createCanvas({width:300,height:200,margin:0}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'})
       .createGeoAnnotation({id:'note',anchor:{type:'position',position:[20,30]},text:'Before'});

@@ -1,0 +1,474 @@
+{
+  "parent": "41c026e000e4ebbc846114a591ee2bef734b561c",
+  "sourceCommit": null,
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Full createAnnotation screen anchors use finite local Canvas pixels without synthetic data, scales or coordinates. Reuse native Text/style/font/effects, selection, codec, composition and interaction editing. Closed screen lineage has no row/resource refs. Ordinary Text still requires data; renderers are unchanged.",
+  "runtimeAndTypesFingerprint": "12a7ddecfd7845057a6734d93add8a73b1b6e4b695edbdd0ac2d97da936883ab",
+  "checks": {
+    "consumerBoundaries": 304,
+    "textFocused": 96,
+    "finalScreenAndFont": 5,
+    "contractsTypesDiscovery": 54,
+    "finalArchitectureBoundary": 12,
+    "ownerCoverage": {
+      "grammar/screenAnnotation.js": [
+        100,
+        100,
+        100
+      ],
+      "actions/marks/text/annotation.js": [
+        100,
+        98.57,
+        100
+      ],
+      "actions/marks/text/actions.js": [
+        95.86,
+        89.71,
+        100
+      ],
+      "actions/encodings/text.js": [
+        96.83,
+        91.94,
+        100
+      ]
+    },
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3
+    },
+    "browser": 1,
+    "renderers": "Independent literal native Text versus public and codec: exact Canvas calls, SVG, decoded PNG and rasterized PDF pixels.",
+    "docs": {
+      "source": 207,
+      "builtPages": 172,
+      "llmArtifacts": 1531,
+      "routes": [
+        "api/marks/text/",
+        "api/interaction/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "mobileInspected": true
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 729256
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 384464
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 350205,
+            "gzipBytes": 112934
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 727710
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 383715
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 350205,
+            "gzipBytes": 112421
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 729256
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 384464
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 350205,
+            "gzipBytes": 112934
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1045,
+    "packedBytes": 1480407,
+    "unpackedBytes": 6754572,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-screen-c7871dee.tgz",
+    "sha1": "9c0f8bc57ffecce7170eb96a76864ea5118e2dfb",
+    "sha256": "c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b"
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 1045,
+    "packedBytes": 1483625,
+    "unpackedBytes": 6754572
+  },
+  "limits": {
+    "entries": 1045,
+    "packedBytes": 1484000,
+    "unpackedBytes": 6755000,
+    "fullGzip": 729300,
+    "basicGzip": 384500,
+    "svgGzip": 25000,
+    "interactionGzip": 113000,
+    "graphGzip": 44000,
+    "searchBytes": 1027500
+  },
+  "preservedFailures": [
+    "Initial focused fixtures used wrong session lifecycle names, target for reviseData, omitted graphic type and a numeric format with string content. Corrected fixtures exercise actual public owners without relaxing assertions.",
+    "The former unsupported-screen test now checks unknown space window. Ordinary createTextMark without data still rejects.",
+    "Font fixture used blur rather than the existing blurRadius option; corrected without runtime change.",
+    "Canonical realistic runner first rejected the new capability test entry without its required type. Corrected registry then16/16 passed.",
+    "CreateAnnotation card measured4265>4220 and editAnnotation3772>3760. Scoped caps4270/3780 preserve the full public type and trace relationships.",
+    "Node20 same-tar12 runtime and strictTS passed before Full729256>728300 bundle ceiling failed. The same measured archive passes the final exact owning cap recheck; Node22 and24 commands exited0. No fresh Node20 runtime rerun is claimed."
+  ],
+  "remaining": [
+    "Pointer annotation anchor drag",
+    "Pointer navigation, general keyboard focus/history and coordinate morph",
+    "Full AT35/38/65/80 and STEP074/077"
+  ],
+  "reusedEvidence": "The late prepared-font test adds coverage only; runtime/types remained frozen across304 consumer tests,96 Text tests, actual-data16, browser1 and render equality. Documentation prose later clarifies data/plot versus screen coordinates; owning source-pinned generation is recorded separately. No full normal/coverage or complete installed suite claimed.",
+  "commands": {
+    "focused": "node --test test/unit/annotation-screen.test.js",
+    "boundaries": "node --test test/unit/interaction-*.test.js test/unit/hit-program.test.js test/unit/annotation-screen.test.js test/unit/persistence/*.test.js test/unit/actions/primitives/edit-semantic.test.js test/unit/actions/primitives/semantic-value-validation.test.js test/unit/actions/composition/facet-text.test.js test/unit/actions/composition/parallel-facets.test.js test/unit/actions/composition/polar-facets.test.js test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned corpus cache",
+    "browser": "node --test --test-name-pattern=\"screen annotation controls\" test/browser/interaction-session.browser.js",
+    "render": "node .artifacts/annotation-screen-render-check.mjs",
+    "installed": "Node20/22/24 node .artifacts/annotation-screen-consumer.mjs; node .artifacts/annotation-screen-cap-recheck.mjs",
+    "docs": "docs:generate; test:docs; docs:build; test:docs:built; node .artifacts/annotation-screen-doc-browser.mjs; source-pinned owning docs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "annotation-screen-browser.log.gz",
+      "sha256": "a2d413c8a300ab7d74c7a17abf13fde9aa5c399493e60309abda7ddef2146ce1"
+    },
+    {
+      "path": "annotation-screen-build.log.gz",
+      "sha256": "306c888f6c593b845d0391fa7046dc665c95fd2133b061f9bd155cb1b0d8efa3"
+    },
+    {
+      "path": "annotation-screen-built.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
+      "path": "annotation-screen-cap-recheck.log.gz",
+      "sha256": "4f9af86e1794b84adeb4b698f28b58c43dbbad7e4b9968e1f7e4081099574b03"
+    },
+    {
+      "path": "annotation-screen-cap-recheck.mjs.gz",
+      "sha256": "f0339b17e5a348cc9e2aafb0777ee21f3058e2ebb54337159ea66e3b25a1b439"
+    },
+    {
+      "path": "annotation-screen-catalog.log.gz",
+      "sha256": "9cf9c583207d9e475c3ef76ca00c831f5aa2f71e2ddc35785499af6b8da2ae58"
+    },
+    {
+      "path": "annotation-screen-consumer-boundaries.log.gz",
+      "sha256": "27649e87395e10342b3e2089c2f39700c6517aabba113b188b415a080bed5df9"
+    },
+    {
+      "path": "annotation-screen-consumer.mjs.gz",
+      "sha256": "d6b82d67140556c610afb2be68145c9bd66ecc46b8515f06f5e35c379feffa9f"
+    },
+    {
+      "path": "annotation-screen-consumer20.log.gz",
+      "sha256": "964783b007267c134b14669eb670b6f1edcd9b2843703a8542d544f6948b1641"
+    },
+    {
+      "path": "annotation-screen-consumer22.log.gz",
+      "sha256": "55e4a4aec32b8a694c1642d5d7072bdf9d8572257b83cfde82ec832bd84f8bd8"
+    },
+    {
+      "path": "annotation-screen-consumer24.log.gz",
+      "sha256": "ace3ebdd75d9c53567748b44129aa4eff1d3710b7acabd0e073e3d46fbbaeb74"
+    },
+    {
+      "path": "annotation-screen-contracts.log.gz",
+      "sha256": "eba54a4b0c59331aab01fd08e490cfba8fe2acf230b7bc084ba6560b2ad197d8"
+    },
+    {
+      "path": "annotation-screen-coverage.log.gz",
+      "sha256": "90b9d219d703416da0d5c07f8ce6e46ee940adb194bd9f49fc0ee52fb1095121"
+    },
+    {
+      "path": "annotation-screen-cross.log.gz",
+      "sha256": "b5157d32ce87fad9dbed79e32ded58685d147dc27d5e8324e3b9049f5c168d34"
+    },
+    {
+      "path": "annotation-screen-doc-browser.log.gz",
+      "sha256": "9176cfdcfb3daca4617c6ad6f82bc8f2c88a6906fbba505db44584a3d319994b"
+    },
+    {
+      "path": "annotation-screen-doc-browser.mjs.gz",
+      "sha256": "bacf5162cb10fe6fb3aa91532f4c20751b0cf25ba7718d2368a3cab1cea3512a"
+    },
+    {
+      "path": "annotation-screen-docs-final-owning.log.gz",
+      "sha256": "7de7bdc05b271fb8413bde62dccef32f34321223f942a0381087594373151b09"
+    },
+    {
+      "path": "annotation-screen-docs.log.gz",
+      "sha256": "376034d3854a019e8ccb5c42f62d3ef288cf7f9f2382562f69453ea279f1ad29"
+    },
+    {
+      "path": "annotation-screen-final-generation.log.gz",
+      "sha256": "518a11651ca34493a7266c9678d8e33994a522ac2ded337ee398e140b7dfa5b7"
+    },
+    {
+      "path": "annotation-screen-final-owning.log.gz",
+      "sha256": "189c05855fc4ddf5fb5f6b0f845485ffc03c7bc3c81196e6186e1abd7b295e6c"
+    },
+    {
+      "path": "annotation-screen-fixed.json.gz",
+      "sha256": "4a6d5b130b8f91361f4d9f4dd340640260e0e3215b515f04eb14449437271ef6"
+    },
+    {
+      "path": "annotation-screen-focused.log.gz",
+      "sha256": "75d2e4d05e0685e124e3eddd4ee8593e32a500408a79b0248c6c5f34f75e7fa3"
+    },
+    {
+      "path": "annotation-screen-font-final.log.gz",
+      "sha256": "e9c19ab1b85803faf72e2c8f745baf9bb14f22c928ab2fe78ec3ffa21224174c"
+    },
+    {
+      "path": "annotation-screen-font.log.gz",
+      "sha256": "dbec6894e429a2451bf5629d0da5d6f3c3d0edd409dd3889cce7e09be3206579"
+    },
+    {
+      "path": "annotation-screen-generation-final.log.gz",
+      "sha256": "f2c15abc6cd44bab397ca522c5a5e34887148112ff700fc68b31a29ec165360d"
+    },
+    {
+      "path": "annotation-screen-generation-r3.log.gz",
+      "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "annotation-screen-generation.log.gz",
+      "sha256": "eafde0cfbd4c5191566a8d8c7381561123849ed61905c2604a755498cf294ef3"
+    },
+    {
+      "path": "annotation-screen-initial.log.gz",
+      "sha256": "e175a1f626be8f766c80b28556c2ce0bbbc2a363d06124d027bee09853ee4f58"
+    },
+    {
+      "path": "annotation-screen-measure20-initial.json.gz",
+      "sha256": "5a50da599b45c06aa2ade2eebe63353d8aecd3f6996323f446e516020dd46203"
+    },
+    {
+      "path": "annotation-screen-pack.log.gz",
+      "sha256": "dbd93e74b16150d0fb0ce2cc1f31fc21745be3fb14b38550cc052641034ac757"
+    },
+    {
+      "path": "annotation-screen-preflight.log.gz",
+      "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "annotation-screen-qualify.py.gz",
+      "sha256": "e0cc60357d2b8f5b8cd4153a5be7a89113d963f3b074b4323f85c8cf792cba05"
+    },
+    {
+      "path": "annotation-screen-realistic-final.log.gz",
+      "sha256": "758ed13dc4cc03ae19ced6e36fff280d8055a0e9f192601e56de7be29b5a321a"
+    },
+    {
+      "path": "annotation-screen-realistic.log.gz",
+      "sha256": "a2128792a44fb220d709bbcb3fc0d6f47caae0c3b6dccdf65debc351f3917a4f"
+    },
+    {
+      "path": "annotation-screen-render-check.mjs.gz",
+      "sha256": "01067847945268544b30dc4e37fe2c1e7f71d77291a89504732fab7ee21a096b"
+    },
+    {
+      "path": "annotation-screen-render.log.gz",
+      "sha256": "d8379f83da31485cacd9124bc84cfa21a15dcc8b503ef4df8ea489e3f899d8e7"
+    },
+    {
+      "path": "annotation-screen-smoke.log.gz",
+      "sha256": "2d8af62a254ec0415c4f9d386888987d8f11ab6ace55e0aba96bd1a376db8432"
+    },
+    {
+      "path": "annotation-screen-text-coverage.log.gz",
+      "sha256": "391408e710e67e04df04a379c3b8af9aa0f695aef595b06b3070627ac5a2de7d"
+    },
+    {
+      "path": "annotation-screen-text-final.log.gz",
+      "sha256": "4fe9254964ed90e029124e0bfd755a0260bd99dc9c2990914de6cf2a6ff7c56e"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "47c3da7c1a5bdff4e8916b38ab78c84bbd055712c9a51ecb6ea0ed8bce61a215"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "f7572e82324a565d3ab0b969160bf5a577500efb19e460a71cdb25544ad6cde3"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "eb6265f404bbc4f04c09172fa26bc8a2252f2c4d64ee227720d117340b99d5e6"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "a92edf2da089c2a9d7e1e427b7a7d5250cec30c146db610559c2cea9c58fbac6"
+    },
+    {
+      "path": "api-marks-text-1440.png",
+      "sha256": "854bbd5808b4cb962bfb06a368e5e66cd6fc0b271e71f4cfe60dff8356a515cb"
+    },
+    {
+      "path": "api-marks-text-320.png",
+      "sha256": "1463f096750a5ac0e97cc0d48c2576116736e5c80ad9a8b22aad583ce4cabccb"
+    },
+    {
+      "path": "api-marks-text-390.png",
+      "sha256": "1e3ca0c320be0b7a998e4cdbd1cf78bc3d58da2861ce462f4bef97d96ea59b63"
+    },
+    {
+      "path": "api-marks-text-768.png",
+      "sha256": "57a2dc851c36cd2fc5cfe8356952f22c62a437414e7bca311e26835f792ccd69"
+    }
+  ]
+}

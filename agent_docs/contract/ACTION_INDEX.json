@@ -1359,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`editAnnotation` and native Text/encoding/label actions; source-owned labels retain source removal lifecycle",
+      "update": "`editAnnotation` and native Text/encoding/label actions; screen anchors remain data-less local Canvas pixels; source-owned labels retain source removal lifecycle",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -1377,7 +1377,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Atomically edits an existing Text datum anchor, constant content, native style, source-item membership, placement or collision policy; preserves native owner lifecycle",
+      "update": "Atomically edits an existing Text datum or screen anchor, constant content, native style, source-item membership, placement or collision policy; preserves native owner lifecycle",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

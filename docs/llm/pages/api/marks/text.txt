@@ -6,7 +6,7 @@ source.
 
 ## `createAnnotation(options)`
 
-Create constant text at a final mark, data coordinate, or plot fraction:
+Create constant text at a final mark, data coordinate, plot fraction, or local Canvas position:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `points`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -46,6 +46,8 @@ and temporal units. Values participate in automatic domains. This binding is cho
 at creation and remains an independent Text layer, so later `encodeX` and `encodeY`
 can move it.
 
+For a screen anchor, set `space: "screen"` with finite x/y logical pixels from the Canvas top-left. x increases right and y increases down. This works with no data, scales or coordinates and does not create them. Resize and margin changes preserve the local position; nested charts apply their child transform. It rejects source/data/coordinate and item membership. `clip:true` uses the Canvas extent. Use `editAnnotation({x,y})` to move it, and ordinary Text styles or offsets for its appearance.
+
 For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
 the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
 dataset; an empty dataset works. Plot anchors reject `source` and use named
@@ -60,11 +62,11 @@ After creation, use the lower Text, position, scale, layout, and mark-removal ac
 
 ## `editAnnotation(options)`
 
-Use this Full action to change an existing annotation's content, offset, style or constant data/plot anchor together.
+Use this Full action to change an existing annotation's content, offset, style or constant data/plot/screen anchor together.
 It also accepts ordinary Text and attached label layers. The target is explicit, current Text, or the only Text layer.
 An invalid change leaves the old program intact. [Full signature and rules](../../../../reference/actions/marks/#editannotation).
 
-`x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal.
+For data and plot anchors, `x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal. Screen anchors retain logical pixel coordinates.
 Field-driven positions and source-owned label positions cannot be replaced here. Change source-owned offsets with
 `dx`/`dy`, or use `placement` for semantic inside/outside positioning. Existing encoded offsets require their encoding action.
 For attached labels, `select`, `selection`, or `all:true` replaces item membership through the native label selector. Choose one mode; an empty selector shows no labels. Named selections stay linked to the same source and follow its revisions.

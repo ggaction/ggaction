@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../screenAnnotation.js";
 import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -130,7 +131,7 @@ export function resolveFacetFamily(semanticSpec) {
   const annotations = semanticSpec.layers.filter(layer => layer.mark?.type === 'text' &&
     ['x', 'y', 'text'].every(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, 'datum')));
   const dataLayers = semanticSpec.layers.filter(layer =>
-    layer.mark?.type !== "image" && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
+    layer.mark?.type !== "image" && !isScreenAnnotation(layer) && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
   const primary = dataLayers.length ? dataLayers : annotations;
   for (const note of annotations) classifyPrimaryLayer(semanticSpec, note);
   if (primary.length === 0) {
@@ -289,7 +290,7 @@ export function planFacetDependencies(semanticSpec, options = {}) {
   const classifications = new Map(
     [...datasets].map(([id, { value }]) => [id, classifyDataset(value)])
   );
-  const layerPaths = [...layers].filter(([, { value: layer }]) => layer.mark?.type !== "image").map(([layerId, { value: layer }]) => {
+  const layerPaths = [...layers].filter(([, { value: layer }]) => layer.mark?.type !== "image" && !isScreenAnnotation(layer)).map(([layerId, { value: layer }]) => {
     const data = validateUserId(layer.data, `Facet layer "${layerId}" dataset id`);
     return { layerId, data, path: tracePath(data, datasets, classifications) };
   });

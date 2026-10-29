@@ -912,7 +912,7 @@ The explicit target chooses the editor. Position fields `x`/`y`, label placement
 
 Send `annotate` to an existing Text owner to update text, datum anchors, offsets, style or source-owned item membership in one transaction.
 The payload follows [`editAnnotation`](../../../api/marks/text/#editannotationoptions) and cannot include another target.
-The Full editor retains the source/data/plot anchor and native replay behavior. Basic does not author Text annotations.
+The Full editor retains the source/data/plot/screen anchor and native replay behavior. Basic does not author Text annotations.
 
 This browser module expects `<canvas id="chart" aria-label="Annotated points"></canvas>`.
 

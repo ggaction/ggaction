@@ -75,7 +75,7 @@ function resolveItems(program, target, grain, identityOnly, options) {
   }
   const policy = requireSelectionPolicy(layer.mark?.type);
   const dataset = findDataset(program, layer.data);
-  if (dataset === undefined && !policy.resourceBacked) {
+  if (dataset === undefined && !policy.resourceBacked && policy.dataOptional?.(layer) !== true) {
     throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
   }
   if (!policy.supportedGrains.includes(grain)) {

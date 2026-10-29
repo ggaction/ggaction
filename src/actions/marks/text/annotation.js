@@ -1,3 +1,4 @@
+import { isScreenAnnotation, normalizeScreenAnnotationAnchor } from "../../../grammar/screenAnnotation.js";
 import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { TEXT_MARK_STYLE_OPTIONS } from "../../../grammar/text.js";
@@ -21,7 +22,7 @@ const editAnnotation = /* @__PURE__ */ closedAction({
     predicate: layer => layer.mark?.type === "text", label: "editAnnotation text mark"
   });
   const target = layer.id, axes = ["x", "y"].filter(key => Object.hasOwn(args, key));
-  if (axes.length && (layer.source !== undefined || findCoordinate(this, layer.coordinate)?.type !== "cartesian" ||
+  if (axes.length && !isScreenAnnotation(layer) && (layer.source !== undefined || findCoordinate(this, layer.coordinate)?.type !== "cartesian" ||
     ["x", "y"].some(key => !Object.hasOwn(layer.encoding?.[key] ?? {}, "datum") ||
       layer.encoding[key].scale === undefined || layer.conditionals?.[key] !== undefined))) {
     throw new Error("Annotation positions require an existing independent Cartesian datum anchor.");
@@ -48,7 +49,9 @@ const editAnnotation = /* @__PURE__ */ closedAction({
     }
     if (text || format) next = next.encodeText({ target, value: text ? args.text : layer.encoding.text.datum,
       ...(format ? { format: args.format } : {}) });
-    for (const axis of axes) {
+    if (axes.length && isScreenAnnotation(layer)) next = next.editSemantic({ property: `layer[${target}].annotationAnchor`,
+      value: normalizeScreenAnnotationAnchor({ ...layer.annotationAnchor, ...Object.fromEntries(axes.map(axis => [axis, args[axis]])) }) }).rematerializeTextMark({ id: target });
+    for (const axis of isScreenAnnotation(layer) ? [] : axes) {
       const binding = layer.encoding[axis];
       next = next[axis === "x" ? "encodeX" : "encodeY"]({ target, datum: args[axis],
         fieldType: binding.fieldType, scale: { id: binding.scale }, coordinate: layer.coordinate,

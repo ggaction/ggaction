@@ -1,3 +1,4 @@
+import { isScreenAnnotation, validateScreenAnnotationLayer, screenAnnotationKey } from "../../../grammar/screenAnnotation.js";
 import { selectProgramItemKeys } from "../expression.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
@@ -27,6 +28,11 @@ function itemNamespace(program, dataset, keys) {
 }
 
 export function identifyItems(program, layer, grain, definitions) {
+  if (isScreenAnnotation(layer)) {
+    validateScreenAnnotationLayer(layer);
+    if (grain !== "text" || definitions.length > 1 || definitions.some(item => item.members.length)) throw new TypeError("Screen annotation has one rowless Text item.");
+    return definitions.map(item => ({ ...item, key: screenAnnotationKey(layer.id), memberKeys: [], topology: "" }));
+  }
   const dataset = requireDataset(program, layer.data);
   const keysByRow = new Map();
   dataset.values.forEach((row, index) => keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]));
@@ -166,7 +172,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
     }
   }
   const positions = selectionResolvers?.identityOnly
-    ? new Map(requireDataset(program, layer.data).rowKeys.map((key, index) => [key, index]))
+    ? new Map((isScreenAnnotation(layer) ? [] : requireDataset(program, layer.data).rowKeys).map((key, index) => [key, index]))
     : undefined;
   return Object.freeze(definitions.map((definition, index) => {
     const indices = definition.graphicIndices ?? [index];

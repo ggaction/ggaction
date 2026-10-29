@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../../grammar/screenAnnotation.js";
 import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -195,6 +196,7 @@ export function canMaterializeText(program, layer) {
   if (layer.mark?.type !== "text" || (layer.encoding?.text === undefined && layer.conditionals?.text === undefined)) {
     return false;
   }
+  if (isScreenAnnotation(layer)) return true;
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
     return canMaterializeTextSource(program, source);

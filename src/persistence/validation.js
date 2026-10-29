@@ -1,3 +1,4 @@
+import { validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
 import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
 import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
@@ -264,7 +265,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
         validateSourceIdentity(resource);
       }
-      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); }
+      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource); }
       if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
         const dataset = semantic.datasets.find(item => item.id === resource.data);
         if (dataset === undefined) throw new Error("Numeric text offsets require an existing dataset.");

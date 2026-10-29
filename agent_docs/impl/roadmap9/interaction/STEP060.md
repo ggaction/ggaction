@@ -13,7 +13,8 @@
 - [x] E5: 기존 Text annotation의 datum anchor/offset/content/placement 원자 편집
 - [x] E6: native Geo annotation의 명시 command 연결
 - [x] E7: source-owned item membership의 inline/named/all 편집과 scoped key 연결
-- [ ] screen anchor·pointer anchor drag 후행 인수
+- [x] E8: 데이터 없는 screen anchor와 native Text/codec/hit 연결
+- [ ] pointer anchor drag 후행 인수
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -590,3 +591,33 @@ Full gzip728,292→728,300과 package1044entries/packed1,481,747/unpacked6,746,6
 E7 source `81ea3c791` push 뒤 provenance를 고정하고 source docs owning47/47과 built172pages/1531LLM을
 통과했다. Runtime·타입과 finaltar22b79797, 시각 입력은 같으므로 동일 패키지3Node·4backend·네 폭Axe
 증거를 재사용한다. 이후 screen anchor와 pointer anchor drag를 별도 개념으로 계속한다.
+
+## E8 data-less screen annotation 최소 경계
+
+기존 전체 승인과 root 확인을 재사용한다. `createAnnotation({space:"screen",x,y,text,...TextStyle})`는
+선택된 local Canvas의 논리 pixel 위치를 저장한다. 브라우저 page/client 좌표를 저장하지 않고
+margin/resize/data/scale 변경에도 x/y를 그대로 유지하며 중첩 합성만 기존 child transform을 적용한다.
+source/data/coordinate/select/selection/placement와 혼합하지 않으며 가짜 dataset/scale은 만들지 않는다.
+`editAnnotation`/`annotate`의 x/y는 같은 screen 위치를 편집하고 기존 content/style/layout owner를 유지한다.
+
+Text layer의 `annotationAnchor:{space:"screen",x,y}`가 유일한 위치 intent다. content는 기존
+encoding.text.datum/format, style은 markConfig, 실제 glyph는 기존 concreteTextItem/materializer가 소유한다.
+Rowless item key는 `[[],owner,"item",["annotation","screen"]]`, concrete lineage는 `{kind:"screen"}`다.
+rows/resourceRefs는 빈 배열이며 codec는 namespace를 해석한 정확 Text owner의 screen anchor를 확인한다.
+일반 Text의 dataset 검증은 유지한다. 후속 pointer anchor drag와 history/focus는 이 단계 완료와 구분한다.
+
+
+E8 검증: interaction/persistence/composition304/304, Text96/96와 이후 추가 prepared-font 회귀5/5,
+source/types/catalog/discovery54/54, 최종 architecture/boundary12/12를 통과했다. Screen grammar
+100/100/100, Annotation100/98.57/100, Text actions95.86/89.71/100, encodeText96.83/91.94/100이다.
+Pinned 실제5개 데이터×3개 recipe16/16, 실제 browser1/1, 독립 literal primitive와 public/codec의
+Canvas calls/SVG/PNG/decoded PDF pixels exact equality를 확인했다.
+
+고정 archive c7871dee10608758da5c9b1878bd739469267bd4d11e2771f5047ba21783565b를 세 Node에서
+12 runtime+strict TypeScript+5 bundle로 검증했다. 최초 Node20은 runtime/type 통과 후 기존 bundle
+ceiling에서 실패했고, 동일 archive·측정의 owning cap 재검사로 닫았다. Node22/24는 종료0이다.
+Source docs207/207, built172pages/1531LLM, Text/interaction 페이지의320/390/768/1440 containment와
+Axe0을 확인했다. 이 증거는 전체 normal/coverage·전체 installed sweep을 주장하지 않는다.
+[원본 실패·정확 artifact·명령](screen-annotation-evidence/qualification.json)에 분리 기록한다.
+
+후속 E9의 pointer anchor drag와 navigation/history/focus, 전체AT35/38/65/80 및 STEP074/077은 남아 있다.

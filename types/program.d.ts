@@ -2469,6 +2469,8 @@ export interface SourceSchemaInput {
 }
 
 export interface SemanticLayer {
+  /** Explicit local Canvas logical-pixel anchor for rowless Text. */
+  readonly annotationAnchor?: { readonly space: "screen"; readonly x: number; readonly y: number };
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
@@ -2562,7 +2564,7 @@ export interface SemanticSpec {
   readonly title: Readonly<Record<string, unknown>>;
 }
 
-export type GraphicLineageRef = {
+export type GraphicLineageRef = { readonly kind: "screen" } | {
   readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
 } | { readonly kind: "resource"; readonly resource: { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number } };
 
@@ -5632,6 +5634,8 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 };
 
 type AnnotationAnchor =
+  | { anchor?: never; space: "screen"; x: number; y: number; source?: never; data?: never;
+      coordinate?: never; select?: never; selection?: never; }
   | {
       anchor: "plot-center";
       select?: never;

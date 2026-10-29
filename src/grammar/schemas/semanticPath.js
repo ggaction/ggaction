@@ -66,6 +66,7 @@ const ENTITY_PATHS = Object.freeze({
       "transform",
       "mark.type",
       "image",
+      "annotationAnchor",
       "alt",
       "hierarchyBinding",
       "hierarchyLabels",
