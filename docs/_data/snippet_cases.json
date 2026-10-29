@@ -471,5 +471,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view."
+  },
+  {
+    "id": "interaction-viewport",
+    "file": "api/interaction.md",
+    "contains": "const viewportSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform."
   }
 ]

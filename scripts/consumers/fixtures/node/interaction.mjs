@@ -26,6 +26,15 @@ export const cases = [
     const selected = s.getState().program.highlightMarks({ selection: "picked", color: "gold", dimOthers: false, bringToFront: false });
     const loaded = deserializeProgram(serializeProgram(selected));
     assert.deepEqual(getMarkItems(loaded, { target: "places" }).filter(item => item.properties.fill === "gold").map(item => item.fields.name), ["Place"]);
+    s.updateProgram(loaded);
+    const phases = []; s.subscribe(event => { if (event.phase) phases.push(event.phase); });
+    s.dispatch({ type: "setViewport", target: "map", payload: { scalePx: 2, translatePx: [10, -20] } });
+    const transformed = deserializeProgram(serializeProgram(s.getState().program));
+    const place = getMarkItems(transformed, { target: "places" })[0];
+    assert.deepEqual([place.properties.x, place.properties.y, place.properties.fill], [170, 160, "gold"]);
+    assert.equal(place.key, hit.itemKey);
+    assert.deepEqual(phases, ["commit", "settled"]);
+    assert.throws(() => s.dispatch({ type: "setViewport", target: "map", payload: { zoom: 2 } }));
     s.destroy();
   } },
   { id: "interaction/partition-host-focus", run() {

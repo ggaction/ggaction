@@ -2521,6 +2521,22 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 16,
+    "heading": "Adjust a geographic view from host controls",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [
+      "translatePx"
+    ],
+    "resources": [
+      "target: \"map\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.",
+    "sha256": "01f51c6859a5d5275d9238fe739638ae40ade5cf7813fb014fcca3c3dd004691",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",
