@@ -1139,6 +1139,13 @@
       "Trail plot",
       "variable width ribbon",
       "sample width path"
+    ],
+    "TablePlot": [
+      "table plot",
+      "keyed table",
+      "formatted cells",
+      "in-cell bars",
+      "sparklines"
     ]
   },
   "summaryOverrides": {
@@ -1161,9 +1168,7 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
-    "createTrailPlot": "Create native filled ribbons with a screen width at each ordered source sample.",
-    "editTrailPlot": "Edit Trail positions, sample widths and appearance while preserving typed series membership."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -2384,6 +2389,25 @@
       "target": "annotation",
       "text": "Updated note",
       "dx": 8
+    },
+    "createTablePlot": {
+      "columns": [
+        "name",
+        {
+          "field": "value",
+          "cell": "bar",
+          "footer": "sum"
+        }
+      ]
+    },
+    "editTablePlot": {
+      "target": "table",
+      "sortBy": [
+        {
+          "field": "value",
+          "order": "descending"
+        }
+      ]
     }
   },
   "callPatternOverrides": {

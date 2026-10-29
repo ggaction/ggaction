@@ -75,6 +75,7 @@ const ENTITY_PATHS = Object.freeze({
       "partitionView",
       "flowBinding",
       "flowLabels",
+      "table",
       "pyramid",
       "ohlc",
       "waterfall",

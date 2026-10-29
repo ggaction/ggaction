@@ -2902,6 +2902,95 @@ editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, gr
 
 Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../../../../api/trail/).
 
+## `createTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateTablePlotOptions`](../../../../reference/types/#type-createtableplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Required | `readonly TableColumn[]` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](../../../../api/table/).
+
+## `editTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditTablePlotOptions`](../../../../reference/types/#type-edittableplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly TableColumn[] \| undefined` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](../../../../api/table/).
+
 ## Related
 
 [Action Reference](../../../../reference/actions/) · [Chart API](../../../../api/) · [Supported Features](../../../../supported-features/)

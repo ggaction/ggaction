@@ -1,4 +1,5 @@
 import { createGeographicMarks } from "./geographic-marks/program.js";
+import { createTable } from "./table/program.js";
 import { createTrail } from "./trail/program.js";
 import { variants as trailVariants } from "./trail/fixture.js";
 import { createWaterfall } from "./waterfall/program.js";
@@ -319,6 +320,9 @@ export const PUBLIC_CHARTS = Object.freeze([
   }),
   example({ id: "streamgraph", data: {}, width: 380, height: 280, docsGroup: "tutorials", createProgram: createStreamgraph,
     browser: { path: "streamgraph/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "streamgraph", width: 380, height: 280 } } }
+  }),
+  example({ id: "table", data: {}, width: 360, height: 220, docsGroup: "tutorials", createProgram: createTable,
+    browser: { path: "table/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "table", width: 360, height: 220 } } }
   }),
   ...trailVariants.map(variant => example({ id: variant.chart, programDirectory: "trail", testDirectory: "trail", data: {}, width: 420, height: 240, docsGroup: "tutorials",
     createProgram: () => createTrail(variant.id),

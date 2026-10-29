@@ -149,6 +149,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStatisticalReference`](./actions/marks.md#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
+| [`createTablePlot`](./actions/marks.md#createtableplot) | H2 | user-facing | marks |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |
 | [`createTextPlot`](./actions/charts-data.md#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | H3 | user-facing | axes |
@@ -288,6 +289,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editStrokeScale`](./actions/charts-data.md#editstrokescale) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./actions/charts-data.md#editstrokewidthscale) | H2 | user-facing | core |
 | [`editSummaryData`](./actions/statistics.md#editsummarydata) | H1, H3 | user-facing | statistics |
+| [`editTablePlot`](./actions/marks.md#edittableplot) | H3 | user-facing | marks |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./actions/guides.md#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./actions/guides.md#editthetaaxislabels) | H3 | user-facing | axes |

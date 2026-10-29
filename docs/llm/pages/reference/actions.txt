@@ -137,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStatisticalReference`](../../../reference/actions/marks/#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](../../../reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](../../../reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
+| [`createTablePlot`](../../../reference/actions/marks/#createtableplot) | H2 | user-facing | marks |
 | [`createTextMark`](../../../reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
 | [`createTextPlot`](../../../reference/actions/charts-data/#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](../../../reference/actions/guides/#createthetaaxis) | H3 | user-facing | axes |
@@ -276,6 +277,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editStrokeScale`](../../../reference/actions/charts-data/#editstrokescale) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](../../../reference/actions/charts-data/#editstrokewidthscale) | H2 | user-facing | core |
 | [`editSummaryData`](../../../reference/actions/statistics/#editsummarydata) | H1, H3 | user-facing | statistics |
+| [`editTablePlot`](../../../reference/actions/marks/#edittableplot) | H3 | user-facing | marks |
 | [`editTextMark`](../../../reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](../../../reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](../../../reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |

@@ -5,17 +5,17 @@
 - [x] STEP055·structure-recipes·core와 기존 전체 승인 확인
 - [x] typed row/column key와 고정·실측 자동 폭의 순수 셀 계산
 - [x] 독립 literal·순서·영역 보존·극값·own-data·예산 회귀
-- [ ] executable primitive와 실제 렌더링
-- [ ] Full create/edit·저장·명시 materialization·source revise
-- [ ] footer 집계·bar cell·sparkline cell·format/wrap
-- [ ] selection/hit·접근성·resize/sort·codec·4 backend
-- [ ] 타입·Current·문서·설치·실제 데이터 수직 검증
+- [x] executable primitive와 실제 렌더링
+- [x] Full create/edit·저장·명시 materialization·source revise
+- [x] footer 집계·bar cell·sparkline cell·format/wrap
+- [x] selection/hit·접근성·resize/sort·codec·4 backend
+- [x] 타입·Current·문서·설치·실제 데이터 수직 검증
 - [ ] STEP050 합산 및 STEP074/077 누적 인수
 
-상태: 순수 계산 checkpoint. 공개 Table 기능이나 STEP055 완료를 뜻하지 않는다.
+상태: STEP055 Table 공개 수직 구현과 owning qualification 완료. STEP050 최신 합산과074/077 누적 인수는 미완료다.
 [AUTHORIZATION.json의 remainingApproval](../AUTHORIZATION.json)은 남은 API·저장·시각
 결정까지 포함하는 명시 승인이다. 이 범위에 따라 아래 구체안을 기록하고 질문 없이 계속한다.
-추가되는 공개 API와 저장 구조는 후속 구현 후 Current에 옮긴다. 원안의 footer, bar-table,
+공개 API와 저장 구조의 정본은 [Current TABLE](../../../contract/current/TABLE.md)이다. 원안의 footer, bar-table,
 inline sparkline, static 4 formats, 접근성 값을 제외하지 않는다.
 
 ## 책임과 현재 private 계산
@@ -71,7 +71,7 @@ source revise·sort·column reorder는 살아 있는 row+column key를 유지한
 cell accessibility value, cell/row/column-header hit는 같은 semantic resolver를 소비한다.
 selection/highlight, Canvas resize, nested composition, scene/interaction, codec 및 offline
 Canvas/SVG/PNG/PDF 소비자는 기존 registry/정책 경계에 연결한다. Renderer에 table 분기를
-추가하지 않는다. 이 공개 소비자들은 아직 이 private checkpoint의 완료 증거가 아니다.
+추가하지 않는다. 공개 소비자 결과는 아래 공개 연결 기록과 table-public-evidence에 보존한다.
 
 ## 수치 증거와 최초 실패
 
@@ -94,3 +94,46 @@ import하지 않으므로 기존 공개 번들·설치 소비자의 입력은 �
 
 실행·입력·패키지 근거는 table-kernel-evidence에 기록한다. 공개 chart 값이나 primitive golden을
 수정해 이 수치 실패를 숨기지 않았다. 외부 adapter/parity 시험을 필수·통과 분모에 넣지 않는다.
+
+
+## 공개 연결 후보 — 기존 남은 전체 승인 적용
+
+`remainingApproval`의 public API/storage/visual 승인을 이 정확한 후보에 적용한다. 재질문은 하지 않는다.
+실행 원본은 `examples/table/program.js`, 독립 primitive는 `test/charts/table/primitive.program.js`,
+manifest는 같은 directory의 `manifest.js`다. 360×220 Canvas, 고정 폭100/100/120, header/두 source row/footer를
+동일 concrete tree로 표현한다. 실제 PNG는 `.artifacts/test/png/charts/table/table/cells/user-facing.png`다.
+Canvas call과 SVG string, PNG pixels 및72dpi PDF raster의 primitive/public exact pair가 통과했다.
+
+공개 옵션·저장 결과 정본은 [Current TABLE](../../../contract/current/TABLE.md)와 `types/program.d.ts`다.
+`createTablePlot({columns})` / `editTablePlot({target?,...patch})`를 Full에만 등록한다. rows는 원 dataset,
+column semantic 의미는 layer.table, replayable cell appearance는 tablePlot config가 각각 한 번 소유한다.
+정렬/제한은 presentation이고 footer는 전체 source 집계다. truncation은 실제 Text lines+ellipsis에만 적용하며
+accessible text와 source row count는 보존한다. 표시 label/index는 key로 쓰지 않는다.
+
+셀 clip은 existing named collection에 둔다. Collection item은 renderer enter/exit를 거치지 않으므로 item에
+clip 필드만 추가하는 안은 적용하지 않았다. 원 renderer/schema 변경 없이 root Table collection의 자식이
+cell collection이고 그 items가 Rect/Path/Circle/Text다. selection은 실제 subtree item owner에 쓰며 clip이 유지된다.
+Shared typed row-token validator를 core/itemIdentity에서 재사용해 저장 column key의 파서를 복제하지 않았다.
+
+focused/critical·primitive·package·실제 자료·문서의 실행 근거는 table-public-evidence에 보존한다.
+STEP050 최신 합산과074 최종 누적 인수는 계속 별도 의무다.
+
+
+## 소비자 매트릭스와 통합 의무
+
+| 소비자 | 결과와 근거 |
+| --- | --- |
+| 의미/typed key/format/sort/rowLimit/footer | Current와 pure literal·공개 lifecycle 테스트; 원행과 전체 source 집계 보존 |
+| cell/row/column-header 선택·hit | logical cell에 typed row/column/role, body의 원행 하나 및 footer의 전체 source membership; header는 columnKey로 식별 |
+| Canvas/source/facet/nested/removal | 명시 dependency rematerialization, 기존 named child clip과 selection identity 유지 |
+| color/legend/theme | native ordinal/continuous facade color, scale edits/legend; body 배경 palette, explicit style 우선·reset |
+| 일반 position/appearance encoders·x/y guide | N/A: Table 자체 row/column layout, appearance는 Table 역할 옵션; 다른 척도/guide를 숨겨 우회하지 않음 |
+| label/font/접근성 | 기존 exact metrics·wrap/grapheme owner, 불충분 준비는 child0회 실패; 실제 text와 full accessible 값 구분 |
+| createMarkLabels | N/A: column label/format/labels 옵션과 실제 cell Text가 의미를 소유 |
+| Canvas/SVG/PNG/PDF·scene·codec | 기본과 outline/shadow primitive pair, cell clip, graphic-only offline restore와scene endpoint |
+| Full/Basic/types/package | Full만create/edit; strict negative Basic, 같은 tar3Node 집중 소비자 |
+| 실제 자료 | 5개 authentic tables의 scalar/bar10·명시 source-cohort sparkline5 및 전체 증거1검사; 가짜 금융 role이나 외부 parity 분모 없음 |
+
+최신050 frame owner 합산은 root가 맡는다. Table은 Cartesian 위치축이 없고 각 sparkline cell에 하나의
+Y mapping만 있으므로 Table 자체에 독립 position scale/guide를 만들지 않는다. 전체074 corpus/coverage와
+077 인수를 이 owning 검사의 통과 수로 대체하지 않는다.

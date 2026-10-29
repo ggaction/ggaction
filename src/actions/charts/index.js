@@ -1,3 +1,4 @@
+import { createTablePlot, editTablePlot } from "./table.js";
 import { createTrailPlot, editTrailPlot } from "./trail.js";
 import { createWaterfallPlot, editWaterfallPlot } from "./waterfall.js";
 import { applyWaterfallMark, materializeWaterfallPlot } from "../marks/waterfall.js";
@@ -29,7 +30,7 @@ import { createBeeswarmPlot } from "./beeswarm.js";
 import { createRaincloudPlot, editRaincloudPlot } from "./raincloud.js";
 
 export function registerChartActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createTrailPlot, editTrailPlot });
+  Object.assign(ProgramClass.prototype, { createTablePlot, editTablePlot, createTrailPlot, editTrailPlot });
   Object.assign(ProgramClass.prototype, { createWaterfallPlot, editWaterfallPlot, applyWaterfallMark, materializeWaterfallPlot });
   Object.assign(ProgramClass.prototype, { createOHLCPlot, editOHLCPlot, applyOHLCMark, materializeOHLCPlot });
   Object.assign(ProgramClass.prototype, { createPyramidPlot, editPyramidPlot, applyPyramidMark, materializePyramidPlot });

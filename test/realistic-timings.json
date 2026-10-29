@@ -58,6 +58,7 @@
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-stream-baselines.test.js": 3162,
     "contracts/realistic-structured-paints.test.js": 184876,
+    "contracts/realistic-table-plots.test.js": 3204,
     "contracts/realistic-trail-plots.test.js": 2968,
     "contracts/realistic-waterfall-plots.test.js": 3002
   },
@@ -296,6 +297,21 @@
       "file": "contracts/realistic-trail-plots.test.js",
       "durationMs": 2967.944792,
       "maxRssKiB": 198464,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-table-plots.test.js",
+      "durationMs": 3204.287084,
+      "maxRssKiB": 189344,
       "status": "passed",
       "environment": {
         "node": "v22.23.1",

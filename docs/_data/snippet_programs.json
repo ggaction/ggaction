@@ -614,5 +614,16 @@
       "exported": "createTrail"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/table.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "table",
+    "prerequisites": "Import the Full ggaction package; the example declares source rows, typed columns and whole-source footer aggregation.",
+    "canonical": {
+      "file": "examples/table/program.js",
+      "exported": "createTable"
+    },
+    "rendering": "authoring-only"
   }
 }

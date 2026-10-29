@@ -226,8 +226,42 @@ function geographic() {
       additionalSources: [land.provenance], transformation: `USGS 2024-01-01–2024-02-01 UTC, magnitude≥5의 고정 응답 ${value.features.length}개 중 earthquake이며 규모가 유한한 ${features.length}개. 원 event ID·좌표·규모·깊이를 보존. 경위도는 equirectangular 투영. 해안선 배경은 Natural Earth v5.1.2 1:110m land (${land.value.features.length}features), SHA-256 ${land.provenance.sha256}.` } };
 }
 
+function table() {
+  const { rows, provenance } = localSource("gapminder.json", "Gapminder · repository snapshot");
+  const groups = new Map();
+  for (const row of rows) {
+    if (!groups.has(row.country)) groups.set(row.country, []);
+    groups.get(row.country).push(row);
+  }
+  const countries = [...groups].map(([country, history]) => {
+    history.sort((a, b) => a.year - b.year);
+    const last = history.at(-1);
+    return { country, life: last.life_expect, fertility: last.fertility, populationMillions: last.pop / 1e6, history };
+  });
+  const program = title(chart().createCanvas({ width: 1260, height: 1060,
+    margin: { top: 105, left: 55, right: 55, bottom: 55 }, background: "#ffffff" })
+    .createData({ values: countries, keyField: "country" })
+    .createTablePlot({ rowLimit: 20, rowHeight: 38, padding: 7,
+      sortBy: [{ field: "populationMillions", order: "descending" }],
+      columns: [
+        { field: "country", label: "Country", width: 205, footer: "count" },
+        { field: "life", label: "Life expectancy", width: 155, cell: { type: "bar", domain: [0, 90] }, format: ".1f", align: "right" },
+        { field: "fertility", label: "Births / woman", width: 145, format: ".2f", align: "right" },
+        { field: "populationMillions", label: "Population (M)", width: 180, cell: "bar", format: ".1f", align: "right", footer: { op: "sum", format: ".1f" } },
+        { field: "history", label: "Life expectancy · 1955–2005", width: 430,
+          cell: { type: "sparkline", x: "year", y: "life_expect", xDomain: [1955, 2005], yDomain: [25, 85], resolveY: "shared" } }
+      ], labels: { fontSize: 12 }, cells: { stroke: "#e2e8f0", strokeWidth: .6 },
+      bars: { fill: "#bfdbfe" }, sparklines: { stroke: "#0d9488", strokeWidth: 2 },
+      headerStyle: { fill: "#e2e8f0", color: "#0f172a" }, footerStyle: { fill: "#eff6ff", color: "#0f172a" } }),
+  "Country dashboard · values in 2005 + 50-year trajectories", "Top 20 of 62 countries by population · shared sparkline axes · footer: all 62 countries, not only visible rows");
+  return { id: "native-gapminder-table", title: "Table · 국가별 수치·막대·50년 추세선", tag: "신규 · Table + bars + sparklines · 62 country records",
+    description: "2005년 기대수명·출산율·인구와 11시점의 기대수명 추세를 같은 행에서 비교합니다. 인구순 상위 20개국을 표시하고 전체 62개국 합계를 유지합니다.", program,
+    provenance: { ...provenance, origin: "https://www.gapminder.org/data/", usedRows: rows.length,
+      transformation: `원본 ${rows.length}행을 ${countries.length}개 국가별 nested history로 묶고 2005년의 원 수치를 열로 노출. 1955–2005년 11관측을 같은 x/y 범위의 sparkline으로 연결. 인구 단위만 백만 명으로 변환. 인구순 20행 표시, 원본 62개국 유지. Footer는 전체 62국의 국가 수와 인구 합계로 세계 전체 인구를 뜻하지 않음.` } };
+}
+
 export function* nativeDataCharts() {
-  for (const build of [pyramid, prices, waterfall, trail, streamgraph, calendar, contour, hierarchyCharts, flow, geographic]) {
+  for (const build of [table, pyramid, prices, waterfall, trail, streamgraph, calendar, contour, hierarchyCharts, flow, geographic]) {
     try {
       const result = build();
       for (const item of Array.isArray(result) ? result : [result]) yield { ...item, newType: true };

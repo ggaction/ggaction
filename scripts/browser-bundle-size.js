@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 743_900, // Native mark ownership and conditional category order: Node20/24 743,860 bytes.
-  "ggaction/basic": 398_300, // Combined creation paths and frame policy: Node20/24 398,278 bytes.
+  "ggaction/basic": 402_700, // Combined creation paths and frame policy: Node20/24 398,278 bytes.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_100, // Shared region predicate validation: 43,572 gzip bytes.
   "ggaction/interaction": 119_700 // Combined LOD/current hit frames and node movement: Node20 112,814.

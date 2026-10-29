@@ -92,3 +92,19 @@ test("meaning comparison retains geographic join correspondence and table change
   assert.notDeepEqual(withoutAllocatedIdentity(a), withoutAllocatedIdentity(changed));
   assert.deepEqual(b, saved);
 });
+
+test("Table private cell collections compare independently allocated keys without hiding typed columns, clips or draw order", async () => {
+  const {chart,hconcat}=await import('../../../src/index.js');
+  const create=key=>chart().createCanvas().createData({values:[{id:1,v:2},{id:'1',v:3}],keyField:'id'}).createTablePlot({columns:[{key,field:'v'}]});
+  const a=create(1).graphicSpec,b=create(1).graphicSpec;
+  assert.notDeepEqual(a,b); assert.deepEqual(withoutAllocatedIdentity(a),withoutAllocatedIdentity(b));
+  assert.notDeepEqual(withoutAllocatedIdentity(a),withoutAllocatedIdentity(create('1').graphicSpec));
+  const first=b.objects.table.children[0],bad=structuredClone(b);bad.objects[first].clip.width+=1;
+  assert.notDeepEqual(withoutAllocatedIdentity(a),withoutAllocatedIdentity(bad));
+  const order=structuredClone(b);order.objects.table.children.reverse();
+  assert.notDeepEqual(withoutAllocatedIdentity(a),withoutAllocatedIdentity(order));
+  const identity=structuredClone(b);identity.objects[first].items[0].identity.key='incorrect';
+  assert.notDeepEqual(withoutAllocatedIdentity(a),withoutAllocatedIdentity(identity));
+  const nested = () => hconcat({programs:[{id:'left',program:create(1)},{id:'right',program:create('1')}]});
+  assert.deepEqual(withoutAllocatedIdentity(nested().graphicSpec),withoutAllocatedIdentity(nested().graphicSpec));
+});

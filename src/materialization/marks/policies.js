@@ -14,6 +14,8 @@ import {
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   geo: Object.freeze({ canMaterialize: (_program, layer) => layer.geoBinding !== undefined, op: "materializeGeoMark", acceptsResolvedScales: true, encoding: Object.freeze({ scaleFirst: true }), scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
+  table: Object.freeze({ canMaterialize: (_program, layer) => layer.table !== undefined,
+    op: "materializeTablePlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   trail: Object.freeze({ canMaterialize: (_program, layer) => layer.trail !== undefined,
     op: "materializeTrailPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   waterfall: Object.freeze({ canMaterialize: (_program, layer) => layer.waterfall !== undefined,

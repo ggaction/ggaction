@@ -226,7 +226,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.optionPaths, 34725);
   assert.equal(inventory.counts.requiredOptionPaths, 23349);
   assert.equal(inventory.counts.excludedOptionPaths, 11376);
-  for (const action of ["createWaterfallPlot", "editWaterfallPlot", "createGeoLODData", "editGeoLODData", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
+  for (const action of ["createTablePlot", "editTablePlot", "createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createGeoLODData", "editGeoLODData", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
   for (const id of ["option-path:editLayout.node.key", "option-path:editLayout.node.x", "option-path:editLayout.node.y", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom", "option-path:createGeoJoinData.geometryKey", "option-path:createGeoJoinData.dataKey", "option-path:editGeoJoinData.dataKey", "option-path:createGeoShapeMark.geometry", "option-path:createGeoPointMark.radiusDeg", "option-path:editGeoLineMark.routeHint", "option-path:editGraticule.extentDeg", "option-path:createCoordinate.projection", "option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
@@ -260,7 +260,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.literalFamilies, 277);
   assert.equal(inventory.counts.pathLiteralRequirements, 16628);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 582);
+  assert.equal(inventory.counts.pathDiversityRequirements, 594);
   for (const action of ["createAreaPlot", "layoutSeries", "encodeColor"]) {
     const path = action === "layoutSeries" ? "mode" : "layout";
     assert.ok(inventory.optionPaths.find(option => option.action === action && option.path === path).values.includes("string:wiggle"));
@@ -568,8 +568,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 229);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1118);
+  assert.equal(scaleTypePaths.length, 231);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1136);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);

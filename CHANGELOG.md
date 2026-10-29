@@ -40,6 +40,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
+- Add Full-only `createTablePlot` and `editTablePlot` for typed row/column cells, formatted text, in-cell bars and sparklines, whole-source footer aggregation and explicit visible row limits. Preserve cell identity, clipping, selection, font preparation and offline Canvas/SVG/PNG/PDF output.
+
 - Add Full-only `createTrailPlot` and `editTrailPlot` for ordered filled ribbons with a logical pixel width per sample. Preserve typed series identities, explicit missing gaps, Cartesian curves and Polar closure through edits, selection, facets and offline rendering.
 
 - Add Full-only `createWaterfallPlot` and `editWaterfallPlot` for ordered contributions, explicit total/subtotal/reset roles, shared cumulative scales and compound stage selection. Preserve source rows, fonts, effects and offline Canvas/SVG/PNG/PDF output through edits and compositions.

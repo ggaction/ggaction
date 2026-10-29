@@ -1,6 +1,7 @@
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
 export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
 export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";

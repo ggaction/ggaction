@@ -4867,6 +4867,18 @@
     "executable": false
   },
   {
+    "file": "api/table.md",
+    "block": 1,
+    "heading": "`createTablePlot`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
+    "sha256": "1b43ac59f6fefbd0c3aedcdf95a11e78372153993f050c690ec05e32218f57c4",
+    "executable": true
+  },
+  {
     "file": "api/titles.md",
     "block": 1,
     "heading": "`createTitle(options)`",

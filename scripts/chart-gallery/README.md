@@ -1,6 +1,6 @@
 # Curated data gallery
 
-This development gallery renders twenty-one real-data charts, including thirteen new native chart types with the public chart actions, and copies existing feature previews into a self-contained static directory. It adds no library API or package export. CSV loading reuses the hash-verified full-source corpus loader; it does not use the smaller test samples.
+This development gallery renders twenty-two real-data charts, including fourteen new native chart types with the public chart actions, and copies existing feature previews into a self-contained static directory. It adds no library API or package export. CSV loading reuses the hash-verified full-source corpus loader; it does not use the smaller test samples.
 
 ```sh
 npm run datasets:sync

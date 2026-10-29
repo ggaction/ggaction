@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 375,
+  "actionCount": 377,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2583,6 +2583,16 @@
       "wraps": [
         "createScale"
       ]
+    },
+    {
+      "name": "createTablePlot",
+      "wraps": [
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editTablePlot",
+      "wraps": []
     }
   ]
 }

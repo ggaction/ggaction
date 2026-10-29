@@ -918,6 +918,12 @@ Choose zero, centered, or moving baselines through the existing Area layout acti
 
 Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/#use-a-moving-streamgraph-baseline).
 
+### [Values and small charts in a keyed table](./table/)
+
+Keep exact values beside bars and shared-scale sparklines.
+
+Representative actions: `createTablePlot`, `editTablePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/table/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

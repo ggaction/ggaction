@@ -2071,6 +2071,43 @@ export interface CalendarLabelPaint {
 }
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
 /** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */
+export interface TableCellPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface TableLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface TableBandPaint { readonly fill?: FillPaint; readonly color?: FillPaint; readonly fontWeight?: string | number; }
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+export interface TableFooterOptions {
+  readonly op: ScalarAggregateOperation; readonly missing?: "drop" | "error"; readonly empty?: "null" | "identity"; readonly format?: string;
+}
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });
+export interface CreateTablePlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly columns: readonly TableColumn[];
+  readonly sortBy?: readonly SortKey[] | false; readonly rowLimit?: number | false;
+  readonly rowHeight?: number; readonly padding?: number; readonly header?: boolean; readonly clip?: boolean;
+  readonly cells?: TableCellPaint; readonly labels?: TableLabelPaint; readonly headerStyle?: TableBandPaint; readonly footerStyle?: TableBandPaint;
+  readonly bars?: TableCellPaint; readonly sparklines?: TableSparklinePaint; readonly color?: false | PyramidColor;
+}
+export type EditTablePlotOptions = { readonly target?: string } & Partial<Omit<CreateTablePlotOptions, "id">>;
+
 export interface TrailBodyPaint {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
   readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
@@ -6784,6 +6821,8 @@ export class ChartProgram {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+  editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
   createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
   editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
   createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;

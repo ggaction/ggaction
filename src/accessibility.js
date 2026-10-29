@@ -82,7 +82,7 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
-  if (["ohlc", "pyramid", "waterfall"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
+  if (["table", "ohlc", "pyramid", "waterfall"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
   if (["flow-node", "flow-link", "contour", "calendar", "geo"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: item.fields
   }));

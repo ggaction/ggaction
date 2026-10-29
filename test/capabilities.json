@@ -1346,6 +1346,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-stream-baselines.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
       }
     ],
     "rendering": [
@@ -1784,6 +1788,44 @@
       {
         "type": "prefix",
         "path": "unit/support/"
+      }
+    ],
+    "table": [
+      {
+        "type": "file",
+        "path": "unit/grammar/table-cells.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/table-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/table-content.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/table-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/table.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/table/"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-consumers.test.js"
       }
     ],
     "text-metrics": [

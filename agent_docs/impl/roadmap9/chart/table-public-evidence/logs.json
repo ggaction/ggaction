@@ -1,0 +1,261 @@
+[
+  {
+    "file": "table-critical-first.log.gz",
+    "source": ".artifacts/table-critical-first.log",
+    "bytes": 9352,
+    "sha256": "a15ddfe72df3a0c6395f2584034db886e9c41d8ec0cf4267ec79fd0daf8b245b",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-critical-final.log.gz",
+    "source": ".artifacts/table-critical-final.log",
+    "bytes": 13749,
+    "sha256": "eaccaba46b6ffdeaaebae174336237cb80589541d22e396161f5b939c291d508",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-shared-final.log.gz",
+    "source": ".artifacts/table-shared-final.log",
+    "bytes": 15745,
+    "sha256": "36a2b211751fbb316267263b97ee616dba7173cfaa3659f59b4b52776a8c3718",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-public-final.log.gz",
+    "source": ".artifacts/table-public-final.log",
+    "bytes": 893,
+    "sha256": "87aef54645db665338d78ff2db9d6964268f0ec2760d7489334d2b36fbb64eea",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-effects-four-backends.log.gz",
+    "source": ".artifacts/table-effects-four-backends.log",
+    "bytes": 4567,
+    "sha256": "8e18542fae95dd7dfcc2ba703e670e507b5c5ac4ca59674f0b598ef793bbdf0f",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-effects-four-backends-fixed.log.gz",
+    "source": ".artifacts/table-effects-four-backends-fixed.log",
+    "bytes": 989,
+    "sha256": "8f5a4cfb7d40df73bd1e9595dc25f54bed8731ad5ba1515250b4b552842233bf",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-realistic-first.log.gz",
+    "source": ".artifacts/table-realistic-first.log",
+    "bytes": 503,
+    "sha256": "a5309455dc35ae18f24c8196105d7cb0de91de79bbc580764bf323f5353f7489",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-realistic-tie-order.log.gz",
+    "source": ".artifacts/table-realistic-tie-order.log",
+    "bytes": 2992,
+    "sha256": "9cf9c86fbf526ed69e6ee04fe2fe3961158b5f24388ce3653a35e3883451efb1",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-realistic-sparklines.log.gz",
+    "source": ".artifacts/table-realistic-sparklines.log",
+    "bytes": 4246,
+    "sha256": "1f9ea2f3eb1a5c3b55de5dd54db59068a87eec1601d6b36065121ffe21b2f3ae",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-catalog-first.log.gz",
+    "source": ".artifacts/table-catalog-first.log",
+    "bytes": 10513,
+    "sha256": "61e4cce4eb80a3dccfcdd5793bf93a201e0e2e0e766e2406ac6c100d69691365",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-catalog-final.log.gz",
+    "source": ".artifacts/table-catalog-final.log",
+    "bytes": 4362,
+    "sha256": "72a09adbad9660a11a8825f3331e57ae443874422726a4d89e3cacd7e42c6305",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-vertical-package.log.gz",
+    "source": ".artifacts/table-vertical-package.log",
+    "bytes": 1916,
+    "sha256": "50d71e1f5d684a3b43f262a4e3a16a9c6828620d1f137ad7ee61add4c6d53e50",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-inventory-contracts.log.gz",
+    "source": ".artifacts/table-inventory-contracts.log",
+    "bytes": 409911,
+    "sha256": "fc9a1cb0d9c53b0422d223abb4cacd5c0d109b60545859e3741fb673764104d9",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-inventory-final.log.gz",
+    "source": ".artifacts/table-inventory-final.log",
+    "bytes": 1206,
+    "sha256": "78ca38063936992f656eae77210f6f66cb96db16ac73dbae12a98591c21e03c4",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-inventory-verified.log.gz",
+    "source": ".artifacts/table-inventory-verified.log",
+    "bytes": 1033,
+    "sha256": "e8e488bdb282ee6647c0495186fee0d47cbd8524f9959c2e58d0d9626e2f51bd",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-inventory-final-pass.log.gz",
+    "source": ".artifacts/table-inventory-final-pass.log",
+    "bytes": 344,
+    "sha256": "51b6c80acb3138007f3e8cc38f0ab59e01ef5959de054bb4407b26f4384127ff",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-lifecycle-replay-fixed.log.gz",
+    "source": ".artifacts/table-lifecycle-replay-fixed.log",
+    "bytes": 344,
+    "sha256": "161bc7fe9f8a0f3a58058ec3524f9e10960f3a8f4782e180b7e0155533ed03fb",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-action-surface-final.log.gz",
+    "source": ".artifacts/table-action-surface-final.log",
+    "bytes": 3895,
+    "sha256": "3022fc8b5c4c8c3cb78f503fa8cd730c8888923dc4d50110cded4b3ca6add035",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-card-repair.log.gz",
+    "source": ".artifacts/table-card-repair.log",
+    "bytes": 1217,
+    "sha256": "3506c8b7a10ca057203296c8392782bf789e4487ff3d11a2dc84bed80217a00e",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-card-final.log.gz",
+    "source": ".artifacts/table-card-final.log",
+    "bytes": 558,
+    "sha256": "a21692f19ed94c694000524af3bb31cff4ac7f3343132bd815e70ff43732808b",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-identity-final.log.gz",
+    "source": ".artifacts/table-identity-final.log",
+    "bytes": 1218,
+    "sha256": "06dfe4c6dbb2aa619b7f0610accafb5d3a7bd8e29c1037fc2d099a92ca02879f",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-first.log.gz",
+    "source": ".artifacts/table-docs-first.log",
+    "bytes": 101474,
+    "sha256": "63b1a5317ded13badebba0d417e785e28f1805969ec21d97d55fbc9bdea6f47f",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-doc-repairs.log.gz",
+    "source": ".artifacts/table-doc-repairs.log",
+    "bytes": 1064,
+    "sha256": "b967a5ff2b17a471d25b5b503b89fc91f14079a4fe0c623521083d91357d1070",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-doc-snippets.log.gz",
+    "source": ".artifacts/table-doc-snippets.log",
+    "bytes": 863,
+    "sha256": "f5fe3a1162dba87b393a96a3671673daa2c64d3e0c8622b9f4f9a7263d6392a8",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-build.log.gz",
+    "source": ".artifacts/table-docs-build.log",
+    "bytes": 420,
+    "sha256": "e1c68de294b6b2d442f525f0d7f90d2c8a0b927a364bb1a97894d5031caa04f5",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-built.log.gz",
+    "source": ".artifacts/table-docs-built.log",
+    "bytes": 179,
+    "sha256": "4bbacfed8b64a44551b4690ed07039d63e276dbf2ec30a04003949734da1e581",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-built-browser.log.gz",
+    "source": ".artifacts/table-built-browser.log",
+    "bytes": 81,
+    "sha256": "9ca3f1596cba11ce086c70a319fa888d8d6dae25a13a100369f804cc8461349c",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-final-package-check20.log.gz",
+    "source": ".artifacts/table-final-package-check20.log",
+    "bytes": 369,
+    "sha256": "22b3c8b9568f516ce50dad658a86fc81480754f1e8aebf5df56a63b5131d1128",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-final-package-check24.log.gz",
+    "source": ".artifacts/table-final-package-check24.log",
+    "bytes": 369,
+    "sha256": "22b3c8b9568f516ce50dad658a86fc81480754f1e8aebf5df56a63b5131d1128",
+    "encoding": "gzip"
+  },
+  {
+    "file": "qualify-table-package.mjs.gz",
+    "source": ".artifacts/qualify-table-package.mjs",
+    "bytes": 3474,
+    "sha256": "e4e1dcbbcdfb50d8d510c866d91471d4a0846ac877c2286e2153e3801dda2179",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-focused-built.mjs.gz",
+    "source": ".artifacts/table-focused-built.mjs",
+    "bytes": 28499,
+    "sha256": "03885dd02f98e091c3619c0bb6e999e44152d4759debfd5acb2161f1e240cebd",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-generate-final.log.gz",
+    "source": ".artifacts/table-docs-generate-final.log",
+    "bytes": 13047,
+    "sha256": "fc638de1eae94a25fda44588f8ee7b424cc0152484302124959a4fc6b0119f75",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-font-final.log.gz",
+    "source": ".artifacts/table-font-final.log",
+    "bytes": 3336,
+    "sha256": "a56152654eb71744ff819bbc4a2c75cf223ab522f39aeb772fb494883ac45546",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-palette-final.log.gz",
+    "source": ".artifacts/table-palette-final.log",
+    "bytes": 3331,
+    "sha256": "5b54bfc72229ed6f23a920c0ceeccc8f216ddff062c9e99484ac0fb9d008de8b",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-installed-final-node20.log.gz",
+    "source": ".artifacts/table-installed-final-node20.log",
+    "bytes": 2424,
+    "sha256": "57e65ce034e66f60c4465706ee8c2e9ae22ab06f8a013640fea5c9bcd66d9ab6",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-installed-final-node22.log.gz",
+    "source": ".artifacts/table-installed-final-node22.log",
+    "bytes": 2413,
+    "sha256": "9093bb20ec29e31f5ead8721a8ebf7841204b3f828afd8736aca555e73be2c57",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-installed-final-node24.log.gz",
+    "source": ".artifacts/table-installed-final-node24.log",
+    "bytes": 2418,
+    "sha256": "4f503037d433df7cc8cc5145ac4c63fc668c0156247d5634a00c784330593690",
+    "encoding": "gzip"
+  }
+]

@@ -1,4 +1,6 @@
 import { assertProgramSingleY } from "../materialization/frameState.js";
+import { validateTableBinding } from "../grammar/tablePlot.js";
+import { deriveTableData } from "../grammar/tableData.js";
 import { validateTrailBinding } from "../grammar/trailPlot.js";
 import { deriveTrailSeries } from "../grammar/trailSeries.js";
 import { validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
@@ -272,6 +274,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         validateSourceIdentity(resource);
       }
       if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource);
+        if (resource.mark?.type === "table") {
+          validateTableBinding(resource, program.markConfigs[resource.id]?.tablePlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Table requires an existing dataset.");
+          deriveTableData(dataset.values, dataset.rowKeys, resource.table);
+        }
         if (resource.mark?.type === "trail") {
           validateTrailBinding(resource, program.markConfigs[resource.id]?.trailPlot);
           const dataset = findDataset(program, resource.data);

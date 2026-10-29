@@ -244,3 +244,5 @@ requirements after resolving each part.
 - Show Contributions and Totals: ./tutorials/waterfall/
 - Trail Plots: ./api/trail/
 - Show Width Along a Series: ./tutorials/trail/
+- Table Plots: ./api/table/
+- Combine Values and Small Charts in a Table: ./tutorials/table/
