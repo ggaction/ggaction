@@ -8,7 +8,7 @@
 - [x] A: 조건부 인코딩·라벨·필터·복합 하이라이트·resize·revision·codec 회귀
 - [x] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
 - [x] B1: typed range의 독립 endpoint inclusive flags 및 단일 경계 구현
-- [ ] B1: focused/realistic/타입·패키지·Current·문서 qualification
+- [x] B1: focused/realistic/타입·패키지·Current·문서 qualification
 - [ ] B2: AST predicate/parameter closure
 - [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, session commands/bindings
@@ -69,3 +69,19 @@ B/C/D 및 다른 STEP 인수 조건은 계속 남아 있다.
 discovery owning 검사를 다시 통과시켰다. 합산 docs는 source commit 고정 후 180/180 통과했다.
 [병합 qualification](selection-evidence/merged/qualification.json)은 Node20 최소 설치·타입·4 bundles 실측,
 초기 한도 실패와 최소 조정, 이전 두 checkpoint에서 재사용한 검증 범위를 구분한다.
+
+## B1 개별 범위 endpoint
+
+Source `3df72643e`는 기존 data FilterRange를 MarkSelector에도 적용한다. 하나 이상 endpoint를 요구하며
+minInclusive/maxInclusive 또는 기존 inclusive shorthand를 받는다. 새 계산 owner는 data filter의 기존 정책을
+추출해 재사용한다. 기존 양끝 inclusive selector의 normalized 저장 형태를 보존하여 legacy codec 의미를 바꾸지 않는다.
+Immutable final-item selection과 기존 resource revision·label·conditional·filter·child scope 경로를 유지한다.
+
+[B1 qualification](range-evidence/qualification.json): final focused21, legacy/graph/selection 회귀138,
+계약46 및 경계27, package7, 실제 데이터5종×3 recipe에서 네 endpoint 형태와 ledger16 통과.
+Ordered range owner는100/100/100, 기존 selector는95.16/95/100이며 floor는95/90/100와90/90/100을 유지했다.
+동일 archive `2cc2a80752c3306eee8719403029f686fb7365958849fea4fa93e4b257e39036`의
+Node20/22/24에서 실행2·strict 타입·4 browser entry가 모두 통과했다. Package909entries/최대1,309,847packed/
+6,003,484unpacked로909/1,310,000/6,004,000을 적용하며 browser/search 한도는 올리지 않았다.
+문서180, build164페이지/1,410 selective artifacts, 수정 페이지4폭 containment·Axe0 및390px 시각 확인을 마쳤다.
+전체 runtime/renderer/installed sweep 완료로 확대하지 않는다. B2 및 C/D는 계속 구현 대상이다.
