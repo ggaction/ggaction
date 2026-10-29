@@ -1,0 +1,308 @@
+{
+  "status": "qualified",
+  "base": "de634f88e",
+  "merged": "1fcebb828",
+  "source": "c3f36a462",
+  "qualificationBase": "483c990af",
+  "scope": "STEP036\u2013041 routes with responsive, projected-resource and interaction base integration",
+  "checks": {
+    "focused": 55,
+    "relatedUnit": 1969,
+    "contracts": 26,
+    "artifactContracts": 23,
+    "realistic": 5,
+    "browser": 2,
+    "commonRealistic": 27,
+    "docs": 189,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1452,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "sourceHashes": {
+    "src/ChartProgram.js": "2688d77ec86b934b2b3832a4ed1e72af536b1a07c4316498d3d0bcebd6a2cf21",
+    "src/actions/canvas/actions.js": "da3cedc136888e7ee14644a48396ab1685da74fd0c486b72d10acc8678e41a3b",
+    "src/actions/data/resourcePlan.js": "5b0e138b2a7f7a7d173c893ee2acab5e1904259c619f6fa7c328bdc265640cf0",
+    "src/actions/graphs/edgeRoutes.js": "d7aca76c026cef2a8958995a3e539c7ecbfb3a88fecca362f388fa45cd739843",
+    "src/actions/graphs/layouts.js": "51f7b6a03a5654ef846650c360d8e992fab00d1b8afe1666a60c2f0524e634db",
+    "src/actions/graphs/plots.js": "6b23d65ed2bdc2621d107679f8f27b0729d892daba41decdbd216136addd3143",
+    "src/actions/graphs/routeClosure.js": "545952424bd4d5a55d1cd823545622c9675cd1602cf7058912228b04afc59d60",
+    "src/actions/graphs/screenRoutes.js": "b8ec38622a4842b9f1f18f3e41ca5108845ac7301443345cc285395512ee0fed",
+    "src/actions/hierarchy/resources.js": "256abfb9c0e8841b8e677e9db8505427cc7d7a81715a08127ca9b492b73dbed8",
+    "src/actions/index.js": "4e4d6747f3efd7fce68a43ca5f03c9d1e3da85064a9cd39ee192c638d6aea8a7",
+    "src/actions/primitives/preparedResourceContext.js": "d1987a1471d6c056399ce8ba78476624ab6bc6d42ac14700167cf4b6b043b534",
+    "src/actions/primitives/resourceState.js": "122621b926e5ae4f6ba13556eae1d1bc79f5614a98c96483fbf44d252c63c2d1",
+    "src/core/resourceReference.js": "7c1ce3b13740c5d5ab9e58974db450a6e74956eddf6472581336cb092d895164",
+    "src/core/resourceReferences.js": "3db251573c9a3502180f2bb54b2bb5a28632e14dfc40078ed2916da948f4a221",
+    "src/core/vocabulary.js": "7392fcdd3cd378650039bc674e47aa5eecfa3ae8c0c61d576567029747e6750e",
+    "src/grammar/graph/routes/budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+    "src/grammar/graph/routes/common.js": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4",
+    "src/grammar/graph/routes/compatibility.js": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+    "src/grammar/graph/routes/density.js": "26ecad8feff6a1c0d19bd180985531f112ff01d48b7144e15c1fc3b7f319cd5f",
+    "src/grammar/graph/routes/densityField.js": "259652565d465cf61bdeb8892347b1ea104998e476c30be5ec51d29c2b86ddd9",
+    "src/grammar/graph/routes/edgePath.js": "163f17f6cbd7198eaf46b397a11d254c7590427dc11dc7c0885102511336af03",
+    "src/grammar/graph/routes/forceDirected.js": "131ec2c1eb95acd39f45a4e366bc00a02e4e221b070eb4a7bb2f8e3c1220f8da",
+    "src/grammar/graph/routes/hierarchical.js": "3e596d925460ed45d454a0b1b69cb7149581ee138dcb3bd5894bf8c376273feb",
+    "src/grammar/graph/routes/job.js": "757453d52e9eca3f555feb00c4fb965701f558f1a23cdb6dd661d8d41d9d3d49",
+    "src/grammar/graph/routes/options.js": "69d6aea1967a60c2188b412ac40138d197582a5aacb936dc16abb4fa2776113d",
+    "src/grammar/graph/routes/polyline.js": "3308e5de9a05fe7567cd6ae5bedb000cdd857fe3b7866850a57fcbc63babd63b",
+    "src/grammar/graph/routes/result.js": "8189f68bdf53fc13edff90545dc81bd26e928ff2a1ef4efadd84f15f59d4f1dc",
+    "src/grammar/graph/routes/resultProvenance.js": "f38e61aad6c1566dad9aef2af3c25611bd6fc08c7e67127c41c8b1905c927715",
+    "src/grammar/graph/routes/shortestPath.js": "be15ecd80bee6f3895f9c7a709afedfc4cc01148a06d67d18a3b47c88364d99e",
+    "src/grammar/graph/routes/spline.js": "3a977183e32e6b185fc83e0245b9271252c909dcdd0f70f0215afd0fba45bcef",
+    "src/grammar/pathGeometry.js": "3e684891ebe21ed4a67f62a8674fc3835ef0d513eae1d1458a72cd0d5e817821",
+    "src/graph.js": "30a7652aee6d646de53e9486de77abcddb8b809fd8c2dd0e29e38b72c27dd722",
+    "src/inspection.js": "c5f68e446f0218ead3465baf18660b20f69cd20cc371654182cb6306508daeed",
+    "src/inspectionDescriptors.js": "5271e83b09c87114a079ef049c5db43085fabf565ead64ee76c812b3178b942d",
+    "src/materialization/canvasResourceRevision.js": "26b4752c7866358463e3117c2a250d287900a5a1b4e78f8f5d80fc54c5ca7820",
+    "src/materialization/graph/geometry.js": "f1040b0852f52d791e8d6cfc53702e36ff1330bd261593537b44f422931aef9a",
+    "src/materialization/graph/layoutState.js": "eb7e535d4322e18c5be8a39fbf4b528b564017247986084c4703c7e5e4ed73b5",
+    "src/materialization/graph/plot.js": "1d78a026b994b7f362fa4abdc76765437606adff270752ae79f411fa40fcc9b8",
+    "src/materialization/graph/routeGeometry.js": "b96c0921a2e3a81707da45ad0dbee543888d013f1a6f421fd821fd11a35627a0",
+    "src/materialization/graph/routeInput.js": "dfd73991a2ec5cd2cc6f8955f6fd3a9620cd220aebd145702bd4ed9b97f092bf",
+    "src/materialization/graph/routeRequest.js": "c0985d659747fdcfea8f51b832f08a87783a59bfc960cbbf93596592224ebe71",
+    "src/materialization/graph/routeResource.js": "47f3d683b218725236117e993708d2f283cf9767339dbd32c0101ebc4e562fa1",
+    "src/materialization/graph/routeState.js": "7b05f3a3b6d78b9a62a8c0bedbd214f4be8b3f92f55c3a5570558de48f38a8bd",
+    "src/materialization/guides/layout.js": "2f846e22377dc396250de172864ef10a1d53620aaed04db2932ed254ddfc4e17",
+    "src/materialization/selection/policies/graph.js": "e07f8261d2396062ce5d50176553b29d41dd39dae330beb3864dd6868b903c42",
+    "src/resources/graphRouteExecutor.js": "454e2f56eb97073a82c4d17b81e4d8d39f5123bc6f212bc80c9d7448cdd7927a",
+    "src/resources/graphRoutes.js": "6963e0aa616fbf88ae4a18c2657b01a3c79d49a906dfba5e30bbdf124dfd830f",
+    "src/selectors/edgeRoutes.js": "7696fd73ede8de04ad85f0891f567073ddcd8b9cc4c55648c6c510b1cc557b0d",
+    "src/selectors/layouts.js": "ff1dd11dffbf61c33cf98cd9269357e8e53a61b68d5d214c564be1764b0a79df",
+    "types/graph.d.ts": "f20f9cc90874c7a938844d612c10bd83ce6d9e7b5449870bf88bbe95df4a28cc",
+    "types/index.d.ts": "2040891b6a1880cdac7685c29a3375f30e2d090ee9152d66a92ed56ccb3c6ad2",
+    "types/program.d.ts": "782ae02968e6f0cd2b1ea41f2be2ff57de8d0a3debcbb7236cc2594e709f738b"
+  },
+  "unchangedIncomingOwners": [
+    {
+      "file": "src/grammar/graph/routes/budget.js",
+      "sha256": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/common.js",
+      "sha256": "1fdad8bb7f6c6d7e9b011048240851a2515a290261da573db276303380e0caf4",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/compatibility.js",
+      "sha256": "4d9c41a8ae6413b08634f1b7cccedfddae8748e7f605d00c0abfe2c7f5caf727",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/density.js",
+      "sha256": "26ecad8feff6a1c0d19bd180985531f112ff01d48b7144e15c1fc3b7f319cd5f",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/densityField.js",
+      "sha256": "259652565d465cf61bdeb8892347b1ea104998e476c30be5ec51d29c2b86ddd9",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/edgePath.js",
+      "sha256": "163f17f6cbd7198eaf46b397a11d254c7590427dc11dc7c0885102511336af03",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/forceDirected.js",
+      "sha256": "131ec2c1eb95acd39f45a4e366bc00a02e4e221b070eb4a7bb2f8e3c1220f8da",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/hierarchical.js",
+      "sha256": "3e596d925460ed45d454a0b1b69cb7149581ee138dcb3bd5894bf8c376273feb",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/job.js",
+      "sha256": "757453d52e9eca3f555feb00c4fb965701f558f1a23cdb6dd661d8d41d9d3d49",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/options.js",
+      "sha256": "69d6aea1967a60c2188b412ac40138d197582a5aacb936dc16abb4fa2776113d",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/polyline.js",
+      "sha256": "3308e5de9a05fe7567cd6ae5bedb000cdd857fe3b7866850a57fcbc63babd63b",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/result.js",
+      "sha256": "8189f68bdf53fc13edff90545dc81bd26e928ff2a1ef4efadd84f15f59d4f1dc",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/resultProvenance.js",
+      "sha256": "f38e61aad6c1566dad9aef2af3c25611bd6fc08c7e67127c41c8b1905c927715",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/shortestPath.js",
+      "sha256": "be15ecd80bee6f3895f9c7a709afedfc4cc01148a06d67d18a3b47c88364d99e",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/grammar/graph/routes/spline.js",
+      "sha256": "3a977183e32e6b185fc83e0245b9271252c909dcdd0f70f0215afd0fba45bcef",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/candidate.js",
+      "sha256": "7ccc802bdeea0d811801100e4661c6951c5de3c983bfff421a607e52be743fb3",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/filterState.js",
+      "sha256": "0fd6c5db2b2e5e68dd6f038b3992a013c9eafcf5de38c29d4a25f5004fde0f57",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/geometry.js",
+      "sha256": "f1040b0852f52d791e8d6cfc53702e36ff1330bd261593537b44f422931aef9a",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/inferredResource.js",
+      "sha256": "74a8eef4a5e1c901e4e595b6eaca36bcfa2d3dc76a0f9a334099a147774e3e35",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/inferredState.js",
+      "sha256": "c77d48dbeba7e58d62ee54ba57eee8c1992b8cec6aaa6da35beee9fbebcee0fe",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/layoutResource.js",
+      "sha256": "9e53259f879b4f8795d8fde2573add594cbccf993800279aed059592e2a10098",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/layoutState.js",
+      "sha256": "eb7e535d4322e18c5be8a39fbf4b528b564017247986084c4703c7e5e4ed73b5",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/plot.js",
+      "sha256": "1d78a026b994b7f362fa4abdc76765437606adff270752ae79f411fa40fcc9b8",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/resources.js",
+      "sha256": "aa01224ccae91d3e3417ca1f9d81c422a73fae3aefa01557459cc8f0d50207c4",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/routeGeometry.js",
+      "sha256": "b96c0921a2e3a81707da45ad0dbee543888d013f1a6f421fd821fd11a35627a0",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/routeInput.js",
+      "sha256": "dfd73991a2ec5cd2cc6f8955f6fd3a9620cd220aebd145702bd4ed9b97f092bf",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/routeResource.js",
+      "sha256": "47f3d683b218725236117e993708d2f283cf9767339dbd32c0101ebc4e562fa1",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/routeState.js",
+      "sha256": "7b05f3a3b6d78b9a62a8c0bedbd214f4be8b3f92f55c3a5570558de48f38a8bd",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/state.js",
+      "sha256": "aab45b53c839e70af4a8cf8e3ce658244bdfc259469bc385eebc450fba98bac1",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/materialization/graph/view.js",
+      "sha256": "28b6fbf45ae8f791693a7752636f87e64436bcff4c50a1d97104a108ab65e348",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/resources/graphRouteExecutor.js",
+      "sha256": "454e2f56eb97073a82c4d17b81e4d8d39f5123bc6f212bc80c9d7448cdd7927a",
+      "incoming": "1fcebb828"
+    },
+    {
+      "file": "src/resources/graphRoutes.js",
+      "sha256": "6963e0aa616fbf88ae4a18c2657b01a3c79d49a906dfba5e30bbdf124dfd830f",
+      "incoming": "1fcebb828"
+    }
+  ],
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/routes-integration-final/ggaction-0.0.26.tgz",
+    "entries": 974,
+    "packedBytes": 1392083,
+    "unpackedBytes": 6355011,
+    "sha256": "433cf0b3d1c201d1061671f71799bfdad034f7f67ba6706f1c257292ddef2c3a"
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 685651,
+        "ggaction/basic": 375588,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 101194,
+        "ggaction/graph": 42378
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 684046,
+        "ggaction/basic": 374772,
+        "ggaction/svg": 20055,
+        "ggaction/interaction": 100709,
+        "ggaction/graph": 42220
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "themeTests": 90,
+      "runtimeCases": 23,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 685651,
+        "ggaction/basic": 375588,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 101194,
+        "ggaction/graph": 42378
+      }
+    }
+  ],
+  "limits": {
+    "entries": 974,
+    "packedBytes": 1393000,
+    "unpackedBytes": 6356000,
+    "ggaction": 686000,
+    "ggaction/basic": 376000,
+    "ggaction/svg": 25000,
+    "ggaction/interaction": 102000,
+    "ggaction/graph": 43000,
+    "searchBytes": 981000
+  },
+  "limitsOfEvidence": [
+    "Not whole-library coverage. Unchanged incoming kernels retain their recorded numerical evidence.",
+    "Two inherited trailing blank lines were removed before the exact final archive was requalified on all three Node runtimes.",
+    "STEP050, later interaction/scene requirements and STEP077 remain open."
+  ]
+}
