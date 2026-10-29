@@ -4,7 +4,7 @@
 
 - [x] A: `format: "items"`의 구체 계약·기존 승인 재사용
 - [x] A: native final items, scoped identity, authored selection membership, logical visibility 구현
-- [ ] A: source/type/package/docs qualification과 원격 checkpoint
+- [x] A: source/type/package/docs qualification과 원격 checkpoint
 - [ ] B: exact current-frame clip/opacity를 사용하는 keyboard focus/restore
 - [ ] C: native activation·hierarchy navigation·tooltip/touch 접근 경로
 - [ ] D: public animation/reduced-motion 합산 및 AT53 전체 matrix
@@ -55,3 +55,5 @@ codec fresh process, callback0 옵션검증, 누적 item/work 제한을 포함�
 - 최초 테스트 fixture의 잘못된 editScale/encodeX/layoutGraph/반복 filter 호출, 미연결 composite
   selection 추정, concrete 좌표 없는 Text 가정을 native 계약에 맞게 수리했다. runtime 결함으로
   보고하지 않는다. 전체 repository/전체 renderer/전체 installed suite를 새로 실행했다고 주장하지 않는다.
+
+최종 source `147a49b388eb89ee0c6ffbe1290d0b815927046e`; [machine evidence](accessible-items-evidence/qualification.json)에 명령·원본 실패·tar·설치·커버리지·화면 증거를 보존했다. Source pin 후49 docs,172 pages/1535 LLM hashes,320/390/768/1440 overflow0/Axe0을 통과했고320/1440 화면을 확인했다. B 이후와 전체077은 미완료다.
