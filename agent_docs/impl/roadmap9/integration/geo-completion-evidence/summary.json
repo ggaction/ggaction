@@ -1,0 +1,882 @@
+{
+  "status": "qualified",
+  "source": "34e070eae",
+  "incoming": "6c3f022cf",
+  "bootstrapIncoming": "49514367a",
+  "bootstrapReviewed": "65bb5a891",
+  "scope": "STEP042 geographic source and fifteen projections integrated with routes, regions, linked native filters and native-browser dependency bootstrap; geographic marks remain pending",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/actions/geo/projections.js": "33fd0414ef4057347e071ec409d1fbc5b34585f4ef9645acbcf0b7f9dd05e734",
+    "src/actions/geo/closure.js": "d0634bd1e01dd8270393c18adae101ddde7ba3ec66019ba18bd2c61f8967f545",
+    "src/actions/geo/resources.js": "adef0c3859cb447b11a0723b2e472973be05bee6b0f3e4d5c15f9f9b9657b648",
+    "src/materialization/geo/projectionState.js": "52ba6fe4c40d886936e628756d725e6ad4432ea90b9032a862647c2f03d8c446",
+    "src/materialization/geo/state.js": "dc1c75471e8a75e2383579395f0212a8f267a7c658e0cf4ed9b3ff1580c4ad52",
+    "src/materialization/geo/resources.js": "a98ff9b1d87b1b294b4da087eede9b2cb44756f81ade05156f8b85358a494da9",
+    "src/materialization/geo/projectionResource.js": "1e8b3901276a7fd17e7bb1c4a5d3930f7c83cd9ffbe1de88fd367fb2c3592b20",
+    "src/grammar/geo/projectionMath.js": "1a4639b16275b62610fa6de7b15065b654998c4f94bfb8dc1d31420fc0d3edae",
+    "src/grammar/geo/normalize.js": "6f2f89050d38652fd187d9ef60a4fb2f8ba5f748658b3b97b8fbcd2c90e3a171",
+    "src/grammar/geo/stream.js": "134995cc1b3bc338a352a63c113ebb213851872ffefc30ac5ffde27e1a6d199e",
+    "src/grammar/geo/projectionOptions.js": "0823d794815ef95aa555589db3cb04f2844d5bb3c63498a1566b9f62f6db492e",
+    "src/grammar/geo/options.js": "78969514a193c6e4fbc903b763ad2aaf6a4a03d71789c5b0f6f14913aee8fa19",
+    "src/grammar/geo/fit.js": "d6353eeb67077bc9b7f6da61274247cd1c7ddf6d395de1031ec639e142c48f8f",
+    "src/grammar/geo/projections.js": "fd10231e60e8595d4b3003e927f66db77c0e1d7d3701d7b7975ab484ca619b40",
+    "src/grammar/geo/projectionFit.js": "36059e6ea326977231420cb5c085605507680549b5d00c5a71d31d088c0a534f",
+    "src/grammar/geo/topology.js": "24759a3cd0f3fb3a10207b1e3bbeff84da1bb68c653b6b2b87412dbcf92d3c11",
+    "src/grammar/geo/geometry.js": "fbf53baef9dd1be24108916e5434dd84a6c2c26c05f5e3f34b9a79cf6f1e7b1c",
+    "src/grammar/geo/projectionDefinition.js": "84a0594af47ee6a200aa00af38f9f8a782ad0338785134148543bda6b35f3511",
+    "src/grammar/geo/input.js": "178c5a327e1141399a07b3f5edcae77d3f6d101207e3fabc6d9cc0a1e4cd365f",
+    "src/actions/primitives/preparedResourceContext.js": "923130ab9e6401d730b215676875048859cb3c5d4459880a00d6defc47852828",
+    "src/actions/primitives/resourceState.js": "41bd26ebd5a79d96ab36ff7cbde1a007fcf49660d5029c14db184507cc74a2b6",
+    "src/materialization/geometryState.js": "24a2b6d43d29f51752cb52c58854c6371263dc92d8c97baa2c216fb416af1d0b",
+    "src/selectors/geometry.js": "4df4242dfc91f453b972d8b2d7957202ff0c6572c495d0556288b5c302feb33c",
+    "src/selectors/projections.js": "30881c97257c3b75e7d21baceca57b4a117a05bc8f565f1ccd814de82907212b"
+  },
+  "unchangedIncomingOwners": [
+    "src/actions/geo/projections.js",
+    "src/actions/geo/closure.js",
+    "src/actions/geo/resources.js",
+    "src/materialization/geo/projectionState.js",
+    "src/materialization/geo/state.js",
+    "src/materialization/geo/resources.js",
+    "src/materialization/geo/projectionResource.js",
+    "src/grammar/geo/projectionMath.js",
+    "src/grammar/geo/normalize.js",
+    "src/grammar/geo/stream.js",
+    "src/grammar/geo/projectionOptions.js",
+    "src/grammar/geo/options.js",
+    "src/grammar/geo/fit.js",
+    "src/grammar/geo/projections.js",
+    "src/grammar/geo/projectionFit.js",
+    "src/grammar/geo/topology.js",
+    "src/grammar/geo/geometry.js",
+    "src/grammar/geo/projectionDefinition.js",
+    "src/grammar/geo/input.js",
+    "src/actions/primitives/preparedResourceContext.js",
+    "src/actions/primitives/resourceState.js",
+    "src/materialization/geometryState.js",
+    "src/selectors/geometry.js",
+    "src/selectors/projections.js"
+  ],
+  "checks": {
+    "combinedFocused": 96,
+    "combinedBrowser": 24,
+    "combinedContracts": 34,
+    "ownerCoverageTests": 133,
+    "geoActionsAndMaterializationCoverage": [
+      100,
+      100,
+      100
+    ],
+    "sharedPreparedResourceContextCoverage": [
+      100,
+      100,
+      100
+    ],
+    "sharedResourceStateCoverage": [
+      100,
+      96.39,
+      88
+    ],
+    "realisticBeforeLinkedMerge": 37,
+    "inventory": 7,
+    "docs": 194,
+    "builtPages": 171,
+    "selectiveLLMArtifacts": 1481,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/geo-integration-final/ggaction-0.0.26.tgz",
+    "entries": 1007,
+    "packedBytes": 1436661,
+    "unpackedBytes": 6532203,
+    "sha256": "5091be37d1a882579ab0566b51f5fff2073d6bb01c840ce38add8b12ea774d11"
+  },
+  "sourcePinnedRepack": {
+    "sha256": "5091be37d1a882579ab0566b51f5fff2073d6bb01c840ce38add8b12ea774d11",
+    "byteIdentical": true,
+    "entries": 1007,
+    "packedBytes": 1436661,
+    "unpackedBytes": 6532203
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "5091be37d1a882579ab0566b51f5fff2073d6bb01c840ce38add8b12ea774d11",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 924,
+          "minifiedBytes": 2471913,
+          "gzipBytes": 707624
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293142,
+          "gzipBytes": 377535
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 109148
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145400,
+          "gzipBytes": 43579
+        }
+      },
+      "types": "geometry, projection and all public consumers passed",
+      "publicSnippet": "projection-fit literal bounds passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "5091be37d1a882579ab0566b51f5fff2073d6bb01c840ce38add8b12ea774d11",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 924,
+          "minifiedBytes": 2471913,
+          "gzipBytes": 705888
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293142,
+          "gzipBytes": 376692
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 108519
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145400,
+          "gzipBytes": 43417
+        }
+      },
+      "types": "geometry, projection and all public consumers passed",
+      "publicSnippet": "projection-fit literal bounds passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "5091be37d1a882579ab0566b51f5fff2073d6bb01c840ce38add8b12ea774d11",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "projection/full-basic-fit-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "projection/fresh-process-offline-fit",
+          "status": "passed"
+        },
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 924,
+          "minifiedBytes": 2471913,
+          "gzipBytes": 707624
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293142,
+          "gzipBytes": 377535
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335388,
+          "gzipBytes": 109148
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145400,
+          "gzipBytes": 43579
+        }
+      },
+      "types": "geometry, projection and all public consumers passed",
+      "publicSnippet": "projection-fit literal bounds passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    }
+  },
+  "bundleAssertions": "geo-integration-bundle-assertions.json.gz",
+  "limits": {
+    "entries": 1007,
+    "packedBytes": 1437000,
+    "unpackedBytes": 6533000,
+    "fullGzip": 707700,
+    "basicGzip": 378000,
+    "svgGzip": 25000,
+    "interactionGzip": 109200,
+    "graphGzip": 44000,
+    "searchBytes": 994000
+  },
+  "measuredSearchBytes": 993344,
+  "findings": [
+    "Initial bare geographic math import prevented all native browser pages from completing; failed/interrupted nineteen-case run preserved. Shared native browser bootstrap and strict status signals repair this, with final24 passing.",
+    "Final combined package1436661/6532203 required minimally rounded1437000/6533000 caps; legal notices and manifest remain required packed content.",
+    "Node20/24 combined Full707624 gzip exceeds provisional706000;707700 cap and explicit all-five assertions pass for the same tar.",
+    "Initial pack staging path and legal allowlist errors are preserved in historical logs.",
+    "Shared resourceState function coverage88 is reported as measured; no global coverage or stricter floor qualification is claimed."
+  ],
+  "reuse": {
+    "coverage": "Geo source/projection owners are byte-identical to incoming; root133 owners prove action/materialization100/100/100. Incoming grammar/selector qualification retained.",
+    "realistic": "37 authentic cases were run before the linked-filter merge; final96 focused and24 browser close the combined interaction boundary. No rerun of whole realistic corpus claimed.",
+    "linkedFilter": "Main381 owning interaction/selection tests and16 authentic cases from linked-filter completion retained; runtime owners unchanged by geographic merge.",
+    "renderers": "No primitive or renderer input contract changed; Geo marks/rendering consumer families belong to the next checkpoint.",
+    "optionalPeers": "This focused installed runner installs the locked native canvas and all public types; it does not replace the global optional-peer or package sweep."
+  },
+  "remaining": [
+    "STEP043-046 geographic marks and remaining geography scope",
+    "STEP050 single Y integration and corpus",
+    "STEP060 C and remaining controls",
+    "STEP074 global qualification",
+    "STEP077 overall delivery"
+  ],
+  "commands": {
+    "focused": "node --test test/unit/geo/*.test.js test/unit/interaction-linked-filter.test.js test/unit/interaction-region-gesture.test.js test/unit/resources/graph-route-host.test.js test/unit/resources/graph-route-lifecycle.test.js",
+    "browser": "node scripts/run-tests.js browser browser/interaction-region.browser.js browser/interaction-session.browser.js browser/edge-routes.browser.js browser/example-dependencies.browser.js",
+    "installed": "same final tar: Node20/22/24 installed.mjs, runtime28, strict geometry/projections/all-public TS, literal projection snippet, fifteen inverses and all three package source signatures, five measured bundles plus explicit all-five assertions",
+    "docs": "source pin provenance/machine/llms; docs194; locked Ruby3.2 preflight and Jekyll171/1481; full320/390/768 browser"
+  },
+  "evidenceFiles": {
+    "geo-integration-bootstrap-browser-final.log": {
+      "sha256": "9f303890c18b922f1cae0f61000287b28e6ce7d232b9e1ed29d381d8b535c988",
+      "bytes": 1029
+    },
+    "geo-integration-bootstrap-contracts-final.log": {
+      "sha256": "95841d478b30ab4c59b1aaf456a93d40fb79ecfe679d730c9a57bcbdb233b76d",
+      "bytes": 4345
+    },
+    "geo-integration-bootstrap-contracts.log": {
+      "sha256": "5af0a737f3dff305ddbcd069af2a47fe85d49fd8b34319f9a98d22bcbcaa77fe",
+      "bytes": 4343
+    },
+    "geo-integration-bootstrap-merge.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "geo-integration-browser-fixed.log": {
+      "sha256": "33cc9ca8c5b946585cb0b7a6f38c93a7a50a7afb18fa9b7ea3854f32ea27a7ef",
+      "bytes": 5232
+    },
+    "geo-integration-browser-interrupted.json": {
+      "sha256": "1d67784571e3d52271775b08694767a460a3eea27eed2251d670a1f13a3c0082",
+      "bytes": 360
+    },
+    "geo-integration-browser.log": {
+      "sha256": "2b88d0c003f17545300441d583c09eaaa7f99a03a068a1525534228df518a664",
+      "bytes": 14797
+    },
+    "geo-integration-build.log": {
+      "sha256": "f8bbf939f6069ea9a17a495e0aa8c76f21beb429f17cc966e690dcfd6878c35e",
+      "bytes": 420
+    },
+    "geo-integration-built.log": {
+      "sha256": "71e2b833e683617e2341bfd92321b68711528a7e9265ba9dba0ec335df10b3c8",
+      "bytes": 179
+    },
+    "geo-integration-bundle-assertions.json": {
+      "sha256": "dce36e89887030ec438c373aec4ee3ea0fa7536c30d3558ce75620c3be32abbf",
+      "bytes": 3165
+    },
+    "geo-integration-contracts.log": {
+      "sha256": "8880b867ff45da6fb8c39a33f4b9bf35a4b103b8c89b72973937f6c68110a28f",
+      "bytes": 7570
+    },
+    "geo-integration-doc-browser.log": {
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    "geo-integration-docs.log": {
+      "sha256": "bb94bf98900fa284983e14447b6245b1cdcccb9263eb0bb9129efb2a3f037008",
+      "bytes": 45109
+    },
+    "geo-integration-final-browser.log": {
+      "sha256": "7e25b8e5b5d3d195201dcd302fa9c0e46f63556ba1373e2fa881a8594fbda522",
+      "bytes": 5466
+    },
+    "geo-integration-final-build.log": {
+      "sha256": "e3b5edde8d665974dfc773f40269956304e52d10c157c69a1e9b2697aeef7bec",
+      "bytes": 420
+    },
+    "geo-integration-final-built.log": {
+      "sha256": "71e2b833e683617e2341bfd92321b68711528a7e9265ba9dba0ec335df10b3c8",
+      "bytes": 179
+    },
+    "geo-integration-final-contracts.log": {
+      "sha256": "703a803463824244a997f50103363df322ed213b046e9604bb18344199bc2f4d",
+      "bytes": 7242
+    },
+    "geo-integration-final-doc-browser.log": {
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    "geo-integration-final-docs.log": {
+      "sha256": "9d7dbcfc56abc32ad0edcf9ed6713f9f6e41cc586af598a4aaa63b30eed6e48f",
+      "bytes": 45365
+    },
+    "geo-integration-final-focus.log": {
+      "sha256": "9a0812d9c7528dcd3fd4ac61d294834e5e11b800e510af99c7b4b6af257add09",
+      "bytes": 23591
+    },
+    "geo-integration-final-generation.log": {
+      "sha256": "2c4cf6e1e4217b00b7113ec64f1363b0b4a416ac1d1c30a9280124f40e747f97",
+      "bytes": 12105
+    },
+    "geo-integration-final-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "geo-integration-final-machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "geo-integration-final-measure.json": {
+      "sha256": "9ea36381903418b062550f4642c822a75a63498bc0484942b9bdb09cc230750d",
+      "bytes": 63
+    },
+    "geo-integration-final-measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "geo-integration-final-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "geo-integration-final-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "geo-integration-financial-contracts.log": {
+      "sha256": "2b19cebd02a57d3dd7e86e1a1b8c23d405881f08183046b595c41eb009f1b484",
+      "bytes": 2777
+    },
+    "geo-integration-financial-measure.json": {
+      "sha256": "f8a29383af0d2b7273033b390c28edc6480f6cc9068084e81309771d3f8a5aca",
+      "bytes": 63
+    },
+    "geo-integration-financial-measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "geo-integration-financial-merge.log": {
+      "sha256": "f651dd07d891ab258821ca16584827bf8a81ad91500f4732344b5f4efc7c8c27",
+      "bytes": 1122
+    },
+    "geo-integration-focused.log": {
+      "sha256": "ed49cc2375bcd7f32bd875fb55f6b884b81c8472050631d19013daca7a3b1d5f",
+      "bytes": 26878
+    },
+    "geo-integration-generation.log": {
+      "sha256": "2c4cf6e1e4217b00b7113ec64f1363b0b4a416ac1d1c30a9280124f40e747f97",
+      "bytes": 12105
+    },
+    "geo-integration-installed-20.json": {
+      "sha256": "559603599890d85259a42d1d0cf1661ace9e5f7caef0261e60180c3111ca4851",
+      "bytes": 3772
+    },
+    "geo-integration-installed-20.log": {
+      "sha256": "33a8f8f8487f85c4bbc13570229e01804ea529f7cd881f04100eb755e72ee6c4",
+      "bytes": 3773
+    },
+    "geo-integration-installed-22.json": {
+      "sha256": "193834d83e3e80ae56173ce78152d98937196dc3c1cd39c0d077646e8ec26b88",
+      "bytes": 3765
+    },
+    "geo-integration-installed-22.log": {
+      "sha256": "8aa95f38bb328a43236115c6196e7d3600c2c0c3ceabf14f892b97c4ad8aada5",
+      "bytes": 3766
+    },
+    "geo-integration-installed-24.json": {
+      "sha256": "0bde3d118bc558f31f1f4c5f35496dd1e8eb46bb212531a4e01e60999bab856b",
+      "bytes": 3781
+    },
+    "geo-integration-installed-24.log": {
+      "sha256": "eba855ade4691422b43120946fbf4c1e8e44a35ce4a20b80318927ce3c5be85e",
+      "bytes": 3782
+    },
+    "geo-integration-inventory.json": {
+      "sha256": "0b5513f937dbc518b049ae2d285f0b6d4e505d06875ac1998097437a39210df2",
+      "bytes": 330
+    },
+    "geo-integration-inventory.log": {
+      "sha256": "f1630f70929c22e2c01b1a4de94286a1dcc274f39e84510e78bfecc303a72917",
+      "bytes": 1717
+    },
+    "geo-integration-lifecycle.log": {
+      "sha256": "e994c164b57238a8abb9187e9f425ab043923e56b082a0aca20c81b7877959f0",
+      "bytes": 9852
+    },
+    "geo-integration-linked-filter-merge.log": {
+      "sha256": "65bdd6febb504d4c9da88303ebb99b5f0961a4375fb194ba135a471c4b3a5898",
+      "bytes": 1796
+    },
+    "geo-integration-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "geo-integration-machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "geo-integration-main-merge.log": {
+      "sha256": "e5a63654be8024c5c9a61cfa68395a72c309adee5097112e73159565644bff14",
+      "bytes": 1187
+    },
+    "geo-integration-measure.json": {
+      "sha256": "ca18eea36501b899b891cebd12a5528e0a3bd3120ee98ab1c8c494506a5297f1",
+      "bytes": 63
+    },
+    "geo-integration-measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "geo-integration-measure.mjs": {
+      "sha256": "7dd5b311b01b06f2b3c91f81e6640daf0acb4f13970f2bbe9c34b3761601e88b",
+      "bytes": 9664
+    },
+    "geo-integration-merge.log": {
+      "sha256": "224a55e6d78739df2de134c91b71d4d81c6fb75ea196b92e1f98995c7364b042",
+      "bytes": 2732
+    },
+    "geo-integration-owner-coverage-final.log": {
+      "sha256": "9e11d746f58faa437c14a59551e4ad3d10c55f0ec8de73ace556cdf4759b5122",
+      "bytes": 34115
+    },
+    "geo-integration-owner-coverage.log": {
+      "sha256": "056aea56b2e2c16ad9110f111ffa14ea972de6034f25d8d810b1f80d264b513b",
+      "bytes": 21888
+    },
+    "geo-integration-pack-final.json": {
+      "sha256": "8b4a8ec8b6fd76273ef8411d84e1d7d5d088fb3ef637ab14ac1cce4c9ee59456",
+      "bytes": 294
+    },
+    "geo-integration-pack-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "geo-integration-pack-pinned.json": {
+      "sha256": "3ac3edeb47ce0c327386c82041991d3c06d25d362493f781ae029b3ad9ba85f5",
+      "bytes": 181
+    },
+    "geo-integration-pack-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "geo-integration-package-contracts-final.log": {
+      "sha256": "8e5bea30f9ab0ab49090128078c42d692bd0cbc763ca55403da529ab6d9f83b1",
+      "bytes": 2771
+    },
+    "geo-integration-package-contracts.log": {
+      "sha256": "b794523ce5c7f430d309873e91400356989ab18b53a716c42ec469343ecfe776",
+      "bytes": 5281
+    },
+    "geo-integration-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "geo-integration-private-kernels.log": {
+      "sha256": "3e09434d7640dfdfd6b77c1c5fbf945df8e9f9565da936e6d9f834527571853d",
+      "bytes": 5422
+    },
+    "geo-integration-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "geo-integration-qualify.py": {
+      "sha256": "0a56a10ede0cc11d34ad29fadb5255852b1227e045432b937a30e3d2ab771226",
+      "bytes": 6252
+    },
+    "geo-integration-realistic.log": {
+      "sha256": "2d9b60af95d8c485dfd0a8c0fb01187d29f49b0d8afcc2942cce90774316d0cd",
+      "bytes": 9572
+    }
+  }
+}
