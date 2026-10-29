@@ -32,7 +32,8 @@
     "browser": 415,
     "browserHostBoundaries": 30,
     "browserHostOwning": 15,
-    "installedRuntimePerNode": 278
+    "installedRuntimePerNode": 278,
+    "sourcePinnedDocs": 20
   },
   "coverage": {
     "scope": "24 changed owners, not global release coverage",
@@ -116,11 +117,16 @@
       "file": "single-y-domain-repair-installed-24.log.gz",
       "sha256": "e84c5e2c6ba8d6dbf3951b3f473187ea17a285a60402b86a7d78f3210b6d9db3",
       "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-source-docs.log.gz",
+      "sha256": "be9876fe900441ca68fd574b03de8919bd88df9199a9a39a4d87d977abe25f1c",
+      "status": "passed"
     }
   ],
   "pending": [
-    "source pin metadata",
     "canonical common lifecycle generator/isolation and independent witness panels",
     "later roadmap slices and release qualification"
-  ]
+  ],
+  "runtimeSource": "e56b8e4c16afe328947bd9840f3412a014874c98"
 }
