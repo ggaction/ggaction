@@ -1,0 +1,128 @@
+{
+  "sourceCommit": "cad229d88c27a4b82535ec8d1d2e419f7232c00f",
+  "parents": [
+    "f4d6c1c7d",
+    "f1800607d"
+  ],
+  "scope": "Merge published resource integrations without changing runtime contracts",
+  "verification": {
+    "theme": 94,
+    "fontFlowBoundaries": 59,
+    "resourceEffects": 33,
+    "packageContracts": 7,
+    "docs": {
+      "original": {
+        "passed": 176,
+        "failed": 1
+      },
+      "failure": "new example path absent from pre-merge branch ref",
+      "postMergeSourceLink": {
+        "passed": 1,
+        "failed": 0
+      },
+      "final": {
+        "passed": 177,
+        "failed": 0
+      },
+      "postCommitMetadataFailure": {
+        "passed": 174,
+        "failed": 3,
+        "reason": "source provenance changed from uncommitted to merge source commit; generated metadata refreshed"
+      }
+    },
+    "inventory": {
+      "publicActions": 328,
+      "topLevelOptionPaths": 3089,
+      "nestedOptionPaths": 26928,
+      "optionPaths": 30017,
+      "requiredOptionPaths": 19977,
+      "excludedOptionPaths": 10040,
+      "topLevelCategoricalPaths": 1080,
+      "topLevelLiteralValues": 4060,
+      "literalFamilies": 251,
+      "pathLiteralRequirements": 14617,
+      "familyLiteralRequirements": 525,
+      "pathDiversityRequirements": 488
+    },
+    "installed": {
+      "passed": 47,
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-main-integration/package/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography"
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 776,
+          "minifiedBytes": 2252265,
+          "gzipBytes": 636849
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 515,
+          "minifiedBytes": 1238571,
+          "gzipBytes": 361295
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        }
+      }
+    },
+    "inventoryContracts": {
+      "passed": 7,
+      "failed": 0
+    },
+    "postCommitContracts": {
+      "passed": 12,
+      "failed": 0
+    }
+  },
+  "artifact": {
+    "entries": 865,
+    "packed": 1264038,
+    "unpacked": 5815002,
+    "sha256": "105036ee4382709bf46f754834e14934315cae28cadd3f6d863b22b5fdba6216"
+  },
+  "logs": {
+    ".artifacts/theme-main-integration/docs-link-final.log": "2ab5f6b965eb501665994c0808103fd02ad487938a2dd7ce38a2f1aa79e13b82",
+    ".artifacts/theme-main-integration/effects.log": "730b9af61bc139a9aeb5423fed6e1319d7302bd01a5ece26c933a551401f3de2",
+    ".artifacts/theme-main-integration/docs-final.log": "99b52f7bbae94d4b28fc59db623cdfb9637e152ad62b0f2724ce05298c342cd7",
+    ".artifacts/theme-main-integration/installed-measure.log": "74d3b74daa105ce396f59b041e594290e9b2ab56cd9f76149b08d409e521f14f",
+    ".artifacts/theme-main-integration/docs-generate-final.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-main-integration/cross.log": "58807dd3c3bd1b658ac3326fd469726ee34b505ae223dc7aa56821dff44112ab",
+    ".artifacts/theme-main-integration/theme-focused.log": "6bc8c28552ae37c0eeeedd3484bc1665863c8caae77306d0fc1d82545f1dc08b",
+    ".artifacts/theme-main-integration/package-final.log": "46cd1af4912da89a37c603792c2d44077f07aeb4b5fa76a37dde4af30e7bac9d",
+    ".artifacts/theme-main-integration/docs.log": "a53570c48f501b2e05063d2cfe3ab4df7057d82a88e92123e0d21065e8637418",
+    ".artifacts/theme-main-integration/package-contract.log": "55ceda7bc98b619023747ed7af4df2988bac4cb96dec769bf6ce62a61e876374",
+    ".artifacts/theme-main-integration/inventory-contract.log": "2b525049ef5682b3229be9c68e80eb44d9c704763658e287a453b5ce07c0825a",
+    ".artifacts/theme-main-integration/docs-postcommit-generate.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-main-integration/pack-initial.log": "fd4096e6eef3561239a86517a41dd884117beb2a0f3f74f4f815aa726f41ff38",
+    ".artifacts/theme-main-integration/docs-complete.log": "3f080fee1af0aada822b727363bfeccae302fe5b5d2e894b1323befed4cbc07a",
+    ".artifacts/theme-main-integration/docs-generate.log": "cdd0c26b1e37e8bf44d7bd42650cf751ab70c9bd00e7bf668b796801c31aee8d",
+    ".artifacts/theme-main-integration/installed-final.log": "ad26d5fb840763962554f0ad6f6b03f57de1d09e6e8f9efca530e001a21de948",
+    ".artifacts/theme-main-integration/postcommit-contracts.log": "6965ea0153c472b3902b3f6712186694fe2ab52fbf3e42cf2c6cac387d8c381b"
+  },
+  "notRun": [
+    "whole normal/coverage suites",
+    "whole realistic corpus",
+    "all installed cases on three Node versions"
+  ],
+  "commands": {
+    "theme": "node --test test/unit/actions/theme-guide-defaults.test.js test/unit/actions/theme-item-identity.test.js test/unit/actions/theme-typography.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/contracts/theme.test.js",
+    "cross": "node --test test/unit/resources/font-resource-labels.test.js test/unit/resources/flow-consumers.test.js test/unit/resources/graph-flow-closure.test.js test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js test/unit/support/coverage-policy.test.js",
+    "effects": "node --test test/unit/resources/resource-plot-effects.test.js test/unit/actions/marks/mark-shadow.test.js",
+    "inventory": "node scripts/run-tests.js realistic test/contracts/generated-scenario-feature-coverage.test.js",
+    "installed": "PATH=<node20-bin>:$PATH node .artifacts/theme-main-integration/installed.mjs",
+    "docs": "npm run docs:generate; node scripts/run-tests.js docs"
+  }
+}

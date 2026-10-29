@@ -51,8 +51,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](./actions/statistics.md#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./actions/statistics.md#createcomputeddata) | H1 | user-facing | statistics |
+| [`createContourData`](./actions/charts-data.md#createcontourdata) | H2 | user-facing | core |
+| [`createContourMark`](./actions/marks.md#createcontourmark) | H2 | user-facing | marks |
 | [`createCoordinate`](./actions/charts-data.md#createcoordinate) | H2 | user-facing | core |
 | [`createData`](./actions/charts-data.md#createdata) | H2 | user-facing | core |
+| [`createDensityContourData`](./actions/charts-data.md#createdensitycontourdata) | H2 | user-facing | core |
 | [`createDensityData`](./actions/charts-data.md#createdensitydata) | H2 | user-facing | core |
 | [`createDensityPlot`](./actions/statistics.md#createdensityplot) | H0, H1 | user-facing | statistics |
 | [`createDerivedData`](./actions/charts-data.md#createderiveddata) | H2 | user-facing | core |
@@ -173,6 +176,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
 | [`editCompositionScales`](./actions/charts-data.md#editcompositionscales) | H3 | user-facing | composition |
 | [`editComputedData`](./actions/statistics.md#editcomputeddata) | H1, H3 | user-facing | statistics |
+| [`editContourData`](./actions/charts-data.md#editcontourdata) | H3 | user-facing | core |
+| [`editContourMark`](./actions/marks.md#editcontourmark) | H3 | user-facing | marks |
 | [`editCoordinate`](./actions/charts-data.md#editcoordinate) | H2 | user-facing | core |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
 | [`editDensityData`](./actions/charts-data.md#editdensitydata) | H2 | user-facing | core |

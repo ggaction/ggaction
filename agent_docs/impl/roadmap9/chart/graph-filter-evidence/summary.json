@@ -1,0 +1,89 @@
+{
+  "status": "induced-view-qualified",
+  "runtimeTests": {
+    "node20": 63,
+    "node22": 63,
+    "node24": 63
+  },
+  "focusedCoverage": {
+    "tests": 24,
+    "lines": 100,
+    "branches": 98.39,
+    "functions": 100
+  },
+  "realistic": {
+    "datasets": 5,
+    "rules": 3,
+    "passed": 15
+  },
+  "render": {
+    "passed": 8,
+    "backends": [
+      "png",
+      "pdf"
+    ]
+  },
+  "browser": {
+    "passed": 2,
+    "dpr": [
+      1,
+      2
+    ],
+    "backends": [
+      "canvas",
+      "svg"
+    ]
+  },
+  "boundaries": {
+    "passed": 36
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/graph-filter-final/ggaction-0.0.26.tgz",
+    "sha256": "55c2aae8a0f6917d51c69afcda206482d7fd510df041426cb5823ff96131dbb5",
+    "entries": 866,
+    "packed": 1259888,
+    "unpacked": 5807352
+  },
+  "pending": [],
+  "remainingRequirements": [
+    "explicit recompute",
+    "controller orphan event"
+  ],
+  "installed": {
+    "node20": {
+      "node": "v20.20.2",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    },
+    "node22": {
+      "node": "v22.23.1",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    },
+    "node24": {
+      "node": "v24.22.1",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    }
+  },
+  "sourceRevision": "525cf6276",
+  "docs": {
+    "sourceTests": 177,
+    "builtPages": 160,
+    "selectiveArtifacts": 1390,
+    "browser": {
+      "desktopSearch": "passed",
+      "allPagesWidths": [
+        320,
+        390,
+        768
+      ]
+    }
+  }
+}

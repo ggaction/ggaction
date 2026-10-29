@@ -58,19 +58,23 @@ export function planCoordinateRematerialization(program, target) {
 }
 
 export function planLayerDataRematerialization(program, id) {
-  const layer = requireLayer(program, id);
-  const scaleIds = [...new Set(getLayerScaleIds(layer))];
-  const markStep = getMarkMaterializationStep(program, layer);
+  return planLayersDataRematerialization(program, [id]);
+}
+
+export function planLayersDataRematerialization(program, ids) {
+  const layers = [...new Set(ids)].map(id => requireLayer(program, id));
+  const scaleIds = [...new Set(layers.flatMap(getLayerScaleIds))];
+  const markSteps = layers.map(layer => getMarkMaterializationStep(program, layer)).filter(Boolean);
   const scales = scaleIds.map(scale => ({
       op: "rematerializeScale",
       args: {
         id: scale,
         guides: false,
-        ...(markStep === undefined ? {} : { marks: false })
+        ...(markSteps.length === 0 ? {} : { marks: false })
       }
     }));
   const directMarks = [
-    ...(markStep === undefined ? [] : [markStep]),
+    ...markSteps,
     ...getScaleConsumerMarkSteps(program, scaleIds)
   ];
   const marks = [
@@ -83,9 +87,8 @@ export function planLayerDataRematerialization(program, id) {
     );
     return buildMaterializationPlan({ scales, marks: reusePlannedMarkScales(program, marks, scaleIds), guides });
   }
-  const existingStep = getExistingMarkRematerializationStep(program, layer);
   return buildMaterializationPlan({
-    marks: existingStep === undefined ? [] : [existingStep]
+    marks: layers.map(layer => getExistingMarkRematerializationStep(program, layer)).filter(Boolean)
   });
 }
 

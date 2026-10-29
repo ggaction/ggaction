@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "createContourData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create bounded contour geometry from an explicit scalar grid and thresholds.",
+  "signature": "createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;",
+  "intents": [
+    "create contour data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "contour geometry",
+    "scalar grid regions"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "explicit scalar grid"
+    ],
+    "owns": [
+      "geometry resource"
+    ],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editContourData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "explicit scalar grid"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "grid",
+      "required": true,
+      "type": "ContourGrid"
+    },
+    {
+      "name": "thresholds",
+      "required": true,
+      "type": "readonly number[]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createContourData({ id, grid, thresholds, target? })"
+  ],
+  "snippet": "program.createContourData({ id: \"surface\", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2, values: [0, 1, 1, 2] }, thresholds: [0, 1, 2] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createcontourdata"
+}

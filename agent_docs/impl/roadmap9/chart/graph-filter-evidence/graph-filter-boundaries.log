@@ -1,0 +1,226 @@
+TAP version 13
+# Subtest: complete-chart discovery reaches semantic and primitive authoring layers
+ok 1 - complete-chart discovery reaches semantic and primitive authoring layers
+  ---
+  duration_ms: 45.641166
+  type: 'test'
+  ...
+# Subtest: discovery separates completion from resource validity
+ok 2 - discovery separates completion from resource validity
+  ---
+  duration_ms: 4.944167
+  type: 'test'
+  ...
+# Subtest: entry-point discovery matches declarations and runtime methods
+ok 3 - entry-point discovery matches declarations and runtime methods
+  ---
+  duration_ms: 5.144125
+  type: 'test'
+  ...
+# Subtest: exports the public module boundaries
+ok 4 - exports the public module boundaries
+  ---
+  duration_ms: 0.674458
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 5 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.50475
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 6 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 1.078916
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 7 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 30.106584
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 8 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 1.622417
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 9 - keeps library terminology source-neutral
+  ---
+  duration_ms: 513.780334
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 10 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 132.2905
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 11 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 1.692709
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 12 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 40.617833
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 13 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.118209
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 14 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.208083
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 15 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 68.426667
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 16 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 175.191625
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 17 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 274.557208
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 18 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.367333
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 19 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.372833
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 20 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.216583
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 21 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 69.340708
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 22 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 38.06775
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 23 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.471042
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 24 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 12.052125
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 25 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 355.725625
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 26 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.25425
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 27 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 73.606667
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 28 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 48.71975
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 29 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 59.187
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 30 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 1.089458
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 31 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 1.149
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 32 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 850.636708
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 33 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 10.496833
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 34 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.071875
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 35 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.519125
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 36 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 2.306375
+  type: 'test'
+  ...
+1..36
+# tests 36
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1650.601125

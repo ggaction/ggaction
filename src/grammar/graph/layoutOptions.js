@@ -6,6 +6,8 @@ import { graphLimits } from "./model.js";
 import { normalizeForceOptions } from "./force.js";
 import { GRAPH_LAYOUT_METHODS } from "../../core/vocabulary.js";
 
+export const GRAPH_COORDINATE_FIELDS = Object.freeze(["positions", "initialPositions", "pinned"]);
+
 function coordinates(value, pin) {
   ownArray(value, pin ? "Graph pins" : "Graph positions");
   const fields = pin ? ["key", "fx", "fy"] : ["key", "x", "y"], seen = new Set();
@@ -45,8 +47,13 @@ export function normalizeGraphLayout(method, input = {}) {
   return cloneAndFreeze({ method, options });
 }
 
-export function graphLayoutKernelOptions(intent) {
+export function graphLayoutKernelOptions(intent, { nodeKeys, retainedCoordinates = [] } = {}) {
   const options = { ...intent.options };
-  for (const field of ["positions", "initialPositions", "pinned"]) if (Object.hasOwn(options, field)) options[field] = options[field].map(item => ({ ...item, key: encodeRowKey(item.key) }));
+  const active = nodeKeys === undefined ? undefined : new Set(nodeKeys);
+  for (const field of GRAPH_COORDINATE_FIELDS) if (Object.hasOwn(options, field)) {
+    const encoded = options[field].map(item => ({ ...item, key: encodeRowKey(item.key) }));
+    options[field] = active !== undefined && retainedCoordinates.includes(field)
+      ? encoded.filter(item => active.has(item.key)) : encoded;
+  }
   return options;
 }

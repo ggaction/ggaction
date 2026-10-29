@@ -1,0 +1,4 @@
+export interface ContourGridFrame {
+  readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
+  readonly width: number; readonly height: number;
+}

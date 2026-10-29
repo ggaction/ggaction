@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 947000; // Logical item selection documentation: measured 946,372 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 957000; // Combined selection and Contour documentation: measured 956169 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

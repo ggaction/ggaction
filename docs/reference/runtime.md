@@ -24,6 +24,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";

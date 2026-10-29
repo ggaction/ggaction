@@ -13,7 +13,7 @@ function callChain(style) {
   '\n  .createFontResource({prepared, requestToken:"text-shadow-example"})'+
   '\n  .applyTextMetrics({prepared:metrics, requestToken:"text-shadow-example"});';
 }
-export const visualVariants=styles.map(style=>({chart:"text-shadows",variant:style,title:`Text shadow · ${style}`,...frame,
+export const visualVariants=styles.map(style=>({chart:"text",variant:style,title:`Text shadow · ${style}`,...frame,
  source:"examples/text-shadows/program.js",primitive:()=>createTextShadowPrimitive(style),userFacing:()=>createTextShadowExample(style),
  callChain:callChain(style),
  programEquivalence:"render"}));

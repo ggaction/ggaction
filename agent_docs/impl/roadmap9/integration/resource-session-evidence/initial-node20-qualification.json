@@ -1,0 +1,48 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "node",
+      "status": "passed",
+      "durationMs": 30159.611541000002
+    },
+    {
+      "id": "mcp",
+      "status": "passed",
+      "durationMs": 668.2636669999993
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 921.286500000002
+    },
+    {
+      "id": "tutorials",
+      "status": "passed",
+      "durationMs": 54864.795625
+    },
+    {
+      "id": "bundle-full",
+      "status": "failed",
+      "durationMs": 4897.741750000001,
+      "error": "Error: ggaction gzip bundle 649557 exceeds 644000.\n    at bundle (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:70:43)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async testPackageConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:73:21)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:99:18"
+    },
+    {
+      "id": "bundle-basic",
+      "status": "failed",
+      "durationMs": 2641.1291670000064,
+      "error": "Error: ggaction/basic gzip bundle 364927 exceeds 363000.\n    at bundle (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:70:43)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async testPackageConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:73:21)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/scripts/package-consumer.js:99:18"
+    },
+    {
+      "id": "bundle-svg",
+      "status": "passed",
+      "durationMs": 119.3737919999985
+    },
+    {
+      "id": "bundle-interaction",
+      "status": "passed",
+      "durationMs": 763.5489579999994
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+export type ContourDensityDefinition = {
+  readonly x: string; readonly y: string; readonly weight?: string;
+  readonly grid: ContourGridFrame; readonly normalization: "unit" | "count";
+} & ({ readonly estimator: "histogram"; readonly bandwidth?: never; readonly kernel?: never }
+  | { readonly estimator: "kde"; readonly bandwidth: readonly [number, number]; readonly kernel: DensityKernel });

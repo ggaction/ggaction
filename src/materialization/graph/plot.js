@@ -1,4 +1,6 @@
+import { validateGraphRecomputeView } from "./filterState.js";
 import { materializeMarkEffectProperties } from "../markEffects.js";
+import { applyGraphView } from "./view.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -28,6 +30,7 @@ function overrideMap(entries) {
 
 export function resolveGraphPlot(program, layer, config) {
   const { layout, graph, nodesData, edgesData } = resolveGraphLayerResources(program, layer), model = graph.result.model;
+  validateGraphRecomputeView(program, layer, graph, config.view);
   const labels = layer.graphLabels, frame = resolveGraphicBounds(program), positions = layout.result.nodes;
   if (labels !== false && Object.hasOwn(labels, "field") && !graph.options.definition.attributes.includes(labels.field)) throw new TypeError("Graph labels require a retained node attribute.");
   validateGeneratedItemLimit(model.nodes.length * (labels === false ? 1 : 2) + model.edges.length * 2, "Graph plot graphic count");
@@ -90,6 +93,6 @@ export function resolveGraphPlot(program, layer, config) {
   const targets = new Set([...nodeStyles.keys(), ...labelStyles.keys(), ...(labels === false ? [] : labels.overrides.map(entry => entry.key))]);
   const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
-  return { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
-    diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };
+  return applyGraphView(program, { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
+    diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) }, config.view);
 }

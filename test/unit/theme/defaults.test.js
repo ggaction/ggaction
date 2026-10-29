@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   THEME_TOKEN_KEYS,
+  GUIDE_NUMERIC_THEME_TOKENS,
   THEME_TOKENS,
   normalizeThemeDefinition,
   resolveThemeTokens
@@ -26,9 +27,9 @@ test("normalizes built-in and custom theme requests into owned partial definitio
   assert.equal(Object.isFrozen(normalized.tokens), true);
 });
 
-test("resolves base tokens and the closed optional axis typography vocabulary", () => {
-  assert.equal(THEME_TOKEN_KEYS.length, 23);
-  const baseKeys = THEME_TOKEN_KEYS.filter(key => !["axisLabel", "axisLabelFontFamily", "axisTitleFontFamily", "axisLabelFontSize", "axisTitleFontSize"].includes(key));
+test("resolves base tokens and the closed optional typography vocabulary", () => {
+  assert.equal(THEME_TOKEN_KEYS.length, 29);
+  const baseKeys = THEME_TOKEN_KEYS.filter(key => ![...GUIDE_NUMERIC_THEME_TOKENS, "fontSize", "fontWeight", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily", "axisLabelFontSize", "axisTitleFontSize"].includes(key));
   assert.deepEqual(Object.keys(THEME_TOKENS.light), [...baseKeys]);
   assert.deepEqual(Object.keys(THEME_TOKENS.dark), [...baseKeys]);
 
@@ -105,4 +106,13 @@ test("rejects executable and hidden theme descriptors before reading them", () =
   assert.equal(reads, 0);
   const tokens = Object.assign(Object.create(null), { mark: "red" });
   assert.equal(normalizeThemeDefinition({ base: "light", tokens }).tokens.mark, "red");
+});
+
+
+test("global typography preserves numeric zero weight and rejects nonfinite values", () => {
+  assert.equal(resolveThemeTokens({ base: "light", tokens: { fontSize: 14, fontWeight: 0 } }).fontWeight, 0);
+  for (const tokens of [{ fontSize: 0 }, { fontSize: -1 }, { fontSize: NaN }, { fontSize: Infinity },
+    { fontWeight: Infinity }, { fontWeight: NaN }, { fontWeight: false }, { fontWeight: "" }]) {
+    assert.throws(() => normalizeThemeDefinition({ base: "light", tokens }));
+  }
 });

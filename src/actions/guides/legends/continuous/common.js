@@ -75,6 +75,7 @@ const DEFAULT_TITLE = {
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: 600
 };
+export { DEFAULT_TITLE as CONTINUOUS_LEGEND_TITLE_STYLE };
 export const ITEM_LEGEND_LABELS = Object.freeze(DEFAULT_LABELS);
 export const ITEM_LEGEND_TITLE_STYLE = Object.freeze({
   ...DEFAULT_TITLE, color: DEFAULT_COLORS.strongText
@@ -109,6 +110,7 @@ const DEFAULT_BORDER = {
   padding: 12,
   background: "transparent"
 };
+export { DEFAULT_BORDER as LEGEND_BORDER_DEFAULTS };
 
 export const validatePositive = validatePositiveFinite;
 export const validateNonNegative = validateNonNegativeFinite;
@@ -281,7 +283,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     requested,
     candidate => (channel === "stroke"
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
-      : ["point", "line", "bar", "rect", "text", "area", "arc", "tick"]
+      : CONTINUOUS_COLOR_MARK_TYPES
     ).includes(candidate.mark?.type) &&
       candidate.encoding?.[channel]?.scale !== undefined &&
       (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
@@ -503,3 +505,4 @@ export function createItemLegendGraphics(program, kind, config, count, type, pla
   if (config.titleVisible !== false) next = next.createGraphics({ id: `${prefix}Title`, type: "text", ...placement });
   return next;
 }
+import { CONTINUOUS_COLOR_MARK_TYPES } from "../../../../core/vocabulary.js";

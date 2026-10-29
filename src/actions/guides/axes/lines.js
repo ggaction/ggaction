@@ -23,6 +23,7 @@ import { resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
 const DEFAULT_STYLE = Object.freeze({ color: DEFAULT_COLORS.text, lineWidth: 1 });
+export { DEFAULT_STYLE as CARTESIAN_AXIS_LINE_DEFAULTS };
 const CREATE_OPTIONS = Object.freeze(["target", "scale", "position", "color", "lineWidth"]);
 const EDIT_OPTIONS = Object.freeze(["target", "position", "color", "lineWidth"]);
 

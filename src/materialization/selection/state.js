@@ -1,36 +1,12 @@
-import { validateRowSelection } from "./rows.js";
+import { resolveItemSelection } from "./itemSelection.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { normalizeMarkSelector, selectMarkItemKeys } from "../../grammar/markSelection.js";
+import { normalizeMarkSelector } from "../../grammar/markSelection.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "./policies/index.js";
 import { selectionPredicate as resolveSelectionPredicate } from "./predicate.js";
 
 export function resolveMarkSelection(program, target, selector) {
   const normalized = normalizeMarkSelector(selector);
-  const items = resolveMarkItems(program, target, normalized.grain);
-  if (normalized.rows) validateRowSelection(program, normalized.rows, items);
-  if (items.length > 0 && !normalized.rows && normalized.items === undefined) {
-    const source = normalized.field !== undefined
-      ? "fields"
-      : normalized.channel !== undefined
-        ? "channels"
-        : "properties";
-    const kind = normalized.field !== undefined
-      ? "field"
-      : normalized.channel !== undefined
-        ? "channel"
-        : "graphic property";
-    const key = normalized.field ?? normalized.channel ?? normalized.property;
-    if (!items.some(item => Object.hasOwn(item[source], key))) {
-      throw new Error(
-        `Selection ${kind} "${key}" is not uniquely defined at the target ${normalized.grain} grain.`
-      );
-    }
-  }
-  return Object.freeze({
-    selector: normalized,
-    items,
-    keys: selectMarkItemKeys(items, normalized)
-  });
+  return resolveItemSelection(program, resolveMarkItems(program, target, normalized.grain), normalized);
 }
 
 export function resolveSelectionCreationId(program, id, target) {

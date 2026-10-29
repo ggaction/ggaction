@@ -519,3 +519,11 @@
 - title: Draw Conserved Flows
   url: /tutorials/flows/
   parent: /tutorials/
+
+- title: Contours and Two-Dimensional Density
+  url: /api/contours/
+  parent: /api/
+
+- title: Draw Levels, Bands and Density
+  url: /tutorials/contours/
+  parent: /tutorials/

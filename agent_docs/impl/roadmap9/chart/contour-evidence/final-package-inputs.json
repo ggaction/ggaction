@@ -1,0 +1,7 @@
+{
+  "sha256": "dd68aae37170fbe1acbeb4ed22cb5ed138d013ebbaac35ec80cd2759904c482c",
+  "comparedFiles": 880,
+  "mismatches": [],
+  "normalizationOwner": "scripts/package-artifact.js",
+  "note": "Compare each current file after the existing canonical JSON/JavaScript package normalization; unlisted files are byte-exact."
+}

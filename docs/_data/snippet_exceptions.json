@@ -651,14 +651,14 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })`\" on docs/api/data/filtering.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-selector-filter-marks-:2",
+    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-recompute-selector-filter-marks-:2",
     "sha256": "e53dfbf266a10c9fc821441db564d8d9d7a3a81529c1c066e2afbc5a2c50874b",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/filtering.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`filterMarks({ target?, mode?, ...selector })` {#filter-marks}\" on docs/api/data/filtering.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-selector-filter-marks-:3",
+    "id": "docs/api/data/filtering.md#-filtermarks-target-mode-recompute-selector-filter-marks-:3",
     "sha256": "b96ff556f3e855b7e130ddb501ebf6bb40ab04fd64604ba2d0efb542044405ba",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/filtering.md",

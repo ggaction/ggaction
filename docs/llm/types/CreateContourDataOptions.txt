@@ -1,0 +1,1 @@
+export interface CreateContourDataOptions { readonly id: string; readonly grid: ContourGrid; readonly thresholds: readonly number[]; }

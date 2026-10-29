@@ -1,0 +1,11 @@
+{
+  "name": "ggaction",
+  "version": "0.0.26",
+  "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/contour/final-package/ggaction-0.0.26.tgz",
+  "sha256": "dd68aae37170fbe1acbeb4ed22cb5ed138d013ebbaac35ec80cd2759904c482c",
+  "size": 1277130,
+  "unpackedSize": 5875530,
+  "entryCount": 880,
+  "node": "v20.20.2",
+  "zlib": "1.3.1-e00f703"
+}

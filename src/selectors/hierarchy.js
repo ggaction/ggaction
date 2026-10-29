@@ -1,5 +1,5 @@
 import { annotateError } from "../core/diagnostics.js";
-import { requireMaterializedDataset } from "./datasets.js";
+import { resolveMaterializedDataset } from "./datasets.js";
 import { requireStoredResource, resolveInputReference } from "./resources.js";
 import { resolveLayoutResource } from "./layouts.js";
 
@@ -23,13 +23,7 @@ export function resolveHierarchyResource(program, kind, requested, method) {
 }
 
 export function resolveHierarchyDataset(program, requested) {
-  const id = requested ?? program.context.currentData;
-  if (id !== undefined) return requireMaterializedDataset(program, id);
-  const candidates = program.semanticSpec.datasets.filter(dataset => Array.isArray(dataset.values));
-  if (candidates.length !== 1) throw annotateError(new Error("Hierarchy data must be explicit unless one materialized dataset exists."), {
-    code: candidates.length ? "ambiguous-resource" : "missing-resource"
-  });
-  return candidates[0];
+  return resolveMaterializedDataset(program, requested, "Hierarchy data");
 }
 
 export function resolveHierarchyLayerResources(program, layer) {

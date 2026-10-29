@@ -1,0 +1,47 @@
+{
+  "label": "suite-browser",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/browser/color-controls.browser.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/browser/contours.browser.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 14795,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T00:27:07.551Z",
+  "finishedAt": "2026-10-29T00:27:22.347Z",
+  "source": {
+    "available": true,
+    "commit": "4732ea8e195ce1edfb9814c2f0e6130d2efa9282",
+    "clean": false,
+    "statusSha256": "a46f62b52972d1e0c396ca794a8c1a9631f723da1f9b20c6b54cd57043be79b0"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "4732ea8e195ce1edfb9814c2f0e6130d2efa9282",
+    "clean": false,
+    "statusSha256": "a46f62b52972d1e0c396ca794a8c1a9631f723da1f9b20c6b54cd57043be79b0"
+  },
+  "logSha256": "0c99bce21ddb1e7e5766938abf12e91f07ff79dc810bb2b133220b157cf57cb8",
+  "discovery": {
+    "suite": "browser",
+    "selectors": [
+      "test/browser/color-controls.browser.js",
+      "test/browser/contours.browser.js",
+      "test/browser/font-assets.browser.js"
+    ],
+    "files": [
+      "test/browser/color-controls.browser.js",
+      "test/browser/contours.browser.js"
+    ]
+  },
+  "bytes": 1659,
+  "retainedBytes": 1659,
+  "truncated": false
+}

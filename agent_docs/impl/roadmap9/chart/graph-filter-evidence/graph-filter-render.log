@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: graph directed exports the primitive vector PDF
+ok 1 - graph directed exports the primitive vector PDF
+  ---
+  duration_ms: 154.486208
+  type: 'test'
+  ...
+# Subtest: graph parallel exports the primitive vector PDF
+ok 2 - graph parallel exports the primitive vector PDF
+  ---
+  duration_ms: 10.342417
+  type: 'test'
+  ...
+# Subtest: graph self-loop exports the primitive vector PDF
+ok 3 - graph self-loop exports the primitive vector PDF
+  ---
+  duration_ms: 5.018042
+  type: 'test'
+  ...
+# Subtest: graph induced exports the primitive vector PDF
+ok 4 - graph induced exports the primitive vector PDF
+  ---
+  duration_ms: 10.113166
+  type: 'test'
+  ...
+# Subtest: renders graph-plots/directed
+ok 5 - renders graph-plots/directed
+  ---
+  duration_ms: 119.894125
+  type: 'test'
+  ...
+# Subtest: renders graph-parallel/parallel
+ok 6 - renders graph-parallel/parallel
+  ---
+  duration_ms: 83.55875
+  type: 'test'
+  ...
+# Subtest: renders graph-self-loop/self-loop
+ok 7 - renders graph-self-loop/self-loop
+  ---
+  duration_ms: 64.95475
+  type: 'test'
+  ...
+# Subtest: renders graph-induced/induced
+ok 8 - renders graph-induced/induced
+  ---
+  duration_ms: 69.388792
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 859.5715

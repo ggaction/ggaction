@@ -13,11 +13,12 @@ import { deriveCompleteRows } from "./complete.js";
 import { windowRowContributions } from "./window.js";
 import { normalizedRowContributions } from "./normalize.js";
 import { imputedRowContributions } from "./impute.js";
+import { graphSubsetIndices } from "./graph/subset.js";
 
 export const LINEAGE_TRANSFORMS = Object.freeze([
   "pivot",
   "bin", "bin2d", "computed", "complete", "boxOutlier", "boxSummary", "density", "ecdf", "filter",
-  "flatten", "lookup", "fold", "gradientProfile", "horizon", "interval", "impute", "markFilter",
+  "flatten", "lookup", "fold", "gradientProfile", "horizon", "interval", "impute", "markFilter", "graphSubset",
   "normalize", "regression", "regressionStatistics", "sort", "summary", "stack", "statisticalReference", "timeUnit", "window"
 ]);
 
@@ -138,6 +139,7 @@ function transformMapping(source, values, t, context) {
     return preserve(retainedIndices(source.values, (t.type === "filter" ? deriveFilteredRows : deriveSortedRows)(source.values, t)));
   }
   if (t.type === "markFilter") return preserve(context.indices ?? retainedIndices(source.values, values));
+  if (t.type === "graphSubset") return preserve(graphSubsetIndices(source.values, t));
   if (t.type === "fold") return source.values.flatMap((_, index) => t.fields.map(field => ({
     key: JSON.stringify([source.rowKeys[index], "fold", field]), indices: [index]
   })));

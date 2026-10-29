@@ -32,7 +32,7 @@
 - 전체 편집이 비어 있거나 undefined/null/unknown option, 잘못된 key/endpoint/weight/limit을 포함하면 거부한다. 정의의 ID나 graph origin은 바꾸지 않는다.
 - 원본 table을 다시 읽어 graph model과 provenance를 만들고 revision을 1 올린다. 관측 explicit key 또는 살아 있는 persisted row key는 행 재정렬 후에도 유지한다. 원본 program, 입력, trace와 graphics는 불변이다.
 - DATA의 `reviseData`와 derived revision 계획은 등록된 graph owner를 명시적으로 호출해 입력 역할을 새 dataset revision으로 갱신한다. 한 dataset이 nodes/edges를 함께 소유하면 graph revision은 한 번만 갱신한다. 유효하지 않은 endpoint/값을 만드는 source revision은 전체적으로 실패한다. 참조 중인 dataset 제거는 기존 restrict 정책으로 거부한다.
-- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed positions나 pinned/initial coverage를 깨뜨리는 source 변경은 전체적으로 거부한다. 연결된 graph plot이 있으면 그 geometry와 label을 preflight하고 layout 반영 뒤 명시 materialize한다. Plot이 없으면 graphics는 그대로다.
+- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed/initial positions에 없는 새 node를 만드는 source 변경은 전체적으로 거부한다. 사라진 node의 기존 좌표와 pin은 아래 layout 계약대로 보존한다. 연결된 graph plot이 있으면 그 geometry와 label을 preflight하고 layout 반영 뒤 명시 materialize한다. Plot이 없으면 graphics는 그대로다.
 
 ### Formal values — `editGraphData`
 
@@ -52,9 +52,12 @@
 - method는 fixed/circular/force다. fixed의 positions는 `{key,x,y}` 배열이며 모든 node를 정확히 한 번 덮는다. key는 원본 typed RowKey이며 compound tuple도 허용한다. x/y는 finite다.
 - circular 기본은 center `[0,0]`, radius `100`, startAngle `0`이다. Radius는 nonnegative finite, angle은 finite degree이며 0은 위쪽, 양수는 시계 방향이다. Empty graph는 빈 결과, single node 또는 radius0은 center에 배치한다.
 - force 기본은 seed1, iterations300, linkDistance30, repulsion100, collisionRadius4, damping0.9, center `[0,0]`, componentGap16, pinned `[]`다. Seed는 uint32, iterations는 nonnegative safe integer, 나머지 숫자는 finite nonnegative이며 damping은 1 이하다. initialPositions는 optional complete `{key,x,y}` 배열이고 pinned는 unique existing key의 `{key,fx,fy}` subset이다. Pins는 packing 뒤에도 exact 좌표를 유지한다. Disconnected components는 저장된 horizontal packing 정책으로 배치한다.
+- Source revision으로 사라진 node의 positions/initialPositions/pinned는 dormant intent로 저장하며 계산에서는 현재 typed key만 사용한다. 같은 key가 다시 나타나면 그 좌표를 재사용한다. Edit에서 생략한 배열은 dormant 항목을 보존하고, 명시적으로 교체한 배열은 현재 node만 허용하는 생성 규칙으로 검증한다. Empty graph도 intent를 보존한다. 저장 복원은 dormant 좌표도 unique/finite로 검증한다.
 - maxNodes/maxEdges 기본은 각각10000이며 positive safe integer다. 공통 work 한도를 계산 전에 검사한다. 옵션은 닫힌 own-data record이며 accessors, unknown/null/undefined fields와 invalid coordinates는 오류다.
 - 저장된 authored layout은 exact graph input 한 개, next revision, resolved options, concrete node 좌표, algorithm version, optional force packing과 exact source-row provenance를 가진다. Renderer와 Canvas를 호출하지 않는다. `editSemantic`을 명시 child로 호출한다.
 - 공개 수정은 [editLayout](LAYOUTS.md#editlayout)이 소유한다. Graph/source revision은 연결된 layout을 명시적으로 다시 계산한다. 저장 복원은 exact node membership/order, fixed/circular coordinates, force pins/component membership/bounds와 provenance를 검증하며 force solver를 실행하지 않는다.
+
+- Coordinate revision evidence: `test/unit/resources/graph-coordinate-revisions.test.js`.
 
 ### Formal values — `layoutGraph`
 
@@ -81,7 +84,7 @@
 - Highlight는 stroke 계열 color/stroke/strokeWidth/opacity/offset을 지원한다. Node border와 edge path/arrow fill을 함께 강조하고 label paint를 보존한다. Node label·edge arrow는 opacity/offset/dim/order에서 같은 항목을 따른다. fill/shape/size/fontSize/strokeDash는 거부한다.
 - Source/graph/layout revision은 모든 plot의 결과를 먼저 검사하고 exact revision 갱신 뒤 명시 재물질화한다. 실패는 원 program/trace를 보존한다. Canvas edit는 placement만 갱신하며 stored solver result는 공유한다. Concat scoped edit를 지원한다.
 - removeMark가 binding을 해제한다. removeResource의 restrict/cascade 모두 live mark는 먼저 제거해야 한다. Codec은 저장 config·binding·label 의미를 검증하며 force solver를 재실행하지 않는다. Inspector와 accessible export는 logical node/edge를 세고 scene은 같은 concrete identity를 보존한다. Canvas/SVG/PNG/PDF는 graph 의미를 해석하지 않는다.
-- Position encoding/axes/scale legend는 stored layout에 적용되지 않는다. Graph facet/repeat와 induced filtering은 이 공개 plot에 아직 연결하지 않았다.
+- Position encoding/axes/scale legend는 stored layout에 적용되지 않는다. Graph facet/repeat는 아직 연결하지 않았다. Graph induced filtering은 [MARK_SELECTION](MARK_SELECTION.md#filtermarks)의 node recipe를 사용한다.
 
 ### Formal values — `createGraphPlot`
 
@@ -144,7 +147,7 @@
 - target은 explicit/current eligible/unique inferred graph이며 observed graph를 수정하지 않는다. Scoped child target을 지원한다. data와 candidateGraph를 생략하면 exact 입력을 보존한다. candidateGraph:null은 후보 입력을 제거한다. definition은 source definition partial patch이며 options를 지정하면 rule options 전체를 교체한다. rule을 바꿀 때는 nodeKey/attributes/limits만 이어받고 새 ruleId와 applicable intent를 받는다. 빈 편집과 explicit undefined/null definition, unknown/inapplicable options는 오류다.
 - topology를 다시 계산하여 graph revision을1 올린다. 살아 있는 같은 ruleId/direction/endpoints의 edge key는 유지한다. Candidate graph를 소비하는 추론 graph chain과 각 layout/plot을 의존 순서대로 preflight하고 한 번씩 명시 갱신한다. Cyclic candidate refs와 실패하는 downstream geometry는 전체 편집을 거부한다.
 - DATA revision의 전체 source replacement map은 exact graph action receiver의 private context에만 존재한다. Prepared primitive는 unique exact next graph/layout revisions, 유지된 options, 동적 dataset의 동일 logicalId와 later revision을 검사한다. 이 authority는 public option이나 저장 state가 아니다.
-- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view와 explicit recompute는 현재 별도 지원하지 않는다.
+- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view는 원 topology를 보존한다. `filterMarks({recompute:true})`는 inferred graph를 선택 source keys로 재추론하고 모든 dependent layout/plot을 새 revision으로 갱신한다. Exact lifecycle은 [MARK_SELECTION.md](./MARK_SELECTION.md)의 graph recompute 계약을 따른다.
 
 ### Formal values — `editInferredGraphData`
 

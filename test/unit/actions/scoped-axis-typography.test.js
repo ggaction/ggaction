@@ -31,7 +31,8 @@ test("axis-only typography is order independent and leaves other text untouched"
     assert.equal(text(after, "yAxisTitle").fill, "blue");
     assert.deepEqual(after.graphicSpec.objects.chartTitle, plain.graphicSpec.objects.chartTitle);
     assert.deepEqual(after.graphicSpec.objects.colorLegendLabels, plain.graphicSpec.objects.colorLegendLabels);
-    assert.deepEqual(after.removeTheme().graphicSpec, plain.applyTheme({ theme: "light" }).graphicSpec);
+    assert.deepEqual(after.removeTheme().graphicSpec, plain.graphicSpec);
+    assert.notEqual(text(plain, "xAxisLine").stroke, text(plain.applyTheme({ theme: "light" }), "xAxisLine").stroke);
     assert.deepEqual(after.applyTheme({ theme: "light" }).graphicSpec, plain.applyTheme({ theme: "light" }).graphicSpec);
     assert.deepEqual(deserializeProgram(serializeProgram(after)).graphicSpec, after.graphicSpec);
     assert.equal(serializeProgram(plain), before);
@@ -69,7 +70,7 @@ test("Polar and Parallel roles use scoped typography and restore family defaults
     assert.ok(Array.isArray(size) ? size.every(value => value === 16) : size === 16);
     const titleSize = text(themed, title).fontSize;
     assert.ok(Array.isArray(titleSize) ? titleSize.every(value => value === 18) : titleSize === 18);
-    assert.deepEqual(themed.removeTheme().graphicSpec, source.applyTheme({ theme: "light" }).graphicSpec);
+    assert.deepEqual(themed.removeTheme().graphicSpec, source.graphicSpec);
   }
 });
 

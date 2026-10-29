@@ -61,6 +61,11 @@
   },
   "options": [
     {
+      "name": "recompute",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"

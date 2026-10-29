@@ -214,6 +214,18 @@ export function withPreviewDatasetValues(program, {
   return program._clone({ semanticSpec });
 }
 
+// Preflight a new immutable derived dataset using the same identity, schema and
+// lineage owners as createDerivedData followed by its materializer.
+export function withPreviewDerivedDataset(program, { id, source: sourceId, transform, values }) {
+  if (findDataset(program, id) !== undefined) throw new Error("Preview derived dataset already exists.");
+  const source = findDataset(program, sourceId);
+  const dataset = { id, source: sourceId, transform: [transform], values,
+    ...derivedIdentityBase(source, id), ...deriveRowLineage(source, values, transform),
+    schema: deriveTransformSchema(source.schema, transform, values, datasetSchemaContext(source, transform, id)) };
+  validateRowsAgainstSchema(values, dataset.schema, `Derived dataset "${id}"`);
+  return program._clone({ semanticSpec: { ...program.semanticSpec, datasets: [...program.semanticSpec.datasets, dataset] } });
+}
+
 // Owned materializers may refresh a generated derived dataset at a stable ID.
 // Keep that privileged immutable transition inside the semantic primitive
 // boundary; public editSemantic still rejects every post-creation dataset edit.

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 335,
+  "count": 340,
   "cards": [
     {
       "schemaVersion": 3,
@@ -27582,6 +27582,11 @@
       },
       "options": [
         {
+          "name": "recompute",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
@@ -41692,6 +41697,646 @@
       "snippet": "program.editFlowLinks({ layout: \"layout\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editflowlinks"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create bounded contour geometry from an explicit scalar grid and thresholds.",
+      "signature": "createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;",
+      "intents": [
+        "create contour data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "contour geometry",
+        "scalar grid regions"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit scalar grid"
+        ],
+        "owns": [
+          "geometry resource"
+        ],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editContourData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit scalar grid"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "grid",
+          "required": true,
+          "type": "ContourGrid"
+        },
+        {
+          "name": "thresholds",
+          "required": true,
+          "type": "readonly number[]"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createContourData({ id, grid, thresholds, target? })"
+      ],
+      "snippet": "program.createContourData({ id: \"surface\", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2, values: [0, 1, 1, 2] }, thresholds: [0, 1, 2] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createcontourdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createDensityContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create weighted two-dimensional histogram or kernel density contours with explicit grid and bandwidth policies.",
+      "signature": "createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;",
+      "intents": [
+        "create density contour data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "two-dimensional density",
+        "weighted point contours"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized point dataset"
+        ],
+        "owns": [
+          "geometry resource"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editContourData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "bandwidth",
+          "unit": "data-value"
+        }
+      ],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized point dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "x",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "grid",
+          "required": true,
+          "type": "ContourGridFrame"
+        },
+        {
+          "name": "normalization",
+          "required": true,
+          "type": "\"count\" | \"unit\""
+        },
+        {
+          "name": "estimator",
+          "required": true,
+          "type": "\"histogram\" | \"kde\""
+        },
+        {
+          "name": "bandwidth",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "kernel",
+          "required": false,
+          "type": "DensityKernel | undefined"
+        },
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "thresholds",
+          "required": true,
+          "type": "readonly number[]"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createDensityContourData({ x, y, grid, normalization, estimator, id, thresholds, data? })"
+      ],
+      "snippet": "program.createDensityContourData({ id: \"density\", data: \"points\", x: \"x\", y: \"y\", grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2 }, estimator: \"histogram\", normalization: \"count\", thresholds: [0, 1] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createdensitycontourdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise contour geometry and update its shared scales, marks and guides atomically.",
+      "signature": "editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;",
+      "intents": [
+        "edit contour data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "contour geometry",
+        "scalar grid regions"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored contour geometry"
+        ],
+        "owns": [
+          "geometry resource"
+        ],
+        "idOptions": [
+          "target",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editContourData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored contour geometry"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "grid",
+          "required": false,
+          "type": "ContourGrid | undefined"
+        },
+        {
+          "name": "thresholds",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "definition",
+          "required": false,
+          "type": "Partial<ContourDensityDefinition> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editContourData({ target?, data?, grid?, thresholds?, definition? })"
+      ],
+      "snippet": "program.editContourData({ target: \"surface\", thresholds: [0, 0.5, 2] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editcontourdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Draw stored contour level boundaries or filled bands with shared position and color scales.",
+      "signature": "createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;",
+      "intents": [
+        "create contour mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "contour bands",
+        "level boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored contour geometry",
+          "Canvas"
+        ],
+        "owns": [
+          "contour mark"
+        ],
+        "idOptions": [
+          "id",
+          "geometry",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale",
+        "createCoordinate"
+      ],
+      "editableVia": [
+        "editContourMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored contour geometry",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "mode",
+          "required": false,
+          "type": "\"filled\" | \"line\" | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "QuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "QuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createContourMark({ id?, coordinate?, target?, outline?, shadow?, geometry?, mode?, x? })"
+      ],
+      "snippet": "program.createContourMark({ geometry: \"surface\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createcontourmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit contour geometry bindings, mappings and appearance while retaining item identity.",
+      "signature": "editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit contour mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "contour bands",
+        "level boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored contour geometry",
+          "Canvas"
+        ],
+        "owns": [
+          "contour mark"
+        ],
+        "idOptions": [
+          "target",
+          "geometry",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editContourMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored contour geometry",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "mode",
+          "required": false,
+          "type": "\"filled\" | \"line\" | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "QuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "QuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editContourMark({ target?, coordinate?, outline?, shadow?, geometry?, mode?, x?, y? })"
+      ],
+      "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editcontourmark"
     }
   ]
 }

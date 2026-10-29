@@ -164,9 +164,10 @@ export function axisThemeTypography(state, component) {
   if (resolveEffectiveThemeFrame(state) === undefined) return {};
   const tokens = resolveEffectiveThemeTokens(state);
   const role = component === "labels" ? "axisLabel" : "axisTitle";
-  const fontSize = tokens[`${role}FontSize`];
+  const fontSize = tokens[`${role}FontSize`] ?? tokens.fontSize;
   return {
     fontFamily: tokens[`${role}FontFamily`] ?? tokens.fontFamily,
-    ...(fontSize === undefined ? {} : { fontSize })
+    ...(fontSize === undefined ? {} : { fontSize }),
+    ...(tokens.fontWeight === undefined ? {} : { fontWeight: tokens.fontWeight })
   };
 }

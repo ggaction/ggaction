@@ -1,4 +1,4 @@
-import { chart, prepareFontResource, prepareTextMetrics } from "ggaction";
+import { chart, prepareFontResource, prepareTextMetrics } from "../../src/index.js";
 import { fonts } from "./fonts/manifest.js";
 import { loadFont, decodeFont, measureFont } from "./host.js";
 

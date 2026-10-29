@@ -69,7 +69,14 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
+Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다. Contour는 같은 Full registry의 geometry handler를 사용한다.
+`grammar/contour/`는 명시 grid 및 density와 결정적 level/band geometry를 계산하고,
+`materialization/contour/state.js`는 동일한 bounded 계산으로 stored grid/source/holes 정합성만 검산한다.
+결과를 복원 시 덮어쓰거나 graphic을 만들지 않는다. `actions/contours/`는 resource revision 후
+shared scale union과 mark/guide closure를 명시 실행한다. `materialization/contour/plot.js`의
+compound path는 기존 renderer의 유일한 입력이다. 정확한 값과 lifecycle은
+[등고선 계약](contract/current/CONTOURS.md)이 소유한다.
+
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
@@ -453,6 +460,8 @@ rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds
 Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. 초기 축 layout 전에
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
+Global typography의 role 기본값은 기존 family defaults와 wrapped Text 생성 의도에서 읽는다. Theme frame과
+authored override 수집을 계속 재사용하며 별도 복원 snapshot이나 provenance history를 저장하지 않는다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
@@ -781,9 +790,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 635,000 bytes |
-| `ggaction/basic` | 360,000 bytes |
+| `ggaction` | 650,000 bytes |
+| `ggaction/basic` | 365,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+| `ggaction/interaction` | 83,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3208,6 +3218,12 @@ family로 필터링하며, exact font binding의 준비된 별칭은 이 경로�
 
 `actions/graphs/layouts.js`는 명시 graph layout 계산과 graph revision의 dependent layout closure를 소유한다. `actions/layouts/index.js`의 공통 editLayout은 source domain의 편집 body로 전달한다. Pure fixed/circular/force kernel은 topology를 보존하며, `materialization/graph/layoutResource.js`가 exact graph input과 resolved intent·결과를 저장한다. 복원 validator는 stored coordinates·node membership·pins·component bounds와 provenance만 검사하며 force solver를 재실행하지 않는다. Source revision은 계산한 모든 layout 결과를 기존 prepared primitive 경계로 원자적으로 교체한다. 정확 API는 [GRAPHS](contract/current/GRAPHS.md)와 [LAYOUTS](contract/current/LAYOUTS.md)가 소유한다.
 
+Graph plot의 필터는 기존 mark appearance config의 view recipe를 명시적으로 소비한다.
+`actions/data/graphFilter`가 완전 후보를 preflight한 뒤 기존 wrapped graph materializer를 호출하고,
+`materialization/graph/view`가 원래 node·edge geometry에서 induced subset을 선택한다. 공통
+item selector 검증은 `selection/itemSelection`이 소유한다. Graph/layout resource와 renderer 경계는
+유지하며 정확한 재평가·제거 계약은 [MARK_SELECTION](contract/current/MARK_SELECTION.md)이 소유한다.
+
 공개 graph layout 추가 뒤 Node20 실측은803entries/1,183,611packed/5,437,539unpacked bytes다.
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
 변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
@@ -3380,6 +3396,38 @@ Public scene schema와 renderer 입력은 유지하며 가이드와 공개 sessi
 Node20/24 1,273,444packed bytes다. Cap은871/1,274,000/5,850,000으로 최소 조정했다.
 Public Full/Basic/SVG import graph에는 private hit owner가 없으며 CanvasScene은 기존 version2 shape를 유지한다.
 
+통합 graph view·theme·actual hit adapter는876entries/5,868,706unpacked, Node20packed1,278,262bytes다.
+현재 cap은876/1,279,000/5,869,000이며 설치 bundle Node20Full637,955/Basic362,086gzip에
+638,000/363,000 cap을 적용한다. Private hit adapter는 공개 interaction API의 완료를 뜻하지 않는다.
+
+
+### Graph selection과 명시 재추론 경계
+
+Graph view의 filter/restore wrapped owner는 Full graph registration에 속한다. 공통
+`filterMarks`는 lightweight selector로 graph mark를 판별하고 이 owner에 dispatch한다.
+따라서 Basic은 graph inference/layout kernel을 filtering import로 끌어오지 않는다.
+재추론의 선택 intent는 기존 graphPlot.view에 단독 저장하고, private graphSubset transform은
+기존 immutable derived-data identity/lineage/revision owner를 재사용한다. 원본 topology를
+기준으로 선택한 typed key를 저장하며 graph→layout→consumer closure의 순수 prepared plan을
+검증한 뒤 명시 child action으로 commit한다. Renderer는 기존 concrete graphicSpec만 읽는다.
+Exact option과 source/replace/remove 의미는 MARK_SELECTION current contract가 소유한다.
+
+Graph recompute의6개 작은 owner로 package882entries/5,885,200unpacked/Node22packed1,279,959bytes를 측정했다.
+현재 packagecap은882/1,283,000/5,886,000, Fullbundle640,278gzip측정에641,000cap을 적용한다.
+
+### Contour integration on the shared resource boundary
+
+Contour의 `geometry` resource는 grid/density 계산·bounded stored-result 검증을 domain owner에
+두고, 기존 exact ref registry와 data revision hook을 재사용한다. 동일 source의 geometry 후보를
+전부 preflight한 뒤 shared scales/marks/guides union을 한 번 materialize한다. Path의 FillPaint와
+outline/shadow는 공통 효과 owner를 사용하며 renderer는 concrete graphicSpec만 읽는다.
+정확한 공개 계약은 [CONTOURS](contract/current/CONTOURS.md)가 소유한다.
+
+main f1800607d 통합의 실제 package 880 entries, Node20/24 packed1,276,997 /
+unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,202 / SVG20,196을
+기준으로 한도를 880 / packed1,278,000 / unpacked5,876,000 및 Full644,000 / Basic362,000으로
+갱신한다. Packed 한도는 측정값의 1,000-byte 경계가 3 bytes밖에 남지 않아 다음 1,000-byte
+경계를 사용하며 최종 tar에서 다시 검증한다. SVG25,000 및 source coverage floors는 유지한다.
 ### Public inspection session boundary
 
 공개 `src/interaction.js`와 `types/interaction.d.ts`의
@@ -3419,3 +3467,11 @@ filter, labels, conditional 소비자가 공유한다. `actions/selection/resour
 child-local identity로 바꾼다. Child resource는 local key만 저장하며 부모 graphic snapshot은 기존
 namespace를 재적용한다. 정확한 옵션/빈 집합/숨긴 키 정책은
 [Mark selection](contract/current/MARK_SELECTION.md#logical-item-selection-and-set-updates)이 소유한다.
+
+### Resource·guide·inspection 통합 검증
+
+Contour·graph recompute·guide geometry·public inspection을 같은 source에 통합했다.
+Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,000/365,000을 적용하고
+SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
+Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
+Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.

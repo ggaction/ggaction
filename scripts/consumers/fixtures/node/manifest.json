@@ -1052,6 +1052,23 @@
     ]
   },
   {
+    "file": "contours.mjs",
+    "cases": [
+      {
+        "id": "contour/full-basic-lifecycle",
+        "statements": 12
+      },
+      {
+        "id": "contour/fresh-process-source-revision",
+        "statements": 10
+      },
+      {
+        "id": "contour/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
+  },
+  {
     "file": "interaction.mjs",
     "cases": [
       {

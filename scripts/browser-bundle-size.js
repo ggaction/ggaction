@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 636_000, // Logical item selection, Node20/24: 635,846 gzip bytes.
-  "ggaction/basic": 361_000, // Shared selector normalization, Node20/24: 360,009 gzip bytes.
+  ggaction: 650_000, // Combined resource and inspection owners: Node20 649,557 gzip bytes.
+  "ggaction/basic": 365_000, // Combined guide owners: Node20 364,927 gzip bytes.
   "ggaction/svg": 25_000,
-  "ggaction/interaction": 83_000 // Dedicated controller: Node20/24 measured 82,299 gzip bytes.
+  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
 
 function minimalBrowserSource(specifier) {

@@ -43,7 +43,8 @@
     "contracts/realistic-mark-blends.test.js": 18646,
     "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-flow-layouts.test.js": 1611,
-    "contracts/realistic-logical-selection.test.js": 2181
+    "contracts/realistic-logical-selection.test.js": 2181,
+    "contracts/realistic-contours.test.js": 3379
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -97,6 +98,10 @@
     "contracts/realistic-logical-selection.test.js": {
       "environment": "macOS arm64, Node22.23.1, canonical realistic runner",
       "measurement": "Successful file duration 2180.84525ms rounded up. Five pinned datasets and observations/categories/series recipes, all five set modes plus empty policy and codec. Scheduling estimate only."
+    },
+    "contracts/realistic-contours.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 16 successful canonical realistic per-test durations 3378.905418ms, rounded upward. Five pinned sources, three contour recipes each, explicit density formula and all five public action witnesses. Scheduling estimate only."
     }
   },
   "localMeasurements": {

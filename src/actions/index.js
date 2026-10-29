@@ -28,6 +28,8 @@ import { registerResourceActions } from "./resources/index.js";
 import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
 import { registerFlowActions } from "./flow/resources.js";
 import { registerFlowPlotActions } from "./flow/plots.js";
+import { registerContourResourceActions, reviseContourInputs } from "./contours/resources.js";
+import { registerContourMarkActions } from "./contours/marks.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -72,10 +74,12 @@ export function registerActions(ProgramClass) {
   registerGraphPlotActions(ProgramClass);
   registerFlowActions(ProgramClass);
   registerFlowPlotActions(ProgramClass);
+  registerContourResourceActions(ProgramClass);
+  registerContourMarkActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
   registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
-  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph"],
-    revise: (program, replacements) => reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements) });
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph", "geometry"],
+    revise: (program, replacements) => reviseContourInputs(reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements), replacements) });
   registerTextMetricActions(ProgramClass);
 }

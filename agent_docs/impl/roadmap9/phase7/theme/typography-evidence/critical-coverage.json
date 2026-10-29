@@ -1,0 +1,71 @@
+{
+  "floors": {
+    "actions/guides/axes/parallel/policy.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "actions/theme/resourcePlots.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/theme/typographyRoles.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "metrics": {
+    "actions/guides/axes/labels.js": {
+      "lines": 89.51,
+      "branches": 77.12,
+      "functions": 78.43
+    },
+    "actions/guides/axes/parallel/policy.js": {
+      "lines": 100,
+      "branches": 98.06,
+      "functions": 100
+    },
+    "actions/guides/axes/titles.js": {
+      "lines": 85.02,
+      "branches": 73.76,
+      "functions": 67.86
+    },
+    "actions/guides/polar/resolve.js": {
+      "lines": 88.64,
+      "branches": 77.5,
+      "functions": 100
+    },
+    "actions/theme/reconcile.js": {
+      "lines": 94.93,
+      "branches": 92.57,
+      "functions": 96.1
+    },
+    "actions/theme/resourcePlots.js": {
+      "lines": 100,
+      "branches": 91.38,
+      "functions": 100
+    },
+    "actions/theme/state.js": {
+      "lines": 88.44,
+      "branches": 65.63,
+      "functions": 100
+    },
+    "actions/titles/resolve.js": {
+      "lines": 83.67,
+      "branches": 62.79,
+      "functions": 85.71
+    },
+    "theme/defaults.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "actions/theme/typographyRoles.js": {
+      "lines": 100,
+      "branches": 95,
+      "functions": 100
+    }
+  }
+}
