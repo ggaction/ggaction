@@ -1,6 +1,6 @@
 {
   "parent": "eef9ee9ad",
-  "sourceCommit": null,
+  "sourceCommit": "1eda23341cdd282a7cc7ad61fe18d7b00d078101",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Bounded runtime undo/redo/reset restores exact immutable program plus private selection records and linked projections. External replacement has explicit reset/record history and origin. No authoring action, persisted schema, or renderer change.",
   "runtimeAndTypesFingerprint": "26b90a7ffaf23498e2a56b06b88bada73dd7427c75fa86c968a68b74adc17930",
@@ -81,6 +81,7 @@
         "failed": 3
       },
       "changedOwning": 166,
+      "sourcePinned": 48,
       "architecture": 1,
       "images": 4,
       "newSnippet": 1,
@@ -506,8 +507,24 @@
       "sha256": "8a62b83085d8ebaa5070c0ed00ffb6f970810c03754dd116e2a7d146964816db"
     },
     {
+      "path": "session-history-pinned-build.log.gz",
+      "sha256": "bbe500cdb697284b113131bd2586e7962fc37dd3b82ea364c5b6bea258e3281a"
+    },
+    {
+      "path": "session-history-pinned-built.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
+      "path": "session-history-pinned-docs.log.gz",
+      "sha256": "e062c64492ab5b6d17cf8d1ca68dc1d9ee3f85c05e228b4d1fa31796dd9b721b"
+    },
+    {
+      "path": "session-history-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
       "path": "session-history-qualify.py.gz",
-      "sha256": "1accdedd1441014e9fc929d6049f8846143670231059df55a263cf4f94e2d79b"
+      "sha256": "cc66b75c5166e627ca4abd7d8469fdeb5bfb1bcdf36b9f7e958244a5c221f218"
     },
     {
       "path": "session-history-realistic.log.gz",
