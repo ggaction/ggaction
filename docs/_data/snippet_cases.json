@@ -431,5 +431,15 @@
     "rendering": "authoring-only",
     "result": "stream, centered, zeroBased",
     "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
+  },
+  {
+    "id": "table-sparkline-column",
+    "file": "api/table.md",
+    "contains": "const sparklineColumn",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
+    "rendering": "authoring-only"
   }
 ]

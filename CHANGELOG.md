@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createTablePlot` and `editTablePlot` for typed row/column cells, formatted text, in-cell bars and sparklines, whole-source footer aggregation and explicit visible row limits. Preserve cell identity, clipping, selection, font preparation and offline Canvas/SVG/PNG/PDF output.
+
 - Add Full-only `createTrailPlot` and `editTrailPlot` for ordered filled ribbons with a logical pixel width per sample. Preserve typed series identities, explicit missing gaps, Cartesian curves and Polar closure through edits, selection, facets and offline rendering.
 
 - Add Full-only `createWaterfallPlot` and `editWaterfallPlot` for ordered contributions, explicit total/subtotal/reset roles, shared cumulative scales and compound stage selection. Preserve source rows, fonts, effects and offline Canvas/SVG/PNG/PDF output through edits and compositions.

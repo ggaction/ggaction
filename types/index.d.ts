@@ -1,3 +1,4 @@
+export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
 export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
 export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";

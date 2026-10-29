@@ -3,7 +3,7 @@
   "name": "createTrailPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Create native filled ribbons with a screen width at each ordered source sample.",
+  "summary": "Creates Trail plot for variable width ribbon.",
   "signature": "createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;",
   "intents": [
     "create trail plot",

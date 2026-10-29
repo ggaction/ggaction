@@ -1,0 +1,22 @@
+{
+  "publicActions": 352,
+  "topLevelOptionPaths": 3418,
+  "nestedOptionPaths": 32750,
+  "optionPaths": 36168,
+  "requiredOptionPaths": 24419,
+  "excludedOptionPaths": 11749,
+  "topLevelCategoricalPaths": 1200,
+  "topLevelLiteralValues": 4316,
+  "literalFamilies": 280,
+  "pathLiteralRequirements": 17363,
+  "familyLiteralRequirements": 561,
+  "pathDiversityRequirements": 594,
+  "scaleTypePaths": 231,
+  "scaleValues": 1136,
+  "ledger": 42705,
+  "localScalePaths": 176,
+  "localScaleValues": 877,
+  "ledgerWithoutRendererFeatures": 42701,
+  "localScalePathsIncludingRadius": 178,
+  "localScaleValuesIncludingRadius": 879
+}

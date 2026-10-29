@@ -1,0 +1,6 @@
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });

@@ -1284,5 +1284,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "table-plots.mjs",
+    "cases": [
+      {
+        "id": "table/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "table/offline-clipped-scene-renderers",
+        "statements": 15
+      },
+      {
+        "id": "table/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
   }
 ]

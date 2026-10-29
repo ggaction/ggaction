@@ -3,7 +3,7 @@
   "name": "editWaterfallPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity.",
+  "summary": "Edit contribution meaning and appearance with stable stage identities.",
   "signature": "editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;",
   "intents": [
     "edit waterfall plot",

@@ -1468,7 +1468,13 @@ function buildDirectDataResources(factors) {
     .createData({ id: "trailSource", values: sourceRows })
     .createTrailPlot({ id: "directTrail", x: "x", y: "y", width: 8, groupBy: "color", guides: false })
     .editTrailPlot({ target: "directTrail", width: 12, lineCap: "round" });
-  return vconcat({ programs: [{ id: "resources", program }, { id: "waterfall", program: waterfall }, { id: "trail", program: trail }] });
+  // Table is an independent keyed presentation. All original source rows remain
+  // available to its footer even when its explicit visible limit is smaller.
+  const table = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "tableSource", values: sourceRows })
+    .createTablePlot({ id: "directTable", columns: ["category", { field: "positive", cell: "bar", footer: "sum" }], rowLimit: 3 })
+    .editTablePlot({ target: "directTable", sortBy: [{ field: "positive", order: "descending" }], cells: { stroke: "#475569" } });
+  return vconcat({ programs: [{ id: "resources", program }, { id: "waterfall", program: waterfall }, { id: "trail", program: trail }, { id: "table", program: table }] });
 }
 
 function appendConditionalPoints(program) {

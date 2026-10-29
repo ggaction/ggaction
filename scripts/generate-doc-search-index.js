@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1015100; // Moving Area baseline documentation: measured 1,015,061 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1020400; // Table action and column documentation: measured 1,020,355 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

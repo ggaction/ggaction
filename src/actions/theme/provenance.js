@@ -94,6 +94,12 @@ function channelSource(context, layer, item, property, value) {
 function resourcePath(context, layer, item, role, property) {
   const owner = resourcePlotThemeOwner(layer);
   if (!owner) return undefined;
+  if (owner.key === "tablePlot") {
+    const band = item?.channels?.role === "header" ? "headerStyle" : item?.channels?.role === "footer" ? "footerStyle" : undefined;
+    const component = role === "label" ? band && ["fill", "fontWeight"].includes(property) ? band : "labels"
+      : role === "bar" ? "bars" : role?.startsWith("sparkline:") ? "sparklines" : band && property === "fill" ? band : "cells";
+    return ["marks", layer.id, owner.key, component, role === "label" && band && property === "fill" ? "color" : property];
+  }
   const component = role === "label" ? "labels" : owner.key === "trailPlot" ? "body" : owner.key === "waterfallPlot" ? (role === "connector" ? "connectors" : "bars") : owner.key === "ohlcPlot" ? (role === "stem" ? "stem" : "body") : owner.key === "pyramidPlot" ? "stages" : owner.key === "flowPlot" ? "body"
     : layer.mark.type === "graph" ? (item?.role === "edge" || role === "arrow" ? "edges" : "nodes")
       : layer.mark.type === "tree" ? (role === "link" ? "links" : "nodes") : "cells";

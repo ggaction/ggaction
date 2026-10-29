@@ -1,5 +1,6 @@
 import { renderToSVG } from "../../src/renderers/svg.js";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 
 const datasetIdentity = new Set(["logicalId", "revision", "allocationId", "rowKeys", "nextGeneratedKey", "lineage"]);
 const dataReferenceKeys = new Set(["kind", "id", "logicalId", "revision"]);
@@ -78,12 +79,46 @@ export function withoutAllocatedIdentity(value, index) {
   return normalizeAllocatedIdentity(value, index, collectDatasetReferences(value));
 }
 
+function normalizeTableCellCollections(value) {
+  if (!value.objects || !Array.isArray(value.order)) return value;
+  const hash = text => createHash("sha256").update(text).digest("hex"), ids = new Map(), targets = new Set();
+  for (const [owner, parent] of Object.entries(value.objects)) for (const id of parent.children ?? []) {
+    const cell = value.objects[id], identity = cell?.items?.[0]?.identity;
+    if (cell?.type !== "collection" || !identity || !cell.items.every(item => item.identity?.key === identity.key)) continue;
+    let key, token;
+    try { key = JSON.parse(identity.key); token = JSON.parse(key[3][1]); } catch { continue; }
+    const localKey = Array.isArray(key[0]) ? JSON.stringify([[], ...key.slice(1)]) : identity.key;
+    if (![identity.key, localKey].some(key => id === `${owner}-cell-${hash(key)}`)) continue;
+    if (key[2] !== "item" || token[0] !== "array" || token[1]?.[0] !== "table-cell" ||
+        token[1].length !== 4 || !["header", "body", "footer"].includes(token[1][1])) continue;
+    const meaning = [...token[1]];
+    if (typeof meaning[2] === "string") {
+      try {
+        const row = JSON.parse(meaning[2]);
+        if (row[0] === "generated" && row.length === 3 && typeof row[1] === "string" && row[1] && Number.isSafeInteger(row[2]) && row[2] >= 0) {
+          meaning[2] = JSON.stringify(["generated", "allocation", row[2]]);
+        }
+      } catch { continue; }
+    }
+    const stable = `${owner}-cell-${hash(JSON.stringify([identity.lineage?.data, meaning]))}`;
+    if (Object.hasOwn(value.objects, stable) && stable !== id) continue;
+    if (targets.has(stable)) return value;
+    targets.add(stable);
+    ids.set(id, stable);
+  }
+  if (!ids.size) return value;
+  return { ...value, order: value.order.map(id => ids.get(id) ?? id), objects: Object.fromEntries(Object.entries(value.objects).map(([id, object]) => [ids.get(id) ?? id, {
+    ...object, ...(object.children ? { children: object.children.map(child => ids.get(child) ?? child) } : {}),
+    ...(ids.has(id) ? { items: object.items.map(item => ({ ...item, id: item.id.replace(id, ids.get(id)) })) } : {})
+  }])) };
+}
+
 function normalizeAllocatedIdentity(value, index, references) {
   if (Array.isArray(value)) return value.map((child, childIndex) =>
     normalizeAllocatedIdentity(child, childIndex, references));
   if (value === null || typeof value !== "object") return value;
   if (value instanceof Date) return value;
-  value = normalizeGeometryIdentity(normalizeObservedOccurrences(value, references));
+  value = normalizeTableCellCollections(normalizeGeometryIdentity(normalizeObservedOccurrences(value, references)));
   const dataset = isDataset(value);
   const dataReference = value.kind === "data" &&
     Object.keys(value).length === dataReferenceKeys.size &&

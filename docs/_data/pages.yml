@@ -580,3 +580,10 @@
 - title: Show Width Along a Series
   url: /tutorials/trail/
   parent: /tutorials/
+
+- title: Table Plots
+  url: /api/table/
+  parent: /api/
+- title: Combine Values and Small Charts in a Table
+  url: /tutorials/table/
+  parent: /tutorials/

@@ -1,3 +1,4 @@
+import { tableSelectionPolicy } from "./table.js";
 import { trailSelectionPolicy } from "./trail.js";
 import { waterfallSelectionPolicy } from "./waterfall.js";
 import { ohlcSelectionPolicy } from "./ohlc.js";
@@ -30,6 +31,7 @@ const POLICIES = Object.freeze({
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,
+  table: tableSelectionPolicy,
   pyramid: pyramidSelectionPolicy,
   waterfall: waterfallSelectionPolicy,
   trail: trailSelectionPolicy,

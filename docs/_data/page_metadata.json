@@ -1204,5 +1204,19 @@
     "editSource": "examples/trail/program.js",
     "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
     "image": "/assets/images/trail.png"
+  },
+  "/api/table/": {
+    "title": "Table Plots",
+    "source": "docs/api/table.md",
+    "editSource": "docs/api/table.md",
+    "description": "Show keyed rows with formatted values, in cell bars and sparklines. Table plots are available in the Full entry.",
+    "image": "/assets/images/table.png"
+  },
+  "/tutorials/table/": {
+    "title": "Combine Values and Small Charts in a Table",
+    "source": "docs/tutorials/table.md",
+    "editSource": "examples/table/program.js",
+    "description": "Keep a source row's name, value and ordered observations together. The amount uses both an exact number and a bar.",
+    "image": "/assets/images/table.png"
   }
 }

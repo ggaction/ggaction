@@ -169,6 +169,26 @@ export function reviseSourceIdentity(source, values, options, allocationId) {
   return cloneAndFreeze({ logicalId: source.logicalId, revision: source.revision + 1, allocationId, keySpec: spec, ...rows });
 }
 
+// Canonical typed tokens are shared by source rows and keyed compound columns.
+export function validateTypedRowKeyToken(key) {
+  let decoded;
+  try { decoded = JSON.parse(key); } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+  if (!Array.isArray(decoded) || decoded.length !== 2 || !["scalar", "tuple"].includes(decoded[0]) || !Array.isArray(decoded[1])) {
+    throw invalid("rowKeys", "Invalid typed row key token.");
+  }
+  let parts;
+  try {
+    parts = decoded[1].map(([type, value]) => {
+      const raw = type === "bigint" ? BigInt(value) : type === "date" ? new Date(value) : value;
+      if (JSON.stringify(scalar(raw, "rowKeys")) !== JSON.stringify([type, value])) throw invalid("rowKeys", "Invalid typed row key token.");
+      return raw;
+    });
+    if (decoded[0] === "scalar" && parts.length !== 1) throw invalid("rowKeys", "Invalid scalar row key token.");
+    if (encodeRowKey(decoded[0] === "scalar" ? parts[0] : parts) !== key) throw invalid("rowKeys", "Noncanonical row key token.");
+  } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+  return key;
+}
+
 export function validateSourceIdentity(dataset) {
   const { logicalId, revision, allocationId, keySpec: spec, rowKeys, nextGeneratedKey, values } = dataset;
   namespace(logicalId, "logicalId");
@@ -195,19 +215,7 @@ export function validateSourceIdentity(dataset) {
         throw invalid("rowKeys", "Invalid generated row key token.");
       }
     } else {
-      if (!Array.isArray(decoded) || decoded.length !== 2 || !["scalar", "tuple"].includes(decoded[0]) || !Array.isArray(decoded[1])) {
-        throw invalid("rowKeys", "Invalid typed row key token.");
-      }
-      let parts;
-      try {
-        parts = decoded[1].map(([type, value]) => {
-          const raw = type === "bigint" ? BigInt(value) : type === "date" ? new Date(value) : value;
-          if (JSON.stringify(scalar(raw, "rowKeys")) !== JSON.stringify([type, value])) throw invalid("rowKeys", "Invalid typed row key token.");
-          return raw;
-        });
-        if (decoded[0] === "scalar" && parts.length !== 1) throw invalid("rowKeys", "Invalid scalar row key token.");
-        if (encodeRowKey(decoded[0] === "scalar" ? parts[0] : parts) !== key) throw invalid("rowKeys", "Noncanonical row key token.");
-      } catch { throw invalid("rowKeys", "Invalid typed row key token."); }
+      validateTypedRowKeyToken(key);
     }
   }
   if (spec.mode !== "generated" && nextGeneratedKey !== 0) throw invalid("nextGeneratedKey", "Keyed sources have no generated counter.");

@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 727_700, // Moving Area baseline: measured 727,624 on Node20 gzip bytes.
-  "ggaction/basic": 393_400, // Shared series grammar: measured 393,299 on Node20 gzip bytes; Full Area actions remain excluded.
+  ggaction: 735_900, // Table cells and native materialization: measured 735,841 gzip bytes on Node20.
+  "ggaction/basic": 402_700, // Shared typography, selection and vocabulary: measured 402,639 gzip bytes on Node20; Table actions are Full only.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
   "ggaction/interaction": 109_300 // Linked filter plus routes baseline: Node20/24 109,216 gzip bytes.

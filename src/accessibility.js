@@ -83,7 +83,7 @@ function finalRows(program, layer) {
       })));
   }
   if (["ohlc", "waterfall"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
-  if (layer.mark.type === "pyramid") return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
+  if (["table", "pyramid"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({ series: {}, values: item.channels }));
   if (["flow-node", "flow-link", "contour", "calendar"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: item.fields
   }));

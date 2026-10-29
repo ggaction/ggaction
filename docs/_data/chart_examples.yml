@@ -2432,3 +2432,20 @@
   actions: createAreaPlot · layoutSeries
   tasks: composition trend
   url: /tutorials/area-layout/#use-a-moving-streamgraph-baseline
+
+- id: table
+  example: /examples/table/
+  title: Values and small charts in a keyed table
+  image: /assets/images/table.png
+  alt: Two source rows with numeric bars, shared-scale sparklines and a sum footer.
+  width: 720
+  height: 440
+  thumbnail: /assets/images/table-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 391
+  caption: Keep exact values beside bars and shared-scale sparklines.
+  summary: Keep exact values beside bars and shared-scale sparklines.
+  actions: createTablePlot · editTablePlot
+  tasks: formatted rows and inline charts
+  url: /tutorials/table/
+  tutorial_order: 320

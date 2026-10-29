@@ -3,7 +3,7 @@
   "name": "createOHLCPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Create row-owned open, high, low and close prices with one shared price scale.",
+  "summary": "Draw explicit open, high, low and close roles as one row-owned item.",
   "signature": "createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;",
   "intents": [
     "create ohlc plot",

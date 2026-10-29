@@ -3,7 +3,7 @@
   "name": "editTrailPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Edit Trail positions, sample widths and appearance while preserving typed series membership.",
+  "summary": "Edits Trail plot, including settings for variable width ribbon.",
   "signature": "editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;",
   "intents": [
     "edit trail plot",

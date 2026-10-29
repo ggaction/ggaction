@@ -6464,6 +6464,42 @@
         "file": "agent_docs/contract/current/TRAIL.md",
         "anchor": "edittrailplot"
       }
+    },
+    {
+      "name": "createTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "createtableplot"
+      }
+    },
+    {
+      "name": "editTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "edittableplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6563,7 +6599,8 @@
       "materializePyramidPlot",
       "materializeOHLCPlot",
       "materializeWaterfallPlot",
-      "materializeTrailPlot"
+      "materializeTrailPlot",
+      "materializeTablePlot"
     ],
     "guideComponents": [
       "createLegendBackground",
@@ -6603,7 +6640,8 @@
       "filterGraphPlotView",
       "restoreGraphPlotView",
       "refreshScreenEdgeRoutes",
-      "applyTrailMark"
+      "applyTrailMark",
+      "applyTableMark"
     ],
     "aggregateComponents": [
       "createBoxMedian",

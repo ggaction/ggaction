@@ -1,0 +1,112 @@
+[
+  {
+    "id": "tt-us-births",
+    "field": "births",
+    "source": {
+      "id": "tt-us-births",
+      "bytes": 96748,
+      "sha256": "dfb9f4e0518bbb255cc24f1fdad496a1098ee24cd66509fe8ced7ac5e3d17fb2",
+      "cached": true,
+      "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/datasets/tidytuesday/tt-us-births.csv"
+    },
+    "sourceRows": 5479,
+    "selectedRows": 12,
+    "selection": "First 12 source rows with finite field; original fields and sourceRowIndex preserved",
+    "selectedValuesSha256": "340e70d63c6051b0df38ad26c2dc10ac3521c234df41a9580171456fe682b1b7",
+    "cellVariants": [
+      "text",
+      "bar",
+      "sparkline explicit nested source cohort"
+    ],
+    "displayedRows": 5,
+    "footerScope": "all 12 selected source observations before rowLimit"
+  },
+  {
+    "id": "tt-trash-wheel",
+    "field": "Weight",
+    "source": {
+      "id": "tt-trash-wheel",
+      "bytes": 92586,
+      "sha256": "f9c02fbfbac7dedef2d04e65ce839382bd45248fc1d53c3e23dfc2aa4d6eb05c",
+      "cached": true,
+      "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/datasets/tidytuesday/tt-trash-wheel.csv"
+    },
+    "sourceRows": 993,
+    "selectedRows": 12,
+    "selection": "First 12 source rows with finite field; original fields and sourceRowIndex preserved",
+    "selectedValuesSha256": "9885ef85eb6d1a4d4ca256cd065afc33e5d5aa85eeb9242eb9ad6615139b08ab",
+    "cellVariants": [
+      "text",
+      "bar",
+      "sparkline explicit nested source cohort"
+    ],
+    "displayedRows": 5,
+    "footerScope": "all 12 selected source observations before rowLimit"
+  },
+  {
+    "id": "tt-stock-prices",
+    "field": "volume",
+    "source": {
+      "id": "tt-stock-prices",
+      "bytes": 3217735,
+      "sha256": "cb6d83535f2df947a982299bc30a9b532c7ffed9642733c6f5fb3657c4a457fc",
+      "cached": true,
+      "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/datasets/tidytuesday/tt-stock-prices.csv"
+    },
+    "sourceRows": 45088,
+    "selectedRows": 12,
+    "selection": "First 12 source rows with finite field; original fields and sourceRowIndex preserved",
+    "selectedValuesSha256": "4d802573561844aa8bcadfea1a5cdaf3b80928c437d8d91af06455b7653a2124",
+    "cellVariants": [
+      "text",
+      "bar",
+      "sparkline explicit nested source cohort"
+    ],
+    "displayedRows": 5,
+    "footerScope": "all 12 selected source observations before rowLimit"
+  },
+  {
+    "id": "tt-animal-rescues",
+    "field": "incident_notional_cost",
+    "source": {
+      "id": "tt-animal-rescues",
+      "bytes": 2658632,
+      "sha256": "3b7fa5d1ae10243181ef56468bf7dd503024a7ac233576e50a86c535f0707c31",
+      "cached": true,
+      "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/datasets/tidytuesday/tt-animal-rescues.csv"
+    },
+    "sourceRows": 7544,
+    "selectedRows": 12,
+    "selection": "First 12 source rows with finite field; original fields and sourceRowIndex preserved",
+    "selectedValuesSha256": "e76e12d9507cdbef00239c90f7e55c4aa3fd5c6ad28ba349082325a6e3db6756",
+    "cellVariants": [
+      "text",
+      "bar",
+      "sparkline explicit nested source cohort"
+    ],
+    "displayedRows": 5,
+    "footerScope": "all 12 selected source observations before rowLimit"
+  },
+  {
+    "id": "tt-movie-profit",
+    "field": "production_budget",
+    "source": {
+      "id": "tt-movie-profit",
+      "bytes": 312621,
+      "sha256": "c0e12dd39368dc097114a34dcabd8da1a5a7d8112cafdba9a48738659715ca03",
+      "cached": true,
+      "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/datasets/tidytuesday/tt-movie-profit.csv"
+    },
+    "sourceRows": 3401,
+    "selectedRows": 12,
+    "selection": "First 12 source rows with finite field; original fields and sourceRowIndex preserved",
+    "selectedValuesSha256": "21548b20d34edf9112f1439997c1581a77cc00d73a7eadb7ff388ae0a817cb0f",
+    "cellVariants": [
+      "text",
+      "bar",
+      "sparkline explicit nested source cohort"
+    ],
+    "displayedRows": 5,
+    "footerScope": "all 12 selected source observations before rowLimit"
+  }
+]

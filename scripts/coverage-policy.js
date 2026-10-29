@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "table-action": { prefix: "actions/charts/table.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Final cell, text, scale and identity candidates must reject before semantic or graphic writes." },
+  "table-mark": { prefix: "actions/marks/table/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit wrapped writes reconcile nested cell clips without stale graphic owners." },
+  "table-plot": { prefix: "grammar/tablePlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typed column keys, closed stored intent and appearance must remain canonical." },
+  "table-data": { prefix: "grammar/tableData.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Full-source aggregate membership and nested sparkline domains must remain bounded and reproducible." },
+  "table-materialization": { prefix: "materialization/table/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Cell geometry, exact text metrics, clipping and primitive identity share the same resolved layout." },
+  "table-selection": { prefix: "materialization/selection/policies/table.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Cell selections preserve typed row and column identity across named clipped collections." },
   "table-cells": { prefix: "grammar/cells.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typed row and column identity, explicit visible limits, measured widths and bounded finite cell geometry must remain independently verified." },
   "trail-action": { prefix: "actions/charts/trail.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Trail bindings, width and complete scale/guide candidates must preflight before writes." },
   "trail-mark": { prefix: "actions/marks/trail/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit semantic and graphical writes preserve series identity and highlight baselines." },

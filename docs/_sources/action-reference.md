@@ -3529,6 +3529,22 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createTablePlot`
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](../api/table.md).
+
+### `editTablePlot`
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](../api/table.md).
+
 ### `createTrailPlot`
 
 ```js

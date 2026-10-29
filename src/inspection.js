@@ -1,3 +1,4 @@
+import { resolveTablePlot } from "./materialization/table/plot.js";
 import { resolveWaterfallPlot } from "./materialization/waterfall/plot.js";
 import { resolveOHLCPlot } from "./materialization/ohlc/plot.js";
 import { resolvePyramidPlot } from "./materialization/pyramid/plot.js";
@@ -497,11 +498,13 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
   const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
   const waterfall = layer.waterfall === undefined ? undefined : resolveWaterfallPlot(program, layer, program.markConfigs[layer.id].waterfallPlot);
   const ohlc = layer.ohlc === undefined ? undefined : resolveOHLCPlot(program, layer, program.markConfigs[layer.id].ohlcPlot);
+  const table = layer.table === undefined ? undefined : resolveTablePlot(program, layer, program.markConfigs[layer.id].tablePlot);
   const pyramid = layer.pyramid === undefined ? undefined : resolvePyramidPlot(program, layer, program.markConfigs[layer.id].pyramidPlot);
   const calendar = layer.calendarBinding === undefined ? undefined : resolveCalendarPlot(program, layer, program.markConfigs[layer.id].calendarPlot);
   const dataset = calendar?.dataset ?? hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
-  const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
+  const items = table === undefined ? graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : [])
+    : [...(graphic?.items ?? []), ...(graphic?.children ?? []).flatMap(id => program.graphicSpec.objects[id]?.items ?? [])];
   const itemByGraphic = new Map();
   if (graphic && findSelectionPolicy(layer.mark.type) && getMarkMaterializationStep(program, layer)) {
     for (const item of resolveMarkItems(program, layer.id)) for (const id of item.graphicIds) itemByGraphic.set(id, item);
@@ -533,7 +536,7 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
     owner: resourceRef("mark", layer.id, childPath), grain,
     appearance: items.flatMap((item, index) => { const logical = itemByGraphic.get(item.id); return markAppearance(appearance, layer, logical, item, resourceRef("mark", layer.id, childPath), logical ? scopedKey(logical.key) : undefined, String(index)); }),
     rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
-    logicalDataItems: logicalSupported ? waterfall?.items.length ?? ohlc?.items.length ?? pyramid?.items.length ?? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? table?.items.length ?? waterfall?.items.length ?? ohlc?.items.length ?? pyramid?.items.length ?? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -734,7 +737,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
       return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics, { includeEffects: false });
     }).filter(Boolean);
-    const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
+    const visible = ["image", "table"].includes(item.markType) ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
       ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }),
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
