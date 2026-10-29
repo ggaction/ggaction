@@ -124,3 +124,35 @@ test("Trail self crossings have explicit shared fill-rule semantics and finite c
   assert.equal(flat.diagnostics.length, 0);
   assert.ok(flat.subpaths.every(run => run.points.every(p => Number.isFinite(p.x) && Number.isFinite(p.y))));
 });
+
+test("closed Trail has two opposite-winding contours and an unpainted center", () => {
+  const points = [p(0, 0, 2), p(10, 0, 2), p(10, 10, 2), p(0, 10, 2)];
+  const result = layoutTrailRibbon(points, { closed: true });
+  const paths = flattenPathCommands(result.commands).subpaths;
+  assert.equal(paths.length, 2);
+  const areas = paths.map(path => signedPolygonArea(path.points.map(({ x, y }) => [x, y])));
+  close(areas[0], 64); close(areas[1], -144); close(Math.abs(areas.reduce((a, b) => a + b)), 80);
+  for (const fillRule of ["nonzero", "evenodd"]) {
+    assert.equal(pathFillContains(result.commands, { x: 5, y: 0 }, { fillRule }), true);
+    assert.equal(pathFillContains(result.commands, { x: 5, y: 5 }, { fillRule }), false);
+    assert.equal(pathFillContains(result.commands, { x: -2, y: 5 }, { fillRule }), false);
+  }
+  const explicit = layoutTrailRibbon([...points, p(0, 0, 4)], { closed: true });
+  assert.equal(explicit.runs[0].length, 4);
+  assert.equal(explicit.runs[0][0].width, 4);
+  assert.deepEqual(explicit.runs[0][0].sourceIndices, [0, 4]);
+  assert.equal(points[0].width, 2);
+});
+
+test("closed Trail reversals and singleton loops retain finite capped pieces", () => {
+  for (const points of [[p(0, 0, 2)], [p(0, 0, 2), p(10, 0, 4)], [p(0, 0, 2), p(10, 0, 4), p(5, 0, 6)]]) {
+    for (const lineJoin of ["miter", "bevel", "round"]) {
+      const result = layoutTrailRibbon(points, { closed: true, lineJoin, lineCap: "round" });
+      assert.ok(result.commands.flatMap(command => Object.values(command).filter(value => typeof value === "number")).every(Number.isFinite));
+      assert.ok(resolvePathSubpaths(result.commands).every(path => path.closed));
+    }
+  }
+  assert.throws(() => normalizeTrailOptions({ closed: "yes" }), /boolean/);
+  const many = Array.from({ length: 10000 }, (_, index) => p(index % 2, index % 3, 1));
+  assert.throws(() => layoutTrailRibbon(many, { closed: true, lineJoin: "bevel" }), /command count/);
+});

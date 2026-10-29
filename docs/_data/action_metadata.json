@@ -2898,5 +2898,21 @@
     ],
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "createTrailPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTrailPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

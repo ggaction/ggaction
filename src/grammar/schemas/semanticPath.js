@@ -77,6 +77,7 @@ const ENTITY_PATHS = Object.freeze({
       "pyramid",
       "ohlc",
       "waterfall",
+      "trail",
       "calendarBinding",
       "calendarLabels",
       "contourBinding",

@@ -14,17 +14,24 @@ export function requireCoordinate(program, id) {
   return coordinate;
 }
 
-export function resolveCartesianCoordinate(program, requested, label = "Mark") {
+function resolveTypedCoordinate(program, requested, type, defaultId, label) {
   if (requested !== undefined) {
     const coordinate = requireCoordinate(program, requested);
-    if (coordinate.type !== "cartesian") throw new TypeError(`${label} requires a Cartesian coordinate.`);
+    if (coordinate.type !== type) throw new TypeError(`${label} requires a ${type === "cartesian" ? "Cartesian" : "Polar"} coordinate.`);
     return coordinate;
   }
-  const eligible = program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "cartesian");
+  const eligible = program.semanticSpec.coordinates.filter(coordinate => coordinate.type === type);
   const current = eligible.find(coordinate => coordinate.id === program.context.currentCoordinate);
   if (current) return current;
   if (eligible.length > 1) throw annotateError(new Error(`${label} coordinate is ambiguous; provide an explicit coordinate.`), { code: "ambiguous-resource" });
   if (eligible.length === 1) return eligible[0];
-  if (program.semanticSpec.coordinates.some(coordinate => coordinate.id === "main")) throw new TypeError(`${label} default coordinate conflicts with an existing coordinate.`);
-  return { id: "main", type: "cartesian" };
+  if (program.semanticSpec.coordinates.some(coordinate => coordinate.id === defaultId)) throw new TypeError(`${label} default coordinate conflicts with an existing coordinate.`);
+  return { id: defaultId, type };
+}
+
+export function resolveCartesianCoordinate(program, requested, label = "Mark") {
+  return resolveTypedCoordinate(program, requested, "cartesian", "main", label);
+}
+export function resolvePolarCoordinate(program, requested, label = "Mark") {
+  return resolveTypedCoordinate(program, requested, "polar", "polar", label);
 }

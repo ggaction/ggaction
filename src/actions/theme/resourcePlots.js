@@ -1,3 +1,4 @@
+import { TRAIL_PLOT_DEFAULTS } from "../../grammar/trailPlot.js";
 import { WATERFALL_PLOT_DEFAULTS } from "../../grammar/waterfallPlot.js";
 import { OHLC_PLOT_DEFAULTS } from "../../grammar/ohlcPlot.js";
 import { PYRAMID_PLOT_DEFAULTS } from "../../grammar/pyramid/plot.js";
@@ -7,6 +8,7 @@ import { HIERARCHY_PLOT_DEFAULTS } from "../../grammar/hierarchy/plot.js";
 import { FLOW_PLOT_DEFAULTS } from "../../grammar/flow/plot.js";
 
 const OWNERS = Object.freeze({
+  trail: { key: "trailPlot", op: "materializeTrailPlot" },
   waterfall: { key: "waterfallPlot", op: "materializeWaterfallPlot" },
   ohlc: { key: "ohlcPlot", op: "materializeOHLCPlot" },
   pyramid: { key: "pyramidPlot", op: "materializePyramidPlot" },
@@ -26,16 +28,17 @@ export function resourcePlotThemeOwner(layer) {
 // A family default is lower precedence than an active theme; removing the final
 // frame restores that family's own value, not a generic mark default.
 export function resourcePlotThemeProperty(path, layer) {
-  if (path[0] !== "marks" || !["graphPlot", "hierarchyPlot", "flowPlot", "calendarPlot", "pyramidPlot", "ohlcPlot", "waterfallPlot"].includes(path[2])) return undefined;
+  if (path[0] !== "marks" || !["graphPlot", "hierarchyPlot", "flowPlot", "calendarPlot", "pyramidPlot", "ohlcPlot", "waterfallPlot", "trailPlot"].includes(path[2])) return undefined;
   if (path.includes("overrides")) return { explicit: true };
   const calendarLabel = path[2] === "calendarPlot" && path[3] === "labels";
   if (path.length !== (calendarLabel ? 6 : 5)) return undefined;
   const [, , family, storedRole] = path, property = path.at(-1);
   const role = family === "flowPlot" && storedRole === "body"
     ? { "flow-node": "nodes", "flow-link": "links" }[layer?.mark?.type] : storedRole;
-  const defaults = family === "waterfallPlot" ? WATERFALL_PLOT_DEFAULTS : family === "ohlcPlot" ? OHLC_PLOT_DEFAULTS : family === "pyramidPlot" ? PYRAMID_PLOT_DEFAULTS : family === "calendarPlot" ? CALENDAR_PLOT_DEFAULTS : family === "graphPlot" ? GRAPH_PLOT_DEFAULTS : family === "flowPlot" ? FLOW_PLOT_DEFAULTS : HIERARCHY_PLOT_DEFAULTS;
+  const defaults = family === "trailPlot" ? TRAIL_PLOT_DEFAULTS : family === "waterfallPlot" ? WATERFALL_PLOT_DEFAULTS : family === "ohlcPlot" ? OHLC_PLOT_DEFAULTS : family === "pyramidPlot" ? PYRAMID_PLOT_DEFAULTS : family === "calendarPlot" ? CALENDAR_PLOT_DEFAULTS : family === "graphPlot" ? GRAPH_PLOT_DEFAULTS : family === "flowPlot" ? FLOW_PLOT_DEFAULTS : HIERARCHY_PLOT_DEFAULTS;
   let token;
   if (role === "labels") token = property === "fill" ? "text" : ["fontFamily", "fontSize", "fontWeight"].includes(property) ? property : undefined;
+  else if (family === "trailPlot") token = role === "body" && property === "fill" ? "mark" : undefined;
   else if (family === "waterfallPlot") token = ["bars", "connectors"].includes(role) && property === "stroke" ? "mutedText" : undefined;
   else if (family === "ohlcPlot") token = ["body", "stem"].includes(role) && property === "stroke" ? "mutedText" : undefined;
   else if (family === "calendarPlot") token = role === "cells"
@@ -47,9 +50,9 @@ export function resourcePlotThemeProperty(path, layer) {
 }
 
 function change(node) {
-  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot|PyramidPlot|OHLCPlot|WaterfallPlot)$/u.exec(node.op);
+  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot|PyramidPlot|OHLCPlot|WaterfallPlot|TrailPlot)$/u.exec(node.op);
   if (match === null) return;
-  const family = match[2] === "WaterfallPlot" ? "waterfallPlot" : match[2] === "OHLCPlot" ? "ohlcPlot" : match[2] === "PyramidPlot" ? "pyramidPlot" : match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
+  const family = match[2] === "TrailPlot" ? "trailPlot" : match[2] === "WaterfallPlot" ? "waterfallPlot" : match[2] === "OHLCPlot" ? "ohlcPlot" : match[2] === "PyramidPlot" ? "pyramidPlot" : match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
   const args = node.args, ids = new Set();
   const materializer = `materialize${match[2]}`;
   const visit = entry => {

@@ -877,6 +877,18 @@ Omit incoming balance connectors explicitly.
 
 Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
 
+### [Changing width along each series](./trail/)
+
+Draw two independent ribbons with a screen width at each source sample.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [An explicit constant ribbon width](./trail-constant-width/)
+
+Preserve both centerlines while setting a constant screen width.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

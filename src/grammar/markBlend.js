@@ -2,7 +2,7 @@ import { ownRecord } from "../core/ownData.js";
 import { isBlendMode } from "./compositing.js";
 
 export const MARK_BLEND_TYPES = Object.freeze([
-  "point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick"
+  "point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick", "trail"
 ]);
 
 export function validateMarkBlend(value, type) {

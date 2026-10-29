@@ -153,6 +153,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./actions/marks.md#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTrailPlot`](./actions/marks.md#createtrailplot) | H2 | user-facing | marks |
 | [`createTreemapPlot`](./actions/charts-data.md#createtreemapplot) | H0, H1 | user-facing | charts |
 | [`createTreePlot`](./actions/charts-data.md#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./actions/guides.md#createverticalgrid) | H3 | user-facing | grid |
@@ -283,6 +284,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](./actions/charts-data.md#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTrailPlot`](./actions/marks.md#edittrailplot) | H3 | user-facing | marks |
 | [`editTreemapPlot`](./actions/charts-data.md#edittreemapplot) | H1, H3 | user-facing | charts |
 | [`editTreePlot`](./actions/charts-data.md#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./actions/guides.md#editverticalgrid) | H3 | user-facing | grid |

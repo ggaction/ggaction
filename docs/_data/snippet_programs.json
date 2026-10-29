@@ -592,5 +592,16 @@
       "exported": "createWaterfall"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/trail.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "signals",
+    "prerequisites": "Import the Full ggaction package; the example declares position and sample screen widths explicitly.",
+    "canonical": {
+      "file": "examples/trail/program.js",
+      "exported": "createTrail"
+    },
+    "rendering": "authoring-only"
   }
 }

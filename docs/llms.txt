@@ -241,3 +241,5 @@ requirements after resolving each part.
 - Show open, high, low and close: ./tutorials/ohlc/
 - Waterfall Plots: ./api/waterfall/
 - Show Contributions and Totals: ./tutorials/waterfall/
+- Trail Plots: ./api/trail/
+- Show Width Along a Series: ./tutorials/trail/

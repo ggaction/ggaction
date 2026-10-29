@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 355,
+  "actionCount": 357,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2446,6 +2446,19 @@
       "name": "editWaterfallPlot",
       "wraps": [
         "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "createTrailPlot",
+      "wraps": [
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editTrailPlot",
+      "wraps": [
         "createScale"
       ]
     }

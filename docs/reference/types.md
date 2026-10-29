@@ -70,6 +70,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
   createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
   editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
@@ -1796,6 +1798,7 @@ Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutli
 
 ```typescript
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
 ```
 
 </details>
@@ -4250,6 +4253,25 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 </details>
 
 Related types: [`PolarTitleOptions`](#type-polartitleoptions) · [`PolarGuideResourceOptions`](#type-polarguideresourceoptions).
+
+### `CreateTrailPlotOptions` {#type-createtrailplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateTrailPlotOptions</summary>
+
+```typescript
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+```
+
+</details>
+
+Related types: [`TrailPlotOptions`](#type-trailplotoptions) · [`TrailPosition`](#type-trailposition) · [`CurveInterpolation`](#type-curveinterpolation) · [`ColorGuides`](#type-colorguides) · [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
 
 ### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
 
@@ -7492,6 +7514,19 @@ export interface EditTitleOptions
 </details>
 
 Related types: [`TitleOptions`](#type-titleoptions).
+
+### `EditTrailPlotOptions` {#type-edittrailplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTrailPlotOptions</summary>
+
+```typescript
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+```
+
+</details>
+
+Related types: [`TrailPatch`](#type-trailpatch) · [`CreateTrailPlotOptions`](#type-createtrailplotoptions).
 
 ### `EditTreePlotOptions` {#type-edittreeplotoptions}
 
@@ -15540,6 +15575,73 @@ export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly i
 </details>
 
 Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeometryPosition`](#type-geometryposition).
+
+### `TrailBodyPaint` {#type-trailbodypaint}
+
+<details markdown="1">
+<summary>Expand TrailBodyPaint</summary>
+
+```typescript
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `TrailPatch` {#type-trailpatch}
+
+<details markdown="1">
+<summary>Expand TrailPatch</summary>
+
+```typescript
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+```
+
+</details>
+
+### `TrailPlotOptions` {#type-trailplotoptions}
+
+<details markdown="1">
+<summary>Expand TrailPlotOptions</summary>
+
+```typescript
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+```
+
+</details>
+
+Related types: [`TrailBodyPaint`](#type-trailbodypaint) · [`OHLCColor`](#type-ohlccolor) · [`BlendMode`](#type-blendmode).
+
+### `TrailPosition` {#type-trailposition}
+
+<details markdown="1">
+<summary>Expand TrailPosition</summary>
+
+```typescript
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

@@ -66,6 +66,12 @@ function sourceAnchor(program, source, item) {
       y: item.properties.y2
     };
   }
+  if (source.mark.type === "trail") {
+    const geometry = item.geometry;
+    const graphic = findGraphic(program.graphicSpec, item.graphicIds?.at(-1))?.object;
+    const origin = graphic?.properties?.commands?.[0] ?? geometry.origin;
+    return { x: geometry.endpoint.x + origin.x - geometry.origin.x, y: geometry.endpoint.y + origin.y - geometry.origin.y };
+  }
   if (source.mark.type === "line") {
     const graphicId = item.graphicIds?.[0];
     const graphic = findGraphic(program.graphicSpec, graphicId)?.object;

@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:54a27765af56402d6e1536778382c9dd9507ed4fe626cf9e083c7ed16e712d48` |
-| Example and dataset source | `ba2062ce01ea14448b7123d13861f056d43c37e2` |
-| Runtime source commit | `b02775be03b05500250820a3abd210aec3b1fcce` |
+| Contract fingerprint | `sha256:7d95fb42cddd2c7f7edf77050e936c4ee7d31c78c6187dc60a0f540b7a62f2ac` |
+| Example and dataset source | `codex/roadmap9-native-charts` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 355 |
+| Declared actions here | 357 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

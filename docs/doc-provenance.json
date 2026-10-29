@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:54a27765af56402d6e1536778382c9dd9507ed4fe626cf9e083c7ed16e712d48",
-  "sourceCommit": "b02775be03b05500250820a3abd210aec3b1fcce",
-  "sourceRef": "b02775be03b05500250820a3abd210aec3b1fcce",
-  "exampleSourceRef": "ba2062ce01ea14448b7123d13861f056d43c37e2",
+  "contractId": "sha256:7d95fb42cddd2c7f7edf77050e936c4ee7d31c78c6187dc60a0f540b7a62f2ac",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-native-charts",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 355,
+  "actionCount": 357,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -199,6 +199,14 @@
       "status": "development"
     },
     "createCalendarLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTrailPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTrailPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

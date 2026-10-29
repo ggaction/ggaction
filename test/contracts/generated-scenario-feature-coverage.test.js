@@ -217,13 +217,13 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 348);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3336);
-  assert.equal(inventory.counts.nestedOptionPaths, 30928);
-  assert.equal(inventory.counts.optionPaths, 34264);
-  assert.equal(inventory.counts.requiredOptionPaths, 23017);
-  assert.equal(inventory.counts.excludedOptionPaths, 11247);
-  for (const action of ["createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeometryData", "editGeometryData", "createProjection", "editProjection"]) {
+  assert.equal(inventory.counts.publicActions, 350);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3383);
+  assert.equal(inventory.counts.nestedOptionPaths, 32122);
+  assert.equal(inventory.counts.optionPaths, 35505);
+  assert.equal(inventory.counts.requiredOptionPaths, 23906);
+  assert.equal(inventory.counts.excludedOptionPaths, 11599);
+  for (const action of ["createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeometryData", "editGeometryData", "createProjection", "editProjection"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
   for (const id of ["option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
@@ -252,12 +252,12 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 1166);
-  assert.equal(inventory.counts.topLevelLiteralValues, 4237);
-  assert.equal(inventory.counts.literalFamilies, 275);
-  assert.equal(inventory.counts.pathLiteralRequirements, 16433);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 1190);
+  assert.equal(inventory.counts.topLevelLiteralValues, 4299);
+  assert.equal(inventory.counts.literalFamilies, 276);
+  assert.equal(inventory.counts.pathLiteralRequirements, 17097);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 560);
+  assert.equal(inventory.counts.pathDiversityRequirements, 582);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
@@ -332,7 +332,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.clipHeight`),
     ...["createAreaPlot", "createBarPlot", "createBeeswarmPlot", "createDensityPlot", "createDotPlot",
       "createDumbbellPlot", "createECDFPlot", "createHeatmap", "createHistogram", "createIntervalPlot",
-      "createLinePlot", "createLollipopPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
+      "createLinePlot", "createLollipopPlot", "createTrailPlot", "editTrailPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
       "createPolarScatterPlot", "createRadarPlot", "createRadialBarPlot", "createRaincloudPlot", "createRegressionPlot",
       "createRosePlot", "createScatterPlot", "createStripPlot", "createTextPlot", "createViolinPlot",
       "facet", "facetGrid", "repeatCharts"].map(action => `${action}.guides.legend.clipHeight`)
@@ -644,7 +644,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 40365);
+  assert.equal(ledger.requirements.length, 41924);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

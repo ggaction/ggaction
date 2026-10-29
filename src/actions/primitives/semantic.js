@@ -1,3 +1,4 @@
+import { TEXT_SOURCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { createSemanticPrimitiveAction } from "./semanticAction.js";
 import { planResourceRemoval } from "../resources/remove.js";
 import { validateDatasetTransforms } from "../../grammar/transforms.js";
@@ -22,7 +23,7 @@ function fullSemanticValidator() {
   return createSemanticValueValidator({
     validateDatasetTransforms,
     validateParallel,
-    sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc"]
+    sourceMarkTypes: TEXT_SOURCE_MARK_TYPES
   });
 }
 

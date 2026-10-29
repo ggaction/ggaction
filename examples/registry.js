@@ -1,3 +1,5 @@
+import { createTrail } from "./trail/program.js";
+import { variants as trailVariants } from "./trail/fixture.js";
 import { createWaterfall } from "./waterfall/program.js";
 import { variants as waterfallVariants } from "./waterfall/fixture.js";
 import { createOHLC } from "./ohlc/program.js";
@@ -313,6 +315,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  ...trailVariants.map(variant => example({ id: variant.chart, programDirectory: "trail", testDirectory: "trail", data: {}, width: 420, height: 240, docsGroup: "tutorials",
+    createProgram: () => createTrail(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 240 } } }
+  })),
   ...waterfallVariants.map(variant => example({ id: variant.chart, programDirectory: "waterfall", testDirectory: "waterfall", data: {}, width: 500, height: 320, docsGroup: "tutorials",
     createProgram: () => createWaterfall(variant.id),
     browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 500, height: 320 } } }

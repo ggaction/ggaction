@@ -3840,3 +3840,19 @@ STEP060 B와 qualified routes/direct-controls baseline 통합은 기존 소유�
 합산 package980entries/1,408,440packed/6,408,744unpacked와 Full688,226/Basic377,519/
 interaction109,145/graph43,572gzip bytes를 측정했다. Cap은980/1,409,000/6,409,000,
 Full688,300/Basic378,000/interaction109,200/graph44,000이며 최초 초과를 보존한다.
+
+
+### Native Trail의 sample-width와 shared curve 경계
+
+Trail은 Full façade가 순수 후보를 검사하고 wrapped `applyTrailMark`/`materializeTrailPlot`을 호출한다.
+의미 width binding은 layer, 모양 옵션은 mark config에 각각 한 번 저장한다. 기존 Line의 series/order/missing
+결과와 source-row identity를 읽고, shared curve/subdivision owner가 위치와 scalar width를 같은 parameter로
+샘플링한다. 새 grammar ribbon owner는 screen-space sample에서 bounded Path만 계산하며 renderer는 기존
+Path/Text만 소비한다. 별도 renderer·package entry·자동 compiler는 없다. 정확 API와 소비자 범위는
+[Current TRAIL](contract/current/TRAIL.md)이 소유한다. STEP050 final guide/frame 후보 사전검사는 합산의
+기존 `assertFacadeGuidesFrame` 책임으로 남으며 이 slice 검증을 그 의무의 완료로 세지 않는다.
+
+공유 curve·stored schema 검증으로 Basic bundle에도 순수 소스가 포함되지만 Full action import는 없다.
+Node20/24 중간 실측 package1028/packed1,473,553/unpacked6,707,821과 Node20 bundle Full726,985/
+Basic392,624gzip에 최소 cap1028/1,474,000/6,708,000 및727,100/392,800을 적용했다.
+검색1,013,957bytes의 cap은1,014,000이며 최종 frozen artifact 실측은 Trail qualification에 별도 고정한다.

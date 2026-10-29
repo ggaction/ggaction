@@ -1486,7 +1486,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the X, Y, or both-axis jitter assignment; `removeJitter` removes it",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1504,7 +1504,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one target jitter assignment and restores semantic base positions",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1522,7 +1522,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces deterministic category-slot packing; `removePointPacking` removes it",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1540,7 +1540,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one packing assignment and restores semantic positions",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1720,7 +1720,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1738,7 +1738,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1756,7 +1756,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces one or more compatible channels on one explicit mark",
-      "audit": "Final-state reassignment \u2014 Implemented",
+      "audit": "Final-state reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1774,7 +1774,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1792,7 +1792,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Reassign supported field color; Tick supports numeric/temporal segment color with explicit stroke-channel switching; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1810,7 +1810,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces nominal/ordinal field, constant value, and scale binding; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1828,7 +1828,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces constant or field-driven stroke color; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1846,7 +1846,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces constant or field-driven line/rule/rect width; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1864,7 +1864,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces field and scale binding; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1882,7 +1882,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Assign an ordinal field to fourteen named point shapes or explicit simple polygons with area or radius normalization; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1900,7 +1900,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the complete constant or field direction assignment; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1918,7 +1918,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks; ordered conditional branches use the same payload and required otherwise",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1936,7 +1936,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1954,7 +1954,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1972,7 +1972,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1990,7 +1990,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2008,7 +2008,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes explicit point glyph radius and restores the theme default",
-      "audit": "Removal \u2014 Implemented",
+      "audit": "Removal — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2026,7 +2026,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2044,7 +2044,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2062,7 +2062,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2080,7 +2080,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces lower/upper fields",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2098,7 +2098,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces lower/upper fields",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2116,7 +2116,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces compatible path grouping",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2134,7 +2134,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces the field and direction for one compatible path",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2152,7 +2152,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action atomically replaces ordered dimensions, key, missing policy and dimension scales",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2170,7 +2170,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes explicit topology order and restores automatic independent-position ordering",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2188,7 +2188,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces category-order intent for one categorical position",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2206,7 +2206,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes category-order intent and restores automatic first-appearance order",
-      "audit": "Removal \u2014 Implemented",
+      "audit": "Removal — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2224,7 +2224,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Removes one encoding and its owned companions, guides and concrete state",
-      "audit": "Removal \u2014 Implemented",
+      "audit": "Removal — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2242,7 +2242,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces its ordinary or ordered conditional assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2296,7 +2296,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action will replace atomic bin/count encodings",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2314,7 +2314,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "`editDensity` creates and rebinds an immutable revision",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2350,7 +2350,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "`editHorizon` creates and rebinds an immutable revision",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2386,7 +2386,7 @@
       "status": "implemented",
       "lifecycle": "Assignment",
       "update": "Same action replaces band or pixel width; valid incomplete bars retain the assignment",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -3610,7 +3610,7 @@
       "status": "implemented",
       "lifecycle": "Mutable resource",
       "update": "Edits an existing coordinate layout constraint",
-      "audit": "Coordinate aspect and Polar frame \u2014 Implemented",
+      "audit": "Coordinate aspect and Polar frame — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -5486,7 +5486,7 @@
       },
       "lifecycle": "Assignment",
       "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
-      "audit": "Reassignment \u2014 Implemented",
+      "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -6428,6 +6428,42 @@
         "file": "agent_docs/contract/current/WATERFALL.md",
         "anchor": "editwaterfallplot"
       }
+    },
+    {
+      "name": "createTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "createtrailplot"
+      }
+    },
+    {
+      "name": "editTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "edittrailplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6526,7 +6562,8 @@
       "materializeCalendarPlot",
       "materializePyramidPlot",
       "materializeOHLCPlot",
-      "materializeWaterfallPlot"
+      "materializeWaterfallPlot",
+      "materializeTrailPlot"
     ],
     "guideComponents": [
       "createLegendBackground",
@@ -6565,7 +6602,8 @@
       "useProgram",
       "filterGraphPlotView",
       "restoreGraphPlotView",
-      "refreshScreenEdgeRoutes"
+      "refreshScreenEdgeRoutes",
+      "applyTrailMark"
     ],
     "aggregateComponents": [
       "createBoxMedian",

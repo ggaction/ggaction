@@ -39,6 +39,7 @@
 ### Formal values — `createWaterfallPlot`
 
 - Implemented: `createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): No proposal.
 - Required: `x`, `role`, `value`.
 - Optional: `id`, `data`, `coordinate`, `reset`, `yScale`, `width`, `bars`, `connectors`, `labels`, `color`, `clip`, `guides`.
 
@@ -60,6 +61,7 @@
 ### Formal values — `editWaterfallPlot`
 
 - Implemented: `editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): No proposal.
 - Required: nonempty patch.
 - Optional: `target`, every create option except `id`.
 

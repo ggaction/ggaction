@@ -3,6 +3,9 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const trailFile = path.join(directory, "trail.mts");
+  await writeFile(trailFile, await readFile(new URL("./fixtures/trail.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", trailFile], directory);
   const waterfallFile = path.join(directory, "waterfall.mts");
   await writeFile(waterfallFile, await readFile(new URL("./fixtures/waterfall.ts", import.meta.url), "utf8"));
   run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", waterfallFile], directory);

@@ -5,6 +5,13 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "trail-action": { prefix: "actions/charts/trail.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Trail bindings, width and complete scale/guide candidates must preflight before writes." },
+  "trail-mark": { prefix: "actions/marks/trail/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit semantic and graphical writes preserve series identity and highlight baselines." },
+  "trail-plot": { prefix: "grammar/trailPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored sample-width meaning and appearance remain canonical and descriptor safe." },
+  "trail-materialization": { prefix: "materialization/trail/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Projected variable-width ribbons retain source membership, color and exact bounded geometry." },
+  "trail-selection": { prefix: "materialization/selection/policies/trail.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Broken runs remain one typed logical series across every selection consumer." },
+  "trail-curve": { prefix: "grammar/trailCurve.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Width interpolation must share curve topology and reject negative extrema or bounded subdivision failure." },
+  "trail-series": { prefix: "grammar/trailSeries.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Variable-width series must preserve native order, original row lineage and explicit missing-width topology." },
   "trail-ribbon": { prefix: "grammar/trail.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Variable-width outlines require finite normals, bounded joins and caps, explicit gaps and complete original lineage." },
   "waterfall-action": { prefix: "actions/charts/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contribution edits must preflight ordered values and all guide dependencies before writes." },
   "waterfall-plot": { prefix: "grammar/waterfallPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored contribution roles and bounded source membership must remain canonical." },

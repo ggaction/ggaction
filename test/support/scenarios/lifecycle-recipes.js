@@ -1462,7 +1462,13 @@ function buildDirectDataResources(factors) {
     .createData({ id: "waterfallSource", values: sourceRows.map(row => ({ ...row, stageRole: "delta" })) })
     .createWaterfallPlot({ id: "directWaterfall", x: "category", value: "positive", role: "stageRole", guides: false })
     .editWaterfallPlot({ target: "directWaterfall", connectors: false });
-  return vconcat({ programs: [{ id: "resources", program }, { id: "waterfall", program: waterfall }] });
+  // Sample widths retain the authentic source values; this is an API witness,
+  // separate from the owning real-table width interpretation tests.
+  const trail = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "trailSource", values: sourceRows })
+    .createTrailPlot({ id: "directTrail", x: "x", y: "y", width: 8, groupBy: "color", guides: false })
+    .editTrailPlot({ target: "directTrail", width: 12, lineCap: "round" });
+  return vconcat({ programs: [{ id: "resources", program }, { id: "waterfall", program: waterfall }, { id: "trail", program: trail }] });
 }
 
 function appendConditionalPoints(program) {

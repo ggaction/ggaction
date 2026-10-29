@@ -58,7 +58,7 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 48);
+  assert.equal(realistic.length, 49);
   assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}dataset-fixtures.test.js`

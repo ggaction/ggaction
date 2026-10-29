@@ -13,6 +13,8 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  trail: Object.freeze({ canMaterialize: (_program, layer) => layer.trail !== undefined,
+    op: "materializeTrailPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   waterfall: Object.freeze({ canMaterialize: (_program, layer) => layer.waterfall !== undefined,
     op: "materializeWaterfallPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   ohlc: Object.freeze({ canMaterialize: (_program, layer) => layer.ohlc !== undefined,

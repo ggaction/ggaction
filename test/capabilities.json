@@ -1268,6 +1268,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-waterfall-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
       }
     ],
     "rendering": [
@@ -1713,7 +1717,39 @@
     "trail": [
       {
         "type": "file",
+        "path": "unit/grammar/trail-curve.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-series.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/trail.test.js"
+      },
+      {
+        "path": "charts/trail/",
+        "type": "prefix"
+      },
+      {
+        "path": "browser/trail.browser.js",
+        "type": "file"
+      },
+      {
+        "path": "unit/trail-plot.test.js",
+        "type": "file"
+      },
+      {
+        "path": "contracts/trail-types.test.js",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
       }
     ],
     "waterfall": [

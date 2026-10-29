@@ -4,6 +4,7 @@ import { validateStoredConditional } from "../../../grammar/conditionalState.js"
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   COLOR_LAYOUTS,
+  TEXT_SOURCE_MARK_TYPES,
   MARK_TYPES,
   STACK_MODES
 } from "../../../core/vocabulary.js";
@@ -53,7 +54,7 @@ export function validateLayerSemanticValue(
   parsed,
   value,
   {
-    sourceMarkTypes = ["point", "bar", "line", "rule", "rect", "arc"],
+    sourceMarkTypes = TEXT_SOURCE_MARK_TYPES,
     validateParallel
   } = {}
 ) {

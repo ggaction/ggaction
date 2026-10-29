@@ -3,6 +3,7 @@ import { SCALE_OPTION_UNITS } from "../src/grammar/scales/types.js";
 const ROLE_ORDER = Object.freeze(["H0", "H1", "H2", "H3", "H4"]);
 
 const analysisChartNames = new Set([
+  "createTrailPlot",
   "createWaterfallPlot",
   "createOHLCPlot",
   "createPyramidPlot",
@@ -23,6 +24,7 @@ const analysisChartNames = new Set([
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
+  "editTrailPlot",
   "editPyramidPlot",
   "editCalendarPlot",
   "editEndpointPlot",
@@ -84,6 +86,7 @@ const explicitLifecycleEditors = Object.freeze({
   bundleGraphEdges: ["editEdgeRoute", "removeResource"],
   editEdgeRoute: ["editEdgeRoute", "removeResource"],
   createCalendarLayout: ["editLayout", "removeResource"],
+  createTrailPlot: ["editTrailPlot", "removeMark"],
   createWaterfallPlot: ["editWaterfallPlot", "removeMark"],
   createOHLCPlot: ["editOHLCPlot", "removeMark"],
   createPyramidPlot: ["editPyramidPlot", "removeMark"],

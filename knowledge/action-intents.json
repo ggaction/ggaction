@@ -1099,6 +1099,11 @@
       "Waterfall plot",
       "ordered contributions and totals",
       "running balance"
+    ],
+    "TrailPlot": [
+      "Trail plot",
+      "variable width ribbon",
+      "sample width path"
     ]
   },
   "summaryOverrides": {
@@ -1125,7 +1130,9 @@
     "createOHLCPlot": "Create row-owned open, high, low and close prices with one shared price scale.",
     "editOHLCPlot": "Edit OHLC fields and styles while preserving typed row identity.",
     "createWaterfallPlot": "Create ordered contribution bars, subtotals and totals with explicit source roles.",
-    "editWaterfallPlot": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity."
+    "editWaterfallPlot": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity.",
+    "createTrailPlot": "Create native filled ribbons with a screen width at each ordered source sample.",
+    "editTrailPlot": "Edit Trail positions, sample widths and appearance while preserving typed series membership."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -2237,6 +2244,15 @@
     "editWaterfallPlot": {
       "target": "waterfall",
       "connectors": false
+    },
+    "createTrailPlot": {
+      "x": "time",
+      "y": "signal",
+      "width": "width"
+    },
+    "editTrailPlot": {
+      "target": "trail",
+      "width": 12
     }
   },
   "callPatternOverrides": {

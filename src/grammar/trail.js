@@ -10,9 +10,10 @@ import { arcToCubicCommands } from "./pathGeometry.js";
 // Null explicitly separates missing-data runs. This module never sorts samples.
 export function normalizeTrailOptions(input = {}) {
   ownRecord(input, "Trail options");
-  rejectUnknownProperties(input, ["lineJoin", "lineCap", "miterLimit", "fillRule"], "Trail options");
+  rejectUnknownProperties(input, ["lineJoin", "lineCap", "miterLimit", "fillRule", "closed"], "Trail options");
   if (Object.values(input).some(value => value === null || value === undefined)) throw new TypeError("Trail options require defined values.");
-  return cloneAndFreeze({ lineJoin: validateLineJoin(input.lineJoin ?? "miter", "Trail"),
+  if (input.closed !== undefined && typeof input.closed !== "boolean") throw new TypeError("Trail closed must be boolean.");
+  return cloneAndFreeze({ ...(input.closed === undefined ? {} : { closed: input.closed }), lineJoin: validateLineJoin(input.lineJoin ?? "miter", "Trail"),
     lineCap: validateLineCap(input.lineCap ?? "butt", "Trail"),
     miterLimit: validateMiterLimit(input.miterLimit ?? 4, "Trail"),
     fillRule: validatePathFillRule(input.fillRule ?? "nonzero") });
@@ -70,29 +71,58 @@ function writer(commands) {
   };
   return { append, line, arc };
 }
+function join(sample, a, b, options, write) {
+  const cross = a.x * b.y - a.y * b.x, dot = a.x * b.x + a.y * b.y;
+  if (cross === 0 && dot > 0) { write.line(offset(sample, b)); return; }
+  const nx = -a.y - b.y, ny = a.x + b.x, norm = Math.hypot(nx, ny), ratio = 2 / norm;
+  const outer = cross < 0;
+  // Inner and miter joins use the same bounded tangent bisector. Bevel is
+  // the deterministic fallback when the intersection exceeds miterLimit.
+  if ((!outer || options.lineJoin === "miter") && ratio <= options.miterLimit) {
+    const distance = finite(sample.width / 2 * ratio);
+    write.line(point(sample.x + nx / norm * distance, sample.y + ny / norm * distance));
+  } else if (outer && options.lineJoin === "round") {
+    const angle = Math.atan2(a.x, -a.y);
+    write.arc(sample, angle, angle + Math.atan2(cross, dot));
+  } else {
+    write.line(offset(sample, a)); write.line(offset(sample, b));
+  }
+}
 function boundary(run, options, write) {
   const directions = run.slice(1).map((sample, i) => direction(run[i], sample));
   write.line(offset(run[0], directions[0]));
-  for (let i = 1; i < run.length - 1; i++) {
-    const sample = run[i], a = directions[i - 1], b = directions[i];
-    const cross = a.x * b.y - a.y * b.x, dot = a.x * b.x + a.y * b.y;
-    if (cross === 0 && dot > 0) { write.line(offset(sample, b)); continue; }
-    const nx = -a.y - b.y, ny = a.x + b.x, norm = Math.hypot(nx, ny), ratio = 2 / norm;
-    const outer = cross < 0;
-    // Inner and miter joins use the same bounded tangent bisector. Bevel is
-    // the deterministic fallback when the intersection exceeds miterLimit.
-    if ((!outer || options.lineJoin === "miter") && ratio <= options.miterLimit) {
-      const distance = finite(sample.width / 2 * ratio);
-      write.line(point(sample.x + nx / norm * distance, sample.y + ny / norm * distance));
-    } else if (outer && options.lineJoin === "round") {
-      const angle = Math.atan2(a.x, -a.y);
-      write.arc(sample, angle, angle + Math.atan2(cross, dot));
-    } else {
-      write.line(offset(sample, a)); write.line(offset(sample, b));
-    }
-  }
+  for (let i = 1; i < run.length - 1; i++) join(run[i], directions[i - 1], directions[i], options, write);
   write.line(offset(run.at(-1), directions.at(-1)));
   return directions;
+}
+function combinePaths(parts, materialize) {
+  const commands = [];
+  for (const part of parts) {
+    const next = materialize(part);
+    validatePathCommandCount(commands.length + next.length, "Trail path command count");
+    for (const command of next) commands.push(command);
+  }
+  return commands;
+}
+function closedRibbon(run, options) {
+  if (run.length < 2) return ribbon(run, options);
+  const reversal = run.findIndex((sample, index) => {
+    const a = direction(run[(index + run.length - 1) % run.length], sample), b = direction(sample, run[(index + 1) % run.length]);
+    return a.x * b.y - a.y * b.x === 0 && a.x * b.x + a.y * b.y < 0;
+  });
+  if (reversal !== -1) {
+    const rotated = [...run.slice(reversal), ...run.slice(0, reversal), run[reversal]];
+    return combinePaths(splitReversals(rotated), part => ribbon(part, options));
+  }
+  // Opposite winding contours preserve the empty center under nonzero fill.
+  // Each contour has its own move, so there is no painted seam connector.
+  return combinePaths([run, [...run].reverse()], points => {
+    const commands = [], write = writer(commands);
+    points.forEach((sample, index) => join(sample,
+      direction(points[(index + points.length - 1) % points.length], sample),
+      direction(sample, points[(index + 1) % points.length]), options, write));
+    write.append({ op: "Z" }); return commands;
+  });
 }
 function cap(sample, direction, options, write) {
   if (options.lineCap === "round") {
@@ -122,10 +152,15 @@ function ribbon(run, options) {
 }
 export function layoutTrailRibbon(input, options = {}) {
   const normalized = normalizeTrailOptions(options), runs = samples(input), commands = [];
-  for (const run of runs) for (const part of splitReversals(run)) {
-    const next = ribbon(part, normalized);
-    validatePathCommandCount(commands.length + next.length, "Trail path command count");
-    for (const command of next) commands.push(command);
+  for (const run of runs) {
+    if (normalized.closed && run.length > 1 && same(run[0], run.at(-1))) {
+      const last = run.pop(); run[0].width = last.width; run[0].sourceIndices.push(...last.sourceIndices);
+    }
+    for (const part of normalized.closed ? [run] : splitReversals(run)) {
+      const next = normalized.closed ? closedRibbon(part, normalized) : ribbon(part, normalized);
+      validatePathCommandCount(commands.length + next.length, "Trail path command count");
+      for (const command of next) commands.push(command);
+    }
   }
   return cloneAndFreeze({ options: normalized, runs, commands, fillRule: normalized.fillRule });
 }
