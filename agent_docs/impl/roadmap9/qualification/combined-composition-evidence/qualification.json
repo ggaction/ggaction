@@ -10,7 +10,17 @@
     "discovery": 16,
     "renderers": 3,
     "realisticSources": 5,
-    "docs": 226
+    "docs": 226,
+    "globalContractsInitial": {
+      "tests": 783,
+      "passed": 782,
+      "failed": 1,
+      "failedOwner": "test/contracts/compact-action-cards.test.js",
+      "measuredCardMedianBytes": 2073,
+      "previousMedianCeilingBytes": 2070,
+      "repairedCeilingBytes": 2080,
+      "repairedOwnerPassed": 12
+    }
   },
   "packageSha256": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2",
   "packageDelta": 0,
