@@ -41,7 +41,9 @@ const DRAWERS = Object.freeze({
 // drawing runs the same preflight; rendering reuses it after canvas resizing.
 function prepareCanvasPainting(target, context, options) {
   const objects = [];
-  walkGraphicSources(target.graphicSpec, (_id, object) => objects.push(object));
+  walkGraphicSources(target.graphicSpec, (_id, object, type) => objects.push(
+    object.type === type ? object : { ...object, type }
+  ));
   preflightCanvasFillCapabilities(objects, context);
   preflightCanvasOutlineCapabilities(objects, context);
   const preparation = { ...options, objects };
