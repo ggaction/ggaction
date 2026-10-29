@@ -926,6 +926,12 @@
         "path": "unit/canvas-scene.test.js"
       }
     ],
+    "responsive-layout": [
+      {
+        "type": "file",
+        "path": "unit/layout/responsive-policy.test.js"
+      }
+    ],
     "scales": [
       {
         "type": "prefix",

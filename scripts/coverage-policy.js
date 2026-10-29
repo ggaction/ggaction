@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "responsive-labels": { prefix: "grammar/responsiveLabels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Declared fallback labels require closed finite own-data normalization and bounded candidate work." },
+  "responsive-layout": { prefix: "layout/responsivePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Fixed Canvas layout must reject oscillation, overflow and stale measured topology within a bounded solve." },
   "theme-definition": { prefix: "actions/theme/definition.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme tokens require closed, descriptor-safe normalization and bounded structured paint palettes." },
   "theme-palettes": { prefix: "actions/theme/palettes.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Categorical paint must preserve typed category identity, authored ranges and named overlays." },
   "legend-highlight-membership": { prefix: "materialization/selection/legend.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Legend pixels and inspection share exact final-item membership and component style eligibility." },
