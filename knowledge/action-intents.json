@@ -1129,6 +1129,11 @@
       "Waterfall plot",
       "ordered contributions and totals",
       "running balance"
+    ],
+    "GeoAnnotation": [
+      "geographic annotation",
+      "feature anchor",
+      "map text"
     ]
   },
   "summaryOverrides": {
@@ -2335,6 +2340,29 @@
     "editWaterfallPlot": {
       "target": "waterfall",
       "connectors": false
+    },
+    "createGeoAnnotation": {
+      "anchor": {
+        "type": "position",
+        "position": [
+          10,
+          20
+        ]
+      },
+      "text": "Location"
+    },
+    "editGeoAnnotation": {
+      "text": "Updated location",
+      "dx": 4
+    },
+    "navigateProjection": {
+      "operation": {
+        "type": "pan",
+        "deltaPx": [
+          10,
+          0
+        ]
+      }
     }
   },
   "callPatternOverrides": {

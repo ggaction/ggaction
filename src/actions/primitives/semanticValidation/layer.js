@@ -1,4 +1,5 @@
 import { normalizePlotSnapshot, normalizePlotAnchor } from "../../../grammar/plotPosition.js";
+import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { validateInputReference } from "../../../core/resourceReference.js";
 import { requireStoredResource } from "../../../selectors/resources.js";
 import { validateStoredConditional } from "../../../grammar/conditionalState.js";
@@ -38,6 +39,9 @@ function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   const source = findLayer(program, value);
   if (source === undefined) {
     throw new Error(`Unknown source layer "${value}".`);
+  }
+  if (source.mark?.type === "geo" && (!isGeoLabelSource(source) || findLayer(program, parsed.id)?.mark?.type !== "text")) {
+    throw new TypeError("Geographic label sources require feature or graticule Text consumers.");
   }
   if (!sourceMarkTypes.includes(source.mark?.type)) {
     const sourceLabel = sourceMarkTypes.length === 1

@@ -619,6 +619,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createPivotData.value", "option-path:createPivotData.op",
     "option-path:editPivotData.op", "option-path:editPivotData.groupBy",
     "option-path:filterData.where", "option-path:editFilteredData.where",
+    "action:createGeoAnnotation", "action:editGeoAnnotation", "option-path:createGeoAnnotation.anchor.type", "option-path:createGeoAnnotation.anchor.geometry", "option-path:createGeoAnnotation.anchor.key", "option-path:createGeoAnnotation.text", "option-path:editGeoAnnotation.dx",
     "action:createGeoLODData", "action:editGeoLODData", "option-path:createGeoLODData.levels", "option-path:createGeoLODData.zoom", "option-path:editGeoLODData.zoom",
     "action:createGeoShapeMark", "action:editGeoShapeMark", "action:createGeoPointMark", "action:editGeoPointMark", "action:createGeoLineMark", "action:editGeoLineMark", "action:createGraticule", "action:editGraticule", "option-path:createGeoShapeMark.geometry", "option-path:editGeoPointMark.radiusPx", "option-path:editGeoLineMark.opacity", "option-path:editGraticule.opacity",
     "action:createGeoJoinData", "action:editGeoJoinData",

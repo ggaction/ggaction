@@ -2899,6 +2899,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "navigateProjection": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createGeoShapeMark": {
     "operation": "create",
     "authoringRoles": [
@@ -2940,6 +2948,22 @@
     "domain": "marks"
   },
   "editGeoLineMark": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createGeoAnnotation": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editGeoAnnotation": {
     "operation": "edit",
     "authoringRoles": [
       "H3"

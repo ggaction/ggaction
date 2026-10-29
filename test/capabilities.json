@@ -12,6 +12,12 @@
         "path": "unit/actions/"
       }
     ],
+    "animation": [
+      {
+        "type": "prefix",
+        "path": "unit/animation/"
+      }
+    ],
     "architecture": [
       {
         "type": "prefix",
@@ -496,6 +502,18 @@
       {
         "type": "file",
         "path": "browser/geographic-marks.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-annotations.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-encodings.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-camera.test.js"
       }
     ],
     "grammar": [

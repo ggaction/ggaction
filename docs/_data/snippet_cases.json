@@ -525,5 +525,77 @@
     "result": "program",
     "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-annotation",
+    "file": "api/geometry.md",
+    "contains": "text: \"Port\", dy: -12",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed planar port feature.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-annotation-example",
+    "file": "tutorials/geographic-marks.md",
+    "contains": "const labeled = createGeographicMarks()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "labeled",
+    "prerequisites": "Copy the linked geographic-marks program.js and fixture.js into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "geographic-feature-fields",
+    "file": "api/geometry.md",
+    "contains": "population: 100, region: \"West\"",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "The two inline places supply their own population measurements.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "geographic-camera-reset",
+    "file": "api/geometry.md",
+    "contains": "const saved = getProjectionView(initial);",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "reset",
+    "resultKind": "semantic"
+  },
+  {
+    "id": "geographic-feature-conditions",
+    "file": "api/geometry.md",
+    "contains": "const emphasized = createGeographicMarks(\"fields\")",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "emphasized",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
+  },
+  {
+    "id": "geographic-source-labels",
+    "file": "api/marks/labels.md",
+    "contains": "const featureLabels = createGeographicMarks(\"labels\");",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "gridLabels",
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "rendering": "authoring-only",
+    "supportFiles": {
+      "geographic-marks/program.js": "examples/geographic-marks/program.js",
+      "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
+    }
   }
 ]

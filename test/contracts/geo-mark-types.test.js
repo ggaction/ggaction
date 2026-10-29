@@ -18,12 +18,39 @@ const p=chart().createCoordinate({type:'geo',projection:'map'}).createGeoPointMa
  .editGeoPointMark({target:{childPath:['left'],id:'cities'},radiusPx:5}).createGeoShapeMark({fill:'orange',blend:'multiply',outline:{color:'white',width:2}})
  .editGeoShapeMark({strokeWidth:0}).createGeoLineMark({interpolation:'great-circle',routeHint:[0,30]}).editGeoLineMark({routeHint:false,interpolation:'source-segment'})
  .createGraticule({stepDeg:[10,20],extentDeg:[[-180,-80],[180,80]],precisionDeg:2.5}).editGraticule({opacity:0}).editCoordinate({target:'main',projection:'other'});
+p.encodeColor({target:'districts',field:'category',scale:{id:'categories',unknown:'gray'}})
+ .encodeColor({target:'routes',field:'value',fieldType:'quantitative',scale:{id:'traffic',type:'threshold',domain:[10],range:['blue','red']}})
+ .encodeSize({target:'places',field:'population',scale:{id:'areas',range:[0,900]}})
+ .createLegend({target:'places',channels:['color','size']})
+ .encodeSize({target:{childPath:['left'],id:'places'},value:100});
+p.encodeColor({target:'places',conditions:[{when:{version:2,registry:'standard@1',root:{type:'literal',value:true}},value:{field:'category',scale:{id:'categories'}}}],otherwise:{value:'gray'}})
+ .encodeSize({target:'places',conditions:[{when:{selection:'chosen'},value:{value:0}}],otherwise:{field:'population',scale:{id:'areas'}}});
+p.createMarkLabels({source:'places',field:'category',inheritColor:'fill',layout:{axis:'y'}})
+ .createMarkLabels({source:'graticule',field:'value',format:'.0f',select:{field:'axis',op:'eq',value:'longitude'}})
+ .createTextMark({id:'names',source:'places'}).encodeText({target:'names',field:'category'})
+ .editTextMark({target:'names',dx:4,fill:'blue'}).removeMarkLabels({source:'places'});
+// @ts-expect-error Source-owned label positions come from their source.
+p.createMarkLabels({source:'places',field:'category',data:'table'});
 basic().createCoordinate({type:'polar'});
 declare const coordinate:SemanticCoordinate;
 if(coordinate.type==='geo') { const id:string=coordinate.projection.id; void id; }
 declare const binding:GeoMarkBinding;
 if(binding.mode==='graticule') { const step:number=binding.graticule.stepDeg[0]; void step; }
 const circle:GeoPointMarkOptions={radiusPx:4}; void circle;
+p.createGeoAnnotation({anchor:{type:'position',position:[10,20]},text:'Here',rotation:20,fill:'red'})
+ .editGeoAnnotation({target:{childPath:['left'],id:'note'},anchor:{type:'feature',geometry:'world',key:['county',1],level:'county'},text:'Moved'});
+if(binding.mode==='annotation' && binding.anchor.type==='feature') { const key = binding.anchor.key; void key; }
+// @ts-expect-error Text content is a required semantic string.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:1});
+// @ts-expect-error Feature anchors use a key, not an explicit position.
+p.createGeoAnnotation({anchor:{type:'feature',position:[0,0]},text:'Bad'});
+// @ts-expect-error Position anchors cannot bind an unrelated geometry.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0],geometry:'world'},text:'Bad'});
+// @ts-expect-error Geographic annotation is not a data text encoding.
+p.createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:'Bad',data:'data'});
+// @ts-expect-error Geographic annotation is Full only.
+basic().createGeoAnnotation({anchor:{type:'position',position:[0,0]},text:'Bad'});
+
 // @ts-expect-error Pixel and geographic radii are exclusive.
 p.editGeoPointMark({radiusDeg:3,radiusPx:5});
 // @ts-expect-error Line marks do not draw point radii.

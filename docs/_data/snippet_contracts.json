@@ -2057,6 +2057,18 @@
   {
     "file": "api/geometry.md",
     "block": 5,
+    "heading": "`navigateProjection`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b6095cb38a3fab998ff59f4eb62160f1b62ed1c90558ccf5d35f09817d9a35e0",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 6,
     "heading": "Draw through a Geo coordinate",
     "mode": "complete",
     "environment": "node-esm",
@@ -2064,6 +2076,42 @@
     "resources": [],
     "prerequisites": "Import the Full package and run this complete planar polygon-with-hole example.",
     "sha256": "0c596832f0ec26235c50a6c2ff7b343992f5f0c08ed4b683e169e5ac36970f98",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 7,
+    "heading": "Map feature fields to color and size",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "The two inline places supply their own population measurements.",
+    "sha256": "f46bcf171b007f8545efa29d5671ed0107fa32d35826d625c44e4ebc2328fa5c",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 8,
+    "heading": "Choose color or size with conditions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "sha256": "fb1200d9c8f25a48aa1d3ce35d107f8bba51d1e8cbe06f63f452aa79d4c98a5e",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 9,
+    "heading": "`createGeoAnnotation`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run the complete module with its inline keyed planar port feature.",
+    "sha256": "6f869a86d85bbd5d12ad8a8f481621040a6a170935ddcdcfa2766e624ceb16db",
     "executable": true
   },
   {
@@ -3286,6 +3334,18 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `labeled`. Resource selectors used here: `target: \"piePlot-labels\"`; `source: \"piePlot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "edbc273b472eac8c8b6f152da472435c83e88d3eef4f4b39646b32b982c7b486",
     "executable": false
+  },
+  {
+    "file": "api/marks/labels.md",
+    "block": 6,
+    "heading": "Geographic sources",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.",
+    "sha256": "046ccef36756369b5bb4f98e8864836afc5105a5079669fc046fe563b945ed34",
+    "executable": true
   },
   {
     "file": "api/marks/line-area.md",

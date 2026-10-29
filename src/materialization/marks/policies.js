@@ -13,7 +13,7 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
-  geo: Object.freeze({ canMaterialize: (_program, layer) => layer.geoBinding !== undefined, op: "materializeGeoMark", scaleApplication: Object.freeze({ default: "defer" }) }),
+  geo: Object.freeze({ canMaterialize: (_program, layer) => layer.geoBinding !== undefined, op: "materializeGeoMark", acceptsResolvedScales: true, encoding: Object.freeze({ scaleFirst: true }), scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   waterfall: Object.freeze({ canMaterialize: (_program, layer) => layer.waterfall !== undefined,
     op: "materializeWaterfallPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   ohlc: Object.freeze({ canMaterialize: (_program, layer) => layer.ohlc !== undefined,

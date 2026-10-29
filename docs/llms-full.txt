@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7. Status: development. Runtime source: e56b8e4c16afe328947bd9840f3412a014874c98. Release baseline: v0.0.13.
+Contract: sha256:71f2a2067df3b97cb6e5c3be2b7e8c1d8318e14b6dee910c8f1652ecaee1f69e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e56b8e4c16afe328947bd9840f3412a014874c98/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e56b8e4c16afe328947bd9840f3412a014874c98/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-combined/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6129,7 +6129,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -7330,7 +7330,8 @@ The wrapper delegates to `createReferenceLine` or `createReferenceBand`, so nati
 
 Text marks turn data values into visible labels. Add one after a compatible point,
 line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
-source.
+source. Full geographic feature and graticule marks also supply their own source
+items without requiring a dataset; see [attached labels](./api/marks/labels/#geographic-sources).
 
 ## `createAnnotation(options)`
 
@@ -7813,6 +7814,8 @@ Constant `fill` also accepts [pattern and radial-gradient paints](./api/appearan
 Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
 scale ID, and field type when the stored program makes that choice safe.
+
+Full [geographic marks](./api/geometry/#map-feature-fields-to-color-and-size) share ordinary color and point-area encodings. Feature properties, joined table fields and active LOD levels use the same scales and legends.
 
 ## Reassign an existing encoding
 
@@ -11701,7 +11704,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -11767,7 +11770,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -12198,7 +12201,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -12800,7 +12803,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -18395,6 +18398,18 @@ physical revision. The result reports the resolved ID and normalized schema.
 it is different from a known schema whose `fields` array is empty. Use
 `childPath` to address a dataset inside a composition.
 
+## Read a projection view
+
+`getProjectionView(program, { target?, childPath? })` returns a frozen snapshot:
+`{projection:{kind:"projection",id,revision},parameters,viewport}`. Target inference follows the
+current or unique named projection. `childPath` addresses an explicit composition child. The
+parameters include resolved scale and translation for a fitted projection. The viewport is the
+current plot rectangle in logical CSS pixels, or `null` if no Canvas exists yet.
+
+Import the query from `ggaction/inspection`. Save its `parameters` and supply them as the explicit
+`initial` value of [navigateProjection reset](./api/geometry/#navigateprojection). The snapshot
+adds no action or persistent camera state and does not restore an old live fit dependency.
+
 ## Expression functions
 
 `getExpressionFunctions({ registry? })` reads the immutable closed expression
@@ -19307,6 +19322,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
+| [`createGeoAnnotation`](./reference/actions/marks/#creategeoannotation) | H2 | user-facing | marks |
 | [`createGeoJoinData`](./reference/actions/charts-data/#creategeojoindata) | H2 | user-facing | core |
 | [`createGeoLineMark`](./reference/actions/marks/#creategeolinemark) | H2 | user-facing | marks |
 | [`createGeoLODData`](./reference/actions/charts-data/#creategeoloddata) | H2 | user-facing | core |
@@ -19447,6 +19463,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeoAnnotation`](./reference/actions/marks/#editgeoannotation) | H3 | user-facing | marks |
 | [`editGeoJoinData`](./reference/actions/charts-data/#editgeojoindata) | H3 | user-facing | core |
 | [`editGeoLineMark`](./reference/actions/marks/#editgeolinemark) | H3 | user-facing | marks |
 | [`editGeoLODData`](./reference/actions/charts-data/#editgeoloddata) | H3 | user-facing | core |
@@ -19594,6 +19611,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutHierarchy`](./reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |
+| [`navigateProjection`](./reference/actions/charts-data/#navigateprojection) | H3 | user-facing | core |
 | [`orderCategories`](./reference/actions/encodings/#ordercategories) | H2 | user-facing | encodings |
 | [`packPoints`](./reference/actions/marks/#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | H2, H3 | user-facing | encodings |
@@ -24837,6 +24855,35 @@ editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?
 
 Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](./api/geometry/#editprojection).
 
+## `navigateProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`NavigateProjectionOptions`](./reference/types/#type-navigateprojectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `operation` | Required | `GeoCameraOperation` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+navigateProjection({ target?, operation })
+```
+
+Navigate a projection with explicit pan, anchored zoom, pinch, rotation, fit, reset or native Canvas resize. Use a saved `getProjectionView` snapshot for reset parameters. Existing projection/Canvas children retain exact resources, consumer refresh and immutable failure.
+
 ## Focused core data editing
 
 ```javascript
@@ -27196,6 +27243,107 @@ editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
 ```
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](./api/geometry/#editgeolinemark).
+
+## `createGeoAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`GeoAnnotationOptions`](./reference/types/#type-geoannotationoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `anchor` | Required | `GeoAnnotationAnchor` |
+| `text` | Required | `string` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createGeoAnnotation({ id?, coordinate?, anchor, text, ...textStyle })
+```
+
+Attach native Text to a semantic geographic position or original feature centroid. See [Geometry and projections](./api/geometry/#creategeoannotation).
+
+## `editGeoAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoAnnotationOptions`](./reference/types/#type-editgeoannotationoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `anchor` | Optional / branch-dependent | `GeoAnnotationAnchor \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editGeoAnnotation({ target?, coordinate?, anchor?, text?, ...textStyle })
+```
+
+Edit the annotation while preserving omitted intent, original feature identity and native Text styles. See [Geometry and projections](./api/geometry/#editgeoannotation).
 
 ## `createGraticule`
 
@@ -34489,6 +34637,8 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
+export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
 export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
 export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";
@@ -35450,7 +35600,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind, PartitionViewState } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind, PartitionViewState, ProjectionParameters, ProjectionViewport } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
@@ -35552,6 +35702,14 @@ export interface ExpressionFunctionDescriptor {
   readonly lazy?: true;
 }
 export function getExpressionFunctions(options?: { readonly registry?: "standard@1" }): readonly ExpressionFunctionDescriptor[];
+
+/** Immutable native view; Canvas-free resource programs report viewport:null. */
+export interface ProjectionView {
+  readonly projection: { readonly kind: "projection"; readonly id: string; readonly revision: number };
+  readonly parameters: ProjectionParameters & { readonly scalePx: number; readonly translatePx: readonly [number, number] };
+  readonly viewport: ProjectionViewport | null;
+}
+export function getProjectionView(program: ProgramInput, options?: { readonly target?: string; readonly childPath?: readonly string[] }): ProjectionView;
 ```
 
 #### `ggaction/scene`
@@ -36048,6 +36206,7 @@ interface ChartProgramActions {
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
@@ -36064,6 +36223,8 @@ interface ChartProgramActions {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -41492,6 +41653,16 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](./reference/types/#type-folddataoptions).
 
+### `EditGeoAnnotationOptions` {#type-editgeoannotationoptions}
+
+ Expand EditGeoAnnotationOptions
+
+```typescript
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+```
+
+Related types: [`GeoAnnotationOptions`](./reference/types/#type-geoannotationoptions).
+
 ### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
 
  Expand EditGeoJoinDataOptions
@@ -43497,6 +43668,47 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 
 Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions).
 
+### `GeoAnnotationAnchor` {#type-geoannotationanchor}
+
+ Expand GeoAnnotationAnchor
+
+```typescript
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+```
+
+Related types: [`RowKey`](./reference/types/#type-rowkey).
+
+### `GeoAnnotationOptions` {#type-geoannotationoptions}
+
+ Expand GeoAnnotationOptions
+
+```typescript
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+```
+
+Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`GeoAnnotationAnchor`](./reference/types/#type-geoannotationanchor).
+
+### `GeoCameraOperation` {#type-geocameraoperation}
+
+ Expand GeoCameraOperation
+
+```typescript
+export type GeoCameraOperation =
+  | { readonly type: "pan"; readonly deltaPx: readonly [number, number] }
+  | { readonly type: "zoom"; readonly anchorPx: readonly [number, number]; readonly factor: number; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "pinch"; readonly fromPx: readonly [readonly [number, number], readonly [number, number]]; readonly toPx: readonly [readonly [number, number], readonly [number, number]]; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "rotate"; readonly rotateDeg: readonly [number, number] | readonly [number, number, number] }
+  | { readonly type: "reset"; readonly initial: ProjectionParameters }
+  | { readonly type: "fit"; readonly fit: ProjectionFitOptions }
+  | { readonly type: "resize"; readonly canvas: { readonly width?: number; readonly height?: number; readonly plot?: false | { readonly width: number; readonly height: number } }; readonly scaling: "preserve" | "fit" };
+/** Native projection edits; reset restores explicit view parameters, without restoring a prior fit policy. */
+```
+
+Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](./reference/types/#type-projectionfitoptions).
+
 ### `GeoEditOptions` {#type-geoeditoptions}
 
  Expand GeoEditOptions
@@ -45444,6 +45656,16 @@ export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id:
 ```
 
 Related types: [`CompleteAxisOptions`](./reference/types/#type-completeaxisoptions).
+
+### `NavigateProjectionOptions` {#type-navigateprojectionoptions}
+
+ Expand NavigateProjectionOptions
+
+```typescript
+export interface NavigateProjectionOptions { readonly target?: string; readonly operation: GeoCameraOperation; }
+```
+
+Related types: [`GeoCameraOperation`](./reference/types/#type-geocameraoperation).
 
 ### `NonCartesianStrokeDashChannel` {#type-noncartesianstrokedashchannel}
 
@@ -48850,6 +49072,9 @@ Related types: [`TextFormat`](./reference/types/#type-textformat).
 
 ```typescript
 export type TextFormat = ValueFormat;
+
+/** Source-owned Text also accepts Full geographic feature/graticule marks without a dataset.
+ * Geographic anchors use the source centroid; field/value text, native styles and label layout retain their existing contracts. */
 ```
 
 Related types: [`ValueFormat`](./reference/types/#type-valueformat).
@@ -50150,9 +50375,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -50218,12 +50443,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e56b8e4c16afe328947bd9840f3412a014874c98/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e56b8e4c16afe328947bd9840f3412a014874c98/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51335,7 +51560,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -51388,7 +51613,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -51634,7 +51859,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -51686,7 +51911,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/repeat-charts).
 
 ## Space between plots
 
@@ -52315,6 +52540,38 @@ another retained resource refers to a requested label, the complete operation fa
 before any label is removed. Later source encoding/style, scale, Canvas, and theme
 edits do not recreate removed labels.
 
+## Geographic sources
+
+In Full, `createMarkLabels` and `createTextMark({ source })` accept geographic
+shape, point, line and graticule marks. Pass an explicit `field` or `value`. One
+label follows each currently visible feature's projected centroid, even when
+the feature has several concrete parts. Null geometry and clipped centroids
+have no visible label. Graticules expose `axis` and numeric `value` fields.
+
+Use the existing `select` or named `selection` options to choose source items.
+Geometry, joined table values, detail level and projection edits update the
+labels while preserving original feature keys and actual joined rows. A coarser
+LOD label retains aliases for the original keys; its hit target remains the
+current visible label. Native styles, prepared fonts, dx/dy and collision layout
+work as usual. Center is the supported semantic placement anchor. Other
+boundary anchors and generic Cartesian Text clipping do not apply. For color,
+use constant fill or `inheritColor` from the source, as with other attached labels.
+
+The [geographic tutorial](./tutorials/geographic-marks/#label-feature-fields-and-graticules)
+uses the shared executable feature and graticule examples. A fixed geographic
+annotation continues to identify one explicit position or original feature.
+
+The standalone geographic example uses the same action for feature names and
+generated longitude values:
+
+> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+
+```js
+import { createGeographicMarks } from "./geographic-marks/program.js";
+const featureLabels = createGeographicMarks("labels");
+const gridLabels = createGeographicMarks("grid-labels");
+```
+
 <!-- Source: /api/marks/label-layout/ -->
 
 # Label Collision Layout
@@ -52361,7 +52618,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -53274,11 +53531,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7` |
-| Example and dataset source | `0a46877e019d00163dc55c681ce4833b14d8e541` |
-| Runtime source commit | `e56b8e4c16afe328947bd9840f3412a014874c98` |
+| Contract fingerprint | `sha256:71f2a2067df3b97cb6e5c3be2b7e8c1d8318e14b6dee910c8f1652ecaee1f69e` |
+| Example and dataset source | `codex/roadmap9-combined` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 369 |
+| Declared actions here | 372 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -53813,12 +54070,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -53923,13 +54180,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -53940,7 +54197,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -54107,7 +54364,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -54647,7 +54904,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -54725,7 +54982,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -55255,7 +55512,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -55546,6 +55803,56 @@ Remove authored fit projections explicitly before removing their geometry.
 Geometry cascade does not delete a reusable authored projection. Projection
 resources and their exact fit inputs survive offline serialization.
 
+## `navigateProjection`
+
+Chart authoring · Full.
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Navigate the current or explicitly named projection. `operation` chooses pan, anchored zoom,
+pinch, absolute spherical rotation, fit, explicit reset or Canvas resize. All distances are
+logical CSS pixels; rotations are degrees. Operations return a new program and update existing
+Geo marks through the native projection edit.
+
+| Operation | Required fields |
+| --- | --- |
+| `pan` | `deltaPx:[x,y]` |
+| `zoom` | `anchorPx:[x,y]`, positive `factor`, positive ordered `scaleExtent:[min,max]` |
+| `pinch` | `fromPx:[[x,y],[x,y]]`, `toPx:[[x,y],[x,y]]`, `scaleExtent` |
+| `rotate` | absolute `rotateDeg:[longitude,latitude,roll?]` for a non-composite spherical projection |
+| `fit` | `fit:{geometry?,width,height,padding?,pointScale?}` using the existing live geometry fit |
+| `reset` | `initial` projection parameters, for example from a saved inspection snapshot |
+| `resize` | `canvas:{width?,height?,plot?}`, `scaling:"preserve"|"fit"` |
+
+Zoom clamps scale while keeping the visible inverse anchor fixed. A clipped or non-invertible
+anchor fails; pinch requires distinct pointers. Resize keeps the previous plot center at the new
+center. `preserve` keeps pixel scale; `fit` uses the smaller settled plot dimension ratio. Native
+Canvas size rules still apply: exact plot dimensions conflict with outer width/height unless you
+explicitly include `plot:false`. Authored projection clipping stays unchanged.
+
+> **Executable complete.** Run as an ES module. This resource-only example creates no graphics; the initial frozen view is explicit caller state.
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+import { getProjectionView } from "ggaction/inspection";
+const initial = chart().createProjection({ id: "map", type: "identity" });
+const saved = getProjectionView(initial);
+const zoomed = initial.navigateProjection({
+  operation: { type: "zoom", anchorPx: [200, 150], factor: 2, scaleExtent: [0.5, 8] }
+});
+const reset = zoomed.navigateProjection({ operation: { type: "reset", initial: saved.parameters } });
+console.log(getProjectionView(reset).parameters.scalePx); // 1
+```
+
+Reset restores view parameters, not an old revision or live fit policy. Fit retains a geometry
+dependency; other camera operations detach an earlier fit. The command stores no hidden baseline,
+DOM listeners or renderer camera. Projection navigation does not choose a geographic detail level.
+Use explicit `editGeoLODData` when changing detail.
+
 ## Draw through a Geo coordinate
 
 A Geo coordinate owns one projection. A geometry mark names that coordinate and
@@ -55593,6 +55900,84 @@ Style options are `fill` (including structured paints), `stroke`, `strokeWidth`,
 butt caps and miter joins with limit 10. Shape points use `radiusPx: 3`.
 Line pieces always have fill none. Outline and shadow accept false to reset;
 blend accepts normal, multiply, screen or difference.
+
+## Map feature fields to color and size
+
+Use `encodeColor` on shape, point or line marks. Filled shapes and points
+map to fill; lines map to stroke. Use `encodeSize` on point marks to map values
+to CSS-pixel area. Native categorical, continuous and discrete scales apply.
+
+> **Executable complete.** The two inline places supply their own population measurements.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 640, height: 400, margin: { left: 40, right: 180, top: 40, bottom: 40 } })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: { population: 100, region: "West" }, geometry: { type: "Point", coordinates: [140, 180] } },
+      { type: "Feature", id: "east", properties: { population: 400, region: "East" }, geometry: { type: "Point", coordinates: [340, 180] } }
+    ]
+  } })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+  .createGeoPointMark()
+  .encodeColor({ field: "region", scale: { range: ["#2563eb", "#dc2626"] } })
+  .encodeSize({ field: "population", scale: { domain: [0, 400], range: [0, 1600] } })
+  .createLegend();
+```
+
+A source mark reads feature properties. A joined mark reads the matching table
+row; an unmatched feature needs explicit `scale.unknown` to map a missing field.
+Otherwise the action fails without changing the program. LOD uses the active
+level's fields. Multiple pieces of one feature share the same value and identity.
+Null/empty geometries stay inspectable but contribute no scale values or visible
+items. Projection clipping does not change scale domains.
+
+Size uses `sqrt(area / Math.PI)` for point radius. It does not mix with geographic
+`radiusDeg`; switch to `radiusPx` first. Aggregate and layout color policies are incompatible with these resource-backed marks.
+
+Use `encodeColor({ value: "navy" })` or `encodeSize({ value: 100 })` to replace a
+field mapping with a constant and remove its dependent legend. Other channels
+remain. Direct fill/stroke/radius edits reject an active conflicting field mapping;
+`removeEncoding` restores its dormant native style. Data, geometry and LOD edits
+refresh shared scales, marks and legends together. Color and size legends appear
+as separate blocks when both channels are present.
+
+### Choose color or size with conditions
+
+Both channels accept the shared first-match `conditions` array and required
+`otherwise`. Each feature is evaluated once, including every part of a multipart
+feature. All branches must have valid fields, scales and values even when inactive.
+Use the existing typed expressions or an explicit `{ selection: "name" }` predicate.
+A zero size hides the circle without removing its logical item.
+
+> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+
+```javascript
+import { createGeographicMarks } from "./geographic-marks/program.js";
+
+const emphasized = createGeographicMarks("fields").encodeColor({
+  conditions: [{
+    when: { version: 2, registry: "standard@1", root: {
+      type: "binary", op: "gte", left: { type: "field", name: "visitors" },
+      right: { type: "literal", value: 8 }
+    } },
+    value: { value: "#dc2626" }
+  }],
+  otherwise: { field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }
+});
+```
+
+A legend describes the unique field/scale binding across branches. If several
+bindings are present, remove that channel's legend before assigning the mapping;
+creating a new ambiguous legend also fails. Every branch contributes its full
+eligible field values to automatic domains, including inactive branches.
+Parameter and selection edits refresh conditional marks. Cross-mark selections
+follow actual shared table rows, not coincident feature IDs. A field predicate
+needs an inferable feature schema; a completely empty feature view can instead
+use a literal, parameter or named selection predicate. This does not change the
+scale's explicit empty-domain policy. Graticules and annotations have their own
+styles and do not accept conditional feature encodings.
 
 ## `editGeoShapeMark`
 
@@ -55686,9 +56071,74 @@ their mark consumers; old programs and traces remain unchanged.
 All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
 scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
 `removeMark`; live marks/coordinates restrict resource removal, including cascade.
-Automatic row facet/repeat, field encodings, joins, geographic labels and camera
-controls are not accepted by these mark options. Generated output is bounded at
+Automatic row facet/repeat is incompatible with these resource-backed marks. Ordinary color/size, table joins and semantic annotations use their dedicated actions. Generated output is bounded at
 10,000 points/items and 10,000,000 work units per materialization.
+
+## `createGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+```
+
+Place text at a source position or at the centroid of a named feature. A Geo coordinate determines
+how the anchor projects. The default ID is `geo-annotation`; give additional annotations explicit IDs.
+
+> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 400, height: 250 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "Feature", id: "port", properties: {},
+      geometry: { type: "Point", coordinates: [120, 90] } } })
+  .createProjection({ id: "map", type: "identity" })
+  .createCoordinate({ type: "geo" })
+  .createGeoAnnotation({ anchor: { type: "feature", geometry: "places", key: "port" },
+    text: "Port", dy: -12, align: "center", fontSize: 16 });
+```
+
+Use `{type:"position",position:[x,y]}` for an explicit anchor: identity projections use source planar
+units, while spherical projections use longitude/latitude degrees. Use
+`{type:"feature",geometry?,key,level?}` for a keyed source or join. Geometry omission follows the
+current/unique eligible geometry; a feature source must declare `featureKey`. Numeric and string keys
+are distinct. Polygons use an area centroid with holes, lines a length centroid, and points an average;
+geographic geometry uses spherical centroids. A centroid can fall outside a concave feature.
+
+For LOD geometry, `level` chooses an original level, or captures the current level when omitted.
+The annotation continues to follow that original feature when the visible map changes detail.
+Editing source geometry moves its annotation; deleting its key rejects the whole edit. Empty/null
+geometry, clipped anchors and empty text produce no placeholder text.
+
+`text` is a required string. Native Text styles apply: `fill`, `opacity`, `fontSize`, `fontFamily`,
+`fontWeight`, `align`, `baseline`, `rotation`, `dx`, `dy`, `lineHeight`, `blockAlign`, `lineCap`,
+`lineJoin`, `miterLimit`, `outline`, `shadow` and `blend`. Offsets are logical pixels after projection.
+`clip` defaults to false. Theme text/font tokens, explicit style overrides and prepared fonts follow
+[Text](./api/marks/text/#createtextmarkoptions). Shadow rendering requires the usual explicit host preparation.
+Selections and highlights use the annotation item; stroke highlighting does not add a Text stroke.
+
+## `editGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
+```
+
+Change `target?`, `coordinate?`, `anchor?`, `text?` or native Text styles. An omitted target resolves the
+current or unique annotation. The patch must be nonempty; omitted fields retain their current values.
+A supplied anchor replaces its intent. Switching to a position detaches the geometry reference.
+Feature geometry omission retains the existing feature source; an omitted level captures the current
+LOD level. Invalid anchors, missing keys or unprepared font queries leave the original chart unchanged.
+
+## Label feature fields and graticules
+
+Use the existing [attached Text labels](./api/marks/labels/#geographic-sources) with
+a geographic shape, point, line or graticule source. They share source feature
+identity and revisions while native Text owns content, style and collision layout.
+Graticules expose their existing axis names and numeric values.
 
 <!-- Source: /api/contours/ -->
 
@@ -55960,7 +56410,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -56226,7 +56676,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -56341,8 +56791,78 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
+
+## Keep labels attached to their features
+
+The annotation variant of the shared example adds West, Central and East using each stop's typed
+feature key. This module imports the shared example program shown above; keep its `program.js` and
+`fixture.js` together in a `geographic-marks` folder. A negative `dy` places the text sixteen logical
+pixels above its projected anchor.
+
+```javascript
+import { createGeographicMarks } from "./geographic-marks/program.js";
+
+const labeled = createGeographicMarks()
+  .createGeoAnnotation({ id: "west-label", anchor: { type: "feature", geometry: "stops", key: 0 },
+    text: "West", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" })
+  .createGeoAnnotation({ id: "central-label", anchor: { type: "feature", geometry: "stops", key: 1 },
+    text: "Central", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" })
+  .createGeoAnnotation({ id: "east-label", anchor: { type: "feature", geometry: "stops", key: 2 },
+    text: "East", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" });
+```
+
+The anchor follows the original feature when its geometry or projection changes. For an LOD source,
+the annotation remembers the selected original level and key even while a coarser feature represents
+it. Use a position anchor when the location is meaningful without a named feature. Empty text and
+clipped anchors keep their semantic intent while producing no visible text.
+
+## Map visitor counts to stop area
+
+The field example uses the same planar
+features with three stop counts, 1, 4 and 9. Their circle radii are 8, 16 and 24
+pixels, so their areas have the same ratio as those counts. Native categorical
+color scales distinguish the stops. The shared public program uses `createGeographicMarks("fields")`; it supplies its own measured features.
+
+Use `encodeColor({ field, scale })` after a shape, point or line mark, and
+`encodeSize({ field, scale })` after a point mark. `createLegend()` can add the
+existing color and size blocks. A join exposes the matching table fields and
+LOD exposes the active level. See [field mapping rules](./api/geometry/#map-feature-fields-to-color-and-size)
+for unknown values, geographic radii and explicit constant transitions.
+
+## Emphasize stops with conditions
+
+The same public program's `createGeographicMarks("conditional")` variant keeps the
+visitor-area mapping while drawing West gray, Central teal and East red. A
+visitor count of at least eight matches the first color branch; a count of at
+least four matches the second. The required `otherwise` supplies West's color.
+Both color and size use the same original feature key, and their native scales
+still inspect all eligible features. The exact executable conditions live in
+that program's shared fixture. See [conditional feature mapping](./api/geometry/#choose-color-or-size-with-conditions)
+for predicates, selections and legend ambiguity.
+
+## Keep stops stable while navigating
+
+The executable `createGeographicMarks("camera")` variant in the same example applies an anchored
+0.75 zoom followed by a small pan. Its district and route move with the projection, while each
+stop remains eight CSS pixels in radius. Use `navigateProjection` for these view changes; save
+`getProjectionView(program).parameters` before navigation when you want an explicit reset target.
+The [camera reference](./api/geometry/#navigateprojection) lists pinch, fit and resize options.
+
+## Label feature fields and graticules
+
+Use `createGeographicMarks("labels")` from the same shared example module for one
+Text label layer reading each stop's `name`. Its `createMarkLabels` call selects
+`source: "geo-point"`, applies an eighteen-pixel font and a negative sixteen-pixel
+vertical offset. This produces the same West, Central and East labels as the fixed
+annotation example, with content now read from the source features.
+
+The `createGeographicMarks("grid-labels")` variant labels the existing graticule's
+`value` field with `format: ".0f"`. Its inline selector chooses `axis: "longitude"`,
+so only −40, 0 and 40 appear above the meridian centroids. Both variants preserve
+source feature identity through projection edits and reuse the native Text
+style, font and collision-layout actions. See [geographic label rules](./api/marks/labels/#geographic-sources).
 
 <!-- Source: /api/pyramid/ -->
 
@@ -56472,7 +56992,7 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
 and editing options.

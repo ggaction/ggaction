@@ -281,6 +281,56 @@ Remove authored fit projections explicitly before removing their geometry.
 Geometry cascade does not delete a reusable authored projection. Projection
 resources and their exact fit inputs survive offline serialization.
 
+## `navigateProjection`
+
+Chart authoring · Full.
+
+```typescript
+navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
+```
+
+Navigate the current or explicitly named projection. `operation` chooses pan, anchored zoom,
+pinch, absolute spherical rotation, fit, explicit reset or Canvas resize. All distances are
+logical CSS pixels; rotations are degrees. Operations return a new program and update existing
+Geo marks through the native projection edit.
+
+| Operation | Required fields |
+| --- | --- |
+| `pan` | `deltaPx:[x,y]` |
+| `zoom` | `anchorPx:[x,y]`, positive `factor`, positive ordered `scaleExtent:[min,max]` |
+| `pinch` | `fromPx:[[x,y],[x,y]]`, `toPx:[[x,y],[x,y]]`, `scaleExtent` |
+| `rotate` | absolute `rotateDeg:[longitude,latitude,roll?]` for a non-composite spherical projection |
+| `fit` | `fit:{geometry?,width,height,padding?,pointScale?}` using the existing live geometry fit |
+| `reset` | `initial` projection parameters, for example from a saved inspection snapshot |
+| `resize` | `canvas:{width?,height?,plot?}`, `scaling:"preserve"|"fit"` |
+
+Zoom clamps scale while keeping the visible inverse anchor fixed. A clipped or non-invertible
+anchor fails; pinch requires distinct pointers. Resize keeps the previous plot center at the new
+center. `preserve` keeps pixel scale; `fit` uses the smaller settled plot dimension ratio. Native
+Canvas size rules still apply: exact plot dimensions conflict with outer width/height unless you
+explicitly include `plot:false`. Authored projection clipping stays unchanged.
+
+> **Executable complete.** Run as an ES module. This resource-only example creates no graphics; the initial frozen view is explicit caller state.
+
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+import { getProjectionView } from "ggaction/inspection";
+const initial = chart().createProjection({ id: "map", type: "identity" });
+const saved = getProjectionView(initial);
+const zoomed = initial.navigateProjection({
+  operation: { type: "zoom", anchorPx: [200, 150], factor: 2, scaleExtent: [0.5, 8] }
+});
+const reset = zoomed.navigateProjection({ operation: { type: "reset", initial: saved.parameters } });
+console.log(getProjectionView(reset).parameters.scalePx); // 1
+```
+
+Reset restores view parameters, not an old revision or live fit policy. Fit retains a geometry
+dependency; other camera operations detach an earlier fit. The command stores no hidden baseline,
+DOM listeners or renderer camera. Projection navigation does not choose a geographic detail level.
+Use explicit `editGeoLODData` when changing detail.
+
 ## Draw through a Geo coordinate
 
 A Geo coordinate owns one projection. A geometry mark names that coordinate and
@@ -328,6 +378,84 @@ Style options are `fill` (including structured paints), `stroke`, `strokeWidth`,
 butt caps and miter joins with limit 10. Shape points use `radiusPx: 3`.
 Line pieces always have fill none. Outline and shadow accept false to reset;
 blend accepts normal, multiply, screen or difference.
+
+## Map feature fields to color and size
+
+Use `encodeColor` on shape, point or line marks. Filled shapes and points
+map to fill; lines map to stroke. Use `encodeSize` on point marks to map values
+to CSS-pixel area. Native categorical, continuous and discrete scales apply.
+
+> **Executable complete.** The two inline places supply their own population measurements.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 640, height: 400, margin: { left: 40, right: 180, top: 40, bottom: 40 } })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: { population: 100, region: "West" }, geometry: { type: "Point", coordinates: [140, 180] } },
+      { type: "Feature", id: "east", properties: { population: 400, region: "East" }, geometry: { type: "Point", coordinates: [340, 180] } }
+    ]
+  } })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+  .createGeoPointMark()
+  .encodeColor({ field: "region", scale: { range: ["#2563eb", "#dc2626"] } })
+  .encodeSize({ field: "population", scale: { domain: [0, 400], range: [0, 1600] } })
+  .createLegend();
+```
+
+A source mark reads feature properties. A joined mark reads the matching table
+row; an unmatched feature needs explicit `scale.unknown` to map a missing field.
+Otherwise the action fails without changing the program. LOD uses the active
+level's fields. Multiple pieces of one feature share the same value and identity.
+Null/empty geometries stay inspectable but contribute no scale values or visible
+items. Projection clipping does not change scale domains.
+
+Size uses `sqrt(area / Math.PI)` for point radius. It does not mix with geographic
+`radiusDeg`; switch to `radiusPx` first. Aggregate and layout color policies are incompatible with these resource-backed marks.
+
+Use `encodeColor({ value: "navy" })` or `encodeSize({ value: 100 })` to replace a
+field mapping with a constant and remove its dependent legend. Other channels
+remain. Direct fill/stroke/radius edits reject an active conflicting field mapping;
+`removeEncoding` restores its dormant native style. Data, geometry and LOD edits
+refresh shared scales, marks and legends together. Color and size legends appear
+as separate blocks when both channels are present.
+
+### Choose color or size with conditions
+
+Both channels accept the shared first-match `conditions` array and required
+`otherwise`. Each feature is evaluated once, including every part of a multipart
+feature. All branches must have valid fields, scales and values even when inactive.
+Use the existing typed expressions or an explicit `{ selection: "name" }` predicate.
+A zero size hides the circle without removing its logical item.
+
+> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+
+```javascript
+import { createGeographicMarks } from "./geographic-marks/program.js";
+
+const emphasized = createGeographicMarks("fields").encodeColor({
+  conditions: [{
+    when: { version: 2, registry: "standard@1", root: {
+      type: "binary", op: "gte", left: { type: "field", name: "visitors" },
+      right: { type: "literal", value: 8 }
+    } },
+    value: { value: "#dc2626" }
+  }],
+  otherwise: { field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }
+});
+```
+
+A legend describes the unique field/scale binding across branches. If several
+bindings are present, remove that channel's legend before assigning the mapping;
+creating a new ambiguous legend also fails. Every branch contributes its full
+eligible field values to automatic domains, including inactive branches.
+Parameter and selection edits refresh conditional marks. Cross-mark selections
+follow actual shared table rows, not coincident feature IDs. A field predicate
+needs an inferable feature schema; a completely empty feature view can instead
+use a literal, parameter or named selection predicate. This does not change the
+scale's explicit empty-domain policy. Graticules and annotations have their own
+styles and do not accept conditional feature encodings.
 
 ## `editGeoShapeMark`
 
@@ -421,6 +549,71 @@ their mark consumers; old programs and traces remain unchanged.
 All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
 scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
 `removeMark`; live marks/coordinates restrict resource removal, including cascade.
-Automatic row facet/repeat, field encodings, joins, geographic labels and camera
-controls are not accepted by these mark options. Generated output is bounded at
+Automatic row facet/repeat is incompatible with these resource-backed marks. Ordinary color/size, table joins and semantic annotations use their dedicated actions. Generated output is bounded at
 10,000 points/items and 10,000,000 work units per materialization.
+
+## `createGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+```
+
+Place text at a source position or at the centroid of a named feature. A Geo coordinate determines
+how the anchor projects. The default ID is `geo-annotation`; give additional annotations explicit IDs.
+
+> **Executable complete.** Run the complete module with its inline keyed planar port feature.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 400, height: 250 })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "Feature", id: "port", properties: {},
+      geometry: { type: "Point", coordinates: [120, 90] } } })
+  .createProjection({ id: "map", type: "identity" })
+  .createCoordinate({ type: "geo" })
+  .createGeoAnnotation({ anchor: { type: "feature", geometry: "places", key: "port" },
+    text: "Port", dy: -12, align: "center", fontSize: 16 });
+```
+
+Use `{type:"position",position:[x,y]}` for an explicit anchor: identity projections use source planar
+units, while spherical projections use longitude/latitude degrees. Use
+`{type:"feature",geometry?,key,level?}` for a keyed source or join. Geometry omission follows the
+current/unique eligible geometry; a feature source must declare `featureKey`. Numeric and string keys
+are distinct. Polygons use an area centroid with holes, lines a length centroid, and points an average;
+geographic geometry uses spherical centroids. A centroid can fall outside a concave feature.
+
+For LOD geometry, `level` chooses an original level, or captures the current level when omitted.
+The annotation continues to follow that original feature when the visible map changes detail.
+Editing source geometry moves its annotation; deleting its key rejects the whole edit. Empty/null
+geometry, clipped anchors and empty text produce no placeholder text.
+
+`text` is a required string. Native Text styles apply: `fill`, `opacity`, `fontSize`, `fontFamily`,
+`fontWeight`, `align`, `baseline`, `rotation`, `dx`, `dy`, `lineHeight`, `blockAlign`, `lineCap`,
+`lineJoin`, `miterLimit`, `outline`, `shadow` and `blend`. Offsets are logical pixels after projection.
+`clip` defaults to false. Theme text/font tokens, explicit style overrides and prepared fonts follow
+[Text](../../../api/marks/text/#createtextmarkoptions). Shadow rendering requires the usual explicit host preparation.
+Selections and highlights use the annotation item; stroke highlighting does not add a Text stroke.
+
+## `editGeoAnnotation`
+
+**Classification:** chart authoring · Full
+
+```ts
+editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
+```
+
+Change `target?`, `coordinate?`, `anchor?`, `text?` or native Text styles. An omitted target resolves the
+current or unique annotation. The patch must be nonempty; omitted fields retain their current values.
+A supplied anchor replaces its intent. Switching to a position detaches the geometry reference.
+Feature geometry omission retains the existing feature source; an omitted level captures the current
+LOD level. Invalid anchors, missing keys or unprepared font queries leave the original chart unchanged.
+
+## Label feature fields and graticules
+
+Use the existing [attached Text labels](../../../api/marks/labels/#geographic-sources) with
+a geographic shape, point, line or graticule source. They share source feature
+identity and revisions while native Text owns content, style and collision layout.
+Graticules expose their existing axis names and numeric values.

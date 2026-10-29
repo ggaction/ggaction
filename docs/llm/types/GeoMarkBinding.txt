@@ -1,4 +1,4 @@
-export type GeoMarkBinding = {
+export type GeoMarkBinding = GeoAnnotationBinding | {
   readonly mode: "shape" | "point" | "line";
   readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
   readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;

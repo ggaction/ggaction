@@ -4,6 +4,8 @@ Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
 scale ID, and field type when the stored program makes that choice safe.
 
+Full [geographic marks](../../../api/geometry/#map-feature-fields-to-color-and-size) share ordinary color and point-area encodings. Feature properties, joined table fields and active LOD levels use the same scales and legends.
+
 ## Reassign an existing encoding
 
 Calling an available field encoding again can replace settings on its bound

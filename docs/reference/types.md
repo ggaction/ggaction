@@ -83,6 +83,7 @@ interface ChartProgramActions {
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
@@ -99,6 +100,8 @@ interface ChartProgramActions {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -6493,6 +6496,19 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
+### `EditGeoAnnotationOptions` {#type-editgeoannotationoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoAnnotationOptions</summary>
+
+```typescript
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+```
+
+</details>
+
+Related types: [`GeoAnnotationOptions`](#type-geoannotationoptions).
+
 ### `EditGeoJoinDataOptions` {#type-editgeojoindataoptions}
 
 <details markdown="1">
@@ -8927,6 +8943,56 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 
 Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
 
+### `GeoAnnotationAnchor` {#type-geoannotationanchor}
+
+<details markdown="1">
+<summary>Expand GeoAnnotationAnchor</summary>
+
+```typescript
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+```
+
+</details>
+
+Related types: [`RowKey`](#type-rowkey).
+
+### `GeoAnnotationOptions` {#type-geoannotationoptions}
+
+<details markdown="1">
+<summary>Expand GeoAnnotationOptions</summary>
+
+```typescript
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+```
+
+</details>
+
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`GeoAnnotationAnchor`](#type-geoannotationanchor).
+
+### `GeoCameraOperation` {#type-geocameraoperation}
+
+<details markdown="1">
+<summary>Expand GeoCameraOperation</summary>
+
+```typescript
+export type GeoCameraOperation =
+  | { readonly type: "pan"; readonly deltaPx: readonly [number, number] }
+  | { readonly type: "zoom"; readonly anchorPx: readonly [number, number]; readonly factor: number; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "pinch"; readonly fromPx: readonly [readonly [number, number], readonly [number, number]]; readonly toPx: readonly [readonly [number, number], readonly [number, number]]; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "rotate"; readonly rotateDeg: readonly [number, number] | readonly [number, number, number] }
+  | { readonly type: "reset"; readonly initial: ProjectionParameters }
+  | { readonly type: "fit"; readonly fit: ProjectionFitOptions }
+  | { readonly type: "resize"; readonly canvas: { readonly width?: number; readonly height?: number; readonly plot?: false | { readonly width: number; readonly height: number } }; readonly scaling: "preserve" | "fit" };
+/** Native projection edits; reset restores explicit view parameters, without restoring a prior fit policy. */
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFitOptions`](#type-projectionfitoptions).
+
 ### `GeoEditOptions` {#type-geoeditoptions}
 
 <details markdown="1">
@@ -11291,6 +11357,19 @@ export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id:
 </details>
 
 Related types: [`CompleteAxisOptions`](#type-completeaxisoptions).
+
+### `NavigateProjectionOptions` {#type-navigateprojectionoptions}
+
+<details markdown="1">
+<summary>Expand NavigateProjectionOptions</summary>
+
+```typescript
+export interface NavigateProjectionOptions { readonly target?: string; readonly operation: GeoCameraOperation; }
+```
+
+</details>
+
+Related types: [`GeoCameraOperation`](#type-geocameraoperation).
 
 ### `NonCartesianStrokeDashChannel` {#type-noncartesianstrokedashchannel}
 
@@ -15403,6 +15482,9 @@ Related types: [`TextFormat`](#type-textformat).
 
 ```typescript
 export type TextFormat = ValueFormat;
+
+/** Source-owned Text also accepts Full geographic feature/graticule marks without a dataset.
+ * Geographic anchors use the source centroid; field/value text, native styles and label layout retain their existing contracts. */
 ```
 
 </details>

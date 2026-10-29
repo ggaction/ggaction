@@ -1342,8 +1342,11 @@ function buildDirectDataResources(factors) {
     .editGeoLODData({ target: "directGeoLOD", zoom: 1 })
     .createProjection({ id: "directProjection", type: "identity", fit: { geometry: "directGeometry", width: 200, height: 100, padding: 4 } })
     .editProjection({ target: "directProjection", reflectX: true })
+    .navigateProjection({ target: "directProjection", operation: { type: "pan", deltaPx: [1, 0] } })
     .editGeometryData({ target: "directGeometry", limits: { maxFeatures: 100000 } })
     .createCoordinate({ id: "directGeoPlane", type: "geo", projection: "directProjection" })
+    .createGeoAnnotation({ id: "directGeoAnnotation", coordinate: "directGeoPlane", anchor: { type: "feature", geometry: "directGeometry", key: rows[0].id }, text: rows[0].category })
+    .editGeoAnnotation({ target: "directGeoAnnotation", dx: 4, text: `${rows[0].category}: ${rows[0].positive}` })
     .createGeoShapeMark({ id: "directGeoShape", coordinate: "directGeoPlane", geometry: "directGeometry", opacity: .3 })
     .editGeoShapeMark({ target: "directGeoShape", fill: "#2563eb" })
     .createGeoPointMark({ id: "directGeoPoints", coordinate: "directGeoPlane", geometry: "directGeometry", radiusPx: 3 })
@@ -2564,7 +2567,8 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
-  "createProjection", "editProjection",
+  "createProjection", "editProjection", "navigateProjection",
+  "createGeoAnnotation", "editGeoAnnotation",
   "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",

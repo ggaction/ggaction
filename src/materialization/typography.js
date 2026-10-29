@@ -13,7 +13,7 @@ export function rematerializeTypography(program) {
   const textOwners = { waterfall: "materializeWaterfallPlot", ohlc: "materializeOHLCPlot", pyramid: "materializePyramidPlot", calendar: "materializeCalendarPlot", text: "rematerializeTextMark", tree: "materializeTreePlot",
     treemap: "materializeTreemapPlot", partition: "materializePartitionPlot", graph: "materializeGraphPlot", "flow-node": "materializeFlowNodes" };
   const marks = program.semanticSpec.layers.flatMap(layer => {
-    const op = textOwners[layer.mark?.type];
+    const op = layer.geoBinding?.mode === "annotation" ? "materializeGeoMark" : textOwners[layer.mark?.type];
     return op !== undefined && exists(layer.id, op) && layer.hierarchyLabels !== false && layer.graphLabels !== false && layer.flowLabels !== false
       ? [{ op, args: { id: layer.id } }] : [];
   });

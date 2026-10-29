@@ -1,3 +1,4 @@
+import { navigateProjection } from "./camera.js";
 import { rematerializeProjectionCoordinates } from "./closure.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
@@ -49,5 +50,5 @@ export const editProjection = /* @__PURE__ */ closedAction(
   });
 
 export function registerProjectionActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createProjection, editProjection });
+  Object.assign(ProgramClass.prototype, { createProjection, editProjection, navigateProjection });
 }

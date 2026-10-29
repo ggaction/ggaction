@@ -6,7 +6,7 @@ import {
   geoAzimuthalEquidistant, geoAzimuthalEquidistantRaw,
   geoConicEqualArea, geoConicEqualAreaRaw, geoConicConformal, geoConicConformalRaw,
   geoConicEquidistant, geoConicEquidistantRaw, geoTransverseMercator,
-  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate, geoCircle
+  geoIdentity, geoAlbers, geoRotation, geoStream, geoInterpolate, geoCircle, geoCentroid, geoPath
 } from "geographic-math";
 
 const FACTORIES = {
@@ -82,4 +82,29 @@ export function circleGeometryMath(center, radius, precision) {
   const ring = circle.coordinates[0].reverse();
   ring[ring.length - 1] = [...ring[0]];
   return circle;
+}
+
+
+// Centroids share the stream's source winding convention. The caller supplies
+// bounded, normalized geometry; only the private mathematical adapter sees it.
+export function centroidGeometryMath(geometry, spherical) {
+  function rings(coordinates) {
+    return coordinates.map((ring, index) => {
+      if (spherical) return [...ring].reverse();
+      const [x, y] = ring[0];
+      let area = 0;
+      for (let i = 1; i < ring.length; i++) area += (ring[i - 1][0] - x) * (ring[i][1] - y) - (ring[i][0] - x) * (ring[i - 1][1] - y);
+      if (!Number.isFinite(area)) throw new RangeError("Geometry has no finite centroid area.");
+      // Planar fill uses ring roles, independent of authored winding.
+      return (area < 0) === (index === 0) ? [...ring].reverse() : ring;
+    });
+  }
+  function oriented(value) {
+    if (value === null) return null;
+    if (value.type === "GeometryCollection") return { type: value.type, geometries: value.geometries.map(oriented) };
+    if (value.type === "Polygon") return { type: value.type, coordinates: rings(value.coordinates) };
+    if (value.type === "MultiPolygon") return { type: value.type, coordinates: value.coordinates.map(rings) };
+    return value;
+  }
+  return spherical ? geoCentroid(oriented(geometry)) : geoPath().centroid(oriented(geometry));
 }

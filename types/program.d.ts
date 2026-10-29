@@ -2276,6 +2276,18 @@ type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters
 /** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
 export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
   | ProjectionEditFittedOptions);
+export interface ProjectionViewport { readonly x: number; readonly y: number; readonly width: number; readonly height: number; }
+/** Logical CSS pixels; zoom and pinch require an explicit positive scale interval. */
+export type GeoCameraOperation =
+  | { readonly type: "pan"; readonly deltaPx: readonly [number, number] }
+  | { readonly type: "zoom"; readonly anchorPx: readonly [number, number]; readonly factor: number; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "pinch"; readonly fromPx: readonly [readonly [number, number], readonly [number, number]]; readonly toPx: readonly [readonly [number, number], readonly [number, number]]; readonly scaleExtent: readonly [number, number] }
+  | { readonly type: "rotate"; readonly rotateDeg: readonly [number, number] | readonly [number, number, number] }
+  | { readonly type: "reset"; readonly initial: ProjectionParameters }
+  | { readonly type: "fit"; readonly fit: ProjectionFitOptions }
+  | { readonly type: "resize"; readonly canvas: { readonly width?: number; readonly height?: number; readonly plot?: false | { readonly width: number; readonly height: number } }; readonly scaling: "preserve" | "fit" };
+/** Native projection edits; reset restores explicit view parameters, without restoring a prior fit policy. */
+export interface NavigateProjectionOptions { readonly target?: string; readonly operation: GeoCameraOperation; }
 export interface ProjectionResource {
   readonly kind: "projection"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
@@ -2284,6 +2296,8 @@ export interface ProjectionResource {
   readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
   readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
 }
+/** Field color is authored through encodeColor; point area through encodeSize.
+ * Direct fill/stroke/radius edits reject conflicting active field mappings. */
 export interface GeoMarkStyleOptions {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
@@ -2312,7 +2326,18 @@ type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & {
 export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
 export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
-export type GeoMarkBinding = {
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+export type GeoAnnotationBinding = { readonly mode: "annotation"; readonly text: string } & (
+  | { readonly anchor: { readonly type: "position"; readonly position: readonly [number, number] }; readonly geometry?: never }
+  | { readonly anchor: { readonly type: "feature"; readonly key: RowKey; readonly level?: string };
+      readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number } });
+
+export type GeoMarkBinding = GeoAnnotationBinding | {
   readonly mode: "shape" | "point" | "line";
   readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
   readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;
@@ -5524,6 +5549,8 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type TextFormat = ValueFormat;
 
+/** Source-owned Text also accepts Full geographic feature/graticule marks without a dataset.
+ * Geographic anchors use the source centroid; field/value text, native styles and label layout retain their existing contracts. */
 export interface TextMarkOptions extends StrokeStyleDetails {
   blend?: BlendMode;
   shadow?: MarkShadow | false;
@@ -6704,6 +6731,7 @@ export class ChartProgram {
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  navigateProjection(options: TargetedOptions<NavigateProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
 
   /** Join geographic features to a materialized table without changing feature identity or source properties. */
@@ -6723,6 +6751,8 @@ export class ChartProgram {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -6963,8 +6993,10 @@ export class ChartProgram {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
+  /** Color also accepts ordinary or conditional Full Geo shape/point/line feature fields. */
   encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
   encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  /** Size also accepts ordinary or conditional Full Geo point feature fields, in CSS-pixel area; radiusDeg is incompatible. */
   encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
   encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
   encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;

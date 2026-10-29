@@ -889,6 +889,18 @@ Omit incoming balance connectors explicitly.
 
 Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
 
+### [Labels stay attached to the original stops](./geographic-annotations/)
+
+Attach semantic text to geographic positions and original feature keys.
+
+Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProjection`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Stop area follows visitor counts](./geographic-fields/)
+
+Map geographic feature properties or joined measurements to color and point area.
+
+Representative actions: `createGeoPointMark`, `encodeColor`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

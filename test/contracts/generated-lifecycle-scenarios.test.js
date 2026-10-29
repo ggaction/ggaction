@@ -129,8 +129,8 @@ test("calls every user-facing action directly from a generated scenario root", (
   for (const operation of [
     "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot",
     "bundleGraphEdges", "editEdgeRoute",
-    "createGeometryData", "editGeometryData", "createGeoJoinData", "editGeoJoinData", "createGeoLODData", "editGeoLODData", "createProjection", "editProjection",
-    "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark",
+    "createGeometryData", "editGeometryData", "createGeoJoinData", "editGeoJoinData", "createGeoLODData", "editGeoLODData", "createProjection", "editProjection", "navigateProjection",
+    "createGeoAnnotation", "editGeoAnnotation", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark",
     "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",
     "removeData", "removeScale", "removeCoordinate",
     "createParameter", "editParameter", "removeParameter", "applyDataUpdate",

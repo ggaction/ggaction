@@ -40,6 +40,7 @@ const coreH3Names = new Set([
   "editGeoJoinData",
   "editGeoLODData",
   "editProjection",
+  "navigateProjection",
   "editGeometryData",
   "editEdgeRoute",
   "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
@@ -85,10 +86,13 @@ const explicitLifecycleEditors = Object.freeze({
   editGeoPointMark: ["editGeoPointMark", "removeMark"],
   createGeoLineMark: ["editGeoLineMark", "removeMark"],
   editGeoLineMark: ["editGeoLineMark", "removeMark"],
+  createGeoAnnotation: ["editGeoAnnotation", "removeMark"],
+  editGeoAnnotation: ["editGeoAnnotation", "removeMark"],
   createGraticule: ["editGraticule", "removeMark"],
   editGraticule: ["editGraticule", "removeMark"],
   createProjection: ["editProjection", "removeResource"],
   editProjection: ["editProjection", "removeResource"],
+  navigateProjection: ["editProjection", "navigateProjection"],
   createGeometryData: ["editGeometryData", "removeResource"],
   editGeometryData: ["editGeometryData", "removeResource"],
   createGeoLODData: ["editGeoLODData", "removeResource"],
@@ -205,6 +209,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeoAnnotation", "editGeoAnnotation",
   "createGeoLODData", "editGeoLODData",
   "createGeoJoinData", "editGeoJoinData",
   "createGeometryData", "editGeometryData",

@@ -74,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./actions/marks.md#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./actions/charts-data.md#createfontresource) | H3 | user-facing | core |
+| [`createGeoAnnotation`](./actions/marks.md#creategeoannotation) | H2 | user-facing | marks |
 | [`createGeoJoinData`](./actions/charts-data.md#creategeojoindata) | H2 | user-facing | core |
 | [`createGeoLineMark`](./actions/marks.md#creategeolinemark) | H2 | user-facing | marks |
 | [`createGeoLODData`](./actions/charts-data.md#creategeoloddata) | H2 | user-facing | core |
@@ -214,6 +215,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./actions/marks.md#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./actions/marks.md#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeoAnnotation`](./actions/marks.md#editgeoannotation) | H3 | user-facing | marks |
 | [`editGeoJoinData`](./actions/charts-data.md#editgeojoindata) | H3 | user-facing | core |
 | [`editGeoLineMark`](./actions/marks.md#editgeolinemark) | H3 | user-facing | marks |
 | [`editGeoLODData`](./actions/charts-data.md#editgeoloddata) | H3 | user-facing | core |
@@ -361,6 +363,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | H2 | user-facing | encodings |
+| [`navigateProjection`](./actions/charts-data.md#navigateprojection) | H3 | user-facing | core |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | H2 | user-facing | encodings |
 | [`packPoints`](./actions/marks.md#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | H2, H3 | user-facing | encodings |

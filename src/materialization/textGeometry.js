@@ -1,5 +1,5 @@
-import { bindTextFontProperties } from "./textFont.js";
-import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
+import { resolveSourceTextAnchors } from "./textSourceAnchors.js";
+import { concreteTextItem } from "./textItem.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
 export { sourceValue } from "./textContent.js";
@@ -245,32 +245,6 @@ function sourcePlacementGeometry(program, source, item) {
   return { kind: "point", center: sourceAnchor(program, source, item) };
 }
 
-function concreteTextItem(program, config, position, text, { offsets = true } = {}) {
-  const x = position.x;
-  const y = position.y;
-  if (text === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
-    return undefined;
-  }
-  const lines = resolveTextLines(text, config);
-  return {
-    type: "text",
-    properties: bindTextFontProperties(program, {
-      x: x + (offsets ? config.dx : 0),
-      y: y + (offsets ? config.dy : 0),
-      text,
-      ...requestedStrokeDetails(config),
-      ...(lines === undefined ? {} : { lines }),
-      fill: config.fill,
-      opacity: config.opacity,
-      fontSize: config.fontSize,
-      fontFamily: config.fontFamily,
-      fontWeight: config.fontWeight,
-      textAlign: config.align,
-      textBaseline: config.baseline,
-      rotation: config.rotation
-    })
-  };
-}
 
 function relativeLuminance(color) {
   if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) {
@@ -348,7 +322,10 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   } else {
     throw new Error(`Unknown label selection kind "${requested.kind}".`);
   }
-  if (sourceOnly) return items.map(item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] }));
+  const anchors = resolveSourceTextAnchors(program, source, items);
+  if (anchors !== undefined) items = items.filter(item => anchors.get(item.key) !== undefined);
+  const provenanceFor = item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key], ...(anchors === undefined ? {} : { sourceItem: item }) });
+  if (sourceOnly) return items.map(provenanceFor);
   const sourceBindings = resolveTextSourceBindings(program, layer, allItems, resolvers);
   const sourceByKey = sourceBindings === undefined ? undefined : new Map(allItems.map((item, index) => [item.key, sourceBindings[index]]));
   const conditionalFill = resolvers.skipAppearance ? undefined : resolveTextConditional(program, layer, "color", allItems, resolvers);
@@ -366,7 +343,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   return items.flatMap(item => {
     const itemSource = sourceByKey?.get(item.key) ?? source;
     const identity = identityRecords?.get(item);
-    const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] } : {};
+    const provenance = members ? provenanceFor(item) : {};
     let resolvedConfig = sourceTextConfig(program, config, itemSource, item);
     if (resolvers.skipAppearance && resolvedConfig.fill === undefined) resolvedConfig = { ...resolvedConfig, fill: DEFAULT_TEXT_MARK.fill };
     if (fillByKey !== undefined) resolvedConfig = { ...resolvedConfig, fill: fillByKey.get(item.key), fillExplicit: true };
@@ -379,14 +356,14 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     if (text === undefined) return [];
     const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
     if (placement === undefined) {
-      const anchor = sourceAnchor(program, itemSource, item);
+      const anchor = anchors?.get(item.key) ?? sourceAnchor(program, itemSource, item);
       const concrete = concreteTextItem(program, resolvedConfig, anchor, text);
       return concrete === undefined ? [] : [{ graphic: concrete, anchor, ...identity, ...provenance }];
     }
     assertMarkLabelPlacementSupport(sourcePlacementContext(program, itemSource), placement);
     const resolved = resolveMarkLabelPlacement({
       placement,
-      geometry: sourcePlacementGeometry(program, itemSource, item),
+      geometry: anchors === undefined ? sourcePlacementGeometry(program, itemSource, item) : { kind: "point", center: anchors.get(item.key) },
       text: {
         text,
         lines: resolveTextLines(text, resolvedConfig),

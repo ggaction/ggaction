@@ -31,13 +31,13 @@ export function materializeMarkOutput(program, id) {
       (conditionalProperties[graphicId] ??= {})[property] = byKey.get(item.key);
     }));
   }
-  const dataset = requireDataset(clipped, layer.data);
+  const dataset = layer.data === undefined ? undefined : requireDataset(clipped, layer.data);
   const identities = new Map();
   for (const item of resolveMarkIdentities(clipped, id)) {
     for (const [index, graphicId] of item.graphicIds.entries()) {
       identities.set(graphicId, {
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
-        lineage: { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
+        lineage: item.lineage ?? { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
           rowKeys: item.rowKeys }
       });
     }

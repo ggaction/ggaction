@@ -1,3 +1,5 @@
+import { validateGeoEncodings } from "./encoding.js";
+import { validateGeoAnnotationBinding } from "./annotation.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateInputReference } from "../../core/resourceReference.js";
@@ -8,7 +10,11 @@ import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js"
 import { resolveStrokeDetails, STROKE_STYLE_PROPERTIES } from "../strokeStyle.js";
 import { projectionTuple } from "./projectionOptions.js";
 
-export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule"]);
+export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule", "annotation"]);
+export function isGeoLabelSource(layer) {
+  return layer?.mark?.type === "geo" && ["shape", "point", "line", "graticule"].includes(layer.geoBinding?.mode);
+}
+
 const REQUIRED_STYLE = ["fill", "stroke", "strokeWidth", "opacity", "radiusPx", "clip", ...STROKE_STYLE_PROPERTIES];
 export const GEO_STYLE_FIELDS = Object.freeze([...REQUIRED_STYLE, "blend", ...MARK_EFFECT_PROPERTIES]);
 
@@ -44,6 +50,7 @@ export function normalizeGraticule(input = {}) {
 
 export function validateGeoMarkBinding(layer, config) {
   const binding = layer.geoBinding;
+  if (binding?.mode === "annotation") return validateGeoAnnotationBinding(layer, config);
   ownRecord(binding, "Geographic mark binding");
   if (!GEO_MODES.includes(binding.mode)) throw new TypeError("Unknown geographic mark mode.");
   const graticule = binding.mode === "graticule";
@@ -66,5 +73,6 @@ export function validateGeoMarkBinding(layer, config) {
   ownRecord(config, "Stored geographic mark style");
   if (REQUIRED_STYLE.some(key => !Object.hasOwn(config, key))) throw new TypeError("Geographic style requires all resolved fields.");
   normalizeGeoStyle(binding.mode, config, undefined, true);
-  if (layer.data !== undefined || layer.conditionals !== undefined || Object.keys(layer.encoding ?? {}).length) throw new TypeError("Geographic marks require their geometry resource and native style.");
+  validateGeoEncodings(layer);
+  if (layer.data !== undefined) throw new TypeError("Geographic marks require their geometry resource and native field mappings.");
 }

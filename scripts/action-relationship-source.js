@@ -584,6 +584,8 @@ export function buildActionRelationshipPrograms() {
       .editEdgeRoute({ options: { exponent: 3 } }).editCanvas({ width: 650 })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas({ width: 400, height: 300, margin: 0 }).createProjection({ id: "camera", type: "identity" })
+      .navigateProjection({ operation: { type: "resize", canvas: { width: 800, height: 600 }, scaling: "fit" } }),
     chart().createCanvas().createGeometryData({ id: "geoPoints", format: "geojson", coordinateKind: "planar", values: { type: "MultiPoint", coordinates: [[10, 10], [30, 20]] } })
       .createProjection({ id: "geoPlane", type: "identity" }).createCoordinate({ id: "geo", type: "geo", projection: "geoPlane" })
       .createGeoShapeMark({ id: "geoShape", coordinate: "geo", geometry: "geoPoints" }).editGeoShapeMark({ opacity: .8 })
@@ -607,6 +609,11 @@ export function buildActionRelationshipPrograms() {
         { id: "county", geometry: "fine", parents: [{ key: "c", parent: "s" }], enterZoom: 4.2, exitZoom: 3.8 }], zoom: 5 })
       .createProjection({ id: "detailFit", type: "identity", fit: { width: 100, height: 100 } })
       .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "details" }).editGeoLODData({ zoom: 3 }),
+    chart().createCanvas().createGeometryData({ id: "featureFields", format: "geojson", coordinateKind: "planar", values: { type: "Feature", properties: { value: 1, category: "A" }, geometry: { type: "Point", coordinates: [20, 30] } } })
+      .createProjection({ id: "fieldMap", type: "identity" }).createCoordinate({ type: "geo" }).createGeoPointMark({ id: "fieldPoints" })
+      .encodeColor({ field: "category" }).encodeSize({ field: "value" }).encodeColor({ value: "red" }).encodeSize({ value: 100 }),
+    chart().createCanvas().createProjection({ id: "noteMap", type: "identity" }).createCoordinate({ type: "geo" })
+      .createGeoAnnotation({ anchor: { type: "position", position: [20, 30] }, text: "Location" }).editGeoAnnotation({ text: "Updated", dx: 5 }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

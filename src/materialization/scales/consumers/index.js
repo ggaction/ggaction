@@ -1,6 +1,7 @@
 import { unfilteredMarkDataset } from "../../../selectors/datasets.js";
 import { waterfallScaleValues } from "../../waterfall/plot.js";
 import { ohlcScaleValues } from "../../ohlc/plot.js";
+import { geoScaleValues } from "../../geo/appearance.js";
 import { findMarkFilterDataset } from "../../../selectors/datasets.js";
 import { readNominalField } from "../../../grammar/scales/fields.js";
 import { calendarScaleValues } from "../../calendar/scaleValues.js";
@@ -87,6 +88,7 @@ export function resolveConsumerValuesForDataset(program, consumer, dataset) {
 }
 
 export function resolveConsumerValues(program, consumer) {
+  if (consumer.layer.mark.type === "geo") return geoScaleValues(program, consumer);
   if (consumer.layer.mark.type === "calendar") return calendarScaleValues(program, consumer);
   if (consumer.layer.mark.type === "contour") return contourScaleValues(program, consumer);
   return resolveConsumerValuesForDataset(

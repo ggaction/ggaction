@@ -179,3 +179,35 @@ and label-target selection/highlight state. Source-target interaction remains. I
 another retained resource refers to a requested label, the complete operation fails
 before any label is removed. Later source encoding/style, scale, Canvas, and theme
 edits do not recreate removed labels.
+
+## Geographic sources
+
+In Full, `createMarkLabels` and `createTextMark({ source })` accept geographic
+shape, point, line and graticule marks. Pass an explicit `field` or `value`. One
+label follows each currently visible feature's projected centroid, even when
+the feature has several concrete parts. Null geometry and clipped centroids
+have no visible label. Graticules expose `axis` and numeric `value` fields.
+
+Use the existing `select` or named `selection` options to choose source items.
+Geometry, joined table values, detail level and projection edits update the
+labels while preserving original feature keys and actual joined rows. A coarser
+LOD label retains aliases for the original keys; its hit target remains the
+current visible label. Native styles, prepared fonts, dx/dy and collision layout
+work as usual. Center is the supported semantic placement anchor. Other
+boundary anchors and generic Cartesian Text clipping do not apply. For color,
+use constant fill or `inheritColor` from the source, as with other attached labels.
+
+The [geographic tutorial](../../../../tutorials/geographic-marks/#label-feature-fields-and-graticules)
+uses the shared executable feature and graticule examples. A fixed geographic
+annotation continues to identify one explicit position or original feature.
+
+The standalone geographic example uses the same action for feature names and
+generated longitude values:
+
+> **Executable complete.** Copy the linked geographic-marks example program and fixture into a geographic-marks folder beside this module.
+
+```js
+import { createGeographicMarks } from "./geographic-marks/program.js";
+const featureLabels = createGeographicMarks("labels");
+const gridLabels = createGeographicMarks("grid-labels");
+```

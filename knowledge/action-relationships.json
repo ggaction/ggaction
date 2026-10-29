@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 369,
+  "actionCount": 372,
   "relationships": [
     {
       "name": "createCanvas",
@@ -629,7 +629,9 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -657,7 +659,9 @@
       "name": "encodeSize",
       "wraps": [
         "editSemantic",
-        "createScale"
+        "createScale",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -2448,6 +2452,13 @@
       ]
     },
     {
+      "name": "navigateProjection",
+      "wraps": [
+        "editProjection",
+        "editCanvas"
+      ]
+    },
+    {
       "name": "createGeoShapeMark",
       "wraps": [
         "editSemantic"
@@ -2479,6 +2490,18 @@
     },
     {
       "name": "editGeoLineMark",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGeoAnnotation",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoAnnotation",
       "wraps": [
         "editSemantic"
       ]

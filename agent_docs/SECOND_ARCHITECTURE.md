@@ -867,6 +867,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 112,900 bytes |
 | `ggaction/graph` | 44,000 bytes |
+| `ggaction` | 730,000 bytes |
+| `ggaction/basic` | 386,000 bytes |
+| `ggaction/svg` | 25,000 bytes |
+| `ggaction/graph` | 46,000 bytes |
+| `ggaction/interaction` | 109,200 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3679,6 +3684,14 @@ prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명
 concrete identity를 읽도록 분리되어 있다. `materialization/geo/mark.js`는 동일 stream을 명시 실행하여
 collection의 point/path와 exact source lineage를 생성한다. 기존 data/coordinate materialization planner가
 geometry→fitted projection→mark union을 중복 없이 실행한다. Renderer 입력은 계속 concrete graphicSpec만이다.
+`materialization/geo/featureDataset.js`는 source owner가 정한 drawable feature의 field와 추론 schema를
+transient row view로 공유 encoder/scale/condition owner에 전달한다. `appearance.js`는 원본 feature
+key와 실제 row lineage를 같은 평가 grain으로 연결한다. Dataset resource나 새 field/조건 문법을
+만들지 않고 ordinary intent는 layer.encoding, 조건부 intent는 기존 layer.conditionals가 소유한다.
+Native Geo materialization은 atomic multi-channel preview 동안 유예하고 최종 union에서 한 번 실행한다. 원본 source-only logical item은 null/empty feature도
+보존하며 visual scale/item eligibility와 구분한다. Geo resource action의 final 후보 preflight는 모든
+공유 scale 후보를 먼저 계산하고 기존 planner가 scale→mark→guide union을 한 번 실행한다.
+선택 channel 값은 기존 semantic row reader와 temporal normalization owner를 공유한다.
 
 ### Interaction의 원자 authoring command 경계
 
@@ -3954,3 +3967,51 @@ Entries 1059와 packed 1510000은 유지한다. 같은 archive의 Node20/24 brow
 Basic 398278은 기존 398300 안이며 SVG/Graph/Interaction 한도도 유지한다.
 [정확한 입력·실행 증거](impl/roadmap9/chart/conditional-domain-evidence/status.json)를 보존한다.
 이 수치는 registry 배포나 roadmap 전체 완료를 뜻하지 않는다.
+Geographic annotation은 기존 Geo layer의 닫힌 mode와 native Text primitive를 재사용한다.
+`grammar/geo/centroid.js`는 명시 source geometry의 bounded planar/spherical centroid만 계산하고,
+`materialization/geo/annotationSource.js`는 exact geometry 및 원 LOD level/key를 해석한다.
+공통 feature metadata 조회는 `materialization/geo/features.js`, native Text/font 구성은
+`materialization/textItem.js`가 단일 소유한다. Projection ref는 coordinate에만 존재하며
+annotation은 원 feature 의미와 literal text를 보존한다. Typography/theme/selection/복원은
+기존 owner를 사용하고 renderer에는 concrete Text만 전달한다. 정확한 API는
+[GEOMETRY.md](contract/current/GEOMETRY.md#creategeoannotation)를 따른다.
+
+Geo camera의 private `grammar/geo/camera.js`는 명시 projection parameter와 operation의
+순수 변환만 담당한다. Pointer inverse와 composite eligibility는 기존 projection kernel,
+geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는 구면 quaternion과
+호환성 판단을 소유하고 숫자·양수 scale 보간은 `grammar/animation/values.js`를 재사용한다.
+초기 snapshot·viewport는 caller가 명시 전달하며 새 persisted camera나 renderer 상태를 만들지
+않는다. 공개 action/session/player 통합은 별도 후행 경계다.
+
+공개 Geo camera는 `actions/geo/camera.js`의 `navigateProjection` facade가 기존 Canvas와
+projection action을 orchestration한다. `inspection.getProjectionView`는 현재 resolved view의
+읽기 전용 snapshot만 제공하며 camera baseline이나 두 번째 semantic owner는 만들지 않는다.
+정확 operation과 resize/fit 수명은 [GEOMETRY.md](contract/current/GEOMETRY.md#navigateprojection)를 따른다.
+
+Geo 조건부 feature adapter 한 파일을 추가한 source 측정은1,040entries,
+6,721,113unpacked bytes와 Node22 packed1,473,594 / Node20·24 packed1,476,716bytes다.
+기존 package 한도를 넘은 파일 수와 byte 한도만1,040 /1,478,000 /6,723,000으로 변경했다.
+동일 minified bytes의 gzip 최댓값 Full727,574 / Basic383,848 / SVG20,200 /
+interaction101,352 / graph43,764는 기존 bundle 한도 안에 있어 이를 유지한다.
+
+### Geo source-owned Text anchors
+
+기존 Text source/encoding/config/layout owner를 그대로 유지하며 `materialization/geo/labels.js`가
+resource-backed feature identity·실제 rows·transient field view와 저장 소유권 검증을 연결한다.
+Full assembly가 `textSourceAnchors.js`의 constructor별 private Geo resolver에
+`geo/labelAnchors.js`를 한 번 등록한다. 이 math-only adapter는 기존 centroid/projection을
+재사용하며 Basic의 import graph에는 들어오지 않는다. Callback과 계산 anchor는 저장하지 않는다.
+공통 final-item reconciliation은 이미 식별된 resource Text의 exact lineage/rows를 보존하고
+기존 markOutput이 native Text effects와 concrete identity를 작성한다. 원 Geo annotation의
+단일 anchor 의미와 renderer의 graphicSpec 전용 입력은 바뀌지 않는다. 정확한 계약은
+[current/MARKS.md](contract/current/MARKS.md#createmarklabels)가 소유한다.
+
+Geo Text의 저장 content 검증은 Full의 기존 projection resource handler에 두어 graph 준비용
+패키지가 Text formatter·Geo 수학을 가져오지 않게 한다. Generic resource graph는 closed
+coordinate/source shape만 확인하고 등록된 kind handler에 의미 검증을 위임한다.
+
+Geo source labels는1043개 package entries이며 Node20·24 packed1,479,001,
+unpacked6,729,227bytes를 측정했다. 캡은1043/1,481,000/6,731,000으로 둔다.
+동일 minified bytes의 Node20·24 gzip은 Full728,161/Basic384,468/Graph44,044이며
+각각730,000/386,000/46,000으로 최소1,000bytes 여유를 둔다. SVG·interaction은
+기존 한도를 유지한다. Graph 입력 검증은 Full 등록 handler 분리 뒤 측정했다.

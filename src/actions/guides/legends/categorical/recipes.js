@@ -48,7 +48,7 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   if (requested !== undefined && requested !== "auto") return requested;
   const config = program.markConfigs[layer.id] ?? {};
   const bar = config.barAppearance ?? {};
-  const styleOwner = layer.mark.type === "bar" ? bar : layer.mark.type === "pyramid" ? config.pyramidPlot.stages : layer.mark.type === "ohlc" ? config.ohlcPlot.body : layer.mark.type === "waterfall" ? config.waterfallPlot.bars : config;
+  const styleOwner = layer.mark.type === "bar" ? bar : layer.mark.type === "pyramid" ? config.pyramidPlot.stages : layer.mark.type === "ohlc" ? config.ohlcPlot.body : layer.mark.type === "waterfall" ? config.waterfallPlot.bars : layer.mark.type === "geo" ? config.geo : config;
   const outline = styleOwner.outline;
   const strokeDetails = {
     ...requestedStrokeDetails(styleOwner, "Legend source"),
@@ -58,6 +58,10 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   const rectDetails = ["bar", "rect"].includes(layer.mark.type)
     ? { ...requestedRectStyleDetails(styleOwner, "Legend source"), ...strokeDetails }
     : strokeDetails;
+  if (layer.mark.type === "geo" && channels?.length === 1 && channels[0] === "color") {
+    if (layer.geoBinding.mode === "line") return { layers: [{ type: "line", length: 32, lineWidth: styleOwner.strokeWidth, ...strokeDetails }] };
+    if (layer.geoBinding.mode === "point") return { layers: [{ type: "point", size: styleOwner.radiusPx, stroke: styleOwner.stroke, strokeWidth: styleOwner.strokeWidth, ...strokeDetails }] };
+  }
   if (channels?.length === 1 && channels[0] === "stroke") {
     const strokeWidth = bar.strokeWidth ?? config.strokeWidth ?? ({
       point: 1,

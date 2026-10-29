@@ -2414,3 +2414,34 @@
   actions: createWaterfallPlot · editWaterfallPlot
   tasks: contributions and running balances
   url: /tutorials/waterfall/
+- id: geographic-annotations
+  example: /examples/geographic-annotations/
+  title: Labels stay attached to the original stops
+  image: /assets/images/geographic-annotations.png
+  alt: West, Central and East labels follow their keyed stop positions above a planar service route.
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/geographic-annotations-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Feature annotations retain the original source anchor as the map changes.
+  summary: Attach semantic text to geographic positions and original feature keys.
+  actions: createGeoAnnotation · editGeoAnnotation · createProjection
+  tasks: geometry annotation label map
+  url: /tutorials/geographic-marks/
+
+- id: geographic-fields
+  example: /examples/geographic-fields/
+  title: Stop area follows visitor counts
+  image: /assets/images/geographic-fields.png
+  alt: Three colored stops have radii 8, 16 and 24 pixels for visitor counts 1, 4 and 9 on a planar district and route.
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/geographic-fields-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Feature categories share native color scales and point areas are proportional to visitor counts.
+  summary: Map geographic feature properties or joined measurements to color and point area.
+  actions: createGeoPointMark · encodeColor · encodeSize
+  tasks: geometry choropleth map proportional symbol
+  url: /tutorials/geographic-marks/

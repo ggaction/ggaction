@@ -8,6 +8,7 @@ const OPTIONS = Object.freeze([
   "type",
   "domain",
   "range",
+  "emptyDomain",
   "interpolate", "whitePoint", "gamma", "midpoint", "base", "exponent", "constant",
   "clamp",
   "reverse",
@@ -37,7 +38,7 @@ export const setQuantitativeColorScale = /* @__PURE__ */ closedAction(
       next = next.editSemantic({ property: `scale[${args.id}].midpoint`, remove: true });
     }
     for (const property of [
-      "type", "domain", "range", "interpolate", "whitePoint", "gamma", "midpoint", "base", "exponent", "constant", "clamp", "reverse", "unknown"
+      "type", "domain", "range", "emptyDomain", "interpolate", "whitePoint", "gamma", "midpoint", "base", "exponent", "constant", "clamp", "reverse", "unknown"
     ]) {
       if (!Object.hasOwn(args, property)) continue;
       if (existing?.[property] === args[property]) continue;

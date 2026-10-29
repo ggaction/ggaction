@@ -293,12 +293,12 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const independentMark = candidates.length === 1 &&
-    ["area", "rect", "bar", "arc", "text", "rule", "tick"].includes(candidates[0].mark?.type);
+    ["area", "rect", "bar", "arc", "text", "rule", "tick", "geo"].includes(candidates[0].mark?.type);
   const seriesChannels = candidates.length === 1 && ["line", "point"].includes(candidates[0].mark?.type)
     ? ["color", "stroke", "shape", "strokeDash"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined) : [];
   const independentSeries = new Set(seriesChannels.map(channel => candidates[0].encoding[channel].field)).size > 1;
   const inferredChannels = independentSeries ? seriesChannels : independentMark
-    ? ["color", "stroke"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
+    ? (candidates[0].mark.type === "geo" ? ["color", "size"] : ["color", "stroke"]).filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
     : [];
   const channels = args.channels !== undefined ? args.channels
     : inferredChannels.length > 0 ? inferredChannels : undefined;

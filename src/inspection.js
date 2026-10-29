@@ -1,6 +1,10 @@
 import { resolveWaterfallPlot } from "./materialization/waterfall/plot.js";
 import { resolveOHLCPlot } from "./materialization/ohlc/plot.js";
 import { resolvePyramidPlot } from "./materialization/pyramid/plot.js";
+import { resolveProjectionResource } from "./selectors/projections.js";
+import { projectionParameters } from "./grammar/geo/projectionDefinition.js";
+import { resolveGraphicBounds } from "./layout/canvas.js";
+import { findCanvasGraphic } from "./materialization/graphicHierarchy.js";
 import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
 import { getMarkMaterializationStep } from "./materialization/marks/index.js";
 import { appearanceContext, markAppearance, guideAppearance } from "./actions/theme/provenance.js";
@@ -47,7 +51,7 @@ import { findCoordinate } from "./selectors/coordinates.js";
 import { inferDatasetSchema } from "./grammar/datasetSchema.js";
 import { BUILTIN_ACTION_DESCRIPTOR_RECORDS } from "./inspectionDescriptors.js";
 import { EXPRESSION_FUNCTIONS } from "./grammar/expressionFunctions.js";
-import { ownRecord } from "./core/ownData.js";
+import { ownRecord, ownArray } from "./core/ownData.js";
 
 /** Read the immutable, closed expression registry without exposing execution. */
 export function getExpressionFunctions(options = {}) {
@@ -121,6 +125,20 @@ export function getPlotComposition(program, { target, childPath } = {}) {
   requireProgram(program);
   if (isPlainObject(target)) { childPath = target.childPath; target = target.id; }
   return cloneAndFreeze(plotComposition(atChildPath(program, childPath), target));
+}
+
+/** Snapshot the native projection view without creating or retaining camera state. */
+export function getProjectionView(program, options = {}) {
+  requireProgram(program);
+  ownRecord(options, "Projection view options");
+  if (Object.keys(options).some(key => !["target", "childPath"].includes(key)) ||
+      Object.values(options).some(value => value === undefined)) throw new TypeError("Projection view options require defined target or childPath values.");
+  if (options.childPath !== undefined) ownArray(options.childPath, "Projection view childPath");
+  const current = atChildPath(program, options.childPath);
+  const resource = resolveProjectionResource(current, options.target);
+  return cloneAndFreeze({ projection: { kind: "projection", id: resource.id, revision: resource.revision },
+    parameters: projectionParameters(resource),
+    viewport: findCanvasGraphic(current) === undefined ? null : resolveGraphicBounds(current) });
 }
 
 export function getDatasetSchema(program, { data, childPath } = {}) {

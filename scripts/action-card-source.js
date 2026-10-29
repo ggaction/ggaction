@@ -91,6 +91,7 @@ function operationAndSubject(name) {
   if (name === "reorderCompositionChildren") {
     return { operation: "edit", subject: "CompositionChildren" };
   }
+  if (name === "navigateProjection") return { operation: "edit", subject: "Projection" };
   if (name === "fitCanvas") return { operation: "layout", subject: "Canvas" };
   const operation = operationPrefixes.find(prefix => name.startsWith(prefix));
   if (!operation) throw new Error(`Compact card operation is missing for ${name}.`);
@@ -188,6 +189,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createGeoAnnotation", "editGeoAnnotation"].includes(action.name)) return {
+    prerequisites: ["Canvas", "Geo coordinate", "explicit position or keyed geographic feature"], owns: ["geographic annotation"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate"]
+  };
   if (["createGeoLODData", "editGeoLODData"].includes(action.name)) return {
     prerequisites: ["explicit keyed geometry levels and parent mappings"], owns: ["geographic detail resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target"]
@@ -200,8 +205,8 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: ["Canvas", "Geo coordinate", ...(action.name.endsWith("Graticule") ? [] : ["compatible geometry source"])], owns: ["geographic mark"],
     idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate", ...(action.name.endsWith("Graticule") ? [] : ["geometry"])]
   };
-  if (["createProjection", "editProjection"].includes(action.name)) return {
-    prerequisites: action.name === "editProjection" ? ["existing named projection"] : ["explicit native projection type"],
+  if (["createProjection", "editProjection", "navigateProjection"].includes(action.name)) return {
+    prerequisites: action.name !== "createProjection" ? ["existing named projection"] : ["explicit native projection type"],
     owns: ["projection resource"], idOptions: [action.name === "createProjection" ? "id" : "target"]
   };
   if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {

@@ -56,6 +56,18 @@ physical revision. The result reports the resolved ID and normalized schema.
 it is different from a known schema whose `fields` array is empty. Use
 `childPath` to address a dataset inside a composition.
 
+## Read a projection view
+
+`getProjectionView(program, { target?, childPath? })` returns a frozen snapshot:
+`{projection:{kind:"projection",id,revision},parameters,viewport}`. Target inference follows the
+current or unique named projection. `childPath` addresses an explicit composition child. The
+parameters include resolved scale and translation for a fitted projection. The viewport is the
+current plot rectangle in logical CSS pixels, or `null` if no Canvas exists yet.
+
+Import the query from `ggaction/inspection`. Save its `parameters` and supply them as the explicit
+`initial` value of [navigateProjection reset](./api/geometry.md#navigateprojection). The snapshot
+adds no action or persistent camera state and does not restore an old live fit dependency.
+
 ## Expression functions
 
 `getExpressionFunctions({ registry? })` reads the immutable closed expression

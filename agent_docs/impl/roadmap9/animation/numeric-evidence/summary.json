@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "status": "private-numeric-kernel-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Private numeric kernel only; STEP-061/062 and public animation entry point remain incomplete.",
+  "tests": {
+    "node20": 9,
+    "node22": 9,
+    "node24": 9,
+    "discovery": 16,
+    "colorBoundaryCombinations": 16128
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "packageDryMeasure": {
+    "entries": 1060,
+    "packedBytes": 1509975,
+    "unpackedBytes": 6889438
+  },
+  "remaining": [
+    "typed item identity and track planner",
+    "semantic coordinate interpolation",
+    "player and injected clock",
+    "offline codec and four renderers",
+    "interaction and lifecycle integration"
+  ],
+  "logs": [
+    {
+      "file": "animation-values-final-coverage.log.gz",
+      "sha256": "743ff0a94a3ae0d1907fb06947d93717e85950d675805c4855ab02c6d0aaa515"
+    },
+    {
+      "file": "animation-values-final-node20.log.gz",
+      "sha256": "59ceefdcb54c526e9a2cbdbbd722d76b36ca962ad5d657bee0f0ec9d50920918"
+    },
+    {
+      "file": "animation-values-final-node24.log.gz",
+      "sha256": "4d2bbef797b83d0e93ae34a297b85a91736d7e3c5d1b72aa661f118af31e78df"
+    },
+    {
+      "file": "animation-values-final-discovery.log.gz",
+      "sha256": "ecc09cda9fec47c1a44a5d34cc98ab08259a30dd46b49902924c86cbfef70337"
+    }
+  ]
+}

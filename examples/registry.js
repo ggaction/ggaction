@@ -350,6 +350,12 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "responsive-guides/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "responsive-guides", width: 400, height: 320 } } }
   }),
+  example({ id: "geographic-fields", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("fields"), browser: { path: "browser-host/?chart=geographic-fields", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-fields", width: 640, height: 480 } } } }),
+  example({ id: "geographic-annotations", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("annotations"), browser: { path: "browser-host/?chart=geographic-annotations", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-annotations", width: 640, height: 480 } } } }),
   example({ id: "geographic-marks", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
     createProgram: () => createGeographicMarks("planar"), browser: { path: "browser-host/?chart=geographic-marks", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "geographic-marks", width: 640, height: 480 } } } }),
