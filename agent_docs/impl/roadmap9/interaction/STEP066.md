@@ -285,3 +285,7 @@ Node20 최초명령은 runtime/types가 통과한 뒤 interaction119,991gzip의 
 Node20packed1,504,715/unpacked6,842,266이며 unpacked만6,843,000으로 올리고 기존 entries/packed
 한도는 유지한다. 최초 async-preview 기대·잘못된fixture·snippet hash·package/bundle 한도 실패는
 최종 source pin 문서와 함께 preview-evidence에 별도 기록한다. 전체066/067/077 완료는 아니다.
+
+Source `63df4901c`를 push한 뒤 source-pinned49/49, built172pages/1535LLM 및4width의
+overflow0/Axe0을 확인하고320/1440 화면을 직접 검토했다. [F qualification](preview-evidence/qualification.json)이
+정확 fingerprint·동일tar·원본실패·수정후 owning checks를 보존한다.
