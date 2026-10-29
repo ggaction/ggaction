@@ -94,6 +94,7 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
     const ticks=axis.ticksAndLabels;
     if(ticks&&typeof ticks==='object'){
       if((statistical||hierarchicalAxes||cartesianAxes)&&ticks.labels&&typeof ticks.labels==='object'){
+        ticks.labels.responsive=false;
         ticks.labels.flushThreshold=action==='createRugPlot'||index%2===0?'auto':4;
         if(axis.title&&typeof axis.title==='object')axis.title.offset={from:'labels',gap:12+index%3*4};
       }

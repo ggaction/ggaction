@@ -25,6 +25,12 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "streamgraph": ["canvas", "stream"],
+  "trail": ["canvas", "trail"],
+  "trail-constant-width": ["canvas", "trail"],
+  "table": ["canvas", "plot-main", "table"],
+  "geographic-fields": ["canvas", "geo-shape", "geo-line", "geo-point"],
+  "geographic-annotations": ["canvas", "geo-shape", "geo-line", "geo-point", "west-label", "central-label", "east-label"],
   "waterfall": ["canvas","waterfall"],
   "waterfall-labels": ["canvas","waterfall"],
   "waterfall-no-connectors": ["canvas","waterfall"],
@@ -460,6 +466,60 @@ function isCanvasOwned(id) {
     id === "chartTitle" || id === "chartSubtitle";
 }
 
+function assertTableHierarchy(program, drawOrder, expected) {
+  const { objects } = program.graphicSpec;
+  const table = objects.table;
+  const dataset = program.semanticSpec.datasets.find(data => data.id === "observations");
+  assert.deepEqual(program.graphicSpec.order, ["canvas"]);
+  assert.equal(objects.canvas.type, "canvas");
+  assert.deepEqual(objects.canvas.children, ["plot-main"]);
+  assert.deepEqual(objects["plot-main"].children, ["table"]);
+  assert.equal(findGraphicParent(program.graphicSpec, "canvas"), undefined);
+  assert.equal(findGraphicParent(program.graphicSpec, "plot-main").id, "canvas");
+  assert.equal(findGraphicParent(program.graphicSpec, "table").id, "plot-main");
+  assert.equal(table.type, "collection");
+  assert.deepEqual(table.items, []);
+  assert.deepEqual(table.clip, { x: 20, y: 20, width: 320, height: 180 });
+  assert.equal(table.children.length, 12);
+  assert.equal(new Set(table.children).size, 12);
+  assert.deepEqual(drawOrder, [...expected, ...table.children]);
+
+  // Row-major typed cells, not allocation-dependent private object ID hashes.
+  const scalar = value => JSON.stringify(["scalar", [["string", value]]]);
+  const fields = ["name", "amount", "trend"];
+  const rows = [["header", null], ["body", "a"], ["body", "b"], ["footer", null]];
+  const roles = [
+    [["rect", "body"], ["text", "label"]],
+    [["rect", "body"], ["rect", "bar"], ["text", "label"]],
+    [["rect", "body"], ["path", "sparkline:0"]],
+    [["rect", "body"]]
+  ];
+  const keys = new Set();
+  for (const [index, id] of table.children.entries()) {
+    const row = Math.floor(index / 3), column = index % 3;
+    const [role, rowId] = rows[row];
+    const field = fields[column], cell = objects[id];
+    assert.equal(findGraphicParent(program.graphicSpec, id).id, "table");
+    assert.equal(cell.type, "collection");
+    assert.deepEqual(cell.children ?? [], []);
+    assert.deepEqual(cell.clip, { x: [20, 120, 220][column], y: 20 + row * 28, width: [100, 100, 120][column], height: 28 });
+    const childRoles = role === "body" ? roles[column === 0 ? 0 : column]
+      : role === "footer" && column !== 1 ? roles[3] : roles[0];
+    assert.deepEqual(cell.items.map(item => [item.type, item.identity.role]), childRoles);
+    const grain = JSON.stringify(["array", ["table-cell", role, rowId === null ? null : scalar(rowId), scalar(field)]]);
+    const key = JSON.stringify([[], "table", "item", [dataset.logicalId, grain]]);
+    const rowKeys = rowId !== null ? [scalar(rowId)]
+      : role === "footer" && column === 1 ? [scalar("a"), scalar("b")] : [];
+    for (const item of cell.items) {
+      assert.equal(item.identity.key, key);
+      assert.equal(item.identity.topology, "");
+      assert.deepEqual(item.identity.lineage, { data: "observations", logicalDataId: dataset.logicalId, revision: 0, rowKeys });
+    }
+    keys.add(key);
+  }
+  assert.equal(keys.size, 12);
+}
+
 test("locks the complete public graphic hierarchy inventory", () => {
   assert.deepEqual(
     Object.keys(EXPECTED_DRAW_ORDER).sort(),
@@ -515,6 +575,10 @@ test("locks the complete public graphic hierarchy inventory", () => {
           : undefined;
       if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
       else assert.equal(drawOrder.length, expectedDrawLength);
+      continue;
+    }
+    if (chart.id === "table") {
+      assertTableHierarchy(program, drawOrder, expected);
       continue;
     }
     if (chart.id === "font-assets") {
