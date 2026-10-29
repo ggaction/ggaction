@@ -1,3 +1,4 @@
+import { geoScaleValues } from "./appearance.js";
 import { resolveGeoMark } from "./mark.js";
 import { ownRecord } from "../../core/ownData.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
@@ -28,7 +29,13 @@ function validateBindings(program, resource) {
     if (!same(resource.result, expected.result)) throw new TypeError("Stored projection fit disagrees with its geometry and options.");
   }
   const coordinates = new Set(program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo" && coordinate.projection.id === resource.id).map(coordinate => coordinate.id));
-  for (const layer of program.semanticSpec.layers) if (coordinates.has(layer.coordinate)) resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id]?.geo);
+  for (const layer of program.semanticSpec.layers) if (coordinates.has(layer.coordinate)) {
+    resolveGeoMark(program, layer, program.materializationConfigs.marks[layer.id]?.geo, program.resolvedScales, { appearance: false });
+    for (const [channel, encoding] of Object.entries(layer.encoding ?? {})) {
+      if (program.resolvedScales[encoding.scale] === undefined) throw new TypeError("Stored geographic mapping requires a resolved scale.");
+      geoScaleValues(program, { layer, encoding, channel });
+    }
+  }
 }
 
 export const projectionResourceHandler = Object.freeze({ validateStored, validateBindings });

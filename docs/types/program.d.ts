@@ -2215,6 +2215,8 @@ export interface ProjectionResource {
   readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
   readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
 }
+/** Field color is authored through encodeColor; point area through encodeSize.
+ * Direct fill/stroke/radius edits reject conflicting active field mappings. */
 export interface GeoMarkStyleOptions {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
   readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
@@ -6898,8 +6900,10 @@ export class ChartProgram {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
+  /** Ordinary color also accepts Full Geo shape/point/line feature fields. */
   encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
   encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  /** Ordinary size also accepts Full Geo point feature fields, in CSS-pixel area; radiusDeg is incompatible. */
   encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
   encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
   encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;

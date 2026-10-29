@@ -1,0 +1,306 @@
+{
+  "scope": "Ordinary geographic feature color, point area and native legends",
+  "base": "79d72577da02c66654fc69745a9a26a5d829fa1f",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "finalGeo": {
+      "tests": 156,
+      "pass": 156
+    },
+    "mixedNativeGeo": {
+      "tests": 7,
+      "pass": 7
+    },
+    "newGeoOwnerCoverage": {
+      "tests": 155,
+      "pass": 155,
+      "lines": 100,
+      "minimumBranches": 96.15,
+      "functions": 100,
+      "floor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "nativeScaleCoverage": {
+      "tests": 193,
+      "pass": 193,
+      "lines": 96.15,
+      "branches": 95.45,
+      "functions": 100
+    },
+    "sourcePackageTypesCardBoundaries": {
+      "initial": {
+        "tests": 58,
+        "pass": 57,
+        "failure": "Stale realistic discovery count 49; new file makes 50."
+      },
+      "repair": {
+        "tests": 47,
+        "pass": 47
+      }
+    },
+    "actualData": {
+      "tests": 16,
+      "pass": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3
+    },
+    "primitive": {
+      "tests": 4,
+      "pass": 4
+    },
+    "renderers": {
+      "tests": 8,
+      "pass": 8,
+      "backends": [
+        "canvas",
+        "svg",
+        "png",
+        "pdf"
+      ]
+    },
+    "browser": {
+      "tests": 4,
+      "pass": 4,
+      "backends": [
+        "canvas",
+        "svg"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "inventory": "pending",
+    "sourceDocs": {
+      "initial": {
+        "tests": 201,
+        "pass": 198,
+        "failures": [
+          "Uncommitted example source pin",
+          "Duplicated manual Liquid link and dependent LLM link check"
+        ]
+      },
+      "repair": {
+        "tests": 201,
+        "pass": 200,
+        "remaining": "Uncommitted example source pin"
+      },
+      "final": "pending"
+    },
+    "builtDocs": "pending"
+  },
+  "package": {
+    "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
+    "entries": 1035,
+    "packedBytes": 1468209,
+    "unpackedBytes": 6697913,
+    "limits": {
+      "entries": 1035,
+      "packedBytes": 1471000,
+      "unpackedBytes": 6698000
+    },
+    "inputParity": {
+      "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
+      "files": 1035,
+      "canonicalPackageTransforms": true,
+      "mismatches": []
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
+        "cases": [
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 960,
+            "minifiedBytes": 2534322,
+            "gzipBytes": 726197
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383859
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 109154
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-fields"
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
+        "cases": [
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 960,
+            "minifiedBytes": 2534322,
+            "gzipBytes": 724407
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383028
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 108525
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43604
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-fields"
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
+        "cases": [
+          {
+            "id": "geographic-encodings/fields-guides-and-atomic-edits",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/fresh-process-field-source-revision",
+            "status": "passed"
+          },
+          {
+            "id": "geographic-encodings/four-renderer-feature-area-parity",
+            "status": "passed"
+          }
+        ],
+        "bundles": {
+          "ggaction": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 960,
+            "minifiedBytes": 2534322,
+            "gzipBytes": 726197
+          },
+          "ggaction/basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 560,
+            "minifiedBytes": 1315392,
+            "gzipBytes": 383859
+          },
+          "ggaction/svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          "ggaction/interaction": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335406,
+            "gzipBytes": 109154
+          },
+          "ggaction/graph": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146183,
+            "gzipBytes": 43764
+          }
+        },
+        "types": "strict Full/Basic geographic encodings consumer passed",
+        "snippets": [
+          "geographic-feature-fields"
+        ]
+      }
+    ]
+  },
+  "repairs": [
+    "Native quantitativeColor action now forwards explicit emptyDomain accepted by its grammar; ordinary Point empty-source regression proves the shared contract.",
+    "One geometry source owner distinguishes logical features from drawable features; null/empty source identities remain available to inspection while visual domains use drawable features.",
+    "Canonical materializationConfigs reads work for both ChartProgram and plain candidate preflight states.",
+    "New test fixture corrections are preserved as original logs; no baseline renderer or old behavior assertions were weakened."
+  ],
+  "limitations": [
+    "No fresh full normal/global coverage claim; owner coverage and affected regressions are separate.",
+    "Conditional resource-grain fields, feature and graticule labels, and native camera remain required subsequent Geo scope.",
+    "Session LOD logical-key availability and Geo annotation commands are peer-owned integration obligations.",
+    "Parent owns final combined realistic-lifecycle-factor-effects, realistic-scenario-generator and realistic-scenario-generation-isolation checks."
+  ]
+}

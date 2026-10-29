@@ -44,7 +44,7 @@ export const MARK_GRAPHIC_TYPES = Object.freeze({
   geo: Object.freeze(["collection"])
 });
 
-export const CONTINUOUS_COLOR_MARK_TYPES = Object.freeze(["point", "line", "bar", "rect", "text", "area", "arc", "tick", "contour", "calendar"]);
+export const CONTINUOUS_COLOR_MARK_TYPES = Object.freeze(["point", "line", "bar", "rect", "text", "area", "arc", "tick", "contour", "calendar", "geo"]);
 
 export const ENCODING_CHANNELS = Object.freeze([
   "x",
@@ -275,12 +275,12 @@ export const AXIS_RESOURCE_CHANNELS = Object.freeze(["x", "y", "theta", "radius"
 // Shared target policy for authoring and read-only action inspection.
 const marks = (...types) => Object.freeze(types);
 export const APPEARANCE_MARK_TYPES = Object.freeze({
-  encodeColor: marks('point', 'line', 'bar', 'area', 'arc', 'rect', 'text'),
+  encodeColor: marks('point', 'line', 'bar', 'area', 'arc', 'rect', 'text', 'geo'),
   encodeStroke: marks('point', 'line', 'area', 'bar', 'rect', 'arc', 'rule', 'tick'),
   encodeOpacity: marks('point', 'rule', 'line', 'area', 'bar', 'rect'),
   encodeStrokeWidth: marks('rule', 'line', 'rect'),
   encodeStrokeDash: marks('line', 'rule'),
-  encodeSize: marks('point'),
+  encodeSize: marks('point', 'geo'),
   encodeShape: marks('point'),
   encodeAngle: marks('point', 'tick')
 });

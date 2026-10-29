@@ -3648,6 +3648,12 @@ prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명
 concrete identity를 읽도록 분리되어 있다. `materialization/geo/mark.js`는 동일 stream을 명시 실행하여
 collection의 point/path와 exact source lineage를 생성한다. 기존 data/coordinate materialization planner가
 geometry→fitted projection→mark union을 중복 없이 실행한다. Renderer 입력은 계속 concrete graphicSpec만이다.
+`materialization/geo/appearance.js`는 source owner가 정한 drawable feature의 field만 transient row view로
+공유 encoder/scale mapper에 전달한다. Dataset resource나 새 field 문법을 만들지 않고 ordinary
+layer.encoding을 단일 소유자로 유지한다. 원본 source-only logical item은 null/empty feature도
+보존하며 visual scale/item eligibility와 구분한다. Geo resource action의 final 후보 preflight는 모든
+공유 scale 후보를 먼저 계산하고 기존 planner가 scale→mark→guide union을 한 번 실행한다.
+선택 channel 값은 기존 semantic row reader와 temporal normalization owner를 공유한다.
 
 ### Interaction의 원자 authoring command 경계
 

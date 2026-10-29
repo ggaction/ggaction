@@ -14,7 +14,16 @@ export const annotations = [
   { id: "central-label", anchor: { type: "feature", geometry: "stops", key: 1 }, text: "Central", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" },
   { id: "east-label", anchor: { type: "feature", geometry: "stops", key: 2 }, text: "East", dy: -16, align: "center", fontSize: 18, fill: "#0f172a" }
 ];
+export const measuredCities = { ...cities, features: cities.features.map((feature, index) => ({ ...feature,
+  properties: { ...feature.properties, visitors: [1, 4, 9][index] } })) };
+export const fieldMappings = [
+  ["encodeColor", { target: "geo-shape", field: "name", scale: { id: "district-color", range: ["#bfdbfe"] } }],
+  ["encodeColor", { target: "geo-line", field: "name", scale: { id: "route-color", range: ["#7c3aed"] } }],
+  ["encodeColor", { target: "geo-point", field: "name", scale: { id: "stop-color", range: ["#2563eb", "#0d9488", "#dc2626"] } }],
+  ["encodeSize", { target: "geo-point", field: "visitors", scale: { id: "stop-size", domain: [1, 9], range: [64 * Math.PI, 576 * Math.PI] } }]
+];
 export const variants = [
+  { id: "fields", chart: "geographic-fields", title: "Stop area follows visitor counts" },
   { id: "annotations", chart: "geographic-annotations", title: "Labels stay attached to the original stops" },
   { id: "planar", chart: "geographic-marks", title: "A district, stops and service route" },
   { id: "graticule", chart: "geographic-grid", title: "Longitude and latitude on one projection" }

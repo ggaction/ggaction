@@ -1,3 +1,4 @@
+import { geoFeatureDataset } from "../../../../materialization/geo/appearance.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { resolveSizeShapeMapping } from "../../../../grammar/legendCombinations.js";
 import { requireDataset } from "../../../../selectors/datasets.js";
@@ -20,7 +21,7 @@ function isCategoricalTarget(layer) {
       channel => layer.encoding?.[channel]?.scale !== undefined
     );
   }
-  return ["bar", "area", "arc", "rect", "rule", "tick", "text"].includes(
+  return ["bar", "area", "arc", "rect", "rule", "tick", "text", "geo"].includes(
     layer?.mark?.type
   ) && ["color", "stroke"].some(
     channel => layer.encoding?.[channel]?.scale !== undefined
@@ -52,7 +53,7 @@ export const sameValues = sameOrderedValues;
 
 function resolveLegendKind(program, layer, requestedChannels) {
   if (sameValues(requestedChannels, ["stroke"])) return "stroke";
-  if (["bar", "area", "arc", "rect", "text"].includes(layer.mark.type)) return "color";
+  if (["bar", "area", "arc", "rect", "text", "geo"].includes(layer.mark.type)) return "color";
   if (
     sameValues(requestedChannels, ["color"]) &&
     (layer.mark.type === "point" || program.guideConfigs.legend?.color?.target === layer.id ||
@@ -124,7 +125,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   const scales = encodings.map(item => item.encoding.scale);
   const resolved = resolveOrdinalScales(program, scales);
   const field = [...fields][0];
-  const transform = requireDataset(program, layer.data).transform?.[0];
+  const dataset = layer.mark.type === "geo" ? geoFeatureDataset(program, layer) : requireDataset(program, layer.data);
+  const transform = dataset.transform?.[0];
   const horizon = field === transform?.as?.color ? horizonLegendPresentation(transform) : undefined;
   let linked;
   if (order?.channel !== undefined) {
@@ -142,7 +144,7 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
     title: nonEmptyString(requestedTitle ?? horizon?.title ?? field, "Legend title"),
     ...(horizon === undefined ? {} : { defaultLabelMap: horizon.labelMap }),
     domain: resolveLegendOrderDomain(resolved.domain, order, linked,
-      order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field)),
+      order?.values === undefined ? undefined : readNominalField(dataset.values, field)),
     ...(sizeShape ? {combine:"size-shape",...resolveSizeShapeMapping({layer,
       scales:program.resolvedScales,order,rows:requireDataset(program,layer.data).values})} : {})
   };

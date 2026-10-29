@@ -123,7 +123,7 @@ export function resolveColorLayout(layer, requested, barGrain, field) {
         : undefined
   );
 
-  if (["point", "line", "rect", "text"].includes(layer.mark.type) && layout !== undefined) {
+  if (["point", "line", "rect", "text", "geo"].includes(layer.mark.type) && layout !== undefined) {
     throw new Error(`Color layout is not supported for ${layer.mark.type} marks.`);
   }
   if (barGrain === BAR_GRAINS.centered && layout !== "overlay") {

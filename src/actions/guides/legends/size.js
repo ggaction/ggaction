@@ -47,7 +47,7 @@ import { normalizeLegendOverflow } from "./categorical/options.js";
 export { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE };
 
 export function isSizeLegendPoint(layer) {
-  return layer?.mark?.type === "point" &&
+  return (layer?.mark?.type === "point" || layer?.mark?.type === "geo" && layer.geoBinding.mode === "point") &&
     layer.encoding?.size?.scale !== undefined;
 }
 

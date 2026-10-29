@@ -18,3 +18,9 @@ export const annotationText = [
   { x: 120, y: 114, text: "West" }, { x: 400, y: 204, text: "Central" }, { x: 520, y: 314, text: "East" }
 ].map(position => ({ type: "text", properties: { ...position, fill: "#0f172a", opacity: 1, fontSize: 18,
   fontFamily: "sans-serif", fontWeight: "normal", textAlign: "center", textBaseline: "alphabetic", rotation: 0 } }));
+
+// A linear area range [64π, 576π] at visitor counts [1, 4, 9] gives radii [8, 16, 24].
+export const measuredRegion = { ...region, properties: { ...region.properties, fill: "#bfdbfe" } };
+export const measuredRoute = { ...route, properties: { ...route.properties, stroke: "#7c3aed" } };
+export const measuredPoints = points.map((point, i) => ({ ...point, properties: { ...point.properties,
+  fill: ["#2563eb", "#0d9488", "#dc2626"][i], radius: [8, 16, 24][i] } }));

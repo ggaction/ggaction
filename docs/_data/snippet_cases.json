@@ -477,5 +477,15 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "geographic-feature-fields",
+    "file": "api/geometry.md",
+    "contains": "population: 100, region: \"West\"",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "The two inline places supply their own population measurements.",
+    "rendering": "authoring-only"
   }
 ]

@@ -11625,7 +11625,9 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "removeEncoding",
+        "editGeoPointMark"
       ],
       "editableVia": [
         "removeEncoding"
@@ -12104,7 +12106,9 @@
       ],
       "wraps": [
         "editSemantic",
-        "createScale"
+        "createScale",
+        "removeEncoding",
+        "editGeoPointMark"
       ],
       "editableVia": [
         "removeEncoding"

@@ -500,6 +500,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-geographic-annotations.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-encodings.test.js"
       }
     ],
     "grammar": [

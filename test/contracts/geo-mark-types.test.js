@@ -18,6 +18,11 @@ const p=chart().createCoordinate({type:'geo',projection:'map'}).createGeoPointMa
  .editGeoPointMark({target:{childPath:['left'],id:'cities'},radiusPx:5}).createGeoShapeMark({fill:'orange',blend:'multiply',outline:{color:'white',width:2}})
  .editGeoShapeMark({strokeWidth:0}).createGeoLineMark({interpolation:'great-circle',routeHint:[0,30]}).editGeoLineMark({routeHint:false,interpolation:'source-segment'})
  .createGraticule({stepDeg:[10,20],extentDeg:[[-180,-80],[180,80]],precisionDeg:2.5}).editGraticule({opacity:0}).editCoordinate({target:'main',projection:'other'});
+p.encodeColor({target:'districts',field:'category',scale:{id:'categories',unknown:'gray'}})
+ .encodeColor({target:'routes',field:'value',fieldType:'quantitative',scale:{id:'traffic',type:'threshold',domain:[10],range:['blue','red']}})
+ .encodeSize({target:'places',field:'population',scale:{id:'areas',range:[0,900]}})
+ .createLegend({target:'places',channels:['color','size']})
+ .encodeSize({target:{childPath:['left'],id:'places'},value:100});
 basic().createCoordinate({type:'polar'});
 declare const coordinate:SemanticCoordinate;
 if(coordinate.type==='geo') { const id:string=coordinate.projection.id; void id; }

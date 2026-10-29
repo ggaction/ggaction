@@ -324,10 +324,39 @@ Remove a mark with removeMark. Live geometry/projection references restrict remo
 cascade; remove consuming marks/coordinates and authored fit projections explicitly first.
 
 Hconcat/vconcat and scoped edits preserve child identities. Implicit row facet/repeat is incompatible with
-resource-owned geometry. Current marks expose native style; table joins, field color/size and geographic
-label anchors are not accepted by these options. These are separate consumer integration obligations.
+resource-owned geometry. Native style is set by these mark options; field mapping uses the existing
+encoding actions described below, and semantic labels use geographic annotation actions.
 Generated features/points share a cumulative10000 item ceiling and stream work is bounded at10000000;
 source normalization retains its separate configured limits.
+
+## Feature color and size
+
+`encodeColor` accepts ordinary nominal/ordinal/quantitative/temporal fields on Geo shape, point and line.
+It uses the existing field/scale contract: shape/point fill or line stroke, native temporalUnit, continuous
+and discretized scales, explicit unknown and existing range/transform behavior. Aggregate and color
+layout are incompatible. Shape line parts keep fill none. `encodeSize` accepts quantitative, nominal
+or ordinal fields on Geo point only; mapped CSS-pixel area becomes radius `sqrt(area/pi)`. It cannot
+coexist with geographic radiusDeg. First change the mark to radiusPx when switching those units.
+
+Fields read original feature properties, a join's current matching table row, or the active LOD level.
+MultiPoint parts share one feature value and identity. Null/empty geometry is excluded from scale values
+and concrete items; its logical source record remains inspectable. Projection clipping and hidden
+backside geometry do not filter domains. Missing/invalid fields require an explicit scale.unknown;
+otherwise authoring, resource revision and editable restore reject them. No zero is synthesized.
+
+Native scale create/edit/remove and categorical/gradient/interval/size legends are shared. Omitted
+createLegend channels infer existing color and size as separate blocks. A constant `{value}` encoding
+removes its field binding and affected legend, restores the native mark style and preserves other
+channels. Direct mark fill (shape/point), stroke (line), or radius edits conflict with the corresponding
+field mapping; removeEncoding or a constant encoder resolves the conflict explicitly. Removing an
+encoding alone restores the dormant native style. Conditional resource-grain mapping is unsupported.
+
+Source geometry, join table and active LOD changes preflight all affected fields and shared scale
+candidates before primitive writes, then materialize the scale/mark/guide union once. Projection and
+Canvas changes retain pixel-area semantics. Selection channels expose semantic values, including
+normalized temporal values, while fields and original lineage stay intact. Scoped concat edits and
+offline restoration retain the same meaning. Evidence: `test/unit/geo/encodings.test.js`,
+`test/unit/geo/encoding-lifecycle.test.js` and the geographic field renderer/installed consumers.
 
 ## `createGeoShapeMark`
 

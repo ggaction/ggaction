@@ -607,3 +607,57 @@ Field encodings·Geo labels/guides·camera와 별도 session availability 합산
 확인했다. Built172페이지/1525 selective artifacts와 전체320/390/768px containment,
 검색·접근성도 통과했다. Source pin만 갱신한 최종 build에서 링크·hash를 다시 확인하며,
 새 runtime이나 타입 변경 없이 동일 qualified tar의1033개 entry byte parity를 유지한다.
+
+## Geo feature appearance와 guide 연결 계약
+
+STEP044/045의 choropleth와 proportional-symbol 소비자를 기존 `encodeColor`/`encodeSize`에
+연결한다. 새 field/scale 문법이나 가짜 dataset은 추가하지 않는다. `layer.encoding`이 field,
+fieldType, scale을 단일 소유하며 geometry ref는 기존 `geoBinding.geometry`만 사용한다.
+Source·join·현재 LOD level의 feature가 단위이고 MultiPoint/여러 path part도 feature당 한 값이다.
+Null/empty geometry는 값 수집과 concrete item 모두에서 제외하지만 기존 source selection과 inspection의 논리 feature는 보존한다. 한 source owner가 전체 features와 drawableFeatures를 결정하며 모든 visual consumer가 후자를 공유한다. Projection clipping은
+presentation이며 domain을 바꾸지 않는다. 최초 feature 순서와 typed logical key를 보존한다.
+
+Color는 shape/point/line의 기존 nominal/ordinal/quantitative/temporal scale을 사용한다.
+Shape/point는 fill, line은 stroke에 적용한다. Aggregate/layout은 적용 불가이며 명시 오류다.
+고정 `{value}` 전환은 기존 removeEncoding과 Geo mark editor를 감싼 자식으로 실행한다.
+Size는 Geo point의 CSS pixel area이며 `sqrt(area/pi)` radius를 쓴다. Geographic `radiusDeg`와
+함께 쓰면 거리/면적 의미가 충돌하므로 먼저 명시 radiusPx로 전환해야 한다. Size의 numeric,
+categorical, transformed/discrete scale과 unknown/empty domain은 기존 owner가 결정한다.
+
+Join 미매칭 feature는 geometry와 identity를 보존한다. Field가 missing이면 명시한 scale.unknown을
+공유 mapper가 적용하고, fallback이 없거나 잘못된 값이면 상태/trace 변경 전에 오류다. 별도
+silent row dropping/default zero는 없다. Ordinary field mapping을 먼저 닫으며 AST conditional
+resource-grain 연결은 뒤따르는 Geo consumer matrix에 명시해 전체 범위에서 삭제하지 않는다.
+
+Consumer matrix: 기존 scale create/edit/remove·automatic domain·categorical/gradient/size legend,
+encoding 제거·상수 전환·공유 scale sibling union·geometry/table/LOD revision·projection/Canvas
+변경·selection/highlight·codec·scoped composition을 검증한다. Source candidate resource와
+모든 scale 후보를 preflight한 뒤 scale→mark→guide union을 한 번 실행한다. Renderer는 기존
+concrete circle/path만 읽는다. 필드 labels와 geographic graticule labels는 다음 의미 개념으로,
+camera046/현재 frame/route와 interaction 연동은 후행 owner 계약으로 계속 추적한다.
+
+
+### Feature appearance checkpoint 검증
+
+Geo source/join/LOD의 ordinary color와 point area를 기존 scale와 legend owner에 연결했다.
+Geometry 후보 전체의 필드와 scale를 preflight하고 공유 native mark까지 단일 plan으로 갱신한다.
+빈 native quantitative color scale가 명시 `emptyDomain`을 선언해도 내부 action의 closed 옵션과
+전달 목록에서 빠졌던 기존 결함을 함께 수리했다. Native Point의 빈 source revision 회귀로
+같은 의미를 검증했으며 Geo만의 예외나 별도 fallback을 만들지 않았다.
+
+최종 Geo·빈 domain 회귀156/156, native scale193/193, 새 혼합 native/Geo7/7, 현재
+카탈로그·타입·package 경계47/47이 통과했다. 새 Geo owner는 lines100, branches96.15 이상,
+functions100이며 기존95/90/100 floor를 유지한다. Native quantitative color owner도
+96.15/95.45/100으로 같은 기준을 통과한다. 실제5 dataset×3 recipes/증인16개, primitive4,
+render8, Canvas/SVG DPR1/2 browser4가 통과했다.
+
+동일 tar `a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c`를
+Node20/22/24에 설치해 각각 신규runtime3, strict Full/Basic 타입, 문서snippet,5 bundle을
+검증했다. Canonical 변환 후1035개 entry 모두 현재source와 동일하다. 새로운 전체
+normal/global coverage 통과를 주장하지 않는다. Discovery 최초57/58 실패는 신규realistic
+파일의49→50 기대값과 실제포함assertion으로 수리하여47/47 owning검사에 포함했다.
+문서의 최초198/201 실패 중 잘못된 중복링크2건은 수리했고200/201 재검증에서 유일하게
+남은 source pin은 이 source commit 후 metadata-only 갱신으로 닫는다.
+최종 inventory·source/built/browser 문서 결과는 아래 evidence에 구분해 기록한다.
+
+[Feature appearance evidence](geo-evidence/encodings/status.json)

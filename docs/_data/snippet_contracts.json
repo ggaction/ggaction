@@ -2069,6 +2069,18 @@
   {
     "file": "api/geometry.md",
     "block": 6,
+    "heading": "Map feature fields to color and size",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "The two inline places supply their own population measurements.",
+    "sha256": "f46bcf171b007f8545efa29d5671ed0107fa32d35826d625c44e4ebc2328fa5c",
+    "executable": true
+  },
+  {
+    "file": "api/geometry.md",
+    "block": 7,
     "heading": "`createGeoAnnotation`",
     "mode": "complete",
     "environment": "node-esm",

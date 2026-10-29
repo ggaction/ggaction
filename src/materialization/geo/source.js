@@ -20,7 +20,8 @@ export function geoMarkSource(program, layer, config) {
   if ((coordinateKind === "planar") !== (parameters.type === "identity")) throw new TypeError("Geometry coordinateKind and Geo projection are incompatible.");
   if (binding.radiusDeg !== undefined && coordinateKind !== "geographic") throw new TypeError("radiusDeg requires geographic source coordinates.");
   const features = generated ? graticuleFeatures(binding.graticule) : geographicFeatures(program, resource);
-  return { binding, projection, resource, coordinateKind, parameters, features };
+  const drawableFeatures = features.filter(feature => feature.drawable !== false);
+  return { binding, projection, resource, coordinateKind, parameters, features, drawableFeatures };
 }
 
 

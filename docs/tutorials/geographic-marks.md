@@ -78,3 +78,18 @@ The anchor follows the original feature when its geometry or projection changes.
 the annotation remembers the selected original level and key even while a coarser feature represents
 it. Use a position anchor when the location is meaningful without a named feature. Empty text and
 clipped anchors keep their semantic intent while producing no visible text.
+
+## Map visitor counts to stop area
+
+{% include chart-example.html id="geographic-fields" %}
+
+The field example uses the same planar
+features with three stop counts, 1, 4 and 9. Their circle radii are 8, 16 and 24
+pixels, so their areas have the same ratio as those counts. Native categorical
+color scales distinguish the stops. The shared public program uses `createGeographicMarks("fields")`; it supplies its own measured features.
+
+Use `encodeColor({ field, scale })` after a shape, point or line mark, and
+`encodeSize({ field, scale })` after a point mark. `createLegend()` can add the
+existing color and size blocks. A join exposes the matching table fields and
+LOD exposes the active level. See [field mapping rules](../api/geometry.md#map-feature-fields-to-color-and-size)
+for unknown values, geographic radii and explicit constant transitions.

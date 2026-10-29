@@ -1267,5 +1267,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "geographic-encodings.mjs",
+    "cases": [
+      {
+        "id": "geographic-encodings/fields-guides-and-atomic-edits",
+        "statements": 13
+      },
+      {
+        "id": "geographic-encodings/fresh-process-field-source-revision",
+        "statements": 7
+      },
+      {
+        "id": "geographic-encodings/four-renderer-feature-area-parity",
+        "statements": 10
+      }
+    ]
   }
 ]

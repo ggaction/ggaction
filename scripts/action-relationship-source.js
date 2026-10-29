@@ -597,6 +597,9 @@ export function buildActionRelationshipPrograms() {
         { id: "county", geometry: "fine", parents: [{ key: "c", parent: "s" }], enterZoom: 4.2, exitZoom: 3.8 }], zoom: 5 })
       .createProjection({ id: "detailFit", type: "identity", fit: { width: 100, height: 100 } })
       .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "details" }).editGeoLODData({ zoom: 3 }),
+    chart().createCanvas().createGeometryData({ id: "featureFields", format: "geojson", coordinateKind: "planar", values: { type: "Feature", properties: { value: 1, category: "A" }, geometry: { type: "Point", coordinates: [20, 30] } } })
+      .createProjection({ id: "fieldMap", type: "identity" }).createCoordinate({ type: "geo" }).createGeoPointMark({ id: "fieldPoints" })
+      .encodeColor({ field: "category" }).encodeSize({ field: "value" }).encodeColor({ value: "red" }).encodeSize({ value: 100 }),
     chart().createCanvas().createProjection({ id: "noteMap", type: "identity" }).createCoordinate({ type: "geo" })
       .createGeoAnnotation({ anchor: { type: "position", position: [20, 30] }, text: "Location" }).editGeoAnnotation({ text: "Updated", dx: 5 }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",

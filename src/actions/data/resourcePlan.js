@@ -1,3 +1,4 @@
+import { preflightGeoConsumers } from "../geo/closure.js";
 import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { layerResourceBindings, mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
@@ -102,6 +103,7 @@ export function planSourceResourceRevision(program, dataReplacements) {
   preflightCalendarConsumers(preview, layouts.filter(resource => resource.options.method === "calendar"));
   const coordinateIds = new Set(coordinates.filter(coordinate => coordinate.type === "geo" && revised.has(key(coordinate.projection))).map(coordinate => coordinate.id));
   const marks = layers.filter(layer => layerResourceBindings(layer).some(({ ref }) => revised.has(key(ref))) || coordinateIds.has(layer.coordinate)).map(layer => layer.id);
+  preflightGeoConsumers(preview, marks);
   return { entries, views, marks };
 }
 

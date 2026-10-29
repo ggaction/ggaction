@@ -354,6 +354,53 @@ butt caps and miter joins with limit 10. Shape points use `radiusPx: 3`.
 Line pieces always have fill none. Outline and shadow accept false to reset;
 blend accepts normal, multiply, screen or difference.
 
+## Map feature fields to color and size
+
+Use ordinary `encodeColor` on shape, point or line marks. Filled shapes and points
+map to fill; lines map to stroke. Use `encodeSize` on point marks to map values
+to CSS-pixel area. Native categorical, continuous and discrete scales apply.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** The two inline places supply their own population measurements.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 640, height: 400, margin: { left: 40, right: 180, top: 40, bottom: 40 } })
+  .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+    type: "FeatureCollection", features: [
+      { type: "Feature", id: "west", properties: { population: 100, region: "West" }, geometry: { type: "Point", coordinates: [140, 180] } },
+      { type: "Feature", id: "east", properties: { population: 400, region: "East" }, geometry: { type: "Point", coordinates: [340, 180] } }
+    ]
+  } })
+  .createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+  .createGeoPointMark()
+  .encodeColor({ field: "region", scale: { range: ["#2563eb", "#dc2626"] } })
+  .encodeSize({ field: "population", scale: { domain: [0, 400], range: [0, 1600] } })
+  .createLegend();
+```
+
+A source mark reads feature properties. A joined mark reads the matching table
+row; an unmatched feature needs explicit `scale.unknown` to map a missing field.
+Otherwise the action fails without changing the program. LOD uses the active
+level's fields. Multiple pieces of one feature share the same value and identity.
+Null/empty geometries stay inspectable but contribute no scale values or visible
+items. Projection clipping does not change scale domains.
+
+Size uses `sqrt(area / Math.PI)` for point radius. It does not mix with geographic
+`radiusDeg`; switch to `radiusPx` first. Aggregate and layout color policies and
+conditional encodings are not supported for these resource-backed marks.
+
+Use `encodeColor({ value: "navy" })` or `encodeSize({ value: 100 })` to replace a
+field mapping with a constant and remove its dependent legend. Other channels
+remain. Direct fill/stroke/radius edits reject an active conflicting field mapping;
+`removeEncoding` restores its dormant native style. Data, geometry and LOD edits
+refresh shared scales, marks and legends together. Color and size legends appear
+as separate blocks when both channels are present.
+
 ## `editGeoShapeMark`
 
 **Chart authoring.**
@@ -446,8 +493,7 @@ their mark consumers; old programs and traces remain unchanged.
 All geographic marks support hconcat/vconcat, scoped edits, selection/highlighting,
 scene export, offline restoration and Canvas/SVG/PNG/PDF. Remove them with
 `removeMark`; live marks/coordinates restrict resource removal, including cascade.
-Automatic row facet/repeat, field encodings, joins, geographic labels and camera
-controls are not accepted by these mark options. Generated output is bounded at
+Automatic row facet/repeat, conditional feature mappings and camera controls are not enabled by these mark options. Ordinary color/size, table joins and semantic annotations use their dedicated actions. Generated output is bounded at
 10,000 points/items and 10,000,000 work units per materialization.
 
 ## `createGeoAnnotation`

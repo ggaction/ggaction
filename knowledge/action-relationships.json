@@ -621,7 +621,9 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
@@ -649,7 +651,9 @@
       "name": "encodeSize",
       "wraps": [
         "editSemantic",
-        "createScale"
+        "createScale",
+        "removeEncoding",
+        "editGeoPointMark"
       ]
     },
     {
