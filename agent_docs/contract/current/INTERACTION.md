@@ -851,3 +851,11 @@ No DOM, HTML string, inferred accessible name or new renderer state is authored 
 
 Tooltip/touch parity for additional controls and public animation/reduced-motion integration remain
 separate capabilities; this entry does not invent a player or an implicit timer.
+
+The documented accessible-tooltip recipe is host-owned UI using the existing `inspect`, `focus` and
+`activate` commands. It demonstrates safe native descriptions, a hoverable tooltip, Escape dismissal,
+keyboard/touch selection and teardown for Canvas/SVG. The host reserves tooltip space so hiding it
+cannot move adjacent controls during a click. It stores no alternate semantic selection, imports no
+new runtime service and makes no reduced-motion/player support claim. `format:'items'` supplies current
+logical fields/selected state; the session supplies exact current-frame eligibility. A host must dispose
+its own tooltip/control listeners together with its session.

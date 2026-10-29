@@ -119,6 +119,9 @@ test("graph item roles and fields expose native nodes and edges without fabricat
   const result = items(p);
   assert.deepEqual(result.map(i => i.role), ["edge", "node", "node", "node"]);
   assert.deepEqual(result.slice(1).map(i => i.fields.key), ["a", "b", "c"]);
+  assert.deepEqual(result.map(i => [i.fields.origin, i.fields.rule, i.fields.ruleId, i.fields.metric]), Array(4).fill(["inferred", "group", "same", null]));
+  assert.deepEqual(result.slice(1).map(i => i.fields.degree), [1, 1, 0]);
+  assert.deepEqual([result[0].fields.sourceKey, result[0].fields.targetKey, result[0].fields.weight], ["a", "b", 1]);
   assert.deepEqual(result.map(i => i.key), getMarkItems(p, { target: "network" }).map(i => i.key));
 });
 
