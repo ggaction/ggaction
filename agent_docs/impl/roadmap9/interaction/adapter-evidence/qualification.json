@@ -59,5 +59,12 @@
       "packedBytes": 1274000,
       "unpackedBytes": 5850000
     }
+  },
+  "sourceRevision": "151435744",
+  "docs": {
+    "focused": 19,
+    "builtPages": 160,
+    "llmArtifacts": 1390,
+    "browser": "UI assets/layout unchanged; reuse f1800607d validation"
   }
 }

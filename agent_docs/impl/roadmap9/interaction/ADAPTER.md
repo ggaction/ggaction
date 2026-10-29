@@ -51,3 +51,8 @@ opacity0, malformed/empty/oversize/own-data 입력을 검사한다. 제품 테�
 정규화 font weight, primitive fixture 생성 호출의 oracle 오류이며 각 기대값을 계약대로 수정했다.
 Package 최초871>868 실패는 새 private source3개에 의한 실제 증가다. 최종 caps와 Node별 실측은 evidence에
 따로 기록한다. Public entry는 추가하지 않으며 private hit owners는 기존 authoring/renderer entry에 유입되지 않는다.
+
+검증 source는151435744다. Node20/22/24 각24개(실제 public point Canvas DPR1/2/3 포함), 경계33개,
+변경 owner의95/90/100 floor를 통과했다. Provenance→machine→LLM 후 docs19개와 built160pages/
+1390selective artifacts를 통과했다. UI assets/layout은 불변이므로 f1800607d browser 증거를 재사용한다.
+Source-free public interaction 설치 증거는 공개 entry 구현과 함께 후속 수행하며 현재 통과로 표시하지 않는다.
