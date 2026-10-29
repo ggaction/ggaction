@@ -1710,6 +1710,12 @@
         "path": "unit/theme/"
       }
     ],
+    "trail": [
+      {
+        "type": "file",
+        "path": "unit/grammar/trail.test.js"
+      }
+    ],
     "waterfall": [
       {
         "type": "prefix",

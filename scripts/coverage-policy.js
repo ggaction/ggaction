@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "trail-ribbon": { prefix: "grammar/trail.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Variable-width outlines require finite normals, bounded joins and caps, explicit gaps and complete original lineage." },
   "waterfall-action": { prefix: "actions/charts/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contribution edits must preflight ordered values and all guide dependencies before writes." },
   "waterfall-plot": { prefix: "grammar/waterfallPlot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored contribution roles and bounded source membership must remain canonical." },
   "waterfall-materialization": { prefix: "materialization/waterfall/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage bodies, running connectors and labels share scale endpoints and stable row identity." },
