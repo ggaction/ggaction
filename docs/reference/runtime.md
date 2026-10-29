@@ -1236,7 +1236,7 @@ export interface InteractionTransactionEvent {
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
-  readonly phase: 'commit' | 'settled' | 'error';
+  readonly phase: 'commit' | 'settled' | 'cancel' | 'error';
   readonly revision: number;
   readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
   readonly previous: InteractionProgram;

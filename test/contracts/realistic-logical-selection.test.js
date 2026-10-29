@@ -32,14 +32,16 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    for(const mode of ['replace','toggle'])for(const onMiss of ['clear','ignore']) {
     const selectedProgram=p.selectMarks({id:'automatic',target:'mark',items:[]}).highlightMarks({selection:'automatic',color:'#ef4444',bringToFront:false,dimOthers:false});
     const automatic=createInteractionSession({program:selectedProgram,bindings:[{type:'select',target:'mark',selection:'automatic',mode,onMiss,slop:0}]}),listeners=new Map();
-    const host={getBoundingClientRect:()=>({left:0,top:0,width:500,height:360}),addEventListener:(type,listener)=>listeners.set(type,listener),removeEventListener:type=>listeners.delete(type)};
+    const captures=new Set(),host={getBoundingClientRect:()=>({left:0,top:0,width:500,height:360}),addEventListener:(type,listener)=>listeners.set(type,listener),removeEventListener:type=>listeners.delete(type),setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id)};
     automatic.mount(host);automatic.dispatch({type:'inspect',point:{x:probe.x,y:probe.y},slop:0});
     const expected=automatic.getState().hit.candidates.find(candidate=>candidate.ownerId==='mark').itemKey;
-    const click=()=>listeners.get('click')({clientX:probe.x,clientY:probe.y});
+    const pointer={clientX:probe.x,clientY:probe.y,pointerId:1,pointerType:'mouse',button:0};
+    const click=(x=probe.x,y=probe.y)=>{const event={...pointer,clientX:x,clientY:y};listeners.get('pointerdown')(event);listeners.get('pointerup')(event);listeners.get('click')({...event,detail:1});};
+    const beforeCapture=automatic.getState().program;listeners.get('pointerdown')(pointer);listeners.get('pointermove')({...pointer,clientX:probe.x+10});listeners.get('pointerup')(pointer);listeners.get('click')({...pointer,detail:1});assert.equal(automatic.getState().program,beforeCapture);assert.equal(captures.size,0);
     const active=()=>getMarkItems(automatic.getState().program,{target:'mark'}).filter(item=>item.geometry.some(g=>g.properties.fill==='#ef4444'||g.properties.stroke==='#ef4444')).map(item=>item.key);
     click();assert.deepEqual(active(),[expected]);click();assert.deepEqual(active(),mode==='toggle'?[]:[expected]);
-    if(mode==='toggle')click();listeners.get('click')({clientX:5000,clientY:5000});assert.deepEqual(active(),onMiss==='clear'?[]:[expected]);
-    automatic.destroy();assert.equal(listeners.size,0);
+    if(mode==='toggle')click();click(5000,5000);assert.deepEqual(active(),onMiss==='clear'?[]:[expected]);
+    automatic.destroy();assert.equal(listeners.size,0);assert.equal(captures.size,0);
    }
    for(const selectionPolicy of ['keep-hidden','drop']) {
     const lifecycle=createInteractionSession({program:q,selectionPolicy,bindings:[]}),events=[];lifecycle.subscribe(event=>events.push(event));

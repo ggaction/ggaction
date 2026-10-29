@@ -31,7 +31,7 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
-Editing gestures, navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+Brush/lasso gestures, navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
@@ -213,7 +213,7 @@ A replacement program revalidates the endpoint before commit; a removed endpoint
 
 `mode` is `replace` (default) or `toggle`. `onMiss` is `clear` (default) or `ignore`. Both option sets
 are closed and explicit null is invalid. `slop` and `hitInvisible` reuse inspect validation/defaults.
-Mounted primary-button `click` events map client coordinates through the existing CSS/root transform
+Mounted primary-button selection events map client coordinates through the existing CSS/root transform
 and query the current accepted frame. Among all hit candidates, the first exact owner/path key in the
 selection's final available item grain is selected. Inspect z-order is retained, and decorative
 geometry still collapses to its item. A missing owner or singular/empty viewport causes no edit.
@@ -225,14 +225,50 @@ snapshot or clearing an existing empty-none key snapshot is a no-op without revi
 Live predicates/ranges are converted to key snapshots when clicked, even if effective membership
 happens to match. Clearing also removes retained hidden intent. Toggle uses the native set operation.
 
-The binding alone emits no inspect/leave events. If an inspect binding includes click, inspection
-runs before selection; subscriber work still follows the existing FIFO lifecycle. Remount/destroy
+The binding alone emits no inspect/leave events. Inspection is independent; subscriber work follows
+the existing FIFO lifecycle. Captured up commits before the subsequent click inspection. Remount/destroy
 release listeners, and a captured old listener is inactive. All successful selection event consumers
 must render the accepted program; the controller never renders. SVG hosts remount after replacing
 the root element. Headless authors use explicit select/clear commands instead of a new low-level
-click command. No automatic modifier, drag/capture, competing binding, keyboard or history policy is
+click command. No automatic modifier, brush/lasso, competing binding, keyboard focus or history policy is
 inferred. Existing count/work limits apply; candidate and key expansion additionally share a
 10,000,000-unit click-selection budget.
 
 Evidence: `test/unit/interaction-click-selection.test.js`, `test/browser/interaction-session.browser.js`,
 the logical-selection realistic corpus, documentation module and source-free interaction consumers.
+
+
+## Captured click lifecycle
+
+On an Element with both `setPointerCapture` and `releasePointerCapture`, select bindings capture the
+primary pointer on down and commit the eligible click on up. Movement is measured in CSS pixels,
+independent of root scale and DPR: below 3 Euclidean pixels remains a click; reaching 3 cancels this
+click-only binding. The final up position is checked even without a preceding move. Crossing the
+threshold and returning to the start does not restore click eligibility. Secondary pointers cannot
+claim or end the active selection. Modifier keys still do not change its configured selection mode.
+
+Escape, pointercancel, lostpointercapture, window blur, successful external program/command replacement,
+remount, unmount and destroy cancel an active click. Cancellation emits one `select` transaction event
+with `phase:"cancel"`, `origin:"user"`, unchanged committed revision and immutable previous/current
+references. Diagnostics contain `code:"gesture-cancelled"` and the reason in `message`. Cancel does not
+produce commit/settled, and late up cannot commit. Down itself does not modify the program or emit a
+transaction phase. A successful up uses one generated transaction ID for commit and settled.
+
+Capture is released before terminal subscribers run. The subsequent browser click is suppressed,
+including when an up subscriber replaces the SVG root and remounts it. An explicit activation click
+with `detail:0` remains available to host keyboard controls. The controller does not add Enter/Space
+behavior or guess a focused item. An independent click-inspection binding receives the later click;
+on capture-capable hosts selection commits on up before that click inspection.
+
+Custom event surfaces without either capture method retain click-only handling. Supplying exactly one
+capture method is an error. Registration failure removes partially installed listeners and leaves the
+old lease active. Capture acquisition failure retains the program, releases any acquired pointer and emits one
+error transaction with diagnostic code `pointer-capture-failed`; no commit/cancel follows.
+Cancel/release/subscriber failures still clear the terminal state; unmount/remount/destroy finish their
+listener cleanup. Failed authoring preflight retains the active capture and original program. A singular
+or empty viewport cannot acquire capture; one arising during a gesture cancels it.
+
+DOM events, capture IDs and armed program references are runtime-only. Codec, static PNG/PDF and
+renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
+brush/lasso preview, RAF coalescing, navigation pinch and history remain unsupported public options.
+Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.

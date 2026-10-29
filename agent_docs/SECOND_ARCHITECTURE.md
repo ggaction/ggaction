@@ -801,7 +801,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 652,000 bytes |
 | `ggaction/basic` | 367,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 97,600 bytes |
+| `ggaction/interaction` | 100,600 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3599,3 +3599,16 @@ Private 계산 검증은 capture/preview의 public 통합 완료를 의미하지
 Private gesture module1개로 entries921, Node20 packed1,329,320/unpacked6,080,779를 측정했다.
 Package cap만921/1,330,000/6,081,000으로 최소 올림하며 public entry import graph와 bundle은
 변하지 않는다. 최초 package entry 초과를 별도 보존한다.
+
+### Captured click의 DOM 효과 경계
+
+`interaction/pointerCapture.js`는 기존 pure gesture reducer의 state/effects를 실제 host capture와
+listener 수명에 연결한다. Session은 같은 native command/FIFO와 immutable program reference를
+소유하며 capture adapter에 authoring 로직을 넣지 않는다. Terminal state를 먼저 받아 capture를
+풀고 subscriber를 호출하여 lostcapture와 SVG remount의 중복 commit을 막는다. Exact public
+cancel/host fallback 의미는 Current INTERACTION이 소유한다. Domain drag preview는 후행이다.
+
+Captured click의 공개 import 연결 후 Node20 package922entries/packed1,331,459/unpacked6,089,158,
+interaction100,541gzip을 측정했다. Package922/1,332,000/6,090,000과 interaction100,600으로
+한도만 최소 올림하며 다른 entry 한도와 search961,000은 유지한다. 최초 package·bundle 초과와
+잘못된 단일 callback host mock의 remount 수리는 pointer-capture evidence에 별도 보존한다.

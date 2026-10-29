@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:aaf2c55debc36f9c838769fca49e5e452dfbca9e3a28f8783cef7218460333a0. Status: development. Runtime source: c999932b098c95d186a9b9af1cf88c4126dd7636. Release baseline: v0.0.13.
+Contract: sha256:7b33b6f71e8f2b4ba847fc97b9a007fedc5e03dcffd65f57e518e736008f3c2c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c999932b098c95d186a9b9af1cf88c4126dd7636/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c999932b098c95d186a9b9af1cf88c4126dd7636/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10798,7 +10798,7 @@ other session methods reject further work.
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
 comparisons. The session does not persist host objects or hover state. Editing
-gestures, keyboard navigation, history, and asset loading
+brush/lasso gestures, keyboard navigation, history, and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
@@ -11061,6 +11061,22 @@ The controller does not yet arbitrate dragging, competing bindings, keyboard act
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
 Headless applications use the same explicit `select` and `clearSelection` commands.
+
+The browser captures the primary pointer from down to up. Moving less than 3 CSS pixels remains a
+click; reaching 3 pixels cancels the click selection. This threshold does not change with device pixel
+ratio or the root transform. Escape, pointer cancellation, lost capture and window blur also cancel.
+A cancelled gesture leaves the committed program unchanged and emits one `select` event with
+`phase: "cancel"`; it has no commit or settled event. The final up position is always checked.
+
+Successful external edits, program replacement, remount, unmount and destroy cancel an active click
+before accepting their new state. Release happens before subscribers run. The browser's following
+click is suppressed, so remounting an SVG during commit cannot toggle twice. An independent click
+inspection runs after this up commit. Host controls may still send an activation click with `detail: 0`;
+the controller does not assign Enter/Space behavior or a focused item.
+
+Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
+Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
+history are not supported by this binding.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -33863,7 +33879,7 @@ export interface InteractionTransactionEvent {
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
-  readonly phase: 'commit' | 'settled' | 'error';
+  readonly phase: 'commit' | 'settled' | 'cancel' | 'error';
   readonly revision: number;
   readonly affectedOwners: readonly (Readonly<ScopedActionTarget> & { readonly id: string })[];
   readonly previous: InteractionProgram;
@@ -47100,12 +47116,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c999932b098c95d186a9b9af1cf88c4126dd7636/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c999932b098c95d186a9b9af1cf88c4126dd7636/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50150,9 +50166,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:aaf2c55debc36f9c838769fca49e5e452dfbca9e3a28f8783cef7218460333a0` |
+| Contract fingerprint | `sha256:7b33b6f71e8f2b4ba847fc97b9a007fedc5e03dcffd65f57e518e736008f3c2c` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `c999932b098c95d186a9b9af1cf88c4126dd7636` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

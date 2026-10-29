@@ -54,3 +54,5 @@ createInteractionSession({program,selectionPolicy:'forget'});
 
 // @ts-expect-error projection results are immutable
 session.getState().linkedSelections[0].keys.push('change');
+
+session.subscribe(event => { if ('phase' in event && event.phase === 'cancel') { const sameRevision: number = event.revision; } });

@@ -641,6 +641,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-pointer-capture.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

@@ -234,3 +234,79 @@ test("automatic click bindings toggle and clear in real Canvas and remounted SVG
   }catch(error){await saveBrowserContextEvidence(context,error);throw error;}
   finally{await context.close();}
 });
+
+async function installCapturedSelections(page) {
+  await page.evaluate(async () => {
+    const { createInteractionSession } = await import('/src/interaction.js');
+    const { render } = await import('/src/index.js'), { renderToSVG } = await import('/src/renderers/svg.js');
+    window.__captureEvents = [[], []]; window.__captureIds = [];
+    window.__captureSessions = window.__inspectionSessions.map((previous, index) => {
+      const program = previous.getState().program.selectMarks({ id: 'picked', target: 'observations', items: [] })
+        .highlightMarks({ selection: 'picked', color: 'red', dimOthers: false, bringToFront: false }); previous.destroy();
+      const session = createInteractionSession({ program, bindings: [{ type: 'select', target: 'observations', selection: 'picked', mode: 'toggle' }] });
+      const mount = () => {
+        const host = document.querySelector(index === 0 ? '#chart' : '#vector svg'); host.style.touchAction = 'none'; host.setAttribute('tabindex', '0');
+        host.addEventListener('pointerdown', event => { window.__captureIds[index] = event.pointerId; }); session.mount(host);
+      };
+      mount(); session.subscribe(event => {
+        if (!event.phase) return; window.__captureEvents[index].push([event.phase, event.diagnostics[0]?.message ?? null]);
+        if (event.phase !== 'commit') return;
+        if (index === 0) render(event.current, document.querySelector('#chart').getContext('2d'), { pixelRatio: 2 });
+        else { document.querySelector('#vector').innerHTML = renderToSVG(event.current); mount(); }
+      }); return session;
+    });
+  });
+}
+
+test("real mouse capture, Escape and long movement cancel once in Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL('examples/inspect-chart/', server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await installCapturedSelections(page);
+    for (const [index, selector] of ['#chart', '#vector svg'].entries()) {
+      const box = await page.locator(selector).boundingBox();
+      const before = await page.evaluate(async index => { const { serializeProgram } = await import('/src/persistence.js'); return serializeProgram(window.__captureSessions[index].getState().program); }, index);
+      await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
+      assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), true);
+      await page.mouse.move(box.x + 295, box.y + 118); await page.keyboard.press('Escape');
+      assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), false);
+      await page.mouse.up();
+      assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape']]);
+      await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
+      await page.mouse.move(box.x + 394, box.y + 118, { steps: 100 }); await page.mouse.up();
+      assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape'], ['cancel', 'movement']]);
+      assert.equal(await page.evaluate(async index => { const { serializeProgram } = await import('/src/persistence.js'); return serializeProgram(window.__captureSessions[index].getState().program); }, index), before);
+      assert.equal(await page.evaluate(index => window.__captureSessions[index].getState().revision, index), 0);
+      await page.mouse.click(box.x + 294, box.y + 118);
+      assert.equal(await page.evaluate(index => window.__captureSessions[index].getState().revision, index), 1);
+    }
+    await page.evaluate(() => window.__captureSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, 'pointer capture and keyboard cancellation'); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("real touch capture cancels movement and commits one tap without a second synthetic click", async () => {
+  const context = await browser.newContext({ hasTouch: true, deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL('examples/inspect-chart/', server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await installCapturedSelections(page);
+    const protocol = await context.newCDPSession(page);
+    for (const [index, selector] of ['#chart', '#vector svg'].entries()) {
+      const box = await page.locator(selector).boundingBox(), x = box.x + 294, y = box.y + 118;
+      await protocol.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y, id: 1 }] });
+      assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), true);
+      await protocol.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x + 10, y, id: 1 }] });
+      await protocol.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'movement']]);
+      await page.touchscreen.tap(x, y);
+      assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'movement'], ['commit', null], ['settled', null]]);
+      assert.equal(await page.evaluate(index => window.__captureSessions[index].getState().revision, index), 1);
+    }
+    await protocol.detach(); await page.evaluate(() => window.__captureSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, 'touch capture'); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

@@ -29,6 +29,7 @@ createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
 createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',mode:'add'}]});
 // @ts-expect-error miss policy differs from selection empty semantics
 createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',onMiss:'all'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='cancel'){const revision:number=event.revision;}});
 const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
 createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
 const available:boolean=session.getState().linkedSelections[0].targetAvailable;

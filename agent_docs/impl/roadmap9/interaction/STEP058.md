@@ -5,9 +5,10 @@
 - [x] 원 카드·interaction/core 계약·OR-24 확인과 AUTHORIZATION 재사용
 - [x] private bounded priority/modifier arbitration과 armed/dragging/pinch reducer
 - [x] 독립 literal threshold·100 move·cancel/late-up·own-data 검증
-- [ ] 실제 DOM capture·Escape/blur/lostcapture 및 click adapter
+- [x] 실제 DOM capture·Escape/blur/lostcapture 및 click adapter
 - [ ] domain preview/RAF coalescing과 final-up 처리 연결
-- [ ] 실제 mouse/touch/keyboard 및 installed public consumers
+- [x] click의 실제 mouse/touch/Escape 및 installed public consumers
+- [ ] 후행 keyboard focus/activation 및 domain gesture consumers
 - [ ] 후행 brush/lasso/navigation 연결과 AT35/36 전체 종료
 
 원 카드와 남은 요구를 보존하며 private 계산만으로 STEP058 또는077을 완료하지 않는다.
@@ -56,3 +57,24 @@ Source boundary/discovery27과 package13을 확인했다. 최종 Node20 package�
 packed1,329,320/unpacked6,080,779로 측정해 caps만921/1,330,000/6,081,000으로 조정했다.
 Runtime entry에서 아직 import하지 않으므로 기존 public bundles/types/Current는 바뀌지 않는다.
 이 기록은 actual DOM capture나 program/history OR24 인수 완료를 주장하지 않는다.
+
+## Captured click 공개 연결
+
+기존 select binding은 native Element의 pointer capture를 사용한다. 명시 custom event surface에
+capture API가 둘 다 없으면 기존 click-only 동작을 보존하고, 하나만 있으면 초기화 오류다.
+기존 immutable selection/native command 경로와 공개 cancel phase만 연결하며 새로운 public
+binding 옵션이나 raw pointer dispatch를 노출하지 않는다. Private priority/modifier/pinch owner는
+후행 domain adapter가 소비할 준비 상태이며 현재 public competing gesture 지원으로 주장하지 않는다.
+
+Down은 program을 바꾸지 않는다. Armed up에서 current accepted frame의 target을 확인해
+commit/settled를 한 번 보내고 뒤따르는 synthetic click을 막는다. 이는 SVG root가 commit
+subscriber 안에서 교체된 경우에도 유지된다. 3 CSS px 이상 이동과 Escape/blur/cancel/lostcapture는
+기존 program reference와 trace를 유지한 cancel 한 번이다. Final up만 움직여도 threshold를 검사한다.
+직접 keyboard activation click(detail0)은 host가 보내는 경우 같은 native 경로로 처리하지만
+Canvas/SVG에 Enter/Space 또는 focus를 자동 부여하지 않는다.
+
+Source focused141(신규 capture14)와 새 owner100/96.81/100·session100/95.96/100,
+경계/타입28, 실제5데이터×3recipe16, 실제 Canvas/SVG mouse·Escape·100move·touch10을 확인했다.
+Capture acquisition 실패는 cleanup 뒤 error1을 내고 원본 프로그램을 보존하며 이 마지막 실패 경계는
+집중 검사로 고정했다. Browser 정상/cancel 경로는 그 오류 전용 추가와 입력/동작이 같아 결과를 재사용한다.
+후행 brush/lasso preview·RAF coalescing·history 인수는 여전히 열려 있다.
