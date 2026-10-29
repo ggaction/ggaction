@@ -24,6 +24,10 @@
       {
         "type": "file",
         "path": "browser/animation-offline.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cross-feature-integration/variants/animation/"
       }
     ],
     "architecture": [

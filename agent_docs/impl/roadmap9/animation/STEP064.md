@@ -8,7 +8,7 @@
 - [x] 독립 시각 목록·한도·오염 실패 검증
 - [x] 실제 endpoint·이미지·폰트 바이트를 담은 저장·복원
 - [x] 새 프로세스의 network 0 및 같은 시각의 canonical scene 일치
-- [ ] SVG/Canvas/PNG/PDF·공개 타입·문서·설치 소비자
+- [x] SVG/Canvas/PNG/PDF·공개 타입·문서·설치 소비자
 
 승인은 구현 완료를 뜻하지 않는다. 이 기록은 이미 승인된 원안의 구체화이며,
 아직 지원하지 않는 typed kernel이나 STEP077 전체 완료를 선언하지 않는다.
@@ -78,10 +78,14 @@ hash는 [independent evidence](offline-independent-evidence/qualification.json)�
 7,183,760 unpacked에 따른 최소한도1109/1,581,000/7,184,000만 적용한다.
 실제 transition offline/fresh-process/4formats 및 공개 package 자격은 다음 결합 의무다.
 
-## 공개 연결 후보
+## 공개 연결 검증
 
 `ggaction/animation`의 여섯 함수는 단일 entry/선언으로 연결했다. planner/rebase는
 69cb70d0c, 공개 player는 d86e49cd3의 지정 source/test delta를 보존한다.
 현재 typed 지원은 Cartesian circle point이며 다른 family는 명시한 fallback이다.
 집중143개, 새프로세스 actual image/font bytes replay, browser DPR1/2, 세시각의
-PNG/PDF interior oracle은 통과했다. 최종 패키지·문서 qualification은 이어서 기록한다.
+PNG/PDF interior oracle은 통과했다. 동일 tar의3Node 공개5cases/strict타입/실행문서/새browserentry가 통과했다.
+source4d7664861 기준 built186페이지/LLM1598자료, desktop search 및 모든페이지의
+320/390/768px 검증이 완료됐다. [원실패·보강·최종영수증](offline-public-evidence/README.md)을
+함께 보존한다. 특히 network guard를 module import보다 먼저 설치한 fresh-process2case를
+같은 tar의3Node에 보충했다. 전체release/다른typedfamily완료로 집계하지 않는다.

@@ -1,0 +1,10 @@
+import {copyFile,writeFile,mkdir,readFile} from 'node:fs/promises';import path from 'node:path';import {createHash} from 'node:crypto';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';import {root,run} from '../scripts/consumers/runtime.js';
+const archive=path.resolve('.artifacts/animation-archives/ggaction-67d01611f7fac2ebdb0a57c70cbdc33cdea4e4f1ae69848101ae6e3dac27224b.tgz');
+const receipt={node:process.version,archive,sha256:createHash('sha256').update(await readFile(archive)).digest('hex'),cases:['animation/offline-fresh-process','animation/embedded-assets-fresh-process']};
+const consumer=await preparePackageConsumer({packageSpec:archive});try{
+ await testOptionalDependencies(consumer);
+ await copyFile(path.join(root,'scripts/consumers/fixtures/node/animation.mjs'),path.join(consumer.directory,'animation.mjs'));
+ await writeFile(path.join(consumer.directory,'run.mjs'),`import {cases} from './animation.mjs';for(const c of cases.filter(c=>c.id.includes('fresh-process'))){await c.run();console.log(c.id+' passed');}`);
+ await run(process.execPath,['run.mjs'],consumer.directory,{stdio:'inherit'});receipt.status='passed';
+}finally{await consumer.cleanup();await writeFile('.artifacts/animation-import-guard-'+process.versions.node.split('.')[0]+'.json',JSON.stringify(receipt,null,2)+'\n');}
