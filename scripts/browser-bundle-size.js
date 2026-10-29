@@ -10,7 +10,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 186_100, // Bounded sampled meaning and native proof: Node20 186,027 gzip bytes.
-  "ggaction/interaction": 129_700 // Authentic sampled-frame publication and transient leases: Node20 129,659.
+  "ggaction/interaction": 130_600 // Geographic source reader, same archive Node20: 130,506 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

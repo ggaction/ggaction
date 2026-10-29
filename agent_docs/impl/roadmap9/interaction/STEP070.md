@@ -111,3 +111,9 @@ Import 전에 network guard를 설치했고 호출0, 원 frame/version 보존을
 증거는 `session-overlap-evidence/summary.json`이다. 경계22개와 문서경로1개도 통과했다.
 AT34 대표 셀과 최종 STEP074 전수 qualification, 나머지 STEP070 domain 의무를 구분하며,
 전체 STEP069/070/077 완료로 확대하지 않는다.
+
+## D3 — Geo source hit 준비
+
+[Geo 원본 metadata 경계](GEO_SOURCE_HIT.md)는 양 endpoint picture에 없는 중간 feature를
+가짜 index 없이 exact native source membership으로 검증한다. 공개 Geo typed sampler와의
+합산은 별도 후행이며 현재 keyboard/native activation 교집합은 유지한다.

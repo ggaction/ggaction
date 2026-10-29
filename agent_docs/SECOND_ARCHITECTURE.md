@@ -3217,7 +3217,17 @@ endpoint identity/background, semantic position 및 현재 node별 exact native 
 weighted metric 출처만 보존한다. Plan identity는 작은 opaque token이고 frame→이전 plan→
 이전 frame 연쇄는 없다. 권한은 현재 표시 출처 및 직접 native endpoint로 한정하며 과거 모든
 조상 프로그램을 권한 집합으로 누적하지 않는다. 원 program과 같은 값의 clone은 권한이 아니다.
-Offline frame의 native metadata, session publication·asset lease는 후속 의무다.
+Offline replay는 editable native program 권한을 복원하지 않는다. Session publication·asset lease는
+Current INTERACTION의 exact frame 계약을 따른다.
+
+Geo에서 양 endpoint picture에 없던 중간 part의 native source는 index 대신 실제 program·childPath·
+owner·itemKey를 가진 private closed origin으로 표현한다. `hitProgram`은 기존 builtin item reader의
+source arm을 통해 같은 native final-grain policy를 읽고 namespace와 resource revision을 대조한다.
+Class별 frozen registration에 기존 source resolver를 함께 전달하며 새 registry나 public plugin 경계는
+없다. Scope/owner별 source Map은 준비 호출 안에서만 유지하고 work budget에 합산한다.
+실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남으며, native selection
+권한은 계속 현재 최종 항목과의 교집합이다. 공개 Geo sampler 연결 상태와 증거는
+[Geo source hit 기록](impl/roadmap9/interaction/GEO_SOURCE_HIT.md)에 둔다.
 
 ### Cartesian title label-relative offset measurement
 
