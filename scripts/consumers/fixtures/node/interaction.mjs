@@ -31,6 +31,21 @@ export const cases = [
           session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest}});
           assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.key),[firstKey]);
         }
+        session.dispatch({type:'filter',target:'points',payload:{select:{items:[firstKey]}}});
+        assert.equal(getMarkItems(session.getState().program,{target:'points'}).length,1);
+        session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+        assert.equal(getMarkItems(session.getState().program,{target:'points'}).length,2);
+        const controls=createInteractionSession({program:chart().createCanvas().createData({values:[{g:'A',v:2},{g:'B',v:5}]}).createBarPlot({id:'bars',x:'g',y:'v',guides:false}),bindings:[]});
+        controls.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['B','A']}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B','A']);
+        assert.deepEqual(deserializeProgram(serializeProgram(controls.getState().program)).graphicSpec,controls.getState().program.graphicSpec);
+        controls.dispatch({type:'filter',target:'bars',payload:{select:{field:'g',op:'eq',value:'B'}}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B']);
+        assert.deepEqual(deserializeProgram(serializeProgram(controls.getState().program)).graphicSpec,controls.getState().program.graphicSpec);
+        controls.dispatch({type:'filter',target:'bars',payload:{clear:true}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B','A']);
+        controls.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['A','B']);controls.destroy();
         stop();
         for (const selectionPolicy of ['keep-hidden','drop']) {
           const original=session.getState().program, lifecycle=createInteractionSession({program:original,selectionPolicy,bindings:[]}), events=[];

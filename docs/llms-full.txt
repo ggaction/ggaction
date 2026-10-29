@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8ac2c11da5339bf04ce356dd4b584ede8f1c564fbc257494e35a540558f968d9. Status: development. Runtime source: 3a9901e925b04d640f064ff7e06d434011a4d858. Release baseline: v0.0.13.
+Contract: sha256:11fbb2fc16000d5c666dfbc6854610484977414806c4c12bec3255e8ca7fc937. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3a9901e925b04d640f064ff7e06d434011a4d858/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3a9901e925b04d640f064ff7e06d434011a4d858/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10889,6 +10889,48 @@ parameter value returns `unchanged` with no event or revision. Subscriber errors
 stop delivery and preserve a commit already made. Runtime bindings and transaction
 metadata are not serialized with the chart.
 
+## Filter and reorder a view
+
+Use `filter` to call the existing mark filter through the same atomic session.
+The payload is `{select,mode?,recompute?}` or `{clear:true}`. `select` uses the
+inline [mark selector](./api/appearance/selection-and-highlighting/); named selection
+expressions, region and screen metadata are not inline filters. Native replace/
+compose and inferred-graph recompute rules remain unchanged. Clear restores that
+filter's source while preserving other authored state.
+
+Use `reorder` with `{channel,values}` or `{channel,by,direction?}` to apply the
+existing [category order](./api/position/category-ordering/). Channel is `x`, `y`, or
+`theta`. `{channel,clear:true}` removes an active order. These commands update the
+native data, geometry and guide consumers before committing the new hit frame.
+They preserve source row order and use the existing selection lifecycle policy.
+Basic programs reject these editors.
+
+> **Executable complete.** Install ggaction and import the authoring and interaction entries.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const controls = createInteractionSession({
+  program: chart().createCanvas({ width: 360, height: 240 })
+    .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 5 }] })
+    .createBarPlot({ id: "bars", x: "category", y: "value", guides: false }),
+  bindings: []
+});
+controls.dispatch({ type: "filter", target: "bars",
+  payload: { select: { field: "category", op: "eq", value: "B" } } });
+controls.dispatch({ type: "filter", target: "bars", payload: { clear: true } });
+controls.dispatch({ type: "reorder", target: "bars",
+  payload: { channel: "x", values: ["B", "A"] } });
+const orderedProgram = controls.getState().program;
+controls.destroy();
+```
+
+Each successful command publishes one `commit` followed by `settled`, including
+dependent linked selections. Invalid options leave the previous program and frame
+intact. Clearing a filter or order is an explicit operation; combining `clear`
+with replacement options is an error.
+
 ## Link named selections
 
 Use an explicit `linkSelection` binding to project existing selections into another
@@ -12046,6 +12088,10 @@ const resetLegend = linked.editLegend({ order: "scale" });
 The first call leaves the legend in its appearance-scale order. The second links
 the legend to the target's theta domain. Resetting the legend leaves sector
 positions unchanged. Ordering theta does not assign path vertex or drawing order.
+
+An active mark filter preserves an explicit category order and applies it only to
+categories that remain visible. Clearing the filter restores the authored order.
+A new order still rejects values absent from the mark's current dataset.
 
 ## Related
 
@@ -34135,7 +34181,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelectionSelector, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -34283,6 +34329,16 @@ export type InteractionSelectionPayload = {
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
 } & ({ readonly select: MarkSelectionSelector; readonly nearest?: never }
   | { readonly nearest: NearestSelection; readonly select?: never });
+export type InteractionFilterPayload = {
+  readonly select: MarkSelector;
+  readonly mode?: 'replace' | 'compose';
+  readonly recompute?: boolean;
+  readonly clear?: never;
+} | { readonly clear: true; readonly select?: never; readonly mode?: never; readonly recompute?: never };
+export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' } & (
+  (CategoryOrder & { readonly clear?: never })
+  | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
+);
 export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'select';
   readonly target: InteractionTarget;
@@ -34295,9 +34351,17 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly type: 'setParameter';
   readonly target: InteractionTarget;
   readonly payload: { readonly value: number | string | boolean | null };
+} | {
+  readonly type: 'filter';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionFilterPayload;
+} | {
+  readonly type: 'reorder';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -47908,12 +47972,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a9901e925b04d640f064ff7e06d434011a4d858/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a9901e925b04d640f064ff7e06d434011a4d858/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50964,9 +51028,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8ac2c11da5339bf04ce356dd4b584ede8f1c564fbc257494e35a540558f968d9` |
+| Contract fingerprint | `sha256:11fbb2fc16000d5c666dfbc6854610484977414806c4c12bec3255e8ca7fc937` |
 | Example and dataset source | `3a9901e925b04d640f064ff7e06d434011a4d858` |
-| Runtime source commit | `3a9901e925b04d640f064ff7e06d434011a4d858` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 345 |
 | Declared actions in that release | 234 |

@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 688_000, // Combined routes, nested responsive layout and region gestures: 687,919 gzip bytes.
+  ggaction: 688_100, // Native direct controls, routes and region gestures: 688,008 gzip bytes.
   "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.

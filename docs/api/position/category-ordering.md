@@ -94,6 +94,10 @@ The first call leaves the legend in its appearance-scale order. The second links
 the legend to the target's theta domain. Resetting the legend leaves sector
 positions unchanged. Ordering theta does not assign path vertex or drawing order.
 
+An active mark filter preserves an explicit category order and applies it only to
+categories that remain visible. Clearing the filter restores the authored order.
+A new order still rejects values absent from the mark's current dataset.
+
 ## Related
 
 [Bar positions](./ordinal-bars.md) · [Position scales](../scales/position.md) ·

@@ -4,12 +4,13 @@ import { namespaceItemKey, unnamespaceItemKey } from "../grammar/schemas/graphic
 import { validateUserId } from "../core/identifiers.js";
 import { normalizeActionTargets } from "../grammar/actionTargets.js";
 import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
+import { normalizeMarkSelector } from "../grammar/markSelection.js";
 import { SELECTION_SET_MODES } from "../grammar/selectionSet.js";
 import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { interactionOptions as options } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
@@ -69,6 +70,27 @@ function invoke(program, method, args) {
 export function prepareInteractionEdit(program, command) {
   const { target, view } = interactionOwner(program, command.target);
   const affectedOwners = cloneAndFreeze([target]);
+  if (command.type === "filter" || command.type === "reorder") {
+    const filter = command.type === "filter";
+    const payload = options(command.payload, [], filter ? ["clear", "select", "mode", "recompute"] : ["clear", "channel", "values", "by", "direction"], "Direct command payload");
+    let method, args;
+    if (Object.hasOwn(payload, "clear")) {
+      options(payload, filter ? ["clear"] : ["clear", "channel"], [], "Clear command payload");
+      if (payload.clear !== true) throw new TypeError("Clear requires true.");
+      method = filter ? "removeMarkFilter" : "removeCategoryOrder";
+      args = filter ? {} : { channel: payload.channel };
+    } else if (filter) {
+      options(payload, ["select"], ["mode", "recompute"], "Filter command payload");
+      method = "filterMarks";
+      args = { ...normalizeMarkSelector(payload.select),
+        ...(Object.hasOwn(payload, "mode") ? { mode: payload.mode } : {}),
+        ...(Object.hasOwn(payload, "recompute") ? { recompute: payload.recompute } : {}) };
+    } else {
+      options(payload, ["channel"], ["values", "by", "direction"], "Reorder command payload");
+      method = "orderCategories"; args = payload;
+    }
+    return { program: invoke(program, method, { ...args, ...address(target, true) }), affectedOwners };
+  }
   if (command.type === "setParameter") {
     requireMethod(program, "editParameter");
     const payload = options(command.payload, ["value"], [], "Parameter command payload");

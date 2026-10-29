@@ -247,3 +247,19 @@ test("rejects invalid targets, channels, assignments, and values atomically", ()
   );
   assert.equal(base.semanticSpec, snapshot);
 });
+
+
+test("native filtered category order retains typed authored intent and rejects unknown stored values", () => {
+  const p = barBase({ horizontal: true, values: [
+    { category: 1, value: 2 }, { category: "1", value: 3 }, { category: false, value: 5 }
+  ] }).orderCategories({ target: "bars", channel: "y", values: [false, "1"] });
+  const source = p.semanticSpec.datasets[0], order = p.semanticSpec.layers[0].encoding.y.categoryOrder;
+  const filtered = p.filterMarks({ target: "bars", field: "category", op: "neq", value: "1" });
+  assert.deepEqual(filtered.resolvedScales.y.domain, [false, 1]);
+  assert.equal(filtered.semanticSpec.layers[0].encoding.y.categoryOrder, order);
+  assert.equal(filtered.semanticSpec.datasets[0], source);
+  assert.deepEqual(filtered.removeMarkFilter({ target: "bars" }).resolvedScales.y.domain, [false, "1", 1]);
+  assert.throws(() => filtered.orderCategories({ target: "bars", channel: "y", values: ["1"] }), /Unknown category/);
+  const invalid = filtered.editSemantic({ property: "layer[bars].encoding.y.categoryOrder", value: { values: ["Missing"] } });
+  assert.throws(() => invalid.rematerializeScale({ id: "y" }), /Unknown category/);
+});

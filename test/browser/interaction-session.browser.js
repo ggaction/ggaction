@@ -7,6 +7,50 @@ import { startStaticServer } from "../support/static-server.js";
 let browser, server;
 test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
+test("host buttons and keyboard commit filter and reorder to the same Canvas and SVG view", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createInteractionSession } = await import("/src/interaction.js");
+      document.body.innerHTML = '<button id="filter">Keep B</button><button id="clear">Restore rows</button><button id="order">B first</button><canvas id="controls" aria-label="Bar chart"></canvas><div id="vector"></div>';
+      const program = chart().createCanvas({ width: 360, height: 240 }).createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 5 }] })
+        .createBarPlot({ id: "bars", x: "category", y: "value", guides: false });
+      const session = createInteractionSession({ program, bindings: [] }); window.__controlsSession = session; window.__controlsPhases = [];
+      const draw = current => { render(current, document.querySelector("#controls").getContext("2d"), { pixelRatio: 2 }); document.querySelector("#vector").innerHTML = renderToSVG(current); };
+      session.subscribe(event => { if (event.phase) window.__controlsPhases.push(event.phase); if (event.phase === "commit") draw(event.current); }); draw(program);
+      for (const [id, command] of [["filter", { type: "filter", payload: { select: { field: "category", op: "eq", value: "B" } } }],
+        ["clear", { type: "filter", payload: { clear: true } }], ["order", { type: "reorder", payload: { channel: "x", values: ["B", "A"] } }]]) {
+        document.querySelector(`#${id}`).addEventListener("click", () => session.dispatch({ ...command, target: "bars", origin: "user" }));
+      }
+    });
+    await page.getByRole("button", { name: "Keep B" }).click();
+    assert.deepEqual(await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__controlsSession.getState().program, { target: "bars" }).map(item => item.fields.category);
+    }), ["B"]);
+    await page.getByRole("button", { name: "Restore rows" }).focus(); await page.keyboard.press("Enter");
+    await page.getByRole("button", { name: "B first" }).focus(); await page.keyboard.press("Space");
+    await page.getByRole("button", { name: "Keep B" }).click();
+    assert.deepEqual(await page.evaluate(() => window.__controlsSession.getState().program.resolvedScales.x.domain), ["B"]);
+    await page.getByRole("button", { name: "Restore rows" }).focus(); await page.keyboard.press("Enter");
+    const result = await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); const state = window.__controlsSession.getState();
+      const items = getMarkItems(state.program, { target: "bars" });
+      const centers = items.map(item => ({ category: item.fields.category, x: item.geometry[0].properties.x }));
+      return { domain: state.program.resolvedScales.x.domain, phases: window.__controlsPhases, revision: state.revision,
+        focus: document.activeElement.id, centers, canvas: [document.querySelector("#controls").width, document.querySelector("#controls").height], svg: document.querySelector("#vector svg") !== null };
+    });
+    assert.deepEqual(result.domain, ["B", "A"]); assert.equal(result.revision, 5); assert.equal(result.focus, "clear");
+    assert.deepEqual(result.phases, Array.from({ length: 5 }, () => ["commit", "settled"]).flat());
+    assert.ok(result.centers.find(item => item.category === "B").x < result.centers.find(item => item.category === "A").x);
+    assert.deepEqual(result.canvas, [720, 480]); assert.equal(result.svg, true);
+    await page.evaluate(() => window.__controlsSession.destroy()); assertNoBrowserErrors(errors, "direct interaction controls"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
 for (const ratio of [1, 2, 3]) test(`real Canvas and SVG pointer events share CSS targets at DPR ${ratio}`, async () => {
   const context = await browser.newContext({ deviceScaleFactor: ratio, viewport: { width: 1100, height: 850 } });
   try {

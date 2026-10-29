@@ -3609,11 +3609,11 @@ coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calend
 
 ### Interaction의 원자 authoring command 경계
 
-`interaction/selection.js`는 명시 owner/child scope의 select/clearSelection/setParameter를 receiver의
+`interaction/selection.js`는 명시 owner/child scope의 selection/parameter/filter/reorder 명령을 receiver의
 기존 wrapped domain action에 위임한다. Full assembly를 controller에 import하거나 private primitive로
 state를 쓰지 않는다. `session.js`는 후보 program과 hit frame 모두 준비한 뒤 한 번에 교체하며
 transaction revision·event·FIFO·중복 transaction 억제는 runtime에만 둔다. Renderer는 여전히
-graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource만 저장한다.
+graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource와 native filter/order intent를 저장한다.
 
 `interaction/input.js`는 queued command와 외부 concrete frame의 bounded own-data snapshot을 공유한다.
 기존 sceneFrame은 해당 snapshot 뒤 canonical scene/concrete validator를 호출한다. 구체 공개 명령,
@@ -3778,3 +3778,14 @@ resolved Polar frame과 child placement를 읽고 resize중 captured preview를 
 951entries/1,370,214packed/6,271,222unpacked이며 Node20/24 최대 Full669,657/Basic376,363/
 interaction108,129gzip을 측정했다. 한도는951/1,371,000/6,272,000 및669,700/376,400/108,200,
 search973,997bytes→974,000이다. 각각의branch한도통과를합산근거로대체하지않는다.
+
+
+Direct filter/reorder 연결은 controller의 기존 receiver dispatch에만 추가되며 별도 resolver나 저장 schema를
+만들지 않는다. 동일951 entries에서 source/types 증가 후 packed1,370,824/unpacked6,274,003bytes를
+측정해 unpacked 한도만6,275,000으로 올렸다. Interaction gzip108,372는108,400으로, 검색974,604bytes는
+975,000으로 최소 올림한다. Category projection을 공유하는 Full/Basic gzip 최대669,714/376,439는
+669,800/376,500으로 최소 올림하며 SVG와 기존 critical floors는 유지한다.
+
+기존 scale consumer의 category-order 해석은 active final-item filter일 때 원 source에서 저장된
+explicit intent를 검증한 뒤 현재 visible category로 투영한다. 새 입력의 검증은 기존 action이
+현재 dataset에서 수행한다. 필터 해제 시 저장 intent를 그대로 다시 적용하며 별도 순서 상태를 만들지 않는다.
