@@ -1,3 +1,4 @@
+import { programTraceOwners } from "../support/program-traces.js";
 import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -87,6 +88,8 @@ test("every realistic lifecycle factor has a final or explicit transient effect"
             const factors = Object.freeze({ ...baseline, [factor]: value });
             const label = `${recipe.id}/${dataset}/${factor}=${JSON.stringify(value)}`;
             const program = recipe.build(factors);
+            assert.deepEqual([...recipe.describe(factors).activeFeatures].sort(),
+              [...recipe.observe(program, factors)].sort(), `${label} claimed and observed features`);
             assertGraphicIntegrity(program, label);
             finals.add(finalFingerprint(program));
             traces.add(fingerprint(program.trace));
@@ -145,13 +148,40 @@ test("scales explicit intervals to the authentic New Zealand name time span", ()
     const program = recipe.build(factors);
     assertGraphicIntegrity(program, `${dataset} direct data resources`);
     assertAnalyticLayerIntegrity(program, `${dataset} direct data resources`);
-    const intervals = program.graphicSpec.objects.directIntervalPlotInterval.items;
+    const intervalOwners = programTraceOwners(program).filter(owner =>
+      owner.graphicSpec.objects.directIntervalPlotInterval !== undefined);
+    assert.equal(intervalOwners.length, 1, "interval geometry requires one explicit owner");
+    const intervals = intervalOwners[0].graphicSpec.objects.directIntervalPlotInterval.items;
     assert.ok(intervals.length > 0);
     assert.ok(intervals.every(item =>
       Number.isFinite(item.properties.y1) &&
       Number.isFinite(item.properties.y2) &&
       Math.abs(item.properties.y2 - item.properties.y1) > 0
     ));
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("filled Trails preserve the authentic global-temperature cohort with no outline stroke", () => {
+  const dataset = "tt-global-temperatures";
+  const recipe = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.find(candidate =>
+    candidate.id === "realistic-action-direct-data-resources"
+  );
+  try {
+    const factors = Object.freeze({ dataset, width: 920, background: "#ffffff",
+      bandwidth: 0.35, steps: 24, bins: 3, includeEmpty: false });
+    const program = recipe.build(factors);
+    assertGraphicIntegrity(program, `${dataset} direct data resources`);
+    assertAnalyticLayerIntegrity(program, `${dataset} direct data resources`);
+    const trailOwners = programTraceOwners(program).filter(owner =>
+      owner.graphicSpec.objects.directTrail !== undefined);
+    assert.equal(trailOwners.length, 1, "Trail geometry requires one explicit owner");
+    const trail = trailOwners[0].graphicSpec.objects.directTrail;
+    assert.ok(trail.items.length > 0);
+    assert.ok(trail.items.every(item => item.properties.strokeWidth === 0));
+    assert.equal(assertAnalyticLayerIntegrity(trailOwners[0]).nonDegenerateItemCount,
+      trail.items.length, "filled ribbons have positive two-dimensional geometry");
   } finally {
     releaseTidyTuesdaySourceCache(dataset);
   }

@@ -58,7 +58,7 @@ const overlay = shares.layoutSeries({ mode: 'overlay' });
 `groupBy` determines which observations form a series. `layoutSeries` determines where that series is
 placed. Color may use another field when its value is constant within each series. Fill normalizes each
 position to one; diverging accumulates positive and negative values separately; center places the total
-symmetrically around zero. Stack, fill and center require nonnegative values. Series use source appearance
+symmetrically around zero. Stack, fill, center and wiggle require nonnegative values. Series use source appearance
 order, independently of color-domain or legend order.
 
 Bar charts use the same separation. After `createBarPlot`, assign `encodeGroup({field:'series'})` and
@@ -74,3 +74,38 @@ positions, NaN and infinity remain errors.
 
 For the exact options and limits, see [`createAreaPlot`](../reference/actions/charts-data.md#createareaplot)
 and [`layoutSeries`](../reference/actions/encodings.md#layoutseries).
+
+
+## Use a moving streamgraph baseline
+
+{% include chart-example.html id="streamgraph" %}
+
+```javascript
+import { chart } from 'ggaction';
+const base = chart().createCanvas({ width: 600, height: 360, margin: 60 })
+  .createData({ values: [
+    { series: 'A', time: 0, value: 1 }, { series: 'A', time: 1, value: 2 },
+    { series: 'A', time: 2, value: 1 }, { series: 'B', time: 0, value: 3 },
+    { series: 'B', time: 1, value: 2 }, { series: 'B', time: 2, value: 1 }
+  ] });
+const stream = base.createAreaPlot({ x: 'time', y: 'value', groupBy: 'series',
+  layout: 'wiggle', color: 'series' });
+const centered = stream.layoutSeries({ mode: 'center' });
+const zeroBased = centered.layoutSeries({ mode: 'stack' });
+```
+
+Wiggle moves the shared baseline to reduce thickness-weighted movement of the layer centers.
+It preserves every sample's thickness and series order. Each connected run begins at zero;
+an all-zero sample keeps the previous baseline. Numeric or temporal x positions must be aligned,
+with no custom path order. Use `missing:'break'` to break all layers together at a null measure.
+The [canonical rendered program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/streamgraph/program.js)
+fixes a small two-series example, including a layer that ends at zero thickness.
+
+The wiggle value scale must support zero; logarithmic value scales are rejected.
+
+### Shared layout policies
+
+Two Area owners can share the same value scale when both use the same stack, fill, center, or wiggle policy.
+The facade checks the complete group, layout and endpoint proposal before creating a mark. Incompatible
+policies, a misaligned group grid, or an explicit domain that excludes resolved bounds fail without creating
+child actions. Direct `layoutSeries` still requires complete positions.

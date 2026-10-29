@@ -1,3 +1,5 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { previewNativePositionFrame } from "./position/resolve.js";
 import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -115,6 +117,87 @@ function applyDensityPosition(program, layerId, definition, groupBy) {
   return next;
 }
 
+export function resolveDensityCreation(program, layer, args) {
+  const field = requireDensityField(args.field, "Density field");
+  const groupBy = args.groupBy === undefined || args.groupBy === false
+    ? undefined
+    : requireDensityField(args.groupBy, "Density groupBy");
+  const source = validateUserId(
+    args.source ?? layer.data,
+    "Density source dataset id"
+  );
+  if (!hasDataset(program, source)) {
+    throw new Error(`Unknown density source dataset "${source}".`);
+  }
+  if (["x", "y", "y2", "group"].some(channel =>
+    layer.encoding?.[channel] !== undefined
+  )) {
+    throw new Error(
+      `Density area target "${layer.id}" already has positional or group encodings.`
+    );
+  }
+  const categoryPlacement = args.placement?.type === "category";
+  const densityChannel = args.densityChannel ?? (categoryPlacement ? "x" : "y");
+  if (!["x", "y"].includes(densityChannel)) {
+    throw new Error(`Unsupported densityChannel "${densityChannel}".`);
+  }
+  const output = args.as ?? [`${field}_value`, `${field}_density`];
+  if (!Array.isArray(output) || output.length !== 2) {
+    throw new TypeError("Density as must contain value and density field names.");
+  }
+  const derivedId = `${layer.id}DensityData`;
+  if (hasDataset(program, derivedId)) {
+    throw new Error(`Dataset "${derivedId}" already exists.`);
+  }
+  const valueScale = resolveDensityScaleOptions(
+    args.valueScale,
+    { nice: false, zero: false },
+    "Density valueScale", program
+  );
+  const placement = args.placement === undefined
+    ? undefined
+    : normalizeDensityPlacement(args.placement, {
+        densityChannel,
+        groupBy,
+        categoryField: groupBy ?? `${layer.id}DensityCategory`
+      });
+  if (placement !== undefined && args.densityScale !== undefined) {
+    throw new Error(
+      "Density category placement cannot be combined with densityScale."
+    );
+  }
+  const densityScale = placement === undefined
+    ? resolveDensityScaleOptions(
+        args.densityScale,
+        { nice: true, zero: true },
+        "Density densityScale", program
+      )
+    : undefined;
+  const placementScale = placement === undefined
+    ? undefined
+    : resolveDensityCategoryScaleOptions(args.placement.scale);
+
+  const dataArgs = {
+    id: derivedId,
+    source,
+    field,
+    ...(groupBy === undefined ? {} : { groupBy }),
+    ...(args.bandwidth === undefined ? {} : { bandwidth: args.bandwidth }),
+    ...(args.extent === undefined ? {} : { extent: args.extent }),
+    ...(args.steps === undefined ? {} : { steps: args.steps }),
+    ...(args.kernel === undefined ? {} : { kernel: args.kernel }),
+    ...(args.normalization === undefined
+      ? {}
+      : { normalization: args.normalization }),
+    ...(args.weight === undefined ? {} : { weight: args.weight }),
+    ...(args.as === undefined ? {} : { as: args.as }),
+    ...(placement === undefined ? {} : { placement })
+  };
+  const definition = resolveDensityPositionDefinition({ layer: { densityChannel }, output, groupBy, placement,
+    coordinate: args.coordinate, valueScale, densityScale, placementScale });
+  return { derivedId, groupBy, placement, dataArgs, definition };
+}
+
 const encodeDensity = /* @__PURE__ */ action(
   {
     op: "encodeDensity",
@@ -123,81 +206,8 @@ const encodeDensity = /* @__PURE__ */ action(
   function (args = {}) {
     validateOptions(args, OPTIONS, "encodeDensity");
     const layer = findArea(this, args.target);
-    const field = requireDensityField(args.field, "Density field");
-    const groupBy = args.groupBy === undefined || args.groupBy === false
-      ? undefined
-      : requireDensityField(args.groupBy, "Density groupBy");
-    const source = validateUserId(
-      args.source ?? layer.data,
-      "Density source dataset id"
-    );
-    if (!hasDataset(this, source)) {
-      throw new Error(`Unknown density source dataset "${source}".`);
-    }
-    if (["x", "y", "y2", "group"].some(channel =>
-      layer.encoding?.[channel] !== undefined
-    )) {
-      throw new Error(
-        `Density area target "${layer.id}" already has positional or group encodings.`
-      );
-    }
-    const categoryPlacement = args.placement?.type === "category";
-    const densityChannel = args.densityChannel ?? (categoryPlacement ? "x" : "y");
-    if (!["x", "y"].includes(densityChannel)) {
-      throw new Error(`Unsupported densityChannel "${densityChannel}".`);
-    }
-    const output = args.as ?? [`${field}_value`, `${field}_density`];
-    if (!Array.isArray(output) || output.length !== 2) {
-      throw new TypeError("Density as must contain value and density field names.");
-    }
-    const derivedId = `${layer.id}DensityData`;
-    if (hasDataset(this, derivedId)) {
-      throw new Error(`Dataset "${derivedId}" already exists.`);
-    }
-    const valueScale = resolveDensityScaleOptions(
-      args.valueScale,
-      { nice: false, zero: false },
-      "Density valueScale", this
-    );
-    const placement = args.placement === undefined
-      ? undefined
-      : normalizeDensityPlacement(args.placement, {
-          densityChannel,
-          groupBy,
-          categoryField: groupBy ?? `${layer.id}DensityCategory`
-        });
-    if (placement !== undefined && args.densityScale !== undefined) {
-      throw new Error(
-        "Density category placement cannot be combined with densityScale."
-      );
-    }
-    const densityScale = placement === undefined
-      ? resolveDensityScaleOptions(
-          args.densityScale,
-          { nice: true, zero: true },
-          "Density densityScale", this
-        )
-      : undefined;
-    const placementScale = placement === undefined
-      ? undefined
-      : resolveDensityCategoryScaleOptions(args.placement.scale);
-
-    const dataArgs = {
-      id: derivedId,
-      source,
-      field,
-      ...(groupBy === undefined ? {} : { groupBy }),
-      ...(args.bandwidth === undefined ? {} : { bandwidth: args.bandwidth }),
-      ...(args.extent === undefined ? {} : { extent: args.extent }),
-      ...(args.steps === undefined ? {} : { steps: args.steps }),
-      ...(args.kernel === undefined ? {} : { kernel: args.kernel }),
-      ...(args.normalization === undefined
-        ? {}
-        : { normalization: args.normalization }),
-      ...(args.weight === undefined ? {} : { weight: args.weight }),
-      ...(args.as === undefined ? {} : { as: args.as }),
-      ...(placement === undefined ? {} : { placement })
-    };
+    const { derivedId, groupBy, placement, dataArgs, definition } = resolveDensityCreation(this, layer, args);
+    assertProgramSingleY(previewNativePositionFrame(this, { ...layer, data: derivedId }, args.coordinate, definition), { allowIncomplete: true });
     let next = placement === undefined
       ? this.createDensityData(dataArgs)
       : this.createCategoricalDensityData(dataArgs);
@@ -206,16 +216,7 @@ const encodeDensity = /* @__PURE__ */ action(
         property: `layer[${layer.id}].data`,
         value: derivedId
       });
-    next = applyDensityPosition(next, layer.id, resolveDensityPositionDefinition({
-      layer: { densityChannel },
-      output,
-      groupBy,
-      placement,
-      coordinate: args.coordinate,
-      valueScale,
-      densityScale,
-      placementScale
-    }), groupBy);
+    next = applyDensityPosition(next, layer.id, definition, groupBy);
     return next.rematerializeAreaMark({ id: layer.id });
   }
 );

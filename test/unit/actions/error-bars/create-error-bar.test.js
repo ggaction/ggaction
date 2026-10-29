@@ -500,11 +500,10 @@ test("namespaces repeated error bars and rejects occupied child roles", () => {
   const second = first.createErrorBar({
     id: "horsepower",
     data: "data",
-    x: { field: "Horsepower", scale: { id: "horsepowerX" } },
+    x: { field: "Origin", fieldType: "nominal", scale: { id: "horsepowerX" } },
     y: {
-      field: "Origin",
-      fieldType: "nominal",
-      scale: { id: "horsepowerY" }
+      field: "Horsepower",
+      scale: { id: "y" }
     }
   });
 

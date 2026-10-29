@@ -1,0 +1,4 @@
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });

@@ -58,7 +58,7 @@ test.before(async () => {
         centers:circles(scene).map(node=>[node.properties.x,node.properties.y])};
       document.querySelector("#status").textContent="complete";
     </script></html>`);
-  server = await startStaticServer(consumer.directory);
+  server = await startStaticServer(consumer.directory, { dependencies: "installed" });
   browser = await chromium.launch({ headless: true });
 });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); await consumer?.cleanup(); });

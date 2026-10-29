@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 3,
+  "name": "createPyramidPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Draw ordered stages with explicit width or area meaning.",
+  "signature": "createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;",
+  "intents": [
+    "create pyramid plot",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "Pyramid plot",
+    "ordered stage widths and areas"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "owns": [
+      "Pyramid stage mark"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate"
+  ],
+  "editableVia": [
+    "editPyramidPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"down\" | \"left\" | \"right\" | \"up\" | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "percentBase",
+      "required": false,
+      "type": "\"first\" | \"previous\" | \"total\" | undefined"
+    },
+    {
+      "name": "encoding",
+      "required": false,
+      "type": "\"area\" | \"width\" | undefined"
+    },
+    {
+      "name": "lastStage",
+      "required": false,
+      "type": "\"flat\" | \"point\" | undefined"
+    },
+    {
+      "name": "taperRatio",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "stage",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "stages",
+      "required": false,
+      "type": "PyramidStagePaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | PyramidLabelPaint | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | PyramidColor | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createPyramidPlot({ stage, value, id?, data?, coordinate?, target?, orientation?, gap? })"
+  ],
+  "snippet": "program.createPyramidPlot({ stage: \"stage\", value: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createpyramidplot"
+}

@@ -1,0 +1,116 @@
+{
+  "status": "qualified native Trail slice; STEP050 integration and remaining STEP054 variants and STEP074 cumulative qualification remain open",
+  "sourceCommit": "fedc6a4b944057433c6d82f07b6cf00039d06391",
+  "base": "946d8f375",
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1028,
+    "packedBytes": 1470925,
+    "unpackedBytes": 6707821,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "88659667c427ca9e5d5f2c47ff90e14f116cc102",
+    "sha256": "8526f0e987796de59cb5a7295cf283578ef6a7ad9b29e678d02dd580b13ddcbd"
+  },
+  "packageMeasurements": {
+    "entries": 1028,
+    "packedBytesNode22": 1470925,
+    "maxPackedBytesNode20And24": 1473553,
+    "unpackedBytes": 6707821,
+    "canonicalStagingEquality": 1028
+  },
+  "cases": {
+    "owning": 41,
+    "criticalOwners": 8,
+    "criticalCoverage": {
+      "lines": 100,
+      "branches": 97.89,
+      "functions": 100
+    },
+    "renderAndTypes": 5,
+    "browserVariants": 2,
+    "browserDensities": [
+      1,
+      2
+    ],
+    "realistic": 16,
+    "realSourceTables": 5,
+    "recipesPerTable": 3,
+    "sharedOriginal": {
+      "pass": 83,
+      "fail": 1,
+      "reason": "outdated realistic file count; corrected discovery passed in boundary check"
+    },
+    "boundariesOriginal": {
+      "pass": 47,
+      "fail": 1,
+      "reason": "preexisting facet direct child discovery assertion; corrected owner3/3"
+    },
+    "hierarchyOwner": 3,
+    "inventoryOriginal": {
+      "pass": 13,
+      "fail": 1
+    },
+    "inventoryCorrectedOwner": 1,
+    "docsOriginal": {
+      "pass": 195,
+      "fail": 3,
+      "reason": "source provenance changed from dirty branch to immutable commit"
+    },
+    "docsCorrectedOwners": 47,
+    "builtPages": 179,
+    "builtMachineArtifacts": 1525,
+    "builtBrowserWidths": [
+      320,
+      390,
+      768
+    ],
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": 1,
+      "optionalPeers": 1,
+      "browserBundles": 5
+    }
+  },
+  "inventory": {
+    "publicActions": 350,
+    "topLevelOptionPaths": 3383,
+    "nestedOptionPaths": 32122,
+    "optionPaths": 35505,
+    "requiredOptionPaths": 23906,
+    "excludedOptionPaths": 11599,
+    "topLevelCategoricalPaths": 1190,
+    "topLevelLiteralValues": 4299,
+    "literalFamilies": 276,
+    "pathLiteralRequirements": 17097,
+    "familyLiteralRequirements": 561,
+    "pathDiversityRequirements": 582,
+    "scaleTypePaths": 229,
+    "scaleValues": 1118,
+    "ledger": 41924,
+    "ledgerWithoutRendererFeatures": 41920
+  },
+  "initialFailuresPreserved": [
+    "Public categorical positions initially received quantitative nice defaults; per-field-type defaults now preserve categorical and timestamp roles.",
+    "Real-data fixture initially counted raw+computed source projections as one array; it now checks12 raw and12 computed identities separately. Source values and rows were not reduced.",
+    "Inventory retained previous action/option/scale counts and omitted Trail guide clipHeight roles; canonical measurements and actual direct API witnesses replace those expectations.",
+    "Default renderer ledger adds4 requirements; the contract explicitly supplies rendererFeatures:[] and therefore asserts41920, while full default inventory is41924. No requirement was removed.",
+    "Shared facet discovery expected no direct children despite existing filterData/guide actions; parent6f524495f evidence-backed assertion was reused.",
+    "The precommit docs pass had source-link, generator freshness and search-cap differences. Sourcecommit provenance refresh then passed47owner tests."
+  ],
+  "evidenceReuse": [
+    "No source/types edits followed fedc6a4b9. Metadata-only source provenance regeneration and inventory assertion repairs do not change installed runtime bytes.",
+    "Original13 passing inventory cases and focused corrected owner1/1 establish the full14 cases without repeating unaffected expensive contracts.",
+    "Original195 passing docs cases plus47 affected owner tests after canonical provenance regeneration establish the198 source checks.",
+    "Original83 shared regressions plus passing corrected discovery establish that shared suite; previous failure logs remain included.",
+    "Final archive is reused byte-identically across Node20/22/24 and compared with all1028 canonical staged files."
+  ],
+  "openObligations": [
+    "Root integrates latest STEP050 assertFacadeGuidesFrame after exact Trail pure preview and before applyTrailMark; frame/guide fit first-child admission is not counted complete here.",
+    "STEP054 rose/radar/violin audit and missing wiggle baseline require a following coherent checkpoint.",
+    "STEP055 Table and STEP056 composition recipes remain assigned work.",
+    "STEP074 cumulative full source coverage and common realistic corpus are not rerun or claimed by this slice."
+  ]
+}

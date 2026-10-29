@@ -16,7 +16,7 @@ test.before(async () => {
   await mkdir(path.join(root, ".artifacts"), { recursive: true });
   directory = await mkdtemp(path.join(root, ".artifacts/side-legend-dom-"));
   await writeFile(path.join(directory, "index.html"), '<!doctype html><html><body><canvas aria-label="Side legend geometry"></canvas><div id="svg"></div><p id="status">Ready</p></body></html>');
-  server = await startStaticServer(root);
+  server = await startStaticServer(root, { dependencies: "repository" });
   browser = await chromium.launch({ headless: true });
 });
 test.after(async () => {

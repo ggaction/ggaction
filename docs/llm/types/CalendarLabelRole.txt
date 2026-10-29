@@ -1,1 +1,3 @@
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */

@@ -28,7 +28,18 @@
   "authoringRoles": [
     "H3"
   ],
-  "wraps": [],
+  "wraps": [
+    "filterData",
+    "editXAxisLine",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisLine",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle",
+    "removeTitle"
+  ],
   "editableVia": [
     "editFacetGuides"
   ],

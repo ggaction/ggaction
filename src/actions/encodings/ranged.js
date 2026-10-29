@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { resolveSecondaryPositionPolicy } from "../../grammar/positionPolicies/secondary.js";
 import { commonPositionBinding } from "../../core/encodingBindings.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
@@ -14,7 +15,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { resolveTarget, setEncodingProperties, validateOptions } from "./shared.js";
 import { applyTemporalUnit } from "./temporal.js";
 import { deriveAreaSeries } from "../../grammar/areaSeries.js";
-import { resolvePositionEncoding } from "./position/resolve.js";
+import { resolvePositionEncoding, previewPositionSequence } from "./position/resolve.js";
 import { resolveScalePreview } from "../scales/preview.js";
 import { findUpstreamTransform } from "../../materialization/dataProvenance.js";
 import { applyRequestedItemMissingPolicy } from
@@ -211,6 +212,7 @@ function rangeAction(channel) {
       fieldType: args.fieldType ?? "quantitative"
     };
     const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect", "rule"], "ranged mark");
+    if (this.actionStack.length === 1) assertProgramSingleY(previewPositionSequence(this, layer, dataset, [[channel, { ...args, fieldType: common.fieldType }]]), { allowIncomplete: true });
     let next = this;
     let lower = { field: args.lower }, upper = { field: args.upper };
     if (layer.mark.type === "rect" || layer.mark.type === "rule") {

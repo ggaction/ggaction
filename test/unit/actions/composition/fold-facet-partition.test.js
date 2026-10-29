@@ -88,7 +88,7 @@ test("omitted anchors, noncommon folds and missing fields reject without modifyi
   assert.throws(() => unit.facet({ ...options, data: "missing" }), /does not exist/);
   assert.equal(serializeProgram(unit), snapshot);
   assert.doesNotThrow(() => unit.facet({ field: "country" }));
-  const mixed = unit.createScatterPlot({ id: "raw", data: "data", x: { field: "gold", scale: { id: "raw-x" } }, y: { field: "silver", scale: { id: "raw-y" } }, guides: false });
+  const mixed = unit.createScatterPlot({ id: "raw", data: "data", x: { field: "gold", scale: { id: "raw-x" } }, y: { field: "silver", scale: { id: "y" } }, guides: false });
   const before = serializeProgram(mixed);
   assert.throws(() => mixed.facet(options), /not a common/);
   assert.equal(serializeProgram(mixed), before);

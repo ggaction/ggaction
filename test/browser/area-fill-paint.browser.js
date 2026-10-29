@@ -43,7 +43,7 @@ test("Browser Canvas and SVG consume the same materialized area gradient", async
               Number(stop.getAttribute('offset')),stop.getAttribute('stop-color')])}};
         document.querySelector('#status').textContent='Ready';
       </script></body></html>`);
-    server = await startStaticServer(root);
+    server = await startStaticServer(root, { dependencies: "repository" });
     browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser,
       server.baseUrl + path.relative(root, directory) + "/",

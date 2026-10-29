@@ -26,7 +26,7 @@ export function pathGroupFields(layer) {
     }
     return normalizeGroupFields(group.fields ?? group.field);
   }
-  if (layer.mark?.type !== "line") return [];
+  if (!["line", "trail"].includes(layer.mark?.type)) return [];
   const color = ["nominal", "ordinal"].includes(layer.encoding?.color?.fieldType)
     ? layer.encoding.color.field : undefined;
   const dash = layer.encoding?.strokeDash?.field;

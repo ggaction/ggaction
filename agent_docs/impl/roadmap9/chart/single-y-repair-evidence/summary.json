@@ -1,0 +1,139 @@
+{
+  "status": "owning-repairs-verified-integration-pending",
+  "baseCommit": "50d42ed4fd7fa64a9969ec845957d67b90332395",
+  "checks": [
+    {
+      "log": "single-y-main-unit.log.gz",
+      "sha256": "3dafffda17665d0c81c18df42542833eae1eca854445f46e7b3528d5a0433198",
+      "counts": {
+        "tests": 6584,
+        "pass": 6577,
+        "fail": 7,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-contracts.log.gz",
+      "sha256": "1d2101f144eb95bc0e4a3b77022570b35877aee3ae04a3dc46cc10c02d9effda",
+      "counts": {
+        "tests": 754,
+        "pass": 738,
+        "fail": 16,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-charts.log.gz",
+      "sha256": "c1997811fee5d578c5a94b8088130ce8bba0d5b72ba885c270e545ecd2895789",
+      "counts": {
+        "tests": 955,
+        "pass": 954,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-source-repairs.log.gz",
+      "sha256": "6644feee22e9c9781b5db95eef97e3bd96a295b6692cd1e638b0571448c5d921",
+      "counts": {
+        "tests": 77,
+        "pass": 77,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-owner-repairs.log.gz",
+      "sha256": "2635e9d535ee9f200c1645f67fbb6a0379e4d176277ff9488eb91016f4d45956",
+      "counts": {
+        "tests": 91,
+        "pass": 91,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-native-boundaries-final.log.gz",
+      "sha256": "f609e924bb67307ebb6d90ab91230c3d0504df348c9e5afa8e9adf2fda220f6e",
+      "counts": {
+        "tests": 21,
+        "pass": 21,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-main-nested-scale-final.log.gz",
+      "sha256": "e6e0586d7e68660f31775af59637e22ae91b6f75648279bf616c06af14dfc254",
+      "counts": {
+        "tests": 4,
+        "pass": 4,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-position-scope-coverage.log.gz",
+      "sha256": "ece6fa51addb07b89ba7ae967edd0eca8a1811a2bdbba992422118de6de46e2b",
+      "counts": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "single-y-final-metadata-leaves.log.gz",
+      "sha256": "4e25f972216a9a8c6bb068bee5419d63187c4f2eae24cde5ab398ed0047e69ac",
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "positionScaleScopeCoverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "sourceHashes": {
+    "src/actions/charts/ecdf.js": "d5de393e7f399251a80a960f925c0d30650e59311dafa2e938c8ea770655cd8d",
+    "src/actions/charts/rug-strip.js": "7c71818a8c2174f4b90a6f7ffb3f39761dac428769277ce97dbd42d6354e386b",
+    "src/actions/composition/layer.js": "4d4c2f5bbdaac0fd5ea5e143f0a9d72df5e9508e9f500f2f0278b440768a211c",
+    "src/actions/encodings/channels.js": "63fc9203632fccfe6fddad894767e1d6c56d989fb0c3ff972326cb59a1bc168d",
+    "src/actions/encodings/position/apply.js": "704c266d8866854ca389b846e8b6c2391c5379bd25318e095397e908969d9ded",
+    "src/actions/encodings/position/resolve.js": "894d80625c3f9567c1bb8e3ba3f4ff3853fdba6426f157bbadc16da0a6436974",
+    "src/actions/marks/references.js": "5b0798c7c85cfd60e6470d5fd2145948f7ac5ee0e1358a2759fbf7357b5b400c",
+    "src/grammar/plotComposition.js": "a6ef3d4f0b7467136d966fc3c87f79afee2eff2b3f8a01fa0c4d184b40c9cb5c",
+    "src/grammar/statisticalReference.js": "297e8be29242740111c1a7065abfa180b9cd60a51b5428067852692c4d71d5d3",
+    "src/actions/encodings/position/scope.js": "e5737ea0a2a5b79925dcd58ec3699a33ea24f89e94a4306f04efe4786fbeb0f1"
+  },
+  "repairs": [
+    "Canvas prospective responsive bounds validate before the first graphical child",
+    "Bulk transpose retains original positional identities",
+    "Source statistical references share native position projection",
+    "Exact native constructor arguments carry temporary final ECDF scale identities with finally cleanup",
+    "Precomputed interval layer projects center before native construction",
+    "Rug facade uses existing encoding owner for plotAnchor intent",
+    "Named owner fixtures retain ambiguity through independent X and shared Y",
+    "New responsive primitive slices and measured realistic timing entries retain their actual evidence"
+  ],
+  "pending": [
+    "Merge the newest stable Geo, interaction and native chart checkpoints",
+    "Run combined source, contract, chart, critical and common realistic checks against the final inputs",
+    "Regenerate and validate final docs and source-pinned provenance",
+    "Measure and consume one exact combined package archive across three Node versions",
+    "STEP050 and STEP077 remain incomplete until required integration verification passes"
+  ]
+}

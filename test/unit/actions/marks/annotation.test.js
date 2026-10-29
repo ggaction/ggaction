@@ -176,7 +176,7 @@ test("annotation branch and child errors reject without partial effects", () => 
   const ambiguous = source
     .createPointMark({ id: "second", data: "data" })
     .encodeX({ target: "second", field: "x", scale: { id: "second-x" } })
-    .encodeY({ target: "second", field: "y", scale: { id: "second-y" } })
+    .encodeY({ target: "second", field: "y", scale: { id: "y" } })
     .createRuleMark({ id: "current", data: "data" });
   assert.throws(
     () => ambiguous.createAnnotation({ text: "note", x: 1, y: 2 }),

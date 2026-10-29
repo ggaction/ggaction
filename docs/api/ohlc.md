@@ -1,0 +1,84 @@
+---
+layout: default
+title: OHLC Plots
+---
+
+# OHLC plots
+
+Show each observation's open, high, low and close as one selectable item. A thin
+line spans the low and high; a rectangle spans the open and close. These Full
+entry actions use the same concrete graphics in Canvas, SVG, PNG and PDF.
+
+{% include chart-example.html id="ohlc" %}
+
+## `createOHLCPlot`
+
+**Chart authoring.**
+
+```typescript
+createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+```
+
+Pass `x`, `low`, `high`, `open` and `close` explicitly. The four price columns
+must be finite and satisfy `low <= min(open, close) <= max(open, close) <= high`.
+The default rejects invalid rows; `invalid: "omit-row"` removes an entire price
+item from domains, graphics, labels and selection. It does not hide invalid X
+or color values on otherwise valid rows.
+
+X accepts a field string or `{ field, fieldType?, scale?, temporalUnit? }`.
+Use `fieldType: "temporal"` for dates. `yScale` takes the ordinary quantitative
+position scale options; the low and high share that one price scale. Default
+scale IDs are `<id>-x` and `<id>-y`. Explicit IDs can share an existing scale.
+
+Options are `{ id?, data?, coordinate?, x, low, high, open, close, yScale?,
+invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? }`.
+The default ID is `ohlc`. Data and coordinate references must be explicit when
+there is no current or unique eligible resource.
+
+| Option | Behavior |
+| --- | --- |
+| `body` | `upFill`, `downFill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `stem` | `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `width` | One of `{band}`, `{pixels}`, `{interval:{unit,insetStart?,insetEnd?}}`; uses the existing Bar width policy |
+| `doji` | `"line"` (default) draws a horizontal body for equal open and close; `"none"` omits that body |
+| `labels` | `false` (default), or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale |
+| `clip` | `true` by default; clips to the plot viewport |
+| `guides` | Ordinary axes/grid/legend options, or `false` |
+
+Rising and falling fills default to green `#16a34a` and red `#dc2626`.
+Both the body and stem use stroke `#334155`, width 1 and opacity 1. Fill accepts
+ordinary structured paints. `outline:false` and `shadow:false` remove effects.
+Prices and body heights are never inflated to make a flat observation visible.
+
+Categorical X uses width `{band:.72}` by default; numeric and temporal X use
+`{pixels:5}`. Band widths require categorical X; point scales use their step as the slot width. Temporal interval widths require
+UTC interval starts and a scale domain covering every interval endpoint.
+
+Labels show `close` by default; `open`, `low` and `high` are also available.
+They use the ordinary Text formatter and font preparation, above the high-low
+stem with an offset of 6 logical pixels. Adjust the clip or label options when
+your chosen price domain leaves insufficient space above the observations.
+
+## `editOHLCPlot`
+
+**Chart authoring.**
+
+```typescript
+editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+```
+
+Patch the fields, scales, appearance or label options of an existing plot.
+A target can be a mark ID or an explicit scoped target in a composition.
+Omitted values stay unchanged; null, undefined and an empty patch are errors.
+Omitting `guides` during editing retains the existing guide presence.
+
+Source revisions preserve typed row identities, even after reordering. Each
+stem, body and label belongs to the same logical item for selection and hit
+testing. Duplicate X labels stay separate rows; they are not aggregated.
+
+Theme typography and muted stroke colors apply normally. Rising/falling colors
+retain their price-direction meaning. Editable snapshots and graphic snapshots
+support offline rendering without fetching the original prices.
+
+See the [OHLC tutorial](../tutorials/ohlc.md) for a complete public call chain.

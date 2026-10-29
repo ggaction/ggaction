@@ -3,6 +3,24 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const tableFile = path.join(directory, "table.mts");
+  await writeFile(tableFile, await readFile(new URL("./fixtures/table.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", tableFile], directory);
+  const streamFile = path.join(directory, "stream-baselines.mts");
+  await writeFile(streamFile, await readFile(new URL("./fixtures/stream-baselines.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", streamFile], directory);
+  const trailFile = path.join(directory, "trail.mts");
+  await writeFile(trailFile, await readFile(new URL("./fixtures/trail.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", trailFile], directory);
+  const waterfallFile = path.join(directory, "waterfall.mts");
+  await writeFile(waterfallFile, await readFile(new URL("./fixtures/waterfall.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", waterfallFile], directory);
+  const ohlcFile = path.join(directory, "ohlc.mts");
+  await writeFile(ohlcFile, await readFile(new URL("./fixtures/ohlc.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", ohlcFile], directory);
+  const pyramidFile = path.join(directory, "pyramid.mts");
+  await writeFile(pyramidFile, await readFile(new URL("./fixtures/pyramid.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", pyramidFile], directory);
   const responsiveFile = path.join(directory, "responsive-guides.mts");
   await writeFile(responsiveFile, await readFile(new URL("./fixtures/responsive-guides.ts", import.meta.url), "utf8"));
   run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", responsiveFile], directory);

@@ -1,3 +1,4 @@
+import { collectGraphicSubtreeIds } from "../../grammar/schemas/graphicTree.js";
 import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
@@ -10,11 +11,12 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { mapOrdinalValues } from "../../grammar/scales/index.js";
 import { resolveEffectiveThemeTokens, resolveEffectiveThemeFrame } from "./state.js";
 
-const FILL_MARKS = new Set(["point", "bar", "area", "arc", "rect", "text"]);
+const FILL_MARKS = new Set(["point", "bar", "area", "arc", "rect", "text", "table"]);
 export function themePatternForValues(program, layer, values, scaleId = layer?.encoding?.color?.scale) {
   const state = program.materializationConfigs.theme;
   if (resolveEffectiveThemeFrame(state) === undefined || !FILL_MARKS.has(layer?.mark?.type) ||
-      state.overrides?.includes(`g:${layer.id}.fill`)) return undefined;
+      state.overrides?.includes(`g:${layer.id}.fill`) ||
+      layer?.mark?.type === "table" && state.overrides?.includes(`c:marks.${layer.id}.tablePlot.cells.fill`)) return undefined;
   const palette = resolveEffectiveThemeTokens(state).patternPalette;
   const scale = findSemanticScale(program, scaleId), resolved = program.resolvedScales[scaleId];
   if (!palette || scale?.type !== "ordinal" || scale.range !== "auto" || !resolved) return undefined;
@@ -42,13 +44,17 @@ export function applyThemePatternPalette(program, target) {
       if (fill !== undefined) for (const id of item.graphicIds) fills.set(id, fill);
     });
     if (!fills.size) continue;
-    const graphic = next.graphicSpec.objects[layer.id];
-    const painted = graphic.items.map(item => ({ ...item, type: item.type ?? graphic.type,
-      properties: fills.has(item.id) && Object.hasOwn(item.properties, "fill")
-        ? { ...item.properties, fill: fills.get(item.id) } : item.properties }));
-    const concrete = materializeFillItems(next, layer, painted);
-    const changed = concrete.some((item, index) => JSON.stringify(item.properties.fill) !== JSON.stringify(graphic.items[index].properties.fill));
-    if (changed) next = next.editGraphics({ target: layer.id, property: "items", value: graphic.items.map((item, index) => ({ type: item.type ?? graphic.type, properties: concrete[index].properties, ...(item.identity === undefined ? {} : { identity: item.identity }) })) });
+    for (const owner of collectGraphicSubtreeIds(next.graphicSpec, layer.id)) {
+      const graphic = next.graphicSpec.objects[owner];
+      if (!graphic.items?.length) continue;
+      const painted = graphic.items.map(item => ({ ...item, type: item.type ?? graphic.type,
+        properties: fills.has(item.id) && Object.hasOwn(item.properties, "fill") &&
+          (layer.mark.type !== "table" || item.identity?.role === "body")
+          ? { ...item.properties, fill: fills.get(item.id) } : item.properties }));
+      const concrete = materializeFillItems(next, layer, painted);
+      const changed = concrete.some((item, index) => JSON.stringify(item.properties.fill) !== JSON.stringify(graphic.items[index].properties.fill));
+      if (changed) next = next.editGraphics({ target: owner, property: "items", value: graphic.items.map((item, index) => ({ type: item.type ?? graphic.type, properties: concrete[index].properties, ...(item.identity === undefined ? {} : { identity: item.identity }) })) });
+    }
   }
   return next;
 }

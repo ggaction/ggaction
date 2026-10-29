@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewCreateAxisFrame, previewEditAxisFrame } from "./frame.js";
 import { positionBindings } from "../../../core/encodingBindings.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { withGuideLayoutTransaction } from "../../../materialization/guides/layout.js";
@@ -197,6 +198,31 @@ function resolveAxisArgs(layers, channel, option) {
   return { ...args, scale };
 }
 
+function previewResolvedAxes(program, coordinate, x, y) {
+  let next = program;
+  for (const [channel, option] of [["x", x], ["y", y]]) {
+    if (option === undefined) continue;
+    for (const entry of Array.isArray(option) ? option : [option]) {
+      next = previewCreateAxisFrame(next, channel, { ...entry, coordinate: coordinate.id });
+    }
+  }
+  return next;
+}
+
+export function previewAxesFrame(program, args = {}) {
+  const descriptor = validateAxesArgs(args);
+  const layers = positionGuideLayers(program, ["x", "y"].filter(channel => args[channel] !== false),
+    { coordinate: descriptor.id }).filter(layer => !isSourceOwnedText(layer));
+  const { cartesianLayers } = inspectChannels(layers);
+  const family = descriptor.type ?? findCoordinate(program, descriptor.id)?.type;
+  if (["polar", "parallel"].includes(family) || args.theta !== undefined || args.radius !== undefined || cartesianLayers.length === 0) return program;
+  const coordinate = resolveCoordinate(program, descriptor, cartesianLayers);
+  const resolve = (channel, value) => Array.isArray(value)
+    ? value.map(entry => resolveAxisArgs(coordinate.layers, channel, entry))
+    : resolveAxisArgs(coordinate.layers, channel, value);
+  return previewResolvedAxes(program, coordinate, resolve("x", args.x), resolve("y", args.y));
+}
+
 const createAxes = /* @__PURE__ */ action(
   {
     op: "createAxes",
@@ -309,6 +335,7 @@ const createAxes = /* @__PURE__ */ action(
       throw new Error("createAxes requires at least one selected axis.");
     }
 
+    assertAxisFrame(previewResolvedAxes(this, coordinate, x, y));
     const apply = source => {
       let program = source;
       for (const [channel, option] of [["x", x], ["y", y]]) {
@@ -360,6 +387,9 @@ const editAxes = /* @__PURE__ */ action(
       }
     }
     if (plan.length === 0) throw new Error("editAxes requires at least one axis change.");
+    const candidate = plan.reduce((program, step) => step.method === "editYAxis"
+      ? previewEditAxisFrame(program, "y", step.args) : program, this);
+    assertAxisFrame(candidate);
     const apply = source => plan.reduce((program, step) => program[step.method](step.args), source);
     // Preflight the full immutable proposal before beginning the returned branch.
     withGuideLayoutTransaction(this, apply);

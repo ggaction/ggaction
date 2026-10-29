@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "./frame.js";
+import { resolveHorizonCreation, horizonPositionBindings } from "../encodings/horizon.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { validateNonEmptyString, validateOptionObject, validateUnitInterval } from "../../core/validation.js";
@@ -65,6 +67,9 @@ export const createHorizonPlot = /* @__PURE__ */ action({
   }
   if (opacity !== undefined) validateUnitInterval(opacity, `${OPERATION} area.opacity`);
   const guides = guideOptions(requestedGuides);
+  const plan = resolveHorizonCreation(this, { id, data, mark: { type: "area" }, encoding: {} }, { ...horizon, x, y });
+  assertFacadeBindingFrame(this, { id, data: plan.id, mark: { type: "area" }, coordinate,
+    bindings: horizonPositionBindings(plan.transform, plan.xScale, plan.yScale), guides, explicitGuides: requestedGuides ?? {} });
   let next = this.createAreaMark({ id, data, ...area });
   if (coordinate !== undefined) next = next.createCoordinate({ id: coordinate, type: "cartesian", layers: [id] });
   next = next.encodeHorizon({ ...horizon, target: id, x, y });

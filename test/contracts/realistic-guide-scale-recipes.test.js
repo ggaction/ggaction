@@ -1,3 +1,4 @@
+import { directProgramTrace } from "../support/program-traces.js";
 import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
@@ -164,7 +165,7 @@ function programSpecs(program) {
 }
 
 function directEntries(program, operation) {
-  return (program.trace.children ?? []).filter(entry => entry.op === operation);
+  return directProgramTrace(program).filter(entry => entry.op === operation);
 }
 
 function buildCoverageProjection(inventory) {
@@ -215,7 +216,7 @@ function buildCoverageProjection(inventory) {
     const actions = new Set();
     const optionIds = new Set();
     const literalIds = new Set();
-    for (const entry of program.trace.children ?? []) {
+    for (const entry of directProgramTrace(program)) {
       actions.add(entry.op);
       for (const option of optionsByAction.get(entry.op) ?? []) {
         const values = nestedTraceValues(entry.args, option.path);
@@ -613,8 +614,8 @@ test("keeps known video-game facets and complete-case parallel profiles nonempty
           assertGraphicIntegrity(program, label);
           assertAnalyticLayerIntegrity(program, label);
           assert.equal(recipe.observeFactors(program, factors).length, 2, label);
-          if (fieldPair === domains.fieldPair[0] && program.compositionSpec?.type === "facet") {
-            const { children: _children, ...materialFacet } = program.compositionSpec;
+          if (fieldPair === domains.fieldPair[0] && recipe.id.endsWith("facet-policies")) {
+            const { children: _children, ...materialFacet } = program.children.measure.compositionSpec;
             materialFingerprints.add(JSON.stringify(materialFacet));
           }
         }
@@ -629,6 +630,38 @@ test("keeps known video-game facets and complete-case parallel profiles nonempty
     } finally {
       releaseTidyTuesdaySourceCache(dataset);
     }
+  }
+});
+
+test("keeps facet scale-policy witnesses in independent measure and count panels", () => {
+  const dataset = "tt-penguins";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>
+    value.id === "realistic-guide-scale-facet-policies"
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    for (const variant of domains.variant) {
+      const factors = { dataset, fieldPair: domains.fieldPair[0], variant };
+      const program = recipe.build(factors);
+      assert.deepEqual(Object.keys(program.children).sort(), ["measure", "xOffset", "yOffset"]);
+      for (const [id, child] of Object.entries(program.children)) {
+        assert.equal(child.compositionSpec.type, "facet", id);
+        const layers = Object.values(child.children).flatMap(cell => cell.semanticSpec.layers);
+        const expectedScale = { measure: "y", xOffset: "barY", yOffset: "horizontalY" }[id];
+        assert.ok(layers.length > 0, id);
+        assert.ok(layers.every(layer => layer.encoding.y.scale === expectedScale), id);
+        const edits = child.trace.children.filter(entry => entry.op === "editFacetScales");
+        assert.equal(edits.length, 2, id);
+        assert.equal(edits[0].args[id === "measure" ? "y" : id], variant.first, id);
+        assert.equal(edits[1].args[id === "measure" ? "y" : id],
+          variant.first === "shared" ? "independent" : "shared", id);
+      }
+      assert.equal(recipe.observeFactors(program, factors).length, 2, variant.id);
+      assertGraphicIntegrity(program, variant.id);
+      assertAnalyticLayerIntegrity(program, variant.id);
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
   }
 });
 
@@ -652,7 +685,7 @@ test("reserves a complete side-legend lane for long Christmas-song labels", () =
     const program = recipe.build(factors);
     assertGraphicIntegrity(program, `${dataset} long-label side legend`);
     assertAnalyticLayerIntegrity(program, `${dataset} long-label side legend`);
-    const canvas = program.trace.children.find(entry => entry.op === "createCanvas").args;
+    const canvas = program.children.measure.trace.children.find(entry => entry.op === "createCanvas").args;
     assert.equal(canvas.width, 1_900);
     assert.equal(canvas.height, 1_300);
     assert.ok(canvas.margin.right > 400, "long labels expand the side-legend lane");

@@ -3574,6 +3574,86 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createTablePlot`
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](../api/table.md).
+
+### `editTablePlot`
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](../api/table.md).
+
+### `createTrailPlot`
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](../api/trail.md).
+
+### `editTrailPlot`
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../api/trail.md).
+
+### `createWaterfallPlot`
+
+```javascript
+createWaterfallPlot({ id?, data?, coordinate?, x, role, value, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots](../api/waterfall.md).
+
+### `editWaterfallPlot`
+
+```javascript
+editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](../api/waterfall.md).
+
+### `createOHLCPlot`
+
+```javascript
+createOHLCPlot({ id?, data?, coordinate?, x, low, high, open, close, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Draw explicit open, high, low and close roles as one row-owned item. See [OHLC plots](../api/ohlc.md).
+
+### `editOHLCPlot`
+
+```javascript
+editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Edit prices and styles while preserving typed row identities. See [OHLC plots](../api/ohlc.md).
+
+### `createPyramidPlot`
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../api/pyramid.md).
+
+### `editPyramidPlot`
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](../api/pyramid.md).
+
 ### `createCalendarPlot`
 
 ```javascript

@@ -898,12 +898,14 @@ function createOwnedFacade(base, action, args, ordinal) {
 }
 
 function sourceProgram(view, profile, action) {
-  const manualProxyGeometry = ["createHeatmap", "createHistogram"].includes(action);
-  let program = chart()
+  const base = chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
-    .createCoordinate({ id: "main", type: "cartesian" })
-    .createPointMark({
+    .createCoordinate({ id: "main", type: "cartesian" });
+  // These facades own their color legend and count/grid coordinates. An
+  // observation-value proxy would introduce an unrelated positional meaning.
+  if (["createHeatmap", "createHistogram"].includes(action)) return base;
+  let program = base.createPointMark({
       id: "contextPoints",
       data: "analysisRows",
       shape: "circle",
@@ -911,8 +913,7 @@ function sourceProgram(view, profile, action) {
       stroke: "#ffffff",
       strokeWidth: 0.4
     });
-  if (!manualProxyGeometry) {
-    program = program
+  program = program
       .encodeX({
         target: "contextPoints",
         coordinate: "main",
@@ -924,7 +925,6 @@ function sourceProgram(view, profile, action) {
         ...contextPosition(action, profile, "y")
       })
       .encodePointRadius({ target: "contextPoints", value: 2.4 });
-  }
   program = program.encodeColor({
       target: "contextPoints",
       field: "category",
@@ -941,8 +941,7 @@ function sourceProgram(view, profile, action) {
         stroke: "#ffffff",
         strokeWidth: 0.4
       });
-    if (!manualProxyGeometry) {
-      program = program
+    program = program
         .encodeX({
           target: "continuousContextPoints",
           coordinate: "main",
@@ -954,7 +953,6 @@ function sourceProgram(view, profile, action) {
           ...contextPosition(action, profile, "y")
         })
         .encodePointRadius({ target: "continuousContextPoints", value: 2.1 });
-    }
     program = program.encodeColor({
         target: "continuousContextPoints",
         field: "value",
@@ -977,16 +975,12 @@ function sourceProgram(view, profile, action) {
       .encodeX({
         target: "seriesContextLines",
         coordinate: "main",
-        field: "sourcePosition",
-        fieldType: "quantitative",
-        scale: { id: "seriesPosition", type: "linear" }
+        ...contextPosition(action, profile, "x")
       })
       .encodeY({
         target: "seriesContextLines",
         coordinate: "main",
-        field: "positiveValue",
-        fieldType: "quantitative",
-        scale: { id: "seriesValue", type: "linear" }
+        ...contextPosition(action, profile, "y")
       })
       .encodeColor({
         target: "seriesContextLines",
@@ -1042,43 +1036,6 @@ function sourceProgram(view, profile, action) {
       });
   }
   return program;
-}
-
-function proxyPosition(value, minimum, maximum, start, end) {
-  if (minimum === maximum) return (start + end) / 2;
-  return start + (value - minimum) / (maximum - minimum) * (end - start);
-}
-
-function materializeGuideProxyGeometry(program, view) {
-  const values = view.rows.map(row => row.positiveValue);
-  const minimum = Math.min(...values);
-  const maximum = Math.max(...values);
-  const x = view.rows.map((row, index) => proxyPosition(
-    index,
-    0,
-    Math.max(1, view.rows.length - 1),
-    CANVAS.margin.left,
-    CANVAS.width - CANVAS.margin.right
-  ));
-  const y = values.map(value => proxyPosition(
-    value,
-    minimum,
-    maximum,
-    CANVAS.height - CANVAS.margin.bottom,
-    CANVAS.margin.top
-  ));
-  let next = program;
-  for (const [id, radius] of [
-    ["contextPoints", 2.4],
-    ["continuousContextPoints", 2.1]
-  ]) {
-    if (next.graphicSpec.objects[id] === undefined) continue;
-    next = next
-      .editGraphics({ target: id, property: "x", value: x })
-      .editGraphics({ target: id, property: "y", value: y })
-      .editGraphics({ target: id, property: "radius", value: radius });
-  }
-  return next;
 }
 
 function quantitativeScale(id, type, profileIndex) {
@@ -1637,7 +1594,7 @@ function buildHeatmap(factors) {
     }, ordinal);
   }
   return titleProgram(
-    materializeGuideProxyGeometry(program, view),
+    program,
     context,
     profile,
     "observational heatmap"
@@ -1725,7 +1682,7 @@ function buildHistogram(factors) {
     )
   }, ordinal);
   return titleProgram(
-    materializeGuideProxyGeometry(program, view),
+    program,
     context,
     profile,
     "grouped histogram"

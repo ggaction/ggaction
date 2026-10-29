@@ -1349,9 +1349,9 @@
 
 - id: axis-owners
   example: /examples/axis-owners/
-  title: Independent Cartesian axis owners
+  title: Named Cartesian axis owners
   image: /assets/images/axis-owners.png
-  alt: A scatterplot with separate quantity and share axes and an inside horizontal title
+  alt: A scatterplot with a named quantity axis and an inside horizontal title
   width: 940
   height: 540
   thumbnail: /assets/images/axis-owners-thumb.png
@@ -1658,7 +1658,9 @@
   summary: A line follows the final endpoints of aggregated bars and retains independent appearance.
   actions: createOverlay editOverlay encodeColor
   tasks: composition comparison
-  url: /recipes/composition/
+  url: /recipes/combo/
+  recipe_url: /recipes/combo/
+  recipe_order: 212
 
 - id: shared-adjacent
   example: /examples/shared-adjacent/
@@ -2219,6 +2221,201 @@
   actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
   tasks: geometry projection map
   url: /tutorials/geographic-marks/
+
+- id: pyramid
+  tutorial_order: 280
+  example: /examples/pyramid/
+  title: Ordered stages by width
+  image: /assets/images/pyramid.png
+  alt: Keep the process order while matching adjacent stage widths.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Keep the process order while matching adjacent stage widths.
+  summary: Keep the process order while matching adjacent stage widths.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-area
+  example: /examples/pyramid-area/
+  title: Ordered stages by area
+  image: /assets/images/pyramid-area.png
+  alt: Make stage areas proportional to values with an explicit taper.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-area-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Make stage areas proportional to values with an explicit taper.
+  summary: Make stage areas proportional to values with an explicit taper.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-up
+  example: /examples/pyramid-up/
+  title: Stages progress upward
+  image: /assets/images/pyramid-up.png
+  alt: Keep input order while changing the direction of progress.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-up-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Keep input order while changing the direction of progress.
+  summary: Keep input order while changing the direction of progress.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-right
+  example: /examples/pyramid-right/
+  title: Stages progress rightward
+  image: /assets/images/pyramid-right.png
+  alt: Use a horizontal process direction without sorting rows.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-right-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Use a horizontal process direction without sorting rows.
+  summary: Use a horizontal process direction without sorting rows.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-left
+  example: /examples/pyramid-left/
+  title: Stages progress leftward
+  image: /assets/images/pyramid-left.png
+  alt: Reverse the progression direction while retaining row order.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-left-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Reverse the progression direction while retaining row order.
+  summary: Reverse the progression direction while retaining row order.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-point
+  example: /examples/pyramid-point/
+  title: An explicit pointed ending
+  image: /assets/images/pyramid-point.png
+  alt: Request a pointed last stage in width mode.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-point-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Request a pointed last stage in width mode.
+  summary: Request a pointed last stage in width mode.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: ohlc
+  example: /examples/ohlc/
+  title: Open, high, low and close
+  image: /assets/images/ohlc.png
+  alt: Keep four prices in one source-owned observation.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Keep four prices in one source-owned observation.
+  summary: Keep four prices in one source-owned observation.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/
+  tutorial_order: 290
+
+- id: ohlc-labels
+  example: /examples/ohlc-labels/
+  title: Explicit closing price labels
+  image: /assets/images/ohlc-labels.png
+  alt: Label closing prices without changing body heights.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Label closing prices without changing body heights.
+  summary: Label closing prices without changing body heights.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/
+
+- id: ohlc-no-doji
+  example: /examples/ohlc-no-doji/
+  title: Explicit flat-body policy
+  image: /assets/images/ohlc-no-doji.png
+  alt: Keep the high-low stem while hiding the flat body.
+  width: 840
+  height: 640
+  thumbnail: /assets/images/ohlc-no-doji-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 488
+  caption: Keep the high-low stem while hiding the flat body.
+  summary: Keep the high-low stem while hiding the flat body.
+  actions: createOHLCPlot · editOHLCPlot
+  tasks: price ranges
+  url: /tutorials/ohlc/
+
+- id: waterfall
+  example: /examples/waterfall/
+  title: Ordered contributions and totals
+  image: /assets/images/waterfall.png
+  alt: Show explicit signed contributions, subtotals and totals.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Show explicit signed contributions, subtotals and totals.
+  summary: Show explicit signed contributions, subtotals and totals.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/
+  tutorial_order: 300
+
+- id: waterfall-labels
+  example: /examples/waterfall-labels/
+  title: Explicit stage labels
+  image: /assets/images/waterfall-labels.png
+  alt: Show each stage value above the bar.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Show each stage value above the bar.
+  summary: Show each stage value above the bar.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/
+
+- id: waterfall-no-connectors
+  example: /examples/waterfall-no-connectors/
+  title: Contribution bars without connectors
+  image: /assets/images/waterfall-no-connectors.png
+  alt: Omit incoming balance connectors explicitly.
+  width: 1000
+  height: 640
+  thumbnail: /assets/images/waterfall-no-connectors-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 410
+  caption: Omit incoming balance connectors explicitly.
+  summary: Omit incoming balance connectors explicitly.
+  actions: createWaterfallPlot · editWaterfallPlot
+  tasks: contributions and running balances
+  url: /tutorials/waterfall/
 - id: geographic-annotations
   example: /examples/geographic-annotations/
   title: Labels stay attached to the original stops
@@ -2250,3 +2447,105 @@
   actions: createGeoPointMark · encodeColor · encodeSize
   tasks: geometry choropleth map proportional symbol
   url: /tutorials/geographic-marks/
+
+- id: trail
+  example: /examples/trail/
+  title: Changing width along each series
+  image: /assets/images/trail.png
+  alt: Draw two independent ribbons with a screen width at each source sample.
+  width: 840
+  height: 480
+  thumbnail: /assets/images/trail-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 366
+  caption: Draw two independent ribbons with a screen width at each source sample.
+  summary: Draw two independent ribbons with a screen width at each source sample.
+  actions: createTrailPlot · editTrailPlot
+  tasks: sample width along ordered series
+  url: /tutorials/trail/
+  tutorial_order: 310
+
+- id: trail-constant-width
+  example: /examples/trail-constant-width/
+  title: An explicit constant ribbon width
+  image: /assets/images/trail-constant-width.png
+  alt: Preserve both centerlines while setting a constant screen width.
+  width: 840
+  height: 480
+  thumbnail: /assets/images/trail-constant-width-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 366
+  caption: Preserve both centerlines while setting a constant screen width.
+  summary: Preserve both centerlines while setting a constant screen width.
+  actions: createTrailPlot · editTrailPlot
+  tasks: sample width along ordered series
+  url: /tutorials/trail/
+
+- id: streamgraph
+  example: /examples/streamgraph/
+  title: Moving streamgraph baseline
+  image: /assets/images/streamgraph.png
+  alt: Blue and teal layers preserve sample thickness while their shared baseline moves
+  width: 760
+  height: 560
+  thumbnail: /assets/images/streamgraph-thumb.png
+  thumbnail_width: 380
+  thumbnail_height: 280
+  caption: Wiggle keeps sample thickness and input series order while minimizing weighted center movement.
+  summary: Choose zero, centered, or moving baselines through the existing Area layout action.
+  actions: createAreaPlot · layoutSeries
+  tasks: composition trend
+  url: /tutorials/area-layout/#use-a-moving-streamgraph-baseline
+
+- id: table
+  example: /examples/table/
+  title: Values and small charts in a keyed table
+  image: /assets/images/table.png
+  alt: Two source rows with numeric bars, shared-scale sparklines and a sum footer.
+  width: 720
+  height: 440
+  thumbnail: /assets/images/table-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 391
+  caption: Keep exact values beside bars and shared-scale sparklines.
+  summary: Keep exact values beside bars and shared-scale sparklines.
+  actions: createTablePlot · editTablePlot
+  tasks: formatted rows and inline charts
+  url: /tutorials/table/
+  tutorial_order: 320
+
+- id: marginal
+  example: /examples/marginal/
+  title: Marginal distributions
+  image: /assets/images/marginal.png
+  alt: A scatterplot with aligned count distributions above and to its right.
+  width: 944
+  height: 800
+  thumbnail: /assets/images/marginal-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 542
+  caption: Three panels share the same observations and aligned value domains.
+  summary: Link scatterplot observations to the exact members of each marginal bin.
+  actions: createScatterPlot createBinData createRectMark hconcat vconcat
+  tasks: composition distribution
+  url: /recipes/marginal/
+  recipe_url: /recipes/marginal/
+  recipe_order: 210
+
+- id: bullet
+  example: /examples/bullet/
+  title: Bullet comparison
+  image: /assets/images/bullet.png
+  alt: A blue actual bar at 65 and target rule at 80 over three reference ranges.
+  width: 720
+  height: 320
+  thumbnail: /assets/images/bullet-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 284
+  caption: Reference ranges, actual and target use one quantitative scale.
+  summary: Compare an actual measure with an explicitly authored target and reference ranges.
+  actions: createRectMark createBarMark createRuleMark createMarkLabels
+  tasks: composition comparison
+  url: /recipes/bullet/
+  recipe_url: /recipes/bullet/
+  recipe_order: 211

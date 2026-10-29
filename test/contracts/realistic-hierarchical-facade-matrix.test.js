@@ -1,3 +1,4 @@
+import { directProgramTrace } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -101,7 +102,7 @@ test("covers every hierarchical facade option, literal and diversity requirement
     const program = recipe.build({ dataset, profile: { id: "maximal" } });
     const entries = new Map(REALISTIC_HIERARCHICAL_FACADE_ACTIONS.map(action => [
       action,
-      program.trace.children.filter(entry => entry.op === action)
+      directProgramTrace(program).filter(entry => entry.op === action)
     ]));
     for (const [action, direct] of entries) {
       assert.ok(

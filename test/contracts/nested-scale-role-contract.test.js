@@ -416,6 +416,50 @@ function buildScaleWitness(action, path, type) {
         ...(path.startsWith("color.") ? { color: colorChannel(type) } : {}),
         guides: false
       });
+    case "createOHLCPlot":
+    case "editOHLCPlot": {
+      const options = { x: "x", low: "lower", high: "upper", open: "center", close: "value", width: { pixels: 8 }, guides: false };
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : path === "yScale.type" ? { yScale: positionScale(type) }
+          : { x: positionChannel(type, "x") };
+      return action === "createOHLCPlot"
+        ? source().createOHLCPlot({ ...options, ...patch })
+        : source().createOHLCPlot(options).editOHLCPlot(patch);
+    }
+    case "createPyramidPlot":
+    case "editPyramidPlot": {
+      const options = { stage: "category", value: "value", labels: false };
+      const patch = { color: colorChannel(type) };
+      return action === "createPyramidPlot"
+        ? source().createPyramidPlot({ ...options, ...patch })
+        : source().createPyramidPlot(options).editPyramidPlot(patch);
+    }
+    case "createTablePlot":
+    case "editTablePlot": {
+      const options = { columns: ["x", "y"] }, patch = { color: colorChannel(type) };
+      return action === "createTablePlot" ? source().createTablePlot({ ...options, ...patch }) : source().createTablePlot(options).editTablePlot(patch);
+    }
+    case "createTrailPlot":
+    case "editTrailPlot": {
+      const options = { x: "x", y: "y", width: 8, groupBy: "x", guides: false };
+      const polar = path.startsWith("theta.") || path.startsWith("radius.");
+      const initial = polar ? { theta: "x", radius: "y", width: 8, groupBy: "x", guides: false } : options;
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : { [path.split(".")[0]]: positionChannel(type, path.startsWith("y.") || path.startsWith("radius.") ? "y" : "x") };
+      return action === "createTrailPlot" ? source().createTrailPlot({ ...initial, ...patch }) : source().createTrailPlot(initial).editTrailPlot(patch);
+    }
+    case "createWaterfallPlot":
+    case "editWaterfallPlot": {
+      const options = { x: "category", value: "value", role: "role", width: { pixels: 8 }, guides: false };
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : path === "yScale.type" ? { yScale: positionScale(type) }
+          : { x: positionChannel(type) };
+      const base = observed(chart()).createCanvas({ width: 320, height: 220, margin: 20 })
+        .createData({ values: rows.map(row => ({ ...row, role: "delta" })) });
+      return action === "createWaterfallPlot"
+        ? base.createWaterfallPlot({ ...options, ...patch })
+        : base.createWaterfallPlot(options).editWaterfallPlot(patch);
+    }
     case "createScatterPlot":
       if (path === "stroke.scale.type") {
         return source().createScatterPlot({ x: "x", y: "y", stroke: colorChannel(type), guides: false });
@@ -872,12 +916,13 @@ function compositionScaleWitness(option, type, inventory) {
     /^create(?:.*Plot|Histogram|Heatmap|ParallelCoordinates)$/.test(candidate.action) &&
     candidate.path === nestedPath && candidate.values.includes(`string:${type}`));
   let lastError;
+  const errors = [];
   for (const candidate of constructors) {
     let captured;
     try {
       observeRecipe = (program, method, args) => { if (method === candidate.action) captured = { program, args }; };
       buildScaleWitness(candidate.action, nestedPath, type);
-    } catch (error) { lastError = error; } finally { observeRecipe = undefined; }
+    } catch (error) { lastError = error; errors.push(`${candidate.action}: ${error.message}`); } finally { observeRecipe = undefined; }
     if (!captured) continue;
     try {
       const { id: _id, data, ...options } = captured.args;
@@ -891,9 +936,9 @@ function compositionScaleWitness(option, type, inventory) {
         .createData({ id: "adjacent-input", values: dataset.values });
       return base.createAdjacentPlot({ id: "comparison", source: "basis", share: {},
         plot: { action: candidate.action, options: { ...options, data: "adjacent-input" } } });
-    } catch (error) { lastError = error; }
+    } catch (error) { lastError = error; errors.push(`${candidate.action}: ${error.message}`); }
   }
-  throw lastError ?? new Error(`No compatible native composition constructor for ${option.path}=${type}.`);
+  throw new Error(errors.join("; ") || `No compatible native composition constructor for ${option.path}=${type}.`, { cause: lastError });
 }
 
 test("derives only role-reachable nested scale type paths", async () => {
@@ -907,10 +952,17 @@ test("derives only role-reachable nested scale type paths", async () => {
   const conditional = scaleTypes.filter(option => option.path.startsWith("otherwise."));
   assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeR", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth", "encodeTheta", "encodeX", "encodeXOffset", "encodeY", "encodeYOffset"].sort());
   for (const option of conditional) assert.deepEqual(option.values, options.get(`option-path:${option.action}.${option.path.slice("otherwise.".length)}`).values);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 152);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 178);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
   assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 701);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 879);
+  for (const action of ["createWaterfallPlot", "editWaterfallPlot"]) {
+    assert.deepEqual(options.get(`option-path:${action}.yScale.type`).values,
+      ["string:linear", "string:pow", "string:sqrt", "string:symlog"]);
+  }
+  for (const action of ["createOHLCPlot", "editOHLCPlot"]) {
+    assert.ok(options.get(`option-path:${action}.yScale.type`).values.includes("string:log"));
+  }
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   // Horizontal lines add the same categorical position roles on Y.

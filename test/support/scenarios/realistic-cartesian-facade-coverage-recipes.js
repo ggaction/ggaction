@@ -59,6 +59,8 @@ const CURVES = Object.freeze([
 ]);
 const DASH_VALUES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const PROFILE_COUNT = 41;
+const BAR_PAINT_STYLES = Object.freeze(["solid", "diagonal", "antidiagonal", "horizontal", "vertical", "cross", "dots"]);
+const BAR_PAINT_PROFILE_COUNT = BAR_PAINT_STYLES.length + 1;
 const CANVAS = Object.freeze({
   width: 2_300,
   height: 1_220,
@@ -205,7 +207,7 @@ function guideModes() {
 const GUIDE_MODES = guideModes();
 
 function variantsFor(action) {
-  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : action === "createLinePlot" ? PROFILE_COUNT + 9 : PROFILE_COUNT }, (_, index) => ({
+  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : action === "createLinePlot" ? PROFILE_COUNT + 9 : action === "createBarPlot" ? PROFILE_COUNT + BAR_PAINT_PROFILE_COUNT : PROFILE_COUNT }, (_, index) => ({
     id: `${slug(action)}-orthogonal-${String(index + 1).padStart(2, "0")}`,
     ordinal: index,
     guide: action === "createLinePlot" && index >= PROFILE_COUNT ? { kind: "cartesian-count" } : GUIDE_MODES[index % GUIDE_MODES.length]
@@ -927,6 +929,7 @@ function categoricalLegendSymbol(index) {
 function guideOptions(variant, program, options, action) {
   if(action === "createScatterPlot" && variant.ordinal === PROFILE_COUNT+2) return {axes:false,grid:false,legend:{combine:"color-size-shape",values:options.shape.scale.domain,clipHeight:8,symbol:{fill:"#2563eb"}}};
   if (action === "createScatterPlot" && variant.ordinal >= PROFILE_COUNT) return {axes:false,grid:false,legend:{combine:variant.ordinal === PROFILE_COUNT ? "size-shape" : "color-size",border:{strokeDash:[4,2,6,1]},clipHeight:8,...(variant.ordinal === PROFILE_COUNT + 1 ? {symbol:{opacity:0.7}}:{})}};
+  if (action === "createBarPlot" && variant.ordinal >= PROFILE_COUNT) return false;
   const guide = variant.guide;
   if (guide.kind === "off") return false;
   const layer = program.semanticSpec.layers.find(layer => layer.id === options.id);
@@ -1175,6 +1178,18 @@ function buildScatter(factors) {
 
 function barOptions(factors, view) {
   const index = factors.variant.ordinal;
+  if (index >= PROFILE_COUNT) {
+    // Extend the established literal-paint profile; retain all original profiles.
+    const options = barOptions({ ...factors, variant: { ...factors.variant, ordinal: 35 } }, view);
+    const ordinal = index - PROFILE_COUNT;
+    const fill = ordinal < BAR_PAINT_STYLES.length
+      ? { type: "pattern", style: BAR_PAINT_STYLES[ordinal], pitch: 64, strokeWidth: 8,
+          phase: [4, 12], foreground: "#2563eb", background: "#dbeafe",
+          coordinateSpace: ordinal % 2 ? "object" : "plot" }
+      : { type: "radial-gradient", center: { x: 0.5, y: 0.5 }, focal: { x: 0.4, y: 0.5 }, radius: 0.7,
+          stops: [{ offset: 0, color: "#93c5fd" }, { offset: 1, color: "#2563eb" }] };
+    return { ...options, bar: { ...options.bar, fill } };
+  }
   const color = barColor(index, view.rows);
   return {
     id: "mainBars",

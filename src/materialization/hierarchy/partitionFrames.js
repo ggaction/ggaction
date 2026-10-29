@@ -4,8 +4,10 @@ import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit 
 import { requireLayer } from "../../selectors/layers.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 import { resolveCoordinatePolarFrame } from "../coordinateBounds.js";
-import { createPartitionBendAdapter, samplePartitionBendPoint, partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
+import { createPartitionBendAdapter, mapPartitionBendPoint, partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
 import { interpolateNumber } from "../../grammar/numeric.js";
+import { preparePartitionInterpolation, samplePartitionInterpolation } from "../../grammar/hierarchy/partitionInterpolation.js";
+import { insetPartitionBendCell } from "../../grammar/hierarchy/partitionBend.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { pathFillContains, pathStrokeDistance } from "../../grammar/pathGeometry.js";
 import { resolvePartitionPlot } from "./partitionPlot.js";
@@ -43,7 +45,8 @@ export function createPartitionFramePlan(before, after, options) {
   let reason;
   const fromKeys = from.graphics.map(graphic => [graphic.identity.key, graphic.identity.role]);
   const toKeys = to.graphics.map(graphic => [graphic.identity.key, graphic.identity.role]);
-  if (JSON.stringify(fromKeys) !== JSON.stringify(toKeys)) reason = "topology";
+  if (JSON.stringify(from.items.map(item => [item.node.key, item.node.parentKey])) !== JSON.stringify(to.items.map(item => [item.node.key, item.node.parentKey]))) reason = "topology";
+  else if (JSON.stringify(fromKeys) !== JSON.stringify(toKeys)) reason = "visibility";
   else if (from.editedGeometry || to.editedGeometry) reason = "graphic-edit";
   else if (from.coordinate.type === to.coordinate.type) reason = "coordinate-family";
   else if (Boolean(from.clip) !== Boolean(to.clip)) reason = "clip";
@@ -51,7 +54,7 @@ export function createPartitionFramePlan(before, after, options) {
   else if ([...from.graphics, ...to.graphics].some(graphic => typeof graphic.properties.fill === "object") ||
       JSON.stringify(comparable(from)) !== JSON.stringify(comparable(to))) reason = "appearance";
   const rectangle = from.coordinate.type === "cartesian" ? from : to, polar = from.coordinate.type === "polar" ? from : to;
-  let adapter;
+  let adapter, track;
   if (!reason) {
     const r = rectangle.config.mapping, p = polar.config.mapping;
     adapter = createPartitionBendAdapter({ ...rectangle.frame, orientation: r.orientation, reverseU: r.reverseU, reverseV: r.reverseV }, {
@@ -60,41 +63,37 @@ export function createPartitionFramePlan(before, after, options) {
       startAngle: p.startAngle, sweep: p.sweep, direction: p.direction, reverseU: p.reverseU, reverseV: p.reverseV, radiusPolicy: p.radiusPolicy
     });
     if (!adapter.compatible) reason = adapter.reason;
+    else {
+      track = preparePartitionInterpolation(frameState(rectangle, adapter, 0), frameState(polar, adapter, 1));
+      if (track.mode === "crossfade") reason = track.reason;
+    }
   }
   const plan = Object.freeze({ kind: "partition-frame-plan", mode: reason ? "crossfade" : "bend", ...(reason ? { reason } : {}) });
-  plans.set(plan, { from, to, rectangle, polar, adapter, reverse: from.coordinate.type === "polar" });
+  plans.set(plan, { from, to, rectangle, polar, adapter, track, reverse: from.coordinate.type === "polar" });
   return plan;
 }
 
-function rectangleInterval(item, adapter) {
-  const { x, y, width, height } = item.geometry, c = Math.cos(adapter.angle0), s = Math.sin(adapter.angle0);
-  const points = [[x, y], [x + width, y + height]].map(([px, py]) => {
-    const dx = px - adapter.origin[0], dy = py - adapter.origin[1];
-    return { u: (c * dx + s * dy) / adapter.kernel.width + .5,
-      v: adapter.handedness * (-s * dx + c * dy) / adapter.kernel.height };
-  });
-  return { u0: Math.min(...points.map(p => p.u)), u1: Math.max(...points.map(p => p.u)),
-    v0: Math.min(...points.map(p => p.v)), v1: Math.max(...points.map(p => p.v)) };
+function frameState(endpoint, adapter, bend) {
+  const keys = new Map(endpoint.items.map(item => [item.node.key, item.key]));
+  const view = new Map(endpoint.view.nodes.map(node => [node.key, node]));
+  return { focusKey: keys.get(endpoint.view.focusKey) ?? null, bend,
+    frame: { origin: bend === 0 ? adapter.origin : adapter.center, angle: adapter.angle0 + adapter.rotation * bend,
+      handedness: adapter.handedness, kernel: adapter.kernel, gap: endpoint.config.mapping.padding },
+    nodes: endpoint.items.map(item => {
+      const cell = view.get(item.node.key), visible = cell?.visible === true;
+      const [v0, v1] = visible ? adapter.reverseV ? [1 - cell.v1, 1 - cell.v0] : [cell.v0, cell.v1] : [0, 0];
+      return { key: item.key, parentKey: keys.get(item.node.parentKey) ?? null, visible,
+        u0: visible ? cell.u0 : 0, u1: visible ? cell.u1 : 0, v0, v1 };
+    }) };
 }
-function polarInterval(item, endpoint, adapter) {
-  const { mapping } = endpoint.config, geometry = item.geometry;
-  const sign = mapping.direction === "clockwise" ? 1 : -1, turn = sign * (mapping.reverseU ? -1 : 1);
-  const center = (mapping.startAngle + sign * mapping.sweep / 2) * Math.PI / 180;
-  const u = angle => (angle - center) / (turn * adapter.kernel.sweep) + .5;
-  const { innerRadius, outerRadius, radiusPolicy } = adapter.kernel;
-  const v = radius => radiusPolicy === "equal-depth-area" ? (radius ** 2 - innerRadius ** 2) / (outerRadius ** 2 - innerRadius ** 2)
-    : (radius - innerRadius) / (outerRadius - innerRadius);
-  return { u0: Math.min(u(geometry.startAngle), u(geometry.endAngle)), u1: Math.max(u(geometry.startAngle), u(geometry.endAngle)),
-    v0: v(geometry.innerRadius), v1: v(geometry.outerRadius), anchorV: v((geometry.innerRadius + geometry.outerRadius) / 2) };
-}
-const unit = value => Math.max(0, Math.min(1, value));
-function bentCell(rectangle, polar, adapter, bend, segments) {
-  const interval = Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, unit(lerp(rectangle[key], polar[key], bend))]));
+function bentCell(node, state, segments) {
+  const { gap, ...basis } = state.frame, bend = state.bend;
+  const interval = insetPartitionBendCell(Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, node[key]])), basis.kernel, bend, gap);
+  if (!interval.visible) return null;
   const count = Math.max(1, Math.ceil((interval.u1 - interval.u0) * segments)), points = [];
-  for (let i = 0; i <= count; i++) points.push(samplePartitionBendPoint(adapter, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v0, bend }));
-  for (let i = count; i >= 0; i--) points.push(samplePartitionBendPoint(adapter, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v1, bend }));
-  const anchor = samplePartitionBendPoint(adapter, { u: (interval.u0 + interval.u1) / 2,
-    v: unit(lerp((rectangle.v0 + rectangle.v1) / 2, polar.anchorV, bend)), bend });
+  for (let i = 0; i <= count; i++) points.push(mapPartitionBendPoint(basis, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v0, bend }));
+  for (let i = count; i >= 0; i--) points.push(mapPartitionBendPoint(basis, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v1, bend }));
+  const anchor = mapPartitionBendPoint(basis, { u: (interval.u0 + interval.u1) / 2, v: interval.anchorV, bend });
   return { commands: points.map((point, index) => ({ op: index ? "L" : "M", ...point })).concat({ op: "Z" }), anchor };
 }
 
@@ -108,16 +107,18 @@ export function samplePartitionFrame(plan, progress, options = {}) {
   if (progress === 0) return nativeFrame(state.from, 0, plan.mode, plan.reason);
   if (plan.mode === "crossfade") return cloneAndFreeze({ progress, mode: plan.mode, reason: plan.reason,
     groups: [group(state.from, 1 - progress), group(state.to, progress)] });
-  const { rectangle, polar, adapter } = state, bend = state.reverse ? 1 - progress : progress;
-  const segments = partitionBendSegments(adapter, bend), rectItems = rectangle.items.filter(item => item.visible);
-  validateWorkLimit(rectItems.length * (2 * (segments + 1) + 1), "Partition frame path work");
-  const polarItems = new Map(polar.items.map(item => [item.key, item])), cells = new Map();
-  for (const item of rectItems) cells.set(item.key, bentCell(rectangleInterval(item, adapter), polarInterval(polarItems.get(item.key), polar, adapter), adapter, bend, segments));
-  const graphics = rectangle.graphics.map(graphic => {
+  const { rectangle, polar } = state, bend = state.reverse ? 1 - progress : progress;
+  const current = samplePartitionInterpolation(state.track, bend).state;
+  const segments = partitionBendSegments({ compatible: true, kernel: current.frame.kernel }, current.bend);
+  const nodes = current.nodes.filter(node => node.visible);
+  validateWorkLimit(nodes.length * (3 * 64 + 2 * (segments + 1) + 1), "Partition frame path work");
+  const cells = new Map(nodes.map(node => [node.key, bentCell(node, current, segments)]));
+  const graphics = rectangle.graphics.flatMap(graphic => {
     const cell = cells.get(graphic.identity.key), properties = paint(graphic);
-    if (graphic.identity.role === "body") return { ...graphic, type: "path", properties: { ...properties, commands: cell.commands } };
+    if (!cell) return [];
+    if (graphic.identity.role === "body") return [{ ...graphic, type: "path", properties: { ...properties, commands: cell.commands } }];
     const offset = rectangle.config.labels.offset.map((value, index) => lerp(value, polar.config.labels.offset[index], bend));
-    return { ...graphic, properties: { ...properties, x: cell.anchor.x + offset[0], y: cell.anchor.y + offset[1] } };
+    return [{ ...graphic, properties: { ...properties, x: cell.anchor.x + offset[0], y: cell.anchor.y + offset[1] } }];
   });
   validateGeneratedItemLimit(graphics.length, "Partition frame graphics");
   for (const graphic of graphics) validateConcreteGraphicProperties(graphic.type, graphic.properties);

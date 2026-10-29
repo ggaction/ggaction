@@ -15,7 +15,7 @@ test("Browser Canvas and SVG keep a subtitle-only ten-pixel line interval", asyn
   let server, browser;
   try {
     await writeFile(path.join(directory, "index.html"), '<!doctype html><canvas aria-label="Independent subtitle spacing"></canvas><div id="svg"></div><p id="status">Ready</p>');
-    server = await startStaticServer(root);
+    server = await startStaticServer(root, { dependencies: "repository" });
     browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser,
       server.baseUrl + path.relative(root, directory) + "/", {

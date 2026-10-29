@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { normalizeResponsiveLabels } from "../../../grammar/responsiveLabels.js";
 import { annotateError, getErrorDetails } from "../../../core/diagnostics.js";
 import { axisLabelTexts, axisLabelLines } from "../../../materialization/axisLabelText.js";
@@ -594,6 +595,7 @@ function makeCreate(channel) {
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
     resolveAxisLabels(this, channel, config, axisId);
+    assertAxisFrame(previewAxisFrame(this, channel, axisId, { scale }, { labels: true }));
     return this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,

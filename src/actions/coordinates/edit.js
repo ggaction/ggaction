@@ -1,3 +1,4 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { normalizeCoordinateAspect } from "../../grammar/coordinates.js";
@@ -47,6 +48,16 @@ export function editNativeCoordinate(program, args = {}) {
   const polarFrame = hasPolarFrame
     ? normalizePolarFrameOptions(args.polarFrame)
     : undefined;
+  if (program.actionStack.length === 1) {
+    const updated = { ...coordinate };
+    for (const [property, value] of [["aspect", aspect], ["polarFrame", polarFrame]]) {
+      if (value === "auto") delete updated[property];
+      else if (value !== undefined) updated[property] = value;
+    }
+    assertProgramSingleY({ ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs,
+      semanticSpec: { ...program.semanticSpec, coordinates: program.semanticSpec.coordinates.map(value =>
+        value.id === target ? updated : value) } }, { allowIncomplete: true });
+  }
   let proposed = program;
   if (hasAspect) {
     proposed = applyCoordinatePatch(proposed, target, "aspect", aspect);

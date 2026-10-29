@@ -10,6 +10,7 @@ const sourceByEnteredAction = new WeakMap();
 const summariesByArguments = new WeakMap();
 let actionCompletionHook;
 const targetDispatchers = new WeakMap();
+const resultValidators = new WeakMap();
 const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "createGraphData", "createInferredGraphData", "createFlowData"]);
 
 // Prepared updates must compare their base with the caller's receiver, before
@@ -46,6 +47,19 @@ function targetDispatcher(ProgramClass) {
 
 export function supportsScopedActionTargets(ProgramClass, operation) {
   return !UNSCOPED_PRIMITIVES.has(operation) && targetDispatcher(ProgramClass) !== undefined;
+}
+
+// Private assembly hook: validation reads the completed immutable candidate and
+// may reject it, but cannot replace it or perform materialization.
+export function registerActionResultValidator(ProgramClass, validator) {
+  if (typeof validator !== "function") throw new TypeError("Action result validator must be a function.");
+  resultValidators.set(ProgramClass, validator);
+}
+
+function validateActionResult(ProgramClass, result) {
+  for (let owner = ProgramClass; owner; owner = Object.getPrototypeOf(owner)) {
+    if (resultValidators.has(owner)) { resultValidators.get(owner)(result); return; }
+  }
 }
 
 export function setActionCompletionHook(hook) {
@@ -297,6 +311,7 @@ export function action(metadata, implementation) {
           }
         }
 
+        if (this.actionStack.length === 0) validateActionResult(this.constructor, result);
         return result._exitAction();
       } finally {
         sourceByEnteredAction.delete(entered);

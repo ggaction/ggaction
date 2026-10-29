@@ -1,0 +1,8 @@
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });

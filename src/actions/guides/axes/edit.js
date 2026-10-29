@@ -1,3 +1,4 @@
+import { assertAxisFrame, previewEditAxisFrame } from "./frame.js";
 import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
 import { resolveAxisTickEditConfig } from "./ticks.js";
 import { resolveAxisLabelEditConfig } from "./labels.js";
@@ -194,6 +195,7 @@ function makeEditAxis(channel) {
       description: `Edit selected existing ${channel}-axis components.`
     },
     withGuideLayoutValidation(function (args = {}) {
+      if (this.actionStack.length === 1) assertAxisFrame(previewEditAxisFrame(this, channel, args));
       const split = splitGuideVisibility(args);
       args = split.args;
       if (Object.keys(args).some(key => key !== "target")) validateArgs(args, operation.operation);

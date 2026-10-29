@@ -1,0 +1,56 @@
+{
+  "node": "v24.22.1",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 3726.6335
+    },
+    {
+      "id": "node",
+      "status": "passed",
+      "durationMs": 41581.051541
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 2102.6089169999977
+    },
+    {
+      "id": "mcp",
+      "status": "passed",
+      "durationMs": 808.8907089999993
+    },
+    {
+      "id": "tutorials",
+      "status": "passed",
+      "durationMs": 71876.48116699999
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2226.6310839999933
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1087.2888749999984
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 54.28104099999473
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 178.05408299999544
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 505.3929999999964
+    }
+  ]
+}

@@ -6,6 +6,12 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 새 mark에 resolved data를 명시해 다른 mark의 encoding을 우연히 상속하지 않는다.
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
+Cartesian facades apply the [single-Y admission contract](AXES.md#single-y-per-cartesian-frame)
+to the final native position and guide plan before the first state-changing child.
+Derived-data facades use their existing output-field and scale definitions; they do
+not evaluate a hidden action chain or manufacture preview rows. Endpoint, ECDF, and
+Raincloud replacements check the retained final frame before removing their old owners.
+Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 Continuous facade의 band grid 역할·auxiliary scale 거절과 Area 양방향 band 지원은
 `test/contracts/continuous-facade-grid-role-contract.test.js`가 runtime·declaration·inventory를 함께 검증한다.
 Nested 옵션·리터럴의 실제 데이터 5회/3셋 증거는 `test/contracts/realistic-hierarchical-facade-matrix.test.js`가 소유한다.
@@ -358,11 +364,13 @@ lifecycle은 Aggregate create-only다.
 - 정확히 하나의 quantitative/temporal measure를 받는다. x measure는 top/bottom, y measure는 left/right
   edge만 허용한다.
 - 반대 위치는 `[0, 1]` anchor scale의 constant datum이다. Bottom/left는 0, top/right는 1이며 source에
-  dummy field나 hidden dataset을 만들지 않는다.
+  dummy field나 hidden dataset을 만들지 않는다. `derivedBindings.plotAnchor`는 해당 축의
+  정규화된 constant intent를 저장한다. 실제 datum과 fixed linear `[0,1]` scale을 검증하며,
+  이 anchor는 독립 데이터 Y척도로 집계하지 않는다. 일반 position/conditional 재인코딩은 해당 축 intent를 제거한다.
 - x measure Tick은 0도 세로선, y measure Tick은 90도 가로선이다. Tick 모양은 기존 Tick owner가 맡는다.
 - 기본 guide는 measure axis 하나다. Constant anchor axis/grid와 legend는 허용하지 않는다.
   Measure는 quantitative/temporal continuous scale이므로 해당 grid의 explicit `bandPosition`은 center/boundary 모두 오류다.
-- Effects: `createTickMark → measure position → constant position → encodeAngle → scoped guide fulfillment`.
+- Effects: `createTickMark → measure position → constant position → anchor intent → encodeAngle → scoped guide fulfillment`.
   Scale, Canvas와 Tick appearance 편집은 기존 lower owner가 재물질화한다.
 
 ### Formal values — `createRugPlot`
@@ -385,14 +393,15 @@ lifecycle은 Aggregate create-only다.
 `stripPlot`, lifecycle은 Aggregate create-only다.
 
 - x만 주면 x가 quantitative/temporal measure이고 y는 `[0, 1]` anchor scale의 center datum 0.5다.
-  x와 y를 함께 주면 정확히 하나는 measure, 다른 하나는 nominal/ordinal category여야 한다.
+  `derivedBindings.plotAnchor.y: 0.5`로 이 center intent를 기록하며 Rug와 같은 저장 검증과
+  재인코딩 규칙을 따른다. x와 y를 함께 주면 정확히 하나는 measure, 다른 하나는 nominal/ordinal category여야 한다.
 - `jitter` 생략/false는 off다. Category slot은 `maxOffset.band`, constant slot은 `maxOffset.pixels`만 받으며
   기존 `jitterPoints`에 `seed`와 `key`를 그대로 전달한다. Measure 좌표는 바꾸지 않는다.
 - `point.radius`는 constant glyph radius이고 `size` encoding과 함께 쓸 수 없다. Color/size/shape는 기존
   appearance encoding owner를 쓴다.
 - 기본 guide는 실제 position axis만 만들고 grid는 만들지 않는다. Constant slot axis/grid를 거부하며
   legend는 color/size/shape가 명시된 경우에만 가능하다.
-- Effects: `createPointMark → x position → y position|constant center → radius? → appearance? → jitter? →
+- Effects: `createPointMark → x position → y position|constant center with anchor intent → radius? → appearance? → jitter? →
   scoped guide fulfillment`. Scale, Canvas, filter, jitter 제거와 appearance 편집은 lower owner가 맡는다.
 
 ### Formal values — `createStripPlot`
@@ -701,23 +710,29 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - Layout defaults to overlay; stack/fill/diverging require one field and baseline 0 on an aligned unique group grid.
   Center additionally requires vertical nonnegative values. Missing defaults to error; break accepts null/undefined
   measure endpoints and emits segments of at least two valid samples. Stacked series break together at each gap.
-- Wrapped children: createAreaMark → encodeGroup? → independent position → range endpoint owners → layoutSeries
+- Wrapped children: createAreaMark → encodeGroup? → canonical layout semantic assignment → independent position → range endpoint owners → layoutSeries
   → encodeColor? → scoped guides. No derived source column, chart recipe, geometry cache or renderer policy is added.
 - Semantic effects: mark.missing, field/datum endpoints, encoding.group and layer.layout.mode. Graphic effects:
   closed concrete paths; endpoint/layout values drive scales, guides and source-owned selection. Guides false skips
   this facade's creation; omitted guides secure compatible Cartesian axes/grid and optional categorical color legend.
+- Wiggle requires vertical quantitative/temporal x, aligned nonnegative y with one zero datum endpoint, and the shared layoutSeries baseline policy. Its value scale uses `NonPointZeroSupportingPositionScaleOptions`; logarithmic value scales are rejected.
+- Creation preflights the final group, layout, endpoint pair, shared scale domain and frame before its first child.
+  Compatible Area owners with the same stack/fill/center/wiggle policy may share a value scale during creation.
+  Conflicting policies, invalid aligned grids and out-of-domain centered bounds reject before creating a mark.
+  The canonical layer.layout is initialized before position children; no pending intent or second stored policy exists.
 - Editing uses encodeX/YRange, encodeX2/Y2, encodeGroup, layoutSeries, editAreaMark and existing scale/guide/data editors.
   Log baselines must be valid for the final pair. Invalid input/resource/grain/style/guide transitions preserve the
   complete previous program, action trace and caller-owned input.
 
 ### Formal values — `createAreaPlot`
 
-- Implemented: required x/y; valueChannel x|y; layout overlay|stack|fill|diverging|center; missing error|break.
+- Implemented: required x/y; valueChannel x|y; layout overlay|stack|fill|diverging|center|wiggle; missing error|break.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAreaPlot`
 
-- ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/break, invalid roles/options,
+- ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/wiggle/break, invalid roles/options,
   immutable edits, exact semantic/graphic/order/Canvas and decoded PNG pairs.
-- Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
-  `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`.
+- Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/charts/area-facade-policy.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
+  `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`,
+  `test/charts/streamgraph/`, `test/unit/wiggle-area.test.js`, `test/contracts/realistic-stream-baselines.test.js`.

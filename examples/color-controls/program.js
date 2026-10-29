@@ -16,7 +16,7 @@ export const gamma1DataOptions = {
 };
 export const gamma1MarkOptions = {"id": "gamma1", "data": "gamma1Data", "stroke": false};
 export const gamma1XOptions = {"target": "gamma1", "lower": "lo", "upper": "hi", "scale": {"id": "gamma1X", "domain": [0, 480]}};
-export const gamma1YOptions = {"target": "gamma1", "lower": "bottom", "upper": "top", "scale": {"id": "gamma1Y", "domain": [0, 270]}};
+export const gamma1YOptions = {"target": "gamma1", "lower": "bottom", "upper": "top", "scale": {"id": "y", "domain": [0, 270]}};
 export const gamma1ColorOptions = {"target": "gamma1", "field": "value", "fieldType": "quantitative", "scale": {"id": "gamma1Color", "domain": [0, 1], "range": ["#75190b", "#90f2a4"], "interpolate": "cubehelix"}};
 export const gamma22DataOptions = {
   id: "gamma22Data",
@@ -34,7 +34,7 @@ export const gamma22DataOptions = {
 };
 export const gamma22MarkOptions = {"id": "gamma22", "data": "gamma22Data", "stroke": false};
 export const gamma22XOptions = {"target": "gamma22", "lower": "lo", "upper": "hi", "scale": {"id": "gamma22X", "domain": [0, 480]}};
-export const gamma22YOptions = {"target": "gamma22", "lower": "bottom", "upper": "top", "scale": {"id": "gamma22Y", "domain": [0, 270]}};
+export const gamma22YOptions = {"target": "gamma22", "lower": "bottom", "upper": "top", "scale": {"id": "y", "domain": [0, 270]}};
 export const gamma22ColorOptions = {"target": "gamma22", "field": "value", "fieldType": "quantitative", "scale": {"id": "gamma22Color", "domain": [0, 1], "range": ["#75190b", "#90f2a4"], "interpolate": "cubehelix"}};
 export const gamma22EditOptions = {"target": "gamma22", "gamma": 2.2};
 export const powerDataOptions = {
@@ -53,7 +53,7 @@ export const powerDataOptions = {
 };
 export const powerMarkOptions = {"id": "power", "data": "powerData", "stroke": false};
 export const powerXOptions = {"target": "power", "lower": "lo", "upper": "hi", "scale": {"id": "powerX", "domain": [0, 480]}};
-export const powerYOptions = {"target": "power", "lower": "bottom", "upper": "top", "scale": {"id": "powerY", "domain": [0, 270]}};
+export const powerYOptions = {"target": "power", "lower": "bottom", "upper": "top", "scale": {"id": "y", "domain": [0, 270]}};
 export const powerColorOptions = {"target": "power", "field": "value", "fieldType": "quantitative", "scale": {"id": "powerColor", "domain": [-2, 2], "range": ["blue", "red"], "interpolate": "rgb"}};
 export const powerEditOptions = {"target": "power", "type": "pow", "exponent": 3};
 export const publicCalls = [

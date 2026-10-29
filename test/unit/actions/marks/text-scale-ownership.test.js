@@ -58,7 +58,7 @@ test("independent text still contributes values and blocks rebinding a genuinely
   const b = points().editCanvas({ margin: 60 }).createAxes().createTextMark({ data: "data", text: "independent" })
     .encodeX({ field: "x" }).encodeY({ field: "other" });
   assert.deepEqual(b.resolvedScales.y.domain, [1, 1000]);
-  assert.throws(() => b.encodeY({ target: "point", field: "other", scale: { id: "new-y" } }), /other consumers/);
+  assert.throws(() => b.encodeY({ target: "point", field: "other", scale: { id: "new-y" } }), /requires one Y scale/);
   const p = b.removeMark({ target: "text" });
   assert.deepEqual(p.resolvedScales.y.domain, [1, 3]);
 });
@@ -70,7 +70,7 @@ test("new axes and grids infer the current source scales instead of inherited te
   assert.equal(guided.semanticSpec.guides.axis.y.scale, "new-y");
   assert.equal(guided.semanticSpec.guides.grid.horizontal.scale, "new-y");
   assert.throws(() => p.createYAxisLine({ scale: "y" }), /requires scale/);
-  assert.throws(() => p.createYAxis({ scale: "y", coordinate: "main" }), /no y encoding/);
+  assert.throws(() => p.createYAxis({ scale: "y", coordinate: "main" }), /requires one Y scale/);
   assert.throws(() => p.createHorizontalGrid({ scale: "y" }), /no matching/);
   const rule = chart().createCanvas({ margin: 60 }).createData({ values: rows }).createRuleMark()
     .encodeY({ field: "y", fieldType: "quantitative" }).createTextMark({ source: "rule", text: "label" })

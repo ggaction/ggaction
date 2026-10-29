@@ -1,3 +1,5 @@
+import { assertAxisFrame, previewAxisFrame } from "./frame.js";
+import { selectCartesianAxis } from "../../../selectors/axes.js";
 import { resolveAxisTickEditConfig } from "./ticks.js";
 import { resolveAxisLabelEditConfig } from "./labels.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -127,6 +129,9 @@ function makeCreate(channel) {
         ...(args.labels ?? {})
       };
 
+      const selected = selectCartesianAxis(this, channel, tickArgs, { create: true });
+      assertAxisFrame(previewAxisFrame(this, channel, selected.id,
+        { scale: selected.options.scale ?? channel }, { ticks: true, labels: true }));
       return this[operation.createTicks](tickArgs)[operation.createLabels](
         labelArgs
       );

@@ -1,3 +1,6 @@
+import { assertFacadeBindingFrame, assertFacadePositionFrame } from "./frame.js";
+import { resolveErrorBar } from "../errorBars/create.js";
+import { intervalPositionBindings } from "../intervals/resolve.js";
 import { action } from "../../core/action.js";
 import { validateNonNegativeFinite } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -106,7 +109,7 @@ export const createIntervalPlot = /* @__PURE__ */ action(
     const guides = normalizeGuides(args.guides, operation);
     const intervalId = `${id}Interval`;
 
-    let next = this.createErrorBar({
+    const intervalOptions = {
       id: intervalId,
       data,
       x,
@@ -116,7 +119,11 @@ export const createIntervalPlot = /* @__PURE__ */ action(
       ...(Object.hasOwn(args, "groupBy") ? { groupBy: args.groupBy } : {}),
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       ...errorBar
-    });
+    };
+    const planned = resolveErrorBar(this, intervalOptions);
+    assertFacadeBindingFrame(this, { id, data: planned.dataId, mark: { type: "point" }, coordinate: planned.coordinate,
+      bindings: intervalPositionBindings(planned, true), guides });
+    let next = this.createErrorBar(intervalOptions);
     const config = next.markConfigs[intervalId]?.errorBar;
     if (config === undefined) {
       throw new Error(`Interval plot child "${intervalId}" has no interval owner configuration.`);
@@ -150,6 +157,8 @@ export const createRegressionPlot = /* @__PURE__ */ action(
     const id = resolveFacadeId(this, args.id, { defaultId: "regressionPlot", operation });
     const data = resolveFacadeData(this, args.data, operation);
     const guides = normalizeGuides(args.guides, operation);
+    assertFacadePositionFrame(this, { id, data, mark: { type: "point" }, coordinate: args.coordinate,
+      positions: [["x", normalizeFieldEncoding(args.x, `${operation} x`)], ["y", normalizeFieldEncoding(args.y, `${operation} y`)]], guides });
     let next = this.createScatterPlot({
       id,
       data,

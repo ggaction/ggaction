@@ -1256,6 +1256,10 @@
       {
         "id": "geometry/topology-atomic-failure",
         "statements": 9
+      },
+      {
+        "id": "geometry/declared-winding-offline-renderers",
+        "statements": 17
       }
     ]
   },
@@ -1307,6 +1311,40 @@
     ]
   },
   {
+    "file": "pyramid-plots.mjs",
+    "cases": [
+      {
+        "id": "pyramid/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "pyramid/offline-scene-renderers",
+        "statements": 14
+      },
+      {
+        "id": "pyramid/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "ohlc-plots.mjs",
+    "cases": [
+      {
+        "id": "ohlc/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "ohlc/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "ohlc/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
     "file": "geographic-levels.mjs",
     "cases": [
       {
@@ -1320,6 +1358,23 @@
       {
         "id": "geographic-levels/four-renderer-current-level-parity",
         "statements": 6
+      }
+    ]
+  },
+  {
+    "file": "waterfall-plots.mjs",
+    "cases": [
+      {
+        "id": "waterfall/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "waterfall/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "waterfall/fresh-process-and-nested",
+        "statements": 10
       }
     ]
   },
@@ -1400,6 +1455,91 @@
       {
         "id": "geographic-labels/four-renderer-native-text-parity",
         "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "trail-plots.mjs",
+    "cases": [
+      {
+        "id": "trail/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "trail/offline-scene-renderers",
+        "statements": 11
+      },
+      {
+        "id": "trail/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "stream-baselines.mjs",
+    "cases": [
+      {
+        "id": "stream-baselines/public-lifecycle",
+        "statements": 19
+      },
+      {
+        "id": "stream-baselines/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "stream-baselines/fresh-process-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "table-plots.mjs",
+    "cases": [
+      {
+        "id": "table/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "table/offline-clipped-scene-renderers",
+        "statements": 15
+      },
+      {
+        "id": "table/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "weighted-blends.mjs",
+    "cases": [
+      {
+        "id": "weighted-blend/linear-pixels-and-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "weighted-blend/fresh-process-codec-and-scene",
+        "statements": 7
+      },
+      {
+        "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+        "statements": 11
+      }
+    ]
+  },
+  {
+    "file": "composition-recipes.mjs",
+    "cases": [
+      {
+        "id": "composition-recipes/marginal",
+        "statements": 11
+      },
+      {
+        "id": "composition-recipes/bullet",
+        "statements": 8
+      },
+      {
+        "id": "composition-recipes/combo",
+        "statements": 7
       }
     ]
   },

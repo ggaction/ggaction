@@ -1,3 +1,5 @@
+import { assertFacadeBindingFrame } from "./frame.js";
+import { previewMarkRemovalFrame } from "../marks/remove.js";
 import { prepareFacadeMissingData } from './missing.js';
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -276,7 +278,16 @@ function addPoints(program, config, positions) {
   return applySlotOffset(next, [id], positions.categoryChannel, config.side);
 }
 
+function assertRaincloudFrame(program, config) {
+  const role = config.points !== false ? "points" : config.density !== false ? "cloud" : "summary";
+  const type = role === "cloud" ? "area" : role === "summary" && config.summary.type === "box" ? "bar" : "point";
+  const { x, y } = rolePositions(config.category, config.value, config.orientation);
+  return assertFacadeBindingFrame(program, { id: config.childIds[role], data: config.source, mark: { type },
+    coordinate: config.coordinate, bindings: { x, y }, guides: config.guides });
+}
+
 function buildRaincloud(program, config) {
+  assertRaincloudFrame(program, config);
   const original = config;
   const prepared = prepareFacadeMissingData(program, { id: config.id, source: config.source,
     fields: [config.category.field, config.value.field, config.color?.field,
@@ -452,6 +463,8 @@ export const editRaincloudPlot = /* @__PURE__ */ action(
     };
     const axes = { fromAxis: current.orientation === "vertical" ? "y" : "x",
       toAxis: candidateArgs.orientation === "vertical" ? "y" : "x" };
+    const frameView = previewMarkRemovalFrame(this, ownerId);
+    assertRaincloudFrame(frameView, normalizeCreate(frameView, candidateArgs, operation));
     const retained = retainStatisticalDependents(this, ownerId);
     const withoutCurrent = retained.program.removeMark({ target: ownerId });
     const revised = normalizeCreate(withoutCurrent, candidateArgs, operation);

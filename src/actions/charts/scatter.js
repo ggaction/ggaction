@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { encodeStroke } from "../encodings/stroke.js";
 import { action } from "../../core/action.js";
 import { validateNonNegativeFinite } from "../../core/validation.js";
@@ -59,6 +60,8 @@ export const createScatterPlot = /* @__PURE__ */ action(
       if (size !== undefined) throw new Error("createScatterPlot point radius conflicts with size.");
     }
 
+    assertFacadePositionFrame(this, { id, data, mark: { type: "point", ...(args.missing === undefined ? {} : { missing: args.missing }) }, coordinate: args.coordinate,
+      positions: [["x", x], ["y", y]], guides });
     const initialPoint = { ...point };
     if (stroke !== undefined) delete initialPoint.strokeWidth;
     let next = this

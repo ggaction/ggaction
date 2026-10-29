@@ -5,12 +5,15 @@ import assert from 'node:assert/strict';
 export function appendLegendCombinationLifecycle(program) {
  const rows=program.semanticSpec.datasets.find(data=>data.id==='analysisRows').values;
  if(rows.length<2) return program;
+ const y=program.semanticSpec.layers.find(layer=>layer.id==='points')?.encoding.y;
+ assert.ok(y?.field && y?.scale,'Legend witnesses require the explicit points Y binding.');
+ const yOptions={field:y.field,fieldType:y.fieldType,scale:{id:y.scale}};
  let next=program;
  for(const combine of ['size-shape','color-size','color-size-shape']) {
   const id=`direct-legend-${combine}`;
   next=next.createPointMark({id,data:'analysisRows'})
    .encodeX({target:id,field:'rank',scale:{id:`${id}-x`}})
-   .encodeY({target:id,field:'value',scale:{id:`${id}-y`}});
+   .encodeY({target:id,...yOptions});
   if(combine==='size-shape') {
    const domain=[...new Set(rows.map(row=>row.category))];
    next=next.encodeShape({target:id,field:'category',scale:{id:`${id}-shape`,domain}})
@@ -54,14 +57,14 @@ export function appendLegendCombinationLifecycle(program) {
   assert.equal(next.guideConfigs.legend[combine==='size-shape'?'series':'colorSize'].combine,combine);
   next=next.removeLegend({target:id}).removeMark({target:id});
  }
- return appendSelectedLegendChannels(next);
+ return appendSelectedLegendChannels(next,yOptions);
 }
 
-function appendSelectedLegendChannels(program) {
+function appendSelectedLegendChannels(program,yOptions) {
  const id='direct-selected-legends';
  let next=program.createPointMark({id,data:'analysisRows'})
   .encodeX({target:id,field:'rank',scale:{id:`${id}-x`}})
-  .encodeY({target:id,field:'value',scale:{id:`${id}-y`}})
+  .encodeY({target:id,...yOptions})
   .encodeColor({target:id,field:'category',scale:{id:`${id}-color`}})
   .encodeStroke({target:id,field:'category',scale:{id:`${id}-stroke`}})
   .encodeShape({target:id,field:'category',scale:{id:`${id}-shape`}})
@@ -71,7 +74,7 @@ function appendSelectedLegendChannels(program) {
  next=next.createRuleMark({id:rule,data:'analysisRows'})
   .encodeX({target:rule,field:'rank',fieldType:'quantitative',scale:{id:`${rule}-x`,zero:true}})
   .encodeX2({target:rule,datum:0,fieldType:'quantitative'})
-  .encodeY({target:rule,field:'value',fieldType:'quantitative',scale:{id:`${rule}-y`}})
+  .encodeY({target:rule,...yOptions})
   .encodeStroke({target:rule,field:'category',scale:{id:`${rule}-stroke`}})
   .encodeStrokeDash({target:rule,field:'category',scale:{id:`${rule}-dash`}})
   .encodeStrokeWidth({target:rule,field:'rank',fieldType:'quantitative',scale:{id:`${rule}-width`}});

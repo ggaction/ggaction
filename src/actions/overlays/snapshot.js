@@ -42,5 +42,6 @@ export function detachOverlay(program, layer) {
   return next.encodeChannels({ target: layer.id, channels: {
     x: { field: x, fieldType: "quantitative", scale: { id: availableName(`${layer.id}-snapshot-x`, scales), type: "linear", domain: [0, 1], zero: false, nice: false } },
     y: { field: y, fieldType: "quantitative", scale: { id: availableName(`${layer.id}-snapshot-y`, scales), type: "linear", domain: [0, 1], zero: false, nice: false } },
-    ...(layer.mark.type === "line" ? { group: { fields: [series] } } : {}) } });
+    ...(layer.mark.type === "line" ? { group: { fields: [series] } } : {}) } })
+    .editSemantic({ property: `layer[${layer.id}].derivedBindings.plotSnapshot`, value: { x, y } });
 }

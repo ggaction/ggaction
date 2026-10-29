@@ -175,6 +175,22 @@ export function prepareHitShape(input) {
   return result;
 }
 
+/** One item may contain several weighted concrete footprints. */
+export function prepareHitShapeUnion(shapes) {
+  ownArray(shapes, "Hit shape union");
+  if (shapes.length < 2 || shapes.length > 64) throw new RangeError("Hit shape union requires 2..64 prepared parts.");
+  let cost = 0;
+  for (const shape of shapes) {
+    const state = states.get(shape);
+    if (!state || state.parts) throw new TypeError("Hit shape union requires flat prepared shapes.");
+    cost += state.work;
+    if (cost > MAX_HIT_STROKE_WORK) throw new RangeError("Hit shape union exceeds its geometry budget.");
+  }
+  const result = cloneAndFreeze({ type: "weighted-blend", bounds: unionBounds(shapes), diagnostics: shapes.flatMap(shape => shape.diagnostics) });
+  states.set(result, { parts: [...shapes], work: cost });
+  return result;
+}
+
 /** Conservative narrow-phase work, used by the bounded current-scene index. */
 export function hitShapeWork(prepared) {
   const state = states.get(prepared);
@@ -200,6 +216,12 @@ function queryShape(prepared, point, options, nearest, spend) {
   if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
   transformHitPoint(identity, point);
   const query = normalizeHitQuery(options);
+  if (state.parts) {
+    const results = state.parts.map(part => queryShape(part, point, query, nearest, spend));
+    const hits = results.filter(result => result.hit).sort((a, b) => a.distance - b.distance);
+    if (hits.length) return hits[0];
+    return freezeOwned({ hit: false, distance: Math.min(...results.map(result => result.distance)), localPoint: null, diagnostics: prepared.diagnostics });
+  }
   let distance = Infinity, hit = false;
   if (prepared.diagnostics.length === 0 && (state.opacity > 0 || query.hitInvisible) &&
       state.clips.every(parts => parts.some(part => contains(part, point)))) {

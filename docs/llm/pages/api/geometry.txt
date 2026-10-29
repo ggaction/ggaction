@@ -5,6 +5,14 @@ identity. These Full `ggaction` actions prepare source geometry; creating a
 resource does not draw it. [Contours](../../../api/contours/) use the same resource kind
 with their own scalar-grid contract.
 
+Clockwise geographic datasets can declare `polygonWinding: "left-hand"` when creating
+or editing their geometry source. The default `"right-hand"` convention preserves existing
+counterclockwise exteriors and clockwise holes. This declaration preserves all source
+coordinates and hashes; projection, fit, feature centroids and labels share it. Reversing a
+ring relative to the declared convention still represents a spherical complement. Planar
+sources do not accept this option. Generated geographic-radius circles retain their own
+direction, including circles larger than a hemisphere.
+
 ## `createGeometryData`
 
 **Chart authoring.**

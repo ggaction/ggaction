@@ -1,3 +1,5 @@
+import { assertFacadePositionFrame } from "./frame.js";
+import { histogramPositionOptions } from "../encodings/histogram.js";
 import { action } from "../../core/action.js";
 import { validateNonEmptyString } from "../../core/validation.js";
 import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
@@ -45,6 +47,9 @@ export const createHistogram = /* @__PURE__ */ action(
         .map(key => [key, args[key]])
     );
 
+    const positions = histogramPositionOptions({ field, ...histogram });
+    assertFacadePositionFrame(this, { id, data, mark: { type: "bar", ...bar }, coordinate: args.coordinate,
+      positions: [["x", positions.x], ["y", positions.y]], guides });
     let next = this
       .createBarMark({ id, data, ...bar })
       .encodeHistogram({

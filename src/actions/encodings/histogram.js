@@ -1,5 +1,7 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { previewPositionSequence } from "./position/resolve.js";
 import { action } from "../../core/action.js";
-import { validateOptions } from "./shared.js";
+import { validateOptions, resolveTarget } from "./shared.js";
 
 const HISTOGRAM_OPTIONS = Object.freeze([
   "field", "target", "coordinate", "maxBins", "binStep", "binBoundaries",
@@ -13,6 +15,14 @@ const encodeHistogram = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateOptions(args, HISTOGRAM_OPTIONS, "encodeHistogram");
+    const { x, y } = histogramPositionOptions(args);
+    const { layer, dataset } = resolveTarget(this, args.target, ["bar"]);
+    if (this.actionStack.length === 1) assertProgramSingleY(previewPositionSequence(this, layer, dataset, [["x", x], ["y", y]]), { allowIncomplete: true });
+    return this.encodeX(x).encodeY(y);
+  }
+);
+
+export function histogramPositionOptions(args) {
     const binOptions = ["maxBins", "binStep", "binBoundaries"].filter(
       key => Object.hasOwn(args, key)
     );
@@ -42,9 +52,8 @@ const encodeHistogram = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "xScale")) x.scale = args.xScale;
     if (Object.hasOwn(args, "yScale")) y.scale = args.yScale;
 
-    return this.encodeX(x).encodeY(y);
-  }
-);
+    return { x, y };
+}
 
 export function registerHistogramEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeHistogram = encodeHistogram;

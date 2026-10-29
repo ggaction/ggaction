@@ -1,3 +1,5 @@
+import { normalizeBin2DTransform } from "../../grammar/bin2d.js";
+import { assertFacadePositionFrame, assertFacadeBindingFrame } from "./frame.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -157,6 +159,8 @@ export const createHeatmap = /* @__PURE__ */ action(
       const x = normalizePosition(args.x, "x", true);
       const y = normalizePosition(args.y, "y", true);
       const color = args.color === undefined ? undefined : normalizeFieldEncoding(args.color, `${OPERATION} color`);
+      assertFacadePositionFrame(this, { id, data, mark: { type: "rect", ...rect }, coordinate: args.coordinate,
+        positions: [["x", x], ["y", y]], guides });
       let next = this
         .createRectMark({ id, data, ...rect })
         .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
@@ -171,6 +175,9 @@ export const createHeatmap = /* @__PURE__ */ action(
     const color = normalizeBinnedColor(args.color);
     const resolvedGuides = binnedGuides(guides, x.field, y.field);
     const generatedData = `${id}Bin2DData`;
+    const planned = normalizeBin2DTransform({ id: generatedData, x: x.field, y: y.field, ...bin });
+    assertFacadeBindingFrame(this, { id, data: generatedData, mark: { type: "rect" }, coordinate: args.coordinate,
+      bindings: { x: { ...x, field: planned.as.x0 }, y: { ...y, field: planned.as.y0 } }, guides: resolvedGuides, explicitGuides: guides });
     const binned = this.createBin2DData({
       id: generatedData,
       source: data,

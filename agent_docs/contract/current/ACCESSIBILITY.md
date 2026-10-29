@@ -46,7 +46,7 @@ stable owner, including attached Text items. Each native item has:
   keys, scoped by this view's childPath and component. Missing links remain null.
 
 Both formats accept a string `target` naming one stable owner at the supplied
-program. A component target reports its owner. A composition-level target is
+program. An owned component target fails with an error naming its stable owner. A composition-level target is
 ambiguous and fails; export the explicit child program or omit target and use
 childPath. Unknown or incomplete owners fail. Empty charts have no views.
 

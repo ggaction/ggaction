@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 3,
+  "name": "editPyramidPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit a Pyramid while preserving typed row identities and source order.",
+  "signature": "editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;",
+  "intents": [
+    "edit pyramid plot",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "Pyramid plot",
+    "ordered stage widths and areas"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "owns": [
+      "Pyramid stage mark"
+    ],
+    "idOptions": [
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editPyramidPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"down\" | \"left\" | \"right\" | \"up\" | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "percentBase",
+      "required": false,
+      "type": "\"first\" | \"previous\" | \"total\" | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "stage",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "stages",
+      "required": false,
+      "type": "PyramidStagePaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | PyramidLabelPaint | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | PyramidColor | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "encoding",
+      "required": false,
+      "type": "\"area\" | \"width\" | undefined"
+    },
+    {
+      "name": "lastStage",
+      "required": false,
+      "type": "\"flat\" | \"point\" | undefined"
+    },
+    {
+      "name": "taperRatio",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editPyramidPlot({ target?, data?, coordinate?, orientation?, gap?, percentBase?, stage?, value? })"
+  ],
+  "snippet": "program.editPyramidPlot({ target: \"pyramid\", encoding: \"area\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editpyramidplot"
+}

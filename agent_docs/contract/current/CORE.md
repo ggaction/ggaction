@@ -2,6 +2,15 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Shared Cartesian admission
+
+최상위 Full/Basic action은 최종 immutable candidate의 Cartesian frame을
+[단일 Y 계약](AXES.md#single-y-per-cartesian-frame)으로 검증한다. 잘못된 candidate는
+호출자에게 반환하지 않으며 이전 program과 trace는 그대로다. `editSemantic`의 직접 후보,
+composition child snapshot 및 editable import도 같은 검증을 적용한다. 미완성 extension
+assignment는 concrete mark가 생기기 전까지 coordinate reference를 지연할 수 있다.
+완성된 frame에서 서로 다른 Y identity, 숨긴 독립 Y 또는 보이는 mirror axis는 거부한다.
+
 ## `createCanvas`
 
 - Signature: `createCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
@@ -81,6 +90,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 Evidence: `test/unit/actions/canvas/responsive-layout.test.js`, `responsive-lifecycle.test.js`, `test/unit/grammar/responsive-state.test.js`, `test/unit/layout/responsive-policy.test.js`, `test/contracts/responsive-layout-types.test.js`, `test/charts/responsive-guides/`, `test/browser/responsive-guides.browser.js`.
 
 ## `editCanvas`
+
+Canvas의 prospective size/margin이 독립 Cartesian frames를 겹치게 하면 첫 graphical child
+전에 같은 단일 Y frame 검증으로 거부한다. Responsive에서는 stale 이전 reservation 대신
+현재 후보 plot을 검사하고 각 measured retry도 같은 read-only 검증을 거친다. Native 경로
+viewport 준비와 실제 rematerialization은 이 후보와 기존 의존 계획을 사용한다. 생성 중의
+정규화 anchor/snapshot 임시 assignment는 outer owner가 완성한 뒤 검사한다.
+증거: `test/unit/actions/canvas/frame-admission.test.js`와 기존 responsive/route lifecycle tests.
 
 - Signature: `editCanvas({ width?, height?, background?, margin?, plot?, plotBorder?, responsive? })`
 - 목적과 필수 state: 기존 Canvas의 한 개 이상 property를 immutable하게 편집한다.
@@ -1996,6 +2012,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - Coverage: `test/unit/actions/coordinates/create-coordinate.test.js`와 Parallel chart contract가 native types, attachments,
   idempotence, conflicts와 validation을 검증한다.
 - Cartesian, Polar와 Parallel resources는 모두 current materialized consumers와 guides를 가진다.
+- Direct coordinate attachment admits the final selected layer bindings through the [single-Y frame policy](AXES.md#single-y-per-cartesian-frame) before a semantic child writes them, including unfinished extension layers.
 
 ### Formal values — `createCoordinate`
 
@@ -2019,6 +2036,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - Signature: `editCoordinate({ target, aspect?, polarFrame?, projection? })`; at least one patch is required.
 - For an existing Geo coordinate, projection is the only patch. It is an explicit existing projection ID and cannot mix with aspect/polarFrame. The complete consumer union is validated and rematerialized atomically.
 - `target`: required existing coordinate ID. The action does not infer a coordinate.
+- Direct edits validate the final Cartesian frame geometry before a semantic child, so an aspect change cannot overlay independent frames. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - `aspect`: `"auto"` or `{ mode, ratio, alignX?, alignY? }`.
   - `mode: "frame"` fixes the effective plot width/height ratio.
   - `mode: "data"` fixes `(pixels per x unit) / (pixels per y unit)` and is available only for one complete Cartesian

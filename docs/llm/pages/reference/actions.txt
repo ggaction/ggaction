@@ -95,6 +95,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](../../../reference/actions/statistics/#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](../../../reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](../../../reference/actions/statistics/#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOHLCPlot`](../../../reference/actions/marks/#createohlcplot) | H2 | user-facing | marks |
 | [`createOverlay`](../../../reference/actions/marks/#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](../../../reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](../../../reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
@@ -107,6 +108,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](../../../reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](../../../reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](../../../reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](../../../reference/actions/marks/#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](../../../reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](../../../reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](../../../reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -135,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStatisticalReference`](../../../reference/actions/marks/#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](../../../reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](../../../reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
+| [`createTablePlot`](../../../reference/actions/marks/#createtableplot) | H2 | user-facing | marks |
 | [`createTextMark`](../../../reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
 | [`createTextPlot`](../../../reference/actions/charts-data/#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](../../../reference/actions/guides/#createthetaaxis) | H3 | user-facing | axes |
@@ -146,10 +149,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](../../../reference/actions/marks/#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](../../../reference/actions/charts-data/#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](../../../reference/actions/guides/#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTrailPlot`](../../../reference/actions/marks/#createtrailplot) | H2 | user-facing | marks |
 | [`createTreemapPlot`](../../../reference/actions/charts-data/#createtreemapplot) | H0, H1 | user-facing | charts |
 | [`createTreePlot`](../../../reference/actions/charts-data/#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](../../../reference/actions/guides/#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](../../../reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](../../../reference/actions/marks/#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](../../../reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](../../../reference/actions/guides/#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](../../../reference/actions/guides/#createxaxislabels) | H3 | user-facing | axes |
@@ -235,6 +240,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkLabelSelection`](../../../reference/actions/marks/#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](../../../reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](../../../reference/actions/statistics/#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOHLCPlot`](../../../reference/actions/marks/#editohlcplot) | H3 | user-facing | marks |
 | [`editOpacityScale`](../../../reference/actions/charts-data/#editopacityscale) | H2 | user-facing | core |
 | [`editOverlay`](../../../reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](../../../reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
@@ -244,6 +250,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](../../../reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](../../../reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](../../../reference/actions/marks/#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](../../../reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](../../../reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
@@ -270,6 +277,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editStrokeScale`](../../../reference/actions/charts-data/#editstrokescale) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](../../../reference/actions/charts-data/#editstrokewidthscale) | H2 | user-facing | core |
 | [`editSummaryData`](../../../reference/actions/statistics/#editsummarydata) | H1, H3 | user-facing | statistics |
+| [`editTablePlot`](../../../reference/actions/marks/#edittableplot) | H3 | user-facing | marks |
 | [`editTextMark`](../../../reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](../../../reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](../../../reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |
@@ -281,10 +289,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](../../../reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](../../../reference/actions/charts-data/#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](../../../reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTrailPlot`](../../../reference/actions/marks/#edittrailplot) | H3 | user-facing | marks |
 | [`editTreemapPlot`](../../../reference/actions/charts-data/#edittreemapplot) | H1, H3 | user-facing | charts |
 | [`editTreePlot`](../../../reference/actions/charts-data/#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](../../../reference/actions/guides/#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](../../../reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](../../../reference/actions/marks/#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](../../../reference/actions/charts-data/#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](../../../reference/actions/guides/#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](../../../reference/actions/guides/#editxaxislabels) | H3 | user-facing | axes |

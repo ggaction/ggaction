@@ -340,3 +340,13 @@ export function resolveIntervalComposite(program, args, policy) {
     groupBy: grouping.transformGroupBy
   };
 }
+
+export function intervalPositionBindings(resolved, center = false) {
+  const position = { field: resolved.position.field, fieldType: resolved.position.fieldType,
+    scale: resolved.position.scale,
+    ...(resolved.position.temporalUnit === undefined ? {} : { temporalUnit: resolved.position.temporalUnit }) };
+  const interval = { field: center ? resolved.fields.center : resolved.fields.lower,
+    fieldType: "quantitative", scale: resolved.interval.scale };
+  return { [resolved.position.channel]: position, [resolved.interval.channel]: interval,
+    ...(center ? {} : { [`${resolved.interval.channel}2`]: { ...interval, field: resolved.fields.upper } }) };
+}

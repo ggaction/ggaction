@@ -1,3 +1,5 @@
+import { registerTableMarkActions } from "./table/index.js";
+import { registerTrailMarkActions } from "./trail/index.js";
 import { registerImageMarkActions } from "./image/index.js";
 import { removeMark } from "./remove.js";
 import {
@@ -22,6 +24,8 @@ import {
 import { registerTextMarkActions } from "./text/index.js";
 
 export function registerMarkActions(ProgramClass) {
+  registerTrailMarkActions(ProgramClass);
+  registerTableMarkActions(ProgramClass);
   registerImageMarkActions(ProgramClass);
   registerPointMarkActions(ProgramClass);
   registerPointJitterActions(ProgramClass);

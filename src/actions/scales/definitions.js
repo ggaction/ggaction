@@ -104,6 +104,12 @@ function validatePaletteRange(options) {
   }
 }
 
+// Shared identity resolution for ordinary and precomputed native positions.
+export function resolvePositionScaleId(channel, options = {}) {
+  optionsObject(options);
+  return validateUserId(options.id ?? channel, "Scale id");
+}
+
 export function resolvePositionScaleDefinition(
   program,
   channel,
@@ -113,7 +119,7 @@ export function resolvePositionScaleDefinition(
 ) {
   optionsObject(options);
   validateKeys(options, POSITION_OPTIONS, "scale");
-  const id = validateUserId(options.id ?? channel, "Scale id");
+  const id = resolvePositionScaleId(channel, options);
   const existing = findSemanticScale(program, id);
   const discrete = ["ordinal", "nominal"].includes(fieldType);
   const expectedType = fieldType === "temporal"

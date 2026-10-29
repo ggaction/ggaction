@@ -72,6 +72,16 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+  editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -988,7 +998,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -1818,6 +1828,8 @@ Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutli
 
 ```typescript
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */
 ```
 
 </details>
@@ -2418,7 +2430,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 ```
 
 </details>
@@ -3012,21 +3025,30 @@ Related types: [`AnnotationBaseOptions`](#type-annotationbaseoptions) · [`Annot
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 ```
 
 </details>
 
-Related types: [`ColorLayout`](#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel).
+Related types: [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`FillPaint`](#type-fillpaint) · [`CurveInterpolation`](#type-curveinterpolation) · [`DensityPlotGuideOptions`](#type-densityplotguideoptions) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`ColorLayout`](#type-colorlayout) · [`AreaPlotIndependentChannel`](#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](#type-areaplotmeasurechannel) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -3373,10 +3395,14 @@ Related types: [`GeoLODLevels`](#type-geolodlevels).
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -3666,6 +3692,25 @@ export interface CreateNativeCoordinateOptions {
 
 </details>
 
+### `CreateOHLCPlotOptions` {#type-createohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateOHLCPlotOptions</summary>
+
+```typescript
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`OHLCX`](#type-ohlcx) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`OHLCWidth`](#type-ohlcwidth) · [`OHLCBodyPaint`](#type-ohlcbodypaint) · [`OHLCStemPaint`](#type-ohlcstempaint) · [`OHLCLabelPaint`](#type-ohlclabelpaint) · [`OHLCColor`](#type-ohlccolor) · [`ColorGuides`](#type-colorguides).
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
 <details markdown="1">
@@ -3830,6 +3875,22 @@ export type CreateProjectionOptions = { readonly id: string } & ((ProjectionPara
 </details>
 
 Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFittedOptions`](#type-projectionfittedoptions).
+
+### `CreatePyramidPlotOptions` {#type-createpyramidplotoptions}
+
+<details markdown="1">
+<summary>Expand CreatePyramidPlotOptions</summary>
+
+```typescript
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+```
+
+</details>
+
+Related types: [`PyramidLayoutOptions`](#type-pyramidlayoutoptions) · [`PyramidStagePaint`](#type-pyramidstagepaint) · [`PyramidLabelPaint`](#type-pyramidlabelpaint) · [`PyramidColor`](#type-pyramidcolor).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -4203,6 +4264,25 @@ export type CreateStripPlotOptions = {
 
 Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
 
+### `CreateTablePlotOptions` {#type-createtableplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateTablePlotOptions</summary>
+
+```typescript
+export interface CreateTablePlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly columns: readonly TableColumn[];
+  readonly sortBy?: readonly SortKey[] | false; readonly rowLimit?: number | false;
+  readonly rowHeight?: number; readonly padding?: number; readonly header?: boolean; readonly clip?: boolean;
+  readonly cells?: TableCellPaint; readonly labels?: TableLabelPaint; readonly headerStyle?: TableBandPaint; readonly footerStyle?: TableBandPaint;
+  readonly bars?: TableCellPaint; readonly sparklines?: TableSparklinePaint; readonly color?: false | PyramidColor;
+}
+```
+
+</details>
+
+Related types: [`TableColumn`](#type-tablecolumn) · [`SortKey`](#type-sortkey) · [`TableCellPaint`](#type-tablecellpaint) · [`TableLabelPaint`](#type-tablelabelpaint) · [`TableBandPaint`](#type-tablebandpaint) · [`TableSparklinePaint`](#type-tablesparklinepaint) · [`PyramidColor`](#type-pyramidcolor).
+
 ### `CreateTextPlotOptions` {#type-createtextplotoptions}
 
 <details markdown="1">
@@ -4282,6 +4362,43 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 </details>
 
 Related types: [`PolarTitleOptions`](#type-polartitleoptions) · [`PolarGuideResourceOptions`](#type-polarguideresourceoptions).
+
+### `CreateTrailPlotOptions` {#type-createtrailplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateTrailPlotOptions</summary>
+
+```typescript
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+```
+
+</details>
+
+Related types: [`TrailPlotOptions`](#type-trailplotoptions) · [`TrailPosition`](#type-trailposition) · [`CurveInterpolation`](#type-curveinterpolation) · [`ColorGuides`](#type-colorguides) · [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
+
+### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateWaterfallPlotOptions</summary>
+
+```typescript
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`WaterfallX`](#type-waterfallx) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`WaterfallWidth`](#type-waterfallwidth) · [`WaterfallBarPaint`](#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](#type-waterfalllabelpaint) · [`WaterfallColor`](#type-waterfallcolor) · [`ColorGuides`](#type-colorguides).
 
 ### `CurveInterpolation` {#type-curveinterpolation}
 
@@ -6562,6 +6679,8 @@ Related types: [`GeoShapeMarkOptions`](#type-geoshapemarkoptions).
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 
@@ -7053,6 +7172,19 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`NormalizedDataOptions`](#type-normalizeddataoptions).
 
+### `EditOHLCPlotOptions` {#type-editohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand EditOHLCPlotOptions</summary>
+
+```typescript
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateOHLCPlotOptions`](#type-createohlcplotoptions).
+
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
 <details markdown="1">
@@ -7211,6 +7343,20 @@ export type EditProjectionOptions = { readonly target?: string } & ((Partial<Pro
 </details>
 
 Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionEditFittedOptions`](#type-projectioneditfittedoptions).
+
+### `EditPyramidPlotOptions` {#type-editpyramidplotoptions}
+
+<details markdown="1">
+<summary>Expand EditPyramidPlotOptions</summary>
+
+```typescript
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
+```
+
+</details>
+
+Related types: [`CreatePyramidPlotOptions`](#type-createpyramidplotoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -7521,6 +7667,19 @@ export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
 
 Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderiveddataedit) · [`SummaryDataOptions`](#type-summarydataoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
+### `EditTablePlotOptions` {#type-edittableplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTablePlotOptions</summary>
+
+```typescript
+export type EditTablePlotOptions = { readonly target?: string } & Partial<Omit<CreateTablePlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateTablePlotOptions`](#type-createtableplotoptions).
+
 ### `EditTextMarkOptions` {#type-edittextmarkoptions}
 
 <details markdown="1">
@@ -7598,6 +7757,19 @@ export interface EditTitleOptions
 
 Related types: [`TitleOptions`](#type-titleoptions).
 
+### `EditTrailPlotOptions` {#type-edittrailplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTrailPlotOptions</summary>
+
+```typescript
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+```
+
+</details>
+
+Related types: [`TrailPatch`](#type-trailpatch) · [`CreateTrailPlotOptions`](#type-createtrailplotoptions).
+
 ### `EditTreePlotOptions` {#type-edittreeplotoptions}
 
 <details markdown="1">
@@ -7645,6 +7817,19 @@ export interface EditViolinPlotOptions {
 </details>
 
 Related types: [`ViolinPlotPositionChannel`](#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](#type-violinplotsplitoptions) · [`ViolinPlotDensityOptions`](#type-violinplotdensityoptions) · [`StatisticalWeight`](#type-statisticalweight).
+
+### `EditWaterfallPlotOptions` {#type-editwaterfallplotoptions}
+
+<details markdown="1">
+<summary>Expand EditWaterfallPlotOptions</summary>
+
+```typescript
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateWaterfallPlotOptions`](#type-createwaterfallplotoptions).
 
 ### `EditWindowDataOptions` {#type-editwindowdataoptions}
 
@@ -9561,6 +9746,8 @@ Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`RowKey`](
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 </details>
@@ -9611,7 +9798,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 </details>
@@ -9939,7 +10127,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -11656,6 +11844,92 @@ export type NumericFormatString =
 
 Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
 
+### `OHLCBodyPaint` {#type-ohlcbodypaint}
+
+<details markdown="1">
+<summary>Expand OHLCBodyPaint</summary>
+
+```typescript
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `OHLCColor` {#type-ohlccolor}
+
+<details markdown="1">
+<summary>Expand OHLCColor</summary>
+
+```typescript
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+
+### `OHLCLabelPaint` {#type-ohlclabelpaint}
+
+<details markdown="1">
+<summary>Expand OHLCLabelPaint</summary>
+
+```typescript
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `OHLCStemPaint` {#type-ohlcstempaint}
+
+<details markdown="1">
+<summary>Expand OHLCStemPaint</summary>
+
+```typescript
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+```
+
+</details>
+
+Related types: [`OHLCBodyPaint`](#type-ohlcbodypaint).
+
+### `OHLCWidth` {#type-ohlcwidth}
+
+<details markdown="1">
+<summary>Expand OHLCWidth</summary>
+
+```typescript
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+```
+
+</details>
+
+Related types: [`BarWidthOptions`](#type-barwidthoptions).
+
+### `OHLCX` {#type-ohlcx}
+
+<details markdown="1">
+<summary>Expand OHLCX</summary>
+
+```typescript
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
+
 ### `ObservedGraphDefinition` {#type-observedgraphdefinition}
 
 <details markdown="1">
@@ -13034,6 +13308,65 @@ export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "n
 ```
 
 </details>
+
+### `PyramidColor` {#type-pyramidcolor}
+
+<details markdown="1">
+<summary>Expand PyramidColor</summary>
+
+```typescript
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+
+### `PyramidLabelPaint` {#type-pyramidlabelpaint}
+
+<details markdown="1">
+<summary>Expand PyramidLabelPaint</summary>
+
+```typescript
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `PyramidLayoutOptions` {#type-pyramidlayoutoptions}
+
+<details markdown="1">
+<summary>Expand PyramidLayoutOptions</summary>
+
+```typescript
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+```
+
+</details>
+
+### `PyramidStagePaint` {#type-pyramidstagepaint}
+
+<details markdown="1">
+<summary>Expand PyramidStagePaint</summary>
+
+```typescript
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -15191,6 +15524,117 @@ export interface SummaryDataOptions {
 
 Related types: [`SummaryAggregateOptions`](#type-summaryaggregateoptions) · [`StatisticalWeight`](#type-statisticalweight).
 
+### `TableBandPaint` {#type-tablebandpaint}
+
+<details markdown="1">
+<summary>Expand TableBandPaint</summary>
+
+```typescript
+export interface TableBandPaint { readonly fill?: FillPaint; readonly color?: FillPaint; readonly fontWeight?: string | number; }
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint).
+
+### `TableCellPaint` {#type-tablecellpaint}
+
+<details markdown="1">
+<summary>Expand TableCellPaint</summary>
+
+```typescript
+export interface TableCellPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `TableColumn` {#type-tablecolumn}
+
+<details markdown="1">
+<summary>Expand TableColumn</summary>
+
+```typescript
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });
+```
+
+</details>
+
+Related types: [`RowKey`](#type-rowkey) · [`ScalarAggregateOperation`](#type-scalaraggregateoperation) · [`TableFooterOptions`](#type-tablefooteroptions) · [`TableSparklineCell`](#type-tablesparklinecell).
+
+### `TableFooterOptions` {#type-tablefooteroptions}
+
+<details markdown="1">
+<summary>Expand TableFooterOptions</summary>
+
+```typescript
+export interface TableFooterOptions {
+  readonly op: ScalarAggregateOperation; readonly missing?: "drop" | "error"; readonly empty?: "null" | "identity"; readonly format?: string;
+}
+```
+
+</details>
+
+Related types: [`ScalarAggregateOperation`](#type-scalaraggregateoperation).
+
+### `TableLabelPaint` {#type-tablelabelpaint}
+
+<details markdown="1">
+<summary>Expand TableLabelPaint</summary>
+
+```typescript
+export interface TableLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `TableSparklineCell` {#type-tablesparklinecell}
+
+<details markdown="1">
+<summary>Expand TableSparklineCell</summary>
+
+```typescript
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });
+```
+
+</details>
+
+Related types: [`CurveInterpolation`](#type-curveinterpolation).
+
+### `TableSparklinePaint` {#type-tablesparklinepaint}
+
+<details markdown="1">
+<summary>Expand TableSparklinePaint</summary>
+
+```typescript
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+</details>
+
+Related types: [`TableCellPaint`](#type-tablecellpaint).
+
 ### `TargetedOptions` {#type-targetedoptions}
 
 <details markdown="1">
@@ -15755,6 +16199,73 @@ export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly i
 
 Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeometryPosition`](#type-geometryposition).
 
+### `TrailBodyPaint` {#type-trailbodypaint}
+
+<details markdown="1">
+<summary>Expand TrailBodyPaint</summary>
+
+```typescript
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `TrailPatch` {#type-trailpatch}
+
+<details markdown="1">
+<summary>Expand TrailPatch</summary>
+
+```typescript
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+```
+
+</details>
+
+### `TrailPlotOptions` {#type-trailplotoptions}
+
+<details markdown="1">
+<summary>Expand TrailPlotOptions</summary>
+
+```typescript
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+```
+
+</details>
+
+Related types: [`TrailBodyPaint`](#type-trailbodypaint) · [`OHLCColor`](#type-ohlccolor) · [`BlendMode`](#type-blendmode).
+
+### `TrailPosition` {#type-trailposition}
+
+<details markdown="1">
+<summary>Expand TrailPosition</summary>
+
+```typescript
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
+
 ### `TreePlotOptions` {#type-treeplotoptions}
 
 <details markdown="1">
@@ -15990,6 +16501,86 @@ export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOption
 </details>
 
 Related types: [`VisibleGuide`](#type-visibleguide) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions).
+
+### `WaterfallBarPaint` {#type-waterfallbarpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallBarPaint</summary>
+
+```typescript
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `WaterfallColor` {#type-waterfallcolor}
+
+<details markdown="1">
+<summary>Expand WaterfallColor</summary>
+
+```typescript
+export type WaterfallColor = OHLCColor;
+```
+
+</details>
+
+Related types: [`OHLCColor`](#type-ohlccolor).
+
+### `WaterfallConnectorPaint` {#type-waterfallconnectorpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallConnectorPaint</summary>
+
+```typescript
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+</details>
+
+Related types: [`WaterfallBarPaint`](#type-waterfallbarpaint).
+
+### `WaterfallLabelPaint` {#type-waterfalllabelpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallLabelPaint</summary>
+
+```typescript
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `WaterfallWidth` {#type-waterfallwidth}
+
+<details markdown="1">
+<summary>Expand WaterfallWidth</summary>
+
+```typescript
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+```
+
+</details>
+
+### `WaterfallX` {#type-waterfallx}
+
+<details markdown="1">
+<summary>Expand WaterfallX</summary>
+
+```typescript
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+```
+
+</details>
+
+Related types: [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `WindowDataOptions` {#type-windowdataoptions}
 

@@ -21,7 +21,7 @@ test("creates center points from the exact statistical interval rows and scales"
   const program = base().createIntervalPlot({
     id: "estimate",
     x: "category",
-    y: { field: "value", center: "mean", extent: "stdev" },
+    y: { field: "value", center: "mean", extent: "stdev", scale: { id: "y" } },
     point: { radius: 5, fill: "#2563eb" },
     errorBar: { caps: false, stroke: "#1e3a8a" },
     guides: false
@@ -67,24 +67,24 @@ test("keeps explicit interval centers and categorical offsets aligned", () => {
   assert.equal(point.encoding.color.field, "group");
 });
 
-test("isolates complete interval scales from earlier chart layers", () => {
+test("isolates interval X scales while sharing the frame Y identity", () => {
   const program = base()
     .createScatterPlot({ id: "observed", x: "x", y: "y", guides: false })
     .createIntervalPlot({
       id: "estimate",
       data: "source",
       x: { field: "category", fieldType: "nominal" },
-      y: { field: "value", center: "mean", extent: "stdev" },
+      y: { field: "value", center: "mean", extent: "stdev", scale: { id: "y" } },
       guides: false
     });
   const interval = findLayer(program, "estimateInterval");
   const point = findLayer(program, "estimate");
   assert.equal(interval.encoding.x.scale, "estimateX");
-  assert.equal(interval.encoding.y.scale, "estimateY");
+  assert.equal(interval.encoding.y.scale, "y");
   assert.equal(point.encoding.x.scale, "estimateX");
-  assert.equal(point.encoding.y.scale, "estimateY");
+  assert.equal(point.encoding.y.scale, "y");
   assert.equal(program.resolvedScales.estimateX.type, "point");
-  assert.equal(program.resolvedScales.estimateY.type, "linear");
+  assert.equal(program.resolvedScales.y.type, "linear");
 });
 
 test("creates scatter and regression children while preserving serialized group:false", () => {

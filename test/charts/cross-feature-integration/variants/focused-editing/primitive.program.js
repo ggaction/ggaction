@@ -193,13 +193,13 @@ export function createMarkRemovalPrimitives(gapminder) {
   program = removeSemanticProperties(program, [
     "layer[point].mark.type",
     "layer[point].data",
-    "layer[point].coordinate",
     "layer[point].encoding.x.field",
     "layer[point].encoding.x.fieldType",
     "layer[point].encoding.x.scale",
     "layer[point].encoding.y.field",
     "layer[point].encoding.y.fieldType",
-    "layer[point].encoding.y.scale"
+    "layer[point].encoding.y.scale",
+    "layer[point].coordinate"
   ]);
   return program.editGraphics({ target: "point", remove: true });
 }

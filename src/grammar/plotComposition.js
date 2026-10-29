@@ -121,7 +121,13 @@ export function constructorChannels(action, options, source) {
       ...(e.temporalUnit ? {temporalUnit:e.temporalUnit}:{}), ...(e.bin ? {bin:e.bin}:{}), path };
   };
   if(['xy','summaryXY','heatmap','horizon'].includes(kind)) {
-    add('x',options.x,'x.scale'); add('y',options.y,'y.scale');
+    for (const channel of ['x','y']) {
+      const encoding = fieldEncoding(options[channel]);
+      const value = action === 'createIntervalPlot' && encoding?.field === undefined &&
+        typeof encoding?.center === 'string' && typeof encoding?.lower === 'string' && typeof encoding?.upper === 'string'
+        ? {...encoding, field: encoding.center, fieldType: 'quantitative'} : encoding;
+      add(channel,value,`${channel}.scale`);
+    }
     if(kind==='horizon' && result.y) result.y.operations=['folded'];
   } else if(['endpoint','categoryValue'].includes(kind)) {
     const axis=options.orientation==='horizontal'?'y':'x', measureAxis=axis==='x'?'y':'x';

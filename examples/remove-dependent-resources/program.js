@@ -8,7 +8,7 @@ export function createResourceRemovalWorkflow() {
     .createData({ id: "temporary", values: [{ x: 2, y: 3 }] })
     .createPointMark({ id: "preview", data: "temporary", fill: "#dc2626" })
     .encodeX({ target: "preview", field: "x", scale: { id: "previewX" } })
-    .encodeY({ target: "preview", field: "y", scale: { id: "previewY" } });
+    .encodeY({ target: "preview", field: "y", scale: { id: "y" } });
   try {
     before.removeData({ id: "temporary" });
   } catch (error) {

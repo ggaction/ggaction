@@ -1,5 +1,7 @@
+import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { resolveTextBounds } from "../core/textMetrics.js";
-import { prepareHitShape } from "../grammar/hitShapes.js";
+import { prepareHitShape, prepareHitShapeUnion } from "../grammar/hitShapes.js";
 import { transformHitPoint } from "../grammar/hitCoordinates.js";
 import { resolveStrokeDetails } from "../grammar/strokeStyle.js";
 
@@ -45,6 +47,17 @@ function clipGeometry(clip) {
 
 /** Consume validated concrete scene geometry, never semantic encodings or renderer objects. */
 export function prepareConcreteHitShape(node, metrics, rootTransform = identity) {
+  if (node.type === "weighted-blend") {
+    validateConcreteGraphicProperties(node.type, node.properties);
+    const asSceneClip = clip => clip.type === "path" ? clip : [clip.x, clip.y, clip.width, clip.height];
+    return prepareHitShapeUnion(node.properties.sources.map((source, index) => {
+      const moved = clip => asSceneClip(translateGraphicClip(clip, ...node.offset));
+      return prepareConcreteHitShape({ type: source.type,
+        properties: { ...source.properties, opacity: (source.properties.opacity ?? 1) * source.weight * (node.properties.opacity ?? 1) },
+        offset: [node.offset[0] + source.offset[0], node.offset[1] + source.offset[1]], clip: node.clip,
+        clips: [...node.clips ?? [], moved(source.clip), ...source.clips.map(moved)] }, Array.isArray(metrics) ? metrics[index] : metrics, rootTransform);
+    }));
+  }
   const p = node.properties, edge = stroke(p);
   const origin = transformHitPoint(rootTransform, { x: node.offset[0], y: node.offset[1] });
   const fill = node.type === "image" || p.fill !== undefined && p.fill !== "none";

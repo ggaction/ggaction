@@ -1,9 +1,11 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
 import { action } from "../../core/action.js";
 import { hasPlotUnderlays } from "../../materialization/plotDrawOrder.js";
 import { findLayer } from "../../selectors/layers.js";
 import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../../materialization/canvasResourceRevision.js";
 import {
   DEFAULT_CANVAS,
+  createGraphicBounds,
   DEFAULT_MARGIN,
   normalizeMargin,
   normalizePlotBorder,
@@ -137,8 +139,16 @@ export const editCanvas = /* @__PURE__ */ action(
     const state = resolveCanvasState(requireCanvas(this).properties, args, this.materializationConfigs.canvas);
     assertBorderAvailable(this, state);
     const changesLayout = ["width", "height", "margin", "plot", "responsive"].some(key => Object.hasOwn(args, key));
+    const preview = previewCanvasState(this, state);
+    if (changesLayout) {
+      const plot = state.responsive === undefined ? undefined : createGraphicBounds(state);
+      const prospective = plot === undefined ? preview : { ...preview,
+        context: { ...preview.context, responsivePlot: { left: plot.x, right: plot.x + plot.width,
+          top: plot.y, bottom: plot.y + plot.height } } };
+      assertProgramSingleY(prospective, { materialized: true, allowIncomplete: true });
+    }
     const resources = changesLayout && state.responsive === undefined
-      ? prepareCanvasResourceRevision(previewCanvasState(this, state)) : undefined;
+      ? prepareCanvasResourceRevision(preview) : undefined;
     let next = this;
     if (state.plotBorder === false && this.materializationConfigs.canvas?.plotBorder !== undefined) {
       next = next.editGraphics({ target: "plotBorder", remove: true });
@@ -150,7 +160,8 @@ export const editCanvas = /* @__PURE__ */ action(
       changesLayout
     ) {
       next = withGuideLayoutTransaction(next, candidate => candidate.materializationConfigs.canvas?.responsive === undefined
-        ? applyMaterializationPlan(candidate, planCanvasRematerialization(candidate)) : candidate);
+        ? applyMaterializationPlan(candidate, planCanvasRematerialization(candidate)) : candidate,
+        { validateCandidate: candidate => assertProgramSingleY(candidate, { materialized: true, allowIncomplete: true }) });
     } else if (state.plotBorder !== false && Object.hasOwn(args, "plotBorder")) {
       next = next.rematerializePlotBorder();
     }

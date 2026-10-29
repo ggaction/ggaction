@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:7b5295b19974653c213436cbf77c965265370415da04bf569ff6e1ff502bdee1. Status: development. Runtime source: d2441294413d13de40fc545f070489645c038276. Release baseline: v0.0.13.
+Contract: sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480. Status: development. Runtime source: d86e49cd321e04003fdc9c49677f1348fcdb53dc. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/d2441294413d13de40fc545f070489645c038276/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/d86e49cd321e04003fdc9c49677f1348fcdb53dc/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/d2441294413d13de40fc545f070489645c038276/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1904,7 +1904,7 @@ const overlay = shares.layoutSeries({ mode: 'overlay' });
 `groupBy` determines which observations form a series. `layoutSeries` determines where that series is
 placed. Color may use another field when its value is constant within each series. Fill normalizes each
 position to one; diverging accumulates positive and negative values separately; center places the total
-symmetrically around zero. Stack, fill and center require nonnegative values. Series use source appearance
+symmetrically around zero. Stack, fill, center and wiggle require nonnegative values. Series use source appearance
 order, independently of color-domain or legend order.
 
 Bar charts use the same separation. After `createBarPlot`, assign `encodeGroup({field:'series'})` and
@@ -1920,6 +1920,38 @@ positions, NaN and infinity remain errors.
 
 For the exact options and limits, see [`createAreaPlot`](./reference/actions/charts-data/#createareaplot)
 and [`layoutSeries`](./reference/actions/encodings/#layoutseries).
+
+## Use a moving streamgraph baseline
+
+```javascript
+import { chart } from 'ggaction';
+const base = chart().createCanvas({ width: 600, height: 360, margin: 60 })
+  .createData({ values: [
+    { series: 'A', time: 0, value: 1 }, { series: 'A', time: 1, value: 2 },
+    { series: 'A', time: 2, value: 1 }, { series: 'B', time: 0, value: 3 },
+    { series: 'B', time: 1, value: 2 }, { series: 'B', time: 2, value: 1 }
+  ] });
+const stream = base.createAreaPlot({ x: 'time', y: 'value', groupBy: 'series',
+  layout: 'wiggle', color: 'series' });
+const centered = stream.layoutSeries({ mode: 'center' });
+const zeroBased = centered.layoutSeries({ mode: 'stack' });
+```
+
+Wiggle moves the shared baseline to reduce thickness-weighted movement of the layer centers.
+It preserves every sample's thickness and series order. Each connected run begins at zero;
+an all-zero sample keeps the previous baseline. Numeric or temporal x positions must be aligned,
+with no custom path order. Use `missing:'break'` to break all layers together at a null measure.
+The [canonical rendered program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/streamgraph/program.js)
+fixes a small two-series example, including a layer that ends at zero thickness.
+
+The wiggle value scale must support zero; logarithmic value scales are rejected.
+
+### Shared layout policies
+
+Two Area owners can share the same value scale when both use the same stack, fill, center, or wiggle policy.
+The facade checks the complete group, layout and endpoint proposal before creating a mark. Incompatible
+policies, a misaligned group grid, or an explicit domain that excludes resolved bounds fail without creating
+child actions. Direct `layoutSeries` still requires complete positions.
 
 <!-- Source: /tutorials/density-area/ -->
 
@@ -1947,7 +1979,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1989,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2122,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2155,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2166,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2263,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2368,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2482,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2492,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7830a16a64097fb6e6be8498a63a80da61bb9afc/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2792,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -2858,6 +2890,191 @@ composite action. Follow each action’s required selectors even when only one r
 Each recipe labels its primary snippet as runnable. Later snippets revise the
 named `program` produced by that primary flow unless they repeat an import and
 complete setup explicitly.
+
+<!-- Source: /recipes/marginal/ -->
+
+# Marginal distributions beside a scatterplot
+
+Keep the scatterplot and both marginal distributions on the same observations.
+This recipe combines three ordinary charts with `hconcat` and `vconcat`; it does
+not require a separate chart constructor.
+
+## Prerequisites
+
+Use the [Getting Started browser module setup](./getting-started/) with a
+`<canvas id="chart"></canvas>` element.
+
+## Complete program
+
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/marginal/)
+after installing ggaction. Its [program.js](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/marginal/program.js)
+contains the public action chain; `fixture.js` declares the rows, boundaries,
+domains and panel dimensions. Replace the source import in that module with
+`import { chart, hconcat, vconcat } from "ggaction"` for an installed application.
+
+```javascript
+import { render } from "ggaction";
+import { createMarginal } from "./program.js";
+
+const program = createMarginal();
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The shared immutable source has an explicit `id` key. `createScatterPlot` uses
+`x` and `y`. Each `createBinData({members:true})` keeps bin membership;
+`createRectMark` with `encodeXRange` and `encodeYRange` draws both horizontal and
+vertical count distributions. The same dimension domain and pixel range appear
+in the scatterplot and its corresponding marginal panel. Count uses its own
+scale: counts and observed values are different quantities.
+
+## Decide the domains and membership
+
+Choose explicit `xDomain`, `yDomain`, `xBins`, `yBins` and `countDomain` when
+calling the example function with your rows. Keep bin endpoints inside the
+matching observed-value domain and set the count domain to contain the largest
+bin. The example includes repeated coordinates with distinct row keys. Repeated
+coordinates remain separate observations; duplicate explicit keys are rejected.
+Zero is a valid observation. An empty array has no inferred field schema and
+cannot create this recipe's bins.
+
+The linked [selection example](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/marginal/selection.js)
+uses public `getMarkItems` to read one bin's exact source rows, then calls
+`highlightMarks` with the same row indices in each explicitly named child.
+It checks current logical source identity and revision before linking. It never
+uses a displayed bin label as row identity.
+
+## Revise and resize together
+
+The named paths are `x`, `lower/center` and `lower/y`. Apply `reviseData` to all
+three observation sources with the same replacement rows before linking again;
+a partial update is rejected by the example selection helper. Stored selections
+follow typed row keys through reordering. Revise the matching domain and bin
+options together when changing the range of observations.
+
+For resizing, set the same width on `x` and `lower/center`, and the same height
+on `lower/center` and `lower/y`. Their corresponding margins keep the plot ranges
+aligned. A composition edit addresses children explicitly; it does not silently
+synchronize unrelated panels.
+
+Canvas, SVG, PNG and PDF consume the resulting chart. Both editable and
+graphic-only snapshots retain the finished output without loading the source.
+
+[Composition](./api/composition/) · [Inspect marks](./recipes/inspect-chart/) ·
+[Histogram](./recipes/histogram/)
+
+<!-- Source: /recipes/bullet/ -->
+
+# Compare an actual measure with a target
+
+A Bullet comparison places reference ranges, an actual measure and a target on
+one quantitative scale. Build those roles with ordinary Rect, Bar, Rule and Text
+marks; the recipe adds no dedicated constructor.
+
+## Prerequisites
+
+Use the [Getting Started browser module setup](./getting-started/) with a
+`<canvas id="chart"></canvas>` element.
+
+## Complete program
+
+Run this entry in the [example directory](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/bullet/)
+after installing ggaction. The linked [program.js](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/bullet/program.js)
+contains the public action chain and `fixture.js` supplies the observations and
+reference ranges. Replace that module's source import with
+`import { chart } from "ggaction"` in an installed application.
+
+```javascript
+import { render } from "ggaction";
+import { createBullet } from "./program.js";
+
+const program = createBullet();
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+`createRectMark` and `encodeXRange` draw the reference ranges first.
+`createBarMark`, `encodeY`, `encodeX` and `encodeBarWidth` draw the actual measure.
+`createRuleMark` and `encodeX` place the target; `createMarkLabels` prints the
+actual value. The order keeps the actual and target visible above their context.
+All three quantitative roles reuse the explicitly named `amount` scale.
+
+## Declare the reference meaning
+
+Supply observations with `id`, `metric`, `actual` and `target`, plus explicit
+`referenceRanges`, `domain` and `metric` options to the example function. The
+shown reference thresholds are 50, 75 and 100, the actual is 65 and the target is
+80. Those thresholds are authored context, not inferred performance categories.
+The actual uses a sum; choose an appropriate upstream summary if your source
+represents a mean or another statistic. A target is an explicit source value.
+
+The actual's categorical Y position does not introduce a second quantitative
+axis. Full-height reference ranges and the target rule deliberately omit Y
+encodings. A zero actual remains semantic zero and produces no visible Bar item;
+an empty set cannot supply the required aggregate. Duplicate explicit row keys
+are rejected.
+
+## Update the comparison
+
+Call `reviseData` on `observed` to change the actual and target together. The
+measure label follows the actual; reference ranges remain on their explicit
+source. `editCanvas` rematerializes all roles through the same scale. Selection
+and highlighting can target `measure` without recoloring the reference ranges.
+
+The result supports Canvas, SVG, PNG and PDF, including graphic-only offline
+snapshots. [Linked overlays](./recipes/combo/) show a related composition using one
+shared quantitative Y scale.
+
+<!-- Source: /recipes/combo/ -->
+
+# Combine bars and a linked line
+
+Use `createOverlay` when a line should follow the endpoints of existing bars.
+The bars and line share the same meaning, scale and final positions. This is a
+composition of public actions, with no dedicated Combo constructor.
+
+## Prerequisites
+
+Use the [Getting Started browser module setup](./getting-started/) with a
+`<canvas id="chart"></canvas>` element.
+
+## Complete program
+
+Run this entry beside the canonical [program.js](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/linked-overlay/program.js)
+after installing ggaction and replacing its source import with
+`import { chart } from "ggaction"`.
+
+```javascript
+import { render } from "ggaction";
+import { createLinkedOverlay } from "./program.js";
+
+const program = createLinkedOverlay();
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The example creates a Bar mark, encodes `month` and aggregated `sales`, and
+creates its guides. `createOverlay({id:"trend",source:"bars"})` follows the final
+bar endpoints. `encodeColor` gives the line its own appearance while preserving
+the source positions.
+
+## Keep one quantitative Y owner
+
+The line shares the bars' Y scale and guide. It does not add a second vertical
+axis. A series measured in a different unit belongs in a separate panel with
+an explicit scale, rather than an overlapping second Y scale. A mirrored or
+hidden axis does not make different units comparable.
+
+## Revise and inspect
+
+`reviseData` on the source recomputes both the bars and their linked line.
+`editCanvas` recomputes both against the same plot range. Select and highlight
+the bars by their source rows; the line retains its declared aggregate path
+identity. Use `getMarkItems` to inspect those actual logical items.
+
+Canvas, SVG, PNG and PDF read the same finished chart. Editable snapshots retain
+the source relation, and graphic snapshots preserve the final line and bars for
+offline output.
+
+[Composition operations](./recipes/composition/) · [Bar chart](./recipes/bar-chart/) ·
+[Marginal panels](./recipes/marginal/) · [Bullet comparison](./recipes/bullet/)
 
 <!-- Source: /recipes/scatterplot/ -->
 
@@ -4859,6 +5076,11 @@ edits, and facet replay preserve the border setting and update its bounds.
 
 ## `editCanvas(options)`
 
+Resizing preserves the single-Y rule for each Cartesian plot region. A change
+that makes independent frames overlap is rejected. Separate facet or concat
+panels, plot-space annotations and normalized Rug/Strip anchors retain their
+existing resize behavior.
+
 Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
 The `plotBorder` object replaces its complete style as described above.
@@ -6124,7 +6346,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -7887,6 +8109,8 @@ scales stay live until the encoding is replaced or removed.
 Field branches contribute their complete final-item populations to automatic
 scale domains. Conditions select values without filtering the input population. Use a
 [parameterized data filter](./data-updates/) to change statistical input.
+Categorical color, stroke, shape and dash domains retain their source appearance
+order, including when aggregation changes the order of the displayed items.
 Appearance on paths and aggregate marks requires one branch value and one predicate result per
 final item; provide the existing grouping or aggregate when needed. Branches
 cannot introduce different grouping, stacking, or layout policies.
@@ -10331,7 +10555,7 @@ guessed. Area layouts can also supply `lower` and `upper` endpoint roles. Parall
 coordinate dimensions use their field names as column roles.
 
 Omitting `target` exports every stable chart owner in semantic order. An explicit
-target must name a stable owner; requesting an owned component reports its owner.
+target must name a stable owner; requesting an owned component fails with an error naming its owner.
 A composition returns child views in composition order, each with `ownerId`,
 `kind: "composition-child"`, `title`, and nested `views`. Facet children also have
 a `facet` field/value record. Grid facets contain both row and column fields;
@@ -10758,6 +10982,30 @@ fails before the destination is cleared or resized. The handle is ephemeral and 
 Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 MiB of numeric/RGBA output buffers.
 The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
 All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
+
+## Weighted concrete blends
+
+The extension `weighted-blend` primitive combines each item's complete source
+pixels in premultiplied linear-light sRGB. Canvas and PNG use bounded offscreen
+surfaces per item. SVG retains native source elements and applies a `linearRGB`
+arithmetic filter. PDF retains vector endpoints and embeds only each intermediate
+weighted item as a raster at one pixel per logical unit. No backend captures the
+whole chart to implement the blend.
+
+Canvas/PNG limits are 1,048,576 pixels per item, 16,777,216 retained result pixels
+per scene, and 67,108,864 source-pixel operations. Density counts toward these
+limits. SVG applies the same logical pixel budgets to its filter regions; native
+Text retains its explicit source viewport so glyph overhangs are not cut to an
+estimated text box. Oversized requests fail explicitly. Canvas checks and prepares
+all weighted results before resizing or clearing the destination.
+
+Prepare embedded images, fonts, and shadows through the existing preparation
+functions for the exact program or scene. Inactive sources are also validated.
+A single weight-one endpoint draws its original primitive directly; empty Text,
+zero-area shapes and fully clipped sources remain transparent. Current-frame hit
+geometry follows the visible source footprints while retaining one logical item.
+See [the concrete source contract](./extension/primitives/#blend-concrete-sources-for-one-item)
+for the extension syntax.
 
 ## Related
 
@@ -12464,7 +12712,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -12530,7 +12778,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -12868,6 +13116,16 @@ connected marks, axes, and grids are recomputed. An explicit new scale ID
 rebinds a non-shared guide while retaining the old named scale. Inferred axis
 titles follow the new field; explicit titles and appearance stay unchanged.
 
+A single Cartesian plot region uses one Y scale identity, including all `y2` endpoints
+and conditional Y branches. Use the existing Y scale for another layer, or place an
+independent measurement in a separate facet or adjacent panel. Hiding axes does not
+change this rule. Literal annotations and detached plot-position snapshots retain
+their own positioning.
+
+Rug edges and the center of a Strip plot with a single measure are fixed plot positions.
+They can accompany a chart without adding another data Y scale. Re-encoding that position
+as data makes it subject to the same single-Y rule.
+
 ## Errors and limitations
 
 A conflicting layer coordinate, non-Cartesian coordinate, cross-channel scale,
@@ -12951,7 +13209,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -13553,7 +13811,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -13637,7 +13895,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | `target` | point, line, area, bar, rect, or arc mark ID | current mark |
 | `fieldType` | `"nominal"`, `"ordinal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
-| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, or `"center"` | mark policy |
+| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, `"center"`, or `"wiggle"` | mark policy |
 | `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
@@ -13770,7 +14028,7 @@ densityArea.encodeColor({
 });
 ```
 
-Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
+Area layouts support `stack`, `fill`, `overlay`, `diverging`, `center`, and `wiggle`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
 color domain order, and legend order have separate roles;
 Canvas and shared-scale changes rematerialize every affected area fill.
@@ -13866,7 +14124,7 @@ then declare `encodeGroup` when it contains several series. Every existing serie
 must have exactly one finite numeric color value, including all missing-break
 subpaths. Without grouping, the entire area is one series. Color never creates
 extra series, changes their order, interpolates between vertices, or changes layout.
-Use `layoutSeries` independently for stack, fill, center, overlay, or diverging placement.
+Use `layoutSeries` independently for stack, fill, center, wiggle, overlay, or diverging placement.
 
 The same scale drives the area fills and `createLegend({ channels: ["color"] })`.
 Gradient legends, sampled color symbols, and discretized intervals retain their
@@ -13916,6 +14174,18 @@ A Tick accepts one color or stroke field. Remove its encoding before switching
 channels or editing a constant stroke. Color removal restores default stroke.
 Categorical color, aggregate, layout and point-only unknown remain unsupported.
 Basic has no Tick/Rug authoring.
+
+### Moving streamgraph baseline
+
+Use `layoutSeries({ mode: "wiggle" })` on a vertical Area with aligned numeric or temporal x samples and
+nonnegative values. The baseline minimizes the thickness-weighted squared movement of layer centers
+between adjacent samples. Each connected run starts at zero; all-zero samples retain the prior baseline,
+and an explicit missing break resets the next run. Series retain their source appearance order.
+Categorical x, horizontal areas, custom path order and Bar layouts cannot use this mode.
+Explicit y domains must contain every shifted bound. Each layout has at most 10,000 samples and cells.
+See the [executable Area workflow](./tutorials/area-layout/#use-a-moving-streamgraph-baseline).
+
+The wiggle value scale must support zero; logarithmic value scales are rejected.
 
 ## Related
 
@@ -19885,6 +20155,23 @@ and data grain. The [canonical channel tables](./api/encodings/) own mark, field
 scale-family, and item-grain compatibility. A facade's convenient default is not the
 complete support limit of its underlying mark.
 
+## Native chart scope
+
+[Pyramid](./api/pyramid/) represents ordered stages with explicit values; stage
+labels do not replace row identity. [Marginal](./recipes/marginal/),
+[Bullet](./recipes/bullet/), and [Combo](./recipes/combo/) are recipes built
+from public actions, not separate chart constructors. Use independent panels
+for different Y measures and one shared Y mapping for overlays in a frame.
+
+Dedicated KPI and Gauge charts are excluded from the built-in API.
+Set-intersection visualizations are outside the current chart API. Public
+extension primitives remain available for custom compositions.
+
+ggaction does not require an external chart engine, translation adapter, or
+reference-chart matching service. Its native actions produce the concrete
+output consumed by every renderer. Optional raster/font providers and geographic
+mathematics serve those native operations.
+
 ## Shared foundations
 
 | Area | Supported now |
@@ -20105,6 +20392,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](./reference/actions/statistics/#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./reference/actions/statistics/#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOHLCPlot`](./reference/actions/marks/#createohlcplot) | H2 | user-facing | marks |
 | [`createOverlay`](./reference/actions/marks/#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](./reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
@@ -20117,6 +20405,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](./reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](./reference/actions/marks/#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -20145,6 +20434,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStatisticalReference`](./reference/actions/marks/#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
+| [`createTablePlot`](./reference/actions/marks/#createtableplot) | H2 | user-facing | marks |
 | [`createTextMark`](./reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
 | [`createTextPlot`](./reference/actions/charts-data/#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | H3 | user-facing | axes |
@@ -20156,10 +20446,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./reference/actions/marks/#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./reference/actions/charts-data/#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./reference/actions/guides/#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTrailPlot`](./reference/actions/marks/#createtrailplot) | H2 | user-facing | marks |
 | [`createTreemapPlot`](./reference/actions/charts-data/#createtreemapplot) | H0, H1 | user-facing | charts |
 | [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./reference/actions/guides/#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](./reference/actions/marks/#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](./reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](./reference/actions/guides/#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](./reference/actions/guides/#createxaxislabels) | H3 | user-facing | axes |
@@ -20245,6 +20537,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkLabelSelection`](./reference/actions/marks/#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./reference/actions/statistics/#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOHLCPlot`](./reference/actions/marks/#editohlcplot) | H3 | user-facing | marks |
 | [`editOpacityScale`](./reference/actions/charts-data/#editopacityscale) | H2 | user-facing | core |
 | [`editOverlay`](./reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
@@ -20254,6 +20547,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](./reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](./reference/actions/marks/#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
@@ -20280,6 +20574,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editStrokeScale`](./reference/actions/charts-data/#editstrokescale) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./reference/actions/charts-data/#editstrokewidthscale) | H2 | user-facing | core |
 | [`editSummaryData`](./reference/actions/statistics/#editsummarydata) | H1, H3 | user-facing | statistics |
+| [`editTablePlot`](./reference/actions/marks/#edittableplot) | H3 | user-facing | marks |
 | [`editTextMark`](./reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |
@@ -20291,10 +20586,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](./reference/actions/charts-data/#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTrailPlot`](./reference/actions/marks/#edittrailplot) | H3 | user-facing | marks |
 | [`editTreemapPlot`](./reference/actions/charts-data/#edittreemapplot) | H1, H3 | user-facing | charts |
 | [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./reference/actions/guides/#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](./reference/actions/marks/#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](./reference/actions/charts-data/#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](./reference/actions/guides/#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./reference/actions/guides/#editxaxislabels) | H3 | user-facing | axes |
@@ -24220,14 +24517,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
-| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
+| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| "wiggle" \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
-| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
+| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { field: string; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; })) \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -25341,9 +25638,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -25380,6 +25678,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -28251,6 +28550,457 @@ editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
 ```
 
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](./api/geometry/#editgraticule).
+
+## `createPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreatePyramidPlotOptions`](./reference/types/#type-createpyramidplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Required | `string` |
+| `value` | Required | `string` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](./api/pyramid/).
+
+## `editPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPyramidPlotOptions`](./reference/types/#type-editpyramidplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](./api/pyramid/).
+
+## `createOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateOHLCPlotOptions`](./reference/types/#type-createohlcplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `OHLCX` |
+| `low` | Required | `string` |
+| `high` | Required | `string` |
+| `open` | Required | `string` |
+| `close` | Required | `string` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createOHLCPlot({ id?, data?, coordinate?, x, low, high, open, close, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Draw explicit open, high, low and close roles as one row-owned item. See [OHLC plots](./api/ohlc/).
+
+## `editOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditOHLCPlotOptions`](./reference/types/#type-editohlcplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `OHLCX \| undefined` |
+| `low` | Optional / branch-dependent | `string \| undefined` |
+| `high` | Optional / branch-dependent | `string \| undefined` |
+| `open` | Optional / branch-dependent | `string \| undefined` |
+| `close` | Optional / branch-dependent | `string \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Edit prices and styles while preserving typed row identities. See [OHLC plots](./api/ohlc/).
+
+## `createWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateWaterfallPlotOptions`](./reference/types/#type-createwaterfallplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `WaterfallX` |
+| `role` | Required | `string` |
+| `value` | Required | `string` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createWaterfallPlot({ id?, data?, coordinate?, x, role, value, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots](./api/waterfall/).
+
+## `editWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditWaterfallPlotOptions`](./reference/types/#type-editwaterfallplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `WaterfallX \| undefined` |
+| `role` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](./api/waterfall/).
+
+## `createTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateTrailPlotOptions`](./reference/types/#type-createtrailplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Required | `string \| number` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](./api/trail/).
+
+## `editTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditTrailPlotOptions`](./reference/types/#type-edittrailplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Optional / branch-dependent | `string \| number \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](./api/trail/).
+
+## `createTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateTablePlotOptions`](./reference/types/#type-createtableplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Required | `readonly TableColumn[]` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTablePlot({ id?, data?, coordinate?, columns, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Draw keyed cells with text, bars, sparklines and explicit whole-source footer summaries. Full only. See [Table plots](./api/table/).
+
+## `editTablePlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditTablePlotOptions`](./reference/types/#type-edittableplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly TableColumn[] \| undefined` |
+| `sortBy` | Optional / branch-dependent | `false \| readonly SortKey[] \| undefined` |
+| `rowLimit` | Optional / branch-dependent | `number \| false \| undefined` |
+| `rowHeight` | Optional / branch-dependent | `number \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `header` | Optional / branch-dependent | `boolean \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `TableLabelPaint \| undefined` |
+| `headerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `footerStyle` | Optional / branch-dependent | `TableBandPaint \| undefined` |
+| `bars` | Optional / branch-dependent | `TableCellPaint \| undefined` |
+| `sparklines` | Optional / branch-dependent | `TableSparklinePaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTablePlot({ target?, data?, coordinate?, columns?, sortBy?, rowLimit?, rowHeight?, padding?, header?, cells?, labels?, headerStyle?, footerStyle?, bars?, sparklines?, color?, clip? })
+```
+
+Patch table meaning and appearance while preserving typed row and column identities. See [Table plots](./api/table/).
 
 ## Related
 
@@ -35199,8 +35949,13 @@ These blocks are generated from the declaration file owned by each package entry
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
+export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
+export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
+export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
+export type { PyramidStagePaint, PyramidLabelPaint, PyramidColor, PyramidLayoutOptions, CreatePyramidPlotOptions, EditPyramidPlotOptions } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
@@ -35551,6 +36306,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -35758,6 +36515,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -35939,7 +36697,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline, MarkShadow,
+  FillPaint, MarkOutline, MarkShadow, GraphicBlendSource, GraphicWeightedBlendProperties,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -36322,7 +37080,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -36890,6 +37648,16 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+  editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -37712,7 +38480,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -38401,6 +39169,8 @@ Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline
 
 ```typescript
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */
 ```
 
 ### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
@@ -38902,7 +39672,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 ```
 
 ### `ColorMappedPointGuideOptions` {#type-colormappedpointguideoptions}
@@ -39397,19 +40168,28 @@ Related types: [`AnnotationBaseOptions`](./reference/types/#type-annotationbaseo
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 ```
 
-Related types: [`ColorLayout`](./reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel).
+Related types: [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](./reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`ColorLayout`](./reference/types/#type-colorlayout) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](./reference/types/#type-areaplotmeasurechannel) · [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -39704,10 +40484,14 @@ Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -39950,6 +40734,22 @@ export interface CreateNativeCoordinateOptions {
 }
 ```
 
+### `CreateOHLCPlotOptions` {#type-createohlcplotoptions}
+
+ Expand CreateOHLCPlotOptions
+
+```typescript
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+Related types: [`OHLCX`](./reference/types/#type-ohlcx) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`OHLCWidth`](./reference/types/#type-ohlcwidth) · [`OHLCBodyPaint`](./reference/types/#type-ohlcbodypaint) · [`OHLCStemPaint`](./reference/types/#type-ohlcstempaint) · [`OHLCLabelPaint`](./reference/types/#type-ohlclabelpaint) · [`OHLCColor`](./reference/types/#type-ohlccolor) · [`ColorGuides`](./reference/types/#type-colorguides).
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
  Expand CreateOverlayOptions
@@ -40090,6 +40890,19 @@ export type CreateProjectionOptions = { readonly id: string } & ((ProjectionPara
 ```
 
 Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](./reference/types/#type-projectionfittedoptions).
+
+### `CreatePyramidPlotOptions` {#type-createpyramidplotoptions}
+
+ Expand CreatePyramidPlotOptions
+
+```typescript
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+```
+
+Related types: [`PyramidLayoutOptions`](./reference/types/#type-pyramidlayoutoptions) · [`PyramidStagePaint`](./reference/types/#type-pyramidstagepaint) · [`PyramidLabelPaint`](./reference/types/#type-pyramidlabelpaint) · [`PyramidColor`](./reference/types/#type-pyramidcolor).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -40409,6 +41222,22 @@ export type CreateStripPlotOptions = {
 
 Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorMappedPointGuideOptions`](./reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripPixelJitterOptions`](./reference/types/#type-strippixeljitteroptions) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel) · [`StripBandJitterOptions`](./reference/types/#type-stripbandjitteroptions).
 
+### `CreateTablePlotOptions` {#type-createtableplotoptions}
+
+ Expand CreateTablePlotOptions
+
+```typescript
+export interface CreateTablePlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly columns: readonly TableColumn[];
+  readonly sortBy?: readonly SortKey[] | false; readonly rowLimit?: number | false;
+  readonly rowHeight?: number; readonly padding?: number; readonly header?: boolean; readonly clip?: boolean;
+  readonly cells?: TableCellPaint; readonly labels?: TableLabelPaint; readonly headerStyle?: TableBandPaint; readonly footerStyle?: TableBandPaint;
+  readonly bars?: TableCellPaint; readonly sparklines?: TableSparklinePaint; readonly color?: false | PyramidColor;
+}
+```
+
+Related types: [`TableColumn`](./reference/types/#type-tablecolumn) · [`SortKey`](./reference/types/#type-sortkey) · [`TableCellPaint`](./reference/types/#type-tablecellpaint) · [`TableLabelPaint`](./reference/types/#type-tablelabelpaint) · [`TableBandPaint`](./reference/types/#type-tablebandpaint) · [`TableSparklinePaint`](./reference/types/#type-tablesparklinepaint) · [`PyramidColor`](./reference/types/#type-pyramidcolor).
+
 ### `CreateTextPlotOptions` {#type-createtextplotoptions}
 
  Expand CreateTextPlotOptions
@@ -40473,6 +41302,37 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 ```
 
 Related types: [`PolarTitleOptions`](./reference/types/#type-polartitleoptions) · [`PolarGuideResourceOptions`](./reference/types/#type-polarguideresourceoptions).
+
+### `CreateTrailPlotOptions` {#type-createtrailplotoptions}
+
+ Expand CreateTrailPlotOptions
+
+```typescript
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+```
+
+Related types: [`TrailPlotOptions`](./reference/types/#type-trailplotoptions) · [`TrailPosition`](./reference/types/#type-trailposition) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`ColorGuides`](./reference/types/#type-colorguides) · [`PolarThetaChannel`](./reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](./reference/types/#type-polarradiuschannel) · [`PolarPathGuideOptions`](./reference/types/#type-polarpathguideoptions).
+
+### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
+
+ Expand CreateWaterfallPlotOptions
+
+```typescript
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+Related types: [`WaterfallX`](./reference/types/#type-waterfallx) · [`NonPointZeroSupportingPositionScaleOptions`](./reference/types/#type-nonpointzerosupportingpositionscaleoptions) · [`WaterfallWidth`](./reference/types/#type-waterfallwidth) · [`WaterfallBarPaint`](./reference/types/#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](./reference/types/#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](./reference/types/#type-waterfalllabelpaint) · [`WaterfallColor`](./reference/types/#type-waterfallcolor) · [`ColorGuides`](./reference/types/#type-colorguides).
 
 ### `CurveInterpolation` {#type-curveinterpolation}
 
@@ -42401,6 +43261,8 @@ Related types: [`GeoShapeMarkOptions`](./reference/types/#type-geoshapemarkoptio
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 
@@ -42812,6 +43674,16 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`NormalizedDataOptions`](./reference/types/#type-normalizeddataoptions).
 
+### `EditOHLCPlotOptions` {#type-editohlcplotoptions}
+
+ Expand EditOHLCPlotOptions
+
+```typescript
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+```
+
+Related types: [`CreateOHLCPlotOptions`](./reference/types/#type-createohlcplotoptions).
+
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
  Expand EditOpacityScaleOptions
@@ -42940,6 +43812,17 @@ export type EditProjectionOptions = { readonly target?: string } & ((Partial<Pro
 ```
 
 Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](./reference/types/#type-projectioneditfittedoptions).
+
+### `EditPyramidPlotOptions` {#type-editpyramidplotoptions}
+
+ Expand EditPyramidPlotOptions
+
+```typescript
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
+```
+
+Related types: [`CreatePyramidPlotOptions`](./reference/types/#type-createpyramidplotoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -43196,6 +44079,16 @@ export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
 
 Related types: [`FocusedWeightedDerivedDataEdit`](./reference/types/#type-focusedweightedderiveddataedit) · [`SummaryDataOptions`](./reference/types/#type-summarydataoptions) · [`StatisticalWeight`](./reference/types/#type-statisticalweight).
 
+### `EditTablePlotOptions` {#type-edittableplotoptions}
+
+ Expand EditTablePlotOptions
+
+```typescript
+export type EditTablePlotOptions = { readonly target?: string } & Partial<Omit<CreateTablePlotOptions, "id">>;
+```
+
+Related types: [`CreateTablePlotOptions`](./reference/types/#type-createtableplotoptions).
+
 ### `EditTextMarkOptions` {#type-edittextmarkoptions}
 
  Expand EditTextMarkOptions
@@ -43258,6 +44151,16 @@ export interface EditTitleOptions
 
 Related types: [`TitleOptions`](./reference/types/#type-titleoptions).
 
+### `EditTrailPlotOptions` {#type-edittrailplotoptions}
+
+ Expand EditTrailPlotOptions
+
+```typescript
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+```
+
+Related types: [`TrailPatch`](./reference/types/#type-trailpatch) · [`CreateTrailPlotOptions`](./reference/types/#type-createtrailplotoptions).
+
 ### `EditTreePlotOptions` {#type-edittreeplotoptions}
 
  Expand EditTreePlotOptions
@@ -43296,6 +44199,16 @@ export interface EditViolinPlotOptions {
 ```
 
 Related types: [`ViolinPlotPositionChannel`](./reference/types/#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](./reference/types/#type-violinplotsplitoptions) · [`ViolinPlotDensityOptions`](./reference/types/#type-violinplotdensityoptions) · [`StatisticalWeight`](./reference/types/#type-statisticalweight).
+
+### `EditWaterfallPlotOptions` {#type-editwaterfallplotoptions}
+
+ Expand EditWaterfallPlotOptions
+
+```typescript
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
+```
+
+Related types: [`CreateWaterfallPlotOptions`](./reference/types/#type-createwaterfallplotoptions).
 
 ### `EditWindowDataOptions` {#type-editwindowdataoptions}
 
@@ -44857,6 +45770,8 @@ Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsour
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 Related types: [`GraphicClipRect`](./reference/types/#type-graphiccliprect) · [`GraphicClipPath`](./reference/types/#type-graphicclippath).
@@ -44898,7 +45813,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 ### `GraticuleOptions` {#type-graticuleoptions}
@@ -45166,7 +46082,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -46605,6 +47521,74 @@ export type NumericFormatString =
 
 Related types: [`ValueFormatPrecision`](./reference/types/#type-valueformatprecision).
 
+### `OHLCBodyPaint` {#type-ohlcbodypaint}
+
+ Expand OHLCBodyPaint
+
+```typescript
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `OHLCColor` {#type-ohlccolor}
+
+ Expand OHLCColor
+
+```typescript
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+```
+
+Related types: [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions).
+
+### `OHLCLabelPaint` {#type-ohlclabelpaint}
+
+ Expand OHLCLabelPaint
+
+```typescript
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+```
+
+Related types: [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
+
+### `OHLCStemPaint` {#type-ohlcstempaint}
+
+ Expand OHLCStemPaint
+
+```typescript
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+```
+
+Related types: [`OHLCBodyPaint`](./reference/types/#type-ohlcbodypaint).
+
+### `OHLCWidth` {#type-ohlcwidth}
+
+ Expand OHLCWidth
+
+```typescript
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+```
+
+Related types: [`BarWidthOptions`](./reference/types/#type-barwidthoptions).
+
+### `OHLCX` {#type-ohlcx}
+
+ Expand OHLCX
+
+```typescript
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
+
 ### `ObservedGraphDefinition` {#type-observedgraphdefinition}
 
  Expand ObservedGraphDefinition
@@ -47746,6 +48730,53 @@ Related types: [`ProjectionPlaneParameters`](./reference/types/#type-projectionp
 export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
   | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
 ```
+
+### `PyramidColor` {#type-pyramidcolor}
+
+ Expand PyramidColor
+
+```typescript
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+```
+
+Related types: [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions).
+
+### `PyramidLabelPaint` {#type-pyramidlabelpaint}
+
+ Expand PyramidLabelPaint
+
+```typescript
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+```
+
+Related types: [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
+
+### `PyramidLayoutOptions` {#type-pyramidlayoutoptions}
+
+ Expand PyramidLayoutOptions
+
+```typescript
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+```
+
+### `PyramidStagePaint` {#type-pyramidstagepaint}
+
+ Expand PyramidStagePaint
+
+```typescript
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -49537,6 +50568,96 @@ export interface SummaryDataOptions {
 
 Related types: [`SummaryAggregateOptions`](./reference/types/#type-summaryaggregateoptions) · [`StatisticalWeight`](./reference/types/#type-statisticalweight).
 
+### `TableBandPaint` {#type-tablebandpaint}
+
+ Expand TableBandPaint
+
+```typescript
+export interface TableBandPaint { readonly fill?: FillPaint; readonly color?: FillPaint; readonly fontWeight?: string | number; }
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint).
+
+### `TableCellPaint` {#type-tablecellpaint}
+
+ Expand TableCellPaint
+
+```typescript
+export interface TableCellPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `TableColumn` {#type-tablecolumn}
+
+ Expand TableColumn
+
+```typescript
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });
+```
+
+Related types: [`RowKey`](./reference/types/#type-rowkey) · [`ScalarAggregateOperation`](./reference/types/#type-scalaraggregateoperation) · [`TableFooterOptions`](./reference/types/#type-tablefooteroptions) · [`TableSparklineCell`](./reference/types/#type-tablesparklinecell).
+
+### `TableFooterOptions` {#type-tablefooteroptions}
+
+ Expand TableFooterOptions
+
+```typescript
+export interface TableFooterOptions {
+  readonly op: ScalarAggregateOperation; readonly missing?: "drop" | "error"; readonly empty?: "null" | "identity"; readonly format?: string;
+}
+```
+
+Related types: [`ScalarAggregateOperation`](./reference/types/#type-scalaraggregateoperation).
+
+### `TableLabelPaint` {#type-tablelabelpaint}
+
+ Expand TableLabelPaint
+
+```typescript
+export interface TableLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `TableSparklineCell` {#type-tablesparklinecell}
+
+ Expand TableSparklineCell
+
+```typescript
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });
+```
+
+Related types: [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+
+### `TableSparklinePaint` {#type-tablesparklinepaint}
+
+ Expand TableSparklinePaint
+
+```typescript
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+Related types: [`TableCellPaint`](./reference/types/#type-tablecellpaint).
+
 ### `TargetedOptions` {#type-targetedoptions}
 
  Expand TargetedOptions
@@ -50014,6 +51135,61 @@ export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly i
 
 Related types: [`GeometryJSONValue`](./reference/types/#type-geometryjsonvalue) · [`GeometryPosition`](./reference/types/#type-geometryposition).
 
+### `TrailBodyPaint` {#type-trailbodypaint}
+
+ Expand TrailBodyPaint
+
+```typescript
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `TrailPatch` {#type-trailpatch}
+
+ Expand TrailPatch
+
+```typescript
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+```
+
+### `TrailPlotOptions` {#type-trailplotoptions}
+
+ Expand TrailPlotOptions
+
+```typescript
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+```
+
+Related types: [`TrailBodyPaint`](./reference/types/#type-trailbodypaint) · [`OHLCColor`](./reference/types/#type-ohlccolor) · [`BlendMode`](./reference/types/#type-blendmode).
+
+### `TrailPosition` {#type-trailposition}
+
+ Expand TrailPosition
+
+```typescript
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
+
 ### `TreePlotOptions` {#type-treeplotoptions}
 
  Expand TreePlotOptions
@@ -50207,6 +51383,68 @@ export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOption
 ```
 
 Related types: [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions).
+
+### `WaterfallBarPaint` {#type-waterfallbarpaint}
+
+ Expand WaterfallBarPaint
+
+```typescript
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `WaterfallColor` {#type-waterfallcolor}
+
+ Expand WaterfallColor
+
+```typescript
+export type WaterfallColor = OHLCColor;
+```
+
+Related types: [`OHLCColor`](./reference/types/#type-ohlccolor).
+
+### `WaterfallConnectorPaint` {#type-waterfallconnectorpaint}
+
+ Expand WaterfallConnectorPaint
+
+```typescript
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+Related types: [`WaterfallBarPaint`](./reference/types/#type-waterfallbarpaint).
+
+### `WaterfallLabelPaint` {#type-waterfalllabelpaint}
+
+ Expand WaterfallLabelPaint
+
+```typescript
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+```
+
+Related types: [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
+
+### `WaterfallWidth` {#type-waterfallwidth}
+
+ Expand WaterfallWidth
+
+```typescript
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+```
+
+### `WaterfallX` {#type-waterfallx}
+
+ Expand WaterfallX
+
+```typescript
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+```
+
+Related types: [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `WindowDataOptions` {#type-windowdataoptions}
 
@@ -50845,9 +52083,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -50913,12 +52151,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d2441294413d13de40fc545f070489645c038276/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d2441294413d13de40fc545f070489645c038276/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51016,6 +52254,50 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](./api/rendering/#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -52030,7 +53312,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -52083,7 +53365,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -52329,7 +53611,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -52381,7 +53663,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/repeat-charts).
 
 ## Space between plots
 
@@ -53088,7 +54370,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -53562,7 +54844,7 @@ export function createResourceRemovalWorkflow() {
     .createData({ id: "temporary", values: [{ x: 2, y: 3 }] })
     .createPointMark({ id: "preview", data: "temporary", fill: "#dc2626" })
     .encodeX({ target: "preview", field: "x", scale: { id: "previewX" } })
-    .encodeY({ target: "preview", field: "y", scale: { id: "previewY" } });
+    .encodeY({ target: "preview", field: "y", scale: { id: "y" } });
   try {
     before.removeData({ id: "temporary" });
   } catch (error) {
@@ -54001,11 +55283,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7b5295b19974653c213436cbf77c965265370415da04bf569ff6e1ff502bdee1` |
-| Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `d2441294413d13de40fc545f070489645c038276` |
+| Contract fingerprint | `sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480` |
+| Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
+| Runtime source commit | `d86e49cd321e04003fdc9c49677f1348fcdb53dc` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 367 |
+| Declared actions here | 377 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -54095,9 +55377,9 @@ Canvas, theme, facet and editable-persistence replay retain the requested placem
 
 Create an axis with `id` when it needs an independent identity. The default IDs are
 `x` and `y`. Refine or remove a named axis with `target`, which selects the axis,
-not its mark or scale. This complete runnable program uses an independent right scale:
+not its mark or scale. This complete runnable program places the chart’s single Y axis on the right:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.
 
 ```js
 import { chart } from "ggaction";
@@ -54105,11 +55387,15 @@ import { chart } from "ggaction";
 const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })
   .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
   .createScatterPlot({ x: "x", y: "y", guides: false })
-  .createYAxis()
-  .createScale({ id: "ratio", type: "linear", domain: [0, 1] })
-  .createYAxis({ id: "share", position: "right", scale: "ratio", coordinate: "main" })
-  .editYAxisTitle({ target: "share", text: "Share" });
+  .createYAxis({ id: "share", position: "right", scale: "y", coordinate: "main" })
+  .editYAxisTitle({ target: "share", text: "Quantity" });
 ```
+
+A Cartesian plot uses one Y scale resource and at most one visible Y axis. Hiding an
+axis does not allow a second data Y scale, and equal domains on separate scale IDs
+still count as separate scales. Use adjacent or faceted panels for independent Y
+measurements. A range endpoint `y2` shares its primary Y scale. Multiple retained
+Y axis owners must share this scale and all but one must be hidden.
 
 `createAxes` and `createGuides.axes` also accept nonempty X/Y arrays, with an explicit
 `id` in every entry. Arrays create axes in entry order and fail atomically if any
@@ -54536,12 +55822,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -54646,13 +55932,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -54663,7 +55949,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -54830,7 +56116,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -55370,7 +56656,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -55448,7 +56734,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -55978,7 +57264,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -55992,6 +57278,14 @@ Keep geographic or planar shapes in an immutable resource with explicit feature
 identity. These Full `ggaction` actions prepare source geometry; creating a
 resource does not draw it. [Contours](./api/contours/) use the same resource kind
 with their own scalar-grid contract.
+
+Clockwise geographic datasets can declare `polygonWinding: "left-hand"` when creating
+or editing their geometry source. The default `"right-hand"` convention preserves existing
+counterclockwise exteriors and clockwise holes. This declaration preserves all source
+coordinates and hashes; projection, fit, feature centroids and labels share it. Reversing a
+ring relative to the declared convention still represents a spherical complement. Planar
+sources do not accept this option. Generated geographic-radius circles retain their own
+direction, including circles larger than a hemisphere.
 
 ## `createGeometryData`
 
@@ -56876,7 +58170,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -57142,7 +58436,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -57257,7 +58551,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/369cc8ec66d295eaade171d0a32a3c7a3d985cc8/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 ## Keep labels attached to their features
@@ -57329,3 +58623,661 @@ The `createGeographicMarks("grid-labels")` variant labels the existing graticule
 so only −40, 0 and 40 appear above the meridian centroids. Both variants preserve
 source feature identity through projection edits and reuse the native Text
 style, font and collision-layout actions. See [geographic label rules](./api/marks/labels/#geographic-sources).
+
+<!-- Source: /api/pyramid/ -->
+
+# Pyramid plots
+
+Show ordered stages as adjacent trapezoids. Use width to compare their spans, or
+area to make each trapezoid's area proportional to its value. These actions use
+the Full `ggaction` entry point and render through Canvas, SVG, PNG and PDF.
+
+## `createPyramidPlot`
+
+**Chart authoring.**
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Create a Canvas and dataset first. Pass `stage` and `value` as column names.
+Stage labels may repeat; dataset row keys identify the individual stages.
+Values must be finite and nonnegative. Rows remain in input order, including
+when a later stage is larger than an earlier one.
+
+Options are `{ id?, data?, coordinate?, stage, value, orientation?, encoding?,
+gap?, lastStage?, taperRatio?, percentBase?, stages?, labels?, color?, clip? }`.
+The default ID is `pyramid`; use an explicit ID for another plot. Omitted data
+and Cartesian coordinate references use the current or unique eligible resource.
+The `main` coordinate is created if none exists. Ambiguous references are errors.
+
+`orientation` is `down` by default, or `up`, `right`, `left`. Directions change
+where stages progress without reversing their input order. Stages have equal
+lengths along that direction. `gap` is nonnegative logical pixels between stages
+and defaults to zero; gaps exceeding the available extent are errors.
+
+With `encoding: "width"` (default), the widest top spans the viewport. Each
+bottom matches the next top; `lastStage: "flat"` keeps the final width and
+`"point"` ends at zero. With `encoding: "area"`, each bottom is its own top
+multiplied by `taperRatio` (default `0.8`, from zero to one). This makes areas
+proportional to values. Width mode rejects `taperRatio`; area mode rejects
+`lastStage`. An empty dataset produces no stages. All-zero values preserve
+stage identities with zero width.
+
+`stages` accepts `fill`, `stroke`, `strokeWidth`, `opacity`, `outline` and
+`shadow`. Defaults are `"#2563eb"`, `"none"`, `0` and `1`. Fills accept
+[solid, gradient and pattern paints](./api/appearance/mark-style/). Effects share
+the existing preparation and `false` reset rules. `clip` defaults to true.
+
+`labels` accepts `false` or `{ content?, format?, fill?, fontFamily?, fontSize?,
+fontWeight?, outline?, shadow? }`. Content is `"stage"` by default, `"value"`,
+or `"percent"`. Defaults are `format: "auto"`, fill `"#0f172a"`, family
+`"sans-serif"`, size `12`, and weight `"normal"`. Number formatting uses the
+shared Text formatter, for example `".1%"` for percentages. Empty auto-formatted
+strings produce no label.
+
+Labels wrap within a rectangle inset by 4 pixels inside each stage, using words
+and then grapheme clusters for long words. Lines are spaced at 1.2 times the font
+size. If that rectangle is too small, vertical stages use the empty lane to their
+right; horizontal stages use the lane below. Labels remain inside the plot and
+within their own stage interval. If neither location fits, the action fails before
+changing the chart. Increase the Canvas size, reduce `labels.fontSize`, or use
+`labels: false`. Stage values and geometry are never changed to fit text.
+A prepared font profile must include the wrapping measurements; prepare metrics
+again before edits that introduce new text or font sizes.
+
+Percent labels require an explicit `percentBase`: `"first"`, `"total"` or
+`"previous"`. A zero denominator produces no percent label; the first stage
+also has none for `"previous"`. Ratios are never silently assigned a denominator.
+
+`color` is a field string or `{ field, fieldType?, scale?, palette? }`. The
+default field type is nominal; ordinal, quantitative and temporal are supported.
+Scale options follow [color encodings](./api/series/color/). The default scale ID
+is `<mark>-color`. Mapping takes precedence over the fixed stage fill.
+Add a legend explicitly with `createLegend({ target: "pyramid" })`.
+
+## `editPyramidPlot`
+
+**Chart authoring.**
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Use the creation options with `target` instead of `id`. Omitted options retain
+their values. An empty patch, unknown option, explicit `null` or `undefined` is an error.
+Changing encoding mode removes the previous mode's specific width policy.
+After `labels: false`, `labels: {}` restores stage labels with their defaults.
+`color: false` removes the mapping and its legend, exposing the fixed stage fill.
+
+Each stage is one selectable item containing its body and optional label.
+Selection, highlighting and hit inspection use the same row identity. Canvas
+resize, source revision, color-scale changes, fonts and themes rematerialize the
+stages. Reordering keyed source rows changes their order while preserving identity.
+Edits validate the complete candidate before writing semantic or graphic children.
+
+Use named concat children and scoped targets for nested editing, or `facet` to
+partition the source dataset. Saved editable programs retain these operations;
+graphic snapshots render offline. This stage layout has no Cartesian x/y axes.
+See the [ordered-stage tutorial](./tutorials/pyramid/) for the executable example.
+
+<!-- Source: /tutorials/pyramid/ -->
+
+# Compare ordered stages
+
+These three observations count visits, trials and returns. The order expresses
+the process. Pyramid keeps it even if a later count exceeds an earlier one.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 420, height: 360,
+    margin: { left: 60, right: 60, top: 60, bottom: 30 }, background: "#ffffff" })
+  .createData({ id: "stages", keyField: "id", values: [
+    { id: "visit", stage: "Visited", value: 100 },
+    { id: "trial", stage: "Tried", value: 60 },
+    { id: "return", stage: "Returned", value: 20 }
+  ] })
+  .createPyramidPlot({ stage: "stage", value: "value",
+    stages: { fill: "#c7d2fe", stroke: "#4338ca", strokeWidth: 1 },
+    labels: { fontSize: 14 } });
+```
+
+The default width profile connects each stage to the width of the next. Its
+last stage stays flat. To compare areas directly, use `encoding: "area"` and
+`taperRatio: 0.8`; the three areas then have the same 100:60:20 ratio as the data.
+
+Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
+the direction of progress; it does not sort the source rows. A pointed ending
+is an explicit `lastStage: "point"` choice for width mode.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/7830a16a64097fb6e6be8498a63a80da61bb9afc/examples/pyramid/program.js)
+drives the browser examples, primitive comparisons and generated images.
+See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
+and editing options.
+
+## Key action trace
+
+`createPyramidPlot` records its stage/value meaning, then explicitly calls
+`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
+the whole candidate before applying the same materializer.
+
+<!-- Source: /api/ohlc/ -->
+
+# OHLC plots
+
+Show each observation's open, high, low and close as one selectable item. A thin
+line spans the low and high; a rectangle spans the open and close. These Full
+entry actions use the same concrete graphics in Canvas, SVG, PNG and PDF.
+
+## `createOHLCPlot`
+
+**Chart authoring.**
+
+```typescript
+createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+```
+
+Pass `x`, `low`, `high`, `open` and `close` explicitly. The four price columns
+must be finite and satisfy `low <= min(open, close) <= max(open, close) <= high`.
+The default rejects invalid rows; `invalid: "omit-row"` removes an entire price
+item from domains, graphics, labels and selection. It does not hide invalid X
+or color values on otherwise valid rows.
+
+X accepts a field string or `{ field, fieldType?, scale?, temporalUnit? }`.
+Use `fieldType: "temporal"` for dates. `yScale` takes the ordinary quantitative
+position scale options; the low and high share that one price scale. Default
+scale IDs are `<id>-x` and `<id>-y`. Explicit IDs can share an existing scale.
+
+Options are `{ id?, data?, coordinate?, x, low, high, open, close, yScale?,
+invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? }`.
+The default ID is `ohlc`. Data and coordinate references must be explicit when
+there is no current or unique eligible resource.
+
+| Option | Behavior |
+| --- | --- |
+| `body` | `upFill`, `downFill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `stem` | `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `width` | One of `{band}`, `{pixels}`, `{interval:{unit,insetStart?,insetEnd?}}`; uses the existing Bar width policy |
+| `doji` | `"line"` (default) draws a horizontal body for equal open and close; `"none"` omits that body |
+| `labels` | `false` (default), or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; overrides body fill with an ordinary color scale |
+| `clip` | `true` by default; clips to the plot viewport |
+| `guides` | Ordinary axes/grid/legend options, or `false` |
+
+Rising and falling fills default to green `#16a34a` and red `#dc2626`.
+Both the body and stem use stroke `#334155`, width 1 and opacity 1. Fill accepts
+ordinary structured paints. `outline:false` and `shadow:false` remove effects.
+Prices and body heights are never inflated to make a flat observation visible.
+
+Categorical X uses width `{band:.72}` by default; numeric and temporal X use
+`{pixels:5}`. Band widths require categorical X; point scales use their step as the slot width. Temporal interval widths require
+UTC interval starts and a scale domain covering every interval endpoint.
+
+Labels show `close` by default; `open`, `low` and `high` are also available.
+They use the ordinary Text formatter and font preparation, above the high-low
+stem with an offset of 6 logical pixels. Adjust the clip or label options when
+your chosen price domain leaves insufficient space above the observations.
+
+## `editOHLCPlot`
+
+**Chart authoring.**
+
+```typescript
+editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+```
+
+Patch the fields, scales, appearance or label options of an existing plot.
+A target can be a mark ID or an explicit scoped target in a composition.
+Omitted values stay unchanged; null, undefined and an empty patch are errors.
+Omitting `guides` during editing retains the existing guide presence.
+
+Source revisions preserve typed row identities, even after reordering. Each
+stem, body and label belongs to the same logical item for selection and hit
+testing. Duplicate X labels stay separate rows; they are not aggregated.
+
+Theme typography and muted stroke colors apply normally. Rising/falling colors
+retain their price-direction meaning. Editable snapshots and graphic snapshots
+support offline rendering without fetching the original prices.
+
+See the [OHLC tutorial](./tutorials/ohlc/) for a complete public call chain.
+
+<!-- Source: /tutorials/ohlc/ -->
+
+# Show open, high, low and close
+
+Keep each observation's four prices together. A high-low stem and an open-close
+body are one chart item, so selecting either part selects the same source row.
+
+```js
+import { chart } from "ggaction";
+
+const prices = chart()
+  .createCanvas({ width: 420, height: 320, margin: { left: 60, right: 60, top: 60, bottom: 60 }, background: "#ffffff" })
+  .createData({ id: "observations", keyField: "id", values: [
+    { id: "a", date: "Monday", low: 1, high: 9, open: 3, close: 7 },
+    { id: "b", date: "Tuesday", low: 2, high: 8, open: 6, close: 4 },
+    { id: "c", date: "Wednesday", low: 4, high: 6, open: 5, close: 5 }
+  ] })
+  .createOHLCPlot({ id: "ohlc", x: "date", low: "low", high: "high",
+    open: "open", close: "close", width: { pixels: 32 },
+    yScale: { domain: [0, 10] }, guides: false });
+
+const labeled = prices.editOHLCPlot({ target: "ohlc",
+  labels: { content: "close", format: ".1f" } });
+const selected = labeled.selectMarks({ id: "chosen", target: "ohlc",
+  field: "id", op: "eq", value: "b" })
+  .highlightMarks({ selection: "chosen", stroke: "#1d4ed8", strokeWidth: 2 });
+```
+
+Green bodies close above their opening price; red bodies close below it. The
+third observation has equal open and close, so it uses a horizontal doji line.
+Its numerical value and range stay unchanged.
+
+With real date columns, pass `{field:"date",fieldType:"temporal"}` as X.
+Use keyed source revisions to update prices; the source rows, scales, bodies,
+labels and selections are rematerialized together. See [OHLC options](./api/ohlc/)
+for invalid rows, color scales, effects, temporal widths and scoped edits.
+
+The facade records the price meaning, then calls the wrapped
+`materializeOHLCPlot` and ordinary graphic primitives. Renderers consume those
+concrete graphics without deriving prices or fetching data.
+
+<!-- Source: /api/waterfall/ -->
+
+# Waterfall plots
+
+Show ordered contributions, subtotals and totals as one bar per source row.
+Connectors show the running balance between stages. These Full entry actions
+use the same concrete graphics in Canvas, SVG, PNG and PDF.
+
+## `createWaterfallPlot`
+
+**Chart authoring.**
+
+```typescript
+createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+```
+
+Pass `x`, `role` and `value` field names. X is categorical, in source order by
+default; `{field,fieldType?:"nominal"|"ordinal",scale?}` specifies its scale.
+The role column determines the arithmetic:
+
+| Role | Value and running balance |
+| --- | --- |
+| `delta` | Requires a finite value; starts at the running balance and adds that value |
+| `subtotal` | Requires the value field to be absent; draws the current balance from zero |
+| `total` | Draws an explicit finite value, or the current balance when the field is absent, from zero |
+
+Totals and subtotals do not change the balance unless their optional `reset`
+field is `true`. Pass `reset: "fieldName"` to bind it. A delta row must omit that
+field, even when other rows use it. Null, undefined, unknown roles and numeric
+overflow are errors. Roles are never inferred from labels.
+
+Options are `{id?,data?,coordinate?,x,role,value,reset?,yScale?,width?,bars?,
+connectors?,labels?,color?,clip?,guides?}`. The default ID is `waterfall`.
+Data and coordinate references must be explicit when no current or unique
+eligible resource exists. `yScale` supports `linear`, `pow`, `sqrt` and `symlog`;
+its default domain includes zero and the actual cumulative endpoints. Log position
+scales are rejected because contributions and totals use a zero origin. Log color
+scales remain available for eligible color values. Default
+scale IDs are `<id>-x` and `<id>-y`.
+
+| Option | Behavior |
+| --- | --- |
+| `width` | `{band:.72}` by default, or `{pixels}`; band width uses the band bandwidth, or the point scale step; policies are mutually exclusive |
+| `bars` | `positiveFill`, `negativeFill`, `totalFill`, `subtotalFill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `connectors` | Enabled by default; `{stroke?,strokeWidth?,opacity?,outline?,shadow?}` or `false` |
+| `labels` | `false` by default, or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; replaces bar fills through an ordinary color scale |
+| `clip` | `true` by default; clips to the plot viewport |
+| `guides` | Ordinary axes/grid/legend options, or `false` |
+
+Positive, negative, total and subtotal fills default to `#16a34a`, `#dc2626`,
+`#2563eb` and `#64748b`. Bar stroke is `#334155`; connector stroke is `#64748b`.
+Both use width 1 and opacity 1. Fills accept structured paints; effects use the
+ordinary outline and shadow options.
+
+Each incoming connector belongs to its current stage. It joins the previous
+bar's right edge to the current bar's left edge at the balance **before** the
+current stage. An explicit total can differ from that balance. A reset makes
+the next connector start at zero.
+
+Labels show `value` by default, or `end` or `category`. They use the ordinary
+Text formatter and font preparation, 6 logical pixels above the screen top of
+the bar. Defaults are sans-serif, size 12, normal weight and fill `#0f172a`.
+Allow space above the data domain or change clipping when labels need room.
+
+## `editWaterfallPlot`
+
+**Chart authoring.**
+
+```typescript
+editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+```
+
+Patch fields, scales or appearance on an existing plot. Targets may name a mark
+or an explicit child path. Omitted options stay unchanged; null, undefined and
+an empty patch are errors. `reset:false` removes the reset binding. Set
+`connectors`, `labels` or `color` to `false` to remove that choice. Omitting
+`guides` while editing preserves current guide presence.
+
+Typed row keys identify stages across revisions and reordering. Bar, connector
+and label share one logical selection and hit item. Implicit totals also expose
+the source contributions they summarize. Filtering recalculates from retained
+rows; facets calculate within each panel. Duplicate X labels remain distinct
+rows and may overlap at the same position.
+
+Themes change stroke and label typography while preserving role fill colors.
+Editable and graphic snapshots support offline rendering. See the
+[Waterfall tutorial](./tutorials/waterfall/) for a complete call chain.
+
+<!-- Source: /tutorials/waterfall/ -->
+
+# Show contributions and totals
+
+Declare each row's role so its effect on the running balance is explicit.
+Positive and negative contributions share the same ordered scale; totals start
+at zero without changing the balance.
+
+```js
+import { chart } from "ggaction";
+
+const contributions = chart()
+  .createCanvas({ width: 500, height: 320, margin: 40, background: "#ffffff" })
+  .createData({ id: "contributions", keyField: "id", values: [
+    { id: "a", stage: "Revenue", role: "delta", value: 5 },
+    { id: "b", stage: "Cost", role: "delta", value: -2 },
+    { id: "c", stage: "Subtotal", role: "subtotal" },
+    { id: "d", stage: "Other", role: "delta", value: 4 },
+    { id: "e", stage: "Total", role: "total" }
+  ] })
+  .createWaterfallPlot({ id: "waterfall", x: "stage", role: "role", value: "value",
+    width: { pixels: 48 }, yScale: { domain: [0, 10] }, guides: false });
+
+const labeled = contributions.editWaterfallPlot({ target: "waterfall", labels: {} });
+const selected = labeled.selectMarks({ id: "cost", target: "waterfall",
+  field: "id", op: "eq", value: "b" })
+  .highlightMarks({ selection: "cost", stroke: "#1d4ed8", strokeWidth: 2 });
+```
+
+The balance moves from 5 to 3, stays at 3 for the subtotal, then rises to 7.
+The final total is 7. Its value is derived from the explicit contribution rows;
+the total row intentionally has no `value` property.
+
+A source revision recalculates the full sequence while preserving keyed stage
+identity. Bar, connector and label stay together during selection and hit
+testing. See [Waterfall options](./api/waterfall/) for reset fields, color
+scales, effects, clipping and scoped edits.
+
+<!-- Source: /api/trail/ -->
+
+# Trail plots
+
+Draw a filled ribbon whose width changes at each sample. A width is measured in
+logical screen pixels, independently of the position scales. Trail plots are
+available in the Full entry and share Canvas, SVG, PNG and PDF output.
+
+## `createTrailPlot`
+
+**Chart authoring.**
+
+```typescript
+createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+```
+
+Supply `x`, `y` and `width`, or Polar `theta`, `radius` and `width`.
+Positions accept a field string or `{field,fieldType?,scale?,temporalUnit?}`.
+One Cartesian position is quantitative; the other may be quantitative, temporal or categorical. Polar radius is
+quantitative. Fields refer to actual samples; aggregate, bin, datum and conditional
+position bindings are not accepted. Use this action's position and color options
+instead of generic encoders for a Trail.
+
+Overlapping Cartesian plots must share one Y scale. Create and edit validate the
+complete frame and guides before changing any child resource; independent Y scales
+belong in separate panels.
+
+`width` is a nonnegative finite number, or a field containing one such number per
+sample. Use `createComputedData` first when the width needs an explicit calculation.
+The ribbon's border `body.strokeWidth` is a separate appearance option.
+
+| Option | Behavior |
+| --- | --- |
+| `id`, `data`, `coordinate` | Default ID `trail`; data and coordinate use explicit/current/unique selection |
+| `groupBy` | A field or field tuple; otherwise categorical color groups samples, or one series is used |
+| `order` | Cartesian field string or `{field,order?:"ascending"\|"descending"}`; default uses native path position order |
+| `missing` | `"error"` by default; `"break"` splits at nullish positions or widths and excludes them from automatic position domains |
+| `curve`, `tension` | Existing nine Cartesian line interpolations; tension belongs only to cardinal |
+| `closed` | `false` by default; closes an uninterrupted series with a hollow ribbon |
+| `lineJoin`, `lineCap` | `miter` and `butt` by default; bevel/round joins and square/round caps are available |
+| `miterLimit`, `fillRule` | `4` and `nonzero` by default; `evenodd` uses the same compound path |
+| `body` | `fill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; each series needs one color value |
+| `blend` | Ordinary blend mode; default `normal` |
+| `clip`, `guides` | Plot clipping defaults to true; ordinary guide options or `false` |
+
+Body defaults are fill `#2563eb`, stroke `none`, border width `0`, opacity `1`.
+Structured fills and common effects apply to the filled ribbon. Polar Trail uses
+linear projected segments and theta ordering; it does not accept Cartesian order
+or non-linear curves. A gap always stays open, even with `closed:true`.
+
+Adjacent identical screen positions use the last width and retain source membership.
+Exactly reversed segments split into capped paths. A single sample with a butt cap
+has zero area; round or square caps give it the corresponding local shape. Zero
+width is allowed. Self intersections use the selected fill rule.
+
+Position and width interpolation share the same samples. A curve that overshoots
+below zero width fails instead of silently clamping. Geometry is bounded by 10,000
+samples and 30,000 path commands; overflow or an unsatisfied subdivision tolerance
+also fails.
+
+## `editTrailPlot`
+
+**Chart authoring.**
+
+```typescript
+editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+```
+
+Patch an existing Trail by explicit/current/unique target, including a scoped
+composition target. Omitted values stay unchanged. Null, undefined and an empty
+patch are errors. Coordinate families cannot be switched in place.
+
+Use `groupBy:false`, `order:false` or `color:false` to remove that choice. Use
+`outline:false`, `shadow:false` or `blend:"normal"` to remove effects. Changing
+away from cardinal without a new tension removes the old tension. Omitting guides
+on edit preserves existing guide presence.
+
+Selections and hits identify source series using typed row membership. Broken runs
+stay one logical item. Revisions, scale and Canvas edits rematerialize the ribbon;
+filtering preserves missing boundaries. Facets and nested scoped edits retain local
+ownership. `createMarkLabels` with an explicit `field` or `value` places labels at
+the last valid endpoint, using the ordinary baseline-before-highlight policy.
+
+See [the Trail tutorial](./tutorials/trail/) for a complete shared program.
+
+<!-- Source: /tutorials/trail/ -->
+
+# Show width along a series
+
+Keep position and sample width separate. These two signals have constant vertical
+positions while the first ribbon widens and the second narrows.
+
+```js
+import { chart } from "ggaction";
+
+const signals = chart()
+  .createCanvas({ width: 420, height: 240, margin: 40, background: "#ffffff" })
+  .createData({ id: "signals", keyField: "id", values: [
+    { id: "a0", time: 0, signal: 7, width: 8, channel: "A" },
+    { id: "a1", time: 10, signal: 7, width: 32, channel: "A" },
+    { id: "b0", time: 0, signal: 3, width: 28, channel: "B" },
+    { id: "b1", time: 10, signal: 3, width: 12, channel: "B" }
+  ] })
+  .createTrailPlot({ id: "trail", x: { field: "time", scale: { domain: [0, 10] } },
+    y: { field: "signal", scale: { domain: [0, 10] } }, width: "width", groupBy: "channel",
+    color: { field: "channel", scale: { domain: ["A", "B"], range: ["#2563eb", "#0d9488"] } }, guides: false });
+
+const constant = signals.editTrailPlot({ width: 18 });
+const selected = signals.selectMarks({ id: "channel-a", target: "trail", field: "channel", op: "eq", value: "A" })
+  .highlightMarks({ selection: "channel-a", fill: "#dc2626" });
+```
+
+The widths 8 and 32 are logical pixels at the endpoints, with linear width between
+them. Resizing the Canvas changes position spacing while retaining those screen
+widths. A computed dataset can supply a calculated width field without changing the
+original measurements. See [Trail options](./api/trail/) for curves, missing
+samples, Polar paths, labels, clipping and effects.
+
+<!-- Source: /api/table/ -->
+
+# Table plots
+
+Show keyed rows with formatted values, in-cell bars and sparklines. Table plots are
+available in the Full entry. Canvas, SVG, PNG and PDF share the same cell clipping
+and drawing order.
+
+## `createTablePlot`
+
+**Chart authoring.**
+
+```typescript
+createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+```
+
+Call after a Canvas and dataset. `columns` is required. Each column is a field
+string or an object with the options below. The default plot ID is `table`.
+Data and Cartesian viewport use the ordinary explicit/current/unique resolution
+rules. A Table has its own row and column layout and does not use x/y axes.
+
+| Column option | Behavior |
+| --- | --- |
+| `key` | Typed row-key value; defaults to the field. Keys must be unique; displayed labels may repeat |
+| `field`, `label` | Source field and displayed heading; the heading defaults to the field |
+| `format`, `missingText` | Native text format, default `auto`; nullish and NaN values display `—` by default |
+| `width` | Positive logical pixels or `auto` (default). Auto columns divide the remaining width in proportion to measured content |
+| `align` | `left` by default; `center` and `right` are supported |
+| `wrap` | `word` by default; `character` or `false` |
+| `cell` | `text` by default, `bar`, or a sparkline object |
+| `footer` | `false` by default, a scalar aggregate name, or `{op,missing?,empty?,format?}` |
+
+Widths use the current text metric profile and the whole source's content.
+Rows have a fixed height. Text wraps within its cell and ends in a grapheme-safe
+ellipsis when the available lines are exhausted. Full values remain in
+`exportAccessibleData`, including truncated text and nested sparkline observations.
+An insufficient font, column or ellipsis capacity is an error.
+
+`sortBy` accepts the existing stable sort-key array. `rowLimit` is an explicit
+nonnegative row limit; omitted rows are reported in a visible `N of M rows shown`
+notice. The source is not reordered or reduced. Footer aggregates always use all
+source rows before the limit, with the ordinary summary missing and empty policies:
+`drop` and `null` by default. Accessible cells include input, used and excluded row
+counts. A footer in one column creates a footer row with blank cells elsewhere.
+
+Bar cells use finite numeric values and a shared linear, zero-containing domain
+from the whole source. Supply `{type:"bar",domain:[min,max]}` to set it explicitly.
+Bars clamp to the inner cell; their accessible numeric values remain unchanged.
+
+Sparkline cells read an array of observations from the field:
+
+> **Executable complete.** Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.
+
+```js
+import { chart } from "ggaction";
+
+const sparklineColumn = {
+  field: "trend",
+  cell: { type: "sparkline", x: "time", y: "value", resolveY: "shared" }
+};
+const program = chart().createCanvas()
+  .createData({ values: [{ trend: [{ time: 0, value: 1 }, { time: 1, value: 3 }] }] })
+  .createTablePlot({ columns: [sparklineColumn] });
+```
+
+The column shares an x extent across all rows. Y is shared by default; set
+`resolveY:"independent"` for a separate extent per row. Explicit `xDomain` and
+shared `yDomain` accept finite ascending pairs. `xType` defaults to quantitative;
+temporal x supports `temporalUnit:"year"` or `"timestamp"`. Native curve and
+cardinal tension options are supported. `missing:"break"` preserves gaps; the
+default is `error`. Empty/null arrays display the missing text. A singleton is a
+circle with radius half the sparkline stroke width. Sparkline footers support
+`count`, not scalar aggregation of nested arrays.
+
+| Plot option | Default and behavior |
+| --- | --- |
+| `rowHeight`, `padding` | `28` and `4` logical pixels; content must fit |
+| `header`, `clip` | `true`; `clip:false` removes the outer plot clip while each cell keeps its own clip |
+| `cells` | White fill, `#cbd5e1` stroke, width `1`, opacity `1` |
+| `labels` | `#0f172a`, sans-serif, size `12`, normal weight |
+| `headerStyle`, `footerStyle` | `#f1f5f9` fill, `#0f172a` text `color`, bold weight |
+| `bars` | `#93c5fd` fill, no stroke, opacity `1` |
+| `sparklines` | `#2563eb` stroke, width `1.5`, opacity `1` |
+| `color` | Native field/scale/palette options applied to body-cell backgrounds |
+
+Cell and bar appearance accepts `fill`, `stroke`, `strokeWidth`, `opacity`,
+`outline` and `shadow`. Labels accept fill and font options plus outline/shadow;
+sparklines accept stroke, width, opacity and effects. Structured fills use the
+normal paint contract. Color legends and scale edits use native color scales. Set or change the field with
+`createTablePlot`/`editTablePlot({color})`; generic position and appearance encoders
+are not Table actions.
+
+The requested rows, header, footer and notice must fit the Canvas viewport height;
+increase the height or choose a smaller row limit explicitly. Limits are 10,000
+source rows, columns, cells and generated graphics, 10,000 total nested samples,
+and bounded text/layout work. Overflows fail before writing state.
+
+## `editTablePlot`
+
+**Chart authoring.**
+
+```typescript
+editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+```
+
+Patch an explicit/current/unique Table, including a scoped composition target.
+Omitted options are preserved. `columns` replaces the complete column list.
+`sortBy:false`, `rowLimit:false` and `color:false` remove those choices.
+`outline:false` and `shadow:false` reset effects. Empty patches, null and explicit
+undefined are errors.
+
+Selection and hits identify each cell by its typed source row, typed column and
+header/body/footer role. Sorting and moving columns retain those identities.
+Footer items carry aggregate source membership. Revisions, resizing, facets,
+scoped edits, highlighting, theme changes and offline restoration rematerialize
+through the same native owners. Cell formatting owns Table text; use column and
+label options rather than a separate `createMarkLabels` layer.
+
+See [the Table tutorial](./tutorials/table/) for a complete program.
+
+<!-- Source: /tutorials/table/ -->
+
+# Combine values and small charts in a table
+
+Keep a source row's name, value and ordered observations together. The amount uses
+both an exact number and a bar. Each trend uses the same x and y scales, and the
+footer sums both source amounts.
+
+```js
+import { chart } from "ggaction";
+
+const table = chart()
+  .createCanvas({ width: 360, height: 220, margin: 20, background: "#ffffff" })
+  .createData({ id: "observations", keyField: "id", values: [
+    { id: "a", name: "Alpha", amount: 4, trend: [{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 2 }] },
+    { id: "b", name: "Beta", amount: 8, trend: [{ x: 0, y: 3 }, { x: 1, y: 1 }, { x: 2, y: 2 }] }
+  ] })
+  .createTablePlot({ id: "table", columns: [
+    { field: "name", label: "Name", width: 100 },
+    { field: "amount", label: "Amount", width: 100, align: "right", cell: "bar", footer: "sum" },
+    { field: "trend", label: "Trend", width: 120, cell: { type: "sparkline", x: "x", y: "y" } }
+  ] });
+
+const sorted = table.editTablePlot({ sortBy: [{ field: "amount", order: "descending" }] });
+const limited = sorted.editTablePlot({ rowLimit: 1 });
+```
+
+The limited table reports one of two rows shown and keeps the footer at 12. Its
+source rows and cell identities are unchanged. [Table options](./api/table/)
+cover formatting, wrapping, missing values, independent sparkline y domains,
+selection, clipping and exact font preparation.

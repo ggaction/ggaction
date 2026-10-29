@@ -1,3 +1,5 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { previewNativePositionFrame } from "./position/resolve.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
@@ -277,6 +279,72 @@ const editHorizon = /* @__PURE__ */ closedAction(
   }
 );
 
+export function horizonPositionBindings(transform, xScale, yScale) {
+  return {
+    x: { field: transform.as.x, fieldType: transform.x.fieldType, scale: xScale },
+    y: { field: transform.as.lower, fieldType: "quantitative", scale: yScale },
+    y2: { field: transform.as.upper, fieldType: "quantitative", scale: yScale }
+  };
+}
+
+export function resolveHorizonCreation(program, layer, args) {
+  validateUnusedHorizonEncodings(layer);
+  const source = resolveHorizonSource(program, layer, args.source);
+  const x = resolveHorizonField(program, layer, source, args.x, "x");
+  const y = resolveHorizonField(program, layer, source, args.y, "y");
+  const groupBy = resolveHorizonGroupBy(layer, source, args.groupBy);
+  const as = horizonOutputFields(layer.id);
+  const transform = validateHorizonTransform({
+    type: "horizon",
+    x: { field: x.field, fieldType: x.fieldType,
+      ...(x.temporalUnit === undefined ? {} : { temporalUnit: x.temporalUnit }) },
+    y: { field: y.field, fieldType: y.fieldType },
+    ...(groupBy === undefined ? {} : { groupBy }),
+    bands: args.bands ?? 3,
+    baseline: args.baseline ?? 0,
+    extent: args.extent ?? "auto",
+    resolve: args.resolve ?? "shared",
+    missing: args.missing ?? "break",
+    overflow: args.overflow ?? "clip",
+    palette: args.palette ?? {},
+    as
+  });
+  const preflight = deriveHorizon(source.values, transform);
+  const id = `${layer.id}HorizonData`;
+  if (hasDataset(program, id)) {
+    throw new Error(`Dataset "${id}" already exists.`);
+  }
+  const xScale = {
+    ...(x.scale ?? {}),
+    ...(preflight.values.length === 0 && x.scale?.domain === undefined
+      ? {
+          domain: source.values.map((row, index) =>
+            x.fieldType === "temporal"
+              ? normalizeTemporalValue(row[x.field], x.field, index, x.temporalUnit)
+              : row[x.field]
+          )
+        }
+      : {})
+  };
+  if (Array.isArray(xScale.domain) && xScale.domain.length > 2) {
+    xScale.domain = numericExtent(xScale.domain);
+  }
+  const yScale = resolveFoldedHorizonScaleOptions(layer.id, y.scale);
+  const colors = resolveHorizonPaletteColors(transform);
+  const colorScale = {
+    id: `${layer.id}HorizonColor`,
+    type: "ordinal",
+    domain: colors.domain,
+    range: colors.range
+  };
+  resolvePositionScaleDefinition(program, "x", x.fieldType, xScale);
+  resolvePositionScaleDefinition(program, "y", "quantitative", yScale);
+  resolveColorScaleDefinition(program, colorScale);
+  if (x.fieldType === "quantitative") readQuantitativeField(source.values, x.field);
+
+  return { source, x, y, groupBy, as, transform, id, xScale, yScale, colorScale };
+}
+
 const encodeHorizon = /* @__PURE__ */ closedAction(
   {
     op: "encodeHorizon",
@@ -284,59 +352,9 @@ const encodeHorizon = /* @__PURE__ */ closedAction(
   }, OPTIONS,
   function (args = {}) {
     const layer = findHorizonArea(this, args.target);
-    validateUnusedHorizonEncodings(layer);
-    const source = resolveHorizonSource(this, layer, args.source);
-    const x = resolveHorizonField(this, layer, source, args.x, "x");
-    const y = resolveHorizonField(this, layer, source, args.y, "y");
-    const groupBy = resolveHorizonGroupBy(layer, source, args.groupBy);
-    const as = horizonOutputFields(layer.id);
-    const transform = validateHorizonTransform({
-      type: "horizon",
-      x: { field: x.field, fieldType: x.fieldType,
-        ...(x.temporalUnit === undefined ? {} : { temporalUnit: x.temporalUnit }) },
-      y: { field: y.field, fieldType: y.fieldType },
-      ...(groupBy === undefined ? {} : { groupBy }),
-      bands: args.bands ?? 3,
-      baseline: args.baseline ?? 0,
-      extent: args.extent ?? "auto",
-      resolve: args.resolve ?? "shared",
-      missing: args.missing ?? "break",
-      overflow: args.overflow ?? "clip",
-      palette: args.palette ?? {},
-      as
-    });
-    const preflight = deriveHorizon(source.values, transform);
-    const id = `${layer.id}HorizonData`;
-    if (hasDataset(this, id)) {
-      throw new Error(`Dataset "${id}" already exists.`);
-    }
-    const xScale = {
-      ...(x.scale ?? {}),
-      ...(preflight.values.length === 0 && x.scale?.domain === undefined
-        ? {
-            domain: source.values.map((row, index) =>
-              x.fieldType === "temporal"
-                ? normalizeTemporalValue(row[x.field], x.field, index, x.temporalUnit)
-                : row[x.field]
-            )
-          }
-        : {})
-    };
-    if (Array.isArray(xScale.domain) && xScale.domain.length > 2) {
-      xScale.domain = numericExtent(xScale.domain);
-    }
-    const yScale = resolveFoldedHorizonScaleOptions(layer.id, y.scale);
-    const colors = resolveHorizonPaletteColors(transform);
-    const colorScale = {
-      id: `${layer.id}HorizonColor`,
-      type: "ordinal",
-      domain: colors.domain,
-      range: colors.range
-    };
-    resolvePositionScaleDefinition(this, "x", x.fieldType, xScale);
-    resolvePositionScaleDefinition(this, "y", "quantitative", yScale);
-    resolveColorScaleDefinition(this, colorScale);
-    if (x.fieldType === "quantitative") readQuantitativeField(source.values, x.field);
+    const { source, x, y, groupBy, as, transform, id, xScale, yScale, colorScale } = resolveHorizonCreation(this, layer, args);
+    assertProgramSingleY(previewNativePositionFrame(this, { ...layer, data: id }, layer.coordinate,
+      horizonPositionBindings(transform, xScale, yScale)), { allowIncomplete: true });
 
     let next = this
       .createHorizonData({

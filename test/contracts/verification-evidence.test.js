@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { runCheck } from "../../scripts/run-check.js";
-import { captureRevision, evidenceHash, validateExecutionPlan, validateCompletion, validateProgress } from "../../scripts/verification-evidence.js";
+import { captureRevision, evidenceHash, evidenceSourceFile, validateExecutionPlan, validateCompletion, validateProgress } from "../../scripts/verification-evidence.js";
 
 const silence = { write() {} };
 const task = { id: "foundation", dependsOn: [], requiredChecks: ["sample-test"] };
@@ -41,8 +41,24 @@ async function evidence(t) {
     writeFileSync(path.join(root, receiptPath), JSON.stringify(receipt));
     copy.commands[0].receiptSha256 = hash(receiptPath);
   };
-  return { root, record, rewriteReceipt, file, hash };
+  return { root, record, rewriteReceipt, file, hash, git };
 }
+
+test("source evidence compares exact binary Git blobs above the subprocess default buffer and rejects altered bytes", async t => {
+  const { root, git } = await evidence(t);
+  const bytes = Buffer.alloc(1024 * 1024 + 257, 0xa5), file = "large.bin";
+  writeFileSync(path.join(root, file), bytes);
+  git(["add", file]);
+  git(["-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "commit.gpgsign=false", "commit", "-qm", "binary input"]);
+  const commit = git(["rev-parse", "HEAD"]);
+  const reference = { path: file, sha256: evidenceHash(bytes) };
+  assert.equal(evidenceSourceFile(root, commit, reference).equals(bytes), true);
+  const changed = Buffer.from(bytes); changed[changed.length - 1] ^= 1;
+  writeFileSync(path.join(root, file), changed);
+  assert.throws(() => evidenceSourceFile(root, commit, { path: file, sha256: evidenceHash(changed) }), /differs from execution commit/);
+  writeFileSync(path.join(root, file), Buffer.from([0]));
+  assert.throws(() => evidenceSourceFile(root, commit, { path: file, sha256: evidenceHash(Buffer.from([0])) }));
+});
 
 test("actual execution retains commit, discovered files and matching logs for completion", async t => {
   const { root, record } = await evidence(t);

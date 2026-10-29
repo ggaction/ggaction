@@ -327,6 +327,17 @@ function gradientPaint(index = 0) {
   };
 }
 
+function paintWitness(index) {
+  const styles = ["solid", "diagonal", "antidiagonal", "horizontal", "vertical", "cross", "dots"];
+  if (index < styles.length) return { type: "pattern", style: styles[index],
+    pitch: 64, strokeWidth: 8, phase: [4, 12], foreground: "#2563eb", background: "#dbeafe",
+    coordinateSpace: index % 2 ? "object" : "plot" };
+  if (index === styles.length) return { type: "radial-gradient", center: { x: 0.5, y: 0.5 },
+    focal: { x: 0.4, y: 0.5 }, radius: 0.7,
+    stops: [{ offset: 0, color: "#93c5fd" }, { offset: 1, color: "#2563eb" }] };
+  return gradientPaint(index);
+}
+
 function labelStyle(index) {
   return {
     offset: 10,
@@ -1444,8 +1455,8 @@ function appendBeeswarm(program, index) {
   return removeWitness(program.createBeeswarmPlot(currentFacadeOptionWitnesses(options,{action:"createBeeswarmPlot",index,program:program})), suffix);
 }
 
-function appendRaincloud(program, index) {
-  const suffix = `matrix-raincloud-${index}`;
+function appendRaincloud(program, index, paintIndex) {
+  const suffix = `matrix-raincloud-${index}${paintIndex === undefined ? "" : `-paint-${paintIndex}`}`;
   const orientation = index % 2 === 0 ? "vertical" : "horizontal";
   const categoryScaleId = `${suffix}-category`;
   const valueScaleId = `${suffix}-value`;
@@ -1484,7 +1495,7 @@ function appendRaincloud(program, index) {
         },
         area: {
           ...strokeDetails(index),
-          ...(hasColor ? {} : { fill: gradientPaint(index) }),
+          ...(hasColor ? {} : { fill: paintIndex === undefined ? gradientPaint(index) : paintWitness(paintIndex) }),
           opacity: 0.45 + index / 100,
           stroke: "#1d4ed8",
           strokeWidth: 0.8 + index % 3 * 0.2,
@@ -1664,10 +1675,10 @@ function appendRaincloud(program, index) {
   return removeWitness(created, owner);
 }
 
-function appendArea(program, index) {
-  const suffix = `matrix-area-${index}`;
+function appendArea(program, index, paintIndex) {
+  const suffix = `matrix-area-${index}${paintIndex === undefined ? "" : `-paint-${paintIndex}`}`;
   const branch = index % 6;
-  const layout = index >= 29 && index <= 32
+  const layout = index === 42 ? "wiggle" : index >= 29 && index <= 32
     ? "overlay"
     : [0, 1, 4].includes(branch)
     ? "overlay"
@@ -1697,7 +1708,12 @@ function appendArea(program, index) {
   const xScale = `${suffix}-x`;
   const yScale = `${suffix}-y`;
   let positions;
-  if (index === 29 || index === 30) {
+  if (index === 42) {
+    positions = {
+      x: { field: "positiveX", fieldType: "quantitative", scale: numericScale(xScale, 0) },
+      y: { field: "positiveY", scale: numericScale(yScale, 0) }, baseline: 0
+    };
+  } else if (index === 29 || index === 30) {
     positions = {
       valueChannel: "y",
       x: {
@@ -1768,7 +1784,7 @@ function appendArea(program, index) {
     color: colorChannel(`${suffix}-color`, index, { categorical: true }),
     area: {
       ...strokeDetails(index),
-      fill: index % 11 === 0 ? gradientPaint(index) : undefined,
+      fill: paintIndex === undefined ? index % 11 === 0 ? gradientPaint(index) : undefined : paintWitness(paintIndex),
       opacity: 0.2 + index / 100,
       stroke: "#2563eb",
       strokeWidth: 1,
@@ -1804,16 +1820,18 @@ function appendArea(program, index) {
   return next;
 }
 
-function appendDensity(program, index) {
-  const suffix = `matrix-density-${index}`;
+function appendDensity(program, index, paintIndex) {
+  const suffix = `matrix-density-${index}${paintIndex === undefined ? "" : `-paint-${paintIndex}`}`;
   const grouped = index !== 0;
+  const automaticBandwidth = index % 2 === 0 && (!grouped ||
+    everyGroupVaries(program, "analysisRows", "group", "positiveY"));
   const options = {
     id: suffix,
     data: "analysisRows",
     coordinate: `${suffix}-coordinate`,
     field: "positiveY",
     groupBy: grouped ? "group" : false,
-    bandwidth: index % 2 === 0 ? "auto" : 0.8,
+    bandwidth: automaticBandwidth ? "auto" : 0.8,
     extent: index % 3 === 0
       ? "auto"
       : [POSITION_TYPES[index % POSITION_TYPES.length] === "log" ? 1 : 0, 1000000],
@@ -1832,7 +1850,7 @@ function appendDensity(program, index) {
     ...(grouped ? { color: colorChannel(`${suffix}-color`, index, { categorical: true, layout: true }) } : {}),
     area: {
       ...strokeDetails(index),
-      fill: grouped ? undefined : gradientPaint(index),
+      fill: paintIndex === undefined ? grouped ? undefined : gradientPaint(index) : paintWitness(paintIndex),
       opacity: 0.28,
       stroke: "#2563eb",
       strokeWidth: 1,
@@ -1857,7 +1875,7 @@ function appendDensity(program, index) {
   return removeWitness(program.createDensityPlot(currentFacadeOptionWitnesses(options,{action:"createDensityPlot",index,program:program})), suffix);
 }
 
-function appendHorizon(program, index) {
+function appendHorizon(program, index, horizonGroup = "group") {
   const suffix = `matrix-horizon-${index}`;
   const temporalUnit = TEMPORAL_UNITS[index % 3];
   const bands = 2 + index % 3;
@@ -1878,7 +1896,7 @@ function appendHorizon(program, index) {
       field: "positiveY", fieldType: "quantitative",
       scale: numericScale(`${suffix}-y`, index, { horizon: true })
     },
-    groupBy: index % 5 === 0 ? false : "group",
+    groupBy: index % 5 === 0 ? false : horizonGroup,
     bands,
     baseline,
     extent: index % 3 === 0
@@ -1911,8 +1929,8 @@ function appendHorizon(program, index) {
   return removeWitness(program.createHorizonPlot(currentFacadeOptionWitnesses(options,{action:"createHorizonPlot",index,program:program})), suffix);
 }
 
-function radialOptions(program, action, index) {
-  const suffix = `matrix-${action.replace("create", "").replace("Plot", "").toLowerCase()}-${index}`;
+function radialOptions(program, action, index, paintIndex) {
+  const suffix = `matrix-${action.replace("create", "").replace("Plot", "").toLowerCase()}-${index}${paintIndex === undefined ? "" : `-paint-${paintIndex}`}`;
   const weighted = index % 2 === 0;
   const hasColor = index % 11 !== 0;
   const measured = action !== "createPiePlot";
@@ -1953,7 +1971,7 @@ function radialOptions(program, action, index) {
         ? 0
         : index === 23 ? { value: 24, unit: "px" } : index % 3 * 0.15,
       padAngle: measured ? 0 : index % 3,
-      ...(hasColor ? {} : { fill: "#60a5fa" }),
+      ...(hasColor ? {} : { fill: paintIndex === undefined ? "#60a5fa" : paintWitness(paintIndex) }),
       opacity: 0.55 + index / 100,
       stroke: "#ffffff",
       strokeWidth: 0.8
@@ -1972,22 +1990,34 @@ function radialOptions(program, action, index) {
   return { suffix, options };
 }
 
-function appendRadial(program, action, index) {
-  const { suffix, options } = radialOptions(program, action, index);
+function appendRadial(program, action, index, paintIndex) {
+  const { suffix, options } = radialOptions(program, action, index, paintIndex);
   return removeWitness(program[action](currentFacadeOptionWitnesses(options,{action,index,program})), suffix);
 }
 
-export function appendHierarchicalFacadeCoverage(program) {
+export function appendHierarchicalFacadeCoverage(program, { horizonGroup = "group" } = {}) {
   let next = appendRealisticColorControls(program);
   for (let index = 0; index < REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT; index += 1) {
     const steps = hierarchicalSteps();
     for (const [action, append] of steps) {
       try {
-        next = append(next, index);
+        next = action === "createHorizonPlot"
+          ? append(next, index, horizonGroup)
+          : append(next, index);
       } catch (error) {
         error.message = `Hierarchical facade profile ${index} ${action}: ${error.message}`;
         throw error;
       }
+    }
+  }
+  next = appendArea(next, 42);
+  // Add current structured-fill branches without replacing any established profile.
+  for (let paintIndex = 0; paintIndex < 9; paintIndex += 1) {
+    next = appendArea(next, 0, paintIndex);
+    next = appendDensity(next, 0, paintIndex);
+    next = appendRaincloud(next, 1, paintIndex);
+    for (const action of ["createPiePlot", "createRadialBarPlot", "createRosePlot"]) {
+      next = appendRadial(next, action, 0, paintIndex);
     }
   }
   for(const index of [36,37,38,39,41,43])next=appendRug(next,index);

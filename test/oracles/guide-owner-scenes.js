@@ -13,7 +13,6 @@ export function axisOwnerScene() {
   const x = value => plot.left + value / 10 * plot.width;
   const y = value => bottom - value / 100 * plot.height;
   const quantityFrame = plot.left - 20;
-  const shareFrame = plot.left + plot.width + 20;
   const values = [0, 50, 100];
   const scene = {
     canvas: { type: "canvas", properties: { width: 470, height: 270, background: "white" } },
@@ -30,7 +29,7 @@ export function axisOwnerScene() {
       x: plot.left + plot.width / 2 + 145, y: bottom - 20, text: "Inside title", ...titleStyle,
       textAlign: "right", textBaseline: "middle", rotation: 0 } }
   };
-  for (const [id, frame, side] of [["quantity", quantityFrame, -1], ["share", shareFrame, 1]]) {
+  for (const [id, frame, side] of [["quantity", quantityFrame, -1]]) {
     const prefix = `axis_${id}__`;
     scene[prefix + "Line"] = { type: "line", parent: "plot-main", properties: {
       x1: frame, y1: bottom, x2: frame, y2: plot.top, ...lineStyle } };

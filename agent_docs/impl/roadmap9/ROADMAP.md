@@ -1,6 +1,8 @@
 # Roadmap 9 — Native 확장
 
-상태: 활성. **Phase 0–3과 STEP-001–016을 완료**했다. G-CORE D1–D8 및 G-PATH D1–D6 제품 구현과 통합 검증을 완료했으며 STEP-017–077은 후속 범위다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
+상태: 활성. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
+
+2026-10-29 현재 합산 후보는 Geo·Trail·Streamgraph·Table·Marginal·Bullet·Combo 및 interaction camera/history/preview를 통합 중이다. 실제 데이터 갤러리는 source `7b6e7ae9906c780fdd374a76073c9e1fb8a7d4eb`에서 새 타입17종·실제 자료25개·전체39개를 검증해 제공했다. [갤러리 검증](qualification/combined-composition-evidence/qualification.json)은 PNG·SVG25쌍과65개 HTTPS 파일의 해시, 1440/768/390px 접근성·검색·확대를 포함한다. 공통 corpus의 Trail·Table palette와 filled-path oracle 연결은 엄격216·360 격리를 포함한10개 검사를 모두 통과했다. 전체 consumer/qualification, 공개 animation·후행 전달은 남아 있으며 STEP-077 완료로 세지 않는다.
 
 [원안](../../../study/coverage-expansion-2026-10-27/roadmap/START_HERE.ko.md)의 범위와 도메인 계약을 보존한다. 상세 구현은 해당 Phase에 필요한 계약만 이곳에서 확정한다. [전체 실행 승인](AUTHORIZATION.json)에 따라 STEP-077까지 계속 진행하며 Gate의 계약·검증 기록은 유지한다.
 
@@ -10,6 +12,6 @@
 - [Phase 3](phase3/GOAL.md): STEP-013–016 완료; 공개 AST/parameter/prepared source, 통계·달력 변환 및 조건부 인코딩 통합. [통계 종료 근거](phase3/STEP8.md), [조건부 종료 근거](phase3/progress/STEP-016.json).
 - [Phase 4](phase4/GOAL.md): STEP-017–019 이미지·페인트·폰트 구현 및 통합 중.
 - [execution-plan.json](execution-plan.json): 원안 카드 링크와 현재 실행 의존성. STEP-056을 STEP-070의 선행 조건에 추가하여 native chart/recipe 작업이 통합·최종 검증에서 누락되지 않게 한다.
-- STEP-001–016은 완료했으며 다음 우선 작업은 STEP-017–019이다. STEP-017–077은 후속 범위다. 이번 Phase 완료가 전체 확장 또는 네 렌더러의 새 기능 지원 완료를 뜻하지 않는다.
+- 현재 우선 작업은 합산 후보의 공유 frame·interaction asset 수명·weighted transition 통합과 전체 검증이다. 각 소유자의 증거는 해당 chart/interaction/animation 기록에 있으며, 최종 qualification이 닫히기 전까지 전체 확장 완료를 선언하지 않는다.
 
 원안의 연구 기록과 제안 상태는 수정하지 않는다. 실행 상태는 이 Roadmap의 progress 기록이 소유한다. 런타임 및 안정 기능 테스트는 구현 계획을 import하지 않는다.

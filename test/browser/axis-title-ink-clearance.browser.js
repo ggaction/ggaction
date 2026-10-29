@@ -14,7 +14,7 @@ test.before(async () => {
   await mkdir(path.join(root, ".artifacts"), {recursive:true});
   directory = await mkdtemp(path.join(root, ".artifacts/axis-title-ink-"));
   await writeFile(path.join(directory, "index.html"), '<!doctype html><canvas aria-label="Axis title ink bounds"></canvas><div id="svg"></div><p id="status">Ready</p>');
-  server = await startStaticServer(root);
+  server = await startStaticServer(root, { dependencies: "repository" });
   browser = await chromium.launch({headless:true});
 });
 test.after(async () => {

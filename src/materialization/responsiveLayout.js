@@ -41,7 +41,7 @@ function failure(result, reason = result.reason) {
 
 // Every candidate replays the original domain action; no intermediate program
 // or authored margin escapes. Scale ranges are prepared before its preflight.
-export function withResponsiveLayout(program, apply) {
+export function withResponsiveLayout(program, apply, validateCandidate) {
   const config = program.materializationConfigs.canvas;
   const canvas = program.graphicSpec.objects.canvas.properties;
   const options = { canvas: { width: canvas.width, height: canvas.height }, minPlotSize: config.responsive.minPlotSize };
@@ -53,6 +53,7 @@ export function withResponsiveLayout(program, apply) {
   for (let iteration = 0; iteration < RESPONSIVE_ITERATIONS; iteration += 1) {
     let candidate = program._withContext({ responsivePlot: plot, responsiveMeasuring: true,
       deferGuideLayoutValidation: true });
+    validateCandidate?.(candidate);
     candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate)
       .filter(step => step.op === "rematerializeScale"));
     candidate = apply(candidate);

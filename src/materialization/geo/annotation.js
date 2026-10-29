@@ -9,7 +9,8 @@ import { resolveGraphicBounds } from "../../layout/canvas.js";
 export function resolveGeoAnnotation(program, layer, config, source, key) {
   const { binding, projection, features, parameters } = source, [feature] = features;
   const lineage = { kind: "resource", resource: binding.geometry ?? { kind: "projection", id: projection.id, revision: projection.revision } };
-  const position = binding.anchor.type === "feature" ? geometryCentroid(feature.geometry, { coordinateKind: source.coordinateKind }) : binding.anchor.position;
+  const position = binding.anchor.type === "feature" ? geometryCentroid(feature.geometry, { coordinateKind: source.coordinateKind,
+      ...(feature.polygonWinding === undefined ? {} : { polygonWinding: feature.polygonWinding }) }) : binding.anchor.position;
   const anchor = position === null ? null : createProjectionKernel(parameters).forward(position).point;
   const graphics = [];
   if (anchor !== null && binding.text.length) {

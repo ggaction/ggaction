@@ -82,8 +82,24 @@
     ],
     "area-layout": [
       {
+        "type": "file",
+        "path": "unit/actions/charts/area-facade-policy.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/area-layout/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/streamgraph/"
+      },
+      {
+        "type": "file",
+        "path": "unit/wiggle-area.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/stream-baseline.test.js"
       }
     ],
     "artifacts": [
@@ -222,6 +238,32 @@
       {
         "type": "prefix",
         "path": "charts/"
+      }
+    ],
+    "composition-recipes": [
+      {
+        "type": "file",
+        "path": "unit/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/composition-recipes.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/marginal/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bullet/"
       }
     ],
     "contour": [
@@ -534,6 +576,10 @@
       {
         "type": "file",
         "path": "browser/geographic-marks.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/geo-winding.browser.js"
       },
       {
         "type": "file",
@@ -938,6 +984,10 @@
       {
         "type": "file",
         "path": "unit/inspection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-native-composition.test.js"
       }
     ],
     "label-layout": [
@@ -1086,6 +1136,40 @@
         "path": "charts/nested-responsive/"
       }
     ],
+    "ohlc": [
+      {
+        "type": "prefix",
+        "path": "charts/ohlc/"
+      },
+      {
+        "type": "file",
+        "path": "browser/ohlc.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/ohlc-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/financial-roles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/ohlc-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-ohlc-plots.test.js"
+      }
+    ],
     "oracles": [
       {
         "type": "prefix",
@@ -1156,6 +1240,18 @@
       {
         "type": "file",
         "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-adapter.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/partition-frames.test.js"
       }
     ],
     "pattern-paints": [
@@ -1236,6 +1332,36 @@
         "path": "unit/actions/coordinates/"
       }
     ],
+    "pyramid": [
+      {
+        "type": "file",
+        "path": "unit/pyramid-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pyramid-layout.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/pyramid/"
+      },
+      {
+        "type": "file",
+        "path": "browser/pyramid.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/pyramid-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pyramid-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-pyramid-plots.test.js"
+      }
+    ],
     "radial-gradient": [
       {
         "type": "prefix",
@@ -1278,6 +1404,34 @@
       {
         "type": "file",
         "path": "contracts/realistic-responsive-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-pyramid-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-ohlc-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-waterfall-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-stream-baselines.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
       }
     ],
     "rendering": [
@@ -1466,6 +1620,24 @@
       {
         "type": "file",
         "path": "unit/renderers/text-shadow.test.js"
+      }
+    ],
+    "single-y": [
+      {
+        "type": "file",
+        "path": "unit/grammar/frame-policy.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/frame-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/single-y-admission.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/single-y-aggregate-admission.test.js"
       }
     ],
     "statistical-fixtures": [
@@ -1708,6 +1880,48 @@
         "path": "unit/support/"
       }
     ],
+    "table": [
+      {
+        "type": "file",
+        "path": "unit/grammar/table-cells.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/table-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/table-content.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/table-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/table.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/table/"
+      },
+      {
+        "type": "file",
+        "path": "unit/table-consumers.test.js"
+      }
+    ],
     "text-metrics": [
       {
         "type": "file",
@@ -1778,6 +1992,100 @@
       {
         "type": "prefix",
         "path": "unit/theme/"
+      }
+    ],
+    "trail": [
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-curve.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-series.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail.test.js"
+      },
+      {
+        "path": "charts/trail/",
+        "type": "prefix"
+      },
+      {
+        "path": "browser/trail.browser.js",
+        "type": "file"
+      },
+      {
+        "path": "unit/trail-plot.test.js",
+        "type": "file"
+      },
+      {
+        "path": "contracts/trail-types.test.js",
+        "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/trail-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-trail-plots.test.js"
+      }
+    ],
+    "waterfall": [
+      {
+        "type": "prefix",
+        "path": "charts/waterfall/"
+      },
+      {
+        "type": "file",
+        "path": "browser/waterfall.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/waterfall-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/waterfall-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/financial-roles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/waterfall-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-waterfall-plots.test.js"
+      }
+    ],
+    "weighted-blends": [
+      {
+        "type": "file",
+        "path": "unit/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend-assets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/weighted-blend-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/weighted-blends.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/cross-feature-integration/variants/weighted-blends/"
       }
     ]
   },

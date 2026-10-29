@@ -1,3 +1,4 @@
+import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
@@ -55,6 +56,8 @@ export const createLinePlot = /* @__PURE__ */ action(
       : normalizeGroupFields(args.groupBy);
     const guides = normalizeGuides(args.guides, "createLinePlot");
 
+    assertFacadePositionFrame(this, { id, data, mark: { type: "line", ...line }, coordinate: args.coordinate,
+      positions: [["x", x], ["y", y]], guides });
     let next = this
       .createLineMark({ id, data, ...line })
       .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))

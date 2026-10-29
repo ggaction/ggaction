@@ -27,8 +27,13 @@ These blocks are generated from the declaration file owned by each package entry
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { TableCellPaint, TableLabelPaint, TableBandPaint, TableSparklinePaint, TableFooterOptions, TableSparklineCell, TableColumn, CreateTablePlotOptions, EditTablePlotOptions } from "./program.js";
+export type { TrailBodyPaint, TrailPosition, TrailPlotOptions, CreateTrailPlotOptions, EditTrailPlotOptions } from "./program.js";
+export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
+export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
+export type { PyramidStagePaint, PyramidLabelPaint, PyramidColor, PyramidLayoutOptions, CreatePyramidPlotOptions, EditPyramidPlotOptions } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
@@ -379,6 +384,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -586,6 +593,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
+export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -767,7 +775,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline, MarkShadow,
+  FillPaint, MarkOutline, MarkShadow, GraphicBlendSource, GraphicWeightedBlendProperties,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -1150,7 +1158,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */

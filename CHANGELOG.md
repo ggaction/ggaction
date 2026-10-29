@@ -25,6 +25,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes; the `annotate` command routes explicit geographic targets to the same native editor.
+- Geographic geometry sources accept explicit `polygonWinding` for clockwise datasets while preserving original coordinates, spherical complements, fitted projections and feature anchors.
+
+- Add concrete `weighted-blend` graphics for bounded per-item linear-light crossfades. Preserve exact ordinary endpoints, clipped sources, retained fonts/images, scene identity and immutable codec state across Canvas, SVG, PNG and PDF.
+
 - Extend existing `createMarkLabels` and source-owned `createTextMark` to Full geographic features and graticules, preserving centroid anchors, typed feature identity, actual joined rows, detail representations, native Text styling and immutable revision closure.
 
 - Extend geographic color and point-area encodings with first-match conditions, typed expressions, named selections, exact parameter revisions and native scale/legend lifecycle. Validate every branch and preserve feature identity through joins, detail changes and offline restoration.
@@ -34,7 +38,21 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 
+- Interaction viewport commands reuse named projection edits with absolute transforms and exact feature identity.
+- Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
+- Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
+
+- Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
+- Add Full-only `createTablePlot` and `editTablePlot` for typed row/column cells, formatted text, in-cell bars and sparklines, whole-source footer aggregation and explicit visible row limits. Preserve cell identity, clipping, selection, font preparation and offline Canvas/SVG/PNG/PDF output.
+
+- Add Full-only `createTrailPlot` and `editTrailPlot` for ordered filled ribbons with a logical pixel width per sample. Preserve typed series identities, explicit missing gaps, Cartesian curves and Polar closure through edits, selection, facets and offline rendering.
+
+- Add Full-only `createWaterfallPlot` and `editWaterfallPlot` for ordered contributions, explicit total/subtotal/reset roles, shared cumulative scales and compound stage selection. Preserve source rows, fonts, effects and offline Canvas/SVG/PNG/PDF output through edits and compositions.
+
+- Add Full-only `createOHLCPlot` and `editOHLCPlot` for explicit open/high/low/close rows, shared price scales, doji policy and compound row selection. Preserve identities, effects, font preparation and offline Canvas/SVG/PNG/PDF output through source, scale and composition edits.
+
+- Add Full-only `createPyramidPlot` and `editPyramidPlot` for ordered stages with explicit width or area meaning, four directions and named percent denominators. Preserve row identities through source revisions, selection, Canvas edits, nested composition, color legends and offline Canvas/SVG/PNG/PDF output.
 
 - Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
 

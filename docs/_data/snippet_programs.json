@@ -570,5 +570,104 @@
       "exported": "createGeographicMarks"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/pyramid.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its ordered stage observations.",
+    "canonical": {
+      "file": "examples/pyramid/program.js",
+      "exported": "createPyramid"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/ohlc.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "prices",
+    "prerequisites": "Import the Full ggaction package; this example declares four prices per source observation.",
+    "canonical": {
+      "file": "examples/ohlc/program.js",
+      "exported": "createOHLC"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/waterfall.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "contributions",
+    "prerequisites": "Import the Full ggaction package; this example declares each contribution and its explicit role.",
+    "canonical": {
+      "file": "examples/waterfall/program.js",
+      "exported": "createWaterfall"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/trail.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "signals",
+    "prerequisites": "Import the Full ggaction package; the example declares position and sample screen widths explicitly.",
+    "canonical": {
+      "file": "examples/trail/program.js",
+      "exported": "createTrail"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/table.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "table",
+    "prerequisites": "Import the Full ggaction package; the example declares source rows, typed columns and whole-source footer aggregation.",
+    "canonical": {
+      "file": "examples/table/program.js",
+      "exported": "createTable"
+    },
+    "rendering": "authoring-only"
+  },
+  "recipes/marginal.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/marginal/program.js",
+      "exported": "createMarginal"
+    },
+    "supportFiles": {
+      "program.js": "examples/marginal/program.js",
+      "fixture.js": "examples/marginal/fixture.js"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/bullet.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/bullet/program.js",
+      "exported": "createBullet"
+    },
+    "supportFiles": {
+      "program.js": "examples/bullet/program.js",
+      "fixture.js": "examples/bullet/fixture.js"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/combo.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/linked-overlay/program.js",
+      "exported": "createLinkedOverlay"
+    },
+    "supportFiles": {
+      "program.js": "examples/linked-overlay/program.js"
+    },
+    "rendering": "renders-canvas"
   }
 }

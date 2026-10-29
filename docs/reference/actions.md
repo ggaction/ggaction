@@ -107,6 +107,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOHLCPlot`](./actions/marks.md#createohlcplot) | H2 | user-facing | marks |
 | [`createOverlay`](./actions/marks.md#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
@@ -119,6 +120,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](./actions/charts-data.md#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./actions/charts-data.md#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](./actions/charts-data.md#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](./actions/marks.md#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](./actions/charts-data.md#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | H3 | user-facing | axes |
@@ -147,6 +149,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createStatisticalReference`](./actions/marks.md#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
+| [`createTablePlot`](./actions/marks.md#createtableplot) | H2 | user-facing | marks |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |
 | [`createTextPlot`](./actions/charts-data.md#createtextplot) | H0 | user-facing | charts |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | H3 | user-facing | axes |
@@ -158,10 +161,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./actions/marks.md#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTrailPlot`](./actions/marks.md#createtrailplot) | H2 | user-facing | marks |
 | [`createTreemapPlot`](./actions/charts-data.md#createtreemapplot) | H0, H1 | user-facing | charts |
 | [`createTreePlot`](./actions/charts-data.md#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./actions/guides.md#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](./actions/marks.md#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](./actions/charts-data.md#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](./actions/guides.md#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](./actions/guides.md#createxaxislabels) | H3 | user-facing | axes |
@@ -247,6 +252,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./actions/statistics.md#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOHLCPlot`](./actions/marks.md#editohlcplot) | H3 | user-facing | marks |
 | [`editOpacityScale`](./actions/charts-data.md#editopacityscale) | H2 | user-facing | core |
 | [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
@@ -256,6 +262,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](./actions/charts-data.md#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](./actions/marks.md#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |
@@ -282,6 +289,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editStrokeScale`](./actions/charts-data.md#editstrokescale) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./actions/charts-data.md#editstrokewidthscale) | H2 | user-facing | core |
 | [`editSummaryData`](./actions/statistics.md#editsummarydata) | H1, H3 | user-facing | statistics |
+| [`editTablePlot`](./actions/marks.md#edittableplot) | H3 | user-facing | marks |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./actions/guides.md#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./actions/guides.md#editthetaaxislabels) | H3 | user-facing | axes |
@@ -293,10 +301,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](./actions/charts-data.md#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTrailPlot`](./actions/marks.md#edittrailplot) | H3 | user-facing | marks |
 | [`editTreemapPlot`](./actions/charts-data.md#edittreemapplot) | H1, H3 | user-facing | charts |
 | [`editTreePlot`](./actions/charts-data.md#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./actions/guides.md#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./actions/statistics.md#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](./actions/marks.md#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](./actions/charts-data.md#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](./actions/guides.md#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./actions/guides.md#editxaxislabels) | H3 | user-facing | axes |

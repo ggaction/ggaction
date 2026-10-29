@@ -1,0 +1,47 @@
+{
+  "floors": {
+    "actions/encodings/seriesLayout.js": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 100
+    },
+    "grammar/areaSeries.js": {
+      "lines": 75,
+      "branches": 75,
+      "functions": 100
+    },
+    "grammar/streamBaseline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "actions/encodings/seriesLayout.js": {
+      "lines": 98.36,
+      "branches": 93.2,
+      "functions": 100
+    },
+    "grammar/areaSeries.js": {
+      "lines": 90.72,
+      "branches": 90.49,
+      "functions": 100
+    },
+    "grammar/streamBaseline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/scales/policies/series.js": {
+      "lines": 93.33,
+      "branches": 87.5,
+      "functions": 90
+    },
+    "all files": {
+      "lines": 93.08,
+      "branches": 91.44,
+      "functions": 98.84
+    }
+  },
+  "status": "passed"
+}

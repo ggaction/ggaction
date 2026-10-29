@@ -1,5 +1,29 @@
 # Axis action contracts
 
+## Single Y per Cartesian frame
+
+All data Y and Y2 bindings in one Cartesian plot region use one scale resource identity.
+Equal numeric domains do not make two resource IDs equivalent. At most one Y guide owner
+is visible; hidden guides still participate in scale-identity validation. Multiple retained
+Y owners must share the scale and all but one remain hidden. Named X owners keep their
+ordinary multiple-scale behavior. Separate non-overlapping facet/concat panels are valid.
+Overlapping independent Cartesian frames are rejected. Plot-space annotations and explicitly
+normalized detached-overlay positions and fixed Rug/Strip plot anchors do not establish data Y axes.
+Their stored intent must match the actual field or constant binding and normalized linear scale. Polar and Parallel
+coordinates retain their native policies. Full, Basic, semantic primitives, composition
+binding, concrete edits and editable persistence use the same admission rule.
+Complete Cartesian facades and their native statistical owners validate the final
+position/guide proposal before creating marks, derived datasets, filters, or scales.
+Complete and focused axis creation, `createAxes`/`createGuides`, and axis visibility
+edits apply the same check before their first state-changing child. `editAxes` checks
+all requested owners together, so a simultaneous visible-owner handoff remains valid.
+Existing position/axis planners own inference; this check creates no graphics or trace
+children. Native normalized plot-anchor/snapshot construction remains atomic at its
+outer owner, rather than rejecting its temporary internal assignments.
+Evidence: `test/unit/single-y-aggregate-admission.test.js`,
+Evidence: `test/unit/single-y-admission.test.js`, `test/unit/frame-state.test.js`,
+`test/unit/grammar/frame-policy.test.js`.
+
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
 ## Named Cartesian owner contract

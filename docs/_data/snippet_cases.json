@@ -433,6 +433,17 @@
     "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
   },
   {
+    "id": "geographic-typed-join",
+    "file": "api/geometry.md",
+    "contains": "const joined = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "joined",
+    "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
+  {
     "id": "interaction-legend-selection",
     "file": "api/interaction.md",
     "contains": "const legendSession = createInteractionSession",
@@ -483,6 +494,17 @@
     "prerequisites": "Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform."
   },
   {
+    "id": "geographic-detail-levels",
+    "file": "api/geometry.md",
+    "contains": "const feature = (id, x)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
+  {
     "id": "interaction-node-movement",
     "file": "api/interaction.md",
     "contains": "const nodeSession = createInteractionSession",
@@ -493,26 +515,16 @@
     "prerequisites": "Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag."
   },
   {
-    "id": "geographic-typed-join",
-    "file": "api/geometry.md",
-    "contains": "const joined = chart()",
+    "id": "named-cartesian-axis",
+    "file": "api/axes/complete.md",
+    "contains": "const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })",
     "mode": "complete",
     "environment": "node-esm",
-    "result": "joined",
-    "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
-    "rendering": "authoring-only",
-    "resultKind": "semantic"
-  },
-  {
-    "id": "geographic-detail-levels",
-    "file": "api/geometry.md",
-    "contains": "const feature = (id, x)",
-    "mode": "complete",
-    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": false,
     "result": "program",
-    "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
-    "rendering": "authoring-only",
-    "resultKind": "semantic"
+    "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
+    "rendering": "authoring-only"
   },
   {
     "id": "interaction-annotation",
@@ -607,6 +619,16 @@
     }
   },
   {
+    "id": "stream-baseline-switching",
+    "file": "tutorials/area-layout.md",
+    "contains": "const stream = base.createAreaPlot",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "stream, centered, zeroBased",
+    "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
+  },
+  {
     "id": "interaction-navigation",
     "file": "api/interaction.md",
     "contains": "const navigationSession = createInteractionSession",
@@ -615,6 +637,26 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Focus it with Tab for keyboard navigation. Drag or pinch the map, scroll to zoom, and press Escape to cancel a drag."
+  },
+  {
+    "id": "table-sparkline-column",
+    "file": "api/table.md",
+    "contains": "const sparklineColumn",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "weighted-concrete-sources",
+    "file": "extension/primitives.md",
+    "contains": "const source = (weight, fill)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "rendering": "authoring-only"
   },
   {
     "id": "interaction-arbitration",

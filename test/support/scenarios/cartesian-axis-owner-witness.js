@@ -9,7 +9,7 @@ function interiorValues(scale) {
 }
 export function exerciseCartesianAxisOwners(program, { observe } = {}) {
   const x = interiorValues(program.resolvedScales.x), y = interiorValues(program.resolvedScales.y);
-  let next = program.createScale({ id: "axisSecondary", type: "linear", domain: [0, 1] });
+  let next = program;
   for (const [index, baseline] of BASELINES.entries()) {
     const align = ALIGNS[index % ALIGNS.length];
     const ticks = { length: 6, strokeDash: [2, 2], strokeDashMap: [{ value: x[0], strokeDash: [] }] };
@@ -27,9 +27,7 @@ export function exerciseCartesianAxisOwners(program, { observe } = {}) {
       .createYAxis(yAxis).removeYAxis({ target: "sourceQuantity" })
       .createGuides({ axes: { coordinate: { id: "main", type: "cartesian" }, x: xAxis, y: yAxis }, grid: false, legend: false })
       .removeXAxis({ target: "sourceHorizontal" }).removeYAxis({ target: "sourceQuantity" })
-      .createAxes({ coordinate: { id: "main", type: "cartesian" }, x: [xAxis], y: [yAxis,
-      { id: "sourceShare", scale: "axisSecondary", position: "right", offset: 2,
-        ticksAndLabels: { values: [0.25, 0.5, 0.75], labels: { fontSize: 10 } }, title: { text: "Share", offset: 150 } }] })
+      .createAxes({ coordinate: { id: "main", type: "cartesian" }, x: [xAxis], y: [yAxis] })
       .editXAxis({ target: "sourceHorizontal", line: false })
       .editYAxis({ target: "sourceQuantity", line: false })
       .createXAxisLine({ target: "sourceHorizontal" }).createYAxisLine({ target: "sourceQuantity" })
@@ -71,7 +69,7 @@ export function exerciseCartesianAxisOwners(program, { observe } = {}) {
       .removeGrid({ horizontal: true, vertical: true });
     observe?.(next, { baseline, align });
     next = next.removeXAxis({ target: "sourceHorizontal" })
-      .removeYAxis({ target: "sourceQuantity" }).removeYAxis({ target: "sourceShare" });
+      .removeYAxis({ target: "sourceQuantity" });
   }
-  return next.removeScale({ id: "axisSecondary" });
+  return next;
 }

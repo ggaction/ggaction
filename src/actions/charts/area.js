@@ -1,3 +1,8 @@
+import { assertFacadeGuidesFrame } from "./frame.js";
+import { findLayer } from "../../selectors/layers.js";
+import { requireMaterializedDataset } from "../../selectors/datasets.js";
+import { previewPositionSequence } from "../encodings/position/resolve.js";
+import { resolveSeriesLayoutPlan, applySeriesLayoutMode } from "../encodings/seriesLayout.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
@@ -39,13 +44,27 @@ export const createAreaPlot = /* @__PURE__ */ action({ op: OPERATION, descriptio
   const color = args.color === undefined ? undefined : normalizeCategoricalColor(args.color, `${OPERATION} color`);
   if (color !== undefined && area.fill !== undefined) throw new Error("createAreaPlot area.fill cannot be combined with color.");
   const guides = normalizeCategoricalGuides(args.guides, OPERATION, color);
+  const mode = args.layout ?? "overlay";
+  const group = groupBy === undefined ? undefined : {
+    ...(groupBy.length === 1 ? { field: groupBy[0] } : { fields: groupBy }), fieldType: "nominal"
+  };
+  const layer = { id, data, mark: { type: "area", missing: args.missing ?? "error" },
+    encoding: group === undefined ? {} : { group }, layout: { mode } };
+  const dataset = requireMaterializedDataset(this, data);
+  const candidate = previewPositionSequence(this, layer, dataset,
+    [[independentChannel, independent], [valueChannel, { lower, upper,
+      ...(measurement.scale === undefined ? {} : { scale: measurement.scale }) }]],
+    { coordinate: args.coordinate });
+  const frame = assertFacadeGuidesFrame(candidate, id, guides, args.guides ?? {});
+  resolveSeriesLayoutPlan(frame, { id, layer: findLayer(frame, id), dataset }, mode);
   let next = this.createAreaMark({ id, data, ...area, missing: args.missing ?? "error" });
   if (groupBy !== undefined) next = next.encodeGroup({ target: id, fields: groupBy });
+  next = applySeriesLayoutMode(next, id, mode);
   next = next[independentChannel === "x" ? "encodeX" : "encodeY"](positionArgs(independent, { target: id, coordinate: args.coordinate }))
     [valueChannel === "y" ? "encodeYRange" : "encodeXRange"]({ target: id, lower, upper,
       ...(measurement.scale === undefined ? {} : { scale: measurement.scale }),
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }) })
-    .layoutSeries({ target: id, mode: args.layout ?? "overlay" });
+    .layoutSeries({ target: id, mode });
   if (color !== undefined) next = next.encodeColor({ target: id, ...color });
   return applyFacadeGuides(next, guides, id, args.guides ?? {});
 });

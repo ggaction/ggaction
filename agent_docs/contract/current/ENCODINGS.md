@@ -20,6 +20,16 @@ no Full-only action to the Basic entry.
   No truthiness, callbacks or JS source. A zero-valued branch remains zero.
 - All branch shapes, fields, types, scale definitions and exact parameter/selection
   references validate before output. Inactive invalid branches reject atomically.
+- Direct `encodeX`/`encodeY` requests preflight their final Cartesian frame before
+  state-changing child actions, including every conditional branch, guide scale
+  rebinding and removal of plot-position intent. Replacing a conditional assignment
+  with an ordinary one uses the same check before clearing the previous assignment.
+- Direct `encodeChannels` checks its complete Cartesian resource-identity proposal,
+  including inactive conditional branches and guide handoff, before its deferred
+  draft can invoke state-changing children. Direct range, Histogram, Density, and
+  Horizon encoders admit their native final pair before creating an endpoint or
+  derived dataset. Internal normalized overlay/plot-anchor authoring keeps the
+  outer owner's final-state admission. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - Existing mark capability, constant/field restrictions and aggregate owners apply.
   Color includes continuous Tick fields; conditional Tick color/stroke remain exclusive.
   Paths and aggregate marks evaluate at their final item grain. Non-unique raw fields
@@ -27,12 +37,17 @@ no Full-only action to the Basic entry.
 - `layer.conditionals[channel]` is the sole semantic owner: normalized conditions,
   otherwise, ordered exact `parameterInputs` and `selectionInputs`. Otherwise is not
   copied into ordinary encoding or materialization config. Reassignment clears the
-  previous owner. Branch field scales get stable target/channel/branch IDs when omitted;
-  reassignment preserves the previous branch ID. Explicit scale sharing retains the
+  previous owner. Y branches share the unique explicitly requested scale, the existing
+  Y/Y2 binding, or the default `y` identity. Distinct explicit Y identities fail the
+  [single-Y frame policy](AXES.md#single-y-per-cartesian-frame). Other branch field scales
+  get stable target/channel/branch IDs when omitted; reassignment preserves the previous
+  branch ID. Explicit scale sharing retains the
   ordinary compatibility and edit rules.
 - Every distinct field/type/scale branch binding contributes its full final-item
   population to automatic domains, including inactive branches. Predicate truth does
   not filter statistical input. Detached contributions refresh surviving consumers.
+  Categorical color, stroke, shape and dash domains retain first-source appearance
+  order after final-item eligibility validation; aggregate cell order does not rename colors.
   `emptyDomain` follows the existing explicit preserve/require-explicit policy.
 - One unique field/type/scale binding can drive an existing legend. Multiple bindings
   are explicitly ambiguous; assigning them with an existing affected legend rejects
@@ -1368,7 +1383,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ value: string; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` supports row-owned points and explicit-domain categorical Cartesian lines, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ value: string; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center" | "wiggle"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"`/`"wiggle"` are area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` supports row-owned points and explicit-domain categorical Cartesian lines, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
@@ -1381,7 +1396,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`
   - ✅ Covered: matching-field inheritance, explicit alternate-field aggregate, ambiguous omission and invalid operation.
 - `layout`
-  - ✅ Covered: omission, all six values, bar/area compatibility, normalized, signed and centered baseline policies,
+  - ✅ Covered: omission, all seven values, bar/area compatibility, normalized, signed and centered baseline policies,
     group/overlay zero endpoint, positive/mixed/all-negative/zero partitions, incompatible explicit domain,
     aligned/missing/duplicate center topology, no-auto-opacity overlay, invalid transition atomicity와
     center의 wrapped `layoutSeries` ownership.
@@ -1867,18 +1882,24 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `layoutSeries`
 
 - Implemented: `layoutSeries({target?,mode}): ChartProgram`. Assignment, full and Basic; Basic supports Bar only
-  and excludes center from its type. Target uses current/unique eligible Bar or Area. Mode is required.
-- Modes: group/stack/fill/overlay/diverging/center. Aggregate/histogram Bar supports all except center;
+  and excludes center/wiggle from its type. Target uses current/unique eligible Bar or Area. Mode is required.
+- Modes: group/stack/fill/overlay/diverging/center/wiggle. Aggregate/histogram Bar supports all except center/wiggle;
   ranged Bar supports overlay only. Raw Area supports all except group, with center vertical only.
   Two-field ribbons only overlay. Density delegates to its existing statistical grain/orientation limits.
   Horizon, Line, Point, Arc, Rect and Rule use their own layout owners and reject this action.
 - Canonical state: `layer.layout.mode`. Identity: `encoding.group` field/fields, in stable first-source appearance.
   Color is appearance and does not reorder the series. Bar color retains its per-aggregate-cell categorical or
   quantitative grain; Area color is constant within a series. Tuple keys never add derived source fields.
-- Stack/fill/center require finite nonnegative values. Diverging accumulates signs separately from zero.
+- Stack/fill/center/wiggle require finite nonnegative values. Diverging accumulates signs separately from zero.
   Fill total zero has zero thickness and domain [0,1]. Center spans ±total/2. Numeric overflow/precision failures
   reject the entire action. Raw Area requires an aligned unique group×position grid and one zero datum endpoint;
   an incomplete simple vertical range can obtain its y2=0 through encodeY2. Missing rows are never synthesized.
+- Wiggle is vertical raw/density Area only, with increasing quantitative or temporal independent positions and no
+  explicit pathOrder. Each connected run starts at baseline 0. For sample j, Δv_i=v_i,j−v_i,j−1 and
+  c_i=Σ(k<i)Δv_k+Δv_i/2; Δbaseline=−Σ(v_i,j·c_i)/Σv_i,j minimizes current-thickness-weighted squared
+  layer-center movement. An all-zero column retains the previous baseline; a shared missing break resets the next
+  run to 0. Input series order and thickness are preserved. Explicit domains must contain every resolved bound.
+  Sample and total cell counts are each bounded by 10,000; finite overflow or unrepresentable positive thickness rejects.
 - Reassignment recomputes scales, geometry, guides and selection. Overlay clears accumulation. Group creates the
   category-axis offset through its existing owner; leaving group removes active offsets and padding. Only an
   automatically generated, unreferenced offset scale is removed; explicit or shared scales are retained.
@@ -1890,13 +1911,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   marker. An offset conflicting with an explicit group rejects; independent color remains valid at its cell grain.
 - Removing color preserves group/layout. Removing a group required by active accumulation/grouping rejects;
   first assign overlay. Incomplete lower encodings remain empty rather than silently recreating endpoints.
+- The Area facade reuses this final layout/domain plan before creating children and initializes the same
+  canonical mode before its position assignments. Direct layoutSeries still requires complete positions;
+  same-policy Area consumers retain the existing shared-scale rules.
 - Effects are explicit wrapped semantic/scale/offset/mark/guide owners. Renderers still consume only graphics.
   Every invalid target, mode, grain, shared-scale constraint or downstream guide/selection preflight is immutable.
 
 ### Formal values — `layoutSeries`
 
 - Implemented: `SeriesLayoutOptions = {target?:string; mode:ColorLayout}`.
-- Basic: `BasicSeriesLayoutOptions` excludes center; no encodeLayout alias.
+- Basic: `BasicSeriesLayoutOptions` excludes center/wiggle; no encodeLayout alias.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `layoutSeries`
@@ -1904,7 +1928,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - ✅ Covered: complete mode math and group/stack/group transitions, raw shared breaks, tuple/color independence,
   legacy adapters, automatic/user offset ownership, invalid topology and immutable failures, Basic boundary.
 - Evidence: `test/unit/actions/encodings/series-layout.test.js`, `test/unit/actions/encodings/bar-authoring-order.test.js`,
-  `test/charts/area-layout/`, `test/contracts/area-endpoint-types.test.js`.
+  `test/charts/area-layout/`, `test/charts/streamgraph/`, `test/unit/wiggle-area.test.js`,
+  `test/unit/grammar/stream-baseline.test.js`, `test/contracts/area-endpoint-types.test.js`.
 
 Parallel reencoding은 field identity로 axis component recipe와 explicit title을 보존하며 removed field를 정리한다. 전체/선택 생성 범위와 cleanup은 [Parallel field-axis contract](AXES.md#shared-parallel-field-axis-contract)를 따른다.
 

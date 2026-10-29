@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 367,
+  "actionCount": 377,
   "relationships": [
     {
       "name": "createCanvas",
@@ -545,7 +545,15 @@
       "name": "removeMark",
       "wraps": [
         "editSemantic",
-        "editGraphics"
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ]
     },
     {
@@ -980,7 +988,11 @@
     {
       "name": "editViolinPlot",
       "wraps": [
-        "editDensity"
+        "editDensity",
+        "editSemantic",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
       ]
     },
     {
@@ -1775,15 +1787,32 @@
     },
     {
       "name": "facet",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ]
     },
     {
       "name": "facetGrid",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "filterData",
+        "editGraphics"
+      ]
     },
     {
       "name": "repeatCharts",
-      "wraps": []
+      "wraps": [
+        "removeTitle",
+        "encodeX"
+      ]
     },
     {
       "name": "editFacetSource",
@@ -1803,7 +1832,18 @@
     },
     {
       "name": "editFacetGuides",
-      "wraps": []
+      "wraps": [
+        "filterData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "removeTitle"
+      ]
     },
     {
       "name": "createScatterPlot",
@@ -1953,6 +1993,7 @@
         "createTickMark",
         "encodeX",
         "encodeY",
+        "editSemantic",
         "encodeAngle"
       ]
     },
@@ -2100,6 +2141,7 @@
       "wraps": [
         "createAreaMark",
         "encodeGroup",
+        "editSemantic",
         "encodeX",
         "encodeYRange",
         "layoutSeries",
@@ -2131,6 +2173,8 @@
     {
       "name": "createLayerPlot",
       "wraps": [
+        "createScatterPlot",
+        "editGraphics",
         "editScale",
         "createBoxPlot"
       ]
@@ -2491,6 +2535,65 @@
       "wraps": [
         "editSemantic"
       ]
+    },
+    {
+      "name": "createPyramidPlot",
+      "wraps": [
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editPyramidPlot",
+      "wraps": []
+    },
+    {
+      "name": "createOHLCPlot",
+      "wraps": [
+        "createScale",
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editOHLCPlot",
+      "wraps": [
+        "createScale"
+      ]
+    },
+    {
+      "name": "createWaterfallPlot",
+      "wraps": [
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editWaterfallPlot",
+      "wraps": [
+        "createScale"
+      ]
+    },
+    {
+      "name": "createTrailPlot",
+      "wraps": [
+        "createCoordinate",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editTrailPlot",
+      "wraps": [
+        "createScale"
+      ]
+    },
+    {
+      "name": "createTablePlot",
+      "wraps": [
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editTablePlot",
+      "wraps": []
     }
   ]
 }

@@ -6,7 +6,7 @@ import { action } from "../../../core/action.js";
 import {
   getPositionEncodingMaterializationSteps
 } from "../../../materialization/marks/index.js";
-import { resolvePositionEncoding } from "./resolve.js";
+import { resolvePositionEncoding, assertPositionEncodingFrame } from "./resolve.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { applyPositionSemantics } from "./apply.js";
@@ -36,6 +36,8 @@ function encodePosition(program, channel, args, operation) {
       } });
     }
   }
+  const resolved = resolvePositionEncoding(program, channel, args, operation);
+  assertPositionEncodingFrame(program, channel, [resolved]);
   const {
     target,
     layer,
@@ -54,7 +56,7 @@ function encodePosition(program, channel, args, operation) {
     weight,
     companion,
     clearRadialMapping
-  } = resolvePositionEncoding(program, channel, args, operation);
+  } = resolved;
   if (layer.derivedBindings?.overlay) throw new Error("Overlay position follows its source; edit the source or detach the overlay first.");
 
   if (args.scale?.id === undefined) assertSharedPositionMeaning(program, layer, channel, {

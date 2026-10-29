@@ -1,0 +1,84 @@
+{
+  "status": "Qualified Table public vertical slice; STEP050 integration and STEP074/077 cumulative qualification remain open",
+  "base": "11147c531",
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1038,
+    "packedBytes": 1486490,
+    "unpackedBytes": 6775557,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "859fadc327935ce18dbdcc58ac93905b0f9af53d",
+    "sha256": "9b81d21ac42b0f4dbbe36d74c956caeffc66073cc9b0eaf57e7b7f59378d84fe"
+  },
+  "cases": {
+    "owning": 50,
+    "criticalOwners": 9,
+    "criticalCoverage": {
+      "lines": 100,
+      "branches": 98.03,
+      "functions": 100
+    },
+    "sharedOwners": 72,
+    "publicPrimitive": 3,
+    "fourBackendAndBrowser": 4,
+    "realistic": 16,
+    "authenticTables": 5,
+    "independentIdentity": 4,
+    "verticalPackage": 8,
+    "catalogBoundary": 22,
+    "inventoryOriginal": {
+      "pass": 11,
+      "fail": 3
+    },
+    "inventoryCorrected": {
+      "deterministicReplay": 1,
+      "nestedScale": 1,
+      "optionInventory": 1
+    },
+    "publicActionSurfaceOriginal": {
+      "pass": 13,
+      "fail": 1
+    },
+    "cardCorrected": 2,
+    "docsOriginal": {
+      "pass": 194,
+      "fail": 6
+    },
+    "docCorrectedOwners": 7,
+    "builtPages": 181,
+    "builtMachineArtifacts": 1538,
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": 1,
+      "documentationSnippets": 2,
+      "optionalPeers": 1,
+      "browserBundles": 5
+    },
+    "docsPinnedOwners": 47,
+    "builtBrowserWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "packageMeasurements": {
+    "entries": 1038,
+    "unpackedBytes": 6775557,
+    "packedBytesNode22": 1486490,
+    "packedBytesNode20And24": 1490275
+  },
+  "open": [
+    "Latest STEP050 admission integration is owned by root; Table has independent cell frames and no Cartesian position encoding.",
+    "Roadmap STEP074/077 cumulative qualification is not claimed.",
+    "Area wiggle final-layout preflight and same-policy scale sharing audit follows this checkpoint."
+  ],
+  "reuse": [
+    "Final card-only archive requalification reused unchanged runtime coverage, actual-source and four-backend visual evidence.",
+    "Immutable source-pinned docs owning47/47 and built181/1538 plus responsive browser passed; repack is byte-identical to the final installed archive."
+  ],
+  "sourceCommit": "9caadd537c1e75b1c264487fa30fc0d3fa2b46ae",
+  "sourceInputDelta": []
+}

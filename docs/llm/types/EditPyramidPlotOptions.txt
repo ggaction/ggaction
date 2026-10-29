@@ -1,0 +1,2 @@
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };

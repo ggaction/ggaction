@@ -140,6 +140,27 @@
     "editSource": "docs/recipes/index.md",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."
   },
+  "/recipes/marginal/": {
+    "title": "Marginal Distribution Recipe",
+    "source": "docs/recipes/marginal.md",
+    "editSource": "examples/marginal/program.js",
+    "description": "Keep the scatterplot and both marginal distributions on the same observations.",
+    "image": "/assets/images/marginal.png"
+  },
+  "/recipes/bullet/": {
+    "title": "Bullet Comparison Recipe",
+    "source": "docs/recipes/bullet.md",
+    "editSource": "examples/bullet/program.js",
+    "description": "A Bullet comparison places reference ranges, an actual measure and a target on one quantitative scale.",
+    "image": "/assets/images/bullet.png"
+  },
+  "/recipes/combo/": {
+    "title": "Combo Chart Recipe",
+    "source": "docs/recipes/combo.md",
+    "editSource": "examples/linked-overlay/program.js",
+    "description": "Use createOverlay when a line should follow the endpoints of existing bars. The bars and line share the same meaning, scale and final positions.",
+    "image": "/assets/images/linked-overlay.png"
+  },
   "/recipes/scatterplot/": {
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
@@ -1155,5 +1176,75 @@
     "editSource": "examples/geographic-marks/program.js",
     "description": "A geometry resource preserves source features. A projection maps their coordinates, and one Geo coordinate shares that projection among shapes, points and lines.",
     "image": "/assets/images/geographic-marks.png"
+  },
+  "/api/pyramid/": {
+    "title": "Pyramid Plots",
+    "source": "docs/api/pyramid.md",
+    "editSource": "docs/api/pyramid.md",
+    "description": "Show ordered stages as adjacent trapezoids. Use width to compare their spans, or area to make each trapezoid's area proportional to its value.",
+    "image": "/assets/images/pyramid.png"
+  },
+  "/tutorials/pyramid/": {
+    "title": "Compare Ordered Stages",
+    "source": "docs/tutorials/pyramid.md",
+    "editSource": "examples/pyramid/program.js",
+    "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one.",
+    "image": "/assets/images/pyramid.png"
+  },
+  "/api/ohlc/": {
+    "title": "OHLC Plots",
+    "source": "docs/api/ohlc.md",
+    "editSource": "docs/api/ohlc.md",
+    "description": "Show each observation's open, high, low and close as one selectable item. A thin line spans the low and high; a rectangle spans the open and close.",
+    "image": "/assets/images/ohlc.png"
+  },
+  "/tutorials/ohlc/": {
+    "title": "Show open, high, low and close",
+    "source": "docs/tutorials/ohlc.md",
+    "editSource": "examples/ohlc/program.js",
+    "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
+    "image": "/assets/images/ohlc.png"
+  },
+  "/api/waterfall/": {
+    "title": "Waterfall Plots",
+    "source": "docs/api/waterfall.md",
+    "editSource": "docs/api/waterfall.md",
+    "description": "Show ordered contributions, subtotals and totals as one bar per source row. Connectors show the running balance between stages.",
+    "image": "/assets/images/waterfall.png"
+  },
+  "/tutorials/waterfall/": {
+    "title": "Show Contributions and Totals",
+    "source": "docs/tutorials/waterfall.md",
+    "editSource": "examples/waterfall/program.js",
+    "description": "Declare each row's role so its effect on the running balance is explicit.",
+    "image": "/assets/images/waterfall.png"
+  },
+  "/api/trail/": {
+    "title": "Trail Plots",
+    "source": "docs/api/trail.md",
+    "editSource": "docs/api/trail.md",
+    "description": "Draw a filled ribbon whose width changes at each sample. A width is measured in logical screen pixels, independently of the position scales.",
+    "image": "/assets/images/trail.png"
+  },
+  "/tutorials/trail/": {
+    "title": "Show Width Along a Series",
+    "source": "docs/tutorials/trail.md",
+    "editSource": "examples/trail/program.js",
+    "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
+    "image": "/assets/images/trail.png"
+  },
+  "/api/table/": {
+    "title": "Table Plots",
+    "source": "docs/api/table.md",
+    "editSource": "docs/api/table.md",
+    "description": "Show keyed rows with formatted values, in cell bars and sparklines. Table plots are available in the Full entry.",
+    "image": "/assets/images/table.png"
+  },
+  "/tutorials/table/": {
+    "title": "Combine Values and Small Charts in a Table",
+    "source": "docs/tutorials/table.md",
+    "editSource": "examples/table/program.js",
+    "description": "Keep a source row's name, value and ordered observations together. The amount uses both an exact number and a bar.",
+    "image": "/assets/images/table.png"
   }
 }

@@ -41,6 +41,7 @@ export function createJobsGroupedBarPrimitives(
     .createCanvas({ width, height, margin, background: "white" })
     .createData({ id: "jobs", values: values.validJobs })
     .createBarMark({ id: "bars" })
+    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "layer[bars].coordinate", value: "main" })
     .editSemantic({ property: "layer[bars].encoding.x.field", value: "year" })
     .editSemantic({
@@ -131,7 +132,6 @@ export function createJobsGroupedBarPrimitives(
   }
 
   return program
-    .editSemantic({ property: "coordinate[main].type", value: "cartesian" })
     .editSemantic({ property: "guide.axis.x.scale", value: "x" })
     .editSemantic({ property: "guide.axis.x.coordinate", value: "main" })
     .editSemantic({ property: "guide.axis.x.title", value: "year" })

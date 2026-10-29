@@ -209,3 +209,43 @@ test("accepts filled flow ribbons without stroke and rejects collapsed or non-fi
     commands.map(command => command.op === "L" ? { ...command, y: Infinity } : command)
   ]) assert.throws(() => assertAnalyticLayerIntegrity(ribbon(invalid)), /no finite, non-zero geometry/);
 });
+
+
+test("filled Pyramid paths retain nonzero geometry without a stroke", () => {
+  const program = {
+    semanticSpec: { layers: [{ id: "stages", mark: { type: "pyramid" } }] },
+    graphicSpec: { objects: { stages: { type: "collection", items: [{ type: "path", properties: {
+      fill: "#2563eb", strokeWidth: 0,
+      commands: [{ op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 0 },
+        { op: "L", x: 15, y: 10 }, { op: "L", x: 5, y: 10 }, { op: "Z" }]
+    } }] } } }
+  };
+  assert.equal(assertAnalyticLayerIntegrity(program).nonDegenerateItemCount, 1);
+  const zero = structuredClone(program);
+  for (const command of zero.graphicSpec.objects.stages.items[0].properties.commands) {
+    if (Object.hasOwn(command, "y")) command.y = 0;
+  }
+  assert.throws(() => assertAnalyticLayerIntegrity(zero), /no finite, non-zero geometry/);
+});
+
+
+test("filled Trail ribbons require finite width and height without requiring a stroke", () => {
+  const ribbon = commands => ({
+    semanticSpec: { layers: [{ id: "trail", mark: { type: "trail" } }] },
+    graphicSpec: { objects: { trail: { type: "path", items: [{ properties: {
+      commands, fill: "#2563eb", stroke: "none", strokeWidth: 0
+    } }] } } }
+  });
+  const commands = [
+    { op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 5 },
+    { op: "L", x: 20, y: 9 }, { op: "L", x: 0, y: 4 }, { op: "Z" }
+  ];
+  assert.equal(assertAnalyticLayerIntegrity(ribbon(commands)).nonDegenerateItemCount, 1);
+  for (const invalid of [
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 0 }, { op: "Z" }],
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 0, y: 20 }, { op: "Z" }],
+    [{ op: "M", x: 4, y: 4 }, { op: "L", x: 4, y: 4 }, { op: "Z" }],
+    commands.map(command => command.x === 20 ? { ...command, x: Infinity } : command),
+    commands.map(command => command.y === 9 ? { ...command, y: NaN } : command)
+  ]) assert.throws(() => assertAnalyticLayerIntegrity(ribbon(invalid)), /no finite, non-zero geometry/);
+});

@@ -1,0 +1,7 @@
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}

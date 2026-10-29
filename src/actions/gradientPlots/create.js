@@ -1,3 +1,4 @@
+import { assertFacadeBindingFrame } from "../charts/frame.js";
 import { closedAction } from "../../core/action.js";
 
 import { findDataset } from "../../selectors/datasets.js";
@@ -61,6 +62,10 @@ export const createGradientPlot = /* @__PURE__ */ closedAction(
       ? category.scale
       : category?.scale?.id;
     const categoryScale = findSemanticScale(this, categoryScaleId);
+    assertFacadeBindingFrame(this, { id, data, mark: { type: "rect" }, coordinate: args.coordinate ?? source?.coordinate,
+      bindings: Object.fromEntries(["x", "y"].filter(channel => positions[channel] !== undefined)
+        .map(channel => [channel, gradientEncodingArgs(positions[channel])])),
+      guides: positions.x !== undefined && positions.y !== undefined ? guides : false });
     let next = categoryScale?.type === "point"
       ? this.editScale({ id: categoryScaleId, type: "band" })
       : this;

@@ -1,3 +1,8 @@
+import { assertProgramSingleY } from "../materialization/frameState.js";
+import { validateTableBinding } from "../grammar/tablePlot.js";
+import { deriveTableData } from "../grammar/tableData.js";
+import { validateTrailBinding } from "../grammar/trailPlot.js";
+import { deriveTrailSeries } from "../grammar/trailSeries.js";
 import { validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
 import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
 import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
@@ -5,6 +10,9 @@ import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
+import { validateWaterfallBinding, readWaterfallItems } from "../grammar/waterfallPlot.js";
+import { validateOHLCBinding, readOHLCItems } from "../grammar/ohlcPlot.js";
+import { validatePyramidBinding, readPyramidStages } from "../grammar/pyramid/plot.js";
 import { validateImageBinding } from "../materialization/imageState.js";
 import { validateConcreteFontBindings } from "../materialization/fontState.js";
 import { validateConditionalDependencies, validateMarkVisibilityState } from "../materialization/resourceState.js";
@@ -64,7 +72,7 @@ import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "../core/resourceReference.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
-import { resolveDatasetReference } from "../selectors/datasets.js";
+import { findDataset, resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
 import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
 import { highlightTargets } from "../selectors/selectionTargets.js";
@@ -265,7 +273,38 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
         validateSourceIdentity(resource);
       }
-      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource); }
+      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource);
+        if (resource.mark?.type === "table") {
+          validateTableBinding(resource, program.markConfigs[resource.id]?.tablePlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Table requires an existing dataset.");
+          deriveTableData(dataset.values, dataset.rowKeys, resource.table);
+        }
+        if (resource.mark?.type === "trail") {
+          validateTrailBinding(resource, program.markConfigs[resource.id]?.trailPlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Trail requires an existing dataset.");
+          deriveTrailSeries(dataset.values, resource, { scales: semantic.scales });
+        }
+        if (resource.mark?.type === "waterfall") {
+          validateWaterfallBinding(resource, program.markConfigs[resource.id]?.waterfallPlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Waterfall requires an existing dataset.");
+          readWaterfallItems(dataset, resource);
+        }
+        if (resource.mark?.type === "ohlc") {
+          validateOHLCBinding(resource, program.markConfigs[resource.id]?.ohlcPlot);
+          const dataset = semantic.datasets.find(entry => entry.id === resource.data);
+          if (dataset === undefined) throw new TypeError("OHLC requires an existing dataset.");
+          readOHLCItems(dataset, resource);
+        }
+        if (resource.mark?.type === "pyramid") {
+          validatePyramidBinding(resource, program.markConfigs[resource.id]?.pyramidPlot);
+          const dataset = semantic.datasets.find(entry => entry.id === resource.data);
+          if (dataset === undefined) throw new TypeError("Pyramid requires an existing dataset.");
+          readPyramidStages(dataset.values, dataset.rowKeys, resource.pyramid);
+        }
+      }
       if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
         const dataset = semantic.datasets.find(item => item.id === resource.data);
         if (dataset === undefined) throw new Error("Numeric text offsets require an existing dataset.");
@@ -689,6 +728,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  assertProgramSingleY(program, { materialized: true });
   validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     if (!legacy) for (const item of graphic.items ?? []) {

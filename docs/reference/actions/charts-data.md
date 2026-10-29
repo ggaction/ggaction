@@ -4242,14 +4242,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
-| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false \| CartesianGridOptions \| undefined; }) \| undefined` |
+| `layout` | Optional / branch-dependent | `"center" \| "diverging" \| "fill" \| "overlay" \| "stack" \| "wiggle" \| undefined` |
 | `valueChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `x` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
-| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; }))` |
+| `y` | Required | `{ field: string; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { field: string; scale?: NonPointZeroSupportingPositionScaleOptions \| undefined; } \| AreaPlotIndependentChannel \| ({ ...; } & ({ ...; } \| { ...; })) \| ({ ...; } & ({ ...; } \| { ...; }))` |
 | `baseline` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -5487,9 +5487,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -5530,6 +5531,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 </details>
 

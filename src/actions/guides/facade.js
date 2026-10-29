@@ -60,8 +60,8 @@ function planGrid(program, args) {
   });
 }
 
-export function fulfillFacadeGuides(program, guides, target, explicitGuides = guides) {
-  if (guides === false) return program;
+export function resolveFacadeGuidePlan(program, guides, target, explicitGuides = guides) {
+  if (guides === false) return undefined;
   const layer = findLayer(program, target);
   if (layer === undefined) throw new Error(`Unknown facade guide target "${target}".`);
   const resolved = resolveGuideOptions(program, guides, [layer]);
@@ -82,7 +82,7 @@ export function fulfillFacadeGuides(program, guides, target, explicitGuides = gu
   if (resolved.legend?.target !== undefined && resolved.legend.target !== target) {
     guideConflict("legend target does not belong to this facade");
   }
-  if (axes === undefined && grid === undefined && legend === undefined) return program;
+  if (axes === undefined && grid === undefined && legend === undefined) return undefined;
   const legendPlan = legend === undefined ? undefined
     : planFacadeLegend(program, layer, legend, explicitGuides.legend ?? {});
   const steps = [
@@ -96,7 +96,14 @@ export function fulfillFacadeGuides(program, guides, target, explicitGuides = gu
     program.semanticSpec.layers.filter(candidate =>
       candidate.coordinate === layer.coordinate && candidate.encoding?.parallel !== undefined
     ).length === 1;
-  if (!hasExisting && unambiguousAxes) {
+  return { axes, grid, legendPlan, steps, grouped: !hasExisting && unambiguousAxes };
+}
+
+export function fulfillFacadeGuides(program, guides, target, explicitGuides = guides) {
+  const plan = resolveFacadeGuidePlan(program, guides, target, explicitGuides);
+  if (plan === undefined) return program;
+  const { axes, grid, legendPlan, steps, grouped } = plan;
+  if (grouped) {
     return program.createGuides({ axes: axes ?? false, grid: grid ?? false, legend: legendPlan?.args ?? false });
   }
   let next = program;

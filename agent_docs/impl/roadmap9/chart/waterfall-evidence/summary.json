@@ -1,0 +1,107 @@
+{
+  "status": "qualified Waterfall vertical slice; STEP050 integration and STEP074 cumulative qualification remain open",
+  "sourceCommit": "ba2062ce01ea14448b7123d13861f056d43c37e2",
+  "base": "bfe92592c7fedb2849ab8101091a3bc380754413",
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "archiveSha256": "d74590ff866949a4dcfc7e9b939e7d13b42402899d9b2bfb8a1b677ddf47cef8",
+  "package": {
+    "entries": 1020,
+    "packedBytesNode22": 1458835,
+    "maxPackedBytesNode20And24": 1461832,
+    "unpackedBytes": 6647786,
+    "sourceStagingEqualityEntries": 1020
+  },
+  "cases": {
+    "finalRuntimeAndTypes": 21,
+    "critical": 17,
+    "criticalOwners": 4,
+    "criticalCoverage": {
+      "lines": 100,
+      "branches": 98.23,
+      "functions": 100
+    },
+    "render": 6,
+    "browserVariants": 3,
+    "browserDensities": [
+      1,
+      2
+    ],
+    "resourceEffects": {
+      "consumers": 11,
+      "formats": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ]
+    },
+    "realistic": 16,
+    "realSourceTables": 5,
+    "generatedLifecycle": 3,
+    "inventoryOriginal": {
+      "pass": 6,
+      "fail": 1
+    },
+    "inventoryCorrectedOwner": 1,
+    "owningContractsOriginal": {
+      "pass": 27,
+      "fail": 1
+    },
+    "finalVerticalAndReusedPrimitiveTests": 7,
+    "documentationOriginal": {
+      "pass": 194,
+      "fail": 3
+    },
+    "documentationCorrectedOwners": 3,
+    "builtBrowserWidths": [
+      320,
+      390,
+      768
+    ],
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": 1,
+      "optionalPeers": 1,
+      "browserBundles": 5
+    }
+  },
+  "primitiveTestsReused": {
+    "revision": "11a9d313e",
+    "files": [
+      "test/charts/ohlc/primitive.test.js",
+      "test/charts/pyramid/primitive.test.js",
+      "test/charts/nested-responsive/primitive.test.js",
+      "test/charts/responsive-guides/primitive.test.js"
+    ]
+  },
+  "initialFailuresPreserved": [
+    "Primitive mock draw structure was initially top-level; canonical plot-main child placement now matches public output.",
+    "New persistence lookup initially bypassed the shared selector; findDataset owner is now reused.",
+    "Vertical gate found four preexisting primitive test gaps; exact parent-owned tests were imported and passed.",
+    "Inventory excluded-array count remained at the prior surface; exact measured count is now11247.",
+    "Docs search payload grew to1009213bytes; bounded cap is now1010000. New source links required a checked-in source commit."
+  ],
+  "evidenceReuse": [
+    "The six unaffected inventory tests passed in the original invocation; the sole corrected owner passed separately.",
+    "The194 unaffected documentation tests passed; all3 corrected owners passed at sourceCommit.",
+    "Critical4owner implementation was unchanged after the17-case coverage run; final21-case runtime/type suite adds cases and fixes only primitive assertions.",
+    "All1020 packed entries equal current committed inputs after canonical package staging transformations; the identical tar was used in all3 Node runs.",
+    "No full coverage, full realistic corpus, or full installed sweep was repeated. STEP074 retains that obligation."
+  ],
+  "remaining": [
+    "STEP050 exact final-preview single-Y admission integration by root",
+    "STEP054 Trail/native variants",
+    "STEP055 Table/sparkline",
+    "STEP056 recipes and STEP074 cumulative qualification"
+  ],
+  "commands": [
+    "node scripts/run-tests.js render capability:waterfall",
+    "node scripts/run-tests.js browser capability:waterfall",
+    "node scripts/run-tests.js realistic capability:waterfall",
+    "node --test test/unit/waterfall-plot.test.js test/unit/grammar/waterfall-plot.test.js test/contracts/waterfall-types.test.js test/charts/waterfall/public.test.js test/charts/waterfall/primitive.test.js",
+    "node --test test/contracts/generated-scenario-feature-coverage.test.js",
+    "node --test --test-name-pattern=\"derives a bounded public option inventory\" test/contracts/generated-scenario-feature-coverage.test.js",
+    "npm run docs:generate",
+    "npm run docs:build"
+  ]
+}

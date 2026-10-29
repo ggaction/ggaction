@@ -106,7 +106,7 @@ export function applyEncodingScale(
     : editScaleForEncoding(program, patch);
 }
 
-export function rebindPositionGuides(
+export function resolvePositionGuideRebinding(
   program,
   channel,
   previousScale,
@@ -114,8 +114,8 @@ export function rebindPositionGuides(
   target
 ) {
   const definition = getPositionChannelDefinition(channel);
-  if (definition?.guideChannel === undefined) return program;
-  if (previousScale === undefined || previousScale === nextScale) return program;
+  if (definition?.guideChannel === undefined) return undefined;
+  if (previousScale === undefined || previousScale === nextScale) return undefined;
 
   const owners = ["x", "y"].includes(definition.guideChannel)
     ? cartesianAxisOwners(program).filter(owner => owner.channel === definition.guideChannel)
@@ -124,12 +124,19 @@ export function rebindPositionGuides(
   const grid = program.semanticSpec.guides.grid?.[direction];
   const ownsGrid = grid?.scale === previousScale;
   const affected = owners.filter(owner => [previousScale, nextScale].includes(owner.semantic?.scale));
-  if (!affected.length && !ownsGrid) return program;
+  if (!affected.length && !ownsGrid) return undefined;
   const remaining = program.semanticSpec.layers.some(layer => layer.id !== target &&
     !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale);
   if ((affected.some(owner => owner.semantic?.scale === previousScale) || ownsGrid) && remaining) {
     throw new Error(`Cannot rebind ${channel} guides from shared scale "${previousScale}" while it has other consumers.`);
   }
+  return { affected, ownsGrid, direction };
+}
+
+export function rebindPositionGuides(program, channel, previousScale, nextScale, target) {
+  const plan = resolvePositionGuideRebinding(program, channel, previousScale, nextScale, target);
+  if (plan === undefined) return program;
+  const { affected, ownsGrid, direction } = plan;
   let next = program;
   for (const owner of affected) {
     const axisId = owner.id;

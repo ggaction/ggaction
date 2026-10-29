@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 3,
+  "name": "createTrailPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Creates Trail plot for variable width ribbon.",
+  "signature": "createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;",
+  "intents": [
+    "create trail plot",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "Trail plot",
+    "variable width ribbon"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "owns": [
+      "Trail variable-width series mark"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "createScale"
+  ],
+  "editableVia": [
+    "editTrailPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "width",
+      "required": true,
+      "type": "string | number"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | readonly string[] | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"break\" | \"error\" | undefined"
+    },
+    {
+      "name": "closed",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fillRule",
+      "required": false,
+      "type": "\"evenodd\" | \"nonzero\" | undefined"
+    },
+    {
+      "name": "body",
+      "required": false,
+      "type": "TrailBodyPaint | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | OHLCColor | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "TrailPosition | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "TrailPosition | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "PolarThetaChannel | undefined"
+    },
+    {
+      "name": "radius",
+      "required": false,
+      "type": "PolarRadiusChannel | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "string | false | { readonly field: string; readonly order?: \"ascending\" | \"descending\" | undefined; } | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "tension",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | ColorGuides | PolarPathGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createTrailPlot({ width, id?, data?, coordinate?, target?, groupBy?, missing?, closed? })"
+  ],
+  "snippet": "program.createTrailPlot({ x: \"time\", y: \"signal\", width: \"width\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createtrailplot"
+}

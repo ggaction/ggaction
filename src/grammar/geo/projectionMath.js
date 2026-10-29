@@ -85,20 +85,23 @@ export function circleGeometryMath(center, radius, precision) {
 }
 
 
-// Centroids share the stream's source winding convention. The caller supplies
-// bounded, normalized geometry; only the private mathematical adapter sees it.
-export function centroidGeometryMath(geometry, spherical) {
-  function rings(coordinates) {
-    return coordinates.map((ring, index) => {
-      if (spherical) return [...ring].reverse();
-      const [x, y] = ring[0];
-      let area = 0;
-      for (let i = 1; i < ring.length; i++) area += (ring[i - 1][0] - x) * (ring[i][1] - y) - (ring[i][0] - x) * (ring[i - 1][1] - y);
-      if (!Number.isFinite(area)) throw new RangeError("Geometry has no finite centroid area.");
-      // Planar fill uses ring roles, independent of authored winding.
-      return (area < 0) === (index === 0) ? [...ring].reverse() : ring;
-    });
-  }
+// Only transient mathematical input changes direction. Retained source rings
+// and their coordinates remain exact, including deliberate spherical complements.
+export function orientGeometryRingsMath(coordinates, spherical, polygonWinding = "right-hand") {
+  return coordinates.map((ring, index) => {
+    if (spherical) return polygonWinding === "right-hand" ? [...ring].reverse() : ring;
+    const [x, y] = ring[0];
+    let area = 0;
+    for (let i = 1; i < ring.length; i++) area += (ring[i - 1][0] - x) * (ring[i][1] - y) - (ring[i][0] - x) * (ring[i - 1][1] - y);
+    if (!Number.isFinite(area)) throw new RangeError("Geometry has no finite centroid area.");
+    // Planar fill uses ring roles, independent of authored winding.
+    return (area < 0) === (index === 0) ? [...ring].reverse() : ring;
+  });
+}
+
+// Centroids and projection streams share the exact declared source convention.
+export function centroidGeometryMath(geometry, spherical, polygonWinding) {
+  const rings = coordinates => orientGeometryRingsMath(coordinates, spherical, polygonWinding);
   function oriented(value) {
     if (value === null) return null;
     if (value.type === "GeometryCollection") return { type: value.type, geometries: value.geometries.map(oriented) };

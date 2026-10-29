@@ -11,6 +11,7 @@ import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 const datasets = ["tt-penguins", "tt-london-marathon-winners", "tt-astronauts", "tt-us-births", "tt-chocolate-ratings"];
 const actions = ["createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark"];
 const witnesses = new Map(actions.map(name => [name, new Map()]));
+const positionScales = { x: { id: "contour-x" }, y: { id: "contour-y" } };
 const frame = { origin: [0, 0], dx: .2, dy: .2, width: 6, height: 6 };
 function histogram(rows, unit) {
   const values = Array(36).fill(0);
@@ -45,11 +46,14 @@ for (const dataset of datasets) for (const recipe of ["counts", "weighted", "ker
       .createDensityContourData({ id: "density", data: "samples", x: "x", y: "y", weight: "weight", grid: frame,
         estimator: recipe === "kernel" ? "kde" : "histogram", normalization: recipe === "counts" ? "count" : "unit",
         ...(recipe === "kernel" ? { bandwidth: [.2, .3], kernel: "gaussian" } : {}), thresholds })
-      .createContourMark({ id: "density-mark", geometry: "density", mode: recipe === "counts" ? "line" : "filled" })
-      .createContourMark({ id: "bin-lines", geometry: "binned", mode: "line", color: false, stroke: "#444444" })
+      .createContourMark({ id: "density-mark", geometry: "density", ...positionScales, mode: recipe === "counts" ? "line" : "filled" })
+      .createContourMark({ id: "bin-lines", geometry: "binned", ...positionScales, mode: "line", color: false, stroke: "#444444" })
       .editContourMark({ target: "bin-lines", strokeWidth: .5, opacity: .6 })
       .editContourData({ target: "density", definition: { normalization: "count" } })
       .editContourData({ target: "binned", thresholds: thresholds.slice(1) });
+    const marks = program.semanticSpec.layers.filter(layer => ["density-mark", "bin-lines"].includes(layer.id));
+    assert.equal(marks.length, 2);
+    assert.deepEqual(marks.map(layer => layer.encoding.y.scale), ["contour-y", "contour-y"]);
     const resource = program.semanticSpec.resources.find(value => value.id === "density");
     assert.equal(resource.result.density.sourceCount, rows.length);
     assert.ok(Math.abs(resource.result.density.totalWeight - total) <= total * 1e-12);

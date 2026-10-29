@@ -1,4 +1,5 @@
-import { chart, hconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
+import { directProgramOperations } from "../program-traces.js";
+import { chart, hconcat, vconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
 import { readFileSync } from "node:fs";
 
 import { loadZooDataset } from "../datasets/zoo.js";
@@ -1327,6 +1328,8 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createPyramidPlot({ id: "directPyramid", data: "directSource", stage: "category", value: "positive", labels: false, stages: { opacity: .2 } })
+    .editPyramidPlot({ target: "directPyramid", encoding: "area" })
     .createCalendarLayout({ id: "directCalendarLayout", data: "directSource", date: "calendarDate", value: "positive", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
     .createCalendarPlot({ id: "directCalendar", layout: "directCalendarLayout", color: false, labels: false, cells: { opacity: .2 } })
     .editCalendarPlot({ target: "directCalendar", cells: { gap: .1 }, monthBoundary: false })
@@ -1351,6 +1354,10 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: rows.map(row => [row.x, row.positive]) } })
     .createGeoLineMark({ id: "directGeoLinesMark", coordinate: "directGeoPlane", geometry: "directGeoLines", strokeWidth: 1 })
     .editGeoLineMark({ target: "directGeoLinesMark", opacity: .6 })
+    .createGeometryData({ id: "directGeoWinding", format: "geojson", coordinateKind: "geographic", polygonWinding: factors.includeEmpty ? "right-hand" : "left-hand", featureKey: "id",
+      values: { type: "FeatureCollection", features: rows.map((row, index) => ({ type: "Feature", id: row.id,
+        properties: { category: row.category }, geometry: { type: "Point", coordinates: [index % 180, row.positive % 80] } })) } })
+    .editGeometryData({ target: "directGeoWinding", polygonWinding: factors.includeEmpty ? "left-hand" : "right-hand" })
     .createProjection({ id: "directGeoSphere", type: "equirectangular", translatePx: [200, 150] })
     .createCoordinate({ id: "directGeoGridFrame", type: "geo", projection: "directGeoSphere" })
     .createGraticule({ id: "directGeoGrid", coordinate: "directGeoGridFrame", extentDeg: [[-40, -20], [40, 20]], stepDeg: [20, 20] })
@@ -1377,7 +1384,7 @@ function buildDirectDataResources(factors) {
     .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
     .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
-  return program
+  const resources = program
     .createDensityData({
       id: "directDensity",
       source: "directSource",
@@ -1415,25 +1422,31 @@ function buildDirectDataResources(factors) {
     })
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
-    .encodeY({ target: "resourcePoints", field: "positive" })
-    .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"})
-    .createDotPlot({
+    .encodeY({ target: "resourcePoints", field: "positive", scale: { id: "directContours-y" } })
+    .createAnnotation({ id: "resourceNote", space: "screen", x: 20, y: 20, text: rows[0].category })
+    .editAnnotation({ target: "resourceNote", dx: 4 })
+    .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"});
+  const panel = () => chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "directSource", values: rows });
+  const resourcePanels = vconcat({ id: "directAnalysis", programs: [
+    { id: "resources", program: resources },
+    { id: "dot", program: panel().createDotPlot({
       id: "directDot",
       data: "directSource",
       category: "category",
       value: "x",
       summary: "mean",
       guides: false
-    })
-    .createLollipopPlot({
+    }) },
+    { id: "lollipop", program: panel().createLollipopPlot({
       id: "directLollipop",
       data: "directSource",
       category: "category",
       value: "positive",
       summary: "mean",
       guides: false
-    })
-    .createDumbbellPlot({
+    }) },
+    { id: "dumbbell", program: panel().createDumbbellPlot({
       id: "directDumbbell",
       data: "directSource",
       category: "category",
@@ -1445,8 +1458,8 @@ function buildDirectDataResources(factors) {
     .editEndpointPlot({
       target: "directDumbbell",
       start: "endpointStart"
-    })
-    .createIntervalPlot({
+    }) },
+    { id: "interval", program: panel().createIntervalPlot({
       id: "directIntervalPlot",
       data: "directSource",
       x: { field: "category", fieldType: "nominal" },
@@ -1456,23 +1469,41 @@ function buildDirectDataResources(factors) {
         upper: "intervalUpper"
       },
       guides: false
-    })
-    .createRegressionPlot({
+    }) },
+    { id: "regression", program: panel().createRegressionPlot({
       id: "directRegressionPlot",
       data: "directSource",
       x: "x",
       y: "positive",
       guides: false
-    })
-    .createECDFPlot({
+    }) },
+    { id: "ecdf", program: panel().createECDFPlot({
       id: "directECDFPlot",
       data: "directSource",
       field: "x",
       groupBy: "color",
       guides: false
     })
-    .editECDFPlot({ target: "directECDFPlot", groupBy: false })
-    .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
+    .editECDFPlot({ target: "directECDFPlot", groupBy: false }) }
+  ] }).createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
+  // Preserve the existing source values and keep cumulative units in a separate panel.
+  const waterfall = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "waterfallSource", values: sourceRows.map(row => ({ ...row, stageRole: "delta" })) })
+    .createWaterfallPlot({ id: "directWaterfall", x: "category", value: "positive", role: "stageRole", guides: false })
+    .editWaterfallPlot({ target: "directWaterfall", connectors: false });
+  // Sample widths retain the authentic source values; this is an API witness,
+  // separate from the owning real-table width interpretation tests.
+  const trail = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "trailSource", values: sourceRows })
+    .createTrailPlot({ id: "directTrail", x: "x", y: "y", width: 8, groupBy: "color", guides: false })
+    .editTrailPlot({ target: "directTrail", width: 12, lineCap: "round" });
+  // Table is an independent keyed presentation. All original source rows remain
+  // available to its footer even when its explicit visible limit is smaller.
+  const table = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "tableSource", values: sourceRows })
+    .createTablePlot({ id: "directTable", columns: ["category", { field: "positive", cell: "bar", footer: "sum" }], rowLimit: 3 })
+    .editTablePlot({ target: "directTable", sortBy: [{ field: "positive", order: "descending" }], cells: { stroke: "#475569" } });
+  return vconcat({ programs: [{ id: "resources", program: resourcePanels }, { id: "waterfall", program: waterfall }, { id: "trail", program: trail }, { id: "table", program: table }] });
 }
 
 function appendConditionalPoints(program) {
@@ -1484,7 +1515,7 @@ function appendConditionalPoints(program) {
   return program.createData({ id: "conditionalRows", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }] })
     .createPointMark({ id: "conditionalPoints", data: "conditionalRows" })
     .encodeX({ target: "conditionalPoints", field: "x", scale: { id: "conditionalX" } })
-    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "conditionalY" } })
+    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "y" } })
     .encodeColor(options("red", "blue"))
     .encodeStroke(options("#111111", "#222222"))
     .encodeSize(options(36, 16))
@@ -1632,6 +1663,10 @@ function buildDirectRangedMarks(factors) {
     })
     .encodeY({ target: "directBands", field: "position", scale: { id: "y" } })
     .encodeGroup({ target: "directBands", field: "group" })
+    .createOHLCPlot({ id: "directOHLC", data: "directRanges", x: { field: "lower", scale: { id: "x" } },
+      low: "position", open: "position", high: "positionEnd", close: "positionEnd", yScale: { id: "y" },
+      width: { pixels: 5 }, labels: false, guides: false })
+    .editOHLCPlot({ target: "directOHLC", body: { opacity: .3 }, doji: "none" })
     .createTitle({ text: lifecycleTitle(factors, "Ranged comparison") });
 }
 
@@ -1882,7 +1917,7 @@ function buildDirectPolarParts(factors) {
   const labels = { color: "#334155", offset: 12, fontSize: 11, fontFamily: "sans-serif", fontWeight: 600,
     format: factors.count === 4 ? "auto" : { decimals: 1 } };
   const title = { color: "#0f172a", fontSize: 13, fontFamily: "sans-serif", fontWeight: 600 };
-  return chart()
+  const polar = chart()
     .createCanvas(polarCanvas(factors, true))
     .createData({ id: "directPolarRows", values: rows })
     .createPolarScatterPlot({
@@ -1934,16 +1969,20 @@ function buildDirectPolarParts(factors) {
       order: [...new Set(rows.map(row => row.angle))],
       line: { strokeWidth: 1.5 },
       guides: false
-    })
-    .createRugPlot({
+    });
+  const panel = () => chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "directPolarRows", values: rows });
+  return vconcat({ id: "directProfiles", programs: [
+    { id: "polar", program: polar },
+    { id: "rug", program: panel().createRugPlot({
       id: "directRug",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directRugX", zero: true } },
       edge: "bottom",
       tick: { length: 12, strokeWidth: 1.25 },
       guides: false
-    })
-    .createStripPlot({
+    }) },
+    { id: "strip", program: panel().createStripPlot({
       id: "directStrip",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directStripX", zero: true } },
@@ -1956,8 +1995,8 @@ function buildDirectPolarParts(factors) {
       guides: false
     })
     .packPoints({ target: "directStrip", channel: "y", overflow: "overlap" })
-    .removePointPacking({ target: "directStrip" })
-    .createBeeswarmPlot({
+    .removePointPacking({ target: "directStrip" }) },
+    { id: "beeswarm", program: panel().createBeeswarmPlot({
       id: "directBeeswarm",
       data: "directPolarRows",
       x: { field: "radius", scale: { id: "directBeeswarmX", zero: true } },
@@ -1969,8 +2008,8 @@ function buildDirectPolarParts(factors) {
       point: { radius: 3, opacity: 0.6 },
       packing: { overflow: "overlap" },
       guides: false
-    })
-    .createRaincloudPlot({
+    }) },
+    { id: "raincloud", program: panel().createRaincloudPlot({
       id: "directRaincloud",
       data: "directPolarRows",
       category: { field: "raincloudGroup", fieldType: "nominal" },
@@ -1984,7 +2023,8 @@ function buildDirectPolarParts(factors) {
       side: "after",
       summary: { type: "interval", center: "mean", extent: "stderr" },
       points: { type: "strip", jitter: false }
-    });
+    }) }
+  ] });
 }
 
 export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
@@ -2207,7 +2247,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
     "action-facet-grid-lifecycle": ["create", "edit", "compose"],
     "action-repeat-charts-lifecycle": ["create", "compose"],
-    "action-direct-data-resources": ["create", "edit", "filter", "remove"],
+    "action-direct-data-resources": ["create", "edit", "filter", "remove", "compose"],
     "action-direct-point-text": ["create", "edit", "remove"],
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
@@ -2217,7 +2257,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-direct-guide-aggregates": ["create", "edit"],
     "action-direct-axis-facades": ["create"],
     "action-direct-axis-parts": ["create"],
-    "action-direct-polar-parts": ["create", "edit", "remove"]
+    "action-direct-polar-parts": ["create", "edit", "remove", "compose"]
   }[base.id];
   const unit = measure?.unit === undefined ? "" : ` (${measure.unit})`;
   const sampleText = view.sample === undefined
@@ -2287,7 +2327,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
+      "createAnnotation", "editAnnotation", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2365,7 +2405,7 @@ function lifecycleSignature(base, factors) {
 }
 
 function observeLifecycleFeatures(base, program, factors) {
-  const operations = new Set(program.trace?.children?.map(node => node.op) ?? []);
+  const operations = directProgramOperations(program);
   const features = [];
   const signature = lifecycleSignature(base, factors);
   if (signature.every(operation => operations.has(operation))) {
@@ -2545,6 +2585,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createAnnotation", "editAnnotation",
   "createProjection", "editProjection", "navigateProjection",
   "createGeoAnnotation", "editGeoAnnotation",
   "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule",

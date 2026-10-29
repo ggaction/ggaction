@@ -71,6 +71,15 @@
   url: /recipes/
   nav_group: start
   nav_order: 6
+- title: Marginal Distribution Recipe
+  url: /recipes/marginal/
+  parent: /recipes/
+- title: Bullet Comparison Recipe
+  url: /recipes/bullet/
+  parent: /recipes/
+- title: Combo Chart Recipe
+  url: /recipes/combo/
+  parent: /recipes/
 - title: Scatterplot Recipe
   url: /recipes/scatterplot/
   parent: /recipes/
@@ -555,4 +564,42 @@
 
 - title: Draw Geometry on a Map
   url: /tutorials/geographic-marks/
+  parent: /tutorials/
+
+- title: Pyramid Plots
+  url: /api/pyramid/
+  parent: /api/
+
+- title: Compare Ordered Stages
+  url: /tutorials/pyramid/
+  parent: /tutorials/
+
+
+- title: OHLC Plots
+  url: /api/ohlc/
+  parent: /api/
+
+- title: Show open, high, low and close
+  url: /tutorials/ohlc/
+  parent: /tutorials/
+
+- title: Waterfall Plots
+  url: /api/waterfall/
+  parent: /api/
+- title: Show Contributions and Totals
+  url: /tutorials/waterfall/
+  parent: /tutorials/
+
+- title: Trail Plots
+  url: /api/trail/
+  parent: /api/
+- title: Show Width Along a Series
+  url: /tutorials/trail/
+  parent: /tutorials/
+
+- title: Table Plots
+  url: /api/table/
+  parent: /api/
+- title: Combine Values and Small Charts in a Table
+  url: /tutorials/table/
   parent: /tutorials/

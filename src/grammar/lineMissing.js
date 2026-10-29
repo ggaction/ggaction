@@ -77,13 +77,16 @@ export function splitLineGapValues(values) {
 
 // Filtering painted runs must not delete the invisible separators and bridge them.
 export function retainLineGapBoundaries(rows, members, layer) {
-  if (layer?.mark?.type !== "line" || layer.mark.missing !== "break") return members;
+  const trail = layer?.mark?.type === "trail";
+  if ((!trail && layer?.mark?.type !== "line") || (trail ? layer.trail?.missing : layer.mark.missing) !== "break") return members;
+  const x = layer.encoding.x ?? layer.encoding.theta, y = layer.encoding.y ?? layer.encoding.radius;
+  const widthField = trail ? layer.trail.width.field : undefined;
   const fields = pathGroupFields(layer);
   const key = row => pathSeriesKey(fields.map(field => row[field]));
   const selectedSeries = new Set([...members].map(key));
   const result = new Set(members);
   for (const row of rows) {
-    if ((row[layer.encoding.x.field] == null || row[layer.encoding.y.field] == null) &&
+    if ((row[x.field] == null || row[y.field] == null || (widthField !== undefined && row[widthField] == null)) &&
         selectedSeries.has(key(row))) result.add(row);
   }
   return result;

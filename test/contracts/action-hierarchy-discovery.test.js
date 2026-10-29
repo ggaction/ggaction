@@ -88,7 +88,9 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
   for (const name of completeChartActions) {
     const card = byName.get(name);
     if (compositionActions.has(name)) {
-      assert.deepEqual(card.wraps, [], name);
+      const required = { facet: ["filterData"], facetGrid: ["filterData"], repeatCharts: ["encodeX"], createAdjacentPlot: [] }[name];
+      for (const child of required) assert.ok(card.wraps.includes(child), `${name} wraps ${child}`);
+      assert.ok(card.wraps.every(child => byName.has(child)), name);
       assert.deepEqual(card.editableVia, name === "createAdjacentPlot"
         ? ["editCompositionLayout", "editCompositionScales", "replaceCompositionChild"] : compositionEditors, name);
       assert.deepEqual(card.completionRequirements.requires, [

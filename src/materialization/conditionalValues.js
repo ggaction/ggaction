@@ -17,6 +17,7 @@ import { readScaleField } from "../grammar/scales/index.js";
 import { conditionalFieldRows, mapConditionalValues } from "./conditionalMapping.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "./selection/policies/index.js";
 import { conditionalSelectionMembership } from "./conditionalSelection.js";
+import { CATEGORICAL_LEGEND_CHANNELS } from "../core/vocabulary.js";
 
 export function readConditionalConsumerValues(program, layer, encoding, scale, channel) {
   const arc = resolveConditionalArcConsumer(program, layer, encoding, channel);
@@ -42,9 +43,17 @@ export function readConditionalConsumerValues(program, layer, encoding, scale, c
     return readScaleField(requireDataset(program, layer.data).values, encoding.field, encoding.fieldType, { temporalUnit: encoding.temporalUnit });
   }
   const items = resolveMarkSourceItems(program, layer.id);
-  return readScaleField(conditionalFieldRows(items, encoding), encoding.field, encoding.fieldType, {
-    allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit
-  });
+  const options = { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit };
+  const values = readScaleField(conditionalFieldRows(items, encoding), encoding.field, encoding.fieldType, options);
+  if (CATEGORICAL_LEGEND_CHANNELS.includes(channel) && ["nominal", "ordinal"].includes(encoding.fieldType)) {
+    // Validate at final item grain first, then retain the ordinary encoding's
+    // first-source category order. Aggregation may enumerate cells differently.
+    const eligible = new Set(values);
+    const dataset = applyItemMissingPolicy(layer, requireDataset(program, layer.data));
+    return readScaleField(dataset.values, encoding.field, encoding.fieldType, options)
+      .filter(value => eligible.has(value));
+  }
+  return values;
 }
 
 export function resolveConditionalValues(program, layer, channel, items) {

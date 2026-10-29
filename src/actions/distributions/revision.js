@@ -1,3 +1,5 @@
+import { assertProgramSingleY } from "../../materialization/frameState.js";
+import { ownedChildren } from "../../selectors/markOwners.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { DEFAULT_TICK_COUNT } from "../guides/tickValues.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -5,6 +7,35 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { resolvePositionScaleDefinition } from "../scales/definitions.js";
 
 const POSITION_CHANNELS = Object.freeze(["x", "y", "x2", "y2"]);
+
+// Validate the final native position handoff before data revision or removal.
+// The projection updates only frame-relevant bindings; it is never materialized.
+export function assertDistributionFrame(program, owner, candidate, additional = []) {
+  const owned = new Set(), pending = [owner.id, ...additional];
+  while (pending.length) {
+    const id = pending.pop();
+    if (owned.has(id)) continue;
+    owned.add(id);
+    for (const child of ownedChildren(program, id)) if (!owned.has(child)) pending.push(child);
+  }
+  const layers = program.semanticSpec.layers.map(layer => {
+    if (!owned.has(layer.id)) return layer;
+    const encoding = { ...layer.encoding };
+    for (const channel of ["x", "y", "x2", "y2"]) {
+      if (encoding[channel] === undefined) continue;
+      const axis = channel[0];
+      encoding[channel] = { ...encoding[channel], fieldType: candidate[axis].fieldType, scale: candidate[axis].scale };
+    }
+    return { ...layer, encoding };
+  });
+  const axis = Object.fromEntries(Object.entries(program.semanticSpec.guides.axis ?? {}).map(([id, guide]) => {
+    const channel = guide.channel ?? id;
+    return [id, ["x", "y"].includes(channel) && guide.scale === candidate.previous[channel].scale
+      ? { ...guide, scale: candidate[channel].scale } : guide];
+  }));
+  assertProgramSingleY({ ...program, guideConfigs: program.guideConfigs,
+    semanticSpec: { ...program.semanticSpec, layers, guides: { ...program.semanticSpec.guides, axis } } }, { allowIncomplete: true });
+}
 
 export function currentDistributionPositions(owner, current) {
   const vertical = current.orientation === "vertical";
@@ -98,7 +129,7 @@ export function resolveDistributionRoles(program, owner, current, args, {
   });
   const xScale = plan("x");
   const yScale = plan("y");
-  return {
+  const candidate = {
     orientation: positions.orientation,
     x: { ...positions.x, scale: xScale.id },
     y: { ...positions.y, scale: yScale.id },
@@ -109,6 +140,8 @@ export function resolveDistributionRoles(program, owner, current, args, {
     measure: vertical ? positions.y.field : positions.x.field,
     previous
   };
+  assertDistributionFrame(program, owner, candidate);
+  return candidate;
 }
 
 function setCartesianProperties(program, id, channel, properties) {

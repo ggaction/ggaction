@@ -52,12 +52,12 @@ test("explicit source overrides a different current mark and dataset", () => {
   const other = points.createData({ id: "other", values: [{ x: 8, y: 10, label: "Other" }] })
     .createPointMark({ id: "other-points" })
     .encodeX({ field: "x", scale: { id: "other-x" } })
-    .encodeY({ field: "y", scale: { id: "other-y" } });
+    .encodeY({ field: "y", scale: { id: "y" } });
   const p = other.createTextMark({ source: "point" }).encodeText({ field: "label" });
   assert.equal(p.semanticSpec.layers.at(-1).data, "data");
   assert.equal(p.semanticSpec.layers.at(-1).source, "point");
   assert.deepEqual(p.graphicSpec.objects.text.items.map(i => i.properties.text), ["Alpha", "Beta"]);
-  const labels = points.createTextMark().encodeText({ field: "label" }).graphicSpec.objects.text;
+  const labels = points.editYScale({ domain: other.resolvedScales.y.domain }).createTextMark().encodeText({ field: "label" }).graphicSpec.objects.text;
   assert.deepEqual(p.graphicSpec.objects.text, labels);
   const resized = p.editCanvas({ width: 540 });
   for (const [index, label] of resized.graphicSpec.objects.text.items.entries()) {

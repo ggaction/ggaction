@@ -1,8 +1,12 @@
+import { statisticalReferencePositions } from "../../../grammar/statisticalReference.js";
+import { findLayer } from "../../../selectors/layers.js";
 import { validatePositionSource } from "../../../grammar/positionPolicies/source.js";
+import { assertProgramSingleY } from "../../../materialization/frameState.js";
+import { positionBindings } from "../../../core/encodingBindings.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
-import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
+import { readAreaEndpoint, normalizeAreaBound } from "../../../grammar/areaEndpoints.js";
 import { readLinePosition } from "../../../grammar/lineMissing.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
@@ -18,7 +22,7 @@ import {
 } from "../../../grammar/scales/index.js";
 import { applyRequestedItemMissingPolicy } from
   "../../../grammar/itemMissing.js";
-import { resolvePositionScaleDefinition } from "../../scales/definitions.js";
+import { resolvePositionScaleDefinition, resolvePositionScaleId } from "../../scales/definitions.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import {
   resolveReassignmentScaleOptions,
@@ -46,6 +50,148 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "aggregate", "bin", "stack", "weight", "temporalUnit", "mapping"
 ]);
 
+// Admission reads the final semantic assignment, including the guide move and
+// removal of detached plot intent, before any wrapped child can expose it.
+export function isPositionEncodingEntry(program) {
+  return program.actionStack.length === 1 && ["encodeX", "encodeY"].includes(program.trace.children.at(-1)?.op);
+}
+
+export function assertPositionEncodingFrame(program, channel, plans) {
+  if (!["x", "y"].includes(channel)) return;
+  // Aggregate authors may deliberately assign a temporary scale before storing
+  // normalized plot intent. Their final candidate has its own admission guard.
+  if (!isPositionEncodingEntry(program)) return;
+  assertProgramSingleY(previewPositionEncodingFrame(program, channel, plans), { allowIncomplete: true });
+}
+
+// Pure proposal shared by direct encoders and the facade which owns a complete
+// pair. A facade validates the pair once, before creating its first mark.
+export function previewPositionEncodingFrame(program, channel, plans, { previousLayer } = {}) {
+  const { layer, coordinate } = plans[0];
+  if (plans.some(plan => plan.coordinate.id !== coordinate.id || plan.coordinate.type !== coordinate.type)) {
+    throw new Error("Conditional positions must share one coordinate.");
+  }
+  const encoding = { ...layer.encoding };
+  const conditionals = { ...layer.conditionals };
+  const derivedBindings = { ...layer.derivedBindings };
+  for (const kind of ["plotSnapshot", "plotAnchor"]) {
+    if (derivedBindings[kind]?.[channel] === undefined) continue;
+    const { [channel]: removed, ...rest } = derivedBindings[kind];
+    void removed;
+    if (Object.keys(rest).length) derivedBindings[kind] = rest;
+    else delete derivedBindings[kind];
+  }
+  const values = plans.map(plan => ({ ...(plan.hasField ? { field: plan.field } : { datum: plan.datum }),
+    fieldType: plan.fieldType, scale: plan.scale.id,
+    ...Object.fromEntries(["aggregate", "bin", "stack", "weight", "temporalUnit"].filter(key =>
+      plan[key] !== undefined).map(key => [key, plan[key]])) }));
+  if (plans.length === 1) {
+    encoding[channel] = values[0];
+    delete conditionals[channel];
+  } else {
+    delete encoding[channel];
+    // The frame policy examines every binding, independently of predicate values.
+    conditionals[channel] = { conditions: values.slice(0, -1).map(value => ({ value })), otherwise: values.at(-1) };
+  }
+  const updated = { ...layer, encoding, conditionals, derivedBindings, coordinate: coordinate.id };
+  const oldScales = new Set(positionBindings(previousLayer ?? layer, channel).map(value => value.scale));
+  const nextScales = new Set(values.map(value => value.scale));
+  const axis = Object.fromEntries(Object.entries(program.semanticSpec.guides.axis ?? {}).map(([id, guide]) =>
+    [id, (guide.channel ?? id) === channel && oldScales.has(guide.scale) && nextScales.size === 1
+      ? { ...guide, scale: values[0].scale } : guide]));
+  const scales = new Map(program.semanticSpec.scales.map(scale => [scale.id, scale]));
+  for (const plan of plans) scales.set(plan.scale.id, plan.scale);
+  return { ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs, semanticSpec: { ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(value => {
+      if (value.id === layer.id) return updated;
+      const reference = program.markConfigs[value.id]?.statisticalReference;
+      if (reference?.source !== layer.id) return value;
+      const positions = statisticalReferencePositions(updated, reference);
+      const nextEncoding = { ...value.encoding };
+      for (const axis of ["x", "y", "x2", "y2"]) {
+        if (!Object.hasOwn(positions, axis)) delete nextEncoding[axis];
+        else {
+          const { datum: ignored, ...retained } = nextEncoding[axis] ?? {};
+          void ignored;
+          nextEncoding[axis] = { ...retained, ...positions[axis] };
+        }
+      }
+      return { ...value, coordinate: updated.coordinate, encoding: nextEncoding };
+    }),
+    coordinates: findCoordinate(program, coordinate.id) === undefined
+      ? [...program.semanticSpec.coordinates, coordinate] : program.semanticSpec.coordinates,
+    scales: [...scales.values()], guides: { ...program.semanticSpec.guides, axis }
+  } };
+}
+
+// Resolve an aggregate's complete ordered position proposal before its first
+// child. The source dataset is real; ranged endpoints retain their shared scale.
+export function previewPositionSequence(program, layer, dataset, positions, { coordinate, plotAnchor } = {}) {
+  let candidate = { ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs,
+    semanticSpec: { ...program.semanticSpec, layers: findLayer(program, layer.id) !== undefined
+      ? program.semanticSpec.layers.map(value => value.id === layer.id ? layer : value)
+      : [...program.semanticSpec.layers, layer] } };
+  for (const [channel, options] of positions) {
+    const current = findLayer(candidate, layer.id);
+    const ranged = Object.hasOwn(options, "lower");
+    const { lower, upper, ...rest } = options;
+    const primary = ranged ? { ...rest, ...normalizeAreaBound(lower) } : options;
+    const plan = resolveLayerPositionEncoding(candidate, channel,
+      { ...primary, target: layer.id, ...(coordinate === undefined ? {} : { coordinate }) },
+      `encode${channel.toUpperCase()}`, current, dataset);
+    candidate = previewPositionEncodingFrame(candidate, channel, [plan]);
+    if (ranged) {
+      const secondary = { ...normalizeAreaBound(upper), fieldType: plan.fieldType, scale: plan.scale.id };
+      candidate = { ...candidate, semanticSpec: { ...candidate.semanticSpec,
+        layers: candidate.semanticSpec.layers.map(value => value.id === layer.id
+          ? { ...value, encoding: { ...value.encoding, [`${channel}2`]: secondary } } : value) } };
+    }
+  }
+  if (plotAnchor !== undefined) candidate = { ...candidate, semanticSpec: { ...candidate.semanticSpec,
+    layers: candidate.semanticSpec.layers.map(value => value.id === layer.id
+      ? { ...value, derivedBindings: { ...value.derivedBindings, plotAnchor } } : value) } };
+  return candidate;
+}
+
+// Native statistical owners provide final field/type/scale bindings before
+// their derived data exists. This frame view does not evaluate data or graphics.
+// Bulk assignment needs the final resource identities before its existing
+// deferred materialization draft runs. The request owner is also used by the
+// ordinary resolver; values/domains remain validated by that ordinary path.
+export function previewPositionIdentityFrame(program, layer, channel, payloads, options) {
+  const plans = payloads.map(args => {
+    const requested = resolvePositionScaleRequest(layer, channel, args);
+    const id = resolvePositionScaleId(channel, requested);
+    return { layer, coordinate: resolvePositionCoordinate(program, channel, layer, args.coordinate),
+      scale: { ...findSemanticScale(program, id), id }, hasField: Object.hasOwn(args, "field"),
+      field: args.field, datum: args.datum, fieldType: args.fieldType ?? layer.encoding?.[channel]?.fieldType ?? "quantitative" };
+  });
+  return previewPositionEncodingFrame(program, channel, plans, options);
+}
+
+function resolvePositionScaleRequest(layer, channel, args) {
+  return resolveReassignmentScaleOptions(layer.encoding?.[channel], Object.hasOwn(args, "scale") ? args.scale : {});
+}
+
+export function previewNativePositionFrame(program, layer, requestedCoordinate, bindings) {
+  const coordinate = resolvePositionCoordinate(program, "y", layer, requestedCoordinate);
+  const encoding = { ...layer.encoding };
+  for (const [channel, value] of Object.entries(bindings)) {
+    const { scale, coordinate: ignored, ...binding } = value;
+    void ignored;
+    encoding[channel] = { ...binding, scale: resolvePositionScaleId(channel.endsWith("2") ? channel[0] : channel, scale) };
+  }
+  const updated = { ...layer, coordinate: coordinate.id, encoding };
+  const exists = findLayer(program, layer.id) !== undefined;
+  return { ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs,
+    semanticSpec: { ...program.semanticSpec,
+      layers: exists ? program.semanticSpec.layers.map(value => value.id === layer.id ? updated : value)
+        : [...program.semanticSpec.layers, updated],
+      coordinates: findCoordinate(program, coordinate.id) === undefined
+        ? [...program.semanticSpec.coordinates, coordinate] : program.semanticSpec.coordinates
+    } };
+}
+
 function inferDatumFieldType(datum, operation) {
   if (Number.isFinite(datum)) return "quantitative";
   if (isNominalValue(datum)) return "nominal";
@@ -65,7 +211,7 @@ function validateCoordinateFamily(layer, channel, operation) {
   }
 }
 
-function resolveCoordinate(program, channel, layer, requestedId) {
+export function resolvePositionCoordinate(program, channel, layer, requestedId) {
   const defaults = getPositionCoordinateDefaults(channel);
   const existingId = layer.coordinate;
   if (requestedId !== undefined) validateUserId(requestedId, "Coordinate id");
@@ -97,11 +243,20 @@ function resolveCoordinate(program, channel, layer, requestedId) {
 export function resolvePositionEncoding(program, channel, args, operation) {
   validateOptions(args, POSITION_ENCODING_OPTIONS, operation);
   validatePositionChannel(channel);
-  const { id: target, dataset: sourceDataset, layer } = resolveTarget(
+  const { dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
     getPositionChannelDefinition(channel).markTypes
   );
+  return resolveLayerPositionEncoding(program, channel, args, operation, layer, sourceDataset);
+}
+
+// A new facade layer has no graphics yet; it uses exactly the same semantic
+// policy and scale resolution as a stored mark, with its real source dataset.
+export function resolveLayerPositionEncoding(program, channel, args, operation, layer, sourceDataset) {
+  validateOptions(args, POSITION_ENCODING_OPTIONS, operation);
+  validatePositionChannel(channel);
+  const target = layer.id;
   const previous = layer.encoding?.[channel];
   if (isSourceOwnedText(layer)) {
     throw new Error(`${operation} cannot replace source-owned Text positions; edit the source, use dx/dy, or create independent Text with data.`);
@@ -202,10 +357,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   const aggregateOutput = isAggregate(policy.aggregate) && !(
     layer.mark.type === "arc" && channel === "theta"
   );
-  const requestedScale = resolveReassignmentScaleOptions(
-    previous,
-    Object.hasOwn(args, "scale") ? args.scale : {}
-  );
+  const requestedScale = resolvePositionScaleRequest(layer, channel, args);
   const resolvedScale = resolvePositionScaleDefinition(
     program,
     channel,
@@ -321,7 +473,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     fieldType,
     temporalUnit,
     scale,
-    coordinate: resolveCoordinate(program, channel, layer, args.coordinate),
+    coordinate: resolvePositionCoordinate(program, channel, layer, args.coordinate),
     clearRadialMapping,
     ...policy
   };

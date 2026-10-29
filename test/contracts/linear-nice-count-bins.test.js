@@ -51,7 +51,7 @@ test("histogram facade, axis inference, edits and persistence share the rounded 
 test("binned aggregate line and shared bar reuse the same unchanged boundaries", () => {
   const program = histogram().createLinePlot({ id: "counts",
     x: { field: "value", bin: { boundaries }, scale: { id: "x" } },
-    y: { field: "value", aggregate: "count", scale: { id: "countsY" } }, guides: false });
+    y: { field: "value", aggregate: "count", scale: { id: "y" } }, guides: false });
   assert.deepEqual(program.resolvedScales.x.domain, [0, 110]);
   assert.deepEqual(inferHistogramBoundaries(program, "x", "x"), boundaries);
   assert.equal(program.graphicSpec.objects.counts.items.length, 1);

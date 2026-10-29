@@ -791,3 +791,13 @@ Evidence: `test/unit/actions/composition/nested-responsive-layout.test.js`,
 `facet-resource-projection.test.js`, `test/charts/nested-responsive/`, and
 `test/browser/nested-responsive.browser.js`. No new authoring options or persisted
 schema were introduced by this closure.
+
+
+### Shared positions during native construction
+
+`createLayerPlot`의 ECDF probability/value 위치는 outer plan이 확정한 기존 scale IDs를
+native constructor의 실제 encoding과 사전검사에서 함께 사용한다. 임시 독립 Y scale을
+만들었다가 나중에 교체하지 않는다. ECDF edit도 현재 resolved scale identity를 보존한다.
+이 private argument scope는 중첩·성공·실패에서 만료하며 public option/codec에는 들어가지 않는다.
+Precomputed Interval의 위치 의미는 명시 center field에서 읽고 기존 lower/upper roles와
+같은 axis scale을 공유한다. 이 경우에도 x/y scale options의 기존 공개 위치는 바뀌지 않는다.

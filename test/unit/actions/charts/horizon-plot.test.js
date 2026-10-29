@@ -103,7 +103,7 @@ test("attaches explicit coordinates and applies opacity after Horizon encoding",
 
 test("retains lower folded-guide escape and reuses compatible facade x guides", () => {
   const p = base().createHorizonPlot({ x: "time", y: "value" });
-  const next = p.createHorizonPlot({ id: "second", data: "source", x: "time", y: { field: "value", scale: { id: "foldedSecond" } } });
+  const next = p.createHorizonPlot({ id: "second", data: "source", x: "time", y: { field: "value", scale: { id: "horizonPlotHorizonAmplitude" } } });
   assert.deepEqual(next.guideConfigs, p.guideConfigs);
   const escaped = p.createYAxis({ scale: p.semanticSpec.layers[0].encoding.y.scale })
     .createLegend({ target: "horizonPlot" });

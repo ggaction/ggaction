@@ -938,7 +938,7 @@ function buildHierarchicalAuthoringActions(factors) {
     .createViolinPlot({
       id: "authoringViolins",
       data: "violinSource",
-      coordinate: "authoringViolinCoordinate",
+      coordinate: "main",
       x: {
         field: "category",
         fieldType: "nominal",
@@ -947,7 +947,7 @@ function buildHierarchicalAuthoringActions(factors) {
       y: {
         field: "value",
         fieldType: "quantitative",
-        scale: { id: "authoringViolinY", zero: false }
+        scale: { id: "authoringY", zero: false }
       },
       split: { field: "split" },
       color: { field: "split" },

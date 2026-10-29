@@ -1,0 +1,1 @@
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;

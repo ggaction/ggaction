@@ -2,6 +2,9 @@
 
 ## Shared contract
 
+Creation and statistical role edits apply the [single-Y frame preflight](AXES.md#single-y-per-cartesian-frame) before changing scales, marks, or derived data.
+Evidence: `test/unit/single-y-aggregate-admission.test.js`.
+
 Gradient plots belong to the same positional family as box plots. Exactly one of `x` and `y` is categorical and the other is
 quantitative. The categorical role determines strip orientation. Explicit options win over uniquely inferable encoded state,
 then documented defaults apply. Ambiguous state is rejected.

@@ -137,7 +137,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 export type ImageMimeType = "image/png" | "image/jpeg" | "image/webp" | "image/svg+xml";
 export interface ConcreteImage {
   readonly contentHash: string;
@@ -1525,7 +1526,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 export type ScalarAggregateOperation =
   | "count" | "sum" | "mean" | "median" | "min" | "max"
   | "distinct" | "valid" | "missing"
@@ -2069,6 +2071,132 @@ export interface CalendarLabelPaint {
   readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
 }
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+/** A Table preserves source rows; sorting and rowLimit affect only cell presentation. */
+export interface TableCellPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface TableLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface TableBandPaint { readonly fill?: FillPaint; readonly color?: FillPaint; readonly fontWeight?: string | number; }
+export type TableSparklinePaint = Pick<TableCellPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+export interface TableFooterOptions {
+  readonly op: ScalarAggregateOperation; readonly missing?: "drop" | "error"; readonly empty?: "null" | "identity"; readonly format?: string;
+}
+export type TableSparklineCell = {
+  readonly type: "sparkline"; readonly x: string; readonly y: string;
+  readonly xDomain?: readonly [number, number]; readonly curve?: CurveInterpolation;
+  readonly tension?: number; readonly missing?: "error" | "break";
+} & ({ readonly xType?: "quantitative"; readonly temporalUnit?: never } |
+  { readonly xType: "temporal"; readonly temporalUnit?: "year" | "timestamp" }) &
+  ({ readonly resolveY?: "shared"; readonly yDomain?: readonly [number, number] } |
+   { readonly resolveY: "independent"; readonly yDomain?: never });
+export type TableColumn = string | {
+  readonly key?: RowKey; readonly field: string; readonly label?: string; readonly format?: string; readonly missingText?: string;
+  readonly width?: number | "auto"; readonly align?: "left" | "center" | "right"; readonly wrap?: false | "word" | "character";
+} & ({ readonly cell?: "text" | "bar" | { readonly type: "text" } | { readonly type: "bar"; readonly domain?: readonly [number, number] };
+       readonly footer?: false | ScalarAggregateOperation | TableFooterOptions } |
+     { readonly cell: TableSparklineCell; readonly footer?: false | "count" | (Omit<TableFooterOptions, "op"> & { readonly op: "count" }) });
+export interface CreateTablePlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly columns: readonly TableColumn[];
+  readonly sortBy?: readonly SortKey[] | false; readonly rowLimit?: number | false;
+  readonly rowHeight?: number; readonly padding?: number; readonly header?: boolean; readonly clip?: boolean;
+  readonly cells?: TableCellPaint; readonly labels?: TableLabelPaint; readonly headerStyle?: TableBandPaint; readonly footerStyle?: TableBandPaint;
+  readonly bars?: TableCellPaint; readonly sparklines?: TableSparklinePaint; readonly color?: false | PyramidColor;
+}
+export type EditTablePlotOptions = { readonly target?: string } & Partial<Omit<CreateTablePlotOptions, "id">>;
+
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+export type WaterfallColor = OHLCColor;
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
 export interface CalendarPlotOptions {
   readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
   readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -2106,20 +2234,27 @@ export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
 export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
 export type GeometryFeatureKey = string | readonly string[];
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 export interface GeometrySourceResource {
   readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly [];
   readonly options: { readonly method: "geo"; readonly format: "geojson" | "topojson"; readonly coordinateKind: "geographic" | "planar";
-    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits> };
+    readonly featureKey?: readonly string[]; readonly topoObject?: string; readonly limits: Required<GeometryLimits>;
+    readonly polygonWinding?: "right-hand" | "left-hand" };
   readonly result: {
     readonly features: readonly { readonly id?: string | number; readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
       readonly geometry: GeographicGeometry | null; readonly sourcePath: readonly (string | number)[]; readonly drawable: boolean }[];
@@ -2505,7 +2640,7 @@ export interface SemanticLayer {
   readonly coordinate?: string;
   readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "multiply" | "screen" | "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
-  readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }>;
+  readonly derivedBindings?: Readonly<{ plotAnchor?: Readonly<{ x?: number; y?: number }>; plotSnapshot?: Readonly<{ x?: string; y?: string }>; regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }>;
     overlay?: Readonly<{ source: string; basis: "visibleItems"; mode: "follow"; series: "source" | "total";
       missing: "break" | "connect"; orderBy?: "x" | "y"; inheritColor: boolean }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
@@ -2604,6 +2739,23 @@ export interface GraphicClipPath {
   readonly fillRule?: PathFillRule;
 }
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
+export interface GraphicBlendSource {
+  readonly weight: number;
+  readonly type: Exclude<GraphicType, "canvas" | "collection" | "weighted-blend">;
+  readonly properties: Readonly<Record<string, unknown>>;
+  readonly offset: readonly [number, number];
+  /** Source viewport and further clips use the group's local coordinate frame. */
+  readonly clip: GraphicClipRect;
+  readonly clips: readonly GraphicClip[];
+}
+export interface GraphicWeightedBlendProperties {
+  /** Two through 64 sources; finite non-negative weights sum to one. */
+  readonly sources: readonly [GraphicBlendSource, GraphicBlendSource, ...GraphicBlendSource[]];
+  readonly opacity?: number;
+  readonly blend?: BlendMode;
+}
 
 export interface GraphicObject {
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */
@@ -4476,7 +4628,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
@@ -4503,7 +4655,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type BarColorChannel =
   | BarCategoricalColorChannel
@@ -5077,7 +5229,7 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 );
 
 export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
-export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center" | "wiggle">; }
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
   | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
@@ -5091,16 +5243,25 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 
 interface LinePlotCommonOptions {
   id?: string;
@@ -6685,6 +6846,16 @@ export class ChartProgram {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTablePlot(options: TargetedOptions<CreateTablePlotOptions>): ChartProgram;
+  editTablePlot(options: TargetedOptions<EditTablePlotOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;

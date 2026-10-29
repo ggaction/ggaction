@@ -375,6 +375,16 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editGeoAnnotation`](current/GEOMETRY.md#editgeoannotation) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGraticule`](current/GEOMETRY.md#creategraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGraticule`](current/GEOMETRY.md#editgraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPyramidPlot`](current/PYRAMID.md#createpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPyramidPlot`](current/PYRAMID.md#editpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createOHLCPlot`](current/OHLC.md#createohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editOHLCPlot`](current/OHLC.md#editohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createWaterfallPlot`](current/WATERFALL.md#createwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editWaterfallPlot`](current/WATERFALL.md#editwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTrailPlot`](current/TRAIL.md#createtrailplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTrailPlot`](current/TRAIL.md#edittrailplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTablePlot`](current/TABLE.md#createtableplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTablePlot`](current/TABLE.md#edittableplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

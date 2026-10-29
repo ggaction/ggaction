@@ -1,0 +1,4 @@
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};

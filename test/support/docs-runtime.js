@@ -34,6 +34,8 @@ export function documentationEnvironment(example, data) {
   const canvas = createCanvas(1, 1);
   eventsFor(canvas);
   canvas.style = {};
+  const attributes = controlElement("canvas");
+  for (const method of ["setAttribute", "getAttribute", "removeAttribute"]) canvas[method] = attributes[method].bind(attributes);
   canvas.before = element => assert.ok(element.nodeType === 1, "Expected a documented control element");
   canvas.setPointerCapture = canvas.releasePointerCapture = () => assert.fail("Capture requires a browser test");
   canvas.ownerDocument = { defaultView: eventsFor({

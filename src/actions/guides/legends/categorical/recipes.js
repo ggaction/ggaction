@@ -48,7 +48,7 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   if (requested !== undefined && requested !== "auto") return requested;
   const config = program.markConfigs[layer.id] ?? {};
   const bar = config.barAppearance ?? {};
-  const styleOwner = layer.mark.type === "bar" ? bar : layer.mark.type === "geo" ? config.geo : config;
+  const styleOwner = layer.mark.type === "bar" ? bar : layer.mark.type === "table" ? config.tablePlot.cells : layer.mark.type === "pyramid" ? config.pyramidPlot.stages : layer.mark.type === "ohlc" ? config.ohlcPlot.body : layer.mark.type === "waterfall" ? config.waterfallPlot.bars : layer.mark.type === "geo" ? config.geo : layer.mark.type === "trail" ? config.trailPlot.body : config;
   const outline = styleOwner.outline;
   const strokeDetails = {
     ...requestedStrokeDetails(styleOwner, "Legend source"),

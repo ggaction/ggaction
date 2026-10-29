@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "floors": {
+    "grammar/cells.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}

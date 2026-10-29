@@ -1,3 +1,5 @@
+import { assertAxisFrame } from "./axes/frame.js";
+import { previewAxesFrame } from "./axes/axes.js";
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -155,6 +157,9 @@ const createGuides = /* @__PURE__ */ action(
       throw new Error("createGuides requires at least one selected guide.");
     }
 
+    if (axes !== undefined && !(args.axes === undefined && hasStoredGuideCollection(this, "axis"))) {
+      assertAxisFrame(previewAxesFrame(this, axes));
+    }
     let next = this;
     if (
       axes !== undefined &&

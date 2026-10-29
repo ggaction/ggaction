@@ -1,5 +1,13 @@
 import { resolveTarget } from '../shared.js';
 import { findDataset, requireDataset } from '../../../selectors/datasets.js';
+import { deriveCompleteRows, normalizeCompleteTransform } from '../../../grammar/complete.js';
+import { withPreviewDerivedDataset, withPreviewLayerData } from '../../primitives/semanticAction.js';
+import { assertPositionEncodingFrame, isPositionEncodingEntry, resolvePositionEncoding } from './resolve.js';
+
+function preflightAlignedPosition(program, layer, data, channel, args) {
+  const view = withPreviewLayerData(program, { id: layer.id, data });
+  assertPositionEncodingFrame(view, channel, [resolvePositionEncoding(view, channel, args, channel === 'x' ? 'encodeX' : 'encodeY')]);
+}
 
 // Completed-key data is tied to one independent coordinate. Its generated
 // rows are not observations and must never be reused as a different measure.
@@ -13,6 +21,7 @@ export function rebindAlignedAreaPosition(program, channel, args) {
   const complete = dataset?.transform?.length === 1 && dataset.transform[0].type === 'complete' ? dataset.transform[0] : undefined;
   if (!complete || complete.key !== layer.encoding[channel]?.field || args.field === complete.key) return program;
   if (!layer.layout?.mode || layer.layout.mode === 'overlay') {
+    if (isPositionEncodingEntry(program)) preflightAlignedPosition(program, layer, dataset.source, channel, args);
     return program.rebindLayerData({ id: layer.id, data: dataset.source });
   }
   const measureChannel = channel === 'x' ? 'y' : 'x';
@@ -34,6 +43,12 @@ export function rebindAlignedAreaPosition(program, channel, args) {
   let id = stem;
   for (let index = 2; ids.has(id); index++) id = `${stem}${index}`;
   const fill = Object.fromEntries(Object.entries(complete.fill).filter(([field]) => field !== args.field));
+  if (isPositionEncodingEntry(program)) {
+    const transform = normalizeCompleteTransform({ key: args.field, groupBy: complete.groupBy, fill });
+    const preview = withPreviewDerivedDataset(program, { id, source: dataset.source, transform,
+      values: deriveCompleteRows(source.values, transform) });
+    preflightAlignedPosition(preview, layer, id, channel, args);
+  }
   let next = program.createCompleteData({ id, source: dataset.source, key: args.field, groupBy: complete.groupBy, fill });
   next = next.rebindLayerData({ id: layer.id, data: id });
   return next._withMarkConfig(layer.id, { ...next.markConfigs[layer.id], alignedPositionData: [

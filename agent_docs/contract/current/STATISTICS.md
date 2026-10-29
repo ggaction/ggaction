@@ -416,6 +416,7 @@ without naming generated child layers.
 - `stroke`, `strokeWidth`: Implemented optional area outline. Width default는 `1`이며 stroke 없이 width만
   지정할 수 없다.
 - `curve`: Implemented shared area curve vocabulary이며 기본값은 `"linear"`다.
+- The native interval position plan must satisfy the [single-Y frame preflight](AXES.md#single-y-per-cartesian-frame) before the first `createErrorBand` child. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - Effect: regression provenance와 fields/grouping을 검증한 뒤 wrapped `createErrorBand` explicit mode에
   area, x, y/y2, group과 curve materialization을 위임한다. Generic explicit title은 제거해 기존 regression
   semantic output을 보존하고 optional outline은 wrapped `editAreaMark`로 적용한다.
@@ -451,6 +452,7 @@ without naming generated child layers.
 - `coordinate`, `xScale`, `yScale`: 필수 shared resource IDs.
 - `strokeWidth`: non-negative finite number, 기본값 `3`.
 - `curve`: Implemented shared curve interpolation이며 기본값 `"linear"`다.
+- The final x/y proposal must satisfy the [single-Y frame preflight](AXES.md#single-y-per-cartesian-frame) before the first mark child. Evidence: `test/unit/single-y-aggregate-admission.test.js`.
 - Effect: line mark와 x/y, optional color/group encoding을 만들고 fitted paths를 materialize한다.
 - Coverage: regression unit/chart tests가 grouped/ungrouped와 shared resource 결과를 검증하며
   direct invalid combination matrix는 부분적이다.

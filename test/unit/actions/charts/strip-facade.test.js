@@ -29,6 +29,7 @@ test("creates a one-measure Strip with a constant center slot", () => {
       target: "strip", datum: 0.5, fieldType: "quantitative",
       scale: { id: "stripAnchor", domain: [0, 1], zero: false, nice: false }
     })
+    .editSemantic({ property: "layer[strip].derivedBindings.plotAnchor", value: { y: 0.5 } })
     .encodePointRadius({ target: "strip", value: 4 });
   assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
   assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);

@@ -217,6 +217,26 @@ function cleanupPositionGuides(program, scales) {
   return next;
 }
 
+// Frame-only proposal for native facade replacement. Share ownership and
+// orphan-axis rules with removeMark; no state, graphics, or children are made.
+export function previewMarkRemovalFrame(program, root) {
+  const ids = collectClosure(program, root);
+  const scales = usedPositionScales(program, ids);
+  const axis = { ...program.semanticSpec.guides.axis };
+  const configs = { ...program.guideConfigs.axis };
+  const candidate = { ...program, markConfigs: Object.fromEntries(Object.entries(program.markConfigs).filter(([id]) => !ids.includes(id))),
+    guideConfigs: { ...program.guideConfigs, axis: configs },
+    semanticSpec: { ...program.semanticSpec,
+      layers: program.semanticSpec.layers.filter(layer => !ids.includes(layer.id)),
+      guides: { ...program.semanticSpec.guides, axis } } };
+  for (const owner of cartesianAxisOwners(candidate)) {
+    if (scales[owner.channel].has(owner.scale) && !hasScaleConsumer(candidate, owner.channel, owner.scale)) {
+      delete axis[owner.id]; delete configs[owner.id];
+    }
+  }
+  return candidate;
+}
+
 export const removeMark = /* @__PURE__ */ closedAction(
   { op: "removeMark", description: "Remove one stable mark owner and owned state." }, OPTIONS,
   function (args = {}) {

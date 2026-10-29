@@ -151,10 +151,10 @@ test("inactive incompatible slots reject point layout atomically", () => {
 
 
 test("stored packing revalidates all opposite-axis branch types on later encoding edits", () => {
-  const original = conditional().packPoints({ channel: "x", key: "id" });
+  const original = base().encodeX(y).encodeY(x).packPoints({ channel: "y", key: "id" });
   const saved = serializeProgram(original);
-  assert.throws(() => original.encodeY({ conditions: [{ when: expression({ type: "literal", value: false }),
-    value: { field: "left", fieldType: "nominal", scale: { id: "wrongY" } } }], otherwise: measure("value") }), /quantitative or temporal opposite position/);
+  assert.throws(() => original.encodeX({ conditions: [{ when: expression({ type: "literal", value: false }),
+    value: { field: "left", fieldType: "nominal", scale: { id: "wrongX" } } }], otherwise: measure("value") }), /quantitative or temporal opposite position/);
   assert.equal(serializeProgram(original), saved);
 });
 

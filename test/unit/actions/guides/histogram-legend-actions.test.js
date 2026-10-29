@@ -159,7 +159,7 @@ test("validates histogram targets, channels, layout, and recipes", () => {
     .encodeHistogram({
       field: "value",
       xScale: { id: "otherX" },
-      yScale: { id: "otherY" }
+      yScale: { id: "y" }
     })
     .encodeColor({
       field: "origin",

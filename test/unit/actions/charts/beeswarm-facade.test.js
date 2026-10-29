@@ -66,10 +66,10 @@ test("supports the horizontal orientation and explicit packing omission", () => 
   );
 });
 
-test("isolates default scales while preserving explicit scale ids", () => {
+test("isolates default X scales while preserving an explicit shared Y identity", () => {
   const program = base()
     .createBeeswarmPlot({
-      id: "first", x: { field: "category", fieldType: "nominal" }, y: "value",
+      id: "first", x: { field: "category", fieldType: "nominal" }, y: { field: "value", scale: { id: "sharedValue" } },
       packing: false, guides: false
     })
     .createBeeswarmPlot({
@@ -80,7 +80,7 @@ test("isolates default scales while preserving explicit scale ids", () => {
     });
   assert.deepEqual(program.semanticSpec.layers.map(layer => [
     layer.encoding.x.scale, layer.encoding.y.scale
-  ]), [["firstX", "firstY"], ["sharedCategory", "sharedValue"]]);
+  ]), [["firstX", "sharedValue"], ["sharedCategory", "sharedValue"]]);
 });
 
 test("rejects role and packing mistakes without changing the source program", () => {

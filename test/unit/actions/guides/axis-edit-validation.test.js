@@ -52,7 +52,7 @@ for (const channel of ["X", "Y"]) test(`${channel}-axis grouped edits reject ori
   }
 });
 test("explicit named owner validation cannot be replaced by another axis or normalized options", () => {
-  const p = base().createYAxis({ id: "alternate", scale: "y", position: "right", title: false });
+  const p = base().editYAxis({ visible: false }).createYAxis({ id: "alternate", scale: "y", position: "right", title: false });
   const before = serializeProgram(p), args = { target: "alternate", ticksAndLabels: { labels: { colorMap: undefined } } };
   assert.throws(() => p.editYAxis(args), /colorMap/);
   assert.throws(() => p.editYAxis({ ...args, target: "missing" }), /Unknown y-axis target/);

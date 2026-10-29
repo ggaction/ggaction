@@ -6644,6 +6644,186 @@
         "file": "agent_docs/contract/current/GEOMETRY.md",
         "anchor": "editgraticule"
       }
+    },
+    {
+      "name": "createPyramidPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPyramidPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PYRAMID.md",
+        "anchor": "createpyramidplot"
+      }
+    },
+    {
+      "name": "editPyramidPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPyramidPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PYRAMID.md",
+        "anchor": "editpyramidplot"
+      }
+    },
+    {
+      "name": "createOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editOHLCPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OHLC.md",
+        "anchor": "createohlcplot"
+      }
+    },
+    {
+      "name": "editOHLCPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editOHLCPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OHLC.md",
+        "anchor": "editohlcplot"
+      }
+    },
+    {
+      "name": "createWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editWaterfallPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/WATERFALL.md",
+        "anchor": "createwaterfallplot"
+      }
+    },
+    {
+      "name": "editWaterfallPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editWaterfallPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/WATERFALL.md",
+        "anchor": "editwaterfallplot"
+      }
+    },
+    {
+      "name": "createTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "createtrailplot"
+      }
+    },
+    {
+      "name": "editTrailPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTrailPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TRAIL.md",
+        "anchor": "edittrailplot"
+      }
+    },
+    {
+      "name": "createTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "createtableplot"
+      }
+    },
+    {
+      "name": "editTablePlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTablePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/TABLE.md",
+        "anchor": "edittableplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -6740,7 +6920,12 @@
       "materializeContourMark",
       "materializeSelectionPreview",
       "materializeCalendarPlot",
-      "materializeGeoMark"
+      "materializeGeoMark",
+      "materializePyramidPlot",
+      "materializeOHLCPlot",
+      "materializeWaterfallPlot",
+      "materializeTrailPlot",
+      "materializeTablePlot"
     ],
     "guideComponents": [
       "createLegendBackground",
@@ -6779,7 +6964,12 @@
       "useProgram",
       "filterGraphPlotView",
       "restoreGraphPlotView",
-      "refreshScreenEdgeRoutes"
+      "refreshScreenEdgeRoutes",
+      "applyPyramidMark",
+      "applyOHLCMark",
+      "applyWaterfallMark",
+      "applyTrailMark",
+      "applyTableMark"
     ],
     "aggregateComponents": [
       "createBoxMedian",

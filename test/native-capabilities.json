@@ -1,0 +1,3324 @@
+{
+  "schemaVersion": 1,
+  "scope": "native",
+  "requirements": [
+    {
+      "id": "USR-01",
+      "description": "Icicle and Sunburst unified partition",
+      "groups": [
+        "AT-62",
+        "AT-63",
+        "AT-64"
+      ]
+    },
+    {
+      "id": "USR-02",
+      "description": "Partition focus, interaction and coordinate animation",
+      "groups": [
+        "AT-65"
+      ]
+    },
+    {
+      "id": "USR-05",
+      "description": "kNN inference and symmetrization",
+      "groups": [
+        "AT-70"
+      ]
+    },
+    {
+      "id": "USR-06",
+      "description": "Radius and similarity inference with metrics",
+      "groups": [
+        "AT-71"
+      ]
+    },
+    {
+      "id": "USR-07",
+      "description": "MST, forest, group and sequence rules",
+      "groups": [
+        "AT-72"
+      ]
+    },
+    {
+      "id": "USR-08",
+      "description": "Inference determinism, exactness, provenance and lifecycle",
+      "groups": [
+        "AT-73",
+        "AT-74"
+      ]
+    },
+    {
+      "id": "USR-09",
+      "description": "Hierarchical edge bundling",
+      "groups": [
+        "AT-75",
+        "AT-76"
+      ]
+    },
+    {
+      "id": "USR-10",
+      "description": "Force-directed edge bundling",
+      "groups": [
+        "AT-75",
+        "AT-77"
+      ]
+    },
+    {
+      "id": "USR-11",
+      "description": "Density/KDE bundling",
+      "groups": [
+        "AT-75",
+        "AT-78"
+      ]
+    },
+    {
+      "id": "USR-12",
+      "description": "Edge-path bundling",
+      "groups": [
+        "AT-75",
+        "AT-79"
+      ]
+    },
+    {
+      "id": "USR-13",
+      "description": "Bundled edge hit/interaction/animation/geo/export/performance",
+      "groups": [
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ]
+    },
+    {
+      "id": "USR-14",
+      "description": "Pyramid naming and preserved stage geometry; external aliases reference-only",
+      "groups": [
+        "AT-83"
+      ]
+    },
+    {
+      "id": "USR-15",
+      "description": "Marginal/Bullet/Combo composition without dedicated public API",
+      "groups": [
+        "AT-84"
+      ]
+    },
+    {
+      "id": "USR-16",
+      "description": "No multiple Y scales or guides in one frame",
+      "groups": [
+        "AT-85",
+        "AT-86"
+      ]
+    },
+    {
+      "id": "USR-17",
+      "description": "KPI/Gauge dedicated support excluded; native docs/catalog reflect scope",
+      "groups": [
+        "AT-87"
+      ]
+    },
+    {
+      "id": "USR-18",
+      "description": "Native scope policy and reference-only external audit rows",
+      "groups": [
+        "AT-88",
+        "AT-91"
+      ]
+    },
+    {
+      "id": "USR-19",
+      "description": "New domain resource persistence and installed package",
+      "groups": [
+        "AT-89"
+      ]
+    },
+    {
+      "id": "USR-20",
+      "description": "Human and agent docs and full revised release gate",
+      "groups": [
+        "AT-90",
+        "AT-91"
+      ]
+    },
+    {
+      "id": "USR-21",
+      "description": "Native design independence without upstream conformance or backend integration obligations",
+      "groups": [
+        "AT-92"
+      ]
+    },
+    {
+      "id": "USR-22",
+      "description": "Translation and reference corpus parity remain outside native qualification",
+      "groups": [
+        "AT-92"
+      ]
+    },
+    {
+      "id": "GGA-01",
+      "description": "Native semantic data and chart composition",
+      "groups": [
+        "AT-08",
+        "AT-16",
+        "AT-17",
+        "AT-18",
+        "AT-20",
+        "AT-26",
+        "AT-27",
+        "AT-28"
+      ]
+    },
+    {
+      "id": "GGA-02",
+      "description": "Native design and theme system",
+      "groups": [
+        "AT-04",
+        "AT-13",
+        "AT-14",
+        "AT-15",
+        "AT-19",
+        "AT-20",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "GGA-03",
+      "description": "Structure and geometric layouts",
+      "groups": [
+        "AT-22",
+        "AT-23",
+        "AT-24",
+        "AT-25",
+        "AT-27"
+      ]
+    },
+    {
+      "id": "GGA-04",
+      "description": "Selection and direct inspection",
+      "groups": [
+        "AT-33",
+        "AT-34",
+        "AT-35",
+        "AT-36",
+        "AT-53"
+      ]
+    },
+    {
+      "id": "GGA-05",
+      "description": "Coordinated interactive views",
+      "groups": [
+        "AT-37",
+        "AT-38",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ]
+    },
+    {
+      "id": "GGA-06",
+      "description": "Native state and lifecycle",
+      "groups": [
+        "AT-06",
+        "AT-07",
+        "AT-09",
+        "AT-10",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ]
+    },
+    {
+      "id": "GGA-07",
+      "description": "Animation and timeline",
+      "groups": [
+        "AT-42",
+        "AT-43",
+        "AT-44",
+        "AT-45",
+        "AT-54"
+      ]
+    },
+    {
+      "id": "GGA-08",
+      "description": "Geo resources and navigation",
+      "groups": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32",
+        "AT-44"
+      ]
+    },
+    {
+      "id": "GGA-09",
+      "description": "Readable and reproducible public APIs",
+      "groups": [
+        "AT-10",
+        "AT-55",
+        "AT-57",
+        "AT-58",
+        "AT-89",
+        "AT-90"
+      ]
+    },
+    {
+      "id": "GGA-10",
+      "description": "Native correctness and design independence",
+      "groups": [
+        "AT-01",
+        "AT-02",
+        "AT-11",
+        "AT-12",
+        "AT-56",
+        "AT-59",
+        "AT-60",
+        "AT-61",
+        "AT-91",
+        "AT-92"
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "id": "AT-01",
+      "expectation": "Reproducible native fixture hashes and public contract baseline",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/dataset-fixtures.test.js"
+        ]
+      },
+      "input": "Native baseline, public actions and schemas, and environment hashes"
+    },
+    {
+      "id": "AT-02",
+      "expectation": "Independent deterministic numeric, geometry, state and time oracles",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/oracle-independence.test.js",
+          "test/unit/oracles/native-fixtures.test.js"
+        ]
+      },
+      "input": "Independent numeric, geometry, state and time reference fixtures"
+    },
+    {
+      "id": "AT-04",
+      "expectation": "Offline native data, image, font and map assets with exact hashes and abort handling",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Offline replay of native data, font, map and image resources"
+    },
+    {
+      "id": "AT-06",
+      "expectation": "Stable keyed identity across value changes, ordering, append, deletion and reload",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/actions/data/row-identity.test.js",
+          "test/unit/core/item-identity.test.js"
+        ]
+      },
+      "input": "Change one of three rows, reorder, append, delete and reload"
+    },
+    {
+      "id": "AT-07",
+      "expectation": "Explicit duplicate, null and absent-key replacement policy without incorrect matching",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/actions/data/row-identity.test.js"
+        ]
+      },
+      "input": "Duplicate and null keys, and whole-data replacement without authored keys"
+    },
+    {
+      "id": "AT-08",
+      "expectation": "Contributing row lineage and final grain across aggregation, bin, stack, fold, lookup and facets",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/actions/data/row-lineage.test.js"
+        ]
+      },
+      "input": "Hit, filter and revise after aggregate, bin, stack, fold, lookup and facet operations"
+    },
+    {
+      "id": "AT-09",
+      "expectation": "Selection and highlight migration preserves meaning and rejects ambiguous references",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/persistence/legacy-selection.test.js",
+          "test/contracts/graphic-hierarchy-migration.test.js"
+        ]
+      },
+      "input": "Load, edit and save a schema-3 selection and highlight program"
+    },
+    {
+      "id": "AT-10",
+      "expectation": "Resource and action codec round trips preserve refs, inspection and trace without transient state",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Serialize every new resource and action, load in a fresh process and edit"
+    },
+    {
+      "id": "AT-11",
+      "expectation": "Compound holes and islands preserve topology under fill rules, transparency and overlays",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PRIMITIVES.md"
+        ],
+        "tests": [
+          "test/charts/compound-path/public.test.js",
+          "test/charts/compound-path/backends.render.js"
+        ]
+      },
+      "input": "Render outer rings, holes and islands with nonzero and evenodd rules on every backend"
+    },
+    {
+      "id": "AT-12",
+      "expectation": "Open and closed curved paths have finite geometry, correct clip, stroke, fill and bounds",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PRIMITIVES.md"
+        ],
+        "tests": [
+          "test/charts/compound-path/primitive.test.js",
+          "test/charts/compound-path/backends.render.js"
+        ]
+      },
+      "input": "Open and closed curved paths, clipping, bounds and invalid commands"
+    },
+    {
+      "id": "AT-13",
+      "expectation": "Patterns and gradients preserve pitch, phase, color, alpha and clipping across four backends",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PRIMITIVES.md"
+        ],
+        "tests": [
+          "test/unit/grammar/patterns.test.js",
+          "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+        ]
+      },
+      "input": "Seven textures and required gradients and alpha on SVG, Canvas, PNG and PDF"
+    },
+    {
+      "id": "AT-14",
+      "expectation": "Images preserve fit, aspect and clip with explicit load errors and disposal-safe callbacks",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Native image assets, load failure, CORS, abort and export"
+    },
+    {
+      "id": "AT-15",
+      "expectation": "Prepared font hashes, line breaking, origins, measurement and rendered layout agree",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/resources/font-public-preparation.test.js",
+          "test/unit/resources/font-layout-lifecycle.test.js"
+        ]
+      },
+      "input": "Pinned fonts, fallback, Korean text, long labels and delayed font preparation"
+    },
+    {
+      "id": "AT-16",
+      "expectation": "Closed typed expressions reject invalid values and ambient evaluation access",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/actions/data/computed-v2.test.js"
+        ]
+      },
+      "input": "Native expression AST and functions with null, date and string boundaries"
+    },
+    {
+      "id": "AT-17",
+      "expectation": "Statistical transforms match independent formulas including pivot, local regression and calendar boundaries",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/STATISTICS.md"
+        ],
+        "tests": [
+          "test/unit/actions/data/pivot-data.test.js",
+          "test/unit/actions/data/robust-loess.test.js",
+          "test/unit/actions/data/calendar-completion.test.js"
+        ]
+      },
+      "input": "Numeric fixtures for every transform and statistical operation"
+    },
+    {
+      "id": "AT-18",
+      "expectation": "Parameters and all conditional branches preserve dependency order, empty behavior and cycle rejection",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ENCODINGS.md"
+        ],
+        "tests": [
+          "test/unit/actions/conditional-encoding.test.js",
+          "test/unit/materialization/conditional-dependencies.test.js",
+          "test/unit/resources/prepared-conditionals.test.js"
+        ]
+      },
+      "input": "Parameter to filter to aggregate to scale to conditional encoding dependencies"
+    },
+    {
+      "id": "AT-19",
+      "expectation": "Native theme precedence and provenance preserve typography, paint, guides and layout",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/actions/theme-provenance.test.js",
+          "test/unit/actions/theme-typography.test.js",
+          "test/unit/actions/theme-paint-consumers.test.js"
+        ]
+      },
+      "input": "Native theme token schema with override, null, false and zero"
+    },
+    {
+      "id": "AT-20",
+      "expectation": "One Y mapping per Cartesian frame with independent panels and responsive occupied bounds",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Unit, overlay, facet, concat and repeat with each permitted scale and guide scope"
+    },
+    {
+      "id": "AT-21",
+      "expectation": "Nested header, plot and footer alignment uses actual text metrics",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/COMPOSITION.md"
+        ],
+        "tests": [
+          "test/unit/actions/composition/nested-responsive-layout.test.js",
+          "test/browser/nested-responsive.browser.js"
+        ]
+      },
+      "input": "Nested facets, three rows of full bounds, long labels and resize"
+    },
+    {
+      "id": "AT-22",
+      "expectation": "Hierarchy tree and treemap preserve stable identity, containment and structural validation",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/HIERARCHY.md"
+        ],
+        "tests": [
+          "test/unit/resources/hierarchy-validation.test.js",
+          "test/unit/resources/hierarchy-consumers.test.js"
+        ]
+      },
+      "input": "Single, multilevel, empty and malformed hierarchy, tree and treemap structures"
+    },
+    {
+      "id": "AT-23",
+      "expectation": "Graph and flow layouts preserve deterministic topology, lineage, width, cycles and adjacency",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Graph, circular and force layouts plus acyclic, cyclic and boundary-case flows"
+    },
+    {
+      "id": "AT-24",
+      "expectation": "Contours match the declared estimator, thresholds and independent topology oracle",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CONTOURS.md"
+        ],
+        "tests": [
+          "test/unit/contour-layouts.test.js",
+          "test/unit/contour-density.test.js",
+          "test/charts/contours/public.test.js"
+        ]
+      },
+      "input": "Histogram and density contour saddles, holes, disconnected regions and empty input"
+    },
+    {
+      "id": "AT-25",
+      "expectation": "Calendar dates map to cells and month boundaries with explicit timezone and aggregation",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CALENDAR.md"
+        ],
+        "tests": [
+          "test/unit/calendar-layout.test.js",
+          "test/unit/resources/calendar-plots.test.js"
+        ]
+      },
+      "input": "Leap years, year boundaries, daylight saving, week starts and missing dates"
+    },
+    {
+      "id": "AT-26",
+      "expectation": "Native chart families preserve meaning, geometry, guides and behavior",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "All native chart capabilities and composition recipes"
+    },
+    {
+      "id": "AT-27",
+      "expectation": "Table and composite roles have explicit layout, hit and order semantics",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Pyramid, OHLC, waterfall, table and sparkline roles with reference-band compositions"
+    },
+    {
+      "id": "AT-28",
+      "expectation": "Native width, area, angle, baseline and bandwidth semantics cover missing, negative and zero values",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Trail, polar, radar, rose, streamgraph and violin variants"
+    },
+    {
+      "id": "AT-29",
+      "expectation": "Projection forward, inverse, fit and clip match independent mathematics",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/geo/projections.test.js",
+          "test/unit/geo/projection-resources.test.js",
+          "test/contracts/geographic-math.test.js"
+        ]
+      },
+      "input": "Every native supported projection, planar coordinates and composite insets"
+    },
+    {
+      "id": "AT-30",
+      "expectation": "Geographic ring and feature identity, holes, clip and joins reject invalid paths and hidden hits",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/geo/geometry-resources.test.js",
+          "test/unit/geo/join-resources.test.js",
+          "test/charts/geographic-marks/public.test.js"
+        ]
+      },
+      "input": "Geographic and topological sources with holes, dateline, poles, geometry collections and null geometry"
+    },
+    {
+      "id": "AT-31",
+      "expectation": "Join policy, LOD hysteresis, selection and annotation rebase preserve feature identity and asset hashes",
+      "owner": {
+        "status": "pending",
+        "reason": "The full LOD selection and annotation rebase chain still needs an integrated acceptance owner."
+      },
+      "input": "Custom geography levels, region joins and county/state detail changes"
+    },
+    {
+      "id": "AT-32",
+      "expectation": "Camera navigation round trips preserve anchors, dateline and clipped inverse semantics",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/geo/camera.test.js",
+          "test/unit/geo/camera-actions.test.js"
+        ]
+      },
+      "input": "Geographic pan, zoom, rotate, region fit, reset, resize and interpolation"
+    },
+    {
+      "id": "AT-33",
+      "expectation": "Semantic hit uses CSS coordinates, clip, occlusion, stroke tolerance and provenance",
+      "owner": {
+        "status": "pending",
+        "reason": "All mark and guide geometry at DPR 1, 2 and 3 still needs one qualified acceptance owner."
+      },
+      "input": "Every geometry plus legend, axis, header and title hits at DPR 1, 2 and 3"
+    },
+    {
+      "id": "AT-34",
+      "expectation": "Selection uses current visible geometry and avoids duplicate semantic events",
+      "owner": {
+        "status": "pending",
+        "reason": "Enter, exit and crossfade current-frame hit requires the integrated animation owner."
+      },
+      "input": "Current animation-frame hits with overlapping enter, exit and crossfade geometry"
+    },
+    {
+      "id": "AT-35",
+      "expectation": "Real pointer, keyboard and touch input obey native state, event and screen contracts",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Native interaction commands, gestures, options and reset conflicts"
+    },
+    {
+      "id": "AT-36",
+      "expectation": "Brush, lasso and angular gestures invert domains and settle exactly once with capture cleanup",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-angular-selection.test.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "input": "X, Y and angular brushes and lassos on log, time and category domains from down through move to cancel or up"
+    },
+    {
+      "id": "AT-37",
+      "expectation": "Typed direct controls preserve declared native option and selection semantics",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-direct-controls.test.js"
+        ]
+      },
+      "input": "Native parameter and selection binding, empty, toggle, nearest and resolve options"
+    },
+    {
+      "id": "AT-38",
+      "expectation": "Linked views preserve scope, order and focus without loops or stale child selections",
+      "owner": {
+        "status": "pending",
+        "reason": "All linked controls, reorder and context command lifecycles need the integrated interaction owner."
+      },
+      "input": "Linked brush, filter, legend, reorder, controls and context commands"
+    },
+    {
+      "id": "AT-39",
+      "expectation": "Preview and committed operations preserve immutable baselines and deterministic domain updates",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Native update commands with preview, commit, cancel and reset"
+    },
+    {
+      "id": "AT-40",
+      "expectation": "Events preserve origin, phase and revision with exact commit, cancel and async settlement",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Native event order for programmatic and user input"
+    },
+    {
+      "id": "AT-41",
+      "expectation": "Stale async work cannot overwrite state and repeated disposal releases all runtime resources",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Cancel, destroy and reentry during mount, update, asset preparation and resize"
+    },
+    {
+      "id": "AT-42",
+      "expectation": "Animation endpoints, interpolation and topology match independent numeric and state expectations",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Deterministic transition samples at 0, 0.25, 0.5, 0.75 and 1, and zero duration"
+    },
+    {
+      "id": "AT-43",
+      "expectation": "Interruption starts at the current frame and deterministic clocks control playback and completion",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Play, pause, seek, reverse, rate, repeat and interrupt"
+    },
+    {
+      "id": "AT-44",
+      "expectation": "Transformed-space and geographic camera transitions avoid incompatible topology morphs",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Simultaneous log scale, polar, geographic, layout and data changes"
+    },
+    {
+      "id": "AT-45",
+      "expectation": "Animation endpoints, fonts, assets and kernel versions produce deterministic frames and reduced motion",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Save an animation envelope and replay offline in a fresh process"
+    },
+    {
+      "id": "AT-53",
+      "expectation": "Accessible information and actionable targets reflect visibility, filtering and restored focus",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Keyboard focus, screen-reader tables, tooltips and reduced motion"
+    },
+    {
+      "id": "AT-54",
+      "expectation": "Static exports preserve interacted geometry, fonts, clips and embedded assets across four formats",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Compare SVG, Canvas, PNG, PDF and exported animation frames"
+    },
+    {
+      "id": "AT-55",
+      "expectation": "Offline fresh-process restore preserves resources, selections and viewport without hidden network state",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Resume a saved interacted chart, geographic view and animation offline"
+    },
+    {
+      "id": "AT-56",
+      "expectation": "Fixed hardware and size classes satisfy measured latency, memory and lifecycle limits",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Startup, update, hit, frame and memory benchmarks for each supported size class"
+    },
+    {
+      "id": "AT-57",
+      "expectation": "Installed packages run without source checkout and preserve optional peer, schema and type boundaries",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/package-boundaries.test.js",
+          "test/contracts/package-artifact.test.js",
+          "test/browser/package-consumer.browser.js"
+        ]
+      },
+      "input": "Clean installed package consumers for SSR, browser, Node and TypeScript"
+    },
+    {
+      "id": "AT-58",
+      "expectation": "Public contracts and executable documentation distinguish current support from pending work",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/documentation-truth.test.js",
+          "test/contracts/compact-action-cards.test.js"
+        ]
+      },
+      "input": "Catalog, contracts, types, examples, human and agent docs, and MCP artifacts"
+    },
+    {
+      "id": "AT-59",
+      "expectation": "Every active native requirement links to completed acceptance evidence without reference-only denominators",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Trace every active native requirement through assigned work, tests and execution evidence"
+    },
+    {
+      "id": "AT-60",
+      "expectation": "Independent review identifies statistical, font, layout and input failures without masking baselines",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Independently review every failing diff and stratified successful samples"
+    },
+    {
+      "id": "AT-61",
+      "expectation": "Required CI and published artifacts identify the same qualified native candidate",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Compare one candidate archive hash across CI, installation, publication and docs"
+    },
+    {
+      "id": "AT-62",
+      "expectation": "Cartesian and polar partition views share normalized intervals, node identity, order and selection",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PARTITION.md"
+        ],
+        "tests": [
+          "test/unit/resources/partition-plots.test.js",
+          "test/unit/grammar/hierarchy-partition-view.test.js"
+        ]
+      },
+      "input": "Create Cartesian and polar partition views from the same hierarchy"
+    },
+    {
+      "id": "AT-63",
+      "expectation": "Partition sums, intervals and containment match independent expectations and invalid structures reject",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PARTITION.md"
+        ],
+        "tests": [
+          "test/unit/grammar/hierarchy-partition.test.js",
+          "test/unit/grammar/hierarchy-partition-mapping.test.js"
+        ]
+      },
+      "input": "Partition numeric fixtures including zero values, internal values, forests and cycles"
+    },
+    {
+      "id": "AT-64",
+      "expectation": "Partition geometry, clip, labels and hit preserve explicit radial area semantics",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PARTITION.md"
+        ],
+        "tests": [
+          "test/unit/resources/partition-frames.test.js",
+          "test/charts/partition-layouts/public.test.js"
+        ]
+      },
+      "input": "Partition orientations, padding, root visibility, deep trees and small wedges"
+    },
+    {
+      "id": "AT-65",
+      "expectation": "Partition focus and coordinate transitions preserve selected nodes and current-frame hit with reduced motion",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Partition focus, filter, breadcrumbs, keyboard navigation and coordinate morph"
+    },
+    {
+      "id": "AT-70",
+      "expectation": "Nearest-neighbor rules preserve typed ties, zero-distance edges and declared symmetrization",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/neighbors.test.js",
+          "test/unit/grammar/graph/edge-identity.test.js"
+        ]
+      },
+      "input": "Directed, union and mutual nearest-neighbor rules with ties and duplicate points"
+    },
+    {
+      "id": "AT-71",
+      "expectation": "Radius and similarity rules preserve inclusive boundaries, empty-vector policy, units and provenance",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/metrics.test.js",
+          "test/unit/grammar/graph/neighbors.test.js"
+        ]
+      },
+      "input": "Radius, similarity, metric and preprocessing boundary cases"
+    },
+    {
+      "id": "AT-72",
+      "expectation": "Spanning, group and sequence rules preserve independent costs, components, lag and edge budgets",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/spanning.test.js",
+          "test/unit/grammar/graph/structural.test.js"
+        ]
+      },
+      "input": "Minimum spanning tree, forest, group and sequence rules"
+    },
+    {
+      "id": "AT-73",
+      "expectation": "Exact search equals brute force and approximate search records deterministic recall without silent sampling",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/search.test.js",
+          "test/unit/grammar/graph/approximate.test.js"
+        ]
+      },
+      "input": "Exact accelerators and explicit approximate search"
+    },
+    {
+      "id": "AT-74",
+      "expectation": "Inference topology invalidation preserves surviving identities and observed versus inferred origins",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md"
+        ],
+        "tests": [
+          "test/unit/resources/graph-recompute.test.js",
+          "test/unit/resources/graph-filter.test.js"
+        ]
+      },
+      "input": "Data revision, neighbor count changes, layout drag, resize and graph selection"
+    },
+    {
+      "id": "AT-75",
+      "expectation": "Routes preserve graph topology, edge identity, direction, weight and fixed endpoints",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md"
+        ],
+        "tests": [
+          "test/unit/resources/graph-routes.test.js",
+          "test/unit/resources/graph-route-lifecycle.test.js"
+        ]
+      },
+      "input": "Common input immutability across all four route bundling methods"
+    },
+    {
+      "id": "AT-76",
+      "expectation": "Hierarchical bundling matches independent hierarchy paths and diagnoses missing mappings",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/routes/hierarchical.test.js"
+        ]
+      },
+      "input": "Hierarchy mapping, lowest common ancestor, strengths zero and one, and missing endpoints"
+    },
+    {
+      "id": "AT-77",
+      "expectation": "Force-directed bundling uses deterministic bounded updates and fixed finite endpoints",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/routes/force-directed.test.js"
+        ]
+      },
+      "input": "Force-directed compatibility, subdivision, schedules, zero-length and opposing edges"
+    },
+    {
+      "id": "AT-78",
+      "expectation": "Density bundling matches its independent field reference and preserves finite vector routes",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/routes/density.test.js"
+        ]
+      },
+      "input": "Density grid, gradient, endpoint pinning, direction and resampling"
+    },
+    {
+      "id": "AT-79",
+      "expectation": "Edge-path bundling preserves actual path provenance, stretch bounds and deterministic fallback",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/EDGE_ROUTES.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph/routes/edge-path.test.js"
+        ]
+      },
+      "input": "Connected, disconnected and directed edge-path graphs with stretch constraints"
+    },
+    {
+      "id": "AT-80",
+      "expectation": "Overlapping routes expose exact original edge candidates, keyboard cycling and accessible current-frame hit",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Overlapping bundles, selection, unbundling, tooltips and keyboard cycling"
+    },
+    {
+      "id": "AT-81",
+      "expectation": "Route transitions preserve attached endpoints, clipping, identity and visibility",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Bundle animation, interruption, seek, source revision and geographic dateline changes"
+    },
+    {
+      "id": "AT-82",
+      "expectation": "Route stages satisfy measured latency and memory limits and four-backend equivalence",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Bundling size classes, abort, workers, caches and exports"
+    },
+    {
+      "id": "AT-83",
+      "expectation": "Pyramid preserves stage order, gaps, values and prior stage geometry",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/PYRAMID.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/unit/pyramid-plot.test.js",
+          "test/charts/pyramid/primitive.test.js",
+          "test/charts/pyramid/public.test.js"
+        ]
+      },
+      "input": "Public Pyramid naming and stage geometry"
+    },
+    {
+      "id": "AT-84",
+      "expectation": "Marginal, bullet and combination views compose existing actions with shared frame mapping",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/AXES.md"
+        ],
+        "tests": [
+          "test/contracts/composition-recipes.test.js",
+          "test/unit/composition-recipes.test.js",
+          "test/contracts/realistic-composition-recipes.test.js",
+          "test/charts/marginal/renderer.render.js",
+          "test/browser/composition-recipes.browser.js"
+        ]
+      },
+      "input": "Marginal, bullet and combination action chains and composition fixtures"
+    },
+    {
+      "id": "AT-85",
+      "expectation": "Multiple Y scales or guides and overlapping-frame bypasses reject atomically",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Two Y scales or guides in one frame, including hidden and mirrored axes"
+    },
+    {
+      "id": "AT-86",
+      "expectation": "Independent frames and shared-scale range endpoints remain valid under single-Y policy",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Independent facet and concat panels, shared-scale Y2 ranges, polar and geographic coordinates"
+    },
+    {
+      "id": "AT-87",
+      "expectation": "Excluded dedicated indicator families are not reintroduced as mandatory public facades",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js"
+        ]
+      },
+      "input": "Excluded dedicated indicator APIs and human and agent documentation scope"
+    },
+    {
+      "id": "AT-88",
+      "expectation": "Native fixture policy preserves exclusions and keeps reference-only rows outside pass counts",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/native-api-policy.test.js"
+        ]
+      },
+      "input": "Separation of native policy and external reference ledgers"
+    },
+    {
+      "id": "AT-89",
+      "expectation": "All domain resources preserve versions, refs and lineage in offline installed codec round trips",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "New resource and action save, load, types, schemas and clean installed consumers"
+    },
+    {
+      "id": "AT-90",
+      "expectation": "Human and agent documentation pins defaults, versions, executable examples and negative cases",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "New domain documentation, agent packets, recipes and option presets"
+    },
+    {
+      "id": "AT-91",
+      "expectation": "All native requirements and the public artifact share final qualification evidence",
+      "owner": {
+        "status": "pending",
+        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+      },
+      "input": "Native completion manifest and existing CI"
+    },
+    {
+      "id": "AT-92",
+      "expectation": "Core, APIs, events, defaults, dependencies and release gates remain native and independent",
+      "owner": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/package-boundaries.test.js"
+        ]
+      },
+      "input": "Independence of core, APIs, events, defaults, dependencies and release gates"
+    }
+  ],
+  "consumerColumns": [
+    "create",
+    "edit",
+    "source-revise",
+    "encodings",
+    "scales",
+    "guides",
+    "composition",
+    "selection-highlight",
+    "hit",
+    "scene-animation",
+    "svg",
+    "canvas",
+    "png",
+    "pdf",
+    "persistence",
+    "types",
+    "package",
+    "docs",
+    "accessibility"
+  ],
+  "consumers": [
+    {
+      "id": "compound-path",
+      "groups": [
+        "AT-11",
+        "AT-12"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "pattern",
+      "groups": [
+        "AT-13"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/structured-paints/public.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/structured-paints/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "image",
+      "groups": [
+        "AT-14"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "partition-cartesian",
+      "groups": [
+        "AT-62",
+        "AT-63",
+        "AT-64",
+        "AT-65"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "partition-polar",
+      "groups": [
+        "AT-62",
+        "AT-63",
+        "AT-64",
+        "AT-65"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/charts/partition-layouts/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "tree",
+      "groups": [
+        "AT-22"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "treemap",
+      "groups": [
+        "AT-22"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "graph-nodes",
+      "groups": [
+        "AT-23",
+        "AT-74"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "edges-hierarchical",
+      "groups": [
+        "AT-75",
+        "AT-76",
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "edges-force-directed",
+      "groups": [
+        "AT-75",
+        "AT-77",
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "edges-density",
+      "groups": [
+        "AT-75",
+        "AT-78",
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "edges-edge-path",
+      "groups": [
+        "AT-75",
+        "AT-79",
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "sankey-dag",
+      "groups": [
+        "AT-23"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-plots.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sankey-cyclic",
+      "groups": [
+        "AT-23"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/flow-plots.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/charts/flow-layouts/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "contour-line",
+      "groups": [
+        "AT-24"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "contour-filled",
+      "groups": [
+        "AT-24"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/charts/contours/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "calendar",
+      "groups": [
+        "AT-25"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/charts/calendar/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/charts/calendar/renderer.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/charts/calendar/renderer.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/charts/calendar/png.render.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "table",
+      "groups": [
+        "AT-27"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "pyramid",
+      "groups": [
+        "AT-83"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "ohlc",
+      "groups": [
+        "AT-26",
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "waterfall",
+      "groups": [
+        "AT-26",
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "trail",
+      "groups": [
+        "AT-26",
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "geo-shape",
+      "groups": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js",
+            "test/unit/geo/conditional-encodings.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/browser/geographic-marks.browser.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/coordinates.test.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "geo-point",
+      "groups": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js",
+            "test/unit/geo/conditional-encodings.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/browser/geographic-marks.browser.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/coordinates.test.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "geo-line",
+      "groups": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js",
+            "test/unit/geo/conditional-encodings.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encoding-lifecycle.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/encodings.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/browser/geographic-marks.browser.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/coordinates.test.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "graticule",
+      "groups": [
+        "AT-29",
+        "AT-30",
+        "AT-32"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {
+        "create": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/browser/geographic-marks.browser.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/png.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/renderer.render.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/marks.test.js",
+            "test/unit/geo/coordinates.test.js"
+          ]
+        }
+      }
+    },
+    {
+      "id": "rose-regression",
+      "groups": [
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "radar-regression",
+      "groups": [
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "streamgraph-regression",
+      "groups": [
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    },
+    {
+      "id": "violin-regression",
+      "groups": [
+        "AT-28"
+      ],
+      "requiredConsumers": [
+        "create",
+        "edit",
+        "source-revise",
+        "encodings",
+        "scales",
+        "guides",
+        "composition",
+        "selection-highlight",
+        "hit",
+        "scene-animation",
+        "svg",
+        "canvas",
+        "png",
+        "pdf",
+        "persistence",
+        "types",
+        "package",
+        "docs",
+        "accessibility"
+      ],
+      "notApplicable": {},
+      "owner": {
+        "status": "pending",
+        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+      },
+      "assignedOwners": {}
+    }
+  ],
+  "interactionColumns": [
+    "pointer-keyboard-touch",
+    "preview-commit-cancel",
+    "undo-redo",
+    "linked",
+    "async-dispose",
+    "restore",
+    "current-frame"
+  ],
+  "interaction": {
+    "id": "interaction",
+    "groups": [
+      "AT-33",
+      "AT-34",
+      "AT-35",
+      "AT-36",
+      "AT-38",
+      "AT-39",
+      "AT-40",
+      "AT-41",
+      "AT-43",
+      "AT-53",
+      "AT-65",
+      "AT-80",
+      "AT-81"
+    ],
+    "requiredConsumers": [
+      "pointer-keyboard-touch",
+      "preview-commit-cancel",
+      "undo-redo",
+      "linked",
+      "async-dispose",
+      "restore",
+      "current-frame"
+    ],
+    "notApplicable": {},
+    "owner": {
+      "status": "pending",
+      "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+    },
+    "assignedOwners": {}
+  },
+  "requiredChecks": [
+    {
+      "id": "normal",
+      "command": [
+        "npm",
+        "test"
+      ]
+    },
+    {
+      "id": "realistic",
+      "command": [
+        "npm",
+        "run",
+        "test:realistic"
+      ]
+    },
+    {
+      "id": "coverage",
+      "command": [
+        "npm",
+        "run",
+        "test:coverage"
+      ]
+    },
+    {
+      "id": "browser",
+      "command": [
+        "npm",
+        "run",
+        "test:browser"
+      ]
+    },
+    {
+      "id": "render",
+      "command": [
+        "npm",
+        "run",
+        "test:render"
+      ]
+    },
+    {
+      "id": "package",
+      "command": [
+        "npm",
+        "run",
+        "test:package"
+      ]
+    },
+    {
+      "id": "platform",
+      "command": [
+        "npm",
+        "run",
+        "test:platform"
+      ]
+    },
+    {
+      "id": "package-artifact",
+      "command": [
+        "npm",
+        "run",
+        "package:check"
+      ]
+    },
+    {
+      "id": "documentation",
+      "command": [
+        "npm",
+        "run",
+        "docs:verify"
+      ]
+    }
+  ]
+}

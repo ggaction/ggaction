@@ -6,6 +6,8 @@ import {
   requireFiniteResult
 } from "./numeric.js";
 
+import { layoutWiggleSeries } from "./streamBaseline.js";
+
 export const DEFAULT_SERIES_BASELINE = 0;
 
 export function validateColorLayout(layout) {
@@ -37,6 +39,7 @@ export function layoutSeriesPartition(
 ) {
   validateValues(values);
   validateColorLayout(layout);
+  if (layout === "wiggle") throw new Error("Wiggle requires aligned series columns.");
   if (!Number.isFinite(baseline)) {
     throw new TypeError("Series layout baseline must be finite.");
   }
@@ -111,6 +114,7 @@ export function resolveSeriesLayoutDomainValues(partitions, layout) {
   validateColorLayout(layout);
   for (const partition of partitions) validateValues(partition);
 
+  if (layout === "wiggle") return layoutWiggleSeries(partitions).flatMap(column => column.flatMap(segment => [segment.start, segment.end]));
   if (layout === "fill") return [0, 1];
   if (layout === "group" || layout === "overlay") {
     return partitions.flatMap(partition => [

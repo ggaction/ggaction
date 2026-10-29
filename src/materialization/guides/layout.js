@@ -61,7 +61,7 @@ function validateFinalGuideLayout(program) {
 
 // Defer cross-guide checks while sibling materializers still carry old
 // coordinates. The scope is transient and never survives a returned program.
-export function withGuideLayoutTransaction(program, apply) {
+export function withGuideLayoutTransaction(program, apply, { validateCandidate } = {}) {
   if (program.context.deferGuideLayoutValidation === true) return apply(program);
   if (program.materializationConfigs.canvas?.responsive !== undefined) {
     const result = withResponsiveLayout(program, candidate => applyGuidePass(candidate, current => {
@@ -70,7 +70,7 @@ export function withGuideLayoutTransaction(program, apply) {
       // bounds. Guide-only edits still need their viewport-dependent results.
       const settled = applyCanvasResourceRevision(applied, prepareCanvasResourceRevision(applied));
       return applyMaterializationPlan(settled, planCanvasRematerialization(settled));
-    }));
+    }), validateCandidate);
     return validateFinalGuideLayout(result);
   }
   const plot = program.materializationConfigs.canvas?.plot;

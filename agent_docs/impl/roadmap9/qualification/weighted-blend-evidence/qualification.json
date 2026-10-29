@@ -1,0 +1,476 @@
+{
+  "schemaVersion": 1,
+  "kind": "focused-concrete-feature-qualification",
+  "implementationCommit": "57e37c94e5683ab175f2cf5e0f03da93311e362f",
+  "archive": {
+    "sha256": "d25f4f3ca3ca49ac50274a906fbb3ba202f6910d0e263340678cd1e8b2964a9b",
+    "file": ".artifacts/weighted-blend/archive/ggaction-0.0.26.tgz",
+    "entries": 1048,
+    "packedBytes": 1482864,
+    "unpackedBytes": 6755280,
+    "node": "v22.23.1"
+  },
+  "scope": "Weighted concrete rendering foundation only; no animation clock/player or full release qualification.",
+  "checks": {
+    "affectedUnit": {
+      "initial": {
+        "passed": 326,
+        "total": 329
+      },
+      "final": {
+        "passed": 329,
+        "total": 329
+      }
+    },
+    "affectedContracts": {
+      "passed": 44,
+      "total": 44
+    },
+    "packageContracts": {
+      "passed": 7,
+      "total": 7
+    },
+    "docsSource": {
+      "passed": 205,
+      "total": 205
+    },
+    "docsBuilt": {
+      "pages": 172,
+      "selectiveArtifacts": 1531
+    },
+    "docsBrowser": {
+      "passed": true,
+      "widths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "browser": {
+      "passed": 2,
+      "total": 2,
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "pngPdf": {
+      "passed": 8,
+      "total": 8
+    },
+    "focusedCoverage": {
+      "lines": 100,
+      "branches": 96.05,
+      "functions": 100,
+      "owners": 5,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "installed": {
+      "archive": "d25f4f3ca3ca49ac50274a906fbb3ba202f6910d0e263340678cd1e8b2964a9b",
+      "nodeMajors": [
+        20,
+        22,
+        24
+      ],
+      "runtimePerNode": 3,
+      "typeCheck": "strict",
+      "snippetsPerNode": 1,
+      "optionalPeers": true,
+      "bundlesPerNode": 5,
+      "node20Repair": "Initial runtime/types/snippet/peers passed; only bundles rerun on the same archive after measured cap correction."
+    }
+  },
+  "retainedFailures": [
+    {
+      "check": "graphic-hierarchy-migration",
+      "status": "pre-existing failure",
+      "reason": "Geo public chart registry lacks four existing expected entries; parent integration owns the repair. No expected entries removed."
+    },
+    {
+      "check": "docs initial",
+      "status": "repaired",
+      "reason": "Related final section and new complete snippet registration corrected."
+    },
+    {
+      "check": "initial Canvas",
+      "status": "repaired",
+      "reason": "Ordinary scene must not incur weighted backdrop preflight; 329 affected tests rerun."
+    },
+    {
+      "check": "browser initial",
+      "status": "repaired",
+      "reason": "Native SVG feImage fragment adds filter origin; inverse source translation verified by DPR 1/2 pixels."
+    },
+    {
+      "check": "system Ruby",
+      "status": "environment corrected",
+      "reason": "Build uses installed Ruby3.2 matching repository major/minor."
+    }
+  ],
+  "followUp": [
+    "Parent sampler flattens interrupted source weights and admits weighted frame type with exact item correspondence.",
+    "Full integrated/native release qualification remains parent-owned."
+  ],
+  "inputs": [
+    {
+      "path": "src/grammar/animation/values.js",
+      "sha256": "b62add5b9c5e838c9cfc8841e54d494994d91c29d58550497418615180a7a703"
+    },
+    {
+      "path": "src/grammar/hitShapes.js",
+      "sha256": "a0d61c28ad327de25dde26783f8e7261a6afd033bb6f6d9c9cae3fe883cc9f7c"
+    },
+    {
+      "path": "src/grammar/linearColor.js",
+      "sha256": "1f872ab68822312ac416b2f62e879110dfb08e032faf6b5ec1783efa1be05d48"
+    },
+    {
+      "path": "src/grammar/schemas/concreteGraphic.js",
+      "sha256": "dc1c75653df920402edbf643356ebbbedcef9af8f5e4942d35524c88f10e199b"
+    },
+    {
+      "path": "src/grammar/schemas/graphic.js",
+      "sha256": "9cc865373262b8dc2a0fdced23a55d98edf38c70c799fcdaa6a765d7fe479e9e"
+    },
+    {
+      "path": "src/grammar/schemas/graphicBounds.js",
+      "sha256": "93830899696366953586544d74244170f064616cbbeeb6ed4bc87473e3bf86a6"
+    },
+    {
+      "path": "src/grammar/schemas/graphicSources.js",
+      "sha256": "f2fdc565a6de9a011a8501f20c021cd2429b41a671c4beac8ad83cedaf1ea54c"
+    },
+    {
+      "path": "src/grammar/schemas/weightedBlend.js",
+      "sha256": "28f35170374e176ce2dc62d621e8f24118021993c28cbafc0f23242318764670"
+    },
+    {
+      "path": "src/grammar/weightedBlend.js",
+      "sha256": "1bc96ccc9abe60b82f5e5b7f59765bf6985f904ad5d64bc99ad5b2b4960aaaa4"
+    },
+    {
+      "path": "src/interaction/hitConcrete.js",
+      "sha256": "961594aebd52e248d8381a42b9440bf938246a054e3183b2c0ea4e0bb4e11ab4"
+    },
+    {
+      "path": "src/materialization/graphicTranslation.js",
+      "sha256": "1a49669271c6d95cd8786c3b7b6323e919344768412df5f9098871c89897e05b"
+    },
+    {
+      "path": "src/renderers/canvas/index.js",
+      "sha256": "4930280b43e68a8abdd02329badb8fe1dea9b8430df10e3a68afffc2a3e7e203"
+    },
+    {
+      "path": "src/renderers/canvas/isolated.js",
+      "sha256": "62cdcb9811c9a5d8f407bbcf47425b8f6eca682d00f4196d907dcfc8d6388f98"
+    },
+    {
+      "path": "src/renderers/canvas/native.js",
+      "sha256": "0608f456773b3f8ff254ebc23d8d135caf759721dd4420b6b85e6544dbfe51dd"
+    },
+    {
+      "path": "src/renderers/canvas/textPaint.js",
+      "sha256": "cae3de68187d08ceea12c7dceac1d04b3b556600b74144ee41b9524e03e262ff"
+    },
+    {
+      "path": "src/renderers/canvas/weightedBlend.js",
+      "sha256": "b1fa7ee6b7cb4ad388522887b2aedb9086762b053face5b3fa8176e3a5e71696"
+    },
+    {
+      "path": "src/renderers/canvasScene.js",
+      "sha256": "e5d9a0360752a5c7f440c8a8834c9105ed1bf8895c01c2862a9b5ff22e998af5"
+    },
+    {
+      "path": "src/renderers/fonts.js",
+      "sha256": "a8039a0626830fb3225af4d67b231b1e28af0246f5845cd362aee331093a5116"
+    },
+    {
+      "path": "src/renderers/imageRendering.js",
+      "sha256": "26bb4d36b1e5caec1bd100414fd208ad45ca9b615d236c64bb607986d3fd987f"
+    },
+    {
+      "path": "src/renderers/paintFrames.js",
+      "sha256": "b93c8dca281969ed4c8bc7d5f996cd9301c2e6b3b858288bdfba3c8e650e2108"
+    },
+    {
+      "path": "src/renderers/shadowRendering.js",
+      "sha256": "89db93fc76bbade35fdd898133782315766d75d06a5b61127fec4a717d27a7bb"
+    },
+    {
+      "path": "src/renderers/shadowState.js",
+      "sha256": "4bb2c0343bf28c2f7b198d65e5c522bfa576d12c45953b10510feb4b4ab767f6"
+    },
+    {
+      "path": "src/renderers/svgSerialization.js",
+      "sha256": "935905903acfc8138639b9c917b66e8e42f58ce4757a759c17179d6d908ad2e9"
+    },
+    {
+      "path": "src/renderers/textGlyphInput.js",
+      "sha256": "7f053bf414ee0c0b793ebd6ac6d31759ce857ce3c769c901e48ef9fa9451df18"
+    },
+    {
+      "path": "src/renderers/textInkBounds.js",
+      "sha256": "18c1b3dd150099a7f20c467e65ead650b315eb3db999df9c209fb7abd07b0214"
+    },
+    {
+      "path": "types/basic.d.ts",
+      "sha256": "360a063bb325e04a8d6e56693d206b197fa5381356429224a04cc1aea7e1805f"
+    },
+    {
+      "path": "types/extension.d.ts",
+      "sha256": "02cf113c299f6d9c89e4d8341f285ff237da4300976e2dcc3d8833c26cae2bfe"
+    },
+    {
+      "path": "types/index.d.ts",
+      "sha256": "e4b151e501e796951b280df606c82549b259ef78839dc8e4f120543056ca57a9"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "88b8bb456f487bba7e0a6313ba9c9e1a32ce7f7c17e8aad2577fe7984c689df3"
+    },
+    {
+      "path": "types/scene.d.ts",
+      "sha256": "0ec51fabe97052f15ba288923017fcaa643d6fb68dd2404482f91fba5916e608"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/source-inputs.json.gz",
+      "sha256": "b162318cd5296a538b245bf8f9b9deccdf65723c432baa338d142f3bf08c4820",
+      "uncompressedSha256": "78390520c4f72bd67bdaf34080785559e66efd2f215bba90034774b371f38eb6",
+      "bytes": 4362
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/focused-coverage-final.log.gz",
+      "sha256": "bc20d94826f785169a9a137f806cf45b8de0d55d4707e678c07c3cec05c4b259",
+      "uncompressedSha256": "4b27360412889f9ddc8268a8501a298b3ee7a738cfc740b8ca1fbd7a98b6a948",
+      "bytes": 7520
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/affected-unit.log.gz",
+      "sha256": "e167c76a40841f5f0ba9eca8eacada8c93b0c4c755d4dd22c6b3fc2fe3a44029",
+      "uncompressedSha256": "8497fe20e9787e229b4baadf2958d851495e01096e5d72c5bd8a5de3631b12a5",
+      "bytes": 74532
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/affected-unit-final.log.gz",
+      "sha256": "68f4b0df8d3819074bd5a4c400673ed129c6ba7899f4d3130b3d2714cf16ecb6",
+      "uncompressedSha256": "4a7fe74c46856f3bbf043b0b158a0f8c1f394cf8eab475bd1317d02a13e49e81",
+      "bytes": 71906
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/affected-contracts-final.log.gz",
+      "sha256": "00d005ad193863c7cab81866fe25fb4e7b4fff1225b869523669bf06bd20e72c",
+      "uncompressedSha256": "5ba1e678a871c29883e0fae726d4d6b231228baae3846c10e28e29a4c5e23b9a",
+      "bytes": 8701
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/package-contracts-final.log.gz",
+      "sha256": "0035bc3ed21c1e9981a454d2def7fee7ff3b781cdbe7be7c57e931fe428e021c",
+      "uncompressedSha256": "fb867d1c6d1238b1467d1a4e7cd6e27eda018d1e80340918cb4321b19ada4bff",
+      "bytes": 1718
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-source.log.gz",
+      "sha256": "bc8cda791491bf375183adc960df6178bd978997463015f8c8104adc1d06830a",
+      "uncompressedSha256": "bebb381b216d3c54e8b655765137aed90baf49ffb5865d6904e88486494db5d3",
+      "bytes": 51196
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-source-pinned.log.gz",
+      "sha256": "96fb4194f9c5eea5d46eb78ba84a64bb8cf8f2379ea7d9d0d066a55ba61e5216",
+      "uncompressedSha256": "49e858704a5cc101df47d77cc4ef24f5182b216f1795a80af3647d36632df518",
+      "bytes": 48162
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-build.log.gz",
+      "sha256": "42dad2fb288af4961dd6a406e2962f669e14d2eb89e26dc07b116eb235c347a3",
+      "uncompressedSha256": "61ac551f10ecd2fbd79c1b0e8d6ccde8c996b3ff435ecebe3ccde81763a7a613",
+      "bytes": 697
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-build-2.log.gz",
+      "sha256": "8b3cc2f17340352f0dbdc26ff8512b65aed885f4f9f7eccf9dc3b1d234ca3cdb",
+      "uncompressedSha256": "f822ccb44b544c3ec92a7be8adb382c7755fc7f5f5fc8cb6049ecd3685870234",
+      "bytes": 201
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-build-pinned.log.gz",
+      "sha256": "5f83a8cd26b981b8c294e86850619085008296ce249b60eb48d0345f5eade95e",
+      "uncompressedSha256": "696c93083cbd0c4afc03f02bc28aa45bb3275c40b2385ebbb93fddd71f2bbd64",
+      "bytes": 420
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-built-pinned.log.gz",
+      "sha256": "39fd24b3847fefcc21f9d9cc4acd6164888171d7d683c735ceceebef2470eea1",
+      "uncompressedSha256": "66f964bf4cff7c3b17c7751bedb184f5a2248d45ac9a6dc40a131e5c0499c901",
+      "bytes": 102
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/docs-browser-pinned.log.gz",
+      "sha256": "7d4114f7d9b21ae6fdc81432dabfead18b156ca8b6e12e649fc2722c33a4b118",
+      "uncompressedSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "bytes": 79
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/browser.log.gz",
+      "sha256": "838ead768933e10f467233c0ec143debcaf164194972b9bc2e7d7d6ce8944a49",
+      "uncompressedSha256": "3b9b91a98789bb12e7a48c618ae0e4c0bda2caef3b5351a2f8108ca441c31bd4",
+      "bytes": 2168
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/browser-final-2.log.gz",
+      "sha256": "3c7b7ab1e59c001255bca3ed6595dca8f169556f57df8ff31023619eccfaa62d",
+      "uncompressedSha256": "09fa031e448c4a1d196eb9d083b19320f42ecd24e0c46d321b8f1160ca961cba",
+      "bytes": 631
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/render-final-2.log.gz",
+      "sha256": "fbf7710ed1d983d5e2806b8963a729afbaab8493d633f3f6aa4f0530c1b11e5f",
+      "uncompressedSha256": "887638f1bb398eb8186d644739c645a76dcee30f78b3e8b0ddc9222b38031170",
+      "bytes": 1807
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/discovery.log.gz",
+      "sha256": "911de264087676191887efabc8f68121dfc4cb335ec81bcfa0a437727564e3bb",
+      "uncompressedSha256": "f3258053b53b342a179abb7a9766420a5c9edf7f7dfe4ed7d239b3910b698a41",
+      "bytes": 11920
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-20-initial.json.gz",
+      "sha256": "c5bccefeda1a515156f92d20ed08e7c37e3dc4fed6e30e2c4f62a4fe58d0513f",
+      "uncompressedSha256": "1c9e562c1780dd024a654ec5f688d3c82e86e78dc3cebcb24d7bf13608d40903",
+      "bytes": 1488
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-20-initial.log.gz",
+      "sha256": "13eb6ceb155fd0360bd32953076c760f47098bd55158335579f5777a3d2d15c9",
+      "uncompressedSha256": "7092c6670508ddc697915357a648e1be04ddf7439d40c2803c8ab659e6e357e3",
+      "bytes": 485
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-20.log.gz",
+      "sha256": "5a637fd8ebd4c5bd6940b344039f1fe30e05d9cf5158712aff8fc1d14e0335a9",
+      "uncompressedSha256": "34062582ae378fd0cff6cb1d4ed4440cf11040fb6c7faa3e24a96f40fec19c97",
+      "bytes": 1711
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-22.log.gz",
+      "sha256": "9ffeefeb4f29ca79c1e1d6da1ea573fc7b3a90b5eb60c1b160547c13b73eaa19",
+      "uncompressedSha256": "4fc0b0a712457c52c4f988210d061b2220beaa183795830b9c9eb479fa7a0a3a",
+      "bytes": 1646
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-24.log.gz",
+      "sha256": "a9056d23e549a1c506c1eb83179bec91c7cc35cf74a46b737922911409ef26d6",
+      "uncompressedSha256": "70d805373918519f19d6b97d32bf7c9275e0f42f15c673f76f2ad111f93da76d",
+      "bytes": 1662
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-20.json.gz",
+      "sha256": "74c45eedf05a19a90ff96ee375d96118db116485294abc5b6bf5f71c042ba035",
+      "uncompressedSha256": "1bfa6cc7644772219244909118c99fb26d159752ec4096105c57adb35ec84da3",
+      "bytes": 1710
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-22.json.gz",
+      "sha256": "654655de3e251fc777422a1d91987d851bb0e334df797a8a44a3f601528d25e1",
+      "uncompressedSha256": "8df1044b9ef95761ca6622cef8f0c4c0ffddfafb5004b303a67fd3dc13c2309c",
+      "bytes": 1645
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-24.json.gz",
+      "sha256": "9a6d796da59ae043a4a6617a16ec327061994a9d471f2811f55f8d36a9866036",
+      "uncompressedSha256": "cb66a0a14ceabcde1727adc5d028fb6887256d3728552491bcc6cf85e80e90b4",
+      "bytes": 1661
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-20.exit.json.gz",
+      "sha256": "9b3065d60ab05c2d9f201ce97a8b9c4aeb851d35ef723ae8f8b7127732e7c532",
+      "uncompressedSha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437",
+      "bytes": 90
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-22.exit.json.gz",
+      "sha256": "4a5e2fda53b061131a5bb4258e84b9dd8cebd1a536de51be6f154bab6516b785",
+      "uncompressedSha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e",
+      "bytes": 65
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/installed-final-24.exit.json.gz",
+      "sha256": "4dd847a2a0a430d12075ea992fdd9ed47c2f7869c45247fb80008a210070201a",
+      "uncompressedSha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a",
+      "bytes": 90
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/package-size-20.json.gz",
+      "sha256": "8f8bc34a02118454a983c8ee87afbe4313a23872724d3ab267c92b5d861f18c5",
+      "uncompressedSha256": "8d614408275d612ee4ac13447b07066d83beb6a683c1f301b5a96a765187cbd0",
+      "bytes": 124
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/package-size-22.json.gz",
+      "sha256": "4be6f5d353ab34c8833a178395009feb2e270f3bdfd194a9be33db80c68e6730",
+      "uncompressedSha256": "f423e66311fa4a193621950e03140553365e9237dc43dbd522450144f467553b",
+      "bytes": 117
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/package-size-24.json.gz",
+      "sha256": "f7242395ec518a920141c2c2ab9a156e94ac23b68ba667ff3274bb9c7e62d191",
+      "uncompressedSha256": "ce36bcba6a28a1108a1dc10c97634ffd7efc41e132c686c379763eec84a5d935",
+      "bytes": 133
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-opaque.json.gz",
+      "sha256": "0769ac81a09dc869fd1bed2a908de3b260ccee50716a93a5db4995b4ed0f8ec9",
+      "uncompressedSha256": "344af703af8c7f92edad326f764f3d16b5906a58c97bc34d8ca8b1525c222fae",
+      "bytes": 364
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-translucent.json.gz",
+      "sha256": "94107691b4bef6f96edd8cfe8e759e0bcd4937f63fe0fe203b8a6ed1a8a190a0",
+      "uncompressedSha256": "17a622d2c3cc4fc2e6956147bda5f8718195ce2dad7e993dab2dc65e582e7582",
+      "bytes": 368
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-topology.json.gz",
+      "sha256": "f36b847b20b2c3114c8d6e6a752dcedc2f1478951915ef789a92508626d2fb67",
+      "uncompressedSha256": "233019c75e21dcd2a83283a46dd4cd60dfde3de52a61337b4886d4bd12055bff",
+      "bytes": 1028
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-endpoint.json.gz",
+      "sha256": "fe7b12f243db156525e39bb7ff1e57b350f6d15c647d2012fcaf265c3b643874",
+      "uncompressedSha256": "e2d95c8c81bd01491711aac5d8b1f98d0e9cc5bb9dd8a9a3b763d368ef8d5299",
+      "bytes": 356
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-many.json.gz",
+      "sha256": "0769ac81a09dc869fd1bed2a908de3b260ccee50716a93a5db4995b4ed0f8ec9",
+      "uncompressedSha256": "344af703af8c7f92edad326f764f3d16b5906a58c97bc34d8ca8b1525c222fae",
+      "bytes": 364
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-unequal.json.gz",
+      "sha256": "be3fa2af702a4d7dc65817c0f12f3ccaebfcb86700e2c2c2c02274a9ac0a2b60",
+      "uncompressedSha256": "18d7cd151c3236ce3cc1ef972706dba995586404468e5a0e0e592f08b8766d22",
+      "bytes": 368
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-text.json.gz",
+      "sha256": "42b8de50e676d49cf806e337c27c7e51cd8d88fa7d3baca3f7f7b8532c8e948c",
+      "uncompressedSha256": "684d9398db62588c465f118837d7223ecd66bb7064412e743604eea4fb47c2c2",
+      "bytes": 1012
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/weighted-blend-evidence/pixels-image.json.gz",
+      "sha256": "0769ac81a09dc869fd1bed2a908de3b260ccee50716a93a5db4995b4ed0f8ec9",
+      "uncompressedSha256": "344af703af8c7f92edad326f764f3d16b5906a58c97bc34d8ca8b1525c222fae",
+      "bytes": 364
+    }
+  ]
+}

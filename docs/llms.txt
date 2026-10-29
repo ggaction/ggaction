@@ -119,6 +119,9 @@ requirements after resolving each part.
 - Error Band Tutorial: ./tutorials/error-band/
 - Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/
 - Empirical Cumulative Distribution Plots: ./tutorials/ecdf/
+- Marginal Distribution Recipe: ./recipes/marginal/
+- Bullet Comparison Recipe: ./recipes/bullet/
+- Combo Chart Recipe: ./recipes/combo/
 - Horizon Chart Recipe: ./recipes/horizon/
 - Error Band Recipe: ./recipes/error-band/
 - Box Plot Recipe: ./recipes/box-plot/
@@ -236,3 +239,13 @@ requirements after resolving each part.
 - Place Observations on a Calendar: ./tutorials/calendar/
 - Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/
 - Draw Geometry on a Map: ./tutorials/geographic-marks/
+- Pyramid Plots: ./api/pyramid/
+- Compare Ordered Stages: ./tutorials/pyramid/
+- OHLC Plots: ./api/ohlc/
+- Show open, high, low and close: ./tutorials/ohlc/
+- Waterfall Plots: ./api/waterfall/
+- Show Contributions and Totals: ./tutorials/waterfall/
+- Trail Plots: ./api/trail/
+- Show Width Along a Series: ./tutorials/trail/
+- Table Plots: ./api/table/
+- Combine Values and Small Charts in a Table: ./tutorials/table/

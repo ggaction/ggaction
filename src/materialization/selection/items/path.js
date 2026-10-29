@@ -20,7 +20,7 @@ import {
   uniqueFields
 } from "./common.js";
 
-function seriesDefinitions(layer, dataset, series) {
+export function pathSeriesItemDefinitions(layer, dataset, series) {
   const groups = new Map();
   series.forEach((item, graphicIndex) => {
     // Every selection derivation requests lineage; use exact source indices
@@ -84,7 +84,7 @@ export function resolveLineItems(program, layer, dataset, grain, resolveItems, s
     program,
     layer,
     "series",
-    seriesDefinitions(layer, dataset, derived.series),
+    pathSeriesItemDefinitions(layer, dataset, derived.series),
     "path"
   , { selectionResolvers });
 }
@@ -100,7 +100,7 @@ export function resolveAreaItems(program, layer, dataset, grain, resolveItems, s
     program,
     layer,
     "series",
-    seriesDefinitions(layer, dataset, derived.series),
+    pathSeriesItemDefinitions(layer, dataset, derived.series),
     "path"
   , { selectionResolvers });
 }

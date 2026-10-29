@@ -1,4 +1,23 @@
+import { normalizePlotAnchor } from "../../../grammar/plotPosition.js";
 import { applyTemporalUnit } from "../temporal.js";
+
+export function applyPlotAnchor(program, id, value) {
+  return program.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: normalizePlotAnchor(value) });
+}
+
+export function clearPlotPositionChannel(program, layer, channel) {
+  const axis = channel === "x2" ? "x" : channel === "y2" ? "y" : channel;
+  let next = program;
+  for (const kind of ["plotSnapshot", "plotAnchor"]) {
+    const position = layer.derivedBindings?.[kind];
+    if (position?.[axis] === undefined) continue;
+    const { [axis]: removed, ...rest } = position;
+    void removed;
+    next = next.editSemantic({ property: `layer[${layer.id}].derivedBindings.${kind}`,
+      ...(Object.keys(rest).length ? { value: rest } : { remove: true }) });
+  }
+  return next;
+}
 
 function replaceAlternateBinding(program, target, channel, previous, usesField) {
   if (previous === undefined) return program;
@@ -157,7 +176,7 @@ export function applyPositionSemantics(program, {
   weight,
   clearRadialMapping
 }) {
-  let next = reconcileInheritedRulePosition(program, {
+  let next = reconcileInheritedRulePosition(clearPlotPositionChannel(program, layer, channel), {
     target,
     channel,
     layer,

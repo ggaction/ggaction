@@ -1111,15 +1111,41 @@
       "joined geographic geometry",
       "typed geometry table join"
     ],
+    "PyramidPlot": [
+      "Pyramid plot",
+      "ordered stage widths and areas"
+    ],
+    "OHLCPlot": [
+      "OHLC plot",
+      "open high low close prices",
+      "price stems and bodies"
+    ],
     "GeoLODData": [
       "geographic detail levels",
       "region hierarchy",
       "map level of detail"
     ],
+    "WaterfallPlot": [
+      "Waterfall plot",
+      "ordered contributions and totals",
+      "running balance"
+    ],
     "GeoAnnotation": [
       "geographic annotation",
       "feature anchor",
       "map text"
+    ],
+    "TrailPlot": [
+      "Trail plot",
+      "variable width ribbon",
+      "sample width path"
+    ],
+    "TablePlot": [
+      "table plot",
+      "keyed table",
+      "formatted cells",
+      "in-cell bars",
+      "sparklines"
     ]
   },
   "summaryOverrides": {
@@ -2285,6 +2311,25 @@
       "target": "joinedGeometry",
       "dataKey": "code"
     },
+    "createPyramidPlot": {
+      "stage": "stage",
+      "value": "value"
+    },
+    "editPyramidPlot": {
+      "target": "pyramid",
+      "encoding": "area"
+    },
+    "createOHLCPlot": {
+      "x": "date",
+      "low": "low",
+      "high": "high",
+      "open": "open",
+      "close": "close"
+    },
+    "editOHLCPlot": {
+      "target": "ohlc",
+      "doji": "none"
+    },
     "createGeoLODData": {
       "id": "regions",
       "levels": [
@@ -2299,10 +2344,14 @@
       "target": "regions",
       "zoom": 5
     },
-    "editAnnotation": {
-      "target": "annotation",
-      "text": "Updated note",
-      "dx": 8
+    "createWaterfallPlot": {
+      "x": "stage",
+      "role": "role",
+      "value": "amount"
+    },
+    "editWaterfallPlot": {
+      "target": "waterfall",
+      "connectors": false
     },
     "createGeoAnnotation": {
       "anchor": {
@@ -2326,6 +2375,39 @@
           0
         ]
       }
+    },
+    "createTrailPlot": {
+      "x": "time",
+      "y": "signal",
+      "width": "width"
+    },
+    "editTrailPlot": {
+      "target": "trail",
+      "width": 12
+    },
+    "editAnnotation": {
+      "target": "annotation",
+      "text": "Updated note",
+      "dx": 8
+    },
+    "createTablePlot": {
+      "columns": [
+        "name",
+        {
+          "field": "value",
+          "cell": "bar",
+          "footer": "sum"
+        }
+      ]
+    },
+    "editTablePlot": {
+      "target": "table",
+      "sortBy": [
+        {
+          "field": "value",
+          "order": "descending"
+        }
+      ]
     }
   },
   "callPatternOverrides": {

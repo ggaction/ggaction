@@ -39,6 +39,10 @@ export function patchGuideVisibility(program, family, id, patch) {
   });
 }
 
+export function isGuidePartVisible(config, part) {
+  return config?.visibility?.all !== false && config?.visibility?.[part] !== false;
+}
+
 function paint(program, restore) {
   const retained = program.materializationConfigs.guideVisibilityPaint ?? {};
   const backups = {}, objects = { ...program.graphicSpec.objects };
@@ -72,9 +76,8 @@ function paint(program, restore) {
     for (const [id, config] of Object.entries(program.guideConfigs.axis ?? {})) {
       const channel = program.semanticSpec.guides.axis?.[id]?.channel ?? id;
       if (channel === "parallel") continue;
-      const visibility = config.visibility ?? {};
       axisGraphicIds(channel, id).forEach((graphic, index) => {
-        if (visibility.all === false || visibility[parts[index]] === false) visit(graphic, true);
+        if (!isGuidePartVisible(config, parts[index])) visit(graphic, true);
       });
     }
     for (const policy of legendResourcePolicies()) {

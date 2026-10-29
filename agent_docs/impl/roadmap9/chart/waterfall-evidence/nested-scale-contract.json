@@ -1,0 +1,32 @@
+{
+  "status": "verified native nested-scale witnesses and impossible Waterfall log-position declaration corrected; integration point-slot repair is owned by parent",
+  "approval": "../../AUTHORIZATION.json remainingApproval",
+  "runtimeDelta": false,
+  "meaning": "Waterfall keeps its explicit zero origin. Existing zero-supporting position type is reused; log color and OHLC log position remain available.",
+  "cases": {
+    "nestedScaleAllAndWaterfallTypesRuntime": 17,
+    "cleanSourceWaterfallTypesRuntime": 13,
+    "nativeAddedReachableScaleLiterals": 92
+  },
+  "inventory": {
+    "nonCompositionNonConditionalPaths": 166,
+    "nonCompositionNonConditionalLiterals": 793
+  },
+  "initialFailures": [
+    "OHLC point scale with implicit band width exposes zero bandwidth; witnesses now explicitly use valid fixed pixel width. Parent owns common point-step slot repair.",
+    "Negative runtime regression initially used a case-sensitive /log/ matcher; actual existing error begins Log. Case-insensitive matcher preserves the expected error meaning."
+  ],
+  "generated": "Canonical docs:generate followed by final machine/LLM refresh and images generated with Trail WIP safely stashed.",
+  "inputHashes": {
+    "types/program.d.ts": "3ac7d6144d047f74210017f82e2014a277904e3b5d7e17ec524c4082ce58df35",
+    "test/contracts/nested-scale-role-contract.test.js": "abb75b1eaa9e008a3a945dd2c6dc26ab1e99ba239a910bf1bb1f5d9afb65b209",
+    "test/contracts/waterfall-types.test.js": "84a904c88af0934eae40428c788dafd16844cccbb168208dcd463dcd2163b25a",
+    "test/unit/waterfall-plot.test.js": "65742ca1a85ed2833444efbbccc9aa962ff6ce68516c719129c3c3aa5b1e5b19",
+    "agent_docs/contract/current/WATERFALL.md": "dbec81922a6ea545bc7055526b584fa097559231a599b0a260599a3862d0500c",
+    "docs/api/waterfall.md": "223c39bf865f8fdd89206d541d5140ff2222146b5465248584a291210191f99e"
+  },
+  "remaining": [
+    "Parent integration replaces point bandwidth with its step for default OHLC/Waterfall width and includes its independent literal tests.",
+    "Parent integration regenerates combined inventory and documentation against its final native mark ownership."
+  ]
+}

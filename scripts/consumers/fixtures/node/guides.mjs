@@ -227,7 +227,7 @@ for (const create of [chart, basicChart]) {
       const namedAxes = create().createCanvas({ width: 600, height: 400, margin: 80 })
         .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
         .createScatterPlot({ x: "x", y: "y", guides: false })
-        .createAxes({ x: false, y: [{ id: "left", position: "left" }, { id: "right", position: "right" }] });
+        .createAxes({ x: false, y: [{ id: "right", position: "right" }] });
       assert.equal(namedAxes.semanticSpec.guides.axis.right.channel, "y");
       assert.equal(namedAxes.graphicSpec.objects.axis_right__Line.properties.x1, 520);
       assert.deepEqual(deserializeProgram(serializeProgram(namedAxes)).graphicSpec, namedAxes.graphicSpec);
@@ -235,9 +235,9 @@ for (const create of [chart, basicChart]) {
       assert.ok((await renderToPDFBuffer(namedAxes)).buffer.length > 100);
       if (create === chart) {
         const changed = namedAxes.editYAxisTitle({ target: "right", text: "Share" })
-          .editCanvas({ width: 700 }).removeYAxis({ target: "left" });
+          .editCanvas({ width: 700 });
         assert.equal(changed.graphicSpec.objects.axis_right__Line.properties.x1, 620);
-        assert.equal(changed.guideConfigs.axis.left, undefined);
+        assert.equal(changed.removeYAxis({ target: "right" }).guideConfigs.axis?.right, undefined);
       }
       const dashedGuides = create().createCanvas({ width: 700, height: 500, margin: 100 })
         .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 2 }] })

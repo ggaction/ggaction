@@ -6,4 +6,5 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";

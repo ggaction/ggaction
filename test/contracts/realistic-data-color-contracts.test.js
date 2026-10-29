@@ -6,9 +6,11 @@ import {buildPublicOptionInventory} from "../support/scenarios/coverage-inventor
 import {literalValueKey} from "../support/scenarios/coverage-ledger.js";
 import {releaseTidyTuesdaySourceCache} from "../support/datasets/tidytuesday.js";
 import {datasetDefinition} from "../support/datasets/catalog.js";
-import {chart} from "../../src/index.js";
+import {chart, hconcat} from "../../src/index.js";
+import {directProgramTrace, programTraceOwners} from "../support/program-traces.js";
 import {realisticRecordView} from "../support/scenarios/realistic-data.js";
 import {appendRealisticColorControls} from "../support/scenarios/realistic-color-controls.js";
+import {realisticResourcePalettePrograms} from "../support/scenarios/realistic-resource-palette.js";
 import {REALISTIC_ENCODING_COVERAGE_RECIPES as encodingRecipes} from "../support/scenarios/realistic-encoding-coverage-recipes.js";
 import {REALISTIC_GUIDE_SCALE_RECIPES as guideRecipes} from "../support/scenarios/realistic-guide-scale-recipes.js";
 import {REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES as cartesianRecipes} from "../support/scenarios/realistic-cartesian-facade-coverage-recipes.js";
@@ -26,6 +28,9 @@ const FIT_ACTIONS = new Set(["createRegression","editRegression","createRegressi
   "editRegressionData","createRegressionPlot"]);
 const COMPUTED_ACTIONS = new Set(["createComputedData","editComputedData"]);
 const STATISTICS_ACTIONS = new Set(["createRegressionStatisticsData","editRegressionStatisticsData"]);
+let inventoryPromise;
+const publicInventory = () => inventoryPromise ??= buildPublicOptionInventory(
+  JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
 
 function targets(inventory) {
   const options=inventory.optionPaths.filter(option=>option.required && (
@@ -63,10 +68,10 @@ function close(actual,expected){assert.ok(Math.abs(actual-expected)<=1e-9*Math.m
 // This test locks the new contract surface and requires direct execution on each source;
 // a changed inventory fingerprint alone cannot satisfy a requirement.
 test("computed, fit, statistics and color additions have actual public 5/3 witnesses",{timeout:600000},async()=>{
-  const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
+  const inventory=await publicInventory();
   const target=targets(inventory);
   assert.deepEqual({options:target.options.length,literals:target.literals.length,sha256:digest([...target.options,...target.literals].map(value=>value.id))},
-    {options:78,literals:81,sha256:"945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071"});
+    {options:84,literals:87,sha256:"c4f83a4e2cdd374b532c0e81f291f928ee6f4cda402b8fabbe5d4e1690b79359"});
   const stats=new Map([...target.options,...target.literals].map(value=>[value.id,{occurrences:0,datasets:new Set()}]));
   const expressionStats=new Map(["createComputedData:floor","createComputedData:datePart","editComputedData:floor","editComputedData:datePart"].map(id=>[id,{occurrences:0,datasets:new Set()}]));
   const optionsByAction=new Map();
@@ -75,7 +80,7 @@ test("computed, fit, statistics and color additions have actual public 5/3 witne
   let builds=0;
   function record(program,dataset){
     const observed=new Set();
-    for(const entry of program.trace.children??[]){
+    for(const entry of directProgramTrace(program)){
       for(const option of optionsByAction.get(entry.op)??[])if(valuesAt(entry.args,option.path).length)observed.add(option.id);
       for(const requirement of target.literals){const option=literalOptions.get(requirement.optionPath);
         if(option.action===entry.op && valuesAt(entry.args,option.path).some(value=>literalValueKey(value)===requirement.valueKey))observed.add(requirement.id);}
@@ -126,7 +131,6 @@ test("computed, fit, statistics and color additions have actual public 5/3 witne
         .createRegressionStatisticsData({id:"statistics",source:"linearFit"})
         .createRegressionData({id:"alternateFit",source:"analysisRows",x:"positiveY",y:"positiveX",interval:false})
         .editRegressionStatisticsData({target:"statistics",source:"alternateFit"});
-      program=appendRealisticColorControls(program);
       assert.deepEqual(program.semanticSpec.datasets[0].values,rows);
       assert.equal(JSON.stringify(rows),sourceSnapshot);
       const rounded=program.semanticSpec.datasets.find(data=>data.transform?.[0]?.as==="lowerValue").values;
@@ -135,7 +139,11 @@ test("computed, fit, statistics and color additions have actual public 5/3 witne
       const expected=referenceLinearStatistics(rows,"positiveY","positiveX");
       assert.equal(statistics.count,expected.count);close(statistics.intercept,expected.intercept);close(statistics.slope,expected.slope);
       if(expected.rSquared===null)assert.equal(statistics.rSquared,null);else close(statistics.rSquared,expected.rSquared);
-      record(program,dataset);
+      const colorProgram=appendRealisticColorControls(chart().createCanvas({width:1200,height:800,margin:100})
+        .createData({id:"analysisRows",values:rows}));
+      record(hconcat({id:"computedAndColor",programs:[
+        {id:"computed",program},{id:"color",program:colorProgram}
+      ],gap:24}),dataset);
       build(encodingRecipes.find(recipe=>recipe.id.includes("appearance")),dataset);
       for(const variantId of ["color-sequential-viridis-lab","color-sequential-viridis-hcl","color-sequential-viridis-cubehelix","color-pow"]){
         // Palette/interpolation pairs are distributed between the two existing
@@ -162,21 +170,24 @@ test("computed, fit, statistics and color additions have actual public 5/3 witne
   console.log(JSON.stringify({requirementCount:stats.size,requirementSha256:digest([...stats.keys()]),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
 });
 
-// Restored object branches are additional obligations; the original fixed159
-// test above is intentionally unchanged. Exercise public consumers rather than
-// count inventory declarations as observations.
+// Every range-object branch remains an execution obligation as new public
+// consumers are added. Inventory declarations alone are not observations.
 test("palette range objects have actual public 5/3 witnesses at every restored consumer",{timeout:600000},async()=>{
   const {realisticDirectPaletteRangeProgram}=await import("../support/scenarios/realistic-direct-lifecycle-coverage-recipes.js");
   const {REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES:statisticalRecipes}=await import("../support/scenarios/realistic-statistical-facade-coverage-recipes.js");
-  const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
+  const inventory=await publicInventory();
   const options=inventory.optionPaths.filter(option=>option.required&&/(?:^|\.)range\.palette(?:\.|$)/u.test(option.path));
-  assert.equal(options.length,136);
-  assert.equal(digest(options.map(value=>value.id)),"4e1c7c39e4de54cd80c29a988271a3aa891e1a684876b8d78484e30a4eec4d09");
+  assert.equal(options.length,200);
+  assert.equal(digest(options.map(value=>value.id)),"b3c9eb622b877a277f4b71834559776054419a497a0f0e74414be4748bd58a8f");
+  const nativeOptions=options.filter(option=>["createTrailPlot","editTrailPlot","createTablePlot","editTablePlot"].includes(option.action));
+  assert.deepEqual(nativeOptions.map(option=>option.id).sort(),
+    ["createTrailPlot","editTrailPlot","createTablePlot","editTablePlot"].flatMap(action=>
+      ["", ".count", ".extent", ".name"].map(suffix=>`option-path:${action}.color.scale.range.palette${suffix}`)).sort());
   const stats=new Map(options.map(option=>[option.id,{occurrences:0,datasets:new Set(),values:new Set()}]));
   let builds=0;
   function record(program,dataset,metadata){
     const observed=new Map();
-    for(const entry of program.trace.children??[]){
+    for(const entry of directProgramTrace(program)){
       for(const option of options){
         if(option.action!==entry.op)continue;
         const values=valuesAt(entry.args,option.path);
@@ -190,9 +201,10 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
     }
     for(const [id,values] of observed){const value=stats.get(id);value.occurrences++;value.datasets.add(dataset);for(const key of values)value.values.add(key);}
     assert.equal(datasetDefinition(dataset).corpus,"tidytuesday");
-    const dataOwner=program.compositionSpec ? program.children[program.compositionSpec.children[0]] : program;
-    const raw=dataOwner.semanticSpec.datasets.find(data=>data.id==="analysisRows");
-    assert.ok(raw?.values.length>0);
+    const raw=programTraceOwners(program).flatMap(owner=>
+      owner.semanticSpec.datasets.filter(data=>data.id==="analysisRows"));
+    assert.ok(raw.length>0);
+    assert.ok(raw.every(data=>data.values.length>0));
     assert.equal(metadata.provenance.sourceRowIndexBasis,"zero-based-data-row-in-pinned-csv");
     assert.match(metadata.provenance.sourceSelectionSha256,/^[a-f0-9]{64}$/u);
     assert.equal(metadata.provenance.indexEncoding,"sorted-zero-based-indexes-sha256-v1");
@@ -244,12 +256,20 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
         assert.equal(variants.length,3);
         for(const variant of variants)build(recipe,dataset,variant);
       }
+      for(const ordinal of [0,1,2])for(const witness of realisticResourcePalettePrograms(dataset,ordinal)){
+        const raw=witness.program.semanticSpec.datasets.find(data=>data.id==="analysisRows");
+        assert.deepEqual(raw.values.map(row=>row.sourceRowIndex).sort((a,b)=>a-b),witness.provenance.sourceRowIndexes);
+        assert.equal(raw.values.length,witness.provenance.sourceRowCount);
+        assert.equal(createHash("sha256").update(witness.provenance.sourceRowIndexes.join(",")).digest("hex"),
+          witness.provenance.sourceSelectionSha256);
+        record(witness.program,dataset,{provenance:witness.provenance});
+      }
       console.log(JSON.stringify({paletteDataset:dataset,actualBuilds:builds}));
     }finally{releaseTidyTuesdaySourceCache(dataset);}
   }
   const missing=[...stats].filter(([id,value])=>value.occurrences<5||value.datasets.size<3||id.endsWith(".name")&&value.values.size<3).map(([id,value])=>({id,occurrences:value.occurrences,datasets:[...value.datasets],values:[...value.values]}));
   assert.deepEqual(missing,[]);
-  assert.equal(builds,145);
+  assert.equal(builds,265);
   console.log(JSON.stringify({paletteRequirementCount:options.length,paletteRequirementSha256:digest(options.map(value=>value.id)),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
 });
 

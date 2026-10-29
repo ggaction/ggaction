@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 3,
+  "name": "createWaterfallPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Draw ordered contributions, explicit totals and subtotals.",
+  "signature": "createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;",
+  "intents": [
+    "create waterfall plot",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "Waterfall plot",
+    "ordered contributions and totals"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "owns": [
+      "Waterfall contribution mark"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "createScale"
+  ],
+  "editableVia": [
+    "editWaterfallPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "yScale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized dataset",
+      "Canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "WaterfallX"
+    },
+    {
+      "name": "role",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "reset",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "yScale",
+      "required": false,
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "WaterfallWidth | undefined"
+    },
+    {
+      "name": "bars",
+      "required": false,
+      "type": "WaterfallBarPaint | undefined"
+    },
+    {
+      "name": "connectors",
+      "required": false,
+      "type": "false | WaterfallConnectorPaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | WaterfallLabelPaint | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | OHLCColor | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | ColorGuides | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createWaterfallPlot({ x, role, value, id?, data?, coordinate?, yScale?, target? })"
+  ],
+  "snippet": "program.createWaterfallPlot({ x: \"stage\", role: \"role\", value: \"amount\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createwaterfallplot"
+}

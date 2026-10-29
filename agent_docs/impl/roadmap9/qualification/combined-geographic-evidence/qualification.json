@@ -1,0 +1,100 @@
+{
+  "status": "focused-verified-global-integration-pending",
+  "sourceRevision": "0d72f2c7001ad591df2b0f377221ed5afd53f194",
+  "mergedRevision": "d50b57df5edeb7eb119a790d443d3f2675bc2d41",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning": 38,
+    "inventory": 7,
+    "packageAndBoundaries": 13,
+    "privateNode20": 25,
+    "privateNode24": 25,
+    "docsPinned": 223,
+    "rowLineage": 6,
+    "globalUnitInitial": {
+      "tests": 7191,
+      "passed": 7190,
+      "failed": 1,
+      "failedOwner": "test/unit/actions/data/row-lineage.test.js",
+      "repairedOwnerPassed": 6
+    },
+    "commonCorpusRepaired": {
+      "sourceRevision": "729a663240c73d61aaa8e6f94cdbef49fa518ff8",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "wallMs": 938639.126791,
+      "isolation": [
+        {
+          "limit": 216,
+          "complete": true,
+          "maximumChildRssBytes": 224804864,
+          "maximumCombinedRssBytes": 293683200,
+          "isolatedAndReferenceMatch": true
+        },
+        {
+          "limit": 360,
+          "complete": true,
+          "maximumChildRssBytes": 298221568,
+          "maximumCombinedRssBytes": 382664704,
+          "isolatedAndReferenceMatch": true
+        }
+      ]
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1113,
+    "packedBytes": 1585560,
+    "unpackedBytes": 7218612,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "9bb57f8a447a5469d92a86048332707870e4e769",
+    "sha256": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2"
+  },
+  "bundles": {
+    "node": "v22.23.1",
+    "archive": "6c3d3fb3bc405586b6ee282ad2d344443e68f4f99b3c2246c02b40cea8e085f2",
+    "bundles": {
+      "ggaction": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1023,
+        "minifiedBytes": 2701141,
+        "gzipBytes": 771345
+      },
+      "ggaction/basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 607,
+        "minifiedBytes": 1440570,
+        "gzipBytes": 421200
+      },
+      "ggaction/svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73895,
+        "gzipBytes": 24765
+      },
+      "ggaction/graph": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      },
+      "ggaction/interaction": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 194,
+        "minifiedBytes": 381868,
+        "gzipBytes": 122074
+      }
+    }
+  },
+  "pending": [
+    "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
+  ]
+}

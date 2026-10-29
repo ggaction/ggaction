@@ -218,7 +218,7 @@ test("requires an explicit target when more than one bar mark is eligible", () =
       fieldType: "ordinal",
       scale: { id: "otherX" }
     })
-    .encodeY({ field: "perc", scale: { id: "otherY" } })
+    .encodeY({ field: "perc", scale: { id: "y" } })
     .encodeColor({
       field: "sex",
       layout: "group",

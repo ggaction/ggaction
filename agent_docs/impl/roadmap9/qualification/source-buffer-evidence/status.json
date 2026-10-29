@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "focused-verified",
+  "tests": {
+    "verificationAndNativeCompletion": 23
+  },
+  "change": "Bound Git raw stdout by validated local evidence bytes plus one; retain exact committed-byte hashes",
+  "logs": [
+    {
+      "file": "evidence-source-buffer-first.log.gz",
+      "sha256": "7949aa6e606eb865976af7a11310642cafe68f3953eedb2da9ea32197a790de0"
+    },
+    {
+      "file": "evidence-source-buffer-repaired.log.gz",
+      "sha256": "0db5f0ef4b75538446606e817673810e2f3ab10058e0bdb24ba1bfb55f3acfa1"
+    }
+  ],
+  "inputSha256": {
+    "scripts/verification-evidence.js": "210dd3235a97c0b47efcf057aa24f2cb77e07b19302d2f35049b8d9fb7318149",
+    "test/contracts/verification-evidence.test.js": "ec3ca9113e6f703be62bc9b0604effe5ed26ec322a81bd981795afdac6d72443"
+  },
+  "finalRoadmapQualificationComplete": false
+}

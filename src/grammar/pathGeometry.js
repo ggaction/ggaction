@@ -127,7 +127,11 @@ export function resolvePathCommandBounds(commands) {
 
 const MAX_FLATTENED_POINTS = 1_000_000;
 const point = (x, y) => ({ x, y });
-const midpoint = (a, b) => point(interpolateNumber(a.x, b.x, 0.5), interpolateNumber(a.y, b.y, 0.5));
+const midpoint = (a, b) => {
+  const result = point(interpolateNumber(a.x, b.x, 0.5), interpolateNumber(a.y, b.y, 0.5));
+  if (a.width !== undefined) result.width = interpolateNumber(a.width, b.width, 0.5);
+  return result;
+};
 
 export function segmentDistance(query, from, to) {
   const dx = to.x - from.x, dy = to.y - from.y, length = Math.hypot(dx, dy);
@@ -143,12 +147,31 @@ function geometryOptions(tolerance, maxDepth) {
 }
 
 // Input is transformed to scene CSS pixels before measuring subdivision error.
-export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}) {
+export function flattenPathCommands(commands, options) {
+  return flattenCommands(commands, options);
+}
+
+// Private Trail bridge: width uses the same curve parameter and subdivision as
+// XY. Its control-polygon deviation from linear width also bounds refinement.
+export function flattenVariableWidthPath(commands, widthCommands, options) {
+  resolvePathSubpaths(commands); resolvePathSubpaths(widthCommands);
+  if (commands.length !== widthCommands.length || commands.some((command, index) => command.op !== widthCommands[index].op)) {
+    throw new TypeError("Variable-width paths require matching command topology.");
+  }
+  const bounds = resolvePathCommandBounds(widthCommands);
+  if (!Number.isFinite(bounds.top) || bounds.top < 0 || !Number.isFinite(bounds.bottom)) {
+    throw new RangeError("Variable-width path curves must remain finite and nonnegative.");
+  }
+  return flattenCommands(commands, options, widthCommands);
+}
+
+function flattenCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}, widthCommands) {
   geometryOptions(tolerance, maxDepth);
   if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_FLATTENED_POINTS) throw new RangeError("Path maxPoints must be an integer from 1 to 1000000.");
   if (!Array.isArray(transform) || transform.length !== 6 || !transform.every(Number.isFinite)) throw new TypeError("Path transform requires six finite numbers.");
-  const map = (x, y) => {
+  const map = (x, y, width) => {
     const [a, b, c, d, e, f] = transform, result = point(a * x + c * y + e, b * x + d * y + f);
+    if (width !== undefined) result.width = width;
     if (![result.x, result.y].every(Number.isFinite)) throw new RangeError("Transformed path coordinates must be finite.");
     return result;
   };
@@ -156,7 +179,7 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
   let pointCount = 0;
   const pointLimit = commandIndex => freezeOwned({ subpaths: freezeOwned([]), diagnostics: freezeOwned([freezeOwned({ code: "path-point-limit", limit: maxPoints, commandIndex })]) });
   for (const { start, end, closed } of resolvePathSubpaths(commands)) {
-    const first = map(commands[start].x, commands[start].y), points = [first];
+    const first = map(commands[start].x, commands[start].y, widthCommands?.[start].y), points = [first];
     let current = first, hasSegments = false;
     pointCount++;
     if (pointCount > maxPoints) return pointLimit(start);
@@ -165,13 +188,16 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
       const command = commands[index];
       if (command.op === "Z") { hasSegments = true; append(first); if (pointCount > maxPoints) return pointLimit(index); continue; }
       hasSegments = true;
-      const to = map(command.x, command.y);
+      const to = map(command.x, command.y, widthCommands?.[index].y);
       if (command.op === "L") append(to);
       else {
-        const stack = [{ points: [current, map(command.x1, command.y1), map(command.x2, command.y2), to], depth: 0 }];
+        const stack = [{ points: [current, map(command.x1, command.y1, widthCommands?.[index].y1), map(command.x2, command.y2, widthCommands?.[index].y2), to], depth: 0 }];
         while (stack.length) {
           const { points: [p0, p1, p2, p3], depth } = stack.pop();
-          const error = Math.max(segmentDistance(p1, p0, p3), segmentDistance(p2, p0, p3));
+          const widthError = widthCommands === undefined ? 0 : Math.max(
+            Math.abs(p1.width - interpolateNumber(p0.width, p3.width, 1 / 3)),
+            Math.abs(p2.width - interpolateNumber(p0.width, p3.width, 2 / 3)));
+          const error = Math.max(segmentDistance(p1, p0, p3), segmentDistance(p2, p0, p3), widthError);
           if (error <= tolerance || depth === maxDepth) {
             if (error > tolerance) diagnostics.push({ code: "path-subdivision-limit", commandIndex: index, maxDepth, error, tolerance });
             append(p3);

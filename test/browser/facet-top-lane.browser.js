@@ -20,7 +20,7 @@ test.before(async()=>{
       .replace(relative,"'/node_modules/ggaction/src/index.js'"));
   }
   await writeFile(path.join(consumer.directory,'index.html'),'<html lang="en"><head><meta charset="utf-8"><title>Facet top lane</title></head><body><p id="status" role="status">Ready</p></body></html>');
-  server=await startStaticServer(consumer.directory);browser=await engines[name].launch({headless:true});
+  server=await startStaticServer(consumer.directory, { dependencies: "installed" });browser=await engines[name].launch({headless:true});
 });
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();await consumer?.cleanup();});
 

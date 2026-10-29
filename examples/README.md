@@ -487,7 +487,7 @@ Refine a complete bar with one compositing edit.
 
 Representative actions: `createBarPlot`, `editBarMark`. [Documentation](https://ggaction.github.io/ggaction/api/marks/bar/#blend-with-underlying-content).
 
-### [Independent Cartesian axis owners](./axis-owners/)
+### [Named Cartesian axis owners](./axis-owners/)
 
 Create complete named axes before focused placement and text edits.
 
@@ -599,7 +599,7 @@ Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabel
 
 A line follows the final endpoints of aggregated bars and retains independent appearance.
 
-Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/combo/).
 
 ### [Shared-scale adjacent charts](./shared-adjacent/)
 
@@ -817,6 +817,78 @@ Draw geographic shapes, points, lines and graticules with stable feature identit
 
 Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
 
+### [Ordered stages by width](./pyramid/)
+
+Keep the process order while matching adjacent stage widths.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Ordered stages by area](./pyramid-area/)
+
+Make stage areas proportional to values with an explicit taper.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress upward](./pyramid-up/)
+
+Keep input order while changing the direction of progress.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress rightward](./pyramid-right/)
+
+Use a horizontal process direction without sorting rows.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress leftward](./pyramid-left/)
+
+Reverse the progression direction while retaining row order.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [An explicit pointed ending](./pyramid-point/)
+
+Request a pointed last stage in width mode.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Open, high, low and close](./ohlc/)
+
+Keep four prices in one source-owned observation.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit closing price labels](./ohlc-labels/)
+
+Label closing prices without changing body heights.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit flat-body policy](./ohlc-no-doji/)
+
+Keep the high-low stem while hiding the flat body.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Ordered contributions and totals](./waterfall/)
+
+Show explicit signed contributions, subtotals and totals.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Explicit stage labels](./waterfall-labels/)
+
+Show each stage value above the bar.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Contribution bars without connectors](./waterfall-no-connectors/)
+
+Omit incoming balance connectors explicitly.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
 ### [Labels stay attached to the original stops](./geographic-annotations/)
 
 Attach semantic text to geographic positions and original feature keys.
@@ -828,6 +900,42 @@ Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProje
 Map geographic feature properties or joined measurements to color and point area.
 
 Representative actions: `createGeoPointMark`, `encodeColor`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Changing width along each series](./trail/)
+
+Draw two independent ribbons with a screen width at each source sample.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [An explicit constant ribbon width](./trail-constant-width/)
+
+Preserve both centerlines while setting a constant screen width.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [Moving streamgraph baseline](./streamgraph/)
+
+Choose zero, centered, or moving baselines through the existing Area layout action.
+
+Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/#use-a-moving-streamgraph-baseline).
+
+### [Values and small charts in a keyed table](./table/)
+
+Keep exact values beside bars and shared-scale sparklines.
+
+Representative actions: `createTablePlot`, `editTablePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/table/).
+
+### [Marginal distributions](./marginal/)
+
+Link scatterplot observations to the exact members of each marginal bin.
+
+Representative actions: `createScatterPlot createBinData createRectMark hconcat vconcat`. [Documentation](https://ggaction.github.io/ggaction/recipes/marginal/).
+
+### [Bullet comparison](./bullet/)
+
+Compare an actual measure with an explicitly authored target and reference ranges.
+
+Representative actions: `createRectMark createBarMark createRuleMark createMarkLabels`. [Documentation](https://ggaction.github.io/ggaction/recipes/bullet/).
 
 ## Development fixtures
 

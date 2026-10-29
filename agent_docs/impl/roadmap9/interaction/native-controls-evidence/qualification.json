@@ -211,5 +211,66 @@
       "path": "api-interaction-768.png",
       "sha256": "8c721dae890516fe6330e1f28b7aa52280c6404df899fdb9d14c48af9b1017e3"
     }
-  ]
+  ],
+  "combinedIntegration": {
+    "sourceRevision": "f374cd532",
+    "runtimeArchive": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+    "docsFirst": {
+      "total": 230,
+      "passed": 228,
+      "failed": 2
+    },
+    "docsRepairedPassed": 230,
+    "searchBytes": 1076418,
+    "previousCeilingBytes": 1075900,
+    "ceilingBytes": 1076500,
+    "controlInventory": 1,
+    "actualInputBrowser": 7,
+    "installedHtmlConsumers": [
+      {
+        "name": "api-interaction--interaction-keyboard",
+        "id": "interaction-keyboard",
+        "file": "api/interaction.md",
+        "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
+        "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 804.1287499999999
+      },
+      {
+        "name": "api-interaction--interaction-accessible-tooltip",
+        "id": "interaction-accessible-tooltip",
+        "file": "api/interaction.md",
+        "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
+        "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 650.2414580000004
+      },
+      {
+        "name": "api-interaction--interaction-native-controls",
+        "id": "interaction-native-controls",
+        "file": "api/interaction.md",
+        "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
+        "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e",
+        "rendering": "renders-canvas",
+        "status": "passed",
+        "durationMs": 678.2043749999993
+      }
+    ],
+    "builtPages": 185,
+    "selectiveLlmArtifacts": 1597,
+    "changedPageWidths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "axeViolations": 0,
+    "runtimeDelta": 0,
+    "remaining": [
+      "Public animation and reduced motion",
+      "Static combined interacted offline fixture and final qualification"
+    ]
+  }
 }

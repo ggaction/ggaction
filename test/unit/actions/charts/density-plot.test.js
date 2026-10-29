@@ -119,9 +119,9 @@ test("requires an explicit ambiguous coordinate and keeps new density roles inde
   const p = source.createDensityPlot({ field: "value", coordinate: "two", guides: false });
   assert.equal(p.semanticSpec.layers[0].coordinate, "two");
   const prior = base().createAreaMark({ id: "prior", data: "source" })
-    .encodeX({ field: "value" }).encodeY({ field: "value" }).encodeGroup({ field: "group" });
+    .encodeX({ field: "value" }).encodeY({ field: "value", scale: { zero: true } }).encodeGroup({ field: "group" });
   const next = prior.createDensityPlot({ field: "value", guides: false,
-    valueScale: { id: "densityValue" }, densityScale: { id: "densityHeight" } });
+    valueScale: { id: "densityValue" }, densityScale: { id: "y" } });
   assert.equal(next.semanticSpec.layers[1].encoding.group, undefined);
   assert.equal(next.graphicSpec.objects.densityPlot.items.length, 1);
 });

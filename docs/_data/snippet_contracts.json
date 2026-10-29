@@ -359,15 +359,15 @@
     "file": "api/axes/complete.md",
     "block": 2,
     "heading": "Independent named Cartesian axes",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [
       "target: \"share\""
     ],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"share\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "39795f944a3111610e45fc6d3750e80715d703d4162a80f09c3ee7679234ede9",
-    "executable": false
+    "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
+    "sha256": "601568e7dfebbcab29d791cf2f0a979dc3237c3721bfa15675feeec8588a7d6c",
+    "executable": true
   },
   {
     "file": "api/axes/complete.md",
@@ -4948,6 +4948,18 @@
     "executable": false
   },
   {
+    "file": "api/table.md",
+    "block": 1,
+    "heading": "`createTablePlot`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
+    "sha256": "1b43ac59f6fefbd0c3aedcdf95a11e78372153993f050c690ec05e32218f57c4",
+    "executable": true
+  },
+  {
     "file": "api/titles.md",
     "block": 1,
     "heading": "`createTitle(options)`",
@@ -5383,5 +5395,20 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "16ba5aa82585149d337b27f9bcd4f80718073a8293d9b2a4b4eaf019be49329b",
     "executable": false
+  },
+  {
+    "file": "extension/primitives.md",
+    "block": 13,
+    "heading": "Blend concrete sources for one item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"canvas\"",
+      "target: \"item\""
+    ],
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "sha256": "9cf34080dbf14c171287361f8b745e1304e653206df5db3ad7a9c7aa5e85bca4",
+    "executable": true
   }
 ]

@@ -1,6 +1,6 @@
 import { validateFontPayload } from "../grammar/fontPayload.js";
 import { contentDigest } from "../core/contentDigest.js";
-import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
+import { walkGraphicSources } from "../grammar/schemas/graphicSources.js";
 
 export function fontRenderKey(font) {
   return JSON.stringify([font.contentHash, font.family, font.style, font.weight, font.metricsProviderVersion]);
@@ -21,9 +21,6 @@ export function concreteFonts(graphicSpec) {
     if (bytes > 64 * 1024 * 1024) throw new RangeError("Font rendering exceeds its unique byte budget.");
     values.set(key, font);
   };
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ object }) { if (!Array.isArray(object.items)) add(object, object.type); },
-    item({ object, owner }) { add(object, object.type ?? owner.type); }
-  });
+  walkGraphicSources(graphicSpec, (_id, object, type) => add(object, type));
   return values;
 }

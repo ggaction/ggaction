@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:7b5295b19974653c213436cbf77c965265370415da04bf569ff6e1ff502bdee1",
-  "sourceCommit": "d2441294413d13de40fc545f070489645c038276",
-  "sourceRef": "d2441294413d13de40fc545f070489645c038276",
-  "exampleSourceRef": "369cc8ec66d295eaade171d0a32a3c7a3d985cc8",
+  "contractId": "sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480",
+  "sourceCommit": "d86e49cd321e04003fdc9c49677f1348fcdb53dc",
+  "sourceRef": "d86e49cd321e04003fdc9c49677f1348fcdb53dc",
+  "exampleSourceRef": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 367,
+  "actionCount": 377,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -207,6 +207,46 @@
       "status": "development"
     },
     "createCalendarLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTablePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTablePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTrailPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTrailPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createWaterfallPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editWaterfallPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createOHLCPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editOHLCPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createPyramidPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPyramidPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

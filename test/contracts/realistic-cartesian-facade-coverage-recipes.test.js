@@ -30,16 +30,16 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 617, diversity: 14 }),
-  createBarPlot: Object.freeze({ requirements: 558, diversity: 11 }),
-  createLinePlot: Object.freeze({ requirements: 502, diversity: 9 }),
+  createScatterPlot: Object.freeze({ requirements: 621, diversity: 14 }),
+  createBarPlot: Object.freeze({ requirements: 587, diversity: 11 }),
+  createLinePlot: Object.freeze({ requirements: 506, diversity: 9 }),
   createParallelCoordinates: Object.freeze({ requirements: 148, diversity: 5 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "cedffa655099ec26a03e85b2d8b9cc38e3de3564a30b9457070219a81f818c5d",
-  createBarPlot: "6fbd6bc5c9b2f748a1b3c58e58156984d6532825ec98573b23b43415f03ac784",
-  createLinePlot: "3f9b0abda751c6ee4ab1126101aea93fe1057e6bef82fdbee5051ac460a33913",
+  createScatterPlot: "d3b09d47484be83aa91f5eb9317939e7552fec75bcee476439048bf5044100c4",
+  createBarPlot: "e35bb9e9e98bf96a7731909633af3b143e560d6d20cba9c3898a8742b1ffd99f",
+  createLinePlot: "a975f70ffa8c8db02403911dcb6958b7bb34165eff3377f501723aa93d05b6a4",
   createParallelCoordinates: "2abf137b2fc05b6e61dbf787a2cbf3f5f17278f96e549eb5241b229a8ff16e53"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
@@ -531,14 +531,14 @@ async function buildProjection() {
   return projectionPromise;
 }
 
-test("defines four bounded facade recipes and a 880-chart schedule", () => {
+test("defines four bounded facade recipes and a 920-chart schedule", () => {
   assert.deepEqual(REALISTIC_CARTESIAN_FACADE_COVERAGE_COUNTS, {
     recipes: 4,
     advanced: 4,
-    variantsPerAction: {createScatterPlot:44,createBarPlot:41,createLinePlot:50,createParallelCoordinates:41},
-    minimumSelections: 880
+    variantsPerAction: {createScatterPlot:44,createBarPlot:49,createLinePlot:50,createParallelCoordinates:41},
+    minimumSelections: 920
   });
-  assert.ok(REALISTIC_CARTESIAN_FACADE_COVERAGE_COUNTS.minimumSelections <= 900);
+  assert.ok(REALISTIC_CARTESIAN_FACADE_COVERAGE_COUNTS.minimumSelections <= 940);
   assert.deepEqual(
     REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES.map(recipe =>
       recipe.expectedDirectActions[0]
@@ -554,7 +554,7 @@ test("defines four bounded facade recipes and a 880-chart schedule", () => {
     assert.equal(recipe.complexity, "advanced", recipe.id);
     assert.equal(recipe.enforceFactorEffects, true, recipe.id);
     assert.equal(recipe.datasets.length, 50, recipe.id);
-    const profileCount=recipe.expectedDirectActions[0] === "createScatterPlot" ? 44 : recipe.expectedDirectActions[0] === "createLinePlot" ? 50 : 41;
+    const profileCount=recipe.expectedDirectActions[0] === "createScatterPlot" ? 44 : recipe.expectedDirectActions[0] === "createLinePlot" ? 50 : recipe.expectedDirectActions[0] === "createBarPlot" ? 49 : 41;
     assert.equal(recipe.factors.variant.length, profileCount, recipe.id);
     assert.equal(recipe.minimumSelections, profileCount*5, recipe.id);
     assert.ok(recipe.minimumSelections <= 540, recipe.id);
@@ -723,9 +723,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1825);
+  assert.equal(actionRequirementCount, 1862);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1840);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1877);
   assert.equal(diversityCount, 39);
 });
 
@@ -743,7 +743,7 @@ test("keeps every orthogonal profile materially distinct under one authentic wit
         assertMaterializedFacadeOptions(program, directEntries(program, recipe.expectedDirectActions[0])[0], `${recipe.id}/${variant.id}`);
         return strippedFingerprint(program);
       });
-      const count=recipe.expectedDirectActions[0] === "createScatterPlot" ? 44 : recipe.expectedDirectActions[0] === "createLinePlot" ? 50 : 41;
+      const count=recipe.expectedDirectActions[0] === "createScatterPlot" ? 44 : recipe.expectedDirectActions[0] === "createLinePlot" ? 50 : recipe.expectedDirectActions[0] === "createBarPlot" ? 49 : 41;
       assert.equal(hashes.length, count, `${recipe.id} fingerprints`);
       assert.equal(new Set(hashes).size, count, `${recipe.id} material distinction`);
     }
@@ -800,7 +800,7 @@ test("direct authentic witnesses satisfy every assigned hard minimum and diversi
   timeout: 180_000
 }, async () => {
   const projection = await buildProjection();
-  assert.equal(projection.chartCount, 880);
+  assert.equal(projection.chartCount, 920);
   assert.ok(projection.datasetCount >= 3);
   const deficits = [];
   for (const collection of [projection.optionStats, projection.literalStats, projection.aggregateStats]) {

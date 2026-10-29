@@ -32,6 +32,8 @@
     "H0"
   ],
   "wraps": [
+    "createScatterPlot",
+    "editGraphics",
     "editScale",
     "createBoxPlot"
   ],

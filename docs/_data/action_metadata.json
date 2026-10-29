@@ -2994,5 +2994,85 @@
     ],
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "createPyramidPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editPyramidPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createOHLCPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editOHLCPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createWaterfallPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editWaterfallPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createTrailPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTrailPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createTablePlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editTablePlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

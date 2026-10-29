@@ -10,7 +10,7 @@ export function rematerializeTypography(program) {
     return program.compositionSpec.type === "facet" ? program.materializeComposition() : program;
   }
   const exists = (id, op) => program.graphicSpec.objects[id] !== undefined && typeof program[op] === "function";
-  const textOwners = { calendar: "materializeCalendarPlot", text: "rematerializeTextMark", tree: "materializeTreePlot",
+  const textOwners = { table: "materializeTablePlot", waterfall: "materializeWaterfallPlot", ohlc: "materializeOHLCPlot", pyramid: "materializePyramidPlot", calendar: "materializeCalendarPlot", text: "rematerializeTextMark", tree: "materializeTreePlot",
     treemap: "materializeTreemapPlot", partition: "materializePartitionPlot", graph: "materializeGraphPlot", "flow-node": "materializeFlowNodes" };
   const marks = program.semanticSpec.layers.flatMap(layer => {
     const op = layer.geoBinding?.mode === "annotation" ? "materializeGeoMark" : textOwners[layer.mark?.type];

@@ -1,3 +1,4 @@
+import { normalizePlotSnapshot, normalizePlotAnchor } from "../../../grammar/plotPosition.js";
 import { validateScreenAnnotationLayer } from "../../../grammar/screenAnnotation.js";
 import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { validateInputReference } from "../../../core/resourceReference.js";
@@ -6,6 +7,7 @@ import { validateStoredConditional } from "../../../grammar/conditionalState.js"
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   COLOR_LAYOUTS,
+  TEXT_SOURCE_MARK_TYPES,
   MARK_TYPES,
   STACK_MODES
 } from "../../../core/vocabulary.js";
@@ -58,7 +60,7 @@ export function validateLayerSemanticValue(
   parsed,
   value,
   {
-    sourceMarkTypes = ["point", "bar", "line", "rule", "rect", "arc"],
+    sourceMarkTypes = TEXT_SOURCE_MARK_TYPES,
     validateParallel
   } = {}
 ) {
@@ -84,6 +86,8 @@ export function validateLayerSemanticValue(
     validateStoredConditional(parsed.path[1], value);
     return;
   }
+  if (property === "derivedBindings.plotAnchor") { normalizePlotAnchor(value); return; }
+  if (property === "derivedBindings.plotSnapshot") { normalizePlotSnapshot(value); return; }
   if (property === "derivedBindings.overlay") {
     const binding = normalizeOverlayBinding(value);
     validateLayerSource(program, parsed, binding.source, ["bar", "line", "area", "point"]);

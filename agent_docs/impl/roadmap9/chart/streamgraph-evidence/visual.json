@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "capability": "series-layout",
+  "chart": "streamgraph",
+  "variant": "wiggle",
+  "title": "Streamgraph: moving baseline with preserved thickness",
+  "userFacingCallChain": "chart()\n  .createCanvas({\"width\":380,\"height\":280,\"margin\":40})\n  .createData({\"id\":\"data\",\"values\":[{\"series\":\"A\",\"x\":0,\"value\":1},{\"series\":\"A\",\"x\":1,\"value\":2},{\"series\":\"A\",\"x\":2,\"value\":1},{\"series\":\"A\",\"x\":3,\"value\":4},{\"series\":\"B\",\"x\":0,\"value\":3},{\"series\":\"B\",\"x\":1,\"value\":2},{\"series\":\"B\",\"x\":2,\"value\":1},{\"series\":\"B\",\"x\":3,\"value\":0}]})\n  .createAreaPlot({\"id\":\"stream\",\"x\":{\"field\":\"x\",\"scale\":{\"domain\":[0,3],\"nice\":false}},\"y\":{\"field\":\"value\",\"scale\":{\"domain\":[-1,4],\"nice\":false}},\"groupBy\":\"series\",\"layout\":\"wiggle\",\"color\":{\"field\":\"series\",\"scale\":{\"range\":[\"#2563eb\",\"#0d9488\"]}},\"area\":{\"opacity\":1,\"stroke\":\"none\",\"strokeWidth\":0},\"guides\":false});",
+  "files": [
+    {
+      "path": ".artifacts/test/png/charts/series-layout/streamgraph/wiggle/primitive.png",
+      "sha256": "a2119529b6a597613c45d97599e0454c19d798f0cc6978fad331a6110bb7883c",
+      "bytes": 5875
+    },
+    {
+      "path": ".artifacts/test/png/charts/series-layout/streamgraph/wiggle/user-facing.png",
+      "sha256": "a2119529b6a597613c45d97599e0454c19d798f0cc6978fad331a6110bb7883c",
+      "bytes": 5875
+    }
+  ]
+}

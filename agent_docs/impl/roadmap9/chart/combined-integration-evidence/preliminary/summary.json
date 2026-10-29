@@ -1,0 +1,104 @@
+{
+  "status": "repairs-in-progress",
+  "sourceCheckpoint": "759cd2d84",
+  "archive": "826fa4e2000305e5507d5d66e8edc7755d5a7641ecf6080841b474a6915ba859",
+  "results": {
+    "unit": {
+      "tests": 6777,
+      "passed": 6776,
+      "failed": 1,
+      "repair": "Missing scheduling entries fixed from per-owner measured logs; focused discovery passed20."
+    },
+    "charts": {
+      "tests": 977,
+      "passed": 977,
+      "failed": 0
+    },
+    "contracts": {
+      "tests": 758,
+      "passed": 748,
+      "failed": 10
+    },
+    "docs": {
+      "tests": 207,
+      "passed": 203,
+      "failed": 4
+    },
+    "commonRealistic": {
+      "status": "interrupted-after-known-failure",
+      "reason": "Pyramid filled paths with zero stroke were classified as stroked paths by the independent geometry oracle; owning repair added a literal nonzero/zero pair. This is not corpus success."
+    },
+    "installedNode20": {
+      "status": "failed",
+      "reason": "Old two-visible-Y fixture and interaction gzip112814 above112800; runtime/manifest counts also require synchronized update. Node22/24 were not run by the fail-fast shell."
+    }
+  },
+  "records": [
+    {
+      "file": "single-y-combined-unit.log.gz",
+      "sha256": "6492dec3d0a405b11486b4e4c595fecd493fa2614f2e995daca88f3fc5330e1a",
+      "decodedSha256": "fa8324363ba47ffcbdead9c318a2a77c1572c4a6fdc028c6470fc325c79a1eb4"
+    },
+    {
+      "file": "single-y-combined-discovery-repair.log.gz",
+      "sha256": "eb6d244fd95ecd2ea8917e8701dd00fdf559fdc5d398ed000c5737a85ac35f5e",
+      "decodedSha256": "d27727e74d1a7a8c78cb3ef93b00ec530c6bfdf8622653e6b1b97b1b941330e1"
+    },
+    {
+      "file": "single-y-combined-discovery-repair-2.log.gz",
+      "sha256": "d987d724dec170c1e18140df6f43dc0492ce416e65f7ccffa631f1be8dd561c9",
+      "decodedSha256": "7c67da7f1ce3e01eb7d5533da7f6c70af6b15869dc1469609bd5d8e7085f286f"
+    },
+    {
+      "file": "single-y-combined-discovery-repair-3.log.gz",
+      "sha256": "7674ff60364f962e4a42a055530cf87335e367cd53212d4ed8328c1deb84bfe6",
+      "decodedSha256": "02c737fe4143de924a267b99c7931f5c20b1dc67b79eb0f46ba365fad1e1cfca"
+    },
+    {
+      "file": "single-y-combined-contracts.log.gz",
+      "sha256": "a7837953aeb29396e0455c3f616015cd1cb149278b19c3bb60930c304bafe647",
+      "decodedSha256": "831d74075942654bfeab51543fa62246b49df06da97c0332ecee151952232264"
+    },
+    {
+      "file": "single-y-combined-docs.log.gz",
+      "sha256": "e9579a731098eb4dbd0df180910f3e84c6b0e0f774770e95c39e51092ca0687b",
+      "decodedSha256": "e4f5d5b4164b6b9af4d8b31db08a9d55e5e6ad10ba2f973b20d6682a379a5ae8"
+    },
+    {
+      "file": "single-y-combined-charts.log.gz",
+      "sha256": "75b90e68f7a60e0513d761beae1b876c32a8587b88f76d86b68f3809b66efc3e",
+      "decodedSha256": "9d9dfac720c069d5b4be687f553fc082bfd4b6e4cb406a88f737402aae2d89dc"
+    },
+    {
+      "file": "single-y-combined-common-realistic.log.gz",
+      "sha256": "da729ac8f5fbfcef4a259c468e01782d72f5f88f7caadbc31c81a701f9a2bfbb",
+      "decodedSha256": "d0849615c07bb42e165f38fc1521fc1b4194920664a8b54ac42accce71c1e097"
+    },
+    {
+      "file": "combined-installed-20.log.gz",
+      "sha256": "8f362ad724f2b27ef9bb48405438231bfcc9ee9963626362dae4dd6fd2c6aeb3",
+      "decodedSha256": "563c367371382dc7c866210367c8f0c6cd00411908951fc424476dbccf363755"
+    },
+    {
+      "file": "single-y-native-owner-split.log.gz",
+      "sha256": "75531d42df1ac59a8566fe71dfb8f43bd2df9f28394ff7acd523d2156eaceabc",
+      "decodedSha256": "ba493b42b1dd8c207ae888c5fab0e3c651f40324878738d4286232c7e48934bf"
+    },
+    {
+      "file": "single-y-owner-oracle-planner-repair.log.gz",
+      "sha256": "e6c47a791addd881b17772d0feaeb5ec583170656688d0e29b1bf17bcd69c0d6",
+      "decodedSha256": "5cf2b3e48e86215350fb8cc63b2837b8db9d3010752e66d2bb2628e84c451035"
+    },
+    {
+      "file": "single-y-native-point-width.log.gz",
+      "sha256": "c6532955d9493fdd60c3df7fb75ae33989d9c982d1f1bbc7ba5939bcc2ba0267",
+      "decodedSha256": "298c423a2beb75caa378a02edd04165de3dc4e4364f5a64dcd677d1023fae8e9"
+    },
+    {
+      "file": "single-y-native-point-hierarchy-repair.log.gz",
+      "sha256": "3f22d41bcf674f527d4a863cc6c7fc79c37785ec5ce105fe05510041507ca3b7",
+      "decodedSha256": "85aee8dfe2d76a6ea8d89ae95c925c998f4b44a0758bef0488e63f00609277f2"
+    }
+  ],
+  "remaining": "Complete owning repairs, source-pinned generation, exact package/input proof, supported Node qualification, required combined suites and common realistic runs before main promotion. No overall Roadmap9/STEP077 completion claim."
+}
