@@ -1,6 +1,6 @@
 {
   "parent": "63ef4ca2a",
-  "sourceCommit": null,
+  "sourceCommit": "43f0f4fe0757e63e090fbd6d2dcebfdf15c84bd9",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Callback updateProgram prepares native worker results, existing replacement preflight and optional renderer assets in the same atomic preparation slot. No new module, worker protocol or stored state.",
   "runtimeAndTypesFingerprint": "996eb5727d167b9604aa78f0430336b7f4878553f80fa4516eaa9351cb51e2ee",
@@ -76,7 +76,20 @@
       "docsOwning": 49,
       "packageBoundaries": 6,
       "packageManifestPolicy": 2,
-      "sourcePinnedBuild": "pending"
+      "sourcePinnedBuild": {
+        "pages": 172,
+        "llmArtifacts": 1531,
+        "owning": 49,
+        "responsiveWidths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "axeViolations": 0,
+        "overflow": false,
+        "manualInspection": "320px and1440px inspected: readable context, correct fragment label, contained code and navigation"
+      }
     },
     "installed": [
       {
@@ -316,6 +329,14 @@
       "sha256": "10eac9f8680ad444a4e9ad7379f1153650718d600056480caa11f9103d164df0"
     },
     {
+      "path": "session-update-build-pinned.log.gz",
+      "sha256": "23b2a96ad476b8acee0eccb0d4d6b43cb6f8bcf100fe1a7a7817627c86c2f25d"
+    },
+    {
+      "path": "session-update-built-pinned.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
       "path": "session-update-cap-recheck.log.gz",
       "sha256": "2e68f38a686eb35e519dcce6a7885d3ec8d480e8a075faf37b5c071871db992b"
     },
@@ -352,8 +373,20 @@
       "sha256": "fe74cf2190f249c7506d8783906bb7c36592e700ece47ccf7b2c6d4ab5a240eb"
     },
     {
+      "path": "session-update-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "session-update-doc-browser.mjs.gz",
+      "sha256": "46ce86b0f113dba9800c813edde0780e8b78e24ea3f9810988c1c52f132527e0"
+    },
+    {
       "path": "session-update-docs-boundaries.log.gz",
       "sha256": "8dfe098b3d68c2a1ee41698350b34be760ab14e02025c664753da2fe125393b9"
+    },
+    {
+      "path": "session-update-docs-pinned.log.gz",
+      "sha256": "a8ee52a972335c6b5e73ee2282c8c6942862fe8469b0702a6d0abb5c35f01286"
     },
     {
       "path": "session-update-docs-preflight.log.gz",
@@ -405,11 +438,27 @@
     },
     {
       "path": "session-update-qualify.py.gz",
-      "sha256": "926d7e05d535d662c2987f4cee429abea59d8980dc4f4f7dfd5c01368db12b2e"
+      "sha256": "9e0578c2a48c71f61899956f83a2544223794dc67c292ac9b0cfde113117282e"
     },
     {
       "path": "session-update-realistic.log.gz",
       "sha256": "3500b1702277eba785f5824dc4e427bcbde47148727b5c4520e82eab62557a3a"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "94368953f868d24c4fa25126fce27110d6d2a0ca770a5f0d68c0b16b252d3479"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "dc1f24f147539da36083f5f4ef83d0e4e47e762966b3d51504bcb02f369dec33"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "c70acbdbf751694c11907246fd6197d0306831aa15faf64ca52797d8391eb90b"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "d883d424fac6f97999885f17efcbee87b13a2df5735e183a4e83cbf7b000e7b4"
     }
   ]
 }

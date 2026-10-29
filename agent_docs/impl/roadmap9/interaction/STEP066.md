@@ -7,6 +7,7 @@
 - [x] A: candidate asset 준비·네 tag·취소·원자 commit·host lease 수명
 - [x] 직접 renderer handles·100회 lifecycle·실제 browser·설치 소비자 검증
 - [x] 타입·Current·공개 문서·증거 동기화
+- [x] B: native 비동기 replacement와 기존 executor/asset pipeline 통합
 - [ ] animation/layout worker/resize observer 통합 및 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
@@ -115,4 +116,5 @@ B 구현은263 interaction/타입/source boundary/discovery, 추가14 focused(ty
 기존 interactioncap 실패를 보존하고 같은 측정값으로 최소cap을 재검사했다. Node22/24 명령은 exit0이다.
 Docs+packageboundary55중 검색cap2실패는 실측 최소cap으로 고쳐 owning49를 통과했다. 전체suite
 통과로 바꾸어 쓰지 않으며 [B qualification](update-evidence/qualification.json)에 원본과 최종을 기록한다.
-Source-pinned build와 최종화면은 source commit 뒤 evidence에 고정한다.
+Source43f0f4fe0에 고정한 owning49·built172pages/1531LLM이 통과했다. 문서4폭320/390/768/1440px
+Axe/overflow0이며320/1440px 화면을 직접 확인했다. exact source 및 최종 PNG는 B qualification에 고정했다.
