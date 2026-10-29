@@ -109,3 +109,7 @@ Source docs189/191 최초 search cap 실패와 보정31, build168pages/1435LLM·
 B는 original row/field tuple source별 projection, native target filter 독점, 기존 필터의 초기 보존과
 다음 propagation 교체, keep-hidden/drop 뒤 downstream closure 및 runtime/codec 경계를 구현한다.
 Legend/parameter control/context/annotation/drag/focus/navigation/keyboard 및 전체AT/077 완료는 아니다.
+
+B source `da43755ef` 이후 provenance→machine→LLM을 고정하고 documentation29, provenance/machine18,
+built168pages/1435LLM을 통과했다. Runtime/source hashes는 검증된 tar와 동일하며 source pin에 따른
+revision label 변경만 있어 같은 interaction page의 앞선4폭Axe 증거를 재사용한다.

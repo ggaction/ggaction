@@ -1,5 +1,5 @@
 {
-  "sourceCommit": "pending source checkpoint; exact source hashes below",
+  "sourceCommit": "da43755ef",
   "baseCommit": "9e0b47f1b27329b919e40b455a63fd4962d00fda",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "STEP060 B linked filter DAG, native filter ownership, empty filtered final items, selection reconciliation and downstream closure",
@@ -98,7 +98,13 @@
         768,
         1440
       ],
-      "sourcePinned": "pending"
+      "sourcePinned": {
+        "documentation": 29,
+        "provenanceMachineCoverage": 18,
+        "builtPages": 168,
+        "selectiveLLM": 1435,
+        "browserReuse": "The same interaction page text/markup passed four-width axe; source revision labels alone changed."
+      }
     },
     "installed": [
       {
@@ -466,6 +472,26 @@
     {
       "path": "linked-filter-qualify.py.gz",
       "sha256": "02fb1f90b7ddf0994337e439454fc06506cff9960fbc7420f9cff041bea650a1"
+    },
+    {
+      "path": "linked-filter-pinned-generate.log.gz",
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353"
+    },
+    {
+      "path": "linked-filter-pinned-checks.log.gz",
+      "sha256": "665c72709eaeca1dd8b068005651c386e1c071d6b53f0486c6893ca06c39031a"
+    },
+    {
+      "path": "linked-filter-pinned-coverage.log.gz",
+      "sha256": "a17546a2fb2bf4f97ba44ae6b5d414091b654570f370c760590dd6eaa6141c3d"
+    },
+    {
+      "path": "linked-filter-pinned-build.log.gz",
+      "sha256": "e645f2d9c52db714a79eb8240dd3dc83c1cc0e27742099f62a9b4258fec93315"
+    },
+    {
+      "path": "linked-filter-pinned-built.log.gz",
+      "sha256": "b40b472fa134f3c1743c6fe627024adaf48a0adb95efc32ec09530d45aaa6bb0"
     }
   ]
 }
