@@ -20,7 +20,7 @@ export function captureRevision(root) {
   }
 }
 
-function evidenceFile(root, reference, pathKey = "path", hashKey = "sha256") {
+export function evidenceFile(root, reference, pathKey = "path", hashKey = "sha256") {
   const file = reference?.[pathKey], hash = reference?.[hashKey];
   requireValue(typeof file === "string" && file.length > 0 && !path.isAbsolute(file) &&
     !file.includes("\\") && !file.includes(":") && file.split("/").every(part => part && part !== ".." && part !== "."), "Evidence requires a repository-relative path.");
@@ -29,6 +29,18 @@ function evidenceFile(root, reference, pathKey = "path", hashKey = "sha256") {
   requireValue(resolved.startsWith(base + path.sep) && statSync(resolved).isFile(), `Evidence must be a file inside the repository: ${file}`);
   const bytes = readFileSync(resolved);
   requireValue(evidenceHash(bytes) === hash, `Evidence hash mismatch: ${file}`);
+  return bytes;
+}
+
+// Unlike generated logs/artifacts, declared source inputs must also belong to the
+// commit whose clean execution receipt is being qualified.
+export function evidenceSourceFile(root, commit, reference) {
+  const bytes = evidenceFile(root, reference);
+  requireValue(commitId(commit), "Source evidence requires an exact commit.");
+  const committed = execFileSync("git", ["show", `${commit}:${reference.path}`], {
+    cwd: root, stdio: ["ignore", "pipe", "pipe"]
+  });
+  requireValue(evidenceHash(committed) === reference.sha256, `Source evidence differs from execution commit: ${reference.path}`);
   return bytes;
 }
 

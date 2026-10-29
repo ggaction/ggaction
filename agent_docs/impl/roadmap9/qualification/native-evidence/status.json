@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "foundation-implemented",
+  "nativeQualification": "pending",
+  "sourceCommit": "5f870e868fb8d8953944d3deaece829be5e49152",
+  "scope": {
+    "requirements": 30,
+    "acceptanceGroups": 79,
+    "consumerCells": 577,
+    "assignedGroupOwners": 38,
+    "pendingGroupOwners": 41,
+    "assignedConsumerOwners": 97,
+    "pendingConsumerOwners": 480
+  },
+  "checks": {
+    "command": [
+      "node",
+      "scripts/run-tests.js",
+      "contracts",
+      "contracts/native-capability-completion.test.js",
+      "contracts/verification-evidence.test.js",
+      "contracts/test-discovery.test.js",
+      "contracts/source-boundaries.test.js"
+    ],
+    "exitCode": 0,
+    "passed": 49,
+    "failed": 0,
+    "durationMs": 5807,
+    "sourceBeforeClean": true,
+    "sourceAfterClean": true
+  },
+  "nativeResults": {
+    "passed": 0,
+    "pendingGroups": 79,
+    "pendingConsumers": 577,
+    "fullQualification": "pending"
+  },
+  "remaining": [
+    "Assign the remaining integrated acceptance and consumer owners against the final source.",
+    "Run all existing candidate qualification suites and supply exact clean-source receipts and one canonical archive.",
+    "Provide per-target input/call/independent expected/actual/diff evidence and independent review.",
+    "Complete later publication and public-artifact comparison obligations; no release operation was run here."
+  ],
+  "files": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/initial-discovery-failure.log.gz",
+      "sha256": "e8fde3cf34d1327b509663f182ceb07d1d0276e48d37da377201c17c05e8cd32"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/initial-pinned-scope-fixture.log.gz",
+      "sha256": "0a30bfb34bd15111f1a07eea3d92d549143af5679656e9d7ec6ae101e8fec4cb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/migration.json",
+      "sha256": "e6eef44c1e658519ae42be0509c98442fe854a1a4a23fe133b165a0aa28cacea"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/pending.json",
+      "sha256": "8fd6aa2979cd43714536553349b3961cb0ccdb5fa2be79c424a4be707c1867fb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/source-final.log.gz",
+      "sha256": "586b8800325a8cb90bfca4df6ca7498f04583fee4b61ca4ac6906f221eeeaff4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/native-evidence/source-final.receipt.json",
+      "sha256": "f1fb74d98b1acfd9a24df290db485a8f51b1c2305b414c51a437600fe8ab077a"
+    }
+  ]
+}

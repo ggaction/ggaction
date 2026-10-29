@@ -1,0 +1,52 @@
+{
+  "label": "suite-contracts",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/contracts/native-capability-completion.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/contracts/source-boundaries.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/contracts/test-discovery.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/contracts/verification-evidence.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 5807,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T19:20:34.602Z",
+  "finishedAt": "2026-10-29T19:20:40.410Z",
+  "source": {
+    "available": true,
+    "commit": "5f870e868fb8d8953944d3deaece829be5e49152",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "5f870e868fb8d8953944d3deaece829be5e49152",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "8082d23d2f144c2dc61fad3e5d349072a7ba9b3d022241b0d25c4e247854271a",
+  "discovery": {
+    "suite": "contracts",
+    "selectors": [
+      "contracts/native-capability-completion.test.js",
+      "contracts/verification-evidence.test.js",
+      "contracts/test-discovery.test.js",
+      "contracts/source-boundaries.test.js"
+    ],
+    "files": [
+      "test/contracts/native-capability-completion.test.js",
+      "test/contracts/source-boundaries.test.js",
+      "test/contracts/test-discovery.test.js",
+      "test/contracts/verification-evidence.test.js"
+    ]
+  },
+  "bytes": 10836,
+  "retainedBytes": 10836,
+  "truncated": false
+}
