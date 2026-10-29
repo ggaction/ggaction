@@ -386,3 +386,10 @@ interaction/direct controls/linked filter/region35개와 browser13개, 경계·�
 유지해 canonical 검증한다. Package는1016entries이고 Full/Basic gzip을 지원 Node에서
 다시 측정했다. 합산 tar·문서 provenance·최종 browser 증거는 source merge commit 이후
 `geo-evidence/marks-merge/`에 별도로 기록한다.
+
+합산 source `0a217a83b`는 canonical inventory7/7와 package7/7, 동일 tar
+`f96999b130e6af40bc4d917c33773f03d5b2c6028af982d9b844a414de53fac3`의 Node20/22/24
+각 runtime8개·strict 타입·docs2개·browser bundle5개를 통과했다.1016개 packed input은
+현재 source와 차이0이다. Postcommit 문서196/196, built172페이지/1505machine artifacts와
+전체 페이지320/390/768px 검증도 통과했다. 합산 증거는 `geo-evidence/marks-merge/status.json`이다.
+이후 join 변경은 별도 개념 commit으로 진행한다.
