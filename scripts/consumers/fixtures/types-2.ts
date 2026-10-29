@@ -239,9 +239,12 @@ import {
     chart().facet({ field: "group", headers: { side: "right" } });
     basicChart().applyTheme({ theme: { base: "light", tokens: {
       fontSize: 14, fontWeight: 0, axisLabel: "red", axisLabelFontSize: 6, axisTitleFontSize: 18,
+      axisStrokeWidth: 0, tickStrokeWidth: 2, tickSize: 8, gridStrokeWidth: .5,
       axisLabelFontFamily: "serif", axisTitleFontFamily: "monospace"
     } } });
     chart().applyTheme({ theme: { base: "dark", tokens: { fontWeight: "bold" } } });
+    // @ts-expect-error guide geometry is numeric
+    chart().applyTheme({ theme: { base: "dark", tokens: { tickSize: "small" } } });
     // @ts-expect-error font weight is a string or number
     chart().applyTheme({ theme: { base: "dark", tokens: { fontWeight: false } } });
     // @ts-expect-error font size is numeric

@@ -86,6 +86,10 @@ export interface FontRenderingHost {
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
+  axisStrokeWidth?: number;
+  tickStrokeWidth?: number;
+  tickSize?: number;
+  gridStrokeWidth?: number;
   fontSize?: number;
   fontWeight?: string | number;
   axisLabel?: string;

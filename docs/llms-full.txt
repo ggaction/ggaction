@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:985f51ac778923435bdbac0cdb75ddce11a1d7f2ad7046f173bd117acef93837. Status: development. Runtime source: ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd. Release baseline: v0.0.13.
+Contract: sha256:57d7f0ad2cf03db46ca2b74f540e16db9a9f75098ad407ec43033d17070865a2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -44854,6 +44854,10 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  axisStrokeWidth?: number;
+  tickStrokeWidth?: number;
+  tickSize?: number;
+  gridStrokeWidth?: number;
   fontSize?: number;
   fontWeight?: string | number;
   axisLabel?: string;
@@ -45974,12 +45978,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -48485,6 +48489,8 @@ Graph, tree, treemap, partition, and flow plots also follow theme defaults for t
 
 Axes, grids, and legends also return to their native family colors when the last theme is removed. An explicitly chosen color stays in place even when it equals a default. Nested compositions preserve each child's resolved styles; the parent does not recolor those snapshots a second time. Updating a stroke legend's sample fill keeps its field-driven stroke and existing geometry.
 
+Use `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, and `gridStrokeWidth` for guide defaults in CSS pixels. These tokens accept finite nonnegative numbers, including zero. Explicit guide options stay in place. Removing a token restores that guide family's native default. The chart keeps its declared Canvas size and margins; a guide that no longer fits causes the change to fail atomically.
+
 Optional `fontSize` and `fontWeight` tokens set text defaults across marks, labels, guides, titles, and facet headers. Axis-specific size tokens override the global size. Authored role styles and named highlights keep priority, including an explicit numeric zero where the original style option accepts it. Removing or replacing a theme restores the native role defaults for omitted tokens. If an exact font profile is active, prepare the required font and measurements before changing typography; missing preparation rejects the whole change.
 
 ## Related
@@ -49022,9 +49028,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:985f51ac778923435bdbac0cdb75ddce11a1d7f2ad7046f173bd117acef93837` |
+| Contract fingerprint | `sha256:57d7f0ad2cf03db46ca2b74f540e16db9a9f75098ad407ec43033d17070865a2` |
 | Example and dataset source | `b63c5f8739681aae0603281f97d065a26d564efa` |
-| Runtime source commit | `ebe34f8964d1bcf6bcbb62a0de1fa6af7ca733fd` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 335 |
 | Declared actions in that release | 234 |

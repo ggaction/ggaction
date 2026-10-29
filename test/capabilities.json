@@ -1292,6 +1292,10 @@
       {
         "type": "file",
         "path": "unit/actions/theme-flow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-guide-geometry.test.js"
       }
     ]
   },

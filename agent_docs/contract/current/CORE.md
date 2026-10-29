@@ -205,9 +205,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`, `sizeSymbol`,
     `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
     `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`, `axisLabelFontFamily`,
-    `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`, `fontSize`, `fontWeight`의 closed vocabulary다.
+    `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`, `fontSize`, `fontWeight`,
+    `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`의 closed vocabulary다.
     FontSize token은 positive finite number이고, fontWeight는 finite number 또는 non-empty string이며
-    나머지는 non-empty string이다. `fontWeight: 0`도 명시값으로 보존한다.
+    guide geometry 4개 token은 nonnegative finite number, 나머지는 non-empty string이다.
+    `fontWeight: 0` 및 guide geometry의 0도 명시값으로 보존한다.
+  - Guide geometry token은 각 native axis line/tick/grid의 lineWidth와 tick length 기본값을 CSS px로
+    지정한다. Cartesian/named/Polar/Parallel 및 Basic의 기존 소비자에만 적용하며 새로운 guide를 만들지 않는다.
+    명시한 direct/facade guide 값은 같은 기본값이나 0이어도 우선한다. 제거 또는 partial token 생략 시
+    각 family 기본값을 복원한다. 기존 wrapped guide materializer와 전체 guide layout 검증을 거치고
+    Canvas dimensions/margins와 scale domain을 바꾸지 않는다. 부족한 공간은 원자적으로 거부한다.
   - Axis 전용 token은 Cartesian/Polar/Parallel 축에만 적용한다. Role font family 미지정은
     global fontFamily, size 미지정은 global fontSize, 그것도 없으면 family 기본값(label 12/11/11, title 13)으로 돌아간다.
     axisLabel 미지정은 Cartesian/Polar text, Parallel axis 색을 사용한다.
@@ -286,6 +293,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     nested concat/facet/shared legend와 offline 복원. `test/unit/actions/theme-guide-defaults.test.js`.
   - ✅ Covered: DAG/cyclic Flow body/link/label 색·font, exact preparation 오류 원자성,
     false label reset, named highlight와 nested scope. `test/unit/actions/theme-flow.test.js`.
+  - ✅ Covered: guide width/length 기본값·명시0·native reset·resize/scale edit·nested scope·bounds 오류.
+    `test/unit/actions/theme-guide-geometry.test.js`.
 - Visual boundary
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
