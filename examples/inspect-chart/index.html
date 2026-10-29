@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inspect a chart</title>
+  <style>
+    body { margin: 24px; color: #1f2937; font: 16px/1.5 system-ui, sans-serif; }
+    main { max-width: 900px; margin: auto; }
+    h1 { margin-bottom: 4px; }
+    .charts { display: flex; flex-wrap: wrap; gap: 20px; }
+    figure { margin: 0; }
+    canvas, svg { display: block; }
+    #inspection { min-height: 2em; }
+  </style>
+</head>
+<body><main>
+  <h1>Inspect a chart</h1>
+  <p id="status">Loading chart…</p>
+  <p>Move over either view. The lower-left point contains two observations.</p>
+  <div class="charts">
+    <figure><figcaption>Canvas</figcaption><canvas id="chart" aria-label="Three observations with two overlapping points"></canvas></figure>
+    <figure><figcaption>SVG</figcaption><div id="vector"></div></figure>
+  </div>
+  <p id="inspection" role="status">Move over a point or guide.</p>
+</main><script type="module" src="./main.js"></script></body>
+</html>

@@ -74,3 +74,23 @@ export function restoreLegendClipContext(program, previous) {
  if (previous !== undefined) context.deferLegendClip = previous;
  return program._clone({context});
 }
+
+// Read the same sample grouping after optional clip windows are materialized.
+export function legendSampleGraphicGroups(program, kind, config) {
+ const descriptors=roles(kind,config),objects=program.graphicSpec.objects;
+ const owners=descriptors.map(role=>objects[role.id]);
+ if(owners.every(owner=>owner===undefined))return [];
+ if(owners.some(owner=>owner===undefined))throw new Error('Legend sample graphics require every configured symbol layer.');
+ if(owners.some(wrapped)){
+  const primary=owners[0];
+  if(!wrapped(primary)||owners.slice(1).some(owner=>(owner.items?.length??0)!==0||(owner.children?.length??0)!==0))throw new Error('Legend clip sample ownership is inconsistent.');
+  return primary.children.map(id=>{
+   const window=objects[id];
+   if(window?.type!=='canvas'||window.children?.length!==descriptors.length||window.children.some(child=>objects[child]===undefined))throw new Error('Legend clip sample graphics are missing.');
+   return [...window.children];
+  });
+ }
+ const count=owners[0].items?.length;
+ if(count===undefined||owners.some(owner=>owner.items?.length!==count))throw new Error('Legend sample graphics have inconsistent item counts.');
+ return Array.from({length:count},(_,index)=>owners.map(owner=>owner.items[index].id));
+}

@@ -7,10 +7,12 @@ import { build } from "vite";
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 644_000, // Contour branch ceiling; remeasure combined source before qualification.
   "ggaction/basic": 363_000, // Preserve integrated native guide and graph dispatch ceiling.
-  "ggaction/svg": 25_000
+  "ggaction/svg": 25_000,
+  "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `
 import { renderToSVG } from "ggaction/svg";

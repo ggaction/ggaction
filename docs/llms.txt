@@ -154,6 +154,8 @@ requirements after resolving each part.
 - Violin Plots: ./api/violin-plots/
 - Guides: ./api/guides/
 - Titles: ./api/titles/
+- Inspect Chart Items: ./api/interaction/
+- Inspect Overlapping Chart Items: ./recipes/inspect-chart/
 - Program Composition: ./api/composition/
 - Quantitative Positions: ./api/position/quantitative/
 - Temporal Line Positions: ./api/position/temporal/

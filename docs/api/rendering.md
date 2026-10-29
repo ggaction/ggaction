@@ -35,6 +35,9 @@ ordered font-family list. SVG uses the browser's font resolution.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+For pointer inspection of the rendered Canvas or SVG, use an explicit
+[interaction session](interaction.md).
+
 ## First render
 
 Run this ES module in a bundler-based browser page containing `<canvas id="chart"></canvas>`:

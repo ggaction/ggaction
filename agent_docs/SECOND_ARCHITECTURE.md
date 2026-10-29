@@ -32,6 +32,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
 `ggaction-mcp`는 별도의 Node stdio executable이며 chart code를 실행하지 않는다.
 검증 수치·과거 bundle 예산은 [기준 commit의 보존 기록](architecture/history/202b7afd-second-architecture.md)에서 확인한다.
@@ -3426,3 +3427,27 @@ unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,
 기준으로 한도를 880 / packed1,278,000 / unpacked5,876,000 및 Full644,000 / Basic362,000으로
 갱신한다. Packed 한도는 측정값의 1,000-byte 경계가 3 bytes밖에 남지 않아 다음 1,000-byte
 경계를 사용하며 최종 tar에서 다시 검증한다. SVG25,000 및 source coverage floors는 유지한다.
+### Public inspection session boundary
+
+공개 `src/interaction.js`와 `types/interaction.d.ts`의
+`ggaction/interaction`은 Full/Basic authoring import와 분리된 browser-safe controller entry다.
+`interaction/session.js`가 DOM listener와 transient inspect/current-frame lifetime을 소유하며,
+program action/selection/history를 만들지 않는다. `sceneFrame.js`는 host가 전달한 concrete frame을
+bounded own-data snapshot으로 고정한 뒤 기존 renderer scene validation을 재사용한다.
+기존 scene/source identity로 metadata를 연결하고 version/generation 교체를 원자적으로 수행한다.
+
+`hitGuides.js`/`hitLegends.js`는 가이드 정책의 raw typed values와 실제 physical item 대응만 읽는다.
+기존 pure tick/sample/layout resolver를 명시적으로 재사용하며 wrapped action을 실행하지 않는다.
+축 표시 문자열·줄 그룹은 `grammar/axisFormat.js`와 `materialization/axisLabelText.js`가 생성과
+검사의 공통 소유자다. Legend clip의 물리 그룹도 기존 `materialization/legendClip.js`가 소유한다.
+Renderer는 기존 graphicSpec만 읽고 public scene schema/codec는 바뀌지 않는다.
+정확한 command/return/event/지원 범위는 [INTERACTION.md](contract/current/INTERACTION.md)가 소유한다.
+050 이후 편집 제스처·selection orphan/history 및 035 추가 composition 소비자는 후속 의무다.
+
+독립 interaction bundle은 Node22 81,727, Node20/24 82,299 gzip bytes로 실측되어 한도83,000을
+추가했다. Full635,000/Basic360,000/SVG25,000 한도는 그대로 통과한다. Package는879entries,
+README 진입점 추가 전 최대1,281,005packed/5,879,334unpacked bytes에 최소1,000bytes
+올림을 적용하여879/1,282,000/5,880,000으로 조정했다. 동일 고정 archive의 실제 후속 bytes와
+Node별 설치 근거는 interaction 공개 체크포인트 기록이 소유한다.
+공개 inspection API/recipe와 entry reference를 포함한 search index는945,337bytes로 기존941,000을
+넘어 최소1,000bytes 올림946,000으로 조정했다. 검색 내용이나 기능을 제외하지 않았다.

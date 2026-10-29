@@ -1067,5 +1067,22 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "interaction.mjs",
+    "cases": [
+      {
+        "id": "interaction/full-basic-immutable-inspection",
+        "statements": 1
+      },
+      {
+        "id": "interaction/current-frame-and-restored-program",
+        "statements": 1
+      },
+      {
+        "id": "interaction/guide-and-host-cleanup",
+        "statements": 1
+      }
+    ]
   }
 ]

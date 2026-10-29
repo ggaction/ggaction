@@ -2074,3 +2074,21 @@
   actions: createContourData · createDensityContourData · createContourMark
   tasks: contour density
   url: /tutorials/contours/
+
+- id: inspect-chart
+  example: /examples/inspect-chart/
+  title: Inspect overlapping chart items
+  image: /assets/images/inspect-chart.png
+  alt: Three observations with two overlapping points and inspectable axes and title
+  width: 840
+  height: 600
+  thumbnail: /assets/images/inspect-chart-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 457
+  caption: The lower-left location contains two distinct observations.
+  summary: Inspect the same final chart items through Canvas, SVG, or headless CSS points.
+  actions: createPointMark · encodeX · encodeY
+  tasks: inspection
+  url: /recipes/inspect-chart/
+  recipe_url: /recipes/inspect-chart/
+  recipe_order: 209

@@ -24,6 +24,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
+| `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
 or configure the consuming project for ESM.

@@ -1,11 +1,5 @@
-import { formatNumericTickValues } from "../../../grammar/ticks.js";
-import { formatVisibleText } from "../../../core/textMetrics.js";
 import { validateBoolean } from "../../../core/validation.js";
-import {
-  formatValue,
-  isUtcValueFormat,
-  validateValueFormat
-} from "../../../grammar/valueFormat.js";
+export { validateAxisFormat, formatNumericAxisTicks, formatAxisValue } from "../../../grammar/axisFormat.js";
 
 const AXIS_POSITIONS = Object.freeze({
   x: Object.freeze(["bottom", "top"]),
@@ -104,48 +98,4 @@ export function resolveAxisTitleGeometry({
   return channel === "x"
     ? { x: along, y: position === "top" ? baseline - offset : baseline + offset }
     : { x: position === "right" ? baseline + offset : baseline - offset, y: along };
-}
-
-export function validateAxisFormat(format) {
-  if (format === "ticks") return format;
-  return validateValueFormat(format, "Label format", {
-    allowDecimalsObject: true
-  });
-}
-
-export function formatNumericAxisTicks(values, scaleType) {
-  if (["ordinal", "band", "point", "time"].includes(scaleType)) {
-    throw new Error('Axis format "ticks" requires a quantitative scale.');
-  }
-  return formatNumericTickValues(values);
-}
-
-export function formatAxisValue(value, scaleType, format, autoFormatter) {
-  if (format === "ticks") {
-    throw new Error('Axis format "ticks" requires the complete settled tick values.');
-  }
-  validateAxisFormat(format);
-  if (format === "auto") return formatVisibleText(autoFormatter(value));
-  if (["ordinal", "band", "point"].includes(scaleType)) {
-    throw new Error('Discrete axis labels require format "auto".');
-  }
-  if (scaleType === "time") {
-    if (!isUtcValueFormat(format)) {
-      throw new Error("Time axis labels require a supported time format string.");
-    }
-    return formatValue(value, {
-      format,
-      valueType: "temporal",
-      label: "Axis label format"
-    });
-  }
-  if (isUtcValueFormat(format)) {
-    throw new Error("Quantitative axis labels cannot use a time format string.");
-  }
-  return formatValue(value, {
-    format,
-    valueType: "quantitative",
-    label: "Axis label format",
-    allowDecimalsObject: true
-  });
 }

@@ -484,6 +484,20 @@
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
+  "/api/interaction/": {
+    "title": "Inspect Chart Items",
+    "source": "docs/api/interaction.md",
+    "editSource": "docs/api/interaction.md",
+    "description": "Inspect overlapping marks and guides in Canvas or SVG while preserving an immutable chart program.",
+    "image": "/assets/images/inspect-chart.png"
+  },
+  "/recipes/inspect-chart/": {
+    "title": "Inspect Overlapping Chart Items",
+    "source": "docs/recipes/inspect-chart.md",
+    "editSource": "examples/inspect-chart/program.js",
+    "description": "Create a chart with two observations at the same location, then inspect both through Canvas or SVG. Open the live example to compare the two surfaces.",
+    "image": "/assets/images/inspect-chart.png"
+  },
   "/api/composition/": {
     "title": "Program Composition",
     "source": "docs/api/composition.md",

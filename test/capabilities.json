@@ -606,6 +606,22 @@
       {
         "path": "unit/resources/graph-hit.test.js",
         "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-guides.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-session.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/interaction-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-session.browser.js"
       }
     ],
     "horizon": [

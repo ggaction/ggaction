@@ -87,6 +87,10 @@
     "./scene": {
       "types": "./types/scene.d.ts",
       "default": "./src/scene.js"
+    },
+    "./interaction": {
+      "types": "./types/interaction.d.ts",
+      "default": "./src/interaction.js"
     }
   },
   "scripts": {
