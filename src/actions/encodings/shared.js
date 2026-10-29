@@ -230,6 +230,11 @@ export function rebindPositionGuides(
 }
 
 export function rematerializeExistingLegend(program) {
+  if (program.materializationConfigs.canvas?.responsive !== undefined) {
+    // Appearance can change occupied stroke/effect bounds even without a
+    // legend. The explicit dependency executor owns the resulting layout pass.
+    return applyMaterializationPlan(program, []);
+  }
   return hasMaterializedLegend(program)
     ? program.rematerializeLegend()
     : program;

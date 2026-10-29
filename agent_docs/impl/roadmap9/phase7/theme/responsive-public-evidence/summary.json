@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "aaa77724cd87b7c166db918d3ecede34a344ac66",
+  "scope": "STEP-034 fixed Canvas and Cartesian responsive labels; nested composition remains STEP-035",
+  "approval": "b758b912",
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/responsive-kernel/release/ggaction-0.0.26.tgz",
+    "sha256": "de5a74c9c8e73671c744c14ea6fe26e668157660e1a9ba6334aedf65d9880c44",
+    "entryCount": 916,
+    "size": 1320816,
+    "unpackedSize": 6056849
+  },
+  "checks": [
+    {
+      "id": "legacy-canvas-axis",
+      "command": "node scripts/run-tests.js unit unit/actions/canvas/ unit/actions/guides/axis-label unit/actions/guides/axis-title unit/layout/responsive-policy.test.js",
+      "passed": 54
+    },
+    {
+      "id": "responsive-critical",
+      "command": "node --experimental-test-coverage --test-coverage-include=src/grammar/responsiveCanvas.js --test-coverage-include=src/grammar/responsiveLabels.js --test-coverage-include=src/layout/responsivePolicy.js --test-coverage-include=src/materialization/responsiveLayout.js --test-coverage-include=src/materialization/guides/canvas.js --test test/unit/actions/canvas/responsive-*.test.js test/unit/grammar/responsive-state.test.js test/unit/layout/responsive-policy.test.js",
+      "passed": 37,
+      "coverage": {
+        "responsiveCanvas": [
+          100,
+          100,
+          100
+        ],
+        "responsiveLabels": [
+          100,
+          100,
+          100
+        ],
+        "responsivePolicy": [
+          100,
+          98.57,
+          100
+        ],
+        "guides/canvas": [
+          100,
+          100,
+          100
+        ],
+        "responsiveLayout": [
+          100,
+          92.86,
+          100
+        ]
+      }
+    },
+    {
+      "id": "axis-hit-critical",
+      "passed": 99,
+      "coverage": {
+        "axisLabelText": [
+          100,
+          91.3,
+          100
+        ],
+        "hitGuides": [
+          100,
+          95.08,
+          100
+        ]
+      }
+    },
+    {
+      "id": "source-boundaries-types",
+      "passed": 12
+    },
+    {
+      "id": "final-discovery-package-types",
+      "passed": 23
+    },
+    {
+      "id": "literal-chart",
+      "passed": 1
+    },
+    {
+      "id": "png-pdf",
+      "passed": 2
+    },
+    {
+      "id": "browser-canvas-svg-dpr1-2",
+      "passed": 1
+    },
+    {
+      "id": "realistic",
+      "passed": 15,
+      "datasets": [
+        "tt-penguins",
+        "tt-london-marathon-winners",
+        "tt-astronauts",
+        "tt-us-births",
+        "tt-chocolate-ratings"
+      ],
+      "command": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-responsive-layout.test.js"
+    },
+    {
+      "id": "installed",
+      "nodeVersions": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "perNodeRuntimeCases": 2,
+      "perNodeQualificationGroups": 7,
+      "sameArtifact": true
+    },
+    {
+      "id": "docs-source",
+      "status": "passed",
+      "passed": 180
+    },
+    {
+      "id": "docs-built",
+      "pages": 165,
+      "llmArtifacts": 1413
+    },
+    {
+      "id": "docs-browser",
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768
+      ],
+      "scope": "All built documentation pages, desktop search, keyboard navigation, mobile accessibility; exact provenance-only rebuild delta is recorded separately."
+    },
+    {
+      "id": "final-provenance-browser",
+      "passed": 93,
+      "pages": 31,
+      "widths": [
+        320,
+        390,
+        768
+      ],
+      "status": "passed"
+    }
+  ],
+  "limits": {
+    "packageEntries": 916,
+    "packagePacked": 1321000,
+    "packageUnpacked": 6057000,
+    "fullGzip": 656000,
+    "basicGzip": 371000,
+    "searchIndex": 959000
+  },
+  "sourceFree": true,
+  "fullNormalOrCoverageRerun": false,
+  "visualInspection": "Rendered PNG inspected: four bars, eight label lines, unchanged Canvas dimensions, visible axis/title; exact primitive/public comparison is in tests.",
+  "logs": [
+    {
+      "path": "public-regression.log.gz",
+      "uncompressedBytes": 11461,
+      "sha256": "d853793d9b26f44e54346457efc275f9d93b62325d9a1a6fdfc445c7b7392c80"
+    },
+    {
+      "path": "public-responsive-3.log.gz",
+      "uncompressedBytes": 2280,
+      "sha256": "275e33104b4612044dc923e05aae94ccfea9a8ba2439502c407ebaa74cf93f8a"
+    },
+    {
+      "path": "public-lifecycle-2.log.gz",
+      "uncompressedBytes": 1601,
+      "sha256": "aaa3305b1ce86f4d0e8ca4c684226c7fe0f83d8cd86b6183858d9f5fe2815887"
+    },
+    {
+      "path": "public-state.log.gz",
+      "uncompressedBytes": 874,
+      "sha256": "6aa30021ee4cc7b511187b6f0368ca1b9d2945c8dca290a4b36ab390677d0861"
+    },
+    {
+      "path": "public-coverage.log.gz",
+      "uncompressedBytes": 8385,
+      "sha256": "96d8777534c03aff24a7ea27badb1ac50c2e4f5b3b01b084593174a187a46245"
+    },
+    {
+      "path": "public-coverage-2.log.gz",
+      "uncompressedBytes": 9559,
+      "sha256": "bf12d8bb302b2844475b961f43f05ffe4dc6768e9676524bfa408658b619313f"
+    },
+    {
+      "path": "axis-hit-coverage.log.gz",
+      "uncompressedBytes": 22392,
+      "sha256": "da4a24b90d1c3e609697147da376db41423f5f77e7d4fe95bf418dee0b5f4ddb"
+    },
+    {
+      "path": "boundaries-types.log.gz",
+      "uncompressedBytes": 2573,
+      "sha256": "9b00684948e210be85c5afd1dbb723dad6d127643bc1cc18cc9673733639acb3"
+    },
+    {
+      "path": "chart.log.gz",
+      "uncompressedBytes": 377,
+      "sha256": "0ed685d8fd75aefee785432f1e34396ce6643e917dd4930bb7b2f4f803c40905"
+    },
+    {
+      "path": "render.log.gz",
+      "uncompressedBytes": 498,
+      "sha256": "38e40a28d0349d3ab7007302e34a670f1670c16f55e43b3387624611c08a79a1"
+    },
+    {
+      "path": "browser.log.gz",
+      "uncompressedBytes": 902,
+      "sha256": "f9d18e9afaf094962a22be0a75dea23603a9fe238c00304b840e622824bc69e2"
+    },
+    {
+      "path": "browser-2.log.gz",
+      "uncompressedBytes": 346,
+      "sha256": "1d194da8c8f5f40a82d862b0a98b7cf3ce0ffd23543fb79f487f17c5a7f52273"
+    },
+    {
+      "path": "browser-final.log.gz",
+      "uncompressedBytes": 346,
+      "sha256": "6f6cfe8529819b61e6a62931fb6fe794b6447040f6f16ddffa5fa78057aacca8"
+    },
+    {
+      "path": "realistic.log.gz",
+      "uncompressedBytes": 22642,
+      "sha256": "dfbf45af628fa037f675478496363ad97da0b4b1839cb7794966ef10306c3556"
+    },
+    {
+      "path": "realistic-2.log.gz",
+      "uncompressedBytes": 3825,
+      "sha256": "f0aa27432c7c72c99baf05365360099456a52a85e8f4a287f04af90253b8c9f8"
+    },
+    {
+      "path": "contracts-final.log.gz",
+      "uncompressedBytes": 4601,
+      "sha256": "c6063cba84a9a58dae5959306cda860447e89f7f6b3187be2d4ae18f0cc96f28"
+    },
+    {
+      "path": "docs-tests.log.gz",
+      "uncompressedBytes": 57710,
+      "sha256": "0dda970e961934b35e3699129d9a7a60295c6da3c1d55948948742b7eaba4cd5"
+    },
+    {
+      "path": "docs-final-source.log.gz",
+      "uncompressedBytes": 42692,
+      "sha256": "03aa882cbf1c2911a3ee0f268bfee110b67ebdedbb62f0c9e529b828ad35efb0"
+    },
+    {
+      "path": "docs-git-source-final.log.gz",
+      "uncompressedBytes": 20640,
+      "sha256": "4dc1c91f704bc22eb4f165642bed3e43dececa63fbd6f292880b336a1d115078"
+    },
+    {
+      "path": "docs-git-source-final-2.log.gz",
+      "uncompressedBytes": 4232,
+      "sha256": "b2af70a9292e160794a2f2e0c5958b3b497551993450785546646199fbbc2349"
+    },
+    {
+      "path": "docs-final-qualified.log.gz",
+      "uncompressedBytes": 41729,
+      "sha256": "333705dc4cbc5ccd2cd1bd3068d1a564228abba4f497673f460f6dde84128f8b"
+    },
+    {
+      "path": "docs-preflight.log.gz",
+      "uncompressedBytes": 257,
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "path": "docs-build.log.gz",
+      "uncompressedBytes": 419,
+      "sha256": "c4a406cad9226ea08b0f1c78494876ec992a76c46bb09eca1f67a4f141fbb90c"
+    },
+    {
+      "path": "docs-built.log.gz",
+      "uncompressedBytes": 179,
+      "sha256": "ca3a9ffdecae5f2884b358d6dc1e41ad1a9180bf7c242996b5620d4f6cb5f09f"
+    },
+    {
+      "path": "docs-browser.log.gz",
+      "uncompressedBytes": 157,
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "path": "docs-generate-3.log.gz",
+      "uncompressedBytes": 2292,
+      "sha256": "1b2e01b720e63fbb840bf10cd871b6a470d8f13842754309d138b436692bf404"
+    },
+    {
+      "path": "docs-generate-4.log.gz",
+      "uncompressedBytes": 11791,
+      "sha256": "ca041c6e4ff422e53ef2300d44bee8976cf871c236a826e72684376b50515bc5"
+    },
+    {
+      "path": "installed-node20.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "installed-node22.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "installed-node24.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs-build-final.log.gz",
+      "uncompressedBytes": 420,
+      "sha256": "75c44ddad8c6e24d3736d4c40bb8580fc456176f04f0df6df0d3ed108015b963"
+    },
+    {
+      "path": "docs-built-final.log.gz",
+      "uncompressedBytes": 179,
+      "sha256": "ca3a9ffdecae5f2884b358d6dc1e41ad1a9180bf7c242996b5620d4f6cb5f09f"
+    },
+    {
+      "path": "installed.mjs.gz",
+      "uncompressedBytes": 2560,
+      "sha256": "3d2c1a0c442337e8e600b67536550fd4b75bf6f0811a91862940e963014f52ea"
+    },
+    {
+      "path": "docs-provenance-browser.mjs.gz",
+      "uncompressedBytes": 7746,
+      "sha256": "fd207d5038150effd626e267e171d39194a6d90c5c950485c218c1a4306188be"
+    },
+    {
+      "path": "docs-provenance-browser-final.log.gz",
+      "uncompressedBytes": 89,
+      "sha256": "d1beef52d9b1577c3ee55acde46815da1710c6adb3162718fcc89d0cd87105f2"
+    }
+  ],
+  "knownInitialFailures": [
+    "browser registry factory received a data argument; fixed explicit zero-argument factory wrapper",
+    "realistic missing checkout-local cache; reused canonical pinned cache through official environment",
+    "docs catalog tutorial order duplicated220; assigned260",
+    "discovery realistic file count40 corrected41",
+    "uncommitted exact Git example source unavailable; fixed source candidate then provenance regeneration",
+    "first artifact outputDirectory was relative to npm staging; repeated with absolute outputDirectory, package owner unchanged"
+  ],
+  "browserProvenanceDelta": "docs-provenance-only-delta.json",
+  "reproduction": {
+    "installedRuntimeFixture": "scripts/consumers/fixtures/node/responsive-guides.mjs",
+    "installedTypesFixture": "scripts/consumers/fixtures/responsive-guides.ts",
+    "fixedTar": "Use the artifact SHA above. The focused runner is archived as installed.mjs.gz; restore it under .artifacts/responsive-kernel and set final-package.json.file to the installed artifact. The canonical full package-consumer also includes these fixtures.",
+    "changedDocsBrowser": "Archived docs-provenance-browser.mjs.gz is the canonical test-built-docs setup and containment helper with only the page enumeration scoped to 31 changed HTML files."
+  },
+  "status": "qualified"
+}

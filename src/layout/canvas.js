@@ -122,6 +122,12 @@ export function resolveGraphicBounds(program) {
   ) {
     throw new Error("Graphical layout requires Canvas dimensions and margin.");
   }
+  const responsive = program.context?.responsivePlot ??
+    program.materializationConfigs.canvas?.responsiveResult?.snapshot.plot;
+  if (program.materializationConfigs.canvas?.responsive !== undefined && responsive !== undefined) {
+    return cloneAndFreeze({ x: responsive.left, y: responsive.top,
+      width: responsive.right - responsive.left, height: responsive.bottom - responsive.top });
+  }
   return createGraphicBounds({
     width: canvas.properties.width,
     height: canvas.properties.height,

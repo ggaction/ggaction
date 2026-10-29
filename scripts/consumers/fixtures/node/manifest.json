@@ -1086,6 +1086,19 @@
     ]
   },
   {
+    "file": "responsive-guides.mjs",
+    "cases": [
+      {
+        "id": "responsive/full-basic-resize-restore",
+        "statements": 1
+      },
+      {
+        "id": "responsive/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
+  },
+  {
     "file": "logical-selection.mjs",
     "cases": [
       {
@@ -1115,6 +1128,23 @@
       },
       {
         "id": "calendar/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "nested-responsive.mjs",
+    "cases": [
+      {
+        "id": "nested/shared-layout-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "nested/projected-graph-source",
+        "statements": 1
+      },
+      {
+        "id": "nested/renderers-scene-codec",
         "statements": 1
       }
     ]

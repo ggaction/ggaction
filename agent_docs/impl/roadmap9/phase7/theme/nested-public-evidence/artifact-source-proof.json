@@ -1,0 +1,8 @@
+{
+  "artifactSha256": "dedfe6a1272818635f90254a6c2e74a14e650eba93b56aa185adc96d65479eb7",
+  "comparedRuntimeAndTypeEntries": 920,
+  "canonicalCompactedEntries": 59,
+  "normalizationOwner": "scripts/package-artifact.js compactPackageJavaScript; exact existing file list and keepNames policy",
+  "differences": [],
+  "postSourceCommitImplementationDelta": []
+}

@@ -1,0 +1,41 @@
+{
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2602.791833
+    },
+    {
+      "id": "responsive-public",
+      "status": "passed",
+      "durationMs": 929.4230000000007
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 1155.8498749999999
+    },
+    {
+      "id": "bundle:ggaction",
+      "status": "passed",
+      "durationMs": 1976.3914999999997
+    },
+    {
+      "id": "bundle:ggaction/basic",
+      "status": "passed",
+      "durationMs": 1099.8062089999985
+    },
+    {
+      "id": "bundle:ggaction/svg",
+      "status": "passed",
+      "durationMs": 58.21712500000103
+    },
+    {
+      "id": "bundle:ggaction/interaction",
+      "status": "passed",
+      "durationMs": 371.10320800000045
+    }
+  ]
+}

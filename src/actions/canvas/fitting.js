@@ -12,6 +12,7 @@ import { findCanvasGraphic } from
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { textBoundsFitCanvas } from "../../core/textMetrics.js";
 import { isOwned } from "../../core/immutable.js";
+import { MINIMUM_PLOT_SIZE } from "../../grammar/responsiveCanvas.js";
 
 const OPTIONS = Object.freeze([
   "padding",
@@ -24,8 +25,8 @@ const OPTIONS = Object.freeze([
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const DEFAULTS = Object.freeze({
   padding: 0,
-  minPlotWidth: 160,
-  minPlotHeight: 120,
+  minPlotWidth: MINIMUM_PLOT_SIZE.width,
+  minPlotHeight: MINIMUM_PLOT_SIZE.height,
   iterationLimit: 32,
   overflow: "error",
   align: "preserve"

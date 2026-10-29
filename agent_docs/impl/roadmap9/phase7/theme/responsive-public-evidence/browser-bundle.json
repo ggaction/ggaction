@@ -1,0 +1,16 @@
+[
+  {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 812,
+    "minifiedBytes": 2312026,
+    "gzipBytes": 654509
+  },
+  {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 534,
+    "minifiedBytes": 1269782,
+    "gzipBytes": 370148
+  }
+]

@@ -1,3 +1,4 @@
+import { guideCanvasProperties } from "../../../../materialization/guides/canvas.js";
 import { legendThemeGap } from "../../../theme/state.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { validateTextAlignment } from "../../../../core/validation.js";
@@ -323,7 +324,7 @@ export function resolveContinuousBounds(
   ) {
     throw new Error(message);
   }
-  return { plot, canvas: canvas.properties };
+  return { plot, canvas: guideCanvasProperties(program) };
 }
 
 export function sampleContinuousValues(domain, count) {
@@ -383,7 +384,7 @@ export function resolveLegendTextBounds(position, text, style, profile, { hardBr
 export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
   // Outside content is intrinsic until its shared edge lane places the final
   // concrete bounds. In-plot and legacy layouts validate their own anchors.
-  if (config?.groupIntrinsic || isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
+  if (canvas.deferCanvasFit || config?.groupIntrinsic || isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
   if (bounds.some(item =>
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
@@ -415,7 +416,7 @@ export function resolveLegendBackgroundFromBounds(
   y -= border.padding;
   right += border.padding;
   bottom += border.padding;
-  if (!config?.groupIntrinsic && !isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
+  if (!canvas.deferCanvasFit && !config?.groupIntrinsic && !isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
     x - strokeExtent < 0 || y - strokeExtent < 0 ||
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height

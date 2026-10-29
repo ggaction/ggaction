@@ -30,6 +30,8 @@ export type {
   Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   ColorEncodingOptions,
   CompleteAxisOptions,
   NamedCompleteAxis,

@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted } from "./preparedResourceContext.js";
+import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -24,6 +24,7 @@ export function replaceStoredResource(program, parsed, value, args) {
     if (!same(ref, value)) resolveInputReference(program, ref);
   }
   const dataRooted = preparedResourceDataRooted(args, program);
+  const projected = preparedResourceDataProjection(args, program);
   const dataReplacements = new Map();
   for (const entry of preparedResourceDataReplacements(args, program)) {
     resolveInputReference(program, entry.previous); resolveInputReference(program, entry.next);
@@ -55,7 +56,11 @@ export function replaceStoredResource(program, parsed, value, args) {
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
   }
-  if (dataRooted) {
+  if (projected && (previous === undefined || value.kind !== "graph" || !previous.inputs.some(ref => ref.kind === "data" && dataReplacements.has(ref.id)) ||
+      dataSourceValueHash(previous.options) !== dataSourceValueHash(value.options))) {
+    throw annotateError(new Error("Prepared projection requires an existing graph with unchanged options."), { code: "stale-result" });
+  }
+  if (dataRooted || projected) {
     if (allowed.size !== replacements.size) throw annotateError(new Error("Prepared source revision requires every affected resource result."), { code: "stale-result" });
     const expected = previous.inputs.map(ref => ref.kind === "data" && dataReplacements.has(ref.id) ? dataReplacements.get(ref.id).next : ref);
     if (dataSourceValueHash(expected) !== dataSourceValueHash(value.inputs)) throw annotateError(new Error("Prepared source resource has stale data inputs."), { code: "stale-result", resourceId: value.id });

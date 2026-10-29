@@ -4,6 +4,12 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testNodeConsumer(directory) {
+  await writeFile(path.join(directory, "nested-responsive-public.js"),
+    (await readFile(new URL("../../examples/nested-responsive/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"'));
+  await writeFile(path.join(directory, "responsive-public.js"),
+    (await readFile(new URL("../../examples/responsive-guides/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"'));
   await writeFile(path.join(directory, "identity-equivalence.js"),
     (await readFile(new URL("../../test/support/identity-equivalence.js", import.meta.url), "utf8"))
       .replace('"../../src/renderers/svg.js"', '"ggaction/svg"'));

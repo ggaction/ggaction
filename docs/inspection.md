@@ -148,12 +148,6 @@ Theme sources include the frame owner, theme name and token. Authored options in
 
 Legacy state without authoring evidence, extension replacement of complete graphic items, or a property selection whose pre-highlight baseline cannot be proven reports `unknown`. The inspection does not infer a source from a matching color alone or claim pixel visibility.
 
-## Related
-
-[Data updates and snapshots](./data-updates.md) ·
-[ChartProgram and immutability](./concepts/chart-program.md) ·
-[Errors and recovery](./errors-and-recovery.md)
-
 A facet parent retains source semantics, while its drawable marks belong to the
 child panels. The parent's retained mark template reports concrete structure as
 `not_applicable`; inspection still checks each actual child graphic.
@@ -162,3 +156,18 @@ Facet preflight also checks partition ancestry and supported transform replay
 using the same pure dependency planner as facet creation. Aggregate output fields
 that are not valid partition ancestors return a `facet-partition` finding before
 any chart action executes.
+
+## Responsive layout decisions
+
+Responsive unit charts additionally expose `layouts`: a read-only array with
+each child's `childPath`, Canvas policy, settled plot/occupied/guide bounds,
+iteration count, and chosen Cartesian label fallbacks. A label result records
+its stage (`native`, `wrap`, `skip`, or `rotate`), reason, raw retained indices,
+angle, and optional wrap width. Programs without an active responsive Canvas
+omit this field. Inspection does not run another layout pass.
+
+## Related
+
+[Data updates and snapshots](./data-updates.md) ·
+[ChartProgram and immutability](./concepts/chart-program.md) ·
+[Errors and recovery](./errors-and-recovery.md)

@@ -4,6 +4,7 @@ import { chart, hconcat } from "../../src/index.js";
 import { createInteractionSession } from "../../src/interaction.js";
 import { resolveStoredSelection } from "../../src/materialization/selection/state.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
+import { resolveCoordinatePolarFrame } from "../../src/materialization/coordinateBounds.js";
 const rows = [0, 5, 90, 180, 355, 360].map(angle => ({ id: `p${angle}`, angle, radius: 1 }));
 const program = (scale = {}, values = rows) => chart().createCanvas({ width: 200, height: 200, margin: 0 })
   .createData({ id: "rows", keyField: "id", values })
@@ -117,4 +118,29 @@ test("sector preview rejects executable nested frame inputs before reading them"
  for(const sector of [{}, {frame:{centerX:100,centerY:100}}, {frame:{centerX:100,centerY:100,availableRadius:100,extra:true}}]) assert.throws(()=>p.materializeSelectionPreview({sector}));
  assert.throws(()=>p.materializeSelectionPreview({points:[],sector:{}}),/points or a sector/);
  assert.throws(()=>p.materializeSelectionPreview({sector:{unknown:true}}),/unsupported/);
+});
+
+test("nested responsive angular gestures keep resolved owner geometry through resize and restoration", () => {
+  const child = program().editCanvas({ width: 300, height: 260, margin: 20, responsive: {} }).createTitle({ text: "Polar view" });
+  const inner = hconcat({ id: "inner", programs: [{ id: "left", program: child }, { id: "right", program: child }] });
+  const p = hconcat({ id: "outer", programs: [{ id: "overview", program: child }, { id: "detail", program: inner }] });
+  const target = { childPath: ["detail", "right"], id: "points" }, { s, host } = setup(p, target), before = serializeProgram(p);
+  const mapped = (angle, current) => {
+    const owner = current.children.detail.children.right, layer = owner.semanticSpec.layers.find(layer => layer.id === "points");
+    const frame = resolveCoordinatePolarFrame(owner, layer.coordinate);
+    const offset = s.getState().scene.nodes.filter(node => node.type === "circle").sort((a, b) => b.offset[0] - a.offset[0])[0].offset;
+    return { x: offset[0] + frame.centerX + frame.availableRadius * .8 * Math.sin(angle * Math.PI / 180),
+      y: offset[1] + frame.centerY - frame.availableRadius * .8 * Math.cos(angle * Math.PI / 180) };
+  };
+  host.fire("pointerdown", mapped(350, p)); host.fire("pointermove", mapped(10, p)); host.flush();
+  assert.deepEqual(ids(s.getState().previewProgram.children.detail.children.right), ["p0", "p5", "p355", "p360"]);
+  const resized = p.editCanvas({ target: { childPath: ["detail", "right"] }, width: 420 });
+  s.updateProgram(resized); assert.equal(s.getState().previewProgram, null); assert.equal(host.captures.size, 0);
+  host.fire("pointerup", mapped(10, resized)); assert.equal(s.getState().program, resized);
+  host.fire("pointerdown", mapped(350, resized)); host.fire("pointermove", mapped(10, resized)); host.flush(); host.fire("pointerup", mapped(10, resized));
+  const next = s.getState().program;
+  assert.equal(next.children.overview, resized.children.overview); assert.equal(next.children.detail.children.left, resized.children.detail.children.left);
+  assert.deepEqual(ids(next.children.detail.children.right), ["p0", "p5", "p355", "p360"]);
+  assert.deepEqual(ids(deserializeProgram(serializeProgram(next)).children.detail.children.right), ["p0", "p5", "p355", "p360"]);
+  assert.equal(serializeProgram(p), before); s.destroy();
 });

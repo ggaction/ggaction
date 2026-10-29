@@ -1,0 +1,30 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createNestedResponsive } from "../../../examples/nested-responsive/program.js";
+import { createNestedResponsivePrimitive } from "./primitive.program.js";
+import { withoutAllocatedIdentity } from "../../support/identity-equivalence.js";
+import { render } from "../../../src/index.js";
+import { inspectProgram, getMarkItems } from "../../../src/inspection.js";
+import { createMockCanvasContext } from "../../support/canvas.js";
+import { renderToSVG } from "../../../src/renderers/svg.js";
+import { createTransitionScene } from "../../../src/scene.js";
+import { serializeGraphic, deserializeGraphic, serializeProgram, deserializeProgram } from "../../../src/persistence.js";
+
+test("nested responsive panels equal the literal primitive and retain scoped identities through scene and codecs", () => {
+  const program = createNestedResponsive(), primitive = createNestedResponsivePrimitive();
+  assert.deepEqual(withoutAllocatedIdentity(program.graphicSpec), withoutAllocatedIdentity(primitive.graphicSpec));
+  const canvas = program.graphicSpec.objects.canvas.properties;
+  assert.deepEqual(canvas, { width: 1047, height: 942, background: "white" });
+  const panel = program.children.panels, first = panel.children[panel.compositionSpec.children[0]];
+  assert.deepEqual(first.resolvedScales.y.domain, [0,20]);
+  assert.ok(Math.abs(first.graphicSpec.objects.bars.items[3].properties.height - 43.7) < 1e-10);
+  const contexts = [createMockCanvasContext(), createMockCanvasContext()];
+  render(program, contexts[0]); render(primitive, contexts[1]); assert.deepEqual(contexts[0].calls, contexts[1].calls);
+  assert.equal(renderToSVG(program, { resourceNamespace: "same" }), renderToSVG(primitive, { resourceNamespace: "same" }));
+  const scene = createTransitionScene(program, { format: "canvas" });
+  assert.deepEqual(createTransitionScene(deserializeGraphic(serializeGraphic(program)), { format: "canvas" }), scene);
+  assert.deepEqual(createTransitionScene(deserializeProgram(serializeProgram(program)), { format: "canvas" }), scene);
+  const items = getMarkItems(program, { target: { childPath: ["panels", panel.compositionSpec.children[0]], id: "bars" } });
+  assert.equal(new Set(items.map(item => item.key)).size, 4);
+  assert.ok(inspectProgram(program).views.some(view => view.owner.childPath?.[0] === "panels"));
+});
