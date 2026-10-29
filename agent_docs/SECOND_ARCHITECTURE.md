@@ -4503,3 +4503,22 @@ Geo stream을 호출한다. 샘플에서 fit/추론을 재실행하거나 endpoi
 두 private owner를 포함한 package는1137entries이며 Node22 1,621,186packed/
 7,354,400unpacked, Node20 1,623,611packed다. 최소천byte 한도는1,624,000/7,355,000이며
 공개 entry에 새 algorithm import를 추가하지 않았다. 현재 공개 animation 범위는 Current가 소유한다.
+
+
+### Native Geo dynamic-part preparation
+
+`materialization/animation/geoPresentation.js`는 숨겨진 native Geo feature도 보존한 source
+appearance/plot origin/collection frame과 exact lineage admission을 소유한다. Scene tree의 기존
+`collectTransitionGraphics` 순회가 collection별 현재 frame과 삽입 위치를 제공하며 empty collection도
+독립 슬롯을 유지한다. Scene snapshot의 이 private metadata는 공개 scene schema를 바꾸지 않는다.
+Native Geo style/part topology와 `materializeFillItemsInPlot`은 기존 materialization owner에서 공유한다.
+이 준비값은 camera에 따라 새 part를 만드는 후속 sampler의 입력이며 실제 공개 planner 지원은 아니다.
+
+Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/owner/logical feature key로
+닫힌다. 없는 endpoint scene index를 만들지 않고, offline clone에는 native program 권한을 주지 않는다.
+원 primitive와 source 의미가 다르면 명시 edited-geo-graphics fallback을 유지한다.
+
+이 private owner 추가 후 package 1,138 entries, unpacked7,370,195bytes, Node20/24 packed1,627,815bytes를
+실측하여 최소1,138/1,628,000/7,371,000 상한을 적용한다. 같은 현재 source의6entry bundle은
+3Node에서 동일 minified bytes이며 Full 최대774,129·animation192,107 gzip에 최소774,200/192,200을
+적용한다. 이는 설치 archive qualification이 아니며 최종 공개 Geo에서 same-tar 소비자를 별도 닫는다.

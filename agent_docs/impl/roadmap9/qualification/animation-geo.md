@@ -63,3 +63,43 @@ radiusDeg120 complement, graticule, great-circle hint, final size mapping과 cal
 검증한다. Null/빈geometry는 native 계산대로 빈parts이며 unknown fields/getter/cycle/invalid
 shape/feature budget은 사전 거부한다. 정규화된 group을 다시 prepare하여 복원하고, process
 내 authentic prepared plan의 변조/unknown version은 sample에서 거부한다.
+
+## 동적 feature admission 연결 결정
+
+`remainingApproval`와 2026-10-30 root 확인을 재사용한다. 양 끝점에서 보이지 않는 feature가
+중간 camera에서 나타날 수 있고 antimeridian part 수가 바뀌므로 endpoint node index를
+만들어내지 않는다. Scoped native Geo owner의 모든 drawable feature·완료 camera·최종 appearance와
+실제 named collection frame/그리기 순서를 준비하고 현재 native stream이 생성한 parts를 방출한다.
+
+- 준비 state는 `groups`에 numeric geometry와 동일 feature 순서의 appearance를 한 번 둔다.
+  `items`는 endpoint scene 순서의 `{group,key,role}` 또는 null이다. Hidden owner도 group을 유지한다.
+- `collectTransitionGraphics`의 기존 concrete tree walk가 named collection의 frame·scene insertion
+  위치를 관찰하게 한다. Clip/offset 계산을 다른 owner에서 복제하지 않고 semantic 조회도 추가하지 않는다.
+- Native Geo의 feature style/part identity와 paint materialization을 기존 owner에서 공유한다.
+  Object-space pattern은 현재 shape bounds, plot-space pattern은 준비된 명시 plot origin을 사용한다.
+  직접 primitive 수정은 실제 endpoint와 native 의미를 비교하여 명시 fallback으로 보존한다.
+- Camera 생성 part의 closed decision은 실제 feature item key/part role과 Geo kernel을 갖는다.
+  Native metadata proof는 actual program+scoped owner+feature key를 사용한다. 현재 endpoint에 없는
+  scene index나 과거 endpoint pixel에서 원 데이터를 추정하지 않는다.
+- strict restore는 group/appearance/frame/lineage/scene role 정합성을 다시 검증하고 입력 budget을
+  누적 적용한다. Endpoint exact refs, 기존 point/graph/Cartesian/partition 의미는 보존한다.
+- 현재 hit는 `resolveMarkSourceItems`의 source grain을 기존 metadata owner에서 재사용하며
+  computed 담당과 조율한다. Renderer는 완성 concrete nodes만 소비한다.
+
+공개 sampler 연결 전 이 독립 admission/helper 단계의 결과를 별도 검증한다. 동적 feature를
+준비만 한 상태로 실제 planner/player/hit 완료를 주장하지 않는다.
+
+
+## 동적 준비 검증
+
+새 presentation은 양 끝점에서 viewport 밖인 feature가 중간에 출현하는 실제 native 결과,
+seam의 part 수 변경, 중첩 반복 owner의 clip/offset, empty collection 순서, object/plot pattern과
+outline/shadow를 보존한다. Primitive 수정은 원 그래픽을 덮어쓰지 않을 fallback으로 남긴다.
+Actual child ID가 namespace 문자열과 구분되는 hidden-feature origin도 검증한다.
+
+누적 owning445개 및 boundaries35개 통과 후 추가된 원점·literal collection 회귀까지 포함한
+coverage266개가 통과했고 변경6owner는100/94.94/100이다. Node20/24에서는23개씩 통과했다.
+Native Geo renderer8개 통과, pattern4backend1개는 기존 fixture의 dependency mode 누락 때문에
+처음 실패했다. 실제 Chromium에서 geographic-math bare import 오류를 확인해 canonical
+startStaticServer의 repository dependency mode만 설정했고1/1 재검증했다. 원 실패는 보존한다.
+Public sampler·현재 hit·offline 재기준은 후행으로 남는다.

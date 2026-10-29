@@ -9,7 +9,7 @@ import { normalizePolygonWinding } from "../geo/options.js";
 import { normalizeProjectionOptions } from "../geo/projectionOptions.js";
 import { validateGeoSourceBinding } from "../geo/mark.js";
 import { prepareGeoCameraInterpolation, sampleGeoCameraInterpolation } from "../geo/cameraInterpolation.js";
-import { geoMarkGeometry, validateGeoMarkGeometry } from "../geo/markGeometry.js";
+import { geoMarkGeometry, validateGeoMarkGeometry, geoPartGeometry } from "../geo/markGeometry.js";
 import { projectGeometry } from "../geo/stream.js";
 import { interpolateNumber } from "./values.js";
 
@@ -65,10 +65,7 @@ export function resolveAnimationGeoGeometry(input) {
       ...(feature.polygonWinding === undefined || group.binding.radiusDeg !== undefined ? {} : { polygonWinding: feature.polygonWinding }) });
     validateWorkLimit(work += projected.diagnostics.work, "Animation geographic stream work");
     validateGeneratedItemLimit(points += projected.diagnostics.outputPoints, "Animation geographic output points");
-    features.push({ key: feature.key, parts: projected.parts.map(part => ({ role: JSON.stringify(part.key),
-      type: part.kind === "point" ? "circle" : "path", properties: part.kind === "point"
-        ? { x: part.point[0], y: part.point[1], radius: feature.radiusPx }
-        : { commands: part.commands, ...(part.fillRule === undefined ? {} : { fillRule: part.fillRule }), ...(part.kind === "line" ? { fill: "none" } : {}) } })) });
+    features.push({ key: feature.key, parts: geoPartGeometry(projected.parts, feature.radiusPx) });
   }
   return cloneAndFreeze({ features, diagnostics: { work, points } });
 }

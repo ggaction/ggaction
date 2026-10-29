@@ -1,3 +1,4 @@
+import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { circleGeometryMath } from "./projectionMath.js";
 
@@ -38,4 +39,16 @@ export function geoMarkGeometry(geometry, binding, parameters) {
     }
   }
   return output;
+}
+
+// Canonical backend-neutral part geometry and topology are shared by native
+// marks and camera samples; clipping may change the number of these parts.
+export function geoPartGeometry(parts, radiusPx) {
+  return parts.map(part => ({ role: JSON.stringify(part.key), kind: part.kind,
+    type: part.kind === "point" ? "circle" : "path", properties: part.kind === "point"
+      ? { x: part.point[0], y: part.point[1], radius: radiusPx }
+      : { commands: part.commands, ...(part.fillRule === undefined ? {} : { fillRule: part.fillRule }), ...(part.kind === "line" ? { fill: "none" } : {}) } }));
+}
+export function geoPartsTopology(parts) {
+  return contentDigest(JSON.stringify(parts.map(part => [JSON.parse(part.role), part.kind, part.properties.commands?.map(command => command.op)])));
 }
