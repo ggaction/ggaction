@@ -246,7 +246,8 @@
           "sha256": "4374c6ca1262c33faa09761a161d211978c303953ec43629e796c275cbe2ee30"
         }
       ],
-      "installKey": "geographic-math"
+      "installKey": "geographic-math",
+      "moduleEntry": "src/index.js"
     },
     {
       "name": "d3-array",
@@ -502,7 +503,8 @@
           "sha256": "3f311254aaf6620552270613fbd4be33ef12d3bda1fd5a8df2e2a7b19f00261c"
         }
       ],
-      "installKey": "d3-array"
+      "installKey": "d3-array",
+      "moduleEntry": "src/index.js"
     },
     {
       "name": "internmap",
@@ -518,7 +520,8 @@
           "sha256": "4da167a52014cf7d2f6fcd9121a5cab3484ef3bfa59055ee92f00ea5c7b33b67"
         }
       ],
-      "installKey": "internmap"
+      "installKey": "internmap",
+      "moduleEntry": "src/index.js"
     }
   ],
   "projectionSources": [
