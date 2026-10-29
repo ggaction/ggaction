@@ -49,6 +49,7 @@ function titleGeometry(program, kind, config, angle = resolveAngle(program, kind
 function validateTitleGeometry(program, kind, config, geometry, text) {
   assertPolarTextLayout({
     canvas: program.graphicSpec.objects.canvas,
+    deferCanvasFit: program.context.responsiveMeasuring === true,
     label: `${prefix(kind)} axis title`,
     items: [{
       ...geometry,

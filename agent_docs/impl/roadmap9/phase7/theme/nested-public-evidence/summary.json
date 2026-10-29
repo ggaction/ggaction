@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fbc2bd66f2c9e95013334c45427b4628e399070c",
+  "approval": "b758b912",
+  "status": "nested-feature-qualified; AT-20 combined single-Y admission pending",
+  "scope": "STEP-035 nested responsive facet/shared-guide closure and AT-21; no new public API or stored schema",
+  "acceptance": {
+    "AT-21": "passed",
+    "AT-20": {
+      "closureTask": "STEP-035",
+      "status": "pending root STEP-050 admission integration",
+      "note": "Implementation ownership does not change the original acceptance closure task."
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/nested-composition/final-package/ggaction-0.0.26.tgz",
+    "sha256": "dedfe6a1272818635f90254a6c2e74a14e650eba93b56aa185adc96d65479eb7",
+    "entries": 934,
+    "size": 1339188,
+    "unpackedSize": 6149683
+  },
+  "checks": [
+    {
+      "id": "affected-unit",
+      "passed": 538,
+      "log": "affected-unit.log.gz"
+    },
+    {
+      "id": "nested-capability-final",
+      "passed": 19,
+      "log": "nested-final-unit.log.gz"
+    },
+    {
+      "id": "changed-source-coverage",
+      "passed": 588,
+      "supplementPassed": 40,
+      "floors": "coverage-closed.json",
+      "scope": "Affected critical owners only; no whole-library coverage claim"
+    },
+    {
+      "id": "discovery-boundaries-package-policy",
+      "passed": 34
+    },
+    {
+      "id": "public-literal-primitive-scene-codecs",
+      "passed": 1
+    },
+    {
+      "id": "native-png-pdf",
+      "passed": 2
+    },
+    {
+      "id": "browser-canvas-svg",
+      "passed": 1,
+      "devicePixelRatios": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "same-artifact-installed",
+      "nodeVersions": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "perNodeRuntimeCases": 3,
+      "perNodeQualificationGroups": 7,
+      "sameArtifact": true
+    },
+    {
+      "id": "docs-source",
+      "passed": 184
+    },
+    {
+      "id": "docs-build",
+      "status": "passed"
+    },
+    {
+      "id": "docs-built",
+      "pages": 168,
+      "llmArtifacts": 1433
+    },
+    {
+      "id": "docs-browser",
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768
+      ],
+      "scope": "Desktop search and all built documentation pages"
+    }
+  ],
+  "limits": {
+    "entries": 934,
+    "packedBytes": 1342000,
+    "unpackedBytes": 6150000,
+    "fullGzip": 668000,
+    "basicGzip": 375000,
+    "svgGzip": 25000,
+    "interactionGzip": 83000,
+    "searchIndex": 970000
+  },
+  "measurements": {
+    "maximumPackedBytes": 1341753,
+    "maximumSourceFullGzip": 667284,
+    "maximumSourceBasicGzip": 374685
+  },
+  "consumerMatrix": {
+    "refs-revisions": "exact projection authority + complete graph/layout result closure; ordinary same-source checks preserved",
+    "responsive-font-source-theme": "resize/revise/font apply-remove/scoped typography/inherited theme preserve resolved shared or independent domains; ancestor snapshots replay",
+    "inspection-selection": "existing childPath and logical item keys retained; scoped items and sibling identities checked",
+    "scene": "static endpoint graphic equality and scoped identity preserved",
+    "persistence": "program and graphic-only codec; no runtime solver or provider in restore",
+    "renderers": "same literal primitive through native Canvas/SVG/PNG/PDF and Chromium Canvas/SVG DPR1/2",
+    "declarations": "Existing API unchanged; installed TypeScript fixture qualification passed",
+    "Basic": "Existing primitive surface unchanged; Basic installed type/bundle checks passed; facet composition remains Full",
+    "async-cleanup": "This checkpoint adds no async owner; existing adapters are reused."
+  },
+  "fullNormalOrCoverageRerun": false,
+  "fullRealisticRerun": false,
+  "realisticOwner": "Root final integration owns the three shared realistic files; AT-21 has no pinned corpus ID obligation.",
+  "knownInitialFailures": [
+    "facet projection was rejected as a same-source revision",
+    "responsive pass reinferred shared domains locally",
+    "temporary cell guides requested measurements before final shared domains",
+    "rotated exact-font header had a floating-point boundary residue",
+    "intrinsic legend measurement re-entered theme completion",
+    "initial primitive manifest described facet instead of final hconcat",
+    "initial public test imported inspection from wrong entry",
+    "initial capability key was unsorted",
+    "initial docs: uncommitted source link, two search-limit failures, extra unregistered contextual code snippet",
+    "588 selected tests passed but observed graph branches were absent; existing 40 tests supply the required branch evidence"
+  ],
+  "selectorCorrection": "A bare responsive filename prefix selected zero files in the baseline 51-test run. It is not counted as responsive evidence. Later 538/588 runs use capability:responsive-layout and include those files.",
+  "visuals": {
+    "directory": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/test/png/charts/nested-composition/nested-responsive/three-rows",
+    "sha256": {
+      "primitive.png": "a5f56eb453ecc46d2f48ef68a42ff204f6e45d2907da877c803beaf6c9128509",
+      "user-facing.png": "a5f56eb453ecc46d2f48ef68a42ff204f6e45d2907da877c803beaf6c9128509",
+      "variant.json": "9d2d4ca038ccd4ccd8a9b0098bada120414d9e2c49010e34b4be4637b4fc2e7a"
+    },
+    "inspection": "Rendered three-row panel and overview PNG inspected; exact primitive/public checks independently establish pixels and calls."
+  },
+  "logs": [
+    {
+      "path": "affected-unit.log.gz",
+      "uncompressedBytes": 119362,
+      "sha256": "cd26eddc1c5b3eab195c0f7c255a85c57ebda64970b40d4d713a223f33e98026"
+    },
+    {
+      "path": "boundaries-closed.log.gz",
+      "uncompressedBytes": 5463,
+      "sha256": "2274779dfa7b9f2acd0fdb27c88cc50f12ca28bd07c21c40168e8b8790c82693"
+    },
+    {
+      "path": "boundaries-final.log.gz",
+      "uncompressedBytes": 9249,
+      "sha256": "032fe39cc8d053b7c73cc600b6f3358608ad2a96baccd27dac3d4d0f69590b41"
+    },
+    {
+      "path": "browser.log.gz",
+      "uncompressedBytes": 352,
+      "sha256": "170220c71d3e569f2d530caec09bd3fd7cab58a5e14c92f402470dd313a1f4fb"
+    },
+    {
+      "path": "contracts-final.log.gz",
+      "uncompressedBytes": 7076,
+      "sha256": "bf11c14107462c8593752d06a516772b86489f80fb49931e8a86e0f3ac43763c"
+    },
+    {
+      "path": "coverage-check.log.gz",
+      "uncompressedBytes": 2344,
+      "sha256": "9b5c765923de1bf444ca661515329853123bdf78576680e5e9728a1aa27c2840"
+    },
+    {
+      "path": "coverage-output.log.gz",
+      "uncompressedBytes": 135712,
+      "sha256": "74ab6e6caf4af5956eb42274cb6d7094330cc5aa18d5ab5aa74a6e9781b22bc1"
+    },
+    {
+      "path": "deeper-stack.log.gz",
+      "uncompressedBytes": 8429,
+      "sha256": "4f8e83709ec9da6ad1047d6ef99437f7404f588224e5503be24e8ec0547286df"
+    },
+    {
+      "path": "docs-browser-final.log.gz",
+      "uncompressedBytes": 79,
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    {
+      "path": "docs-build-final.log.gz",
+      "uncompressedBytes": 419,
+      "sha256": "b0fc6d4da9c3e8f142e39cb00dccaae9ea79ae66a95b3ebaa1eb36bea6e2f369"
+    },
+    {
+      "path": "docs-built-final.log.gz",
+      "uncompressedBytes": 102,
+      "sha256": "7e32a52ab98cf171e4dc7cc77f800e4895c855a1da13c6f3ad0d8f0b6dac4ba2"
+    },
+    {
+      "path": "docs-generate.log.gz",
+      "uncompressedBytes": 12047,
+      "sha256": "7dd43625db21caf625ca0db3e814e4671306337a92a6afbf30edf924c23a6a27"
+    },
+    {
+      "path": "docs-source-final.log.gz",
+      "uncompressedBytes": 42784,
+      "sha256": "d807d29f0e45932f324ea50a08882261f158765a9881c4aa3084937815607e32"
+    },
+    {
+      "path": "docs-source.log.gz",
+      "uncompressedBytes": 45790,
+      "sha256": "33bc31b3353ed583810668d7dc75cf3d6d89461a32ac66222173d88d59fc45b4"
+    },
+    {
+      "path": "focused-coverage.mjs.gz",
+      "uncompressedBytes": 2639,
+      "sha256": "00e6e923bfd6ee48e5ec88a108284e6b9e44599a7750eda358200702d3bdd893"
+    },
+    {
+      "path": "graph-coverage-supplement.log.gz",
+      "uncompressedBytes": 10487,
+      "sha256": "f3577a0daa86489b7cc1303c888e1be0924b4d9b0b7490345df880d6e73598a1"
+    },
+    {
+      "path": "installed.mjs.gz",
+      "uncompressedBytes": 2558,
+      "sha256": "69ad7c245cf644ec466a46098e59777458cfa4961e8c29a21c120dbec7a94632"
+    },
+    {
+      "path": "nested-final-unit.log.gz",
+      "uncompressedBytes": 4852,
+      "sha256": "91683edd6aaae180ad054301116fc66bdff091b57bfef44e1d861864a3d92d09"
+    },
+    {
+      "path": "package-check-final.log.gz",
+      "uncompressedBytes": 368,
+      "sha256": "c024bf761817988653c89daf248f6b0191d7e5dbfe52bb792c5bc4ca40a0d9da"
+    },
+    {
+      "path": "projection-final-2.log.gz",
+      "uncompressedBytes": 7789,
+      "sha256": "1999d76e9b676fce3f8754c1e4f10e07dc9318fca74e388d7c3f0faafd1f1e62"
+    },
+    {
+      "path": "projection-initial.log.gz",
+      "uncompressedBytes": 3130,
+      "sha256": "c4db96f5f8dfd691b2baa4d37ac9fe98ff8a714a794b6a9570f462ee429d1839"
+    },
+    {
+      "path": "public-chart-final.log.gz",
+      "uncompressedBytes": 404,
+      "sha256": "a018e21a8094127d5884d4d19e3bba48e6dd5a89e5cbcded35c2f50295d2f357"
+    },
+    {
+      "path": "public-chart.log.gz",
+      "uncompressedBytes": 1326,
+      "sha256": "96ddfc89d1c5fd85ca5c376ec63f8c7127adbaf45b62d0cc03f1bfa3d9063e23"
+    },
+    {
+      "path": "render-final.log.gz",
+      "uncompressedBytes": 513,
+      "sha256": "7683d093bcc85eef9ff032f64b95d5ccfe37c55bc4e7a39dbb9f7d47d35ee502"
+    },
+    {
+      "path": "render.log.gz",
+      "uncompressedBytes": 1524,
+      "sha256": "e5c8bc15d6677db89fc3c25f1e11e6baf5a50eb6be5eccf217c2bba402d1bc47"
+    },
+    {
+      "path": "responsive-font-fixed-2.log.gz",
+      "uncompressedBytes": 5350,
+      "sha256": "454c5e01cd0a7bd80bce45a7f4c2eb250f0182bb29d9755b989f2ed2522b84b4"
+    },
+    {
+      "path": "responsive-font-fixed.log.gz",
+      "uncompressedBytes": 3193,
+      "sha256": "d810e0cfb4e9d5dc5a9ef9746d77a689644ec40af003dda92797994864f71217"
+    },
+    {
+      "path": "responsive-font.log.gz",
+      "uncompressedBytes": 2468,
+      "sha256": "046a81ce714a2c098447341598762cd26412c8b36474b4a7d57e16e93f6279dc"
+    },
+    {
+      "path": "responsive-probe-2.log.gz",
+      "uncompressedBytes": 1831,
+      "sha256": "1ba6df8ff604fb1b0c677110530df9c13dea5f830ed31224f54b4b2d17a5ec6d"
+    },
+    {
+      "path": "responsive-probe-3.log.gz",
+      "uncompressedBytes": 2350,
+      "sha256": "71b17a94cf275ed3abf8a2eb6f929657d24eb7d1ae2f70ede203b974837b01d4"
+    },
+    {
+      "path": "responsive-probe.log.gz",
+      "uncompressedBytes": 1632,
+      "sha256": "73f47a1ff5dbe2fcbe0fae71c51e9f361fa599a6796107383e556261c5a38881"
+    },
+    {
+      "path": "responsive-tests-1.log.gz",
+      "uncompressedBytes": 3028,
+      "sha256": "a7a5f3103abc4f033cd5a53606df9eec4eee4aa17cc0b743deb127c8ac94115f"
+    },
+    {
+      "path": "responsive-tests-2.log.gz",
+      "uncompressedBytes": 2379,
+      "sha256": "40051dc99a625e3b5be403b7d1a34d8733fcbc29e701f66c183ff55c14ee0b91"
+    }
+  ],
+  "reproduction": {
+    "focusedCoverage": "Restore focused-coverage.mjs.gz under .artifacts/nested-composition and run with Node 22; coverage-command.json records exact instrumented arguments. The initial wrapper floor failure is closed separately by graph-coverage-supplement.log.gz and coverage-closed.json.",
+    "capability": "node scripts/run-tests.js unit capability:nested-composition",
+    "render": "node scripts/run-tests.js render capability:nested-composition",
+    "browser": "node scripts/run-tests.js browser browser/nested-responsive.browser.js",
+    "installed": "Restore installed.mjs.gz under .artifacts/nested-composition, set final-package.json.file to the exact hash artifact, and use Node 20/22/24 with each node directory first in PATH. This is a source-free consumer; canonical full package tests also register the same fixture.",
+    "docs": "npm run test:docs; npm run docs:build; node scripts/check-built-docs.js _site; node scripts/test-built-docs.js _site"
+  }
+}

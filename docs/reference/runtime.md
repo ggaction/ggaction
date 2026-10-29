@@ -99,6 +99,8 @@ export type {
   BindMarkDataOptions,
   RemoveResourceOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   FitCanvasOptions,
   PivotColumn,
   PivotNumericOperation,
@@ -604,6 +606,8 @@ export type {
   Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   ColorEncodingOptions,
   CompleteAxisOptions,
   NamedCompleteAxis,
@@ -999,7 +1003,25 @@ export interface AppearanceProvenance {
   readonly primitive?: number; readonly property: string; readonly value: unknown; readonly source: AppearanceSource;
 }
 export interface OwnerInspection { readonly appearance: readonly AppearanceProvenance[]; readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
-export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
+export interface ResponsiveLayoutInspection {
+  readonly childPath: readonly string[];
+  readonly policy: Readonly<{ minPlotSize: Readonly<{ width: number; height: number }> }>;
+  readonly result: Readonly<{
+    status: "satisfied"; reason: "converged"; iterations: number; change: number;
+    requiredBounds: ResponsiveBounds;
+    requiredPlotSize: Readonly<{ width: number; height: number }>;
+    snapshot: Readonly<{ plot: ResponsiveBounds; occupied: ResponsiveBounds;
+      lanes: readonly Readonly<{ id: string; bounds: ResponsiveBounds }>[] }>;
+  }>;
+  readonly labels: readonly Readonly<{ id: string;
+    policy: Readonly<{ sequence: readonly ["wrap", "skip", "rotate"]; maxLines: number; skipStride: number; rotationCandidates: readonly number[] }>;
+    result: Readonly<{ stage: "native" | "wrap" | "skip" | "rotate";
+      reason: "native-fit" | "label-overlap" | "label-lines" | "label-size";
+      indices: readonly number[]; rotation: number; maxWidth?: number; wrap?: "word" | "character" }>;
+  }>[];
+}
+export interface ResponsiveBounds { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number; }
+export interface ProgramInspection { readonly version: 1; readonly layouts?: readonly ResponsiveLayoutInspection[]; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;

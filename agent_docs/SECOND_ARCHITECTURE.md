@@ -801,10 +801,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 663,000 bytes |
-| `ggaction/basic` | 371,000 bytes |
+| `ggaction` | 668,000 bytes |
+| `ggaction/basic` | 375,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 101,000 bytes |
+| `ggaction/interaction` | 102,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3492,6 +3492,21 @@ SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked
 Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
 Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
 
+### Bounded fixed-Canvas guide layout
+
+Canvas responsive intent와 derived plot reservation은 기존 Canvas materialization config 한 곳이
+소유한다. `grammar/responsiveCanvas.js`/`responsiveLabels.js`는 closed own-data 정책과 저장
+결과를 검증하며, `layout/responsivePolicy.js`는 명시적으로 측정된 최대4회 snapshot만 비교한다.
+`materialization/responsiveLayout.js`가 기존 guide transaction 안에서 scale→mark→guide→title
+계획을 실행하고 최종 concrete occupied bounds를 측정한다. 전역 action hook이나 semantic
+compiler는 없으며 renderer의 입력 경계도 바뀌지 않는다. 반환 시 측정 context를 제거하고
+`layout/canvas.js resolveGraphicBounds`가 settled plot의 단일 읽기 owner로 남는다.
+
+축 fallback intent와 result는 기존 guide config에 분리하여 저장한다. Actual text, hit metadata,
+inspection이 동일 선택을 읽고 font/source 갱신은 기존 explicit dependency 경계를 사용한다.
+정확 옵션·수렴·실패·복원 계약은 [CORE](contract/current/CORE.md)와
+[AXES](contract/current/AXES.md)가 소유한다. Nested composition의 root reservation 및 ancestor
+closure는 별도 composition owner의 후속 연결 의무이며 unit solver에 자동 재귀를 넣지 않는다.
 ### Ordered range 계산 owner
 
 `grammar/orderedRange.js`는 data filter와 final-item mark selector의 숫자·문자열 endpoint 검증 및 포함 판정을 함께 소유한다.
@@ -3636,3 +3651,24 @@ Captured click의 공개 import 연결 후 Node20 package922entries/packed1,331,
 interaction100,541gzip을 측정했다. Package922/1,332,000/6,090,000과 interaction100,600으로
 한도만 최소 올림하며 다른 entry 한도와 search961,000은 유지한다. 최초 package·bundle 초과와
 잘못된 단일 callback host mock의 remount 수리는 pointer-capture evidence에 별도 보존한다.
+
+### Nested facet responsive and projection closure
+
+`materialization/facetScaleContext.js`는 명시적인 facet/typography/theme 작업 동안
+이미 결정된 child domain을 유지한다. Responsive pass는 범위만 다시 계산하며,
+임시 `context.facetMaterialization`은 반환 전에 복구된다. 저장 schema나 자동
+컴파일 경계는 추가하지 않는다. 최종 bounds는 `layout/canvas.js`의
+`resolveGraphicBounds`를 계속 사용한다.
+
+Facet의 새 derived dataset identity는 같은 logicalId의 후속 source revision과
+구분한다. `actions/data/resourceRevision.js`의 class-local project 경로는 기존
+각 resource owner를 재사용하며 graph만 별도 prepared projection 권한을 쓴다.
+이 권한은 exact receiver/args, old/new dataset refs와 전체 graph/layout 결과
+closure를 primitive가 확인한 뒤 소멸한다. 상세 동작은
+[Current composition](contract/current/COMPOSITION.md#responsive-nested-reflow)이 소유한다.
+
+
+Nested closure의 동일 staged source는 Node20/24에서934entries,
+1,341,753packed/6,149,683unpackedbytes, minimal browser Full667,284gzip을
+기록했다. 한도는934/1,342,000/6,150,000 및 Full668,000으로 교정하며
+Basic375,000/SVG25,000/interaction83,000은 유지한다.

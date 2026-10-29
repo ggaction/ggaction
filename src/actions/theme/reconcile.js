@@ -1171,6 +1171,9 @@ function axisTypographyChanged(before, after) {
 }
 
 export function reconcileProgramTheme(program, { source, metadata }) {
+  // Intrinsic facet legends replay resolved intent in a private scratch unit.
+  // The parent action owns theme reconciliation, including typography reflow.
+  if (program.context.facetLegendIntrinsic === true) return program;
   program = reconcileFollowingRegressions(program);
   const storedState = program.materializationConfigs.theme;
   if (storedState === undefined) return program;

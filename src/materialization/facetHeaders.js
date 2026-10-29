@@ -544,8 +544,10 @@ function assertLegacyHeadersFit(items, layout, plotById, profile, contentById) {
     const bounds = resolveTextBounds(items[index].properties, profile);
     const cell = layout.children[index];
     const plot = plotById.get(cell.id);
-    if (bounds.left < 0 || bounds.right > layout.width ||
-      bounds.top < 0 || bounds.bottom > layout.height ||
+    const tolerance = Number.EPSILON * 16 * Math.max(1, layout.width, layout.height,
+      ...Object.values(bounds).map(Math.abs));
+    if (bounds.left < -tolerance || bounds.right > layout.width + tolerance ||
+      bounds.top < -tolerance || bounds.bottom > layout.height + tolerance ||
       previous.some(item => textBoundsIntersect(item, bounds)) ||
       (["plot", "content"].includes(layout.spacing) ? layout.children.some(other => textBoundsIntersect(bounds,
         contentById === undefined ? placedPlot(other, plotById.get(other.id))

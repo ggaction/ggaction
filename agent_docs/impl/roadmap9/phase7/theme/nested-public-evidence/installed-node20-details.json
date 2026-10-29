@@ -1,0 +1,52 @@
+{
+  "node": "v20.20.2",
+  "sha256": "dedfe6a1272818635f90254a6c2e74a14e650eba93b56aa185adc96d65479eb7",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "results": {
+    "nested-responsive-public": [
+      {
+        "id": "nested/shared-layout-lifecycle",
+        "status": "passed"
+      },
+      {
+        "id": "nested/projected-graph-source",
+        "status": "passed"
+      },
+      {
+        "id": "nested/renderers-scene-codec",
+        "status": "passed"
+      }
+    ],
+    "bundle:ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 830,
+      "minifiedBytes": 2349396,
+      "gzipBytes": 667318
+    },
+    "bundle:ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 542,
+      "minifiedBytes": 1283921,
+      "gzipBytes": 374664
+    },
+    "bundle:ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    "bundle:ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 140,
+      "minifiedBytes": 250232,
+      "gzipBytes": 82992
+    }
+  }
+}

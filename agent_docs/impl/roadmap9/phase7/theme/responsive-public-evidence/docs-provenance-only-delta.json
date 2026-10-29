@@ -1,0 +1,165 @@
+{
+  "htmlPages": 165,
+  "changedPages": 31,
+  "change": "Only exact repository source refs in href/raw download code and two source-reference table cells on version page. All other content, CSS and script source unchanged.",
+  "reused": "Full desktop/search/accessibility and 320/390/768 all-page browser evidence",
+  "supplement": "Every changed HTML page at three widths, canonical containment helper",
+  "sourceCommit": "aaa77724cd87b7c166db918d3ecede34a344ac66",
+  "records": [
+    {
+      "path": "extension/primitives/index.html",
+      "before": "dd40a5973f76625de6db76cef9dbf665fd31cc487d9c1a9f6f1592f50ecbdb99",
+      "after": "8aef51bcf9de608012ffbc1c0521510eaefb3df79b4e987d89d019c033e900b2"
+    },
+    {
+      "path": "mcp/index.html",
+      "before": "454ab5ff133394f5743dbc051d308a9a6e8eeb503a810ab5fb192e742f72ff28",
+      "after": "f13feca339b653bc33b6525799a8b1bc778e5e11f7ecee0c297d2b2c447f0b06"
+    },
+    {
+      "path": "getting-started/index.html",
+      "before": "a2a87b4a3d6b36c42f669bddca717258ed0c5fa27c01bf043b8ed500750ce770",
+      "after": "970aca998c0ec4a79da5e0fe8ac58734412bb3856c69ff75fcda5f62bdc90756"
+    },
+    {
+      "path": "version/index.html",
+      "before": "96d04253c426a73c7bc4317069943e9c380ee2613c06539823f532fabe4b4f30",
+      "after": "33769456c18b1149f33eb09b441fa2ad7319835775a0b6394c258f875c618a11"
+    },
+    {
+      "path": "api/marks/label-layout/index.html",
+      "before": "a0be81f290782b7baaa75ae28d6101d3fb4d54dd38a9ba67f3a589884e148739",
+      "after": "7fa7a951fdaf9e957953a5cf85887b668289b968b4b96f35842bfd4db619ad63"
+    },
+    {
+      "path": "api/series-encodings/index.html",
+      "before": "efa9a59751a93204f9780c48f66e9f52ec92a6d2ba0e74dd5e8ee46b5c3d62ee",
+      "after": "3f2be52ac08f2866a6f014bf82ceab71f45d11620c1e04e1a674199d8990ed2f"
+    },
+    {
+      "path": "api/position/temporal/index.html",
+      "before": "12aae2ec6fe3633f1425be3cb4f2715ccf24f8445f08055d9b3d7beca92ac131",
+      "after": "9614e515f0c0bb73f681f11d7a882bf102956e02d78d103281e22010b748272b"
+    },
+    {
+      "path": "api/composition/index.html",
+      "before": "7d676b98a378464357a544b09a9743cb8e0353bcd39884354fd9c15574137e8a",
+      "after": "188c5f7c7e0dc39d7ddeb6fff957889bc54d7d5c869b55c42ed45e8ccec11723"
+    },
+    {
+      "path": "api/composition/facets/index.html",
+      "before": "7b7d08431e4ed8811ce38440863dc6f8c49beb32d429c9d73d62eff5c5a274d6",
+      "after": "01703178ace5be754edd6a4798ed6e857411b8cfde212294d05db07b6b95a3a4"
+    },
+    {
+      "path": "api/data/window/index.html",
+      "before": "ef023ad9269e53be52cbf2bea9d75f73150f0eccbabdc3b53fa1930c8ce0e899",
+      "after": "b55d4969152da5b50cf1a007b880ee948a17ae646894ee1c07a1558c95913cb6"
+    },
+    {
+      "path": "tutorials/mark-selection/index.html",
+      "before": "588a0ab7620f2b7dd757c18f331d3343fd7c906863351da22afb4e531879773e",
+      "after": "4b05ddab5677f6857a4ce5a861376d5ecd7ab781ec198c39104ee7e02fbeb945"
+    },
+    {
+      "path": "tutorials/grouped-bar/index.html",
+      "before": "d8ade7cc925b0682e6b2bc22e6079a038e978b9867c28e73c43956a11eda96e7",
+      "after": "b6eab28622a64825adf493d8b82fbac8bebeddb59d62be1eb7fd1780e1c0f7fa"
+    },
+    {
+      "path": "tutorials/image-assets/index.html",
+      "before": "da7f639bd81f50d3c4c612dc12066a6870dcfe1ffc3720eeab1497d23ff16b91",
+      "after": "ae0c78cee18be090276b491fbc608bcb7bcf742edfa9a5e6a8ce1a8cddef967c"
+    },
+    {
+      "path": "tutorials/hierarchy/index.html",
+      "before": "84a3c2d23526d7f584b17e295b135dba65ab8faa57e4f4a9c6c173da71acd31f",
+      "after": "e62d6b601fdb1750b5fca32bb8d4bfff314899620e77d7ff8fa0518e8fa58389"
+    },
+    {
+      "path": "tutorials/font-assets/index.html",
+      "before": "561d9af2ece331a0ad4016a7338551a9e44515dec6a4da04a1fa41f595060540",
+      "after": "d905bb72de99e53c527ec4d8dd1429bc1241cd0b072e0fe3cd30e0f8e47af04c"
+    },
+    {
+      "path": "tutorials/polar-lines/index.html",
+      "before": "4cff3eb6c98d41993512a9933751c141a58253baf7934758f183537237831e1d",
+      "after": "2b4a62578b868c02b32fec7edf4996146c00d5163d8c935de583404ff3351ff5"
+    },
+    {
+      "path": "tutorials/density-area/index.html",
+      "before": "b87d8b5c9c61bb806fff2ccb600463d86e904d11573ffb735ebc8a24aea11e66",
+      "after": "c4b911f6ed50d94483f03208aa3254832ee8e7e374f01f04ddb8c9483d46717a"
+    },
+    {
+      "path": "tutorials/horizon/index.html",
+      "before": "07e547c3ddfe654d3b759f8fbe0d7caff624c82d40c1add5b370cae8ea19c751",
+      "after": "1cb01ccf7c8f07206efde6ea8bb5b5543f95c3469cefcc7e84afe7ef0a9fad48"
+    },
+    {
+      "path": "tutorials/polar-arcs/index.html",
+      "before": "dc4bbf0bb01b2979699729b7466b9316da7e839507a7c57dba5658ad69531daa",
+      "after": "7d6a22e050b98875a75e6c0bb3ba94da4d0ab23b3f7c195a69f72d8614b12a8a"
+    },
+    {
+      "path": "tutorials/contours/index.html",
+      "before": "bbf3aae02bb6b378de04f1b1699d56830438de8d7aa4ba319a886eb3353eb23a",
+      "after": "dfaa6744e6a822a1119c435f75c67a301a196ae4c1740f8c040355bf2fb0788a"
+    },
+    {
+      "path": "tutorials/regression-scatterplot/index.html",
+      "before": "af28f58db0b845e36237e7ba0b608f5158b105d176f42959da96686f842f9ca3",
+      "after": "5002daf684481754ddb20aceaf101d80cc7bb9963b1cbc6663a710097cc1b802"
+    },
+    {
+      "path": "tutorials/line-chart/index.html",
+      "before": "33f63f998efa3b6fca5b026078a613eeefa95b74797e8a8eeb953e62d8f0fd4f",
+      "after": "2735ca3126ec4ceb3a5260c9f86c7f38b8000e257d4b757ee0e3a460547906fd"
+    },
+    {
+      "path": "tutorials/scatterplot/index.html",
+      "before": "3a172f4f6d61e73caacab8927aa4d8836ff483396b88061b110854c490d55d88",
+      "after": "a8d280a391f374fff716cb31a4377f5817aa97f71495ce3373884e5f4d2c2da8"
+    },
+    {
+      "path": "tutorials/ecdf/index.html",
+      "before": "f6658bdd5c9ccec06482898cf0af138da9f1c329ecdb478df89e6fa1dc8782c9",
+      "after": "75c06f660bfd257f9815a65d5169236ffbd16d029f66a8bb41c4d6bf1729a7f2"
+    },
+    {
+      "path": "tutorials/polar-points/index.html",
+      "before": "f7ae2043d66a3261c07ca60f0f989c563bb7b16051989b6a61feffcbe0aba4b4",
+      "after": "0fb1710e2f7a062c7a592173b7535bbcecf88b9a760f99818f4bfb6b25713b46"
+    },
+    {
+      "path": "tutorials/error-band/index.html",
+      "before": "2266f1c06cb911ed805c91a81a3ea35ff7b6ce009f195af434e87362b9014de7",
+      "after": "2e7f2111c2483a219689c3aac17321a8fb457a4fc6ffbe6ab1e22c91b436264e"
+    },
+    {
+      "path": "tutorials/error-bar/index.html",
+      "before": "be1dbd4692cfd8e08349be61e8882e587cd1f0d4766a5ac59ed0098169c1a56c",
+      "after": "6d55bc07082f4cc0e06546ed52a83a422eb47c824bee5f62461dd2879bfcd57b"
+    },
+    {
+      "path": "tutorials/partition/index.html",
+      "before": "32c21ceb0b0639ca0e9f8bd980c909bc01ae2fc2829648dfcc5840c5b1bf960e",
+      "after": "a3befb6abaeb3ad5dba478d2f67a2338bc1e676ea94bb109af2ea989f6d08ed1"
+    },
+    {
+      "path": "tutorials/flows/index.html",
+      "before": "f41161aa3641d82e6eb38da9b4d950e022faaf38e400d0b176822f6e2244347e",
+      "after": "4edce1a251105baa05cd808614f3dca1aecee390f3609f1b8b945be9cd951f2c"
+    },
+    {
+      "path": "tutorials/area-layout/index.html",
+      "before": "71eaa700cf47c935d6aec195228f0537219c8d074cb4a3fe03b2586e446e5f0d",
+      "after": "7fe74b5b15ebf1ad0f332037e4380576a0abc273c17426e12e88a751ecad1811"
+    },
+    {
+      "path": "tutorials/histogram/index.html",
+      "before": "2c8336bcdd367b8d505218f0c3db370c2849dce2babbfb99a6a6f4f689ff1104",
+      "after": "577c3fcae5789da2a534323caa8facaa22c6cbdffa6a5382d88a18ecf67fcc02"
+    }
+  ]
+}

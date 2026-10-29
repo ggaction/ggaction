@@ -1,0 +1,31 @@
+{
+  "floors": {
+    "grammar/responsiveLabels.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "layout/responsivePolicy.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "grammar/responsiveLabels.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "layout/responsivePolicy.js": {
+      "lines": 100,
+      "branches": 97.18,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 98,
+      "functions": 100
+    }
+  }
+}

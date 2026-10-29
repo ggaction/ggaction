@@ -517,5 +517,27 @@
       "exported": "createCalendar"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/responsive-guides.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its category rows.",
+    "canonical": {
+      "file": "examples/responsive-guides/program.js",
+      "exported": "createResponsiveGuides"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/nested-responsive.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares all regional rows.",
+    "canonical": {
+      "file": "examples/nested-responsive/program.js",
+      "exported": "createNestedResponsive"
+    },
+    "rendering": "authoring-only"
   }
 }

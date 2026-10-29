@@ -11,15 +11,22 @@ export function registerDataResourceRevision(ProgramClass, handler) {
   if (handlers.has(ProgramClass)) throw new Error("Data resource revision is already registered.");
   ownRecord(handler, "Data resource revision handler");
   ownArray(handler.kinds, "Data resource revision kinds");
-  if (Object.keys(handler).some(key => !["kinds", "revise", "reviseSource"].includes(key)) || typeof handler.revise !== "function" ||
+  if (Object.keys(handler).some(key => !["kinds", "revise", "reviseSource", "project"].includes(key)) || typeof handler.revise !== "function" ||
+      (Object.hasOwn(handler, "project") && typeof handler.project !== "function") ||
       (Object.hasOwn(handler, "reviseSource") && typeof handler.reviseSource !== "function") || handler.kinds.length === 0 ||
       handler.kinds.some(kind => !STORED_RESOURCE_KINDS.includes(kind)) || new Set(handler.kinds).size !== handler.kinds.length) {
     throw new TypeError("Data resource revision requires unique stored kinds and one revise function.");
   }
-  handlers.set(ProgramClass, Object.freeze({ kinds: Object.freeze([...handler.kinds]), revise: handler.revise, reviseSource: handler.reviseSource }));
+  handlers.set(ProgramClass, Object.freeze({ kinds: Object.freeze([...handler.kinds]), revise: handler.revise, reviseSource: handler.reviseSource, project: handler.project }));
 }
 export function reviseDataResources(program, replacements) {
   return handlers.get(program.constructor)?.revise(program, replacements) ?? program;
+}
+
+// Projection has separate authority because a cell owns a derived logical ID.
+export function projectDataResources(program, replacements) {
+  const handler = handlers.get(program.constructor);
+  return (handler?.project ?? handler?.revise)?.(program, replacements) ?? program;
 }
 
 export function reviseSourceDataResources(program, replacements, marks) {

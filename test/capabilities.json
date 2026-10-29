@@ -870,6 +870,36 @@
         "path": "unit/materialization/"
       }
     ],
+    "nested-composition": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/nested-responsive-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-resource-projection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/data-resource-revision.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/facet-scale-context.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/nested-responsive.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/nested-responsive/"
+      }
+    ],
     "oracles": [
       {
         "type": "prefix",
@@ -1054,6 +1084,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "rendering": [
@@ -1076,6 +1110,36 @@
       {
         "type": "file",
         "path": "unit/canvas-scene.test.js"
+      }
+    ],
+    "responsive-layout": [
+      {
+        "type": "file",
+        "path": "unit/layout/responsive-policy.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/canvas/responsive-"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/responsive-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/responsive-layout-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/responsive-guides/"
+      },
+      {
+        "type": "file",
+        "path": "browser/responsive-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "scales": [

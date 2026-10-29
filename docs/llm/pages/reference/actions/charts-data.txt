@@ -24,6 +24,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -58,6 +59,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `height` | Optional / branch-dependent | `number \| undefined` |
 | `background` | Optional / branch-dependent | `string \| undefined` |
 | `margin` | Optional / branch-dependent | `number \| Partial<Record<"bottom" \| "left" \| "right" \| "top", number>> \| undefined` |
+| `responsive` | Optional / branch-dependent | `false \| ResponsiveCanvasOptions \| undefined` |
 | `plot` | Optional / branch-dependent | `false \| { width: number; height: number; } \| undefined` |
 | `plotBorder` | Optional / branch-dependent | `false \| { color?: string \| undefined; lineWidth?: number \| undefined; underlay?: boolean \| undefined; } \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |

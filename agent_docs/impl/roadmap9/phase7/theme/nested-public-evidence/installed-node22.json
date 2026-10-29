@@ -1,0 +1,41 @@
+{
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2230.681166
+    },
+    {
+      "id": "nested-responsive-public",
+      "status": "passed",
+      "durationMs": 2361.741917
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 1535.4367089999996
+    },
+    {
+      "id": "bundle:ggaction",
+      "status": "passed",
+      "durationMs": 2254.676042000001
+    },
+    {
+      "id": "bundle:ggaction/basic",
+      "status": "passed",
+      "durationMs": 1128.7224999999999
+    },
+    {
+      "id": "bundle:ggaction/svg",
+      "status": "passed",
+      "durationMs": 62.48450000000048
+    },
+    {
+      "id": "bundle:ggaction/interaction",
+      "status": "passed",
+      "durationMs": 395.87433299999975
+    }
+  ]
+}

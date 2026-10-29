@@ -91,6 +91,11 @@
       "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
     },
     {
+      "name": "responsive",
+      "required": false,
+      "type": "false | ResponsiveCanvasOptions | undefined"
+    },
+    {
       "name": "plot",
       "required": false,
       "type": "false | { width: number; height: number; } | undefined"
@@ -107,7 +112,7 @@
     }
   ],
   "callPatterns": [
-    "createCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
+    "createCanvas({ target?, width?, height?, background?, margin?, responsive?, plot?, plotBorder? })"
   ],
   "snippet": "program.createCanvas({})",
   "errors": [],

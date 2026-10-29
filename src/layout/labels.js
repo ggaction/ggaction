@@ -649,7 +649,7 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) 
   });
 }
 
-export function assertPolarTextLayout({ canvas, items, label }, profile) {
+export function assertPolarTextLayout({ canvas, items, label, deferCanvasFit = false }, profile) {
   const dimensions = canvas?.properties;
   if (
     ![dimensions?.width, dimensions?.height].every(Number.isFinite) ||
@@ -658,7 +658,7 @@ export function assertPolarTextLayout({ canvas, items, label }, profile) {
     throw new Error("Polar text layout requires finite Canvas dimensions.");
   }
   const bounds = items.map(item => resolveTextBounds(item, profile));
-  const outside = bounds.some(item => !textBoundsFitCanvas(item, dimensions));
+  const outside = !deferCanvasFit && bounds.some(item => !textBoundsFitCanvas(item, dimensions));
   let overlap = false;
   for (let first = 0; first < bounds.length && !overlap; first += 1) {
     for (let second = first + 1; second < bounds.length; second += 1) {

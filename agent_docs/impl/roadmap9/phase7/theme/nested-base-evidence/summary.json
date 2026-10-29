@@ -1,0 +1,30 @@
+{
+  "scope": "STEP035 prerequisite integration only; STEP035 implementation pending",
+  "parents": [
+    "9e2179cd1",
+    "e21e40cca",
+    "c966374951afec293106d34bd0f9dd9ed0261976"
+  ],
+  "tests": {
+    "selectionResponsiveCalendarSourceClosure": 51,
+    "boundariesDiscoveryTypesPackage": 34,
+    "canonicalOptionInventory": 7
+  },
+  "package": {
+    "entries": 933,
+    "maxPackedBytes": 1340394,
+    "unpackedBytes": 6143706
+  },
+  "browserGzipMax": {
+    "full": 666557,
+    "basic": 374493
+  },
+  "publicInventory": {
+    "actions": 336,
+    "optionPaths": 31326,
+    "required": 20943,
+    "excluded": 10383,
+    "ledgerRequirements": 36970
+  },
+  "reusedEvidence": "The parent feature checkpoints retain their complete qualification. This merge verifies interaction, boundaries, generated references and actual archive/bundle dimensions without repeating unrelated corpus or installed sweeps."
+}

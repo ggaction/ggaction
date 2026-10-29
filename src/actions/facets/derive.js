@@ -1,4 +1,6 @@
-import { reviseDataResources } from "../data/resourceRevision.js";
+import { withFacetScaleDomains } from "../../materialization/facetScaleContext.js";
+import { projectDataResources } from "../data/resourceRevision.js";
+import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
 import { freezeOwned } from "../../core/immutable.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
@@ -14,7 +16,7 @@ import {
   getMarkMaterializationStep,
   reusePlannedMarkScales
 } from "../../materialization/marks/index.js";
-import { buildMaterializationPlan } from "../../materialization/planner.js";
+import { buildMaterializationPlan, applyMaterializationPlan as applyScalePlan } from "../../materialization/planner.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -131,7 +133,7 @@ function buildFacetCellCandidate(
       histogramBoundaries.get(layer.id)
     );
   }
-  child = reviseDataResources(child, datasets);
+  child = projectDataResources(child, datasets);
   for (const [id, markConfig] of Object.entries(base.markConfigs)) {
     const gradientPlot = markConfig.gradientPlot;
     if (gradientPlot?.materialized !== true) continue;
@@ -157,7 +159,9 @@ function buildFacetCellCandidate(
     return { program: child, populated: false };
   }
   const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(getLayerScaleIds))];
-  const program = applyMaterializationPlan(child, buildMaterializationPlan({
+  // Only resolve candidate domains here. Shared policies are applied before
+  // the final layout; measuring these temporary local guides is unnecessary.
+  const program = applyScalePlan(child, buildMaterializationPlan({
     scales: scaleIds.map(id => ({
       op: "rematerializeScale",
       args: { id, guides: false, marks: false }
@@ -226,13 +230,17 @@ function applyResolvedDomains(
   const guides = Object.keys(resolution.scales).flatMap(id =>
     planScaleGuideRematerialization(next, id)
   );
-  return applyMaterializationPlan(
-    next,
+  const apply = candidate => applyMaterializationPlan(candidate,
     buildMaterializationPlan({
-      marks: reusePlannedMarkScales(next, marks, Object.keys(resolution.scales)),
+      marks: reusePlannedMarkScales(candidate, marks, Object.keys(resolution.scales)),
       guides
-    })
-  );
+    }));
+  if (next.materializationConfigs.canvas?.responsive === undefined) return apply(next);
+  // Responsive passes must update ranges for the solved plot without replacing
+  // the facet's already-resolved shared or independent domain with local data.
+  const domains = Object.fromEntries(Object.keys(resolution.scales).map(id => [id, next.resolvedScales[id].domain]));
+  return withFacetScaleDomains(next, domains, !materializeMarks,
+    scoped => withGuideLayoutTransaction(scoped, apply));
 }
 
 function materializeFacetCell(

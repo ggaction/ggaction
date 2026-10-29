@@ -1101,6 +1101,13 @@
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
     "image": "/assets/images/contours.png"
   },
+  "/tutorials/responsive-guides/": {
+    "title": "Fit Labels Inside a Fixed Canvas",
+    "source": "docs/tutorials/responsive-guides.md",
+    "editSource": "examples/responsive-guides/program.js",
+    "description": "Use a fixed outer size when a chart must fit an existing panel. The Canvas policy reserves space for guides, and the label policy decides how much text can fit.",
+    "image": "/assets/images/responsive-guides.png"
+  },
   "/api/calendar/": {
     "title": "Calendar Plots",
     "source": "docs/api/calendar.md",
@@ -1114,5 +1121,12 @@
     "editSource": "examples/calendar/program.js",
     "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
     "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/nested-responsive/": {
+    "title": "Arrange Nested Panels with Shared Guides",
+    "source": "docs/tutorials/nested-responsive.md",
+    "editSource": "examples/nested-responsive/program.js",
+    "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
+    "image": "/assets/images/nested-responsive.png"
   }
 }

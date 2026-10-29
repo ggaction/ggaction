@@ -1,0 +1,48 @@
+{
+  "allTests": 588,
+  "supplementalTests": 40,
+  "status": "passed",
+  "floors": {
+    "actions/data/resourceRevision.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/graphs/layouts.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/graphs/sourceRevisionContext.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/primitives/preparedResourceContext.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/facetScaleContext.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/layout.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "graphSupplement": {
+    "lines": 100,
+    "branches": 96.77,
+    "functions": 100
+  },
+  "newOwner": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "scope": "Changed source coverage only; not whole-source or all critical family qualification."
+}
