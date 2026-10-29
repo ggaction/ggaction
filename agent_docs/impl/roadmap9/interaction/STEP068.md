@@ -151,3 +151,7 @@ macOS realpath 경로 오류 및 임시 테스트 host의 h1 누락은 harness �
 Root의 최신 native dependency loader와 연결하도록 두 browser fixture에 repository dependency
 옵션을 명시한다. 이 branch의 이전 loader는 옵션을 사용하지 않으므로 최신 loader 합산 검증은
 root가 소유한다. C2/D와 AT53·전체077은 계속 미완료다.
+
+C1 source `27ce21d20`와 [최종 machine evidence](tooltip-accessibility-evidence/qualification.json)에
+실제 명령·고정 tar 재사용 근거·source/type fingerprint·원본 실패·화면을 보존한다.
+Repository dependency 옵션 추가 뒤 B2+C1 browser4의 합산6개도 통과했다.
