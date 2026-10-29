@@ -1860,11 +1860,63 @@ export interface GraphLabelsOptions extends GraphLabelPaint {
   field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
 }
 export interface GraphPlotOptions {
-  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
 }
 export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
+export interface EdgeRouteLimits {
+  readonly maxNodes?: number; readonly maxEdges?: number; readonly maxCandidatePairs?: number; readonly maxSamples?: number;
+}
+export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+  readonly hierarchy?: string; readonly hierarchyLayout?: string;
+  readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
+  readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
+}
+export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+export type EdgeRouteDefinition =
+  { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
+  | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
+  | { readonly method: "density"; readonly options?: EdgeRouteCommonOptions }
+  | { readonly method: "edge-path"; readonly options?: EdgePathRouteOptions };
+export type BundleGraphEdgesOptions = { readonly id: string; readonly graph?: string; readonly layout?: string; readonly coordinateSpace?: "world" | "screen" } & EdgeRouteDefinition;
+/** Same-method options patch existing values; changing method starts from that method's defaults. */
+export interface EditEdgeRouteOptions {
+  readonly target?: string; readonly graph?: string; readonly layout?: string; readonly method?: EdgeRouteMethod;
+  readonly coordinateSpace?: "world" | "screen";
+  readonly options?: Partial<HierarchicalEdgeRouteOptions> | ForceDirectedEdgeRouteOptions | EdgeRouteCommonOptions | EdgePathRouteOptions;
+}
+declare const preparedGraphEdgeRoutes: unique symbol;
+/** Opaque, exact-receiver preparation. Obtain it from ggaction/graph. */
+export interface PreparedGraphEdgeRoutes {
+  readonly [preparedGraphEdgeRoutes]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+export interface EdgeRoutePoint { readonly x: number; readonly y: number; }
+export interface EdgeRouteVector {
+  readonly edgeKey: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly controlPoints: readonly EdgeRoutePoint[];
+  readonly commands: readonly (EdgeRoutePoint & { readonly op: "M" | "L" })[];
+  readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+  readonly provenance: Readonly<Record<string, unknown>> & { readonly algorithmVersion: string; readonly reason?: string };
+}
+export interface EdgeRouteResult {
+  readonly complete: true; readonly routes: readonly EdgeRouteVector[];
+  readonly diagnostics: Readonly<Record<string, unknown>> & { readonly work: number; readonly candidatePairs: number; readonly peakSamples: number };
+}
+export interface EdgeRouteResource {
+  readonly kind: "edge-route"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Exclude<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: EdgeRouteMethod; readonly coordinateSpace: "world" | "screen";
+    readonly options: Readonly<Record<string, unknown>> & { readonly limits: Readonly<Required<EdgeRouteLimits>> } };
+  readonly result: EdgeRouteResult & { readonly inputHash: string; readonly resultHash: string;
+    readonly viewport: null | { readonly x: number; readonly y: number; readonly width: number; readonly height: number } };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
 export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 /** Coordinate arrays cover current nodes when authored; source revisions retain absent keys for reuse. */
@@ -2055,7 +2107,7 @@ export interface ContourMarkOptions {
   readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly clip?: boolean;
 }
 export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -2222,7 +2274,8 @@ export interface SemanticLayer {
   readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
-  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number };
+    readonly routes?: { readonly kind: "edge-route"; readonly id: string; readonly revision: number } };
   readonly graphLabels?: false | { readonly field?: string; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;
@@ -2286,7 +2339,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | CalendarLayoutResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | CalendarLayoutResource | EdgeRouteResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6363,6 +6416,8 @@ export class ChartProgram {
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+  bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;

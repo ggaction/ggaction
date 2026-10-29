@@ -1,0 +1,25 @@
+{
+  "scope": "Latest main baseline merge before public routes",
+  "parents": [
+    "58738bbb3",
+    "afc4e34e6"
+  ],
+  "checks": {
+    "routeGraphLayoutCalendarSelectionAndBoundaries": 126,
+    "packageContracts": 7,
+    "docsGeneration": "pass"
+  },
+  "archiveSha256": "7b44bd9f4051bb586b4720581f5e65373989767d9f4d611a5602749b16098524",
+  "packageLimits": {
+    "entries": 939,
+    "packedBytes": 1348000,
+    "unpackedBytes": 6165000
+  },
+  "browserLimits": {
+    "ggaction": 663000,
+    "ggaction/basic": 371000,
+    "ggaction/svg": 25000,
+    "ggaction/interaction": 83000
+  },
+  "remaining": "Public edge-route resource, API, preparation, lifecycle, and consumer integration are not implemented by this checkpoint."
+}

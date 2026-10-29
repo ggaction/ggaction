@@ -571,6 +571,22 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `bundleGraphEdges`
+
+```javascript
+bundleGraphEdges({ id, graph?, layout?, method, options?, coordinateSpace? })
+```
+
+Create a Full-only stored edge route using hierarchical, force-directed, density, or edge-path bundling. Graph topology and item identity remain unchanged. The [Edge routes API](../api/edge-routes.md) owns method options, exact input binding, bounded computation and worker preparation. Bind the result with `createGraphPlot({routes:id})`. Prepared application accepts only `{prepared,requestToken}` on the exact original receiver.
+
+### `editEdgeRoute`
+
+```javascript
+editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
+```
+
+Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
+
 ### `createGraphData`
 
 ```javascript

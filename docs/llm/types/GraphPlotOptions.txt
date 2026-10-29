@@ -1,5 +1,5 @@
 export interface GraphPlotOptions {
-  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
 }

@@ -1,0 +1,35 @@
+{
+  "scope": "Private common edge route kernel; public methods/resources/consumers remain open.",
+  "baseline": "f0d674fe7",
+  "runtime": "v22.23.1",
+  "checks": {
+    "mergedBaseline": 169,
+    "commonUnit": 9,
+    "commonCoverage": {
+      "tests": 9,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "architectureDiscovery": 27,
+    "packageAndPolicy": 14,
+    "criticalOwners": 3
+  },
+  "requiredFloor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "artifact": "c1069ff55d185eff5e8e578cedd52d6e51b3f729612a7719c57d0e2ceec3f44a",
+  "initialFailures": [
+    "Test authoring used source/target instead of the existing normalized sourceKey/targetKey, and direct error.code instead of diagnostic metadata; corrected.",
+    "New capability key was initially outside alphabetical order; sorted without dropping any selector."
+  ],
+  "qualification": "Focused owning checks only; no claim of full suite or all bundling acceptance completion. Renderer and installed runtime sweeps are reserved for the public consumer checkpoint.",
+  "hashes": {
+    "src/grammar/graph/routes/budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568",
+    "src/grammar/graph/routes/common.js": "9c97635144d2662e2c52b73eda0001d9bb3c5854c31bca6e6607f8034e82cf95",
+    "src/grammar/graph/routes/polyline.js": "78fc3df4f6dbbb93d922f809c1561b9eb2324f0181e2e846454747bec547f914",
+    "test/unit/grammar/graph/routes/common.test.js": "918d5d14ea280229d145dc52ff29b562365cca9498d1e204eb622b15d211ba98"
+  }
+}

@@ -5,6 +5,13 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
+  "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
+  "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },
+  "responsive-guide-canvas": { prefix: "materialization/guides/canvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Containment deferral is limited to a private measured candidate and never stored." },
+  "responsive-labels": { prefix: "grammar/responsiveLabels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Declared fallback labels require closed finite own-data normalization and bounded candidate work." },
+  "responsive-layout": { prefix: "layout/responsivePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Fixed Canvas layout must reject oscillation, overflow and stale measured topology within a bounded solve." },
+  "edge-route-kernel": { prefix: "grammar/graph/routes/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Edge route geometry must preserve exact endpoints, typed identity, deterministic work order and bounded immutable output." },
   "selection-region": { prefix: "grammar/selectionRegion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region predicates must preserve typed final-grain intersections and bounded immutable metadata." },
   "selection-lasso": { prefix: "grammar/lassoSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Lasso membership must use finite CSS polygons, exact logical keys and bounded geometry work." },
   "interaction-region": { prefix: "interaction/regionSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region gestures must share exact committed scales, current-frame anchors and scoped identities." },
@@ -12,12 +19,6 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "angular-scale-inversion": { prefix: "grammar/scales/angularInversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Angular inverse must preserve periodic seam unions, resolved theta units and cumulative category bounds." },
   "brush-scale-inversion": { prefix: "grammar/scales/inversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Brush inverse values must preserve resolved scale geometry, typed keys and bounded immutable input." },
 
-  "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
-  "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
-  "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },
-  "responsive-guide-canvas": { prefix: "materialization/guides/canvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Containment deferral is limited to a private measured candidate and never stored." },
-  "responsive-labels": { prefix: "grammar/responsiveLabels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Declared fallback labels require closed finite own-data normalization and bounded candidate work." },
-  "responsive-layout": { prefix: "layout/responsivePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Fixed Canvas layout must reject oscillation, overflow and stale measured topology within a bounded solve." },
   "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },
   "calendar-materialization": { prefix: "materialization/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored calendar results and all cell, month boundary and label consumers require exact source identity and responsive geometry." },
   "calendar-selection": { prefix: "materialization/selection/policies/calendar.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar final day items must preserve contributing rows and exclude decorative roles from selection." },
@@ -121,6 +122,8 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "hierarchy-actions": { prefix: "actions/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Hierarchy revisions must preflight all dependent layouts and plots before wrapped transitions." },
   "source-preparation": { prefix: "resources/", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Host input, opaque preparation and freshness must be validated before application." },
   "source-grammar": { prefix: "grammar/dataSource", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Parsing, retained payload and request proofs must agree without host execution." },
+  "canvas-resource-revision": { prefix: "materialization/canvasResourceRevision.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact-class Canvas resource preparation must preserve immutable registration and Basic isolation." },
+  "edge-route-selection": { prefix: "selectors/edgeRoutes.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Route consumers must resolve one eligible exact stored resource." },
   "data-resource-revision": { prefix: "actions/data/resourceRevision", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact-class data-backed resource dispatch must preserve immutable registration and Basic isolation." },
   "source-actions": { prefix: "actions/data/source", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared source planning and exact child contexts preserve atomic application." },
   "source-state": { prefix: "materialization/dataSourceState", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Historic receipts and live source revisions have distinct validated owners." },

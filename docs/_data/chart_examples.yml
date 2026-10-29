@@ -2172,3 +2172,19 @@
   actions: facet · hconcat · editCanvas
   tasks: nested panels
   url: /tutorials/nested-responsive/
+- id: edge-routes
+  example: /examples/edge-routes/
+  title: Edge routes
+  image: /assets/images/edge-routes.png
+  alt: Three original graph edges with the long connection routed along two existing edges
+  width: 640
+  height: 480
+  thumbnail: /assets/images/edge-routes-thumb.png
+  thumbnail_width: 320
+  thumbnail_height: 240
+  caption: Bundling changes connection geometry while preserving every original node and edge identity.
+  summary: Follow existing graph edges with a bounded detour and explicit stored route.
+  actions: bundleGraphEdges · createGraphPlot · editEdgeRoute
+  tasks: graph edge routes bundling
+  url: /tutorials/edge-routes/
+  tutorial_order: 225

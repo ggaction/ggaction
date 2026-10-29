@@ -505,6 +505,12 @@
 - title: Graph Tutorial
   url: /tutorials/graphs/
   parent: /tutorials/
+- title: Edge Routes
+  url: /api/edge-routes/
+  parent: /api/graphs/
+- title: Edge Route Tutorial
+  url: /tutorials/edge-routes/
+  parent: /tutorials/
 
 - title: Partition Plots
   url: /api/partition/

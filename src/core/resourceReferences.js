@@ -12,6 +12,8 @@ const LAYER_RESOURCE_BINDINGS = Object.freeze([
   Object.freeze({ path: Object.freeze(["image"]), kind: "image", marks: Object.freeze(["image"]) }),
   Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap", "partition"]) }),
   Object.freeze({ path: Object.freeze(["graphBinding", "layout"]), kind: "layout", marks: Object.freeze(["graph"]) }),
+  // An empty required-mark list declares an optional, exact typed binding.
+  Object.freeze({ path: Object.freeze(["graphBinding", "routes"]), kind: "edge-route", marks: Object.freeze([]) }),
   Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) }),
   Object.freeze({ path: Object.freeze(["contourBinding", "geometry"]), kind: "geometry", marks: Object.freeze(["contour"]) })
 ]);

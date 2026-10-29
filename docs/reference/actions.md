@@ -36,6 +36,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
+| [`bundleGraphEdges`](./actions/charts-data.md#bundlegraphedges) | H2 | user-facing | core |
 | [`createAdjacentPlot`](./actions/charts-data.md#createadjacentplot) | H0 | user-facing | composition |
 | [`createAnnotation`](./actions/marks.md#createannotation) | H1, H2 | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | H2 | user-facing | marks |
@@ -187,6 +188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editDerivedData`](./actions/charts-data.md#editderiveddata) | H2 | user-facing | core |
 | [`editECDFData`](./actions/statistics.md#editecdfdata) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | H1, H3 | user-facing | charts |
+| [`editEdgeRoute`](./actions/charts-data.md#editedgeroute) | H3 | user-facing | core |
 | [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | H1, H3 | user-facing | charts |
 | [`editErrorBand`](./actions/statistics.md#editerrorband) | H1, H3 | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorbandboundary) | H1, H3 | user-facing | statistics |

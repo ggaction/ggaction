@@ -1,6 +1,6 @@
+import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
 import { getMarkMaterializationStep } from "./materialization/marks/index.js";
 import { appearanceContext, markAppearance, guideAppearance } from "./actions/theme/provenance.js";
-import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
 import { layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";

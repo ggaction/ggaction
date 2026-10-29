@@ -91,6 +91,10 @@
     "./interaction": {
       "types": "./types/interaction.d.ts",
       "default": "./src/interaction.js"
+    },
+    "./graph": {
+      "types": "./types/graph.d.ts",
+      "default": "./src/graph.js"
     }
   },
   "scripts": {

@@ -1,0 +1,5 @@
+export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+  readonly hierarchy?: string; readonly hierarchyLayout?: string;
+  readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
+  readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
+}

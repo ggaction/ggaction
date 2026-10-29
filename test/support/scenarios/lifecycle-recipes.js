@@ -1306,10 +1306,12 @@ function buildDirectDataResources(factors) {
   program = program
     .createData({ id: "directGraphNodes", values: [...new Set(rows.map(row => row.category))].map(category => ({ category })) })
     .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
-      source: "category", target: "category", weight: "positive", selfLoops: true })
+      source: "category", target: "category", edgeKey: "id", weight: "positive", selfLoops: true })
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
+    .bundleGraphEdges({ id: "directEdgeRoutes", layout: "directGraphLayout", method: "edge-path" })
+    .editEdgeRoute({ target: "directEdgeRoutes", options: { exponent: 3 } })
     .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
-    .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
+    .editGraphPlot({ target: "directGraphPlot", routes: false, nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
     .editGraphData({ target: "directGraph", definition: { directed: true } })
     .createInferredGraphData({ id: "directInferredGraph", data: "directSource", nodeKey: "id", ruleId: "source-order",

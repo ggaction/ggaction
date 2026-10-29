@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `bundleGraphEdges` and `editEdgeRoute` for hierarchical, force-directed, density and edge-path bundling. Bind original graph edges through `createGraphPlot({ routes })`, preserve exact revisions and offline vectors, and use the browser-safe `ggaction/graph` entry for explicit worker preparation, cancellation and bounded caching.
+
 - Add Full-only `createCalendarLayout`, `createCalendarPlot`, and `editCalendarPlot` for explicit civil-day aggregation, month boundaries and date labels. Preserve missing-day policy, exact source rows, selection and rendering through source, layout and Canvas revisions.
 
 - Added explicit inferred-graph `filterMarks({ recompute: true })` with preserved node identity, source revision replay, dependent layout refresh and reversible source restoration.

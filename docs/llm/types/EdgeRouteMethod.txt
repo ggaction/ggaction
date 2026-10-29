@@ -1,0 +1,1 @@
+export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";

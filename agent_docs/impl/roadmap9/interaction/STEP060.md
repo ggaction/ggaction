@@ -113,3 +113,12 @@ Legend/parameter control/context/annotation/drag/focus/navigation/keyboard 및 �
 B source `da43755ef` 이후 provenance→machine→LLM을 고정하고 documentation29, provenance/machine18,
 built168pages/1435LLM을 통과했다. Runtime/source hashes는 검증된 tar와 동일하며 source pin에 따른
 revision label 변경만 있어 같은 interaction page의 앞선4폭Axe 증거를 재사용한다.
+
+
+### B 안정 통합 기준선
+
+`f2915cd17`의 qualified routes/region/direct-controls를 병합했다. 실행 코드 충돌 없이
+capability witness 중복을 제거하고 linked-filter 증거를 유지했다. 집중55·설치 Node20
+runtime3/strict TS/5bundle 측정을 완료했다. 문서47 중 최초45통과, 남은2는
+미커밋 신규 example source ref와 search cap이며 source commit 뒤 owning 검사를 닫는다.
+원본 로그는 linked-filter-merge-evidence에 보존한다. 전체077 완료로 보지 않는다.

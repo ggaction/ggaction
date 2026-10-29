@@ -72,6 +72,11 @@
       "type": "string | undefined"
     },
     {
+      "name": "routes",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
       "name": "origin",
       "required": false,
       "type": "\"auto\" | readonly [number, number] | undefined"
@@ -98,7 +103,7 @@
     }
   ],
   "callPatterns": [
-    "editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+    "editGraphPlot({ target?, layout?, routes?, origin?, clip?, nodes?, edges?, labels? })"
   ],
   "snippet": "program.editGraphPlot({ target: \"networkPlot\", nodes: { radius: 8 } })",
   "errors": [],

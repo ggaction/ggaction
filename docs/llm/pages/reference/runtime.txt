@@ -32,6 +32,7 @@ export type { ConditionalEncodingOptions } from "./program.js";
 export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
 export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
+export type { EdgeRouteMethod, EdgeRouteLimits, EdgeRouteCommonOptions, HierarchicalEdgeRouteOptions, ForceDirectedEdgeRouteOptions, EdgePathRouteOptions, EdgeRouteDefinition, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, ApplyGraphEdgeRoutesOptions, EdgeRoutePoint, EdgeRouteVector, EdgeRouteResult, EdgeRouteResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -1351,6 +1352,46 @@ export declare function createInteractionSession(options: {
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
   readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
+```
+
+#### `ggaction/graph`
+
+[Complete declaration and relative dependencies](../../../types/graph.d.ts)
+
+```typescript
+import type { ChartProgram, BundleGraphEdgesOptions, EditEdgeRouteOptions, PreparedGraphEdgeRoutes, EdgeRouteResult, InputRef } from "./program.js";
+export type { PreparedGraphEdgeRoutes } from "./program.js";
+
+declare const graphRouteJob: unique symbol;
+/** Immutable structured-clone job supplied to the worker by prepareGraphEdgeRoutes. */
+export interface GraphRouteJob {
+  readonly [graphRouteJob]: true; readonly schemaVersion: 1; readonly algorithmVersion: string;
+  readonly inputHash: string; readonly inputs: readonly InputRef[];
+}
+export interface GraphRouteCompletion {
+  readonly inputHash: string; readonly resultHash: string;
+  readonly result: EdgeRouteResult & { readonly options: Readonly<Record<string, unknown>> };
+}
+/** A browser Worker satisfies this protocol. One request owns one worker until completion, error or cancellation. */
+export interface GraphRouteWorker {
+  postMessage(message: { readonly job: GraphRouteJob }): void;
+  addEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
+  addEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
+  removeEventListener(type: "message", listener: (event: { readonly data: unknown }) => void): void;
+  removeEventListener(type: "error", listener: (event: { readonly error: unknown }) => void): void;
+  terminate(): void;
+}
+export interface GraphRouteExecutor {
+  compute(job: GraphRouteJob, options?: { readonly signal?: AbortSignal }): Promise<GraphRouteCompletion>;
+  evict(inputHash?: string): void;
+  dispose(): void;
+}
+export type GraphEdgeRoutesRequest = ({ readonly kind: "create" } & BundleGraphEdgesOptions)
+  | ({ readonly kind: "edit" } & EditEdgeRouteOptions);
+export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly signal?: AbortSignal; readonly executor?: GraphRouteExecutor; }
+export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
+export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
+export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
 ```
 
 ## Rendering functions

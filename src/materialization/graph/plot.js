@@ -8,6 +8,8 @@ import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { resolveGraphLayerResources } from "../../selectors/graphs.js";
 import { graphEdgeGeometry } from "./geometry.js";
+import { storedGraphRouteGeometry } from "./routeGeometry.js";
+import { resolveInputReference } from "../../selectors/resources.js";
 import { materializeFillItems } from "../fillPaint.js";
 
 export const graphItemKey = (layer, graph, role, key) => JSON.stringify([[], layer.id, role, [graph.id, key]]);
@@ -57,22 +59,28 @@ export function resolveGraphPlot(program, layer, config) {
   const memberItem = (source, dataset) => ({ members: source.sourceRows.map(index => dataset.values[index]),
     memberKeys: source.sourceRows.map(index => dataset.rowKeys[index]), dataset });
   const edgeStyle = config.edges;
-  const routes = graphEdgeGeometry(model, located, radii, { ...edgeStyle, arrows: edgeStyle.arrows === "auto" ? model.directed : edgeStyle.arrows });
+  const routeResource = layer.graphBinding.routes === undefined ? undefined : resolveInputReference(program, layer.graphBinding.routes);
+  if (routeResource !== undefined && (routeResource.kind !== "edge-route" || routeResource.inputs[0].id !== graph.id || routeResource.inputs[0].revision !== graph.revision ||
+      routeResource.inputs[1].id !== layout.id || routeResource.inputs[1].revision !== layout.revision)) throw new TypeError("Graph routes require the same exact graph and node layout.");
+  const edgeLineage = routeResource === undefined ? lineage : { kind: "resource", resource: layer.graphBinding.routes };
+  const resolvedEdgeStyle = { ...edgeStyle, arrows: edgeStyle.arrows === "auto" ? model.directed : edgeStyle.arrows };
+  const routes = routeResource === undefined ? graphEdgeGeometry(model, located, radii, resolvedEdgeStyle)
+    : storedGraphRouteGeometry(model, routeResource, origin, radii, resolvedEdgeStyle);
   for (const { edge, commands, arrowCommands } of routes) {
     const key = graphItemKey(layer, graph, "edge", edge.key), topology = contentDigest(JSON.stringify([edge.sourceKey, edge.targetKey]));
     const properties = { commands, fill: "none", stroke: edgeStyle.stroke, strokeWidth: edgeStyle.strokeWidth, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) };
     const graphicIndices = [graphics.length], graphicRoles = ["body"];
-    graphics.push({ type: "path", properties, identity: { key, topology, role: "body", lineage } });
+    graphics.push({ type: "path", properties, identity: { key, topology, role: "body", lineage: edgeLineage } });
     if (arrowCommands) {
       graphicIndices.push(graphics.length); graphicRoles.push("arrow");
-      graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) }, identity: { key, topology, role: "arrow", lineage } });
+      graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) }, identity: { key, topology, role: "arrow", lineage: edgeLineage } });
     }
-    items.push({ key, topology, role: "edge", properties, graphicIndices, graphicRoles, ...memberItem(edge, edgesData),
+    items.push({ key, topology, role: "edge", properties, graphicIndices, graphicRoles, lineage: edgeLineage, ...memberItem(edge, edgesData),
       fields: { ...inference, kind: "edge", key: edge.key, sourceKey: rawKeys.get(edge.sourceKey), targetKey: rawKeys.get(edge.targetKey), weight: edge.weight, origin: edge.origin, directed: edge.directed, ruleId: edge.ruleId } });
   }
   model.nodes.forEach((node, index) => {
     const key = graphItemKey(layer, graph, "node", node.key), properties = { ...located.get(node.key), ...bodyStyle(config.nodes, nodeStyles, node.key) };
-    const item = { key, topology: "", role: "node", properties, graphicIndices: [graphics.length], graphicRoles: ["body"], ...memberItem(node, nodesData),
+    const item = { key, topology: "", role: "node", properties, graphicIndices: [graphics.length], graphicRoles: ["body"], lineage, ...memberItem(node, nodesData),
       fields: { ...inference, ...Object.fromEntries(Object.entries(node.attributes).map(([name, value]) => [`attribute:${name}`, value])), kind: "node", key: rawKeys.get(node.key),
         degree: degrees.get(node.key), incoming: model.adjacency[index].incoming.length, outgoing: model.adjacency[index].outgoing.length, origin: graph.provenance.origin } };
     graphics.push({ type: "circle", properties, identity: { key, topology: "", role: "body", lineage } });

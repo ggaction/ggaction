@@ -222,6 +222,8 @@ requirements after resolving each part.
 - Hierarchy Tutorial: ./tutorials/hierarchy/
 - Graph Plots: ./api/graphs/
 - Graph Tutorial: ./tutorials/graphs/
+- Edge Routes: ./api/edge-routes/
+- Edge Route Tutorial: ./tutorials/edge-routes/
 - Partition Plots: ./api/partition/
 - Partition Tutorial: ./tutorials/partition/
 - Flow Data and Sankey Layouts: ./api/flows/

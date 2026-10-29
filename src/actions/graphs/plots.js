@@ -4,6 +4,7 @@ import { normalizeGraphPlot, validateGraphPlotDefinition } from "../../grammar/g
 import { resolveGraphPlotLayout } from "../../selectors/graphs.js";
 import { requireLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { resolveInputReference } from "../../selectors/resources.js";
+import { resolveEdgeRouteResource } from "../../selectors/edgeRoutes.js";
 import { assertMarkAvailable, resolveMarkId } from "../marks/shared.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 import { resolveMarkGraphicPlacement } from "../../materialization/graphicHierarchy.js";
@@ -27,16 +28,19 @@ export const materializeGraphPlot = /* @__PURE__ */ closedAction(
 function facade(editing) {
   const op = editing ? "editGraphPlot" : "createGraphPlot", styleOptions = ["origin", "clip", "nodes", "edges", "labels"];
   return closedAction({ op, description: `${editing ? "Edit" : "Create"} a resource-backed graph plot.` },
-    [editing ? "target" : "id", "layout", ...styleOptions], function (args = {}) {
+    [editing ? "target" : "id", "layout", "routes", ...styleOptions], function (args = {}) {
       if (Object.values(args).some(value => value === null || value === undefined)) throw new TypeError("Graph plot arguments cannot contain null or undefined.");
       if (editing && !Object.keys(args).some(key => key !== "target")) throw new TypeError("Graph plot edits require a nonempty patch.");
       const previous = editing ? resolveEligibleLayer(this, { target: args.target, predicate: layer => layer.mark.type === "graph", label: op }) : undefined;
       const id = previous?.id ?? resolveMarkId(this, args.id, { defaultId: "graphPlot", label: "Graph plot id", markType: "graph", operation: op });
       if (!editing) assertMarkAvailable(this, id);
       const layout = resolveGraphPlotLayout(this, args.layout ?? previous?.graphBinding.layout.id), graph = resolveInputReference(this, layout.inputs[0]);
+      const routeId = Object.hasOwn(args, "routes") ? args.routes : previous?.graphBinding.routes?.id;
+      const routes = routeId === undefined || routeId === false ? undefined : resolveEdgeRouteResource(this, routeId);
       const normalized = normalizeGraphPlot(Object.fromEntries(styleOptions.filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]])), graph,
         previous === undefined ? undefined : this.markConfigs[id].graphPlot, previous?.graphLabels);
-      const layer = { ...previous, id, mark: { type: "graph" }, graphBinding: { layout: { kind: "layout", id: layout.id, revision: layout.revision } }, graphLabels: normalized.labels };
+      const layer = { ...previous, id, mark: { type: "graph" }, graphBinding: { layout: { kind: "layout", id: layout.id, revision: layout.revision },
+        ...(routes === undefined ? {} : { routes: { kind: "edge-route", id: routes.id, revision: routes.revision } }) }, graphLabels: normalized.labels };
       resolveGraphPlot(this, layer, normalized.config);
       return this.editSemantic({ property: `layer[${id}].mark.type`, value: "graph" })
         .editSemantic({ property: `layer[${id}].graphBinding`, value: layer.graphBinding })

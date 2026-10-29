@@ -1,0 +1,4 @@
+export interface EdgeRouteResult {
+  readonly complete: true; readonly routes: readonly EdgeRouteVector[];
+  readonly diagnostics: Readonly<Record<string, unknown>> & { readonly work: number; readonly candidatePairs: number; readonly peakSamples: number };
+}

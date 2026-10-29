@@ -80,6 +80,7 @@ function unique(values) {
 }
 
 function operationAndSubject(name) {
+  if (name === "bundleGraphEdges") return { operation: "layout", subject: "GraphEdges" };
   if (name === "facet") return { operation: "compose", subject: "facet" };
   if (name === "facetGrid") return { operation: "compose", subject: "FacetGrid" };
   if (name === "repeatCharts") return { operation: "compose", subject: "RepeatedCharts" };
@@ -186,6 +187,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["bundleGraphEdges", "editEdgeRoute"].includes(action.name)) return {
+    prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
+    idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
+  };
   if (action.name === "createCalendarLayout") return { prerequisites: ["materialized civil-day observations"], owns: ["calendar layout resource"], idOptions: ["id", "data"] };
   if (["createCalendarPlot", "editCalendarPlot"].includes(action.name)) return {
     prerequisites: ["stored calendar layout", "Canvas"], owns: ["calendar mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
