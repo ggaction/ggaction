@@ -1,6 +1,6 @@
 {
   "baseCommit": "beb751bf9",
-  "sourceCommit": null,
+  "sourceCommit": "b9bee2b48",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "STEP060 C1 categorical legend selection; current-frame samples/labels to native immutable selection and linked closure",
   "sourceHashes": {
@@ -83,7 +83,13 @@
         390,
         768,
         1440
-      ]
+      ],
+      "sourcePinned": {
+        "passed": 47,
+        "builtPages": 170,
+        "selectiveLLM": 1454,
+        "browserReuse": "Unchanged interaction page body and executable snippet; only source revision labels regenerated after source commit."
+      }
     },
     "installed": [
       {
@@ -467,6 +473,22 @@
     {
       "path": "legend-selection-source-final.log.gz",
       "sha256": "b6f2c3fd4a3c8d02105f12c7fd6702ee7ef83f674d2356cdbe088cb1a1074971"
+    },
+    {
+      "path": "legend-selection-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "legend-selection-pinned-docs.log.gz",
+      "sha256": "e94c152afdb9cee5fdce9b49d4cd8095af7725eeac4237fbe28a50c482ba52ce"
+    },
+    {
+      "path": "legend-selection-pinned-build.log.gz",
+      "sha256": "611d353c22a96e706d38ff83772391e9f6a05c163c864f4cf09d21e48973cc93"
+    },
+    {
+      "path": "legend-selection-pinned-built.log.gz",
+      "sha256": "d1c4b02e7686ee74b725bff3bd19b5ae06ab60c7243dcb0cff15a7662cc622f0"
     }
   ]
 }

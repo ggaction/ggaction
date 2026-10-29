@@ -165,3 +165,7 @@ capture/cancel, native selection closure, linked filtering, codec 및 immutable 
 기존 canonical floor는 낮추지 않았다. 같은 최종 archive `c6d8c8cb`로 Node20/22/24 각각 runtime3,
 strict TS와5bundle이 통과했고 Node22 설치 문서 예제는 클릭 결과a/c를 확인했다. 문서47 최초46통과의
 원인은 마지막 소스 수정 뒤 stale provenance였으며 재생성 후47/47이다. 전수 coverage·전체060/077은 미완료다.
+
+Source `b9bee2b48` 고정 뒤 provenance→machine→LLM, owning docs47, built170pages/1454LLM을
+통과했다. Runtime/타입과 exact tar는 동일하고 source revision label만 바뀌므로 기존 네 폭 Axe0
+화면 증거를 재사용한다. Final source-free snippet은 같은 최종 tar `c6d8c8cb`로 실행했다.

@@ -11,7 +11,7 @@ The comparison baseline below is the older release used by the migration notes.
 | --- | --- |
 | Contract fingerprint | `sha256:a4f60d37d56ea8e01effc9e26ef96a914a4993e87899a513c4815600ab78b5f5` |
 | Example and dataset source | `3a9901e925b04d640f064ff7e06d434011a4d858` |
-| Runtime source commit | `current` |
+| Runtime source commit | `b9bee2b487f7ec364183a41c5847ca2a88790e48` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 345 |
 | Declared actions in that release | 234 |
