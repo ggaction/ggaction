@@ -1184,6 +1184,10 @@
       {
         "id": "geometry/topology-atomic-failure",
         "statements": 9
+      },
+      {
+        "id": "geometry/declared-winding-offline-renderers",
+        "statements": 17
       }
     ]
   },

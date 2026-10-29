@@ -1351,6 +1351,10 @@ function buildDirectDataResources(factors) {
     .createGeometryData({ id: "directGeoLines", format: "geojson", coordinateKind: "planar", values: { type: "LineString", coordinates: rows.map(row => [row.x, row.positive]) } })
     .createGeoLineMark({ id: "directGeoLinesMark", coordinate: "directGeoPlane", geometry: "directGeoLines", strokeWidth: 1 })
     .editGeoLineMark({ target: "directGeoLinesMark", opacity: .6 })
+    .createGeometryData({ id: "directGeoWinding", format: "geojson", coordinateKind: "geographic", polygonWinding: factors.includeEmpty ? "right-hand" : "left-hand", featureKey: "id",
+      values: { type: "FeatureCollection", features: rows.map((row, index) => ({ type: "Feature", id: row.id,
+        properties: { category: row.category }, geometry: { type: "Point", coordinates: [index % 180, row.positive % 80] } })) } })
+    .editGeometryData({ target: "directGeoWinding", polygonWinding: factors.includeEmpty ? "left-hand" : "right-hand" })
     .createProjection({ id: "directGeoSphere", type: "equirectangular", translatePx: [200, 150] })
     .createCoordinate({ id: "directGeoGridFrame", type: "geo", projection: "directGeoSphere" })
     .createGraticule({ id: "directGeoGrid", coordinate: "directGeoGridFrame", extentDeg: [[-40, -20], [40, 20]], stepDeg: [20, 20] })

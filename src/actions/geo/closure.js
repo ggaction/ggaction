@@ -25,7 +25,7 @@ export function writeGeometryResource(program, geometry) {
     if (key(previous) === key(geometry) || !previous.inputs.some(ref => revised.has(key(ref)))) continue;
     let resource;
     if (previous.kind === "projection") resource = createProjectionResource({ id: previous.id, revision: previous.revision + 1,
-      options: previous.options, geometry: input(previous.inputs[0]) });
+      options: previous.options, geometry: input(previous.inputs[0]), input });
     else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ id: previous.id, revision: previous.revision + 1, definition,

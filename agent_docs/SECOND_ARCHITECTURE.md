@@ -3940,3 +3940,12 @@ archive의 집중 재검증을 별도 보존한다. Package는1,048entries,
 Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
 1,048 / 1,488,000 / 6,757,000이다. 최종 Node22 archive의 packed1,482,864bytes와
 동일 archive Node20/22/24 설치 증거는 qualification 기록이 소유한다.
+
+
+명시 geographic polygon winding은 기존 모듈을 확장하며 source resource의
+options 한 곳만 정책을 소유한다. Join/LOD의 exact input traversal과 transient
+projection/centroid 변환은 기존 materialization feature owner가 공유한다.
+retained source의 좌표/순서/hash와 기존 기본 right-hand 및 보완 영역은 유지한다.
+Node20/24 packed1,487,545bytes, Node22 packed1,483,856bytes,
+unpacked6,759,508bytes, entries1,048을 측정해 cap을1,489,000 / 6,761,000 /
+1,048로 갱신했다. 기존 unpacked cap 실패는 최초 증거로 보존한다.

@@ -151,6 +151,15 @@ test("calls every user-facing action directly from a generated scenario root", (
 
 test("retains direct action effects in final semantic and graphic state", () => {
   const resources = buildLifecycleRecipe("action-direct-data-resources");
+  const winding = semanticResource(resources, "resources", "directGeoWinding");
+  assert.equal(winding.options.polygonWinding, "right-hand");
+  assert.equal(winding.revision, 1);
+  assert.deepEqual(resources.trace.children.filter(node =>
+    (node.op === "createGeometryData" && node.args.id === winding.id) ||
+    (node.op === "editGeometryData" && node.args.target === winding.id))
+    .map(node => [node.op, node.args.polygonWinding]), [
+    ["createGeometryData", "left-hand"], ["editGeometryData", "right-hand"]
+  ]);
   const preparedSource = semanticResource(resources, "datasets", "unusedPreparedLifecycleSource");
   assert.deepEqual(preparedSource.values, [{ fixture: "prepared-source", value: 1 }]);
   assert.equal(preparedSource.sourceReceipt.sourceId, preparedSource.id);

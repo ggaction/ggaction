@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { chart } from "ggaction";
+import { chart, render } from "ggaction";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { renderToPNGBuffer } from "ggaction/png";
+import { renderToPDFBuffer } from "ggaction/pdf";
+import { renderToSVG } from "ggaction/svg";
 import { chart as basic } from "ggaction/basic";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { inspectProgram, comparePrograms } from "ggaction/inspection";
@@ -47,5 +51,26 @@ export const cases = [
     assert.throws(() => p.editGeometryData({ values: { type: "Topology", arcs: [], objects: { region: { type: "LineString", arcs: [0] } } } }));
     assert.equal(serializeProgram(p), saved);
     assert.deepEqual(resource(deserializeProgram(saved)).result, resource(p).result);
+  } },
+  { id: "geometry/declared-winding-offline-renderers", async run() {
+    const values = {type:"Feature",id:"region",properties:{},geometry:{type:"Polygon",coordinates:[
+      [[-20,-20],[-20,20],[20,20],[20,-20],[-20,-20]], [[-5,-5],[5,-5],[5,5],[-5,5],[-5,-5]]
+    ]}};
+    const p = chart().createCanvas({width:200,height:200,margin:0})
+      .createGeometryData({id:"places",format:"geojson",coordinateKind:"geographic",polygonWinding:"left-hand",featureKey:"id",values})
+      .createProjection({id:"map",type:"equirectangular",scalePx:180/Math.PI,translatePx:[100,100]})
+      .createCoordinate({type:"geo"}).createGeoShapeMark({fill:"red",strokeWidth:0});
+    const saved=serializeProgram(p), script=`import {readFileSync} from 'node:fs';import {deserializeProgram,serializeProgram} from 'ggaction/persistence';globalThis.fetch=()=>{throw Error('Network forbidden');};process.stdout.write(serializeProgram(deserializeProgram(readFileSync(0,'utf8'))));`;
+    const q=deserializeProgram(execFileSync(process.execPath,["--input-type=module","-e",script],{input:saved,encoding:"utf8",timeout:30000}));
+    assert.deepEqual(resource(q).result.source.values,values);
+    assert.equal(resource(q).options.polygonWinding,"left-hand");
+    const canvas=createCanvas(200,200), context=canvas.getContext("2d");render(q,context);
+    assert.deepEqual([...context.getImageData(110,100,1,1).data],[255,0,0,255]);
+    assert.deepEqual([...context.getImageData(100,100,1,1).data],[255,255,255,255]);
+    assert.match(renderToSVG(q),/fill-rule="evenodd"/);
+    const png=await renderToPNGBuffer(q), image=await loadImage(png.buffer);context.drawImage(image,0,0);
+    assert.deepEqual([...context.getImageData(110,100,1,1).data],[255,0,0,255]);
+    assert.ok((await renderToPDFBuffer(q)).buffer.length>0);
+    assert.throws(()=>p.editGeometryData({polygonWinding:"auto"}));assert.equal(serializeProgram(p),saved);
   } }
 ];

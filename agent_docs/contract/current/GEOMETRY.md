@@ -7,7 +7,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 
 ## `createGeometryData`
 
-- Signature: `createGeometryData({id,format,values,coordinateKind,featureKey?,topoObject?,limits?})`.
+- Signature: `createGeometryData({id,format,values,coordinateKind,featureKey?,topoObject?,limits?,polygonWinding?})`.
 - `id`, `format:geojson|topojson`, source `values`, and `coordinateKind:geographic|planar` are required.
   Geographic x/y means WGS84 longitude/latitude degrees; latitude is[-90,90], longitude remains finite
   and unwrapped. Planar values retain caller units. Additional coordinate dimensions remain in source
@@ -16,6 +16,11 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
   preserved. Null and empty geometries are nondrawable. Nonempty lines require at least2 positions;
   each ring requires at least4, consistent dimensions and exactly equal first/last positions. Rings are
   never closed or reoriented automatically. Polygon first ring is exterior and following rings are holes.
+  Optional geographic-only `polygonWinding:right-hand|left-hand` declares the source convention;
+  omission retains right-hand. Right-hand uses counterclockwise exteriors and clockwise holes,
+  left-hand the reverse. Deliberately opposite rings still select the complementary spherical area.
+  This option changes transient projection/centroid input only: retained values, normalized coordinates,
+  source hashes and feature keys remain unchanged. Planar sources reject an explicit polygonWinding.
   JSON foreign members remain in retained source. Optional bbox must be finite paired coordinates;
   declared bbox does not override actual coordinates. Geometry `crs` members are unsupported.
 - TopoJSON transforms apply delta accumulation to arc x/y before scale/translate. Unquantized arcs
@@ -50,13 +55,19 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 
 ## `editGeometryData`
 
-- Signature: `editGeometryData({target?,values?,coordinateKind?,topoObject?,limits?})`.
+- Signature: `editGeometryData({target?,values?,coordinateKind?,topoObject?,limits?,polygonWinding?})`.
 - target resolves explicit ID, current eligible geometry source, or one unique eligible source. Contours
   are ineligible. Empty edits, unknown keys and undefined values fail. Format and featureKey policy
   are immutable; create another resource when that policy must change.
 - Revision increments once, including same-value explicit edits. Keyed features retain logical keys
   through reorder/value changes. Generated keys survive options-only edits, while whole values replacement
   or changing the selected TopoJSON object allocates new keys without value-based correspondence.
+- `polygonWinding` edits preserve unspecified convention and refresh all dependent fitted projections,
+  marks, labels and annotations through the same exact-ref revision closure. Joins and active LOD
+  resolve the original source convention; inactive feature anchors retain their selected source's
+  convention. Generated geographic-radius disks use their own circle direction, including radius>90°.
+  Changing coordinateKind to planar drops an omitted previous winding option; an explicit planar
+  winding option still fails. Changing back to geographic uses the declared option or right-hand.
 - Limits patches retain unspecified previous limits. TopoJSON object omission preserves the stored
   object selection even when replacement values introduce other objects. Invalid source, keys, limits,
   target or existing consumer compatibility rejects the entire edit before primitive writes.
@@ -70,7 +81,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
 ### Value coverage — `editGeometryData`
 
 - ✅ Covered: retained keyed identity, new generated identity, object selection, immutable failure, removal, inspection, Full/Basic and corrupted offline restore.
-- Evidence: `test/unit/geo/geometry-resources.test.js`.
+- Evidence: `test/unit/geo/geometry-resources.test.js`, `test/unit/geo/polygon-winding.test.js`.
 
 ## `createGeoJoinData`
 

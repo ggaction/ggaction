@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Geographic geometry sources accept explicit `polygonWinding` for clockwise datasets while preserving original coordinates, spherical complements, fitted projections and feature anchors.
+
 - Add concrete `weighted-blend` graphics for bounded per-item linear-light crossfades. Preserve exact ordinary endpoints, clipped sources, retained fonts/images, scene identity and immutable codec state across Canvas, SVG, PNG and PDF.
 
 - Extend existing `createMarkLabels` and source-owned `createTextMark` to Full geographic features and graticules, preserving centroid anchors, typed feature identity, actual joined rows, detail representations, native Text styling and immutable revision closure.

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:ea5653abb03419d64f2fa73b1fa774e0ee5fe377d9a05b6e67d27662a918b5d3. Status: development. Runtime source: 57e37c94e5683ab175f2cf5e0f03da93311e362f. Release baseline: v0.0.13.
+Contract: sha256:b874bdb11ece76d821c982348cbe37fce608e29ed09b1c15c9d624a2d50ce7be. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/57e37c94e5683ab175f2cf5e0f03da93311e362f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/57e37c94e5683ab175f2cf5e0f03da93311e362f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -24258,9 +24258,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -24297,6 +24298,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -38271,10 +38273,14 @@ Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -40948,6 +40954,8 @@ Related types: [`GeoShapeMarkOptions`](./reference/types/#type-geoshapemarkoptio
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 
@@ -49436,12 +49444,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/57e37c94e5683ab175f2cf5e0f03da93311e362f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/57e37c94e5683ab175f2cf5e0f03da93311e362f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -52568,9 +52576,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ea5653abb03419d64f2fa73b1fa774e0ee5fe377d9a05b6e67d27662a918b5d3` |
+| Contract fingerprint | `sha256:b874bdb11ece76d821c982348cbe37fce608e29ed09b1c15c9d624a2d50ce7be` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `57e37c94e5683ab175f2cf5e0f03da93311e362f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 364 |
 | Declared actions in that release | 234 |
@@ -54553,6 +54561,14 @@ Keep geographic or planar shapes in an immutable resource with explicit feature
 identity. These Full `ggaction` actions prepare source geometry; creating a
 resource does not draw it. [Contours](./api/contours/) use the same resource kind
 with their own scalar-grid contract.
+
+Clockwise geographic datasets can declare `polygonWinding: "left-hand"` when creating
+or editing their geometry source. The default `"right-hand"` convention preserves existing
+counterclockwise exteriors and clockwise holes. This declaration preserves all source
+coordinates and hashes; projection, fit, feature centroids and labels share it. Reversing a
+ring relative to the declared convention still represents a spherical complement. Planar
+sources do not accept this option. Generated geographic-radius circles retain their own
+direction, including circles larger than a hemisphere.
 
 ## `createGeometryData`
 

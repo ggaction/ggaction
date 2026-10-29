@@ -67,11 +67,6 @@
       "type": "string"
     },
     {
-      "name": "coordinateKind",
-      "required": true,
-      "type": "\"geographic\" | \"planar\""
-    },
-    {
       "name": "featureKey",
       "required": false,
       "type": "GeometryFeatureKey | undefined"
@@ -80,6 +75,16 @@
       "name": "limits",
       "required": false,
       "type": "GeometryLimits | undefined"
+    },
+    {
+      "name": "coordinateKind",
+      "required": true,
+      "type": "\"geographic\" | \"planar\""
+    },
+    {
+      "name": "polygonWinding",
+      "required": false,
+      "type": "\"left-hand\" | \"right-hand\" | undefined"
     },
     {
       "name": "format",
@@ -103,7 +108,7 @@
     }
   ],
   "callPatterns": [
-    "createGeometryData({ id, coordinateKind, format, values, target?, featureKey?, limits?, topoObject? })"
+    "createGeometryData({ id, coordinateKind, format, values, target?, featureKey?, limits?, polygonWinding? })"
   ],
   "snippet": "program.createGeometryData({ id: \"geometry\", format: \"geojson\", coordinateKind: \"geographic\", featureKey: \"id\", values: { type: \"Feature\", id: \"place\", properties: {}, geometry: { type: \"Point\", coordinates: [12.6, 55.7] } } })",
   "errors": [],

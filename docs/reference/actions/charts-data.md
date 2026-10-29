@@ -5486,9 +5486,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -5529,6 +5530,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 </details>
 

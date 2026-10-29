@@ -505,6 +505,10 @@
       },
       {
         "type": "file",
+        "path": "browser/geo-winding.browser.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/realistic-geographic-annotations.test.js"
       },
       {

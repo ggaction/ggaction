@@ -80,10 +80,15 @@
       "name": "limits",
       "required": false,
       "type": "GeometryLimits | undefined"
+    },
+    {
+      "name": "polygonWinding",
+      "required": false,
+      "type": "\"left-hand\" | \"right-hand\" | undefined"
     }
   ],
   "callPatterns": [
-    "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })"
+    "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits?, polygonWinding? })"
   ],
   "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
   "errors": [],

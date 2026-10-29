@@ -1,3 +1,4 @@
+import { normalizePolygonWinding } from "./options.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
@@ -5,7 +6,7 @@ import { MAX_PATH_COMMANDS } from "../pathTopology.js";
 import { createGeometryBudget, snapshotGeometryJSON } from "./input.js";
 import { normalizeGeometry } from "./geometry.js";
 import { normalizeProjectionOptions, projectionTuple, longitudeDegrees } from "./projectionOptions.js";
-import { buildProjectionMath, streamGeometryMath, sphericalMidpoint } from "./projectionMath.js";
+import { buildProjectionMath, streamGeometryMath, sphericalMidpoint, orientGeometryRingsMath } from "./projectionMath.js";
 import { createProjectionKernel } from "./projections.js";
 
 function antipodal(a, b) {
@@ -61,9 +62,10 @@ function leaves(geometry) {
 
 export function projectGeometry(geometry, projectionInput, input = {}) {
   ownRecord(input, "Geographic stream options");
-  rejectUnknownProperties(input, ["coordinateKind", "interpolation", "routeHint", "maxPoints"], "geographic stream");
+  rejectUnknownProperties(input, ["coordinateKind", "interpolation", "routeHint", "maxPoints", "polygonWinding"], "geographic stream");
   const options = normalizeProjectionOptions(projectionInput), coordinateKind = input.coordinateKind;
   if (!["geographic", "planar"].includes(coordinateKind) || (coordinateKind === "planar") !== (options.type === "identity")) throw new TypeError("Geometry coordinateKind and projection type are incompatible.");
+  const polygonWinding = normalizePolygonWinding(input);
   const interpolation = Object.hasOwn(input, "interpolation") ? input.interpolation : "source-segment";
   if (!["source-segment", "great-circle"].includes(interpolation) || coordinateKind === "planar" && interpolation !== "source-segment") throw new TypeError("Geometry interpolation is incompatible with its coordinate kind.");
   const maxPoints = Object.hasOwn(input, "maxPoints") ? input.maxPoints : MAX_PATH_COMMANDS;
@@ -96,8 +98,11 @@ export function projectGeometry(geometry, projectionInput, input = {}) {
     if (g.type === "LineString") prepared = { type: g.type, coordinates: lineCoordinates(g.coordinates, settings, kernel, budget, countPrepared) };
     else if (g.type === "Polygon") prepared = { type: g.type, coordinates: g.coordinates.map(points => {
       const ring = lineCoordinates(points, settings, kernel, budget, countPrepared);
-      return coordinateKind === "geographic" ? [...ring].reverse() : ring;
+      return ring;
     }) };
+    if (g.type === "Polygon" && coordinateKind === "geographic") prepared = {
+      ...prepared, coordinates: orientGeometryRingsMath(prepared.coordinates, true, polygonWinding)
+    };
     if (g.type === "Point") {
       const projected = kernel.forward(g.coordinates.slice(0, 2));
       if (projected.reason === "non-finite-projection") throw new RangeError("Geographic point projection overflows.");
