@@ -30,6 +30,10 @@
     "packageArtifact": {
       "tests": 7,
       "pass": 7
+    },
+    "sourceDocs": {
+      "tests": 197,
+      "pass": 197
     }
   },
   "package": {
@@ -100,6 +104,23 @@
     {
       "file": "topology-package-size-24.json.gz",
       "sha256": "53f939049adc2be790a422bab732c736457319faaa584cf805eb2b3e8f1303a7"
+    },
+    {
+      "file": "topology-docs.log.gz",
+      "sha256": "d3f82a09ebf04a4d2c4e98f9bfa8efa72aa2546cd940dd3e0c9cd110d16d436b"
+    },
+    {
+      "file": "topology-provenance.log.gz",
+      "sha256": "9b35b403ed4658b37822e9eb06482a5d9bfbdb5488a669f984c2fa1b14ad45e5"
+    },
+    {
+      "file": "topology-machine.log.gz",
+      "sha256": "f92b6883c2ffb0f111f564631c70578123a0cc8d279044c43faf9e1d83a1d6c8"
+    },
+    {
+      "file": "topology-llms.log.gz",
+      "sha256": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc"
     }
-  ]
+  ],
+  "sourceCommit": "771d7e2dc"
 }
