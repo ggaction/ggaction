@@ -440,5 +440,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button."
+  },
+  {
+    "id": "interaction-hierarchy-focus",
+    "file": "api/interaction.md",
+    "contains": "const focusSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view."
   }
 ]

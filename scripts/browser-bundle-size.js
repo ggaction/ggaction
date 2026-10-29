@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 378_400, // Shared filter projection owners: Node20 measured 378,363; editors remain Full-only.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
-  "ggaction/interaction": 112_000 // Context host requests: Node20 measured 111,970.
+  "ggaction/interaction": 112_100 // Native partition focus command: Node20 measured 112,019.
 });
 
 function minimalBrowserSource(specifier) {

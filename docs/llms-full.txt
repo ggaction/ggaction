@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:42d0fb6f2d260d37bb5c4cd2c6c4c4504f33b9c4e82e18a3761478c259da726a. Status: development. Runtime source: 176c767233d1b8d1d7946dbdc9137affa32c93a0. Release baseline: v0.0.13.
+Contract: sha256:9997ff34b72d398245a8ac67dc69809bbef28ca2e89cfab573976e193b7578be. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/176c767233d1b8d1d7946dbdc9137affa32c93a0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/176c767233d1b8d1d7946dbdc9137affa32c93a0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11428,6 +11428,62 @@ A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using
 current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
 host decides which commands are applicable. It does not infer a focused item or menu policy. Without a
 context binding, the mounted surface keeps its normal browser menu.
+
+## Navigate a partition view from host controls
+
+Send `focusHierarchy` with a typed node key or grouped path. `focus:null` returns to the current root.
+The native partition view keeps its hierarchy values, layout and logical selection identities. Hidden
+selections follow the configured native and session pruning policies. The host owns navigation controls
+and can display the breadcrumb keys returned by inspection.
+
+This browser module expects `<canvas id="chart" aria-label="Hierarchy partition"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems, inspectProgram } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const nav = document.createElement("nav");
+nav.setAttribute("aria-label", "Partition navigation");
+nav.innerHTML = '<button id="focus-root">All groups</button> <button id="focus-a">Group A</button> <output id="focus-trail" aria-live="polite"></output>';
+canvas.before(nav);
+const program = chart().createCanvas({ width: 600, height: 400 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "root", parent: null }, { id: "A", parent: "root" },
+    { id: "A1", parent: "A", amount: 2 }, { id: "A2", parent: "A", amount: 4 },
+    { id: "B", parent: "root", amount: 4 }
+  ] })
+  .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "amount" })
+  .layoutHierarchy({ id: "partition-layout", method: "partition" })
+  .createPartitionPlot({ id: "partition", labels: {} });
+const focusSession = createInteractionSession({ program, bindings: [] });
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const view = inspectProgram(current).views[0].partition;
+  const names = new Map(getMarkItems(current, { target: "partition" }).map(item => [item.fields.nodeKey, item.fields.id]));
+  nav.querySelector("output").textContent = [...view.breadcrumbKeys, view.focusKey].map(key => names.get(key)).join(" / ");
+};
+const focusA = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: { key: "A" } }, origin: "user" });
+const focusRoot = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null }, origin: "user" });
+nav.querySelector("#focus-a").addEventListener("click", focusA);
+nav.querySelector("#focus-root").addEventListener("click", focusRoot);
+const unsubscribe = focusSession.subscribe(event => {
+  if (event.type === "program" || ("phase" in event && event.phase === "commit")) draw(event.state.program);
+});
+draw(program);
+const disposeFocus = () => {
+  nav.querySelector("#focus-a").removeEventListener("click", focusA);
+  nav.querySelector("#focus-root").removeEventListener("click", focusRoot);
+  unsubscribe(); focusSession.destroy(); nav.remove();
+};
+```
+
+Native buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
+partition's explicit `{childPath,id}` target. This command does not change Tree or Treemap views, create
+an animation, or infer a focused keyboard item.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -34474,7 +34530,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -34688,6 +34744,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: InteractionFilterPayload;
 } | {
+  readonly type: 'focusHierarchy';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly focus: HierarchyNodeTarget | null };
+} | {
   readonly type: 'setVisibility';
   readonly target: InteractionTarget;
   readonly payload: InteractionVisibilityPayload;
@@ -34697,7 +34757,7 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -48336,12 +48396,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/176c767233d1b8d1d7946dbdc9137affa32c93a0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/176c767233d1b8d1d7946dbdc9137affa32c93a0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51392,9 +51452,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:42d0fb6f2d260d37bb5c4cd2c6c4c4504f33b9c4e82e18a3761478c259da726a` |
+| Contract fingerprint | `sha256:9997ff34b72d398245a8ac67dc69809bbef28ca2e89cfab573976e193b7578be` |
 | Example and dataset source | `3a9901e925b04d640f064ff7e06d434011a4d858` |
-| Runtime source commit | `176c767233d1b8d1d7946dbdc9137affa32c93a0` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 347 |
 | Declared actions in that release | 234 |

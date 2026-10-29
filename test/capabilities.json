@@ -1278,6 +1278,10 @@
       {
         "type": "prefix",
         "path": "unit/selectors/"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-hierarchy-focus.test.js"
       }
     ],
     "selectors": [

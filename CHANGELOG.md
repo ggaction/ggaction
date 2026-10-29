@@ -4,6 +4,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
 - Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.

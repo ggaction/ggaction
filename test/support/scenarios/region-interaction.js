@@ -51,6 +51,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertLinkedFilter(source);
   assertLegendSelection(source);
   assertLegendVisibility(source);
+  assertHierarchyFocusSource(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -185,4 +186,24 @@ function assertLegendVisibility(source) {
     session.destroy(); assert.equal(listeners.size, 0);
   }
   assert.equal(serializeProgram(p), before);
+}
+
+
+function assertHierarchyFocusSource(rows, recipe) {
+  let p = chart().createCanvas({ width: 500, height: 400, margin: 20 }).createData({ id: "focus-rows", keyField: "key", values: rows })
+    .createComputedData({ id: "counts", source: "focus-rows", as: "unitWeight", expression: { version: 2, registry: "standard@1", root: { type: "literal", value: 1 } } })
+    .createHierarchyData({ id: "h", groupFields: recipe === "observations" ? ["category", "key"] : ["category"], value: "unitWeight" })
+    .layoutHierarchy({ id: "layout", method: "partition" });
+  if (recipe === "series") p = p.createCoordinate({ id: "polar", type: "polar" });
+  p = p.createPartitionPlot({ id: "focus", ...(recipe === "categories" ? { orientation: "vertical" } : {}), ...(recipe === "series" ? { coordinate: "polar", outerRadius: 150 } : {}) });
+  const before = serializeProgram(p), original = getMarkItems(p, { target: "focus" }), category = rows[0].category;
+  const session = createInteractionSession({ program: p, bindings: [] });
+  session.dispatch({ type: "focusHierarchy", target: "focus", payload: { focus: { path: [category] } } });
+  const next = deserializeProgram(serializeProgram(session.getState().program)), visible = getMarkItems(next, { target: "focus" }).filter(item => item.visible);
+  assert.ok(visible.length); assert.ok(visible.every(item => item.fields.category === category));
+  assert.equal(visible[0].fields.value, rows.filter(row => row.category === category).length);
+  assert.ok(visible.every(item => item.rows.some(row => row.data === "focus-rows")));
+  session.dispatch({ type: "focusHierarchy", target: "focus", payload: { focus: null } });
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "focus" }).map(item => item.key), original.map(item => item.key));
+  assert.equal(serializeProgram(p), before); session.destroy();
 }

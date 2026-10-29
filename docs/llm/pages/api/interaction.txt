@@ -730,3 +730,59 @@ A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using
 current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
 host decides which commands are applicable. It does not infer a focused item or menu policy. Without a
 context binding, the mounted surface keeps its normal browser menu.
+
+## Navigate a partition view from host controls
+
+Send `focusHierarchy` with a typed node key or grouped path. `focus:null` returns to the current root.
+The native partition view keeps its hierarchy values, layout and logical selection identities. Hidden
+selections follow the configured native and session pruning policies. The host owns navigation controls
+and can display the breadcrumb keys returned by inspection.
+
+This browser module expects `<canvas id="chart" aria-label="Hierarchy partition"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems, inspectProgram } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const nav = document.createElement("nav");
+nav.setAttribute("aria-label", "Partition navigation");
+nav.innerHTML = '<button id="focus-root">All groups</button> <button id="focus-a">Group A</button> <output id="focus-trail" aria-live="polite"></output>';
+canvas.before(nav);
+const program = chart().createCanvas({ width: 600, height: 400 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "root", parent: null }, { id: "A", parent: "root" },
+    { id: "A1", parent: "A", amount: 2 }, { id: "A2", parent: "A", amount: 4 },
+    { id: "B", parent: "root", amount: 4 }
+  ] })
+  .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "amount" })
+  .layoutHierarchy({ id: "partition-layout", method: "partition" })
+  .createPartitionPlot({ id: "partition", labels: {} });
+const focusSession = createInteractionSession({ program, bindings: [] });
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const view = inspectProgram(current).views[0].partition;
+  const names = new Map(getMarkItems(current, { target: "partition" }).map(item => [item.fields.nodeKey, item.fields.id]));
+  nav.querySelector("output").textContent = [...view.breadcrumbKeys, view.focusKey].map(key => names.get(key)).join(" / ");
+};
+const focusA = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: { key: "A" } }, origin: "user" });
+const focusRoot = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null }, origin: "user" });
+nav.querySelector("#focus-a").addEventListener("click", focusA);
+nav.querySelector("#focus-root").addEventListener("click", focusRoot);
+const unsubscribe = focusSession.subscribe(event => {
+  if (event.type === "program" || ("phase" in event && event.phase === "commit")) draw(event.state.program);
+});
+draw(program);
+const disposeFocus = () => {
+  nav.querySelector("#focus-a").removeEventListener("click", focusA);
+  nav.querySelector("#focus-root").removeEventListener("click", focusRoot);
+  unsubscribe(); focusSession.destroy(); nav.remove();
+};
+```
+
+Native buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
+partition's explicit `{childPath,id}` target. This command does not change Tree or Treemap views, create
+an animation, or infer a focused keyboard item.

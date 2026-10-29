@@ -48,6 +48,14 @@ program.removeMarkVisibility();
 createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',scaleDomain:'visible-data',slop:0}]});
 session.dispatch({type:'setVisibility',target:'points',payload:{channel:'shape',values:['A'],visible:true,scaleDomain:'all-data'}});
 session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:{key:1}}});
+session.dispatch({type:'focusHierarchy',target:{childPath:['left'],id:'partition'},payload:{focus:{path:['A',2]}}});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null}});
+// @ts-expect-error focus is explicit and cannot be omitted
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{}});
+// @ts-expect-error the focus command does not edit styles or coordinate mappings
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null,rootVisible:false}});
+
 // @ts-expect-error visibility is Full-only
 basic().setMarkVisibility({channel:'color',values:['A'],visible:false,scaleDomain:'all-data'});
 // @ts-expect-error visibility does not accept null categories

@@ -10,6 +10,24 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/partition-host-focus", run() {
+    const rows = [{ id: "root", parent: null }, { id: 1, parent: "root" }, { id: "1", parent: 1, value: 2 }, { id: "other", parent: "root", value: 4 }];
+    const p = chart().createCanvas({ width: 500, height: 350 }).createData({ id: "rows", values: rows, keyField: "id" })
+      .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "layout", method: "partition" }).createPartitionPlot({ id: "partition" });
+    const source = serializeProgram(p), session = createInteractionSession({ program: p, bindings: [] }), events = [];
+    session.subscribe(event => events.push(event));
+    session.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: { key: 1 } } });
+    const focused = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(focused, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id), [1, "1"]);
+    assert.deepEqual(focused.graphicSpec, p.editPartitionPlot({ target: "partition", focus: { key: 1 } }).graphicSpec);
+    session.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null } });
+    assert.deepEqual(getMarkItems(session.getState().program, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id), rows.map(row => row.id));
+    assert.deepEqual(events.map(event => event.phase), ["commit", "settled", "commit", "settled"]);
+    assert.equal(serializeProgram(p), source); session.destroy();
+    const unsupported = createInteractionSession({ program: basic().createCanvas(), bindings: [] });
+    assert.throws(() => unsupported.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null } }), /editPartitionPlot/); unsupported.destroy();
+  } },
   { id: "interaction/context-host-request", run() {
     for (const factory of [chart, basic]) {
       const p = make(factory), original = serializeProgram(p), events = [], listeners = new Map();

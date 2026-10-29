@@ -11,7 +11,8 @@
 - [ ] continuous/interval legend 조작의 원 카드 후행 범위
 - [x] D: 기존 setParameter host controls와 context semantic targets
 - [ ] annotation anchor/offset 편집
-- [ ] node drag, partition focus/breadcrumb, geo navigation 및 keyboard
+- [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
+- [ ] node drag, geo navigation 및 일반 session keyboard/focus·coordinate morph
 - [ ] AT35/38/65/80 consumer matrix와 STEP074/077 전달
 
 [전체 승인](../AUTHORIZATION.json)의 남은 public API/저장/시각 결정 승인과 재질문 금지 지시를 재사용한다.
@@ -303,3 +304,50 @@ Source 고정 뒤 provenance와 owning docs47을 다시 기록한다. 전체 nor
 
 D source `176c76723` push 후 source-pinned provenance→machine→LLM, owning docs50 및
 built170pages/1458LLM을 통과했다. 최종 archive `5a1675aa`와 runtime/타입은 그대로다.
+
+## E1 partition focus 직접 명령 최소 계약
+
+기존 승인과 현재 `editPartitionPlot`의 focus 저장/selection/pruning/revision 계약을 재사용한다.
+`dispatch({type:"focusHierarchy",target,payload:{focus},transactionId?,origin?,causeTransactionId?})`는
+명시 partition owner와 기존 `HierarchyNodeTarget|null`만 받는다. null은 현재 root 복귀이며
+layout/paint/coordinate/pruning policy를 이 명령에서 수정하지 않는다. 다른 hierarchy mark 또는
+Basic은 native editor capability 경계에서 거부한다. Scoped child/facet-source는 기존 target 경로다.
+
+Native editor가 typed key/path 검증·stored focus·ancestor recovery·정확 concrete rematerialization을
+소유하고, session은 selection reconcile/linked closure·current frame·한 commit/settled를 재사용한다.
+새 focus binding·DOM breadcrumb widget·자동 keyboard focus를 만들지 않는다. Host는 기존
+inspection breadcrumb/navigation과 자신이 선언한 typed node targets로 버튼/키보드 명령을 만들며,
+자료에서 사라진 node는 native recovery 이후 새 inspection을 읽는다. Generic gesture/keyboard focus,
+coordinate morph frame/AT65 전체는 이 명령만으로 완료하지 않는다.
+
+
+### E1 검증 및 소비자 행렬
+
+기존 partition domain action으로만 focus를 변경하며 session이 별도 layout이나 persisted focus schema를
+만들지 않는다. Cartesian/polar, typed scalar와 grouped path, nested child 형제 보존, keep-hidden/drop,
+source 삭제 후 nearest surviving ancestor recovery 및 stale sampled frame 거부를 확인했다.
+기존 native action의 explicit-edit 의미를 그대로 유지하며 동일 focus의 임의 no-op 추정은 추가하지 않는다.
+
+| 소비자 | 검증 범위 |
+|---|---|
+| graph/semantic/trace | 기존 hierarchy/layout resource는 공유, native editor와 concrete equality, 원 program/input 불변, 오류 atomic |
+| selections / source revision | focus로 숨긴 key의 keep-hidden/drop, source 삭제 시 native ancestor 복구, root 재표시 후 동일 선택 |
+| scope / scene / codec | explicit child target, sibling reference 보존, 현재 generation 갱신, editable codec 복원 |
+| actual data | pinned5 datasets × observations/categories/series3, 원 row lineage·independent category counts·focus/root복원 |
+| host controls | canonical snippet의 button click/Enter/Space, breadcrumb 표시, host focus·한 commit/settled·dispose |
+| renderers | 기존 partition의 nativePNG/browserCanvas/browserSVG/vectorPDF 4backend와 independent literal sample 재검증 |
+| installed | 동일 archive의 Node20/22/24 runtime6·strict TS·5browser entries, source-free canonical snippet |
+| declarations/docs | closed payload, 기존 HierarchyNodeTarget 재사용, Full-only/native capability, Current·generated·built·responsive |
+
+최초 native fixture2/4의 required hierarchy/layout ID와 layout options 위치를 바로잡은 뒤4/4통과했다.
+최종 interaction 집중163/163과 변경 selection owner100/99.20/100, source/types/discovery28,
+realistic16, canonical browser1, partition renderer1을 통과했다. Native renderer 구현은 바뀌지 않았다.
+일반 focus 모델·navigation gesture·coordinate morph/reduced-motion/AT65 전체와 STEP074/077은 미완료다.
+전수 normal/coverage를 반복한 결과로 보고하지 않고, root의 전체 합산 검증 의무를 유지한다.
+
+[Qualification](hierarchy-focus-evidence/qualification.json)에 실패와 최종 증거를 구분했다.
+동일 archive `440fe2ae`로 Node20/22/24 각 runtime6·strict TS·5bundles 및 설치 공개 snippet을
+통과했다. Node20 packed1,416,610/unpacked6,444,435/988entries이며 unpacked만6,445,000으로
+올림했다. Interaction112,019gzip에112,100, search988,257bytes에988,300을 적용했다.
+최초 Node20 bundle 초과와 docs49/50을 보존하고, 보정 뒤 세 Node 전체 명령·owning search1 및
+source docs50을 확인했다. Built170pages/1458LLM·네 폭Axe0와 모바일 실제 화면을 확인했다.

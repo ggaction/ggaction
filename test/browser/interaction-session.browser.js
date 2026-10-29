@@ -507,3 +507,41 @@ test("native parameter inputs and host context actions preserve keyboard focus a
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("host partition buttons and breadcrumbs follow native focus with pointer and keyboard activation", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-hierarchy-focus"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Hierarchy partition"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/inspection", "inspection"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__focusSession=focusSession;window.__disposeFocus=disposeFocus;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__focusPhases = [];
+      window.__focusSession.subscribe(event => { if (event.phase) window.__focusPhases.push(event.phase);
+        if (event.phase === "commit") document.querySelector("#vector").innerHTML = renderToSVG(event.current); });
+    }, snippet.code);
+    assert.equal(await page.locator("output").textContent(), "root");
+    await page.getByRole("button", { name: "Group A", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.equal(await page.locator("output").textContent(), "root / A");
+    assert.deepEqual(await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); const state = window.__focusSession.getState();
+      return { ids: getMarkItems(state.program, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id),
+        revision: state.revision, focus: document.activeElement.id, vector: !!document.querySelector("#vector svg") };
+    }), { ids: ["A", "A1", "A2"], revision: 1, focus: "focus-a", vector: true });
+    await page.getByRole("button", { name: "All groups", exact: true }).focus(); await page.keyboard.press("Space");
+    assert.equal(await page.locator("output").textContent(), "root");
+    await page.getByRole("button", { name: "Group A", exact: true }).click();
+    assert.deepEqual(await page.evaluate(() => ({ revision: window.__focusSession.getState().revision, phases: window.__focusPhases, focus: document.activeElement.id })),
+      { revision: 3, phases: ["commit", "settled", "commit", "settled", "commit", "settled"], focus: "focus-a" });
+    await page.evaluate(() => window.__disposeFocus()); assert.equal(await page.getByRole("navigation").count(), 0);
+    assertNoBrowserErrors(errors, "partition host focus"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

@@ -2471,6 +2471,20 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 15,
+    "heading": "Navigate a partition view from host controls",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"partition\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.",
+    "sha256": "6fd1f87017b39ba22cb581f1fb8d8d76ab2c16bd939b1b1d4a755f724a1086cf",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

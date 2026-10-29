@@ -10,7 +10,7 @@ import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { interactionOptions as options } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
@@ -90,6 +90,10 @@ export function prepareInteractionEdit(program, command) {
       method = "orderCategories"; args = payload;
     }
     return { program: invoke(program, method, { ...args, ...address(target, true) }), affectedOwners };
+  }
+  if (command.type === "focusHierarchy") {
+    const payload = options(command.payload, ["focus"], [], "Hierarchy focus payload");
+    return { program: invoke(program, "editPartitionPlot", { ...payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "setVisibility") {
     const payload = options(command.payload, [], ["clear", "channel", "values", "visible", "scaleDomain"], "Visibility command payload");
