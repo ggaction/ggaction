@@ -2537,6 +2537,21 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 17,
+    "heading": "Move graph nodes with pointer or keyboard",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"network\"",
+      "target: \"layout\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.",
+    "sha256": "0e7878d2aa67896922db3ce5699c6bec6c04ce36fa6ed9b77ea277f6a7d80669",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

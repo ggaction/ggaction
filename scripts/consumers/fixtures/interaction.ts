@@ -114,3 +114,11 @@ session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payloa
 session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error viewport commands do not infer LOD zoom
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+
+program.editLayout({target:'layout',node:{key:[1,'a'],x:10,y:20}});
+session.dispatch({type:'moveNode',target:'layout',payload:{key:1,x:10,y:20}});
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
+// @ts-expect-error node edits cannot simultaneously replace options
+program.editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
+// @ts-expect-error node dragging has no selection binding
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',selection:'picked'}]});

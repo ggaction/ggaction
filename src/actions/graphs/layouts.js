@@ -34,7 +34,7 @@ function materializeLayouts(program, ids, routeIds = new Set()) {
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id) || routeIds.has(layer.graphBinding?.routes?.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
-import { normalizeGraphLayout, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
+import { normalizeGraphLayout, patchGraphNodePosition, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
 export const layoutGraph = /* @__PURE__ */ closedAction(
@@ -49,12 +49,20 @@ export const layoutGraph = /* @__PURE__ */ closedAction(
 
 export function editGraphLayout(program, args, previous) {
   if (Object.hasOwn(args, "order")) throw new TypeError("Graph layouts do not accept hierarchy order.");
-  ownRecord(args.options, "Graph layout options patch");
-  if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
+  const graph = resolveInputReference(program, previous.inputs[0]);
+  let intent, retainedCoordinates;
+  if (Object.hasOwn(args, "node")) {
+    if (Object.hasOwn(args, "options")) throw new TypeError("Node movement cannot also replace layout options.");
+    intent = patchGraphNodePosition(previous.options, graph.result.model.nodes.map(node => node.key), args.node);
+    retainedCoordinates = GRAPH_COORDINATE_FIELDS;
+  } else {
+    ownRecord(args.options, "Graph layout options patch");
+    if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
+    intent = { method: previous.options.method, options: { ...previous.options.options, ...args.options } };
+    retainedCoordinates = GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field));
+  }
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
-    graph: resolveInputReference(program, previous.inputs[0]),
-    retainedCoordinates: GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field)),
-    intent: { method: previous.options.method, options: { ...previous.options.options, ...args.options } } });
+    graph, retainedCoordinates, intent });
   const routes = prepareEdgeRouteRevisions(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate));
   previewGraphLayouts(program, routes.resources, [resource]);
   const next = withPreparedResourceResults(program, { property: `resource[layout:${resource.id}]`, value: resource }, routes.entries, args => program.editSemantic(args));

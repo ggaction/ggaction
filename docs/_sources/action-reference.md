@@ -3490,10 +3490,10 @@ Compute an explicit tree, treemap, or normalized partition layout from a named h
 ### `editLayout`
 
 ```javascript
-editLayout({ target?, order?, options? })
+editLayout({ target?, order?, options?, node? })
 ```
 
-Patch a stored hierarchy or graph layout and refresh its existing consumers. Full only.
+Patch a stored layout and refresh its existing consumers. A fixed/force graph layout also accepts `node:{key,x,y}` to move one current node while preserving dormant coordinates. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#editlayout)
 
 ### `createTreePlot`

@@ -57,3 +57,21 @@ export function graphLayoutKernelOptions(intent, { nodeKeys, retainedCoordinates
   }
   return options;
 }
+
+
+// A single-node edit retains dormant source coordinates. Replacing an authored
+// array continues to use the stricter current-membership rules in the action.
+export function patchGraphNodePosition(intent, nodeKeys, value) {
+  if (!["fixed", "force"].includes(intent.method)) throw new TypeError("Node movement requires a fixed or force graph layout.");
+  const [position] = coordinates([value], false), encoded = encodeRowKey(position.key);
+  if (!nodeKeys.includes(encoded)) throw new Error("Node movement requires a current graph node key.");
+  const field = intent.method === "fixed" ? "positions" : "pinned";
+  const replacement = field === "positions" ? position : { key: position.key, fx: position.x, fy: position.y };
+  let replaced = false;
+  const values = intent.options[field].map(previous => {
+    if (encodeRowKey(previous.key) !== encoded) return previous;
+    replaced = true; return replacement;
+  });
+  if (!replaced) values.push(replacement);
+  return normalizeGraphLayout(intent.method, { ...intent.options, [field]: values });
+}

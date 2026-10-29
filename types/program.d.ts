@@ -2277,8 +2277,9 @@ export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: H
   | { method: "treemap"; options: HierarchyTreemapOptions });
 /** The method remains fixed; supplied options patch its existing layout intent. */
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });
 export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
 export interface HierarchyNode {
   readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;

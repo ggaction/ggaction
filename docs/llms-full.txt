@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:2c18e9bfccea3bcf6b3e592a638c8e0cd9f64b1283b4ca86e276747713eff0ba. Status: development. Runtime source: c9d3bccca07570ed8c02453d349283cbb9adc5e1. Release baseline: v0.0.13.
+Contract: sha256:4fb29f6f5b8e69156d461867c0bd3939b2fcf41294bd1846669167c3e405feb0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c9d3bccca07570ed8c02453d349283cbb9adc5e1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c9d3bccca07570ed8c02453d349283cbb9adc5e1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11544,6 +11544,61 @@ For a projection in a composed child, use `{childPath,id}`. The nonempty patch a
 transform fields above; it does not change projection type, clipping, geometry or level of detail.
 Native buttons keep focus and their usual keyboard behavior. This direct command does not install
 pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
+
+## Move graph nodes with pointer or keyboard
+
+Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot origin determine the
+coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
+once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
+solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+
+This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="node-right">Move first node right</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 0 })
+  .createData({ id: "nodes", keyField: "id", values: [{ id: "first", group: "pair" }, { id: "second", group: "pair" }] })
+  .createInferredGraphData({ id: "graph", nodeKey: "id", ruleId: "pair", rule: "group", options: { fields: ["group"] } })
+  .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "first", x: 70, y: 90 }, { key: "second", x: 210, y: 160 }] } })
+  .createGraphPlot({ id: "network", origin: [0, 0], nodes: { radius: 12 }, labels: false });
+const nodeSession = createInteractionSession({ program, bindings: [{ type: "moveNode", target: "network" }] });
+const first = current => getMarkItems(current, { target: "network" }).find(item => item.fields.kind === "node" && item.fields.key === "first");
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const { x, y } = first(current).properties;
+  controls.querySelector("output").textContent = `First node: ${x}, ${y}`;
+};
+const moveRight = () => {
+  const { x, y } = first(nodeSession.getState().program).properties;
+  nodeSession.dispatch({ type: "moveNode", target: "layout", payload: { key: "first", x: x + 20, y }, origin: "user" });
+};
+controls.querySelector("button").addEventListener("click", moveRight);
+const unsubscribe = nodeSession.subscribe(event => {
+  if (event.type === "program" || "phase" in event) draw(event.state.previewProgram ?? event.state.program);
+});
+draw(program);
+const unmount = nodeSession.mount(canvas);
+const disposeNodeControls = () => {
+  controls.querySelector("button").removeEventListener("click", moveRight);
+  unsubscribe(); unmount(); nodeSession.destroy(); controls.remove();
+};
+```
+
+The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
+flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
+program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
+when delivering external frames. General keyboard item navigation, unpin controls and history are not
+installed by this binding.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -23751,16 +23806,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `node` | Optional / branch-dependent | `GraphPosition \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
 | `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<GraphFixedOptions> \| ... 4 more ... \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLayout({ target?, order?, options? })
+editLayout({ target?, order?, options?, node? })
 ```
 
-Patch a stored hierarchy or graph layout and refresh its existing consumers. Full only.
+Patch a stored layout and refresh its existing consumers. A fixed/force graph layout also accepts `node:{key,x,y}` to move one current node while preserving dormant coordinates. Full only.
 [Hierarchy resources and plots](./api/hierarchy/#editlayout)
 
 ## `createTreePlot`
@@ -35117,7 +35173,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -35199,6 +35255,8 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
+/** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
+export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -35255,7 +35313,7 @@ export interface LinkedSelectionState {
 }
 export interface InteractionState {
   readonly program: InteractionProgram;
-  /** Separate transient selection rendering. Null outside an active preview. */
+  /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
@@ -35337,6 +35395,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: { readonly focus: HierarchyNodeTarget | null };
 } | {
+  readonly type: 'moveNode';
+  readonly target: InteractionTarget;
+  readonly payload: GraphPosition;
+} | {
   readonly type: 'setViewport';
   readonly target: InteractionTarget;
   readonly payload: InteractionViewportPayload;
@@ -35350,7 +35412,7 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -35397,7 +35459,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -41141,11 +41203,12 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });
 ```
 
-Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](./reference/types/#type-calendarlayoutpatch).
+Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](./reference/types/#type-calendarlayoutpatch) · [`GraphPosition`](./reference/types/#type-graphposition).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -49369,12 +49432,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c9d3bccca07570ed8c02453d349283cbb9adc5e1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c9d3bccca07570ed8c02453d349283cbb9adc5e1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -52425,9 +52488,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2c18e9bfccea3bcf6b3e592a638c8e0cd9f64b1283b4ca86e276747713eff0ba` |
+| Contract fingerprint | `sha256:4fb29f6f5b8e69156d461867c0bd3939b2fcf41294bd1846669167c3e405feb0` |
 | Example and dataset source | `0a217a83b217d228b6a17dc73e1d5979544acdcb` |
-| Runtime source commit | `c9d3bccca07570ed8c02453d349283cbb9adc5e1` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 359 |
 | Declared actions in that release | 234 |
@@ -53435,6 +53498,12 @@ Removing a mark keeps its reusable layout. Remove the layout before its hierarch
 Create [observed graph data and a layout](./api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](./tutorials/graphs/) uses the same program as the browser and renderer examples.
 
 A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
+
+Use `editLayout({ target: 'layout', node: { key: 'a', x: 80, y: 100 } })` to move one current node.
+A fixed layout changes that node's position; a force layout sets its pin and recomputes the native solver.
+Coordinates are layout-local. Other authored positions, including dormant source keys, remain stored.
+The node patch cannot be combined with `options` or `order` and does not apply to circular or flow layouts.
+For pointer and keyboard controls, see [node movement](./api/interaction/#move-graph-nodes-with-pointer-or-keyboard).
 
 ## createGraphPlot
 

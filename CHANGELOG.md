@@ -3,6 +3,8 @@
 All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
+- Added explicit graph node movement and captured pointer dragging with native fixed/force layout edits, typed identities, dormant-coordinate preservation and atomic previews.
+
 
 - Interaction viewport commands reuse named projection edits with absolute transforms and exact feature identity.
 - Interaction hierarchy-focus commands reuse native partition views and host navigation controls.

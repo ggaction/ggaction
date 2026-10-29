@@ -5,10 +5,11 @@ import { editHierarchyLayout } from "../hierarchy/resources.js";
 import { editGraphLayout } from "../graphs/layouts.js";
 
 export const editLayout = /* @__PURE__ */ closedAction(
-  { op: "editLayout", description: "Revise a stored layout and its consumers." }, ["target", "order", "options"], function (args = {}) {
+  { op: "editLayout", description: "Revise a stored layout and its consumers." }, ["target", "order", "options", "node"], function (args = {}) {
     const previous = resolveLayoutResource(this, args.target);
     if (Object.keys(args).every(key => key === "target")) throw new TypeError("Layout edits require a nonempty patch.");
     if (Object.values(args).some(value => value === undefined)) throw new TypeError("Layout edits cannot contain undefined; omission preserves intent.");
+    if (Object.hasOwn(args, "node") && (previous.inputs[0].kind !== "graph" || Object.hasOwn(args, "order"))) throw new TypeError("Node movement requires a graph layout and no hierarchy order.");
     if (previous.options.method === "calendar") return editCalendarLayout(this, args, previous);
     return previous.inputs[0].kind === "hierarchy" ? editHierarchyLayout(this, args, previous) : editGraphLayout(this, args, previous);
   });

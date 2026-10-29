@@ -5660,11 +5660,12 @@ Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focused
 
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });
 ```
 
-Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](../../../reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](../../../reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](../../../reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](../../../reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](../../../reference/types/#type-calendarlayoutpatch).
+Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](../../../reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](../../../reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](../../../reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](../../../reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](../../../reference/types/#type-calendarlayoutpatch) · [`GraphPosition`](../../../reference/types/#type-graphposition).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 

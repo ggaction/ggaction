@@ -12,7 +12,7 @@ import { storedGraphRouteGeometry } from "./routeGeometry.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { materializeFillItems } from "../fillPaint.js";
 
-export const graphItemKey = (layer, graph, role, key) => JSON.stringify([[], layer.id, role, [graph.id, key]]);
+import { graphItemKey } from "../../grammar/graph/itemIdentity.js";
 function originalKey(dataset, node, definition) {
   const row = dataset.values[node.sourceRows[0]], fields = definition.nodeKey;
   return Array.isArray(fields) ? fields.map(field => row[field]) : row[fields];

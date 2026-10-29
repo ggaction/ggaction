@@ -10,6 +10,26 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/node-movement", run() {
+    const p = chart().createCanvas({width:300,height:200,margin:0})
+      .createData({id:'nodes',keyField:'id',values:[{id:1,g:'a'},{id:'1',g:'a'}]})
+      .createInferredGraphData({id:'graph',nodeKey:'id',ruleId:'same',rule:'group',options:{fields:['g']}})
+      .layoutGraph({id:'layout',method:'fixed',options:{positions:[{key:1,x:40,y:50},{key:'1',x:150,y:100}]}})
+      .createGraphPlot({id:'network',origin:[0,0],labels:false});
+    const session=createInteractionSession({program:p,bindings:[{type:'moveNode',target:'network'}]}),listeners=new Map(),pending=new Map(),captures=new Set();let next=0;
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:300,height:200}),addEventListener:(key,fn)=>listeners.set(key,fn),removeEventListener:key=>listeners.delete(key),
+      setPointerCapture:id=>captures.add(id),releasePointerCapture:id=>captures.delete(id),hasPointerCapture:id=>captures.has(id),
+      requestAnimationFrame:fn=>(pending.set(++next,fn),next),cancelAnimationFrame:id=>pending.delete(id)};
+    session.mount(host);const phases=[];session.subscribe(event=>{if(event.phase)phases.push(event.phase)});
+    const fire=(type,x,y)=>listeners.get(type)({pointerId:1,pointerType:'mouse',clientX:x,clientY:y});
+    fire('pointerdown',40,50);fire('pointermove',80,90);const jobs=[...pending.values()];pending.clear();jobs.forEach(job=>job());
+    assert.equal(session.getState().program,p);session.dispatch({type:'inspect',point:{x:80,y:90},slop:0});assert.equal(session.getState().hit.target.role,'node');
+    fire('pointerup',80,90);const restored=deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(restored,{target:'network'}).filter(item=>item.fields.kind==='node').map(item=>[item.fields.key,item.properties.x,item.properties.y]),[[1,80,90],['1',150,100]]);
+    assert.equal(session.getState().revision,1);assert.deepEqual(phases,['preview','preview','commit','settled']);assert.equal(captures.size,0);assert.equal(pending.size,0);
+    session.dispatch({type:'moveNode',target:'layout',payload:{key:'1',x:170,y:120}});
+    assert.equal(session.getState().revision,2);session.destroy();assert.equal(listeners.size,0);
+  } },
   { id: "interaction/geographic-context", run() {
     const p = chart().createCanvas({ width: 300, height: 200, margin: 0 })
       .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {

@@ -1,18 +1,51 @@
 import assert from "node:assert/strict";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { DOMParser } from "@xmldom/xmldom";
+
+// This scaffold checks initial snippet execution. Browser tests own gesture,
+// focus and scheduling behavior; the scaffold never synthesizes those effects.
+function eventsFor(element) {
+  const events = new EventTarget();
+  for (const method of ["addEventListener", "removeEventListener", "dispatchEvent"]) element[method] = events[method].bind(events);
+  return element;
+}
+
+function controlElement(tag) {
+  const element = eventsFor(new DOMParser().parseFromString(`<${tag}></${tag}>`, "text/html").documentElement);
+  const decorated = new WeakSet([element]);
+  Object.defineProperty(element, "innerHTML", { set(value) {
+    const fragment = new DOMParser().parseFromString(`<${tag}>${value}</${tag}>`, "text/html").documentElement;
+    while (element.firstChild) element.removeChild(element.firstChild);
+    while (fragment.firstChild) element.appendChild(fragment.firstChild);
+  } });
+  element.querySelector = selector => {
+    assert.match(selector, /^(?:#[a-z][a-z0-9-]*|button|input|output)$/, "Undocumented control selector");
+    const found = [...element.getElementsByTagName(selector.startsWith("#") ? "*" : selector)]
+      .find(node => !selector.startsWith("#") || node.getAttribute("id") === selector.slice(1));
+    assert.ok(found, `Missing documented control: ${selector}`);
+    if (!decorated.has(found)) { eventsFor(found); decorated.add(found); }
+    return found;
+  };
+  element.remove = () => element.parentNode?.removeChild(element);
+  return element;
+}
 
 export function documentationEnvironment(example, data) {
   const canvas = createCanvas(1, 1);
-  const events = new EventTarget();
-  canvas.addEventListener = events.addEventListener.bind(events);
-  canvas.removeEventListener = events.removeEventListener.bind(events);
-  canvas.dispatchEvent = events.dispatchEvent.bind(events);
+  eventsFor(canvas);
+  canvas.style = {};
+  canvas.before = element => assert.ok(element.nodeType === 1, "Expected a documented control element");
+  canvas.setPointerCapture = canvas.releasePointerCapture = () => assert.fail("Capture requires a browser test");
+  canvas.ownerDocument = { defaultView: eventsFor({
+    requestAnimationFrame() { assert.fail("Animation frames require a browser test"); },
+    cancelAnimationFrame() { assert.fail("Animation frames require a browser test"); }
+  }) };
   canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: canvas.width, height: canvas.height });
   return { canvas,
     document: example.environment === "browser-module" ? {
       createElement(tag) {
-        assert.equal(tag, "canvas", "Undocumented element creation");
-        return createCanvas(1, 1);
+        assert.ok(["canvas", "div", "nav"].includes(tag), "Undocumented element creation");
+        return tag === "canvas" ? createCanvas(1, 1) : controlElement(tag);
       },
       querySelector(selector) {
         assert.ok(["#chart", "canvas"].includes(selector), `Undocumented Canvas selector: ${selector}`);

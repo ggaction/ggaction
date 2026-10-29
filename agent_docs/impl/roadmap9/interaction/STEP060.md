@@ -13,7 +13,8 @@
 - [ ] annotation anchor/offset 편집
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
-- [ ] node drag, geo navigation 및 일반 session keyboard/focus·coordinate morph
+- [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
+- [ ] geo pointer navigation 및 일반 session keyboard/focus·coordinate morph
 - [ ] AT35/38/65/80 consumer matrix와 STEP074/077 전달
 
 [전체 승인](../AUTHORIZATION.json)의 남은 public API/저장/시각 결정 승인과 재질문 금지 지시를 재사용한다.
@@ -420,3 +421,42 @@ annotation, 일반 focus/history/coordinate morph 및 전체060/074/077은 계�
 
 E2 source `c9d3bccca`를 push한 뒤 provenance를 고정해 docs50과 built172pages/1509LLM을
 다시 통과했다. Runtime·타입·동일 최종 tar와 시각입력은 그대로라 네 폭Axe/화면을 재사용한다.
+
+## E3 node position 및 실제 drag 최소 계약
+
+전체 승인을 재사용하고 원안 `moveNode` 이름을 유지한다. 직접 명령 target은 명시 graph layout ID,
+payload는 `GraphPosition{key:RowKey,x:number,y:number}`다. 기존 `editLayout({target,node:{key,x,y}})`로
+위임하여 fixed의 해당 positions 또는 force의 해당 pinned 항목을 추가/수정한다. `node`는 options/order와
+상호배타이며 새 method/schema/solver를 만들지 않는다. 현재 node만 이동할 수 있고 dormant 좌표·pins를
+보존하여 source 복귀의 기존 의미를 유지한다. Circular/flow/hierarchy/calendar는 의미 없는 이동을 거부한다.
+
+`{type:"moveNode",target:GraphPlotTarget}` pointer binding은 실제 node hit만 적용하고 stored layout binding을
+읽는다. Layout 좌표는 CSS→root→child의 명시 변환 후 displacement로 구하며 최초 pointer offset을 유지한다.
+GraphPlot origin은 명시값이어야 한다(auto centering이 pointer 추종을 바꾸는 숨은 정책을 만들지 않는다).
+Committed frame만 시작점으로 받아 sampled topology/좌표를 추정하지 않는다. 기존 capture reducer의3px threshold,
+RAF coalescing, 같은 immutable baseline preview, pointerup 한 번commit, Escape/cancel/lostcapture/blur/update/teardown
+복구를 재사용한다. Force는 native deterministic recomputation과 pin을 사용하므로 다른 node도 native solver에 따라
+움직인다. General history/keyboard focus·pin release·auto-origin drag는 후행 의무로 명시하고 미지원 옵션은 거부한다.
+
+
+### E3 검증 체크포인트
+
+집중13, shared interaction coverage198, native graph/facet closure119 및 source/type/discovery/package 계약60을
+통과했다. 변경8owners의 lines/functions는100이고 branch는92.11–100이며 기존 critical floor를 유지한다.
+고정5datasets×3recipes에서 scalar/tuple key 모두 실행하여 새 node/key/key[]/x/y option paths의 실증을 남겼다.
+Force12iterations의 exact pin·이웃 재계산·codec deterministic replay, dormant 좌표 보존, route revision과
+edge identity, 중첩 child/negative CSS scale,8취소경로, sampled geometry 거부와 실패 원자성을 포함한다.
+
+Canonical 문서 예제의 실제 Chromium mouse/touch/Enter·Escape와 Canvas/SVG current geometry를 검증했다.
+기존 GraphPlot PNG/PDF/public15와 같은 tar4d4fcf8f의3Node 각각8runtime·strictTS·5bundles,
+설치된 공개 예제의 pointer/keyboard/cleanup도 통과했다. Native renderer owner는 바꾸지 않았다.
+Node20 최대 package1026entries/1,461,423packed/6,647,540unpacked 및 Full716,325,
+interaction112,676gzip에 최소 cap1,462,000/6,648,000/716,400/112,700을 적용했다.
+
+Docs 최초196/202에서 search cap2건과 기존 Canvas-only scaffold의 host controls4건이 실패했다.
+기존 XML parser를 이용한 제한된 초기실행 scaffold를 보완하되 gesture/RAF/focus는 실제 browser의 책임으로
+유지했다. 최종202/202, built172pages/1509LLM 및320/390/768/1440px overflow0/Axe0을 통과했다.
+[정확 archive·명령·원본 실패 로그](node-movement-evidence/qualification.json)를 보존한다.
+전수 normal/coverage나 전체 installed matrix는 주장하지 않는다. Geo representationKeys session 결합,
+annotation 편집, pointer pan/pinch, camera/LOD, 일반 keyboard focus/history, pin 해제/auto-origin 정책과
+전체060/074/077 인수는 계속 후행 의무다.
