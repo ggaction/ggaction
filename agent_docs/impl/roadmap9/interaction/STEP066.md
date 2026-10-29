@@ -4,9 +4,9 @@
 
 - [x] 원 카드066/067, interaction 계약 및 기존 session/asset preparation owner 확인
 - [x] 전체 승인 remainingApproval 재사용, 부모와 최소 경계 확인
-- [ ] A: candidate asset 준비·네 tag·취소·원자 commit·host lease 수명
-- [ ] 직접 renderer handles·100회 lifecycle·실제 browser·설치 소비자 검증
-- [ ] 타입·Current·공개 문서·증거 동기화
+- [x] A: candidate asset 준비·네 tag·취소·원자 commit·host lease 수명
+- [x] 직접 renderer handles·100회 lifecycle·실제 browser·설치 소비자 검증
+- [x] 타입·Current·공개 문서·증거 동기화
 - [ ] animation/layout worker/resize observer 통합 및 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
@@ -74,5 +74,6 @@ fragment hash 등록이며 changed owning49가 통과한다. 이후 source 변�
 1건을 재생성해49 owning을 다시 통과했다. 시각검토에서 정상 cleanup 예제가 expected-error로 표시된
 것을 발견해 try/finally로 정확히 고치고 동일 fragment browser를 재검증했다.
 
-Source-pinned build·화면·최종 SHA는 [qualification](preparation-evidence/qualification.json)의
-후속 evidence commit에서 확정한다. 전체 normal/source/installed sweep이나066/067전체 완료를 주장하지 않는다.
+Source `57a2463deb9fca9f37af08684939bf696892c003`에 고정한 owning49, built172pages/1531LLM이
+통과했다. 문서320/390/768/1440px에서 overflow0/Axe0이며320/1440px 화면을 직접 확인했다.
+[qualification](preparation-evidence/qualification.json)은 최초 실패와 최종 source·tar·명령·화면을 함께 보존한다. 전체 normal/source/installed sweep이나066/067전체 완료를 주장하지 않는다.

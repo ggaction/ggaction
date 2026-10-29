@@ -1,6 +1,6 @@
 {
   "parent": "68d09461d",
-  "sourceCommit": null,
+  "sourceCommit": "57a2463deb9fca9f37af08684939bf696892c003",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Atomic optional renderer asset preparation for native candidates, history and external replacement, four exact dependency tags, abortable leases and terminal runtime disposal. No authoring API, persisted state or renderer computation added.",
   "runtimeAndTypesFingerprint": "5f526a757f108cc73db38e1d47037208223258fcba18bbec8bebe40e9e90c029",
@@ -70,8 +70,16 @@
       "changedOwning": 49,
       "builtPages": 172,
       "llmArtifacts": 1531,
-      "finalPinnedBuild": "pending",
-      "manualInspection": "pending after corrected fragment badge"
+      "finalPinnedBuild": "passed: 172 pages and 1531 LLM artifacts",
+      "manualInspection": "320px and 1440px screenshots inspected: contextual fragment label, contained code, readable copy and navigation",
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "overflow": false
     },
     "installed": [
       {
@@ -317,6 +325,14 @@
       "sha256": "cc7b31642d8cc6d3425dc2adbc59e2fb88ce92e4fdff590589e1c82b65d07eb8"
     },
     {
+      "path": "session-preparation-build-pinned.log.gz",
+      "sha256": "bb9561d633b3793bb5cdd71f1b76066f28f09dcfdd3f0fbdb51679305e48a465"
+    },
+    {
+      "path": "session-preparation-built-pinned.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
       "path": "session-preparation-cap-recheck.log.gz",
       "sha256": "0af891451b742f7fc6a5e6a699ee2354b5c6b9d73354ea8e2a76badeff5093ea"
     },
@@ -365,6 +381,10 @@
       "sha256": "25683aa41d1caf9485eb10a29343c1c2f354a923499bacc2132fd7297138c2cc"
     },
     {
+      "path": "session-preparation-doc-browser-final.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
       "path": "session-preparation-doc-browser.log.gz",
       "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
     },
@@ -387,6 +407,10 @@
     {
       "path": "session-preparation-docs-generate.log.gz",
       "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "session-preparation-docs-pinned.log.gz",
+      "sha256": "991fc0ab4a35631629c96e5ea4c0497c664b53da5765d269689f35382565ba6e"
     },
     {
       "path": "session-preparation-docs-provenance.log.gz",
@@ -462,7 +486,7 @@
     },
     {
       "path": "session-preparation-qualify.py.gz",
-      "sha256": "c9d05a38c0b7056576c48da4503b3d078a0dc8727c22c4e3b1f1f5f258365cab"
+      "sha256": "e4757bb80f383bbdca2419b077e89967d80d0f553fcf27491a7b2f5538888d43"
     },
     {
       "path": "session-preparation-realistic-final.log.gz",
@@ -475,6 +499,22 @@
     {
       "path": "session-preparation-search.log.gz",
       "sha256": "62945f1ece688632e1557eeae274be617009152ad948aa7f96ec08dca36f2578"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "b30b438419a7f1cc07597088ef15094e33e4e540fe7ab4e7a69d1b9e004a564b"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "2990690ddd1563aa100cacabcd44a9f919ee40deba4f16b7282d6386bcd0470e"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "b5808bd150455e59a10d5590518d067f1f12493b2c63b1a39eaae0ebf50f71f8"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "e0e4903b3a83bbfb5a6ec1e9d579dc9bbd5584c20f0e6ed4e44b6decb2aa2622"
     }
   ]
 }
