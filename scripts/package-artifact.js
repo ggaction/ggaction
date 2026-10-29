@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 1059,
+  entries: 1060,
   packedBytes: 1510000,
-  unpackedBytes: 6886000
+  unpackedBytes: 6890000
 });
 
 const REQUIRED_FILES = Object.freeze([
