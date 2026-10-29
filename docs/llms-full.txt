@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:a4f60d37d56ea8e01effc9e26ef96a914a4993e87899a513c4815600ab78b5f5. Status: development. Runtime source: b9bee2b487f7ec364183a41c5847ca2a88790e48. Release baseline: v0.0.13.
+Contract: sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/b9bee2b487f7ec364183a41c5847ca2a88790e48/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/b9bee2b487f7ec364183a41c5847ca2a88790e48/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11177,6 +11177,52 @@ Only one editing pointer binding can be active alongside inspection and linked b
 For SVG, remount the new SVG element after rendering a committed program. Call
 `legendSession.destroy()` when the surface is removed; selection state remains in the chart.
 
+## Hide and restore categories from a legend
+
+Use `effect: "visibility"` when clicking a legend should hide actual category items. No named selection is required.
+Choose `scaleDomain: "visible-data"` to fit other automatic domains to the visible items, or `"all-data"` to preserve
+those domains from the input before visibility. An existing user filter remains in force: its result is the all-data
+input. The controlling categorical legend always retains that complete domain and mapping so a second click can
+restore hidden categories. Explicit scale domains keep their precedence.
+
+Place `<canvas id="chart" aria-label="Category visibility"></canvas>` in the page, then run:
+
+> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+  .createData({ keyField: "id", values: [
+    { id: "a", x: 1, y: 2, category: "A" },
+    { id: "b", x: 2, y: 3, category: "B" },
+    { id: "c", x: 3, y: 4, category: "A" }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false })
+  .createLegend({ target: "points", channels: ["color"] });
+const canvas = document.querySelector("#chart"), context = canvas.getContext("2d");
+render(program, context);
+const visibilitySession = createInteractionSession({ program, bindings: [{
+  type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data"
+}] });
+visibilitySession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+visibilitySession.mount(canvas);
+```
+
+The native `setMarkVisibility` action and `setVisibility` session command accept `channel`, unique typed `values`,
+boolean `visible` and the same explicit `scaleDomain`. Use the command payload `{clear:true}` or the native
+`removeMarkVisibility` action to remove visibility alone. User filters and hidden-selection policy remain separate.
+Changing a linked filter preserves visibility. Numeric `1` and string `"1"` are distinct categories; unknown values
+reject. Continuous or interval legends and Basic authoring are unsupported. Empty views retain valid domains.
+
+Session commands commit one final state after selection and linked updates. Hidden items disappear from graphics,
+inspection and hit candidates. `keep-hidden` lets their selection return when shown again; `drop` removes it.
+Visibility survives editable serialization. Recreate runtime bindings after loading, remount a newly rendered SVG
+surface, and destroy the session when its host is removed.
+
 ## Automatic click selection
 
 Use a `select` binding when the session should turn clicks into selection commands. The named
@@ -19274,6 +19320,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkHighlight`](./reference/actions/charts-data/#removemarkhighlight) | H3 | user-facing | mark-selection |
 | [`removeMarkLabels`](./reference/actions/marks/#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
+| [`removeMarkVisibility`](./reference/actions/advanced/#removemarkvisibility) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./reference/actions/guides/#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./reference/actions/guides/#removeparallelaxis) | H3 | user-facing | axes |
 | [`removeParameter`](./reference/actions/charts-data/#removeparameter) | H3 | user-facing | core |
@@ -19296,6 +19343,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`replaceImageResource`](./reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
+| [`setMarkVisibility`](./reference/actions/advanced/#setmarkvisibility) | H3 | advanced | mark-selection |
 
 <!-- Source: /reference/actions/charts-data/ -->
 
@@ -24284,6 +24332,14 @@ Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
 ranges. A family transition requires an explicit new domain and the destination
 range rules to be satisfied.
 [Scale options](./api/scales/)
+
+## Previous reference location {#setmarkvisibility}
+
+This contract moved: [open the current action or shared contract](./reference/actions/advanced/#setmarkvisibility).
+
+## Previous reference location {#removemarkvisibility}
+
+This contract moved: [open the current action or shared contract](./reference/actions/advanced/#removemarkvisibility).
 
 ## Related
 
@@ -32858,6 +32914,68 @@ guide values or a continuous-only grid make the whole request fail atomically.
 This advanced authoring action is available only
 from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 
+## `setMarkVisibility`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`MarkVisibilityOptions`](./reference/types/#type-markvisibilityoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
+| `values` | Required | `readonly (string \| number \| boolean)[]` |
+| `visible` | Required | `boolean` |
+| `scaleDomain` | Required | `"all-data" \| "visible-data"` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```ts
+setMarkVisibility({ target?, channel, values, visible, scaleDomain })
+```
+
+Advanced chart authoring. Hide or restore unique typed category values from an existing categorical legend block. `channel` selects that block; `visible` is boolean and `scaleDomain` must be `"visible-data"` or `"all-data"`. The target can be omitted only when the existing legend identifies one owner. Numeric and string categories remain distinct. Unknown values and unsupported blocks reject.
+
+Visibility removes actual final items and preserves original row lineage. It composes after an existing user filter, and changing or removing that filter preserves the visibility intent. `all-data` uses the user-filtered input before visibility; `visible-data` uses the remaining items. Explicit scale domains keep precedence. The controlling categorical legend always retains its pre-visibility categories and mapping so hidden categories can be restored. Empty results retain valid domains. Full only.
+
+## `removeMarkVisibility`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RemoveMarkVisibilityOptions`](./reference/types/#type-removemarkvisibilityoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```ts
+removeMarkVisibility({ target? })
+```
+
+Advanced chart authoring. Remove only the category visibility view, restore its user-filtered input and rematerialize dependent marks and guides. Omitted target follows the current eligible mark or unique active owner. A missing or ambiguous owner rejects. Source data, stored selections and the separate user filter remain intact. Full only.
+
 ## `selectMarks`
 
 **API layer:** advanced. **Authoring roles:** H3.
@@ -34338,6 +34456,15 @@ export interface LegendSelectionBinding {
   readonly mode?: 'replace' | 'toggle';
   readonly slop?: number;
 }
+/** Toggle actual category membership; the control legend remains available to restore it. */
+export interface LegendVisibilityBinding {
+  readonly type: 'legend';
+  readonly effect: 'visibility';
+  readonly target: InteractionTarget;
+  readonly channel: LegendChannel;
+  readonly scaleDomain: 'visible-data' | 'all-data';
+  readonly slop?: number;
+}
 interface RegionSelectionBindingOptions {
   readonly target: InteractionTarget;
   readonly selection: string;
@@ -34456,6 +34583,13 @@ export type InteractionFilterPayload = {
   readonly recompute?: boolean;
   readonly clear?: never;
 } | { readonly clear: true; readonly select?: never; readonly mode?: never; readonly recompute?: never };
+export type InteractionVisibilityPayload = {
+  readonly channel: LegendChannel;
+  readonly values: readonly (string | number | boolean)[];
+  readonly visible: boolean;
+  readonly scaleDomain: 'visible-data' | 'all-data';
+  readonly clear?: never;
+} | { readonly clear: true; readonly channel?: never; readonly values?: never; readonly visible?: never; readonly scaleDomain?: never };
 export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' } & (
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
@@ -34477,12 +34611,16 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: InteractionFilterPayload;
 } | {
+  readonly type: 'setVisibility';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionVisibilityPayload;
+} | {
   readonly type: 'reorder';
   readonly target: InteractionTarget;
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -34529,7 +34667,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LegendSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -34642,6 +34780,8 @@ interface ChartProgramActions {
   filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;
   filterMarks(options: TargetedOptions<FilterMarksOptions>): ChartProgram;
   removeMarkFilter(options?: TargetedOptions<RemoveMarkFilterOptions>): ChartProgram;
+  setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
+  removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
   selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;
   editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;
   removeMarkHighlight(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;
@@ -41609,6 +41749,7 @@ export type FilterMarksOptions = {
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
+/** Hide categorical final items independently of an existing user filter. */
 ```
 
 Related types: [`MarkSelector`](./reference/types/#type-markselector).
@@ -43565,6 +43706,23 @@ Related types: [`MarkGraphicProperty`](./reference/types/#type-markgraphicproper
 ```typescript
 export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }
 ```
+
+### `MarkVisibilityOptions` {#type-markvisibilityoptions}
+
+ Expand MarkVisibilityOptions
+
+```typescript
+export interface MarkVisibilityOptions {
+  target?: string;
+  channel: LegendChannel;
+  values: readonly (string | number | boolean)[];
+  visible: boolean;
+  /** all-data means the user-filtered input before visibility. Control legends retain its mapping. */
+  scaleDomain: 'visible-data' | 'all-data';
+}
+```
+
+Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
 
@@ -45770,6 +45928,14 @@ export interface RemoveMarkOptions {
 export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
+```
+
+### `RemoveMarkVisibilityOptions` {#type-removemarkvisibilityoptions}
+
+ Expand RemoveMarkVisibilityOptions
+
+```typescript
+export interface RemoveMarkVisibilityOptions { target?: string; }
 ```
 
 ### `RemoveParallelAxisOptions` {#type-removeparallelaxisoptions}
@@ -48093,12 +48259,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b9bee2b487f7ec364183a41c5847ca2a88790e48/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b9bee2b487f7ec364183a41c5847ca2a88790e48/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51149,11 +51315,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a4f60d37d56ea8e01effc9e26ef96a914a4993e87899a513c4815600ab78b5f5` |
+| Contract fingerprint | `sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e` |
 | Example and dataset source | `3a9901e925b04d640f064ff7e06d434011a4d858` |
-| Runtime source commit | `b9bee2b487f7ec364183a41c5847ca2a88790e48` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 345 |
+| Declared actions here | 347 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

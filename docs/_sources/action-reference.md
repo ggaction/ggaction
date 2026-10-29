@@ -42,6 +42,8 @@ interface ChartProgramActions {
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
+  setMarkVisibility(options: MarkVisibilityOptions): ChartProgram;
+  removeMarkVisibility(options?: RemoveMarkVisibilityOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
@@ -1318,6 +1320,24 @@ Graph plots retain selected nodes and their induced edges while preserving the
 stored graph, layout, degree values and item identities. Use node fields, rows
 or pre-highlight body properties; the recipe follows source and appearance edits.
 [Data](../api/data.md)
+
+### `setMarkVisibility`
+
+```ts
+setMarkVisibility({ target?, channel, values, visible, scaleDomain })
+```
+
+Advanced chart authoring. Hide or restore unique typed category values from an existing categorical legend block. `channel` selects that block; `visible` is boolean and `scaleDomain` must be `"visible-data"` or `"all-data"`. The target can be omitted only when the existing legend identifies one owner. Numeric and string categories remain distinct. Unknown values and unsupported blocks reject.
+
+Visibility removes actual final items and preserves original row lineage. It composes after an existing user filter, and changing or removing that filter preserves the visibility intent. `all-data` uses the user-filtered input before visibility; `visible-data` uses the remaining items. Explicit scale domains keep precedence. The controlling categorical legend always retains its pre-visibility categories and mapping so hidden categories can be restored. Empty results retain valid domains. Full only.
+
+### `removeMarkVisibility`
+
+```ts
+removeMarkVisibility({ target? })
+```
+
+Advanced chart authoring. Remove only the category visibility view, restore its user-filtered input and rematerialize dependent marks and guides. Omitted target follows the current eligible mark or unique active owner. A missing or ambiguous owner rejects. Source data, stored selections and the separate user filter remain intact. Full only.
 
 ### `removeMarkFilter`
 

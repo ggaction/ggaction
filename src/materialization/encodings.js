@@ -1,3 +1,4 @@
+import { validateLayerVisibility } from "./markVisibility.js";
 import { hasMaterializedLegend } from "./legends.js";
 import { requireLayer } from "../selectors/layers.js";
 import {
@@ -17,6 +18,7 @@ export function planEncodingRematerialization(program, {
     `Unknown encoding materialization target "${target}"`
   );
 
+  validateLayerVisibility(program, layer);
   const { scales, marks: directMarks } = getEncodingMaterializationStages(
     program,
     layer,

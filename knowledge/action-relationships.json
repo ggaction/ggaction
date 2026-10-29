@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 345,
+  "actionCount": 347,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1479,6 +1479,18 @@
     },
     {
       "name": "removeMarkFilter",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "setMarkVisibility",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "removeMarkVisibility",
       "wraps": [
         "editSemantic"
       ]

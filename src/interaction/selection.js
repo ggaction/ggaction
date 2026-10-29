@@ -10,7 +10,7 @@ import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { interactionOptions as options } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
@@ -90,6 +90,22 @@ export function prepareInteractionEdit(program, command) {
       method = "orderCategories"; args = payload;
     }
     return { program: invoke(program, method, { ...args, ...address(target, true) }), affectedOwners };
+  }
+  if (command.type === "setVisibility") {
+    const payload = options(command.payload, [], ["clear", "channel", "values", "visible", "scaleDomain"], "Visibility command payload");
+    let method, args;
+    if (Object.hasOwn(payload, "clear")) {
+      options(payload, ["clear"], [], "Clear visibility payload");
+      if (payload.clear !== true) throw new TypeError("Clear requires true.");
+      method = "removeMarkVisibility"; args = {};
+    } else {
+      options(payload, ["channel", "values", "visible", "scaleDomain"], [], "Visibility command payload");
+      method = "setMarkVisibility"; args = payload;
+    }
+    const next = invoke(program, method, { ...args, ...address(target, true) });
+    // Wrapped native no-ops may append trace only. Sessions publish meaningful changes.
+    const nextOwner = interactionOwner(next, target).view;
+    return { program: nextOwner.semanticSpec === view.semanticSpec && nextOwner.graphicSpec === view.graphicSpec ? program : next, affectedOwners };
   }
   if (command.type === "setParameter") {
     requireMethod(program, "editParameter");

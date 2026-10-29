@@ -1,3 +1,4 @@
+import { normalizeLegendVisibility, resolveLegendVisibility, legendVisibilityCommand } from "./legendVisibility.js";
 import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
 import { normalizeLegendSelection, resolveLegendSelection, legendSelectionCommand } from "./legendSelection.js";
 import { prepareSelectionCapture } from "./pointerCapture.js";
@@ -18,7 +19,7 @@ import { createHitFrameBridge } from "./hitFrame.js";
 import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksNeedUpdate } from "./bindings.js";
 
 function resolvePointerSelection(program, binding, allowMissing) {
-  return binding.type === "legend" ? resolveLegendSelection(program, binding, allowMissing)
+  return binding.type === "legend" ? (binding.effect === "visibility" ? resolveLegendVisibility : resolveLegendSelection)(program, binding, allowMissing)
     : resolveClickSelection(program, binding.target, binding.selection, allowMissing);
 }
 
@@ -30,12 +31,12 @@ function bindings(program, value) {
   ownArray(value, "Interaction bindings");
   const inspect = [], linked = [], selected = [], regions = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect"], "Interaction binding");
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain"], "Interaction binding");
     (["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
   if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one editing pointer binding.");
   const links = normalizeSelectionLinks(program, linked);
-  return { linked: links, select: selected.length ? (selected[0].type === "legend" ? normalizeLegendSelection : normalizeClickSelection)(program, selected[0], links) : undefined,
+  return { linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
     region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
@@ -322,11 +323,11 @@ export function createInteractionSession(input) {
             });
           }
           if (configured.select) {
-            const binding = configured.select;
+            const binding = configured.select, eventType = binding.effect === "visibility" ? "setVisibility" : "select";
             const select = (point, pointerType, transactionId) => {
               const query = normalizeHitQuery({ pointerType, hitInvisible: binding.hitInvisible,
                 ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
-              const command = (binding.type === "legend" ? legendSelectionCommand : clickSelectionCommand)(program, binding, bridge.hit(point, query));
+              const command = (binding.type === "legend" ? (binding.effect === "visibility" ? legendVisibilityCommand : legendSelectionCommand) : clickSelectionCommand)(program, binding, bridge.hit(point, query));
               if (!command) return outcome("unchanged");
               if (transactionId === undefined) { transactionSequence = nextInteger(transactionSequence); transactionId = `interaction-${transactionSequence}`; }
               return edit(interactionTransaction(command, transactionId));
@@ -341,12 +342,12 @@ export function createInteractionSession(input) {
                 return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
               },
               select: (token, point, pointerType) => select(point, pointerType, token.transactionId),
-              cancel: (token, reason) => publish("select", {
+              cancel: (token, reason) => publish(eventType, {
                 transactionId: token.transactionId, origin: "user", phase: "cancel", revision,
                 affectedOwners: freezeOwned([binding.target]), previous: token.previous, current: program,
                 diagnostics: freezeOwned([freezeOwned({ code: "gesture-cancelled", message: reason })]), selectionChanges: Object.freeze([])
               }),
-              error: (token, error) => publish("select", {
+              error: (token, error) => publish(eventType, {
                 transactionId: token.transactionId, origin: "user", phase: "error", revision,
                 affectedOwners: Object.freeze([]), previous: token.previous, current: program,
                 diagnostics: freezeOwned([freezeOwned({ code: "pointer-capture-failed", message: String(error?.message ?? error) })]), selectionChanges: Object.freeze([])

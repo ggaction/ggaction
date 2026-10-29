@@ -6,6 +6,8 @@ import {
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { resolveMarkSelection } from "./state.js";
+import { validateWorkLimit } from "../../core/validation.js";
+import { validateVisibilityBinding } from "../markVisibility.js";
 
 function resolvePointRows(program, layer, selector) {
   const dataset = findDataset(program, layer.data);
@@ -37,4 +39,17 @@ export function resolveMarkFilterSelection(program, target, selector) {
     return resolvePointRows(program, layer, normalized);
   }
   return resolveMarkSelection(program, target, normalized);
+}
+
+export function resolveMarkVisibilitySelection(program, target, input) {
+  const layer = findLayer(program, target), visibility = validateVisibilityBinding(layer, input);
+  const { items } = resolveMarkSelection(program, target, { items: [], empty: "all" });
+  const hidden = new Set(visibility.hidden), keys = [];
+  let work = visibility.hidden.length;
+  for (const item of items) {
+    validateWorkLimit(work += 1 + item.key.length, "Visibility item work");
+    if (!Object.hasOwn(item.fields ?? {}, visibility.field)) throw new Error("Visibility requires an unambiguous final-item category field.");
+    if (!hidden.has(item.fields[visibility.field])) keys.push(item.key);
+  }
+  return { items, keys };
 }

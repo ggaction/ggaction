@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:a4f60d37d56ea8e01effc9e26ef96a914a4993e87899a513c4815600ab78b5f5",
-  "sourceCommit": "b9bee2b487f7ec364183a41c5847ca2a88790e48",
-  "sourceRef": "b9bee2b487f7ec364183a41c5847ca2a88790e48",
+  "contractId": "sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "3a9901e925b04d640f064ff7e06d434011a4d858",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 345,
+  "actionCount": 347,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -74,6 +74,14 @@
     },
     "removeMarkFilter": {
       "availableBy": "v0.0.13"
+    },
+    "setMarkVisibility": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "removeMarkVisibility": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "selectMarks": {
       "availableBy": "v0.0.13"

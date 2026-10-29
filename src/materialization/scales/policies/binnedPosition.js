@@ -1,3 +1,4 @@
+import { findMarkFilterDataset } from "../../../selectors/datasets.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { compositionChannel } from "../../../selectors/plotComposition.js";
 import { findHistogramBinIndex, resolveHistogramBins } from "../../../grammar/histogram.js";
@@ -54,7 +55,7 @@ export function resolveBinnedPositionDomain({
   // are never rebinned. Those boundaries describe the partition, not a fixed
   // display domain: auto scales follow the retained bins' complete intervals.
   // An unfiltered consumer still contributes its full requested bin extent.
-  if (binnedPositions.every(({ consumer }) => program?.markConfigs[consumer.layer.id]?.markFilter)) {
+  if (binnedPositions.every(({ consumer }) => program && findMarkFilterDataset(program, consumer.layer))) {
     let first = Infinity, last = -1;
     for (const { values } of binnedPositions) for (const value of values) {
       if (!Number.isFinite(value)) continue;

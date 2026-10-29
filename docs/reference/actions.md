@@ -355,6 +355,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | H3 | user-facing | mark-selection |
 | [`removeMarkLabels`](./actions/marks.md#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | H3 | advanced | mark-selection |
+| [`removeMarkVisibility`](./actions/advanced.md#removemarkvisibility) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./actions/guides.md#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./actions/guides.md#removeparallelaxis) | H3 | user-facing | axes |
 | [`removeParameter`](./actions/charts-data.md#removeparameter) | H3 | user-facing | core |
@@ -377,3 +378,4 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`replaceImageResource`](./actions/charts-data.md#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./actions/charts-data.md#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./actions/advanced.md#selectmarks) | H3 | advanced | mark-selection |
+| [`setMarkVisibility`](./actions/advanced.md#setmarkvisibility) | H3 | advanced | mark-selection |

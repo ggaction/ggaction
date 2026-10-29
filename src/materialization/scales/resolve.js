@@ -254,7 +254,7 @@ export function resolveScaleMaterialization(options) {
     scale.domain === "auto" &&
     Array.isArray(preserved) &&
     resolvedScales[id]?.type === scale.type &&
-    (consumers.some(({ layer }) =>
+    (valuesByConsumer.some(value => value.emptyFiltered === true) || consumers.some(({ layer }) =>
       markConfigs?.[layer.id]?.markFilter?.empty === true
     ) || (scale.emptyDomain === "preserve" && allValues.length === 0 && samePreservedMeaning))
   ) {

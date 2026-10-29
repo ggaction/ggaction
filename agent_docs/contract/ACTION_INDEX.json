@@ -4036,6 +4036,42 @@
       }
     },
     {
+      "name": "setMarkVisibility",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Hide or restore categorical final items independently of user filtering",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "setmarkvisibility"
+      }
+    },
+    {
+      "name": "removeMarkVisibility",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove only category visibility and preserve user filtering",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "removemarkvisibility"
+      }
+    },
+    {
       "name": "selectMarks",
       "layer": "advanced",
       "domain": "mark-selection",

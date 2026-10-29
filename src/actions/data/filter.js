@@ -1,4 +1,6 @@
-import { findMarkFilterDataset } from "../../selectors/datasets.js";
+import { retainedHistogramBoundaries, restoreHistogramBin, preserveHistogramBin } from "./filterGeometry.js";
+import { findNativeMarkFilterDataset, findMarkVisibilityDataset, isEmptyMarkFilteredView } from "../../selectors/datasets.js";
+import { preserveMarkVisibility } from "./visibility.js";
 import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
 import { activeGraphFilter } from "../../selectors/graphFilters.js";
@@ -21,7 +23,7 @@ import {
   markFilterSelectors,
   normalizeMarkFilterTransform
 } from "../../grammar/markFilter.js";
-import { resolveMarkFilterSelection } from "../../materialization/selection/filter.js";
+import { resolveMarkFilterSelection, resolveMarkVisibilitySelection } from "../../materialization/selection/filter.js";
 import { synchronizeBoxFilter } from "../boxPlots/components.js";
 import { findSelectionPolicy } from
   "../../materialization/selection/policies/index.js";
@@ -50,16 +52,6 @@ const MARK_OPTIONS = Object.freeze(["target", "mode", "recompute", ...MARK_SELEC
 const REMOVE_MARK_FILTER_OPTIONS = Object.freeze(["target"]);
 const EMPTY_MARK_OPTIONS = Object.freeze(["id"]);
 
-function retainedHistogramBoundaries(layer, items) {
-  if (layer.mark?.type !== "bar" || layer.encoding?.x?.bin === undefined) {
-    return undefined;
-  }
-  const boundaries = [...new Set(items.flatMap(item => [
-    item.channels.x,
-    item.channels.x2
-  ]).filter(Number.isFinite))].sort((left, right) => left - right);
-  return boundaries.length < 2 ? undefined : boundaries;
-}
 
 export const materializeFilteredData = /* @__PURE__ */ closedAction(
   { op: "materializeFilteredData", description: "Materialize one filtered derived dataset." }, MATERIALIZE_OPTIONS,
@@ -133,7 +125,11 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
     }
     let preview = this;
     let currentRows = source.values;
-    const selectors = markFilterSelectors(transform);
+    const selectors = transform.visibility === undefined ? markFilterSelectors(transform) : [];
+    if (transform.visibility !== undefined) {
+      const resolved = resolveMarkVisibilitySelection(preview, transform.target, transform.visibility);
+      currentRows = deriveMarkFilteredRows(source.values, resolved.items, resolved.keys, layer);
+    }
     for (const [index, selector] of selectors.entries()) {
       const resolved = resolveMarkFilterSelection(
         preview,
@@ -175,10 +171,12 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
         value: id
       });
     }
+    const ownerKey = transform.visibility === undefined ? "markFilter" : "visibilityFilter";
     next = next._withMarkConfig(transform.target, {
       ...next.markConfigs[transform.target],
-      markFilter: {
-        ...next.markConfigs[transform.target].markFilter,
+      [ownerKey]: {
+        ...next.markConfigs[transform.target][ownerKey],
+        dataset: id, source: dataset.source,
         empty: currentRows.length === 0
       }
     });
@@ -197,9 +195,7 @@ export const materializeEmptyMark = /* @__PURE__ */ closedAction(
   function (args = {}) {
     const id = validateUserId(args.id, "Empty mark id");
     const layer = requireLayer(this, id);
-    const owner = this.markConfigs[id]?.markFilter;
-    const dataset = findDataset(this, layer.data);
-    if (owner?.empty !== true || dataset?.values?.length !== 0) {
+    if (!isEmptyMarkFilteredView(this, layer)) {
       throw new Error(`Mark "${id}" does not own an active empty filter.`);
     }
     return applyLayerEmptyDataView(this, id);
@@ -208,7 +204,7 @@ export const materializeEmptyMark = /* @__PURE__ */ closedAction(
 
 function activeMarkFilter(program, layer) {
   const configured = program.markConfigs[layer.id]?.markFilter;
-  const dataset = findMarkFilterDataset(program, layer);
+  const dataset = findNativeMarkFilterDataset(program, layer);
   if (dataset === undefined) return undefined;
   const transform = dataset.transform[0];
   return {
@@ -228,24 +224,6 @@ function withoutMarkFilterConfig(program, id) {
   return program._withMarkConfig(id, remaining);
 }
 
-function restoreHistogramBin(program, layer, originalBin) {
-  let next = program;
-  const current = layer.encoding?.x?.bin ?? {};
-  for (const property of ["maxBins", "step", "boundaries"]) {
-    if (Object.hasOwn(originalBin, property)) {
-      next = next.editSemantic({
-        property: `layer[${layer.id}].encoding.x.bin.${property}`,
-        value: originalBin[property]
-      });
-    } else if (Object.hasOwn(current, property)) {
-      next = next.editSemantic({
-        property: `layer[${layer.id}].encoding.x.bin.${property}`,
-        remove: true
-      });
-    }
-  }
-  return next;
-}
 
 function removeActiveMarkFilter(program, layer, owner) {
   let next = synchronizeBoxFilter(program, layer.id).editSemantic({
@@ -289,6 +267,9 @@ export const removeMarkFilter = /* @__PURE__ */ closedAction(
       label: "mark filter",
       predicate: candidate => activeMarkFilter(this, candidate) !== undefined || activeGraphFilter(this, candidate) !== undefined
     });
+    if (findMarkVisibilityDataset(this, layer)) {
+      return preserveMarkVisibility(this, layer.id, next => next.removeMarkFilter({ target: layer.id }));
+    }
     if (activeGraphFilter(this, layer) !== undefined) return this.restoreGraphPlotView({ target: layer.id });
     return removeActiveMarkFilter(this, layer, activeMarkFilter(this, layer));
   }
@@ -320,6 +301,9 @@ export const filterMarks = /* @__PURE__ */ closedAction(
         (candidate.data !== undefined || candidate.mark?.type === "graph") && (target !== undefined || !isSourceOwnedText(candidate)) &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
+    if (findMarkVisibilityDataset(this, layer)) {
+      return preserveMarkVisibility(this, layer.id, next => next.filterMarks({ ...args, target: layer.id }));
+    }
     assertIndependentOverlayGeometry(layer, "filterMarks");
     if (this.markConfigs[layer.id]?.itemFilterable === false) {
       throw new Error(
@@ -366,20 +350,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
         source: baseLayer.data,
         transform: [transform]
       });
-    if (boundaries !== undefined) {
-      for (const property of ["maxBins", "step"]) {
-        if (Object.hasOwn(baseLayer.encoding.x.bin, property)) {
-          next = next.editSemantic({
-            property: `layer[${baseLayer.id}].encoding.x.bin.${property}`,
-            remove: true
-          });
-        }
-      }
-      next = next.editSemantic({
-        property: `layer[${baseLayer.id}].encoding.x.bin.boundaries`,
-        value: boundaries
-      });
-    }
+    next = preserveHistogramBin(next, baseLayer, boundaries);
     next = next._withMarkConfig(baseLayer.id, {
       ...next.markConfigs[baseLayer.id],
       markFilter: {

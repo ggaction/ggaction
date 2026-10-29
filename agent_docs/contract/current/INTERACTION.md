@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, categorical legend-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, categorical legend-selection/visibility, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -420,3 +420,34 @@ codec restoration; the native selection is persisted. Root and explicit child sc
 facet-source geometry, competing editing bindings and linked target-selection writers reject.
 Evidence: `test/unit/interaction-legend-selection.test.js`, `test/browser/interaction-session.browser.js`,
 `test/contracts/realistic-logical-selection.test.js`, and the installed interaction consumer.
+
+
+## Categorical legend visibility
+
+Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as its one editing
+pointer binding. It selects an existing categorical legend block at the explicit root/concat owner;
+no named selection is required. Each symbol/label click toggles that typed category using native
+`setMarkVisibility`. Titles, background, overflow summaries and other blocks are inert. Missing
+owners or removed legends become dormant. Continuous/interval blocks, facet geometry, competing
+pointer bindings and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
+identity and immutable input rules match categorical selection.
+
+`dispatch({type:"setVisibility",target,payload:{channel,values,visible,scaleDomain},transactionId?,origin?,causeTransactionId?})`
+invokes `setMarkVisibility`; `{clear:true}` replaces the payload to call `removeMarkVisibility`.
+Both require the receiver's Full editor even for no-ops. A semantic/graphic no-op emits no transaction,
+trace or revision. A successful transaction emits `setVisibility` commit/settled after selection
+reconciliation and all linked changes. Errors retain the exact previous program, scene and trace.
+
+The native [visibility contract](MARK_SELECTION.md#setmarkvisibility) owns the two explicit domain
+policies and user-filter coexistence. All-data means the user-filter result before visibility. The
+control legend retains that whole category domain and mapping so hidden groups can be re-enabled;
+other automatic domains follow the selected policy, with explicit scale domains retaining precedence.
+Visibility removes actual membership, never just opacity. Existing keep-hidden/drop selection policy
+applies. Linked-filter writers own only the user filter: they project using the unfiltered universe,
+then rebuild the native filter while preserving the separate visibility recipe. Intermediate candidates
+are not published. Hidden-only native membership changes still commit even when the visible set stays
+unchanged. Dormant hidden categories survive source revisions. Runtime bindings must be recreated after
+codec restoration; visibility intent and original-row lineage are persisted in the program.
+
+Evidence: visibility grammar/action/session suites, the real-data selection corpus and Canvas/SVG
+browser interaction suite.

@@ -479,6 +479,52 @@ Only one editing pointer binding can be active alongside inspection and linked b
 For SVG, remount the new SVG element after rendering a committed program. Call
 `legendSession.destroy()` when the surface is removed; selection state remains in the chart.
 
+## Hide and restore categories from a legend
+
+Use `effect: "visibility"` when clicking a legend should hide actual category items. No named selection is required.
+Choose `scaleDomain: "visible-data"` to fit other automatic domains to the visible items, or `"all-data"` to preserve
+those domains from the input before visibility. An existing user filter remains in force: its result is the all-data
+input. The controlling categorical legend always retains that complete domain and mapping so a second click can
+restore hidden categories. Explicit scale domains keep their precedence.
+
+Place `<canvas id="chart" aria-label="Category visibility"></canvas>` in the page, then run:
+
+> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+  .createData({ keyField: "id", values: [
+    { id: "a", x: 1, y: 2, category: "A" },
+    { id: "b", x: 2, y: 3, category: "B" },
+    { id: "c", x: 3, y: 4, category: "A" }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false })
+  .createLegend({ target: "points", channels: ["color"] });
+const canvas = document.querySelector("#chart"), context = canvas.getContext("2d");
+render(program, context);
+const visibilitySession = createInteractionSession({ program, bindings: [{
+  type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data"
+}] });
+visibilitySession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+visibilitySession.mount(canvas);
+```
+
+The native `setMarkVisibility` action and `setVisibility` session command accept `channel`, unique typed `values`,
+boolean `visible` and the same explicit `scaleDomain`. Use the command payload `{clear:true}` or the native
+`removeMarkVisibility` action to remove visibility alone. User filters and hidden-selection policy remain separate.
+Changing a linked filter preserves visibility. Numeric `1` and string `"1"` are distinct categories; unknown values
+reject. Continuous or interval legends and Basic authoring are unsupported. Empty views retain valid domains.
+
+Session commands commit one final state after selection and linked updates. Hidden items disappear from graphics,
+inspection and hit candidates. `keep-hidden` lets their selection return when shown again; `drop` removes it.
+Visibility survives editable serialization. Recreate runtime bindings after loading, remount a newly rendered SVG
+surface, and destroy the session when its host is removed.
+
 ## Automatic click selection
 
 Use a `select` binding when the session should turn clicks into selection commands. The named

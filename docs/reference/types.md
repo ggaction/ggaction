@@ -36,6 +36,8 @@ interface ChartProgramActions {
   filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;
   filterMarks(options: TargetedOptions<FilterMarksOptions>): ChartProgram;
   removeMarkFilter(options?: TargetedOptions<RemoveMarkFilterOptions>): ChartProgram;
+  setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
+  removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
   selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;
   editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;
   removeMarkHighlight(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;
@@ -8273,6 +8275,7 @@ export type FilterMarksOptions = {
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
+/** Hide categorical final items independently of an existing user filter. */
 ```
 
 </details>
@@ -10645,6 +10648,26 @@ export interface MarkShadow { color: string; offsetX?: number; offsetY?: number;
 ```
 
 </details>
+
+### `MarkVisibilityOptions` {#type-markvisibilityoptions}
+
+<details markdown="1">
+<summary>Expand MarkVisibilityOptions</summary>
+
+```typescript
+export interface MarkVisibilityOptions {
+  target?: string;
+  channel: LegendChannel;
+  values: readonly (string | number | boolean)[];
+  visible: boolean;
+  /** all-data means the user-filtered input before visibility. Control legends retain its mapping. */
+  scaleDomain: 'visible-data' | 'all-data';
+}
+```
+
+</details>
+
+Related types: [`LegendChannel`](#type-legendchannel).
 
 ### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
 
@@ -13298,6 +13321,17 @@ export interface RemoveMarkOptions {
 export interface RemoveMarkSelectionOptions {
   selection?: string;
 }
+```
+
+</details>
+
+### `RemoveMarkVisibilityOptions` {#type-removemarkvisibilityoptions}
+
+<details markdown="1">
+<summary>Expand RemoveMarkVisibilityOptions</summary>
+
+```typescript
+export interface RemoveMarkVisibilityOptions { target?: string; }
 ```
 
 </details>

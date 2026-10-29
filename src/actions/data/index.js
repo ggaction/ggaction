@@ -2,6 +2,7 @@ import {
   createTimeUnitData,
   materializeTimeUnitData
 } from "./timeUnit.js";
+import { setMarkVisibility, removeMarkVisibility } from "./visibility.js";
 import {
   createDerivedData,
   bindMarkData,
@@ -79,6 +80,8 @@ export function registerDataActions(ProgramClass) {
     materializeGraphSubsetData,
     filterData,
     filterMarks,
+    setMarkVisibility,
+    removeMarkVisibility,
     materializeEmptyMark,
     removeMarkFilter,
     materializeRegressionData,

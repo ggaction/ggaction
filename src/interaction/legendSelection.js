@@ -1,12 +1,11 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
-import { categoricalLegendView } from "../grammar/legendOverflow.js";
 import { legendBlockDescriptors, resolveLegendBlock } from "../materialization/legendTargets.js";
 import { LEGEND_CHANNELS } from "../core/vocabulary.js";
 import { interactionOptions as options } from "./input.js";
 import { normalizeClickSelection, resolveClickSelection } from "./clickSelection.js";
-import { interactionNamespaces, scopeSelectionKeys } from "./selection.js";
-import { guideHitToken, guideHitItemKey } from "./hitGuides.js";
+import { scopeSelectionKeys } from "./selection.js";
+import { hitLegendCategory } from "./legendCategory.js";
 
 export function resolveLegendSelection(program, binding, allowMissing = false) {
   const owner = resolveClickSelection(program, binding.target, binding.selection, allowMissing);
@@ -48,16 +47,9 @@ export function legendSelectionCommand(program, binding, hit) {
     const value = item.fields[config.field], group = groups.get(value) ?? [];
     group.push(item.key); groups.set(value, group);
   }
-  const view = categoricalLegendView(config), namespaces = interactionNamespaces(program, target), entries = new Map();
-  const visible = view.hiddenCount > 0 ? view.domain.slice(0, view.overflow.maxItems) : view.domain;
-  spend(visible.length + JSON.stringify(namespaces).length * visible.length);
-  for (const value of visible) {
-    const key = guideHitItemKey(namespaces, guideHitToken(target.id, "legend-item", [kind, ["value", value]]));
-    spend(key.length); entries.set(key, groups.get(value) ?? []);
-  }
-  const candidate = hit.candidates.find(item => { spend(1 + item.itemKey.length); return entries.has(item.itemKey); });
-  if (!candidate) return null;
-  const keys = entries.get(candidate.itemKey);
+  const category = hitLegendCategory(program, target, kind, config, hit, spend);
+  if (!category) return null;
+  const keys = groups.get(category.value) ?? [];
   if (!keys.length) return null;
   const selector = resolved.selector;
   if (binding.mode === "replace" && selector.items?.length === keys.length) {

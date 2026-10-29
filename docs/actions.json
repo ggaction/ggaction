@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 345,
+  "count": 347,
   "cards": [
     {
       "schemaVersion": 3,
@@ -27799,6 +27799,165 @@
       "snippet": "program.removeMarkFilter({})",
       "errors": [],
       "route": "/reference/actions/charts-data/#removemarkfilter"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "setMarkVisibility",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "summary": "Edits category visibility, including settings for hide and restore legend categories.",
+      "signature": "setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;",
+      "intents": [
+        "set mark visibility",
+        "edit",
+        "change",
+        "mark selection",
+        "conditional emphasis",
+        "category visibility",
+        "hide and restore legend categories"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing category visibility",
+          "target mark and selector operands"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "setMarkVisibility",
+        "removeMarkVisibility"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing category visibility",
+          "target mark and selector operands"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "channel",
+          "required": true,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\""
+        },
+        {
+          "name": "values",
+          "required": true,
+          "type": "readonly (string | number | boolean)[]"
+        },
+        {
+          "name": "visible",
+          "required": true,
+          "type": "boolean"
+        },
+        {
+          "name": "scaleDomain",
+          "required": true,
+          "type": "\"all-data\" | \"visible-data\""
+        }
+      ],
+      "callPatterns": [
+        "setMarkVisibility({ target?, channel, values, visible, scaleDomain })"
+      ],
+      "snippet": "program.setMarkVisibility({ channel: \"color\", values: [\"A\"], visible: false, scaleDomain: \"all-data\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#setmarkvisibility"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeMarkVisibility",
+      "layer": "advanced",
+      "domain": "mark-selection",
+      "summary": "Removes category visibility while preserving unrelated chart resources.",
+      "signature": "removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;",
+      "intents": [
+        "remove mark visibility",
+        "remove",
+        "delete",
+        "mark selection",
+        "conditional emphasis",
+        "category visibility",
+        "hide and restore legend categories"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing category visibility",
+          "target mark and selector operands"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing category visibility",
+          "target mark and selector operands"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeMarkVisibility({ target? })"
+      ],
+      "snippet": "program.removeMarkVisibility({})",
+      "errors": [],
+      "route": "/reference/actions/advanced/#removemarkvisibility"
     },
     {
       "schemaVersion": 3,

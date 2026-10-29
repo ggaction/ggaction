@@ -1812,6 +1812,22 @@
     "layer": "user-facing",
     "domain": "mark-selection"
   },
+  "setMarkVisibility": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "advanced",
+    "domain": "mark-selection"
+  },
+  "removeMarkVisibility": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "advanced",
+    "domain": "mark-selection"
+  },
   "selectMarks": {
     "operation": "select",
     "authoringRoles": [

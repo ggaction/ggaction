@@ -2410,6 +2410,20 @@
   {
     "file": "api/interaction.md",
     "block": 11,
+    "heading": "Hide and restore categories from a legend",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.",
+    "sha256": "c75b524006aa62120d0eb046fe1b9f9c2eab44be267d80b33113538d01e8fa07",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 12,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2424,7 +2438,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 12,
+    "block": 13,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",

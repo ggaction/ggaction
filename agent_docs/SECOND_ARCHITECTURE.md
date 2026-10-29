@@ -3828,3 +3828,16 @@ unpacked6,414,627을 실측했다. Cap982/1,411,000/6,415,000을 적용한다. N
 interaction gzip110,977에는111,000 cap을 적용하며 Full688,300/Basic378,000/SVG25,000/
 graph44,000은 유지한다. 동일 archive 세Node·source-free 문서 실행과 최초 초과는
 [C1 qualification](impl/roadmap9/interaction/legend-selection-evidence/qualification.json)에 보존한다.
+
+
+### 범주 visibility와 사용자 필터의 독립 소유
+
+범주 visibility는 기존 final-item filter owner를 재사용하되 사용자 filter의 바깥 derived view로
+저장한다. 숨김 category와 domain 정책은 transform 하나가 소유하고 config는 source/dataset 참조와
+empty realization만 소유한다. 필터 수정은 immutable 후보에서 visibility를 벗긴 뒤 기존 filter
+lifecycle을 호출하고 같은 visibility recipe를 다시 materialize한다. Host에는 최종 상태만 전달한다.
+Scale 계산은 명시 source projection으로 all-data/visible-data를 선택하며 control legend의 전체
+category mapping을 보존한다. Renderer는 계속 concrete graphicSpec만 읽는다. Interaction은 receiver의
+기존 wrapped editor를 호출하고 Full assembly를 import하지 않는다. 정확 계약은 Current
+[Mark Selection](contract/current/MARK_SELECTION.md#setmarkvisibility)과
+[Interaction](contract/current/INTERACTION.md#categorical-legend-visibility)이 소유한다.

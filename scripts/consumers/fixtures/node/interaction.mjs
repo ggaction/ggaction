@@ -10,6 +10,22 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/legend-visibility-filter-composition", run() {
+    const p = chart().createCanvas({ width: 500, height: 350, margin: 100 }).createData({ id: "rows", keyField: "id", values: [
+      { id: "a", x: 1, y: 2, category: 1 }, { id: "b", x: 2, y: 20, category: "1" }, { id: "c", x: 3, y: 4, category: 1 }
+    ] }).createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false }).createLegend({ channels: ["color"] })
+      .filterMarks({ target: "points", field: "x", op: "lte", value: 2 });
+    const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data" }] });
+    session.dispatch({ type: "setVisibility", target: "points", payload: { channel: "color", values: ["1"], visible: false, scaleDomain: "all-data" } });
+    const q = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(q, { target: "points" }).map(item => item.fields.id), ["a"]);
+    assert.deepEqual(q.resolvedScales.y.domain, [2, 20]); assert.deepEqual(q.guideConfigs.legend.color.domain, [1, "1"]);
+    assert.deepEqual(getMarkItems(q.removeMarkVisibility(), { target: "points" }).map(item => item.fields.id), ["a", "b"]);
+    assert.deepEqual(getMarkItems(q.removeMarkFilter(), { target: "points" }).map(item => item.fields.id), ["a", "c"]);
+    session.dispatch({ type: "setVisibility", target: "points", payload: { clear: true } });
+    assert.deepEqual(getMarkItems(session.getState().program, { target: "points" }).map(item => item.fields.id), ["a", "b"]);
+    assert.equal(typeof basic().setMarkVisibility, "undefined"); session.destroy();
+  } },
   { id: "interaction/full-basic-immutable-inspection", run() {
     for (const factory of [chart, basic]) {
       const p = make(factory), original = serializeProgram(p), session = createInteractionSession({ program: p });

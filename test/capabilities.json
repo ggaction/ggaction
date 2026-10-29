@@ -772,6 +772,18 @@
       {
         "type": "file",
         "path": "unit/selection-region.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-legend-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/mark-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-visibility.test.js"
       }
     ],
     "horizon": [

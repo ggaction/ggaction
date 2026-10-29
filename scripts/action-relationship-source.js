@@ -25,7 +25,9 @@ function selectionLifecyclePrograms() {
     .selectMarks({ id: "focus", field: "x", op: "max" })
     .highlightMarks({ selection: "focus", color: "#dc2626" })
     .editMarkSelection({ selection: "focus", field: "x", op: "min" });
-  return [selected, selected.removeMarkSelection({ selection: "focus" })];
+  const visible = selected.editCanvas({ width: 500, height: 350, margin: 100 }).encodeColor({ field: "x", fieldType: "nominal" }).createLegend({ channels: ["color"] })
+    .setMarkVisibility({ channel: "color", values: [1], visible: false, scaleDomain: "all-data" });
+  return [selected, selected.removeMarkSelection({ selection: "focus" }), visible.removeMarkVisibility()];
 }
 
 function focusedScaleEditorPrograms() {

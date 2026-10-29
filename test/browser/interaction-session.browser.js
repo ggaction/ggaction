@@ -398,3 +398,49 @@ test("categorical legend clicks and cancellation select the same groups on Canva
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("categorical visibility retains control labels and restores actual items on Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1200, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createInteractionSession } = await import("/src/interaction.js");
+      document.body.innerHTML = '<canvas id="legend-canvas" aria-label="Category visibility chart"></canvas><div id="legend-vector"></div>';
+      const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+        .createData({ values: [{ id: "a", x: 1, y: 2, category: "A" }, { id: "b", x: 2, y: 3, category: "B" }, { id: "c", x: 3, y: 4, category: "A" }], keyField: "id" })
+        .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "category" })
+        .createLegend({ channels: ["color"] }).selectMarks({ id: "picked", target: "points", items: [] })
+        .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+      window.__legendPhases = [[], []];
+      window.__legendSessions = [0, 1].map(index => {
+        const session = createInteractionSession({ program, bindings: [{ type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data" }] });
+        const draw = current => {
+          if (index === 0) { const element = document.querySelector("#legend-canvas"); render(current, element.getContext("2d"), { pixelRatio: 2 }); session.mount(element); }
+          else { const container = document.querySelector("#legend-vector"); container.innerHTML = renderToSVG(current); session.mount(container.querySelector("svg")); }
+        };
+        session.subscribe(event => { if (event.phase) window.__legendPhases[index].push(event.phase); if (event.phase === "commit") draw(event.current); });
+        draw(program); return session;
+      });
+    });
+    const vector = await page.locator("#legend-vector svg").boundingBox();
+    const label = await page.locator("#legend-vector text").filter({ hasText: /^A$/ }).boundingBox();
+    const local = { x: label.x + label.width / 2 - vector.x, y: label.y + label.height / 2 - vector.y };
+    for (const [index, selector] of ["#legend-canvas", "#legend-vector svg"].entries()) {
+      const box = await page.locator(selector).boundingBox(), point = { x: box.x + local.x, y: box.y + local.y };
+      await page.mouse.move(point.x, point.y); await page.mouse.down(); await page.keyboard.press("Escape"); await page.mouse.up();
+      assert.equal(await page.evaluate(index => window.__legendSessions[index].getState().revision, index), 0);
+      await page.mouse.click(point.x, point.y);
+      assert.deepEqual(await page.evaluate(async index => { const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__legendSessions[index].getState().program, { target: "points" }).map(item => item.fields.id); }, index), ["b"]);
+      await page.mouse.click(point.x, point.y);
+      assert.deepEqual(await page.evaluate(async index => { const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__legendSessions[index].getState().program, { target: "points" }).map(item => item.fields.id); }, index), ["a", "b", "c"]);
+      assert.deepEqual(await page.evaluate(index => window.__legendPhases[index], index), ["cancel", "commit", "settled", "commit", "settled"]);
+    }
+    assert.deepEqual(await page.locator("#legend-canvas").evaluate(canvas => [canvas.width, canvas.height]), [1000, 700]);
+    await page.evaluate(() => window.__legendSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, "legend visibility"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

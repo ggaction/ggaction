@@ -33,8 +33,21 @@ createInteractionSession({program,bindings:[{type:'legend',effect:'selection',ta
 createInteractionSession({program,bindings:[{type:'legend',target:'points',channel:'color',selection:'picked'}]});
 // @ts-expect-error internal legend representation names are not public channels
 createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});
-// @ts-expect-error legend selection does not implement visibility
+// @ts-expect-error visibility has no selection ID and requires a domain policy
 createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',selection:'picked'}]});
+program.setMarkVisibility({target:{childPath:['right'],id:'points'},channel:'color',values:[1,'1',false],visible:false,scaleDomain:'all-data'});
+program.removeMarkVisibility();
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',scaleDomain:'visible-data',slop:0}]});
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'shape',values:['A'],visible:true,scaleDomain:'all-data'}});
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
+// @ts-expect-error visibility is Full-only
+basic().setMarkVisibility({channel:'color',values:['A'],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility does not accept null categories
+program.setMarkVisibility({channel:'color',values:[null],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility must choose its domain policy
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'color',values:['A'],visible:false}});
+// @ts-expect-error clear replaces the complete payload
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true,channel:'color'}});
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});

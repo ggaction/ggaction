@@ -1,9 +1,10 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeMarkSelector } from "./markSelection.js";
 import { retainLineGapBoundaries } from "./lineMissing.js";
+import { normalizeMarkVisibility } from "./markVisibility.js";
 
 const TRANSFORM_KEYS = Object.freeze([
-  "type", "target", "selector", "selectors"
+  "type", "target", "selector", "selectors", "visibility"
 ]);
 
 export function markFilterSelectors(transform) {
@@ -37,7 +38,12 @@ export function validateMarkFilterTransform(transform) {
   if (typeof transform.target !== "string" || transform.target.length === 0) {
     throw new TypeError("Mark filter target must be a non-empty string.");
   }
-  markFilterSelectors(transform);
+  if (Object.hasOwn(transform, "visibility")) {
+    if (Object.hasOwn(transform, "selector") || Object.hasOwn(transform, "selectors")) {
+      throw new TypeError("Visibility views cannot also own native filter selectors.");
+    }
+    normalizeMarkVisibility(transform.visibility);
+  } else markFilterSelectors(transform);
 }
 
 export function normalizeMarkFilterTransform(target, selectors) {

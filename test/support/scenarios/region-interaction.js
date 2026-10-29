@@ -50,6 +50,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertDirectControls(source);
   assertLinkedFilter(source);
   assertLegendSelection(source);
+  assertLegendVisibility(source);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -142,4 +143,28 @@ function assertLegendSelection(source) {
   listeners.get("click")(point);
   assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), []);
   session.destroy(); assert.equal(listeners.size, 0);
+}
+
+
+function assertLegendVisibility(source) {
+  const p = source.editCanvas({ width: 800, height: 500, margin: 140 }).encodeColor({ target: "mark", field: "category" })
+    .createLegend({ target: "mark", channels: ["color"], symbol: { layers: [{ type: "swatch", width: 14, height: 12 }] } });
+  const items = getMarkItems(p, { target: "mark" }), category = items[0].fields.category;
+  const expected = items.filter(item => item.fields.category !== category).map(item => item.key), before = serializeProgram(p);
+  for (const scaleDomain of ["visible-data", "all-data"]) {
+    const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "visibility", target: "mark", channel: "color", scaleDomain }] });
+    const listeners = new Map(), host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 800, height: 500 }),
+      addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) };
+    session.mount(host);
+    const legend = session.getState().scene.nodes.find(node => node.type === "rect" && node.properties.width === 14 && node.properties.height === 12);
+    const point = { clientX: legend.offset[0] + legend.properties.x + 7, clientY: legend.offset[1] + legend.properties.y + 6 };
+    listeners.get("click")(point);
+    const next = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(next, { target: "mark" }).map(item => item.key), expected);
+    assert.deepEqual(next.guideConfigs.legend.color?.domain ?? next.guideConfigs.legend.series.domain, p.guideConfigs.legend.color?.domain ?? p.guideConfigs.legend.series.domain);
+    for (const item of getMarkItems(next, { target: "mark" })) assert.ok(item.rows.some(row => row.data === "rows"));
+    listeners.get("click")(point); assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).map(item => item.key), items.map(item => item.key));
+    session.destroy(); assert.equal(listeners.size, 0);
+  }
+  assert.equal(serializeProgram(p), before);
 }

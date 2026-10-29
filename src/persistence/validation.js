@@ -6,7 +6,7 @@ import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
 import { validateImageBinding } from "../materialization/imageState.js";
 import { validateConcreteFontBindings } from "../materialization/fontState.js";
-import { validateConditionalDependencies } from "../materialization/resourceState.js";
+import { validateConditionalDependencies, validateMarkVisibilityState } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
 import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
@@ -573,6 +573,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       throw invalidSnapshot("Invalid filtered row provenance.", path);
     }
   }
+  validateMarkVisibilityState(program);
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {

@@ -46,6 +46,36 @@ export function findMarkFilterDataset(program, layer) {
   return dataset?.source !== undefined && transform?.type === "markFilter" && transform.target === layer.id ? dataset : undefined;
 }
 
+export function findMarkVisibilityDataset(program, layer) {
+  const dataset = findMarkFilterDataset(program, layer);
+  return dataset?.transform[0].visibility === undefined ? undefined : dataset;
+}
+
+// User filtering and visibility are separate, ordered final-item views.
+export function findNativeMarkFilterDataset(program, layer) {
+  const outer = findMarkFilterDataset(program, layer);
+  return outer?.transform[0].visibility === undefined ? outer
+    : findMarkFilterDataset(program, { ...layer, data: outer.source });
+}
+
+// Authored category order validates against the original filter source while
+// realized domains project onto the current view. Reject malformed cycles.
+export function unfilteredMarkDataset(program, layer) {
+  const seen = new Set();
+  let current = layer, dataset = findDataset(program, layer.data);
+  while (findMarkFilterDataset(program, current)) {
+    if (seen.has(dataset.id)) throw new Error("Cyclic mark-filter source.");
+    seen.add(dataset.id);
+    dataset = requireDataset(program, dataset.source);
+    current = { ...layer, data: dataset.id };
+  }
+  return dataset;
+}
+
+export function isEmptyMarkFilteredView(program, layer) {
+  return findMarkFilterDataset(program, layer)?.values?.length === 0;
+}
+
 export function findDatasetConsumer(program, source) {
   return program.semanticSpec.datasets.find(dataset => dataset.source === source);
 }

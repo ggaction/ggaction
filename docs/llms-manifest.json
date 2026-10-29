@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a4f60d37d56ea8e01effc9e26ef96a914a4993e87899a513c4815600ab78b5f5",
-    "sourceCommit": "b9bee2b487f7ec364183a41c5847ca2a88790e48",
+    "contractId": "sha256:7905a28acca11955fe0301d04dea89ecf4c3d17c113cb0488c972f8bcfabc60e",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "eda9efeb49559b5b61390097054c5764904cbf174570065c0e15047ca1663e16"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1247,11 +1247,12 @@
         "select-the-nearest-item",
         "keep-or-drop-hidden-selections",
         "select-categories-from-a-legend",
+        "hide-and-restore-categories-from-a-legend",
         "automatic-click-selection",
         "brush-or-lasso-an-existing-selection"
       ],
-      "bytes": 34997,
-      "sha256": "ca95806d1edf7988164544c225ecfb14462a76a8edf620051856d43cac0b7c90"
+      "bytes": 37762,
+      "sha256": "6fc6efb1bd2f28fa97739799ee5213a47de0075f4a457535cd1564f2a794864a"
     },
     {
       "order": 74,
@@ -2036,8 +2037,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36821,
-      "sha256": "8024096b4418b2956dceaf04337a62a5983a93fb3a8bb9867947c7c179240a9e"
+      "bytes": 37043,
+      "sha256": "04b8281d1f85a10c14d20d996c673f0add551fcfa6fbd02575801f6c9a8a960e"
     },
     {
       "order": 120,
@@ -2177,10 +2178,12 @@
         "editedgeroute",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
+        "setmarkvisibility",
+        "removemarkvisibility",
         "related"
       ],
-      "bytes": 254128,
-      "sha256": "559956c6467d15f71a6526fa3fc289d42dcfe22d0dc622c79f7b3b1f864ced2e"
+      "bytes": 254474,
+      "sha256": "3dbf3131a982f236eb9efcd0e719e6e1a8637b0a5beffe525502a19a567866ef"
     },
     {
       "order": 121,
@@ -2460,6 +2463,8 @@
       "headings": [
         "advanced-chart-actions",
         "encodechannels",
+        "setmarkvisibility",
+        "removemarkvisibility",
         "selectmarks",
         "editmarkselection",
         "removemarkselection",
@@ -2474,8 +2479,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 13467,
-      "sha256": "55a67c391887d91bdb3dbe8051577d3a7fb13b37646da3ba7bd4e19192b34b07"
+      "bytes": 16892,
+      "sha256": "2309cdaf3e7680b72a99f5b103e84d6478fe1e22a176456f88847c073035eafe"
     },
     {
       "order": 126,
@@ -2518,8 +2523,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 59986,
-      "sha256": "7c32270e93114bfa08bd02dd9b7eb1520ffae980d28536aeb79f08644839e9cd"
+      "bytes": 60893,
+      "sha256": "63d4d012b1e33e5e9b43968c1fe658cc366fbb51265af6bbffe39649d2d31a86"
     },
     {
       "order": 128,
@@ -3092,6 +3097,7 @@
         "type-markselectionselector",
         "type-markselector",
         "type-markshadow",
+        "type-markvisibilityoptions",
         "type-meanconfidenceintervalmethod",
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
@@ -3242,6 +3248,7 @@
         "type-removemarklabelsoptions",
         "type-removemarkoptions",
         "type-removemarkselectionoptions",
+        "type-removemarkvisibilityoptions",
         "type-removeparallelaxisoptions",
         "type-removeparameteroptions",
         "type-removepathorderoptions",
@@ -3366,8 +3373,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 464513,
-      "sha256": "42ef44086d547f6d66f8cc1c79fb68bbc196c1a14cee6069fddfc637c188a441"
+      "bytes": 465450,
+      "sha256": "032def033b0c516d95adb2e216ca15908c099e3bf7297439e017e0e7493851c1"
     },
     {
       "order": 129,
@@ -3401,8 +3408,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "a4f7fcab6ebdbb02c5d5c6d6456d5e4f478be05299ebd836f257ac7fe5165689"
+      "bytes": 20908,
+      "sha256": "1f59845331519e84008cbbf29d9692df72522a6f26bdbd39d72a11092af78e4e"
     },
     {
       "order": 131,
@@ -3741,8 +3748,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "77d6ab0b87d20e963a87b811d8bcfd35458b4a976821957c4ed73b78c21b8ed3"
+      "bytes": 3000,
+      "sha256": "e319224583c53bfcfe3a7c28dff0a87e649bc2ec173112018acd2184153cbe53"
     },
     {
       "order": 152,

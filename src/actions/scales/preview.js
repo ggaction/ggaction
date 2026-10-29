@@ -1,5 +1,7 @@
 import { resolveEffectiveThemeTokens } from "../theme/state.js";
 import { positionBindings } from "../../core/encodingBindings.js";
+import { visibilityScaleInput } from "../../materialization/markVisibility.js";
+import { isEmptyMarkFilteredView } from "../../selectors/datasets.js";
 import { resolveScaleRange } from "../../grammar/scales/index.js";
 import { resolvePolarFrame } from "../../grammar/polar.js";
 import { resolveArcAutoPositionRange, validateMeasuredRadiusConsumers } from "../../materialization/scales/policies/arc.js";
@@ -45,9 +47,11 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
     ? consumerChannels.values().next().value
     : families.values().next().value;
   const valuesByConsumer = consumers.map(consumer => {
+    const input = visibilityScaleInput(program, consumer);
+    const emptyFiltered = isEmptyMarkFilteredView(input.program, input.consumer.layer);
     if (
       facet?.empty === true ||
-      program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true ||
+      emptyFiltered ||
       (program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined &&
         ["x", "y", "x2", "y2"].includes(consumer.channel))
     ) {
@@ -56,15 +60,16 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
         values: [],
         categoryOrder: undefined,
         seriesLayout: undefined,
+        emptyFiltered,
         ...(program.markConfigs?.[consumer.layer.id]?.statisticalReference === undefined
           ? {}
           : { scalePolicy: false })
       };
     }
     return { consumer,
-      values: resolveConsumerValues(program, consumer),
-      categoryOrder: domain === undefined ? resolveConsumerCategoryOrder(program, consumer) : undefined,
-      seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) };
+      values: resolveConsumerValues(input.program, input.consumer),
+      categoryOrder: domain === undefined ? resolveConsumerCategoryOrder(input.program, input.consumer) : undefined,
+      seriesLayout: resolveSeriesLayoutScaleValues(input.program, input.consumer) };
   });
   const polarFrame = channel === "radius"
     ? resolveSharedRadiusFrame(program, consumers, bounds)

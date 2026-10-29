@@ -420,5 +420,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category."
+  },
+  {
+    "id": "interaction-legend-visibility",
+    "file": "api/interaction.md",
+    "contains": "const visibilitySession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items."
   }
 ]

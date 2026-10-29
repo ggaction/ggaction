@@ -7,7 +7,8 @@
 - [x] A: filter/reorder 직접 명령과 원자 lifecycle 연결
 - [x] B: linked filter의 origin/closure, hidden/drop 및 host focus 인수
 - [x] C1: categorical legend sample/label의 typed selection binding
-- [ ] legend visibility/selection, scale visible-data/all-data 정책
+- [x] C2: categorical legend visibility, 사용자 filter 합성 및 visible-data/all-data 정책
+- [ ] continuous/interval legend 조작의 원 카드 후행 범위
 - [ ] parameter controls, context action targets
 - [ ] annotation anchor/offset 편집
 - [ ] node drag, partition focus/breadcrumb, geo navigation 및 keyboard
@@ -169,3 +170,79 @@ strict TS와5bundle이 통과했고 Node22 설치 문서 예제는 클릭 결과
 Source `b9bee2b48` 고정 뒤 provenance→machine→LLM, owning docs47, built170pages/1454LLM을
 통과했다. Runtime/타입과 exact tar는 동일하고 source revision label만 바뀌므로 기존 네 폭 Axe0
 화면 증거를 재사용한다. Final source-free snippet은 같은 최종 tar `c6d8c8cb`로 실행했다.
+
+## C2 visibility 구현 계약
+
+기존 [포괄 승인](../AUTHORIZATION.json)을 재사용한다. 원 interaction 계약의 `setVisibility`와
+범례 visibility effect를 연결하며, 아래 구체안을 구현 전에 기록했다. 아래 행렬 범위의 구현과 검증을 마쳤다.
+
+- Full advanced domain `setMarkVisibility({target?,channel,values,visible,scaleDomain})`는 명시한
+  categorical legend block의 typed values를 숨기거나 복원한다. `visible`은 boolean,
+  `scaleDomain`은 필수 `"visible-data"|"all-data"`다. Values는 비어 있지 않은 중복 없는
+  원 범주 배열이다. Target 생략은 기존 유일 legend target 규칙만 재사용한다.
+- `removeMarkVisibility({target?})`는 visibility intent만 제거한다. 사용자가 만든 native
+  filter를 지우거나 다른 초기 상태로 reset하지 않는다. 기존 visibility가 없으면 오류다.
+- Session `setVisibility` command는 동일 target과 payload `{channel,values,visible,scaleDomain}`
+  또는 `{clear:true}`를 사용한다. `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}`
+  binding은 실제 current-frame category hit를 toggle한다. Authored selection 생성은 필요 없다.
+
+기존 markFilter가 사용자 filter intent와 final grain을 소유한다. Visibility는 그 결과를 source로
+갖는 별도 바깥 markFilter derived view다. Visibility recipe는 바깥 transform의 단일
+`visibility:{channels,field,hidden,scaleDomain}`에 저장하고, refs/empty realization만 mark config에 둔다.
+같은 row-provenance와 derived revision DAG를 재사용하며, hidden은 numeric/string을 합치지 않는다.
+Visibility 제거는 바깥 view만 제거한다. Native filter 편집/제거는 visibility를 내부 immutable
+후보에서 잠시 벗긴 뒤 원 filter를 수정하고 같은 visibility를 재적용한다. 중간 후보는 host로
+발행하지 않으며 오류 시 이전 program·selection·trace를 유지한다. LinkFilter도 이 native filter
+소유권을 유지하고 visibility와 합성한다. 사용자 filter가 제외한 항목을 visibility가 되살리지 않는다.
+
+`all-data`는 visibility 직전의 사용자 filter 결과이고, `visible-data`는 숨김을 적용한 final-item
+view다. 기존 explicit scale domain은 그대로 우선한다. 예외로 control legend의 categorical 채널은
+visibility 직전 범주와 매핑을 항상 유지한다. 이는 숨긴 범주를 다시 켤 수 있고, 살아 있는 범주의
+색상/shape/dash 의미가 숨김 때문에 바뀌지 않도록 하는 명시 정책이다. 다른 scale은 요청한 정책을
+따른다. Empty visible view는 기존 empty-filter domain 보존 정책을 재사용한다.
+
+새 renderer나 opacity 대체를 만들지 않는다. 실제 items/row membership을 제외하여 graphics,
+hit/inspection, source-dependent marks가 같은 view를 읽는다. 기존 keep-hidden/drop selection
+reconcile 뒤 linked closure가 한 번 닫힌다. Child snapshot/codec/data revision에서도 두 derived
+단계·원래 filter·hidden categories·control mapping을 함께 검증한다. Resource-backed 또는 composite
+target은 기존 final-item data-filter capability 경계를 넘지 않으며 미지원은 명시 거부한다.
+
+검증은 typed category 원행, point/category/series grain, 기존 filter와 hide/restore 양방향 순서,
+빈 view/unknown/new source category, all-data/visible-data의 literal domains, 동일 색상매핑,
+revision/codec·nested child·linked selection/filter 및 실제 Canvas/SVG 입력을 포함한다.
+공개 types/Current/action index/generated references와 fixed archive 소비자를 같은 checkpoint로 닫는다.
+
+
+### C2 검증 및 소비자 행렬
+
+[Qualification](legend-visibility-evidence/qualification.json)은 원본 실패와 수정 후 검사를 구분한다.
+`setMarkVisibility`/`removeMarkVisibility` 두 Full action, explicit session command와 categorical
+legend binding을 연결했다. Basic 및 non-independent/resource/composite final-item target은 원래
+native filter capability 경계에서 거부한다. 전체 STEP060/074/077 완료 표시는 하지 않는다.
+
+| 소비자 | 검증된 동작 |
+|---|---|
+| final grain / typed rows | point/category/line series, numeric1/string1/false 구분, 원 row order·identity와 행 lineage 보존 |
+| native filter / control legend | 사용자 필터 결과를 all-data 기준으로 사용, 어느 단계 먼저 생성해도 합성, 양쪽 개별 제거, 숨긴 범주와 이전 매핑 유지 |
+| domains / empty / bins | visible/all literal domain, explicit domain 우선, empty domain 보존, histogram partition·line gaps·stored category order 투영 |
+| revisions / stale bindings | parameter→computed→native filter→visibility DAG, source revision, dormant hidden 범주 복원, 변경된 control encoding 원자 거부 |
+| selections / linked closure | keep-hidden/drop, 원행/명시 fields projection, 숨김 중 native membership 변화도 commit, downstream closure·실패 trace 보존 |
+| nested / current frame | child scope와 형제 참조, semantic no-op은 동일 program/trace/revision, 실제 symbol/label hit·capture·cancel |
+| codec / consumers | 저장 recipe/ref/empty/provenance 검사, retained downstream snapshot, labels/highlights/hit 모두 같은 visible items |
+| renderer | 독립 literal primitive omission과 Canvas calls·SVG·PNG bytes·PDF streams 일치, editable/graphic codec 및 flattened Canvas scene 확인 |
+| browser / package / docs | Canvas/SVG DPR2 실제 toggle/cancel/restore, 동일 tar 세 Node runtime4·strict TS·5 bundles, 설치 공개 예제 실제 클릭 |
+
+새6owner의 lines/functions는100%, branches90.48–100%로 새 canonical95/90/100 floor를 만족한다.
+공유 owner 집중 coverage235와 새 owner56 이후 마지막 dormant hidden 보완은 owning22로 검증했고,
+변경한 visibility owner는100/92.50/100이다. 최종 source/type/session/discovery 최초35/37에서
+추가 render module의 잘못된 unit 위치2건을 발견해 기존 mark-selection-points slice로 옮겼다.
+정식 render runner1과 discovery16을 다시 통과했다. 실제5datasets×3recipes와 inventory16,
+실제 browser1, source docs47, built170pages/1458LLM, 320/390/768/1440 Axe0을 확인했다.
+
+최종 archive `cb065aa8`는988entries, Node22 packed1,413,676/unpacked6,442,865bytes다.
+Node20 pack 실측1,416,316으로 cap988/1,417,000/6,443,000을 설정했다. 동일 archive에서
+Node20/24 Full690,277/Basic378,363/interaction111,865gzip bytes가 최대값이므로 해당cap만
+690,300/378,400/111,900으로 최소 상향했다. Node20 runtime4/TS 성공 후 기존cap 실패를
+보존하고 같은 bundle측정에 새cap을 검증했으며, Node22/24는 새cap 포함 전체명령이 성공했다.
+Superseded `e582ecdc`는 dormant hidden 보완 전이므로 최종 증거로 세지 않는다.
+전수 coverage는 반복하지 않았고 root의 전체 통합 qualification 의무를 유지한다.

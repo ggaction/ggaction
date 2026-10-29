@@ -84,3 +84,13 @@ createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',targe
 createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'color',selection:'picked',mode:'toggle'}]});
 // @ts-expect-error internal representation is not a public legend channel
 createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});
+
+program.setMarkVisibility({channel:'color',values:[1,'1',false],visible:false,scaleDomain:'all-data'});
+program.removeMarkVisibility();
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',scaleDomain:'visible-data'}]});
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'shape',values:['A'],visible:true,scaleDomain:'all-data'}});
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
+// @ts-expect-error Basic has no visibility authoring
+basic().setMarkVisibility({channel:'color',values:['A'],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility requires an explicit policy
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'color',values:['A'],visible:false}});

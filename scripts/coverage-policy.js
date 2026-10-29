@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "mark-visibility": { prefix: "grammar/markVisibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Visibility decisions require bounded typed categories and explicit domain ownership." },
+  "visibility-materialization": { prefix: "materialization/markVisibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Visibility must preserve user filtering, control mappings and exact restored ownership." },
+  "visibility-actions": { prefix: "actions/data/visibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Two-stage filters must compose atomically and restore independent owners." },
+  "filter-geometry": { prefix: "actions/data/filterGeometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Filtered final items must preserve and restore native histogram bin partitions." },
+  "legend-category-identity": { prefix: "interaction/legendCategory.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Category effects share typed current-frame semantic guide identity." },
+  "interaction-legend-visibility": { prefix: "interaction/legendVisibility.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Legend visibility requires explicit scope and policy, bounded hit identity and native atomic closure." },
   "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
   "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
   "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },
