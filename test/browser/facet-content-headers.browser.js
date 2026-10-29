@@ -15,7 +15,7 @@ test.before(async () => {
   consumer = await preparePackageConsumer();
   await writeFile(path.join(consumer.directory, "index.html"),
     '<html lang="en"><head><meta charset="utf-8"><title>Content headers</title></head><body><p id="status" role="status">Ready</p></body></html>');
-  server = await startStaticServer(consumer.directory);
+  server = await startStaticServer(consumer.directory, { dependencies: "installed" });
   browser = await engines[name].launch({ headless: true });
 });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); await consumer?.cleanup(); });

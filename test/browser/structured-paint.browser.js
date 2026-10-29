@@ -38,7 +38,7 @@ function samples(variant) {
 test("public structured fills match independent samples in Browser Canvas and SVG", async () => {
   let server, browser;
   try {
-    server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
+    server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser, `${server.baseUrl}examples/structured-paints/`, {
       waitFor: () => document.querySelector("#status").textContent !== "Loading"
     });
@@ -74,7 +74,7 @@ test("public structured fills match independent samples in Browser Canvas and SV
 test("Browser structured Text paints retain rotated multiline glyph alpha", async () => {
   let server, browser;
   try {
-    server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
+    server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser, `${server.baseUrl}examples/structured-paints/`, {
       waitFor: () => document.querySelector("#status").textContent !== "Loading"
     });
@@ -127,7 +127,7 @@ test("Browser structured Text paints retain rotated multiline glyph alpha", asyn
 test("Text pattern phase stays periodic beyond estimated glyph bounds", async () => {
   let server, browser;
   try {
-    server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
+    server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser, `${server.baseUrl}examples/structured-paints/`, {
       waitFor: () => document.querySelector("#status").textContent !== "Loading"
     });

@@ -59,7 +59,7 @@ let browser;
 let server;
 
 test.before(async () => {
-  server = await startStaticServer(repositoryRoot);
+  server = await startStaticServer(repositoryRoot, { dependencies: "repository" });
   browser = await chromium.launch({ headless: true });
 });
 

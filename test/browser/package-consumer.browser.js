@@ -23,7 +23,7 @@ let server;
 test.before(async () => {
   consumer = await preparePackageConsumer();
   await writeFile(path.join(consumer.directory, "index.html"), await readFile(new URL("./fixtures/packed-consumer.html", import.meta.url), "utf8"));
-  server = await startStaticServer(consumer.directory);
+  server = await startStaticServer(consumer.directory, { dependencies: "installed" });
   browser = await chromium.launch({ headless: true });
 });
 

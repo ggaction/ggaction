@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "status": "owning-change-verified-integration-generation-pending",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "sourceBase": "6f524495f",
+  "sourceDelta": [
+    "src/materialization/conditionalValues.js"
+  ],
+  "artifact": {
+    "sha256": "3bb1d1e85d6e29a65f81b70760fc2dff2cf6a52335cbaa90b9a7afc16e35058d",
+    "entryCount": 1059,
+    "packedBytes": 1509149,
+    "unpackedBytes": 6886601,
+    "delta": [
+      "src/materialization/conditionalValues.js"
+    ]
+  },
+  "packageInputCount": 1059,
+  "tests": {
+    "unit": 6787,
+    "unitHostAdditional": 4,
+    "conditionalOwning": 30,
+    "contracts": {
+      "initial": 758,
+      "passed": 757,
+      "failed": 1,
+      "repairOwningPassed": 7,
+      "failedReason": "unpacked size 6886601 exceeded 6886000; measured minimum bound raised to 6887000"
+    },
+    "charts": 977,
+    "docs": 208,
+    "browser": 415,
+    "browserHostBoundaries": 30,
+    "browserHostOwning": 15,
+    "installedRuntimePerNode": 278
+  },
+  "coverage": {
+    "scope": "24 changed owners, not global release coverage",
+    "lines": 100,
+    "branches": 98.38,
+    "functions": 100,
+    "conditionalValuesBranches": 94.32
+  },
+  "logs": [
+    {
+      "file": "single-y-domain-repair-unit-coverage.log.gz",
+      "sha256": "54f53af83f7f777849e4d472652a9cdac38cb926992f456c0323394a45271903",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-conditional-domain-owning.log.gz",
+      "sha256": "ef48ff274a74f91eda4bf8b9b79c1589a7983baf56e3fa005cf7b1d20fc8a49a",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-contracts.log.gz",
+      "sha256": "6cf696b638f27bc3558cbea81a0a2cbe64a4f9766462c5be53193f753ec49114",
+      "status": "failed-package-ceiling-only"
+    },
+    {
+      "file": "single-y-domain-repair-package-contract.log.gz",
+      "sha256": "8884333dd9da3f5f2e01a5c2b3f5b63c018f52dc59617729ebeb715fc79fd457",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-charts.log.gz",
+      "sha256": "bb1738c138d9254548b991829bb5a29bf3ffd9c0d5861a79f5621f9b10a61875",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-docs.log.gz",
+      "sha256": "ba149dbc3f904163c55eebed650bcc2b33c7bee237ea6e7a9c611c0ef4036c4b",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-browser-repaired.log.gz",
+      "sha256": "98a2969547671d456910e7a34c3d2454ed60e84fc24021d40a06c4f4bbcc44f8",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-browser-dependencies-unit.log.gz",
+      "sha256": "d3fcafc2f6e79933169d390e43544c84ec547609faff905ee8d477139f231433",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-browser-dependencies-contracts.log.gz",
+      "sha256": "e4b9452d0ae9a3bc895e70be9fa526e66a2d2991209922846338fa5fc891a84d",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-browser-dependencies-owning.log.gz",
+      "sha256": "7470631dc9fe12826fd10a83ee8844937c713b452045821c470cdda0b2c9840c",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-browser-dependencies-unit-first.log.gz",
+      "sha256": "0d88f04742bc91131e32408d8d92e85a7f0362202cb0e3692f6e68cca5933319",
+      "status": "failed-preserved"
+    },
+    {
+      "file": "single-y-domain-repair-browser.log.gz",
+      "sha256": "84dceb0b12810b723c298bb92943696106d30c3e928baaa48e1e48513fda37c5",
+      "status": "interrupted-missing-import-map"
+    },
+    {
+      "file": "single-y-domain-repair-installed-20.log.gz",
+      "sha256": "59218a7d36bcb9e136657d01b05b5f7275e2a781be2f8256103edeef96b74345",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-installed-22.log.gz",
+      "sha256": "c1e3a9ed040cbc2da34cd9799ce76233873f0e7a779213b7d6a5654ef3009e7e",
+      "status": "passed"
+    },
+    {
+      "file": "single-y-domain-repair-installed-24.log.gz",
+      "sha256": "e84c5e2c6ba8d6dbf3951b3f473187ea17a285a60402b86a7d78f3210b6d9db3",
+      "status": "passed"
+    }
+  ],
+  "pending": [
+    "source pin metadata",
+    "canonical common lifecycle generator/isolation and independent witness panels",
+    "later roadmap slices and release qualification"
+  ]
+}

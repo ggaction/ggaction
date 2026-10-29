@@ -10,7 +10,7 @@ import{createRecipeOpacityProgram}from'../../examples/legend-recipe-opacity/prog
 import{openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence}from'../support/browser.js';
 import{startStaticServer}from'../support/static-server.js';
 let browser,server;
-test.before(async()=>{server=await startStaticServer(fileURLToPath(new URL('../../',import.meta.url)));browser=await chromium.launch({headless:true});});
+test.before(async()=>{server=await startStaticServer(fileURLToPath(new URL('../../',import.meta.url)), { dependencies: "repository" });browser=await chromium.launch({headless:true});});
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();});
 for(const entry of[{id:'legend-layout',factory:createGradientBlockProgram,opacity:null},...[0,.7,1].map(opacity=>({id:'legend-recipe-opacity',factory:()=>createRecipeOpacityProgram(opacity),opacity}))]){
  test(`${entry.id} ${entry.opacity??'gradient'} has exact browser Canvas and SVG primitive output`,async()=>{

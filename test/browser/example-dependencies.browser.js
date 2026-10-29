@@ -6,7 +6,7 @@ import { startStaticServer } from "../support/static-server.js";
 import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence } from "../support/browser.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 let server, browser;
-test.before(async () => { server = await startStaticServer(root); browser = await chromium.launch({ headless: true }); });
+test.before(async () => { server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
 for (const url of ["examples/browser-host/?chart=contours", "examples/inspect-chart/", "examples/getting-started/", "examples/cars-scatterplot/"]) test(`native example bootstrap loads ${url} without a bundler`, async () => {
   const { page, errors } = await openBrowserPage(browser, `${server.baseUrl}${url}`, { waitFor: () => {

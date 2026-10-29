@@ -12,7 +12,7 @@ test("Browser Canvas and SVG use the same top-title alignment without viewing pi
   await mkdir(path.join(root,".artifacts"),{recursive:true});const directory=await mkdtemp(path.join(root,".artifacts/legend-align-"));let server,browser;
   try{
     await writeFile(path.join(directory,"index.html"),'<!doctype html><canvas aria-label="Aligned legend title"></canvas><div id="svg"></div><p id="status">Ready</p>');
-    server=await startStaticServer(root);browser=await chromium.launch({headless:true});
+    server=await startStaticServer(root, { dependencies: "repository" });browser=await chromium.launch({headless:true});
     const opened=await openBrowserPage(browser,server.baseUrl+path.relative(root,directory)+"/",{waitFor:()=>document.querySelector("#status")?.textContent==="Ready"});
     const records=await opened.page.evaluate(async()=>{
       const{chart,render}=await import('/src/index.js');const{renderToSVG}=await import('/src/renderers/svg.js');const records=[];

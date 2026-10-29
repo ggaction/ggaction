@@ -26,7 +26,7 @@ test.before(async () => {
   await writeFile(path.join(consumer.directory, "grapheme-wrapping.js"),
     (await readFile(new URL("../support/text/grapheme-wrapping.js", import.meta.url), "utf8"))
       .replace('"../../../src/index.js"', '"/node_modules/ggaction/src/index.js"'));
-  server = await startStaticServer(consumer.directory);
+  server = await startStaticServer(consumer.directory, { dependencies: "installed" });
   browser = await browsers[browserName].launch({ headless: true });
 });
 test.after(async () => {

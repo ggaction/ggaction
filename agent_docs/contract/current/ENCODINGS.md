@@ -46,6 +46,8 @@ no Full-only action to the Basic entry.
 - Every distinct field/type/scale branch binding contributes its full final-item
   population to automatic domains, including inactive branches. Predicate truth does
   not filter statistical input. Detached contributions refresh surviving consumers.
+  Categorical color, stroke, shape and dash domains retain first-source appearance
+  order after final-item eligibility validation; aggregate cell order does not rename colors.
   `emptyDomain` follows the existing explicit preserve/require-explicit policy.
 - One unique field/type/scale binding can drive an existing legend. Multiple bindings
   are explicitly ambiguous; assigning them with an existing affected legend rejects

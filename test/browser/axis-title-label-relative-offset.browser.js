@@ -14,7 +14,7 @@ test.before(async () => {
   await mkdir(path.join(root, ".artifacts"), { recursive: true });
   temporary = await mkdtemp(path.join(root, ".artifacts/title-label-relative-"));
   await writeFile(path.join(temporary, "index.html"), "<!doctype html><title>Relative axis titles</title>");
-  server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
+  server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true });
 });
 test.after(async () => {
   await closeBrowserWithEvidence(browser); await server?.close();

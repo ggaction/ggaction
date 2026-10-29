@@ -12,7 +12,7 @@ import { startStaticServer } from "../support/static-server.js";
 test("canonical named-shapes browser Canvas and SVG preserve the independent literal scene", async () => {
   let server, browser;
   try {
-    server=await startStaticServer(fileURLToPath(new URL("../../",import.meta.url)));
+    server=await startStaticServer(fileURLToPath(new URL("../../",import.meta.url)), { dependencies: "repository" });
     browser=await chromium.launch({headless:true});
     const {page,errors}=await openBrowserPage(browser,new URL("examples/named-shapes/",server.baseUrl).href,{
       waitFor:()=>{const text=document.querySelector("#status")?.textContent??"";return text.length>0&&!/^Loading\b/i.test(text);}

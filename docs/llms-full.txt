@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:70e26ded7003c849362d2fa7345037f749c7f6d303a0927ff8dd6feb16e38722. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -7872,6 +7872,8 @@ scales stay live until the encoding is replaced or removed.
 Field branches contribute their complete final-item populations to automatic
 scale domains. Conditions select values without filtering the input population. Use a
 [parameterized data filter](./data-updates/) to change statistical input.
+Categorical color, stroke, shape and dash domains retain their source appearance
+order, including when aggregation changes the order of the displayed items.
 Appearance on paths and aggregate marks requires one branch value and one predicate result per
 final item; provide the existing grouping or aggregate when needed. Branches
 cannot introduce different grouping, stacking, or layout policies.
@@ -53272,7 +53274,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:70e26ded7003c849362d2fa7345037f749c7f6d303a0927ff8dd6feb16e38722` |
+| Contract fingerprint | `sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7` |
 | Example and dataset source | `0a46877e019d00163dc55c681ce4833b14d8e541` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -21,7 +21,7 @@ test("Browser Canvas and SVG render two separately positioned lines",async()=>{
  function bands(context){const pixels=context.getImageData(185,135,30,45).data;const occupied=[];for(let y=0;y<45;y++){let ink=false;for(let x=0;x<30;x++){const i=(y*30+x)*4;if(pixels[i+3]>0&&pixels[i]<180){ink=true;break;}}if(ink)occupied.push(y);}let n=0,last=-2;for(const y of occupied){if(y>last+1)n++;last=y;}return n;}
  window.multiline={canvas:bands(canvas.getContext('2d')),svg:bands(ctx),tspans:(svg.match(/<tspan/g)||[]).length};document.querySelector('#status').textContent='Ready';
  </script></body></html>`);
- server=await startStaticServer(root);browser=await chromium.launch({headless:true});
+ server=await startStaticServer(root, { dependencies: "repository" });browser=await chromium.launch({headless:true});
  const opened=await openBrowserPage(browser,server.baseUrl+path.relative(root,directory)+"/",{waitFor:()=>window.multiline!==undefined});
  assert.deepEqual(await opened.page.evaluate(()=>window.multiline),{canvas:2,svg:2,tspans:2});
  assertNoBrowserErrors(opened.errors,"multiline text");await opened.page.close();

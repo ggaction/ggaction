@@ -6,7 +6,7 @@ import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveB
 import { startStaticServer } from "../support/static-server.js";
 
 let browser, server;
-test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
+test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url)), { dependencies: "repository" }); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
 
 for (const ratio of [1, 2]) test(`edge route Canvas, SVG and actual worker agree at DPR ${ratio}`, async () => {

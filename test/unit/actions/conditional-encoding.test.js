@@ -18,6 +18,38 @@ function base() { return chart().createCanvas({ width: 400, height: 300, margin:
   .createData({ id: "raw", values: [{ id: "a", x: 1, y: 2, group: "A" }, { id: "b", x: 2, y: 4, group: "B" }, { id: "c", x: 3, y: 6, group: "C" }], keyField: "id" })
   .createScatterPlot({ id: "points", data: "raw", x: "x", y: "y" }); }
 
+test("conditional categorical appearance retains source order when aggregate cells reorder categories", () => {
+  const values = [
+    { category: "one", group: "A", value: 2 },
+    { category: "two", group: "B", value: 3 },
+    { category: "one", group: "C", value: 5 },
+    { category: "two", group: "A", value: 7 }
+  ];
+  for (const layout of ["stack", "group", "overlay"]) {
+    const initial = chart().createCanvas({ width: 600, height: 400, margin: 60 })
+      .createData({ id: "raw", values })
+      .createBarPlot({ id: "bars", data: "raw", x: { field: "category", fieldType: "nominal" },
+        y: { field: "value", aggregate: "sum" }, guides: false });
+    const binding = { field: "group", layout, scale: { id: "groups" } };
+    const ordinary = initial.encodeColor({ target: "bars", ...binding });
+    const saved = serializeProgram(ordinary);
+    assert.deepEqual(ordinary.resolvedScales.groups.domain, ["A", "B", "C"]);
+    for (const predicate of [false, true]) {
+      const conditional = condition(binding, binding, expression(literal(predicate)));
+      for (const result of [ordinary.encodeColor({ target: "bars", ...conditional }),
+        ordinary.encodeChannels({ target: "bars", channels: { color: conditional } })]) {
+        assert.deepEqual(result.resolvedScales.groups.domain, ["A", "B", "C"]);
+        assert.deepEqual(result.graphicSpec.objects.bars.items, ordinary.graphicSpec.objects.bars.items);
+        const withLegend = result.createLegend({ target: "bars", channels: ["color"] });
+        assert.deepEqual(withLegend.guideConfigs.legend.color.domain, ["A", "B", "C"]);
+        const restored = deserializeProgram(serializeProgram(withLegend)).editCanvas({ width: 700 });
+        assert.deepEqual(restored.resolvedScales.groups.domain, ["A", "B", "C"]);
+      }
+    }
+    assert.equal(serializeProgram(ordinary), saved);
+  }
+});
+
 test("constant and conditional stroke widths preserve an existing conditional stroke owner", () => {
   const original = base().encodeStroke(condition({ value: "red" }, { value: "blue" }));
   for (const result of [original.encodeStrokeWidth({ value: 2 }),

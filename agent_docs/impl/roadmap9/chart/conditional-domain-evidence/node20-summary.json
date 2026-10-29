@@ -1,0 +1,53 @@
+{
+  "node": "v20.20.2",
+  "source": "6f524495f-with-exact-input-sha256-delta",
+  "archive": "3bb1d1e85d6e29a65f81b70760fc2dff2cf6a52335cbaa90b9a7afc16e35058d",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "results": {
+    "node": {
+      "count": 278
+    },
+    "mcp": {
+      "coldStartMilliseconds": 658.679375000007
+    },
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 975,
+      "minifiedBytes": 2599680,
+      "gzipBytes": 743860
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 575,
+      "minifiedBytes": 1360734,
+      "gzipBytes": 398278
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    "ggaction/graph": {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 80,
+      "minifiedBytes": 146171,
+      "gzipBytes": 43759
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 183,
+      "minifiedBytes": 349638,
+      "gzipBytes": 112814
+    }
+  },
+  "status": "passed"
+}

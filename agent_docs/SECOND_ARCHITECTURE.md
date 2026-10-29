@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 743,700 bytes |
+| `ggaction` | 743,900 bytes |
 | `ggaction/basic` | 398,300 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 112,900 bytes |
@@ -3943,3 +3943,14 @@ Pyramid·OHLC·Waterfall의 complete chart action은 순수 후보 검증과 sca
 owner의 기존 wrapped `materialize*Plot`이 담당한다. 따라서 facade가 primitive를 직접 쓰지 않으며
 독립된 의미 적용과 materialization 단계가 trace에 남는다. Public API, 저장 state와 renderer 경계는
 동일하다. 정확 계약과 internal 등록은 기존 Current 및 internal action inventory가 소유한다.
+
+### Conditional category order integration measurement
+
+최종 item grain의 검증을 유지하면서 categorical appearance의 원본 등장 순서를 보존한
+canonical package는 1059 entries/1509149 packed/6886601 unpacked bytes다. 기존
+6886000 unpacked 한도를 초과하여 다음 최소 1000-byte 한도 6887000으로 조정한다.
+Entries 1059와 packed 1510000은 유지한다. 같은 archive의 Node20/24 browser Full은
+743860 gzip bytes로 기존 743700을 초과하여 최소 100-byte 한도 743900을 적용한다.
+Basic 398278은 기존 398300 안이며 SVG/Graph/Interaction 한도도 유지한다.
+[정확한 입력·실행 증거](impl/roadmap9/chart/conditional-domain-evidence/status.json)를 보존한다.
+이 수치는 registry 배포나 roadmap 전체 완료를 뜻하지 않는다.

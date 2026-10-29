@@ -6,7 +6,7 @@ import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveB
 import { startStaticServer } from "../support/static-server.js";
 import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
-test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
+test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url)), { dependencies: "repository" }); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
 test("host buttons and keyboard commit filter and reorder to the same Canvas and SVG view", async () => {
   const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
