@@ -1,0 +1,43 @@
+{
+  "label": "suite-docs",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/docs/documentation-coverage.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 4696,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-29T00:40:51.899Z",
+  "finishedAt": "2026-10-29T00:40:56.596Z",
+  "source": {
+    "available": true,
+    "commit": "4c7ca8379649235cc282672b11fda4c74f7f628a",
+    "clean": false,
+    "statusSha256": "1171d2eb408a833da910c0c82472876271fee3926afb20a9ea2c635afdc8871f"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "4c7ca8379649235cc282672b11fda4c74f7f628a",
+    "clean": false,
+    "statusSha256": "1171d2eb408a833da910c0c82472876271fee3926afb20a9ea2c635afdc8871f"
+  },
+  "logSha256": "7c1b74f1c967f53ea5b7297bc1ac55d6a816279d35fc93693b5fb2298045f47e",
+  "discovery": {
+    "suite": "docs",
+    "selectors": [
+      "test/docs/documentation-coverage.test.js"
+    ],
+    "files": [
+      "test/docs/documentation-coverage.test.js"
+    ]
+  },
+  "bytes": 4235,
+  "retainedBytes": 4235,
+  "truncated": false
+}

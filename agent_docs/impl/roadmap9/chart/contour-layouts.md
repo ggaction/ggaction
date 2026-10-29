@@ -6,8 +6,8 @@
 - [x] 남은 설계·시각 Gate의 기존 명시 승인 기록
 - [x] 순수 grid/marching/ring 계산과 독립 수치·위상 oracle
 - [x] 명시 histogram/KDE → 같은 scalar grid
-- [ ] 공개 resource/action·저장·revision·소비자 계약 구체화와 구현
-- [ ] 모든 renderer·타입·문서·실제 자료·설치 검증 및 checkpoint
+- [x] 공개 resource/action·저장·revision·소비자 계약 구체화와 구현
+- [x] 현재 공개 범위의 renderer·타입·문서·실제 자료·설치 검증 및 checkpoint (후행 STEP033/035 의무 별도)
 
 승인은 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다.
 사용자의 STEP077까지 남은 설계·시각 결정을 포함한 명시 승인으로 질문을 반복하지 않는다.
@@ -74,11 +74,11 @@ package dry-run은 Node20/22/24에서825entries, 최대1,206,098packed/5,540,055
 
 ## 후행 공개 소비자 의무
 
-이 기록의 현재 결과는 private 계산뿐이다. 공개 resource/action·persisted schema와
+68124d29e의 독립 checkpoint는 private 계산뿐이었다. 당시 공개 resource/action·persisted schema와
 point-density estimator/bandwidth/normalization, source provenance, 정확한 revision closure,
 contour-line/filled mark의 position/color/guide/selection/composition·모든 backend·scene·codec·
-types·installed consumer는 STEP023의 필수 범위로 남아 있다. 단순 heatmap 대체는 하지 않는다.
-공개 primitive와 dataflow를 구체화한 뒤 같은 승인 범위에서 구현·검증하며 AT24를 닫는다.
+types·installed consumer는 STEP023의 필수 범위로 남겨 두었으며 아래 공개 checkpoint에서 구현·검증했다.
+단순 heatmap 대체는 하지 않는다. AT24의 후행 closure는 원본 acceptance 연결을 유지한다.
 
 ## 공개 구현 계약
 
@@ -114,7 +114,7 @@ Source revision은 geometry→shared scales→marks/guides→selection을 사전
 identity에는 resource lineage와 exact source rows를 결박하고 source revision에도 같은 level/band key를
 유지한다. 빈 level metadata는 남기지만 가짜 drawable을 만들지 않는다.
 
-### Public consumer checkpoint progress
+### 공개 구현 중간 검증 기록
 
 공개 자원·마크·원본 갱신·복원·선택 경계 17개, 수치/차트 통합 focused coverage 40개가 통과했다. 새 owner의 coverage는 lines 100 / branches 97.25 / functions 100이며 기존 family floor(95/90/100)는 변경하지 않았다. 동일 source의 모든 geometry 후보를 먼저 계산·preflight하고 공유 scales/marks/guides union을 최종 상태에서 한 번 materialize한다. 두 geometry 공유 scale과 두 번째 후보 실패의 원자성 회귀가 포함된다.
 
@@ -128,3 +128,37 @@ Partition을 함께 유지한다. Contour는 기존 outline/shadow normalize 및
 사용하고 false reset을 지원하며 각 graphic/scene의 exact prepared shadow handle을 사용한다.
 applyTheme의 새 resource role 연결은 STEP033 소비자 의무로, implicit facet/repeat는 STEP035
 geometry partition 정책 의무로 인계하며 현재 공개 지원 범위와 구분한다.
+
+
+### 공개 checkpoint 검증 종료
+
+최종 library source는 `4c7ca8379649235cc282672b11fda4c74f7f628a`다. 수치·geometry·source closure는
+main 통합 source `4732ea8e`와 동일하며 이후 변경은 Flow selector의 필수 `roles` 직접조회 2줄뿐이다.
+관측·추론 graph가 모두 필수 roles를 저장하므로 missing roles에서 첫 input을 고르는 fallback을 제거했다.
+Malformed layout/roles 및 데이터 후보 유일성 회귀 33/33, datasets 100/97.56/100과 flow 100/100/100이다.
+
+전체 coverage 원본은 7,742/7,747, global 96.56/94.45/98.97로 보존했다. 실패 5개는 생성 provenance/LLM
+3개, geometry lineage fixture, realistic timing manifest였으며 owning checks로 회복했다. 문서 재생성 뒤
+드러난 새 5개 action의 CHANGELOG 누락도 보완해 owning 18/18을 통과했다. Global 수치를 합성하지 않는다.
+Critical 398개 중 원본에서 396개, 보완 focused에서 2개를 충족했고 기존 floor를 낮추지 않았다.
+새 Contour 16개 owner는 모두 lines/functions 100%, branches 최소 94.90%다.
+
+전체 render assertion 349/349 뒤 기존 outline/shadow gallery identity 3곳을 바로잡아 해당 3개 backend
+회귀 및 342개 gallery(검토 대기 0)를 통과했다. standalone host의 font example import를 public source
+entry로 수정해 전체 browser 345/345를 통과했으며 installed copier는 그 정확한 entry만 `ggaction`으로
+변환한다. Flow selector 수정 후 영향 render 8/8와 browser 4/4도 통과했다.
+
+최종 actual-data 5개 × 3 recipe 및 inventory 16/16, canonical lifecycle/inventory 10/10을 통과했다.
+Public 333 actions, 30,327 option paths와 35,873 ledger requirements를 동기화했다.
+고정 tar `dd68aae37170fbe1acbeb4ed22cb5ed138d013ebbaac35ec80cd2759904c482c`는 880 entries,
+1,277,130 packed / 5,875,530 unpacked bytes이며 Node 20.20.2/22.23.1/24.22.1 각각 runtime 231,
+tutorial 82, qualification 7개가 모두 통과했다. Source docs 177/178 + CHANGELOG 보완 owning 18/18,
+별도 support/executable 89/89, built 162페이지/1,408 selective artifacts 및 desktop search·320/390/768px
+전 페이지 containment/accessibility 검사도 통과했다.
+
+원본 실패, 영향 수리, source hashes, 같은 tar 설치와 정확한 명령은
+[contour-checkpoint.json](contour-checkpoint.json)과 [증거 manifest](contour-evidence/manifest.json)에 있다.
+원본 full run을 최종 전체 green run으로 바꾸어 주장하지 않는다. Root의 최종 통합에서는 공통 realistic
+3파일을 한 번 실행하며 source geometry preflight/scale-mark union을 graph/Flow closure와 함께 유지한다.
+STEP033 applyTheme 역할과 STEP035 implicit facet/repeat geometry partition은 후행 통합 의무다.
+현재 hconcat/vconcat 및 scoped edit 지원과 구분하며 사용자 요구를 삭제하거나 전체 STEP077 완료로 닫지 않는다.

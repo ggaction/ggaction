@@ -1,0 +1,337 @@
+{
+  "status": "verified-conceptual-checkpoint",
+  "sourceCommit": "4c7ca8379649235cc282672b11fda4c74f7f628a",
+  "integratedBase": "f1800607d09cead3b1131a5b4e7fa663e6f67a5a",
+  "recordedAt": "2026-10-29T00:45:50.825074+00:00",
+  "scope": "STEP023 grid and density contour public slice; STEP033 theme and STEP035 partition integrations remain explicit",
+  "fullRun": {
+    "command": "node scripts/run-tests.js coverage",
+    "source": "4732ea8e195ce1edfb9814c2f0e6130d2efa9282",
+    "tests": 7747,
+    "passed": 7742,
+    "failed": 5,
+    "failures": [
+      "Documentation provenance freshness",
+      "Selective LLM freshness",
+      "Full LLM freshness",
+      "Resource lineage test assumed layout instead of geometry",
+      "Realistic timing manifest omitted contour file"
+    ]
+  },
+  "coverage": {
+    "totalCriticalFloors": 398,
+    "originalPassed": 396,
+    "sourcePresence": "passed",
+    "originalGlobal": {
+      "lines": 96.56,
+      "branches": 94.45,
+      "functions": 98.97
+    },
+    "repairs": [
+      {
+        "path": "selectors/datasets.js",
+        "floor": {
+          "lines": 80,
+          "branches": 80,
+          "functions": 80
+        },
+        "original": {
+          "lines": 87.84,
+          "branches": 87.1,
+          "functions": 78.57
+        },
+        "focused": {
+          "lines": 100,
+          "branches": 97.56,
+          "functions": 100
+        }
+      },
+      {
+        "path": "selectors/flow.js",
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "original": {
+          "lines": 100,
+          "branches": 83.33,
+          "functions": 100
+        },
+        "focused": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        }
+      }
+    ],
+    "floorsLowered": false,
+    "runtimeChangesAfterFullRun": [
+      "src/selectors/flow.js"
+    ],
+    "note": "Original full normal and global coverage remain unchanged. Focused owner proofs are separate; no synthetic merged global coverage.",
+    "newContourOwners": {
+      "actions/contours/closure.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "actions/contours/marks.js": {
+        "lines": 100,
+        "branches": 94.9,
+        "functions": 100
+      },
+      "actions/contours/resources.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/density.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/grid.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/input.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/layout.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/marching.js": {
+        "lines": 100,
+        "branches": 95.16,
+        "functions": 100
+      },
+      "grammar/contour/plot.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/contour/rings.js": {
+        "lines": 100,
+        "branches": 96.72,
+        "functions": 100
+      },
+      "materialization/contour/plot.js": {
+        "lines": 100,
+        "branches": 95.65,
+        "functions": 100
+      },
+      "materialization/contour/resources.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "materialization/contour/scaleValues.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "materialization/contour/state.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "materialization/selection/policies/contour.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "selectors/contours.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  },
+  "repairs": [
+    {
+      "command": "node --test test/unit/actions/data/row-lineage.test.js test/unit/support/test-sharding.test.js",
+      "tests": 10,
+      "passed": 10,
+      "sourceChanged": false
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include='src/selectors/datasets.js' --test-coverage-include='src/selectors/flow.js' test/unit/selectors/datasets.test.js test/unit/resources/flow-state.test.js test/unit/resources/flow-resources.test.js test/unit/resources/flow-plots.test.js test/unit/resources/flow-consumers.test.js test/unit/resources/graph-flow-closure.test.js",
+      "tests": 33,
+      "passed": 33,
+      "sourceChanged": [
+        "src/selectors/flow.js"
+      ],
+      "reason": "Remove unreachable first-input fallback: both graph domains require exact stored node/edge roles; malformed roles now fail closed."
+    },
+    {
+      "command": "npm run docs:generate && node scripts/run-tests.js docs",
+      "tests": 178,
+      "passed": 177,
+      "failed": 1,
+      "reason": "Freshness repaired; remaining assertion exposed missing CHANGELOG mentions of five new Contour actions."
+    },
+    {
+      "command": "node scripts/run-tests.js docs test/docs/documentation-coverage.test.js",
+      "tests": 18,
+      "passed": 18,
+      "reason": "Added five public action names to CHANGELOG; no library source change."
+    }
+  ],
+  "evidence": {
+    "render": {
+      "originalAssertions": 349,
+      "originalWrapper": "failed after assertions on three pre-existing outline/shadow gallery metadata names",
+      "repairedBackendTests": 3,
+      "galleryVariants": 342,
+      "reviewVariants": 0,
+      "afterSelectorFix": 8
+    },
+    "browser": {
+      "original": "interrupted after deterministic bare ggaction import failures in standalone hosts",
+      "repair": "font example imports public source entry; installed support rewrites only that exact entry to ggaction",
+      "full": 345,
+      "afterSelectorFix": 4
+    },
+    "docs": {
+      "sourceFull": {
+        "passed": 177,
+        "total": 178
+      },
+      "sourceRepair": 18,
+      "supportAndExecutable": 89,
+      "builtPages": 162,
+      "builtArtifacts": 1408,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearchAndAccessibility": true
+    },
+    "realistic": {
+      "contourTests": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "lifecycleInventoryTests": 10,
+      "publicActions": 333,
+      "optionPaths": 30327,
+      "ledgerRequirements": 35873
+    },
+    "installed": {
+      "artifact": {
+        "sha256": "dd68aae37170fbe1acbeb4ed22cb5ed138d013ebbaac35ec80cd2759904c482c",
+        "entryCount": 880,
+        "size": 1277130,
+        "unpackedSize": 5875530
+      },
+      "nodes": [
+        {
+          "node": "v20.20.2",
+          "runtime": 231,
+          "tutorials": 82,
+          "qualifications": 7,
+          "bundles": {
+            "full": {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 791,
+              "minifiedBytes": 2275111,
+              "gzipBytes": 643483
+            },
+            "basic": {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 514,
+              "minifiedBytes": 1238062,
+              "gzipBytes": 361187
+            },
+            "svg": {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            }
+          }
+        },
+        {
+          "node": "v22.23.1",
+          "runtime": 231,
+          "tutorials": 82,
+          "qualifications": 7,
+          "bundles": {
+            "full": {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 791,
+              "minifiedBytes": 2275111,
+              "gzipBytes": 642391
+            },
+            "basic": {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 514,
+              "minifiedBytes": 1238062,
+              "gzipBytes": 360496
+            },
+            "svg": {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20055
+            }
+          }
+        },
+        {
+          "node": "v24.22.1",
+          "runtime": 231,
+          "tutorials": 82,
+          "qualifications": 7,
+          "bundles": {
+            "full": {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 791,
+              "minifiedBytes": 2275111,
+              "gzipBytes": 643483
+            },
+            "basic": {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 514,
+              "minifiedBytes": 1238062,
+              "gzipBytes": 361187
+            },
+            "svg": {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            }
+          }
+        }
+      ],
+      "original22": "Previous tar passed 231 runtime cases and 6/7 qualifications; font-support copier failed, then 82 tutorial cases passed separately. Final tar passed every qualification on all three Nodes."
+    }
+  },
+  "remainingIntegrationObligations": [
+    "STEP033: bind Contour body roles through applyTheme using the existing shared paint/effect owners.",
+    "STEP035: define geometry/source partition semantics for implicit facet/repeat; current API explicitly rejects them, while hconcat/vconcat and scoped edits are supported.",
+    "Parent final union: rerun shared lifecycle-factor-effects, scenario-generator and scenario-generation-isolation after combining new builders; already assigned to root.",
+    "Parent merge: preserve geometry source preflight and final shared scale/mark union alongside inference and Flow revision closure; regenerate shared inventories and remeasure aggregate package."
+  ],
+  "releaseActions": {
+    "pullRequest": false,
+    "packagePublish": false,
+    "documentationDeploy": false
+  },
+  "evidenceManifest": "contour-evidence/manifest.json"
+}

@@ -1,0 +1,6 @@
+{
+  "pid": 73002,
+  "command": "node scripts/run-tests.js browser",
+  "reason": "Confirmed shared browser-host registry bare import failure. Original output retained; no timeout or pass claim.",
+  "runtimeSourceChanged": false
+}

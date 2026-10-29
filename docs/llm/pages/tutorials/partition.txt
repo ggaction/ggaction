@@ -1,6 +1,6 @@
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-contour/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/4c7ca8379649235cc282672b11fda4c74f7f628a/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
