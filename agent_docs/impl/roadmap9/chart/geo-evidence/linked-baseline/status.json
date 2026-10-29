@@ -316,6 +316,16 @@
     {
       "file": "merge-routes.log.gz",
       "sha256": "790c890905e735f866497bed35b32525aca18dff280fa76118314997b6483f2c"
+    },
+    {
+      "file": "merge-postcommit-docs.log.gz",
+      "sha256": "0a1c7a019ff96c516665d0c7711392b623cfc790dfa50545d45f5d4589f5a6e0"
     }
-  ]
+  ],
+  "sourceCommit": "3df2f4bd3",
+  "postCommitDocumentation": {
+    "sourceTests": 186,
+    "provenance": "3df2f4bd3",
+    "runtimeInputsUnchanged": true
+  }
 }
