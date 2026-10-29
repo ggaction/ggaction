@@ -1,3 +1,4 @@
+import { calendarSelectionPolicy } from "./calendar.js";
 import { imageSelectionPolicy } from "./image.js";
 import { contourSelectionPolicy } from "./contour.js";
 import { graphSelectionPolicy } from "./graph.js";
@@ -24,6 +25,7 @@ import { resolveOverlayItems } from "../items/overlay.js";
 const POLICIES = Object.freeze({
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
+  calendar: calendarSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
   "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,

@@ -1107,5 +1107,19 @@
     "editSource": "examples/responsive-guides/program.js",
     "description": "Use a fixed outer size when a chart must fit an existing panel. The Canvas policy reserves space for guides, and the label policy decides how much text can fit.",
     "image": "/assets/images/responsive-guides.png"
+  },
+  "/api/calendar/": {
+    "title": "Calendar Plots",
+    "source": "docs/api/calendar.md",
+    "editSource": "docs/api/calendar.md",
+    "description": "Aggregate observations by civil day and place each date in a week/weekday cell. These chart authoring actions require the Full ggaction entry point.",
+    "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/calendar/": {
+    "title": "Place Observations on a Calendar",
+    "source": "docs/tutorials/calendar.md",
+    "editSource": "examples/calendar/program.js",
+    "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
+    "image": "/assets/images/calendar.png"
   }
 }

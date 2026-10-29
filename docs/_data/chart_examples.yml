@@ -2108,3 +2108,50 @@
   actions: createCanvas · createBarPlot · editCanvas
   tasks: responsive labels
   url: /tutorials/responsive-guides/
+
+- id: calendar
+  tutorial_order: 230
+  example: /examples/calendar/
+  title: A leap year, one cell per civil day
+  image: /assets/images/calendar.png
+  alt: 2024 contains 366 days. Pale cells have no recorded observation.
+  width: 2160
+  height: 720
+  thumbnail: /assets/images/calendar-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 213
+  caption: 2024 contains 366 days. Pale cells have no recorded observation.
+  summary: Place civil-day aggregates in stable week and weekday cells.
+  actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
+  tasks: calendar dates
+  url: /tutorials/calendar/
+- id: calendar-monday
+  example: /examples/calendar-monday/
+  title: Weeks begin on Monday
+  image: /assets/images/calendar-monday.png
+  alt: The dates and values stay the same; the shared calendar grid changes.
+  width: 2160
+  height: 720
+  thumbnail: /assets/images/calendar-monday-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 213
+  caption: The dates and values stay the same; the shared calendar grid changes.
+  summary: Place civil-day aggregates in stable week and weekday cells.
+  actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
+  tasks: calendar dates
+  url: /tutorials/calendar/
+- id: calendar-omitted
+  example: /examples/calendar-omitted/
+  title: Omit unobserved days
+  image: /assets/images/calendar-omitted.png
+  alt: Only observed days keep their cells; calendar positions remain fixed.
+  width: 2160
+  height: 720
+  thumbnail: /assets/images/calendar-omitted-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 213
+  caption: Only observed days keep their cells; calendar positions remain fixed.
+  summary: Place civil-day aggregates in stable week and weekday cells.
+  actions: createCalendarLayout · createCalendarPlot · editCalendarPlot
+  tasks: calendar dates
+  url: /tutorials/calendar/

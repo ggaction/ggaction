@@ -446,7 +446,7 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length", "offset", "itemGap"]
+    if (!["color", "fill", "emptyFill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length", "offset", "itemGap"]
       .includes(property)) {
       return { changed: false, value };
     }

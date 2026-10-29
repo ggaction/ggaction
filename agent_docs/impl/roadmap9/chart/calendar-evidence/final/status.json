@@ -1,0 +1,446 @@
+{
+  "status": "verified-owning-checks-after-preserved-original-failures",
+  "runtimeSourceCommit": "80b84bac1",
+  "qualificationInputCommit": "83fffcfd883b04192b0c1da2195b5f301dd7f12e",
+  "mergedBaseline": "2d92baea0b7f72f288f0d9d16784a64d677c3abc",
+  "runtimeAndPackedInputsUnchangedAfterQualification": true,
+  "fullCoverage": {
+    "global": {
+      "lines": 96.66,
+      "branches": 94.59,
+      "functions": 99.02
+    },
+    "criticalOwnerCount": 434,
+    "originalFull": {
+      "tests": 7965,
+      "passed": 7957,
+      "failed": 8
+    },
+    "sourceUnchanged": true,
+    "focusedOwners": {
+      "actions/graphs/layouts.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "actions/graphs/resources.js": {
+        "lines": 100,
+        "branches": 93.1,
+        "functions": 100
+      }
+    },
+    "basis": "Original full source coverage plus independently rerun graph owner checks; not a second full run"
+  },
+  "repairChecks": {
+    "normal": 35,
+    "graphCoverage": 83,
+    "discovery": 16,
+    "realisticInventory": 7,
+    "calendarRender": 6,
+    "calendarBrowser": 3,
+    "textShadowManifestRender": 1
+  },
+  "realisticOriginal": {
+    "passed": 25,
+    "total": 26,
+    "calendarAuthenticDatasetCount": 5,
+    "recipesPerDataset": 3,
+    "repairedOwner": "generated-scenario-feature-coverage.test.js"
+  },
+  "installed": {
+    "sha256": "bb5b531b1e990b337db9a3133d44a46f6d4987d9f198a4c72ac555f50d8e4ec2",
+    "file": "ggaction-0.0.26.tgz",
+    "entries": 920,
+    "packedBytes": 1316966,
+    "unpackedBytes": 6061365,
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "originalRuntimePassed": 237,
+    "runtimeTotal": 238,
+    "repairedRuntimePassed": 238,
+    "tutorialsPerNode": 84,
+    "otherQualificationsPerNode": 7,
+    "originalFailure": "calendar sourceRefs assertion omitted the canonical data reference",
+    "repair": "fixture-only expected layout plus data; reran complete Node runtime consumer against the identical archive"
+  },
+  "docs": {
+    "sourcePassed": 180,
+    "builtPages": 166,
+    "artifacts": 1428,
+    "browserWidths": [
+      320,
+      390,
+      768
+    ],
+    "initialBuildFailure": "system Ruby selected instead of configured Ruby3.3; retry with existing Ruby3.3 succeeded"
+  },
+  "deferredIntegration": {
+    "owner": "root",
+    "commonRealisticFiles": [
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-scenario-generator.test.js",
+      "test/contracts/realistic-scenario-generation-isolation.test.js"
+    ],
+    "resourceOnlyGraphFacet": "STEP035 owner informed; existing different-logical-source projection is rejected by same-source revision proof",
+    "roadmapComplete": false
+  },
+  "files": [
+    {
+      "source": "full-coverage.log",
+      "file": "full-coverage.log.gz",
+      "sha256": "fa95d0f89b97da90f5ce237033ea632b04a369f409130df253d3c2dd99f98053",
+      "bytes": 2007993
+    },
+    {
+      "source": "full-coverage.check.json",
+      "file": "full-coverage.check.json.gz",
+      "sha256": "ca542557216c34224823a5a4b630cfc9fb0c70bd05eb63ebc9fa7d4274c738fc",
+      "bytes": 233200
+    },
+    {
+      "source": "full-coverage.receipt.json",
+      "file": "full-coverage.receipt.json.gz",
+      "sha256": "51f51a23393d7efa6316870a64cb14d9e0b93a28b5aed84f6ce8ee993e659019",
+      "bytes": 71487
+    },
+    {
+      "source": "full-coverage.metrics.json",
+      "file": "full-coverage.metrics.json.gz",
+      "sha256": "cd3e499c54b92781479dec5c4c7dfaf9c769a73e30d38ed00501f6d022461a8f",
+      "bytes": 91731
+    },
+    {
+      "source": "coverage-reconciled.json",
+      "file": "coverage-reconciled.json.gz",
+      "sha256": "3d9854e8f991f961a3f25c5330270bd94f1441034e2d0b59ae63dd37a6f51824",
+      "bytes": 578
+    },
+    {
+      "source": "normal-repair.log",
+      "file": "normal-repair.log.gz",
+      "sha256": "9144ceb9bfa1fd52d06721a9e35c23f59badb95ee8ba18f431637ca20cbd75a3",
+      "bytes": 7346
+    },
+    {
+      "source": "normal-repair-final.log",
+      "file": "normal-repair-final.log.gz",
+      "sha256": "05058956545313e4749b1f0476f68143a52a92ffe20b9ca65f95945e17abded1",
+      "bytes": 7402
+    },
+    {
+      "source": "normal-repair-final.check.json",
+      "file": "normal-repair-final.check.json.gz",
+      "sha256": "c430cfb0994781a75b5c7d3fc3ed1779a27bab9691c1a48c3ddd107df3cdb467",
+      "bytes": 2810
+    },
+    {
+      "source": "graph-coverage-repair.log",
+      "file": "graph-coverage-repair.log.gz",
+      "sha256": "8f149f522f01edea4ca0a2451781fd6f43631927068343f6889b0e5b3bd34a68",
+      "bytes": 20657
+    },
+    {
+      "source": "graph-coverage-final.log",
+      "file": "graph-coverage-final.log.gz",
+      "sha256": "39004ec9b7b201485665598c9914321cf3a887c389bf008b72819966330aa5f4",
+      "bytes": 20853
+    },
+    {
+      "source": "discovery-repair.log",
+      "file": "discovery-repair.log.gz",
+      "sha256": "e9d61324fdad0ec5377dba1e80c10849793d215f7027c2558fd163a28493938f",
+      "bytes": 3286
+    },
+    {
+      "source": "discovery-repair.check.json",
+      "file": "discovery-repair.check.json.gz",
+      "sha256": "88214037620fbfa515c45a18ae4def02b189a6ddf195d2cbbe444df864ac0ff3",
+      "bytes": 1302
+    },
+    {
+      "source": "realistic-final.log",
+      "file": "realistic-final.log.gz",
+      "sha256": "45e2b7fe543245465259379e91d3afb3703eedd1949355e08a327d1599b31a1b",
+      "bytes": 7047
+    },
+    {
+      "source": "realistic-final.check.json",
+      "file": "realistic-final.check.json.gz",
+      "sha256": "22bb76c03135c958decaf034d053feebc23dc5e659ba2edffc056732c140c94d",
+      "bytes": 1923
+    },
+    {
+      "source": "realistic-repair.log",
+      "file": "realistic-repair.log.gz",
+      "sha256": "49fb67c065600e01f8ece8a2aa29922ab48c6de7f8cf0eadee77ceab5c1c7c2d",
+      "bytes": 1721
+    },
+    {
+      "source": "realistic-repair.check.json",
+      "file": "realistic-repair.check.json.gz",
+      "sha256": "96caaf2609747744a1af79b8cb9654fcdfe4dc201dced2deeb26d6e16a6bf0cf",
+      "bytes": 1464
+    },
+    {
+      "source": "calendar-timing.json",
+      "file": "calendar-timing.json.gz",
+      "sha256": "3976843f8dc33fd00017e2105463a788e6700ab7948e5964e38497326628f07f",
+      "bytes": 311
+    },
+    {
+      "source": "render-retry.log",
+      "file": "render-retry.log.gz",
+      "sha256": "77a31f18f3e7deddb1efe7aba4af14334f71c8ec995c438caae1c4e0c6db0f3e",
+      "bytes": 1168
+    },
+    {
+      "source": "render-retry.check.json",
+      "file": "render-retry.check.json.gz",
+      "sha256": "46b1867279afedfba84099afa196b27479ce8790dcdec8e0ad4b4c0758299967",
+      "bytes": 1379
+    },
+    {
+      "source": "browser-final.log",
+      "file": "browser-final.log.gz",
+      "sha256": "f5b8f5290252c29afadad9480291462facf3ca0d0cf7c247f29823d02edec038",
+      "bytes": 778
+    },
+    {
+      "source": "browser-final.check.json",
+      "file": "browser-final.check.json.gz",
+      "sha256": "4f54420fe413b028a2a00a17a97e179e9d416284e8fe055442f432d4624b08bc",
+      "bytes": 1212
+    },
+    {
+      "source": "text-shadow-manifest-render.log",
+      "file": "text-shadow-manifest-render.log.gz",
+      "sha256": "8b797491666f9a5a373f750bc53bdb431b7ce95eeb31443612a62b2aa5d4c0a6",
+      "bytes": 404
+    },
+    {
+      "source": "text-shadow-manifest-render.check.json",
+      "file": "text-shadow-manifest-render.check.json.gz",
+      "sha256": "e7a238bb2c325868532de815b8deb4508f2b84fd891d1865a318fb28a53c7f02",
+      "bytes": 1299
+    },
+    {
+      "source": "docs-source-final.log",
+      "file": "docs-source-final.log.gz",
+      "sha256": "6aed2300759d99b64f92b2b934a326b5deae9bbf789dcc8412b465995c7cf7b6",
+      "bytes": 41636
+    },
+    {
+      "source": "docs-build-final.log",
+      "file": "docs-build-final.log.gz",
+      "sha256": "61ac551f10ecd2fbd79c1b0e8d6ccde8c996b3ff435ecebe3ccde81763a7a613",
+      "bytes": 697
+    },
+    {
+      "source": "docs-build-retry.log",
+      "file": "docs-build-retry.log.gz",
+      "sha256": "815f9369aea110047c8a12eaf64cdb48fb283b113650bb9264ba7bb2bd3bb7bd",
+      "bytes": 420
+    },
+    {
+      "source": "docs-built-final.log",
+      "file": "docs-built-final.log.gz",
+      "sha256": "3f9420f9b020999fbaf65f3686d3db3b381d187de4060e2ad230673917d12c34",
+      "bytes": 179
+    },
+    {
+      "source": "docs-browser-final.log",
+      "file": "docs-browser-final.log.gz",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    {
+      "source": "source-freeze-checks.log",
+      "file": "source-freeze-checks.log.gz",
+      "sha256": "01f38f9bbe0ff0c291c5394aaff54ec945c161b9f6d66dee0b533929aacede7f",
+      "bytes": 4672
+    },
+    {
+      "source": "batch-focused-coverage.log",
+      "file": "batch-focused-coverage.log.gz",
+      "sha256": "1889dc807325dc1938335acc15975b9e8219ecd3378a01da3c01668ed2febf12",
+      "bytes": 90105
+    },
+    {
+      "source": "final-package.json",
+      "file": "final-package.json.gz",
+      "sha256": "2a76ec4bd4a280a0653fb1106292b65dd4428567b3edae85d99c08fa9126aeb3",
+      "bytes": 93132
+    },
+    {
+      "source": "bundles.json",
+      "file": "bundles.json.gz",
+      "sha256": "299511aca0731c659b12285465f73303f300e68edf249ebb778a7d793516dce0",
+      "bytes": 2181
+    },
+    {
+      "source": "inventory-merged.json",
+      "file": "inventory-merged.json.gz",
+      "sha256": "a17b0069197513ee74af71bbf9e6f3056591a9320ac242dd2f9ad4719fd03065",
+      "bytes": 440
+    },
+    {
+      "source": "installed-repair.mjs",
+      "file": "installed-repair.mjs.gz",
+      "sha256": "e931f0795c8a199e63a18a8e3fa5ae0d3a0c4df7d78f2f811b83014b5ba15fc5",
+      "bytes": 799
+    },
+    {
+      "source": "run-installed.mjs",
+      "file": "run-installed.mjs.gz",
+      "sha256": "122519e85be29be9016ff90850509df78ca4499c6b521ecdedb0208389424987",
+      "bytes": 1185
+    },
+    {
+      "source": "final-installed-20.log",
+      "file": "final-installed-20.log.gz",
+      "sha256": "82f07da4a250e2706908fe807dfb6e3d9ec0d378e38c678995a3ba782742c146",
+      "bytes": 2930
+    },
+    {
+      "source": "final-installed-20-node-cases.json",
+      "file": "final-installed-20-node-cases.json.gz",
+      "sha256": "a8837998a096e694c6b28056e07c59fb6640eddcb90b72b2819d989731dc4b0e",
+      "bytes": 26535
+    },
+    {
+      "source": "final-installed-20-qualification.json",
+      "file": "final-installed-20-qualification.json.gz",
+      "sha256": "77134963f22b49cc5f0142b3ced7c3bab0eed700b7f7a3b7d1427763d8dc8c9a",
+      "bytes": 2437
+    },
+    {
+      "source": "final-installed-20-tutorials.json",
+      "file": "final-installed-20-tutorials.json.gz",
+      "sha256": "ac75b88ef01ea7a35742e3490faa98c4da736e7bac62b815f35c19c7224129ac",
+      "bytes": 26450
+    },
+    {
+      "source": "final-installed-20.exit.json",
+      "file": "final-installed-20.exit.json.gz",
+      "sha256": "b4ffc710014db4520fb29a3baf718bdb7e50470f64afd2c45ff38a65f14ca78c",
+      "bytes": 221
+    },
+    {
+      "source": "installed-repair-20.log",
+      "file": "installed-repair-20.log.gz",
+      "sha256": "bc38f8b76d23a4dba0eecc6a13e9273d98828ef8512c761cf61927b587fd5121",
+      "bytes": 172
+    },
+    {
+      "source": "installed-repair-20.json",
+      "file": "installed-repair-20.json.gz",
+      "sha256": "d26444810531c0560c5c3bbc53838e27532970f995edd4352f1814c1a9c4fac8",
+      "bytes": 26123
+    },
+    {
+      "source": "final-installed-22.log",
+      "file": "final-installed-22.log.gz",
+      "sha256": "1a1523722a7dbdf832c54f5e1efcaf0b4ab0df5af46c5707f49b2029ac8c3bc9",
+      "bytes": 2906
+    },
+    {
+      "source": "final-installed-22-node-cases.json",
+      "file": "final-installed-22-node-cases.json.gz",
+      "sha256": "e6497ab4ca305c4f6d53e68d1c8ae3444d319bf74bb828ab63bd84f0f20e8214",
+      "bytes": 26525
+    },
+    {
+      "source": "final-installed-22-qualification.json",
+      "file": "final-installed-22-qualification.json.gz",
+      "sha256": "bf165ebef460d389529e6ba488bfd9270e70b61e67b71513697d04c3f2cd09d8",
+      "bytes": 2409
+    },
+    {
+      "source": "final-installed-22-tutorials.json",
+      "file": "final-installed-22-tutorials.json.gz",
+      "sha256": "a81f524534f285e2ea18bc5efd5f01616024fcd7bcb1d791e5a2fbd48a1bf559",
+      "bytes": 26430
+    },
+    {
+      "source": "final-installed-22.exit.json",
+      "file": "final-installed-22.exit.json.gz",
+      "sha256": "3e854152eddd8bbb2629231a03b7492fdb95aa2a22ebfd12637e6c5fd30ff379",
+      "bytes": 196
+    },
+    {
+      "source": "installed-repair-22.log",
+      "file": "installed-repair-22.log.gz",
+      "sha256": "c9c960dcdff16c58dd0b2a1da4fa6413d54de6a5c8d4cea9e676bb76265d8a0b",
+      "bytes": 172
+    },
+    {
+      "source": "installed-repair-22.json",
+      "file": "installed-repair-22.json.gz",
+      "sha256": "e74ff7acd3315039d957c8264e039e509ebc598912f81ad23b6addcc2a3e1f41",
+      "bytes": 26144
+    },
+    {
+      "source": "final-installed-24.log",
+      "file": "final-installed-24.log.gz",
+      "sha256": "033beeb5e23402fe057e6a42db8d091ee7cfe73750db727d8b044bd1bf3e1aa7",
+      "bytes": 2932
+    },
+    {
+      "source": "final-installed-24-node-cases.json",
+      "file": "final-installed-24-node-cases.json.gz",
+      "sha256": "3e8d07f9cd07b9d8ef1469f24915bee8b619f5c4b6d582c334a1fa011bf17a2f",
+      "bytes": 26534
+    },
+    {
+      "source": "final-installed-24-qualification.json",
+      "file": "final-installed-24-qualification.json.gz",
+      "sha256": "75908d13b3b33f7a76e5ac88232661d16dacaf91fb15bc49861818060b086fc6",
+      "bytes": 2437
+    },
+    {
+      "source": "final-installed-24-tutorials.json",
+      "file": "final-installed-24-tutorials.json.gz",
+      "sha256": "f1842dd99b245862611aab1f09cdbdec45c80dd8b124ff13135c05332192a69e",
+      "bytes": 26444
+    },
+    {
+      "source": "final-installed-24.exit.json",
+      "file": "final-installed-24.exit.json.gz",
+      "sha256": "6f385f0cdf80c425135c31f64de07df102c23be0476dbef6edf5107cb88614b6",
+      "bytes": 221
+    },
+    {
+      "source": "installed-repair-24.log",
+      "file": "installed-repair-24.log.gz",
+      "sha256": "0e167c625b9bdc311403ff99675008a9ee318c1fc50bdd854cfe0007b72dad6a",
+      "bytes": 172
+    },
+    {
+      "source": "installed-repair-24.json",
+      "file": "installed-repair-24.json.gz",
+      "sha256": "9ccd4688a821fa6b8a387715761f04c79fcd7eea62d6f16f2e072677fba3e5a3",
+      "bytes": 26143
+    },
+    {
+      "source": "package-size-v20.20.2.json",
+      "file": "package-size-v20.20.2.json.gz",
+      "sha256": "907e6abf11eed5fac6739e5604d2246987b55a678b6cfc8955ccefeee887eba7",
+      "bytes": 124
+    },
+    {
+      "source": "package-size-v22.23.1.json",
+      "file": "package-size-v22.23.1.json.gz",
+      "sha256": "5dcd75d24467afc84bb18489e565e1d5535dd981c6578f791997dd9a9a2d00fe",
+      "bytes": 117
+    },
+    {
+      "source": "package-size-v24.22.1.json",
+      "file": "package-size-v24.22.1.json.gz",
+      "sha256": "aef0c11cbba58c1d6f7cf22f9476becaddf6a322f6f69fb1e3f52bf15d285027",
+      "bytes": 133
+    }
+  ]
+}

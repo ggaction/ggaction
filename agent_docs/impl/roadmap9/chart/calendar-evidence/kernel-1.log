@@ -1,0 +1,190 @@
+TAP version 13
+# Subtest: Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+ok 1 - Gregorian oracle anchors leap centuries, known weekdays and year boundaries
+  ---
+  duration_ms: 1.105458
+  type: 'test'
+  ...
+# Subtest: all week starts place leap-year cells against independent Gregorian arithmetic
+ok 2 - all week starts place leap-year cells against independent Gregorian arithmetic
+  ---
+  duration_ms: 54.7515
+  type: 'test'
+  ...
+# Subtest: month polygons exactly cover emitted cells with independent area and perimeter
+ok 3 - month polygons exactly cover emitted cells with independent area and perimeter
+  ---
+  duration_ms: 11.29475
+  type: 'test'
+  ...
+# Subtest: explicit omission preserves separate islands and a missing-day hole
+ok 4 - explicit omission preserves separate islands and a missing-day hole
+  ---
+  duration_ms: 2.564083
+  type: 'test'
+  ...
+# Subtest: partial multi-year ranges keep calendar ordering and 54-week frames
+ok 5 - partial multi-year ranges keep calendar ordering and 54-week frames
+  ---
+  duration_ms: 0.287916
+  type: 'test'
+  ...
+# Subtest: empty and zero-valued inputs retain their distinct explicit completion semantics
+ok 6 - empty and zero-valued inputs retain their distinct explicit completion semantics
+  ---
+  duration_ms: 0.517625
+  type: 'test'
+  ...
+# Subtest: duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+ok 7 - duplicate civil dates use the explicit shared aggregate and preserve exact contributions
+  ---
+  duration_ms: 36.363542
+  type: 'test'
+  ...
+# Subtest: spring and fall transitions group instants by civil day without adding 24-hour durations
+ok 8 - spring and fall transitions group instants by civil day without adding 24-hour durations
+  ---
+  duration_ms: 2.992708
+  type: 'test'
+  ...
+# Subtest: invalid dates, nonexistent local time and skipped civil boundaries fail closed
+not ok 9 - invalid dates, nonexistent local time and skipped civil boundaries fail closed
+  ---
+  duration_ms: 57.926
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:107:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /roundtrip/. Input:
+    
+    'RangeError: Time-unit day boundary does not exist in time zone "Pacific/Apia".'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Time-unit day boundary does not exist in time zone "Pacific/Apia".'
+  name: 'RangeError'
+  stack: |-
+    resolveCalendarBoundary (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/src/grammar/timeUnit.js:265:9)
+    deriveCalendarDayDomain (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/src/grammar/calendarDay.js:51:9)
+    layoutCalendarDays (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/src/grammar/calendar/layout.js:55:41)
+    layout (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:9:40)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:112:23
+    getActual (node:assert:609:5)
+    Function.throws (node:assert:757:24)
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:112:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:112:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+not ok 10 - calendar normalization rejects ambiguous policy, malformed source and excess work before mutation
+  ---
+  duration_ms: 28.409
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:115:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/test/unit/calendar-layout.test.js:129:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: calendar results isolate caller data and freeze every shared cell and boundary
+ok 11 - calendar results isolate caller data and freeze every shared cell and boundary
+  ---
+  duration_ms: 2.680375
+  type: 'test'
+  ...
+# Subtest: a literal hill has a closed interpolated diamond and shared nested bands
+ok 12 - a literal hill has a closed interpolated diamond and shared nested bands
+  ---
+  duration_ms: 2.519458
+  type: 'test'
+  ...
+# Subtest: the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+ok 13 - the asymptotic determinant distinguishes saddles from center averaging and fixes exact ties
+  ---
+  duration_ms: 0.425875
+  type: 'test'
+  ...
+# Subtest: donut holes, missing quads and disconnected islands keep separate winding and topology
+ok 14 - donut holes, missing quads and disconnected islands keep separate winding and topology
+  ---
+  duration_ms: 0.701917
+  type: 'test'
+  ...
+# Subtest: constant and all-missing grids retain empty levels and assign the last upper endpoint once
+ok 15 - constant and all-missing grids retain empty levels and assign the last upper endpoint once
+  ---
+  duration_ms: 0.352875
+  type: 'test'
+  ...
+# Subtest: an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+ok 16 - an island inside a hole remains a separate polygon and nested holes choose their enclosing ring
+  ---
+  duration_ms: 0.464875
+  type: 'test'
+  ...
+# Subtest: linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+ok 17 - linear scalar planes match an independent clipped-polygon oracle across orientation and scale
+  ---
+  duration_ms: 1.842416
+  type: 'test'
+  ...
+# Subtest: invalid grid descriptors, scalar values, precision and work fail without reading accessors
+ok 18 - invalid grid descriptors, scalar values, precision and work fail without reading accessors
+  ---
+  duration_ms: 75.995042
+  type: 'test'
+  ...
+# Subtest: deterministic varied grids conserve band area with exactly one region at each sampled point
+ok 19 - deterministic varied grids conserve band area with exactly one region at each sampled point
+  ---
+  duration_ms: 38.671167
+  type: 'test'
+  ...
+# Subtest: ring assembly rejects open boundaries and orphan holes instead of inventing connections
+ok 20 - ring assembly rejects open boundaries and orphan holes instead of inventing connections
+  ---
+  duration_ms: 0.374167
+  type: 'test'
+  ...
+# Subtest: masked scalar grids conserve exactly the area of complete quads
+ok 21 - masked scalar grids conserve exactly the area of complete quads
+  ---
+  duration_ms: 24.328958
+  type: 'test'
+  ...
+# Subtest: oversized contour arrays are rejected before element descriptors are traversed
+ok 22 - oversized contour arrays are rejected before element descriptors are traversed
+  ---
+  duration_ms: 0.228417
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 20
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 294.262667

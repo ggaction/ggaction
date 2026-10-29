@@ -126,6 +126,22 @@
     ],
     "calendar": [
       {
+        "type": "prefix",
+        "path": "charts/calendar/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/calendar-plot-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/calendar-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/calendar-layout.test.js"
+      },
+      {
         "type": "file",
         "path": "unit/grammar/calendar-days.test.js"
       },
@@ -140,6 +156,22 @@
       {
         "type": "file",
         "path": "contracts/calendar-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/calendar.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-calendar-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/source-resource-plan.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-calendar.test.js"
       }
     ],
     "center-stack": [

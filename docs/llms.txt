@@ -229,3 +229,5 @@ requirements after resolving each part.
 - Contours and Two-Dimensional Density: ./api/contours/
 - Draw Levels, Bands and Density: ./tutorials/contours/
 - Fit Labels Inside a Fixed Canvas: ./tutorials/responsive-guides/
+- Calendar Plots: ./api/calendar/
+- Place Observations on a Calendar: ./tutorials/calendar/

@@ -48,6 +48,7 @@ function scaleBindingSignature(channel, consumers, { comparable = false } = {}) 
     data: comparable
       ? comparableDataIdentity(consumer.layer.data)
       : consumer.layer.data,
+    ...(consumer.layer.calendarBinding === undefined ? {} : { layout: consumer.layer.calendarBinding.layout.id }),
     ...(consumer.layer.contourBinding === undefined ? {} : { geometry: consumer.layer.contourBinding.geometry.id }),
     field: consumer.encoding.field,
     datum: consumer.encoding.datum,

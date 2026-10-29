@@ -1,0 +1,95 @@
+# Place observations on a calendar
+
+A calendar makes each civil day a stable location. This example uses the 366 days
+of 2024, then leaves every fifth observation absent. Blue cells have observations;
+pale cells have none. Fixed paint makes missing-day placement easy to compare.
+
+The complete Full program names its time zone, date range, aggregate, week start
+and missing-day policy before creating the plot.
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 366 }, (_, index) => ({
+  date: new Date(Date.UTC(2024, 0, index + 1)).toISOString().slice(0, 10),
+  value: index % 10
+})).filter((_, index) => index % 5 !== 0);
+
+const program = chart()
+  .createCanvas({
+    "width": 1080,
+    "height": 360,
+    "margin": {
+      "left": 40,
+      "right": 40,
+      "top": 80,
+      "bottom": 40
+    },
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "observations",
+    "keyField": "date",
+    "values": observations
+  })
+  .createCalendarLayout({
+    "id": "days",
+    "date": "date",
+    "value": "value",
+    "start": "2024-01-01",
+    "end": "2024-12-31",
+    "timeZone": "UTC",
+    "weekStartsOn": 0,
+    "aggregate": "sum",
+    "missing": "empty"
+  })
+  .createCalendarPlot({
+    "id": "calendar",
+    "color": false,
+    "cells": {
+      "fill": "#2563eb",
+      "emptyFill": "#e2e8f0"
+    },
+    "labels": {
+      "week": false
+    },
+    "monthBoundary": {}
+  })
+  .createTitle({
+    "text": "A leap year, one cell per civil day",
+    "subtitle": "2024 contains 366 days. Pale cells have no recorded observation.",
+    "align": "left",
+    "alongOffset": 0,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+```
+
+The layout is a stored resource. Creating it does not draw anything;
+createCalendarPlot materializes its cells, month boundaries and labels.
+Use color options instead of color: false when the daily aggregate should
+control fill, then add a legend explicitly.
+
+Change weekStartsOn to 1 to put Monday in the first row. Dates and values stay
+the same while their calendar positions change.
+
+With missing: "omit", unobserved dates have no cells. Their locations remain
+empty, so later dates never shift into those gaps. This variant hides month
+boundaries to emphasize the missing cells.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/calendar/program.js)
+contains all three variants. Its program is shared by browser examples, renderer
+pairs and generated images. See [Calendar plots](../../../api/calendar/) for exact
+options, selection, aggregation, edits and source revision behavior.

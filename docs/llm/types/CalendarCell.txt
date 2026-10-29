@@ -1,0 +1,4 @@
+export interface CalendarCell {
+  readonly key: string; readonly instant: number; readonly year: number; readonly month: number; readonly day: number;
+  readonly yearIndex: number; readonly week: number; readonly weekday: number; readonly value: number | null; readonly sourceIndices: readonly number[];
+}

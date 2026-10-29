@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:a6299c0d5f21c5407641a58d9dc53f3dbf95a5c9fd6e1af8a8446b2d1552cb3e",
-  "sourceCommit": "aaa77724cd87b7c166db918d3ecede34a344ac66",
-  "sourceRef": "aaa77724cd87b7c166db918d3ecede34a344ac66",
-  "exampleSourceRef": "aaa77724cd87b7c166db918d3ecede34a344ac66",
+  "contractId": "sha256:da4843b36ddb80307807919c0f4ac2b1a7efdf5b00625b28b13240a6293de275",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-theme",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 340,
+  "actionCount": 343,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -187,6 +187,18 @@
       "status": "development"
     },
     "createParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createCalendarLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createCalendarPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editCalendarPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

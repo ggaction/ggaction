@@ -3,6 +3,7 @@ import { SCALE_OPTION_UNITS } from "../src/grammar/scales/types.js";
 const ROLE_ORDER = Object.freeze(["H0", "H1", "H2", "H3", "H4"]);
 
 const analysisChartNames = new Set([
+  "createCalendarPlot",
   "createDotPlot",
   "createLollipopPlot",
   "createDumbbellPlot",
@@ -19,6 +20,7 @@ const analysisChartNames = new Set([
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
+  "editCalendarPlot",
   "editEndpointPlot",
   "editECDFPlot",
   "editRadarPlot",
@@ -68,6 +70,9 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createCalendarLayout: ["editLayout", "removeResource"],
+  createCalendarPlot: ["editCalendarPlot", "removeMark"],
+  editCalendarPlot: ["editCalendarPlot", "removeMark"],
   createContourData: ["editContourData", "removeResource"],
   createDensityContourData: ["editContourData", "removeResource"],
   editContourData: ["editContourData", "removeResource"],
@@ -168,6 +173,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",
   "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark",
   "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",
   "layoutGraph",

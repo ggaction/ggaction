@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 3,
+  "name": "editCalendarPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit a calendar plot while preserving day identities and source lineage.",
+  "signature": "editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;",
+  "intents": [
+    "edit calendar plot",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "calendar plot",
+    "day cells and month boundaries"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored calendar layout",
+      "Canvas"
+    ],
+    "owns": [
+      "calendar mark"
+    ],
+    "idOptions": [
+      "target",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "editCalendarPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored calendar layout",
+      "Canvas"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "CalendarCellPaint | undefined"
+    },
+    {
+      "name": "monthBoundary",
+      "required": false,
+      "type": "false | CalendarBoundaryPaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editCalendarPlot({ target?, coordinate?, layout?, clip?, color?, cells?, monthBoundary?, labels? })"
+  ],
+  "snippet": "program.editCalendarPlot({ target: \"calendar\", cells: { opacity: 0.5 } })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editcalendarplot"
+}

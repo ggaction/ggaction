@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { contourGrid } from "../../src/grammar/contour/layout.js";
-import { stitchContourRings } from "../../src/grammar/contour/rings.js";
+import { stitchGridRings } from "../../src/grammar/gridBoundary.js";
 import { contourArea, signedRingArea, locateContourPoint, clipScalarPlane } from "../oracles/contour.js";
 
 const grid = (values, width = 3, height = 3, options = {}) => ({ origin: [0, 0], dx: 1, dy: 1, width, height, values, ...options });
@@ -129,8 +129,8 @@ test("deterministic varied grids conserve band area with exactly one region at e
 
 test("ring assembly rejects open boundaries and orphan holes instead of inventing connections", () => {
   const a = { id: "a", x: 0, y: 0 }, b = { id: "b", x: 1, y: 0 }, c = { id: "c", x: 0, y: 1 };
-  assert.throws(() => stitchContourRings([[a, b]], grid([])), /closed rings/);
-  assert.throws(() => stitchContourRings([[a, c], [c, b], [b, a]], grid([])), /enclosing outer ring/);
+  assert.throws(() => stitchGridRings([[a, b]], grid([])), /closed rings/);
+  assert.throws(() => stitchGridRings([[a, c], [c, b], [b, a]], grid([])), /enclosing outer ring/);
 });
 
 test("masked scalar grids conserve exactly the area of complete quads", () => {

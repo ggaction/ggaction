@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 3,
+  "name": "createCalendarLayout",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Store civil-day aggregates, week/weekday cells and month boundaries.",
+  "signature": "createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;",
+  "intents": [
+    "create calendar layout",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "calendar layout",
+    "civil-day aggregation"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized civil-day observations"
+    ],
+    "owns": [
+      "calendar layout resource"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editLayout",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized civil-day observations"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "start",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "end",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "timeZone",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "weekStartsOn",
+      "required": true,
+      "type": "0 | 1 | 2 | 3 | 4 | 5 | 6"
+    },
+    {
+      "name": "missing",
+      "required": true,
+      "type": "\"empty\" | \"omit\""
+    },
+    {
+      "name": "date",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "aggregate",
+      "required": true,
+      "type": "\"count\" | \"max\" | \"mean\" | \"median\" | \"min\" | \"sum\""
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createCalendarLayout({ start, end, timeZone, weekStartsOn, missing, date, aggregate, id? })"
+  ],
+  "snippet": "program.createCalendarLayout({ id: \"days\", date: \"date\", value: \"value\", start: \"2024-01-01\", end: \"2024-12-31\", timeZone: \"UTC\", weekStartsOn: 1, aggregate: \"sum\", missing: \"empty\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createcalendarlayout"
+}

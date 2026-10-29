@@ -531,3 +531,10 @@
 - title: Fit Labels Inside a Fixed Canvas
   url: /tutorials/responsive-guides/
   parent: /tutorials/
+
+- title: Calendar Plots
+  url: /api/calendar/
+  parent: /api/
+- title: Place Observations on a Calendar
+  url: /tutorials/calendar/
+  parent: /tutorials/
