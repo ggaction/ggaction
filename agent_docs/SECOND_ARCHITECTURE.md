@@ -80,6 +80,10 @@ packed 최대1,334,664 bytes로 상한929/1,335,000/6,118,000을 적용한다.
 Force compatibility와 고정 double-buffer schedule은 같은 private route owner에 추가됐다.
 공개 entry import는 없으며 package만931 entries/6,126,103 unpacked/최대1,337,161 packed
 bytes로 증가해 상한931/1,338,000/6,127,000을 적용한다. Browser bundle 입력은 이전 HEB와 같다.
+Density 계산은 sparse field와 direction channels를 `routes/densityField.js`, 고정 iteration
+및 point-buffer 수명을 `routes/density.js`가 소유한다. Dense grid 차분과 같은 값을 계산하고
+완료 vector만 반환한다. 합산 package933 entries/6,135,655 unpacked/최대1,339,858 packed
+bytes에 최소 상한933/1,340,000/6,136,000을 적용하며 public bundle 입력은 유지한다.
 
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를

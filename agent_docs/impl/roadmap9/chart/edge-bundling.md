@@ -7,7 +7,7 @@
 - [x] 공통 입력·타입 순서·정규화·길이 재표본화·budget·완료 결과 private kernel
 - [x] Hierarchical LCA + clamped B-spline private kernel
 - [x] Force-directed compatibility + double buffer
-- [ ] Density field + vector advection
+- [x] Density field + vector advection
 - [ ] Edge-path Dijkstra + skip/lock
 - [ ] Full public actions·exact resource revision closure·prepared entry
 - [ ] 네 렌더러·scene·selection·inspection·codec·실제 데이터 소비자
@@ -157,3 +157,36 @@ package7/7 통과. 기존95/90/100 floor와 모든 global floor는 유지한다.
 어느 public entry에서도 import되지 않아 HEB의 동일 bundle 증거를 재사용한다. 실제 패키지
 staging은 세 Node에서 재측정했고 entries931/unpacked6,126,103/packed최대1,337,161bytes다.
 Public resource/worker/renderer/codec 연결은 아직 위 표의 열린 의무다.
+
+## Density 계산 구체화
+
+고정256² grid와20회 bandwidth/step schedule은 원안대로 두고 별도 tuning 옵션을 늘리지
+않는다. Arc-length half-neighbor weight와 tangent를 가진 samples가 compact radial kernel을
+splat한다. Directed tangent는8 circular channels에 선형 분배하며 query 방향의 각 이웃
+channel(-1/0/+1) 합을 같은 선형 비중으로 읽는다. 반대 방향 channel은 섞지 않는다.
+Grid는 normalized unit의 등방성 square다. 각 iteration의 old route 중심에 변 길이를
+max(1, width, height)로 맞춘 뒤 현재 bandwidth halo를 더한다. 짧은 축을 늘려 동일한
+정규화 거리에서 x/y sampling 간격을 유지하고, 퇴화한 수평 route에도 zero-height grid를 만들지 않는다.
+
+희소 Map은 실제 기여한 grid cell만 보관한다. 중앙 차분(경계는 편측 차분)을 필요한 grid
+node에서 평가한 뒤 bilinear 보간하므로 전수 field/gradient 배열과 같은 CPU 정의다.
+Allocation 및 splat rectangle 작업량을 사전 검사하며 field와 sample buffers는 결과에
+저장하지 않는다. 초기 route는 첫 bandwidth spacing으로 먼저 재표본화하고, 각 iteration은
+old field→동시 advection→[1,2,1]/4 smoothing→endpoint 재고정→현재 spacing 재표본화한다.
+Zero-length는 weight0인 exact point route이며 canonical result에 명시 reason을 남긴다.
+
+
+Density의 authorable 옵션은 `zeroLength:'point'`이며 다른 수치들은 `density-v1`의 고정
+정의다. Field와 transient point buffers의 동시 peak 및 누적 splat 작업을 사전에 검사한다.
+명시 sample limit, work limit, nonfinite field/gradient 또는 abort는 완료 결과를 반환하지 않는다.
+Scalar kernel1/.5625/0, 도함수-1.5, 독립 dense8×8 모든 cell·border 차분, bilinear,
+방향 wrap/interpolation, arc-length mass, simultaneous advection/smoothing과 exact endpoints를
+검증했다. Internal point는 계산한 gradient를 그대로 따르며 직선으로 보이도록 숨은 보정을 하지 않는다.
+
+[고정 검증 증거](edge-bundling-evidence/density/status.json): canonical route34/34,
+동일34개 coverage의9개 route owner 모두100/100/100, architecture/discovery/policy34/34,
+package7/7 통과. 최초2개 fixture 실패는 circular floating fraction을 exact.5로 비교한 조건과
+endpoints를 넘어 모든 internal sample의 y=0을 요구한 과도한 조건이었다. 원본 로그를 보존하고
+원 계약의 허용 오차 및 endpoint 보존으로 고쳤다. 기존 floor는 낮추지 않았다.
+세 Node의 실제 package는933 entries/6,135,655 unpacked/최대1,339,858 packed bytes이고
+새 private owner만 추가돼 기존 HEB bundle 입력과 증거는 그대로 유효하다.

@@ -30,3 +30,25 @@ export function polylineDistance(point, points) {
     return Math.hypot(point.x - a.x - t * dx, point.y - a.y - t * dy);
   }));
 }
+
+// Dense all-cell/all-sample scalar reference. Deliberately independent of sparse
+// splat ranges, tangent bins and the implementation's flattened cell addressing.
+export function denseRouteDensity(samples, bounds, size, bandwidth) {
+  const grid = Array.from({ length: size }, () => Array(size).fill(0));
+  for (let row = 0; row < size; row++) for (let column = 0; column < size; column++) {
+    const x = bounds.x + column * bounds.width / (size - 1), y = bounds.y + row * bounds.height / (size - 1);
+    for (const sample of samples) {
+      const squared = ((x - sample.x) ** 2 + (y - sample.y) ** 2) / bandwidth ** 2;
+      if (squared < 1) grid[row][column] += sample.weight * (1 - squared) ** 2;
+    }
+  }
+  return grid;
+}
+
+export function denseRouteGradient(grid, bounds, x, y) {
+  const last = grid.length - 1;
+  const horizontal = x === 0 ? [0, 1] : x === last ? [last - 1, last] : [x - 1, x + 1];
+  const vertical = y === 0 ? [0, 1] : y === last ? [last - 1, last] : [y - 1, y + 1];
+  return { x: (grid[y][horizontal[1]] - grid[y][horizontal[0]]) * last / (bounds.width * (horizontal[1] - horizontal[0])),
+    y: (grid[vertical[1]][x] - grid[vertical[0]][x]) * last / (bounds.height * (vertical[1] - vertical[0])) };
+}
