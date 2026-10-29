@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "common-corpus-verified-awaiting-promotion",
+  "status": "verified-promoted-to-main",
   "runtimeSource": "e56b8e4c16afe328947bd9840f3412a014874c98",
   "authorization": "../../AUTHORIZATION.json#remainingApproval",
   "qualificationSubject": "The qualified runtime plus the exact test-only fixture input hashes below. This is not Roadmap9 completion.",
@@ -20,7 +20,8 @@
     "independentPanelContracts": 16,
     "panelDatasetBuilds": 15,
     "paletteOrderContract": 1,
-    "encodingOwningContracts": 4
+    "encodingOwningContracts": 4,
+    "postPromotionDocs": 21
   },
   "runtimeEvidence": "../conditional-domain-evidence/status.json",
   "installed": {
@@ -108,6 +109,11 @@
       "file": "single-y-resource-palette-preflight-final.log.gz",
       "sha256": "fdd798007a8265415255382455170639bc1b622dd28d99d2ac3a2195c1111dae",
       "uncompressedBytes": 206
+    },
+    {
+      "file": "common-promotion-docs.log.gz",
+      "sha256": "c39c9b7f02317cfd660872452ade00a68175071959f765f0225ace5fd0a1968d",
+      "uncompressedBytes": 4948
     }
   ],
   "preservedFailures": [
@@ -117,7 +123,14 @@
     "Earlier palette tests exposed a shallow composition dataset lookup and missing third fallback palette; repaired without removing any requirement."
   ],
   "remaining": [
-    "Promotion to main and later native, Geo, interaction and animation integration.",
+    "Later native, Geo, interaction and animation integration.",
     "Full release coverage, all native qualification and STEP077 remain separate obligations."
-  ]
+  ],
+  "checkpointCommit": "d06845a30",
+  "promotion": {
+    "branch": "main",
+    "method": "fast-forward",
+    "previousHead": "e0267c005f124d69bf44d75f4f2fdb8e479ff517",
+    "qualifiedPackedInputChanges": []
+  }
 }
