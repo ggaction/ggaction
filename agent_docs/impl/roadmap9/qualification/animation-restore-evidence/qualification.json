@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "status": "private-native-plan-restore-checkpoint",
+  "sourceCommit": "b095334c30834e748d0143cb65564ee44c8afc57",
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "d0a98f54a5cb888b89d06bde0ddfabe704571bdfe4ccd62b31adb283c3d53710"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-planner.md",
+      "sha256": "1114b8ce29f5cd5a2682de7f7d2f1982fff2ce5c1e03ed54388d8e3ce50ac5f8"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "e369b6f5a2ebd6694592dbf69019c35c1c1a9633eae7659d72cf262aac70fdb4"
+    },
+    {
+      "path": "src/animation/planner.js",
+      "sha256": "5c47d321409c834eba34338ca12fbdce04ddfda8cf7508bc193811a4e93f8fe0"
+    },
+    {
+      "path": "src/grammar/animation/pointState.js",
+      "sha256": "c4c17139d1cd8f5c0300d82bf6278b30117b5c81776cca487c5cdf1dc12de7ac"
+    },
+    {
+      "path": "src/materialization/animation/point.js",
+      "sha256": "6544a6880dbebeb073161371c61472d31c7ea62507a45584aa33e389f8eaa406"
+    },
+    {
+      "path": "test/unit/animation/restore.test.js",
+      "sha256": "596f1c3ac2151fc8b78903b7a41ac538f6884514422e8ac8f0f08db124f63b1f"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-owning.log.gz",
+      "sha256": "4165cdda771440233450fb3e7b5502f6582b216c8cb72a6aee4d53bc89c9e2f9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-cumulative.log.gz",
+      "sha256": "08306fe18f3df01504c525f5a94ff1fdccdd163b7cb15b6648b1ab1f63b56655"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-coverage.log.gz",
+      "sha256": "e05f868dd218c8347ba5615ba7472bf404d9d736291a3315964126a4377ea60a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-boundaries.log.gz",
+      "sha256": "96d93c021f918b39ef4cd9682eb29eb4b47eebedf1d38455817de790d33bb677"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-package.log.gz",
+      "sha256": "f94da9df073d5d55d559a6373d2b664d15ed8ae38be71404e81a695a0500daed"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-node20.log.gz",
+      "sha256": "631d5409495f3a091b510cf566d1c7afd0897ccfc790dfa3125ed1c8fe35eada"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/restore-node24.log.gz",
+      "sha256": "ffc42aea50bd3d01b76182f6b7426906468fabe22f34235b871db09c69a3f353"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/package-size-20.json.gz",
+      "sha256": "3f7accfcffc25bf310a61761f53b7fe5ac7f1c132228bc88f332e8fcdc726cb7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/package-size-22.json.gz",
+      "sha256": "303cb5ea7b8b5388137098a2fc27be392a8fd7d33e90dc077e2c9c61683f3415"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-restore-evidence/package-size-24.json.gz",
+      "sha256": "ca48021f77eab081c4339426c2453f8db3f9ede447532df614ca29fe57073444"
+    }
+  ],
+  "checks": {
+    "cumulative": 112,
+    "node20": 92,
+    "node24": 92,
+    "coverage": {
+      "tests": 22,
+      "lines": 100,
+      "branches": 95.93,
+      "functions": 100
+    },
+    "boundaries": 33,
+    "package": 7
+  },
+  "evidenceScope": "Exact source bytes tested before commit; no full-suite, installed-package, player or complete animation claim.",
+  "openObligations": [
+    "sampled-frame rebase",
+    "public entry and installed consumer",
+    "compatible geometry families",
+    "offline hit addresses",
+    "integration qualification"
+  ]
+}
