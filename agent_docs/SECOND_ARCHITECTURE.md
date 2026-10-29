@@ -92,6 +92,15 @@ Calendar/selection 통합 afc4e34e6 이후 동일 private route source의 합산
 6,164,691 unpacked/최대1,347,343 packed bytes다. 상한939/1,348,000/6,165,000을 적용하며
 통합 main의 Full663,000/Basic371,000 gzip 상한을 유지한다.
 
+Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact revision vector와
+해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
+source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
+내린다. `routes/result.js`와 `resultProvenance.js`는 solver 재실행 없이 완료 vector, 원 edge
+순서, endpoint, bounds, method provenance/schedule을 검증한다. 아직 public entry에서
+도달하지 않으며 네 solver 자체의 숫자 정책은 각 기존 owner를 공유한다. 이 private 추가의
+package는944 entries,6,191,389 unpacked이며 Node20/24 packed1,354,281,
+Node22 packed1,351,738 bytes다. 기존 공개 번들은 영향이 없어 합산 기준 증거를 재사용한다.
+
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
 freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plugin 또는 renderer registry가 아니다.

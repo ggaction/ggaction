@@ -5,6 +5,7 @@
 - [x] 네 solver의 독립 계산 checkpoint `58738bbb3`
 - [x] 현재 Graph/Layout/Plot/typed-binding/prepare 소유자 확인
 - [x] 최종 통합 기준 afc4e34e6 병합 및 126개 회귀·7개 패키지 계약 검증
+- [x] Private job/source adapter 및 solver 없는 완료 결과 검증
 - [ ] Public resource·수정·GraphPlot·source/layout/hierarchy closure
 - [ ] 저장 검증·Full/Basic·typed refs·removal·inspection
 - [ ] Worker/sync parity·token/abort/cache lifetime
@@ -89,3 +90,18 @@ known node key/type/topology를 유지해야 한다. 최신 frame만 hit/nearest
 generation은 거부한다. Overlap candidate 목록은 보존된다. Route 공개 resource 이후 이
 기존 경계를 소비하며 별도 session/controller를 복제하지 않는다. 해당 checkpoint는 현재
 기준 main afc4e34e6에 아직 포함됐다고 주장하지 않는다.
+
+## Private job 검증 checkpoint
+
+`routeInput`은 observed explicit key를 원 typed 비교로 정렬하고 occurrence는 source logicalId와
+persisted rowKey로 정렬한다. Inferred edge는 ruleId·direction·typed endpoint rank 순서를
+사용한다. 이 순위를 숫자 vector로 전달해 normalized key를 해독하지 않는다. Tree/treemap
+anchor는 기존 결과에서만 읽는다. Job은 exact graph/layout/hierarchy revision, 해석된 옵션,
+viewport와 signed zero를 입력 hash에 포함한다. 완료 결과는 기존 solver의 schedule 정책을
+공유하며 M/L finite command, 원 edge 순서, exact endpoint, bounds, 실제 parent/edge path,
+길이, lock/skip 이력과 hash를 검증한다. Partial/forged/stale/descriptor 입력을 거부한다.
+
+집중 계산·source adapter52개가 통과했고 16개 owner는 기존 family floor
+95% lines/90% branches/100% functions를 모두 유지했다. 결과 검증은 solver를 재실행하지
+않는다. 직접 공개 action과 executor가 아직 없으므로 이 checkpoint를 STEP036–041 완료로
+간주하지 않는다. 상세 로그는 `edge-bundling-evidence/job/`에 보존한다.

@@ -47,7 +47,7 @@ export function advanceForceRoutes(routes, lengths, neighbors, step) {
   return { routes: next, displacementCaps };
 }
 
-function schedule() {
+export function forceRouteSchedule() {
   const cycles = [];
   let iterations = 60;
   for (let cycle = 0; cycle < 6; cycle++) {
@@ -75,7 +75,7 @@ export function bundleForceDirectedRoutes(input, optionsInput = {}, signal) {
       compatibilityPairs++;
     }
   }
-  const cycles = active.length ? schedule() : [];
+  const cycles = active.length ? forceRouteSchedule() : [];
   // The exact fixed schedule is known before allocating mutable sample buffers.
   let work = 0;
   for (const cycle of cycles) {

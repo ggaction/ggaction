@@ -16,7 +16,7 @@ export function normalizeHierarchicalRouteOptions(input = {}) {
   return Object.freeze({ strength, zeroLength, ...normalizeSplineOptions({ tolerance: input.tolerance, maxSubdivisions: input.maxSubdivisions }) });
 }
 
-function hierarchyInput(input, context) {
+export function validateRouteHierarchy(input, context) {
   ownRecord(input, "Route hierarchy input");
   rejectUnknownProperties(input, ["model", "mapping", "positions"], "route hierarchy input");
   if (!["model", "mapping", "positions"].every(key => Object.hasOwn(input, key))) throw new TypeError("Route hierarchy requires own model, mapping and positions.");
@@ -65,7 +65,7 @@ function ancestorPath(source, target, hierarchy, budget) {
 
 export function bundleHierarchicalRoutes(routeInput, input, optionsInput = {}, signal) {
   const options = normalizeHierarchicalRouteOptions(optionsInput);
-  const context = prepareRouteInput(routeInput, signal), hierarchy = hierarchyInput(input, context);
+  const context = prepareRouteInput(routeInput, signal), hierarchy = validateRouteHierarchy(input, context);
   const routes = [], details = new Map();
   let heldSamples = context.edges.length * 2;
   for (const edge of context.edges) {

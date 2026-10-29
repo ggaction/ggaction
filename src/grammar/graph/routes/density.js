@@ -5,8 +5,10 @@ import { prepareRouteInput, finalizeRouteResult } from "./common.js";
 import { routeLength, resampleRoute } from "./polyline.js";
 import { routeDensitySamples, createRouteDensityField, advectDensityRoute } from "./densityField.js";
 
-const GRID_SIZE = 256, ITERATIONS = 20, STEP = 0.005, MAX_EDGE_SAMPLES = 4096;
-const bandwidthAt = iteration => Math.max(2 / GRID_SIZE, 0.05 * 0.9 ** iteration);
+export const DENSITY_ROUTE_POLICY = Object.freeze({ gridSize: 256, iterations: 20, step: 0.005 });
+const { gridSize: GRID_SIZE, iterations: ITERATIONS, step: STEP } = DENSITY_ROUTE_POLICY;
+const MAX_EDGE_SAMPLES = 4096;
+export const densityRouteBandwidth = iteration => Math.max(2 / GRID_SIZE, 0.05 * 0.9 ** iteration);
 
 export function normalizeDensityRouteOptions(input = {}) {
   ownRecord(input, "Density route options");
@@ -37,10 +39,10 @@ export function bundleDensityRoutes(input, optionsInput = {}, signal) {
   let routes = context.edges.map(edge => [edge.source, edge.target]);
   const active = routes.some(points => routeLength(points) > 0), schedule = [];
   if (active) {
-    routes = resampleDensityRoutes(routes, bandwidthAt(0), context.budget);
+    routes = resampleDensityRoutes(routes, densityRouteBandwidth(0), context.budget);
     for (let iteration = 0; iteration < ITERATIONS; iteration++) {
       context.budget.check();
-      const bandwidth = bandwidthAt(iteration), sampleCount = routes.reduce((sum, points) => sum + points.length, 0);
+      const bandwidth = densityRouteBandwidth(iteration), sampleCount = routes.reduce((sum, points) => sum + points.length, 0);
       // Include old/new routes, weighted samples, smoothing and resampling buffers.
       context.budget.samples(sampleCount * 6 + context.edges.length * 2); context.budget.charge(sampleCount * 24);
       const samples = routes.map(routeDensitySamples), flat = samples.flat();
