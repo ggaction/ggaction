@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "marginal": [],
+  "bullet": ["canvas", "ranges", "measure", "target", "measure-label", "chartTitle"],
   "streamgraph": ["canvas", "stream"],
   "trail": ["canvas", "trail"],
   "trail-constant-width": ["canvas", "trail"],
@@ -430,6 +432,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
+  "marginal": 11,
   "nested-responsive": 73,
   "shared-adjacent": 27,
   "combined-legends": 13,
@@ -442,6 +445,7 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "marginal": 2,
   "nested-responsive": 2,
   "shared-adjacent": 2,
   "combined-legends": 2,

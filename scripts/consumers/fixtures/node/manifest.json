@@ -1072,40 +1072,8 @@
     "file": "interaction.mjs",
     "cases": [
       {
-        "id": "interaction/geographic-representation",
-        "statements": 5
-      },
-      {
-        "id": "interaction/node-movement",
-        "statements": 27
-      },
-      {
-        "id": "interaction/geographic-context",
+        "id": "interaction/native-camera-navigation",
         "statements": 23
-      },
-      {
-        "id": "interaction/partition-host-focus",
-        "statements": 16
-      },
-      {
-        "id": "interaction/context-host-request",
-        "statements": 1
-      },
-      {
-        "id": "interaction/legend-visibility-filter-composition",
-        "statements": 13
-      },
-      {
-        "id": "interaction/full-basic-immutable-inspection",
-        "statements": 1
-      },
-      {
-        "id": "interaction/current-frame-and-restored-program",
-        "statements": 34
-      },
-      {
-        "id": "interaction/guide-and-host-cleanup",
-        "statements": 85
       },
       {
         "id": "interaction/geographic-label-screen-history",
@@ -1144,8 +1112,40 @@
         "statements": 29
       },
       {
-        "id": "interaction/native-camera-navigation",
+        "id": "interaction/geographic-representation",
+        "statements": 5
+      },
+      {
+        "id": "interaction/node-movement",
+        "statements": 27
+      },
+      {
+        "id": "interaction/geographic-context",
         "statements": 23
+      },
+      {
+        "id": "interaction/partition-host-focus",
+        "statements": 16
+      },
+      {
+        "id": "interaction/context-host-request",
+        "statements": 1
+      },
+      {
+        "id": "interaction/legend-visibility-filter-composition",
+        "statements": 13
+      },
+      {
+        "id": "interaction/full-basic-immutable-inspection",
+        "statements": 1
+      },
+      {
+        "id": "interaction/current-frame-and-restored-program",
+        "statements": 34
+      },
+      {
+        "id": "interaction/guide-and-host-cleanup",
+        "statements": 85
       }
     ]
   },
@@ -1494,6 +1494,23 @@
       {
         "id": "table/fresh-process-and-nested",
         "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "composition-recipes.mjs",
+    "cases": [
+      {
+        "id": "composition-recipes/marginal",
+        "statements": 11
+      },
+      {
+        "id": "composition-recipes/bullet",
+        "statements": 8
+      },
+      {
+        "id": "composition-recipes/combo",
+        "statements": 7
       }
     ]
   }

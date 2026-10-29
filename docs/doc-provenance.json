@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:68077e6a53b125bb36c5c8437d95b93244630926012e5d2a369eff898d23f9f7",
-  "sourceCommit": "e56b8e4c16afe328947bd9840f3412a014874c98",
-  "sourceRef": "e56b8e4c16afe328947bd9840f3412a014874c98",
-  "exampleSourceRef": "0a46877e019d00163dc55c681ce4833b14d8e541",
+  "contractId": "sha256:84adcdaae5c1e102d1583e8096ce4953e0a5067d3261b47bd88765ebc3cc71f1",
+  "sourceCommit": "0e41afeb5588b93ec778a121886b7c38a4609785",
+  "sourceRef": "0e41afeb5588b93ec778a121886b7c38a4609785",
+  "exampleSourceRef": "codex/roadmap9-native-charts",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 369,
+  "actionCount": 377,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -210,6 +210,22 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createTablePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTablePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTrailPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTrailPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createWaterfallPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
@@ -251,6 +267,10 @@
       "status": "development"
     },
     "editProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "navigateProjection": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -315,6 +335,14 @@
       "status": "development"
     },
     "editGraticule": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoAnnotation": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoAnnotation": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -594,6 +622,10 @@
     },
     "createAnnotation": {
       "availableBy": "v0.0.13"
+    },
+    "editAnnotation": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createStatisticalReference": {
       "introducedAfter": "v0.0.13",

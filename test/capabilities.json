@@ -1354,6 +1354,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
       }
     ],
     "rendering": [
@@ -1818,6 +1822,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-table-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
       },
       {
         "type": "file",

@@ -1,0 +1,27 @@
+{
+  "node": "24.22.1",
+  "sha": "3364bce3f7fad099c1e7adb25e8a4f0d88dfc8841ed285b0d0c129c8da0e1451",
+  "sourceCandidate": "69089faccecc0e2de8429a78c4f85c663b8ab621",
+  "scope": "Current integration artifact; not final STEP077 release qualification",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "records": [
+    {
+      "id": "composition-recipes/marginal",
+      "status": "passed",
+      "durationMs": 134.59508300000005
+    },
+    {
+      "id": "composition-recipes/bullet",
+      "status": "passed",
+      "durationMs": 52.494208999999955
+    },
+    {
+      "id": "composition-recipes/combo",
+      "status": "passed",
+      "durationMs": 65.36954200000002
+    }
+  ]
+}

@@ -1658,7 +1658,9 @@
   summary: A line follows the final endpoints of aggregated bars and retains independent appearance.
   actions: createOverlay editOverlay encodeColor
   tasks: composition comparison
-  url: /recipes/composition/
+  url: /recipes/combo/
+  recipe_url: /recipes/combo/
+  recipe_order: 212
 
 - id: shared-adjacent
   example: /examples/shared-adjacent/
@@ -2511,3 +2513,39 @@
   tasks: formatted rows and inline charts
   url: /tutorials/table/
   tutorial_order: 320
+
+- id: marginal
+  example: /examples/marginal/
+  title: Marginal distributions
+  image: /assets/images/marginal.png
+  alt: A scatterplot with aligned count distributions above and to its right.
+  width: 944
+  height: 800
+  thumbnail: /assets/images/marginal-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 542
+  caption: Three panels share the same observations and aligned value domains.
+  summary: Link scatterplot observations to the exact members of each marginal bin.
+  actions: createScatterPlot createBinData createRectMark hconcat vconcat
+  tasks: composition distribution
+  url: /recipes/marginal/
+  recipe_url: /recipes/marginal/
+  recipe_order: 210
+
+- id: bullet
+  example: /examples/bullet/
+  title: Bullet comparison
+  image: /assets/images/bullet.png
+  alt: A blue actual bar at 65 and target rule at 80 over three reference ranges.
+  width: 720
+  height: 320
+  thumbnail: /assets/images/bullet-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 284
+  caption: Reference ranges, actual and target use one quantitative scale.
+  summary: Compare an actual measure with an explicitly authored target and reference ranges.
+  actions: createRectMark createBarMark createRuleMark createMarkLabels
+  tasks: composition comparison
+  url: /recipes/bullet/
+  recipe_url: /recipes/bullet/
+  recipe_order: 211

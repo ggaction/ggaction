@@ -6,8 +6,8 @@
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "6acdd73f26e00b7d7611aae0f21f04520fdc7430bf4a614e2416978c5951752f",
-      "bytes": 1232477
+      "sha256": "2c2ce46a464650f2ccbbdb704cc29a906904a48c909cbcd87c18a7036912d5a4",
+      "bytes": 1258368
     },
     {
       "path": "mcp-resources.json",
@@ -37,10 +37,10 @@
   ],
   "catalogs": {
     "pages": {
-      "count": 182,
+      "count": 185,
       "path": "llm/pages.json",
-      "bytes": 45080,
-      "sha256": "d4c0e6e018903c96ce175861be396c33c2afe69438ba2918ed3e51373f00f372"
+      "bytes": 45789,
+      "sha256": "cb67f8c9b19ea2c726d762a1d7f62afb20e5b2a58d9b8d89725bccbaada82247"
     },
     "actions": {
       "count": 377,
