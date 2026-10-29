@@ -134,6 +134,8 @@ Calendar에 존재하지 않는 position scale을 추정해 brush하지 않고 �
 SVG 상한25,000은 유지한다. 이전 각 branch cap 통과를 합산 cap 통과로 대체하지 않았다.
 
 전체 문서187 중186개는 merge 전 통과했고 유일 실패는 아직 commit하지 않은 Calendar 예제의 Git 링크였다.
-소스 merge commit 뒤 provenance pin·소유 검사로 닫는다. Built166pages/1431LLM와 변경3페이지의
+소스 merge `a8681980a` 뒤 provenance를 고정했고 소유 문서20/20와 build를 통과했다.
+[통합 qualification](region-integration-evidence/qualification.json)에 최초 실패와 최종 증거를 함께 보존한다.
+Built166pages/1431LLM와 변경3페이지의
 320/390/768/1440 responsive+Axe(12cells)는 통과했다. Runtime 및 내용이 같은 upstream 전체 화면과
 059 전체 화면 증거를 보존하며 이번 integration의 전역 coverage 또는077 전체 완료를 주장하지 않는다.
