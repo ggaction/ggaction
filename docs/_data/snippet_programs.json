@@ -528,5 +528,16 @@
       "exported": "createResponsiveGuides"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/nested-responsive.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares all regional rows.",
+    "canonical": {
+      "file": "examples/nested-responsive/program.js",
+      "exported": "createNestedResponsive"
+    },
+    "rendering": "authoring-only"
   }
 }

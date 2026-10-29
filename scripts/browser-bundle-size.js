@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 667_000, // Combined responsive, selection and Calendar: Node20/24 666,557 bytes.
+  ggaction: 668_000, // Nested responsive facet closure: Node20/24 667,284 bytes.
   "ggaction/basic": 375_000, // Combined responsive and selection owners: Node20/24 374,493 bytes.
   "ggaction/svg": 25_000,
   "ggaction/interaction": 83_000 // Dedicated controller; measured independently.

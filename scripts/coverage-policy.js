@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
   "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
   "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },
   "responsive-guide-canvas": { prefix: "materialization/guides/canvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Containment deferral is limited to a private measured candidate and never stored." },

@@ -1,3 +1,4 @@
+import { withRetainedFacetDomains } from "../../materialization/facetScaleContext.js";
 import { action, closedAction } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
 import { normalizeTextMetricProfile } from "../../core/textMetricProfile.js";
@@ -26,12 +27,10 @@ export function applyTextMetricProfile(program, profile) {
     ? program._withoutMaterializationConfig(["textMetrics"])
     : program._withMaterializationConfig(["textMetrics"], profile);
   if (next.compositionSpec !== undefined) {
-    const children = Object.fromEntries(next.compositionSpec.children.map(id => {
-      const child = next.children[id];
-      return [id, profile === undefined
+    const children = Object.fromEntries(next.compositionSpec.children.map(id => [id,
+      withRetainedFacetDomains(next, id, child => profile === undefined
         ? child.materializationConfigs.textMetrics === undefined ? child : metricsProgram(next, child).removeTextMetrics()
-        : inheritTextMetrics(next, child)];
-    }));
+        : inheritTextMetrics(next, child))]));
     next = next._withCompositionState({ children, compositionSpec: next.compositionSpec });
     for (const id of next.compositionSpec.children) next = next.useProgram({ id });
     return next.materializeComposition();

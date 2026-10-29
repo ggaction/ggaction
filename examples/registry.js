@@ -1,3 +1,4 @@
+import { createNestedResponsive } from "./nested-responsive/program.js";
 import { createCalendar } from "./calendar/program.js";
 import { createResponsiveGuides } from "./responsive-guides/program.js";
 import { createContours } from "./contours/program.js";
@@ -319,6 +320,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createCalendar("omitted"),
     browser: { path: "browser-host/?chart=calendar-omitted", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "calendar-omitted", width: 1080, height: 360 } } }
+  }),
+  example({ id: "nested-responsive", data: {}, width: 1047, height: 942, docsGroup: "tutorials", createProgram: createNestedResponsive,
+    browser: { path: "nested-responsive/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "nested-responsive", width: 1047, height: 942 } } }
   }),
   example({ id: "responsive-guides", data: {}, width: 400, height: 320, docsGroup: "tutorials", createProgram: () => createResponsiveGuides(),
     browser: { path: "responsive-guides/", canvas: "#chart",

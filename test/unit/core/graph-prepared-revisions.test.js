@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../src/index.js";
-import { withGraphSourceRevisions, graphSourceRevisions } from "../../../src/actions/graphs/sourceRevisionContext.js";
+import { withGraphSourceRevisions, graphSourceRevisions, withGraphSourceProjection, graphSourceProjection } from "../../../src/actions/graphs/sourceRevisionContext.js";
 import { action } from "../../../src/core/action.js";
 import { dataInputReference } from "../../../src/selectors/resources.js";
 import { withPreparedResourceResults, preparedResourceResults, preparedResourceDataReplacements } from "../../../src/actions/primitives/preparedResourceContext.js";
@@ -60,4 +60,20 @@ test("source revision context restores outer bindings and cannot leak to another
     probe.call(before,{}); expected=undefined;probe.call(after,{});
   });
   probe.call(before,{});
+});
+
+test("graph projection authority is separate from revision and restores nested mode", () => {
+  const { before, after } = fixture(), sources = new Map();
+  const probe = action({ op: "inspectGraphProjection", description: "Inspect source projection authority." }, function ({ projected }) {
+    assert.equal(graphSourceProjection(this), projected);
+    assert.equal(graphSourceRevisions(this), projected ? sources : undefined);
+    return this;
+  });
+  withGraphSourceProjection(before, sources, () => {
+    probe.call(before, { projected: true });
+    probe.call(after, { projected: false });
+    withGraphSourceRevisions(before, undefined, () => probe.call(before, { projected: false }));
+    probe.call(before, { projected: true });
+  });
+  probe.call(before, { projected: false });
 });

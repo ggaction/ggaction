@@ -538,3 +538,7 @@
 - title: Place Observations on a Calendar
   url: /tutorials/calendar/
   parent: /tutorials/
+
+- title: Arrange Nested Panels with Shared Guides
+  url: /tutorials/nested-responsive/
+  parent: /tutorials/

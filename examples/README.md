@@ -792,6 +792,12 @@ Place civil-day aggregates in stable week and weekday cells.
 
 Representative actions: `createCalendarLayout`, `createCalendarPlot`, `editCalendarPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/calendar/).
 
+### [Nested panels with shared guides](./nested-responsive/)
+
+Compose a three-row facet with an overview and resize its source through a scoped target.
+
+Representative actions: `facet`, `hconcat`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/nested-responsive/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

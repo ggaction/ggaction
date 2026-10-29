@@ -797,7 +797,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 667,000 bytes |
+| `ggaction` | 668,000 bytes |
 | `ggaction/basic` | 375,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 83,000 bytes |
@@ -3539,3 +3539,25 @@ Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 pack
 Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
 interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
 coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.
+
+
+### Nested facet responsive and projection closure
+
+`materialization/facetScaleContext.js`는 명시적인 facet/typography/theme 작업 동안
+이미 결정된 child domain을 유지한다. Responsive pass는 범위만 다시 계산하며,
+임시 `context.facetMaterialization`은 반환 전에 복구된다. 저장 schema나 자동
+컴파일 경계는 추가하지 않는다. 최종 bounds는 `layout/canvas.js`의
+`resolveGraphicBounds`를 계속 사용한다.
+
+Facet의 새 derived dataset identity는 같은 logicalId의 후속 source revision과
+구분한다. `actions/data/resourceRevision.js`의 class-local project 경로는 기존
+각 resource owner를 재사용하며 graph만 별도 prepared projection 권한을 쓴다.
+이 권한은 exact receiver/args, old/new dataset refs와 전체 graph/layout 결과
+closure를 primitive가 확인한 뒤 소멸한다. 상세 동작은
+[Current composition](contract/current/COMPOSITION.md#responsive-nested-reflow)이 소유한다.
+
+
+Nested closure의 동일 staged source는 Node20/24에서934entries,
+1,341,753packed/6,149,683unpackedbytes, minimal browser Full667,284gzip을
+기록했다. 한도는934/1,342,000/6,150,000 및 Full668,000으로 교정하며
+Basic375,000/SVG25,000/interaction83,000은 유지한다.

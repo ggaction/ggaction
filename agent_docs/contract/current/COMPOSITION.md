@@ -761,3 +761,33 @@ binned consumers still require an identical bin definition. An automatic domain
 includes raw observations and binned endpoints without replacing source bin
 assignments; explicit domains remain authoritative. Different fields or units
 remain incompatible.
+
+
+## Responsive nested reflow
+
+Facet derivation resolves candidate scales before materializing guides. The final
+shared or independent domains remain authoritative during a responsive range
+solve; authored `domain: "auto"` is retained. Text metric apply/remove and
+inherited theme replay explicitly carry each facet child's resolved domains into
+layout-only work. This transient authority is restored on return and never
+persisted. Empty full-grid cells retain their resolved shared domains and empty
+mark graphics. Intrinsic authored-legend measurement replays resolved intent and
+does not independently re-run the parent theme completion hook.
+
+Nested concat source-target edits refresh facet snapshots, occupied bounds and all
+ancestor placement while preserving unrelated child identities. The final bounds
+owner remains `resolveGraphicBounds`. Legacy rotated header containment uses a
+16-ULP scale-relative boundary allowance, matching responsive containment; actual
+header/header and header/content intersections remain errors.
+
+Resource-only inferred graphs may accompany native facet/repeat marks. Facet
+projection uses a separate private prepared authority from same-source later
+revision: exact old/new dataset refs, exact receiver/args and the complete graph
+and layout dependency closure must agree. It cannot authorize an unrelated
+revision, missing dependent result or changed graph definition. GraphPlot facet
+support is unchanged. Projection context is not stored or exposed publicly.
+
+Evidence: `test/unit/actions/composition/nested-responsive-layout.test.js`,
+`facet-resource-projection.test.js`, `test/charts/nested-responsive/`, and
+`test/browser/nested-responsive.browser.js`. No new authoring options or persisted
+schema were introduced by this closure.

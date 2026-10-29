@@ -1121,5 +1121,12 @@
     "editSource": "examples/calendar/program.js",
     "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
     "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/nested-responsive/": {
+    "title": "Arrange Nested Panels with Shared Guides",
+    "source": "docs/tutorials/nested-responsive.md",
+    "editSource": "examples/nested-responsive/program.js",
+    "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
+    "image": "/assets/images/nested-responsive.png"
   }
 }

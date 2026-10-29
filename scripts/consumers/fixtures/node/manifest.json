@@ -1131,5 +1131,22 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "nested-responsive.mjs",
+    "cases": [
+      {
+        "id": "nested/shared-layout-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "nested/projected-graph-source",
+        "statements": 1
+      },
+      {
+        "id": "nested/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
   }
 ]

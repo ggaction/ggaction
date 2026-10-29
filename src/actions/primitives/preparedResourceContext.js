@@ -27,7 +27,13 @@ export function withPreparedDataResourceResults(program, args, replacements, ope
   return bindPreparedResources(program, args, replacements, operation, dataReplacements, true);
 }
 
-function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted) {
+// Facet projections create a new dataset identity, not a later source revision.
+// This separate private authority still binds exact refs and a complete result DAG.
+export function withPreparedProjectedResourceResults(program, args, replacements, operation, dataReplacements) {
+  return bindPreparedResources(program, args, replacements, operation, dataReplacements, false, true);
+}
+
+function bindPreparedResources(program, args, replacements, operation, dataReplacements, dataRooted, projected = false) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -50,12 +56,18 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     ownRecord(entry, "Prepared data replacement");
     if (Object.keys(entry).length !== 2) throw new TypeError("Prepared data replacement requires previous and next.");
     validateInputReference(entry.previous); validateInputReference(entry.next);
-    if (entry.previous.kind !== "data" || entry.next.kind !== "data" || entry.previous.logicalId !== entry.next.logicalId ||
-        entry.next.revision <= entry.previous.revision || dataIds.has(entry.previous.id)) throw new TypeError("Prepared data replacements require unique later revisions of the same source.");
+    if (entry.previous.kind !== "data" || entry.next.kind !== "data" || dataIds.has(entry.previous.id)) {
+      throw new TypeError("Prepared data replacements require unique data references.");
+    }
+    if (projected ? entry.previous.logicalId === entry.next.logicalId || entry.previous.id === entry.next.id
+      : entry.previous.logicalId !== entry.next.logicalId || entry.next.revision <= entry.previous.revision) {
+      throw new TypeError(projected ? "Prepared data projections require distinct dataset identities."
+        : "Prepared data replacements require unique later revisions of the same source.");
+    }
     dataIds.add(entry.previous.id);
   }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements), dataRooted, projected });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
 }
@@ -68,4 +80,9 @@ export function preparedResourceDataReplacements(args, enteredProgram) {
 export function preparedResourceDataRooted(args, enteredProgram) {
   preparedResourceResults(args, enteredProgram);
   return prepared.get(args)?.dataRooted === true;
+}
+
+export function preparedResourceDataProjection(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.projected === true;
 }

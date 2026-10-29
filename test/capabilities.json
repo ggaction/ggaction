@@ -842,6 +842,36 @@
         "path": "unit/materialization/"
       }
     ],
+    "nested-composition": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/nested-responsive-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-resource-projection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/data-resource-revision.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/facet-scale-context.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/nested-responsive.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/nested-responsive/"
+      }
+    ],
     "oracles": [
       {
         "type": "prefix",

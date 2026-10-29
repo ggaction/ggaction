@@ -231,3 +231,4 @@ requirements after resolving each part.
 - Fit Labels Inside a Fixed Canvas: ./tutorials/responsive-guides/
 - Calendar Plots: ./api/calendar/
 - Place Observations on a Calendar: ./tutorials/calendar/
+- Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:da4843b36ddb80307807919c0f4ac2b1a7efdf5b00625b28b13240a6293de275",
+    "contractId": "sha256:12b0bc3b23465fa28ff2bf815486071b1943b14e90eeb9e4612fdb7394a3df13",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 167,
+  "sectionCount": 168,
   "sections": [
     {
       "order": 1,
@@ -1278,10 +1278,11 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope",
         "path-layer-color",
-        "shared-color-legends"
+        "shared-color-legends",
+        "nested-responsive-panels"
       ],
-      "bytes": 8459,
-      "sha256": "a59d8259a60f36923ef22701e0456800a7a67cb578158ef4fe7be6b212cb38e2"
+      "bytes": 9525,
+      "sha256": "f32f8a40615d31c6d77574e9daaa5bc31f0ff558839e468f82d02a1170c9f15c"
     },
     {
       "order": 76,
@@ -3715,7 +3716,7 @@
         "migration-from-v0013"
       ],
       "bytes": 2980,
-      "sha256": "8f3908d0e2db35ad6f25eaca2a031f1b010057a8d2d69d9d39699cf0e81e6676"
+      "sha256": "b7cd0a489b5fcf185e1645cf703899fecbacc3043be064e79ff1072e8259b510"
     },
     {
       "order": 152,
@@ -3955,6 +3956,17 @@
       ],
       "bytes": 2859,
       "sha256": "0049b47bbf95d5c8fb2fc05137dc003bfd76025634316ef49a7a5bf3d4db2547"
+    },
+    {
+      "order": 168,
+      "title": "Arrange Nested Panels with Shared Guides",
+      "route": "/tutorials/nested-responsive/",
+      "source": "tutorials/nested-responsive.md",
+      "headings": [
+        "arrange-nested-panels-with-shared-guides"
+      ],
+      "bytes": 2880,
+      "sha256": "326058c95ba85706eaa479e9833030c26d8df6153633263e902e0065882a9419"
     }
   ]
 }
