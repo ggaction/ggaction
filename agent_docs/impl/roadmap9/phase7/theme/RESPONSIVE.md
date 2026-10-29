@@ -7,8 +7,8 @@
 - [x] private closed label policy와 4회/0.1px convergence reducer·독립 literal 시험
 - [x] Canvas/axis authoring·wrapped materialization·inspection·codec 공개 연결
 - [x] 실제 resize/font/revise·명시 child 교체·scene·네 renderer 검증
-- [ ] 고정 tar 설치 소비자·최종 문서 자격
-- [ ] STEP-034 완료 기록과 generated docs 동기화
+- [x] 고정 tar 설치 소비자·최종 문서 자격
+- [x] STEP-034 완료 기록과 generated docs 동기화
 - [ ] STEP-035 nested facet/shared guide 후속 통합
 
 기준은 STEP-033 qualification `0aae2f639`와 합산 runtime `039deaf14`다.

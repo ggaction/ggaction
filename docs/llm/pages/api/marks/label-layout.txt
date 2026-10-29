@@ -42,7 +42,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/aaa77724cd87b7c166db918d3ecede34a344ac66/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`

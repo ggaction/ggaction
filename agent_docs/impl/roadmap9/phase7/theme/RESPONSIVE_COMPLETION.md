@@ -7,10 +7,10 @@
 - [x] Current·declarations·inspection·program/graphic codec·scene
 - [x] 실제 native Canvas/SVG/PNG/PDF, browser DPR 1/2, 실데이터 15개
 - [x] 담당 5개 critical coverage floor 및 source boundaries
-- [ ] 동일 최종 tar Node 20/22/24 설치·타입·browser bundle 자격
-- [ ] 최종 docs source/build/built/browser 및 원격 evidence 기록
+- [x] 동일 최종 tar Node 20/22/24 설치·타입·browser bundle 자격
+- [x] 최종 docs source/build/built/browser 및 원격 evidence 기록
 
-이 문서는 STEP-034의 공개 후보를 기록한다. STEP-035의 nested facet/root shared-guide
+이 문서는 source `aaa77724cd87b7c166db918d3ecede34a344ac66`의 STEP-034 공개 완료를 기록한다. STEP-035의 nested facet/root shared-guide
 재배치와 STEP-050 single-Y admission은 별도 소유자이며 전체 AT-20 완료를 주장하지 않는다.
 기준과 정확한 결정은 [RESPONSIVE.md](RESPONSIVE.md), durable 동작은 Current CORE/AXES다.
 
@@ -59,3 +59,23 @@ STEP-035에서 독립 재현하고 고친다.
 처음 browser factory에 data 인자가 전달된 fixture 오류, 실데이터 cache 경로 누락,
 문서 catalog 순서 중복/count 누락, source 예제의 미커밋 Git 링크 실패는 각각 구분하여
 보존한다. 구현 회귀 통과로 이 초기 실패를 덮거나 미실행 전체 suite를 성공으로 세지 않는다.
+
+## 완료 자격
+
+최종 tar SHA-256은 `de5a74c9c8e73671c744c14ea6fe26e668157660e1a9ba6334aedf65d9880c44`다.
+916 entries, packed 1,320,816 bytes, unpacked 6,056,849 bytes이며 Node20/22/24는 이 한 파일을
+설치했다. 각 Node에서 신규 source-free runtime 2개, optional peers·기존/신규 TypeScript·
+Full/Basic/SVG/interaction browser bundle의 7개 자격이 모두 통과했다. 패키지 한도는 실제
+추가 owner 3개 및 현재 bytes를 기준으로 916/1,321,000/6,057,000으로 조정했다.
+브라우저 source 실측 최고 Full655,514/Basic370,946 bytes에 따라 한도656,000/371,000으로
+최소 조정했다. Node22 및 설치 artifact의 별도 실측도 JSON에 보존했다.
+
+추가 실제 hit/axis label 회귀99개는 axisLabelText100/91.30/100, hitGuides100/95.08/100을
+통과했다. 선택되지 않은 label이 hit metadata에 다시 등장하지 않는 기존 공통 owner를 유지한다.
+문서 source180/180, built165 pages/1413 LLM artifacts, desktop search 및 전체 페이지의
+320/390/768px containment·접근성 검증이 통과했다. Source commit 뒤 provenance만 갱신한
+재빌드에서 Git 링크·다운로드 URL·version 표의 source ref만 바뀐 31개 HTML을 모두 확인했다.
+변경31페이지×3화면폭=93 canonical containment를 추가 통과했으며 런타임/타입/tar bytes는 그대로다.
+
+STEP-034를 완료하고 STEP-035는 계속 진행한다. 별도 승인 없이 전체 Roadmap9 종료를 주장하지
+않으며, AT-20의 single-Y와 AT-21의 중첩 합성은 후행 통합에서 닫는다.
