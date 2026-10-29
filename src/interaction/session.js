@@ -1,5 +1,7 @@
 import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
-import { prepareClickCapture } from "./pointerCapture.js";
+import { prepareSelectionCapture } from "./pointerCapture.js";
+import { normalizeRegionBinding, resolveRegionBinding, prepareRegionGesture, regionGestureCommand } from "./regionSelection.js";
+import { materializeRegisteredSelectionPreview } from "../materialization/selection/expression.js";
 import { normalizeSelectionPolicy, reconcileSelections } from "./reconciliation.js";
 import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
@@ -20,14 +22,15 @@ function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
   if (!Array.isArray(value) || value.length > 258) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], linked = [], selected = [];
+  const inspect = [], linked = [], selected = [], regions = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss"], "Interaction binding");
-    (head.type === "linkSelection" ? linked : head.type === "select" ? selected : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels"], "Interaction binding");
+    (head.type === "linkSelection" ? linked : head.type === "select" ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
-  if (inspect.length > 1 || selected.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select binding.");
+  if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select, brush or lasso binding.");
   const links = normalizeSelectionLinks(program, linked);
-  return { linked: links, select: selected.length ? normalizeClickSelection(program, selected[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
+  return { linked: links, select: selected.length ? normalizeClickSelection(program, selected[0], links) : undefined,
+    region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
     const events = request.events === undefined ? ["pointermove", "click"] : request.events;
@@ -62,10 +65,10 @@ export function createInteractionSession(input) {
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
-  let state, revision = 0, transactionSequence = 0, ignoredClick;
+  let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null;
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
-  const snapshot = () => state = freezeOwned({ program, scene: bridge.getState().scene,
+  const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene,
     frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
@@ -111,32 +114,38 @@ export function createInteractionSession(input) {
     if (failure) throw failure;
     return outcome("applied");
   };
-  const edit = command => {
+  const prepareEdit = command => {
+    let prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
+    if (prepared.program === program) return null;
+    const initial = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: configured.linked });
+    prepared = applySelectionLinks(initial.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...initial.affectedOwners], command, selectionPolicy);
+    const reconciled = reconcileSelections(prepared.program, initial.records, selectionPolicy, { verify: true });
+    const selectionChanges = [...initial.changes, ...reconciled.changes];
+    const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
+    const candidate = prepareProgramHitFrame(prepared.program, version);
+    const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame };
+  };
+  const edit = (command, draft) => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
     const previous = program;
-    let prepared, version, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
+    let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
       ...(command.causeTransactionId === undefined ? {} : { causeTransactionId: command.causeTransactionId }),
       phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics), selectionChanges: cloneAndFreeze(phase === "error" ? [] : selectionChanges)
     });
     try {
-      prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
-      if (prepared.program === program) return outcome("unchanged");
-      reconciled = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: configured.linked });
-      prepared = applySelectionLinks(reconciled.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...reconciled.affectedOwners], command, selectionPolicy);
-      const verified = reconcileSelections(prepared.program, reconciled.records, selectionPolicy, { verify: true });
-      selectionChanges = [...reconciled.changes, ...verified.changes];
-      reconciled = verified;
-      version = nextInteger(bridge.getState().version); nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
-      candidate = prepareProgramHitFrame(prepared.program, version);
-      frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      const result = draft ?? prepareEdit(command);
+      if (!result) return outcome("unchanged");
+      ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges } = result);
     } catch (error) {
       publish(command.type, details("error", Object.freeze([]), [{ code: getErrorDetails(error)?.code ?? "interaction-command-failed", message: error.message }]));
       throw error;
     }
     mounted?.capture?.cancel("updateProgram");
+    previewProgram = null;
     bridge.updateFrame(frame); base = candidate; program = prepared.program;
     linkedSelections = prepared.projections; selectionRecords = reconciled.records;
     generation = nextGeneration; revision = nextRevision; lastHit = null;
@@ -170,6 +179,7 @@ export function createInteractionSession(input) {
       return perform(() => {
         if (c.generation !== generation || c.version <= bridge.getState().version) return outcome("stale");
         const frame = rebindProgramHitFrame(base, scene, c.version, rootTransform);
+        mounted?.capture?.cancel("updateProgram");
         bridge.updateFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
       });
     }
@@ -187,6 +197,7 @@ export function createInteractionSession(input) {
           linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy);
         }
         if (configured.select) resolveClickSelection(linked.program, configured.select.target, configured.select.selection, true);
+        if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
         const verified = reconcileSelections(linked.program, reconciled.records, selectionPolicy, { verify: true });
         const selectionChanges = cloneAndFreeze([...reconciled.changes, ...verified.changes]);
         const candidate = prepareProgramHitFrame(linked.program, version);
@@ -230,6 +241,79 @@ export function createInteractionSession(input) {
               };
             lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: true });
           }
+          if (configured.region) {
+            const binding = configured.region;
+            const scheduler = element.ownerDocument?.defaultView ?? element;
+            if (typeof scheduler.requestAnimationFrame !== "function" || typeof scheduler.cancelAnimationFrame !== "function") throw new TypeError("Brush and lasso require host animation-frame scheduling.");
+            let gesture;
+            const discard = token => {
+              try { if (token?.raf !== undefined) scheduler.cancelAnimationFrame(token.raf); }
+              finally { if (token) token.raf = undefined; gesture = undefined; previewProgram = null; }
+            };
+            const details = (token, phase, diagnostics = []) => ({ transactionId: token.transactionId, origin: "user", phase, revision,
+              affectedOwners: freezeOwned([binding.target]), previous: token.previous, current: program,
+              diagnostics: cloneAndFreeze(diagnostics), selectionChanges: Object.freeze([]) });
+            const failure = (token, error) => {
+              discard(token);
+              publish("select", details(token, "error", [{ code: getErrorDetails(error)?.code ?? "selection-gesture-failed", message: String(error?.message ?? error) }]));
+            };
+            const preview = token => {
+              if (token.previous !== program) throw new Error("Selection gesture baseline is stale.");
+              const result = regionGestureCommand(token.context, token.points);
+              const command = interactionTransaction(result.command, token.transactionId), draft = prepareEdit(command);
+              previewProgram = materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
+              publish("select", { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
+              return { command, draft };
+            };
+            lease.capture = prepareSelectionCapture(element, {
+              binding: { id: "selection", kind: binding.type },
+              current: () => !destroyed && mounted === lease,
+              perform,
+              point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
+              begin: point => {
+                const context = prepareRegionGesture(program, binding, base, bridge.getState().scene, transform, point);
+                if (!context) return null;
+                transactionSequence = nextInteger(transactionSequence);
+                return gesture = { transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], raf: undefined };
+              },
+              sample: (token, point) => {
+                const previous = token.points.at(-1);
+                if (previous.x === point.x && previous.y === point.y) return;
+                if (binding.type === "brush") token.points = [token.points[0], point];
+                else {
+                  if (token.points.length >= 10_000) throw new RangeError("Lasso exceeds its screen point budget.");
+                  token.points.push(point);
+                }
+              },
+              preview: token => {
+                if (token.raf !== undefined) return;
+                token.raf = scheduler.requestAnimationFrame(() => {
+                  token.raf = undefined;
+                  if (destroyed || mounted !== lease || gesture !== token) return;
+                  perform(() => {
+                    if (gesture !== token) return;
+                    try { preview(token); } catch (error) { lease.capture.fail(error); }
+                  });
+                });
+              },
+              drag: token => {
+                let result;
+                try {
+                  if (token.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
+                  token.raf = undefined;
+                  result = preview(token);
+                  discard(token);
+                } catch (error) { failure(token, error); throw error; }
+                return edit(result.command, result.draft);
+              },
+              cancel: (token, reason) => {
+                discard(token);
+                publish("select", details(token, "cancel", [{ code: "gesture-cancelled", message: reason }]));
+              },
+              error: failure,
+              blockClick: pointerId => { ignoredClick = pointerId; }
+            });
+          }
           if (configured.select) {
             const binding = configured.select;
             const select = (point, pointerType, transactionId) => {
@@ -240,7 +324,7 @@ export function createInteractionSession(input) {
               if (transactionId === undefined) { transactionSequence = nextInteger(transactionSequence); transactionId = `interaction-${transactionSequence}`; }
               return edit(interactionTransaction(command, transactionId));
             };
-            lease.capture = prepareClickCapture(element, {
+            lease.capture = prepareSelectionCapture(element, {
               current: () => !destroyed && mounted === lease,
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },

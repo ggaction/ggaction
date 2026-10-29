@@ -148,8 +148,7 @@ other session methods reject further work.
 
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
-comparisons. The session does not persist host objects or hover state. Editing
-brush/lasso gestures, keyboard navigation, history, and asset loading
+comparisons. The session does not persist host objects or hover state. Keyboard navigation, history, angular gestures, and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 
@@ -428,7 +427,7 @@ binding does not emit inspection events by itself. Missing endpoints become inac
 At most one click-selection binding is supported alongside inspection and linked bindings. A linked
 target cannot also be its click-selection writer. Root and explicit concat owners are supported;
 facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
-The controller does not yet arbitrate dragging, competing bindings, keyboard activation or modifiers.
+The controller does not yet arbitrate competing bindings, keyboard activation or modifiers.
 
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
@@ -450,3 +449,63 @@ the controller does not assign Enter/Space behavior or a focused item.
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
 Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
 history are not supported by this binding.
+
+
+## Brush or lasso an existing selection
+
+Use a Full program with an existing authored selection. A session accepts one click, brush, or lasso
+binding alongside inspection and linked selections. The following browser fragment assumes `program`
+has a `points` mark and `picked` selection, and `canvas` is an HTML Canvas element:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: "points"`; `selection: "picked"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const brush = createInteractionSession({ program, bindings: [
+  { type: "brush", target: "points", selection: "picked", axis: "xy" }
+] });
+brush.subscribe(event => {
+  if (["preview", "commit", "cancel", "error"].includes(event.phase)) {
+    render(event.state.previewProgram ?? event.current, canvas.getContext("2d"));
+  }
+});
+brush.mount(canvas);
+```
+
+`axis` is x, y, or default xy. Brush uses the stored position scale and writes a typed domain region;
+x/y conditions intersect. Linear, log, time, ordinal, band and point scales are supported. Bands that
+touch the brush interval are included, while padding gaps select no nearest category. Time endpoints
+are epoch milliseconds. Set `channels: {y: "y2"}` for an aggregated Bar's ending y value, or x2 for its
+ending x value. Other secondary channels require an explicit stored binding. Polar/angular brushing
+and arbitrary animation-scale inversion are rejected; brush starts from committed owner geometry.
+
+Use `{type: "lasso", target: "points", selection: "picked"}` for a freehand screen polygon.
+Lasso selects the centers of current logical-item hit bounds, respecting clipping and opacity. It
+uses the current accepted frame, including sampled geometry. The selected keys and normalized
+CSS-local polygon are recorded together; resizing preserves the keys. Fewer than three distinct
+points select nothing. Lasso does not accept axis or channel options.
+
+Both bindings accept `mode: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default replace.
+Each preview recomputes from the same pointerdown program; repeated toggle previews do not accumulate.
+At most one preview is published per animation frame. Final pointerup uses its last coordinates
+synchronously and creates one commit followed by settled. `state.program` and its revision stay
+unchanged during preview; render `state.previewProgram` for the temporary selection and blue overlay.
+The committed program never contains that overlay. Empty brushes select nothing.
+
+Escape, lost capture, pointer cancellation, blur, a new accepted frame/program, unmount and destruction
+clear the preview and retain the prior program. Redraw that program on cancel. Capture and host RAF
+are required. Set the host's CSS `touch-action` policy for direct touch gestures. For SVG, mount a
+stable wrapper with the same logical dimensions and replace only its SVG contents during preview;
+replacing the captured element cancels the gesture. Canvas/SVG use the same program, and ordinary
+PNG/PDF exports can render a preview snapshot without running a controller.
+
+Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
+bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
+50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
+is removed.

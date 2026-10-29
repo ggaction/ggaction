@@ -414,3 +414,34 @@ keys so moving between child paths enters/exits. SVG scene v1 and Canvas scene v
 
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/core/resource-state.test.js`,
 `test/unit/persistence/legacy-selection.test.js`, `test/unit/persistence/legacy-derived.test.js`.
+
+
+## Typed regions and screen polygon metadata
+
+Named `MarkSelectionSelector` additionally accepts `{region,grain?}`. Region has one or more of
+`x`, `y`, `x2`, `y2`, or `theta` alone. Each axis has exactly `{ranges:[...]}` or `{values:[...]}`.
+Numeric ranges require finite min/max and reuse endpoint inclusion flags, default inclusive. At most
+two ordered, non-overlapping ranges form a union within an axis; axes intersect. Categories are
+finite number/string/boolean values, deduplicated by first occurrence with strict typed equality.
+Empty arrays mean no members. Missing or incompatible per-item values are excluded; a nonempty
+owner with no such final-grain channel rejects the selector. Aggregate channels retain their existing
+endpoint meaning; raw member rows never substitute for unavailable final-item values. Full region
+shape validation occurs even for empty data. Category count is at most 10,000, item count at most
+50,000, and cumulative key/category comparisons and UTF-16 work at most 10,000,000.
+
+An items selector may additionally contain `screenPolygon:[{x,y},...]`. Points are finite CSS-local
+coordinates, bounded to 10,000 input points; consecutive duplicates and a repeated closing point
+normalize away. Polygons with fewer than three points are valid metadata. Item keys alone determine
+membership through resize, filtering, source revisions and codec restoration. An item-key resource
+stores optional normalized `options.screenPolygon`; it is never interpreted as a data-space polygon.
+Set updates retain only the incoming polygon metadata when present. Replacing with another selector
+or editing without polygon metadata removes it. Predicate resources store normalized `region` in
+their existing predicate options; algorithm version remains `"1"`. Malformed/noncanonical stored
+ranges, points or mixed selector forms fail load rather than being repaired.
+
+Native select/edit, inline or named highlights, named labels, conditional encodings and scoped
+composition edits share the updated resource revision. Inline mark filters and inline label selectors
+retain `MarkSelector` and reject region/polygon additions. Basic does not author these selections.
+The theta selector reads semantic theta values in their existing units; this does not introduce an
+angular pointer gesture. Evidence: `test/unit/actions/selection/region-selection.test.js`,
+`test/unit/selection-region.test.js`, `test/contracts/logical-selection-types.test.js`.

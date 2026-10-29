@@ -79,6 +79,7 @@ export const cases = [
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
     const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+    assert.throws(() => autoProgram.editMarkSelection({ selection: 'picked', region: { x: { ranges: [{min:0,max:1},{min:1,max:2}] } } }), /non-overlapping/);
     const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();
     const host={getBoundingClientRect:()=>({left:10,top:20,width:200,height:160}),addEventListener:(event,listener)=>clicks.set(event,listener),removeEventListener:(event,listener)=>{if(clicks.get(event)===listener)clicks.delete(event)}};
     automatic.mount(host);clicks.get('click')({clientX:60,clientY:80});
@@ -92,6 +93,27 @@ export const cases = [
     const accepted=automatic.getState().program;clicks.get('pointerdown')(pointer);clicks.get('keydown')({key:'Escape'});clicks.get('pointerup')(pointer);clicks.get('click')({...pointer,detail:1});
     assert.equal(automatic.getState().program,accepted);assert.equal(phases.at(-1),'cancel');assert.equal(captures.size,0);
     automatic.destroy();assert.equal(clicks.size,0);
+    for (const type of ["brush", "lasso"]) {
+      const source = autoProgram, session = createInteractionSession({ program: source, bindings: [{ type, target: "points", selection: "picked" }] });
+      const pending = new Map(); let frameId = 0;
+      host.requestAnimationFrame = fn => { pending.set(++frameId, fn); return frameId; };
+      host.cancelAnimationFrame = id => pending.delete(id);
+      session.mount(host); const phases = []; session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+      const pointer = (x, y) => ({ pointerId: 1, pointerType: "mouse", button: 0, clientX: x + 10, clientY: y + 20 });
+      clicks.get("pointerdown")(pointer(20, 20));
+      clicks.get("pointermove")(pointer(90, 20)); clicks.get("pointermove")(pointer(90, 100));
+      if (type === "lasso") clicks.get("pointermove")(pointer(20, 100));
+      assert.equal(pending.size, 1); const callbacks = [...pending.values()]; pending.clear(); callbacks.forEach(fn => fn());
+      assert.equal(session.getState().program, source); assert.equal(session.getState().revision, 0);
+      assert.equal(getMarkItems(session.getState().previewProgram, { target: "points" }).filter(item => item.properties.fill === "red").length, 2);
+      clicks.get("pointerup")(pointer(type === "brush" ? 90 : 20, 100));
+      assert.deepEqual(phases, ["preview", "preview", "commit", "settled"]); assert.equal(session.getState().revision, 1);
+      assert.equal(session.getState().previewProgram, null); assert.equal(captures.size, 0); assert.equal(pending.size, 0);
+      const restored = deserializeProgram(serializeProgram(session.getState().program));
+      assert.equal(getMarkItems(restored, { target: "points" }).filter(item => item.properties.fill === "red").length, 2);
+      if (type === "lasso") assert.equal(restored.semanticSpec.resources.find(resource => resource.id === "picked").options.screenPolygon.length, 4);
+      session.destroy(); assert.equal(clicks.size, 0);
+    }
     const p = make(chart);
     const session = createInteractionSession({ program: p }), active = new Map();
     const element = { addEventListener(type, listener) { active.set(type, listener); },

@@ -6251,7 +6251,8 @@
       "materializePartitionPlot",
       "materializeFlowNodes",
       "materializeFlowLinks",
-      "materializeContourMark"
+      "materializeContourMark",
+      "materializeSelectionPreview"
     ],
     "guideComponents": [
       "createLegendBackground",

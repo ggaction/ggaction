@@ -22,11 +22,12 @@ export function sceneIdentities(graphicSpec) {
 export function canvasSceneSnapshot(program, cache = true) {
   if (!program?.graphicSpec) throw new TypeError("Scene snapshot requires a ChartProgram.");
   if (cache && snapshots.has(program)) return snapshots.get(program);
-  const sources = [];
+  const sources = [], canvases = [];
   const scene = collectTransitionGraphics(program.graphicSpec, sceneIdentities(program.graphicSpec), {
-    onNode(graphicId, node) { sources.push({ graphicId, nodeKey: node.key }); }
+    onNode(graphicId, node) { sources.push({ graphicId, nodeKey: node.key }); },
+    onCanvas(graphicId, frame) { canvases.push({ graphicId, offset: [frame.x, frame.y], clip: frame.clip }); }
   });
-  const snapshot = cloneAndFreeze({ scene, sources });
+  const snapshot = cloneAndFreeze({ scene, sources, canvases });
   if (cache) snapshots.set(program, snapshot);
   return snapshot;
 }

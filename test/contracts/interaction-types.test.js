@@ -23,6 +23,18 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
 createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
+// @ts-expect-error one-axis brush cannot select the other axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
+// @ts-expect-error Cartesian channel must match its axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',channels:{x:'y'}}]});
+// @ts-expect-error screen lasso has no domain axis
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
+// @ts-expect-error angular bindings are not yet public
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'angular'}]});
 // @ts-expect-error click bindings use existing named selections
 createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
 // @ts-expect-error drag and additive gestures have no automatic click binding

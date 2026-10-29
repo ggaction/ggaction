@@ -1433,11 +1433,28 @@ export type MarkSelector = { grain?: "item" | "stack"; items: readonly string[];
       ties?: "first" | "all";
     }
 );
-export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };
+export type SelectionRegion = ({ x?: SelectionRegionAxis; y?: SelectionRegionAxis; x2?: SelectionRegionAxis; y2?: SelectionRegionAxis; theta?: never } &
+  ({ x: SelectionRegionAxis } | { y: SelectionRegionAxis } | { x2: SelectionRegionAxis } | { y2: SelectionRegionAxis }))
+  | { theta: SelectionRegionAxis; x?: never; y?: never; x2?: never; y2?: never };
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never }) | {
   grain?: "item" | "stack";
   /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
   where: ComputedExpressionV2;
-  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
 };
 export type SelectMarksOptions = {
   id?: string;
@@ -1986,7 +2003,7 @@ export interface PersistentSelectionResource {
   readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
   readonly inputs: readonly InputRef[];
   readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
-    | { readonly mode: "item-keys"; readonly itemKeys: readonly string[]; readonly empty: "none" | "all" }
+    | { readonly mode: "item-keys"; readonly itemKeys: readonly string[]; readonly empty: "none" | "all"; readonly screenPolygon?: readonly { readonly x: number; readonly y: number }[] }
     | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
   readonly result: Readonly<Record<string, never>>;
   readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };

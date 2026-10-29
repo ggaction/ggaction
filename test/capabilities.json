@@ -654,6 +654,26 @@
       {
         "type": "file",
         "path": "browser/interaction-session.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/selection-region.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/selection/region-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-region-gesture.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-region.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "charts/mark-selection-points/variants/interaction/png.render.js"
       }
     ],
     "horizon": [

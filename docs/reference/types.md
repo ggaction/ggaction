@@ -10274,17 +10274,29 @@ export interface MarkOutline { color: string; width: number; }
 <summary>Expand MarkSelectionSelector</summary>
 
 ```typescript
-export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never }) | {
   grain?: "item" | "stack";
   /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
   where: ComputedExpressionV2;
-  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
 };
 ```
 
 </details>
 
-Related types: [`MarkSelector`](#type-markselector) · [`ComputedExpressionV2`](#type-computedexpressionv2).
+Related types: [`MarkSelector`](#type-markselector) · [`ComputedExpressionV2`](#type-computedexpressionv2) · [`SelectionRegion`](#type-selectionregion).
 
 ### `MarkSelector` {#type-markselector}
 
@@ -13498,6 +13510,35 @@ export type SelectMarksOptions = {
 </details>
 
 Related types: [`MarkSelectionSelector`](#type-markselectionselector).
+
+### `SelectionRegion` {#type-selectionregion}
+
+<details markdown="1">
+<summary>Expand SelectionRegion</summary>
+
+```typescript
+export type SelectionRegion = ({ x?: SelectionRegionAxis; y?: SelectionRegionAxis; x2?: SelectionRegionAxis; y2?: SelectionRegionAxis; theta?: never } &
+  ({ x: SelectionRegionAxis } | { y: SelectionRegionAxis } | { x2: SelectionRegionAxis } | { y2: SelectionRegionAxis }))
+  | { theta: SelectionRegionAxis; x?: never; y?: never; x2?: never; y2?: never };
+```
+
+</details>
+
+Related types: [`SelectionRegionAxis`](#type-selectionregionaxis).
+
+### `SelectionRegionAxis` {#type-selectionregionaxis}
+
+<details markdown="1">
+<summary>Expand SelectionRegionAxis</summary>
+
+```typescript
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };
+```
+
+</details>
+
+Related types: [`FilterRange`](#type-filterrange).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 

@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "selection-region": { prefix: "grammar/selectionRegion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region predicates must preserve typed final-grain intersections and bounded immutable metadata." },
+  "selection-lasso": { prefix: "grammar/lassoSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Lasso membership must use finite CSS polygons, exact logical keys and bounded geometry work." },
+  "interaction-region": { prefix: "interaction/regionSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region gestures must share exact committed scales, current-frame anchors and scoped identities." },
+  "selection-preview": { prefix: "actions/selection/preview", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Preview materialization must remain immutable, traceable and separate from committed state." },
   "brush-scale-inversion": { prefix: "grammar/scales/inversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Brush inverse values must preserve resolved scale geometry, typed keys and bounded immutable input." },
   "interaction-pointer-capture": { prefix: "interaction/pointerCapture", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Host capture must release listeners and pointers exactly once across cancellation, reentrancy and disposal." },
   "interaction-gestures": { prefix: "interaction/gestures", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Gesture arbitration and terminal transitions must retain pointer ownership, bounded work and one commit or cancellation." },

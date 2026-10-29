@@ -1,6 +1,18 @@
-export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never }) | {
   grain?: "item" | "stack";
   /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
   where: ComputedExpressionV2;
-  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
 };

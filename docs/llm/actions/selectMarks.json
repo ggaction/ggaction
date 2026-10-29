@@ -93,6 +93,16 @@
       "type": "\"all\" | \"none\" | undefined"
     },
     {
+      "name": "region",
+      "required": false,
+      "type": "SelectionRegion | undefined"
+    },
+    {
+      "name": "screenPolygon",
+      "required": false,
+      "type": "readonly { readonly x: number; readonly y: number; }[] | undefined"
+    },
+    {
       "name": "rows",
       "required": false,
       "type": "{ data: string; indices: readonly number[]; }"

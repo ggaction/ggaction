@@ -317,13 +317,47 @@ their existing comparison grammar. A set update such as `mode: "add"` evaluates
 an incoming AST once and stores item keys. Use the default `replace` to keep a
 live expression.
 
-## Related
-
-[Appearance overview](../../../../api/appearance/) · [Mark-selection tutorial](../../../../tutorials/mark-selection/) · [Data filtering](../../../../api/data/filtering/)
-
 Row indices are input coordinates only. A persistent selection immediately stores
 the corresponding logical row keys. Reordering keyed data preserves the selection;
 deleting a key hides its membership, and reintroducing it selects it again.
 Field, channel and property predicates remain dynamic and reevaluate after edits.
 Selection meaning belongs to `semanticSpec.resources`; target/projection and
 highlight appearance stay in their respective materialization configurations.
+
+## Select a typed region
+
+Named selections can intersect final-item position channels. This complete module selects the
+observation at (15, 5):
+
+> **Executable complete.** Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createCanvas({ width: 400, height: 300 })
+  .createData({ values: [{ x: 5, y: 5 }, { x: 15, y: 5 }, { x: 25, y: 10 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y" })
+  .selectMarks({
+  id: "window", target: "points",
+  region: { x: { ranges: [{ min: 10, max: 20 }] }, y: { ranges: [{ min: 3, max: 8 }] } }
+});
+```
+
+Each region axis accepts either `ranges` or typed `values`. Available axes are x, y, x2, y2, or theta
+alone. Axes intersect; up to two ordered non-overlapping numeric ranges form a union within an axis.
+Range endpoints are inclusive by default and accept `minInclusive` and `maxInclusive`. Empty arrays
+select nothing. Categories use strict number/string/boolean equality. Dates use the channel's epoch
+milliseconds. A Bar's ending value is y2 or x2; raw rows do not replace an aggregate channel.
+A channel unavailable at the final item grain is an error.
+
+An item-key selector may include `screenPolygon: [{x,y}, ...]` as CSS-local metadata. The keys retain
+selection meaning through resizing and data revisions; the old polygon is not reevaluated in data
+space. Consecutive duplicates and a repeated closing point normalize away. Replacing the selector
+without polygon metadata removes it. These forms work with named selections and highlights;
+inline filters and inline label selectors retain their existing grammar. Region categories and
+polygon inputs are bounded to 10,000 entries and all selection work is bounded.
+See [brush and lasso interaction](../../../../api/interaction/#brush-or-lasso-an-existing-selection) for pointer input.
+
+## Related
+
+[Appearance overview](../../../../api/appearance/) · [Mark-selection tutorial](../../../../tutorials/mark-selection/) · [Data filtering](../../../../api/data/filtering/)

@@ -1,3 +1,4 @@
+import { normalizeSelectionRegion, normalizeScreenPolygon, selectRegionItemKeys } from "./selectionRegion.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeMarkSelector, MARK_SELECTOR_GRAINS, selectMarkItemKeys } from "./markSelection.js";
@@ -10,6 +11,17 @@ import { EXPRESSION_LIMITS, limit } from "./expressionValues.js";
 // closed grammar until their own authoring owner binds expression inputs.
 export function normalizeSelectionSelector(selector) {
   ownRecord(selector, "Selection selector");
+  if (Object.hasOwn(selector, "region")) {
+    if (Object.keys(selector).some(key => !["region", "grain"].includes(key))) throw new TypeError("Region selection accepts only region and grain.");
+    const grain = Object.hasOwn(selector, "grain") && selector.grain !== undefined ? selector.grain : "item";
+    if (!MARK_SELECTOR_GRAINS.includes(grain)) throw new Error(`Unknown mark selector grain "${grain}".`);
+    return cloneAndFreeze({ grain, region: normalizeSelectionRegion(selector.region) });
+  }
+  if (Object.hasOwn(selector, "screenPolygon")) {
+    if (!Object.hasOwn(selector, "items")) throw new TypeError("Screen polygon metadata requires logical item keys.");
+    const { screenPolygon, ...keys } = selector;
+    return cloneAndFreeze({ ...normalizeMarkSelector(keys), screenPolygon: normalizeScreenPolygon(screenPolygon) });
+  }
   if (!Object.hasOwn(selector, "where")) return normalizeMarkSelector(selector);
   if (Object.keys(selector).some(key => !["where", "grain"].includes(key))) {
     throw new TypeError("Expression selection accepts only where and grain.");
@@ -31,7 +43,11 @@ export function validateSelectionExpression(expression, parameters = {}) {
 
 export function selectExpressionItemKeys(items, selector, parameters = {}) {
   const normalized = normalizeSelectionSelector(selector);
-  if (!Object.hasOwn(normalized, "where")) return selectMarkItemKeys(items, normalized);
+  if (Object.hasOwn(normalized, "region")) return selectRegionItemKeys(items, normalized.region);
+  if (!Object.hasOwn(normalized, "where")) {
+    const { screenPolygon: _polygon, ...selector } = normalized;
+    return selectMarkItemKeys(items, selector);
+  }
   const inspected = inspectPredicateExpression(normalized.where);
   if (Array.isArray(items)) limit(items.length * (inspected.nodes + inspected.fields.length), EXPRESSION_LIMITS.rowWork, "selectionWork");
   ownArray(items, "Selectable expression items");

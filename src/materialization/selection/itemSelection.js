@@ -5,7 +5,7 @@ import { selectProgramItemKeys } from "./expression.js";
 export function resolveItemSelection(program, items, selector) {
   const normalized = normalizeSelectionSelector(selector);
   if (normalized.rows) validateRowSelection(program, normalized.rows, items);
-  if (items.length > 0 && !normalized.rows && normalized.items === undefined && !Object.hasOwn(normalized, "where")) {
+  if (items.length > 0 && !normalized.rows && normalized.items === undefined && !Object.hasOwn(normalized, "where") && !Object.hasOwn(normalized, "region")) {
     const source = normalized.field !== undefined
       ? "fields"
       : normalized.channel !== undefined

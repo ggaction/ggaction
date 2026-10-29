@@ -2,12 +2,11 @@ import { idleGestureState, reduceGesture } from "./gestures.js";
 
 const CLICK = Object.freeze({ id: "selection", kind: "select" });
 
-// A private DOM effect adapter for the existing select binding. Custom event
-// surfaces without capture retain their click-only behavior; partial capture
-// implementations are rejected before installing listeners.
-export function prepareClickCapture(element, callbacks) {
+// A private DOM effect adapter shared by click, brush and lasso. Custom event
+// surfaces retain click-only behavior; domain drags require capture support.
+export function prepareSelectionCapture(element, callbacks) {
   const methods = ["setPointerCapture", "releasePointerCapture"].map(key => typeof element[key] === "function");
-  if (!methods.some(Boolean)) return null;
+  if (!methods.some(Boolean) && callbacks.binding === undefined) return null;
   if (!methods.every(Boolean)) throw new TypeError("Pointer selection requires both capture and release methods.");
   let host = element, hooks = callbacks, current = idleGestureState(), active;
   const listeners = [];
@@ -26,15 +25,25 @@ export function prepareClickCapture(element, callbacks) {
     }
     if (terminal) {
       try {
-        if (terminal.type === "commit" && terminal.gesture === "click") hooks.select(token, terminal.pointers[0].point, terminal.pointers[0].type);
+        if (terminal.type === "commit" && hooks.drag) hooks.drag(token, terminal.pointers[0].point, terminal.pointers[0].type);
+        else if (terminal.type === "commit" && terminal.gesture === "click") hooks.select(token, terminal.pointers[0].point, terminal.pointers[0].type);
         else hooks.cancel(token, terminal.type === "cancel" ? terminal.reason : "movement");
       } catch (error) { failure ??= error; }
+    } else if (result.effects.some(effect => effect.type === "preview")) {
+      hooks.preview?.(token);
     }
     if (failure) throw failure;
   };
   const cancel = reason => {
     if (hooks === null || current.phase === "idle") return false;
     apply(reduceGesture(current, { type: "cancel", reason })); return true;
+  };
+  const fail = error => {
+    if (hooks === null || active === undefined) throw error;
+    const token = active, pointers = current.pointers;
+    current = idleGestureState(); active = undefined; hooks.blockClick(pointers[0].id);
+    for (const pointer of pointers) { try { release(pointer.id); } catch { /* Preserve the original failure. */ } }
+    try { hooks.error(token, error); } finally { throw error; }
   };
   const pointer = event => {
     const point = hooks.point(event);
@@ -46,8 +55,8 @@ export function prepareClickCapture(element, callbacks) {
     if (input === null) return;
     hooks.perform(() => {
       if (!valid() || current.phase !== "idle") return;
-      const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: CLICK });
-      const token = hooks.begin();
+      const result = reduceGesture(current, { type: "down", ...input, pointerType, binding: hooks.binding ?? CLICK });
+      const token = hooks.begin(input.point, pointerType);
       if (token === null) return;
       current = result.state; active = token;
       try { host.setPointerCapture(input.pointerId); }
@@ -66,10 +75,13 @@ export function prepareClickCapture(element, callbacks) {
     hooks.perform(() => {
       if (!valid() || current.phase === "idle") return;
       if (input === null) { cancel("pointercancel"); return; }
-      const result = reduceGesture(current, { type, ...input });
-      if (type === "move" && result.state.phase === "dragging") {
-        current = result.state; cancel("movement");
-      } else apply(result);
+      try {
+        if (current.pointers.some(pointer => pointer.id === input.pointerId)) hooks.sample?.(active, input.point);
+        const result = reduceGesture(current, { type, ...input });
+        if (!hooks.drag && type === "move" && result.state.phase === "dragging") {
+          current = result.state; cancel("movement");
+        } else apply(result);
+      } catch (error) { if (hooks.drag && active !== undefined) fail(error); throw error; }
     });
   };
   const abort = (reason, pointerId) => {
@@ -104,7 +116,7 @@ export function prepareClickCapture(element, callbacks) {
     throw error;
   }
   return Object.freeze({
-    cancel,
+    cancel, fail,
     dispose(reason = "unmount") {
       if (hooks === null) return;
       try { cancel(reason); } finally {

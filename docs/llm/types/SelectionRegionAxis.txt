@@ -1,0 +1,2 @@
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };

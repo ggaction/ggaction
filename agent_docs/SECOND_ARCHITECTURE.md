@@ -3612,3 +3612,24 @@ Captured click의 공개 import 연결 후 Node20 package922entries/packed1,331,
 interaction100,541gzip을 측정했다. Package922/1,332,000/6,090,000과 interaction100,600으로
 한도만 최소 올림하며 다른 entry 한도와 search961,000은 유지한다. 최초 package·bundle 초과와
 잘못된 단일 callback host mock의 remount 수리는 pointer-capture evidence에 별도 보존한다.
+
+
+### 영역 선택과 별도 미리보기 program
+
+`grammar/selectionRegion.js`는 final-item channel 교집합과 bounded polygon metadata를,
+`grammar/lassoSelection.js`는 기존 path geometry를 재사용한 screen polygon membership을 소유한다.
+기존 selection resource/editor가 저장과 revision·의존 소비자를 계속 관리한다.
+`interaction/regionSelection.js`는 기존 scale inverse와 scene hit identity를 명시 결합한다.
+Scene의 기존 concrete tree 순회가 Canvas placement를 함께 읽어 empty/nested owner도 추정 없이 찾는다.
+Session은 같은 down baseline에서만 후보를 만들며 previewProgram과 committed program을 분리한다.
+Full의 registration-once selection owner가 내부 wrapped preview materializer를 제공하고, 이 action은
+기존 concrete primitive를 호출한다. Interaction은 Full assembly를 import하지 않으며 renderer에는
+semantic 선택·host state가 들어가지 않는다. 정확한 공개 옵션과 제한은 Current INTERACTION과
+MARK_SELECTION이 소유한다. Angular와 후행 history의 완료는 이 checkpoint에 포함하지 않는다.
+
+
+이 공개 연결의 Node20/24 최대 실측은 Full653,407/Basic367,386/interaction105,754 gzip,
+package927entries/packed1,340,606/unpacked6,125,329이다. 상한은 각각653,500/367,400/105,800 및
+927/1,341,000/6,126,000으로 최소 올림했다. Basic 증가는 공유 persisted selection 검증 소유자이며
+Full action import는 없다. Search961,762bytes는962,000 상한을 쓴다. 최초 초과와 경계 수정 전후
+archive는 STEP059 evidence에서 별도 구분하며 최종 통합에서는 합산 실측을 다시 수행한다.

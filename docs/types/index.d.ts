@@ -456,6 +456,8 @@ export type {
   SemanticSpec,
   SelectMarksOptions,
   MarkSelectionSelector,
+  SelectionRegionAxis,
+  SelectionRegion,
   StrokeDashEncodingOptions,
   StrokeWidthEncodingOptions,
   StrokeWidthScaleOptions,
