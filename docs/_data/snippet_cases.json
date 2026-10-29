@@ -645,5 +645,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text."
+  },
+  {
+    "id": "interaction-accessible-tooltip",
+    "file": "api/interaction.md",
+    "contains": "const accessibleSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description."
   }
 ]

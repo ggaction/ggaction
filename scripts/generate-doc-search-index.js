@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1039400; // Keyboard focus host example: 1,039,320 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1040000; // Accessible tooltip host example: 1,039,911 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

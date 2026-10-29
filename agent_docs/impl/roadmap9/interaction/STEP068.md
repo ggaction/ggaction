@@ -7,7 +7,8 @@
 - [x] A: source/type/package/docs qualification과 원격 checkpoint
 - [x] B: exact current-frame clip/opacity를 사용하는 keyboard focus/restore
 - [x] B: native selection activation·hierarchy navigation
-- [ ] C: tooltip/touch/control 접근 경로
+- [x] C1: hover/focus/Escape tooltip와 touch native activation
+- [ ] C2: 모든 actionable control의 keyboard/touch matrix
 - [ ] D: public animation/reduced-motion 합산 및 AT53 전체 matrix
 - [ ] STEP074–077 최종 통합
 
@@ -121,3 +122,32 @@ B source `d2441294413d13de40fc545f070489645c038276`를 고정했다.
 화면 확인에서 정적 HTML 앞의 이전 수동 안내 한 줄이 남아 있어 제거했다. 실행 JavaScript의
 공통 안내만 유지하고 owning49/build172/1535 hashes/4폭 Axe0을 재확인했다. Runtime/type와
 고정 tar는 변하지 않았다.
+
+## C1: hover/focus tooltip와 touch native activation
+
+기존 승인과 B의 공개 commands를 재사용한다. 새로운 tooltip runtime/binding/DOM library 없이
+완전한 host 예제를 추가한다. safe text와 native item snapshot, 정확한 inspect/focus key만 읽고
+click/tap→focus→activate를 기존 reducer로 전달한다. hoverable tooltip의 Escape는 host capture
+listener가 우선 처리하며 이전 selection/program/history를 바꾸지 않는다. 외부 layout에 영향을
+주지 않도록 설명 영역을 고정하고 DOM/window listener를 명시적으로 제거한다.
+
+실제 Canvas/SVG 각각 keyboard 및 touch4개 검증에서 태그 모양의 원 데이터가 textContent로
+표시되고 실행되지 않음을 확인한다. pointer→tooltip 이동, Escape, native toggle, filter로 focus
+container 복구, disabled 중복 filter control, dispose 후 event0을 검사한다. 최초4실패는 tooltip
+닫기와 함께 버튼 위치가 이동하는 host 배치 결함으로 재현했으며 설명 영역 고정 후4/4 통과다.
+Library source/types/package는 B와 동일하다. Graph의 inferred origin/rule/ruleId/metric 및 실제
+endpoint/degree를 literal로 추가 확인한다. 모든 native control의 keyboard/touch matrix와 public
+animation/reduced-motion은 C2/D 의무로 남긴다.
+
+C1 최종 입력에서 Canvas/SVG 각각 keyboard/touch4개와 마크 제거 후 빈 설명·container 복구를
+확인했다. Native item literal와 discovery26, owning docs31+18, built172pages/1535hashes,
+320/390/768/1440 overflow0/Axe0을 통과했다. 320/1440 화면을 직접 확인했다. Search 실측
+1039911 bytes에 따라 한도1040000으로 최소 조정했으며 최초47/49 실패를 보존했다.
+
+B의 동일7cab archive를 Node22/Vite/Chromium에서 source-free 설치해 최신 문서 예제의
+keyboard/touch/native selection/filter fallback/teardown/Axe0을 검증했다. 새 라이브러리 코드나
+타입이 없으므로 B의 동일 runtime/types fingerprint와3Node 검증을 재사용한다. 최초 Vite의
+macOS realpath 경로 오류 및 임시 테스트 host의 h1 누락은 harness 수리이며 runtime 결함이 아니다.
+Root의 최신 native dependency loader와 연결하도록 두 browser fixture에 repository dependency
+옵션을 명시한다. 이 branch의 이전 loader는 옵션을 사용하지 않으므로 최신 loader 합산 검증은
+root가 소유한다. C2/D와 AT53·전체077은 계속 미완료다.

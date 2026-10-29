@@ -24,6 +24,10 @@
       {
         "type": "file",
         "path": "browser/interaction-keyboard.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/accessible-tooltip.browser.js"
       }
     ],
     "actions": [

@@ -7,7 +7,7 @@ import AxeBuilder from '@axe-core/playwright';
 import {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserContextEvidence} from '../support/browser.js';
 import {startStaticServer} from '../support/static-server.js';
 let browser,server;
-test.before(async()=>{server=await startStaticServer(fileURLToPath(new URL('../../',import.meta.url)));browser=await chromium.launch({headless:true});});
+test.before(async()=>{server=await startStaticServer(fileURLToPath(new URL('../../',import.meta.url)), { dependencies: 'repository' });browser=await chromium.launch({headless:true});});
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();});
 for(const backend of ['canvas','svg']) test(`keyboard native items expose safe focused alternatives beside ${backend}`,async()=>{
  const section=(await readFile(new URL('../../docs/api/interaction.md',import.meta.url),'utf8')).split('## Keyboard item focus')[1];

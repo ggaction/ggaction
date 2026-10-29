@@ -1466,3 +1466,145 @@ with that camera binding. For independent keyboard camera controls, use a separa
 
 Focus uses current paint and clip footprints. Text retains its metric-box hit policy. PNG and PDF
 exports are static; the same accessible item snapshot can accompany them without installing listeners.
+
+## Accessible tooltips and touch
+
+Tooltips are host UI. Combine native item descriptions with the same pointer inspection and keyboard
+focus state; never insert a field value as HTML. This complete example exposes three descriptions,
+including the two overlapping points, through a focusable listbox. Hover or focus opens a tooltip;
+Escape closes that description until the pointer or focused item changes. A click or touch tap focuses
+and toggles the native selection, so touch does not depend on hover. The host owns tooltip dismissal;
+it does not create a second selection or history store.
+
+```html
+<div id="accessible-chart" role="listbox" aria-label="Observations" tabindex="0"
+     style="position:relative;width:420px;height:300px">
+  <canvas id="accessible-canvas" aria-label="Observations" aria-hidden="true"></canvas>
+  <div id="accessible-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+  <span id="accessible-ring" aria-hidden="true" style="display:none;position:absolute;pointer-events:none;width:16px;height:16px;border:2px solid #111;border-radius:50%"></span>
+</div>
+<div style="height:4em;position:relative">
+  <p id="accessible-tooltip" role="tooltip" hidden style="position:absolute;margin:0;max-height:4em;overflow:auto"></p>
+</div>
+<button id="accessible-hide" type="button">Hide A</button>
+<button id="accessible-dispose" type="button">Remove interactions</button>
+```
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+import { createInteractionSession } from "ggaction/interaction";
+import { renderTransitionScene } from "ggaction/scene";
+
+const program = chart().createCanvas({ width: 420, height: 300, margin: 70 })
+  .createData({ id: "rows", keyField: "name", values: [
+    { name: "A", x: 2, y: 3 }, { name: "B", x: 8, y: 7 }, { name: "C", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: "y", scale: { domain: [0, 10], nice: false } })
+  .selectMarks({ id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "#dc2626", dimOthers: false, bringToFront: false });
+const surface = document.querySelector("#accessible-chart");
+const canvas = document.querySelector("#accessible-canvas");
+const options = document.querySelector("#accessible-options");
+const tooltip = document.querySelector("#accessible-tooltip");
+const ring = document.querySelector("#accessible-ring");
+const hideButton = document.querySelector("#accessible-hide");
+const disposeButton = document.querySelector("#accessible-dispose");
+const accessibleSession = createInteractionSession({ program, bindings: [
+  { type: "inspect", slop: 0 },
+  { type: "keyboard", targets: [{ target: "points", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }] }
+] });
+let live = true, pointerKey = null, shownKey = null, dismissedKey = null, overTooltip = false, previousProgram, previousScene;
+const describe = item => `${item.fields.name}: x ${item.fields.x}, y ${item.fields.y}. ${item.selectedBy.includes("chosen") ? "Selected" : "Not selected"}.`;
+const drawAccessible = event => {
+  const state = event.state;
+  if (event.type === "inspect" && !overTooltip) pointerKey = state.hit?.target?.ownerId === "points" ? state.hit.target.itemKey : null;
+  else if ((event.type === "leave" && !overTooltip) || event.type === "focus" || state.program !== previousProgram || event.type === "frame") pointerKey = null;
+  if (state.scene !== previousScene) renderTransitionScene(state.scene, canvas.getContext("2d"));
+  previousScene = state.scene; previousProgram = state.program;
+  const items = exportAccessibleData(state.program, { format: "items" }).views.find(view => view.ownerId === "points")?.items ?? [];
+  options.replaceChildren(); surface.removeAttribute("aria-activedescendant");
+  items.filter(item => item.visible).forEach((item, index) => {
+    const option = document.createElement("span"); option.id = `observation-${index}`;
+    option.setAttribute("role", "option"); option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = describe(item); options.append(option);
+    if (item.key === state.focus?.currentItemKey) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  const focusKey = document.activeElement === surface ? state.focus?.currentItemKey : null;
+  const selected = items.find(item => item.visible && item.key === (pointerKey ?? focusKey));
+  const nextKey = selected?.key ?? null;
+  if (nextKey !== shownKey) dismissedKey = null;
+  shownKey = nextKey; tooltip.hidden = selected === undefined || dismissedKey === nextKey;
+  tooltip.textContent = selected ? describe(selected) : "";
+  if (tooltip.hidden) surface.removeAttribute("aria-describedby");
+  else surface.setAttribute("aria-describedby", tooltip.id);
+  const point = state.focus?.screenPoint; ring.style.display = point ? "block" : "none";
+  if (point) { ring.style.left = `${point.x - 10}px`; ring.style.top = `${point.y - 10}px`; }
+};
+const dismissTooltip = event => {
+  if (event.key !== "Escape" || tooltip.hidden) return;
+  dismissedKey = shownKey; tooltip.hidden = true; surface.removeAttribute("aria-describedby");
+  event.preventDefault(); // Capture phase dismisses the tooltip before native hierarchy Escape.
+};
+const activatePointer = () => {
+  const hit = accessibleSession.getState().hit?.target;
+  if (hit?.ownerId !== "points") return;
+  surface.focus({ preventScroll: true });
+  accessibleSession.dispatch({ type: "focus", target: "points", itemKey: hit.itemKey });
+  accessibleSession.dispatch({ type: "activate" });
+};
+const hideA = () => {
+  const result = accessibleSession.updateProgram(accessibleSession.getState().program
+    .filterMarks({ target: "points", field: "name", op: "neq", value: "A" }));
+  if (result.status === "applied") hideButton.disabled = true;
+};
+const leaveSurface = event => { overTooltip = !tooltip.hidden && tooltip.contains(event.relatedTarget); };
+const enterTooltip = () => { overTooltip = true; };
+const leaveTooltip = () => { overTooltip = false; pointerKey = null; drawAccessible({ state: accessibleSession.getState() }); };
+const updateFocusDescription = () => drawAccessible({ state: accessibleSession.getState() });
+const unsubscribeAccessible = accessibleSession.subscribe(drawAccessible);
+// This listener runs before session pointerleave so the tooltip can remain hoverable.
+surface.addEventListener("pointerleave", leaveSurface);
+const unmountAccessible = accessibleSession.mount(surface);
+// Mount inspection first: click/tap then reads the exact current hit, with no delayed callback.
+surface.addEventListener("click", activatePointer);
+window.addEventListener("keydown", dismissTooltip, true);
+surface.addEventListener("focus", updateFocusDescription); surface.addEventListener("blur", updateFocusDescription);
+tooltip.addEventListener("pointerenter", enterTooltip); tooltip.addEventListener("pointerleave", leaveTooltip);
+hideButton.addEventListener("click", hideA);
+const disposeAccessible = () => {
+  if (!live) return; live = false;
+  surface.removeEventListener("click", activatePointer);
+  window.removeEventListener("keydown", dismissTooltip, true);
+  surface.removeEventListener("pointerleave", leaveSurface);
+  surface.removeEventListener("focus", updateFocusDescription); surface.removeEventListener("blur", updateFocusDescription);
+  tooltip.removeEventListener("pointerenter", enterTooltip); tooltip.removeEventListener("pointerleave", leaveTooltip);
+  hideButton.removeEventListener("click", hideA);
+  disposeButton.removeEventListener("click", disposeAccessible);
+  window.removeEventListener("pagehide", disposeAccessible);
+  unmountAccessible(); unsubscribeAccessible(); accessibleSession.destroy();
+  tooltip.hidden = true; tooltip.textContent = ""; ring.style.display = "none";
+  surface.removeAttribute("aria-describedby"); surface.removeAttribute("aria-activedescendant");
+};
+disposeButton.addEventListener("click", disposeAccessible);
+window.addEventListener("pagehide", disposeAccessible);
+drawAccessible({ state: accessibleSession.getState() });
+```
+
+The tooltip is ordinary text beside the chart and remains available when the pointer moves into that
+text. Escape and native focus changes dismiss or replace it without a timer. Tab is never trapped, and nested host controls keep their
+own keyboard behavior. Filtering updates the native descriptions and selected state before the host
+reads them. The item-focus example above explains owner fallback and geographic representations.
+Use a similarly explicit list of native controls for camera, legend visibility and other commands;
+those controls must dispatch through the same session reducer and cleanup their own listeners.
+Public animation and reduced-motion playback integration remain separate from this static host recipe.
