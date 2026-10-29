@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "status": "private-clock-arithmetic-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicPlayerComplete": false,
+  "kernelVersion": "bounded-playback-clock@1",
+  "tests": {
+    "node20": 30,
+    "node22": 30,
+    "node24": 30,
+    "discovery": 16,
+    "virtualClockCases": 4674,
+    "sourcePinnedDocs": 20
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "packageMeasure": {
+    "entries": 1063,
+    "packedBytes": 1513023,
+    "unpackedBytes": 6900235
+  },
+  "logs": [
+    {
+      "file": "animation-timing-final-coverage.log.gz",
+      "sha256": "fa73a999d32790cc929834515b4dedbb901f996c460cccb551c386c9b6537d6c",
+      "status": "passed"
+    },
+    {
+      "file": "animation-timing-final-node20.log.gz",
+      "sha256": "ea07598427f0e68b95c5480542798148bb7f14cb92bec9b3c35c2058edb4e1a0",
+      "status": "passed"
+    },
+    {
+      "file": "animation-timing-final-node24.log.gz",
+      "sha256": "4192f98c1e9918b37abc5e17e5c5f247337554c101e795e2b6f004734ac739c7",
+      "status": "passed"
+    },
+    {
+      "file": "animation-timing-final-discovery.log.gz",
+      "sha256": "5eb4927a0cba94635d71ee7a0b9a351f4c4a677311c15cd59dde8a6b7e80fb6c",
+      "status": "passed"
+    },
+    {
+      "file": "animation-timing-package-contract.log.gz",
+      "sha256": "dfac8bc6150fc6f9015998a8c3243f7aec7f9b08c17f62eb69144c14fda76a82",
+      "status": "passed"
+    },
+    {
+      "file": "animation-timing-final-docs.log.gz",
+      "sha256": "68d6fb8473bb8f43050420bd5ade708e849d6a523fba9aa9e35dcfec45793920",
+      "status": "passed"
+    }
+  ],
+  "sourceCommit": "67c8b6edc127db6d64bc476ba20ab0ad0d5d4dfe"
+}

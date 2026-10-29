@@ -3113,6 +3113,26 @@ The extracted SVG serializer preserves concrete clipping, multiline text and def
 시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
 저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
 
+Roadmap9의 [남은 범위 승인](impl/roadmap9/AUTHORIZATION.json#remainingApproval)에 따라
+transition 재생의 비공개 controller는 `src/animation/`에서 준비한다. clock·예약·Promise와
+callback 수명은 이 runtime owner에, 경과 시간의 순수 계산은 `grammar/animation/`에 둔다.
+controller는 주입 sampler가 만든 장면만 전달하며 ChartProgram이나 renderer를 변경하지 않는다.
+이는 기존 공개 scene entry의 계약이나 저장 경계를 변경하지 않는다. 새 공개 animation entry의
+planner·typed sampler·offline 경계가 검증되기 전까지 위 외부 재생기 분리를 현재 지원 API로 유지한다.
+
+Node22의 같은 canonical staging으로 private controller 추가를 측정한 결과는
+1064 entries/1515412 packed/6910023 unpacked bytes다. 앞선 1063/1514000/6901000
+한도를 초과하므로 entries 1064와 다음 최소 1000-byte 한도 1516000/6911000을 적용한다.
+아직 public entry에서 import하지 않으며 browser bundle 한도는 변경하지 않는다.
+
+`animation/endpoints.js`는 이미 소유된 graphicSpec만 기존 concrete scene으로 투영한다.
+semanticSpec·trace·authoring config는 읽지 않으며, 실제 저장된 item key와 primitive role만
+대응 근거로 사용한다. scene의 anonymous fallback key는 correspondence가 아니다.
+lineage·topology·namespace·offset·clip과 실제 graphic payload를 보존한다. 이는 private
+planner의 입력 준비이며 typed compatibility·중간 장면·offline animation schema는 후속 의무다.
+Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
+최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
+
 ### Cartesian title label-relative offset measurement
 
 Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌

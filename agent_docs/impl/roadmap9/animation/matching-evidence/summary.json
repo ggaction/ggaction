@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "status": "private-identity-matching-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicPlannerComplete": false,
+  "tests": {
+    "node20": 16,
+    "node22": 16,
+    "node24": 16,
+    "discovery": 16
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "packageMeasure": {
+    "entries": 1061,
+    "packedBytes": 1510596,
+    "unpackedBytes": 6891519
+  },
+  "testRepairs": [
+    "Used the existing reviseData public API and its exact source/id contract.",
+    "Compared an interior point after automatic domain changes; an endpoint can retain identical pixels despite changed data."
+  ],
+  "logs": [
+    {
+      "file": "animation-matching-final-coverage-3.log.gz",
+      "sha256": "24cfd89adcd19ef5729af9935707a088ba19a2e936c613c020db7cbc40ff335b",
+      "status": "passed"
+    },
+    {
+      "file": "animation-matching-final-node20.log.gz",
+      "sha256": "1c9c0228e1c97a6698a7c3a4a8836118fb25ca97dffc1fefe29bebed080cb65b",
+      "status": "passed"
+    },
+    {
+      "file": "animation-matching-final-node24.log.gz",
+      "sha256": "d136f6168a2f707d7f0586609aafe5b68b5b7bd6b1964ac50c327a6d0ea24e7b",
+      "status": "passed"
+    },
+    {
+      "file": "animation-matching-final-discovery.log.gz",
+      "sha256": "ef98fb19b017f6d0e39775baa6cd7d206c35069fbb2f234a3b061f95825c2eba",
+      "status": "passed"
+    },
+    {
+      "file": "animation-matching-package-contract.log.gz",
+      "sha256": "9dd4949d75c656f387d5706773e39a1ff27d97450add3a8d46d551e5fde9485e",
+      "status": "passed"
+    },
+    {
+      "file": "animation-matching-final-coverage.log.gz",
+      "sha256": "987f4dd6b4d729a1b74e68092d2bfc1bc1acb801a4a4ab9b780e2d65f62b8106",
+      "status": "failed-test-fixture-before-repair"
+    },
+    {
+      "file": "animation-matching-final-coverage-2.log.gz",
+      "sha256": "fae0371f150944b5ff1e92a15ef8e5878d412ed0e659a6652b870d7e0b3a8212",
+      "status": "failed-test-fixture-before-repair"
+    },
+    {
+      "file": "animation-matching-final-docs.log.gz",
+      "sha256": "a93453289fae55ae4c51d6f08c2b1b823c1b581c16c676565df721adff9480c4",
+      "status": "passed"
+    }
+  ],
+  "sourceCommit": "80a9c52a8"
+}

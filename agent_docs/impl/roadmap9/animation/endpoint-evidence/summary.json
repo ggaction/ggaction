@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "private-graphic-endpoint-projection-verified",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "publicPlannerComplete": false,
+  "runtimeSource": "ed6dc1c2b00fcd6f9b30f5ae84c0cac6db46aea1",
+  "tests": {
+    "node20": 54,
+    "node22": 54,
+    "node24": 54,
+    "endpointProjection": 8,
+    "sceneBoundariesAndDiscovery": 32,
+    "packageArtifact": 7,
+    "sourcePinnedDocs": 21
+  },
+  "coverage": {
+    "scope": "six private animation owners",
+    "lines": 100,
+    "branches": 98.89,
+    "functions": 100,
+    "endpoint": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "packageMeasure": {
+    "entries": 1065,
+    "packedBytes": 1516293,
+    "unpackedBytes": 6912702
+  },
+  "inputSha256": {
+    "src/animation/endpoints.js": "b28bcce0c518f22ba40142bd49ac94af4424527869df88c8ee5ca8a458b15d44",
+    "test/unit/animation/endpoints.test.js": "989483576fad6e68de504d294c20e041e744c14c4b840d1c4780d393afd2a960",
+    "scripts/package-artifact.js": "4ce8d773313741e249e4b2451880be98881079e693627f247923a11892ed03fe"
+  },
+  "logs": [
+    {
+      "file": "animation-endpoints-final-coverage.log.gz",
+      "sha256": "7b77dd955dde0465ca13f80a3ff93ab4c267267b576fe3b4811ba326e739c4af",
+      "uncompressedBytes": 13718
+    },
+    {
+      "file": "animation-endpoints-node20.log.gz",
+      "sha256": "f97475857efb6754b6f4a26368ea58068cabbfcf0b2163cf23da9b92614ddcf1",
+      "uncompressedBytes": 11957
+    },
+    {
+      "file": "animation-endpoints-final-node24.log.gz",
+      "sha256": "df59597f6589bac31bfdfb3d2a7324dc4d45bd6ec366775d9135514d7f3948b8",
+      "uncompressedBytes": 5466
+    },
+    {
+      "file": "animation-endpoints-boundaries.log.gz",
+      "sha256": "156b6b7b85501616eadb0bb3a002ec2961f7370448f76ca5fe85aa5447ee7eab",
+      "uncompressedBytes": 6567
+    },
+    {
+      "file": "animation-endpoints-package-contract.log.gz",
+      "sha256": "2d15dd6eac599040acfecfde9784cf190fff79b19eef6b7f3732cfa7de2da5bf",
+      "uncompressedBytes": 1713
+    },
+    {
+      "file": "animation-endpoints-first-coverage.log.gz",
+      "sha256": "7752348503d33af7d0479e1d6bd05e9a908bf2696617b71239440868bfb8f520",
+      "uncompressedBytes": 3953
+    },
+    {
+      "file": "animation-endpoints-second-coverage.log.gz",
+      "sha256": "7267c24c4b4fa711cf10ad1441532216806b4f3e600e206c1a89c295ef9851ad",
+      "uncompressedBytes": 2474
+    },
+    {
+      "file": "animation-endpoints-node24.log.gz",
+      "sha256": "cdedf98b5c240e9794871a6d80700d8688c7dcd3ba5969adca4ce11d67f0c13b",
+      "uncompressedBytes": 1061
+    },
+    {
+      "file": "animation-endpoints-package-measure-final.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "uncompressedBytes": 208
+    },
+    {
+      "file": "animation-endpoints-final-docs.log.gz",
+      "sha256": "dda34043e41827cca1e0c1764cbcf6d0e6af9d5212d12e7b88991cf65489dc71",
+      "uncompressedBytes": 4953
+    }
+  ],
+  "preservedFailures": [
+    "Initial anonymous-Canvas test omitted small Canvas margin; corrected fixture only.",
+    "Node24 directory selector was unsupported; explicit six test files passed.",
+    "Original package ceiling rejected exactly one new private module; canonical dry pack measured minimal caps."
+  ],
+  "remaining": [
+    "typed transition planner and sampled intermediate scenes",
+    "semantic-coordinate, curve, hierarchy, graph, Geo and guide integration",
+    "public API, offline animation payload and renderer/session consumers"
+  ]
+}
