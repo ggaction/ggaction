@@ -3,7 +3,7 @@
     "bcdeaeb4197d3e1b10ff9e0bd1127ac44fec8c17",
     "430f9df90"
   ],
-  "sourceCommit": null,
+  "sourceCommit": "41621fb78e283acec5f046664d5e5038fba8a029",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Merge verified geographic join/detail resources and preserve explicit authored logical selection identities across visible detail representations. Current hit/item identity and stored selector remain native. Genuine absence retains normal keep-hidden/drop behavior.",
   "runtimeAndTypesFingerprint": "b3b1034d05de5fa0ff68deaa4db3b42b40b5e861199897a53743657effe49edc",
@@ -203,7 +203,8 @@
           }
         ]
       }
-    ]
+    ],
+    "sourcePinnedDocs": 30
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-geo-representation-c8ffec62.tgz",
@@ -373,6 +374,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "d2d192f46504b9a92e21a3a9ac52d56f0c23d0fcbf459f98f9f7fee5f2d5af71"
+    },
+    {
+      "path": "geo-session-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "geo-session-docs-pinned.log.gz",
+      "sha256": "305ee5a285c94269cb456b2add38781b32f0e6c8423b792900b8cadaad948771"
+    },
+    {
+      "path": "geo-session-build-pinned.log.gz",
+      "sha256": "0331eca473d2991c2a731e18e32bdb2050f6fb673c8647892397e1d1527113e8"
+    },
+    {
+      "path": "geo-session-built-pinned.log.gz",
+      "sha256": "1f83025508c9e5e773913227afe8d978bd54f8126f35bc1ee8edca275c1017ee"
     }
   ]
 }
