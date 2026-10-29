@@ -5,7 +5,7 @@
 - [x] 기존 순수 값 owner와 structure-recipes 계약 확인
 - [x] 독립 primitive·수치·렌더 증거
 - [x] 공개 create/edit·consumer 구현
-- [ ] Current/types/docs/package 검증과 checkpoint
+- [x] Current/types/docs/package 검증과 checkpoint
 
 Gate는 `../AUTHORIZATION.json`의 remainingApproval(남은077의 API·저장·아키텍처·시각 결정을 구현자가 선택·검증하도록 명시 승인)에 따른 approved 상태다. 아래 구체 선택과 실제 증거를 기록하며 추가 승인 질문을 하지 않는다. 검증 완료를 승인만으로 대체하지 않는다.
 
@@ -28,3 +28,7 @@ semantic encoding.x/y는 category/value 필드와 scale을 저장한다. layer.w
 ## 검증과 남은 의무
 
 독립 fixture는 +5,-2,subtotal,+4,total → [0,5],[5,3],[0,3],[3,7],[0,7]이다. 원본 pure oracle의 negative/explicit total/reset/overflow 검사도 유지한다. create/edit/revise/rebind/remove, appearance/color/guide/font/theme, filter/highlight/hit/accessibility, Canvas/coordinate/scale, facet/nested, editable/graphic codec와 offline4formats를 연결한다. 첫 child 전 pure complete candidate, renderer graphicSpec-only, Full/Basic 경계를 유지한다. STEP050 합산 admission·STEP074 전체검증은 별도 남은 의무다.
+
+## 확인된 체크포인트
+
+공개 source `ba2062ce01ea14448b7123d13861f056d43c37e2`의 실제 결과는 [evidence summary](waterfall-evidence/summary.json)에 고정했다. 동일 tar를 Node20/22/24에서 각각3개 실제 공개 lifecycle·strict types·optional peers·5개 browser bundle로 확인했다. source의1020 package entry는 canonical staging 결과와 byte hash가 모두 같으며, 최초 실패와 owning repair 결과를 함께 보존한다. 최신 통합의 single-Y admission과 STEP074 전체 검증은 이 checkpoint의 완료 주장에 포함하지 않는다.
