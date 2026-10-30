@@ -1225,6 +1225,14 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/bounded-long-paths",
+        "statements": 5
+      },
+      {
+        "id": "edge-routes/own-host-options",
+        "statements": 5
+      },
+      {
         "id": "edge-routes/responsive-source-and-guide-closure",
         "statements": 16
       },
@@ -1680,6 +1688,18 @@
   {
     "file": "interaction-animation.mjs",
     "cases": [
+      {
+        "id": "interaction-animation/four-route-player-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "interaction-animation/geographic-route-seam-current-hit",
+        "statements": 12
+      },
+      {
+        "id": "interaction-animation/overlapping-edge-four-formats",
+        "statements": 5
+      },
       {
         "id": "interaction-animation/native-frame-four-formats",
         "statements": 20

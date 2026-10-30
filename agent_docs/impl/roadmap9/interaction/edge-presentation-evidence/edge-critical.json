@@ -1,0 +1,68 @@
+{
+  "tests": 642,
+  "status": "passed",
+  "metrics": {
+    "interaction/session.js": {
+      "lines": 100,
+      "branches": 95.41,
+      "functions": 100
+    },
+    "interaction/keyboardFocus.js": {
+      "lines": 100,
+      "branches": 95.27,
+      "functions": 100
+    },
+    "interaction/edgePresentation.js": {
+      "lines": 100,
+      "branches": 91.89,
+      "functions": 100
+    },
+    "materialization/graph/presentationReader.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "animation/nativeGraphPresentation.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "animation/frameProvenance.js": {
+      "lines": 97.89,
+      "branches": 96.1,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "interaction/session.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "interaction/keyboardFocus.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "interaction/edgePresentation.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/graph/presentationReader.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/nativeGraphPresentation.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/frameProvenance.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}

@@ -17,10 +17,10 @@ const active = signal => { if (signal !== undefined) AbortSignal.prototype.throw
 
 export async function prepareGraphEdgeRoutes(program, request, host) {
   if (!(program instanceof ChartProgram) || getBuiltinResourceKindHandler(program.constructor, "edge-route")?.validateStored !== edgeRouteResourceHandler.validateStored) throw new TypeError("Route preparation requires a Full route-authoring program.");
-  ownRecord(request, "Route preparation request");
+  request = Object.assign(Object.create(null), ownRecord(request, "Route preparation request"));
   const { kind, ...args } = request;
   if (!["create", "edit"].includes(kind)) throw new TypeError("Route preparation kind must be create or edit.");
-  ownRecord(host, "Route preparation host");
+  host = Object.assign(Object.create(null), ownRecord(host, "Route preparation host"));
   rejectUnknownProperties(host, ["requestToken", "signal", "executor"], "route preparation host");
   const { requestToken, signal, executor } = host;
   if (typeof requestToken !== "string" || !requestToken) throw new TypeError("Route preparation requires a nonempty requestToken.");

@@ -1525,7 +1525,8 @@ nested charts and opaque scoped item keys from `exportAccessibleData` or inspect
 
 Headless hosts can dispatch `{type:"focus",move:"first"}`, `{type:"focus",target:"points",itemKey}`
 or `{type:"activate"}`. Moves are next, previous, first, last, parent, firstChild, previousSibling,
-nextSibling and root. The hierarchy moves follow native navigation metadata. On a hierarchy item,
+nextSibling, root, nextCandidate and previousCandidate. The candidate moves cycle the latest current-frame
+inspection with PageDown/PageUp. The hierarchy moves follow native navigation metadata. On a hierarchy item,
 Left/Right visit parent/first child, Up/Down visit siblings, Home visits root, and Escape invokes the
 configured partition parent's native focus. Unavailable neighbors are unchanged. Tab and modified
 keys stay with the host; nested text controls are never intercepted. A keyboard binding takes the
@@ -1781,3 +1782,120 @@ Use the labeled [parameter input](#connect-parameter-inputs-and-a-context-action
 [annotation controls](#edit-existing-annotations) for those editing tasks. Provide context actions from
 a keyboard-accessible or touch button as well as a pointer menu. These are host controls; the library
 keeps one command, preparation, selection and history path and does not create DOM widgets.
+
+## Inspect overlapping graph edges
+
+Pointer inspection retains every original edge at a shared stroke. With a keyboard binding,
+PageDown and PageUp cycle those candidates in their actual hit order; Enter uses the configured
+native activation. Headless hosts use `focus` moves `nextCandidate` and `previousCandidate`.
+These moves wrap within the eligible candidates from the latest current-frame inspection. They
+never select an item by themselves. A source or accepted-frame change invalidates old candidates.
+
+`dispatch({type:"unbundleEdge",target,itemKey})` temporarily draws one painted GraphPlot edge
+using its native unbundled geometry. Use an opaque scoped edge key and an explicit root or child
+target. `itemKey:null` restores the baseline. The command supports static native graphs and
+authentic animated graph frames; independently edited plain scenes and active editing previews
+reject. It changes `previewFrame` and emits `unbundleEdge`, without changing the program, routes,
+selection, revision or history. Candidate cycling restores the original baseline and rechecks the
+original inspection point before advancing. Escape, a new frame, source update, native edit,
+editing gesture, unmount and destruction also clear this temporary view.
+
+The host renders `previewFrame` with `previewAssets` before the ordinary animation/native state.
+An asset resolver receives the exact preview in its `frame` field. Until preparation succeeds the
+previous picture and assets remain active; failed or stale leases cannot publish a preview. The
+baseline `animationFrame` and its assets stay available for restoration. For a graph with no routed
+geometry, the temporary result may already match its native edge.
+
+Use this complete example's HTML and module together. Hover over the shared line, focus the chart,
+and press PageDown or PageUp. The buttons expand the focused edge and restore it. Enter selects the
+focused item once. The host uses text nodes for descriptions and owns tooltip dismissal.
+
+```html
+<div id="edge-chart" role="listbox" aria-label="Graph connections" tabindex="0"
+     style="width:300px;height:200px;position:relative">
+  <canvas id="edge-canvas" aria-label="Graph connections" aria-hidden="true"></canvas>
+  <div id="edge-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+</div>
+<p id="edge-description" role="tooltip" hidden></p>
+<button id="edge-expand" type="button">Expand focused edge</button>
+<button id="edge-restore" type="button">Restore routes</button>
+<button id="edge-dispose" type="button">Remove interactions</button>
+```
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ id: "nodes", keyField: "id", values: [{ id: "a" }, { id: "b" }] })
+  .createData({ id: "edges", values: [
+    { id: "first", from: "a", to: "b" }, { id: "second", from: "a", to: "b" }
+  ] })
+  .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id",
+    edgeKey: "id", source: "from", target: "to", directed: true })
+  .layoutGraph({ id: "layout", method: "fixed", options: { positions: [
+    { key: "a", x: 40, y: 80 }, { key: "b", x: 240, y: 80 }
+  ] } })
+  .createGraphPlot({ id: "network", origin: [0, 0], nodes: { radius: 10 },
+    edges: { stroke: "black", strokeWidth: 4, arrows: false, parallelGap: 24 } })
+  .bundleGraphEdges({ id: "routes", method: "edge-path" }).editGraphPlot({ routes: "routes" })
+  .selectMarks({ id: "chosen", target: "network", items: [], empty: "none" });
+const surface = document.querySelector("#edge-chart"), canvas = document.querySelector("#edge-canvas");
+const options = document.querySelector("#edge-options"), description = document.querySelector("#edge-description");
+const expand = document.querySelector("#edge-expand"), restore = document.querySelector("#edge-restore");
+const dispose = document.querySelector("#edge-dispose");
+const edgeSession = createInteractionSession({ program, bindings: [
+  { type: "inspect", slop: 0 },
+  { type: "keyboard", targets: [{ target: "network", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }] }
+] });
+let dismissed = false, live = true;
+const describe = (item, index) => `${item.fields.kind} ${index + 1}. ${item.selectedBy.includes("chosen") ? "Selected" : "Not selected"}.`;
+const drawEdges = event => {
+  const state = event.state, current = state.previewFrame ?? state.animationFrame ?? state.program;
+  render(current, canvas.getContext("2d"), { pixelRatio: window.devicePixelRatio });
+  const items = exportAccessibleData(state.program, { format: "items", target: "network" }).views[0]?.items ?? [];
+  options.replaceChildren(); surface.removeAttribute("aria-activedescendant");
+  items.filter(item => item.visible).forEach((item, index) => {
+    const option = document.createElement("span"); option.id = `edge-option-${index}`;
+    option.setAttribute("role", "option"); option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = describe(item, index); options.append(option);
+    if (item.key === state.focus?.currentItemKey) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  if (event.type === "focus" || event.type === "inspect") dismissed = false;
+  const item = items.find(item => item.key === (state.focus?.currentItemKey ?? state.hit?.target?.itemKey));
+  description.hidden = !item || dismissed || state.destroyed;
+  description.textContent = item ? describe(item, items.indexOf(item)) : "";
+  if (description.hidden) surface.removeAttribute("aria-describedby");
+  else surface.setAttribute("aria-describedby", description.id);
+  expand.disabled = !item || item.fields.kind !== "edge" || state.destroyed;
+};
+const expandEdge = () => {
+  const key = edgeSession.getState().focus?.currentItemKey;
+  if (key) edgeSession.dispatch({ type: "unbundleEdge", target: "network", itemKey: key });
+};
+const restoreEdges = () => edgeSession.dispatch({ type: "unbundleEdge", target: "network", itemKey: null });
+const dismiss = event => { if (event.key === "Escape") { dismissed = true; drawEdges({ state: edgeSession.getState() }); } };
+const unsubscribeEdges = edgeSession.subscribe(drawEdges), unmountEdges = edgeSession.mount(surface);
+surface.addEventListener("keydown", dismiss);
+expand.addEventListener("click", expandEdge); restore.addEventListener("click", restoreEdges);
+const disposeEdges = () => {
+  if (!live) return; live = false;
+  unmountEdges(); unsubscribeEdges(); edgeSession.destroy();
+  surface.removeEventListener("keydown", dismiss);
+  expand.removeEventListener("click", expandEdge); restore.removeEventListener("click", restoreEdges);
+  dispose.removeEventListener("click", disposeEdges);
+  options.replaceChildren(); surface.removeAttribute("aria-activedescendant"); surface.removeAttribute("aria-describedby");
+  description.hidden = true; expand.disabled = true; restore.disabled = true;
+};
+dispose.addEventListener("click", disposeEdges);
+drawEdges({ state: edgeSession.getState() });
+```

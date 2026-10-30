@@ -77,6 +77,39 @@ test("route preparation snapshots host options and rejects aborted, forged and d
   running.dispose();
 });
 
+test("route host boundaries ignore inherited options without evaluating getters", async () => {
+  const p = source(), job = jobFor(p), saved = serializeProgram(p);
+  const request = { kind: "create", id: "routes", method: "edge-path" };
+  for (const key of ["createWorker", "signal", "executor", "requestToken", "kind"]) {
+    let reads = 0;
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+    Object.defineProperty(Object.prototype, key, { configurable: true, get() {
+      reads++; throw new Error(`Inherited ${key} evaluated`);
+    } });
+    let executor;
+    try {
+      if (key === "createWorker" || key === "signal") {
+        executor = createGraphRouteExecutor({});
+        assert.deepEqual(await executor.compute(job, {}), computeGraphEdgeRoutes(job));
+      }
+      if (key === "requestToken") {
+        await assert.rejects(prepareGraphEdgeRoutes(p, request, {}), /nonempty requestToken/);
+      } else if (key === "kind") {
+        await assert.rejects(prepareGraphEdgeRoutes(p, { id: "routes", method: "edge-path" }, { requestToken: "own" }), /kind must be/);
+      } else {
+        const prepared = await prepareGraphEdgeRoutes(p, request, { requestToken: "own" });
+        assert.equal(prepared.kind, "edge-route-preparation");
+      }
+      assert.equal(reads, 0, key);
+    } finally {
+      executor?.dispose();
+      if (previous === undefined) delete Object.prototype[key];
+      else Object.defineProperty(Object.prototype, key, previous);
+    }
+  }
+  assert.equal(serializeProgram(p), saved);
+});
+
 test("explicit route executors bound cache lifetime, pending workers, cancellation and late completions", async () => {
   const p = source(), workers = controlledWorkers(), executor = createGraphRouteExecutor({ createWorker: workers.createWorker });
   const firstJob = jobFor(p), first = executor.compute(firstJob); workers.workers[0].complete();

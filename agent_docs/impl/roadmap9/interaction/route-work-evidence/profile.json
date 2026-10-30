@@ -1,0 +1,505 @@
+{
+  "kind": "read-only-charge-site-diagnostic-not-performance",
+  "source": "d15c2716c",
+  "runtime": "v22.23.1",
+  "changes": "Loader labels existing charge calls; original guards, charges, numeric calculations unchanged. Diagnostic overhead invalidates elapsed timings.",
+  "cases": [
+    {
+      "method": "density",
+      "edgeCount": 100,
+      "status": "error",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000024
+      },
+      "profiles": [
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 55240,
+              "accepted": 55240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 1000,
+              "accepted": 1000
+            },
+            "common.js:17": {
+              "calls": 200,
+              "attempted": 5180,
+              "accepted": 5180
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 1400,
+              "accepted": 1400
+            }
+          },
+          "accepted": 62820,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 55240,
+              "accepted": 55240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 1000,
+              "accepted": 1000
+            },
+            "common.js:17": {
+              "calls": 200,
+              "attempted": 5180,
+              "accepted": 5180
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 1400,
+              "accepted": 1400
+            }
+          },
+          "accepted": 62820,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 55240,
+              "accepted": 55240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 1000,
+              "accepted": 1000
+            },
+            "common.js:17": {
+              "calls": 200,
+              "attempted": 5180,
+              "accepted": 5180
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 1400,
+              "accepted": 1400
+            },
+            "density.js:26": {
+              "calls": 1,
+              "attempted": 22200,
+              "accepted": 22200
+            },
+            "density.js:47": {
+              "calls": 1,
+              "attempted": 532800,
+              "accepted": 532800
+            },
+            "densityField.js:33": {
+              "calls": 1,
+              "attempted": 22200,
+              "accepted": 22200
+            },
+            "densityField.js:39": {
+              "calls": 17417,
+              "attempted": 9360004,
+              "accepted": 9359475
+            }
+          },
+          "accepted": 9999495,
+          "rejected": {
+            "site": "densityField.js:39",
+            "value": 529,
+            "acceptedBefore": 9999495,
+            "message": "Route work must not exceed 10000000."
+          }
+        }
+      ]
+    },
+    {
+      "method": "force-directed",
+      "edgeCount": 1000,
+      "status": "error",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 148988520
+      },
+      "profiles": [
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            }
+          },
+          "accepted": 652020,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            }
+          },
+          "accepted": 652020,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            },
+            "forceDirected.js:65": {
+              "calls": 1,
+              "attempted": 7992000,
+              "accepted": 7992000
+            },
+            "forceDirected.js:86": {
+              "calls": 1,
+              "attempted": 139845000,
+              "accepted": 0
+            }
+          },
+          "accepted": 8644020,
+          "rejected": {
+            "site": "forceDirected.js:86",
+            "value": 139845000,
+            "acceptedBefore": 9143520,
+            "message": "Route work must not exceed 10000000."
+          }
+        }
+      ]
+    },
+    {
+      "method": "edge-path",
+      "edgeCount": 1000,
+      "status": "error",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10001510
+      },
+      "profiles": [
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            }
+          },
+          "accepted": 652020,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            }
+          },
+          "accepted": 652020,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 568240,
+              "accepted": 568240
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 10000,
+              "accepted": 10000
+            },
+            "common.js:17": {
+              "calls": 2000,
+              "attempted": 53780,
+              "accepted": 53780
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 20000,
+              "accepted": 20000
+            },
+            "edgePath.js:38": {
+              "calls": 1,
+              "attempted": 18000,
+              "accepted": 18000
+            },
+            "edgePath.js:51": {
+              "calls": 5,
+              "attempted": 5,
+              "accepted": 5
+            },
+            "shortestPath.js:16": {
+              "calls": 4811,
+              "attempted": 4662532,
+              "accepted": 4662532
+            },
+            "shortestPath.js:48": {
+              "calls": 9614,
+              "attempted": 9614,
+              "accepted": 9614
+            },
+            "shortestPath.js:54": {
+              "calls": 4807,
+              "attempted": 4659339,
+              "accepted": 4657716
+            }
+          },
+          "accepted": 9999887,
+          "rejected": {
+            "site": "shortestPath.js:54",
+            "value": 1623,
+            "acceptedBefore": 9999887,
+            "message": "Route work must not exceed 10000000."
+          }
+        }
+      ]
+    },
+    {
+      "method": "hierarchical",
+      "edgeCount": 10000,
+      "status": "error",
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000048
+      },
+      "profiles": [
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 5842045,
+              "accepted": 5842045
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 99992,
+              "accepted": 99992
+            },
+            "common.js:17": {
+              "calls": 19999,
+              "attempted": 557752,
+              "accepted": 557752
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 279986,
+              "accepted": 279986
+            },
+            "hierarchical.js:24": {
+              "calls": 1,
+              "attempted": 1397725,
+              "accepted": 1397725
+            },
+            "hierarchical.js:48": {
+              "calls": 1,
+              "attempted": 119996,
+              "accepted": 119996
+            }
+          },
+          "accepted": 8297496,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 5842045,
+              "accepted": 5842045
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 99992,
+              "accepted": 99992
+            },
+            "common.js:17": {
+              "calls": 19999,
+              "attempted": 557752,
+              "accepted": 557752
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 279986,
+              "accepted": 279986
+            },
+            "hierarchical.js:24": {
+              "calls": 1,
+              "attempted": 1397725,
+              "accepted": 1397725
+            },
+            "hierarchical.js:48": {
+              "calls": 1,
+              "attempted": 119996,
+              "accepted": 119996
+            }
+          },
+          "accepted": 8297496,
+          "rejected": null
+        },
+        {
+          "charges": {
+            "common.js:45": {
+              "calls": 1,
+              "attempted": 5842045,
+              "accepted": 5842045
+            },
+            "common.js:47": {
+              "calls": 1,
+              "attempted": 99992,
+              "accepted": 99992
+            },
+            "common.js:17": {
+              "calls": 19999,
+              "attempted": 557752,
+              "accepted": 557752
+            },
+            "common.js:21": {
+              "calls": 2,
+              "attempted": 279986,
+              "accepted": 279986
+            },
+            "hierarchical.js:24": {
+              "calls": 1,
+              "attempted": 1397725,
+              "accepted": 1397725
+            },
+            "hierarchical.js:48": {
+              "calls": 1,
+              "attempted": 119996,
+              "accepted": 119996
+            },
+            "hierarchical.js:57": {
+              "calls": 13376,
+              "attempted": 26752,
+              "accepted": 26752
+            },
+            "hierarchical.js:76": {
+              "calls": 6688,
+              "attempted": 160512,
+              "accepted": 160512
+            },
+            "spline.js:45": {
+              "calls": 6688,
+              "attempted": 1284096,
+              "accepted": 1283904
+            },
+            "spline.js:65": {
+              "calls": 6687,
+              "attempted": 231192,
+              "accepted": 231192
+            }
+          },
+          "accepted": 9999856,
+          "rejected": {
+            "site": "spline.js:45",
+            "value": 192,
+            "acceptedBefore": 9999856,
+            "message": "Route work must not exceed 10000000."
+          }
+        }
+      ]
+    }
+  ]
+}

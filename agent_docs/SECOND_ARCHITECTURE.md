@@ -926,11 +926,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 775,000 bytes |
+| `ggaction` | 779,900 bytes |
 | `ggaction/basic` | 423,100 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 128,500 bytes |
+| `ggaction/interaction` | 129,600 bytes |
 | `ggaction/animation` | 267,100 bytes |
 
 
@@ -4756,3 +4756,28 @@ exact graphic item 역할을 연결하며 hit가 이를 재사용한다. 이 추
 interaction128,441bytes다. Current table과 README는 이 측정의 최소 여유 상한을 따른다.
 검증과 source-identical critical coverage 재사용의 정확한 경계는
 [통합 증거](impl/roadmap9/animation/guide-timeline-merged-evidence/qualification.json)가 소유한다.
+
+### Temporary selected-edge presentation
+
+GraphPlot의 임시 펼침은 canonical graph/layout/route를 수정하지 않고 기존 session의
+previewFrame/previewAssets 수명과 native unbundled geometry owner를 재사용한다. 정적 native
+baseline만 Full builtin의 registration-once exact-class reader에서 준비한다. interaction entry는
+이 작은 private reader 경계만 참조하며 Full assembly나 public animation planner를 import하지
+않는다. 별도 public registry·저장 schema·authoritative selection store는 없다. 새 baseline proof는
+현재 endpoint/native source와 graph 의미만 소유해 이전 계획의 조상 참조를 보존하지 않는다.
+후속 현재-frame overlay는 기존 flat proof의 모든 의미 vector를 그대로 유지한다. 정확한 공개
+입력·복원·자산 규칙은 [Current interaction](contract/current/INTERACTION.md#overlapping-edge-candidates-and-temporary-presentation)에 둔다.
+
+최종 source package는 entries1,165, Node20/24 packed1,667,942, unpacked7,534,634 bytes로
+상한1,165/1,668,000/7,535,000을 적용했다. 동일 tar의 Node20 gzip에서 Full779,346 및
+interaction137,437 bytes를 측정해 상한779,400/137,500으로 조정했다. 최초 package/bundle
+초과 결과와 동일 archive 재검증은 edge-presentation evidence에 보존한다.
+
+결합검사에서 graph node-move 변경이 기존 Flow editLayout의 dag/cyclic intent를 Graph 전용
+normalizer로 보내던 회귀를 확인했다. Graph action owner가 기존 method에 맞는 Flow/Graph
+normalizer를 선택한 뒤 같은 resource factory·revision closure·preflight·wrapped materialization을
+유지하도록 복구했다. 기존 Flow 계약을 복원하며 새 API나 persisted schema를 만들지 않는다.
+최종 결합 archive07ea…78b0는1,194entries/unpacked7,693,163bytes이고
+Node20/24 최대packed1,704,959bytes다. 세 Node의 동일 tar gzip 최대는 Full779,857 /
+Basic423,068 / animation267,065 / interaction129,518bytes다. 최초 초과와 최종 재검증은
+[edge 통합 증거](impl/roadmap9/animation/edge-timeline-merged-evidence/qualification.json)에 둔다.

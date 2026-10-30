@@ -902,3 +902,48 @@ store. The parameter context-action button obtains its explicit native item's cu
 point before requesting `contextMenu`, so keyboard and touch users do not need hover or right-click.
 Hosts own labeled controls, safe text, control disposal and applicability; the library does not install
 a DOM widget system. Public playback and reduced-motion integration remain outside these static examples.
+
+## Overlapping edge candidates and temporary presentation
+
+`focus.move:'nextCandidate'|'previousCandidate'` cycles the last current-frame inspection's actual
+candidate order, intersected with configured keyboard targets and eligible native items. Logical
+body/arrow duplicates appear once. The moves wrap, start at the first/last candidate when focus is
+outside that set, and leave focus unchanged when no eligible current candidates exist. PageDown and
+PageUp dispatch these moves without modifiers; nested controls and Tab retain their host behavior.
+No candidate move edits selection or history. Ordinary next/previous and hierarchy moves retain
+their existing non-wrapping rules.
+
+`dispatch({type:'unbundleEdge',target,itemKey})` requires an explicit native Full GraphPlot target and
+an opaque scoped edge key that belongs to the current native graph and is painted in the current
+frame. `itemKey:null` clears that target's temporary presentation, or is unchanged when none exists.
+It accepts a native baseline or authentic graph sample with matching native topology; independently
+modified plain scenes, unsupported constructors, non-edge/unknown keys, fully clipped or zero-opacity
+items, and active editing previews reject before a presentation change. Finite scene and work limits
+still apply. Existing graph layout, parallel-edge, loop, endpoint and arrow policies calculate the
+selected edge's unbundled geometry. Only that logical edge's body/arrow change; all other concrete
+items, roles, order, clips, opacity and source identities remain intact. No junctions or new native
+resources are introduced. A graph already using native edge geometry may produce an equal picture.
+
+The accepted result is a runtime `previewFrame`, paired only with `previewAssets`. The original
+`animationFrame`/`frameAssets` or native baseline is retained. Program identity, trace, layout,
+canonical route resource, selection, revision and history do not change. Success emits
+`{type:'unbundleEdge',target,itemKey,state}`; this is a presentation event, not a native transaction.
+One edge is shown at a time; switching keys starts from the original baseline. With an asset resolver,
+preparation uses the exact candidate in `request.frame`, retains the prior picture/lease until success,
+and reuses the session generation/revision/resource-vector checks. Failure retains the last accepted
+picture; stale or disposed results release their leases and never publish.
+
+Explicit null, Escape, candidate cycling, editing gesture start, native edit/history request, source
+replacement, a valid newer frame, unmount or destruction clear the temporary view. Invalid commands
+and stale frames do not clear it. Candidate cycling first restores the baseline and queries the
+original inspection point with the original hit options at the new frame version. A prior leave
+clears that point, so it cannot revive a stale candidate list. Native selection still uses explicit
+`activate` or existing selection commands and records at most one normal history transaction.
+When focus or history remains unchanged, restoration still emits `unbundleEdge` with `itemKey:null`,
+so hosts receive the restored view without a native program, revision or history change.
+Hosts render preview before animation/native state and own accessible descriptions, tooltip DOM,
+dismissal and listener teardown; field values are inserted as text.
+
+Evidence: `test/unit/interaction-edge-presentation.test.js`,
+`test/browser/interaction-animation.browser.js`, `test/contracts/realistic-graph-drag.test.js`,
+the canonical overlapping-edge documentation example and installed interaction-animation consumer.

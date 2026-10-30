@@ -1,0 +1,47 @@
+{
+  "kind": "diagnostic-preflight-not-SLO",
+  "runtime": "v22.23.1",
+  "count": 1000,
+  "geometry": "1000 circle nodes, offset floor(n/3) edges, radius150, explicit fixed layout",
+  "results": [
+    {
+      "method": "force-directed",
+      "status": "error",
+      "elapsedMs": 153.104958,
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 148988520
+      }
+    },
+    {
+      "method": "density",
+      "status": "error",
+      "elapsedMs": 413.6684580000001,
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000491
+      }
+    },
+    {
+      "method": "edge-path",
+      "status": "error",
+      "elapsedMs": 113.18262499999992,
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10001510
+      }
+    }
+  ]
+}

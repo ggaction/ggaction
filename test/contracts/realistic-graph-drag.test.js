@@ -28,11 +28,23 @@ for (const dataset of datasets) for (const recipe of ["fixed", "fixed-routed", "
     const to = p.editLayout({ node: { key: rows[0].key, x: first.x + 20, y: first.y + 30 } });
     const frame = sampleTransition(planTransition({ from: p, to, options: { durationMs: 100, easing: "linear" } }), 50);
     const current = frame.scene.nodes.filter(n => n.type === "circle"), [x, y] = [current[0].properties.x, current[0].properties.y];
-    const s = createInteractionSession({ program: p, bindings: [{ type: "moveNode", target: "plot" }] }), listeners = new Map(), pending = new Map(); let seq = 0;
+    const s = createInteractionSession({ program: p, bindings: [{ type: "moveNode", target: "plot" }, { type: "keyboard", targets: [{ target: "plot" }] }] }), listeners = new Map(), pending = new Map(); let seq = 0;
     s.mount({ getBoundingClientRect: () => ({ left: 0, top: 0, width: 600, height: 400 }), addEventListener: (k, f) => listeners.set(k, f), removeEventListener: k => listeners.delete(k),
       setPointerCapture() {}, releasePointerCapture() {}, hasPointerCapture: () => true, requestAnimationFrame: f => (pending.set(++seq, f), seq), cancelAnimationFrame: k => pending.delete(k) });
     const fire = (type, x, y) => listeners.get(type)({ pointerId: 1, pointerType: "mouse", clientX: x, clientY: y });
-    s.dispatch({ type: "frame", frame, version: s.getState().frameVersion + 1, generation: 0 }); fire("pointerdown", x, y); fire("pointermove", x + 15, y + 10);
+    s.dispatch({ type: "frame", frame, version: s.getState().frameVersion + 1, generation: 0 });
+    // The first moving pair may collapse under endpoint-radius clipping; the second pair stays painted.
+    const edge = getMarkItems(p).filter(item => item.fields.kind === "edge")[1];
+    s.dispatch({ type: "focus", target: "plot", itemKey: edge.key });
+    s.dispatch({ type: "inspect", point: s.getState().focus.screenPoint, slop: 0 });
+    assert.ok(s.getState().hit.candidates.some(item => item.itemKey === edge.key));
+    s.dispatch({ type: "unbundleEdge", target: "plot", itemKey: edge.key });
+    assert.ok(s.getState().previewFrame); assert.equal(s.getState().program, p); assert.equal(s.getState().history.undoCount, 0);
+    assert.deepEqual(s.getState().scene.nodes.filter(node => node.type === "circle"), current);
+    assert.equal(serializeProgram(p), original);
+    s.dispatch({ type: "focus", move: "nextCandidate" }); assert.equal(s.getState().previewFrame, null);
+    assert.deepEqual(s.getState().scene, frame.scene);
+    fire("pointerdown", x, y); fire("pointermove", x + 15, y + 10);
     for (const fn of pending.values()) fn(); pending.clear();
     const preview = s.getState().previewFrame; assert.ok(preview); assert.equal(s.getState().program, p);
     assert.deepEqual(preview.scene.nodes.filter(n => n.type === "circle").map(n => [n.properties.x, n.properties.y]), current.map((n, i) => [n.properties.x + (i ? 0 : 15), n.properties.y + (i ? 0 : 10)]));

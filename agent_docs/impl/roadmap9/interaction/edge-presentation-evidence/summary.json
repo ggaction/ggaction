@@ -1,0 +1,205 @@
+{
+  "status": "qualified-conceptual-checkpoint",
+  "sourceCommit": "117c64e4d0474a1bf725e11f34302a494f46b9b7",
+  "base": "cd83a51bc",
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "scope": [
+    "Actual current overlapping-edge candidates and keyboard cycle",
+    "One temporary native/current-meaning edge body and arrow; canonical routes/program/history unchanged",
+    "Existing frame assets, cancellation, source/edit/history lifetime and safe host tooltip"
+  ],
+  "coverage": {
+    "tests": 642,
+    "status": "passed",
+    "metrics": {
+      "interaction/session.js": {
+        "lines": 100,
+        "branches": 95.41,
+        "functions": 100
+      },
+      "interaction/keyboardFocus.js": {
+        "lines": 100,
+        "branches": 95.27,
+        "functions": 100
+      },
+      "interaction/edgePresentation.js": {
+        "lines": 100,
+        "branches": 91.89,
+        "functions": 100
+      },
+      "materialization/graph/presentationReader.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "animation/nativeGraphPresentation.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "animation/frameProvenance.js": {
+        "lines": 97.89,
+        "branches": 96.1,
+        "functions": 100
+      }
+    },
+    "floors": {
+      "interaction/session.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/keyboardFocus.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/edgePresentation.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/graph/presentationReader.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "animation/nativeGraphPresentation.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "animation/frameProvenance.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "checks": {
+    "focusedNew": 11,
+    "cumulative": 642,
+    "typesPackageBoundariesDiscoverySharding": 55,
+    "canonicalRealistic": {
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "tests": 16,
+      "fileDurationMs": 30511.329292
+    },
+    "sourceBrowser": {
+      "tests": 16,
+      "new": 4,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "installedBrowser": {
+      "tests": 4,
+      "sourceFree": true,
+      "archive": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda"
+    },
+    "renderers": {
+      "cases": [
+        "static native baseline",
+        "authentic current graph sample"
+      ],
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "expected": "Independent native unbundled body and arrow spliced into independently materialized routed graph",
+      "actualDiff": "0 decoded Canvas/PNG pixels; exact PNG bytes, SVG path command arrays and decompressed PDF streams; vector PDF"
+    },
+    "docs": {
+      "initial": {
+        "tests": 232,
+        "passed": 229,
+        "failed": 3
+      },
+      "repairs": [
+        "Generated runtime reference updated for new command union",
+        "Search size measured at 1083983 bytes; bound 1084000"
+      ],
+      "affectedFilesAfterRepair": {
+        "tests": 31,
+        "passed": 31
+      },
+      "fullRerunAfterMetadataRepair": false,
+      "built": {
+        "pages": 186,
+        "llmArtifacts": 1598,
+        "widths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "axeViolations": 0,
+        "overflow": false,
+        "visualInspection": [
+          320,
+          1440
+        ]
+      }
+    }
+  },
+  "archive": {
+    "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+    "entryCount": 1165,
+    "packedBytes": {
+      "node22": 1664329,
+      "node20": 1667942,
+      "node24": 1667942
+    },
+    "unpackedBytes": 7534634,
+    "finalCanonicalRepack": "byte-identical"
+  },
+  "installed": {
+    "node20": "Runtime/types/HTML passed initially; Full size failure preserved; six measured bundles passed with minimum new bounds on same tar",
+    "node22": "New four-format runtime, strict types, actual HTML, six bundles and four actual browser cases passed",
+    "node24": "New four-format runtime, strict types, actual HTML and six bundles passed"
+  },
+  "firstFailures": [
+    "Missing pinned dataset cache environment, repaired by existing shared cache path",
+    "First realistic edge collapsed at one fixture current time; use existing painted second pair with no runtime fallback",
+    "Browser blob import needed absolute installed public bundle URL",
+    "Restoration without native focus/history change omitted host notification; repaired with atomic presentation-only event and focused regression",
+    "Initial package entry count and Full gzip bounds exceeded; exact measured minimum increases and same tar checks preserved",
+    "Three documentation failures from stale generated runtime reference and search bytes; owning 31 checks pass after generation"
+  ],
+  "hashes": {
+    "src/interaction/session.js": "d12230f94c7b184a0fedb36a924f38c88c54a5993fa64f38721ae11aad0ed3dc",
+    "src/interaction/edgePresentation.js": "96bb630f863138bace08334ce0fcd28339ea45d08e932d34b0208974971deee4",
+    "src/interaction/keyboardFocus.js": "1efb56470ea7c68ae7ab4c26584a7edd684f2193293ccefdb6e6c296fae231a3",
+    "src/animation/nativeGraphPresentation.js": "7213885d087d215120e21a16ae46802db16fc018780ab3f8c4f125654c1b7400",
+    "src/materialization/graph/presentationReader.js": "d862e919694f107b5611f591409bcb55aa49675c59efbe1b2f54bb98c9ba37d4",
+    "src/animation/frameProvenance.js": "568677aa644d81134f76b74cbb07369f569f9d94c06f8c7a0196ab65ceba72d9",
+    "test/unit/interaction-edge-presentation.test.js": "86da8fbced215e23051ea636819d463767ca55d0ac66b30640d642cc9c2ea157",
+    "test/browser/interaction-animation.browser.js": "9e12fabbaa7cea9dfcf50f1db506707524abd04c496146b2bf6ccd6ab507a1b5",
+    "test/contracts/realistic-graph-drag.test.js": "bed5b8ce36b6177556252d8bdc1a1f983c664bb431b35df0392f01cb5c0c5dd6",
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "2e83b2c5193182910caedb15b2ef418ed695591d11b3fc63d59e09a2f1224b7a",
+    "docs/api/interaction.md": "78bee8c81cba25af4fb07303a164046be0b279666da7afa86a86dcc979df7bd2"
+  },
+  "remaining": [
+    "AT81 all Geo/interrupt combinations and combined STEP070 matrix",
+    "AT82 route worker/cache/SLO qualification remains with route owner and combined qualification",
+    "STEP041/062/070/074/077 are not declared complete"
+  ],
+  "commands": {
+    "coverage": "node .artifacts/edge-focused-coverage.mjs (copy qualify-coverage.mjs.txt to that path)",
+    "focused": "node --test test/unit/interaction-edge-presentation.test.js",
+    "owning": "node --test test/contracts/interaction-types.test.js test/contracts/source-boundaries.test.js test/contracts/package-artifact.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js test/unit/support/test-sharding.test.js test/unit/support/coverage-policy.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-graph-drag.test.js",
+    "browser": "node --test test/browser/interaction-animation.browser.js",
+    "installed": "ANIMATION_PACKAGE_SPEC=<sha256 archive> node .artifacts/qualify-edge-presentation.mjs (copy qualify-installed.mjs.txt; prepend each Node bin to PATH; Node22 SESSION_FRAME_BROWSER=1)",
+    "docs": "npm run docs:snippets; npm run docs:reference; npm run docs:search; npm run docs:provenance; npm run docs:machine; npm run docs:llms; npm run test:docs (initial 229/232); node --test test/docs/action-reference.test.js test/docs/documentation.test.js (31/31 after repairs); npm run docs:build; npm run test:docs:built; node .artifacts/edge-doc-browser.mjs",
+    "package": "npm run package:pack (final byte-identical archive)"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "floor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "actual": {
+    "lines": 98.77,
+    "branches": 97.96,
+    "functions": 100
+  }
+}

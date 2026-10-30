@@ -1,0 +1,200 @@
+{
+  "status": "diagnostic-preflight-with-unresolved-performance-cells",
+  "sourceCommit": "106f9ff3035e62493430cb9053768b15ae7a2e97",
+  "baseCheckpoint": "bf6b46d57",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "27.0.0",
+    "cpu": "Apple M4",
+    "logicalCores": 10,
+    "memoryBytes": 17179869184,
+    "profile": "Node diagnostic only; no Chromium production P95 claim"
+  },
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "newRuntimeChanges": false,
+  "rows": [
+    {
+      "edges": 100,
+      "method": "force-directed",
+      "outcome": "complete",
+      "elapsedMs": 198.71216699999997,
+      "work": 1894670,
+      "limitDiagnostic": null
+    },
+    {
+      "edges": 100,
+      "method": "density",
+      "outcome": "error",
+      "elapsedMs": 342.11354100000005,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000024
+      }
+    },
+    {
+      "edges": 100,
+      "method": "edge-path",
+      "outcome": "complete",
+      "elapsedMs": 67.534583,
+      "work": 2095720,
+      "limitDiagnostic": null
+    },
+    {
+      "edges": 1000,
+      "method": "force-directed",
+      "outcome": "error",
+      "elapsedMs": 153.104958,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 148988520
+      }
+    },
+    {
+      "edges": 1000,
+      "method": "density",
+      "outcome": "error",
+      "elapsedMs": 413.6684580000001,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000491
+      }
+    },
+    {
+      "edges": 1000,
+      "method": "edge-path",
+      "outcome": "error",
+      "elapsedMs": 113.18262499999992,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10001510
+      }
+    },
+    {
+      "edges": 10000,
+      "method": "force-directed",
+      "outcome": "error",
+      "elapsedMs": 868.076791,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route candidate pairs",
+        "limit": 10000000,
+        "actual": 49995000
+      }
+    },
+    {
+      "edges": 10000,
+      "method": "density",
+      "outcome": "error",
+      "elapsedMs": 1004.1138340000002,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route active samples",
+        "limit": 10000000,
+        "actual": 13400000
+      }
+    },
+    {
+      "edges": 10000,
+      "method": "edge-path",
+      "outcome": "error",
+      "elapsedMs": 835.677541,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000041
+      }
+    },
+    {
+      "edges": 100,
+      "nodes": 100,
+      "method": "hierarchical",
+      "outcome": "complete",
+      "elapsedMs": 134.387792,
+      "work": 126909,
+      "limitDiagnostic": null
+    },
+    {
+      "edges": 1000,
+      "nodes": 1000,
+      "method": "hierarchical",
+      "outcome": "complete",
+      "elapsedMs": 916.262791,
+      "work": 1147485,
+      "limitDiagnostic": null
+    },
+    {
+      "edges": 10000,
+      "nodes": 9999,
+      "method": "hierarchical",
+      "outcome": "error",
+      "elapsedMs": 1504.6113329999998,
+      "work": null,
+      "limitDiagnostic": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000048
+      }
+    }
+  ],
+  "counts": {
+    "completed": 4,
+    "resourceLimit": 8,
+    "sloPassed": 0,
+    "sloNotRun": 12
+  },
+  "interpretation": [
+    "Single Node calls diagnose admission/completion only, not production Chromium 5 warmup/30 sample P95.",
+    "Complete records do not establish browser success SLO. Resource-limit records do not establish performance support.",
+    "No input edges were dropped or sampled, no guard or policy changed, no partially completed routes accepted.",
+    "Hierarchical needs native tree anchors; its declared star hierarchy differs from the circle-node workload of other methods.",
+    "The 10k hierarchical case has 9999 graph nodes plus one hierarchy root to retain default 10k hierarchy limit, while every 10k edge is retained."
+  ],
+  "diagnosis": "Density builds arc-length samples then a compact-kernel sparse field for each of 20 iterations. Its existing cumulative cell/sample work budget rejects the 100-circle-edge workload before completion. No attempt was made to lower work charges or change numerical policy to force a pass.",
+  "next": [
+    "Pin complete production browser workload and stage measurements per method, including hierarchy and directed field channels.",
+    "Investigate arithmetic-preserving kernel/representation improvements under current memory/work guard before claiming previously rejected classes.",
+    "Measure abort acknowledgement and retained heap separately from existing exact cleanup counter tests.",
+    "Keep unresolved STEP070/074/077 cells; do not mark AT82 complete."
+  ],
+  "hashes": {
+    "src/grammar/graph/routes/density.js": "26ecad8feff6a1c0d19bd180985531f112ff01d48b7144e15c1fc3b7f319cd5f",
+    "src/grammar/graph/routes/densityField.js": "259652565d465cf61bdeb8892347b1ea104998e476c30be5ec51d29c2b86ddd9",
+    "src/grammar/graph/routes/forceDirected.js": "131ec2c1eb95acd39f45a4e366bc00a02e4e221b070eb4a7bb2f8e3c1220f8da",
+    "src/grammar/graph/routes/edgePath.js": "163f17f6cbd7198eaf46b397a11d254c7590427dc11dc7c0885102511336af03",
+    "src/grammar/graph/routes/hierarchical.js": "3e596d925460ed45d454a0b1b69cb7149581ee138dcb3bd5894bf8c376273feb",
+    "src/grammar/graph/routes/budget.js": "f32d00a6b734ffc23bb95f294ea73ac68645fdf25fb4c91045acb60662231568"
+  },
+  "commands": [
+    "node .artifacts/route-size-preflight.mjs",
+    "node .artifacts/route-size-class-preflight.mjs 1000",
+    "node .artifacts/route-size-class-preflight.mjs 10000",
+    "node .artifacts/route-hierarchy-size-preflight.mjs"
+  ]
+}

@@ -21,8 +21,9 @@ export function validateRouteProvenance(job, result, context) {
   const method = job.intent.method, options = job.intent.options;
   const positions = new Map(context.positions.map(node => [node.key, node]));
   const edges = new Map(context.model.edges.map(edge => [edge.key, edge]));
-  const hierarchy = job.hierarchy && new Map(job.hierarchy.model.nodes.map(node => [node.key, node]));
-  const mapping = job.hierarchy && new Map(job.hierarchy.mapping.map(item => [item.nodeKey, item.hierarchyKey]));
+  const hierarchyInput = Object.hasOwn(job, "hierarchy") ? job.hierarchy : undefined;
+  const hierarchy = hierarchyInput && new Map(hierarchyInput.model.nodes.map(node => [node.key, node]));
+  const mapping = hierarchyInput && new Map(hierarchyInput.mapping.map(item => [item.nodeKey, item.hierarchyKey]));
   for (const route of result.routes) {
     const p = route.provenance, a = positions.get(route.sourceKey), b = positions.get(route.targetKey);
     ownRecord(p, "Route provenance");

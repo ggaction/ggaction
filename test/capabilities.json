@@ -441,6 +441,10 @@
       },
       {
         "type": "file",
+        "path": "unit/resources/graph-route-own-request.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/resources/graph-route-lifecycle.test.js"
       },
       {
@@ -1052,6 +1056,10 @@
       {
         "type": "file",
         "path": "unit/interaction-native-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-edge-presentation.test.js"
       }
     ],
     "label-layout": [

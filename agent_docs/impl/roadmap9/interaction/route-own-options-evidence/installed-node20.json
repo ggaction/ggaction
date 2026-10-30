@@ -1,0 +1,65 @@
+{
+  "node": "v20.20.2",
+  "sha256": "e52497df5b5400051dfbf76efb5d597fa69141bf3b0b03ed5b2442cbd6357139",
+  "checks": [
+    {
+      "id": "edge-routes/own-host-options",
+      "status": "passed",
+      "durationMs": 138.37770799999998
+    },
+    {
+      "id": "edge-routes/worker-authority-and-cache",
+      "status": "passed",
+      "durationMs": 130.995042
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1035,
+      "minifiedBytes": 2720079,
+      "gzipBytes": 779421
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 609,
+      "minifiedBytes": 1442605,
+      "gzipBytes": 422618
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 147173,
+      "gzipBytes": 43971
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 393,
+      "minifiedBytes": 766897,
+      "gzipBytes": 233184
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 214,
+      "minifiedBytes": 429949,
+      "gzipBytes": 137437
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "bundle-limit-failed"
+}

@@ -1,0 +1,89 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2413.160542
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2534.682416,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1035,
+        "minifiedBytes": 2719738,
+        "gzipBytes": 779346
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1310.5787920000002,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 609,
+        "minifiedBytes": 1442605,
+        "gzipBytes": 422618
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 81.02574999999979,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24954
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 221.4574590000002,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 83,
+        "minifiedBytes": 146684,
+        "gzipBytes": 43913
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 1106.4164999999994,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 393,
+        "minifiedBytes": 766897,
+        "gzipBytes": 233184
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 649.0729169999995,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 214,
+        "minifiedBytes": 429949,
+        "gzipBytes": 137437
+      }
+    }
+  ],
+  "status": "measured",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

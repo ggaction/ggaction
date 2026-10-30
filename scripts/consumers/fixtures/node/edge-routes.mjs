@@ -25,6 +25,73 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/bounded-long-paths", run() {
+    const count = 1000, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + 333) % count }));
+    const positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
+    const base = chart().createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const saved = serializeProgram(base), routed = base.bundleGraphEdges({ id: "routes", method: "edge-path" }), result = route(routed).result;
+    assert.equal(result.routes.length, count);
+    assert.ok(result.diagnostics.work <= 10_000_000);
+    assert.deepEqual(result.diagnostics.lockedEdges, []); assert.deepEqual(result.diagnostics.bundledEdges, []);
+    result.routes.forEach((item, index) => {
+      const source = positions[index], target = positions[(index + 333) % count];
+      assert.equal(item.provenance.reason, "stretch");
+      assert.deepEqual(item.commands, [{ op: "M", x: source.x, y: source.y }, { op: "L", x: target.x, y: target.y }]);
+    });
+    const restored = deserializeProgram(serializeProgram(routed));
+    assert.deepEqual(route(restored).result, result);
+    assert.equal(serializeProgram(base), saved);
+  } },
+  { id: "edge-routes/own-host-options", async run() {
+    const base = source(), saved = serializeProgram(base);
+    const request = { kind: "create", id: "routes", method: "edge-path" };
+    for (const key of ["createWorker", "signal", "executor", "requestToken", "kind"]) {
+      let reads = 0, executor;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() {
+        reads++; throw new Error(`Inherited ${key} evaluated`);
+      } });
+      try {
+        executor = createGraphRouteExecutor({});
+        if (key === "requestToken") await assert.rejects(prepareGraphEdgeRoutes(base, request, {}), /nonempty requestToken/);
+        else if (key === "kind") await assert.rejects(prepareGraphEdgeRoutes(base, { id: "routes", method: "edge-path" }, { requestToken: "own" }), /kind must be/);
+        else {
+          const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "own" });
+          const cached = await prepareGraphEdgeRoutes(base, request, { requestToken: "owned", executor });
+          assert.equal(prepared.inputHash, cached.inputHash);
+        }
+        assert.equal(reads, 0, key);
+      } finally {
+        executor?.dispose();
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    const reference = await prepareGraphEdgeRoutes(base, request, { requestToken: "defaults" });
+    for (const key of ["zeroLength", "exponent", "maxStretch", "mapping", "limits", "hierarchy", "hierarchyLayout"]) {
+      let reads = 0;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() { reads++; throw new Error(`Inherited ${key} evaluated`); } });
+      try {
+        const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "numeric" });
+        assert.equal(prepared.inputHash, reference.inputHash);
+        assert.equal(reads, 0, key);
+      } finally {
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    const routed = base.bundleGraphEdges({ id: "routes", method: "edge-path" });
+    let reads = 0;
+    await assert.rejects(prepareGraphEdgeRoutes(routed, { kind: "edit", target: "routes", options: {
+      limits: { get maxSamples() { reads++; return 1000; } }
+    } }, { requestToken: "accessor" }), /accessors/);
+    assert.equal(reads, 0);
+    assert.equal(serializeProgram(base), saved);
+  } },
   { id: "edge-routes/responsive-source-and-guide-closure", run() {
     const rows = [{ id: "a", x: 0, y: 1000 }, { id: "b", x: 1, y: 2000 }, { id: "c", x: 2, y: 3000 }];
     const initial = source().editCanvas({ width: 1000, height: 700, margin: 100 })

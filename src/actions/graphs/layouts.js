@@ -1,3 +1,4 @@
+import { normalizeFlowLayout } from "../../grammar/flow/options.js";
 import { createInferredGraphResource } from "../../materialization/graph/inferredResource.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
@@ -58,7 +59,8 @@ export function editGraphLayout(program, args, previous) {
   } else {
     ownRecord(args.options, "Graph layout options patch");
     if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
-    intent = normalizeGraphLayout(previous.options.method, { ...previous.options.options, ...args.options });
+    const normalize = ["dag", "cyclic"].includes(previous.options.method) ? normalizeFlowLayout : normalizeGraphLayout;
+    intent = normalize(previous.options.method, { ...previous.options.options, ...args.options });
     retainedCoordinates = retainedGraphCoordinates(previous.options, intent, graph.result.model.nodes.map(node => node.key));
   }
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,

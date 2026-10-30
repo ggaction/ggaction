@@ -82,3 +82,18 @@ export function registerGraphPresentationFrame(frame, original, endpoint, graphs
 }
 
 export function animationFrameProvenance(frame) { return frames.get(frame); }
+
+// An exact native graph baseline is prepared by the builtin native reader. No
+// arbitrary scene or externally cloned frame acquires native source authority.
+export function registerNativeGraphPresentationFrame(frame, program, endpoint, graphs) {
+  if (!isOwned(frame) || frames.has(frame) || !isOwned(endpoint) || !isOwned(graphs) ||
+      frame.graphicSpec !== program.graphicSpec || endpoint.graphicSpec !== frame.graphicSpec ||
+      endpoint.scene !== frame.scene || endpoint.identities.length !== frame.scene.nodes.length ||
+      graphs.items.length !== frame.scene.nodes.length) {
+    throw new TypeError("Native graph presentation requires its exact owned program and projected endpoint.");
+  }
+  frames.set(frame, Object.freeze({ planIdentity: Object.freeze({}), timeMs: 0,
+    positions: cloneAndFreeze(Array(frame.scene.nodes.length).fill(null)), endpoint, graphs,
+    native: nativeSource(program, endpoint) }));
+  return frame;
+}

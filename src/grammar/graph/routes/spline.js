@@ -7,7 +7,7 @@ import { flattenPathCommands } from "../../pathGeometry.js";
 import { validateRoutePoints } from "./polyline.js";
 
 export function normalizeSplineOptions(input = {}) {
-  ownRecord(input, "Spline options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Spline options"));
   rejectUnknownProperties(input, ["tolerance", "maxSubdivisions"], "spline options");
   const tolerance = input.tolerance === undefined ? 0.001 : input.tolerance;
   const maxSubdivisions = input.maxSubdivisions === undefined ? 4096 : input.maxSubdivisions;

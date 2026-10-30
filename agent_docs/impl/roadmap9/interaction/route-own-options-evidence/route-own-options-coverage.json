@@ -1,0 +1,91 @@
+{
+  "report": {
+    "grammar/graph/routes/density.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/edgePath.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/forceDirected.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/hierarchical.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/options.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/resultProvenance.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/graph/routes/spline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/graph/routeRequest.js": {
+      "lines": 100,
+      "branches": 96.83,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 99.6,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "grammar/graph/routes/density.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/edgePath.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/forceDirected.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/hierarchical.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/options.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/resultProvenance.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/graph/routes/spline.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/graph/routeRequest.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}

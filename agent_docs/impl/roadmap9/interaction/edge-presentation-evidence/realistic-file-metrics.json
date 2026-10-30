@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "file": "contracts/realistic-graph-drag.test.js",
+  "durationMs": 30511.329292,
+  "maxRssKiB": 215408,
+  "status": "passed",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runner": "local"
+  },
+  "run": null,
+  "attempt": null
+}

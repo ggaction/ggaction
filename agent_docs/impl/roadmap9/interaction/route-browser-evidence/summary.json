@@ -1,0 +1,560 @@
+{
+  "status": "measured-partial-size-support-not-AT82-complete",
+  "authorization": "../../AUTHORIZATION.json remainingApproval",
+  "source": "d15c2716c",
+  "qualifiedCheckpoint": "08cff3ecf",
+  "archiveSha256": "e52497df5b5400051dfbf76efb5d597fa69141bf3b0b03ed5b2442cbd6357139",
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-10-30T05:24:40.195Z",
+    "loadStart": [
+      9.15625,
+      7.99365234375,
+      5.96142578125
+    ],
+    "browser": "153.0.8010.12",
+    "end": "2026-10-30T05:27:14.867Z",
+    "loadEnd": [
+      6.82373046875,
+      8.57666015625,
+      6.61376953125
+    ],
+    "processListPrivacy": "Executable basenames only; unrelated local project paths omitted."
+  },
+  "bundles": {
+    "app.js": {
+      "bytes": 2782273,
+      "sha256": "b845025561ed43a477aa02983708cdd6308b1c1522e4b8b90833685a911e412e"
+    },
+    "worker.js": {
+      "bytes": 55146,
+      "sha256": "17ad0be0d1c7b6bc077b67fcd1ec0ce25da38257eafa34fe12f2310c77598c28"
+    }
+  },
+  "profile": {
+    "DPR": [
+      1,
+      2
+    ],
+    "warmups": 5,
+    "measuredPerSuccessfulCell": 30,
+    "deterministicSeed": 0,
+    "postBootstrapHttpRequests": 0,
+    "fonts": "not used: no Text, labels, or guides emitted",
+    "rendering": "headless Chromium Canvas commands and SVG serialization/DOM, not compositor-paint timing",
+    "sourcePreparation": "single diagnostic only; not included in P95"
+  },
+  "cases": [
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "hierarchical",
+      "ratio": 1,
+      "status": "measured",
+      "sourcePreparationMs": 28.199999809265137,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 31.300000190734863,
+        "prepareComputeValidateMs": 88,
+        "applyMs": 52.90000009536743,
+        "bundlingMs": 139.70000004768372,
+        "materializeMs": 9.599999904632568,
+        "canvasRenderMs": 1.6999998092651367,
+        "svgSerializeDomMs": 1.2000000476837158
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "force-directed",
+      "ratio": 1,
+      "status": "measured",
+      "sourcePreparationMs": 7.299999952316284,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 64.5,
+        "prepareComputeValidateMs": 134.79999995231628,
+        "applyMs": 62.89999985694885,
+        "bundlingMs": 196.40000009536743,
+        "materializeMs": 9.5,
+        "canvasRenderMs": 2.4000000953674316,
+        "svgSerializeDomMs": 1.7999999523162842
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "density",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 7.5,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "edge-path",
+      "ratio": 1,
+      "status": "measured",
+      "sourcePreparationMs": 6.5,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 20.299999952316284,
+        "prepareComputeValidateMs": 55,
+        "applyMs": 31.200000047683716,
+        "bundlingMs": 84.79999995231628,
+        "materializeMs": 4,
+        "canvasRenderMs": 0.6000001430511475,
+        "svgSerializeDomMs": 0.7000000476837158
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "hierarchical",
+      "ratio": 1,
+      "status": "measured",
+      "sourcePreparationMs": 98.30000019073486,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 231.70000004768372,
+        "prepareComputeValidateMs": 725.6999998092651,
+        "applyMs": 507.7000000476837,
+        "bundlingMs": 1221,
+        "materializeMs": 56.39999985694885,
+        "canvasRenderMs": 11.700000047683716,
+        "svgSerializeDomMs": 10.800000190734863
+      },
+      "thresholdMs": 5000,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "force-directed",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 65.90000009536743,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "density",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 72,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "edge-path",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 69.60000014305115,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 9999,
+      "method": "hierarchical",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 1110.2999999523163,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "force-directed",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 725,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route candidate pairs must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "density",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 661.8000001907349,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route active samples must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "edge-path",
+      "ratio": 1,
+      "status": "explicit-error",
+      "sourcePreparationMs": 685.5999999046326,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "hierarchical",
+      "ratio": 2,
+      "status": "measured",
+      "sourcePreparationMs": 28.800000190734863,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 30.09999990463257,
+        "prepareComputeValidateMs": 85.90000009536743,
+        "applyMs": 53,
+        "bundlingMs": 139.29999995231628,
+        "materializeMs": 9.5,
+        "canvasRenderMs": 1.7999999523162842,
+        "svgSerializeDomMs": 1.2000000476837158
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "force-directed",
+      "ratio": 2,
+      "status": "measured",
+      "sourcePreparationMs": 6.799999952316284,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 59.90000009536743,
+        "prepareComputeValidateMs": 133.20000004768372,
+        "applyMs": 62.40000009536743,
+        "bundlingMs": 194,
+        "materializeMs": 9.299999952316284,
+        "canvasRenderMs": 2.4000000953674316,
+        "svgSerializeDomMs": 1.8000001907348633
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "density",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 6.5,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 100,
+      "nodes": 100,
+      "method": "edge-path",
+      "ratio": 2,
+      "status": "measured",
+      "sourcePreparationMs": 7.799999952316284,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 20.299999952316284,
+        "prepareComputeValidateMs": 55.19999980926514,
+        "applyMs": 31.899999856948853,
+        "bundlingMs": 86.19999980926514,
+        "materializeMs": 3.9000000953674316,
+        "canvasRenderMs": 0.7000000476837158,
+        "svgSerializeDomMs": 0.7999999523162842
+      },
+      "thresholdMs": 500,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "hierarchical",
+      "ratio": 2,
+      "status": "measured",
+      "sourcePreparationMs": 97.5,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 165.79999995231628,
+        "prepareComputeValidateMs": 631,
+        "applyMs": 462.10000014305115,
+        "bundlingMs": 1091.4000000953674,
+        "materializeMs": 51.200000047683716,
+        "canvasRenderMs": 9,
+        "svgSerializeDomMs": 8.100000143051147
+      },
+      "thresholdMs": 5000,
+      "successSLO": "passed-this-fixture"
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "force-directed",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 64,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "density",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 69.19999980926514,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "edge-path",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 64,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 9999,
+      "method": "hierarchical",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 1027.5,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "force-directed",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 635.9000000953674,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route candidate pairs must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "density",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 631.7000000476837,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route active samples must not exceed 10000000."
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 10000,
+      "method": "edge-path",
+      "ratio": 2,
+      "status": "explicit-error",
+      "sourcePreparationMs": 668.2999999523163,
+      "warmups": 0,
+      "measured": 0,
+      "successSLO": "not-measured",
+      "error": "Route work must not exceed 10000000."
+    }
+  ],
+  "aggregate": {
+    "cells": 24,
+    "successfulMeasuredCells": 8,
+    "explicitLimitCells": 16,
+    "largeSuccessCells": 0,
+    "allSizeClassesSupported": false
+  },
+  "quietSupplement": {
+    "reason": "Guide coverage briefly overlapped DPR1 1000-edge HEB in original measurement",
+    "originalBundlingP95Ms": 1221,
+    "final": {
+      "edgeCount": 1000,
+      "nodes": 1000,
+      "method": "hierarchical",
+      "ratio": 1,
+      "status": "measured",
+      "sourcePreparationMs": 131.60000014305115,
+      "warmups": 5,
+      "measured": 30,
+      "p95": {
+        "computeMs": 163.20000004768372,
+        "prepareComputeValidateMs": 618.2999999523163,
+        "applyMs": 472.59999990463257,
+        "bundlingMs": 1081.5,
+        "materializeMs": 50.40000009536743,
+        "canvasRenderMs": 9.599999904632568,
+        "svgSerializeDomMs": 8.5
+      },
+      "thresholdMs": 5000,
+      "successSLO": "passed-this-fixture"
+    }
+  },
+  "lifecycle": [
+    {
+      "ratio": 1,
+      "cycles": 100,
+      "gc": "CDP HeapProfiler.collectGarbage before each Runtime.getHeapUsage sample",
+      "slopeBytesPerCycle": 4227.09642399534,
+      "growthBytes": 772000,
+      "proposedHeapThresholds": {
+        "slope": 10240,
+        "growth": 2097152
+      },
+      "heapStatus": "passed-this-fixture",
+      "abortAcknowledgementP95Ms": 0.19999980926513672,
+      "lifecycleScope": "Real DOM inspect mount, real Blob route worker; 50 complete/update/render and 50 immediate postMessage abort/dispose. No pointer editing or ResizeObserver in this fixture; those retain separate source tests.",
+      "allCountersZero": true,
+      "backingStorageGrowth": 0,
+      "embedderHeapGrowth": 34504
+    },
+    {
+      "ratio": 2,
+      "cycles": 100,
+      "gc": "CDP HeapProfiler.collectGarbage before each Runtime.getHeapUsage sample",
+      "slopeBytesPerCycle": 4552.791193942925,
+      "growthBytes": 798684,
+      "proposedHeapThresholds": {
+        "slope": 10240,
+        "growth": 2097152
+      },
+      "heapStatus": "passed-this-fixture",
+      "abortAcknowledgementP95Ms": 0.20000004768371582,
+      "lifecycleScope": "Real DOM inspect mount, real Blob route worker; 50 complete/update/render and 50 immediate postMessage abort/dispose. No pointer editing or ResizeObserver in this fixture; those retain separate source tests.",
+      "allCountersZero": true,
+      "backingStorageGrowth": 0,
+      "embedderHeapGrowth": -133720
+    }
+  ],
+  "density": {
+    "policyGridSize": 256,
+    "directedChannels": 8,
+    "policyIterations": 20,
+    "actualFieldCells": "unavailable: all circle fixtures rejected before complete result",
+    "diagnosticReference": "../route-size-preflight-evidence/summary.json"
+  },
+  "forceCandidatePairs": {
+    "100": 4950,
+    "1000": 499500,
+    "10000": 49995000,
+    "largePairLimit": 10000000
+  },
+  "limitations": [
+    "Original contaminated cell retained and replaced only by separate quiet 5+30 supplement",
+    "OS background services remain; this is one Apple M4 desktop profile, not a cross-machine guarantee",
+    "Lifecycle uses 20-edge edge-path, real inspect DOM mount, 50 complete/update/render and 50 immediate native worker aborts per DPR",
+    "Pointer drag/capture, ResizeObserver and asset leases are separate existing fixtures, not newly qualified by this memory test",
+    "Only main renderer JS heap is subject to the recorded threshold; CDP embedder/backing metrics are reported separately, not total process RSS",
+    "No font-bearing routes, assets or geometric GraphRoute binding were added",
+    "Budget rejection is a safety result, not successful SLO support",
+    "AT82, geographic GraphRoute binding, latest combined qualification and STEP077 remain open"
+  ],
+  "firstFailure": "Smoke harness passed an unsupported createGraphPlot graph option; preserved then fixed to public layout option. No runtime fix or threshold relaxation.",
+  "reproducibility": "Archived harness process list formatting removes unrelated local paths; measured stage/worker/lifecycle code is unchanged. Rebuild the exact source package, verify archive hash, copy .mjs.txt files into .artifacts removing .txt, and provide route-own-options-fixed.json with frozenFile pointing to the archive.",
+  "artifacts": [
+    {
+      "file": "contention.json",
+      "sha256": "1a1e3c28ddd7ba1d942775eb38543e41d2358f2f9143087ec37694bb5dc5f386"
+    },
+    {
+      "file": "measure-route-browser-quiet.mjs.txt",
+      "sha256": "a03843f46fb8a68585695aaa0ddc490c0036a67fff2a8a3326b9d96930716588"
+    },
+    {
+      "file": "measure-route-browser.mjs.txt",
+      "sha256": "2725003ec2d940ca5742c8e7043fbce854f77b8457a9a6fddc8be632519e198e"
+    },
+    {
+      "file": "measured.json.gz",
+      "sha256": "1de426dae9352a40a746516deab2cdb2963e9ea5c55b6bf380230317155f2fee"
+    },
+    {
+      "file": "quiet-cell.json.gz",
+      "sha256": "44abbf1782589aaf7e582b1edbd4131ea35ca6fe64fb03fe08837246c733a4c8"
+    },
+    {
+      "file": "route-browser-entry.mjs.txt",
+      "sha256": "e9bbd860612aabfaf7630fc1791b94dde4e314491fb323c3f7dd554a26e2969b"
+    },
+    {
+      "file": "route-browser-measured.log.gz",
+      "sha256": "569a4d01432fdd221a707716d02bea205ac0da58e426caea0f1f80d1d39085ed"
+    },
+    {
+      "file": "route-browser-quiet-cell.log.gz",
+      "sha256": "66f8d25a5e13733c1af974d82fde29e9b2f92ce60635d8c06478fc05cd1b5935"
+    },
+    {
+      "file": "route-browser-smoke-corrected.log.gz",
+      "sha256": "56196dc967eaa43f36d32e58e4c2601def9c5a76e91d2af424bf0fb94ead160f"
+    },
+    {
+      "file": "route-browser-smoke-first-failure.log.gz",
+      "sha256": "85fc7d34bdd1eb673cbe40b43047144a52d69bfd33a7492a9640cd5405a677da"
+    },
+    {
+      "file": "route-browser-worker.mjs.txt",
+      "sha256": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729"
+    },
+    {
+      "file": "smoke-first-failure.json.gz",
+      "sha256": "51a7ce08f7ddc26566ffd1eb61ec5bdea45e51f3d711f241a8f2be2d847e88e7"
+    },
+    {
+      "file": "smoke.json.gz",
+      "sha256": "c709e3471f3356ddc5707272d441b7dba3b6b639e80687399370c51ef2505b09"
+    }
+  ]
+}
