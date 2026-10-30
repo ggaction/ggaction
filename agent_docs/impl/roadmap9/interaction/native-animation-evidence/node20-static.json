@@ -1,0 +1,49 @@
+{
+  "node": "v20.20.2",
+  "freshProcess": true,
+  "networkCalls": 0,
+  "snapshotSha256": "ed6d0fdef1d5ccf1ef10b8b59945e26f3e9c8c75c5559074b5cea67fabcc3737",
+  "restoredDescriptionSha256": "b1094468a16a74e844f1a9bdd5ef222ce5a5546541f64371d824fc29a5112a4e",
+  "original": {
+    "width": 836,
+    "height": 180,
+    "rgba": "0a995810da14ef5a6af7357bbb2790ab50ebe4524fa72ff07667b5a2beb8b99e",
+    "png": "caf9f8ff8eb30184a5ef145b5160019f003df4362ed4af806981a71a2fe6cc97",
+    "svg": "2bbe01aea3e6eced97f22b8d98406a020cd0ec9b76278aefe2a3cd37df2ab5c1",
+    "pdfStreams": [
+      "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+      "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+      "aeee3250ad6184ba2b066d65ff999b4991acdee9ff2e9a87de2e8e89c756b85a",
+      "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+      "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+    ]
+  },
+  "edited": {
+    "width": 836,
+    "height": 180,
+    "rgba": "4466ef1be4a68f633420fc0fbcb45068767da68dffe7d44c96fc41a02e38cd15",
+    "png": "e5e107770ed5ef550c82b3272235f4ea1d0941a19c0d49da73fdc996fd070974",
+    "svg": "9b4cf3257ad7ab9bbc4ed07ceda0864a72e80bf56ed156be4470f4113b5bd0d4",
+    "pdfStreams": [
+      "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+      "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+      "c412a2e12f1bfe9b156520fde3ae84da47d4cdb6d2ee9c2b2fe2d4d6123b973c",
+      "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+      "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+    ]
+  },
+  "commands": [
+    "focusHierarchy",
+    "moveNode",
+    "setViewport",
+    "select",
+    "focus",
+    "undo",
+    "redo"
+  ],
+  "history": {
+    "undoCount": 1,
+    "redoCount": 1,
+    "limit": 100
+  }
+}

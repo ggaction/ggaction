@@ -211,3 +211,16 @@ keyboard.dispatch({type:'focus',move:'next',target:'points',itemKey:'item'});
 keyboard.getState().focus!.itemKey='changed';
 // @ts-expect-error activation does not accept arbitrary payloads
 keyboard.dispatch({type:'activate',payload:{}});
+
+import {planTransition,sampleTransition,type TransitionFrame} from 'ggaction/animation';
+const animationProgram=chart().createCanvas();
+const animationFrame=sampleTransition(planTransition({from:animationProgram,to:animationProgram,options:{durationMs:100}}),50);
+const animationSession=createInteractionSession({program:animationProgram,assetResolver(request){
+  const frame:TransitionFrame|undefined=request.frame;
+  const version:number|undefined=request.frameVersion;return{dispose(){}};
+}});
+animationSession.dispatch({type:'frame',frame:animationFrame,version:1,generation:0});
+const acceptedFrame:TransitionFrame|null=animationSession.getState().animationFrame;
+const frameAssets=animationSession.getState().frameAssets;
+// @ts-expect-error scene and authentic sample are mutually exclusive
+animationSession.dispatch({type:'frame',frame:animationFrame,scene:animationFrame.scene,version:2,generation:0});

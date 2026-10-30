@@ -1,17 +1,13 @@
 import { canonicalJSON } from "../../core/contentDigest.js";
-import { mapOrdinalOffsetValues } from "../../grammar/scales/index.js";
 import { resolveBarCellOpacities } from "./resolve.js";
 import { deriveSeriesBarCells } from "../../grammar/bars/aggregate.js";
 import { resolveBarChannels, resolveBarColorLayout, resolveBarOffsetChannel } from "../../grammar/bars/policy.js";
 import {
-  mapContinuousScaleValues,
-  mapOrdinalPositionValues,
   readScaleField
 } from "../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
 import { DEFAULT_BAR_FILL, resolveBarAppearance } from "./resolve.js";
-import { resolveBarWidth, resolveBarInterval } from "../../grammar/bars/geometry.js";
-import { finiteMidpoint } from "../../grammar/numeric.js";
+import { resolveAggregateBarGeometry } from "../../grammar/bars/geometry.js";
 
 export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const { dataset, layer } = required;
@@ -54,28 +50,9 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     const measureScale = resolved.resolvedScales[selected?.[channels.measure]?.binding.scale ?? layer.encoding[channels.measure].scale];
     const offset = selected?.[resolveBarOffsetChannel(layer)];
     const offsetScale = resolved.resolvedScales[offset?.binding.scale ?? layer.encoding[resolveBarOffsetChannel(layer)]?.scale];
-    const temporal = categoryScale.type === "time";
-    const defaultWidth = widthConfig?.interval === undefined ? resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step)) : undefined;
-    const indices = new Map(categoryScale.domain.map((value, index) => [value, index]));
-    const categoryValue = cell[channels.category];
-    const interval = widthConfig?.interval === undefined ? undefined : resolveBarInterval(widthConfig, categoryValue, categoryScale);
-    const width = interval?.width ?? defaultWidth;
-    const categoryCenter = (temporal ? mapContinuousScaleValues : mapOrdinalPositionValues)([categoryValue], categoryScale)[0];
-    let position = interval?.position ?? (!grouped && layer.encoding.group !== undefined && layer.encoding.group.inferredFrom === undefined && !temporal && categoryScale.step > 0
-      ? (categoryScale.start ?? categoryScale.range[0]) + indices.get(categoryValue) * categoryScale.step + categoryScale.bandwidth / 2 - width / 2
-      : categoryCenter - width / 2);
-    if (grouped) {
-      const direction = Math.sign(categoryScale.step ?? categoryScale.range[1] - categoryScale.range[0]) || 1;
-      const offsetCenter = offset === undefined ? offsetScale.start + seriesIndex * offsetScale.step + (Math.sign(offsetScale.step) || 1) * offsetScale.bandwidth / 2 : mapOrdinalOffsetValues([offset.value], offsetScale)[0];
-      if (offset === undefined && vertical && direction > 0 && offsetScale.step > 0) {
-        const categoryStart = temporal ? categoryCenter - categoryScale.bandwidth / 2
-          : (categoryScale.start ?? categoryScale.range[0]) + indices.get(categoryValue) * categoryScale.step;
-        position = categoryStart + offsetScale.start + seriesIndex * offsetScale.step + (offsetScale.bandwidth - width) / 2;
-      } else position = categoryCenter + direction * (offsetCenter - finiteMidpoint(...offsetScale.range)) - width / 2;
-    }
-    const [a, b] = mapContinuousScaleValues([start, end], measureScale);
-    return { x: vertical ? position : Math.min(a, b), y: vertical ? Math.min(a, b) : position,
-      width: vertical ? width : Math.abs(a - b), height: vertical ? Math.abs(a - b) : width,
+    return { ...resolveAggregateBarGeometry({ categoryScale, measureScale, offsetScale, categoryValue: cell[channels.category],
+      start, end, widthConfig, grouped, vertical, seriesIndex, offsetValue: offset?.value,
+      explicitGroup: layer.encoding.group !== undefined && layer.encoding.group.inferredFrom === undefined }),
       fill: fills?.[index] ?? config.barAppearance?.fill ?? config.fill ?? DEFAULT_BAR_FILL,
       ...resolveBarAppearance(config, existing[index]?.properties),
       ...(strokes === undefined ? {} : { stroke: strokes[index] }),

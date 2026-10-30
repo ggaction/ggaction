@@ -1,0 +1,16 @@
+import {readFile,writeFile,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {run,root} from '../scripts/consumers/runtime.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+const packageSpec=path.resolve('.artifacts/session-animation-archives/ggaction-ae486a9124187717bb8a3c95e54b14c636e6c924e8c0795288e60f9ab721275f.tgz');
+const archiveSha256=createHash('sha256').update(await readFile(packageSpec)).digest('hex');
+const consumer=await preparePackageConsumer({packageSpec});
+try {
+ await testOptionalDependencies(consumer);
+ await copyFile(path.join(root,'scripts/consumers/fixtures/node/interaction-animation.mjs'),path.join(consumer.directory,'animation.mjs'));
+ await writeFile(path.join(consumer.directory,'run.mjs'),`import {cases} from './animation.mjs';const entry=cases.find(c=>c.id==='interaction-animation/fresh-offline-native-scope');await entry.run();console.log(entry.id+' passed');`);
+ await run(process.execPath,['run.mjs'],consumer.directory,{stdio:'inherit'});
+ await writeFile(`.artifacts/session-animation-offline-audit-node${process.versions.node.split('.')[0]}.json`,JSON.stringify({node:process.version,archiveSha256,cases:1,status:'passed',sameTimeSceneEqual:true,nativeRestoredAuthority:true,animationEnvelopeAuthority:false,networkCalls:0},null,2)+'\n');
+} finally {await consumer.cleanup();}

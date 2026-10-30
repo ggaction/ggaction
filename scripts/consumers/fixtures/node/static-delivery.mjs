@@ -8,6 +8,7 @@ import { chart, hconcat, prepareFontResource, prepareTextMetrics, prepareFontRen
   prepareImageResource, prepareImageRendering, render } from "ggaction";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 import { getMarkItems, getProjectionView, inspectProgram } from "ggaction/inspection";
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "ggaction/animation";
 import { createInteractionSession } from "ggaction/interaction";
 import { exportAccessibleData } from "ggaction/accessibility";
 import { createTransitionScene, renderTransitionScene } from "ggaction/scene";
@@ -121,7 +122,7 @@ function pdfStreams(buffer) {
     try { return digest(inflateSync(bytes)); } catch { return digest(bytes); }
   });
 }
-async function outputs(program, prefix) {
+async function outputs(program, prefix, { native = true } = {}) {
   const fonts = await prepareFontRendering(program, { register: registerInstalledFont });
   const images = await prepareImageRendering(program, { decode });
   try {
@@ -138,7 +139,7 @@ async function outputs(program, prefix) {
     decoded.getContext("2d").drawImage(image, 0, 0);
     assert.deepEqual(decoded.getContext("2d").getImageData(0, 0, png.width, png.height).data, canvasPixels);
     assert.match(svg, /@font-face/); assert.match(svg, /data:image\/png;base64,/); assert.match(svg, /clipPath/);
-    assert.match(pdf.buffer.toString("latin1"), /\/Subtype \/Image/); assert.match(pdf.buffer.toString("latin1"), /\/ToUnicode/);
+    assert.match(pdf.buffer.toString("latin1"), /\/Subtype \/Image/); if (native) assert.match(pdf.buffer.toString("latin1"), /\/ToUnicode/);
     assert.deepEqual([pdf.width, pdf.height, pdf.pages], [canvas.width, canvas.height, 1]);
     const scene = createTransitionScene(program, { format: "canvas" });
     const sceneFonts = await prepareFontRendering(scene, { register: registerInstalledFont });
@@ -198,20 +199,24 @@ async function restoreStaticDelivery(saved, directory) {
   } finally { session.destroy(); assert.throws(() => session.dispatch({ type: "undo" }), /disposed|destroyed/i); }
 }
 
-export const cases = [{ id: "static-delivery/interacted-native-offline-four-formats", async run() {
-  assert.match(import.meta.resolve("ggaction"), /\/node_modules\/ggaction\//);
-  const program = interact(await example()), saved = serializeProgram(program);
-  nativeExpectations(program);
-  await mkdir("static-delivery", { recursive: true }); await writeFile("static-delivery/program.json", saved);
-  const before = describe(program), rendered = await outputs(program, "static-delivery/original");
+function offlineRestore(method, saved, directory) {
   const script = `import http from 'node:http';import https from 'node:https';import net from 'node:net';import tls from 'node:tls';import dns from 'node:dns';import {syncBuiltinESMExports} from 'node:module';import {readFileSync} from 'node:fs';
     globalThis.__offlineCalls=0;const blocked=()=>{globalThis.__offlineCalls++;throw new Error('Network disabled in offline consumer');};
     globalThis.fetch=blocked;globalThis.WebSocket=blocked;
     for(const [owner,keys]of [[http,['request','get']],[https,['request','get']],[net,['connect','createConnection']],[tls,['connect']],[dns,['lookup','resolve']],[dns.promises,['lookup','resolve']]])for(const key of keys)owner[key]=blocked;
     net.Socket.prototype.connect=blocked;syncBuiltinESMExports();
     for(const probe of [()=>fetch('https://invalid.example'),()=>http.get('http://invalid.example'),()=>net.connect(80,'invalid.example')]){try{probe();throw new Error('Guard failed');}catch(error){if(!error.message.startsWith('Network disabled'))throw error;}}
-    globalThis.__offlineCalls=0;const {restoreStaticDelivery}=await import('./static-delivery.mjs');const result=await restoreStaticDelivery(readFileSync(0,'utf8'),'static-delivery');if(globalThis.__offlineCalls!==0)throw new Error('Unexpected network use');process.stdout.write(JSON.stringify(result));`;
-  const result = JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 60_000, maxBuffer: 16 * 1024 * 1024 }));
+    globalThis.__offlineCalls=0;const module=await import('./static-delivery.mjs');const result=await module[${JSON.stringify(method)}](readFileSync(0,'utf8'),${JSON.stringify(directory)});if(globalThis.__offlineCalls!==0)throw new Error('Unexpected network use');process.stdout.write(JSON.stringify(result));`;
+  return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script], { input: saved, encoding: "utf8", timeout: 60_000, maxBuffer: 16 * 1024 * 1024 }));
+}
+
+export const cases = [{ id: "static-delivery/interacted-native-offline-four-formats", async run() {
+  assert.match(import.meta.resolve("ggaction"), /\/node_modules\/ggaction\//);
+  const program = interact(await example()), saved = serializeProgram(program);
+  nativeExpectations(program);
+  await mkdir("static-delivery", { recursive: true }); await writeFile("static-delivery/program.json", saved);
+  const before = describe(program), rendered = await outputs(program, "static-delivery/original");
+  const result = offlineRestore("restoreStaticDelivery", saved, "static-delivery");
   assert.equal(result.networkCalls, 0); assert.deepEqual(result.restored, before); assert.deepEqual(result.rendered, rendered);
   assert.equal(serializeProgram(program), saved);
   const edited = deserializeProgram(await readFile("static-delivery/edited.json", "utf8"));
@@ -219,6 +224,80 @@ export const cases = [{ id: "static-delivery/interacted-native-offline-four-form
   await writeFile("static-delivery/receipt.json", JSON.stringify({ node: process.version, freshProcess: true, networkCalls: result.networkCalls,
     snapshotSha256: digest(saved), restoredDescriptionSha256: digest(JSON.stringify(before)), original: rendered, edited: result.editedOutput,
     commands: ["focusHierarchy", "moveNode", "setViewport", "select", "focus", "undo", "redo"], history: result.history }, null, 2));
+} }, { id: "static-delivery/native-endpoints-animation-replay", async run() {
+  const from = await example(), to = interact(from), options = { durationMs: 100, easing: "linear" };
+  const native = { from: serializeProgram(from), to: serializeProgram(to), options };
+  const saved = JSON.stringify(native), plan = planTransition({ from, to, options }), animation = serializeAnimation(plan);
+  await mkdir("native-animation", { recursive: true });
+  await writeFile("native-animation/endpoints.json", saved);
+  const assets = embeddedAssets(from.graphicSpec);
+  assert.deepEqual(assets.map(asset => asset.mimeType).sort(), ["font/ttf", "image/png"]);
+  assert.deepEqual(embeddedAssets(to.graphicSpec), assets);
+  const expected = await animationOutputs(plan, "native-animation/original", assets);
+  const result = offlineRestore("restoreNativeAnimation", saved, "native-animation");
+  assert.equal(result.networkCalls, 0); assert.equal(result.plan, animation);
+  assert.deepEqual(result.records, expected); assert.deepEqual(result.assets, assets);
+  assert.deepEqual(result.authority, { nativeAccepted: true, envelopeRejected: true, history: 0 });
+  assert.equal(serializeProgram(from), native.from); assert.equal(serializeProgram(to), native.to);
+  assert.notEqual(expected[0].sceneHash, expected.at(-1).sceneHash);
+  assert.notEqual(expected[0].rendered.rgba, expected.at(-1).rendered.rgba);
+  await writeFile("native-animation/receipt.json", JSON.stringify({ node: process.version, freshProcess: true,
+    networkCalls: result.networkCalls, fromSha256: digest(native.from), toSha256: digest(native.to),
+    animationSha256: digest(animation), assets, records: result.records, authority: result.authority }, null, 2));
 } }];
 
-export { restoreStaticDelivery };
+function embeddedAssets(graphicSpec) {
+  const found = new Map(), pending = [graphicSpec];
+  while (pending.length) {
+    const value = pending.pop();
+    if (!value || typeof value !== "object") continue;
+    if (value.contentHash && value.payload?.encoding === "base64") {
+      const bytes = Buffer.from(value.payload.data, "base64");
+      assert.equal(bytes.length, value.byteLength); assert.equal(digest(bytes), value.contentHash);
+      found.set(`${value.mimeType}:${value.contentHash}`, { contentHash: value.contentHash, mimeType: value.mimeType,
+        byteLength: value.byteLength, payloadSha256: digest(value.payload.data) });
+    }
+    pending.push(...Object.values(value));
+  }
+  return [...found.values()].sort((a, b) => a.contentHash.localeCompare(b.contentHash));
+}
+async function animationOutputs(plan, directory, assets) {
+  const records = [];
+  for (const timeMs of [0, 25, 50, 75, 100]) {
+    const frame = sampleTransition(plan, timeMs);
+    assert.deepEqual(embeddedAssets(frame.graphicSpec), assets);
+    records.push({ timeMs, sceneHash: digest(JSON.stringify(frame.scene)), graphicHash: digest(JSON.stringify(frame.graphicSpec)),
+      rendered: await outputs(frame, `${directory}-${timeMs}`, { native: false }) });
+  }
+  return records;
+}
+async function restoreNativeAnimation(saved, directory) {
+  assert.match(import.meta.resolve("ggaction"), /\/node_modules\/ggaction\//);
+  const input = JSON.parse(saved), from = deserializeProgram(input.from), to = deserializeProgram(input.to);
+  assert.equal(serializeProgram(from), input.from); assert.equal(serializeProgram(to), input.to);
+  const plan = planTransition({ from, to, options: input.options }), animation = serializeAnimation(plan);
+  const assets = embeddedAssets(from.graphicSpec); assert.deepEqual(embeddedAssets(to.graphicSpec), assets);
+  const offline = deserializeAnimation(animation).plan;
+  for (const timeMs of [0, 25, 50, 75, 100]) {
+    const live = sampleTransition(plan, timeMs), replay = sampleTransition(offline, timeMs);
+    assert.deepEqual(replay.scene, live.scene); assert.deepEqual(replay.graphicSpec, live.graphicSpec);
+    assert.deepEqual(embeddedAssets(replay.graphicSpec), assets);
+  }
+  const session = createInteractionSession({ program: from, bindings: [{ type: "keyboard", targets: [{ target: graphTarget }] }] });
+  let authority;
+  try {
+    session.dispatch({ type: "frame", frame: sampleTransition(plan, 50), version: 1, generation: 0 });
+    const node = getMarkItems(from, { target: graphTarget }).find(item => item.fields.kind === "node" && item.fields.key === 1);
+    session.dispatch({ type: "focus", target: graphTarget, itemKey: node.key }); assert.ok(session.getState().focus?.screenPoint);
+    session.dispatch({ type: "inspect", point: session.getState().focus.screenPoint, slop: 0 });
+    assert.equal(session.getState().hit.target.itemKey, session.getState().focus.currentItemKey);
+    const accepted = session.getState();
+    assert.throws(() => session.dispatch({ type: "frame", frame: sampleTransition(offline, 50), version: 2, generation: 0 }), /native endpoint metadata/);
+    assert.equal(session.getState(), accepted);
+    authority = { nativeAccepted: true, envelopeRejected: true, history: session.getState().history.undoCount };
+  } finally { session.destroy(); }
+  return { plan: animation, assets, records: await animationOutputs(plan, `${directory}/restored`, assets), authority,
+    networkCalls: globalThis.__offlineCalls ?? null };
+}
+
+export { restoreStaticDelivery, restoreNativeAnimation };

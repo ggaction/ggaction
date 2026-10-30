@@ -5,12 +5,12 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 774_100, // Completed graph animation integration: Node20/24 774,063 gzip bytes.
-  "ggaction/basic": 422_200, // Combined installed Basic authoring: Node20/24 422,154 gzip bytes.
+  ggaction: 774_200, // Combined Cartesian and graph preparation: Node20 774,093 gzip bytes.
+  "ggaction/basic": 422_400, // Shared native aggregate geometry: Node20 422,288 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 199_800, // Public partition tracks: Node20/24 199,722 gzip bytes.
-  "ggaction/interaction": 128_700 // Shared admission and bounded native preparation work: Node20 128,607.
+  "ggaction/animation": 232_600, // Current native Geo stream, dynamic parts and all typed families: Node20 232,505 gzip bytes.
+  "ggaction/interaction": 131_000 // Geographic frame selection, same archive Node20: 130,975 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

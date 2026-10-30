@@ -50,3 +50,16 @@ test("shared graph meaning remains private, immutable and aligned with the frame
  assert.equal(animationFrameProvenance(frame).graphs.groups[0].nodes[0].x,10);
  assert.equal(Object.hasOwn(frame,"graphs"),false);assert.ok(Object.isFrozen(animationFrameProvenance(frame).graphs.items[0]));
 });
+
+test("all typed state vectors reject mismatched frame order before registering authority", () => {
+ const plan=cloneAndFreeze({durationMs:1}), frame=cloneAndFreeze({scene:{nodes:[{key:"a"}]}});
+ registerAnimationPlan(plan,{});
+ for(const kind of ["geos","partitions","graphs"])for(const items of [{},[]]) {
+  assert.throws(()=>registerAnimationFrame(frame,{plan,timeMs:0,[kind]:{groups:[],items}}),/node order/);
+  assert.equal(animationFrameProvenance(frame),undefined);
+ }
+ for(const kind of ["cartesian","polars","positions"])for(const values of [{},[]]) {
+  assert.throws(()=>registerAnimationFrame(frame,{plan,timeMs:0,[kind]:values}),/node order/);
+  assert.equal(animationFrameProvenance(frame),undefined);
+ }
+});

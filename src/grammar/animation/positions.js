@@ -15,7 +15,7 @@ function pair(value, label) {
   return value;
 }
 
-function endpoint(input) {
+export function normalizePositionEndpoint(input) {
   ownRecord(input, "Animation position endpoint");
   rejectUnknownProperties(input, ["value", "scale"], "animation position endpoint");
   if (!Number.isFinite(input.value)) throw new TypeError("Animation position value must be finite.");
@@ -52,7 +52,7 @@ function compatibility(from, to) {
 // A planner supplies resolved semantic values and scale decisions. Never infer
 // a semantic track by inverting already drawn pixel positions.
 export function preparePositionInterpolation(fromInput, toInput) {
-  const from = endpoint(fromInput), to = endpoint(toInput);
+  const from = normalizePositionEndpoint(fromInput), to = normalizePositionEndpoint(toInput);
   const reason = compatibility(from, to);
   return reason === undefined ? cloneAndFreeze({ kind: "position", version: ANIMATION_POSITION_VERSION, from, to }) : fade(reason);
 }

@@ -43,7 +43,7 @@ console.log(renderToSVG(frames[1]));
 ```
 
 Item keys retain number/string distinctions and child composition namespaces.
-The Cartesian semantic kernel moves compatible circle points by
+The Cartesian point kernel moves compatible circle points by
 interpolating their data values and scale mappings. For example, a logarithmic
 axis maps the interpolated data value; it does not average endpoint pixels.
 Other geometry or incompatible appearance uses a bounded weighted crossfade,
@@ -70,6 +70,27 @@ moving independently. These rules also apply after offline serialization. Native
 current-frame hit testing uses the displayed geometry; restored offline frames can
 render and rebase, but cannot bind to a live session without native endpoint metadata.
 
+## Move Cartesian shapes and series
+
+Compatible rules, range or categorical rectangles, aggregate/ranged/centered bars,
+histograms, lines, and areas interpolate their prepared values before mapping them
+through their scales. The decision kernel is `cartesian-geometry`. A logarithmic
+position maps the interpolated value instead of averaging endpoint pixels.
+
+Preparation retains the native bin totals, stack/fill/center/wiggle endpoints,
+ordered sample membership, curve, bar width, and corner policy. Sampling does not
+repeat aggregation, binning, or layout. The existing native geometry rules produce
+step and smooth lines, closed areas, horizontal and vertical bars, rounded corners,
+and explicit band, pixel, or calendar-interval widths. Categorical transitions require
+the same typed domain order, item value, and padding policy; their ranges may change.
+
+Changed sample membership, curve/layout/width/corner policy, categorical domain,
+scale policy, appearance, or structured paint uses an explicit crossfade reason.
+Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
+fixed/category-slot placements, and density-derived areas are outside this typed
+kernel. All remain renderable through the shared concrete fallback. Authentic
+samples retain current values for interruption and offline replay; unknown kernel
+versions or inconsistent stored geometry reject the restore.
 ## Bend an icicle into a sunburst
 
 PartitionPlot transitions use the stored hierarchy cells and their stable parent
@@ -90,6 +111,49 @@ primitive geometry also falls back. A gap that consumes a cell during the bend
 produces `partition-collapsed-cell` for its body and label. Current native frames
 support hit testing on the displayed paths. Offline frames retain rendering and
 rebasing data; live interaction uses separately restored native programs.
+
+## Move native polar shapes
+
+Polar points, ordered lines, and proportional or radial arcs use the `polar-geometry`
+kernel. Preparation retains their native angles, radii, frame, and ordered member
+keys. Sampling uses the same polar projection, line, and annular-sector builders as
+the original chart. Angles take the shortest path across the seam; an exact half
+turn chooses the positive direction. Full-circle arcs retain their signed sweep.
+
+This interpolates resolved polar coordinates. It does not interpolate arbitrary
+raw values and nonlinear scales together. Changed mapping policies use the explicit
+`polar-mapping` crossfade. A Canvas resize with the same relative radial range is
+compatible. Line member order and closure, arc direction and padding, and appearance
+must remain compatible. Conditional positions, non-circular points, and edited
+geometry retain explicit fallbacks. Native polar Rule/Rect authoring is not added.
+Guide-specific transitions remain outside this kernel.
+
+Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
+stores the actual polar coordinates and membership with a versioned kernel, validates
+them against the endpoint geometry, and feeds the same frame to all four renderers.
+
+## Move geographic cameras
+
+Native Geo shape, point, line, and graticule items use their original geometry and
+resolved camera parameters. Sampling applies quaternion rotation, logarithmic positive
+scale, and translation through the same projection stream as native Geo marks.
+Horizon clips and seams may change the number of current parts. A source feature can
+be visible midway even when both endpoint scenes hide it.
+
+These current parts report a `geographic` decision with `kernel: 'native-geo'`,
+`ownerKey`, `itemKey`, and `role`. They have no fabricated endpoint indices. Exact
+endpoints preserve the original scene and graphics; current frames remain directly
+renderable, interruptible, and serializable with their actual source geometry.
+
+Incompatible projection policies, source geometry, winding, or appearance retain an
+explicit crossfade reason. Other compatible features of the same owner still move
+through the native camera. Current native hit testing uses each actual feature and
+resource lineage. Offline replay preserves pixels and semantic camera state without
+creating authority to interact with a native program. Native sessions can click or
+keyboard-activate a feature painted only midway when the same source key exists in
+the current program. Each source revision is checked independently; selection intent
+is retained even if the current native projection hides its highlight. Camera-aware
+Geo labels and annotations remain separate integration work.
 
 ## Functions
 
