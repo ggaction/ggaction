@@ -207,7 +207,9 @@ Geo source labels and geographic annotations use their native centroid or geogra
 anchor at the current camera. Their `geographic` decisions use `kernel: 'native-geo-text'`.
 This includes labels visible only midway, collision leaders, graticule labels, and
 inset projections. Native Text content, resolved styles, explicit offsets, prepared
-fonts, collection clips, and drawing order are retained. Compatible solid color and
+fonts, collection clips, and drawing order are retained. A label painted only midway
+can be clicked or keyboard-selected when its exact source key still exists in the
+current native program. Compatible solid color and
 opacity changes use the same appearance interpolation as other typed frames.
 
 A change to a label group's membership, text, other static styles, or layout policy

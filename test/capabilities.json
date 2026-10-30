@@ -92,6 +92,10 @@
       {
         "type": "file",
         "path": "browser/animation-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
       }
     ],
     "architecture": [
@@ -720,6 +724,10 @@
       {
         "type": "file",
         "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/graph-presentation.test.js"
       }
     ],
     "guides": [
@@ -1476,6 +1484,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
       }
     ],
     "rendering": [

@@ -67,4 +67,18 @@ export function registerAnimationFrameView(frame, original, timeMs) {
   return frame;
 }
 
+// A private forward-materialized graph view retains the same flat native source
+// authority and other family meanings. It never retains the previous frame.
+export function registerGraphPresentationFrame(frame, original, endpoint, graphs) {
+  const source = frames.get(original);
+  if (!isOwned(frame) || frames.has(frame) || source?.native === undefined || !isOwned(endpoint) || !isOwned(graphs) ||
+      endpoint.scene !== frame.scene || endpoint.graphicSpec !== frame.graphicSpec ||
+      endpoint.identities !== source.endpoint.identities || endpoint.backgrounds !== source.endpoint.backgrounds ||
+      frame.scene.nodes.length !== original.scene.nodes.length || graphs.items.length !== frame.scene.nodes.length) {
+    throw new TypeError("Graph presentation requires an authentic native frame and its exact forward-materialized endpoint.");
+  }
+  frames.set(frame, Object.freeze({ ...source, endpoint, graphs }));
+  return frame;
+}
+
 export function animationFrameProvenance(frame) { return frames.get(frame); }

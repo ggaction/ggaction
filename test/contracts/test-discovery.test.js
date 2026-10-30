@@ -65,6 +65,7 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   )), true);
   for (const name of [
     "realistic-edge-routes.test.js",
+    "realistic-graph-drag.test.js",
     "realistic-projections.test.js",
     "realistic-geographic-marks.test.js",
     "realistic-geographic-join.test.js",

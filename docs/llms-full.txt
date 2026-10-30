@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:5fca6679a355ad2046ba28b09a6bb692cb126115bb569a1450a292246c9176f3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11226,7 +11226,9 @@ Geo source labels and geographic annotations use their native centroid or geogra
 anchor at the current camera. Their `geographic` decisions use `kernel: 'native-geo-text'`.
 This includes labels visible only midway, collision leaders, graticule labels, and
 inset projections. Native Text content, resolved styles, explicit offsets, prepared
-fonts, collection clips, and drawing order are retained. Compatible solid color and
+fonts, collection clips, and drawing order are retained. A label painted only midway
+can be clicked or keyboard-selected when its exact source key still exists in the
+current native program. Compatible solid color and
 opacity changes use the same appearance interpolation as other typed frames.
 
 A change to a label group's membership, text, other static styles, or layout policy
@@ -11440,12 +11442,12 @@ import { createInteractionSession } from "ggaction/interaction";
 const assetSession = createInteractionSession({
   program,
   bindings: interactionBindings,
-  async assetResolver({ program, signal }) {
+  async assetResolver({ program, frame, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
     let ready = false;
     try {
-      const images = await prepareImageRendering(program, {
+      const images = await prepareImageRendering(frame ?? program, {
         signal,
         async decode({ bytes, mimeType }) {
           const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
@@ -11462,8 +11464,9 @@ const assetSession = createInteractionSession({
 const stopDrawing = assetSession.subscribe(event => {
   const state = event.state;
   if (state.destroyed) return;
-  const current = state.previewProgram ?? state.program;
-  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  const current = state.previewFrame ?? state.animationFrame ?? state.previewProgram ?? state.program;
+  const assets = state.previewFrame ? state.previewAssets : state.animationFrame ? state.frameAssets
+    : state.previewProgram ? state.previewAssets : state.assets;
   if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
@@ -11576,7 +11579,7 @@ Maintain an increasing host counter greater than the current `frameVersion` and 
 previous request, including requests still preparing. Use the current session generation.
 Stale requests return `stale` without examining their frame. Entering, exiting and weighted
 shapes use their actual displayed geometry for inspection; keyboard activation additionally
-requires that the logical item exists in the session's current program. A geographic feature may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the feature.
+requires that the logical item exists in the session's current program. A geographic feature or its attached Text label may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the item. Attached labels retain their source selection; projection clipping does not remove their logical membership.
 
 With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
 assets prepare, the previous accepted picture and focus remain active. A successful `frame`
@@ -12493,6 +12496,28 @@ flow layouts do not accept node movement. Gesture cancellation releases capture 
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
 when delivering external frames. General keyboard item navigation and unpin controls are not
 installed by this binding.
+
+### Drag a graph during animation
+
+A `moveNode` binding can start from an accepted authentic animation frame when its current graph
+meaning has the same native owner and complete node/edge topology. The initial pointer offset is
+preserved. During dragging, `state.previewFrame` contains the actual current graph presentation;
+`state.program`, history and the accepted `state.animationFrame` stay unchanged. Incident routed
+edges stay attached using their current shape. Independently altered plain scenes and fallback graph
+geometry cannot supply this semantic baseline.
+
+Use the prepared drawing callback in [Prepare assets before committing](./api/interaction/#prepare-assets-before-committing): select
+`previewFrame` before `animationFrame`, then `previewProgram` and the committed `program`, and pair each
+with its corresponding handles. A transient graph frame uses `previewAssets`; its accepted animation
+baseline keeps `frameAssets`.
+
+With an asset resolver, prepare `request.frame ?? request.program`; the preview and its assets become
+visible together. Escape and cancellation restore the accepted frame and its original handles.
+Release updates the native layout once and creates one history entry. Fixed layouts keep current
+positions; force layouts use them as starting positions, retain existing pins and add the dragged
+node's pin. The native force solver can move other nodes on release. To animate that final change,
+retain the last preview frame and explicitly pass it as `from` to `planTransition`, with the committed
+program as `to`. Undo/redo restores native programs. Transient frames are never stored in the program.
 
 ## Edit existing annotations
 
@@ -37667,6 +37692,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Authentic current-meaning graph drag presentation; separate from the accepted animation baseline. */
+  readonly previewFrame: TransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
   readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
@@ -37681,7 +37708,7 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
-  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  /** Transient handles for the exact previewFrame or previewProgram; never reuse baseline assets. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Transient handles bound to animationFrame, separately from committed assets. */
   readonly frameAssets: Readonly<InteractionAssets> | null;
@@ -37844,7 +37871,7 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
-   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;
@@ -55767,7 +55794,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5fca6679a355ad2046ba28b09a6bb692cb126115bb569a1450a292246c9176f3` |
+| Contract fingerprint | `sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

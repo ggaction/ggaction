@@ -63,3 +63,51 @@ test("public native graticule frame click keeps target hit revision and current 
   } finally { session.destroy(); }
   assert.equal([...listeners.values()].reduce((count, callbacks) => count + callbacks.size, 0), 0);
 });
+
+function labelTransition() {
+  const from = animationGeoFrame("point").from.createMarkLabels({ source: "places", id: "names", field: "id", dx: 20 })
+    .selectMarks({ id: "picked", target: "names", items: [], empty: "none" });
+  const to = from.editProjection({ translatePx: [600, 150] });
+  return { from, to, frame: sampleTransition(planTransition({ from, to, options: { durationMs: 100, easing: "linear" } }), 50) };
+}
+
+test("public middle-only geographic Text activates the exact source key from a sampled camera", () => {
+  const { from, to, frame } = labelTransition(), before = serializeProgram(from);
+  assert.deepEqual(getMarkItems(from, { target: "names" }), []); assert.deepEqual(getMarkItems(to, { target: "names" }), []);
+  const decision = frame.decisions.find(value => value.kernel === "native-geo-text"); assert.ok(decision);
+  assert.equal(Object.hasOwn(decision, "targetIndex"), false);
+  const session = createInteractionSession({ program: from, selectionPolicy: "drop", bindings: [{ type: "keyboard", targets: [{ target: "names", activation: { type: "select", selection: "picked" } }] }] });
+  try {
+    accept(session, frame); session.dispatch({ type: "focus", target: "names", itemKey: decision.itemKey });
+    assert.equal(session.getState().focus.role, "text");
+    session.dispatch({ type: "activate" });
+    const next = session.getState().program;
+    assert.deepEqual(resolveStoredSelection(next, "picked").selector.items, [decision.itemKey]);
+    assert.deepEqual(resolveStoredSelection(next, "picked").keys, []);
+    assert.deepEqual(resolveStoredSelection(next, "picked", { membership: true }).keys, [decision.itemKey]);
+    assert.equal(session.getState().history.undoCount, 1); assert.equal(serializeProgram(from), before);
+    session.dispatch({ type: "undo" }); assert.equal(session.getState().program, from);
+  } finally { session.destroy(); }
+});
+
+test("public geographic Text click retains its actual current-frame resource lineage", () => {
+  const { from, frame } = labelTransition(), listeners = new Map();
+  const host = {
+    getBoundingClientRect: () => ({ left: 0, top: 0, width: 400, height: 300 }),
+    addEventListener(type, callback) { const callbacks = listeners.get(type) ?? new Set(); callbacks.add(callback); listeners.set(type, callbacks); },
+    removeEventListener(type, callback) { listeners.get(type)?.delete(callback); }
+  };
+  const session = createInteractionSession({ program: from, bindings: [{ type: "select", target: "names", selection: "picked", onMiss: "ignore" }, { type: "keyboard", targets: [{ target: "names" }] }] });
+  try {
+    session.mount(host); accept(session, frame);
+    const decision = frame.decisions.find(value => value.kernel === "native-geo-text");
+    session.dispatch({ type: "focus", target: "names", itemKey: decision.itemKey });
+    const point = session.getState().focus.screenPoint;
+    session.dispatch({ type: "inspect", point, slop: 0 });
+    assert.equal(session.getState().hit.target.itemKey, decision.itemKey);
+    assert.deepEqual(session.getState().hit.target.resourceRefs, [{ kind: "geometry", id: "world", revision: 0 }]);
+    for (const callback of listeners.get("click") ?? []) callback({ clientX: point.x, clientY: point.y });
+    assert.deepEqual(resolveStoredSelection(session.getState().program, "picked").selector.items, [decision.itemKey]);
+  } finally { session.destroy(); }
+  assert.equal([...listeners.values()].reduce((count, callbacks) => count + callbacks.size, 0), 0);
+});

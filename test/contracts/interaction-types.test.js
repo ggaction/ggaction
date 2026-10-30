@@ -25,6 +25,9 @@ const program = chart(); const session = createInteractionSession({ program, his
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
 session.dispatch({type:'focus',move:'firstChild'});session.dispatch({type:'focus',target:'points',itemKey:null});session.dispatch({type:'activate'});
 const currentItem:string|null|undefined=session.getState().focus?.currentItemKey;
+const previewFrame:TransitionFrame|null=session.getState().previewFrame;
+// @ts-expect-error the preview is an immutable session-owned view
+session.getState().previewFrame=null;
 // @ts-expect-error focus moves and explicit target keys are exclusive
 session.dispatch({type:'focus',move:'first',target:'points',itemKey:'key'});
 // @ts-expect-error no inferred nearest focus

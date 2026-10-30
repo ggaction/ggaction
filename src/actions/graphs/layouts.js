@@ -34,7 +34,7 @@ function materializeLayouts(program, ids, routeIds = new Set()) {
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id) || routeIds.has(layer.graphBinding?.routes?.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
-import { normalizeGraphLayout, patchGraphNodePosition, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
+import { normalizeGraphLayout, patchGraphNodePosition, retainedGraphCoordinates, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
 export const layoutGraph = /* @__PURE__ */ closedAction(
@@ -58,8 +58,8 @@ export function editGraphLayout(program, args, previous) {
   } else {
     ownRecord(args.options, "Graph layout options patch");
     if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
-    intent = { method: previous.options.method, options: { ...previous.options.options, ...args.options } };
-    retainedCoordinates = GRAPH_COORDINATE_FIELDS.filter(field => !Object.hasOwn(args.options, field));
+    intent = normalizeGraphLayout(previous.options.method, { ...previous.options.options, ...args.options });
+    retainedCoordinates = retainedGraphCoordinates(previous.options, intent, graph.result.model.nodes.map(node => node.key));
   }
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,
     graph, retainedCoordinates, intent });

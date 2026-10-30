@@ -221,6 +221,7 @@ const animationSession=createInteractionSession({program:animationProgram,assetR
 }});
 animationSession.dispatch({type:'frame',frame:animationFrame,version:1,generation:0});
 const acceptedFrame:TransitionFrame|null=animationSession.getState().animationFrame;
+const graphPreviewFrame:TransitionFrame|null=animationSession.getState().previewFrame;
 const frameAssets=animationSession.getState().frameAssets;
 // @ts-expect-error scene and authentic sample are mutually exclusive
 animationSession.dispatch({type:'frame',frame:animationFrame,scene:animationFrame.scene,version:2,generation:0});

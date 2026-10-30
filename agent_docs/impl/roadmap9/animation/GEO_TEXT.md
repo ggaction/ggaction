@@ -159,3 +159,14 @@ slot은 rebase/closed offline에서도 유지한다. 일반 edited graphics나 �
 Source reader D bridge 합산 뒤 actual click/keyboard, critical coverage, 네 backend, browser,
 실데이터, 고정 tar 3Node와 최종 문서는 아직 진행 항목이며 이 source commit으로 완료를
 주장하지 않는다. Runtime 원안 전체 Text 의미 보간 의무도 위 fallback 설명과 구분한다.
+
+
+## D source eligibility 합산
+
+D source862f7394c/finalcd83a51bc를 병합했다. 공유4는 optional geotexts와 D의
+registerGraphPresentationFrame proof spread를 모두 보존한다. 실제 공개 plan→sample에서
+양 endpoint에 없는 Text를 생성해 keyboard activation/click/undo/hidden intent 및 exact geometry
+lineage를 검증했다. 누적 animation·interaction-animation·source boundary·strict type
+418/418이 `.artifacts/animation-geo-text/public-d-combined.log`에서 통과했다.
+Root에 이 합산 source를 넘긴 뒤 timeline이 shared4를 소유한다. 이후 renderer/coverage/
+설치본/문서 증거는 이 source의 후속 기록이며 전체로드맵 완료를 뜻하지 않는다.

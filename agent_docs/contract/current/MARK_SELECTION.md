@@ -501,3 +501,14 @@ It cannot accompany a Cartesian region, `where`, raw value selectors or `screenP
 resources retain it beside `region`; item-key resources retain `options.screenAngles`. Membership
 continues to use native domain values or logical keys. Incoming set updates retain only their incoming
 metadata; ordinary replacement removes it. Codec rejects malformed angle metadata without repair.
+
+
+## Geographic Text source membership
+
+Attached Text labels of geographic shape, point, line and graticule marks preserve source-item membership
+independently of projection clipping. The source's drawable features and the label's explicit all/inline/named
+selection define that membership; missing or removed features are excluded. Exact opaque Text keys, rows and
+resource lineage are inherited through the native label policy. Session keep-hidden/drop reconciliation uses
+this semantic source grain. Concrete-property predicates and native highlights continue to read the current
+materialized picture. Other Text sources retain their existing final-item semantics. Current-frame activation
+additionally requires the authenticated source, painted shape and scope checks in [Interaction](INTERACTION.md).

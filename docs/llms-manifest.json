@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:5fca6679a355ad2046ba28b09a6bb692cb126115bb569a1450a292246c9176f3",
+    "contractId": "sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1299,8 +1299,8 @@
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 18995,
-      "sha256": "ef32b589929002fc70d510a298d7f8ac85ba7faf9ee1db3ebab4dbf8ba843a9e"
+      "bytes": 19129,
+      "sha256": "0277b5f7e943fbe94bbe96cde288e332230ac30f2826da4bc98eb5b4beb6b30b"
     },
     {
       "order": 77,
@@ -1331,6 +1331,7 @@
         "adjust-a-geographic-view-from-host-controls",
         "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
+        "drag-a-graph-during-animation",
         "edit-existing-annotations",
         "prepare-native-work-before-replacing-the-program",
         "combine-editing-gestures",
@@ -1338,8 +1339,8 @@
         "accessible-tooltips-and-touch",
         "native-control-alternatives"
       ],
-      "bytes": 100231,
-      "sha256": "bf04a5f203d2532fe4e0588a8924e76952d373cdc3cedce5126796654e122b97"
+      "bytes": 102156,
+      "sha256": "44771391427847bc6185cb9e0f829011a87aa3d7acb66a3b70aef03ddcf069d8"
     },
     {
       "order": 78,
@@ -2644,8 +2645,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 80143,
-      "sha256": "0e09da5521f2522f907c4db43861a2edf9ea88719740ac8a1396961ced24ed93"
+      "bytes": 80324,
+      "sha256": "a28f3506408197e75e82fee248475a9938a1cd06e4ca408905ffcb541f56aa75"
     },
     {
       "order": 132,
@@ -3955,7 +3956,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "2b04e9834cd9cc942682f9bcf13d6ef50ac543bfd4b5019cd1c74f0241814139"
+      "sha256": "a5f5cd925da0bc73bc43bd4e3b5829978e52d38b015cf9ceab3a3be9d48e95a0"
     },
     {
       "order": 156,

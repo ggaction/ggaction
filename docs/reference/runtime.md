@@ -1390,6 +1390,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Authentic current-meaning graph drag presentation; separate from the accepted animation baseline. */
+  readonly previewFrame: TransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
   readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
@@ -1404,7 +1406,7 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
-  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  /** Transient handles for the exact previewFrame or previewProgram; never reuse baseline assets. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Transient handles bound to animationFrame, separately from committed assets. */
   readonly frameAssets: Readonly<InteractionAssets> | null;
@@ -1567,7 +1569,7 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
-   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;

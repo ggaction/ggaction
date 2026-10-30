@@ -273,5 +273,8 @@ Sampled-only payload의 digest는 과거 source의 인증서가 아니며 내부
 검증한다. 같은 binding/key/digest가 모순된 anchor를 주장하면 거부한다. Closed restore,
 반복 rebase와 renderer-ready frame은 같은 prepared owner를 사용한다. 모든 Geo body/Text
 샘플의 stream/layout 작업은 합산 10,000,000, 실제 출력은 10,000 item 한도를 공유한다.
+Native session은 실제 current frame이 그린 Geo Text의 exact source key를 현재 native Text
+source reader로 다시 확인해 click/keyboard를 허용한다. 양 endpoint의 projection에서 숨겨진
+label도 source key가 존재하면 선택 intent를 유지하고 visible highlight는 현재 native 결과에 따른다.
 Text content/style/layout 변경을 camera 이동과 동시에 의미적으로 보간하는 후행 의무는
 현재 명시 crossfade와 구분하며 전체 Text/Geo animation 완료로 간주하지 않는다.

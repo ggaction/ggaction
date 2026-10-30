@@ -1687,6 +1687,14 @@
       {
         "id": "interaction-animation/geographic-projection-membership",
         "statements": 18
+      },
+      {
+        "id": "interaction-animation/geographic-label-source-lifecycle",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/current-graph-drag-four-formats",
+        "statements": 43
       }
     ]
   },

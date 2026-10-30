@@ -75,3 +75,37 @@ artifact link·hash 검사를 통과했다. 변경 interaction page의320/390/76
 Axe0, browser error0이며320폭 화면도 직접 확인했다. 최종 metadata commit은 runtime/type/hash와
 검증한 archive를 바꾸지 않는다. 공개 Geo sampler와 실제 activation 통합은 peer에 이 안정 source를
 전달했으며 별도 합산 evidence로 닫는다.
+
+
+## Geo Text source-grain 후속
+
+- [x] 기존 remainingApproval 및 부모/Geo 담당자와 동일 closed origin 확장 합의
+- [x] native Text source-only helper 재사용, 원본 label selection과 lineage 유지
+- [x] exact Geo Text owner/role·child/resource 검증 및 current-source 교집합
+- [x] 의미 lifecycle/codec/clip/opacity 및 package 경계 검증
+- [ ] Geo 담당자의 실제 typed Text sampler/browser/설치와 합산
+
+Peer `07759d610`의 `resolvePreparedSourceTextEntries(...,{sourceOnly:true})` 최소 delta를 재사용한다.
+Explicit finite source-anchor map은 membership admission 용도로만 주며 좌표·font·format을 계산하지 않는다.
+기존 source reader에서 drawable item만 얻고 원 native all/inline/named selection을 적용한다. Geo Text
+policy에서만 sourceMembership을 켜서 keep-hidden/drop이 projection clipping을 원본 제거로 오인하지
+않게 한다. 실제 graphic-property predicate와 highlight는 native 현재 picture를 계속 읽는다.
+
+Interaction의 eligibility는 작은 markKind owner를 재사용한다. 신규 public API/저장 schema는 없으며
+Text role과 geo role을 native layer에서 확정해 frame identity와 대조한다. 원 frame/current program 각자의
+source revision을 검증하고 같은 child·mark·resource kind/id·logical key만 활성화한다. 새 geotexts vector는
+peer shared4가 소유하고 graph preview writer는 기존 proof spread로 그대로 보존한다.
+
+새 bridge 회귀7개, 기존 Text/Geo/selection 결합201개, 최종 hit owning87개가 통과했다.
+Hit owner coverage는99.31/93.10/100으로 기존95/90/100 floor를 유지한다. Source-only Text/selection
+policy, frameSelection, markKind도 적용 floor를 유지했다. 설치 fixture는 공개 native Geo Text의
+projection-hidden 선택 유지→codec→원본 삭제 drop을 검증한다. 실제 typed Geo Text sample의
+현재-frame browser/renderer 연결은 peer shared4 checkpoint에서 별도로 합산하며 아직 완료로 표시하지 않는다.
+
+Source `862f7394c11a533208a4fadfe3faa619968fbf21`를 push하고 provenance→machine→LLM을 갱신했다.
+[증거](geo-label-source-evidence/summary.json)는 새7/누적201/hit87/최종 owning44, 문서231/231,
+환경 preflight·빌드186페이지/1598LLM, 변경 interaction page320/390/768/1280의 overflow/Axe/error0을
+구분해 담는다. 같은 daac12ae… archive로 Node20/22/24의 공개 native Geo Text lifecycle1개, strict
+interaction 타입, optional peers와6entry bundle을 검증했다. Node20의 최초 cap 초과는 원 receipt로
+보존하고 같은 archive의 전체 측정값을 최소 상한과 대조했다. 최종 canonical repack은 byte-identical이다.
+실제 public Geo Text 중간-frame emission은 peer가 소유하므로 그 합산 전에는 AT70 완료를 주장하지 않는다.
