@@ -22,6 +22,6 @@ Endpoint의 optional `polars` vector는 node 순서와 길이가 정확히 일�
 - [x] Animation 192/192, 기존 critical 32 owner 바닥(95/90/100), 실제 자료 5/5, 같은 시각 Canvas/SVG/PNG/PDF 4/4.
 - [x] 동일 tar Node20/22/24 각각 공개 runtime 9개·strict 타입·실행 문서 snippet·optional peers·6 browser entries. 실제 animation gzip 최대203265에 최소203300 상한을 검증했다.
 - [x] 현재 계약·공개 문서·타입·생성 reference 동기화. 첫 문서 실패의 owning 66개 재검증 통과.
-- [ ] 소스 pin 후 built docs/browser 및 최종 evidence 기록.
+- [x] 소스 pin18/18, built186페이지/1598 artifacts, 전체 문서320/390/768px browser 및 [최종 evidence](polar-evidence/README.md).
 
 후행 guides/timeline/typed special layouts 및 최종077 qualification은 별도 의무로 유지한다.

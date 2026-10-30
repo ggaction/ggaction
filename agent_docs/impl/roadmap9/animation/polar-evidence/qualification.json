@@ -1,0 +1,193 @@
+{
+  "sourceCommit": "d72114d9dbcce8078a1b8833aa888e08f59f9f63",
+  "base": "608ac81223273670985c4f7daf487e745573211f",
+  "scope": "native polar point/line/arc resolved coordinates; shortest seam; same mapping/grid; flat current frame and strict offline",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "status": "qualified-focused-checkpoint",
+  "checks": {
+    "animationTests": 192,
+    "criticalFiles": 32,
+    "criticalFloors": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actualDataTests": 5,
+    "fourRendererTests": 4,
+    "boundariesInitial": {
+      "tests": 36,
+      "passed": 35,
+      "failed": 1,
+      "reason": "realistic discovery inventory58 versus59"
+    },
+    "discoveryRepair": {
+      "tests": 16,
+      "passed": 16
+    },
+    "packageContracts": 7,
+    "docsInitial": {
+      "tests": 231,
+      "passed": 227,
+      "failed": 4,
+      "reason": "search size2; stale source provenance1; stale generated runtime reference1"
+    },
+    "docsOwningRepair": {
+      "tests": 66,
+      "passed": 66
+    },
+    "docsSourcePin": {
+      "tests": 18,
+      "passed": 18
+    },
+    "installed": {
+      "sameArchive": true,
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeCasesPerNode": 9,
+      "strictTypes": true,
+      "documentedSnippet": true,
+      "optionalPeers": true,
+      "browserEntriesPerNode": 6
+    },
+    "builtDocs": {
+      "pages": 186,
+      "selectiveLLMArtifacts": 1598
+    },
+    "docsBrowser": {
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "documentationTruth": {
+      "initial": {
+        "tests": 3,
+        "passed": 1,
+        "failed": 2
+      },
+      "final": {
+        "tests": 3,
+        "passed": 3
+      },
+      "repairReference": "0118b1bd3",
+      "note": "Adopt missing public animation heading and synchronize existing cap table with this branch measured canonical limits; runtime/archive unchanged."
+    }
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1144,
+    "packedBytes": 1632891,
+    "unpackedBytes": 7404421,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-0c32e2530889c607f993f1d06da9b9b87475b0287962ceee54c146c441ae63f3.tgz",
+    "sha1": "7821561496a367b4cc6de9ad70b009f89e277f43",
+    "sha256": "0c32e2530889c607f993f1d06da9b9b87475b0287962ceee54c146c441ae63f3"
+  },
+  "packageLimits": {
+    "entries": 1144,
+    "packedBytes": 1637000,
+    "unpackedBytes": 7405000
+  },
+  "packageMeasuredMaximum": {
+    "entries": 1144,
+    "packedBytes": 1636493,
+    "unpackedBytes": 7404421
+  },
+  "bundleLimits": {
+    "ggaction": 774100,
+    "ggaction/basic": 422300,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 46000,
+    "ggaction/animation": 203300,
+    "ggaction/interaction": 128700
+  },
+  "renderArtifacts": [
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/arc/polar-middle-pdf.png",
+      "bytes": 3600,
+      "sha256": "a21be04aef764c9ed8ad5671a8af48754ee507452bbd8ef770af9a903f1fc5bc"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/arc/polar-middle.json",
+      "bytes": 309,
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/arc/polar-middle.pdf",
+      "bytes": 970,
+      "sha256": "5823e2c4168083dd60930a2b1dc7598387c5bbcae8f8abb7305276638b23f42f"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/arc/polar-middle.png",
+      "bytes": 4641,
+      "sha256": "8160b9e9cf74e2f7e34d4c0783ff44071068d61328f1f37210346fa1e2ee03d7"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/arc/polar-middle.svg",
+      "bytes": 892,
+      "sha256": "2eea02be5f70d80f20360c82d81f670a73dd4d5881d16f631fbd7958067ba2ae"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/line/polar-middle-pdf.png",
+      "bytes": 469,
+      "sha256": "2ce684ae9aec85010d44ad68a739a9502229e8cbb7fe6e828a3db2e1005aa3da"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/line/polar-middle.json",
+      "bytes": 309,
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/line/polar-middle.pdf",
+      "bytes": 848,
+      "sha256": "23488fc619f83c8044303cb6d2ae4e930d397a2560bd346300aba03837c42a85"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/line/polar-middle.png",
+      "bytes": 639,
+      "sha256": "766f59cbab65f01de5ac5a2e3840ac2742ce464a194a4508a8163c99f3962180"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/line/polar-middle.svg",
+      "bytes": 290,
+      "sha256": "d152f82bfba59a28078d07cb2ff46ed400feac3e3346163d30297df77bafda0c"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/point/polar-middle-pdf.png",
+      "bytes": 644,
+      "sha256": "c44f0e85348d74726fb3adcdcf6b575bac1b012b5336c36d7b07ee58fba08c7e"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/point/polar-middle.json",
+      "bytes": 309,
+      "sha256": "5e4ab3a997d3845bc19c2a7feee4f185e3ef79a673ce4b5a734667771680ec47"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/point/polar-middle.pdf",
+      "bytes": 1032,
+      "sha256": "01d4ccb7448613f2f93f2598af49d320c7ae8bbeebe70e7cf1e58a17b3a66c83"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/point/polar-middle.png",
+      "bytes": 959,
+      "sha256": "fd01204d40ac7dfd93e46b3bd3aa906d7456d9996669012013a1129459461068"
+    },
+    {
+      "path": ".artifacts/test/png/charts/cross-feature-integration/animation/polar/point/polar-middle.svg",
+      "bytes": 262,
+      "sha256": "938164d81c6c5179a875cdc9970f331819ce77f2157a0a76aa26e14004a82b37"
+    }
+  ],
+  "remaining": [
+    "Native mapping changes, conditional positions, incompatible grids/appearance/effects remain explicit fallback.",
+    "Polar Rule/Rect authoring is not added; guide rule/circle and timeline are separate follow-up.",
+    "No claim of complete STEP061/062/074/077 or release qualification."
+  ]
+}
