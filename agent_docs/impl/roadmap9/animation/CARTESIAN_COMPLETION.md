@@ -8,7 +8,7 @@
 - [x] Ordinal offset, fixed/box span, category slot의 native 배치를 공유한다.
 - [x] Density-derived area와 source-follow overlay를 forward 의미값으로 연결한다.
 - [x] 정확 endpoint, 현재 frame 재기준, 닫힌 복원·한도·오염 및 네 renderer를 검증한다.
-- [ ] Current·타입·공개 문서·동일 tar 3 Node 증거를 동기화하고 commit/push한다.
+- [x] Current·타입·공개 문서·동일 tar 3 Node 증거를 동기화하고 source `d939c695a`를 commit/push했다.
 
 시작점은 `5ff53c12d`(공개 timeline v3 source `933cacad0` + 문서 pin)이다.
 이는 전체 STEP061/062/077 완료 선언이나 fresh final AT60이 아니다.
@@ -77,5 +77,8 @@ native placement/path 추출을 소유한다. 공유 `planner`, `sample`, `frame
 - 최초 문서 232개 중 230개 통과·2개 생성물 불일치가 있었고, 타입 복사와 runtime
   reference를 재생성한 뒤 owning 2/2로 회복했다. 원본 실패와 회복 로그를 구분한다.
   Package/documentation contracts 16/16, source/discovery 30/30도 통과했다.
-- Source-pinned 문서 및 지속 증거 기록은 후속 metadata commit으로 고정한다.
+- Source-pinned provenance/coverage 18/18와 documentation truth 3/3, built 186페이지·
+  selective 1,598 artifacts, desktop 및 전체 320·390·768px browser가 통과했다.
+  [지속 증거](cartesian-completion-evidence/qualification.json)에 source/input/artifact hash와
+  최초 실패·회복·동일 archive 설치 결과를 보존한다.
   공통 corpus·전체 합산 AT60/STEP077 qualification은 부모의 최종 candidate 책임이다.
