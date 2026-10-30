@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:cfdc64d6dadccf1ee0cc2538d77fc5c0c719b5399f16105ec6c4ea966f726451",
-    "sourceCommit": "01ae2001fea92fcb24d185affa4ae148524ecfe3",
+    "contractId": "sha256:497d855964f45f8d69eab1ef502c5cb988da6c6854e38fda02b75aa97b2fcd33",
+    "sourceCommit": "ddfaee5e6eb241b03ce93de70f397bc19df40a00",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -66,7 +66,7 @@
         "related"
       ],
       "bytes": 12058,
-      "sha256": "b11e7cb7f01dd9cebcd3d53befa8cd24b1521f6c3f5250a2d3443a4952b852aa"
+      "sha256": "4635900872d4d9f8bcb8e0b90afc03e748abceddd9a89340bc3e948704bed43f"
     },
     {
       "order": 4,
@@ -1292,14 +1292,15 @@
         "move-cartesian-shapes-and-series",
         "bend-an-icicle-into-a-sunburst",
         "move-native-polar-shapes",
+        "move-ticks-labels-and-grids",
         "move-geographic-cameras",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 15951,
-      "sha256": "7a4eab6eef11ecd41958ad3c3d8b3efbecaa11b986bc332fe95035bb0aed90e2"
+      "bytes": 18082,
+      "sha256": "cfe7f397ea5edffddfdf8e3fa9724e8ae647db130e043a6eb670718f92114ca7"
     },
     {
       "order": 77,
@@ -2643,8 +2644,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 80025,
-      "sha256": "0dd0941854718ebbeee674c33e1d6ebdfdac0ec21d2885c7d07c9ae528063da0"
+      "bytes": 80143,
+      "sha256": "0e09da5521f2522f907c4db43861a2edf9ea88719740ac8a1396961ced24ed93"
     },
     {
       "order": 132,
@@ -3613,7 +3614,7 @@
         "blend-concrete-sources-for-one-item"
       ],
       "bytes": 23271,
-      "sha256": "e9e776b76ed0a41013b792d6bcf2f8e183fb5f26238714a08deb3ee985767c09"
+      "sha256": "9eac11277a3dad89fee43226cbd76d1ce807d9b3e71fbe0363cb381ac404cd0a"
     },
     {
       "order": 135,
@@ -3954,7 +3955,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "0c1066d849b8c165f85eaae7ad462b852355cb614e0073634c6b2bc4e0fa1dda"
+      "sha256": "05c1b9592319a352a07d569e9640a6be85bd23fccd8109bfa5a1d2af669573e9"
     },
     {
       "order": 156,
