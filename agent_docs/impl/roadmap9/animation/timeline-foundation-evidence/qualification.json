@@ -1,6 +1,6 @@
 {
   "status": "verified-private-preparation",
-  "sourceRevision": "pending metadata pin",
+  "sourceRevision": "e5db759a083ed345caea45536e78f1fa5fb692d8",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "checks": {
     "numericAndLifecycleCasesEachNode20_22_24": 9,
@@ -10,7 +10,8 @@
       100
     ],
     "contracts": 45,
-    "documentation": 30
+    "documentation": 30,
+    "sourcePinnedDocumentation": 30
   },
   "packageMeasurements": {
     "20": {
