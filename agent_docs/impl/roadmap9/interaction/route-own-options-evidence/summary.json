@@ -1,1 +1,197 @@
-{"status":"runtime-verified-qualification-metadata-pending","runtimeSource":"pending-source-commit","authorization":"../AUTHORIZATION.json remainingApproval","scope":"Own optional route numeric intent/request data; API, schema, type and algorithm unchanged","sourceTests":{"node20":88,"node22":88,"node24":88},"owningCoverage":{"owners":8,"lines":100,"minimumBranches":96.83,"functions":100,"canonicalFloor":[95,90,100]},"boundaries":43,"archiveSha256":"e52497df5b5400051dfbf76efb5d597fa69141bf3b0b03ed5b2442cbd6357139","installed":{"nodes":[20,22,24],"casesPerNode":2,"bundlesPerNode":6},"notClaimed":["full repository coverage","Chromium SLO","retained heap","AT82 completion","STEP077 completion"]}
+{
+  "status": "verified-own-data-checkpoint",
+  "runtimeSource": "d15c2716ca4800757b23ea69004c13308a6fe19e",
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "scope": "Own optional route numeric intent/request data; API, schema, type and algorithm unchanged",
+  "sourceTests": {
+    "node20": 88,
+    "node22": 88,
+    "node24": 88
+  },
+  "owningCoverage": {
+    "owners": 8,
+    "lines": 100,
+    "minimumBranches": 96.83,
+    "functions": 100,
+    "canonicalFloor": [
+      95,
+      90,
+      100
+    ]
+  },
+  "boundaries": 43,
+  "archiveSha256": "e52497df5b5400051dfbf76efb5d597fa69141bf3b0b03ed5b2442cbd6357139",
+  "installed": {
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "casesPerNode": 2,
+    "bundlesPerNode": 6
+  },
+  "notClaimed": [
+    "full repository coverage",
+    "Chromium SLO",
+    "retained heap",
+    "AT82 completion",
+    "STEP077 completion"
+  ],
+  "documentation": {
+    "sourcePinnedOwningChecks": 31,
+    "fullBuildRepeated": false
+  },
+  "failuresPreserved": [
+    "initial regression with one invalid exponent fixture",
+    "corrected regression inherited getter failures",
+    "public preparation inherited hierarchy",
+    "unpacked cap",
+    "Node20 packed cap",
+    "Node20 Full bundle cap"
+  ],
+  "package": {
+    "entries": 1165,
+    "maximumPackedBytes": 1668120,
+    "unpackedBytes": 7535326,
+    "limits": {
+      "entries": 1165,
+      "packedBytes": 1668200,
+      "unpackedBytes": 7535400
+    }
+  },
+  "bundle": {
+    "FullMaximum": 779421,
+    "FullLimit": 779500,
+    "otherLimitsUnchanged": true
+  },
+  "artifacts": [
+    {
+      "file": "installed-node20.json",
+      "sha256": "d25a05dba28bfa55a2894519300903b04b163c3b6f17c4f816823ebf26709b3b"
+    },
+    {
+      "file": "installed-node22.json",
+      "sha256": "07edc01e8d87ad59feb9e1bdef061d1da088d5e6e012e09df058666ceea639f7"
+    },
+    {
+      "file": "installed-node24.json",
+      "sha256": "8bbadcc5497e27ad4b048135ea256133c923920cfd6a2969d4249a348b9e104c"
+    },
+    {
+      "file": "qualifier.mjs.txt",
+      "sha256": "7c66fa7b9ab4a08439248d6ac8204132bb790635e2bf6d30a872888c0caabcb7"
+    },
+    {
+      "file": "route-own-options-boundaries-final.log.gz",
+      "sha256": "0be25d32f37e9e54ff26967df7abf7490692d87fd00f4c238eab097891371d20"
+    },
+    {
+      "file": "route-own-options-boundaries-first.log.gz",
+      "sha256": "0596719071d4adc7a520b2f1744069f3d8349bd763afc7b6f2c61166d74cf18c"
+    },
+    {
+      "file": "route-own-options-consumer-source-final.log.gz",
+      "sha256": "b03809b65bb926e1320074eed0d3fa32cf8af5265e6fca5a70d74f8aa27ff2c2"
+    },
+    {
+      "file": "route-own-options-consumer-source.log.gz",
+      "sha256": "eb07c178bc303e933d96667c630cf3358e4f13533f072bcf3fc19eae56e7bff5"
+    },
+    {
+      "file": "route-own-options-corrected-repro.log.gz",
+      "sha256": "d72efec355ca4e9a2a128b5958d9eacb678580fa61e225730ad07d47f24bc799"
+    },
+    {
+      "file": "route-own-options-coverage-final.log.gz",
+      "sha256": "c2b469d07ac0b7e5fbdd1cd1628892ec17f62ee4762a41b15a0b98290013f3ed"
+    },
+    {
+      "file": "route-own-options-coverage.json",
+      "sha256": "f53e4ad7b8571db3bf6d30f9bfc041127e0a8cdfd3185ac97717aa9c8491a94f"
+    },
+    {
+      "file": "route-own-options-coverage.log.gz",
+      "sha256": "2b01bd66330cc1bdcf78275fe8429d16e733fc98da2d2f48ef587f04ce667f28"
+    },
+    {
+      "file": "route-own-options-docs.log.gz",
+      "sha256": "4ca2b842d218d555c3d21c3019c492141cd2243e6ab0bb195fa39d9e2467f7e6"
+    },
+    {
+      "file": "route-own-options-first-failure.log.gz",
+      "sha256": "4c7103d4144b4dd3f91ca0f80f7950acd32171bd79e69a48e8af7540785294a6"
+    },
+    {
+      "file": "route-own-options-fixed.json",
+      "sha256": "b9eadec28e7e028476bbd0e5c196b90d9e28deda1722c85bc5302cb452fa394e"
+    },
+    {
+      "file": "route-own-options-focused.log.gz",
+      "sha256": "54b3bbb781e97ff242006510fe63cd660fc7b237388aa908b353af733ebb64d8"
+    },
+    {
+      "file": "route-own-options-installed-final.json",
+      "sha256": "60c41a5e7a53206df3ff1c2707ac3d9c414d67a418481f89ca137e72c2db9bc8"
+    },
+    {
+      "file": "route-own-options-installed-node20.log.gz",
+      "sha256": "f249567eba172eca69014164a8e60aa265a22be46048039ec5ec6a6dd4c2443d"
+    },
+    {
+      "file": "route-own-options-installed-node22.log.gz",
+      "sha256": "b5b1c0931a8045a6f150955e1eae0c796735d08df14c15ae4bd64ceb2fc371a5"
+    },
+    {
+      "file": "route-own-options-installed-node24.log.gz",
+      "sha256": "2b8f6e2f822851b070d500f1425721e37b516ade234574bd95d62736d06546b9"
+    },
+    {
+      "file": "route-own-options-llms.log.gz",
+      "sha256": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc"
+    },
+    {
+      "file": "route-own-options-machine.log.gz",
+      "sha256": "b258368bfbbfa9cca3f82b97954629b0d1e892e056066e254330af5be4c56f63"
+    },
+    {
+      "file": "route-own-options-pack.log.gz",
+      "sha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    {
+      "file": "route-own-options-package-first.log.gz",
+      "sha256": "6eba89bfa83030eea4135c5c3f54fafe0c494a63e9050eda82ea4b855196bb9c"
+    },
+    {
+      "file": "route-own-options-package-node20-first.log.gz",
+      "sha256": "10892deebe0a58ac4956577fd7c23e10ef052552dcb3831e1a190da72158f15c"
+    },
+    {
+      "file": "route-own-options-package-node20.json",
+      "sha256": "f6510093923a83207334274782f1b2d32d64c9e8223f47831a22b27aa915045b"
+    },
+    {
+      "file": "route-own-options-package-node20.log.gz",
+      "sha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    {
+      "file": "route-own-options-package-node24.json",
+      "sha256": "f6510093923a83207334274782f1b2d32d64c9e8223f47831a22b27aa915045b"
+    },
+    {
+      "file": "route-own-options-package-node24.log.gz",
+      "sha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    {
+      "file": "route-own-options-provenance.log.gz",
+      "sha256": "9b35b403ed4658b37822e9eb06482a5d9bfbdb5488a669f984c2fa1b14ad45e5"
+    },
+    {
+      "file": "route-own-options-source-node20.log.gz",
+      "sha256": "2b87846e740b7c2210e480d944436fe0e6158e2785b08e79c997eed7bbb8566d"
+    },
+    {
+      "file": "route-own-options-source-node24.log.gz",
+      "sha256": "bc05457762baeb3ac7a8d0bb80eaedf5719c06157fb85cac49b9687730f1b66f"
+    }
+  ]
+}
