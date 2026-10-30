@@ -40,6 +40,12 @@
         "packed": 1676300,
         "unpacked": 7568300
       }
+    },
+    "sourcePinnedDocs": {
+      "tests": 23,
+      "builtPages": 186,
+      "selectiveArtifacts": 1598,
+      "browserReuse": "Existing guide desktop/responsive and installed renderer evidence is unchanged; extraction preserves all 10 public legend variants exactly."
     }
   },
   "remaining": [
@@ -70,5 +76,6 @@
     "src/interaction/hitLegends.js": "94760d05da6fbbbc65931182759e821501bf3d9b1fff83e6a05f69a13c766bcf",
     "src/grammar/legendSampling.js": "3026b81308736cdbf5edf9437b016b1ae2688f0dd625681fd6471d933dade77e",
     "src/materialization/guides/legendConfig.js": "899b386f66e8cff1c7670959fa1bdd4d5738891f6054f45b1d64a53503a14bcc"
-  }
+  },
+  "sourceRevision": "d9ef22ad5"
 }

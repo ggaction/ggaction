@@ -31,3 +31,5 @@ JSON data 형태로 만든 뒤 통과했다. Product runtime 수리로 오인하
 
 Size/color-size/gradient의 sample/layout owner와 actual legend 의미·strict offline·reflow의
 후속 의무는 [GUIDE_DETAILS](../GUIDE_DETAILS.md)에 유지한다.
+
+최종 source `d9ef22ad5`의 문서 source pin 후23개 검사, build186페이지와1598개 선택 문서 artifact가 통과했다. 원10예제의 내용·이미지는 동일하므로 앞선 renderer/browser 증거를 재사용하며 새로운 전수 시각 검사를 주장하지 않는다.
