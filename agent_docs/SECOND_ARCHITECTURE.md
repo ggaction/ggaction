@@ -4621,3 +4621,12 @@ Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebas
 색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
 Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
 정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Private timeline target preparation
+
+`grammar/animation/timeline`은 명시 수치 slot의 시간·겹침·마커 계산을 소유하고
+`animation/timelineTracks`는 admitted native endpoint와 exact track에서 semantic owner,
+item/role, guide, whole Geo feature를 연결한다. `grammar/animation/ownerKey`가 namespace와
+resource owner의 키를 하나로 만든다. 준비 결과의 raw authored 값과 private numeric schedule을
+분리하며 이전 program/scene/plan을 binding에 저장하지 않는다. 공개 entry·현재 저장 schema와
+renderer 경계는 아직 변하지 않는다. 공개 연결 계획은 구현 기록에만 둔다.
