@@ -21,8 +21,8 @@ partition owner에서 저장된 normalized interval·focus와 명시 coordinate 
 Child namespace별 group은 exact layout/hierarchy refs와 label offset을 한 번 보유하며,
 scene 순서의 item vector가 group·key·role을 참조한다. `grammar/animation/partitionState.js`는
 명시 frame을 기존 hierarchy bend kernel에 연결하고, 현재 curved state를 보존해 재기준화한다.
-Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 이 준비 owner는 아직
-공개 planner·offline transport에 연결되지 않았으며 현재 공개 지원은 Current 계약이 소유한다.
+Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 공개 planner와 offline
+transport도 같은 owner를 사용하며 정확한 지원은 Current 계약이 소유한다.
 
 ### Boolean filter 의존성
 
@@ -792,6 +792,14 @@ commands를 연결하고 runtime bindings·event·listener 수명을 소유한�
 renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
 [Current INTERACTION](contract/current/INTERACTION.md)이 소유한다.
 
+### `ggaction/animation`
+
+Browser-safe planner/sampler는 명시 native program 또는 authentic current frame에서 준비된
+의미와 concrete scene을 사용한다. Player만 명시 host clock·render callback과 일시 수명을
+가지며 offline owner는 실제 endpoint/asset bytes 및 versioned kernel을 검증한다.
+Renderer·DOM·Node export dependency를 이 entry에 넣지 않는다. 정확한 지원 family와
+공개 계약은 [ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -891,11 +899,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 771,400 bytes |
-| `ggaction/basic` | 421,200 bytes |
+| `ggaction` | 774,100 bytes |
+| `ggaction/basic` | 422,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 122,100 bytes |
+| `ggaction/interaction` | 128,700 bytes |
+| `ggaction/animation` | 199,800 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
