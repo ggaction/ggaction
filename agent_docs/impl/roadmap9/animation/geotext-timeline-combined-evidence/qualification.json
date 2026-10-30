@@ -7,7 +7,7 @@
   "checks": {
     "animationInteractionCurrentHitAndScheduling": 439,
     "boundariesDiscoveryAndDocumentationTruth": 39,
-    "owningDocumentation": 39
+    "owningDocumentationAfterRepair": 39
   },
   "packageActual": {
     "22": {
@@ -37,11 +37,21 @@
   "sourceEquivalence": "All existing src and types files are byte-identical to3c591dd0a; the only additional source files are the three unimported private timeline/target owners. No new installed-runtime claim.",
   "firstFailures": [
     "The combined realistic inventory has62 files. Original discovery assertion61 failed; expected inventory count updated without excluding a file.",
-    "All3Node canonical packs exceeded the inherited entry cap1169. Actual archives were measured and minimum combined caps updated; Node22 canonical package inspection then passed."
+    "All3Node canonical packs exceeded the inherited entry cap1169. Actual archives were measured and minimum combined caps updated; Node22 canonical package inspection then passed.",
+    "Combined search content measured1084070 bytes against the old1083600 cap. The first39-case docs command had38pass/1fail and was incorrectly recorded as39passed in the merge metadata before reading its completion; this record corrects it and preserves that original failed log."
   ],
   "remaining": [
     "Geo source owner is completing renderer/browser/critical/installed evidence separately",
     "Public timeline sampling, markers and strict offline integration",
     "Full STEP077 acceptance and release qualification"
-  ]
+  ],
+  "initialDocumentation": {
+    "tests": 39,
+    "pass": 38,
+    "fail": 1
+  },
+  "searchIndex": {
+    "actualBytes": 1084070,
+    "maximumBytes": 1084100
+  }
 }
