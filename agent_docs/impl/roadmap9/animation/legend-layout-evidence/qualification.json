@@ -35,6 +35,11 @@
       "maximumPacked": 1675847,
       "unpacked": 7564602,
       "limitChange": "Only entries1170\u21921174; packed/unpacked/browser limits unchanged. Moved native code keeps its existing canonical source compaction."
+    },
+    "pinnedDocumentation": {
+      "tests": 23,
+      "builtPages": 186,
+      "llmArtifacts": 1598
     }
   },
   "remaining": [
@@ -62,5 +67,6 @@
     "src/materialization/guides/legendItems.js": "b504a73df59c6c7f07eea28266ce3df5698d997db60a920ebf5c27faf63ffe04",
     "src/materialization/guides/legendLayout.js": "fedbd215dcba81df48aadc33f4ca6b510d4b4584990b39ded0a14c3f6c92606c",
     "src/materialization/guides/legendSamples.js": "365add696ebb5b70e4266d97e10e6c272c6c5017abb7b1e44db161c20a1686f2"
-  }
+  },
+  "sourceCommit": "9adf00e17"
 }
