@@ -6,8 +6,8 @@
 - [x] 실제 Chromium DPR1/2의 8성공·16제한과 P95/heap 증거 보존
 - [x] 제한값·수학을 변경하지 않는 charge-site 진단
 - [x] predecessor 상태 방식, 독립 oracle와 기존 출력 비교
-- [ ] 같은 archive 세 Node 및 문서·경계 검증 마감
-- [ ] 새 source의 실제 Chromium edge-path1k P95
+- [x] 같은 archive 세 Node 및 문서·경계 검증 마감
+- [x] 새 source의 실제 Chromium edge-path1k P95
 - [ ] HEB 입력 준비 중복의 추가 검토
 - [ ] Density/force의 나머지 크기 지원과 geographic GraphRoute 연결
 
@@ -87,3 +87,22 @@ Stale state가 실제로 해제돼도 이 상한을 낮추지 않는다. 동률 
 - 누적 source92개 통과. 변경 owner98.77/97.96/100으로 기존95/90/100 floor를 유지한다.
   공개 설치 fixture는1k complete·원 endpoint·restore·원 program 불변과 기존 worker/renderer를
   같은 archive에서 확인한다. 패키지 측정·최초 실패는 final summary에 별도 기록한다.
+
+## 최종 checkpoint 증거
+
+Runtime source는 `c7892a9fe`, 원격 `codex/roadmap9-paints`에 고정했다.
+같은 `d810aaf3…cfc7a0` archive에서 Node20/22/24 각각 공개4사례와6entry bundle을 통과했다.
+Boundary/discovery43, source92×3Node, source-pin 문서31을 통과했고 생성 후 package SHA-256도
+같았다. 최초 package/잘못된 coverage lookup 실패와 최종 검증을 함께 보존했다.
+
+Chromium153·Apple M4·16GiB에서 다른 agent의 큰 검사가 끝난 뒤 DPR1/2 각각5회 warmup과
+30회 측정을 실행했다. Edge-path1k bundling P95는 **856.5 / 896.1 ms**, worker compute는
+241.1 / 250.1 ms다. Native materialization은39.6 / 40.0 ms, Canvas 명령7.2 / 5.3 ms,
+SVG serialization+DOM8.3 / 6.4 ms다. Compositor paint 시간을 주장하지 않는다.
+두 셀 모두 이 fixture의5,000 ms 기준 이내이고1,000개 원 edge를 유지했다. 초기 bundle 로드
+후 offline이며 HTTP 요청0, 완료 worker/listener/timer/capture/callback-after-destroy 모두0이다.
+Host lifecycle100/retained-heap은 변경되지 않은 이전 source의 측정으로 분리해 재사용한다.
+
+이 결과는 새 source의 **추가2셀**이다. 이전 source의24셀(8성공/16제한)을 소급 수정하지
+않는다. HEB10k, force/density 및 geographic binding은 후속이며 AT82 전체 통과가 아니다.
+세부 수치·samples·환경·최초 실패와 해시는 [summary](route-work-evidence/summary.json)에 있다.

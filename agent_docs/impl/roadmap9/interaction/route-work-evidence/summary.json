@@ -1,7 +1,7 @@
 {
-  "status": "runtime-qualified-provenance-pending",
+  "status": "qualified-edge-path-checkpoint-overall-AT82-incomplete",
   "baseSource": "d15c2716c",
-  "source": "pending-source-commit",
+  "source": "c7892a9fe",
   "authorization": "../../AUTHORIZATION.json remainingApproval; parent explicit predecessor implementation acceptance 2026-10-30",
   "changedRuntime": [
     "src/grammar/graph/routes/shortestPath.js"
@@ -49,7 +49,60 @@
     "work": 9684020,
     "peakSamples": 15995,
     "allEdgesRetained": true,
-    "browserP95": "not-measured-new-source"
+    "browserP95": {
+      "warmups": 5,
+      "measuredPerDPR": 30,
+      "cases": [
+        {
+          "ratio": 1,
+          "edgeCount": 1000,
+          "status": "measured",
+          "p95": {
+            "computeMs": 241.09999990463257,
+            "prepareComputeValidateMs": 550.4000000953674,
+            "applyMs": 311.5,
+            "bundlingMs": 856.5,
+            "materializeMs": 39.60000014305115,
+            "canvasRenderMs": 7.200000047683716,
+            "svgSerializeDomMs": 8.299999952316284
+          },
+          "thresholdMs": 5000,
+          "successSLO": "passed-this-fixture",
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        },
+        {
+          "ratio": 2,
+          "edgeCount": 1000,
+          "status": "measured",
+          "p95": {
+            "computeMs": 250.09999990463257,
+            "prepareComputeValidateMs": 578.2999999523163,
+            "applyMs": 317.7999999523163,
+            "bundlingMs": 896.0999999046326,
+            "materializeMs": 40,
+            "canvasRenderMs": 5.300000190734863,
+            "svgSerializeDomMs": 6.400000095367432
+          },
+          "thresholdMs": 5000,
+          "successSLO": "passed-this-fixture",
+          "counters": {
+            "workers": 0,
+            "workerListeners": 0,
+            "listeners": 0,
+            "timers": 0,
+            "captures": 0,
+            "callbacksAfterDestroy": 0
+          }
+        }
+      ]
+    }
   },
   "package": {
     "entries": 1165,
@@ -70,10 +123,76 @@
     "first boundary command omitted real discovery path; final command includes test/contracts/test-discovery.test.js and all43pass"
   ],
   "remaining": [
-    "New-source browser P95",
     "HEB duplicate preparation audit",
     "Density/force size limits",
     "Geographic GraphRoute binding",
     "Overall AT82/STEP077"
-  ]
+  ],
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningTests": 31,
+    "finalArchiveUnchanged": true
+  },
+  "browser": {
+    "environment": {
+      "cpu": "Apple M4",
+      "cores": 10,
+      "ramBytes": 17179869184,
+      "os": "Darwin 27.0.0 arm64",
+      "node": "v22.23.1",
+      "start": "2026-10-30T05:52:31.089Z",
+      "loadStart": [
+        2.11767578125,
+        3.39599609375,
+        4.77880859375
+      ],
+      "browser": "153.0.8010.12",
+      "end": "2026-10-30T05:53:37.456Z",
+      "loadEnd": [
+        2.8671875,
+        3.349609375,
+        4.65625
+      ]
+    },
+    "archive": "d810aaf337abe0418b7457549170be8f5e5042cb368d409b7e235c0869cfc7a0",
+    "networkAfterBootstrap": 0,
+    "lifecycle100": "Reuses unchanged host lifecycle measurements from route-browser-evidence/summary.json; not rerun for shortest-path state representation.",
+    "limits": "Only two new edge-path 1k cells. Earlier24-cell measurements retain their original source and outcomes. No new10k/force/density success claim."
+  },
+  "evidenceHashes": {
+    "browser-harness.mjs.txt": "79fb0195088ed4c267f7828b72adf3ae6fbfa8f75f3f7b4e207885846dd0d766",
+    "browser-report.json.gz": "6663758490654ae94992deba4043ef8c33e1cae3f5e39a23ec5d9d47e05e8c8b",
+    "browser.log.gz": "6b6a5fb97f514defa42c704da46cb5017e3fecfa0acd84b7751569548590a541",
+    "docs-docs.log.gz": "a724d365130558868eef478914b72594c357dcbd7bca548b18aad7a8955dcfd5",
+    "docs-llms.log.gz": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc",
+    "docs-machine.log.gz": "b258368bfbbfa9cca3f82b97954629b0d1e892e056066e254330af5be4c56f63",
+    "docs-provenance.log.gz": "9b35b403ed4658b37822e9eb06482a5d9bfbdb5488a669f984c2fa1b14ad45e5",
+    "edge-path-after.json.gz": "dcbc44ee2bfd7c3379957951782863a0850a7ff78dfdeeeb04db2444f978e3f9",
+    "edge-path-before.json.gz": "cc5ebbc2da84a47e4b89e2b05c37cced00557a83e14ca5ff0dcc1ebaef103cc7",
+    "edge-path-linked-boundaries-final.log.gz": "130c13f2162444c037c74363025f5bf671d64d081f16e163915a19966c879ea8",
+    "edge-path-linked-boundaries.log.gz": "68e3fd35fa2330c112ae9e2ca419f029d9fbfbdd734c43bc360809c0f17e8b81",
+    "edge-path-linked-first.log.gz": "2038860706129313179c75f19e1369ed59f6cb6f3af21a70c7e5e06e96293f24",
+    "edge-path-linked-fixed.json": "af6e5f8a3424018e281d3462a7f5ed227285b970bc37be87785627d17068af69",
+    "edge-path-linked-floor.json": "81e5a86ac6ec02306ecf98e109e86cc01cf48c2ff3d9ecc0b44c81b9367d9908",
+    "edge-path-linked-installed20.log.gz": "cefe352761abe403ee25280b02507e863b998f9ad6509e614aa9f849fa568339",
+    "edge-path-linked-installed22.log.gz": "8cfbe2580d3dbf98bc104a88f5c76d7f9b4affdfed4352bef64e63591290f4c4",
+    "edge-path-linked-installed24.log.gz": "cd640bf80e4a11f6edbfe06501d4716f942f0f247aac4eaa31dace23fae62661",
+    "edge-path-linked-owning.log.gz": "1d1f4b02aeea29b2413d0ffd0189b0c1d722a8eaf2ff55fd52159e95ae91e032",
+    "edge-path-linked-pack-first.log.gz": "3e6dca977e1ac677b0fc7ac687eaf9876991342596547f69af7e28ebfc67ca3c",
+    "edge-path-linked-package20-first.log.gz": "fa355ebe3b0ea8cd45a8f5362fa61d0bd982de6efe058e77d231438206af921b",
+    "edge-path-linked-package20.json": "420ac12dd001d1e1c6f3c1dc4be9450b61ff5cb6b918a6a199f0913b2944158f",
+    "edge-path-linked-package24-first.log.gz": "13a1d85b46cec6f4ba4b0e0800fe523c43778f5f98cb91ad2a9bc7d4f0b78598",
+    "edge-path-linked-package24.json": "9e524d6dfca92f9206a3d6ce61b0b03ad08196812377c2b04a9e2ad28c76d4d4",
+    "edge-path-linked-size1000.json.gz": "f5375208ea7e49d8ae62a6ae304d4f843fe2ebdfa4c140f87366de30d256faa1",
+    "edge-path-linked-source20.log.gz": "7b385b8db28dcda8b3cdee3f4f0a26f40021f28785ea9670c118ff713748c518",
+    "edge-path-linked-source24.log.gz": "ec0e12ed7cac809d8529cebfd7ba3308ce6031a22da6e5d9be3635ea2fe7c88b",
+    "installed.json": "ad611cf62cfcddac18c0525bc70a60e395d29d65955c6a96ffc57f1940702cb5",
+    "output-comparison.mjs.txt": "b9454aefcc96883b3866d9c51174c0f78a9e436cdeb19646b71a854dc52093f8",
+    "pack-final.json": "8a8d3ff2ba4d10f0decc1eb7c56645e4b783c0c61a65423aade77ac34b514963",
+    "profile.json": "64cd007cfd41f7f900ed7c8c00f74fd1a89be82b481b84833c51d7ec6751fed9",
+    "profile.mjs.txt": "42cebb1a4c5b6f47082d7e78286e86625bf0b9fc6b1d7268967334c565ff6fcb",
+    "qualifier.mjs.txt": "110e77e3f9672924c2d2043c0562d2d8bea8666ed265c89e7f7206d80d6e74c5"
+  }
 }
