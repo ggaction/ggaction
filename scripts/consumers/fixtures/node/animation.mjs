@@ -33,7 +33,7 @@ export const cases=[
       .createData({values:[{a:1,b:10,c:'A'},{a:100,b:20,c:'B'}]});
     const title=source.createPointMark().encodeX({field:'a',scale:{type:'log',domain:[1,1000],nice:false}}).encodeY({field:'b'})
       .createXAxis({line:false,ticksAndLabels:false,title:{text:'Amount',at:10,offset:35}});
-    const boundary=source.createBarMark().encodeX({field:'c',scale:{type:'band',paddingInner:0,paddingOuter:0}})
+    const boundary=source.createBarMark().encodeX({field:'c',fieldType:'nominal',scale:{type:'band',paddingInner:0,paddingOuter:0}})
       .encodeY({field:'b'}).createVerticalGrid({bandPosition:'boundary'});
     const parallel=source.createParallelCoordinates({id:'lines',dimensions:['a','b'],guides:{legend:false}});
     const pairs=[[title,title.editXAxisTitle({at:100}),'title'],[boundary,boundary.editCanvas({width:800}),'boundary'],

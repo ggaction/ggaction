@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 422_800, // Shared prepared guide label layout: Node20 422,705 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 243_700, // Native typed guides: Node20/24 243,697 gzip bytes.
+  "ggaction/animation": 248_500, // Native title, boundary and Parallel guides: Node20/24 248,468 gzip bytes.
   "ggaction/interaction": 131_400 // Shared guide metadata: Node20/24 131,347 gzip bytes.
 });
 

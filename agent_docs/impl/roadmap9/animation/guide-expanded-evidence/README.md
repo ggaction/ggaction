@@ -1,9 +1,9 @@
-# Title·band boundary·Parallel guide 공개 연결 후보
+# Title·band boundary·Parallel guide 공개 연결
 
 ## 상태
 
-이 source checkpoint는 **candidate-awaiting-shared-fix**다. 전체 frame 오프라인 equality의
-기존 Parallel 본체 reason 불일치 1건을 유지하며 최종 자격 통과로 세지 않는다.
+최초 source `bd8ce86d1`은 **candidate-awaiting-shared-fix**로 기록했다. 아래 초기 검사는
+수리 전 증거이며, 최종 검사는 마지막 절과 [qualification.json](qualification.json)이 소유한다.
 승인은 [remainingApproval](../../AUTHORIZATION.json#remainingApproval)을 재사용한다.
 Source revision은 `bd8ce86d1`이며 원 결정은 [GUIDE_DETAILS](../GUIDE_DETAILS.md)의 공개 연결 절이 소유한다.
 
@@ -53,3 +53,32 @@ Source pin 후 문서 owning23/23과 canonical Jekyll build·built186/1598을 �
 최초 pin build 명령은 canonical source 인자를 빠뜨려 실패했으며, `npm run docs:build`로
 바로잡은 로그를 별도로 보존했다. Source pin은 생성 링크와 identity metadata만 변경했고
 문서 본문·layout·assets·runtime은 같으므로 앞선 전체 responsive browser 증거를 재사용한다.
+
+## 최종 수리와 고정 패키지 검증
+
+Root가 승인한 좁은 수리를 같은 코드로 적용했다. Cartesian/Polar의 active track predicate는
+그대로 유지하고, export vector·manifest·restore 기본값 거부만 retained-vector predicate를
+사용한다. 두 track owner의 root 파일 hash가 같으며 planner의 transport 전용 patch를 보존했다.
+Timeline version3나 다른 shared4 변경은 가져오지 않았고 현재 전역 transition version은2다.
+
+최종 animation350/350과7owners critical floors가 통과했다(100/96.53/100). Parallel whole-frame
+재기준·offline equality가 통과하며 원 reason 불일치와 첫 실패 로그는 삭제하지 않았다.
+Node20/22/24 source 각8개, source 경계·package·documentation truth29개도 통과했다.
+
+고정 tar SHA256은 `39669c5908180098ce162cd8c8da36c1b4c1e4011edf5805406944938484e59e`다.
+같은 파일에서 각Node의 신규 title/boundary/Parallel 소비자와 기존 guide 소비자2개,
+strict animation declarations와 optional peers를 검증했다. Fresh child는 네트워크0에서
+명시5시점·전체frame equality·재기준·Canvas/PNG/SVG/PDF를 실제 공개 API로 소비한다.
+첫 설치 fixture가 nominal fieldType을 생략해 실패한 기록을 보존했으며 fixture만 바로잡고
+같은 tar로 다시 통과했다.
+
+6entry×3Node의 같은18측정 중 animation 최대248,468bytes가 기존243,700을 초과했다.
+최소248,500으로 현재 표와 함께 교정하고 원 측정값으로 재검증했다. 재설치·재번들은 하지 않았다.
+Node20/24 pack 최대1,675,963bytes도 기존1,675,300 초과를 보존하고 최소1,676,000으로 교정했다.
+세Node canonical package가1169entries/7,566,612unpacked로 통과했다. 설치한 Node22 tar 자체는
+1,671,863packed이며 위 압축 차이를 동일 archive 설치 증거와 혼동하지 않는다.
+
+Native guide geometry 및 sample/render source는 후보와 같으므로 앞선6 renderer검사·10browserpairs,
+실제5dataset×6recipe와 문서232개·built186/1598·responsive browser 증거를 재사용한다.
+Source pin 이후 owning 문서와 canonical build를 다시 확인하고 metadata commit에서 기록한다.
+Legend·inferred title ink·복잡한 reflow와 전체61/62/63/77은 계속 열린 의무다.

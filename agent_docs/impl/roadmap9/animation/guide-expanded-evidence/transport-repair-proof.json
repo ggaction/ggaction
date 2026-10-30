@@ -1,0 +1,21 @@
+{
+  "source": "root authorized narrow transport-only repair",
+  "files": {
+    "src/animation/cartesianTracks.js": {
+      "sha256": "f5b1f8d806adb7a7611178d95b80aa23264a197659e18a038c8979dec67f8d24",
+      "sameAsRoot": true
+    },
+    "src/animation/polarTracks.js": {
+      "sha256": "eed75379fd55c17e510de94a3a875a67e4f85433d762a6277ed1f1fefd79f9f3",
+      "sameAsRoot": true
+    }
+  },
+  "plannerScope": [
+    "import retained predicates",
+    "export endpoint vectors",
+    "export kernel presence",
+    "restore default-vector rejection"
+  ],
+  "transitionVersion": 2,
+  "timelineSourceCopied": false
+}

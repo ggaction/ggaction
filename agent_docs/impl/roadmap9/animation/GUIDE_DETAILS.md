@@ -5,7 +5,7 @@
 - [x] [remainingApproval](../AUTHORIZATION.json#remainingApproval)로 남은 API·저장·시각 결정을 재사용한다. 재질문하지 않는다.
 - [x] [원 animation 계약](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/animation.ko.md)의 guide 값 대응 및 AT-42/44를 현재 native 소유자와 대조했다.
 - [x] Band edge membership, axis title anchor, Parallel field geometry의 native 계산 소유자를 분리했다.
-- [ ] 이 준비를 typed guide 의미·current frame·strict offline에 연결하고 consumer를 검증한다.
+- [x] 이 준비를 typed guide 의미·current frame·strict offline에 연결하고 consumer를 검증했다.
 - [x] Native label의 settled wrapping과 measured edge/flush/rotation 계산을 공유했다.
 - [ ] 준비된 label group의 closed animation 의미·title ink dependency와 legend를 공개 연결한다.
 
@@ -112,9 +112,10 @@ Inferred/relative title ink, legend와 복잡한 reflow는 이번 확대에서 �
 불일치를 발견했다. Guide geometry/scene은 같으나 전체 frame equality는 실패하여 root 소유
 shared planner에서 별도로 보수한다. 첫 실패와 보수 후 결과를 증거에 구분한다.
 
-공개 연결 후보 source `bd8ce86d1`과 통과·실패·후행 의무는
-[확대 후보 증거](guide-expanded-evidence/README.md)에 고정했다. 최종 설치 qualifier는
-공통 Parallel reason 수리를 받은 뒤 실행하며, 후보를 stable 완료로 집계하지 않는다.
+공개 연결 후보 source `bd8ce86d1`의 첫 실패는 보존했다. Root와 같은 retained-vector transport
+수리를 적용한 최종 source에서 animation350/350·7 critical owners와 같은 tar의 Node20/22/24
+각2공개 소비자·strict types·6bundles가 통과했다. [최종 증거](guide-expanded-evidence/qualification.json)와
+[실행 기록](guide-expanded-evidence/README.md)은 초기 후보와 안정 체크포인트를 구분한다.
 
 ## 후속 legend·reflow 소유권 준비
 

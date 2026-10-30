@@ -7,10 +7,10 @@ import { ANIMATION_GEO_VERSION } from "../grammar/animation/geoState.js";
 import { prepareGeoTracks, emptyAnimationGeos } from "./geoTracks.js";
 import { projectPolarAnimationState } from "../materialization/animation/polar.js";
 import { ANIMATION_POLAR_VERSION } from "../grammar/animation/polarState.js";
-import { preparePolarTrack, emptyAnimationPolars, hasAnimationPolars, validateAnimationPolars } from "./polarTracks.js";
+import { preparePolarTrack, emptyAnimationPolars, hasRetainedAnimationPolars, validateAnimationPolars } from "./polarTracks.js";
 import { projectCartesianAnimationState } from "../materialization/animation/cartesian.js";
 import { ANIMATION_CARTESIAN_VERSION } from "../grammar/animation/cartesianState.js";
-import { prepareCartesianTrack, emptyAnimationCartesian, hasAnimationCartesian, validateAnimationCartesian } from "./cartesianTracks.js";
+import { prepareCartesianTrack, emptyAnimationCartesian, hasRetainedAnimationCartesian, validateAnimationCartesian } from "./cartesianTracks.js";
 import { projectPartitionAnimations } from "../materialization/animation/partition.js";
 import { validateAnimationPartitionState } from "../materialization/animation/partitionGeometry.js";
 import { PARTITION_ANIMATION_VERSION } from "../grammar/animation/partitionState.js";
@@ -154,13 +154,13 @@ export function exportTransitionPlan(input) {
     const frame=exactFrames.get(plan)?.[side],source=plan[side];
     const geoState=geos[side].groups.length?{geos:geos[side]}:{};
     const guideState=hasAnimationGuides(guides[side])?{guides:guides[side]}:{};
-    const graphState={...(hasAnimationPolars(polars[side])?{polars:polars[side]}:{}),...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasAnimationCartesian(cartesian[side])?{cartesian:cartesian[side]}:{})};
+    const graphState={...(hasRetainedAnimationPolars(polars[side],source)?{polars:polars[side]}:{}),...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasRetainedAnimationCartesian(cartesian[side],source)?{cartesian:cartesian[side]}:{})};
     const partitionState=partitions[side].groups.length?{partitions:partitions[side]}:{};
     const view=frame===undefined?{}:{view:{progress:frame.progress,decisions:frame.decisions,...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
     return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view}:{scene:source.scene,identities:source.identities,
       backgrounds:source.backgrounds,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view};
   };
-  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(hasAnimationGuides(guides.from)||hasAnimationGuides(guides.to)?{guide:ANIMATION_GUIDE_VERSION}:{}),...(geos.from.groups.length||geos.to.groups.length?{geo:ANIMATION_GEO_VERSION}:{}),...(hasAnimationPolars(polars.from)||hasAnimationPolars(polars.to)?{polar:ANIMATION_POLAR_VERSION}:{}),...(hasAnimationCartesian(cartesian.from)||hasAnimationCartesian(cartesian.to)?{cartesian:ANIMATION_CARTESIAN_VERSION}:{}),...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{}),...(partitions.from.groups.length||partitions.to.groups.length?{partition:PARTITION_ANIMATION_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
+  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(hasAnimationGuides(guides.from)||hasAnimationGuides(guides.to)?{guide:ANIMATION_GUIDE_VERSION}:{}),...(geos.from.groups.length||geos.to.groups.length?{geo:ANIMATION_GEO_VERSION}:{}),...(hasRetainedAnimationPolars(polars.from,plan.from)||hasRetainedAnimationPolars(polars.to,plan.to)?{polar:ANIMATION_POLAR_VERSION}:{}),...(hasRetainedAnimationCartesian(cartesian.from,plan.from)||hasRetainedAnimationCartesian(cartesian.to,plan.to)?{cartesian:ANIMATION_CARTESIAN_VERSION}:{}),...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{}),...(partitions.from.groups.length||partitions.to.groups.length?{partition:PARTITION_ANIMATION_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
     from:endpoint("from"),to:endpoint("to")});
 }
 
@@ -207,9 +207,9 @@ function restoreEndpoint(input) {
   const partitions=Object.hasOwn(input,"partitions")?validateAnimationPartitionState(input.partitions,endpoint):emptyAnimationPartitions(endpoint.scene.nodes.length);
   if(Object.hasOwn(input,"partitions")&&partitions.groups.length===0)throw new TypeError("An empty animation partition state must be omitted.");
   const polars=Object.hasOwn(input,"polars")?validateAnimationPolars(input.polars,endpoint):emptyAnimationPolars(endpoint);
-  if(Object.hasOwn(input,"polars")&&!hasAnimationPolars(polars))throw new TypeError("Empty polar animation states must be omitted.");
+  if(Object.hasOwn(input,"polars")&&!hasRetainedAnimationPolars(polars,endpoint))throw new TypeError("Empty polar animation states must be omitted.");
   const cartesian=Object.hasOwn(input,"cartesian")?validateAnimationCartesian(input.cartesian,endpoint):emptyAnimationCartesian(endpoint);
-  if(Object.hasOwn(input,"cartesian")&&!hasAnimationCartesian(cartesian))throw new TypeError("Empty Cartesian animation states must be omitted.");
+  if(Object.hasOwn(input,"cartesian")&&!hasRetainedAnimationCartesian(cartesian,endpoint))throw new TypeError("Empty Cartesian animation states must be omitted.");
   for(const [index,decision]of (input.view?.decisions??[]).entries())if(decision.kind==="semantic-kernel"){
     if(decision.kernel==="guide-geometry"?guides[index]?.kind===undefined:decision.kernel==="polar-geometry"?polars[index].kind===undefined:decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):decision.kernel==="cartesian-geometry"?cartesian[index].kind===undefined:(decision.kernel==="partition"?partitions:graphs).items[index]===null||Object.hasOwn((decision.kernel==="partition"?partitions:graphs).items[index],"reason")) {
       throw new TypeError("Sampled semantic decision requires its retained prepared meaning.");
