@@ -61,7 +61,9 @@
     "contracts/realistic-structured-paints.test.js": 184876,
     "contracts/realistic-table-plots.test.js": 3204,
     "contracts/realistic-trail-plots.test.js": 2968,
-    "contracts/realistic-waterfall-plots.test.js": 3002
+    "contracts/realistic-waterfall-plots.test.js": 3002,
+    "contracts/realistic-geographic-transitions.test.js": 1468,
+    "contracts/realistic-polar-transitions.test.js": 1593
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -350,6 +352,28 @@
     "contracts/realistic-composition-recipes.test.js": {
       "record": "1793318509594-54262.json",
       "durationMs": 1583.912208,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-geographic-transitions.test.js": {
+      "record": "1793321149548-80963.json",
+      "durationMs": 1467.8640830000002,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-polar-transitions.test.js": {
+      "record": "1793321149672-80964.json",
+      "durationMs": 1592.425458,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",
