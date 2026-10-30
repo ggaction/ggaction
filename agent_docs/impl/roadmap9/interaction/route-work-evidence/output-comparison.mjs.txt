@@ -1,0 +1,13 @@
+import { normalizeObservedGraph } from '../src/grammar/graph/normalize.js';
+import { bundleEdgePathRoutes } from '../src/grammar/graph/routes/edgePath.js';
+import { writeFileSync } from 'node:fs';
+const results=[];
+for (const directed of [false,true]) for (let seed=0; seed<32; seed++) {
+ const n=4+seed%5, nodes=Array.from({length:n},(_,key)=>({key})), edges=[];
+ for(let a=0;a<n;a++)for(let b=0;b<n;b++)if((a*17+b*13+seed*7)%5===0)edges.push({key:edges.length,sourceKey:a,targetKey:b});
+ const model=normalizeObservedGraph(nodes,edges,{directed,selfLoops:true});
+ const input={model, positions:model.nodes.map((node,i)=>({key:node.key,x:(i*7+seed)%11,y:(i*3+seed)%7})),order:{nodes:nodes.map(n=>n.key),edges:edges.map(e=>e.key)}};
+ const result=bundleEdgePathRoutes(input); const {work,peakSamples,...diagnostics}=result.diagnostics;
+ results.push({seed,directed,result:{...result,diagnostics}});
+}
+writeFileSync(process.argv[2],JSON.stringify(results)+'\n');

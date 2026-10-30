@@ -1,0 +1,79 @@
+{
+  "status": "runtime-qualified-provenance-pending",
+  "baseSource": "d15c2716c",
+  "source": "pending-source-commit",
+  "authorization": "../../AUTHORIZATION.json remainingApproval; parent explicit predecessor implementation acceptance 2026-10-30",
+  "changedRuntime": [
+    "src/grammar/graph/routes/shortestPath.js"
+  ],
+  "sourceChecks": {
+    "node20": 92,
+    "node22": 92,
+    "node24": 92
+  },
+  "critical": {
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actual": {
+      "lines": 98.77,
+      "branches": 97.96,
+      "functions": 100
+    }
+  },
+  "boundaries": 43,
+  "archiveSha256": "d810aaf337abe0418b7457549170be8f5e5042cb368d409b7e235c0869cfc7a0",
+  "installed": {
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "casesPerNode": 4,
+    "bundlesPerNode": 6
+  },
+  "comparison": {
+    "fixtures": 64,
+    "geometryProvenanceEqual": true,
+    "excludedDiagnostics": [
+      "work",
+      "peakSamples"
+    ],
+    "beforeSha256": "61c3e22be4fb4ad8cc95cafe8e8399bdd70fff32a6d350fcc5cbca15bc39d173",
+    "afterSha256": "61c3e22be4fb4ad8cc95cafe8e8399bdd70fff32a6d350fcc5cbca15bc39d173"
+  },
+  "expandedFixture": {
+    "edges": 1000,
+    "work": 9684020,
+    "peakSamples": 15995,
+    "allEdgesRetained": true,
+    "browserP95": "not-measured-new-source"
+  },
+  "package": {
+    "entries": 1165,
+    "packedMax": 1668423,
+    "unpacked": 7536026,
+    "caps": {
+      "entries": 1165,
+      "packed": 1668500,
+      "unpacked": 7536100
+    },
+    "bundleCapsChanged": false,
+    "fullGzipMax": 779493
+  },
+  "preservedFailures": [
+    "unpacked 7536026 > 7535400",
+    "Node20/24 packed1668423 >1668200",
+    "first coverage verifier used src/ prefix absent from canonical coverage table; rerun with correct grammar/ key and unchanged95/90/100 floor",
+    "first boundary command omitted real discovery path; final command includes test/contracts/test-discovery.test.js and all43pass"
+  ],
+  "remaining": [
+    "New-source browser P95",
+    "HEB duplicate preparation audit",
+    "Density/force size limits",
+    "Geographic GraphRoute binding",
+    "Overall AT82/STEP077"
+  ]
+}

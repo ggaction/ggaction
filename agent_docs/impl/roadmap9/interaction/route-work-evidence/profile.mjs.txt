@@ -1,0 +1,52 @@
+import { registerHooks } from 'node:module';
+import { execFileSync } from 'node:child_process';
+import { writeFileSync } from 'node:fs';
+const profiles = [];
+globalThis.__newRouteProfile = () => { const item = { charges: new Map(), accepted: 0, rejected: null }; profiles.push(item); return item; };
+registerHooks({load(url, context, nextLoad) {
+ const result = nextLoad(url, context);
+ if (!url.includes('/src/grammar/graph/routes/') || !url.endsWith('.js')) return result;
+ const file = url.split('/').at(-1);
+ let source = execFileSync('git', ['show', `d15c2716c:src/grammar/graph/routes/${file}`], {encoding:'utf8'});
+ if (file === 'budget.js') {
+  source = source.replace('let work = 0,', 'const profile = globalThis.__newRouteProfile();\n  let work = 0,');
+  source = source.replace('limits: resolved, check, charge,', `limits: resolved, check, charge,
+    chargeAt(site, value) {
+      const previous = profile.charges.get(site) ?? { calls: 0, attempted: 0, accepted: 0 };
+      previous.calls++; previous.attempted += value; profile.charges.set(site, previous);
+      try { charge(value); previous.accepted += value; profile.accepted += value; }
+      catch (error) { profile.rejected = { site, value, acceptedBefore: work, message: error.message }; throw error; }
+    },`);
+ } else {
+  source = source.replace(/\.charge\(/g, (match, offset) => `.chargeAt(${JSON.stringify(`${file}:${source.slice(0, offset).split('\n').length}`)}, `);
+  source = source.replace('const fieldBudget = { charge:', 'const fieldBudget = { chargeAt: context.budget.chargeAt, charge:');
+ }
+ return {...result, source};
+}});
+const {chart} = await import('../src/index.js');
+const {encodeRowKey} = await import('../src/core/itemIdentity.js');
+const {getErrorDetails} = await import('../src/core/diagnostics.js');
+const cases = [];
+for (const [method, edgeCount] of [['density',100],['force-directed',1000],['edge-path',1000],['hierarchical',10000]]) {
+ const count=method==='hierarchical'?9999:edgeCount;
+ const nodes=Array.from({length:count},(_,id)=>({id}));
+ const edges=Array.from({length:edgeCount},(_,id)=>({id,source:id%count,target:(id+Math.floor(count/3))%count}));
+ let p=chart(); let positions, options={};
+ if (method==='hierarchical') {
+  p=p.createData({id:'tree',values:[{key:'root',parent:null,value:0},...nodes.map(({id})=>({key:id,parent:'root',value:1}))]})
+    .createHierarchyData({id:'hierarchy',data:'tree',key:'key',parent:'parent',value:'value'})
+    .layoutHierarchy({id:'tree-layout',method:'tree',options:{nodeSize:[1,1],siblingGap:1,depthGap:100,orientation:'vertical'}});
+  const anchors=new Map(p.semanticSpec.resources.find(r=>r.kind==='layout').result.nodes.map(n=>[n.key,n]));
+  positions=nodes.map(({id})=>({key:id,x:anchors.get(encodeRowKey(id)).x,y:anchors.get(encodeRowKey(id)).y}));
+  options={hierarchy:'hierarchy',hierarchyLayout:'tree-layout',mapping:nodes.map(({id})=>({nodeKey:id,hierarchyKey:id}))};
+ } else positions=nodes.map(({id})=>({key:id,x:200+150*Math.cos(2*Math.PI*id/count),y:200+150*Math.sin(2*Math.PI*id/count)}));
+ p=p.createData({id:'nodes',values:nodes,keyField:'id'}).createData({id:'edges',values:edges,keyField:'id'})
+ .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'source',target:'target'})
+ .layoutGraph({id:'layout',method:'fixed',options:{positions}});
+ profiles.length=0;
+ let outcome;
+ try { p.bundleGraphEdges({id:'routes',graph:'graph',layout:'layout',method,options}); outcome={status:'complete'}; }
+ catch(error){outcome={status:'error',message:error.message,details:getErrorDetails(error)};}
+ const item={method,edgeCount,...outcome,profiles:profiles.map(p=>({...p,charges:Object.fromEntries(p.charges)}))}; cases.push(item); console.log(JSON.stringify(item));
+}
+writeFileSync('.artifacts/route-work-profile.json',JSON.stringify({kind:'read-only-charge-site-diagnostic-not-performance',source:'d15c2716c',runtime:process.version,changes:'Loader labels existing charge calls; original guards, charges, numeric calculations unchanged. Diagnostic overhead invalidates elapsed timings.',cases},null,2)+'\n');
