@@ -106,7 +106,7 @@ test("polar rules and circles replay native guide values across Canvas resize", 
 });
 
 test("unsupported label policy and edited guide geometry keep explicit fallback through restore", () => {
-  const from = axis().editXAxisLabels({ flush: true });
+  const from = axis().editXAxisLabels({ flush: true, maxWidth: 50, wrap: "word" });
   const next = from.editCanvas({ width: 600 });
   const prepared = plan(from, next), middle = sampleTransition(prepared, 50);
   assert.equal(guides(middle).filter(value => value.decision.reason === "guide-layout").length, 3);
@@ -117,7 +117,7 @@ test("unsupported label policy and edited guide geometry keep explicit fallback 
 
 test("strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping", () => {
   const from = axis(), payload = exportTransitionPlan(plan(from, from.editCanvas({ width: 600 })));
-  assert.equal(payload.kernels.guide, "native-guide-values@3");
+  assert.equal(payload.kernels.guide, "native-guide-values@4");
   for (const mutate of [
     value => { value.kernels.guide = "unknown"; },
     value => { value.from.guides.pop(); },

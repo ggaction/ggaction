@@ -165,7 +165,8 @@ import { renderToSVG } from 'ggaction/svg';
 const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
   .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
   .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
-  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] });
+  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
+  .createXAxisLabels({ values: [0, 5, 10], flush: true });
 const to = from.editScale({ id: 'x', domain: [0, 20] });
 const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
 const restored = deserializeAnimation(serializeAnimation(plan));
@@ -187,8 +188,12 @@ Parallel axes match by field name, component, and raw tick value when fields mov
 appear, or disappear. Neither uses array position as identity. If native band edges
 split during a transition, that boundary crossfades explicitly.
 
-Flush, rotated, or responsive reflow labels, inferred or label-relative title clearance,
-and edited geometry retain explicit fallbacks.
+Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the native
+measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
+policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
+profiles must contain every required measurement. Current layouts support interruption
+and offline replay. Width-based wrapping, responsive skip/rotation selection, inferred or
+label-relative title clearance, and edited geometry retain explicit fallbacks.
 
 Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
 use their native single-edge layout. Ticks and labels keep their raw values; the current

@@ -22,7 +22,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
-    "sha256": "c0c76dcdbefc7817d34268dde3ac6ec0b89e7ad6806d8e4c210db408e1d2f4a2",
+    "sha256": "9dbf48a7a9bd57bc58ef5bced0f6d2ceb8925922230729d3d1296c4898f85426",
     "executable": true
   },
   {

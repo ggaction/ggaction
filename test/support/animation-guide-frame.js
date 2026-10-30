@@ -1,13 +1,21 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
     .createPointMark({ id: "m", opacity: 0 });
   let to, points;
-  if (variant === "legend") {
+  if (variant === "label-layout") {
+    from = chart().createCanvas({ width: 200, height: 220, margin: { left: 20, right: 20, top: 20, bottom: 60 } })
+      .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
+      .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } }).encodeY({ field: "y" })
+      .createXAxisLabels({ values: [6], flush: true, fontSize: 40, fontWeight: "bold", color: "red", offset: 8,
+        labelMap: [{ value: 6, label: "I" }] });
+    to = from.editScale({ id: "x", domain: [0, 14] });
+    points = [[100, 185], [125, 185]];
+  } else if (variant === "legend") {
     from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
       .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
       .encodeX({ field: "x" }).encodeY({ field: "y" })

@@ -178,3 +178,19 @@ version3 timeline은 후속 합산에서 보존한다. Guide manifest의 단일 
 범례 item grid/categorical/size, auto sampling, border/group/multi-lane 및 axis flush·rotation·responsive
 reflow와 inferred title 의존성은 후행 의무다. 이 checkpoint를 범례 전체 또는061/062/063/077
 완료로 집계하지 않는다. 첫 rect admission 실패와 이후 통과를 evidence에서 분리한다.
+
+
+## 고정 축 label measured layout
+
+`AUTHORIZATION.json#remainingApproval`에 따라 기존 guide vector를 `native-guide-values@4`로
+확대한다. 새 공개 함수나 shared4 변경은 없으며 root timeline v3는 합산 시 유지한다.
+`axisLabelState`는 native raw values, frame/scale, 고정 회전·flush·edge 정책과 정확 metric query를
+보존한다. 공통 `guideMetrics`는 기존 gradient의 query/binding 정책을 추출한 단일 owner다.
+표시 text/hard-break/정렬/font가 같을 때 native layout을 현재 의미값으로 재생하고 strict forward
+proof, 현재 frame 재기준, 오프라인 동일 시각과 네 renderer를 검증한다. 새 format/줄 선택을
+추정하지 않으며 width wrapping/responsiveResult·inferred title은 후행 의무로 유지한다.
+
+최초 focused 실패는 잘못된 Canvas selector import, 새 지원에 대한 이전 fallback 기대,
+회전 옵션 fixture의 잘못된 단위 형식과 ticks/labels 값 불일치였다. 원 로그를 보존하고 정식 API
+입력으로 수리한다. 범례 categorical/size/group 및 동적 responsive reflow는 여전히 진행 중이며
+이번 고정 label checkpoint를 전체061/062/063/077 완료로 집계하지 않는다.

@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 423_000, // Native gradient layout reuse: Node20/24 422,915 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 266_100, // Prepared gradient legend values: Node20/24 266,083 gzip bytes.
+  "ggaction/animation": 269_900, // Prepared axis label layout: Node20/24 269,895 gzip bytes.
   "ggaction/interaction": 131_400 // Shared guide metadata: Node20/24 131,347 gzip bytes.
 });
 

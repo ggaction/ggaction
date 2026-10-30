@@ -50,7 +50,7 @@ test("guide transport validates forward geometry and keeps mark identities disjo
   assert.throws(() => validateAnimationGuides(corrupt, a), /differs/);
   const identities = [...a.identities]; identities[index] = a.identities.find(Boolean);
   assert.throws(() => validateAnimationGuides(a.guides, { ...a, identities }), /mark identity/);
-  const unsupported = endpoint(base().editXAxisLabels({ flush: true }));
+  const unsupported = endpoint(base().editXAxisLabels({ flush: true, maxWidth: 50, wrap: "word" }));
   assert.equal(prepareGuideTracks(a, unsupported).tracks.filter(track => track.reason === "guide-layout").length, 2);
 });
 

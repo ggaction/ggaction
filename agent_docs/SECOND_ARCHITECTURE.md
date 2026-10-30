@@ -927,7 +927,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 266,100 bytes |
+| `ggaction/animation` | 269,900 bytes |
 
 
 
@@ -4651,3 +4651,12 @@ query closure를 소유한다. 원 native gradient layout/strip 계산은 author
 owner를 재사용한다. `guideTracks`는 순수 axis/anchor 계산과 native legend 계산을 분기하며 같은
 semantic-guide 출력/forward proof를 유지한다. Renderer·trace·public signature는 바뀌지 않으며
 현재 지원 및 fallback은 [Animation Current](contract/current/ANIMATION.md)가 소유한다.
+
+
+### Prepared native axis label layout
+
+`materialization/animation/axisLabelState`는 raw 값·native frame/scale·고정 label 정책을 준비하고
+기존 `axisLabelLayout`의 측정 배치를 재생한다. `guideMetrics`가 범례와 축의 필요한 정확 query
+closure 및 font binding 보존을 함께 소유한다. 최종 pixel을 의미로 역산하지 않고, 같은 native
+forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 남은 지원 범위는
+[Animation Current](contract/current/ANIMATION.md)가 소유한다.

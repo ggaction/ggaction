@@ -3,8 +3,8 @@ import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateWorkLimit, validateUnitInterval } from "../../core/validation.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { DEFAULT_FONT_FAMILY, textMetricFontWeight, textMetricKey } from "../../core/font.js";
-import { measureTextWidth, fontMetricBinding, resolveTextBounds, unionBounds } from "../../core/textMetrics.js";
-import { normalizeTextMetricProfile, normalizeFontMetricProfile } from "../../core/textMetricProfile.js";
+import { resolveTextBounds, unionBounds } from "../../core/textMetrics.js";
+import { prepareGuideMetrics, normalizeGuideMetrics } from "./guideMetrics.js";
 import { normalizeLegendSampling } from "../../grammar/legendSampling.js";
 import { validateValueFormat } from "../../grammar/valueFormat.js";
 import { cartesianPosition, normalizeCartesianPosition, prepareCartesianPosition, sampleCartesianPosition } from "../../grammar/animation/cartesianPosition.js";
@@ -73,28 +73,6 @@ function queries(config, texts) {
   if (config.titleVisible) append(config.title, config.titleStyle);
   return [...result.values()];
 }
-function profileFor(config, texts, source) {
-  const measurements = queries(config, texts).map(query => ({ ...query, width: measureTextWidth(query.text, query, source) }));
-  if (source?.schemaVersion !== 2) return normalizeTextMetricProfile({ schemaVersion: 1, id: "animation-legend", measurements });
-  const fonts = new Map();
-  for (const query of measurements) {
-    const binding = fontMetricBinding(source, query);
-    fonts.set(binding.resource.id, binding);
-  }
-  return normalizeFontMetricProfile({ schemaVersion: 2, id: "animation-legend", fonts: [...fonts.values()], measurements });
-}
-function normalizeProfile(profile) {
-  ownRecord(profile, "Prepared legend metrics");
-  if (!["schemaVersion", "id", "measurements"].every(key => Object.hasOwn(profile, key))) throw new TypeError("Prepared legend metrics require every field.");
-  if (profile.schemaVersion === 2 && !Object.hasOwn(profile, "fonts")) throw new TypeError("Prepared legend metrics require font bindings.");
-  ownArray(profile.measurements, "Prepared legend measurements");
-  let work = 0;
-  for (const query of profile.measurements) {
-    ownRecord(query, "Prepared legend measurement");
-    validateWorkLimit(work += 1 + (typeof query.text === "string" ? query.text.length : 0), "Prepared legend text work");
-  }
-  return profile.schemaVersion === 2 ? normalizeFontMetricProfile(profile) : normalizeTextMetricProfile(profile);
-}
 function normalizeLayout(input) {
   if (layouts.has(input)) return layouts.get(input);
   record(input, ["frame", "config", "mapping", "metrics", "stripStrokeWidth"], "Prepared legend layout");
@@ -112,7 +90,7 @@ function normalizeLayout(input) {
       !same(mapping.scale.range, [0, 1]) || !Object.is(mapping.value, config.sampling.values[0])) {
     throw new TypeError("Prepared legend mapping requires its native first sample and unit range.");
   }
-  const metrics = normalizeProfile(input.metrics);
+  const metrics = normalizeGuideMetrics(input.metrics);
   const result = { ...input, config, mapping, metrics };
   const layout = intrinsic(result);
   const expected = queries(config, layout.texts).map(textMetricKey).sort();
@@ -173,7 +151,7 @@ export function prepareGradientLegendLayout({ config, scale, frame, profile, str
   const mapping = cartesianPosition(canonical.sampling.values[0], { ...scale, type: scale.type === "sequential" ? "linear" : scale.type, range: [0, 1] });
   const initial = { frame, config: canonical, mapping, metrics: profile, stripStrokeWidth };
   const texts = intrinsic(initial).texts;
-  return normalizeLayout({ ...initial, metrics: profileFor(canonical, texts, profile) });
+  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(queries(canonical, texts), profile, "animation-legend") });
 }
 export function normalizeLegendAnimationState(input) {
   record(input, ["identity", "kind", "layout"], "Legend animation state");

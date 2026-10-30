@@ -1,11 +1,16 @@
+import { normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode, prepareAxisLabelInterpolation, sampleAxisLabelInterpolation } from "../materialization/animation/axisLabelState.js";
 import { normalizeLegendAnimationState, legendAnimationMatchesNode, prepareLegendInterpolation, sampleLegendInterpolation } from "../materialization/animation/legendState.js";
 import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
-import { ownArray } from "../core/ownData.js";
+import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { guideAnimationKey, normalizeGuideAnimationState, guideAnimationMatchesNode, prepareGuideInterpolation, sampleGuideInterpolation as sampleNativeGuide } from "../grammar/animation/guideState.js";
 import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
+const normalizeState = state => state.kind === "legend" ? normalizeLegendAnimationState(state)
+  : state.kind === "label-layout" ? normalizeAxisLabelAnimationState(state) : normalizeGuideAnimationState(state);
+const matchesNode = (state, node) => (state.kind === "legend" ? legendAnimationMatchesNode
+  : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, node);
 export const emptyAnimationGuides = endpoint => Object.freeze(endpoint.scene.nodes.map(() => null));
 export const hasAnimationGuides = states => states.some(state => state !== null);
 export function validateAnimationGuides(states, endpoint) {
@@ -13,9 +18,10 @@ export function validateAnimationGuides(states, endpoint) {
   if (states.length !== endpoint.scene.nodes.length) throw new TypeError("Guide states must follow exact endpoint node order.");
   return cloneAndFreeze(states.map((input, index) => {
     if (input === null) return null;
-    const state = input.kind === "legend" ? normalizeLegendAnimationState(input) : normalizeGuideAnimationState(input);
+    ownRecord(input, "Animation guide state");
+    const state = normalizeState(input);
     if (endpoint.identities[index] !== undefined || endpoint.backgrounds?.some(entry => entry.index === index)) throw new TypeError("A guide cannot replace native mark identity.");
-    if (state.reason === undefined && !(state.kind === "legend" ? legendAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index])) {
+    if (state.reason === undefined && !matchesNode(state, endpoint.scene.nodes[index])) {
       throw new TypeError("Guide animation meaning differs from its concrete endpoint.");
     }
     return state;
@@ -48,8 +54,9 @@ function prepareTrack(match, from, to, a, b) {
     !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline", ...(a.kind === "legend" ? ["width", "height"] : [])].includes(key)));
   const style = prepareAnimationAppearance(appearance(source.properties), appearance(target.properties));
   if (style.kind === "crossfade") return fade(style.reason);
-  const guide = a.kind === "legend" && b.kind === "legend" ? prepareLegendInterpolation(a, b)
-    : a.kind === "legend" || b.kind === "legend" ? { kind: "crossfade", reason: "guide-policy" } : prepareGuideInterpolation(a, b);
+  const guide = a.kind !== b.kind ? { kind: "crossfade", reason: "guide-policy" }
+    : a.kind === "legend" ? prepareLegendInterpolation(a, b)
+    : a.kind === "label-layout" ? prepareAxisLabelInterpolation(a, b) : prepareGuideInterpolation(a, b);
   return guide.kind === "crossfade" ? fade(guide.reason) : { ...match, kind: "semantic-guide", guide, appearance: style };
 }
 export function prepareGuideTracks(from, to) {
@@ -73,5 +80,6 @@ export function prepareGuideTracks(from, to) {
 // The sampler delegates native guide meaning to its owning materializer. The
 // public sampler imports this wrapper, not a second layout implementation.
 export function sampleGuideInterpolation(plan, progress) {
-  return plan.from?.kind === "legend" ? sampleLegendInterpolation(plan, progress) : sampleNativeGuide(plan, progress);
+  return plan.from?.kind === "legend" ? sampleLegendInterpolation(plan, progress)
+    : plan.from?.kind === "label-layout" ? sampleAxisLabelInterpolation(plan, progress) : sampleNativeGuide(plan, progress);
 }

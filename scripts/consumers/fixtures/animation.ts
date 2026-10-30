@@ -87,3 +87,7 @@ const legendFrom=guideFrom.encodeColor({field:'x',fieldType:'quantitative',scale
 const legendTo=legendFrom.editScale({id:'color',domain:[1,10000]}).editLegend({gradient:{length:160,thickness:20}});
 const legendFrame=sampleTransition(planTransition({from:legendFrom,to:legendTo,options:{durationMs:100,easing:'linear'}}),50);
 render(legendFrame,context);renderToSVG(legendFrame);renderToPNGBuffer(legendFrame);renderToPDFBuffer(legendFrame);
+
+const fixedLabels=guideFrom.editXAxisLabels({flush:true});
+const fixedLabelFrame=sampleTransition(planTransition({from:fixedLabels,to:fixedLabels.editCanvas({width:680}),options:{durationMs:100}}),50);
+renderToSVG(fixedLabelFrame);

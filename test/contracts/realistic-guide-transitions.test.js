@@ -9,7 +9,7 @@ import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 const sources = [{ id: "tt-us-births", field: "births" }, { id: "tt-trash-wheel", field: "Weight" },
   { id: "tt-stock-prices", field: "volume", eligible: row => row.stock_symbol === "AAPL" },
   { id: "tt-animal-rescues", field: "incident_notional_cost" }, { id: "tt-movie-profit", field: "production_budget" }];
-for (const source of sources) test(`${source.id} preserves raw guide values across seven native transition recipes`, () => {
+for (const source of sources) test(`${source.id} preserves raw guide values across eight native transition recipes`, () => {
   try {
     const original = tidyTuesdaySourceRows(source.id);
     assert.match(tidyTuesdayFixtureReport(source.id).sha256, /^[a-f0-9]{64}$/);
@@ -35,6 +35,7 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       .encodeColor({ field: source.field, fieldType: "quantitative", scale: { domain: [0, max], range: ["red", "blue"] } })
       .createLegend({ channels: ["color"], values: [value], offset: 20, title: source.field });
     for (const [recipe, from] of [["axis", x.createXAxis({ ticksAndLabels: { values: [value] }, title: false })],
+      ["label-layout", x.createXAxisLabels({ values: [value], flush: true })],
       ["grid", x.createVerticalGrid({ values: [value] })], ["polar", polar],
       ["title", x.createXAxis({ line: false, ticksAndLabels: false, title: { text: source.field, at: value, offset: 20 } })],
       ["boundary", boundary], ["parallel", parallel], ["legend", legend]]) {
@@ -48,10 +49,11 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       assert.ok(indices.length > 0);
       for (const index of indices) {
         const key = JSON.parse(frame.decisions[index].guideKey);
-        if (["axis", "grid", "polar"].includes(recipe) && key[3] !== "line") assert.equal(key[4], value);
+        if (["axis", "grid", "polar", "label-layout"].includes(recipe) && key[3] !== "line") assert.equal(key[4], value);
         const properties = frame.scene.nodes[index].properties;
         if (["ticks", "grid"].includes(key[3]) && recipe !== "polar") assert.ok(Math.abs(properties.x1 - (40 + 320 / 3)) < 1e-9);
         if (recipe === "polar") assert.deepEqual(properties.commands[0], { op: "M", x: 250, y: 145 });
+        if (recipe === "label-layout") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
         if (recipe === "title") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
         if (recipe === "parallel") assert.ok(key[3].startsWith("parallel-"));
         if (recipe === "legend") {

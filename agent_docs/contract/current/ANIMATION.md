@@ -138,9 +138,17 @@ Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/c
 동일 raw value의 scale/domain/range와 frame을 먼저 보간한 뒤 native geometry를 만든다.
 새 값과 제거된 값은 enter/exit이며 중복 raw value는 `guide-ambiguity` reason의 별도 enter/exit다.
 같은 값의 label 문자열·font/static style 변경은 appearance crossfade다. 동일 label 줄 구성과
-정렬 정책을 유지하며 복잡한 flush·rotation·responsive reflow는 `guide-layout`, 명시 geometry
+정렬 정책을 유지하며 동적인 wrap/skip/rotation 선택의 responsive reflow는 `guide-layout`, 명시 geometry
 편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
 다음 transition도 명시 fallback한다. Complex axis label reflow는 아직 이 typed 범위 밖이다.
+
+Cartesian label의 고정 회전, flush/flushThreshold, plot-edge 정렬은 `label-layout` 준비값에서
+원 native 측정·배치 함수를 재생한다. 같은 raw 값 집합과 표시 문자열·hard-break 줄·font·정렬 정책을
+유지하고 frame/scale/offset/alongOffset을 먼저 보간한다. Canvas fit과 원 overlap 정책을 검증하며
+중간 배치가 불가능하면 `guide-layout`으로 fade한다. 필요한 정확 metric query만 보존하고 schema2
+font resource/content identity와 측정 누락 오류를 유지한다. LabelMap의 숨긴 값은 다시 나타나지 않고
+중복 문자열은 raw value/line identity를 합치지 않는다. maxWidth wrapping, responsiveResult에 따른
+줄 수·skip·rotation 선택 변화 및 inferred title clearance는 이 고정 배치 범위에 포함되지 않는다.
 
 명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
 보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
@@ -165,7 +173,7 @@ gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native lay
 범례, border/group/multi-block/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
 지원되는 gradient component에는 `guide-layout` reason을 보존한다.
 
-Optional endpoint `guides` vector와 `native-guide-values@3` manifest를 보존한다. Strict restore는
+Optional endpoint `guides` vector와 `native-guide-values@4` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

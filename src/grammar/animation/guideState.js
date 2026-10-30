@@ -10,7 +10,7 @@ import { interpolateNumber } from "./values.js";
 import { normalizeBandBoundaryMembers, normalizeGuideAnchor, resolveGuideAnchor, prepareGuideAnchor, sampleGuideAnchor } from "./guideAnchors.js";
 import { interpolatePolarAngle } from "./polarState.js";
 
-export const ANIMATION_GUIDE_VERSION = "native-guide-values@3";
+export const ANIMATION_GUIDE_VERSION = "native-guide-values@4";
 const kinds = new Set(["line", "ticks", "labels", "grid"]);
 const components = new Set([...kinds, "title", "boundary", "parallel-line", "parallel-ticks", "parallel-labels", "parallel-title", "legend-strip", "legend-tick", "legend-label", "legend-title"]);
 const reasons = new Set(["guide-policy", "guide-layout", "guide-ambiguity", "guide-edited", "guide-unavailable", "nonfinite-guide"]);
