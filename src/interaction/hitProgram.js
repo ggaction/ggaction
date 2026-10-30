@@ -1,3 +1,4 @@
+import { graphicScopes } from "../selectors/graphicScopes.js";
 import { requireClosedProgramState } from "../core/programState.js";
 import { transformHitPoint } from "../grammar/hitCoordinates.js";
 import { ownHitScene } from "./sceneFrame.js";
@@ -25,12 +26,9 @@ function spend(budget, count = 1) {
   if (budget.work > MAX_HIT_INDEX_WORK) throw new RangeError("Hit program exceeds its preparation work budget.");
 }
 function contexts(program, budget) {
-  const result = new Map(), stack = [{ program, childPath: [], namespaces: [] }];
-  while (stack.length) {
-    const context = stack.pop();
+  const result = new Map();
+  for (const context of graphicScopes(program, count => spend(budget, count))) {
     requireProgram(context.program);
-    spend(budget);
-    if (context.childPath.length > 1024) throw new RangeError("Hit program exceeds its composition work budget.");
     const qualify = id => {
       spend(budget, id.length + context.namespaces.reduce((size, namespace) => size + 6 * namespace.length + 2, 0));
       return context.namespaces.reduceRight((value, namespace) => namespaceGraphicId(namespace, value), id);
@@ -43,9 +41,6 @@ function contexts(program, budget) {
         result.set(qualify(item.id), { ...context, localId: item.id });
       }
     }
-    const spec = context.program.compositionSpec;
-    for (const id of spec?.children ?? []) stack.push({ program: context.program.children[id],
-      childPath: [...context.childPath, id], namespaces: [...context.namespaces, `${spec.id}-${id}`] });
   }
   return result;
 }

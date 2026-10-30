@@ -1,9 +1,10 @@
+import { mapPolarGuideValues } from "../../../../src/materialization/guides/tickValues.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
 import { deriveArcSectors } from "../../../../src/grammar/arcs.js";
 import { resolveArcItems } from "../../../../src/materialization/selection/items/arc.js";
-import { mapPolarGuideValues } from "../../../../src/actions/guides/polar/resolve.js";
+
 
 const rows = [{ category: "A", value: 1 }, { category: "A", value: 1 },
   { category: "B", value: 3 }, { category: "C", value: 4 }, { category: "Z", value: 0 }];

@@ -1,3 +1,4 @@
+import { resolveAxisTitleGeometry } from "../../../grammar/axisGeometry.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { compositionChannel } from "../../../selectors/plotComposition.js";
@@ -28,12 +29,7 @@ import { findDataset } from "../../../selectors/datasets.js";
 import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
 import { finiteMidpoint } from "../../../grammar/numeric.js";
-import {
-  defaultAxisPosition,
-  defaultAxisTitleRotation,
-  resolveAxisTitleGeometry,
-  validateAxisPosition
-} from "./policy.js";
+import { defaultAxisPosition, defaultAxisTitleRotation, validateAxisPosition } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
