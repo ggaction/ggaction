@@ -28,6 +28,28 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/guides-offline-native',async run(){
+    const from=chart().createCanvas({width:400,height:240,margin:40})
+      .createData({values:[{x:0,y:0},{x:10,y:10}]}).createPointMark()
+      .encodeX({field:'x',scale:{domain:[0,10],nice:false}}).encodeY({field:'y'})
+      .createXAxis({ticksAndLabels:{values:[0,5,10]},title:false}).createVerticalGrid({values:[5]});
+    const to=from.editScale({id:'x',domain:[0,20]});
+    const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+    const tick=frame.decisions.findIndex(d=>d.kernel==='guide-geometry'&&JSON.parse(d.guideKey)[3]==='ticks'&&JSON.parse(d.guideKey)[4]===5);
+    assert.ok(tick>=0);assert.ok(Math.abs(frame.scene.nodes[tick].properties.x1-(40+320/3))<1e-10);
+    const child=spawnSync(process.execPath,['--input-type=module','-e',`
+      ${offlineNetworkGuard}
+      const {deserializeAnimation,sampleTransition}=await import('ggaction/animation');
+      let text='';for await(const chunk of process.stdin)text+=chunk;
+      console.log(JSON.stringify({frame:sampleTransition(deserializeAnimation(text).plan,50),network}));
+    `],{input:saved,encoding:'utf8',timeout:30000});
+    assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{frame:JSON.parse(JSON.stringify(frame)),network:0});
+    const rebased=planTransition({from:frame,to:from,options:{durationMs:100,easing:'linear'}});
+    assert.equal(sampleTransition(rebased,0),frame);assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,50),sampleTransition(rebased,50));
+    const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+    assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+    assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+  }},
   {id:'animation/polar-offline-native',async run(){
     const base=()=>chart().createCanvas({width:200,height:200,margin:20}).createData({id:'rows',keyField:'id',values:[{id:1,t:350,r:50,c:'A'},{id:'1',t:80,r:70,c:'B'}]});
     const theta={field:'t',scale:{domain:[0,360],nice:false}},radius={field:'r',scale:{domain:[0,100],nice:false}};

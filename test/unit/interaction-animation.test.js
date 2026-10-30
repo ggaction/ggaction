@@ -194,7 +194,7 @@ test("frame subscriber reentry is FIFO and throwing disposal leaves an already p
 });
 
 test("weighted frames preserve actual endpoint hit through mount and pending preparation uses latest transform", async () => {
-  const p = points(), target = moved(p).encodeColor({ value: "red" }), frame = sampleTransition(plan(p, target), 50), c = controlled(p), s = c.s; await ready(c);
+  const p = points(), target = moved(p).encodeColor({ value: "red" }).editPointMark({shape:"square"}), frame = sampleTransition(plan(p, target), 50), c = controlled(p), s = c.s; await ready(c);
   s.dispatch(frameCommand(s, frame, 5)); await tick();
   const off = s.mount({ addEventListener() {}, removeEventListener() {}, getBoundingClientRect: () => ({ left: 0, top: 0, width: 500, height: 400 }) }, { rootTransform: [2, 0, 0, 2, 10, 15] });
   c.calls[1].resolve(c.lease("weighted")); await s.whenSettled();

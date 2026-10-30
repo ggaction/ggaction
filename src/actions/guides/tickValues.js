@@ -1,11 +1,7 @@
 import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
-import {
-  isTransformedScaleType,
-  readQuantitativeField,
-  transformedTicks
-} from "../../grammar/scales/index.js";
-import { niceTicks, timeTicks, validateTickSelectionRounding, axisTickSelection } from "../../grammar/ticks.js";
+import { readQuantitativeField } from "../../grammar/scales/index.js";
+import { axisTickSelection } from "../../grammar/ticks.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { applyItemMissingPolicy } from "../../grammar/itemMissing.js";
@@ -48,24 +44,6 @@ export function inferHistogramBoundaries(program, channel, scaleId) {
   if (domain === undefined) return unique;
   const minimum = Math.min(...domain), maximum = Math.max(...domain);
   return unique.filter(value => value >= minimum && value <= maximum);
-}
-
-export function valuesFromTickConfig(program, config) {
-  const scale = program.resolvedScales[config.scale];
-  validateTickSelectionRounding(config, scale?.type);
-  if (config.mode === "values") return config.values;
-  if (scale?.type === "time") return timeTicks(scale.domain, config.count);
-  if (scale?.type === "linear") return niceTicks(scale.domain, config.count, config.rounding);
-  if (isTransformedScaleType(scale?.type)) {
-    return transformedTicks(scale.type, scale.domain, config.count, {
-      ...(scale.base === undefined ? {} : { base: scale.base }),
-      ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
-      ...(scale.constant === undefined ? {} : { constant: scale.constant })
-    });
-  }
-  throw new Error(
-    `Guide values require resolved continuous scale "${config.scale}".`
-  );
 }
 
 export function inferGridTickConfig(program, channel, scaleId) {

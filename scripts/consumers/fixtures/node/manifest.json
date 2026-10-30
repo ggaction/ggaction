@@ -1594,6 +1594,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/guides-offline-native",
+        "statements": 17
+      },
+      {
         "id": "animation/polar-offline-native",
         "statements": 4
       },
@@ -1699,6 +1703,23 @@
       },
       {
         "id": "animation-geo/immutable-failure",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "animation-appearance.mjs",
+    "cases": [
+      {
+        "id": "animation-appearance/offline-four-renderers",
+        "statements": 11
+      },
+      {
+        "id": "animation-appearance/current-frame-interruption",
+        "statements": 2
+      },
+      {
+        "id": "animation-appearance/current-ink-selection",
         "statements": 5
       }
     ]

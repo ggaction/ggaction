@@ -1,3 +1,4 @@
+import { mapPolarGuideValues } from "../../../../materialization/guides/tickValues.js";
 import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import { resolveTextLines } from "../../../../core/textMetrics.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
@@ -11,17 +12,7 @@ import {
 import { resolvePlotGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { assertPolarTextLayout } from "../../../../layout/labels.js";
-import {
-  formatPolarGuideValues,
-  mapPolarGuideValues,
-  normalizePolarTickMode,
-  POLAR_AXIS_DEFAULTS,
-  polarGuideNames,
-  resolvePolarFrameForProgram,
-  validatePolarLabelFormat,
-  validatePolarTextStyle,
-  validatePolarTickConfig
-} from "../resolve.js";
+import { formatPolarGuideValues, normalizePolarTickMode, POLAR_AXIS_DEFAULTS, polarGuideNames, resolvePolarFrameForProgram, validatePolarLabelFormat, validatePolarTextStyle, validatePolarTickConfig } from "../resolve.js";
 import {
   componentResources,
   labelCreateOptions,

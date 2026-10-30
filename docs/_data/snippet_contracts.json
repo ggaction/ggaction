@@ -16,6 +16,18 @@
   {
     "file": "api/animation.md",
     "block": 2,
+    "heading": "Move ticks, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
+    "sha256": "c0c76dcdbefc7817d34268dde3ac6ec0b89e7ad6806d8e4c210db408e1d2f4a2",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 3,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -27,7 +39,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 3,
+    "block": 4,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

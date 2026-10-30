@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3dc48c746888cb4ee0b584d6897dbde187bd502d6d54cf8ce5b8e3d29bdb70b7. Status: development. Runtime source: c8470d1e8edcecc140b084556d32904b97586b52. Release baseline: v0.0.13.
+Contract: sha256:0900447432adccc31d4c25806b83c532c34308b749f356c76a1f3468748e60e7. Status: development. Runtime source: f599ec6760bc7f71f9f1149e26b22c3f655fc5aa. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c8470d1e8edcecc140b084556d32904b97586b52/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c8470d1e8edcecc140b084556d32904b97586b52/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11058,6 +11058,27 @@ Other geometry or incompatible appearance uses a bounded weighted crossfade,
 reported in the sample's `decisions`. Entering and exiting items retain explicit
 decisions. This surface does not promise semantic interpolation for every chart family.
 
+## Animate solid color and opacity
+
+Compatible point, Cartesian, polar, guide, graph, partition, and geographic geometry can
+change solid `fill`, `stroke`, `opacity`, and explicit `strokeWidth` while moving.
+Color interpolation uses premultiplied linear sRGB: halfway from black to white
+is approximately RGB(188, 188, 188). A transparent `none` paint gaining red retains
+red chroma while its alpha increases. Opacity interpolates separately; an omitted
+opacity means one. Stroke width requires explicit values at both endpoints.
+
+Use the existing domain edit actions to set the endpoint styles, then prepare the
+same transition. Exact endpoints retain the authored colors. An authentic sampled
+frame retains its current color and geometry when you reverse or interrupt it.
+Patterns, gradients, unresolved host colors, changed text/fonts, and other changed
+static effects use the explicit `appearance` crossfade. An unchanged geographic
+pattern continues to use the native geometry and paint materialization rules.
+
+Saved transition plans use version 2 and the required
+`premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
+and missing or unknown kernels are rejected on restore. The outer animation
+envelope remains schema 1.
+
 ## Move a completed graph layout
 
 GraphPlot transitions interpolate the completed node coordinates, radii, origin,
@@ -11093,7 +11114,7 @@ and explicit band, pixel, or calendar-interval widths. Categorical transitions r
 the same typed domain order, item value, and padding policy; their ranges may change.
 
 Changed sample membership, curve/layout/width/corner policy, categorical domain,
-scale policy, appearance, or structured paint uses an explicit crossfade reason.
+scale policy, unsupported style, or structured paint uses an explicit crossfade reason.
 Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
 fixed/category-slot placements, and density-derived areas are outside this typed
 kernel. All remain renderable through the shared concrete fallback. Authentic
@@ -11131,7 +11152,7 @@ turn chooses the positive direction. Full-circle arcs retain their signed sweep.
 This interpolates resolved polar coordinates. It does not interpolate arbitrary
 raw values and nonlinear scales together. Changed mapping policies use the explicit
 `polar-mapping` crossfade. A Canvas resize with the same relative radial range is
-compatible. Line member order and closure, arc direction and padding, and appearance
+compatible. Line member order and closure, arc direction and padding, and unsupported style
 must remain compatible. Conditional positions, non-circular points, and edited
 geometry retain explicit fallbacks. Native polar Rule/Rect authoring is not added.
 Guide-specific transitions remain outside this kernel.
@@ -11139,6 +11160,45 @@ Guide-specific transitions remain outside this kernel.
 Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
+
+## Move ticks, labels, and grids
+
+Cartesian axis lines, ticks, fixed-layout labels, and grids, plus polar axes,
+spokes, and circle grids, retain their raw guide values. Compatible transitions
+interpolate the scale and frame before applying the native guide geometry.
+Matched decisions report `kernel: 'guide-geometry'` and a separate `guideKey`.
+The key preserves the child scope, guide owner, component, typed value, and label
+line role. It never matches different values by their array position or text.
+
+For example, this complete Node.js module moves the grid at value 5 through a
+changing domain and exports the offline midpoint:
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, serializeAnimation, deserializeAnimation,
+  sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+  .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] });
+const to = from.editScale({ id: 'x', domain: [0, 20] });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 500)));
+```
+
+New values enter and removed values exit. Duplicated raw values keep separate
+enter/exit decisions with `reason: 'guide-ambiguity'`. A changed label string uses
+an appearance crossfade. Current sampled guides can be reused as either endpoint.
+Offline restore validates their values, geometry, and version before replay.
+
+Flush, rotated, or responsive reflow labels and edited geometry retain explicit
+fallbacks. Band-boundary grids, titles, legends, and Parallel guides remain outside
+this typed guide kernel. They use the existing anonymous enter/exit behavior.
 
 ## Move geographic cameras
 
@@ -37864,19 +37924,19 @@ export interface TransitionOptions {
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 1;
+  readonly version: 2;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
-/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, partition, or completed-graph.
+/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
-  | { readonly kind: 'enter'; readonly targetIndex: number }
-  | { readonly kind: 'exit'; readonly sourceIndex: number }
+  | { readonly kind: 'enter'; readonly targetIndex: number; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
-      readonly targetIndex: number; readonly itemKey?: string; readonly owner?: string;
+      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string;
       readonly role: string; readonly kernel?: string; readonly reason?: string };
 /** An authentic immutable sample, directly accepted by all four renderers. */
 export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
@@ -52562,12 +52622,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c8470d1e8edcecc140b084556d32904b97586b52/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c8470d1e8edcecc140b084556d32904b97586b52/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55694,9 +55754,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3dc48c746888cb4ee0b584d6897dbde187bd502d6d54cf8ce5b8e3d29bdb70b7` |
+| Contract fingerprint | `sha256:0900447432adccc31d4c25806b83c532c34308b749f356c76a1f3468748e60e7` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `c8470d1e8edcecc140b084556d32904b97586b52` |
+| Runtime source commit | `f599ec6760bc7f71f9f1149e26b22c3f655fc5aa` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

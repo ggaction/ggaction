@@ -1,0 +1,21 @@
+{
+  "status": "failed",
+  "failures": {
+    "ggaction/basic": {
+      "actual": 422320,
+      "limit": 422300
+    },
+    "ggaction/interaction": {
+      "actual": 128881,
+      "limit": 128700
+    }
+  },
+  "actualMaximum": {
+    "ggaction": 774091,
+    "ggaction/basic": 422320,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44076,
+    "ggaction/interaction": 128881,
+    "ggaction/animation": 203265
+  }
+}

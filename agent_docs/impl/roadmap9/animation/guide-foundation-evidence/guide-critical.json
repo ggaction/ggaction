@@ -1,0 +1,86 @@
+{
+  "files": {
+    "animation/guideTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/guides/axisItems.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/guides/tickValues.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "selectors/graphicScopes.js": {
+      "lines": 80,
+      "branches": 80,
+      "functions": 80
+    },
+    "grammar/gridGeometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "coverage": {
+    "animation/guideTracks.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 100,
+      "branches": 97.18,
+      "functions": 100
+    },
+    "grammar/axisGeometry.js": {
+      "lines": 100,
+      "branches": 86.96,
+      "functions": 100
+    },
+    "grammar/gridGeometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 100,
+      "branches": 95.24,
+      "functions": 100
+    },
+    "materialization/guides/axisItems.js": {
+      "lines": 100,
+      "branches": 95,
+      "functions": 100
+    },
+    "materialization/guides/tickValues.js": {
+      "lines": 94.64,
+      "branches": 86.96,
+      "functions": 100
+    },
+    "selectors/graphicScopes.js": {
+      "lines": 100,
+      "branches": 88.89,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 99.47,
+      "branches": 95.17,
+      "functions": 100
+    }
+  }
+}

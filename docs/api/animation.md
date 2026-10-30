@@ -50,6 +50,27 @@ Other geometry or incompatible appearance uses a bounded weighted crossfade,
 reported in the sample's `decisions`. Entering and exiting items retain explicit
 decisions. This surface does not promise semantic interpolation for every chart family.
 
+## Animate solid color and opacity
+
+Compatible point, Cartesian, polar, guide, graph, partition, and geographic geometry can
+change solid `fill`, `stroke`, `opacity`, and explicit `strokeWidth` while moving.
+Color interpolation uses premultiplied linear sRGB: halfway from black to white
+is approximately RGB(188, 188, 188). A transparent `none` paint gaining red retains
+red chroma while its alpha increases. Opacity interpolates separately; an omitted
+opacity means one. Stroke width requires explicit values at both endpoints.
+
+Use the existing domain edit actions to set the endpoint styles, then prepare the
+same transition. Exact endpoints retain the authored colors. An authentic sampled
+frame retains its current color and geometry when you reverse or interrupt it.
+Patterns, gradients, unresolved host colors, changed text/fonts, and other changed
+static effects use the explicit `appearance` crossfade. An unchanged geographic
+pattern continues to use the native geometry and paint materialization rules.
+
+Saved transition plans use version 2 and the required
+`premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
+and missing or unknown kernels are rejected on restore. The outer animation
+envelope remains schema 1.
+
 ## Move a completed graph layout
 
 GraphPlot transitions interpolate the completed node coordinates, radii, origin,
@@ -85,7 +106,7 @@ and explicit band, pixel, or calendar-interval widths. Categorical transitions r
 the same typed domain order, item value, and padding policy; their ranges may change.
 
 Changed sample membership, curve/layout/width/corner policy, categorical domain,
-scale policy, appearance, or structured paint uses an explicit crossfade reason.
+scale policy, unsupported style, or structured paint uses an explicit crossfade reason.
 Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
 fixed/category-slot placements, and density-derived areas are outside this typed
 kernel. All remain renderable through the shared concrete fallback. Authentic
@@ -123,7 +144,7 @@ turn chooses the positive direction. Full-circle arcs retain their signed sweep.
 This interpolates resolved polar coordinates. It does not interpolate arbitrary
 raw values and nonlinear scales together. Changed mapping policies use the explicit
 `polar-mapping` crossfade. A Canvas resize with the same relative radial range is
-compatible. Line member order and closure, arc direction and padding, and appearance
+compatible. Line member order and closure, arc direction and padding, and unsupported style
 must remain compatible. Conditional positions, non-circular points, and edited
 geometry retain explicit fallbacks. Native polar Rule/Rect authoring is not added.
 Guide-specific transitions remain outside this kernel.
@@ -131,6 +152,49 @@ Guide-specific transitions remain outside this kernel.
 Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
+
+## Move ticks, labels, and grids
+
+Cartesian axis lines, ticks, fixed-layout labels, and grids, plus polar axes,
+spokes, and circle grids, retain their raw guide values. Compatible transitions
+interpolate the scale and frame before applying the native guide geometry.
+Matched decisions report `kernel: 'guide-geometry'` and a separate `guideKey`.
+The key preserves the child scope, guide owner, component, typed value, and label
+line role. It never matches different values by their array position or text.
+
+For example, this complete Node.js module moves the grid at value 5 through a
+changing domain and exports the offline midpoint:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, serializeAnimation, deserializeAnimation,
+  sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+  .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] });
+const to = from.editScale({ id: 'x', domain: [0, 20] });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 500)));
+```
+
+New values enter and removed values exit. Duplicated raw values keep separate
+enter/exit decisions with `reason: 'guide-ambiguity'`. A changed label string uses
+an appearance crossfade. Current sampled guides can be reused as either endpoint.
+Offline restore validates their values, geometry, and version before replay.
+
+Flush, rotated, or responsive reflow labels and edited geometry retain explicit
+fallbacks. Band-boundary grids, titles, legends, and Parallel guides remain outside
+this typed guide kernel. They use the existing anonymous enter/exit behavior.
 
 ## Move geographic cameras
 

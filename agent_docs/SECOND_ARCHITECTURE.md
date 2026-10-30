@@ -794,9 +794,12 @@ renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재
 
 ### `ggaction/animation`
 
-Browser-safe typed transition entry는 준비된 native endpoint에서 불변 frame을 계산하고,
-같은 concrete graphicSpec을 네 renderer에 제공한다. 공개 planner, player와 offline envelope의
-정확한 계약은 [Current ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+Browser-safe planner/sampler는 명시 native program 또는 authentic current frame에서 준비된
+의미와 concrete scene을 사용한다. Player만 명시 host clock·render callback과 일시 수명을
+가지며 offline owner는 실제 endpoint/asset bytes 및 versioned kernel을 검증한다.
+Renderer·DOM·Node export dependency를 이 entry에 넣지 않는다. 정확한 지원 family와
+공개 계약은 [ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 
 ### `ggaction/scene`
 
@@ -891,6 +894,19 @@ bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래
 
 독립 Text 숫자 오프셋은 기존 encoding, 순수 Text grammar와 Text materializer를 재사용한다. 새 상태 owner나 renderer boundary는 없으며, 실측 Full gzip424768bytes에 따라 한도만425000으로 보정한다. Basic214000/SVG25000은 유지한다.
 
+### Native guide geometry and scoped metadata ownership
+
+Native axis/grid actions, hit metadata, and animation preparation share pure geometry
+(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`) and read-only guide value/item
+association (`materialization/guides/`). Composition traversal uses the shared
+`selectors/graphicScopes.js`; each caller retains its validation and work budget.
+Actions still explicitly materialize graphics. These shared calculations do not add a
+semantic compiler, renderer access to meaning, or new stored graphic identity. Public
+animation preparation carries guide meaning in an optional endpoint vector. The same
+closed validator checks native forward geometry, sampled identity and offline restore;
+flat frame provenance retains current guide values without retaining previous plans.
+Exact supported guide families and fallbacks belong to the Current Animation contract.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -898,11 +914,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 774,400 bytes |
-| `ggaction/basic` | 422,400 bytes |
+| `ggaction/basic` | 422,500 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 131,100 bytes |
-| `ggaction/animation` | 232,600 bytes |
+| `ggaction/interaction` | 131,400 bytes |
+| `ggaction/animation` | 243,700 bytes |
+
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4622,3 +4639,13 @@ LOD aliases and graticule projection lineage without copying source geometry or 
 This is preparation only; current-camera collision layout, final effects, hit admission and public
 sampling remain with the follow-up Geo Text integration. Basic keeps its constructor-scoped anchor
 resolver and does not import geographic mathematics through Text.
+
+### Animation solid appearance ownership
+
+`animation/appearance`는 native geometry owner가 분리한 style slice의 공통 보간 정책을
+소유한다. 기존 color parser와 premultiplied linear-sRGB/numeric kernel을 사용하고 sampler가
+동일 현재 geometry에 concrete style patch를 적용한다. Geo는 feature별 prepared paint에 같은
+정책을 사용하며 이미 지원하던 동일 structured paint의 native materialization은 유지한다.
+색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
+Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
+정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.

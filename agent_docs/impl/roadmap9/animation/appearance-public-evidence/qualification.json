@@ -1,0 +1,79 @@
+{
+  "status": "verified-public-appearance; broader integration audit pending",
+  "sourceRevision": "to be pinned after this source commit",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1158,
+    "packedBytes": 1656786,
+    "unpackedBytes": 7501982,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-416528637f56f7ecb071bc635df8699fb5512aa2e194a0c74d287e5cf713d0b9.tgz",
+    "sha1": "1287a609229aaff06dd60a6221fc1e2cbd912912",
+    "sha256": "416528637f56f7ecb071bc635df8699fb5512aa2e194a0c74d287e5cf713d0b9"
+  },
+  "checks": {
+    "sourceUnitEachNode20_22_24": 292,
+    "criticalOwners": 9,
+    "criticalMinimums": [
+      95,
+      90,
+      100
+    ],
+    "criticalActualAggregate": [
+      100,
+      96.06,
+      100
+    ],
+    "contracts": 46,
+    "docs": 231,
+    "nodeRendererCases": 3,
+    "browserCases": 1,
+    "browserMatrix": "Canvas/SVG x DPR1/2 x gamma/alpha/rebased",
+    "sameArchiveEachNode20_22_24": {
+      "runtimeCases": 25,
+      "strictTypes": "passed",
+      "executableDoc": "passed",
+      "optionalPeers": "canvas1.0.9/sdk1.32.1"
+    },
+    "installedBundles": "same18 actual measurements asserted against current minimal caps; original20/24 commands failed solely old limits and remain preserved"
+  },
+  "packageActualMaximum": {
+    "entries": 1158,
+    "packedBytes": 1659383,
+    "unpackedBytes": 7501982
+  },
+  "firstFailures": [
+    "Existing tests expected color changes to use crossfade; retained fallback tests now use structured style/shape policies, and solid changes assert compatible geometry.",
+    "New fixture initially used unsupported createPointMark radius/size; changed to documented encodeRadius.",
+    "New native-session test omitted its stored selection; initialize explicit empty selection before binding.",
+    "Browser alpha pixel quantization differs by one8bit channel; tolerate1 only for alpha pixels, preserve exact numeric and opaque anchors.",
+    "Initial package/search/bundle caps and generated runtime reference were stale; measured minimal caps, synchronized owners, regenerated docs."
+  ],
+  "remaining": [
+    "Guide/timeline and remaining Geo text/presentation integration",
+    "Entire STEP077/global AT and consumer qualification",
+    "Post-source-pin built documentation and complete integration audit"
+  ],
+  "sourceHashes": {
+    "src/animation/appearance.js": "143f9f9968267ab542bb092262a355e072eb393584917b5a09f3ff12f94db0a9",
+    "src/animation/planner.js": "63a0bc4db1fae865fb57e05bea2b51fe5a11bdf7251634f9723bca13d84729e7",
+    "src/animation/sample.js": "173c6abf2e7a042ac3be69d405b94455e69f278f9f558cc3a9375f20aca70ced",
+    "src/animation/concrete.js": "defcc65a828c34a5f186c8506a2226afe4b2f5a7e7ca3ba51654582b6b7df401",
+    "src/animation/cartesianTracks.js": "ba0cd3bcddcdd823ee847b94a260a4111d3c279c35531edf1e0dad92b5b5fb5a",
+    "src/animation/polarTracks.js": "33cda888066a62a6f019575726c7764f2c4e759b36ae1a0ceb64cc2a41973115",
+    "src/animation/graphTracks.js": "8faa3083e854e9d84502e0b781f9bd81bde26a1e3444919a90622972405bde3a",
+    "src/animation/partitionTracks.js": "4027e7a8891cdc80b5a6f38e7a2cbc65a23f5f5efc5e476a5b441d22add3aa95",
+    "src/animation/geoTracks.js": "92726788d435a2aafe87c97c9c9f94e646fd2137b8c5af75ecda750f8f9f3367",
+    "types/animation.d.ts": "7af0bf3d60f55b2d65d08e86be6977eb0bb82287cffe6d5b1e25eebf426d11f4",
+    "agent_docs/contract/current/ANIMATION.md": "a907dc96313c757b4978fd01afa7ed2792f33aeee575dc1d565288441f852eb5",
+    "docs/api/animation.md": "77e4d5322d0ff68fcfe945084cf7ba004a12818183c0440c6a8ce66ffd5e3bf3",
+    "test/support/animation-appearance-frame.js": "20450144c0ab8bda7c92be21dc694a4b6c17d9ed5b8408fd47903d2f6da7c56c",
+    "test/unit/animation/appearance-lifecycle.test.js": "a2ae81f836ccfaa228a8e1e8a517e37b5612d9b762c2d10a6973d3e292d4a86c",
+    "test/unit/animation/partition-session.test.js": "46f0f926b88417db725cb85b927b2197bb890313aa574b9386548703d018d364",
+    "test/browser/animation-appearance.browser.js": "99b237e890b63c0a4f96beac2eae798f3014f29d3cd7d054fe7c3443ec6acae5",
+    "test/charts/cross-feature-integration/variants/animation/appearance.render.js": "514f23e4360902b088f6977c0cc7d58f7acad9dcdca2ebdf322711e23c3d1aac",
+    "scripts/consumers/fixtures/node/animation-appearance.mjs": "995a20a4744a5e1449ef50f362bc65c67384130ce20c511ccee389aebad5d067"
+  }
+}

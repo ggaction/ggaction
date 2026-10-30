@@ -1,13 +1,9 @@
+import { mapPolarGuideValues } from "../../../../src/materialization/guides/tickValues.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
-import {
-  mapPolarGuideValues,
-  normalizePolarTickMode,
-  polarGuideNames,
-  resolvePolarGuideResources
-} from "../../../../src/actions/guides/polar/resolve.js";
+import { normalizePolarTickMode, polarGuideNames, resolvePolarGuideResources } from "../../../../src/actions/guides/polar/resolve.js";
 
 function polarProgram() {
   return chart()

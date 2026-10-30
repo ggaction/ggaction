@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { preparePartitionAnimationState, samplePartitionAnimationState } from "../grammar/animation/partitionState.js";
@@ -34,8 +35,9 @@ export function partitionTrackPreparation(from, to, a, b) {
     const prepared = pairs[pair], reason = prepared.reason ?? prepared.plan.reason ?? (prepared.plan.track.mode === "crossfade" ? prepared.plan.track.reason : undefined);
     if (reason) return fade(reason);
     if (sameConcreteValue(a.groups[source.group], b.groups[target.group]) && sameConcreteValue(first, last)) return { ...match, kind: "exact" };
-    if (typeof first.properties.fill === "object" || typeof last.properties.fill === "object" || !sameConcreteValue(partitionAnimationPaint(first.properties), partitionAnimationPaint(last.properties))) return fade("appearance");
-    return { ...match, kind: "semantic-partition", pair };
+    const appearance = prepareAnimationAppearance(partitionAnimationPaint(first.properties), partitionAnimationPaint(last.properties));
+    if (appearance.kind === "crossfade") return fade(appearance.reason);
+    return { ...match, kind: "semantic-partition", pair, appearance };
   };
   return { pairs, track };
 }

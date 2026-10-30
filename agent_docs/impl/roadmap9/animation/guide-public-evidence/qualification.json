@@ -1,0 +1,84 @@
+{
+  "status": "verified",
+  "mergeInputs": [
+    "fdc6511d7",
+    "01ae2001fea92fcb24d185affa4ae148524ecfe3"
+  ],
+  "testOnlyUpstream": "598d2cccdbc93647705f9b7e71f99d13a9834ab7",
+  "animationTests": 323,
+  "coverageOwners": 8,
+  "coverage": {
+    "lines": 100,
+    "branches": 95.94,
+    "functions": 100
+  },
+  "followupBasicAndPackageTests": 21,
+  "contractsAndInteractionTests": 52,
+  "realistic": {
+    "datasets": 5,
+    "recipesPerDataset": 3,
+    "tests": 5
+  },
+  "render": {
+    "nodeTests": 2,
+    "browserTests": 1,
+    "browserVariants": 2,
+    "DPR": [
+      1,
+      2
+    ]
+  },
+  "installed": {
+    "sha256": "51664ee3eb92e16a34519c8d808de12d7f2a4d465665d6a9ba8696dc1f19ff17",
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "runtimeCasesEach": 26,
+    "types": "passed",
+    "documentationCasesEach": 2,
+    "optionalPeers": "passed",
+    "bundleMeasurements": 18,
+    "limitsReassertion": "passed"
+  },
+  "finalArchive": {
+    "sha256": "da8697bb987f11caf1908d166cadbff46ba7649cd2cbac1ae081192e24bbf7dd",
+    "entries": 1165,
+    "packedBytesNode22": 1664279,
+    "unpackedBytes": 7533307,
+    "installedEvidenceReuse": "README-only delta; all other 1164 members have identical SHA256, final archive was not reinstalled"
+  },
+  "documentation": {
+    "initial": {
+      "total": 232,
+      "passed": 229,
+      "failed": 3
+    },
+    "owningRepair": {
+      "total": 31,
+      "passed": 31
+    },
+    "sourcePinned": {
+      "tests": 31,
+      "passed": 31,
+      "sourceCommit": "f599ec6760bc7f71f9f1149e26b22c3f655fc5aa"
+    },
+    "build": {
+      "pages": 186,
+      "selectiveLLMArtifacts": 1598,
+      "passed": true
+    },
+    "browser": {
+      "desktopSearch": "passed",
+      "allPagesResponsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "passed": true
+    }
+  },
+  "scope": "Native Cartesian/polar guide slice only; title, legend, Parallel, reflow, boundary grids and timeline remain open.",
+  "sourceCommit": "f599ec6760bc7f71f9f1149e26b22c3f655fc5aa"
+}

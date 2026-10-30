@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance, sampleAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { canonicalJSON } from "../core/contentDigest.js";
 import { validateUnitInterval, validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
@@ -29,9 +30,12 @@ export function prepareGeoTracks(from,to) {
     const interpolation=prepareGeoInterpolation(a.geometry,b.geometry);
     const reason=source.reason??target.reason??(!clipInterpolationCompatible(a.frame,b.frame)?"clip-topology":interpolation.kind==="crossfade"?interpolation.reason:undefined);
     const failures=new Map(interpolation.failures?.map(failure=>[failure.key,failure.reason])??[]),old=new Map(a.geometry.features.map((feature,index)=>[feature.key,index]));
-    const eligible=new Set(),fallback=[];
+    const eligible=new Set(),fallback=[],styles=new Map();
     for(const [index,feature] of b.geometry.features.entries()) {
-      const previous=old.get(feature.key),failure=reason??failures.get(feature.key)??(previous===undefined?"geo-feature-topology":!same(a.styles[previous],b.styles[index])?"appearance":undefined);
+      const previous=old.get(feature.key);
+      const appearance=previous===undefined||same(a.styles[previous],b.styles[index])?null:prepareAnimationAppearance(a.styles[previous],b.styles[index]);
+      const failure=reason??failures.get(feature.key)??(previous===undefined?"geo-feature-topology":appearance?.kind==="crossfade"?appearance.reason:undefined);
+      if(!failure)styles.set(feature.key,appearance);
       if(failure)fallback.push({key:feature.key,reason:failure});else eligible.add(feature.key);
     }
     const targetIndices=new Map();
@@ -46,7 +50,7 @@ export function prepareGeoTracks(from,to) {
     }
     slots.reverse();
     const first=subset(a,eligible),last=subset(b,eligible),index=groups.length;
-    groups.push({sourceGroup,targetGroup,from:first,to:last,interpolation:eligible.size?prepareGeoInterpolation(first.geometry,last.geometry):null,slots,fallback});
+    groups.push({sourceGroup,targetGroup,from:first,to:last,interpolation:eligible.size?prepareGeoInterpolation(first.geometry,last.geometry):null,appearances:last.geometry.features.map(feature=>styles.get(feature.key)),slots,fallback});
     pairs.set(JSON.stringify([sourceGroup,targetGroup]),index);
   }
   validateGeneratedItemLimit(groups.length,"Animation Geo paired groups");
@@ -72,6 +76,7 @@ export function sampleGeoTracks(state,progress) {
     if(group.interpolation===null)continue;
     const geometry=sampleGeoInterpolation(group.interpolation,progress).group;
     const presentation=normalizeGeoAnimationPresentation({...group.to,geometry,
+      styles:group.to.styles.map((style,index)=>group.appearances[index]===null?style:{...style,...sampleAnimationAppearance(group.appearances[index],progress)}),
       plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],progress)),
       frame:interpolateNodeFrame(group.from.frame,group.to.frame,progress)});
     const resolved=resolveGeoAnimationPresentation(presentation);

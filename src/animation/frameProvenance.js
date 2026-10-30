@@ -35,6 +35,7 @@ export function registerAnimationFrame(frame, input) {
   if (input.positions !== undefined && (!Array.isArray(input.positions) || input.positions.length !== frame.scene.nodes.length)) {
     throw new TypeError("Animation frame positions must follow its exact node order.");
   }
+  if(input.guides!==undefined&&(!Array.isArray(input.guides)||input.guides.length!==frame.scene.nodes.length))throw new TypeError("Guide frame state must follow its exact node order.");
   if(input.polars!==undefined&&(!Array.isArray(input.polars)||input.polars.length!==frame.scene.nodes.length))throw new TypeError("Polar frame state must follow its exact node order.");
   if(input.cartesian!==undefined && (!Array.isArray(input.cartesian)||input.cartesian.length!==frame.scene.nodes.length))throw new TypeError("Cartesian frame state must follow its exact node order.");
   if (input.graphs !== undefined && (!Array.isArray(input.graphs.items) || input.graphs.items.length !== frame.scene.nodes.length)) {
@@ -48,6 +49,7 @@ export function registerAnimationFrame(frame, input) {
     ...(input.positions === undefined ? {} : { positions: cloneAndFreeze(input.positions) }),
     ...(input.geos === undefined ? {} : { geos: cloneAndFreeze(input.geos) }),
     ...(input.graphs === undefined ? {} : { graphs: cloneAndFreeze(input.graphs) }),
+    ...(input.guides === undefined ? {} : { guides: cloneAndFreeze(input.guides) }),
     ...(input.polars === undefined ? {} : { polars: cloneAndFreeze(input.polars) }),
     ...(input.cartesian === undefined ? {} : { cartesian: cloneAndFreeze(input.cartesian) }),
     ...(input.partitions === undefined ? {} : { partitions: cloneAndFreeze(input.partitions) }),

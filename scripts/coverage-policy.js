@@ -396,7 +396,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
     branches: 75,
     functions: 100
   }),
-  "layout/grid.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
+  "grammar/gridGeometry.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
   "layout/legend.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "layout/title.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "materialization/planner.js": Object.freeze({

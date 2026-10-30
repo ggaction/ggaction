@@ -84,6 +84,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-geographic-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-guide-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-guides.browser.js"
       }
     ],
     "architecture": [
