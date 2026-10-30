@@ -28,6 +28,36 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/geographic-text-offline-native',async run(){
+    for(const hidden of [false,true]){
+      const features=['Alpha','Beta'].map((name,id)=>({type:'Feature',id,properties:{name},geometry:{type:'Point',coordinates:hidden?[0,0]:[30,35]}}));
+      const from=chart().createCanvas({width:400,height:300,margin:0})
+        .createGeometryData({id:'places',format:'geojson',coordinateKind:hidden?'geographic':'planar',featureKey:'id',values:{type:'FeatureCollection',features}})
+        .createProjection({id:'map',...(hidden?{type:'orthographic',scalePx:100,translatePx:[-200,150],clipExtentPx:[[0,0],[400,300]]}:{type:'identity'})})
+        .createCoordinate({type:'geo'}).createGeoPointMark({id:'points',fill:'#1679c5',radiusPx:5})
+        .createMarkLabels({source:'points',id:'names',field:'name',fontSize:18,dx:12,dy:-12})
+        .layoutLabels({target:'names',axis:'both',padding:3,maxDisplacement:30,leader:{}})
+        .createGeoAnnotation({id:'note',anchor:{type:'position',position:hidden?[0,0]:[45,100]},text:'Note',dx:10,dy:25,fontSize:18});
+      const to=from.editProjection(hidden?{translatePx:[600,150]}:{scalePx:4,translatePx:[40,0]});
+      const native=from.editProjection(hidden?{translatePx:[200,150]}:{scalePx:2,translatePx:[20,0]});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+      assert.ok(frame.decisions.some(d=>d.kernel==='native-geo-text'));
+      assert.deepEqual(frame.scene.nodes.filter(n=>n.type==='text').map(n=>n.properties.text).sort(),['Alpha','Beta','Note']);
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,sampleTransition}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frame:sampleTransition(deserializeAnimation(text).plan,50),network}));
+      `],{input:saved,encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{frame:JSON.parse(JSON.stringify(frame)),network:0});
+      const rebased=planTransition({from:frame,to:from,options:{durationMs:100,easing:'linear'}});
+      assert.equal(sampleTransition(rebased,0),frame);assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,50),sampleTransition(rebased,50));
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      const png=(await renderToPNGBuffer(frame)).buffer;
+      assert.deepEqual(png,await canvas.encode('png'));assert.deepEqual(png,(await renderToPNGBuffer(native)).buffer);
+      assert.equal(renderToSVG(frame),renderToSVG(sampleTransition(deserializeAnimation(saved).plan,50)));assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/guides-offline-native',async run(){
     const from=chart().createCanvas({width:400,height:240,margin:40})
       .createData({values:[{x:0,y:0},{x:10,y:10}]}).createPointMark()

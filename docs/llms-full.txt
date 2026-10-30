@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8. Status: development. Runtime source: 3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -37971,7 +37971,7 @@ export interface TransitionPlan {
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
-  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exit'; readonly sourceIndex: number; readonly reason?: 'guide-ambiguity' }
@@ -52662,12 +52662,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55796,7 +55796,7 @@ The comparison baseline below is the older release used by the migration notes.
 | --- | --- |
 | Contract fingerprint | `sha256:8e988647c58e081f7144bbf110994149dc34cdb5df20863b5e8f03e0850a6fe8` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `current` |
+| Runtime source commit | `3c591dd0ae90cb12f6ec1d136a9bbfb696715d3a` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

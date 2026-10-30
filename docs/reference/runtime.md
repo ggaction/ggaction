@@ -1669,7 +1669,7 @@ export interface TransitionPlan {
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
-  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exit'; readonly sourceIndex: number; readonly reason?: 'guide-ambiguity' }

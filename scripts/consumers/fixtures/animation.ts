@@ -64,7 +64,7 @@ const geoTo=geoFrom.editProjection({translatePx:[600,150]});
 const geoFrame=sampleTransition(planTransition({from:geoFrom,to:geoTo,options:{durationMs:100}}),50);
 render(geoFrame,context);renderToSVG(geoFrame);renderToPNGBuffer(geoFrame);renderToPDFBuffer(geoFrame);
 for(const decision of geoFrame.decisions)if(decision.kind==='geographic'){
- const kernel:'native-geo'=decision.kernel;
+ const kernel:'native-geo'|'native-geo-text'=decision.kernel;
  const address:readonly string[]=[decision.ownerKey,decision.itemKey,decision.role];
  // @ts-expect-error current geographic parts have no invented endpoint index
  const index=decision.targetIndex;

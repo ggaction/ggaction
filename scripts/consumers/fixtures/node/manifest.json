@@ -1594,6 +1594,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/geographic-text-offline-native",
+        "statements": 1
+      },
+      {
         "id": "animation/guides-offline-native",
         "statements": 17
       },
@@ -1603,7 +1607,7 @@
       },
       {
         "id": "animation/bounded-repeated-interruption",
-        "statements": 14
+        "statements": 12
       },
       {
         "id": "animation/public-player-interruption",

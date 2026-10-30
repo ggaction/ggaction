@@ -28,17 +28,20 @@ for(const dataset of datasets)for(const recipe of ["planar-points","spherical-po
     // Spherical views explicitly map the observed extents to [-60,60]×[-30,30].
     // Properties retain the original observations and source-row membership.
     const coordinates=rows.map(row=>planar?[row.orderNumeric,row.value]:[spanX?(row.orderNumeric-minX)/spanX*120-60:0,spanY?(row.value-minY)/spanY*60-30:0]);
-    const features=line?[{type:"Feature",id:"cohort",properties:{observations:rows},geometry:{type:"LineString",coordinates}}]
+    const features=line?[{type:"Feature",id:"cohort",properties:{observations:rows,label:dataset},geometry:{type:"LineString",coordinates}}]
       :rows.map((row,index)=>({type:"Feature",id:row.key,properties:{...row},geometry:{type:"Point",coordinates:coordinates[index]}}));
     let from=chart().createCanvas({width:600,height:400,margin:0}).createGeometryData({id:"source",format:"geojson",coordinateKind:planar?"planar":"geographic",featureKey:"id",values:{type:"FeatureCollection",features}})
       .createProjection(planar?{id:"map",type:"identity",fit:{geometry:"source",width:600,height:400,padding:40}}:{id:"map",type:"equirectangular",scalePx:80,translatePx:[300,200]}).createCoordinate({type:"geo"});
     from=line?from.createGeoLineMark({id:"marks"}):from.createGeoPointMark({id:"marks"});
+    from=from.createMarkLabels({source:"marks",id:"names",field:line?"label":"value",fontSize:10,dx:4,dy:-4})
+      .layoutLabels({target:"names",axis:"both",padding:1,maxDisplacement:4,leader:{}});
     const original=JSON.stringify(from),initial=getProjectionView(from).parameters;
     const to=from.editProjection({scalePx:initial.scalePx*(planar?1:4),translatePx:initial.translatePx.map((value,index)=>value+(index?20:40)),...(!planar?{rotateDeg:[30,0,0]}:{})});
     const plan=planTransition({from,to,options:{durationMs:100,easing:"linear"}}),current=sampleTransition(plan,50);
     const native=from.editProjection({scalePx:initial.scalePx*(planar?1:2),translatePx:initial.translatePx.map((value,index)=>value+(index?10:20)),...(!planar?{rotateDeg:[15,0,0]}:{})});
     nearTree(current.scene,projectAnimationEndpoint(native).scene);
-    assert.ok(current.decisions.some(decision=>decision.kind==="geographic"));
+    assert.ok(current.decisions.some(decision=>decision.kernel==="native-geo"));
+    assert.ok(current.decisions.some(decision=>decision.kernel==="native-geo-text"));
     assert.ok(current.decisions.every(decision=>decision.kind!=="crossfade"));
     assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),current);
     assertSvgIntegrity(renderToSVG(current),`${dataset}/${recipe}`);assert.equal(JSON.stringify(from),original);

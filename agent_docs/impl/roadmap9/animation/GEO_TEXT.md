@@ -8,7 +8,9 @@
 - [x] source Text labels의 기존 selection/format/override/placement 준비 owner 연결.
 - [x] 현재 camera의 source Text collision layout·leaders·final effects 재실행.
 - [x] root appearance v2·guide 안정본 뒤 shared planner/sample/proof 연결.
-- [ ] 현재 frame hit/선택·hidden eligibility·graticule/inset·offline·네 renderer 및 설치 증거.
+- [x] 현재 frame hit/선택·hidden eligibility·graticule/inset·offline·네 renderer 및 설치 증거.
+- [x] 원 실패와 owning 수리를 분리한 source·실데이터·문서·동일 tar 3Node qualification.
+- [ ] 문자열/멤버십/정적 Text layout 변경의 후행 typed 의미와 최종 통합·release 판정.
 
 이 문서는 계획과 구현 순서다. Current 지원이나 STEP062/AT44 완료를 선언하지 않는다.
 본체의 source 정본은 c8470d1e8이며 native shape/point/line/graticule은 그 경로를 유지한다.
@@ -170,3 +172,43 @@ lineage를 검증했다. 누적 animation·interaction-animation·source boundar
 418/418이 `.artifacts/animation-geo-text/public-d-combined.log`에서 통과했다.
 Root에 이 합산 source를 넘긴 뒤 timeline이 shared4를 소유한다. 이후 renderer/coverage/
 설치본/문서 증거는 이 source의 후속 기록이며 전체로드맵 완료를 뜻하지 않는다.
+
+
+## 공개 Geo Text camera qualification
+
+Runtime 정본은 `3c591dd0a`이며 이후 qualification에서 `src/`와 `types/`를 바꾸지 않았다.
+Root가 public timeline을 시작했으므로 이 기록은 transition v2의 Geo Text component 증거이며
+후행 합산이나 전체 STEP062/AT44 완료를 주장하지 않는다.
+
+- 누적 animation393/393과 새 네 소유자의 coverage100/93.95/100이 통과했다. 개별 branches는
+  Frames100, Tracks96.67, native preparation92.23, geometry94.05다. 기존 family95/90/100을
+  그대로 적용했으며 원 첫 측정과 추가된 malformed transport·drawing slot·collector 검사를 보존했다.
+- Canvas/SVG DPR1·2의 collision/hidden 두 variant, PNG/Canvas 및 decoded PDF의 native exact
+  비교3/3이 통과했다. 충돌 회피선과 geographic annotation을 같은 현재 camera로 그린다.
+  대표 PNG의 겹침 분리와 leader 연결도 직접 확인했다.
+- 원본 TTF bytes와 준비된 font profile을 포함한 새 프로세스 offline replay 및 transport 검사5/5,
+  실제5개 dataset×3개 camera recipe와 exhaustive witness의 canonical realistic16/16이 통과했다.
+- source/package/discovery/type37개 중36개가 처음 통과했다. 유일한 낡은 corpus count61을
+  실제62로 동기화한 뒤 package/discovery/documentation owning26/26과 최종19/19 및 sharding4/4가 통과했다. 설치 fixture의 statement inventory도 실제 AST와 대조하여
+  오래된 interruption count14를12로 동기화했고11개 사례가 정확히 일치했다.
+- 같은 archive `e4bcede7b855e683a30c542a1ea303e3cd50e0fce62def030657eda2b10c4b19`에서
+  Node20/22/24 각각 animation23 runtime, strict animation types, optional peers를 검증했다.
+  source-free 새 Geo Text 사례는 collision/hidden camera, annotation, 네 공개 renderer,
+  network0 새 프로세스, current-frame/offline 재기준을 포함한다.
+  Node20/24 설치 프로세스는 runtime/type 이후 interaction gzip136504가 기존136200을 넘어
+  exit1이었다. 원 결과를 보존하고 canonical cap을 최소136600으로 맞춘 뒤 동일18개 번들
+  측정을 재검증했다. 재설치나 runtime 재실행으로 과거 실패를 덮지 않았다.
+- Package 원 실측1177 entries, unpack7607057, packed Node22 1680694 / Node20·24 1683091에
+  최소1177/1684000/7608000 cap을 적용했다. Animation source gzip 최대255934에256000을
+  적용했으며 설치 archive의 최대255927도 통과했다. 나머지 cap은 유지했다.
+- 문서 원232개 중228개가 통과했다. generated reference/machine 갱신과 실제 search1084071에
+  최소1084100 한도를 적용한 뒤232/232를 확인했다. 첫 Ruby4 환경에는 bundle이 없어 build가
+  실패했으며 그 뒤의 stale built check는 증거로 세지 않는다. 준비된 Ruby3.2.11의 preflight와
+  새 Jekyll build 뒤 built186페이지/1598 LLM artifact와 전체320·390·768px responsive browser가 통과했다.
+
+증거의 정확 source 입력과 로그/hash는 [공개 qualification](geo-text-evidence/qualification.json)에 둔다.
+공통 lifecycle3 및 최종 통합 corpus/release 판정은 root가 최종 candidate에서 소유한다.
+Text 문자열·source membership·정적 font/layout policy 또는 source geometry digest가 변하는
+조합은 명시된 concrete crossfade다. 그 fallback을 해당 의미 보간 의무 완료로 세지 않는다.
+Offline sampled anchor/digest의 검증은 내부 forward consistency이며 역사적 원 geometry 인증이
+아니다. Offline renderer-ready frame만으로 native interaction program 권한을 새로 만들지 않는다.

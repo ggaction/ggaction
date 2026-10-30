@@ -9,8 +9,8 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 422_700, // Shared Text source preparation: Node20 422,618 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 243_700, // Preserve the qualified native guide ceiling until combined measurement.
-  "ggaction/interaction": 136_200 // Exact geographic Text source authority: Node20 136,155 gzip bytes.
+  "ggaction/animation": 256_000, // Native Geo Text frames: Node20/24 measure 255,934 gzip bytes.
+  "ggaction/interaction": 136_600 // Installed geographic Text authority: Node20/24 136,504 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
