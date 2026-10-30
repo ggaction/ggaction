@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1083400; // Current graph drag guidance: 1083393 measured compact bytes (1083394 with newline).
+export const SEARCH_INDEX_MAX_BYTES = 1084000; // Temporary edge presentation guidance: 1083982 compact bytes (1083983 with newline).
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

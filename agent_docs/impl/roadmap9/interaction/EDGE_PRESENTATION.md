@@ -7,7 +7,7 @@
 - [x] 현재 후보 keyboard 순환과 native activation
 - [x] native/current graph의 선택 간선만 일시 펼침
 - [x] 준비 lease·취소·수정·history 불변 및 실제 tooltip/브라우저
-- [ ] 4renderer·원본 데이터·동일 설치 archive·문서 동기화
+- [x] 4renderer·원본 데이터·동일 설치 archive·문서 동기화
 
 원본은 `study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-041-bundling-consumers.ko.md` 및
 `roadmap/contracts/edge-bundling.ko.md`의 통합 종료 조건이다. 모든 원 간선 후보 보존, 정렬된 후보 배열,
@@ -64,4 +64,6 @@ Canonical 실제 데이터 runner의 5 pinned datasets×3recipes와 집계16/16,
 
 수명 감사에서 focus/history가 바뀌지 않는 요청이 presentation만 복원하고 host 알림을 생략하던 결함을 고쳤다. 복원 이벤트는 프로그램/revision/history를 바꾸지 않으며 invalid 명령·stale frame은 기존 화면을 보존한다. 빈 후보·leave·empty undo/reset·동일 parameter 설정과 active editing preview 반례를 고정했다.
 
-설치·문서 pin/전체 문서 검사는 최종 evidence에서 닫는다. AT81의 모든 Geo/interrupt 조합 및 STEP041/062/070/077 전체 완료를 이 체크포인트만으로 선언하지 않는다.
+최종 같은 archive의 Node20/22/24 집중 소비자와 source-free browser4가 통과했다. 전체 문서232 중229 통과/3 실패 원본을 보존하고, 검색 실측 상한1084000과 런타임 참조 재생성 뒤 해당 소유31/31을 통과했다. built186pages/1598LLM 및320·390·768·1440폭 Axe0/overflow0를 확인했다. AT81의 모든 Geo/interrupt 조합 및 STEP041/062/070/077 전체 완료를 이 체크포인트만으로 선언하지 않는다.
+
+최종 source는 `117c64e4d0474a1bf725e11f34302a494f46b9b7`이며 상세 입력·archive·검증·최초 실패는 [machine evidence](edge-presentation-evidence/summary.json)에 있다. 최종 canonical 재포장은 같은 SHA256 `3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda`이다. 공개 배포/게시/PR은 하지 않았다.
