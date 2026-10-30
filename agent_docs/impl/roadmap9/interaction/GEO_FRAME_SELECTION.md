@@ -101,3 +101,11 @@ Hit owner coverage는99.31/93.10/100으로 기존95/90/100 floor를 유지한다
 policy, frameSelection, markKind도 적용 floor를 유지했다. 설치 fixture는 공개 native Geo Text의
 projection-hidden 선택 유지→codec→원본 삭제 drop을 검증한다. 실제 typed Geo Text sample의
 현재-frame browser/renderer 연결은 peer shared4 checkpoint에서 별도로 합산하며 아직 완료로 표시하지 않는다.
+
+Source `862f7394c11a533208a4fadfe3faa619968fbf21`를 push하고 provenance→machine→LLM을 갱신했다.
+[증거](geo-label-source-evidence/summary.json)는 새7/누적201/hit87/최종 owning44, 문서231/231,
+환경 preflight·빌드186페이지/1598LLM, 변경 interaction page320/390/768/1280의 overflow/Axe/error0을
+구분해 담는다. 같은 daac12ae… archive로 Node20/22/24의 공개 native Geo Text lifecycle1개, strict
+interaction 타입, optional peers와6entry bundle을 검증했다. Node20의 최초 cap 초과는 원 receipt로
+보존하고 같은 archive의 전체 측정값을 최소 상한과 대조했다. 최종 canonical repack은 byte-identical이다.
+실제 public Geo Text 중간-frame emission은 peer가 소유하므로 그 합산 전에는 AT70 완료를 주장하지 않는다.

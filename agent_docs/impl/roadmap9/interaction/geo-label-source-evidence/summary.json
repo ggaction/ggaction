@@ -1,0 +1,225 @@
+{
+  "status": "qualified-conceptual-checkpoint",
+  "sourceCommit": "862f7394c11a533208a4fadfe3faa619968fbf21",
+  "base": "7ecfc7e81",
+  "reusedHelperSource": "07759d610",
+  "authorization": "../AUTHORIZATION.json remainingApproval",
+  "scope": [
+    "native geographic Text source membership before projection clipping",
+    "closed current-frame source identity and exact native Text role",
+    "selection keep-hidden/drop, source removal, named/inline source selection, codec, nested scope, transparency and clipping"
+  ],
+  "checks": {
+    "new": 7,
+    "cumulative": 201,
+    "hitOwning": 87,
+    "finalContractsAndDocsOwning": 44,
+    "docs": 231,
+    "built": {
+      "pages": 186,
+      "llmArtifacts": 1598,
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "axeViolations": 0,
+      "overflows": 0,
+      "browserErrors": 0
+    }
+  },
+  "coverage": {
+    "markKind": [
+      100,
+      100,
+      100
+    ],
+    "frameSelection": [
+      100,
+      94.74,
+      100
+    ],
+    "hitProgram": [
+      99.31,
+      93.1,
+      100
+    ],
+    "textSelectionPolicy": [
+      100,
+      84.62,
+      100
+    ],
+    "selectionState": [
+      100,
+      93.1,
+      100
+    ],
+    "textGeometry": [
+      80.62,
+      80.67,
+      88.46
+    ]
+  },
+  "archive": {
+    "sha256": "daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42",
+    "entryCount": 1162,
+    "packedBytes": {
+      "node22": 1661590,
+      "node20": 1664504,
+      "node24": 1664504
+    },
+    "unpackedBytes": 7520719,
+    "finalCanonicalRepack": "byte-identical"
+  },
+  "installed": {
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "cases": [
+      "interaction-animation/geographic-label-source-lifecycle"
+    ],
+    "strictTypes": "scripts/consumers/fixtures/interaction.ts",
+    "optionalPeers": true,
+    "bundles": [
+      "ggaction",
+      "ggaction/basic",
+      "ggaction/svg",
+      "ggaction/graph",
+      "ggaction/animation",
+      "ggaction/interaction"
+    ],
+    "node20Qualification": "Runtime/types passed before original Full cap failure. Same archive six bundle measurements passed final minimum caps; original receipt retained."
+  },
+  "failuresPreserved": [
+    "Original test authoring used target instead of source for createMarkLabels and incomplete selector edits; corrected test inputs, no runtime bypass.",
+    "Initial package count 1162 exceeded1161; exact 3Node measurements adjusted ceilings.",
+    "Node20 Full gzip774677 exceeded774500; same archive measured all six entries and minimum affected ceilings were adjusted.",
+    "Built-page test originally asserted a paraphrase rather than actual documented sentence; exact existing sentence asserted in final four-width pass."
+  ],
+  "notCompleted": [
+    "Peer public typed Geo Text sampler/browser/installed current-frame activation integration",
+    "AT80 temporary edge presentation and overlap keyboard cycle",
+    "STEP070 and overall STEP077"
+  ],
+  "artifacts": [
+    {
+      "file": "geo-label-source-browser-final.log.gz",
+      "sha256": "4fa1b30b1bd0cae6976e7aee3bccd211cb8491fb0c58f9693525803e67a12bb3"
+    },
+    {
+      "file": "geo-label-source-browser-verified.log.gz",
+      "sha256": "af96a4f3cdde94632d2531a9544e17bb3b705632ec0359dc07629dfaff2cd012"
+    },
+    {
+      "file": "geo-label-source-browser.log.gz",
+      "sha256": "f1942a5292902a502259368177a36dfa065286b02c7a855a948fae26cc5e89db"
+    },
+    {
+      "file": "geo-label-source-budget-final.log.gz",
+      "sha256": "ef08bd898f0114cc091bd12aecefe0bd5b60385004237ff4b2312bbc5601663c"
+    },
+    {
+      "file": "geo-label-source-build.log.gz",
+      "sha256": "bc1b269391f15e897c7a8957d1707353933b8f7fafe9bf0f15add73056e72c2c"
+    },
+    {
+      "file": "geo-label-source-built.log.gz",
+      "sha256": "ab31745dbe7e25b5ba78d70ed1de03b462d6f93a52dfcde848837cd259114c8b"
+    },
+    {
+      "file": "geo-label-source-bundles20.log.gz",
+      "sha256": "0be4ea25fa7d48be21072d165cdd34c68b05d839020d7b96a2c59a1cb80ea8a1"
+    },
+    {
+      "file": "geo-label-source-contracts.log.gz",
+      "sha256": "6d97e4c9721e0767b0f447059bb161c8cdd012d906c9e6a29353645b5d14d960"
+    },
+    {
+      "file": "geo-label-source-coverage.log.gz",
+      "sha256": "7b052bdfd884eff5975696b55a5714823d5204c9b7d50d967965b5a0168aa5a0"
+    },
+    {
+      "file": "geo-label-source-doc-generation.log.gz",
+      "sha256": "ff1e173ebfd711f21dc34510c15e44bbcbc14b3a77a678fa05eba2593517baae"
+    },
+    {
+      "file": "geo-label-source-docs.log.gz",
+      "sha256": "c9d8e47f40dd0e4479b736590d2bacfc9061ecd3cfbee21df3b59a0ec62c8385"
+    },
+    {
+      "file": "geo-label-source-final.log.gz",
+      "sha256": "fb475156c368e0b5d8d1210b3b4a5145fa871e2bdb75b71c4d5b4060838108ec"
+    },
+    {
+      "file": "geo-label-source-first.log.gz",
+      "sha256": "df5a7c53d032254709c2c2cb84f4395740d7d8ef424362bd4568d36fe1f01426"
+    },
+    {
+      "file": "geo-label-source-hit-coverage.log.gz",
+      "sha256": "057cef5eed08b5dfe50a8590b9c6ceabc0a9006bb975a45b32025f1338ff9ab0"
+    },
+    {
+      "file": "geo-label-source-hit-final.log.gz",
+      "sha256": "eb241c39584d3e6b3662e5f1b2fcefabbc237ca05800e6eac5b5818116fe147b"
+    },
+    {
+      "file": "geo-label-source-installed20.log.gz",
+      "sha256": "7fbcd5a0c000febbaa89f8594beb36e94ca0a4610a98d7fb3cb603245e86ec52"
+    },
+    {
+      "file": "geo-label-source-installed22.log.gz",
+      "sha256": "ca57d19b741348043474ac9a264b502010b743661defdf17c0b818c643f23a1d"
+    },
+    {
+      "file": "geo-label-source-installed24.log.gz",
+      "sha256": "19289a01e852a9069bfb44e8e5b1a2794119ced19b3a8faab4ff5b35496842eb"
+    },
+    {
+      "file": "geo-label-source-measure20.log.gz",
+      "sha256": "87908db817d4f114fd504b6e6d2a3f9c05a5172fad78cdf4f1492c4374c951c3"
+    },
+    {
+      "file": "geo-label-source-measure24.log.gz",
+      "sha256": "852671403c704a163adec48efed97a85aee5105fee7e8db790ba4d92c110e173"
+    },
+    {
+      "file": "geo-label-source-new.log.gz",
+      "sha256": "87fb067545cfa58750ff7efc9377b8a00fa3d19137df1c25645c1cd763ce5a47"
+    },
+    {
+      "file": "geo-label-source-owning-final.log.gz",
+      "sha256": "1ecd8f278605f52cd043f3663928b795e7835e5222ff90d770a7708d0277bb2e"
+    },
+    {
+      "file": "geo-label-source-package-final.log.gz",
+      "sha256": "33d1f0adf15d2ee6c9993bfcac37b1b81dc8cba1cbf8e4cad24716595aafb96d"
+    },
+    {
+      "file": "geo-label-source-package-initial.log.gz",
+      "sha256": "b5e74de8d4070e7473890ced67b63af91c01674f1d8105ba60ef2873ebbb1d5a"
+    },
+    {
+      "file": "geo-label-source-preflight.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "file": "geo-label-source-search.log.gz",
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
+    },
+    {
+      "file": "geo-label-source-second.log.gz",
+      "sha256": "7156fc0ce82937bb52cf46cc304bed584ed3c78fee52d192b8c4d1224521257d"
+    },
+    {
+      "file": "geo-label-source-signatures.log.gz",
+      "sha256": "41885648d98c50f49d3bbb2747a30c7f46555e03f38f895df0441a52891d1885"
+    },
+    {
+      "file": "geo-label-source-snippets.log.gz",
+      "sha256": "7ab651e51563bec6fa2a5e7453f21c7b2fc022ed973e92ac701aa9c155a50147"
+    }
+  ]
+}
