@@ -90,3 +90,25 @@ work bound가 있다. 아직 private 계산이므로 public session, installed c
 준비·stale 결과·재진입, native 한 revision/history/undo/redo, Canvas/SVG DPR1·2 및 public 설치 소비자.
 이 절은 소스 진행 기록이며 최종 qualification 수치·archive·실패 로그는 별도 evidence에 고정한다.
 AT80의 공개 temporary edge 표시/후보 keyboard cycle 및 전체077 완료는 아직 주장하지 않는다.
+
+
+## 드래그 공개 체크포인트 증거
+
+Source `4e26d4cb41c6b634e4351a6538b4814f22bbb40b`를 고정했다.
+[증거](graph-drag-evidence/summary.json)는 실제 공개5사례·strict 타입·6entry bundle을
+동일 d1073ea8… archive로 Node20/22/24에서 각각 통과한 결과를 담는다. Canvas/PNG pixel exact,
+SVG 좌표, PDF vector stream을 독립 native layout과 비교했고 설치 Chromium의 Canvas/SVG×DPR1/2
+실제 pointer4사례도 통과했다. Native layout coverage129개는100/100/100이며 나머지 변경9owner는
+기존 critical floor를 유지한다. 실제 고정5datasets×fixed/fixed-routed/force는32행 witness로16/16,
+원본 hash 검증·canonical runner와 timing ledger를 포함한다.
+
+원본 broad owning635/634의 단일 실패는 appearance 확장으로 바뀐 weighted fixture였고, root598의
+정확 수정 및 실제 weighted-blend 존재 검사를 owning으로 통과했다. 마지막 source owning55/54의
+단일 실패는 새 corpus 목록61이었다. 이를 새파일 등록·root598의 Geo/polar timing·현재 canonical
+timing과 함께 고친 discovery/sharding20/20을 별도 기록한다. 전체635를 모두 녹색이라고 소급하지 않는다.
+문서 원본231/230의 단일 실패는 변경 asset fragment의 이전 해시였으며, exact fragment browser2/2와
+owning18/18로 닫았다. 빌드186페이지/1598LLM 링크, 전체320/390/768 containment·search·Axe·keyboard
+검사를 통과했다. 마지막 Node22 canonical 재pack은 설치 tar와 byte-identical임을 확인했다.
+
+이 checkpoint는 AT80의 공개 임시 간선 펼침·겹친 후보 keyboard 순환·tooltip과 전체077 완료를
+포함하지 않는다. 이어지는 Geo Text current-source 교집합과 간선 presentation은 별도 개념으로 진행한다.
