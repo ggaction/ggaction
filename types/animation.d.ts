@@ -18,9 +18,11 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
-/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, or completed-graph.
+/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, partition, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+      readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number }
   | { readonly kind: 'exit'; readonly sourceIndex: number }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;

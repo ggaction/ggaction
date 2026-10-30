@@ -898,11 +898,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 774,200 bytes |
-| `ggaction/basic` | 422,300 bytes |
+| `ggaction/basic` | 422,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 130,600 bytes |
-| `ggaction/animation` | 203,300 bytes |
+| `ggaction/animation` | 232,600 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4551,16 +4551,17 @@ appearance/plot origin/collection frame과 exact lineage admission을 소유한�
 `collectTransitionGraphics` 순회가 collection별 현재 frame과 삽입 위치를 제공하며 empty collection도
 독립 슬롯을 유지한다. Scene snapshot의 이 private metadata는 공개 scene schema를 바꾸지 않는다.
 Native Geo style/part topology와 `materializeFillItemsInPlot`은 기존 materialization owner에서 공유한다.
-이 준비값은 camera에 따라 새 part를 만드는 후속 sampler의 입력이며 실제 공개 planner 지원은 아니다.
+`animation/geoTracks`는 compatible source feature를 준비하고 `geoFrames`는 현재 native stream
+parts를 원 collection 순서로 방출한다. 현재 part는 endpoint에 없는 경우에도 실제 feature/role과
+lineage를 가진 닫힌 geographic decision을 사용한다. `sceneItemIdentity`가 native와 generated
+scene key를 공유하며 flat frame proof의 optional Geo state가 rebase/offline 검증에 재사용된다.
 
 Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/owner/logical feature key로
 닫힌다. 없는 endpoint scene index를 만들지 않고, offline clone에는 native program 권한을 주지 않는다.
 원 primitive와 source 의미가 다르면 명시 edited-geo-graphics fallback을 유지한다.
 
-이 private owner 추가 후 package 1,138 entries, unpacked7,370,195bytes, Node20/24 packed1,627,815bytes를
-실측하여 최소1,138/1,628,000/7,371,000 상한을 적용한다. 같은 현재 source의6entry bundle은
-3Node에서 동일 minified bytes이며 Full 최대774,129·animation192,107 gzip에 최소774,200/192,200을
-적용한다. 이는 설치 archive qualification이 아니며 최종 공개 Geo에서 same-tar 소비자를 별도 닫는다.
+정확한 지원·fallback 및 native authority 경계는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
 ### Cartesian animation meaning and geometry
 
 `materialization/animation/cartesian*`는 native final item/row identity와 실제 row/series owner를

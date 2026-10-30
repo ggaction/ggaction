@@ -1677,5 +1677,22 @@
         "statements": 3
       }
     ]
+  },
+  {
+    "file": "animation-geo.mjs",
+    "cases": [
+      {
+        "id": "animation-geo/offline-four-renderers",
+        "statements": 14
+      },
+      {
+        "id": "animation-geo/current-frame-interruption",
+        "statements": 9
+      },
+      {
+        "id": "animation-geo/immutable-failure",
+        "statements": 5
+      }
+    ]
   }
 ]

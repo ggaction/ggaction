@@ -24,10 +24,29 @@ export function geoAnimationItemKey(geometry, featureKey) {
   const [scope, owner] = JSON.parse(geometry.key);
   return JSON.stringify([scope, owner, "geo", [geometry.logicalId, featureKey]]);
 }
-export function geoAnimationFeatureOrigin(state, group, featureKey) {
+export function geoAnimationFeatureOrigin(state, group, featureKey, required = true) {
   const origin = nativeOrigins.get(state)?.[group]?.get(featureKey);
-  if (origin === undefined) throw new TypeError("Geo native origin requires an exact prepared feature.");
+  if (required && origin === undefined) throw new TypeError("Geo native origin requires an exact prepared feature.");
   return origin;
+}
+// Current meaning retains only exact native feature associations, never the
+// earlier plan or its sampled frame. Offline states carry no native authority.
+export function inheritGeoAnimationOrigins(state, source, groups) {
+  const origins = nativeOrigins.get(source);
+  if (origins === undefined) return state;
+  if (groups.length !== state.groups.length) throw new TypeError("Geo origin groups must follow current meaning.");
+  nativeOrigins.set(state, state.groups.map((group, index) => {
+    const previous = source.groups[groups[index]]?.presentation.geometry, current = group.presentation.geometry;
+    if (previous === undefined || previous.key !== current.key || !same(previous.binding, current.binding) || !same(previous.projection, current.projection)) throw new TypeError("Geo origin differs from its exact target resource.");
+    const result = new Map();
+    for (const feature of current.features) {
+      const origin = origins[groups[index]].get(feature.key);
+      if (origin === undefined || origin.itemKey !== geoAnimationItemKey(current, feature.key)) throw new TypeError("Geo origin lacks its exact feature key.");
+      result.set(feature.key, origin);
+    }
+    return result;
+  }));
+  return state;
 }
 function closed(input, keys, label) {
   ownRecord(input, label); rejectUnknownProperties(input, keys, label);
@@ -155,13 +174,14 @@ export function validateGeoAnimationPresentations(input, endpoint) {
   ownArray(state.groups, "Animation Geo groups"); ownArray(state.items, "Animation Geo items");
   validateGeneratedItemLimit(state.groups.length, "Animation Geo groups");
   if (state.items.length !== endpoint.scene.nodes.length) throw new TypeError("Geo items must follow every endpoint node.");
-  const owners = new Map(), expected = [], represented = state.groups.map(() => new Set()); let work = 0, points = 0, previous = -1;
+  const owners = new Map(), expected = [], featureKeys = [], represented = state.groups.map(() => new Set()); let work = 0, points = 0, previous = -1;
   for (const [index, group] of state.groups.entries()) {
     closed(group, ["presentation", "insertion", ...(Object.hasOwn(group, "reason") ? ["reason"] : [])], "Animation Geo group presentation");
     if (!Number.isSafeInteger(group.insertion) || group.insertion < 0 || group.insertion < previous || group.insertion > endpoint.scene.nodes.length) throw new TypeError("Geo group insertion must follow bounded endpoint drawing order.");
     previous = group.insertion;
     const presentation = normalizeGeoAnimationPresentation(group.presentation), key = presentation.geometry.key;
     if (owners.has(key)) throw new TypeError("Animation Geo owners must be unique."); owners.set(key, index);
+    featureKeys.push(new Set(presentation.geometry.features.map(feature => geoAnimationItemKey(presentation.geometry, feature.key))));
     if (Object.hasOwn(group, "reason") && group.reason !== "edited-geo-graphics") throw new TypeError("Unknown Geo group fallback reason.");
     const resolved = resolveGeoAnimationPresentation(presentation);
     validateWorkLimit(work += resolved.diagnostics.work, "Animation Geo state work");
@@ -171,7 +191,8 @@ export function validateGeoAnimationPresentations(input, endpoint) {
   for (const [index, item] of state.items.entries()) {
     const identity = endpoint.identities[index], owner = identity === undefined ? undefined : JSON.stringify(JSON.parse(identity.key).slice(0, 2));
     if (item === null) {
-      if (owners.has(owner)) throw new TypeError("Geo source identity requires its prepared item.");
+      const group = owners.get(owner);
+      if (group !== undefined && featureKeys[group].has(identity.key)) throw new TypeError("Geo source identity requires its prepared item.");
       continue;
     }
     closed(item, ["group", "key", "role", ...(Object.hasOwn(item, "reason") ? ["reason"] : [])], "Animation Geo item");

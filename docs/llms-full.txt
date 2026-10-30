@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:bfc2b4b4021359ff4267d0163e7792aa3137383ae3163e78805119e25ccdc6ff. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:27cdb19760efaa708249efff9e689fb9bf21c4e83cde821c12e7563cbd45851e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11139,6 +11139,27 @@ Guide-specific transitions remain outside this kernel.
 Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
+
+## Move geographic cameras
+
+Native Geo shape, point, line, and graticule items use their original geometry and
+resolved camera parameters. Sampling applies quaternion rotation, logarithmic positive
+scale, and translation through the same projection stream as native Geo marks.
+Horizon clips and seams may change the number of current parts. A source feature can
+be visible midway even when both endpoint scenes hide it.
+
+These current parts report a `geographic` decision with `kernel: 'native-geo'`,
+`ownerKey`, `itemKey`, and `role`. They have no fabricated endpoint indices. Exact
+endpoints preserve the original scene and graphics; current frames remain directly
+renderable, interruptible, and serializable with their actual source geometry.
+
+Incompatible projection policies, source geometry, winding, or appearance retain an
+explicit crossfade reason. Other compatible features of the same owner still move
+through the native camera. Current native hit testing uses each actual feature and
+resource lineage. Offline replay preserves pixels and semantic camera state without
+creating authority to interact with a native program. Camera-aware Geo labels and
+annotations, and activation of features visible only in an intermediate frame, remain
+separate integration work.
 
 ## Functions
 
@@ -37843,9 +37864,11 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
-/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, or completed-graph.
+/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, partition, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+      readonly itemKey: string; readonly role: string }
   | { readonly kind: 'enter'; readonly targetIndex: number }
   | { readonly kind: 'exit'; readonly sourceIndex: number }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
@@ -55667,7 +55690,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bfc2b4b4021359ff4267d0163e7792aa3137383ae3163e78805119e25ccdc6ff` |
+| Contract fingerprint | `sha256:27cdb19760efaa708249efff9e689fb9bf21c4e83cde821c12e7563cbd45851e` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

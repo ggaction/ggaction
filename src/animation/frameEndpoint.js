@@ -1,3 +1,4 @@
+import { validateGeoAnimationDecision } from "../grammar/animation/geoDecision.js";
 import { unavailablePolarAnimation } from "../grammar/animation/polarState.js";
 import { unavailableCartesianAnimation } from "../grammar/animation/cartesianState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
@@ -11,7 +12,7 @@ import { validateAnimationFallbackReason } from "./concrete.js";
 
 // Capture correspondence once while the authentic plan is available. No earlier
 // plan or sampled endpoint is retained by the resulting frame meaning.
-export function captureFrameMeaning(frame, plan, timeMs) {
+export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
   const progress = easeProgress(transitionProgress(timeMs, plan.durationMs), plan.easing);
   const side = progress === 0 ? "from" : progress === 1 ? "to" : undefined;
   const exact = side === undefined ? undefined : plan[side];
@@ -19,13 +20,15 @@ export function captureFrameMeaning(frame, plan, timeMs) {
   if (exact) { identities = exact.identities; backgrounds = exact.backgrounds; }
   else {
     if (frame.decisions.length !== frame.scene.nodes.length) throw new TypeError("Animation decisions must follow the exact sampled nodes.");
-    identities = frame.decisions.map(decision => {
+    identities = frame.decisions.map((decision, index) => {
+      if(decision.kind==="geographic"){const value=geographic[index];if(value===undefined)throw new TypeError("Geographic decision requires its actual generated identity.");validateGeoAnimationDecision(decision,value.identity);return value.identity;}
       const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
-      const index = decision.targetIndex ?? decision.sourceIndex;
-      if (endpoint.scene.nodes[index] === undefined) throw new TypeError("Animation decision requires an exact endpoint node.");
-      return endpoint.identities[index];
+      const originalIndex = decision.targetIndex ?? decision.sourceIndex;
+      if (endpoint.scene.nodes[originalIndex] === undefined) throw new TypeError("Animation decision requires an exact endpoint node.");
+      return endpoint.identities[originalIndex];
     });
     backgrounds = frame.decisions.flatMap((decision, index) => {
+      if(decision.kind==="geographic")return [];
       const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
       const original = decision.targetIndex ?? decision.sourceIndex;
       const background = endpoint.backgrounds.find(value => value.index === original);
@@ -36,7 +39,8 @@ export function captureFrameMeaning(frame, plan, timeMs) {
   const proof = animationPlanProvenance(plan);
   let native;
   if (proof?.from !== undefined && proof.to !== undefined) {
-    const nodes = exact ? proof[side].nodes : frame.decisions.map(decision => {
+    const nodes = exact ? proof[side].nodes : frame.decisions.map((decision,index) => {
+      if(decision.kind==="geographic"){const origin=geographic[index]?.origin;if(origin===undefined)throw new TypeError("Geographic hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze([origin])});}
       const origin = decision.kind === "exit" ? proof.from.nodes[decision.sourceIndex] : proof.to.nodes[decision.targetIndex];
       if (origin === undefined) throw new TypeError("Animation hit requires an exact native source.");
       if (decision.kind !== "crossfade") return origin;
@@ -55,7 +59,7 @@ export function captureFrameMeaning(frame, plan, timeMs) {
 export function prepareFrameEndpoint(frame, proof) {
   if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
   const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
-  return { endpoint: proof.endpoint, positions: cloneAndFreeze(positions), graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
+  return { endpoint: proof.endpoint, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }
 
 export function validateSampledEndpointMetadata(scene,identities,backgrounds,view) {
@@ -81,6 +85,7 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
   if(scene.nodes.length>0&&((view.progress===0||view.progress===1)!==(view.decisions.length===0)))throw new TypeError("Sampled decisions disagree with endpoint progress.");
   for(const [index,decision]of view.decisions.entries()){
     ownRecord(decision,"Sampled decision");
+    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!["circle","path"].includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
     const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;
     const identityFields=Object.hasOwn(decision,"itemKey")?["itemKey","role"]:["owner","role"];
     const fields=singular?["kind",singular]:["kind","sourceIndex","targetIndex",...identityFields,

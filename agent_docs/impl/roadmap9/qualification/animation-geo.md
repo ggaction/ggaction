@@ -103,3 +103,66 @@ Native Geo renderer8개 통과, pattern4backend1개는 기존 fixture의 depende
 처음 실패했다. 실제 Chromium에서 geographic-math bare import 오류를 확인해 canonical
 startStaticServer의 repository dependency mode만 설정했고1/1 재검증했다. 원 실패는 보존한다.
 Public sampler·현재 hit·offline 재기준은 후행으로 남는다.
+
+### 동적 sampler 연결 계약
+
+`AUTHORIZATION.json#remainingApproval`와 root의 2026-10-30 구체안 확인을 재사용한다.
+공개 함수 추가 없이 기존 plan/sample/export/restore에 optional Geo prepared state를 연결한다.
+`animation/geoTracks`는 scoped owner별 camera와 호환 feature를 준비하고 native stream/paint owner로
+현재 part를 계산한다. 같은 feature의 part 개수·role 변화는 endpoint index로 위장하지 않는다.
+동적 decision은 정확 `{kind:'geographic',kernel:'native-geo',ownerKey,itemKey,role}`이며, 각 part의
+실제 resource lineage/토폴로지는 prepared presentation의 계산 결과가 소유한다. 원 endpoint의
+indices와 matching decision은 기존 owner에 남긴다.
+
+원 geometry 또는 source appearance가 다른 feature는 명시 이유의 concrete fallback이다. 같은
+owner의 다른 호환 feature는 계속 typed camera 경로를 사용한다. 화면 밖 호환 feature도 현재
+의미 state에 유지한다. 대상 collection의 실제 순서와 feature 순서를 사용해 새 조각을 삽입하고,
+재등장·seam split 때문에 없는 endpoint scene index를 생성하지 않는다. t0/t1은 원 scene/graphics와
+captured frame 참조를 그대로 반환한다.
+
+현재 Geo state는 owned/frozen 단일 객체로 flat proof에 유지된다. native origin은 해당 state의
+private WeakMap에서 실제 program/child IDs/owner/key만 유지하며 과거 plan을 보존하지 않는다.
+복원 state에는 native 프로그램 권한이 생기지 않는다. 생성된 identity/decision/현재 의미값의
+closed 검산과 기존 work/part/JSON 한도를 restore에도 적용한다. labels/annotation typed geometry,
+양 끝 hidden feature의 keyboard/click activation, 전체 corpus/최종 release는 별도 미완료 의무다.
+
+### Public dynamic sampling and bounded frame batches
+
+The shared planner now preserves all existing point/graph/Cartesian/partition/polar vectors and
+adds optional Geo meaning without a new public function. `geoTracks` prepares compatible source
+features; `geoFrames` emits only actual current native stream parts at explicit collection slots.
+The `geographic` decision is closed over actual owner/item/role and never invents endpoint indices.
+Current scene keys reuse `sceneSnapshot.sceneItemIdentity`. Current Geo state retains original
+source geometry, exact target refs, camera and static appearance once; native WeakMap associations
+are transferred by exact target feature and no earlier plan is retained. Offline states have no
+native source authority. D activation separately verifies each native revision and intersects
+actual child scope/owner/resource kind+id/typed feature key rather than rewriting target lineage.
+
+Each sample keeps the existing generated part/node and cumulative geographic stream work limits.
+`exportAnimationFrames` additionally charges the actual sampled node counts against the existing
+work limit, because endpoint counts cannot bound a newly visible middle feature. A private batch
+collector publishes no partial output. Literal 10M/10M+1 cumulative tests and a public both-hidden
+10,001-part sample rejection prove the two different limits. Existing floors remain 95/90/100.
+
+The first full realistic run compared exact floating coordinates to arithmetic geometric-mean
+literals; all differences were floating rounding (up to about 6e-11). The owning assertion now uses
+relative 1e-12 numeric tolerance for the independent midpoint oracle while requiring exact keys,
+roles, order, property fields and replay bytes. Planar observed coordinates use pan without scale
+change so the cohort remains in view; the spherical recipes independently exercise log scale.
+Original logs are preserved. Final Current/docs keep typed Geo labels/annotations and session
+activation integration as pending until their corresponding owners are actually connected.
+
+First public source checkpoint evidence (before D activation merge and final installed archive):
+- `geo-shared-owning.log`: 479/479 animation + Geo tests; later new public fixture3 and body9 pass.
+- `animation-geo-public/coverage.log`: 264/264; all 11 measured changed owners pass unchanged
+  95/90/100 floors, aggregate 100/95.99/100. This is focused coverage, not repository coverage.
+- `geo-render-1.log`:4 PNG/PDF pairs; `geo-browser-1.log`: Canvas/SVG,4 variants,DPR1/2.
+- `geo-realistic-2.log`: canonical pinned5 sources×3 recipes + coverage assertion16/16.
+- `contracts.log`:38/39; only new realistic inventory60 vs59 failed. Owning19/19 repaired count
+  plus explicit new file assertion. No runtime changes were needed for that repair.
+- Source bundle Node22/20 measured animation231,453/232,505, Basic421,415/422,318.
+  Minimum rounded ceilings232,600/422,400; all other existing ceilings preserved.
+- Source package Node22/20:1,155 entries/unpacked7,492,933; packed1,654,055/1,656,720.
+  Minimum package ceilings1,155/1,657,000/7,493,000. These source measurements do not claim
+  installed consumers. Final same-tar Node20/22/24, source-pin docs and D actual activation
+  remain required after its stable source is combined.

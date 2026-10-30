@@ -76,6 +76,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-polar-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-transitions.test.js"
       }
     ],
     "architecture": [

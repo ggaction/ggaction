@@ -179,3 +179,30 @@ completed/cancelled/interrupted/disposed 이유와 timeMs/iteration으로 settle
 읽고 network0에서 같은시각의scene/SVG/PNG/Canvas를 비교한다. renderer/browser와설치
 검사는 동일 frame을공개renderer에직접전달하며 privatecompilerimport를 요구하지 않는다.
 모든 typedfamily의 의미별보간이나 전체roadmap완료를 뜻하지 않는다.
+
+## Geographic camera frames
+
+동일 scoped Geo owner와 typed feature key의 shape/point/line/graticule은 `native-geo` camera
+kernel을 사용한다. 원 geographic/planar geometry, polygon winding, mode, exact resource ref와
+해결된 camera parameters를 한 번 준비한다. Quaternion 최단 회전, positive scale의 log 보간,
+translation 및 CSS point radius를 기존 camera/value owner로 계산한 후 native projection stream을
+다시 실행한다. Pixel 역산이나 endpoint path command의 단순 보간을 하지 않는다.
+
+중간 clip/horizon/seam 때문에 endpoint에 없던 feature 또는 part가 나타날 수 있다. 이 경우
+`{kind:'geographic',kernel:'native-geo',ownerKey,itemKey,role}` decision을 사용하며 가짜
+`sourceIndex`/`targetIndex`를 만들지 않는다. 실제 현재 geometry와 native item identity를
+같은 순서로 만들고 native scene key 규칙을 재사용한다. 정확 t0/t1은 원 scene/graphicSpec을
+그대로 반환한다. Hidden source도 명시 collection slot에 보존하여 drawing order를 유지한다.
+
+Projection type·static clip/parameter·binding·원 geometry/winding·source paint 정책이 다른
+feature는 명시 reason의 concrete crossfade다. 같은 owner의 다른 호환 feature는 typed camera
+경로를 유지한다. 변경되는 structured paint 보간은 지원하지 않지만 동일 paint의 현재 geometry
+bounds는 기존 materializer로 계산한다. Primitive 직접 편집도 `edited-geo-graphics`로 구분한다.
+
+현재 프레임은 실제 prepared geometry/camera/style와 target exact resource lineage를 flat private
+proof에 유지한다. 양방향 rebase와 offline 저장은 같은 상태를 소비하며 이전 plan을 보유하지
+않는다. Optional endpoint `geos`와 `native-geo-camera@1`을 저장하고 closed shape, feature/part,
+forward geometry, order, work bounds 및 version을 재검증한다. Native hit는 실제 target program의
+childPath/owner/source feature를 검증한다. Offline payload는 native program 권한을 만들지 않는다.
+Geo labels/annotation의 camera-aware typed 이동과 session의 중간-only feature activation은 별도
+통합 의무이며 이 Geo body 경로의 완료로 간주하지 않는다.

@@ -14,6 +14,8 @@ import { projectGeometry } from "../geo/stream.js";
 import { interpolateNumber } from "./values.js";
 
 export const ANIMATION_GEO_VERSION = "native-geo-camera@1";
+const fallbackReasons = new Set(["geo-identity", "geo-binding", "geo-feature-topology", "geo-feature-geometry", "edited-geo-graphics", "projection-type", "projection-parameters"]);
+export const isGeoAnimationFallbackReason = reason => fallbackReasons.has(reason);
 const plans = new WeakSet();
 const equal = (a, b) => canonicalJSON(a) === canonicalJSON(b);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });

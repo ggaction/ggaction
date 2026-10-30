@@ -3,6 +3,9 @@ import { cloneAndFreeze } from "./core/immutable.js";
 import { contentDigest } from "./core/contentDigest.js";
 
 const snapshots = new WeakMap();
+export function sceneItemIdentity(identity) {
+  return { key: contentDigest(JSON.stringify([identity.key, identity.role])), topology: identity.topology };
+}
 export function sceneIdentities(graphicSpec) {
   const result = new Map(), token = value => contentDigest(JSON.stringify(value));
   for (const [id, object] of Object.entries(graphicSpec.objects)) {
@@ -12,7 +15,7 @@ export function sceneIdentities(graphicSpec) {
       const identity = item.identity;
       result.set(item.id, identity === undefined ? {
         key: token([id, object.type === "text" ? item.properties.text : item.id]), topology: ""
-      } : { key: token([identity.key, identity.role]), topology: identity.topology });
+      } : sceneItemIdentity(identity));
     }
   }
   return result;

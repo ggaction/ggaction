@@ -121,6 +121,27 @@ Current angles stay unwrapped when a frame is reused as an endpoint. Offline rep
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
 
+## Move geographic cameras
+
+Native Geo shape, point, line, and graticule items use their original geometry and
+resolved camera parameters. Sampling applies quaternion rotation, logarithmic positive
+scale, and translation through the same projection stream as native Geo marks.
+Horizon clips and seams may change the number of current parts. A source feature can
+be visible midway even when both endpoint scenes hide it.
+
+These current parts report a `geographic` decision with `kernel: 'native-geo'`,
+`ownerKey`, `itemKey`, and `role`. They have no fabricated endpoint indices. Exact
+endpoints preserve the original scene and graphics; current frames remain directly
+renderable, interruptible, and serializable with their actual source geometry.
+
+Incompatible projection policies, source geometry, winding, or appearance retain an
+explicit crossfade reason. Other compatible features of the same owner still move
+through the native camera. Current native hit testing uses each actual feature and
+resource lineage. Offline replay preserves pixels and semantic camera state without
+creating authority to interact with a native program. Camera-aware Geo labels and
+annotations, and activation of features visible only in an intermediate frame, remain
+separate integration work.
+
 ## Functions
 
 | Function | Result and behavior |

@@ -6,10 +6,10 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 774_200, // Combined Cartesian and graph preparation: Node20 774,093 gzip bytes.
-  "ggaction/basic": 422_300, // Shared native aggregate geometry: Node20 422,288 gzip bytes.
+  "ggaction/basic": 422_400, // Shared native aggregate geometry: Node20 422,288 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 203_300, // Cartesian/graph typed preparation and flat frame proof: Node20 200,273 gzip bytes.
+  "ggaction/animation": 232_600, // Current native Geo stream, dynamic parts and all typed families: Node20 232,505 gzip bytes.
   "ggaction/interaction": 130_600 // Shared admission and bounded native preparation work: Node20 128,607.
 });
 

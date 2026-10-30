@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:bfc2b4b4021359ff4267d0163e7792aa3137383ae3163e78805119e25ccdc6ff",
+    "contractId": "sha256:27cdb19760efaa708249efff9e689fb9bf21c4e83cde821c12e7563cbd45851e",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1291,13 +1291,14 @@
         "move-cartesian-shapes-and-series",
         "bend-an-icicle-into-a-sunburst",
         "move-native-polar-shapes",
+        "move-geographic-cameras",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 13210,
-      "sha256": "8f77988321269771a40031b427a13c80773bb7b3c74170d48f5477c505655700"
+      "bytes": 14486,
+      "sha256": "fcfa6f22d711ff80ab5778d224e1ec5a4d39e7702c5aa3ee12a8a4fbdf6d76ac"
     },
     {
       "order": 77,
@@ -2641,8 +2642,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 79662,
-      "sha256": "785b4555d8e1391e49fc3d28450f10ca189d35f04a1346d8857c2bf9376f80ce"
+      "bytes": 79822,
+      "sha256": "48d13bdb8947c76c35aa2b51a31d79f8d3206693b38cacfe0682d5b5007fec67"
     },
     {
       "order": 132,
@@ -3952,7 +3953,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "fdab5ec1b02ce3c4bc2211c297ade1d55d024e65896577dbfde90d59706ab18f"
+      "sha256": "c23d087dcc47b1bcbfd784de27d6dc528297ec085f8c5a0e0da2cb4acfe6d54f"
     },
     {
       "order": 156,
