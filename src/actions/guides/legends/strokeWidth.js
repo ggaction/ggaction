@@ -1,3 +1,4 @@
+import { assertLegendBoundsInsideCanvas, resolveContinuousBounds, resolveLegendBackgroundFromBounds, formatContinuousValues } from "../../../materialization/guides/legendLayout.js";
 import {validateLegendClip} from "../../../grammar/legendClip.js";
 import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
 import { intrinsicLegendConfig } from "../../../materialization/legendGroups.js";
@@ -12,19 +13,7 @@ import { resolveLegendGraphicPlacement } from
 import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { DEFAULT_COLORS } from
   "../../../theme/defaults.js";
-import {
-  ITEM_LEGEND_LABELS as STROKE_WIDTH_LEGEND_LABELS,
-  ITEM_LEGEND_TITLE_STYLE as STROKE_WIDTH_LEGEND_TITLE_STYLE,
-  normalizeItemLegendConfig,
-  ITEM_LEGEND_OPTIONS as OPTIONS,
-  assertLegendBoundsInsideCanvas,
-  materializeItemLegend,
-  createItemLegendGraphics,
-  resolveContinuousBounds,
-  resolveLegendBackgroundFromBounds,
-  formatContinuousValues,
-  selectLegendLayer
-} from "./continuous/common.js";
+import { ITEM_LEGEND_LABELS as STROKE_WIDTH_LEGEND_LABELS, ITEM_LEGEND_TITLE_STYLE as STROKE_WIDTH_LEGEND_TITLE_STYLE, normalizeItemLegendConfig, ITEM_LEGEND_OPTIONS as OPTIONS, materializeItemLegend, createItemLegendGraphics, selectLegendLayer } from "./continuous/common.js";
 import { normalizeLegendSampling, resolveLegendSampleValues } from "../../../grammar/legendSampling.js";
 import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
 

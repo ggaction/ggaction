@@ -1,0 +1,66 @@
+{
+  "status": "verified-native-legend-preparation",
+  "base": "d2574190e",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "storedShapeChanged": false,
+  "typedLegendPublished": false,
+  "checks": {
+    "owning": 570,
+    "criticalOwners": 4,
+    "aggregateCoverage": {
+      "lines": 98.57,
+      "branches": 95.55,
+      "functions": 100
+    },
+    "exactPublicVariantEquality": 10,
+    "boundariesDiscovery": 16,
+    "packageDocumentation": 10,
+    "actualData": {
+      "tests": 4,
+      "datasets": 3,
+      "repetitions": 5,
+      "durationMs": 10026.87075
+    },
+    "installedNode22": {
+      "runtime": 5,
+      "bundles": 6,
+      "archive": "e23aacbac3662bf48bb8da1e4e6575c47b871f238ff74232e867cfb056fd17f9"
+    },
+    "sourceNode20_24": {
+      "each": 5
+    },
+    "package3Node": {
+      "entries": 1174,
+      "maximumPacked": 1675847,
+      "unpacked": 7564602,
+      "limitChange": "Only entries1170\u21921174; packed/unpacked/browser limits unchanged. Moved native code keeps its existing canonical source compaction."
+    }
+  },
+  "remaining": [
+    "native legend strict prepared state and sampled geometry",
+    "current-frame/offline/render qualification for the new legend state",
+    "axis reflow and inferred title ink dependency",
+    "final combined qualification"
+  ],
+  "inputHashes": {
+    "src/actions/guides/legends/categorical/actions.js": "4234f78e7a222c0646f72af80df0a68d6ed29303d40ac09e5bcdaf033f72f5dd",
+    "src/actions/guides/legends/categorical/layout.js": "a01b289050d59d6402cc710b6b298a66f8862651926b486f1e59b878a1a8b720",
+    "src/actions/guides/legends/colorSize.js": "cc1df5424b2e18f5fa6c876987636025d637687533ad6c1c071085ad30da4cf7",
+    "src/actions/guides/legends/continuous/colorSymbols.js": "3f826118bf81edcd76246b54c856c58dc34fa30d298e338b89ac7cd34d94d745",
+    "src/actions/guides/legends/continuous/common.js": "9be5775dfce79e06aeec8ce57183222874a60760d1930e87e79d498295f5b3ae",
+    "src/actions/guides/legends/continuous/gradient.js": "ed605b0195c56b113f9cca064df4b3b64fc597bb3e904454029e12aea00813d2",
+    "src/actions/guides/legends/continuous/interval.js": "c98d4fd5fc4a82329a6dabf21c9aa65bca285f190c207fdeb7223e48538685cc",
+    "src/actions/guides/legends/continuous/opacity.js": "4bbfe6c37497214ba98ab315418de924be71924924f73f8a2ebb47b7682e271a",
+    "src/actions/guides/legends/edit.js": "156f38df0168241b6b3ba9a5fd71ad9dadf7f544abbe78248d4e262028f288cc",
+    "src/actions/guides/legends/lane.js": "eeed8af2f1cf364f10793c365e45fd64bf6b6bf398d1b8a86f0e265562b884d8",
+    "src/actions/guides/legends/size.js": "266b729925ca25f92761cb281577ba99996fa500194e70e945d4ee925eef04aa",
+    "src/actions/guides/legends/strokeWidth.js": "a6d596cfbd918a7b2b9118cb3889f9e41b4303b73f718544d292943a05e5478d",
+    "src/interaction/hitLegends.js": "b7c7fec6813df106f888c706b01c2506ffe215343044028376c5214e84e0282b",
+    "src/materialization/guides/legendConfig.js": "899b386f66e8cff1c7670959fa1bdd4d5738891f6054f45b1d64a53503a14bcc",
+    "src/materialization/guides/legendGradient.js": "d4271e8dfaf425713ab9fdc87da813518274c6b4b1f3825a7b345d9c0f9e43ff",
+    "src/materialization/guides/legendItems.js": "b504a73df59c6c7f07eea28266ce3df5698d997db60a920ebf5c27faf63ffe04",
+    "src/materialization/guides/legendLayout.js": "fedbd215dcba81df48aadc33f4ca6b510d4b4584990b39ded0a14c3f6c92606c",
+    "src/materialization/guides/legendSamples.js": "365add696ebb5b70e4266d97e10e6c272c6c5017abb7b1e44db161c20a1686f2"
+  }
+}

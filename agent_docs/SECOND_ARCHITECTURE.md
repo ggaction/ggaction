@@ -4637,6 +4637,8 @@ Strict transition version2/appearance kernel manifest가 저장·복원의 계�
 `grammar/legendSampling`은 native quantitative sample의 정규화·scale validation·정확한 값 선택을
 소유한다. `materialization/guides/legendConfig`는 명시 block override와 categorical owner 조회·
 표시 label 선택을 소유하며, wrapped legend action과 hit metadata가 같은 읽기 전용 함수를 쓴다.
-이 추출은 action·trace·materialization 순서를 바꾸지 않는다. Native size/color-size/gradient의
-layout 계산과 animation의 준비된 legend 의미 연결은 별도 책임이며 final pixel 차이를 의미값으로
-추정하지 않는다. 공개 signature·저장 shape·renderer 경계는 유지한다.
+`materialization/guides/legendLayout`, `legendSamples`, `legendGradient`는 native size/color-size/gradient의
+읽기 전용 layout 계산을 소유한다. `legendItems`는 raw category·interval·sample/title/summary와
+exact graphic item 역할을 연결하며 hit가 이를 재사용한다. 이 추출은 action·trace·materialization
+순서를 바꾸지 않는다. Animation의 준비된 legend 의미 연결은 별도 책임이며 final pixel 차이를
+의미값으로 추정하지 않는다. 공개 signature·저장 shape·renderer 경계는 유지한다.

@@ -1,41 +1,25 @@
-import{validateLegendClip,clippedSampleBounds}from"../../../grammar/legendClip.js";
+
+import { resolveSizeLegendLayout, requireSizeLegendScale } from "../../../materialization/guides/legendSamples.js";
+
 import{hasLegendClipGraphics}from"../../../materialization/legendClip.js";
-import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
-import { intrinsicLegendConfig, legendGroup } from "../../../materialization/legendGroups.js";
-import { formatVisibleText } from "../../../core/textMetrics.js";
+
+
+
 import { action, closedAction } from "../../../core/action.js";
 import {
   validateKeys
 } from "../../../core/validation.js";
-import {
-  formatDiscretizedIntervals,
-  isDiscreteSizeScaleType,
-  isEnumeratedSizeScaleType,
-  isSizeScaleType,
-  mapSizeValues
-} from "../../../grammar/scales/index.js";
-import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
+import { isEnumeratedSizeScaleType } from "../../../grammar/scales/index.js";
+
 import { DEFAULT_COLORS } from
   "../../../theme/defaults.js";
 import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import {
-  ITEM_LEGEND_LABELS as SIZE_LEGEND_LABELS,
-  ITEM_LEGEND_TITLE_STYLE as SIZE_LEGEND_TITLE_STYLE,
-  normalizeItemLegendConfig,
-  ITEM_LEGEND_OPTIONS as SIZE_OPTIONS,
-  assertLegendBoundsInsideCanvas,
-  materializeItemLegend,
-  createItemLegendGraphics,
-  resolveContinuousBounds,
-  resolveLegendBackgroundFromBounds,
-  formatContinuousValues,
-  selectLegendLayer
-} from "./continuous/common.js";
+import { ITEM_LEGEND_LABELS as SIZE_LEGEND_LABELS, ITEM_LEGEND_TITLE_STYLE as SIZE_LEGEND_TITLE_STYLE, normalizeItemLegendConfig, ITEM_LEGEND_OPTIONS as SIZE_OPTIONS, materializeItemLegend, createItemLegendGraphics, selectLegendLayer } from "./continuous/common.js";
 import { legendResourcePolicies } from "../../../materialization/guides/resources.js";
-import { normalizeLegendSampling, readLegendSampling, resolveLegendSampleValues } from "../../../grammar/legendSampling.js";
-import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
+import { normalizeLegendSampling } from "../../../grammar/legendSampling.js";
+
 import { normalizeLegendOverflow } from "./categorical/options.js";
 
 
@@ -59,106 +43,6 @@ export function resolveSizeLegendPoint(program, requested) {
   return layer;
 }
 
-function requireScale(program, id) {
-  const scale = program.resolvedScales[id];
-  if (!isSizeScaleType(scale?.type)) {
-    throw new Error(`Legend requires resolved size scale "${id}".`);
-  }
-  return scale;
-}
-
-export function resolveSizeLegendLayout(program, config) {
-  validateLegendClip("size",config);
-  config = intrinsicLegendConfig(program, config);
-  const scale = requireScale(program, config.scale);
-  const categorical = [
-    program.guideConfigs.legend?.series,
-    program.guideConfigs.legend?.color,
-    program.guideConfigs.legend?.stroke
-  ]
-    .find(candidate => candidate?.target === config.target);
-  const inherit = config.inheritAppearance === true && categorical !== undefined;
-  const inheritedLabels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
-  const inheritedTitleStyle = inherit ? categorical.titleStyle : config.titleStyle;
-  const effective = resolveEffectiveLegendBlockConfig(program, "size", {
-    ...config,
-    labels: inheritedLabels,
-    titleStyle: inheritedTitleStyle
-  });
-  const labels = effective.labels;
-  const titleStyle = effective.titleStyle;
-  // Group ownership replaces placement inheritance, never shared typography.
-  const placementCategorical = config.blockLocalPosition === undefined && legendGroup(program, config.target) === undefined &&
-    (config.inheritPosition !== false || categorical?.position === config.position)
-    ? categorical : undefined;
-  const position = placementCategorical?.position ?? config.position;
-  if (placementCategorical?.layout === "legacy-bottom") {
-    throw new Error('Combined size legends require layout "edge".');
-  }
-  const horizontal = placementCategorical !== undefined && ["top", "bottom"].includes(position);
-  const geometry = horizontal ? {
-    position, align: categorical.align, direction: categorical.direction,
-    columns: categorical.columns, titlePosition: categorical.titlePosition,
-    offset: categorical.offset, itemGap: effective.blockGap ?? categorical.itemGap
-  } : { position };
-  const ordinalSize = scale.type === "ordinal";
-  if (ordinalSize && config.labels.format !== undefined && config.labels.format !== "auto") {
-    throw new Error("Categorical size legends retain original category labels.");
-  }
-  const discrete = isDiscreteSizeScaleType(scale.type);
-  if ((discrete || ordinalSize) && readLegendSampling(config).mode === "values") {
-    throw new Error("Discrete size legends do not support exact values.");
-  }
-  const allValues = discrete
-    ? undefined
-    : ordinalSize ? scale.domain : resolveLegendSampleValues(effective, scale, "Size legend");
-  const hiddenCount = ordinalSize && effective.overflow &&
-    allValues.length > effective.overflow.maxItems
-    ? allValues.length - effective.overflow.maxItems
-    : 0;
-  const values = hiddenCount > 0
-    ? allValues.slice(0, effective.overflow.maxItems)
-    : allValues;
-  const areas = discrete
-    ? scale.range
-    : mapSizeValues(values, scale);
-  const radii = areas.map(area => Math.sqrt(area / Math.PI));
-  const radius = Math.max(...radii);
-  const width = Math.max(32, radius * 2);
-  const { plot, canvas } = resolveContinuousBounds(program);
-  const itemText = discrete
-    ? formatDiscretizedIntervals(scale.thresholds, config.labels.format)
-    : ordinalSize ? values.map(formatVisibleText) : formatContinuousValues(
-        values,
-        scale.domain,
-        "quantitative",
-        config.labels.format
-      );
-  const mappedText = !discrete && effective.labelMap !== undefined
-    ? itemText.map((label, index) => resolveDisplayLabel(values[index], effective.labelMap, () => label))
-    : itemText;
-  const text = hiddenCount > 0 ? [...mappedText, `…${hiddenCount} entries`] : mappedText;
-  const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
-  const symbolExtent = symbolStroke / 2;
-  const sampleWidth = width + symbolStroke;
-  const layout = resolveLegendItemLayout(plot, { ...effective, ...geometry, labels, titleStyle }, text, {
-    width: sampleWidth, height: Math.min(radius * 2 + symbolStroke, effective.clipHeight??Infinity),
-    itemBounds: radii.map(r => clippedSampleBounds({
-      left: sampleWidth / 2 - r - symbolExtent,
-      right: sampleWidth / 2 + r + symbolExtent,
-      top: -r - symbolExtent,
-      bottom: r + symbolExtent
-    },effective.clipHeight))
-  }, undefined, program.materializationConfigs.textMetrics);
-  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
-  const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
-  return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
-    symbolY: layout.itemY.slice(0, radii.length), radii, text, values, hiddenCount,
-    ...(effective.labelMap === undefined ? {} : {
-      labelItemIndices: text.flatMap((label, index) => label === "" ? [] : [index])
-    }), labels, titleStyle, background, config: effective };
-}
-
 export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
   {
     op: "rematerializeSizeLegend",
@@ -173,7 +57,7 @@ export const rematerializeSizeLegend = /* @__PURE__ */ closedAction(
     if (encoding?.scale === undefined) {
       throw new Error("Size legend target requires a size encoding.");
     }
-    const scale = requireScale(this, encoding.scale);
+    const scale = requireSizeLegendScale(this, encoding.scale);
     const title = config.inferredTitle === true ? encoding.field : config.title;
     const currentConfig = {
       ...config,
@@ -206,7 +90,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
   if (encoding?.scale === undefined) {
     throw new Error(`Point mark "${layer.id}" requires a size encoding.`);
   }
-  const scale = requireScale(program, encoding.scale);
+  const scale = requireSizeLegendScale(program, encoding.scale);
   const discrete = isEnumeratedSizeScaleType(scale.type);
   if (args.overflow !== undefined && scale.type !== "ordinal") {
     throw new Error("Size legend overflow requires an ordinal scale.");

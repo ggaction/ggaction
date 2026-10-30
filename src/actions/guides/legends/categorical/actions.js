@@ -1,5 +1,6 @@
+import { resolveColorSizeLayout } from "../../../../materialization/guides/legendSamples.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
-import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend,resolveColorSizeLayout} from "../colorSize.js";
+import { resolveColorSizeConfig, createColorSizeLegendFromConfig, materializeColorSizeLegend } from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
@@ -13,7 +14,7 @@ import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout } from "./layout.js";
-import { resolveCategoricalLegendConfig as activeConfig } from "../../../../materialization/guides/legendConfig.js";
+
 import { normalizeOptions } from "./options.js";
 import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";

@@ -145,3 +145,18 @@ Label reflow는 이미 준비된 wrapping/측정값을 native measured placement
 새 공개 typed 지원이나 qualifier 통과로 집계하지 않는다.
 
 범례 값·label 첫 추출의 source/설치/실제자료 근거는 [owner 증거](legend-owner-evidence/README.md)에 기록한다.
+
+## 범례 native layout과 item 대응 owner
+
+후속 추출은 `materialization/guides/legendLayout`, `legendSamples`, `legendGradient`로 기존
+크기·색상/크기·gradient의 read-only 계산을 옮겼다. 원 action은 같은 함수를 명시적으로 호출하고
+trace와 graphical write 순서는 유지한다. `legendItems`는 같은 native layout 결과에서 typed
+raw value/interval endpoints·symbol layer role·title/summary·exact graphic ID를 읽는다. Hit는
+이 owner를 사용하므로 범례 관련 action 역방향 import 예외가 모두 없어졌다. Clip 안의 glyph와
+line/point/swatch 대응도 원 `legendSampleGraphicGroups`를 사용한다.
+
+이 단계의 공개 signature와 저장형식은 그대로다. 후속 typed state는 pure 축/anchor의
+`grammar/animation/guideState`를 유지하고 native layout/정확 측정치를 사용하는 materialization
+owner로 분리한다. `guideTracks`의 validate/prepare/sample wrapper를 통해 같은 semantic-guide
+seam을 사용하며 root의 v3 sampler에는 import만 좁게 연결한다. Endpoint program이나 전체
+font profile을 저장하지 않고 필요한 측정과 semantic owner/값·배치 정책만 strict proof로 보존한다.

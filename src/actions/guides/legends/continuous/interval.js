@@ -1,3 +1,4 @@
+import { assertLegendBoundsInsideCanvas, resolveContinuousBounds, resolveLegendBackgroundFromBounds } from "../../../../materialization/guides/legendLayout.js";
 import { legendThemeGap } from "../../../theme/state.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
@@ -11,22 +12,7 @@ import {
 import { formatDiscretizedIntervals } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
-import {
-  assertLegendBoundsInsideCanvas,
-  editGraphicProperties,
-  editLegendBackground,
-  normalizeInitialLegendTitle,
-  normalizeLegendBorder,
-  normalizeItemLegendLayout,
-  normalizeLegendTextOptions,
-  normalizeLegendTitleOptions,
-  resolveContinuousBounds,
-  resolveContinuousColorLayer,
-  resolveLegendBackgroundFromBounds,
-  styleContinuousText,
-  validateNonNegative,
-  validatePositive
-} from "./common.js";
+import { editGraphicProperties, editLegendBackground, normalizeInitialLegendTitle, normalizeLegendBorder, normalizeItemLegendLayout, normalizeLegendTextOptions, normalizeLegendTitleOptions, resolveContinuousColorLayer, styleContinuousText, validateNonNegative, validatePositive } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";

@@ -1,3 +1,4 @@
+import { assertLegendBoundsInsideCanvas, resolveContinuousBounds, resolveLegendBackgroundFromBounds } from "../../../../materialization/guides/legendLayout.js";
 import { categoricalLegendLabels } from "../../../../materialization/guides/legendConfig.js";
 import { CATEGORICAL_LEGEND_KINDS } from "../../../../grammar/legendBlocks.js";
 import { themePatternForValues } from "../../../theme/palettes.js";
@@ -12,11 +13,7 @@ import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.
 import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
-import {
-  assertLegendBoundsInsideCanvas,
-  resolveContinuousBounds,
-  resolveLegendBackgroundFromBounds
-} from "../continuous/common.js";
+
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
