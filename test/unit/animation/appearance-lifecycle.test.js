@@ -17,7 +17,7 @@ const circle = frame => frame.scene.nodes.find(node => node.type === 'circle');
 test('public solid style and geometry share a versioned current frame with exact native endpoints', () => {
   for (const mode of ['gamma', 'alpha', 'rebased']) {
     const { from, to, plan: prepared, frame } = animationAppearanceFrame(mode);
-    assert.equal(prepared.version, 2);
+    assert.equal(prepared.version, 3);
     const color = parsePaintColor(circle(frame).properties.fill);
     if (mode === 'alpha') { close(color.r, 1); close(color.g, 0); close(color.a, .5); }
     else { close(color.r, mode === 'rebased' ? .8808250210902997 : .7353569830524495); close(color.a, 1); }

@@ -11,8 +11,9 @@ import { partitionTrackSamples, samplePartitionTrack, partitionFrameCollector, p
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
-import { transitionProgress,easeProgress,interpolateNumber } from "../grammar/animation/values.js";
-import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts } from "./planner.js";
+import { transitionSampleState,interpolateNumber } from "../grammar/animation/values.js";
+import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame, transitionGraphs, transitionCartesian, transitionPartitions, transitionPolars, transitionGeos, transitionGuides, transitionGeoTexts, transitionTimeline, transitionOwners } from "./planner.js";
+import { sampleTransitionTimeline } from "./timelineSample.js";
 import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
 import { captureFrameMeaning } from "./frameEndpoint.js";
@@ -21,30 +22,31 @@ import { canvasSceneProgram } from "../renderers/canvasScene.js";
 import { graphTrackSamples, sampleGraphTrack, graphFrameCollector } from "./graphTracks.js";
 
 export function sampleTransition(input,timeMs) {
-  const plan=requireTransitionPlan(input),progress=easeProgress(transitionProgress(timeMs,plan.durationMs),plan.easing);
+  const plan=requireTransitionPlan(input),{progress,side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
+  const timeline=sampleTransitionTimeline(transitionTimeline(plan),timeMs,progress),owners=transitionOwners(plan);
   const decisions=[],geographic=[];
   const geoState=transitionGeos(plan);
   const geoTextState=transitionGeoTexts(plan);
   const guideState=transitionGuides(plan);
   const polarState=transitionPolars(plan);
   const cartesianState=transitionCartesian(plan);
-  const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress),graphFrame=graphFrameCollector();
-  const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress),partitionFrame=partitionFrameCollector();
+  const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress,timeline.progress),graphFrame=graphFrameCollector();
+  const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress,timeline.progress),partitionFrame=partitionFrameCollector();
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
   const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,meaning:captureFrameMeaning(frame,plan,timeMs,geographic)}):frame;
   const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
   const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
   const meaning=position=>position.reason?null:position;
-  if(progress===0||progress===1){
-    const side=progress===0?"from":"to",endpoint=plan[side],frame=transitionEndpointFrame(plan,side)??cloneAndFreeze({graphicSpec:endpoint.graphicSpec,scene:endpoint.scene,progress,decisions});
+  if(side!==undefined){
+    const endpoint=plan[side],frame=transitionEndpointFrame(plan,side)??cloneAndFreeze({graphicSpec:endpoint.graphicSpec,scene:endpoint.scene,progress,decisions});
     return finish(frame,(progress===0?fromPositions:toPositions).map(meaning),graphState[side],cartesianState[side].map(meaning),partitionState[side],polarState[side].map(meaning),geoState[side],guideState[side],geoTextState[side]);
   }
   const width=interpolateNumber(plan.from.scene.width,plan.to.scene.width,progress),height=interpolateNumber(plan.from.scene.height,plan.to.scene.height,progress);
   const updates=new Map([...plan.tracks,...plan.frameTracks].map(track=>[track.targetIndex,track]));
   const positions=[],cartesian=[],polars=[],guides=[];
   let geographicWork=0;const accountGeographicWork=amount=>validateWorkLimit(geographicWork+=amount,"Animation geographic sample work");
-  const geoFrame=geoFrameCollector(sampleGeoTracks(geoState.state,progress,accountGeographicWork),geoState.to);
-  const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork),geoTextState.to);
+  const geoFrame=geoFrameCollector(sampleGeoTracks(geoState.state,progress,accountGeographicWork,timeline),geoState.to);
+  const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork,timeline),geoTextState.to);
   const nodes=[];
   const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);}};
   const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);}};
@@ -55,11 +57,12 @@ export function sampleTransition(input,timeMs) {
   for(const values of geographicSlots.values())values.sort((a,b)=>geographicOrder.get(JSON.stringify(a))-geographicOrder.get(JSON.stringify(b)));
   const appendGeographic=slot=>{for(const [role,key]of geographicSlots.get(slot)??[]){if(role==="geo")appendGeo(slot,key);else appendGeoText(slot,role,key);}};
   const sampleNode=(to,targetIndex)=>{
+    const ownerKey=owners.to[targetIndex],progress=timeline.progress(ownerKey);
     guides.push(guideState.to[targetIndex]);
     const track=updates.get(targetIndex);
-    if(track===undefined){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({kind:"enter",targetIndex,...(guideState.ambiguousTo.has(targetIndex)?{reason:"guide-ambiguity"}:{})});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return fadeAnimationNode(to,progress);}
+    if(track===undefined){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({kind:"enter",targetIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousTo.has(targetIndex)?{reason:"guide-ambiguity"}:{})});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return fadeAnimationNode(to,progress);}
     const from=plan.from.scene.nodes[track.sourceIndex],metadata={sourceIndex:track.sourceIndex,targetIndex,
-      ...(track.guideKey!==undefined?{guideKey:track.guideKey}:track.key===undefined?{owner:track.owner}:{itemKey:track.key}),role:track.role};
+      ...(track.guideKey!==undefined?{guideKey:track.guideKey}:track.key===undefined?{owner:track.owner}:{itemKey:track.key}),role:track.role,...(ownerKey===undefined?{}:{ownerKey})};
     if(track.kind==="exact"){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({...metadata,kind:"exact"});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return to;}
     let reason=track.reason;
     const appearance=()=>sampleAnimationAppearance(track.appearance,progress);
@@ -121,14 +124,15 @@ export function sampleTransition(input,timeMs) {
     if(guides[guides.length-1]!==null)guides[guides.length-1]={identity:guides[guides.length-1].identity,reason:"guide-unavailable"};
     positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);decisions.push({...metadata,kind:"crossfade",reason});return blendAnimationNodes(from,to,progress,width,height);
   };
-  for(const [targetIndex,to]of plan.to.scene.nodes.entries()){appendGeographic(targetIndex);if(geoState.skipTo.has(targetIndex)||geoTextState.skipTo.has(targetIndex))continue;nodes.push(sampleNode(to,targetIndex));geoFrame.append(null);geoTextFrame.append(null);}
+  for(const [targetIndex,to]of plan.to.scene.nodes.entries()){appendGeographic(targetIndex);if(geoState.skipTo.has(targetIndex)||geoTextState.skipTo.has(targetIndex))continue;nodes.push(timeline.node(sampleNode(to,targetIndex),targetIndex));geoFrame.append(null);geoTextFrame.append(null);}
   appendGeographic(plan.to.scene.nodes.length);
   const used=new Set(nodes.map(node=>node.key));
   if(used.size!==nodes.length)throw new TypeError("Animation generated Geo key collides with another scene key.");
   for(const sourceIndex of plan.exits){if(geoState.skipFrom.has(sourceIndex)||geoTextState.skipFrom.has(sourceIndex))continue;const from=plan.from.scene.nodes[sourceIndex];let key=from.key;
     if(used.has(key))key=JSON.stringify(["animation-exit",sourceIndex,key]);
     if(used.has(key))throw new TypeError("Animation exit key collides with a target scene key.");used.add(key);
-    guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-progress,key));
+    const ownerKey=owners.from[sourceIndex];
+    guides.push(guideState.from[sourceIndex]);decisions.push({kind:"exit",sourceIndex,...(ownerKey===undefined?{}:{ownerKey}),...(guideState.ambiguousFrom.has(sourceIndex)?{reason:"guide-ambiguity"}:{})});nodes.push(fadeAnimationNode(from,1-timeline.progress(ownerKey),key));
     positions.push(meaning(fromPositions[sourceIndex]));cartesian.push(meaning(cartesianState.from[sourceIndex]));polars.push(meaning(polarState.from[sourceIndex]));appendGraph("from",sourceIndex);appendPartition("from",sourceIndex);geoFrame.append(null);geoTextFrame.append(null);
   }
   validateGeneratedItemLimit(nodes.length,"Animation sampled nodes");
@@ -143,7 +147,7 @@ export function withSampleTime(frame,timeMs,plan) {
   if(proof===undefined)throw new TypeError("A sampled time view requires an authentic frame.");
   if(plan!==undefined){
     requireTransitionPlan(plan);
-    const progress=easeProgress(transitionProgress(timeMs,plan.durationMs),plan.easing),side=progress===0?"from":progress===1?"to":undefined;
+    const {side}=transitionSampleState(timeMs,plan.durationMs,plan.easing);
     if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){
       return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,
         geotexts:transitionGeoTexts(plan)[side],guides:transitionGuides(plan)[side],geos:transitionGeos(plan)[side],positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),graphs:transitionGraphs(plan)[side],partitions:transitionPartitions(plan)[side],polars:transitionPolars(plan)[side].map(position=>position.reason?null:position),cartesian:transitionCartesian(plan)[side].map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});

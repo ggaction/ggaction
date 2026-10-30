@@ -14,6 +14,15 @@ export function transitionProgress(timeMs, durationMs) {
   return durationMs === 0 ? (timeMs < 0 ? 0 : 1) : Math.min(1, Math.max(0, timeMs / durationMs));
 }
 
+// Exact native endpoints depend on authored time, never a rounded easing value.
+// Interior samples retain an interior progress for closed frame metadata even
+// when division/easing underflows to zero or rounds up to one.
+export function transitionSampleState(timeMs, durationMs, easing) {
+  const eased = easeProgress(transitionProgress(timeMs, durationMs), easing);
+  const side = durationMs === 0 ? timeMs < 0 ? 'from' : 'to' : timeMs <= 0 ? 'from' : timeMs >= durationMs ? 'to' : undefined;
+  return Object.freeze({ side, progress: side === undefined ? Math.max(Number.MIN_VALUE, Math.min(1 - Number.EPSILON / 2, eased)) : side === 'from' ? 0 : 1 });
+}
+
 export function easeProgress(progress, easing = "cubic-in-out") {
   validateUnitInterval(progress, "Animation progress");
   if (easing === "linear") return progress;

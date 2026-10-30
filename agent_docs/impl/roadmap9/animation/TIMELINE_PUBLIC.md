@@ -1,6 +1,6 @@
 # 공개 timeline 연결의 구체 결정
 
-[remainingApproval](../AUTHORIZATION.json#remainingApproval)의 남은 공개 API·저장·시각 결정 승인을 재사용한다. 이 문서는 구현할 계약이며 Current는 아니다. 순수 schedule의 기존 검증은 [TIMELINE_ADAPTER](TIMELINE_ADAPTER.md)가 소유한다.
+[remainingApproval](../AUTHORIZATION.json#remainingApproval)의 남은 공개 API·저장·시각 결정 승인을 재사용한다. 이 문서는 승인된 공개 연결의 구현·검증 기록이다. 정확한 공개 계약은 [Current](../../../contract/current/ANIMATION.md)가 소유한다. 순수 schedule의 기존 검증은 [TIMELINE_ADAPTER](TIMELINE_ADAPTER.md)가 소유한다.
 
 ## 공개 형태
 
@@ -41,6 +41,10 @@ Transition version3가 새 decision metadata와 계산 규칙을 고정한다. T
 
 ## 검증과 현재 상태
 
-공개 연결은 아직 미구현이다. 독립 target 준비 owner는 구현했다. Native endpoint identity·exact track·guide vector·Geo feature pair에서 대상과 경계값을 준비하며, 모호한 role과 fallback primitive의 style 연결은 거부한다. Geometry는 semantic owner 단위이고 Geo paint는 양 endpoint에서 보이지 않는 feature도 whole-feature 단위로 연결한다. Raw CSS 문자열을 저장하고 수치 schedule과 binding은 private WeakMap에 둔다. 이 준비 owner는 공개 entry에서 아직 import하지 않는다.
+공개 planner/sample/player/offline seam과 version3 계약을 연결했다. Native endpoint identity·exact track·guide vector·Geo feature pair에서 대상과 경계값을 준비하며, 모호한 role과 fallback primitive의 style 연결은 거부한다. Geometry는 semantic owner 단위이고 Geo paint는 양 endpoint에서 보이지 않는 feature도 whole-feature 단위로 연결한다. Raw CSS 문자열을 저장하고 수치 schedule과 binding은 private WeakMap에 둔다. 현재 style/geometry와 Geo Text 의미를 함께 갱신한다.
 
-Geo Text shared source가 동결되면 planner/sample/player/offline seam을 연결한다. 원안의 typed geometry·current-frame·native selection·네 renderer·offline·3Node 설치 및 marker lifecycle을 같은 public checkpoint에서 검증한다. 이 설계나 준비 검사만으로 AT42 또는 STEP077을 완료 처리하지 않는다.
+Easing이 interior에서0 또는1로 반올림하더라도 raw 시각의 exact endpoint 판정은 유지한다. Sampled-concrete Cartesian/Polar 벡터는 native interpolation 선택과 별개로 transport하여 전체 frame의 fallback 사유도 offline 왕복에서 보존한다. Marker는 실제 controller run/iteration만 사용하며 terminal 뒤의 backward/equal seek에서 잘못 재전달하지 않고 처음0에서 재생할 때0 marker를 정확히 한 번 전달한다.
+
+독립 검토가 세 경계 결함을 실제 재현했으며 수정 뒤 같은 재현 코드와 source hash로 재검증했다. 원래 실패와 수정 결과를 `timeline-public-evidence/`에 함께 보존한다. 이 검증은 STEP077 전체에 요구되는 최종 독립 감사 AT60을 대체하지 않는다.
+
+현재 source 검사, renderer/browser, installed consumer 및 문서의 성공 종료는 [qualification.json](timeline-public-evidence/qualification.json)에 기록했다. 같은 archive의3Node 소비자와 독립 산식의 실제 자료 timeline, 최초 실패와 수정 뒤 같은 재현 결과를 구분해 보존한다. 후행 guide title/band/Parallel·legend/reflow의 전체 결합과 STEP077 전체 수용 검증은 남아 있다. 이 checkpoint만으로 AT42 또는 STEP077을 완료 처리하지 않는다.

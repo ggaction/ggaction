@@ -10,10 +10,10 @@ import { ANIMATION_GEO_VERSION } from "../grammar/animation/geoState.js";
 import { prepareGeoTracks, emptyAnimationGeos } from "./geoTracks.js";
 import { projectPolarAnimationState } from "../materialization/animation/polar.js";
 import { ANIMATION_POLAR_VERSION } from "../grammar/animation/polarState.js";
-import { preparePolarTrack, emptyAnimationPolars, hasAnimationPolars, validateAnimationPolars } from "./polarTracks.js";
+import { preparePolarTrack, emptyAnimationPolars, hasRetainedAnimationPolars, validateAnimationPolars } from "./polarTracks.js";
 import { projectCartesianAnimationState } from "../materialization/animation/cartesian.js";
 import { ANIMATION_CARTESIAN_VERSION } from "../grammar/animation/cartesianState.js";
-import { prepareCartesianTrack, emptyAnimationCartesian, hasAnimationCartesian, validateAnimationCartesian } from "./cartesianTracks.js";
+import { prepareCartesianTrack, emptyAnimationCartesian, hasRetainedAnimationCartesian, validateAnimationCartesian } from "./cartesianTracks.js";
 import { projectPartitionAnimations } from "../materialization/animation/partition.js";
 import { validateAnimationPartitionState } from "../materialization/animation/partitionGeometry.js";
 import { PARTITION_ANIMATION_VERSION } from "../grammar/animation/partitionState.js";
@@ -38,9 +38,14 @@ import { projectGraphAnimationState, validateAnimationGraphState } from "../mate
 import { ANIMATION_GRAPH_VERSION } from "../grammar/animation/graphState.js";
 import { ANIMATION_ROUTE_VERSION } from "../grammar/animation/routes.js";
 import { graphTrackPreparation, emptyAnimationGraphs } from "./graphTracks.js";
+import { prepareAnimationTimeline } from "./timelineTracks.js";
+import { ANIMATION_TIMELINE_VERSION } from "../grammar/animation/timeline.js";
+import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/animation/ownerKey.js";
 
-export const TRANSITION_PLAN_VERSION = 2;
+export const TRANSITION_PLAN_VERSION = 3;
 const plans = new WeakSet();
+const preparedTimelines = new WeakMap();
+const preparedOwners = new WeakMap();
 const preparedPositions = new WeakMap();
 const preparedGuides = new WeakMap();
 const preparedGeoTexts = new WeakMap();
@@ -113,11 +118,14 @@ function track(match,from,to,a,b) {
 // Native typed families share exact keyed correspondence and endpoint admission.
 // Unsupported identities remain explicit crossfades, never pixel-inferred tracks.
 export function normalizeTransitionOptions(input) {
-  const options=ownRecord(input,"Transition options");rejectUnknownProperties(options,["durationMs","easing"],"transition options");
+  const options=ownRecord(input,"Transition options");rejectUnknownProperties(options,["durationMs","easing","tracks","markers","composite"],"transition options");
+  if(!Object.hasOwn(options,"durationMs"))throw new TypeError("Transition options require their own duration.");
   validateNonNegativeFinite(options.durationMs,"Transition duration");
   const easing=Object.hasOwn(options,"easing")?options.easing:"cubic-in-out";easeProgress(.5,easing);
   if(easing===undefined)throw new TypeError("Transition easing cannot be undefined.");
-  return {durationMs:options.durationMs,easing};
+  const timeline=Object.fromEntries(["tracks","markers","composite"].filter(key=>Object.hasOwn(options,key)).map(key=>[key,options[key]]));
+  budget([timeline],true);
+  return cloneAndFreeze({durationMs:options.durationMs,easing,...timeline});
 }
 function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,guides,geotexts) {
   validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes");
@@ -128,16 +136,20 @@ function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,gu
   const guidePreparation=prepareGuideTracks({...from,guides:guides.from},{...to,guides:guides.to});
   const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
   const partitionPreparation=partitionTrackPreparation(from,to,partitions.from,partitions.to);
-  const tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
+  let tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
   tracks.push(...guidePreparation.tracks);
+  const owners=Object.fromEntries([['from',from],['to',to]].map(([side,endpoint])=>[side,endpoint.identities.map((identity,index)=>identity!==undefined?graphicAnimationOwnerKey(identity):guides[side][index]===null?undefined:guideAnimationOwnerKey(guides[side][index].identity))]));
+  tracks=tracks.map(track=>owners.to[track.targetIndex]===undefined?track:{...track,ownerKey:owners.to[track.targetIndex]});
   const frames=frameTracks(from,to), matchedAnonymous=[...frames,...guidePreparation.tracks], frameSources=new Set(matchedAnonymous.map(track=>track.sourceIndex)),frameTargets=new Set(matchedAnonymous.map(track=>track.targetIndex));
   for(const item of [...tracks,...frames])if(item.kind==="crossfade")blendAnimationNodes(from.scene.nodes[item.sourceIndex],to.scene.nodes[item.targetIndex],.5,Math.max(from.scene.width,to.scene.width),Math.max(from.scene.height,to.scene.height));
-  const plan=cloneAndFreeze({kind:"transition-plan",version:TRANSITION_PLAN_VERSION,...options,
+  const timeline=['tracks','markers','composite'].some(key=>Object.hasOwn(options,key))?prepareAnimationTimeline(options,{from,to,tracks,guides,geos:{...geos,...geoPreparation},geotexts:{...geotexts,...geoTextPreparation}}):undefined;
+  const plan=cloneAndFreeze({kind:"transition-plan",version:TRANSITION_PLAN_VERSION,durationMs:options.durationMs,easing:options.easing,
     from,to,tracks,frameTracks:frames,enters:matching.enters.filter(index=>!frameTargets.has(index)),exits:matching.exits.filter(index=>!frameSources.has(index))});
-  plans.add(plan);preparedGeoTexts.set(plan,{...geotexts,...geoTextPreparation});preparedGuides.set(plan,{from:cloneAndFreeze(guides.from),to:cloneAndFreeze(guides.to),ambiguousFrom:new Set(guidePreparation.ambiguous.source),ambiguousTo:new Set(guidePreparation.ambiguous.target)});preparedGeos.set(plan,{...geos,...geoPreparation});preparedPolars.set(plan,cloneAndFreeze(polars));preparedCartesian.set(plan,cloneAndFreeze(cartesian));preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));preparedPartitions.set(plan,cloneAndFreeze({...partitions,pairs:partitionPreparation.pairs}));return plan;
+  plans.add(plan);preparedOwners.set(plan,cloneAndFreeze(owners));preparedTimelines.set(plan,timeline);preparedGeoTexts.set(plan,{...geotexts,...geoTextPreparation});preparedGuides.set(plan,{from:cloneAndFreeze(guides.from),to:cloneAndFreeze(guides.to),ambiguousFrom:new Set(guidePreparation.ambiguous.source),ambiguousTo:new Set(guidePreparation.ambiguous.target)});preparedGeos.set(plan,{...geos,...geoPreparation});preparedPolars.set(plan,cloneAndFreeze(polars));preparedCartesian.set(plan,cloneAndFreeze(cartesian));preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));preparedPartitions.set(plan,cloneAndFreeze({...partitions,pairs:partitionPreparation.pairs}));return plan;
 }
 export function planTransition(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
+  if (["from","to","options"].some(key=>!Object.hasOwn(input,key))) throw new TypeError("Transition request requires its own endpoints and options.");
   const options=normalizeTransitionOptions(input.options);
   requireTransitionEndpoint(input.from);requireTransitionEndpoint(input.to);budget([input.from.graphicSpec,input.to.graphicSpec]);
   const prepare=value=>{
@@ -159,17 +171,20 @@ export function exportTransitionPlan(input) {
     const frame=exactFrames.get(plan)?.[side],source=plan[side];
     const geoState={...(geos[side].groups.length?{geos:geos[side]}:{}),...(geotexts[side].groups.length?{geotexts:geotexts[side]}:{})};
     const guideState=hasAnimationGuides(guides[side])?{guides:guides[side]}:{};
-    const graphState={...(hasAnimationPolars(polars[side])?{polars:polars[side]}:{}),...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasAnimationCartesian(cartesian[side])?{cartesian:cartesian[side]}:{})};
+    const graphState={...(hasRetainedAnimationPolars(polars[side],source)?{polars:polars[side]}:{}),...(graphs[side].groups.length?{graphs:graphs[side]}:{}),...(hasRetainedAnimationCartesian(cartesian[side],source)?{cartesian:cartesian[side]}:{})};
     const partitionState=partitions[side].groups.length?{partitions:partitions[side]}:{};
     const view=frame===undefined?{}:{view:{progress:frame.progress,decisions:frame.decisions,...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
     return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view}:{scene:source.scene,identities:source.identities,
       backgrounds:source.backgrounds,positions:positions[side],...graphState,...partitionState,...geoState,...guideState,...view};
   };
-  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(geotexts.from.groups.length||geotexts.to.groups.length?{geoText:ANIMATION_GEO_TEXT_VERSION}:{}),...(hasAnimationGuides(guides.from)||hasAnimationGuides(guides.to)?{guide:ANIMATION_GUIDE_VERSION}:{}),...(geos.from.groups.length||geos.to.groups.length?{geo:ANIMATION_GEO_VERSION}:{}),...(hasAnimationPolars(polars.from)||hasAnimationPolars(polars.to)?{polar:ANIMATION_POLAR_VERSION}:{}),...(hasAnimationCartesian(cartesian.from)||hasAnimationCartesian(cartesian.to)?{cartesian:ANIMATION_CARTESIAN_VERSION}:{}),...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{}),...(partitions.from.groups.length||partitions.to.groups.length?{partition:PARTITION_ANIMATION_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
+  const timeline=preparedTimelines.get(plan);
+  return cloneAndFreeze({kind:plan.kind,version:plan.version,...(timeline===undefined?{}:{timeline}),kernels:{...kernels,...(timeline===undefined?{}:{timeline:ANIMATION_TIMELINE_VERSION}),...(geotexts.from.groups.length||geotexts.to.groups.length?{geoText:ANIMATION_GEO_TEXT_VERSION}:{}),...(hasAnimationGuides(guides.from)||hasAnimationGuides(guides.to)?{guide:ANIMATION_GUIDE_VERSION}:{}),...(geos.from.groups.length||geos.to.groups.length?{geo:ANIMATION_GEO_VERSION}:{}),...(hasRetainedAnimationPolars(polars.from,plan.from)||hasRetainedAnimationPolars(polars.to,plan.to)?{polar:ANIMATION_POLAR_VERSION}:{}),...(hasRetainedAnimationCartesian(cartesian.from,plan.from)||hasRetainedAnimationCartesian(cartesian.to,plan.to)?{cartesian:ANIMATION_CARTESIAN_VERSION}:{}),...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{}),...(partitions.from.groups.length||partitions.to.groups.length?{partition:PARTITION_ANIMATION_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
     from:endpoint("from"),to:endpoint("to")});
 }
 
 export function transitionGeoTexts(plan) {requireTransitionPlan(plan);return preparedGeoTexts.get(plan);}
+export function transitionTimeline(plan) {requireTransitionPlan(plan);return preparedTimelines.get(plan);}
+export function transitionOwners(plan) {requireTransitionPlan(plan);return preparedOwners.get(plan);}
 export function transitionGuides(plan) {requireTransitionPlan(plan);return preparedGuides.get(plan);}
 export function transitionGeos(plan) {requireTransitionPlan(plan);return preparedGeos.get(plan);}
 export function transitionPolars(plan) {requireTransitionPlan(plan);return preparedPolars.get(plan);}
@@ -218,9 +233,9 @@ function restoreEndpoint(input) {
   const partitions=Object.hasOwn(input,"partitions")?validateAnimationPartitionState(input.partitions,endpoint):emptyAnimationPartitions(endpoint.scene.nodes.length);
   if(Object.hasOwn(input,"partitions")&&partitions.groups.length===0)throw new TypeError("An empty animation partition state must be omitted.");
   const polars=Object.hasOwn(input,"polars")?validateAnimationPolars(input.polars,endpoint):emptyAnimationPolars(endpoint);
-  if(Object.hasOwn(input,"polars")&&!hasAnimationPolars(polars))throw new TypeError("Empty polar animation states must be omitted.");
+  if(Object.hasOwn(input,"polars")&&!hasRetainedAnimationPolars(polars,endpoint))throw new TypeError("Empty polar animation states must be omitted.");
   const cartesian=Object.hasOwn(input,"cartesian")?validateAnimationCartesian(input.cartesian,endpoint):emptyAnimationCartesian(endpoint);
-  if(Object.hasOwn(input,"cartesian")&&!hasAnimationCartesian(cartesian))throw new TypeError("Empty Cartesian animation states must be omitted.");
+  if(Object.hasOwn(input,"cartesian")&&!hasRetainedAnimationCartesian(cartesian,endpoint))throw new TypeError("Empty Cartesian animation states must be omitted.");
   for(const [index,decision]of (input.view?.decisions??[]).entries())if(decision.kind==="semantic-kernel"){
     if(decision.kernel==="guide-geometry"?guides[index]?.kind===undefined:decision.kernel==="polar-geometry"?polars[index].kind===undefined:decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):decision.kernel==="cartesian-geometry"?cartesian[index].kind===undefined:(decision.kernel==="partition"?partitions:graphs).items[index]===null||Object.hasOwn((decision.kernel==="partition"?partitions:graphs).items[index],"reason")) {
       throw new TypeError("Sampled semantic decision requires its retained prepared meaning.");
@@ -230,7 +245,8 @@ function restoreEndpoint(input) {
 }
 export function restoreTransitionPlan(input) {
   budget([input],true);
-  closed(input,["kind","version","kernels","durationMs","easing","from","to"],"Restored transition plan");
+  const timelineKernel=Object.hasOwn(input,"timeline");
+  closed(input,["kind","version","kernels","durationMs","easing","from","to",...(timelineKernel?["timeline"]:[])],"Restored transition plan");
   if(input.kind!=="transition-plan"||input.version!==TRANSITION_PLAN_VERSION)throw new TypeError("Unsupported transition plan kind or version.");
   const guideKernel=Object.hasOwn(input.from,"guides")||Object.hasOwn(input.to,"guides");
   const geoTextKernel=Object.hasOwn(input.from,"geotexts")||Object.hasOwn(input.to,"geotexts");
@@ -239,7 +255,8 @@ export function restoreTransitionPlan(input) {
   const partitionKernel=Object.hasOwn(input.from,"partitions")||Object.hasOwn(input.to,"partitions");
   const polarKernel=Object.hasOwn(input.from,"polars")||Object.hasOwn(input.to,"polars");
   const cartesianKernel=Object.hasOwn(input.from,"cartesian")||Object.hasOwn(input.to,"cartesian");
-  closed(input.kernels,["transition","position","appearance",...(geoTextKernel?["geoText"]:[]),...(guideKernel?["guide"]:[]),...(geoKernel?["geo"]:[]),...(polarKernel?["polar"]:[]),...(cartesianKernel?["cartesian"]:[]),...(graphKernel?["graph","route"]:[]),...(partitionKernel?["partition"]:[])],"Animation kernels");
+  closed(input.kernels,["transition","position","appearance",...(timelineKernel?["timeline"]:[]),...(geoTextKernel?["geoText"]:[]),...(guideKernel?["guide"]:[]),...(geoKernel?["geo"]:[]),...(polarKernel?["polar"]:[]),...(cartesianKernel?["cartesian"]:[]),...(graphKernel?["graph","route"]:[]),...(partitionKernel?["partition"]:[])],"Animation kernels");
+  if(timelineKernel&&input.kernels.timeline!==ANIMATION_TIMELINE_VERSION)throw new TypeError("Unsupported animation timeline kernel version.");
   if(geoTextKernel&&input.kernels.geoText!==ANIMATION_GEO_TEXT_VERSION)throw new TypeError("Unsupported geographic Text animation kernel version.");
   if(guideKernel&&input.kernels.guide!==ANIMATION_GUIDE_VERSION)throw new TypeError("Unsupported guide animation kernel version.");
   if(geoKernel&&input.kernels.geo!==ANIMATION_GEO_VERSION)throw new TypeError("Unsupported animation Geo kernel version.");
@@ -248,7 +265,8 @@ export function restoreTransitionPlan(input) {
   if(cartesianKernel&&input.kernels.cartesian!==ANIMATION_CARTESIAN_VERSION)throw new TypeError("Unsupported Cartesian animation kernel version.");
   if(graphKernel&&(input.kernels.graph!==ANIMATION_GRAPH_VERSION||input.kernels.route!==ANIMATION_ROUTE_VERSION))throw new TypeError("Unsupported animation graph kernel version.");
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position||input.kernels.appearance!==kernels.appearance)throw new TypeError("Unsupported animation kernel version.");
-  const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
+  if(timelineKernel){closed(input.timeline,["version","tracks","markers","composite"],"Restored timeline");if(input.timeline.version!==ANIMATION_TIMELINE_VERSION)throw new TypeError("Unsupported animation timeline version.");}
+  const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing,...(timelineKernel?{tracks:input.timeline.tracks,markers:input.timeline.markers,composite:input.timeline.composite}:{})});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
   const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian},{from:from.partitions,to:to.partitions},{from:from.polars,to:to.polars},{from:from.geos,to:to.geos},{from:from.guides,to:to.guides},{from:from.geotexts,to:to.geotexts});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});

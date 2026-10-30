@@ -1731,5 +1731,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "animation-timeline.mjs",
+    "cases": [
+      {
+        "id": "animation-timeline/nonlinear-offline-four-renderers",
+        "statements": 17
+      },
+      {
+        "id": "animation-timeline/player-marker-lifetimes",
+        "statements": 6
+      },
+      {
+        "id": "animation-timeline/current-hit-selection-rebase",
+        "statements": 4
+      }
+    ]
   }
 ]

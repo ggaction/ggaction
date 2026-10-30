@@ -26,8 +26,9 @@ export function validateAnimationOwnerKey(input) {
 
 export function graphicAnimationOwnerKey(identity) {
   ownRecord(identity, 'Graphic identity');
+  if (!Object.hasOwn(identity,'lineage')) throw new TypeError('Graphic identity requires its own lineage.');
   ownRecord(identity.lineage, 'Graphic identity lineage');
-  if (Array.isArray(identity.lineage.rowKeys)) ownArray(identity.lineage.rowKeys, 'Graphic identity row keys');
+  if (Object.hasOwn(identity.lineage,'rowKeys') && Array.isArray(identity.lineage.rowKeys)) ownArray(identity.lineage.rowKeys, 'Graphic identity row keys');
   validateGraphicIdentity(identity);
   const [namespaces, owner] = JSON.parse(identity.key);
   return animationOwnerKey(namespaces, owner);

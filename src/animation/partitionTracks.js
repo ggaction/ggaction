@@ -41,15 +41,15 @@ export function partitionTrackPreparation(from, to, a, b) {
   };
   return { pairs, track };
 }
-export function partitionTrackSamples(state, progress) {
+export function partitionTrackSamples(state, progress, ownerProgress) {
   const sampled = new Map();
   return index => {
     if (!sampled.has(index)) {
-      const pair = state.pairs[index], sample = samplePartitionAnimationState(pair.plan, progress);
+      const pair = state.pairs[index], current = ownerProgress===undefined?progress:ownerProgress(state.to.groups[pair.targetGroup].id), sample = samplePartitionAnimationState(pair.plan, current);
       if (sample.mode !== "partition") sampled.set(index, { reason: sample.reason });
       else {
         const from = state.from.groups[pair.sourceGroup], to = state.to.groups[pair.targetGroup];
-        const group = cloneAndFreeze({ ...to, meaning: sample.state, labelOffset: from.labelOffset.map((value, i) => interpolateNumber(value, to.labelOffset[i], progress)) });
+        const group = cloneAndFreeze({ ...to, meaning: sample.state, labelOffset: from.labelOffset.map((value, i) => interpolateNumber(value, to.labelOffset[i], current)) });
         sampled.set(index, { group, geometry: resolvePartitionAnimationGeometry(group) });
       }
     }

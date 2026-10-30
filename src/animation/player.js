@@ -18,7 +18,7 @@ function configuration(durationMs, rate, repeat) {
 // planner and its public entry are qualified together.
 export function createPlaybackController(input) {
   ownRecord(input, "Animation controller");
-  rejectUnknownProperties(input, ["durationMs", "clock", "sample", "render", "commit", "rate", "repeat", "reducedMotion"], "animation controller");
+  rejectUnknownProperties(input, ["durationMs", "clock", "sample", "render", "commit", "notify", "rate", "repeat", "reducedMotion"], "animation controller");
   let clock = option(input, "clock");
   ownRecord(clock, "Animation clock");
   for (const name of ["now", "requestFrame", "cancelFrame"]) {
@@ -28,6 +28,8 @@ export function createPlaybackController(input) {
   let render = callable(option(input, "render"), "Animation render");
   let commit = option(input, "commit");
   if (commit !== undefined) callable(commit, "Animation commit");
+  let notify = option(input, "notify");
+  if (notify !== undefined) callable(notify, "Animation sample observer");
   let sample = callable(option(input, "sample"), "Animation sample");
   const playback = normalizePlaybackOptions(Object.fromEntries(["rate", "repeat", "reducedMotion"]
     .filter(key => Object.hasOwn(input, key)).map(key => [key, input[key]])));
@@ -37,8 +39,10 @@ export function createPlaybackController(input) {
   let anchor, scheduled = false, handle, generation = 0, requesting = false;
   let busy = false, queue = [], settled, resolveFinished, finished;
   let rejectedControl;
+  let run, deferred = [];
 
   function newRun() {
+    run = Object.freeze({});
     settled = false;
     finished = new Promise(resolve => { resolveFinished = resolve; });
   }
@@ -76,12 +80,25 @@ export function createPlaybackController(input) {
     return { ...next, frame: next.timeMs === timeMs && next.iteration === iteration && frame !== undefined
       ? frame : sample(next.timeMs) };
   }
-  function apply(next, at, emit = true) {
+  const playbackSnapshot = () => Object.freeze({ timeMs, iteration, durationMs, rate, repeat, run, sample });
+  function notifySample(previous, cause, emit = true) {
+    const pending = deferred;
+    deferred = [];
+    if (notify === undefined) return;
+    pending.push({ previous, current: playbackSnapshot(), cause, emit });
+    for (const event of pending) {
+      if (status === "disposed") return;
+      notify(Object.freeze({ ...event, frame }));
+    }
+  }
+  function apply(next, at, emit = true, cause = "advance") {
+    const previous = playbackSnapshot();
     timeMs = next.timeMs;
     iteration = next.iteration;
     frame = next.frame;
     anchor = at;
     if (emit) render(frame);
+    if (status !== "disposed") notifySample(previous, cause);
     if (status !== "disposed" && next.finished) complete();
   }
   function synchronize() {
@@ -138,14 +155,16 @@ export function createPlaybackController(input) {
     status = rate === 0 ? "paused" : "playing";
     anchor = at;
     if (reducedMotion && rate !== 0) {
+      const previous = playbackSnapshot();
       timeMs = rate < 0 ? 0 : durationMs;
       iteration = repeat === Infinity ? 0 : repeat;
       frame = sample(timeMs);
       render(frame);
+      if (status !== "disposed") notifySample(previous, "reduced-motion");
       if (status !== "disposed") complete();
     } else {
       const next = advancePlayback({ timeMs, durationMs, elapsedMs: 0, rate, iteration, repeat });
-      apply({ ...next, frame: sample(next.timeMs) }, at);
+      apply({ ...next, frame: sample(next.timeMs) }, at, true, "start");
     }
   }
   function play() {
@@ -160,16 +179,22 @@ export function createPlaybackController(input) {
     alive();
     return perform(() => { synchronize(); if (status === "playing") { status = "paused"; unschedule(); } });
   }
-  function seek(value) {
+  function seek(value, options = {}) {
     alive();
     if (!Number.isFinite(value)) throw new TypeError("Animation seek time must be finite.");
+    ownRecord(options, "Animation seek options");
+    rejectUnknownProperties(options, ["emit"], "animation seek options");
+    const emit = option(options, "emit", false);
+    if (typeof emit !== "boolean") throw new TypeError("Animation seek emit must be boolean.");
     return perform(() => {
       synchronize();
       if (status === "disposed") return;
+      const previous = playbackSnapshot();
       if (settled) { newRun(); status = "paused"; iteration = 0; }
       timeMs = Math.max(0, Math.min(durationMs, value));
       frame = sample(timeMs);
       render(frame);
+      if (status !== "disposed") notifySample(previous, "seek", emit);
     });
   }
   function changeRate(value) {
@@ -222,6 +247,10 @@ export function createPlaybackController(input) {
       return { at, captured, initialTime, nextSample, playing: status === "playing" };
     }
     function replace({ at, captured, initialTime, nextSample, playing }) {
+      if (notify !== undefined) {
+        const previous = playbackSnapshot();
+        deferred.push({ previous, current: Object.freeze({ ...previous, timeMs: captured.timeMs, iteration: captured.iteration }), cause: "advance", emit: true });
+      }
       unschedule();
       timeMs = captured.timeMs; iteration = captured.iteration;
       settle("interrupted");
@@ -230,7 +259,7 @@ export function createPlaybackController(input) {
       newRun();
       status = playing ? "playing" : "paused";
       if (playing) start();
-      else { frame = captured.frame; anchor = at; render(frame); }
+      else { frame = captured.frame; anchor = at; const previous = playbackSnapshot(); render(frame); if (status !== "disposed") notifySample(previous, "replace", false); }
     }
     // A rejected target must leave the active run and its pending frame intact.
     const prepared = busy ? undefined : prepare();
@@ -247,7 +276,8 @@ export function createPlaybackController(input) {
     queue = [];
     try { unschedule(); } finally {
       settle("disposed");
-      frame = sample = render = commit = clock = undefined;
+      deferred = [];
+      frame = sample = render = commit = notify = clock = run = undefined;
     }
   }
   const api = Object.freeze({ play, pause, seek, reverse, setRate: changeRate, setRepeat: changeRepeat,

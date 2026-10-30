@@ -6,7 +6,10 @@ import { easeProgress, interpolateNumber, interpolatePositiveScale, interpolateR
 export const ANIMATION_TIMELINE_VERSION = 'keyframe-schedule@1';
 const kernels = new Map([['number', interpolateNumber], ['positive-scale', interpolatePositiveScale], ['rotation', interpolateRotation], ['rgba', interpolateRGBA]]);
 const prepared = new WeakMap();
-function closed(value, keys, label) { ownRecord(value, label); rejectUnknownProperties(value, keys, label); }
+function closed(value, keys, label, required = keys) {
+  ownRecord(value, label); rejectUnknownProperties(value, keys, label);
+  if (required.some(key => !Object.hasOwn(value,key))) throw new TypeError(`${label} requires its own declared fields.`);
+}
 function name(value, label, spend) {
   if (typeof value !== 'string' || value.length === 0) throw new TypeError(`${label} requires a nonempty string.`);
   spend(value.length); return value;
@@ -25,7 +28,7 @@ function bounds(track) { return { start: track.keyframes[0].timeMs, end: track.k
 // Targets are opaque exact identity slots supplied by the native adapter. This
 // numeric owner neither looks up a program nor infers a semantic value from ink.
 export function prepareTimelineSchedule(input) {
-  closed(input, ['durationMs', 'tracks', 'markers', 'composite'], 'Timeline schedule');
+  closed(input, ['durationMs', 'tracks', 'markers', 'composite'], 'Timeline schedule', ['durationMs','tracks']);
   validateNonNegativeFinite(input.durationMs, 'Timeline duration');
   const composite = Object.hasOwn(input, 'composite') ? input.composite : 'reject';
   if (!['reject', 'priority'].includes(composite)) throw new TypeError('Timeline composite must be reject or priority.');
@@ -33,7 +36,7 @@ export function prepareTimelineSchedule(input) {
   let work = 0, count = 0;
   const spend = amount => validateWorkLimit(work += amount, 'Timeline preparation work');
   const tracks = input.tracks.map(track => {
-    closed(track, ['target', 'property', 'kernel', 'keyframes', 'priority'], 'Timeline track');
+    closed(track, ['target', 'property', 'kernel', 'keyframes', 'priority'], 'Timeline track', ['target','property','kernel','keyframes']);
     const target = name(track.target, 'Timeline target', spend), property = name(track.property, 'Timeline property', spend);
     const interpolate = kernels.get(track.kernel);
     if (interpolate === undefined) throw new TypeError('Unknown timeline interpolation kernel.');
@@ -44,7 +47,7 @@ export function prepareTimelineSchedule(input) {
     validateGeneratedItemLimit(count += track.keyframes.length, 'Timeline keyframes');
     let previous = -1;
     const keyframes = track.keyframes.map(frame => {
-      spend(1); closed(frame, ['timeMs', 'value', 'easingToNext'], 'Timeline keyframe');
+      spend(1); closed(frame, ['timeMs', 'value', 'easingToNext'], 'Timeline keyframe', ['timeMs','value']);
       validateNonNegativeFinite(frame.timeMs, 'Keyframe time');
       if (frame.timeMs < previous || frame.timeMs > input.durationMs) throw new RangeError('Keyframe times must be nondecreasing within the timeline.');
       previous = frame.timeMs;
@@ -128,7 +131,7 @@ export function sampleTimelineSchedule(schedule, timeMs) {
 
 export function timelineMarkerCrossings(schedule, input) {
   const { markerIds } = requireSchedule(schedule);
-  closed(input, ['fromTimeMs', 'toTimeMs', 'iteration', 'emit', 'state'], 'Timeline marker crossing');
+  closed(input, ['fromTimeMs', 'toTimeMs', 'iteration', 'emit', 'state'], 'Timeline marker crossing', ['fromTimeMs','toTimeMs','iteration']);
   const from = input.fromTimeMs, to = input.toTimeMs;
   if (!Number.isFinite(from) || !Number.isFinite(to)) throw new TypeError('Marker crossing times must be finite.');
   if (!Number.isSafeInteger(input.iteration) || input.iteration < 0) throw new TypeError('Marker iteration requires a nonnegative safe integer.');

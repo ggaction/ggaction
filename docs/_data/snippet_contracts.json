@@ -10,7 +10,7 @@
       "source: \"rows\""
     ],
     "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
-    "sha256": "c0fca538e59f2d5bd064b0f409e2577f25d2e1ba5af1f071c6a0c030a9e916a7",
+    "sha256": "c2ccc563e44b49321685320603637f1a36f7e8dc8c37f08d3673b668d7779469",
     "executable": true
   },
   {

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:240370724559c910d9e47945879133db643e99f5d4d978a18e70dba385690aeb. Status: development. Runtime source: 076121e93f7824c5eb6cab0c0361619547d8c424. Release baseline: v0.0.13.
+Contract: sha256:ad4c2157cd2bf69a317ca19051c6fb99ae7b6758acbea9820fd4609694572bdc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/076121e93f7824c5eb6cab0c0361619547d8c424/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/076121e93f7824c5eb6cab0c0361619547d8c424/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11032,7 +11032,7 @@ Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
 ```javascript
 import { chart } from 'ggaction';
-import { planTransition, serializeAnimation, deserializeAnimation,
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation,
   exportAnimationFrames } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
@@ -11043,7 +11043,14 @@ const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
   .encodeY({ field: 'y', scale: { domain: [0, 100], nice: false } });
 const to = from.reviseData({ source: 'rows', id: 'next',
   values: [{ id: 'a', x: 100, y: 50 }] });
-const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const ordinary = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const point = sampleTransition(ordinary, 500).decisions.find(value => value.itemKey);
+const plan = planTransition({ from, to, options: {
+  durationMs: 1000, easing: 'linear',
+  tracks: [{ target: { ownerKey: point.ownerKey }, property: 'geometry', kernel: 'native-progress',
+    keyframes: [{ timeMs: 0, value: 0 }, { timeMs: 500, value: 0.25 }, { timeMs: 1000, value: 1 }] }],
+  markers: [{ id: 'halfway', timeMs: 500 }]
+} });
 const saved = serializeAnimation(plan, { rate: 1, repeat: 0, reducedMotion: false });
 const restored = deserializeAnimation(saved);
 const frames = exportAnimationFrames(restored.plan, { timesMs: [0, 500, 1000] });
@@ -11074,10 +11081,56 @@ Patterns, gradients, unresolved host colors, changed text/fonts, and other chang
 static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
-Saved transition plans use version 2 and the required
+Saved transition plans use version 3 and the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Set keyframes and markers
+
+Use a sampled decision's `ownerKey` to control the progress of its native chart or
+guide owner. A geometry track uses `property: 'geometry'`, `kernel: 'native-progress'`,
+and values from zero to one. Graph nodes and edges, partition cells and labels, and
+geographic parts retain their shared owner clock. Existing native geometry calculations
+produce the result. The frame's `progress` and Canvas dimensions still use the whole plan's time.
+
+Style tracks address an exact `{itemKey, role?}` or `{guideKey}`. `fill` and `stroke`
+use `kernel: 'color'` with CSS color strings. `opacity` and `strokeWidth` use
+`'number'` or `'positive-scale'`; positive-scale values must be positive. Opacity
+stays within zero to one and stroke widths are nonnegative. Omit `role` only when
+one compatible primitive is uniquely identified. Geographic paint follows the whole
+feature, including features hidden at both endpoints. Geographic label/body styles
+also update their current prepared values; individual leader styles are unsupported.
+Specify the label/body role when the group can produce leaders.
+
+Keyframe times are nondecreasing within the duration. A repeated time uses its last
+value from that instant. `easingToNext` defaults to the plan's easing. Gaps hold the
+latest completed track. Overlap rejects by default; `composite: 'priority'` requires
+an explicit integer priority on every track and rejects overlapping ties. The highest
+active priority wins. The resolved values at zero and duration must match the actual
+native endpoints, preserving their exact graphics and authored color strings.
+Exact endpoint admission follows the original time, so floating-point easing cannot
+hide a keyframe immediately before the ending time. Interior progress stays strictly
+between zero and one even at floating-point underflow or rounding boundaries.
+Missing or ambiguous targets, incompatible style targets, and unsupported properties
+reject preparation. Raw pixel coordinates are not keyframe properties.
+
+Supply `onMarker(event)` to `createAnimationPlayer` to receive unique marker crossings
+after rendering. Events contain `id`, `timeMs`, `iteration`, and the actual current
+`frame`; a skipped marker need not have the same time as the displayed frame. Forward
+playback emits each marker once per iteration, including zero when starting at zero.
+Reverse crossings are silent. `seek(timeMs, {emit: true})` emits forward crossings;
+ordinary `seek` is silent after synchronizing any time already played.
+
+Skipped repetitions retain iteration/time order. Marker batches are checked against
+10,000 callbacks and 10,000,000 ID-work units before delivery. A failed batch cancels
+the run without partial delivery. Reduced motion uses the same bounds; infinite repeat
+finishes at iteration zero. Disposal stops remaining callbacks and the completion
+commit. A callback error cancels the run. Reentrant controls use the same bounded queue.
+
+Saved timelines retain authored values and `keyframe-schedule@1`, then validate exact
+targets and endpoint values again when restored. Callbacks, clocks, and current playback
+state are not persisted. Native keyframes and marker timing work with all four renderers.
 
 ## Move a completed graph layout
 
@@ -11242,7 +11295,7 @@ simultaneous content/layout changes remain outside this camera kernel.
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
@@ -37956,15 +38009,34 @@ declare const transitionPlan: unique symbol;
 declare const transitionFrame: unique symbol;
 export type AnimationProgram = ChartProgram | BasicChartProgram;
 export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface AnimationKeyframe<Value> {
+  readonly timeMs: number;
+  readonly value: Value;
+  readonly easingToNext?: AnimationEasing;
+}
+export type AnimationStyleTarget =
+  | { readonly itemKey: string; readonly role?: string; readonly guideKey?: never }
+  | { readonly guideKey: string; readonly itemKey?: never; readonly role?: never };
+export type AnimationTrack =
+  | { readonly target: { readonly ownerKey: string }; readonly property: 'geometry'; readonly kernel: 'native-progress';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'fill' | 'stroke'; readonly kernel: 'color';
+      readonly keyframes: readonly AnimationKeyframe<string>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'opacity' | 'strokeWidth'; readonly kernel: 'number' | 'positive-scale';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number };
+export interface AnimationMarker { readonly id: string; readonly timeMs: number; }
 export interface TransitionOptions {
   readonly durationMs: number;
   readonly easing?: AnimationEasing;
+  readonly tracks?: readonly AnimationTrack[];
+  readonly markers?: readonly AnimationMarker[];
+  readonly composite?: 'reject' | 'priority';
 }
 /** Created only by planTransition or deserializeAnimation. */
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 2;
+  readonly version: 3;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
@@ -37973,10 +38045,10 @@ export interface TransitionPlan {
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
-  | { readonly kind: 'enter'; readonly targetIndex: number; readonly reason?: 'guide-ambiguity' }
-  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'enter'; readonly targetIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
-      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string;
+      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string; readonly ownerKey?: string;
       readonly role: string; readonly kernel?: string; readonly reason?: string };
 /** An authentic immutable sample, directly accepted by all four renderers. */
 export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
@@ -38032,10 +38104,14 @@ export interface AnimationSettlement {
   readonly timeMs: number;
   readonly iteration: number;
 }
+export interface AnimationMarkerEvent extends AnimationMarker {
+  readonly iteration: number;
+  readonly frame: TransitionFrame;
+}
 export interface AnimationPlayer {
   play(): AnimationPlayer;
   pause(): AnimationPlayer;
-  seek(timeMs: number): AnimationPlayer;
+  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer;
   reverse(): AnimationPlayer;
   setRate(rate: number): AnimationPlayer;
   setRepeat(repeat: number): AnimationPlayer;
@@ -38051,6 +38127,7 @@ export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
   readonly clock: AnimationClock<Handle>;
   readonly render: (frame: TransitionFrame) => void;
   readonly commit?: (frame: TransitionFrame) => void;
+  readonly onMarker?: (event: AnimationMarkerEvent) => void;
 }): AnimationPlayer;
 ```
 
@@ -52662,12 +52739,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/076121e93f7824c5eb6cab0c0361619547d8c424/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/076121e93f7824c5eb6cab0c0361619547d8c424/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55794,9 +55871,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:240370724559c910d9e47945879133db643e99f5d4d978a18e70dba385690aeb` |
+| Contract fingerprint | `sha256:ad4c2157cd2bf69a317ca19051c6fb99ae7b6758acbea9820fd4609694572bdc` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `076121e93f7824c5eb6cab0c0361619547d8c424` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

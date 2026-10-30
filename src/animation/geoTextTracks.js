@@ -55,23 +55,25 @@ export function prepareGeoTextTracks(from, to) {
     return { ...match, kind: "crossfade", reason: b === null ? "geo-identity" : failures.get(b.group) ?? "geo-identity" };
   } };
 }
-export function sampleGeoTextTracks(state, progress, accountWork) {
+export function sampleGeoTextTracks(state, progress, accountWork, timeline) {
   if (!prepared.has(state)) throw new TypeError("Geographic Text sampling requires authentic tracks.");
   validateUnitInterval(progress, "Geographic Text progress");
   let work = 0;
   const account = amount => { validateWorkLimit(work += amount, "Geographic Text sampled work"); accountWork?.(amount); };
   return state.groups.map(group => {
     const a = group.from.presentation, b = group.to.presentation;
-    const presentation = normalizeGeoTextPresentation({ ...b, parameters: sampleGeoCameraInterpolation(group.camera, progress).parameters,
-      plotOrigin: b.plotOrigin.map((value, index) => interpolateNumber(a.plotOrigin[index], value, progress)),
-      bounds: Object.fromEntries(Object.entries(b.bounds).map(([key, value]) => [key, interpolateNumber(a.bounds[key], value, progress)])),
+    const current = timeline?.progress(b.key) ?? progress;
+    const presentation = normalizeGeoTextPresentation({ ...b, parameters: sampleGeoCameraInterpolation(group.camera, current).parameters,
+      plotOrigin: b.plotOrigin.map((value, index) => interpolateNumber(a.plotOrigin[index], value, current)),
+      bounds: Object.fromEntries(Object.entries(b.bounds).map(([key, value]) => [key, interpolateNumber(a.bounds[key], value, current)])),
       entries: b.entries.map((entry, index) => ({ ...entry, properties: { ...entry.properties,
-        ...(group.appearances[index] === null ? {} : sampleAnimationAppearance(group.appearances[index], progress)),
-        x: interpolateNumber(group.entries[index].properties.x, entry.properties.x, progress),
-        y: interpolateNumber(group.entries[index].properties.y, entry.properties.y, progress) } })) });
+        ...(group.appearances[index] === null ? {} : sampleAnimationAppearance(group.appearances[index], current)),
+        ...timeline?.textStyle(group.targetGroup,entry.identity.key),
+        x: interpolateNumber(group.entries[index].properties.x, entry.properties.x, current),
+        y: interpolateNumber(group.entries[index].properties.y, entry.properties.y, current) } })) });
     return { sourceGroup: group.sourceGroup, targetGroup: group.targetGroup, presentation,
-      frame: interpolateNodeFrame(group.from.frame, group.to.frame, progress),
-      leaderFrame: group.to.leaderFrame === null ? null : interpolateNodeFrame(group.from.leaderFrame, group.to.leaderFrame, progress),
+      frame: interpolateNodeFrame(group.from.frame, group.to.frame, current),
+      leaderFrame: group.to.leaderFrame === null ? null : interpolateNodeFrame(group.from.leaderFrame, group.to.leaderFrame, current),
       graphics: resolveGeoTextPresentation(presentation, account) };
   });
 }

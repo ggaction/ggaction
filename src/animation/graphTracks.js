@@ -41,11 +41,11 @@ export function graphTrackPreparation(from,to,a,b) {
 
 // Sample each shared node/edge state once even when bodies, arrows and labels
 // consume it. The caller owns paint, clipping and exact endpoint references.
-export function graphTrackSamples(pairs,progress) {
+export function graphTrackSamples(pairs,progress,ownerProgress) {
   const sampled=new Map();
   return index=>{
     if(!sampled.has(index)){
-      const result=sampleGraphInterpolation(pairs[index],progress);
+      const result=sampleGraphInterpolation(pairs[index],ownerProgress===undefined?progress:ownerProgress(pairs[index].to.key));
       sampled.set(index,{...result,failures:new Map(result.failures.map(failure=>[failure.key,failure.reason])),geometry:resolveAnimationGraphGeometry(result.group)});
     }
     return sampled.get(index);

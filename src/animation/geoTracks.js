@@ -68,17 +68,19 @@ export function prepareGeoTracks(from,to) {
 
 // Native geometry is resolved once per group and sample. Current paint bounds
 // and projection clipping come from their existing materialization owners.
-export function sampleGeoTracks(state,progress,accountWork) {
+export function sampleGeoTracks(state,progress,accountWork,timeline) {
   validateUnitInterval(progress,"Animation Geo progress");
   if(!prepared.has(state))throw new TypeError("Geo sampling requires authentic prepared tracks.");
   const groups=[];let work=0,points=0;
   for(const group of state.groups){
     if(group.interpolation===null)continue;
-    const geometry=sampleGeoInterpolation(group.interpolation,progress).group;
+    const current=timeline?.progress(group.to.geometry.key)??progress;
+    const geometry=sampleGeoInterpolation(group.interpolation,current).group;
     const presentation=normalizeGeoAnimationPresentation({...group.to,geometry,
-      styles:group.to.styles.map((style,index)=>group.appearances[index]===null?style:{...style,...sampleAnimationAppearance(group.appearances[index],progress)}),
-      plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],progress)),
-      frame:interpolateNodeFrame(group.from.frame,group.to.frame,progress)});
+      styles:group.to.styles.map((style,index)=>{const native=group.appearances[index]===null?style:{...style,...sampleAnimationAppearance(group.appearances[index],current)};
+        const patch=timeline?.geoStyle(group.targetGroup,geometry.features[index].key);return patch===undefined?native:{...native,...patch};}),
+      plotOrigin:group.from.plotOrigin.map((value,index)=>interpolateNumber(value,group.to.plotOrigin[index],current)),
+      frame:interpolateNodeFrame(group.from.frame,group.to.frame,current)});
     const resolved=resolveGeoAnimationPresentation(presentation);
     validateWorkLimit(work+=resolved.diagnostics.work,"Animation Geo sampled work");
     accountWork?.(resolved.diagnostics.work);

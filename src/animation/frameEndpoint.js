@@ -1,11 +1,12 @@
 import { guideAnimationKey } from "../grammar/animation/guideState.js";
+import { graphicAnimationOwnerKey, guideAnimationOwnerKey } from "../grammar/animation/ownerKey.js";
 import { validateGeoAnimationDecision } from "../grammar/animation/geoDecision.js";
 import { unavailablePolarAnimation } from "../grammar/animation/polarState.js";
 import { unavailableCartesianAnimation } from "../grammar/animation/cartesianState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownRecord, ownArray } from "../core/ownData.js";
 import { rejectUnknownProperties, validateUnitInterval } from "../core/validation.js";
-import { easeProgress, transitionProgress } from "../grammar/animation/values.js";
+import { transitionSampleState } from "../grammar/animation/values.js";
 import { unavailablePointAnimationPosition } from "../grammar/animation/pointState.js";
 import { projectSampledAnimationEndpoint } from "./endpoints.js";
 import { animationPlanProvenance } from "./frameProvenance.js";
@@ -14,8 +15,7 @@ import { validateAnimationFallbackReason } from "./concrete.js";
 // Capture correspondence once while the authentic plan is available. No earlier
 // plan or sampled endpoint is retained by the resulting frame meaning.
 export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
-  const progress = easeProgress(transitionProgress(timeMs, plan.durationMs), plan.easing);
-  const side = progress === 0 ? "from" : progress === 1 ? "to" : undefined;
+  const { side } = transitionSampleState(timeMs, plan.durationMs, plan.easing);
   const exact = side === undefined ? undefined : plan[side];
   let identities, backgrounds;
   if (exact) { identities = exact.identities; backgrounds = exact.backgrounds; }
@@ -87,12 +87,14 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
   for(const [index,decision]of view.decisions.entries()){
     ownRecord(decision,"Sampled decision");
     if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
+    const ownerKey=identities[index]!==undefined?graphicAnimationOwnerKey(identities[index]):guides[index]==null?undefined:guideAnimationOwnerKey(guides[index].identity);
     const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;
     const identityFields=Object.hasOwn(decision,"guideKey")?["guideKey","role"]:Object.hasOwn(decision,"itemKey")?["itemKey","role"]:["owner","role"];
-    const fields=singular?["kind",singular,...(Object.hasOwn(decision,"reason")?["reason"]:[])]:["kind","sourceIndex","targetIndex",...identityFields,
-      ...(decision.kind==="crossfade"?["reason"]:decision.kind==="semantic-kernel"?["kernel"]:[])];
+    const fields=[...(singular?["kind",singular,...(Object.hasOwn(decision,"reason")?["reason"]:[])]:["kind","sourceIndex","targetIndex",...identityFields,
+      ...(decision.kind==="crossfade"?["reason"]:decision.kind==="semantic-kernel"?["kernel"]:[])]),...(ownerKey===undefined?[]:["ownerKey"])];
     rejectUnknownProperties(decision,fields,"sampled decision");
     if(fields.some(key=>!Object.hasOwn(decision,key))||!["enter","exit","exact","crossfade","semantic-kernel"].includes(decision.kind))throw new TypeError("Unknown or incomplete sampled decision.");
+    if(ownerKey!==undefined&&decision.ownerKey!==ownerKey)throw new TypeError("Sampled owner differs from its exact native identity.");
     for(const key of ["sourceIndex","targetIndex"])if(Object.hasOwn(decision,key)&&(!Number.isSafeInteger(decision[key])||decision[key]<0||decision[key]>=10000))throw new TypeError("Invalid sampled decision index.");
     if(singular&&Object.hasOwn(decision,"reason")&&(decision.reason!=="guide-ambiguity"||guides[index]==null))throw new TypeError("Only an ambiguous guide may add an unmatched decision reason.");
     if(!singular){

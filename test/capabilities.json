@@ -91,7 +91,15 @@
       },
       {
         "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/animation-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-timeline.browser.js"
       },
       {
         "type": "file",
@@ -1425,6 +1433,10 @@
       }
     ],
     "realistic": [
+      {
+        "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
       {
         "type": "file",
         "path": "contracts/dataset-fixtures.test.js"

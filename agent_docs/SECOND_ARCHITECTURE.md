@@ -4700,11 +4700,32 @@ Full774,677/Basic422,618/animation233,184/interaction136,155에 따라 각 상�
 774,700/422,700/233,200/136,200으로 올렸다. Basic은 작은 source-only Text 준비만 공유하고
 Geo action/projection assembly를 가져오지 않는다. 최초 초과와 동일 archive 재검증을 보존한다.
 
-### Private timeline target preparation
+### Native timeline and marker ownership
 
 `grammar/animation/timeline`은 명시 수치 slot의 시간·겹침·마커 계산을 소유하고
 `animation/timelineTracks`는 admitted native endpoint와 exact track에서 semantic owner,
 item/role, guide, whole Geo feature를 연결한다. `grammar/animation/ownerKey`가 namespace와
 resource owner의 키를 하나로 만든다. 준비 결과의 raw authored 값과 private numeric schedule을
-분리하며 이전 program/scene/plan을 binding에 저장하지 않는다. 공개 entry·현재 저장 schema와
-renderer 경계는 아직 변하지 않는다. 공개 연결 계획은 구현 기록에만 둔다.
+분리하며 이전 program/scene/plan을 binding에 저장하지 않는다. 공개 planner는 이 준비 결과를
+private WeakMap에 두고 raw authored track과 marker만 transition version3 payload에 저장한다.
+복원은 같은 native target·경계값·kernel 검증을 다시 실행한다. `animation/timelineSample`은
+한 sample의 owner clock과 style patch를 제공하며 Geo/Text의 현재 의미도 native materialization
+전에 갱신한다. Graph/partition은 group clock을 공유하고 renderer는 완성 graphicSpec만 읽는다.
+
+`grammar/animation/values`는 raw 시각의 정확 endpoint 여부와 열린 구간 progress를 한 번 결정한다.
+Easing 반올림으로 interior sample을 exact endpoint로 바꾸지 않는다. Cartesian/Polar의 저장 여부는
+native kernel 선택과 별개로 결정해, sampled-concrete fallback 의미도 offline 왕복에서 보존한다.
+
+기존 controller는 clock·iteration·재진입 FIFO·run 수명을 계속 소유한다.
+`animation/timelinePlayback`은 그 알림만 받아 immutable schedule의 forward marker crossing을
+계산하고 run별 중복 전달을 막는다. 별도 clock이나 저장 callback은 없으며 callback 전에 전체
+한도를 검증한다. 정확 옵션·seek/interrupt 수명과 한도는 [Current](contract/current/ANIMATION.md)가
+소유한다. 전체 STEP077 검증과 후행 guide/legend 통합은 별도 의무로 남는다.
+
+이 결합 source의 canonical package는1182entries, unpacked7,646,781bytes이며
+Node22 packed1,690,756 및 Node20/24 packed1,693,299bytes다. 측정 상한은
+1182/1,694,000/7,646,800으로 맞춘다. 같은 Node22 archive를 세 Node에 설치한 실제
+최대 gzip은 Full774,659/Basic422,662/animation262,122/interaction136,504bytes이며
+animation/interaction 상한만262,200/136,600으로 조정한다. 기존18측정과 최초 초과를
+보존해 새 상수로 다시 검증한다. 공개 설명의 검색 payload는1,084,689bytes여서 최소
+상한1,084,700을 적용한다. 이 수치는 이후 결합 source의 검증을 대신하지 않는다.

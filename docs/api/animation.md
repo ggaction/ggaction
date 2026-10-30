@@ -24,7 +24,7 @@ Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
 ```javascript
 import { chart } from 'ggaction';
-import { planTransition, serializeAnimation, deserializeAnimation,
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation,
   exportAnimationFrames } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
@@ -35,7 +35,14 @@ const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
   .encodeY({ field: 'y', scale: { domain: [0, 100], nice: false } });
 const to = from.reviseData({ source: 'rows', id: 'next',
   values: [{ id: 'a', x: 100, y: 50 }] });
-const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const ordinary = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const point = sampleTransition(ordinary, 500).decisions.find(value => value.itemKey);
+const plan = planTransition({ from, to, options: {
+  durationMs: 1000, easing: 'linear',
+  tracks: [{ target: { ownerKey: point.ownerKey }, property: 'geometry', kernel: 'native-progress',
+    keyframes: [{ timeMs: 0, value: 0 }, { timeMs: 500, value: 0.25 }, { timeMs: 1000, value: 1 }] }],
+  markers: [{ id: 'halfway', timeMs: 500 }]
+} });
 const saved = serializeAnimation(plan, { rate: 1, repeat: 0, reducedMotion: false });
 const restored = deserializeAnimation(saved);
 const frames = exportAnimationFrames(restored.plan, { timesMs: [0, 500, 1000] });
@@ -66,10 +73,56 @@ Patterns, gradients, unresolved host colors, changed text/fonts, and other chang
 static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
-Saved transition plans use version 2 and the required
+Saved transition plans use version 3 and the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Set keyframes and markers
+
+Use a sampled decision's `ownerKey` to control the progress of its native chart or
+guide owner. A geometry track uses `property: 'geometry'`, `kernel: 'native-progress'`,
+and values from zero to one. Graph nodes and edges, partition cells and labels, and
+geographic parts retain their shared owner clock. Existing native geometry calculations
+produce the result. The frame's `progress` and Canvas dimensions still use the whole plan's time.
+
+Style tracks address an exact `{itemKey, role?}` or `{guideKey}`. `fill` and `stroke`
+use `kernel: 'color'` with CSS color strings. `opacity` and `strokeWidth` use
+`'number'` or `'positive-scale'`; positive-scale values must be positive. Opacity
+stays within zero to one and stroke widths are nonnegative. Omit `role` only when
+one compatible primitive is uniquely identified. Geographic paint follows the whole
+feature, including features hidden at both endpoints. Geographic label/body styles
+also update their current prepared values; individual leader styles are unsupported.
+Specify the label/body role when the group can produce leaders.
+
+Keyframe times are nondecreasing within the duration. A repeated time uses its last
+value from that instant. `easingToNext` defaults to the plan's easing. Gaps hold the
+latest completed track. Overlap rejects by default; `composite: 'priority'` requires
+an explicit integer priority on every track and rejects overlapping ties. The highest
+active priority wins. The resolved values at zero and duration must match the actual
+native endpoints, preserving their exact graphics and authored color strings.
+Exact endpoint admission follows the original time, so floating-point easing cannot
+hide a keyframe immediately before the ending time. Interior progress stays strictly
+between zero and one even at floating-point underflow or rounding boundaries.
+Missing or ambiguous targets, incompatible style targets, and unsupported properties
+reject preparation. Raw pixel coordinates are not keyframe properties.
+
+Supply `onMarker(event)` to `createAnimationPlayer` to receive unique marker crossings
+after rendering. Events contain `id`, `timeMs`, `iteration`, and the actual current
+`frame`; a skipped marker need not have the same time as the displayed frame. Forward
+playback emits each marker once per iteration, including zero when starting at zero.
+Reverse crossings are silent. `seek(timeMs, {emit: true})` emits forward crossings;
+ordinary `seek` is silent after synchronizing any time already played.
+
+Skipped repetitions retain iteration/time order. Marker batches are checked against
+10,000 callbacks and 10,000,000 ID-work units before delivery. A failed batch cancels
+the run without partial delivery. Reduced motion uses the same bounds; infinite repeat
+finishes at iteration zero. Disposal stops remaining callbacks and the completion
+commit. A callback error cancels the run. Reentrant controls use the same bounded queue.
+
+Saved timelines retain authored values and `keyframe-schedule@1`, then validate exact
+targets and endpoint values again when restored. Callbacks, clocks, and current playback
+state are not persisted. Native keyframes and marker timing work with all four renderers.
 
 ## Move a completed graph layout
 
@@ -238,7 +291,7 @@ simultaneous content/layout changes remain outside this camera kernel.
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |

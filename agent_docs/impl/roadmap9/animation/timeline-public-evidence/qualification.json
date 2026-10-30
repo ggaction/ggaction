@@ -1,0 +1,125 @@
+{
+  "status": "verified-public-timeline; wider STEP077 integration pending",
+  "sourceRevision": null,
+  "sourceRevisionNote": "Source hashes are authoritative until the following metadata-only source pin.",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1182,
+    "packedBytes": 1690756,
+    "unpackedBytes": 7646781,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-ddc3458494835d98c102d0ca7b9d6cad6f871cdb67877c23034778bf01f6fca6.tgz",
+    "sha256": "ddc3458494835d98c102d0ca7b9d6cad6f871cdb67877c23034778bf01f6fca6"
+  },
+  "checks": {
+    "sourceUnitEachNode20_22_24": 488,
+    "focusedCoverageCases": 500,
+    "criticalOwners": 17,
+    "criticalMinimums": [
+      95,
+      90,
+      100
+    ],
+    "criticalActualAggregate": [
+      100,
+      96.87,
+      100
+    ],
+    "everyOwnerMinimumActual": [
+      100,
+      92.73,
+      100
+    ],
+    "inheritedGetterBoundaryCases": 44,
+    "contracts": 51,
+    "realistic": {
+      "cases": 47,
+      "newSources": 5,
+      "newTimelineCases": 5,
+      "updatedOpaqueSelectorSubsetRerun": 5
+    },
+    "docs": 232,
+    "nodeRendererCases": 3,
+    "browserCases": 1,
+    "browserMatrix": "Canvas/SVG x DPR1/2 x retimed/priority/rebased",
+    "sameArchiveEachNode20_22_24": {
+      "runtimeCases": 31,
+      "strictTypes": "passed",
+      "executableDoc": "passed",
+      "optionalPeers": "canvas1.0.9/sdk1.32.1"
+    },
+    "installedBundles": "same18 original measurements asserted against current minimal caps; original 3 commands failed solely old bundle limits and remain preserved",
+    "builtDocumentation": {
+      "pages": 186,
+      "llmHashes": 1598,
+      "browser": "desktop search and every page at320/390/768 passed"
+    }
+  },
+  "packageActualMaximum": {
+    "entries": 1182,
+    "packedBytes": 1693299,
+    "unpackedBytes": 7646781
+  },
+  "bundleActualMaximum": {
+    "ggaction": 774659,
+    "ggaction/basic": 422662,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 43913,
+    "ggaction/animation": 262122,
+    "ggaction/interaction": 136504
+  },
+  "independentAudit": {
+    "status": "original repros and new regressions pass after repairs; not final AT60",
+    "defectsRepaired": [
+      "Interior easing rounded to exact endpoint before a late keyframe.",
+      "Terminal backward/equal explicit seek incorrectly emitted a passed marker.",
+      "Playback first started at nonzero time then from zero missed the zero marker.",
+      "Required fields and internal optional selectors could execute inherited getters before rejection/defaulting."
+    ],
+    "evidencePrefix": "audit-"
+  },
+  "firstFailures": [
+    "Initial renderer/target fixtures inferred a degenerate single-row scale or insufficient guide margin; explicit domains and margin fixed the test inputs.",
+    "Initial package entries/packed/unpacked and animation/interaction bundle caps were exceeded; actual measurements and minimum cap changes are retained.",
+    "Initial docs were229/232 due search cap and stale snippet inventory; canonical regeneration and minimum measured search cap yield232/232.",
+    "Initial realistic native run omitted the read-only shared dataset cache variable and failed42/42 before program construction; the canonical retry with the verified cache passes47/47.",
+    "Independent audit exposed actual endpoint/marker/input-boundary defects; original failures and the repaired runs are retained."
+  ],
+  "remaining": [
+    "Expanded guide title/band/Parallel and legend/reflow final integration.",
+    "Entire STEP077 acceptance/consumer matrix and exact final artifact qualification.",
+    "Fresh final independent AT60 and separately authorized public artifact delivery."
+  ],
+  "sourceHashes": {
+    "src/animation/planner.js": "3e6d02ce740c9ac1c34f56c74a46eca6173ce87f21fe1ddd3980f6c20b59661d",
+    "src/animation/sample.js": "7e42e9ada476a656a92fef0a1d74137df12c385469b9dd7910da0c63c97590c4",
+    "src/animation/frameEndpoint.js": "bf13e29c29d8523315a50eb636e21ebf02034cee21b9cbb03b419bc322bfef61",
+    "src/animation/createPlayer.js": "aae5dabbe6ab94484ee4c088bd71e1c077db5bae87c0e74cf2746185f24c30b1",
+    "src/animation/player.js": "15e674de20b1ca6d850f92380ebb2aa0802de919f9d766b518a290671eb729a7",
+    "src/animation/timelineTracks.js": "9fce514c06f19daa53fba69efeb7961e5477b6c629f4845a2337caa5869f9ecb",
+    "src/animation/timelineSample.js": "89699be0040480ee6fdd0da05cf045957be928b1a24e978c4f9512e2d555b827",
+    "src/animation/timelinePlayback.js": "be4ac183fe1baeb17ea62b01f5dc374005d822e88fa47ad7a461fe77659d353a",
+    "src/animation/graphTracks.js": "51f779a6c2837090bd37fa44c49ea68505ebf6016c97b9ae23bc663256cc50d1",
+    "src/animation/partitionTracks.js": "3c215ee33994d73b9b519edcecf77aaf336ea34cca5b52fe79e25d16cfdcf747",
+    "src/animation/cartesianTracks.js": "f5b1f8d806adb7a7611178d95b80aa23264a197659e18a038c8979dec67f8d24",
+    "src/animation/polarTracks.js": "eed75379fd55c17e510de94a3a875a67e4f85433d762a6277ed1f1fefd79f9f3",
+    "src/animation/geoTracks.js": "c31c23d3fa61c3c578efb22749203258f83671bbcfd8567af28b0389255dc569",
+    "src/animation/geoTextTracks.js": "455e71d70d227b0486d299711af8cd4b22ec2df9550d2424ca985942e7d1b730",
+    "src/grammar/animation/timeline.js": "161dd97e9d9dddad588d316d56953e7b96b3af62727e1c8db7741709814290f6",
+    "src/grammar/animation/values.js": "8a394f655b0ccc74016e3e3630c6f25d1fe603768a0097b5a73cfa48854653fd",
+    "src/grammar/animation/ownerKey.js": "51b59b237d52e2561d88c205b6a2ae8e5ef9dedc473c090408ef1eb1cc948c83",
+    "types/animation.d.ts": "4e8333b4a358c0f90dca772f2c55cf3faba7430aa1ba3193c514f4415ec8507a",
+    "agent_docs/contract/current/ANIMATION.md": "8c169f056b3bb432cf9c1927e976115f068ceec745134b81f052af27de62baa6",
+    "docs/api/animation.md": "1ad33754e5ae3b458e528f55bf2a6440c6fe36670777aecda479d7af669327c1",
+    "scripts/consumers/fixtures/node/animation-timeline.mjs": "dce509ee85021f8279954787142398d3dd327b739f135680e19baab36c78955e",
+    "test/unit/animation/timeline-public.test.js": "e4f7483c51284fb139b8942cd2c925e4b1fe4f1cf024066cae7c03126fb7ee8f",
+    "test/unit/animation/markers.test.js": "6ca13bad3e0e36da608f9c457fd8cf22311cb186a1b1e339fa97d486f52f9d8a",
+    "test/unit/animation/timeline-input-boundaries.test.js": "bc3be5bc5251fbdc69d70df0ded8244de81260250e80bf13c39b45cd1cfc2146",
+    "test/contracts/realistic-animation-timeline.test.js": "67bb223c5cfec4418761602d2fe137cbe28aa0973a42850dffc5af363c2a71fe",
+    "test/support/animation-timeline-frame.js": "839e0e27f28f36d041204819bad9c87e2a2c1a781ed60582e962d0e0d02484cb",
+    "test/browser/animation-timeline.browser.js": "3801dc4f89323d34be30ba9a55926a956668910f882db6150b7442237baa31e5",
+    "test/charts/cross-feature-integration/variants/animation/timeline.render.js": "4b6d2d3f29d4cee40b9fb9a62eb0091a2fd9ec61168213aee63737bd86aaa0a9"
+  }
+}

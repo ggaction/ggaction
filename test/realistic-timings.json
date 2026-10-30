@@ -4,6 +4,7 @@
   "environment": "Ubuntu, Node 22",
   "measurement": "Sum of per-test duration_ms from the successful realistic run; scheduling estimates, not per-file elapsed-time guarantees.",
   "durationMs": {
+    "contracts/realistic-animation-timeline.test.js": 2038,
     "contracts/dataset-fixtures.test.js": 22252,
     "contracts/generated-lifecycle-scenarios.test.js": 20882,
     "contracts/generated-scenario-effective-factors.test.js": 2529,
@@ -152,6 +153,18 @@
     }
   },
   "localMeasurements": {
+    "contracts/realistic-animation-timeline.test.js": {
+      "record": "1793337670561-67567.json",
+      "durationMs": 2037.9862919999998,
+      "maxRssKiB": 209328,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
     "contracts/realistic-combined-legend-witness.test.js": {
       "environment": "Darwin, Node 22",
       "source": "local integration run",
