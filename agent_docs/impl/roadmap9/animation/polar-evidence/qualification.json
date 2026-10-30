@@ -64,6 +64,19 @@
         390,
         768
       ]
+    },
+    "documentationTruth": {
+      "initial": {
+        "tests": 3,
+        "passed": 1,
+        "failed": 2
+      },
+      "final": {
+        "tests": 3,
+        "passed": 3
+      },
+      "repairReference": "0118b1bd3",
+      "note": "Adopt missing public animation heading and synchronize existing cap table with this branch measured canonical limits; runtime/archive unchanged."
     }
   },
   "archive": {

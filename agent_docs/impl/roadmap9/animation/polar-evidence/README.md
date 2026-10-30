@@ -52,3 +52,10 @@ ignored 로컬 출력의 검증값이며 실행 fixture로 재생성한다.
 
 Source-pinned Jekyll build, built186페이지/1598 selective LLM artifacts, 실제 desktop search 및 전체
 문서의320/390/768px responsive browser가 모두 통과했다. 관련 원본 로그를 보존한다.
+
+## Package 문서 사실성 보충
+
+Root의0118b1bd3 감사가 드러낸 별도 documentation-truth3개 중 package heading 누락과 낡은
+bundle 표2건을 재현했다. 같은 animation entry 설명을 채택하고 현재 측정 상한 표만 정확히
+동기화한 뒤3/3이 통과했다. Basic README는 이미422300과 일치해 바꾸지 않았다. 이 보충은
+runtime/선언/설치 archive를 바꾸지 않으며 다음 public 체크포인트도 해당 검사를 포함한다.
