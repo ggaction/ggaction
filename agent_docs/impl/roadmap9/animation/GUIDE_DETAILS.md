@@ -6,7 +6,8 @@
 - [x] [원 animation 계약](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/animation.ko.md)의 guide 값 대응 및 AT-42/44를 현재 native 소유자와 대조했다.
 - [x] Band edge membership, axis title anchor, Parallel field geometry의 native 계산 소유자를 분리했다.
 - [ ] 이 준비를 typed guide 의미·current frame·strict offline에 연결하고 consumer를 검증한다.
-- [ ] Label ink/flush/rotation/reflow, legend의 나머지 의미를 연결한다.
+- [x] Native label의 settled wrapping과 measured edge/flush/rotation 계산을 공유했다.
+- [ ] 준비된 label group의 closed animation 의미·title ink dependency와 legend를 공개 연결한다.
 
 ## 현재 소유 경계
 
@@ -72,3 +73,22 @@ raw identity를 함께 검증하고 기존 guide manifest owner에 version을 �
 실행 증거는 [closed anchor 증거](guide-anchor-state-evidence/README.md)에 기록한다. Title/legend/
 Parallel/reflow/band-boundary 공개 전환, namespace 대응·재기준·strict offline·4 backend의 후속
 통합 의무를 이 독립 준비로 완료 처리하지 않는다.
+
+## Native label 배치 준비
+
+`materialization/axisLabelLayout.js`의 `prepareAxisLabelLayout`은 이미 검증된 native 값과
+선택 indices, scale, frame, config, text metric profile을 받는다. 원 값·indices와 표시 문자열을
+분리하고 empty label을 숨긴 뒤 기존 wrapping owner를 한 번 호출해 줄을 고정한다.
+`resolvePreparedAxisLabelLayout`은 그 줄과 같은 native 측정 profile만 사용하여 회전·edge clearance·
+flush·명시 align 및 occupied/collision bounds를 계산한다. `maxWidth`나 responsive 폭을
+매 frame 다시 선택하지 않는다. Native action이 Canvas/label/title 충돌을 검사하는 순서는 유지한다.
+
+이 private 함수는 검증된 native 입력을 위한 계산 경계다. Config/profile 전체를 새 animation
+payload로 저장하지 않는다. 후속 closed group state는 같은 raw values와 line roles, 필요한
+준비 metric·font identity·배치 정책만 정규화하고 endpoint forward equality를 검증해야 한다.
+줄·문자열·font 또는 responsive 선택이 달라지면 safe fade하며, 이를 final x/y offset 보간으로
+우회하지 않는다. Schema1의 기존 측정 정책과 schema2의 missing exact metric 오류를 그대로
+유지한다. Inferred/label-relative title은 이 label bounds와 title 측정의 의존성을 함께 보존한 뒤
+연결해야 하며 아직 새 공개 typed 범위로 집계하지 않는다.
+
+실행 증거는 [label 배치 준비](guide-label-layout-evidence/README.md)에 둔다.

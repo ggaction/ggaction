@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 774_500, // Shared native guide anchors: Node20/24 774,473 gzip bytes.
-  "ggaction/basic": 422_500, // Shared native guide geometry: Node20/24 422,412 gzip bytes.
+  ggaction: 774_800, // Shared prepared guide label layout: Node20 774,703 gzip bytes.
+  "ggaction/basic": 422_800, // Shared prepared guide label layout: Node20 422,705 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 243_700, // Native typed guides: Node20/24 243,697 gzip bytes.

@@ -905,6 +905,10 @@ dash behavior. Parallel marks and field guides share the same slot calculation.
 Parallel tick selection is read by native actions and prepared anchors from
 `materialization/guides/tickValues.js`; prepared title, boundary, and field anchors
 reuse these native geometry owners without reading concrete coordinates as meaning.
+`materialization/axisLabelLayout.js` separates settled text/line preparation from
+native measured placement. Axis actions reuse the same edge clearance, rotation and
+flush calculation while retaining their explicit Canvas and collision admission.
+Prepared placement never chooses a new wrap or responsive fallback during sampling.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same
@@ -918,8 +922,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 774,500 bytes |
-| `ggaction/basic` | 422,500 bytes |
+| `ggaction` | 774,800 bytes |
+| `ggaction/basic` | 422,800 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
