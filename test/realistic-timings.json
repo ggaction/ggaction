@@ -15,6 +15,7 @@
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
+    "contracts/realistic-composition-recipes.test.js": 1584,
     "contracts/realistic-conditional-lifecycle.test.js": 958,
     "contracts/realistic-contours.test.js": 3379,
     "contracts/realistic-data-color-contracts.test.js": 50176,
@@ -338,6 +339,17 @@
     "contracts/realistic-responsive-layout.test.js": {
       "record": "1793279805187-40300.json",
       "durationMs": 3483.3687919999998,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-composition-recipes.test.js": {
+      "record": "1793318509594-54262.json",
+      "durationMs": 1583.912208,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

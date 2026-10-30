@@ -7,10 +7,13 @@
 - [x] Cartesian·polar의 실제 frame을 기존 normalized bend 커널로 변환
 - [x] compatible 일반 방향32종의 native 경계와 현재 curved state rebasing 검증
 - [x] 공개 planner·sampler의 group track 연결
-- [ ] strict offline transport, renderer와 current hit/session의 합산 검증
+- [x] strict offline transport·네 renderer·현재 path hit 검증
+- [ ] accepted session 및 다른 typed family의 합산 검증
 
 `materialization/animation/partition.js`는 기존 `resolvePartitionPlot`을 준비 시 한 번 사용한다. 이미 저장된 partition layout의 interval/view와 명시 coordinate frame을 읽으며 hierarchy layout solver를 실행하지 않는다. 각 명시 child namespace와 layer별 group이 exact layout/hierarchy refs, normalized state, label offset을 한 번 소유한다. scene 순서의 item vector는 group index·item key·primitive role만 참조한다. 같은 child 객체의 반복 배치도 서로 다른 namespace로 다룬다. body/label의 실제 geometry가 native owner 결과와 다르면 명시 fallback 표시를 유지하며 의미값을 pixel에서 추측하지 않는다.
 
 `grammar/animation/partitionState.js`는 program·resource·renderer를 읽지 않는다. 명시 normalized node/parent key와 coordinate/mapping을 canonical frame으로 변환하고 기존 `partitionInterpolation`에 위임한다. 직사각형의 basis와 depth interval을 함께 반사하면 native 모양을 유지하면서 polar endpoint의 depth convention에 맞출 수 있다. native endpoint에서 사용되지 않는 반경 또는 직사각형 크기만 다른 endpoint에 맞추며, 이미 휜 현재 상태의 치수·gap·origin·angle은 보존한다. hierarchy·visibility·handedness·radius policy와 radial depth direction이 호환되지 않으면 crossfade 이유를 유지한다. 저장된 plan의 direction 결정과 payload shape도 검증한다.
 
 공개 group track·strict offline transport·현재 path hit 연결을 구현했다. 초기 준비 증거와 공개 통합 증거는 별도로 보존한다. 독립 optional `partitions` group vector를 graph 및 Cartesian 의미와 함께 합산하며 구체적인 public signature나 ChartProgram 저장 구조를 추가하지 않는다. 네 renderer·설치본 qualification은 공개 통합 체크포인트의 실제 실행 결과로 기록하고 session 전체 또는 STEP077 완료로 대신하지 않는다.
+
+공개 source `292534e326372868f6d3df45772290f2964f8eca`의 [실행 증거](partition-public-evidence/qualification.json)를 별도로 고정한다. Native 일반 방향32종, 양방향 current frame·100회 중단·strict corruption 거부와 같은 실제 frame의 Canvas/SVG DPR1·2/PNG/vector PDF를 확인했다. 동일 archive를 설치한 세 Node에서 각각 기존·graph·partition12개, strict TypeScript와 실행 문서가 통과했다. 최초 bundle 한도 실패와 같은18측정의 최소 상한 재판정을 구분하며 전체 STEP077 완료는 남아 있다.

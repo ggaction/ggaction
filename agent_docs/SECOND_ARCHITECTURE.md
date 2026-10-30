@@ -21,8 +21,8 @@ partition owner에서 저장된 normalized interval·focus와 명시 coordinate 
 Child namespace별 group은 exact layout/hierarchy refs와 label offset을 한 번 보유하며,
 scene 순서의 item vector가 group·key·role을 참조한다. `grammar/animation/partitionState.js`는
 명시 frame을 기존 hierarchy bend kernel에 연결하고, 현재 curved state를 보존해 재기준화한다.
-Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 이 준비 owner는 아직
-공개 planner·offline transport에 연결되지 않았으며 현재 공개 지원은 Current 계약이 소유한다.
+Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 공개 planner와 offline
+transport도 같은 owner를 사용하며 정확한 지원은 Current 계약이 소유한다.
 
 ### Boolean filter 의존성
 
