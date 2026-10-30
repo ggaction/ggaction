@@ -12,7 +12,8 @@
 ## 현재 소유 경계
 
 Shared `planner/sample/frameEndpoint/frameProvenance`는 root의 timeline 통합이 소유한다.
-본 준비는 native geometry/read-only meaning에 한정하며 새 공개 API·저장 필드·guide kernel version을 추가하지 않는다.
+아래 초기 준비 절은 native geometry/read-only meaning의 독립 checkpoint 기록이다.
+후속 공개 연결의 지원 범위와 guide manifest 확대는 마지막 절과 Current Animation이 소유한다.
 기존 [공개 guide slice](GUIDES.md)와 원격 `312026112`의 증거는 그대로 유지한다.
 
 1. `grammar/gridGeometry.js`는 selected band의 start/end를 native scale center와 bandwidth로 계산하고
@@ -110,3 +111,28 @@ Inferred/relative title ink, legend와 복잡한 reflow는 이번 확대에서 �
 새 공개 pair 검증에서 기존 Parallel body의 sampled-concrete→unsupported-family 복원 reason
 불일치를 발견했다. Guide geometry/scene은 같으나 전체 frame equality는 실패하여 root 소유
 shared planner에서 별도로 보수한다. 첫 실패와 보수 후 결과를 증거에 구분한다.
+
+공개 연결 후보 source `bd8ce86d1`과 통과·실패·후행 의무는
+[확대 후보 증거](guide-expanded-evidence/README.md)에 고정했다. 최종 설치 qualifier는
+공통 Parallel reason 수리를 받은 뒤 실행하며, 후보를 stable 완료로 집계하지 않는다.
+
+## 후속 legend·reflow 소유권 준비
+
+`interaction/hitLegends.js`의 read-only sample/label 대응은 현재 일부 native action 모듈의
+계산 함수를 읽는 명시 예외다. 이를 그대로 materialization으로 옮겨 새 역방향 import 예외를
+만들지 않는다. 먼저 exact sampling은 grammar, effective block config와 resolved sample/label
+선택은 materialization, native 배치는 기존 layout owner로 나누어 현 함수를 그대로 재사용한다.
+현재 필요한 추출 대상은 `resolveEffectiveLegendBlockConfig`, categorical active config와 label
+선택, `resolveLegendSampleValues`, size/colorSize/gradient의 resolved sample/label 선택이다.
+Wrapped create/edit/materialize와 trace는 action owner에 남긴다.
+
+후속 metadata owner는 namespace와 native target/block family, component, typed raw category나
+interval endpoints를 보존한다. Overflow summary와 title은 별도 명시 role이며 현재 hit key와
+선택 결과를 바꾸지 않는다. Sample의 line/point/swatch layer와 clip window는 동일 native
+`legendSampleGraphicGroups`를 재사용한다. 표시 text나 item index를 의미 key로 삼지 않는다.
+
+Label reflow는 이미 준비된 wrapping/측정값을 native measured placement에 전달하는 범위다.
+현재 profile 전체나 최종 x/y 차이를 새 의미로 저장하지 않는다. 각 raw label의 settled lines와
+필요한 정확 측정치, field/scale/frame·정책을 닫힌 준비값으로 검증한 뒤 native edge/flush 배치를
+재생한다. Inferred title은 이 label bounds 의존성을 함께 보존해야 한다. 이 절은 구현 계획이며
+새 공개 typed 지원이나 qualifier 통과로 집계하지 않는다.

@@ -46,6 +46,23 @@
     "built": {
       "pages": 186,
       "llmArtifacts": 1598
+    },
+    "builtBrowser": {
+      "status": "passed",
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true,
+      "sameContentBeforeSourcePin": true,
+      "sourcePinDelta": "Only generated source links and identity metadata changed; documented content/layout/assets/runtime unchanged."
+    },
+    "sourcePinnedDocs": {
+      "passed": 23,
+      "build": "passed",
+      "builtPages": 186,
+      "llmArtifacts": 1598
     }
   },
   "pending": [
@@ -71,5 +88,13 @@
     "test/unit/animation/guide-anchor-transitions.test.js": "c0fda0b178cfeb148af043901b2507c3f2418eb2381b4b011e51300ca8604230",
     "test/contracts/realistic-guide-transitions.test.js": "cc0768974eeb9a413a618ad94c82d995da725cf59cf0d8680e96be4b598a839b",
     "scripts/consumers/fixtures/node/animation.mjs": "b6a97202387f164bd6718ffa53caa329466d2fc1878055c078838b4ad95555ad"
-  }
+  },
+  "sourceRevision": "bd8ce86d1",
+  "executionFailures": [
+    {
+      "check": "source-pinned Jekyll build first attempt",
+      "reason": "Command omitted canonical --source docs --destination _site --baseurl /ggaction arguments.",
+      "repair": "Used npm run docs:build; final build and built verifier passed."
+    }
+  ]
 }

@@ -5,7 +5,7 @@
 이 source checkpoint는 **candidate-awaiting-shared-fix**다. 전체 frame 오프라인 equality의
 기존 Parallel 본체 reason 불일치 1건을 유지하며 최종 자격 통과로 세지 않는다.
 승인은 [remainingApproval](../../AUTHORIZATION.json#remainingApproval)을 재사용한다.
-원 결정은 [GUIDE_DETAILS](../GUIDE_DETAILS.md)의 공개 연결 절이 소유한다.
+Source revision은 `bd8ce86d1`이며 원 결정은 [GUIDE_DETAILS](../GUIDE_DETAILS.md)의 공개 연결 절이 소유한다.
 
 ## 구현과 통과한 증거
 
@@ -21,7 +21,8 @@ Parallel은 field identity와 별도 slot 값을 보존한다. 새 primitive·�
   Parallel 본체와 resize background의 기존 weighted raster를 guide vector 출력과 구분했다.
 - 실제5dataset×6recipe=30개를 canonical realistic runner로 실행해5/5 통과했다.
 - Source 경계·discovery·documentation truth40/40, package 관련17/17, 문서232/232,
-  Jekyll build 및 built186페이지/1598 LLM artifact 통과.
+  Jekyll build 및 built186페이지/1598 LLM artifact 통과. 같은 문서 내용의 desktop search와
+  전체320/390/768px responsive browser 검사도 통과했다.
 
 ## 첫 실패와 후행 수리
 
@@ -47,3 +48,8 @@ vector로 채우면서 이후 fallback reason이 바뀐다. Track 선택과 저�
 
 추정/label-relative title ink, legend, 복잡한 flush/rotation/responsive reflow의 typed 연결은
 후행이다. 이번 후보나 후속 qualifier를 전체STEP061/062/063/077 완료로 세지 않는다.
+
+Source pin 후 문서 owning23/23과 canonical Jekyll build·built186/1598을 다시 통과했다.
+최초 pin build 명령은 canonical source 인자를 빠뜨려 실패했으며, `npm run docs:build`로
+바로잡은 로그를 별도로 보존했다. Source pin은 생성 링크와 identity metadata만 변경했고
+문서 본문·layout·assets·runtime은 같으므로 앞선 전체 responsive browser 증거를 재사용한다.
