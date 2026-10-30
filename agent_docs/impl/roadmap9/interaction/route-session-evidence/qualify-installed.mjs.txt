@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {root,run} from '../scripts/consumers/runtime.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+const fixed=JSON.parse(await readFile('.artifacts/edge-fixed-archive.json','utf8'));
+const artifact=await readFile(fixed.frozenFile),sha256=createHash('sha256').update(artifact).digest('hex');assert.equal(sha256,fixed.sha256);
+const consumer=await preparePackageConsumer({packageSpec:fixed.frozenFile});
+const receipt={node:process.version,sha256,checks:[],runtimeChanged:false};
+try{
+ await testOptionalDependencies(consumer);
+ await copyFile(path.join(root,'scripts/consumers/fixtures/node/interaction-animation.mjs'),path.join(consumer.directory,'route-session.mjs'));
+ await writeFile(path.join(consumer.directory,'runner.mjs'),`import {cases} from './route-session.mjs';import {writeFile} from 'node:fs/promises';const checks=[];for(const entry of cases.filter(value=>['interaction-animation/four-route-player-lifecycle','interaction-animation/geographic-route-seam-current-hit'].includes(value.id))){const start=performance.now();try{await entry.run();checks.push({id:entry.id,status:'passed',durationMs:performance.now()-start});}catch(error){checks.push({id:entry.id,status:'failed',error:error.stack});process.exitCode=1;}}await writeFile('route-result.json',JSON.stringify(checks));`);
+ run(process.execPath,['runner.mjs'],consumer.directory,{stdio:'inherit'});receipt.checks=JSON.parse(await readFile(path.join(consumer.directory,'route-result.json'),'utf8'));assert.equal(receipt.checks.length,2);receipt.status='passed';
+}finally{
+ await mkdir('.artifacts/route-session-installed',{recursive:true});await writeFile('.artifacts/route-session-installed/node'+process.versions.node.split('.')[0]+'.json',JSON.stringify(receipt,null,2)+'\n');await consumer.cleanup();
+}console.log(JSON.stringify(receipt,null,2));

@@ -1669,6 +1669,14 @@
     "file": "interaction-animation.mjs",
     "cases": [
       {
+        "id": "interaction-animation/four-route-player-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "interaction-animation/geographic-route-seam-current-hit",
+        "statements": 12
+      },
+      {
         "id": "interaction-animation/overlapping-edge-four-formats",
         "statements": 5
       },

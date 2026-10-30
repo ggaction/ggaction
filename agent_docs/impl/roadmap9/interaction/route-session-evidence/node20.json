@@ -1,0 +1,18 @@
+{
+  "node": "v20.20.2",
+  "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+  "checks": [
+    {
+      "id": "interaction-animation/four-route-player-lifecycle",
+      "status": "passed",
+      "durationMs": 6207.664333000001
+    },
+    {
+      "id": "interaction-animation/geographic-route-seam-current-hit",
+      "status": "passed",
+      "durationMs": 84.7519169999996
+    }
+  ],
+  "runtimeChanged": false,
+  "status": "passed"
+}

@@ -5,6 +5,7 @@ import {chart,render,prepareImageRendering} from 'ggaction';
 import {planTransition,sampleTransition,createAnimationPlayer} from 'ggaction/animation';
 import {createInteractionSession} from 'ggaction/interaction';
 import {getMarkItems} from 'ggaction/inspection';
+import {createTransitionScene} from 'ggaction/scene';
 import {serializeProgram,deserializeProgram} from 'ggaction/persistence';
 import {renderToSVG} from 'ggaction/svg';
 import {renderToPNGBuffer} from 'ggaction/png';
@@ -14,7 +15,82 @@ const source=()=>chart().createCanvas({width:240,height:180,margin:20}).createDa
 const target=p=>p.reviseData({source:'rows',id:'next',values:[{id:'a',x:9,y:9}]});
 const binding={type:'keyboard',targets:[{target:'points',activation:{type:'select',selection:'picked'}}]};
 const options={durationMs:100,easing:'linear'};
+
+function bundledPair(method){
+ let p=chart().createCanvas({width:400,height:300,margin:0});
+ if(method==='hierarchical')p=p.createData({id:'tree',values:[{key:'root',parent:null,value:0},{key:'a',parent:'root',value:1},{key:'b',parent:'root',value:1}]})
+  .createHierarchyData({id:'hierarchy',data:'tree',key:'key',parent:'parent',value:'value'})
+  .layoutHierarchy({id:'tree-layout',method:'tree',options:{nodeSize:[10,10],siblingGap:20,depthGap:50,orientation:'vertical'}});
+ const positions=method==='hierarchical'?[{key:'a',x:-15,y:60},{key:'b',x:15,y:60}]:[{key:'a',x:40,y:60},{key:'b',x:240,y:60}];
+ const origin=method==='hierarchical'?[140,50]:[0,0];
+ p=p.createData({id:'nodes',keyField:'id',values:[{id:'a'},{id:'b'}]})
+  .createData({id:'edges',keyField:'id',values:[{id:'one',from:'a',to:'b'},{id:'two',from:'a',to:'b'}]})
+  .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'from',target:'to',directed:true})
+  .layoutGraph({id:'layout',graph:'graph',method:'fixed',options:{positions}})
+  .bundleGraphEdges({id:'routes',graph:'graph',layout:'layout',method,...(method==='hierarchical'?{options:{hierarchy:'hierarchy',hierarchyLayout:'tree-layout',mapping:[{nodeKey:'a',hierarchyKey:'a'},{nodeKey:'b',hierarchyKey:'b'}]}}:{})})
+  .createGraphPlot({id:'plot',layout:'layout',routes:'routes',origin,nodes:{radius:2},edges:{stroke:'black',strokeWidth:3}})
+  .selectMarks({id:'picked',target:'plot',items:[],empty:'none'});
+ return {from:p,to:p.editGraphPlot({origin:[origin[0]+40,origin[1]+20]}),origin};
+}
+const routeResource=p=>p.semanticSpec.resources.find(resource=>resource.kind==='edge-route');
+const closedClock={now:()=>0,requestFrame(){throw Error('Paused route player requested a callback');},cancelFrame(){}};
+
 export const cases=[
+ {id:'interaction-animation/four-route-player-lifecycle',async run(){
+  for(const method of ['hierarchical','force-directed','density','edge-path']){
+   const {from,to,origin}=bundledPair(method),saved=serializeProgram(from),keys=getMarkItems(from,{target:'plot'}).filter(item=>item.fields.kind==='edge').map(item=>item.key);
+   const s=createInteractionSession({program:from,bindings:[{type:'keyboard',targets:[{target:'plot',activation:{type:'select',selection:'picked'}}]}]});
+   const player=createAnimationPlayer({plan:planTransition({from,to,options}),clock:closedClock,render(frame){s.dispatch({type:'frame',frame,version:s.getState().frameVersion+1,generation:s.getState().generation});}});
+   for(const time of [25,50,75]){
+    player.seek(time);const frame=player.getFrame(),expected=from.editGraphPlot({origin:[origin[0]+40*time/100,origin[1]+20*time/100]});
+    assert.deepEqual(frame.scene,createTransitionScene(expected,{format:'canvas'}),method);
+    s.dispatch({type:'focus',target:'plot',itemKey:keys[0]});s.dispatch({type:'inspect',point:s.getState().focus.screenPoint,slop:0});
+    assert.ok(s.getState().hit.candidates.some(item=>item.itemKey===keys[0]),method);assert.equal(new Set(s.getState().hit.candidates.map(item=>item.itemKey)).size,s.getState().hit.candidates.length);
+   }
+   const current=player.getFrame(),finished=player.finished;player.interrupt({to:from,options});assert.equal(player.getFrame(),current);assert.equal((await finished).reason,'interrupted');
+   player.seek(50);assert.deepEqual(player.getFrame().scene,createTransitionScene(from.editGraphPlot({origin:[origin[0]+15,origin[1]+7.5]}),{format:'canvas'}),method);
+   s.dispatch({type:'focus',target:'plot',itemKey:keys[0]});s.dispatch({type:'unbundleEdge',target:'plot',itemKey:keys[0]});assert.ok(s.getState().previewFrame);assert.equal(s.getState().history.undoCount,0);
+   player.seek(75);assert.equal(s.getState().previewFrame,null);assert.equal(s.getState().animationFrame,player.getFrame());
+   s.dispatch({type:'focus',target:'plot',itemKey:keys[0]});s.dispatch({type:'activate'});const chosen=s.getState().program;assert.equal(s.getState().history.undoCount,1);
+   const revised=chosen.reviseData({source:'edges',id:'edges-next',values:[{id:'two',from:'a',to:'b'},{id:'one',from:'a',to:'b'}]});
+   assert.equal(routeResource(revised).revision,1);assert.deepEqual(new Set(getMarkItems(revised,{target:'plot'}).filter(item=>item.fields.kind==='edge').map(item=>item.key)),new Set(keys));
+   const generation=s.getState().generation;s.updateProgram(revised);const stable=s.getState();let reads=0;
+   assert.equal(s.dispatch({type:'frame',frame:new Proxy({},{get(){reads++;throw Error('Stale payload read');}}),version:stable.frameVersion+1,generation}).status,'stale');assert.equal(reads,0);assert.equal(s.getState(),stable);
+   const fresh=sampleTransition(planTransition({from:revised,to:revised.editGraphPlot({origin:[origin[0]+20,origin[1]+10]}),options}),50);
+   s.dispatch({type:'frame',frame:fresh,version:stable.frameVersion+1,generation:stable.generation});s.dispatch({type:'focus',target:'plot',itemKey:keys[0]});
+   s.dispatch({type:'inspect',point:s.getState().focus.screenPoint,slop:0});assert.ok(s.getState().hit.candidates.some(item=>item.itemKey===keys[0]&&item.resourceRefs.some(ref=>ref.kind==='edge-route'&&ref.revision===1)));
+   assert.deepEqual(deserializeProgram(serializeProgram(revised)).graphicSpec,revised.graphicSpec);assert.equal(serializeProgram(from),saved);
+   player.dispose();s.destroy();
+  }
+ }},
+ {id:'interaction-animation/geographic-route-seam-current-hit',async run(){
+  const make=(type,rotateDeg,clipExtentPx,coordinates=[[170,0],[-170,0]],interpolation='source-segment')=>chart().createCanvas({width:400,height:300,margin:0})
+   .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:['properties','id'],values:{type:'FeatureCollection',features:[{type:'Feature',properties:{id:'route'},geometry:{type:'LineString',coordinates}}]}})
+   .createProjection({id:'map',type,rotateDeg,scalePx:50,translatePx:[200,150],clipExtentPx})
+   .createCoordinate({type:'geo'}).createGeoLineMark({id:'route',strokeWidth:4,interpolation}).selectMarks({id:'picked',target:'route',items:[],empty:'none'});
+  for(const clipped of [false,true]){
+   const from=make('equirectangular',[-20,0,0],clipped?[[200,0],[400,300]]:[[0,0],[400,300]]),to=from.editProjection({rotateDeg:[20,0,0]}),key=getMarkItems(from,{target:'route'})[0].key;
+   const s=createInteractionSession({program:from,bindings:[{type:'keyboard',targets:[{target:'route',activation:{type:'select',selection:'picked'}}]}]});
+   const player=createAnimationPlayer({plan:planTransition({from,to,options}),clock:closedClock,render(frame){s.dispatch({type:'frame',frame,version:s.getState().frameVersion+1,generation:s.getState().generation});}});player.seek(50);
+   assert.deepEqual(player.getFrame().scene,createTransitionScene(from.editProjection({rotateDeg:[0,0,0]}),{format:'canvas'}));
+   for(const [x,count] of [[353,1],[47,clipped?0:1],[200,0]]){s.dispatch({type:'inspect',point:{x,y:150},slop:0});assert.equal(s.getState().hit.candidates.length,count);if(count)assert.equal(s.getState().hit.target.itemKey,key);}
+   s.dispatch({type:'focus',target:'route',itemKey:key});const current=player.getFrame();player.interrupt({to:from,options});assert.equal(player.getFrame(),current);player.seek(25);
+   assert.deepEqual(player.getFrame().scene,createTransitionScene(from.editProjection({rotateDeg:[-5,0,0]}),{format:'canvas'}));
+   s.dispatch({type:'activate'});assert.equal(s.getState().history.undoCount,1);s.dispatch({type:'undo'});assert.equal(s.getState().program,from);player.dispose();s.destroy();
+  }
+  const hidden=make('orthographic',[0,0,0],[[0,0],[400,300]]),visible=hidden.editProjection({rotateDeg:[180,0,0]}),s=createInteractionSession({program:hidden});
+  const plan=planTransition({from:hidden,to:visible,options});
+  s.dispatch({type:'frame',frame:sampleTransition(plan,0),version:1,generation:0});s.dispatch({type:'inspect',point:{x:200,y:150},slop:0});assert.equal(s.getState().hit.candidates.length,0);
+  s.dispatch({type:'frame',frame:sampleTransition(plan,100),version:2,generation:0});s.dispatch({type:'inspect',point:{x:200,y:150},slop:0});assert.equal(s.getState().hit.candidates.length,1);s.destroy();
+  for(const interpolation of ['source-segment','great-circle']){
+   const arc=make('equirectangular',[-10,0,0],[[0,0],[400,300]],[[-45,45],[45,45]],interpolation),arcSession=createInteractionSession({program:arc});
+   const arcFrame=sampleTransition(planTransition({from:arc,to:arc.editProjection({rotateDeg:[10,0,0]}),options}),50);arcSession.dispatch({type:'frame',frame:arcFrame,version:1,generation:0});
+   // The great-circle midpoint is atan(sqrt(2)) north; source-segment preserves latitude pi/4.
+   for(const [latitude,kind] of [[Math.atan(Math.SQRT2),'great-circle'],[Math.PI/4,'source-segment']]){arcSession.dispatch({type:'inspect',point:{x:200,y:150-50*latitude},slop:0});assert.equal(arcSession.getState().hit.candidates.length,interpolation===kind?1:0);}
+   arcSession.destroy();
+  }
+ }},
+
  {id:'interaction-animation/overlapping-edge-four-formats',async run(){
   const plain=chart().createCanvas({width:300,height:200,margin:0})
    .createData({id:'nodes',keyField:'id',values:[{id:'a'},{id:'b'}]})
