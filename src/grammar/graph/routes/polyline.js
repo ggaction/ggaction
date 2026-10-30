@@ -33,6 +33,26 @@ function lengths(points) {
 
 export function routeLength(points) { return lengths(points).at(-1); }
 
+// Attach an existing sampled route to new center anchors without solving or
+// resampling it. Arc-length weights retain every interior sample and distribute
+// endpoint displacement continuously; a collapsed route uses sample order.
+export function reanchorRoute(points, source, target) {
+  const cumulative = lengths(points), total = cumulative.at(-1);
+  validateRoutePoints([source, target]);
+  const dx0 = source.x - points[0].x, dy0 = source.y - points[0].y;
+  const dx1 = target.x - points.at(-1).x, dy1 = target.y - points.at(-1).y;
+  if (![dx0, dy0, dx1, dy1].every(Number.isFinite)) throw new RangeError("Route anchor displacement must be finite.");
+  const result = points.map((point, index) => {
+    const u = total === 0 ? index / (points.length - 1) : cumulative[index] / total;
+    const x = dx0 === 0 && dx1 === 0 ? point.x : point.x + interpolateNumber(dx0, dx1, u);
+    const y = dy0 === 0 && dy1 === 0 ? point.y : point.y + interpolateNumber(dy0, dy1, u);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) throw new RangeError("Attached route coordinates must be finite.");
+    return { x, y };
+  });
+  result[0] = { ...source }; result[result.length - 1] = { ...target };
+  return result;
+}
+
 // Count includes both endpoints. Repeated samples contribute zero arc length.
 // Every returned point is fresh, including pinned and degenerate endpoints.
 export function resampleRoute(points, count) {

@@ -201,8 +201,23 @@ resource lineage. Offline replay preserves pixels and semantic camera state with
 creating authority to interact with a native program. Native sessions can click or
 keyboard-activate a feature painted only midway when the same source key exists in
 the current program. Each source revision is checked independently; selection intent
-is retained even if the current native projection hides its highlight. Camera-aware
-Geo labels and annotations remain separate integration work.
+is retained even if the current native projection hides its highlight.
+
+Geo source labels and geographic annotations use their native centroid or geographic
+anchor at the current camera. Their `geographic` decisions use `kernel: 'native-geo-text'`.
+This includes labels visible only midway, collision leaders, graticule labels, and
+inset projections. Native Text content, resolved styles, explicit offsets, prepared
+fonts, collection clips, and drawing order are retained. A label painted only midway
+can be clicked or keyboard-selected when its exact source key still exists in the
+current native program. Compatible solid color and
+opacity changes use the same appearance interpolation as other typed frames.
+
+A change to a label group's membership, text, other static styles, or layout policy
+uses an explicit crossfade. A body appearance fallback does not stop a compatible
+label's camera motion. Current labels and annotations can be rebased or replayed
+offline. Stored sampled anchors are checked for internal consistency; their digest
+does not certify historical source data. General Text anchor interpolation and
+simultaneous content/layout changes remain outside this camera kernel.
 
 ## Functions
 

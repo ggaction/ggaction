@@ -33,3 +33,16 @@ node --test test/docs/action-reference.test.js test/docs/documentation.test.js
 모든 tar member의 SHA256를 비교했다. 최초 실패 로그를 성공 로그로 덮어쓰지 않았다.
 소스 coverage와 현실 데이터 corpus는 별도로 실행했으며 critical floor는 canonical
 `assertCriticalCoverage`를 사용했다. 전체 release sweep이나 STEP077 완료 검사는 아니다.
+
+문서 source pin과 built 검증은 다음 순서로 실행했다.
+
+```sh
+node scripts/doc-provenance.js
+node scripts/generate-doc-action-reference.js
+node scripts/generate-doc-search-index.js
+node scripts/generate-llm-docs.js
+node --test test/docs/action-reference.test.js test/docs/documentation.test.js
+bundle exec jekyll build --source docs --destination _site --baseurl /ggaction
+node scripts/check-built-docs.js _site
+node scripts/test-built-docs.js _site
+```

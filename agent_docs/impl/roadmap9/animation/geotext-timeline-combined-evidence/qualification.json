@@ -1,0 +1,47 @@
+{
+  "status": "verified-combined-source; public timeline pending",
+  "sourceInputs": [
+    "3f74334af",
+    "3c591dd0a"
+  ],
+  "checks": {
+    "animationInteractionCurrentHitAndScheduling": 439,
+    "boundariesDiscoveryAndDocumentationTruth": 39,
+    "owningDocumentation": 39
+  },
+  "packageActual": {
+    "22": {
+      "entries": 1180,
+      "packedBytes": 1687029,
+      "unpackedBytes": 7630788,
+      "sha256": "fe1c4c10659d45a12604ad5fe3f7e189e8125bc68ce6f944030d7dd10dbf47d2"
+    },
+    "20": {
+      "entries": 1180,
+      "packedBytes": 1689515,
+      "unpackedBytes": 7630788,
+      "sha256": "b2117325e096a5f6139565c9ed6a107b557da710abb9f33f122e6334d26d3672"
+    },
+    "24": {
+      "entries": 1180,
+      "packedBytes": 1689515,
+      "unpackedBytes": 7630788,
+      "sha256": "b2117325e096a5f6139565c9ed6a107b557da710abb9f33f122e6334d26d3672"
+    }
+  },
+  "packageLimits": {
+    "entries": 1180,
+    "packedBytes": 1690000,
+    "unpackedBytes": 7631000
+  },
+  "sourceEquivalence": "All existing src and types files are byte-identical to3c591dd0a; the only additional source files are the three unimported private timeline/target owners. No new installed-runtime claim.",
+  "firstFailures": [
+    "The combined realistic inventory has62 files. Original discovery assertion61 failed; expected inventory count updated without excluding a file.",
+    "All3Node canonical packs exceeded the inherited entry cap1169. Actual archives were measured and minimum combined caps updated; Node22 canonical package inspection then passed."
+  ],
+  "remaining": [
+    "Geo source owner is completing renderer/browser/critical/installed evidence separately",
+    "Public timeline sampling, markers and strict offline integration",
+    "Full STEP077 acceptance and release qualification"
+  ]
+}

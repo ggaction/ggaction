@@ -1,4 +1,3 @@
-import { findLayer } from "../selectors/layers.js";
 import { resolveRegisteredMarkSourceItems } from "../materialization/selection/itemResolver.js";
 import { frameGeographicSource } from "./hitFrameSource.js";
 import { scopeSelectionKeys } from "./selection.js";
@@ -7,7 +6,6 @@ import { validateGeneratedItemLimit } from "../core/validation.js";
 // Keep native picture items authoritative. Only authenticated Geo source parts
 // painted in this frame may add the same current-native semantic item grain.
 export function currentFrameSelectionItems(program, owner, items, frame, spend) {
-  if (findLayer(owner.view, owner.target.id)?.mark.type !== "geo") return items;
   const keys = new Set(items.map(item => item.key)), sources = new Map();
   for (const entry of frame?.entries ?? []) {
     spend(1 + entry.metadata.itemKey.length);

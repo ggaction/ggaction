@@ -29,7 +29,7 @@ export function canvasSceneSnapshot(program, cache = true) {
   const scene = collectTransitionGraphics(program.graphicSpec, sceneIdentities(program.graphicSpec), {
     onNode(graphicId, node) { sources.push({ graphicId, nodeKey: node.key }); },
     onCanvas(graphicId, frame) { canvases.push({ graphicId, offset: [frame.x, frame.y], clip: frame.clip }); },
-    onCollection(graphicId, frame, index) { collections.push({ graphicId, index, offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips }); }
+    onCollection(graphicId, frame, index, parent) { collections.push({ graphicId, index, offset: [frame.x, frame.y], clip: frame.clip, clips: frame.clips, parentFrame: { offset: [parent.x, parent.y], clip: parent.clip, clips: parent.clips } }); }
   });
   const snapshot = cloneAndFreeze({ scene, sources, canvases, collections });
   if (cache) snapshots.set(program, snapshot);

@@ -63,7 +63,7 @@ export function collectTransitionGraphics(graphicSpec, identities, { onNode, onC
             Math.max(0, Math.min(bounds.right, parent.clip[0] + parent.clip[2]) - left),
             Math.max(0, Math.min(bounds.bottom, parent.clip[1] + parent.clip[3]) - top)] });
         }
-        if (object.type === "collection" || Array.isArray(object.items)) onCollection?.(id, stack.at(-1), nodes.length);
+        if (object.type === "collection" || Array.isArray(object.items)) onCollection?.(id, stack.at(-1), nodes.length, object.clip === undefined ? stack.at(-1) : stack.at(-2));
         if (object.type !== "collection" && !Array.isArray(object.items)) add(id, object);
       }
     },

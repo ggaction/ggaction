@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:4fcf94628f8e7cb5639bd547658f9516159f42d9b5d6f4f70825db63575ada39",
-    "sourceCommit": "d3a4b0c23c1dece88ea613803167a7a1b5dbe3f0",
+    "contractId": "sha256:240370724559c910d9e47945879133db643e99f5d4d978a18e70dba385690aeb",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "5b2b27d2d3eca46bd300b120ba904e05a53833be173b4e702416ad6446c93198"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1299,8 +1299,8 @@
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 18082,
-      "sha256": "cfe7f397ea5edffddfdf8e3fa9724e8ae647db130e043a6eb670718f92114ca7"
+      "bytes": 19129,
+      "sha256": "0277b5f7e943fbe94bbe96cde288e332230ac30f2826da4bc98eb5b4beb6b30b"
     },
     {
       "order": 77,
@@ -1331,6 +1331,7 @@
         "adjust-a-geographic-view-from-host-controls",
         "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
+        "drag-a-graph-during-animation",
         "edit-existing-annotations",
         "prepare-native-work-before-replacing-the-program",
         "combine-editing-gestures",
@@ -1338,8 +1339,8 @@
         "accessible-tooltips-and-touch",
         "native-control-alternatives"
       ],
-      "bytes": 100231,
-      "sha256": "bf04a5f203d2532fe4e0588a8924e76952d373cdc3cedce5126796654e122b97"
+      "bytes": 102156,
+      "sha256": "44771391427847bc6185cb9e0f829011a87aa3d7acb66a3b70aef03ddcf069d8"
     },
     {
       "order": 78,
@@ -2644,8 +2645,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 80143,
-      "sha256": "0e09da5521f2522f907c4db43861a2edf9ea88719740ac8a1396961ced24ed93"
+      "bytes": 80344,
+      "sha256": "038f6e6f09a3ce867980c8e867659252e2aa26b8d8159228910386d70b754570"
     },
     {
       "order": 132,
@@ -3613,8 +3614,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "84b0be74e5eff5d3070f58b12e418b2088d4b5f09891366d1f75c5951d590ff7"
+      "bytes": 23199,
+      "sha256": "154898c835b60023d0d67cc82ef4faba7828ddafb6a46a5485b13b28f4ce8cb9"
     },
     {
       "order": 135,
@@ -3954,8 +3955,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "da2d73ca2ad97a69087a040ce10f611685ff1745cb85e8274132cbcbde70588a"
+      "bytes": 3000,
+      "sha256": "9477b37e960bf8cb7c2f8253932f69b763135747e46e41d045e746fc82cddae9"
     },
     {
       "order": 156,

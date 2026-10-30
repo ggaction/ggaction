@@ -583,7 +583,7 @@ function overlapPairs(items, account) {
   return pairs.sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(pair => pair.map(id => items[id].id));
 }
 
-export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) {
+export function resolveLabelLayout({ items, bounds, ...options } = {}, profile, accountWork) {
   if (!Array.isArray(items)) {
     throw new TypeError("Label layout requires an item array.");
   }
@@ -593,7 +593,10 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) 
   for (const item of items) validateItem(item, ids);
   const candidates = enumerateLabelOffsets(policy);
   let work = 0;
-  const account = amount => validateWorkLimit(work += amount, "Label layout work");
+  const account = amount => {
+    validateWorkLimit(work += amount, "Label layout work");
+    accountWork?.(amount);
+  };
   account(items.length);
   const base = items.map(item => ({
     id: item.id,

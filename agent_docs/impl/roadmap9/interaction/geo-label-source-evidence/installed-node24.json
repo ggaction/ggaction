@@ -1,0 +1,99 @@
+{
+  "node": "v24.22.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/geo-label-source-archives/ggaction-daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42.tgz",
+  "sha256": "daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2882.464417
+    },
+    {
+      "id": "geographic-label-source-public-lifecycle",
+      "status": "passed",
+      "durationMs": 762.385792
+    },
+    {
+      "id": "interaction-strict-types",
+      "status": "passed",
+      "durationMs": 186.4320000000007
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2647.450749999999,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1025,
+        "minifiedBytes": 2704025,
+        "gzipBytes": 774677
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1344.2540829999998,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 609,
+        "minifiedBytes": 1442605,
+        "gzipBytes": 422618
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 87.69595800000025,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24954
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 240.4742920000008,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 83,
+        "minifiedBytes": 146684,
+        "gzipBytes": 43913
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 839.2784159999992,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 393,
+        "minifiedBytes": 766897,
+        "gzipBytes": 233184
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 525.6850830000003,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 212,
+        "minifiedBytes": 424930,
+        "gzipBytes": 136155
+      }
+    }
+  ],
+  "status": "passed",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

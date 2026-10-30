@@ -99,6 +99,10 @@ Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한
 materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
 screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
 Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Private `materialization/graph/presentation.js`는 검증된 현재 그래프 의미에서 일시 edge geometry와
+node 이동 값을 만든다. 기존 native edge owner와 공통 polyline의 endpoint 부착을 재사용하며
+layout·saved route·trace를 쓰지 않는다. 공개 session 연결 전의 독립 계산 경계이며, 정확한
+진행 범위는 [그래프 presentation 기록](impl/roadmap9/interaction/GRAPH_PRESENTATION.md)에 있다.
 Shared materialization의 `canvasResourceRevision` registry가 Canvas와 guide transaction의
 명시 resource adapter 경계를 소유한다. Responsive와 exact-plot guide transaction도 이를 호출한다. Responsive pass의
 domain action이 먼저 현재 후보 bounds로 source resource union을 닫고, guide-only viewport
@@ -800,6 +804,7 @@ Browser-safe planner/sampler는 명시 native program 또는 authentic current f
 Renderer·DOM·Node export dependency를 이 entry에 넣지 않는다. 정확한 지원 family와
 공개 계약은 [ANIMATION](contract/current/ANIMATION.md)이 소유한다.
 
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -912,11 +917,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 774,400 bytes |
-| `ggaction/basic` | 422,500 bytes |
+| `ggaction` | 774,700 bytes |
+| `ggaction/basic` | 422,700 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 131,400 bytes |
+| `ggaction/interaction` | 136,200 bytes |
 | `ggaction/animation` | 243,700 bytes |
 
 
@@ -4612,6 +4617,33 @@ Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebas
 공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
 [Animation](contract/current/ANIMATION.md)이 소유한다.
 
+### Geographic annotation animation preparation
+
+비공개 `grammar/animation/geoAnchor.js`는 원 geographic/feature anchor와 exact resource ref,
+정규화 camera를 닫힌 의미값으로 검증한다. 기존 camera interpolation과 projection forward만
+사용하며 pixel 역산·fit·새 centroid 정책을 추가하지 않는다. 반복 sampling의 centroid는 준비
+track에 종속된 private 계산값이며 serialized source geometry와 두 번째 정본을 만들지 않는다.
+`materialization/animation/geoAnnotation.js`는 native Text의 명시 상대배치·실제 font bytes와
+측정 profile·paint를 기존 owner에서 준비한다. `grammar/geo/annotationPosition.js`가 원 native
+주석과 animation의 source-space anchor 정책을 공유하며 Basic-safe shape validator에는
+수학 dependency를 넣지 않는다. 이 private 경계는 공개 planner의 Geo Text 지원 선언이 아니다.
+
+세 private/shared owner 추가 후 canonical package는1160 entries/7,509,649 unpacked bytes,
+Node22 packed1,658,169 및 Node20 packed1,660,835bytes다. 기존 한도초과를 별도 기록하고
+최소 package 한도를1160/1,661,000/7,510,000으로 조정한다. 여섯 browser entry의 기존
+한도는 유지한다. 정확 검증 범위와 후행 통합은 [Geo Text 준비 기록](impl/roadmap9/animation/GEO_TEXT.md)을 따른다.
+
+### Source Text animation preparation
+
+Private `textGeometry.resolvePreparedSourceTextEntries` accepts explicit native item anchors and
+resolvers while reusing the ordinary source Text selection, formatting, overrides and placement.
+`materialization/animation/geoLabels` supplies source feature membership and resolved inherited
+appearance at an explicit preparation origin. It retains native feature keys, joined row references,
+LOD aliases and graticule projection lineage without copying source geometry or reversing pixels.
+This is preparation only; current-camera collision layout, final effects, hit admission and public
+sampling remain with the follow-up Geo Text integration. Basic keeps its constructor-scoped anchor
+resolver and does not import geographic mathematics through Text.
+
 ### Animation solid appearance ownership
 
 `animation/appearance`는 native geometry owner가 분리한 style slice의 공통 보간 정책을
@@ -4621,6 +4653,52 @@ Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebas
 색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
 Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
 정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+
+### Geographic animation Text preparation
+
+`materialization/animation/geoText.js`는 native Geo source Text와 Geo annotation의 원 anchor,
+exact scoped identity/ref, source digest와 상대 Text 속성을 준비한다. Geometry·centroid·camera,
+Text content, fill/effects, collision/leader 정책은 기존 owner를 재사용한다. Shared animation
+planner는 optional `geotexts`를 단일 현재 의미값으로 보존하며 dynamic body와 Text의 실제
+collection 순서를 재사용한다. Scene의 private collection snapshot은 parent clip/offset을
+포함해 아직 생성되지 않은 leader의 placement를 endpoint pixel 역산 없이 결정한다.
+`layout/labels.js`는 기존 로컬 한도와 함께 호출자가 제공하는 transient work 누계를 받아
+한 sample의 여러 group이 합산 한도를 우회하지 않게 한다. Callback은 저장하지 않는다.
+정확한 지원/명시 crossfade/저장 검증은 Current [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Current graph presentation and native drag commit
+
+현재 graph 의미의 forward geometry owner를 `materialization/graph/frameGeometry`로 분리해 native
+animation 준비와 `animation/graphPresentation`이 함께 사용한다. 후자는 기존 flat frame proof의
+source authority를 보존한 일시 frame만 만들며, 과거 frame/plan chain이나 새 저장 schema를 만들지 않는다.
+Interaction node movement는 exact current native membership을 검증한 뒤 이 작은 owner만 호출한다.
+Full action assembly는 import하지 않으며 public native `editLayout`은 release에 한 번 호출한다.
+Session은 `previewFrame`과 준비 lease를 원자 게시하고 기존 `animationFrame`을 취소 기준으로 유지한다.
+취소·source 변경·destroy는 기존 capture/preparation owner가 정리한다. Exact API/수명은
+[Current interaction](contract/current/INTERACTION.md#graph-node-dragging)이 소유한다.
+
+이 공개 연결의 동일 tar 검증은 package entries1161, packed 최대1,663,855 bytes, unpacked
+7,518,359 bytes를 측정해 상한을1161/1,664,000/7,519,000으로 맞췄다. Node20/22/24의
+여섯 browser entry 중 변경 상한은 Full774,500과 interaction136,100 gzip bytes이며, 실제 최대는
+774,417/136,076이다. Basic422,391과 animation232,964는 기존 상한을 유지한다. 새 사용 설명의
+검색 JSON은1,083,394 bytes여서 상한을1,083,400으로 최소 조정했다. 이전 실패와 정확한 archive
+및 소비자 증거는 [구현 기록](impl/roadmap9/interaction/GRAPH_PRESENTATION.md)에 보존한다.
+
+
+### Geographic Text current-source authority
+
+`grammar/geo/markKind`는 native label source 종류만 판별해 현재-frame reader가 Geo style/projection
+assembly를 import하지 않게 한다. Native Text policy는 기존 source-only Text preparation으로 원본
+label 선택·key·rows·lineage를 얻는다. Source membership 여부는 각 policy가 소유하며 Geo Text에서만
+투영 clipping과 실제 원본 제거를 구분한다. Frame proof는 기존 closed geo-feature origin과 exact native
+owner/resource 검증을 재사용하며 새 persisted schema나 registry를 만들지 않는다.
+
+동일 archive의 Node20/22/24 준비에서 entries1162, packed 최대1,664,504, unpacked7,520,719 bytes를
+측정해 상한1162/1,665,000/7,521,000으로 조정했다. Node20 browser gzip 최대
+Full774,677/Basic422,618/animation233,184/interaction136,155에 따라 각 상한을
+774,700/422,700/233,200/136,200으로 올렸다. Basic은 작은 source-only Text 준비만 공유하고
+Geo action/projection assembly를 가져오지 않는다. 최초 초과와 동일 archive 재검증을 보존한다.
 
 ### Private timeline target preparation
 

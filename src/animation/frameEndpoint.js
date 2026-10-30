@@ -60,7 +60,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
 export function prepareFrameEndpoint(frame, proof) {
   if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
   const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
-  return { endpoint: proof.endpoint, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
+  return { endpoint: proof.endpoint, geotexts: proof.geotexts, guides: proof.guides, positions: cloneAndFreeze(positions), geos: proof.geos, graphs: proof.graphs, polars: proof.polars?.map((state,index)=>state??unavailablePolarAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), partitions: proof.partitions, cartesian: proof.cartesian?.map((state,index)=>state??unavailableCartesianAnimation(proof.endpoint.identities[index]===undefined?"anonymous":"sampled-concrete")), frame };
 }
 
 export function validateSampledEndpointMetadata(scene,identities,backgrounds,view,guides=[]) {
@@ -86,7 +86,7 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
   if(scene.nodes.length>0&&((view.progress===0||view.progress===1)!==(view.decisions.length===0)))throw new TypeError("Sampled decisions disagree with endpoint progress.");
   for(const [index,decision]of view.decisions.entries()){
     ownRecord(decision,"Sampled decision");
-    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!["circle","path"].includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
+    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
     const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;
     const identityFields=Object.hasOwn(decision,"guideKey")?["guideKey","role"]:Object.hasOwn(decision,"itemKey")?["itemKey","role"]:["owner","role"];
     const fields=singular?["kind",singular,...(Object.hasOwn(decision,"reason")?["reason"]:[])]:["kind","sourceIndex","targetIndex",...identityFields,

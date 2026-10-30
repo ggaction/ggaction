@@ -68,7 +68,7 @@ export function prepareGeoTracks(from,to) {
 
 // Native geometry is resolved once per group and sample. Current paint bounds
 // and projection clipping come from their existing materialization owners.
-export function sampleGeoTracks(state,progress) {
+export function sampleGeoTracks(state,progress,accountWork) {
   validateUnitInterval(progress,"Animation Geo progress");
   if(!prepared.has(state))throw new TypeError("Geo sampling requires authentic prepared tracks.");
   const groups=[];let work=0,points=0;
@@ -81,6 +81,7 @@ export function sampleGeoTracks(state,progress) {
       frame:interpolateNodeFrame(group.from.frame,group.to.frame,progress)});
     const resolved=resolveGeoAnimationPresentation(presentation);
     validateWorkLimit(work+=resolved.diagnostics.work,"Animation Geo sampled work");
+    accountWork?.(resolved.diagnostics.work);
     validateGeneratedItemLimit(points+=resolved.diagnostics.points,"Animation Geo sampled points");
     const byFeature=new Map(presentation.geometry.features.map(feature=>[geoAnimationItemKey(geometry,feature.key),[]]));
     for(const graphic of resolved.graphics)byFeature.get(graphic.identity.key).push(graphic);

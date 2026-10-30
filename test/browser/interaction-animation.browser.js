@@ -144,3 +144,58 @@ for (const backend of ["canvas", "svg"]) for (const ratio of [1, 2]) test(`authe
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+for (const backend of ["canvas", "svg"]) for (const ratio of [1, 2]) test(`current routed graph drag shares ${backend} pixels and exact native history at DPR ${ratio}`, async () => {
+  const context = await browser.newContext({ deviceScaleFactor: ratio });
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => document.querySelector("#status").textContent === "Ready" });
+    await page.evaluate(async ({ backend, ratio }) => {
+      const api = await import("/public.js"), surface = document.querySelector("#surface");
+      surface.style.width = "300px"; surface.style.height = "200px"; surface.style.touchAction = "none";
+      surface.innerHTML = '<canvas aria-label="Moving graph" style="width:300px;height:200px"></canvas>';
+      const from = api.chart().createCanvas({ width: 300, height: 200, margin: 0 })
+        .createData({ id: "nodes", keyField: "id", values: [{ id: "a" }, { id: "b" }] })
+        .createData({ id: "edges", values: [{ id: "ab", from: "a", to: "b" }] })
+        .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "from", target: "to", directed: true })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 40, y: 60 }, { key: "b", x: 200, y: 60 }] } })
+        .createGraphPlot({ id: "plot", origin: [0, 0], nodes: { radius: 10, fill: "red", stroke: "none", strokeWidth: 0 }, edges: { stroke: "black", strokeWidth: 4 } })
+        .bundleGraphEdges({ id: "routes", method: "edge-path" }).editGraphPlot({ routes: "routes" });
+      const to = from.editLayout({ options: { positions: [{ key: "a", x: 60, y: 100 }, { key: "b", x: 220, y: 100 }] } });
+      const frame = api.sampleTransition(api.planTransition({ from, to, options: { durationMs: 100, easing: "linear" } }), 50);
+      const session = api.createInteractionSession({ program: from, bindings: [{ type: "inspect", slop: 0 }, { type: "moveNode", target: "plot" }] }), phases = [];
+      session.subscribe(event => {
+        if (event.phase) phases.push(event.phase); const state = event.state;
+        const current = state.previewFrame ?? state.animationFrame ?? state.previewProgram ?? state.program;
+        if (backend === "canvas") api.render(current, surface.querySelector("canvas").getContext("2d"), { pixelRatio: ratio });
+        else surface.innerHTML = api.renderToSVG(current);
+      });
+      session.mount(surface); session.dispatch({ type: "frame", frame, version: session.getState().frameVersion + 1, generation: session.getState().generation });
+      window.drag = { session, phases, from, frame };
+    }, { backend, ratio });
+    const box = await page.locator("#surface").boundingBox(); await page.mouse.move(box.x + 50, box.y + 80); await page.mouse.down();
+    await page.mouse.move(box.x + 80, box.y + 120, { steps: 3 }); await page.waitForFunction(() => window.drag.session.getState().previewFrame !== null);
+    const preview = await page.evaluate(async ({ backend, ratio }) => {
+      const s = window.drag.session.getState(); let canvas = document.querySelector("canvas");
+      if (backend === "svg") {
+        const image = new Image(); image.src = 'data:image/svg+xml,' + encodeURIComponent(document.querySelector("svg").outerHTML); await image.decode();
+        canvas = document.createElement("canvas"); canvas.width = 300 * ratio; canvas.height = 200 * ratio; canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+      }
+      return { rgba: [...canvas.getContext("2d").getImageData(80 * ratio, 120 * ratio, 1, 1).data],
+        original: s.program === window.drag.from, frame: s.animationFrame === window.drag.frame, undo: s.history.undoCount,
+        nodes: s.previewFrame.scene.nodes.filter(n => n.type === "circle").map(n => [n.properties.x, n.properties.y]) };
+    }, { backend, ratio });
+    assert.deepEqual(preview, { rgba: [255, 0, 0, 255], original: true, frame: true, undo: 0, nodes: [[80, 120], [210, 80]] });
+    await page.keyboard.press("Escape"); await page.mouse.up();
+    assert.equal(await page.evaluate(() => window.drag.session.getState().previewFrame), null);
+    assert.deepEqual(await page.evaluate(() => window.drag.session.getState().scene.nodes.filter(n => n.type === "circle").map(n => [n.properties.x, n.properties.y])), [[50, 80], [210, 80]]);
+    await page.mouse.move(box.x + 50, box.y + 80); await page.mouse.down(); await page.mouse.move(box.x + 80, box.y + 120); await page.mouse.up();
+    assert.deepEqual(await page.evaluate(() => {
+      const s = window.drag.session.getState(); return { undo: s.history.undoCount, revision: s.revision,
+        positions: s.program.semanticSpec.resources.find(r => r.kind === "layout").options.options.positions,
+        commits: window.drag.phases.filter(phase => phase === "commit").length };
+    }), { undo: 1, revision: 1, positions: [{ key: "a", x: 80, y: 120 }, { key: "b", x: 210, y: 80 }], commits: 1 });
+    await page.evaluate(() => { const s = window.drag.session; s.dispatch({ type: "undo" }); if (s.getState().program !== window.drag.from) throw Error("Undo did not restore source"); s.dispatch({ type: "redo" }); s.destroy(); });
+    assertNoBrowserErrors(errors, `Current graph drag ${backend} ${ratio}`); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

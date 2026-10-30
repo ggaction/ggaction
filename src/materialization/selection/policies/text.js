@@ -1,15 +1,25 @@
 import { isScreenAnnotation } from "../../../grammar/screenAnnotation.js";
 import { geoLabelSource, identifyGeoLabelItems } from "../../geo/labels.js";
 import { DEFAULT_TEXT_MARK } from '../../../grammar/text.js';
-import { resolveTextGraphicEntries, resolveIndependentTextSourceDefinitions, resolveIndependentTextItemDefinitions } from '../../textGeometry.js';
+import { resolveTextGraphicEntries, resolvePreparedSourceTextEntries, resolveIndependentTextSourceDefinitions, resolveIndependentTextItemDefinitions } from '../../textGeometry.js';
 import { finalizeItems, identifyItems } from '../items/common.js';
 import { normalizeTextHighlightStyle } from '../styles.js';
 
 export const textSelectionPolicy = Object.freeze({
   dataOptional: isScreenAnnotation,
   resourceBacked: (program, layer) => geoLabelSource(program, layer) !== undefined,
+  sourceMembership: (program, layer) => geoLabelSource(program, layer) !== undefined,
   supportedGrains: Object.freeze(['item']),
   resolveSourceItems(program, layer, dataset, grain, resolvers) {
+    const source = geoLabelSource(program, layer);
+    if (source !== undefined) {
+      const sourceItems = resolvers.resolveMarkSourceItems(program, source.id, "item", { channels: [] }).filter(item => item.visible !== false);
+      const anchors = new Map(sourceItems.map(item => [item.key, { x: 0, y: 0 }]));
+      const entries = resolvePreparedSourceTextEntries(program, layer, program.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK, anchors,
+        { ...resolvers, resolveMarkItems: (current, target, ...args) => current === program && target === source.id
+          ? sourceItems : resolvers.resolveMarkItems(current, target, ...args) }, { sourceOnly: true });
+      return identifyGeoLabelItems(layer, entries);
+    }
     if (layer.source === undefined && ["x", "y", "text", "dx", "dy", "color"].some(channel => layer.conditionals?.[channel] !== undefined)) {
       return identifyItems(program, layer, "text", resolveIndependentTextSourceDefinitions(program, layer, dataset, program.markConfigs[layer.id] ?? DEFAULT_TEXT_MARK));
     }
