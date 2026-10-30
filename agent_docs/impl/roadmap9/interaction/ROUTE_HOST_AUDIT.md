@@ -6,8 +6,8 @@
 - [x] 상속된 getter 실행 반례와 기존 own-data 계약 수리
 - [x] native host/source/revision 20개 및 두 owner critical coverage 검증
 - [x] package·source boundary·discovery 43개 검증
-- [ ] 새 고정 archive의 public own-host·실제 worker/cache 설치 검증
-- [ ] 설치·실측 및 source-pinned 문서 증거 마감
+- [x] 새 고정 archive의 public own-host·실제 worker/cache 설치 검증
+- [x] 설치·실측 및 source-pinned 문서 증거 마감
 - [ ] AT82 Chromium production sizeclass/SLO·retained heap qualification
 
 기존 [AUTHORIZATION](../AUTHORIZATION.json)의 remainingApproval 범위에서 기존 입력
@@ -45,3 +45,14 @@ worker·AbortSignal의 취소/cleanup/cache·snapshot 검증은 기존 host suit
 - 원본의 budget error는 안전성 결과이며 해당 sizeclass 성능 성공과 구분한다.
   renderer parity와 worker/cache/runtime lifetime의 기존 검증을 재사용하되 AT82 전체,
   STEP070/074/077 종료는 여전히 후행이다.
+
+## 검증 결과
+
+Source `106f9ff30` 이후 런타임은 동결했다. [기계 판독 증거](route-host-evidence/summary.json)에
+원본 실패와 최종 20개 source·43개 경계·15개 session·31개 문서 검사를 보존했다.
+두 변경 owner는 line/function100%, branch97.18/100%로 현행 자동 floor를 통과했다.
+동일 `b7a2808f…f860a` tar에서 Node20/22/24 각각 새 own-options와 기존 실제 worker/cache
+2개 소비자 및6entry bundle가 통과했다. Node20 package packed1,667,969/unpacked7,534,812,
+Full779,346/graph43,931 gzip bytes이며 기존 상한을 변경하지 않았다.
+Session의100회 취소·100회 resize/worker/assets 종단 회귀도 새 owner에서 통과했다.
+이것은 정확한 해제 counter의 증거이며 retained heap slope나 대형 SLO를 대신하지 않는다.
