@@ -1032,6 +1032,10 @@
       {
         "type": "file",
         "path": "unit/interaction-native-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-edge-presentation.test.js"
       }
     ],
     "label-layout": [

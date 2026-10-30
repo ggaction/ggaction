@@ -1669,6 +1669,10 @@
     "file": "interaction-animation.mjs",
     "cases": [
       {
+        "id": "interaction-animation/overlapping-edge-four-formats",
+        "statements": 5
+      },
+      {
         "id": "interaction-animation/native-frame-four-formats",
         "statements": 20
       },

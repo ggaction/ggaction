@@ -34,7 +34,7 @@
     "contracts/realistic-geographic-levels.test.js": 997,
     "contracts/realistic-geographic-marks.test.js": 1752,
     "contracts/realistic-geographic-transitions.test.js": 1468,
-    "contracts/realistic-graph-drag.test.js": 26125,
+    "contracts/realistic-graph-drag.test.js": 30512,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
@@ -384,15 +384,15 @@
       "status": "passed"
     },
     "contracts/realistic-graph-drag.test.js": {
-      "record": "1793322193413-95600.json",
-      "durationMs": 26124.708666,
+      "durationMs": 30511.329292,
+      "status": "passed",
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",
         "arch": "arm64",
         "runner": "local"
       },
-      "status": "passed"
+      "record": "1793325189784-19693.json"
     }
   }
 }

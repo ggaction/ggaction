@@ -720,5 +720,16 @@
     "result": "from,to",
     "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-overlapping-edges",
+    "file": "api/interaction.md",
+    "contains": "const edgeSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.",
+    "host": "paired-html"
   }
 ]

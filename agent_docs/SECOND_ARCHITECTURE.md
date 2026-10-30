@@ -4644,3 +4644,19 @@ owner/resource 검증을 재사용하며 새 persisted schema나 registry를 만
 Full774,677/Basic422,618/animation233,184/interaction136,155에 따라 각 상한을
 774,700/422,700/233,200/136,200으로 올렸다. Basic은 작은 source-only Text 준비만 공유하고
 Geo action/projection assembly를 가져오지 않는다. 최초 초과와 동일 archive 재검증을 보존한다.
+
+### Temporary selected-edge presentation
+
+GraphPlot의 임시 펼침은 canonical graph/layout/route를 수정하지 않고 기존 session의
+previewFrame/previewAssets 수명과 native unbundled geometry owner를 재사용한다. 정적 native
+baseline만 Full builtin의 registration-once exact-class reader에서 준비한다. interaction entry는
+이 작은 private reader 경계만 참조하며 Full assembly나 public animation planner를 import하지
+않는다. 별도 public registry·저장 schema·authoritative selection store는 없다. 새 baseline proof는
+현재 endpoint/native source와 graph 의미만 소유해 이전 계획의 조상 참조를 보존하지 않는다.
+후속 현재-frame overlay는 기존 flat proof의 모든 의미 vector를 그대로 유지한다. 정확한 공개
+입력·복원·자산 규칙은 [Current interaction](contract/current/INTERACTION.md#overlapping-edge-candidates-and-temporary-presentation)에 둔다.
+
+최종 source package는 entries1,165, Node20/24 packed1,667,942, unpacked7,534,634 bytes로
+상한1,165/1,668,000/7,535,000을 적용했다. 동일 tar의 Node20 gzip에서 Full779,346 및
+interaction137,437 bytes를 측정해 상한779,400/137,500으로 조정했다. 최초 package/bundle
+초과 결과와 동일 archive 재검증은 edge-presentation evidence에 보존한다.

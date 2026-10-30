@@ -23,6 +23,14 @@ createInteractionSession({program:basic(),bindings:[{type:'keyboard',targets:[{t
 createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[{target:{childPath:['a'],id:'points'},activation:{type:'select',selection:'picked',mode:'toggle'}},{target:'partition',activation:{type:'focusHierarchy'}}]}]});
 const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
+session.dispatch({type:'focus',move:'nextCandidate'});session.dispatch({type:'focus',move:'previousCandidate'});
+session.dispatch({type:'unbundleEdge',target:{childPath:['left'],id:'network'},itemKey:'opaque-key'});
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:null});
+session.subscribe(event=>{if(event.type==='unbundleEdge'){const key:string|null=event.itemKey;const owner:string=event.target.id;}});
+// @ts-expect-error edge presentation requires an explicit owner
+session.dispatch({type:'unbundleEdge',itemKey:'key'});
+// @ts-expect-error temporary presentation does not accept a native edit payload
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:'key',payload:{}});
 session.dispatch({type:'focus',move:'firstChild'});session.dispatch({type:'focus',target:'points',itemKey:null});session.dispatch({type:'activate'});
 const currentItem:string|null|undefined=session.getState().focus?.currentItemKey;
 const previewFrame:TransitionFrame|null=session.getState().previewFrame;

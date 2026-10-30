@@ -15,6 +15,40 @@ const target=p=>p.reviseData({source:'rows',id:'next',values:[{id:'a',x:9,y:9}]}
 const binding={type:'keyboard',targets:[{target:'points',activation:{type:'select',selection:'picked'}}]};
 const options={durationMs:100,easing:'linear'};
 export const cases=[
+ {id:'interaction-animation/overlapping-edge-four-formats',async run(){
+  const plain=chart().createCanvas({width:300,height:200,margin:0})
+   .createData({id:'nodes',keyField:'id',values:[{id:'a'},{id:'b'}]})
+   .createData({id:'edges',values:[{id:'one',from:'a',to:'b'},{id:'two',from:'a',to:'b'}]})
+   .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'from',target:'to',directed:true})
+   .layoutGraph({id:'layout',method:'fixed',options:{positions:[{key:'a',x:40,y:80},{key:'b',x:240,y:80}]}})
+   .createGraphPlot({id:'plot',origin:[0,0],nodes:{radius:10},edges:{stroke:'black',strokeWidth:4,parallelGap:24}});
+  const p=plain.bundleGraphEdges({id:'routes',method:'edge-path'}).editGraphPlot({routes:'routes'}).selectMarks({id:'picked',items:[],empty:'none'});
+  const before=serializeProgram(p),keys=getMarkItems(p).filter(item=>item.fields.kind==='edge').map(item=>item.key);
+  const streams=buffer=>[...buffer.toString('latin1').matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/g)].map(match=>{const bytes=Buffer.from(match[1],'latin1');try{return inflateSync(bytes).toString('latin1');}catch{return bytes.toString('latin1');}});
+  for(const animated of [false,true]){
+   const s=createInteractionSession({program:p,bindings:[{type:'keyboard',targets:[{target:'plot',activation:{type:'select',selection:'picked'}}]}]});
+   const positions=[{key:'a',x:50,y:100},{key:'b',x:250,y:100}];
+   if(animated){const to=p.editLayout({options:{positions:[{key:'a',x:60,y:120},{key:'b',x:260,y:120}]}});const frame=sampleTransition(planTransition({from:p,to,options}),50);s.dispatch({type:'frame',frame,version:1,generation:0});}
+   const baseline=s.getState().scene;s.dispatch({type:'inspect',point:{x:animated?150:140,y:animated?100:80},slop:0});
+   const order=s.getState().hit.candidates.map(item=>item.itemKey);assert.deepEqual(new Set(order),new Set(keys));
+   s.dispatch({type:'focus',move:'nextCandidate'});assert.equal(s.getState().focus.itemKey,order[0]);
+   s.dispatch({type:'unbundleEdge',target:'plot',itemKey:order[0]});const preview=s.getState().previewFrame;assert.ok(preview);
+   const native=animated?plain.editLayout({options:{positions}}):plain,routed=animated?p.editLayout({options:{positions}}):p;
+   const expected={graphicSpec:structuredClone(routed.graphicSpec)};
+   const actualItems=expected.graphicSpec.objects.plot.items;
+   for(const item of actualItems)if(item.identity.key===order[0])item.properties.commands=native.graphicSpec.objects.plot.items.find(n=>n.identity.key===order[0]&&n.identity.role===item.identity.role).properties.commands;
+   assert.equal(actualItems.filter(item=>item.identity.key===order[0]).length,2);
+   const canvas=createCanvas(1,1);render(preview,canvas.getContext('2d'));const png=await renderToPNGBuffer(preview),expectedPNG=await renderToPNGBuffer(expected);assert.deepEqual(png.buffer,expectedPNG.buffer);
+   const image=await loadImage(png.buffer),copy=createCanvas(300,200);copy.getContext('2d').drawImage(image,0,0);assert.deepEqual(copy.getContext('2d').getImageData(0,0,300,200).data,canvas.getContext('2d').getImageData(0,0,300,200).data);
+   const paths=svg=>[...svg.matchAll(/<path[^>]*\sd="([^"]*)"/g)].map(match=>match[1]);assert.deepEqual(paths(renderToSVG(preview)),paths(renderToSVG(expected)));assert.equal(paths(renderToSVG(preview)).length,4);
+   const pdf=await renderToPDFBuffer(preview),expectedPDF=await renderToPDFBuffer(expected);assert.deepEqual(streams(pdf.buffer),streams(expectedPDF.buffer));assert.doesNotMatch(pdf.buffer.toString('latin1'),/\/Subtype\s*\/Image/);
+   assert.equal(s.getState().program,p);assert.equal(s.getState().history.undoCount,0);assert.equal(serializeProgram(p),before);
+   s.dispatch({type:'focus',move:'nextCandidate'});assert.equal(s.getState().previewFrame,null);assert.deepEqual(s.getState().scene,baseline);assert.equal(s.getState().focus.itemKey,order[1]);
+   s.dispatch({type:'activate'});assert.equal(s.getState().history.undoCount,1);assert.deepEqual(s.getState().program.semanticSpec.resources.find(r=>r.id==='picked').options.itemKeys,[order[1]]);
+   s.dispatch({type:'undo'});assert.equal(s.getState().program,p);s.destroy();
+  }
+ }},
+
  {id:'interaction-animation/native-frame-four-formats',async run(){
   assert.match(import.meta.resolve('ggaction/interaction'),/\/node_modules\/ggaction\//);
   const p=source(),frame=sampleTransition(planTransition({from:p,to:target(p),options}),50),s=createInteractionSession({program:p,bindings:[binding]});
