@@ -45,7 +45,9 @@ export function resolveStoredSelection(program, id, { sourceOnly = false, member
   }
   const predicate = selectionPredicate(program, definition);
   if (sourceOnly && predicate.property !== undefined) throw new Error("Facet source links cannot project a concrete-property selection; use fields or original rows.");
-  const sourceMembership = membership && requireSelectionPolicy(requireLayer(program, definition.target).mark.type).sourceMembership === true;
+  const layer = requireLayer(program, definition.target), policy = requireSelectionPolicy(layer.mark.type);
+  const sourceMembership = membership && (typeof policy.sourceMembership === "function"
+    ? policy.sourceMembership(program, layer) : policy.sourceMembership) === true;
   const sourceItems = sourceOnly || sourceMembership ? resolveMarkSourceItems(program, definition.target, definition.grain) : undefined;
   const resolved = sourceOnly || sourceMembership && predicate.property === undefined
     ? resolveItemSelection(program, sourceItems, predicate)

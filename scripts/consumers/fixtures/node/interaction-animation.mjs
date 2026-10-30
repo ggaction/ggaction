@@ -64,6 +64,23 @@ export const cases=[
   assert.deepEqual(intent(s.getState().program),[]);assert.deepEqual(events.at(-1).selectionChanges[0].droppedKeys,[key]);
   assert.deepEqual(intent(chosen),[key]);s.destroy();
  }},
+ {id:'interaction-animation/geographic-label-source-lifecycle',run(){
+  const data=codes=>({type:'FeatureCollection',features:codes.map(code=>({type:'Feature',properties:{code},geometry:{type:'Point',coordinates:code==='front'?[0,0]:[180,0]}}))});
+  const p=chart().createCanvas({width:240,height:180,margin:0})
+   .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:['properties','code'],values:data(['front','back'])})
+   .createProjection({id:'map',type:'orthographic',scalePx:70,translatePx:[120,90]}).createCoordinate({id:'geo',type:'geo'}).createGeoPointMark({id:'places',radiusPx:10})
+   .createMarkLabels({source:'places',id:'names',field:'code'});
+  const key=getMarkItems(p.editProjection({rotateDeg:[180,0]}),{target:'names'})[0].key;
+  const chosen=p.selectMarks({id:'picked',target:'names',items:[key],empty:'none'}),intent=value=>value.semanticSpec.resources.find(resource=>resource.id==='picked').options.itemKeys;
+  const s=createInteractionSession({program:chosen,selectionPolicy:'drop'}),events=[];s.subscribe(event=>events.push(event));
+  s.dispatch({type:'setViewport',target:'map',payload:{rotateDeg:[90,0]}});
+  assert.deepEqual(intent(s.getState().program),[key]);assert.deepEqual(events.at(-1).selectionChanges,[]);assert.equal(s.getState().history.undoCount,1);
+  const restored=deserializeProgram(serializeProgram(s.getState().program));assert.deepEqual(intent(restored),[key]);
+  assert.deepEqual(getMarkItems(restored.editProjection({rotateDeg:[180,0]}),{target:'names'}).map(item=>item.key),[key]);
+  s.updateProgram(restored.editGeometryData({target:'world',values:data(['front'])}));
+  assert.deepEqual(intent(s.getState().program),[]);assert.deepEqual(events.at(-1).selectionChanges[0].droppedKeys,[key]);
+  assert.deepEqual(intent(chosen),[key]);s.destroy();
+ }},
  {id:'interaction-animation/current-graph-drag-four-formats',async run(){
   const p=chart().createCanvas({width:300,height:200,margin:0})
    .createData({id:'nodes',keyField:'id',values:[{id:'a'},{id:'b'}]})

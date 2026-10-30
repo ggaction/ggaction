@@ -4629,3 +4629,18 @@ Session은 `previewFrame`과 준비 lease를 원자 게시하고 기존 `animati
 774,417/136,076이다. Basic422,391과 animation232,964는 기존 상한을 유지한다. 새 사용 설명의
 검색 JSON은1,083,394 bytes여서 상한을1,083,400으로 최소 조정했다. 이전 실패와 정확한 archive
 및 소비자 증거는 [구현 기록](impl/roadmap9/interaction/GRAPH_PRESENTATION.md)에 보존한다.
+
+
+### Geographic Text current-source authority
+
+`grammar/geo/markKind`는 native label source 종류만 판별해 현재-frame reader가 Geo style/projection
+assembly를 import하지 않게 한다. Native Text policy는 기존 source-only Text preparation으로 원본
+label 선택·key·rows·lineage를 얻는다. Source membership 여부는 각 policy가 소유하며 Geo Text에서만
+투영 clipping과 실제 원본 제거를 구분한다. Frame proof는 기존 closed geo-feature origin과 exact native
+owner/resource 검증을 재사용하며 새 persisted schema나 registry를 만들지 않는다.
+
+동일 archive의 Node20/22/24 준비에서 entries1162, packed 최대1,664,504, unpacked7,520,719 bytes를
+측정해 상한1162/1,665,000/7,521,000으로 조정했다. Node20 browser gzip 최대
+Full774,677/Basic422,618/animation233,184/interaction136,155에 따라 각 상한을
+774,700/422,700/233,200/136,200으로 올렸다. Basic은 작은 source-only Text 준비만 공유하고
+Geo action/projection assembly를 가져오지 않는다. 최초 초과와 동일 archive 재검증을 보존한다.
