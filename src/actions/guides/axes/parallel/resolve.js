@@ -1,3 +1,4 @@
+import { parallelAxisPosition } from "../../../../grammar/parallelGuides.js";
 import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
 import { validateUserId } from "../../../../core/identifiers.js";
 import {
@@ -93,7 +94,6 @@ export function resolveStyledParallelAxes(program, dimensions) {
     ? undefined
     : findLayer(program, stored.target);
   const bounds = resolveCoordinateBounds(program, layer?.coordinate);
-  const step = bounds.width / (dimensions.length - 1);
   const configs = resolveParallelAxisConfigs(program, dimensions);
   const titles = program.semanticSpec.guides.axis?.parallel?.titles ?? [];
   return {
@@ -103,7 +103,7 @@ export function resolveStyledParallelAxes(program, dimensions) {
       const config = configs.dimensions[index];
       return {
         ...dimension,
-        x: bounds.x + step * index,
+        x: parallelAxisPosition(bounds, index, dimensions.length),
         config,
         title: titles.find(title => title.field === dimension.field)?.text ?? dimension.title,
         ticks: config.ticks === undefined ? undefined : componentValues(program, dimension, config.ticks),

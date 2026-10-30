@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "parallel-guide-geometry": { prefix: "grammar/parallelGuides.js", floor: { lines: 100, branches: 100, functions: 100 }, rationale: "Native field axes and prepared transitions must share exact placement, component geometry and explicit alignment." },
   "animation": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics and item matching must preserve exact endpoints, bounded values and unambiguous semantic identity." },
   "animation-runtime": { prefix: "animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Playback must bound callbacks, preserve the current frame on interruption and settle every run exactly once." },
   "animation-meaning": { prefix: "materialization/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition inputs must preserve final item identity and resolved semantic values without inferring meaning from pixels." },

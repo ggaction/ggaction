@@ -897,9 +897,11 @@ bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래
 ### Native guide geometry and scoped metadata ownership
 
 Native axis/grid actions, hit metadata, and animation preparation share pure geometry
-(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`) and read-only guide value/item
+(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`, `grammar/parallelGuides.js`) and read-only guide value/item
 association (`materialization/guides/`). Composition traversal uses the shared
 `selectors/graphicScopes.js`; each caller retains its validation and work budget.
+Band boundaries retain all typed edge memberships while preserving native first-owner
+dash behavior. Parallel marks and field guides share the same slot calculation.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same
@@ -913,7 +915,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 774,400 bytes |
+| `ggaction` | 774,500 bytes |
 | `ggaction/basic` | 422,500 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |

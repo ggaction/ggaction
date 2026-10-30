@@ -20,7 +20,7 @@ import {
   mapContinuousScaleValues
 } from "../../../grammar/scales/index.js";
 import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
-import { resolveGridLineGeometry } from "../../../grammar/gridGeometry.js";
+import { resolveBandGridBoundaries, resolveGridLineGeometry } from "../../../grammar/gridGeometry.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { inferGridTickConfig } from "../tickValues.js";
@@ -263,22 +263,12 @@ export function resolveGridGeometry(program, config) {
     if (config.mode === "count") throw new Error("Categorical grid values cannot use count.");
     const values = valuesFromTickConfig(program, config);
     if (!values.every(value => scale.domain.includes(value))) throw new RangeError("Grid values must be inside the scale domain.");
-    const centers = mapOrdinalPositionValues(values, scale);
-    const direction = scale.range[1] >= scale.range[0] ? 1 : -1;
-    const owners = new Map();
-    if (config.bandPosition === "boundary") {
-      centers.forEach((center, index) => {
-        for (const edge of [center - direction * scale.bandwidth / 2, center + direction * scale.bandwidth / 2]) {
-          if (!owners.has(edge)) owners.set(edge, values[index]);
-        }
-      });
-    }
-    const positions = config.bandPosition === "boundary"
-      ? [...owners.keys()].sort((a, b) => direction * (a - b)) : centers;
+    const boundaries = config.bandPosition === "boundary" ? resolveBandGridBoundaries(values, scale) : undefined;
+    const positions = boundaries === undefined ? mapOrdinalPositionValues(values, scale) : boundaries.map(entry => entry.position);
     validateGeneratedItemLimit(positions.length, "Grid value count");
     return {
       ...resolveGridLineGeometry({ direction: config.direction, values: positions, positions: positions.map(value => value + (config.alongOffset ?? 0)), bounds }),
-      strokeDash: resolveGuideDashes(config.bandPosition === "boundary" ? positions.map(value => owners.get(value)) : values, config)
+      strokeDash: resolveGuideDashes(boundaries === undefined ? values : boundaries.map(entry => entry.owner), config)
     };
   }
   const values = valuesFromTickConfig(program, config);
