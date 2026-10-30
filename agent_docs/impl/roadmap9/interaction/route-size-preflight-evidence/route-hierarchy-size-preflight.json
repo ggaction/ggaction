@@ -1,0 +1,42 @@
+{
+  "kind": "diagnostic-preflight-not-SLO",
+  "runtime": "v22.23.1",
+  "geometry": "star hierarchy native tree anchors, offset floor(n/3) graph edges",
+  "results": [
+    {
+      "edges": 100,
+      "nodes": 100,
+      "hierarchyNodes": 101,
+      "status": "complete",
+      "elapsedMs": 134.387792,
+      "work": 126909,
+      "peakSamples": 2668,
+      "routes": 100
+    },
+    {
+      "edges": 1000,
+      "nodes": 1000,
+      "hierarchyNodes": 1001,
+      "status": "complete",
+      "elapsedMs": 916.262791,
+      "work": 1147485,
+      "peakSamples": 14466,
+      "routes": 1000
+    },
+    {
+      "edges": 10000,
+      "nodes": 9999,
+      "hierarchyNodes": 10000,
+      "status": "error",
+      "elapsedMs": 1504.6113329999998,
+      "message": "Route work must not exceed 10000000.",
+      "details": {
+        "code": "resource-limit",
+        "operation": "bundleGraphEdges",
+        "optionPath": "Route work",
+        "limit": 10000000,
+        "actual": 10000048
+      }
+    }
+  ]
+}
