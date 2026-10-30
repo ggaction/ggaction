@@ -72,11 +72,20 @@ cardinal/monotone/monotone-steffen/natural 및 area의 허용 curve는 기존 pa
 수평/수직 방향, 명시 pixel/band/calendar interval 폭과 native grouped offset placement를 보존한다.
 
 곡선·layout·radius·폭 policy, ordered vertex row membership, categorical domain/order 또는
-scale policy가 달라지면 명시 reason crossfade다. 위치 conditional, non-Cartesian, overlay/offset
-rule, fixed-span/box-span/category-slot 특수 배치와 density-derived area는 이 typed kernel에
+scale policy가 달라지면 명시 reason crossfade다. Conditional position은 native final item/vertex의
+선택된 branch 값과 scale을 준비한다. Sample/restore는 조건 AST를 다시 실행하지 않는다.
+Rule과 원형 point의 ordinal offset, error-bar fixed span, box median span 및 실제 raincloud
+category-slot은 native placement 계산을 공유한다. 같은 span 단위의 크기와 slot band 값은 보간한다.
+
+Continuous/category density area는 완료된 sample grid·density·정규화 maximum과 native path를
+사용한다. 밀도 추정 자체를 frame마다 반복하지 않는다. Source-follow point/line overlay는
+native source item/segment/order와 원 값·scale에서 anchor를 forward 계산한다. Bar endpoint는
+현재 category cell 중심과 measure 끝점이며, nested overlay state는 허용하지 않는다.
+다른 source/ordered member grid 또는 native segment topology는 기존 enter/exit·crossfade다.
+Non-Cartesian은 각 별도 kernel의 범위이며, jitter/packing·비원형 point anchor는 이 확장에
 포함되지 않는다. Structured paint나 아래 solid 범위를 벗어나는 style 변경도 공통 concrete fallback이다.
 성공한 sample은 현재 의미 vector만 flat proof에 보존하여 양방향 재기준과 offline 복원을 지원한다.
-저장 payload는 endpoint별 optional Cartesian state와 `semantic-cartesian-geometry@1` version을
+저장 payload는 endpoint별 optional Cartesian state와 `semantic-cartesian-geometry@2` version을
 포함하며 unknown version·다른 row membership·forward geometry 오염을 원자적으로 거부한다.
 기존 public 함수 signature와 scene schema는 바뀌지 않는다. 다른 typed family의 완료를 뜻하지 않는다.
 ## Partition의 native 일반 방향 전환

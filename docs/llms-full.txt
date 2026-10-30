@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:e5bef141f0494fc7f7aa797e0c5a1b0931077b828297a7ac6653538680775ceb. Status: development. Runtime source: 254bb9e35cfc6202513e7cc5c70b32bece9de57a. Release baseline: v0.0.13.
+Contract: sha256:3070f8278ffc03439e4a1bea34679417e983cf302e2089c9d84e79368fa19ccd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/254bb9e35cfc6202513e7cc5c70b32bece9de57a/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/254bb9e35cfc6202513e7cc5c70b32bece9de57a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11168,11 +11168,20 @@ the same typed domain order, item value, and padding policy; their ranges may ch
 
 Changed sample membership, curve/layout/width/corner policy, categorical domain,
 scale policy, unsupported style, or structured paint uses an explicit crossfade reason.
-Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
-fixed/category-slot placements, and density-derived areas are outside this typed
-kernel. All remain renderable through the shared concrete fallback. Authentic
-samples retain current values for interruption and offline replay; unknown kernel
-versions or inconsistent stored geometry reject the restore.
+Conditional positions use the branch values and scales selected at each endpoint;
+the sampler does not rerun expressions. Native ordinal offsets, error-bar caps,
+box-plot median spans, and raincloud category slots use the same placement rules
+as static charts. Compatible span sizes and slot offsets can change continuously.
+
+Density areas retain their completed sample grid and width normalization. Density
+estimation is not repeated per frame. Source-follow point and line overlays follow
+the current value-space anchors of compatible point, bar, line, or area items.
+Changed source membership or segment topology retains explicit enter/exit or fade
+behavior. Jitter, packing, and noncircular point anchors remain concrete fallbacks.
+Other coordinate families use their own typed kernels.
+
+Authentic samples retain current values for interruption and offline replay;
+unknown kernel versions or inconsistent stored geometry reject the restore.
 ## Bend an icicle into a sunburst
 
 PartitionPlot transitions use the stored hierarchy cells and their stable parent
@@ -38179,6 +38188,8 @@ export interface TransitionPlan {
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Guide geometry includes explicit native titles, band boundaries, and field-keyed Parallel axes.
+ * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
+ * completed density samples, and compatible source-follow overlays.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
@@ -52877,12 +52888,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/254bb9e35cfc6202513e7cc5c70b32bece9de57a/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/254bb9e35cfc6202513e7cc5c70b32bece9de57a/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56009,9 +56020,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e5bef141f0494fc7f7aa797e0c5a1b0931077b828297a7ac6653538680775ceb` |
+| Contract fingerprint | `sha256:3070f8278ffc03439e4a1bea34679417e983cf302e2089c9d84e79368fa19ccd` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `254bb9e35cfc6202513e7cc5c70b32bece9de57a` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

@@ -1,0 +1,18 @@
+{
+  "status": "integration-in-progress; not a fully qualified checkpoint",
+  "base": "8d38c3ca7",
+  "cartesian": "6830445aa86cc56134910400c3d3f6f4cc95830a",
+  "sourceChecks": {
+    "animationAndNativePlacementUnit": 525,
+    "boundariesTypesDiscovery": 37
+  },
+  "sharedSeam": "Only add circle to cartesian-geometry sampled primitive list, as explicitly reproduced and authorized. planner/sample/frameProvenance unchanged.",
+  "upstreamQualification": "../cartesian-completion-evidence/qualification.json",
+  "remaining": [
+    "Merge frozen gradient/fixed-label source",
+    "Measure combined package and bundle ceilings before final archive",
+    "Complete same-archive3Node installed/render/browser/realistic/docs integration qualification",
+    "Source-pin final combined qualification",
+    "Later native guide and GeoText obligations and STEP077 remain open"
+  ]
+}

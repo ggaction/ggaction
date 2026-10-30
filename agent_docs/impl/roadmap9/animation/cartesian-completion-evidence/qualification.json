@@ -1,0 +1,1107 @@
+{
+  "status": "verified-native-cartesian-completion",
+  "sourceRevision": "d939c695aa2d29e3e5e44c72e7adda663705c994",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "scope": "Conditional Cartesian values, native offsets/fixed and box spans/category slots, completed density areas, and source-follow overlays. Existing public API signatures and legitimate topology fallback remain unchanged.",
+  "checks": {
+    "focusedCoverage": {
+      "tests": 608,
+      "passed": 608,
+      "lines": 97.37,
+      "branches": 93.58,
+      "functions": 100,
+      "criticalOwners": 13,
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "scope": "All animation tests plus selected changed native owner tests. Not repository-wide coverage. The final circle admission one-line repair was subsequently verified by owning 8 and public/installed 3 cases."
+    },
+    "circleRestoreOwning": 8,
+    "realistic": {
+      "sources": 5,
+      "recipesPerSource": 3,
+      "tests": 5,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-cartesian-transitions.test.js"
+    },
+    "rendererCases": 4,
+    "browser": {
+      "tests": 1,
+      "variants": 4,
+      "dpr": [
+        1,
+        2
+      ],
+      "backends": [
+        "Canvas",
+        "SVG"
+      ]
+    },
+    "sourceDiscovery": 30,
+    "packageAndDocumentationContracts": 16,
+    "docs": {
+      "initial": {
+        "tests": 232,
+        "passed": 230,
+        "failed": 2
+      },
+      "repairedOwning": 2,
+      "pinnedContracts": 3,
+      "pinnedDocumentationCoverage": 18,
+      "builtPages": 186,
+      "selectiveArtifacts": 1598,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": true,
+      "optionalPeers": true,
+      "browserBundles": 6
+    }
+  },
+  "package": {
+    "sha256": "058befd4884e5bab62e2ea637b0f4f527fe1691eefcbd288beeacb76f13dec97",
+    "entries": 1190,
+    "packedBytes": 1697065,
+    "unpackedBytes": 7677726
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1190,
+      "packedBytes": 1701026,
+      "unpackedBytes": 7677726
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1190,
+      "packedBytes": 1697065,
+      "unpackedBytes": 7677726
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1190,
+      "packedBytes": 1701026,
+      "unpackedBytes": 7677726
+    }
+  },
+  "sourceBundles": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705235,
+          "gzipBytes": 774936
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443447,
+          "gzipBytes": 422819
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 128451
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43912
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884096,
+          "gzipBytes": 267777
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705235,
+          "gzipBytes": 773290
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443447,
+          "gzipBytes": 421930
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24778
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 127976
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43762
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884096,
+          "gzipBytes": 266752
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705235,
+          "gzipBytes": 774936
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443447,
+          "gzipBytes": 422819
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 128451
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43912
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884096,
+          "gzipBytes": 267777
+        }
+      }
+    }
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "058befd4884e5bab62e2ea637b0f4f527fe1691eefcbd288beeacb76f13dec97",
+      "cases": [
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705178,
+          "gzipBytes": 774964
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443412,
+          "gzipBytes": 422870
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 136504
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43913
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884074,
+          "gzipBytes": 267765
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including native Cartesian placements passed",
+      "limits": {
+        "ggaction": {
+          "actual": 774964,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 422870,
+          "limit": 422900,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 136504,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43913,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 267765,
+          "limit": 267800,
+          "passed": true
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "058befd4884e5bab62e2ea637b0f4f527fe1691eefcbd288beeacb76f13dec97",
+      "cases": [
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705178,
+          "gzipBytes": 773362
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443412,
+          "gzipBytes": 421956
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 135951
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43763
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884074,
+          "gzipBytes": 266761
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including native Cartesian placements passed",
+      "limits": {
+        "ggaction": {
+          "actual": 773362,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 421956,
+          "limit": 422900,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24779,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135951,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43763,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 266761,
+          "limit": 267800,
+          "passed": true
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "058befd4884e5bab62e2ea637b0f4f527fe1691eefcbd288beeacb76f13dec97",
+      "cases": [
+        {
+          "id": "animation-cartesian-completion/native-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705178,
+          "gzipBytes": 774964
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443412,
+          "gzipBytes": 422870
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 136504
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43913
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 441,
+          "minifiedBytes": 884074,
+          "gzipBytes": 267765
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including native Cartesian placements passed",
+      "limits": {
+        "ggaction": {
+          "actual": 774964,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 422870,
+          "limit": 422900,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 136504,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43913,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 267765,
+          "limit": 267800,
+          "passed": true
+        }
+      }
+    }
+  },
+  "originalFailures": [
+    {
+      "path": ".artifacts/cartesian-completion/coverage-check.log",
+      "tests": 489,
+      "passed": 488,
+      "failed": 1,
+      "resolution": "Updated the old point offset exclusion expectation after the native typed implementation."
+    },
+    {
+      "path": ".artifacts/cartesian-completion/coverage-final.log",
+      "tests": 489,
+      "passed": 489,
+      "failed": 0,
+      "resolution": "Focused selector omitted explicit .test.js suffixes; corrected the selector and reran all intended 608 tests with 13 existing critical floors unchanged."
+    },
+    {
+      "path": ".artifacts/cartesian-completion/realistic-first.log",
+      "tests": 5,
+      "passed": 0,
+      "failed": 5,
+      "resolution": "Supplied the native rule fixture explicit x scale ID rather than relying on an ambiguous resource."
+    },
+    {
+      "path": ".artifacts/cartesian-completion/consumer-source.log",
+      "passed": 2,
+      "failed": 1,
+      "resolution": "Parent-approved single Cartesian primitive whitelist addition for circle in frameEndpoint; preserved other families. Repaired source 3 cases and same-tar 3Node cases pass."
+    },
+    {
+      "path": ".artifacts/cartesian-completion/docs.log",
+      "tests": 232,
+      "passed": 230,
+      "failed": 2,
+      "resolution": "Regenerated typed machine documentation and runtime reference; owning 2 tests pass. Full docs suite was not rerun after those generation-only repairs."
+    }
+  ],
+  "limitations": [
+    "This is a focused component checkpoint, not fresh final AT60 or whole STEP061/062/077 completion.",
+    "Jitter, packing and noncircle Point remain explicit fallbacks; changed member/segment topology retains enter/exit/crossfade.",
+    "Root owns combined final release/corpus checks; common lifecycle builders were not changed by this checkpoint."
+  ],
+  "sourceInputs": [
+    {
+      "path": "README.md",
+      "sha256": "510cd0f578c58cf3abe316e5bb7c30741c74fd44d6508f85c2f2bfa3947d5c51"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "67dd3906e9f91d2e6e41f62c122224c6a221cdd8d05f5a9adc9304d0963b6558"
+    },
+    {
+      "path": "scripts/consumers/fixtures/animation.ts",
+      "sha256": "879aff99c43bc49a645d9f74d0ab2e5384b50a975e337630587b83d682c74190"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/animation-cartesian-completion.mjs",
+      "sha256": "f49e4c26dbeecdc09fd2e2e6f92e11c7bbafc93403838ca7a568cf721aa5312a"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "e0d86fa44944765257e58c4fc8dd8fbfcb73fd9c1b0a6f9631b4e35ddb4a2a52"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "dc0ad9d972cd7153489ee627c61ba395cae73fdc16e59bc0deaed8c67d3e29a2"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "b6beff574dccecf8e67f9640840e06ffd927c1e0727d9f62c2fd77042dbeea65"
+    },
+    {
+      "path": "src/actions/marks/area/materialize.js",
+      "sha256": "7145cdf7d3f68b1467c85b153c3ce8241247329dbdea0dd12f17d5bed59bd47d"
+    },
+    {
+      "path": "src/actions/marks/rule/actions.js",
+      "sha256": "df2635d9de76da5ac14375d64d198471292098a4f3ecd96064f5d98f537b8c0d"
+    },
+    {
+      "path": "src/animation/frameEndpoint.js",
+      "sha256": "bd24cbe28afb3b9655ab98e3d93a84d1cdaa22a60b40c846a3bc1a51fa10b6f4"
+    },
+    {
+      "path": "src/grammar/animation/cartesianDensity.js",
+      "sha256": "8d413a0c50115302b80f281d58b4958898d177a07d1a6fea75c642741c291335"
+    },
+    {
+      "path": "src/grammar/animation/cartesianOverlay.js",
+      "sha256": "3da83d00c453473ba076bbe20f26dcb11fb837dd303e4e742d2b559f4e1244cb"
+    },
+    {
+      "path": "src/grammar/animation/cartesianPlacement.js",
+      "sha256": "b66071e86d33488dfe0749dc555529dcf36585c1d1d5f979197c54210004ba36"
+    },
+    {
+      "path": "src/grammar/animation/cartesianPosition.js",
+      "sha256": "78aefff18ffe38c10cbdecdafdc324746cb0985c03b924488d28e2f946b69f3a"
+    },
+    {
+      "path": "src/grammar/animation/cartesianState.js",
+      "sha256": "e706f1345bee4ab5614e71aeaf3404ec271b0fb53890bb7f18d66696e3eaef1a"
+    },
+    {
+      "path": "src/grammar/areaSeries.js",
+      "sha256": "d4540fe5f75f2252ba932871dc0b23e7b9d761f286d7de775db8f68cb035dffb"
+    },
+    {
+      "path": "src/grammar/categoricalDensity.js",
+      "sha256": "37aeaee8a9ce964d3288c8958b23028aec6709ed562e195d2e7a837573ca029d"
+    },
+    {
+      "path": "src/grammar/densityAreaPath.js",
+      "sha256": "c7d2bd53acb5abfa1b77757ab73ad143fbd24676ac2682b70029fae1cf3a5a3d"
+    },
+    {
+      "path": "src/grammar/positionOffset.js",
+      "sha256": "eeba3c87c4829596899744bcc310b93fbdb8a3764b9d5ea25b8f43181f35bcb6"
+    },
+    {
+      "path": "src/grammar/ruleGeometry.js",
+      "sha256": "1bd05a45ec07d844ed5c66d9f80904406e9eb92ce327db6e3e5253bf82de097b"
+    },
+    {
+      "path": "src/materialization/animation/cartesian.js",
+      "sha256": "41bb074e8226ce74a9fc7d789a27885b21815e75b5148d062c24a45229969afa"
+    },
+    {
+      "path": "src/materialization/animation/cartesianOverlay.js",
+      "sha256": "d73f4a01a481f90a6eb6825912942b4ef537c29ab4f6ef673e0883cfdba0a9a1"
+    },
+    {
+      "path": "src/materialization/animation/cartesianRows.js",
+      "sha256": "ddb5c68a978f34ba850ced9e7d6ab5592c100158df69ea25e02505b8df3474fa"
+    },
+    {
+      "path": "src/materialization/animation/cartesianSeries.js",
+      "sha256": "ff7e6ba66b3f32ad642d98aa52e6b4a2b2ca828b54fd8f33bbb4044d4e50efb1"
+    },
+    {
+      "path": "src/materialization/animation/cartesianWork.js",
+      "sha256": "07b2f807f2d83f9ea671fb2177f8b454a553f531235d110ca0bde0cea3705611"
+    },
+    {
+      "path": "src/materialization/categorySlotOffset.js",
+      "sha256": "566df83c41ee06a819807a4b082b2c69ce34b2f94612c8905a75bb97ba96fe5e"
+    },
+    {
+      "path": "src/materialization/overlayItems.js",
+      "sha256": "0004061c159cc590229a01d461d5550d23586eaacb6fe3bc0a20074cf207418f"
+    },
+    {
+      "path": "src/materialization/rowEncoding.js",
+      "sha256": "a4dd58bae81cccd3da898245ae0e8e9ebca6e822420071b5dbf5c4ecae30c0b4"
+    },
+    {
+      "path": "src/materialization/selection/items/overlay.js",
+      "sha256": "763ac3d70870ef1ef3edbacfc2d3920edf86388439e9f9b94a6d2028182ab010"
+    },
+    {
+      "path": "test/browser/animation-cartesian-completion.browser.js",
+      "sha256": "57319b2a820f77b702a751febd4ad25415b22b0ddd4220ad93c3ecbd26f49edd"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "867025e5566b05eb2dac279561c586f086e78bdf26ef14e2dcecbb185df2f4a0"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/cartesian-completion.render.js",
+      "sha256": "dd112bc5e0ccf1cd25a8c1f8fe48f9ea89e4e19b5221a412a54ab13406e8be26"
+    },
+    {
+      "path": "test/contracts/realistic-cartesian-transitions.test.js",
+      "sha256": "1a8fd4965fd09b9cf020322adf55a2c4088e8a955f39b99a040429151a2d0322"
+    },
+    {
+      "path": "test/contracts/test-discovery.test.js",
+      "sha256": "1b860eb77eee241ce70a12c69e1439babf17320387fe2f602b0fa36f82c852b3"
+    },
+    {
+      "path": "test/realistic-timings.json",
+      "sha256": "859e573cd927a8dcc54d77450e8b772fdd208f0328f1d062eec968305e8e4343"
+    },
+    {
+      "path": "test/support/animation-cartesian-completion.js",
+      "sha256": "5cc847b919c570df1d8baa2812b5e81cb9c4f4998b31e12e3e4c48a6632de147"
+    },
+    {
+      "path": "test/unit/animation/cartesian-conditionals.test.js",
+      "sha256": "844d51429028538c5474af525e7fc0da508268950a46a95547e606eec7d6c02a"
+    },
+    {
+      "path": "test/unit/animation/cartesian-density.test.js",
+      "sha256": "2c31bae46f97b35c8724a5a299d717574c86fadf2807d5c37f9244a9aae3d76b"
+    },
+    {
+      "path": "test/unit/animation/cartesian-extended-boundaries.test.js",
+      "sha256": "0423977a40f9dff081bf91e8ef282a3978f9cb70c276d1e848231eb64183994c"
+    },
+    {
+      "path": "test/unit/animation/cartesian-fallbacks.test.js",
+      "sha256": "73fa7737f2c1014f5c9cd1c436f58a9ccdd3d028a18ab205443e3c142c6a12df"
+    },
+    {
+      "path": "test/unit/animation/cartesian-overlays.test.js",
+      "sha256": "3783eb5b2d2efe05d1aae251334cf3f2d25437379e81188cf81ea6701162b83c"
+    },
+    {
+      "path": "test/unit/animation/cartesian-placement.test.js",
+      "sha256": "7d476beb1fc22a15b94cc6bbef4ee823f16bd2c5a294a4331a15e70a9ff08a4b"
+    },
+    {
+      "path": "test/unit/animation/point-projection.test.js",
+      "sha256": "b57866a99fcbb1cd1818a233ff277a6b0cbb9eb2405919309c02a1bf0a7d4b55"
+    },
+    {
+      "path": "test/unit/grammar/native-position-placement.test.js",
+      "sha256": "4fa448185b2d62a983e81f06fd01e2e43f8ab4f1c8e62f1f2198e7669b21020d"
+    },
+    {
+      "path": "types/animation.d.ts",
+      "sha256": "f2f8f2c48623bae619c33687e81249ff718ca6c85c0a6c56ebc1cf996cd2eb85"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/boundaries-final.log.gz",
+      "origin": ".artifacts/cartesian-completion/boundaries-final.log",
+      "sha256": "1e989823f3fd3ee98c1d07873d5c96bddf05a3cf30d86e4ade978fd182ffd7e1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/browser.log.gz",
+      "origin": ".artifacts/cartesian-completion/browser.log",
+      "sha256": "c05c9875b02b200887ee6f3a2e47a978a44a0d1d50e511bd06be91d309910ffe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/check-runtimes.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/check-runtimes.mjs",
+      "sha256": "473c1070cf68d78f13bad34953516c5fc63d48f8a26dd5e364be2917f53b14cc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/circle-restore-owning.log.gz",
+      "origin": ".artifacts/cartesian-completion/circle-restore-owning.log",
+      "sha256": "32543fb79a0279355872bb53589063648379eb705dd14395782f8cc842bb7277"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/consumer-source-repaired.log.gz",
+      "origin": ".artifacts/cartesian-completion/consumer-source-repaired.log",
+      "sha256": "d9e74c072f04b7df5cc71c257b4ad45ec5e17a359c09f86498239939d57cc348"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/consumer-source.log.gz",
+      "origin": ".artifacts/cartesian-completion/consumer-source.log",
+      "sha256": "1a65f7618a858ab2751cfed8dc90480a30b9b0070eea9b7dadc03d95ec8cf24b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/contracts.log.gz",
+      "origin": ".artifacts/cartesian-completion/contracts.log",
+      "sha256": "743b686c4de435fee2ecb4b1fedf46e3d7e64ddd7387097e327bccc0bc1a5b78"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage-check.log.gz",
+      "origin": ".artifacts/cartesian-completion/coverage-check.log",
+      "sha256": "35655fb195e338fa3c8a1ccf55c70072c2d1673951cb2bb5da5f57c87207dee9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage-final-2.log.gz",
+      "origin": ".artifacts/cartesian-completion/coverage-final-2.log",
+      "sha256": "baf5ceea9cb0008f6d4f0b93385b2a87f19131097368350057d114f4b27588d8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage-final.log.gz",
+      "origin": ".artifacts/cartesian-completion/coverage-final.log",
+      "sha256": "e899b651f47926e21f2d357615a8675062040a51c4e757a4c818c446fd817944"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage.json.gz",
+      "origin": ".artifacts/cartesian-completion/coverage.json",
+      "sha256": "c3bd6918626cbef63419fd1172c09e38f7a1e9abe0fbaab44cbfa0633b37be20"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage.log.gz",
+      "origin": ".artifacts/cartesian-completion/coverage.log",
+      "sha256": "9e946ceb5bd17a3b4f3140170a0d5449a681a83e826ce4009cd48af5899b5077"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/coverage.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/coverage.mjs",
+      "sha256": "efa3ed589e7833829edf542dac97a621b102237197e18f66e27945b3901c0fed"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-browser-pinned.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-browser-pinned.log",
+      "sha256": "7d4114f7d9b21ae6fdc81432dabfead18b156ca8b6e12e649fc2722c33a4b118"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-build-pinned.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-build-pinned.log",
+      "sha256": "42dad2fb288af4961dd6a406e2962f669e14d2eb89e26dc07b116eb235c347a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-build.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-build.log",
+      "sha256": "42dad2fb288af4961dd6a406e2962f669e14d2eb89e26dc07b116eb235c347a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-built-pinned.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-built-pinned.log",
+      "sha256": "c717c384f5d6837fd94e6ba18ab4d7be0411a81675b7ea28e47550ec57af50a2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-built.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-built.log",
+      "sha256": "c717c384f5d6837fd94e6ba18ab4d7be0411a81675b7ea28e47550ec57af50a2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs-owning-repaired.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs-owning-repaired.log",
+      "sha256": "e300d2334cb2578ce7abbe30a1ae39f3c9f5976d1c2ba42f34f06d0e82497c96"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/docs.log.gz",
+      "origin": ".artifacts/cartesian-completion/docs.log",
+      "sha256": "836fa15f0a58655db9ae378e0d743ff87b09521fe0f767ab31e4320f7f94c380"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/evidence-validation.log.gz",
+      "origin": ".artifacts/cartesian-completion/evidence-validation.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/frame-probe.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/frame-probe.mjs",
+      "sha256": "e1c77d38c61174714c548ebc9aad6376fb104aa750a3b4d243ce431a18a9e8ac"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-20.json.gz",
+      "origin": ".artifacts/cartesian-completion/installed-20.json",
+      "sha256": "d6046edd9d604e64b06fd8fc983a724934003c2fe682431c81e22a0f38be7702"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-20.log.gz",
+      "origin": ".artifacts/cartesian-completion/installed-20.log",
+      "sha256": "c109003850161a2a7d36bf59c1e46bae8a9a125c5bf783770be3107fde255ce2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-22.json.gz",
+      "origin": ".artifacts/cartesian-completion/installed-22.json",
+      "sha256": "d118cf224d1648e3a0353a41d0e8113507e825ed9feefcfdc9f92262216be07b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-22.log.gz",
+      "origin": ".artifacts/cartesian-completion/installed-22.log",
+      "sha256": "12ad13b6cdaee033e6ee9068029bd6b798c871d212decacf72df172486af6d96"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-24.json.gz",
+      "origin": ".artifacts/cartesian-completion/installed-24.json",
+      "sha256": "50e298f51f142699f369823c3945eeaff54f338e738fad163833c398be1a53e0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed-24.log.gz",
+      "origin": ".artifacts/cartesian-completion/installed-24.log",
+      "sha256": "c1c04b51ba1c1027caff9fd385d353e5f936a37d08c49dbe3af128d0adc15026"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/installed.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/installed.mjs",
+      "sha256": "b5a61a9962226b214f3c115e82681636dc45895130018c4327446c47c8559df7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/llms-final.log.gz",
+      "origin": ".artifacts/cartesian-completion/llms-final.log",
+      "sha256": "a7e3354a5db7c806a2526bcb2811672ba0ade2d5b5686be40a09502020c5a6fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/llms-generated.log.gz",
+      "origin": ".artifacts/cartesian-completion/llms-generated.log",
+      "sha256": "a7e3354a5db7c806a2526bcb2811672ba0ade2d5b5686be40a09502020c5a6fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/llms.log.gz",
+      "origin": ".artifacts/cartesian-completion/llms.log",
+      "sha256": "a7e3354a5db7c806a2526bcb2811672ba0ade2d5b5686be40a09502020c5a6fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/machine.log.gz",
+      "origin": ".artifacts/cartesian-completion/machine.log",
+      "sha256": "cbf35f227587ab5bc6f2c34b0f1e7bc50d25ccaffaccad45aa8af5f589c4c974"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/measure-bundles.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/measure-bundles.mjs",
+      "sha256": "c99749aa48b284ee48045418ef56b6ce3580cf39b6624a04f7c25c4f47c3be79"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/measure-package.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/measure-package.mjs",
+      "sha256": "97c02332fa5af01bd859c9586edf5097bf9090d365d834c70a4060bb2a7bf0ba"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/pack.log.gz",
+      "origin": ".artifacts/cartesian-completion/pack.log",
+      "sha256": "4a5374fb6ebee607f0121c2c9e48b0a20821ac1d2febe8b846f2cd6ce469a479"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-contract.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-contract.log",
+      "sha256": "8e4d0c517c5b75b8ea55da1462a693f22f914cfbfbda678218bfbb303c95fe81"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-doc-contracts-final.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-doc-contracts-final.log",
+      "sha256": "48d9514e1579c9ea04a7172e8585059aa3f762a25fd6bc1741a109cc30108345"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-measure-20.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-measure-20.log",
+      "sha256": "470940826716a6d8287d07355237f5bdad469530ee5f0a966f786aa55e91d7c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-measure-22.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-measure-22.log",
+      "sha256": "4a6ee82c15aa463e0b2a66c33fe903f22bec0ffac9144572283fd9249c14b196"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-measure-24.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-measure-24.log",
+      "sha256": "2e7b626e1f499755de681c03bda20aa472903bdee76d2d520103bd13768f6a38"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-size-20.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-size-20.json",
+      "sha256": "3f758bfdc8e8fa99508df34827dca4514eb8cdd311dd27ecb0cf1c1ef74adc66"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-size-22.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-size-22.json",
+      "sha256": "8cf907262ff143bcd1eca15dc0b8abf6189468b05b8147c8439b8545e5443600"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-size-24.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-size-24.json",
+      "sha256": "739575d9a99ba6b0fabfeefc7ab3842a938738d8464827c80563537c4d5b0a7d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-20.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-20.json",
+      "sha256": "b4d024754a26ca182fc837c470aae1e6238effbd5777cbedcb35c773993221cb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-20.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-20.log",
+      "sha256": "9f37dd34b50e30ece2a28d90fa0771e9291d5559c666f814016b373b3f92b651"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-22.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-22.json",
+      "sha256": "c6beb62b309953453b2f35057573e9d319c6cd1ee2a94c7de76daa2128b1c793"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-22.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-22.log",
+      "sha256": "309bce641dd9c2542c5a7fbfe2cfd12f8c00b02f4907acf8a37285226d4d9f89"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-24.json.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-24.json",
+      "sha256": "7062223b95138af5cf97d05330fdecd16a7fcfaff78e0d0e793c09ded8c30da6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/package-validated-24.log.gz",
+      "origin": ".artifacts/cartesian-completion/package-validated-24.log",
+      "sha256": "50e73823e3d552df64c05b1562f8e95ebcdbc07d13412e97d267ea2622ce6142"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/provenance-draft.log.gz",
+      "origin": ".artifacts/cartesian-completion/provenance-draft.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/realistic-first.log.gz",
+      "origin": ".artifacts/cartesian-completion/realistic-first.log",
+      "sha256": "52c9cf6917995458bb0c64a6045f29f95bcc1565084ebdcd2278556a920f7425"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/realistic.log.gz",
+      "origin": ".artifacts/cartesian-completion/realistic.log",
+      "sha256": "052e5aca7da2a52c1f418ba6bc5370fca0be7cb6b59c6c6d574e94d76c8d8132"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/reference.log.gz",
+      "origin": ".artifacts/cartesian-completion/reference.log",
+      "sha256": "78fb0e814a39752a6ee5cfed27ab902067a74c9c56fa1d0e7a27a9445aeb6306"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/render-browser-final.log.gz",
+      "origin": ".artifacts/cartesian-completion/render-browser-final.log",
+      "sha256": "f538dc1953134138e68cce8e36f46820dff889cf3a9e899379ea1d867fd98ba3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/render.log.gz",
+      "origin": ".artifacts/cartesian-completion/render.log",
+      "sha256": "d3c32cbc2eae189d7ec2da43a373383147e348084e80aab860ac78ffacc02503"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-20.json.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-20.json",
+      "sha256": "83366e8056394931d05531d13a2f9950602b6842a9bc830f5dddc0f986e20b43"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-20.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-20.log",
+      "sha256": "84b6166b78b5924ab4c7a604cc6bea567abdd5c84be12ecbb443291dd686f5de"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-22.json.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-22.json",
+      "sha256": "a6819db85069ef2f238d1524dff8d74875ad375b34f6f773c4223a5c924e2691"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-22.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-22.log",
+      "sha256": "23bd062f35017ec610e8354f5a7b0b128c890efd2ebc88c63372ffd37d2a572f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-24.json.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-24.json",
+      "sha256": "15735a91d6c9dfb21742ad509e2e87db29422e34bcf7330adadf57dd823bf52d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-bundles-24.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-bundles-24.log",
+      "sha256": "bbeb9184a0bebfc3ce6f9799ba3828639efa681dea20ab6372f2f19a92551d78"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-pin-coverage.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-pin-coverage.log",
+      "sha256": "824b5bf8d2823301e19ea10b6205fcfd59a45d634235371ef4020db6f41ec0e4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-pin-docs.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-pin-docs.log",
+      "sha256": "fcb074194d40c3d1785b4b1de75c364a397c8e0682ffa495359a297001d8978c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/source-pin-llms.log.gz",
+      "origin": ".artifacts/cartesian-completion/source-pin-llms.log",
+      "sha256": "0f6dbbaaee26923d36138c3d75c819b08b8cbcb78c006d3d9fcf1a9c534243fe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/cartesian-completion-evidence/validate-package.mjs.gz",
+      "origin": ".artifacts/cartesian-completion/validate-package.mjs",
+      "sha256": "f5f8ed6cbbef2594bf15a2ef7eb5103713e6339b124044314d1df1030bf373de"
+    }
+  ]
+}

@@ -370,7 +370,8 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
     mode: derived.mode,
     series: derived.series.map((series, index) => ({
       key: series.key,
-      values: valuesBySeries[index]
+      values: valuesBySeries[index],
+      ...(series.sourceIndices===undefined?{}:{sourceIndices:series.sourceIndices})
     }))
   });
 }

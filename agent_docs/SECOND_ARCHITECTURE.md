@@ -4608,6 +4608,12 @@ Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/
 Sample은 집계·binning·stack/layout을 다시 실행하지 않는다. Flat frame proof와 optional versioned
 Cartesian vector는 동일한 현재 의미를 rebase/strict restore에 공급한다. 공개 함수와 renderer schema는
 변경하지 않으며 정확한 지원·fallback 범위는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+Native offset/slot은 `grammar/positionOffset.js`, fixed/box rule span은 `grammar/ruleGeometry.js`,
+density boundary는 `grammar/densityAreaPath.js` 및 `grammar/categoricalDensity.js`가 정본이다.
+기존 native materializer와 Cartesian sampler가 이 계산을 공유한다. Overlay 준비는 기존
+`overlayItems`의 선택·순서·segment와 semantic binding을 읽으며, 하나의 source anchor state만
+보존하여 pixel 역산이나 overlay 재귀·과거 program 저장을 추가하지 않는다.
+
 ### Public partition animation integration
 
 기존 공개 animation planner/sampler가 `materialization/animation/partition`의 exact

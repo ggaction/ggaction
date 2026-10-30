@@ -5,7 +5,9 @@ import { resolveDiscretePositionScale, resolveOrdinalPositionScale, resolveOrdin
 import { mapContinuousScaleValues } from "../scales/mapping.js";
 import { normalizePositionEndpoint, preparePositionInterpolation, samplePositionInterpolation } from "./positions.js";
 import { interpolateNumber } from "./values.js";
+import { applyOffsetPositionValues } from "../positionOffset.js";
 
+const own=(value,key)=>Object.hasOwn(value,key)?value[key]:undefined;
 const discrete = new Set(["ordinal", "band", "point", "ordinal-offset"]);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const parameters = type => ["band", "ordinal-offset"].includes(type) ? ["paddingInner", "paddingOuter", "align"] : type === "point" ? ["padding", "align"] : [];
@@ -21,8 +23,23 @@ export function cartesianPosition(value, scale) {
 
 export function normalizeCartesianPosition(input) {
   ownRecord(input, "Cartesian animation position");
-  rejectUnknownProperties(input, ["value", "scale"], "Cartesian animation position");
-  const scale = ownRecord(input.scale, "Cartesian animation scale");
+  rejectUnknownProperties(input, ["value", "scale", "offset"], "Cartesian animation position");
+  if(!Object.hasOwn(input,"value")||!Object.hasOwn(input,"scale"))throw new TypeError("Cartesian position requires own value and scale.");
+  const main=normalizeBase({value:input.value,scale:input.scale});
+  if (!Object.hasOwn(input,"offset")) return main;
+  ownRecord(input.offset,"Cartesian position offset");
+  rejectUnknownProperties(input.offset,["value","scale"],"Cartesian position offset");
+  const offset=normalizeBase(input.offset);
+  if(offset.scale.type!=="ordinal-offset")throw new TypeError("Cartesian position offset requires its ordinal offset scale.");
+  return cloneAndFreeze({...main,offset});
+}
+
+function normalizeBase(input) {
+  if(!Object.hasOwn(input,"value")||!Object.hasOwn(input,"scale"))throw new TypeError("Cartesian position requires own value and scale.");
+  const raw = ownRecord(input.scale, "Cartesian animation scale");
+  if(["type","domain","range"].some(key=>!Object.hasOwn(raw,key)))throw new TypeError("Cartesian scale requires own type, domain and range.");
+  const scale=Object.assign(Object.create(null),raw);
+  input={value:input.value,scale};
   if (!discrete.has(scale.type)) return cloneAndFreeze(normalizePositionEndpoint(input));
   rejectUnknownProperties(scale, ["type", "domain", "range", ...parameters(scale.type)], "Cartesian animation scale");
   ownArray(scale.domain, "Cartesian animation domain");
@@ -35,11 +52,19 @@ export function normalizeCartesianPosition(input) {
 
 function resolveDiscrete(scale, value) {
   const resolve = scale.type === "ordinal-offset" ? resolveOrdinalOffsetScale : scale.type === "ordinal" ? resolveOrdinalPositionScale : resolveDiscretePositionScale;
-  return resolve({ ...scale, values: [value], channel: "x", parentBandwidth: 1 });
+  return resolve(Object.assign(Object.create(null),scale,{values:[value],channel:"x",parentBandwidth:1}));
 }
 
 export function resolveCartesianPosition(input) {
   const normalized = normalizeCartesianPosition(input);
+  const resolved=resolveBase(normalized);
+  if(own(normalized,"offset")===undefined)return resolved;
+  const offset=resolveBase(own(normalized,"offset"));
+  return {...resolved,offset:own(normalized,"offset"),position:applyOffsetPositionValues({base:[resolved.position],offset:[offset.position],
+    parentScale:resolved.resolvedScale,offsetScale:offset.resolvedScale,channel:"Cartesian"})[0]};
+}
+
+function resolveBase(normalized) {
   if (discrete.has(normalized.scale.type)) {
     const scale = resolveDiscrete(normalized.scale, normalized.value);
     return { ...normalized, resolvedScale: scale, position: (normalized.scale.type === "ordinal-offset" ? mapOrdinalOffsetValues : mapOrdinalPositionValues)([normalized.value], scale)[0] };
@@ -50,6 +75,14 @@ export function resolveCartesianPosition(input) {
 
 export function prepareCartesianPosition(fromInput, toInput) {
   const from = normalizeCartesianPosition(fromInput), to = normalizeCartesianPosition(toInput);
+  if((own(from,"offset")===undefined)!==(own(to,"offset")===undefined))return fade("geometry-policy");
+  const offset=own(from,"offset")===undefined?undefined:prepareBase(own(from,"offset"),own(to,"offset"));
+  if(offset?.kind==="crossfade")return offset;
+  const main=prepareBase({value:from.value,scale:from.scale},{value:to.value,scale:to.scale});
+  return main.kind==="crossfade"||offset===undefined?main:cloneAndFreeze({kind:"offset-position",from,to,main,offset});
+}
+
+function prepareBase(from, to) {
   if (from.scale.type !== to.scale.type) return fade("scale-type");
   if (!discrete.has(from.scale.type)) return preparePositionInterpolation(from, to);
   if (!Object.is(from.value, to.value) || from.scale.domain.length !== to.scale.domain.length ||
@@ -62,6 +95,15 @@ export function prepareCartesianPosition(fromInput, toInput) {
 export function sampleCartesianPosition(plan, progress) {
   validateUnitInterval(progress, "Cartesian animation progress");
   ownRecord(plan, "Prepared Cartesian animation position");
+  if(!Object.hasOwn(plan,"kind"))throw new TypeError("Prepared Cartesian position requires kind.");
+  if(plan.kind==="offset-position") {
+    rejectUnknownProperties(plan,["kind","from","to","main","offset"],"prepared Cartesian offset position");
+    const verified=prepareCartesianPosition(plan.from,plan.to);
+    if(verified.kind!=="offset-position"||JSON.stringify(verified)!==JSON.stringify(plan))throw new TypeError("Invalid prepared Cartesian offset position.");
+    const main=sampleCartesianPosition(verified.main,progress),offset=sampleCartesianPosition(verified.offset,progress);
+    if(main.kind==="crossfade"||offset.kind==="crossfade")return main.kind==="crossfade"?main:offset;
+    return resolveCartesianPosition({value:main.value,scale:main.scale,offset:{value:offset.value,scale:offset.scale}});
+  }
   if (plan.kind === "position") {
     const sampled = samplePositionInterpolation(plan, progress);
     return sampled.kind === "crossfade" ? sampled : { ...sampled, resolvedScale: sampled.scale };

@@ -100,3 +100,13 @@ const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
  .createXAxis({title:{text:'Amount',at:10,offset:35}});
 const guidePlan=planTransition({from:guideFrom,to:guideFrom.editXAxisTitle({at:100}),options:{durationMs:100}});
 renderToSVG(sampleTransition(deserializeAnimation(serializeAnimation(guidePlan)).plan,50));
+const nativeRows=chart().createCanvas().createData({id:'raw',keyField:'id',values:[{id:'a',category:'A',value:2,lower:1,upper:3}]});
+const nativeRule=nativeRows.createRuleMark({id:'rule'}).encodeX({conditions:[{when:{version:2,registry:'standard@1',root:{type:'literal',value:false}},value:{field:'value',fieldType:'quantitative'}}],otherwise:{field:'lower',fieldType:'quantitative'}});
+const nativeCaps=nativeRows.createErrorBar({id:'interval',x:{field:'category',fieldType:'nominal'},y:{center:'value',lower:'lower',upper:'upper'},caps:true,capSize:20});
+const nativeDensity=nativeRows.createDensityPlot({id:'density',field:'value',bandwidth:1,extent:[0,4],steps:8,guides:false});
+const nativeOverlay=nativeRows.createBarMark({id:'bar'}).encodeX({field:'category',fieldType:'nominal'}).encodeY({field:'value',aggregate:'sum'}).createOverlay({id:'overlay',source:'bar',type:'point'});
+for(const endpoint of [nativeRule,nativeCaps,nativeDensity,nativeOverlay]){
+ const nativePlan=planTransition({from:endpoint,to:endpoint.editCanvas({width:600}),options:{durationMs:100}});
+ const nativeFrame=sampleTransition(deserializeAnimation(serializeAnimation(nativePlan)).plan,50);
+ render(nativeFrame,context);renderToSVG(nativeFrame);renderToPNGBuffer(nativeFrame);renderToPDFBuffer(nativeFrame);
+}
