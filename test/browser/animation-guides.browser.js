@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
 import { chromium } from "playwright";
+import { guideFrameVariants } from "../support/animation-guide-frame.js";
 import { startStaticServer } from "../support/static-server.js";
 import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserEvidence } from "../support/browser.js";
 
@@ -18,7 +19,7 @@ test("browser guide planner samples renderer-ready frames in Canvas and SVG at b
     await writeFile(path.join(directory, "frame.js"), bundle.outputFiles[0].contents);
     await writeFile(path.join(directory, "index.html"), '<!doctype html><html lang="en"><title>Sampled guide geometry</title><link rel="icon" href="data:,"><p id="status">Ready</p><canvas aria-label="Native guide values and coordinate mapping"></canvas></html>');
     server = await startStaticServer(directory);browser = await chromium.launch({ headless: true });
-    for (const ratio of [1, 2]) for (const variant of ["cartesian","polar"]) {
+    for (const ratio of [1, 2]) for (const variant of guideFrameVariants) {
       const context = await browser.newContext({ deviceScaleFactor: ratio });
       try {
         const opened = await openBrowserPage(context, server.baseUrl, { waitFor: () => document.querySelector("#status").textContent === "Ready" });

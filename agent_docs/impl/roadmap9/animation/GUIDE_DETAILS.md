@@ -92,3 +92,21 @@ payload로 저장하지 않는다. 후속 closed group state는 같은 raw value
 연결해야 하며 아직 새 공개 typed 범위로 집계하지 않는다.
 
 실행 증거는 [label 배치 준비](guide-label-layout-evidence/README.md)에 둔다.
+
+## 공개 title/boundary/Parallel 연결
+
+기존 remainingApproval에 따라 closed anchor를 guide state의 `{identity,kind:"anchor",anchor}`
+분기로 연결한다. 공용 함수 원형과 root 소유 timeline transition version은 바꾸지 않는다.
+새 의미의 오프라인 결과를 구버전과 혼동하지 않도록 guide manifest만 `native-guide-values@2`다.
+Title value는 null, boundary value는 canonical member set, Parallel value는 `{field,value}`이며
+component는 각각 title/boundary/parallel-{line,ticks,labels,title}이다. Parallel field slot은
+identity가 아니고 native geometry 준비값이다. Scalar -0/0과 number/string 값은 구별한다.
+
+Projection은 scope-local 준비에 전체 preparation work 계수를 전달하고 namespace를 적용한다.
+Track/sample/flat provenance/strict restore는 기존 semantic-guide 경계를 그대로 사용한다.
+Native forward geometry 불일치는 guide-edited, 변경된 문자열·font는 appearance fade다.
+Inferred/relative title ink, legend와 복잡한 reflow는 이번 확대에서 완료 집계하지 않는다.
+
+새 공개 pair 검증에서 기존 Parallel body의 sampled-concrete→unsupported-family 복원 reason
+불일치를 발견했다. Guide geometry/scene은 같으나 전체 frame equality는 실패하여 root 소유
+shared planner에서 별도로 보수한다. 첫 실패와 보수 후 결과를 증거에 구분한다.

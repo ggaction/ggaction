@@ -132,17 +132,29 @@ Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/c
 재사용하며 현재 frame을 양방향 endpoint로 사용할 수 있다. 키는 실제 child namespace,
 명시 guide owner, component, typed raw value, label line role로 구성한다. 표시 문자열이나
 배열 index로 다른 값을 대응시키지 않는다. matched decision의 `guideKey`는 mark `itemKey`와
-별도이며 role은 `guide-line|guide-ticks|guide-labels|guide-grid`다.
+별도이며 role은 `guide-line|guide-ticks|guide-labels|guide-grid`, `guide-title|guide-boundary`,
+`guide-parallel-line|guide-parallel-ticks|guide-parallel-labels|guide-parallel-title`이다.
 
 동일 raw value의 scale/domain/range와 frame을 먼저 보간한 뒤 native geometry를 만든다.
 새 값과 제거된 값은 enter/exit이며 중복 raw value는 `guide-ambiguity` reason의 별도 enter/exit다.
 같은 값의 label 문자열·font/static style 변경은 appearance crossfade다. 동일 label 줄 구성과
 정렬 정책을 유지하며 복잡한 flush·rotation·responsive reflow는 `guide-layout`, 명시 geometry
 편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
-다음 transition도 명시 fallback한다. Band-boundary grid, axis title, legend, Parallel guide는
-이 typed kernel에 포함되지 않으며 기존 anonymous enter/exit를 유지한다.
+다음 transition도 명시 fallback한다. Legend와 complex label reflow는 아직 이 typed 범위 밖이다.
 
-Optional endpoint `guides` vector와 `native-guide-values@1` manifest를 보존한다. Strict restore는
+명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
+보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
+Inferred·label-relative clearance는 현재 `guide-layout`이며 최종 pixel offset을 의미로 추정하지
+않는다. Polar title은 native theta frame 또는 radial inside/outside·shortest angle을 재사용한다.
+Band-boundary grid는 같은 경계를 공유하는 모든 typed `{value,edge}`의 canonical set으로
+대응한다. Membership이 달라지면 enter/exit이며 중간 native 계산에서 경계가 분리되면
+`guide-layout` fade다. 임의 epsilon이나 첫 member 선택으로 합치지 않는다.
+Parallel line/tick/label/title은 field와 component, typed raw tick으로 대응한다. Field 재정렬과
+삽입·삭제에도 field identity를 보존하며 현재 slot index/count와 frame을 native slot owner로
+계산한다. Raw tick은 같은 scale owner를 쓰고 field 이름·표시 문자열·배열 순번을 혼동하지 않는다.
+이 확대는 기존 opaque plan과 optional guide vector 안에서 이루어지며 공개 함수 원형은 같다.
+
+Optional endpoint `guides` vector와 `native-guide-values@2` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

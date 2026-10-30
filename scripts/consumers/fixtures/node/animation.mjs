@@ -28,6 +28,38 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/guide-anchors-offline-native',async run(){
+    const source=chart().createCanvas({width:600,height:420,margin:90})
+      .createData({values:[{a:1,b:10,c:'A'},{a:100,b:20,c:'B'}]});
+    const title=source.createPointMark().encodeX({field:'a',scale:{type:'log',domain:[1,1000],nice:false}}).encodeY({field:'b'})
+      .createXAxis({line:false,ticksAndLabels:false,title:{text:'Amount',at:10,offset:35}});
+    const boundary=source.createBarMark().encodeX({field:'c',scale:{type:'band',paddingInner:0,paddingOuter:0}})
+      .encodeY({field:'b'}).createVerticalGrid({bandPosition:'boundary'});
+    const parallel=source.createParallelCoordinates({id:'lines',dimensions:['a','b'],guides:{legend:false}});
+    const pairs=[[title,title.editXAxisTitle({at:100}),'title'],[boundary,boundary.editCanvas({width:800}),'boundary'],
+      [parallel,parallel.encodeParallelCoordinates({target:'lines',dimensions:['b','a']}),'parallel-title']];
+    for(const [from,to,role] of pairs){
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+      const indices=frame.decisions.flatMap((d,i)=>d.kernel==='guide-geometry'&&JSON.parse(d.guideKey)[3]===role?[i]:[]);
+      assert.ok(indices.length>0);
+      if(role==='title')assert.ok(Math.abs(frame.scene.nodes[indices[0]].properties.x-(90+140*Math.log10(55)))<1e-10);
+      if(role==='boundary')assert.equal(indices.length,3);
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frames:exportAnimationFrames(deserializeAnimation(text).plan,{timesMs:[0,25,50,75,100]}),network}));
+      `],{input:saved,encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);
+      assert.deepEqual(JSON.parse(child.stdout),{frames:JSON.parse(JSON.stringify(exportAnimationFrames(plan,{timesMs:[0,25,50,75,100]}))),network:0});
+      const rebased=planTransition({from:frame,to,options:{durationMs:100,easing:'linear'}});
+      assert.strictEqual(sampleTransition(rebased,0),frame);
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,50),sampleTransition(rebased,50));
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+      assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/guides-offline-native',async run(){
     const from=chart().createCanvas({width:400,height:240,margin:40})
       .createData({values:[{x:0,y:0},{x:10,y:10}]}).createPointMark()

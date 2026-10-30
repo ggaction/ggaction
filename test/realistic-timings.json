@@ -62,7 +62,7 @@
     "contracts/realistic-table-plots.test.js": 3204,
     "contracts/realistic-trail-plots.test.js": 2968,
     "contracts/realistic-waterfall-plots.test.js": 3002,
-    "contracts/realistic-guide-transitions.test.js": 3654,
+    "contracts/realistic-guide-transitions.test.js": 2657,
     "contracts/realistic-geographic-transitions.test.js": 1468,
     "contracts/realistic-polar-transitions.test.js": 1593
   },
@@ -363,7 +363,7 @@
     },
     "contracts/realistic-guide-transitions.test.js": {
       "record": ".artifacts/checks/suite-realistic.json",
-      "durationMs": 3653.4530409999998,
+      "durationMs": 2656.081125,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

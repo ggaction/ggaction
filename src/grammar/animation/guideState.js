@@ -7,10 +7,12 @@ import { resolveGridLineGeometry } from "../gridGeometry.js";
 import { buildPolarCircleCommands, resolveThetaAxisTicks, resolveRadialAxisTicks, resolveThetaAxisLabels, resolveRadialAxisLabels, resolveThetaSpokes, resolveRadialCircles, resolveRadialAxisLine } from "../polarGuides.js";
 import { normalizeCartesianPosition, resolveCartesianPosition, prepareCartesianPosition, sampleCartesianPosition } from "./cartesianPosition.js";
 import { interpolateNumber } from "./values.js";
+import { normalizeBandBoundaryMembers, normalizeGuideAnchor, resolveGuideAnchor, prepareGuideAnchor, sampleGuideAnchor } from "./guideAnchors.js";
 import { interpolatePolarAngle } from "./polarState.js";
 
-export const ANIMATION_GUIDE_VERSION = "native-guide-values@1";
+export const ANIMATION_GUIDE_VERSION = "native-guide-values@2";
 const kinds = new Set(["line", "ticks", "labels", "grid"]);
+const components = new Set([...kinds, "title", "boundary", "parallel-line", "parallel-ticks", "parallel-labels", "parallel-title"]);
 const reasons = new Set(["guide-policy", "guide-layout", "guide-ambiguity", "guide-edited", "guide-unavailable", "nonfinite-guide"]);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
@@ -27,18 +29,43 @@ function finite(value, label, nonnegative = false) {
 function scalar(value) {
   return typeof value === "string" || typeof value === "boolean" || Number.isFinite(value);
 }
+function identityValue(component, value) {
+  if (component === "line" || component === "title") {
+    if (value !== null) throw new TypeError("Guide line and title identity requires null values.");
+    return null;
+  }
+  if (component === "boundary") return normalizeBandBoundaryMembers(value);
+  if (component.startsWith("parallel-")) {
+    record(value, ["field", "value"], "Parallel guide identity value");
+    if (typeof value.field !== "string" || !value.field.length ||
+        (["parallel-line", "parallel-title"].includes(component) ? value.value !== null : !scalar(value.value))) {
+      throw new TypeError("Parallel guide identity requires an exact field and typed value.");
+    }
+    return { field: value.field, value: value.value };
+  }
+  if (!scalar(value)) throw new TypeError("Guide identity requires a typed scalar value.");
+  return value;
+}
 export function normalizeGuideIdentity(input) {
   record(input, ["namespaces", "owner", "component", "value", "line"], "Guide identity");
   ownArray(input.namespaces, "Guide namespaces");
   if (input.namespaces.length > 1024 || input.namespaces.some(value => typeof value !== "string" || !value.length) ||
-      typeof input.owner !== "string" || !input.owner.length || !kinds.has(input.component) ||
-      (input.component === "line" ? input.value !== null : !scalar(input.value)) ||
+      typeof input.owner !== "string" || !input.owner.length || !components.has(input.component) ||
       !Number.isSafeInteger(input.line) || input.line < 0 || input.component !== "labels" && input.line !== 0) {
     throw new TypeError("Guide identity requires exact scope, owner, role and typed value.");
   }
+  const value = identityValue(input.component, input.value);
   validateWorkLimit(input.owner.length + input.namespaces.reduce((sum, value) => sum + value.length, 0) +
-    (typeof input.value === "string" ? input.value.length : 1), "Guide identity work");
-  return cloneAndFreeze(input);
+    JSON.stringify(encodeValue(value)).length, "Guide identity work");
+  return cloneAndFreeze({ ...input, value });
+}
+function normalizeAnchorState(input) {
+  record(input, ["identity", "kind", "anchor"], "Anchored guide animation state");
+  const identity = normalizeGuideIdentity(input.identity), anchor = normalizeGuideAnchor(input.anchor);
+  const component = anchor.kind === "band-boundary" ? "boundary" : anchor.kind === "parallel" ? `parallel-${anchor.component}` : "title";
+  const value = anchor.kind === "band-boundary" ? anchor.members : anchor.kind === "parallel" ? { field: anchor.field, value: anchor.mapping?.value ?? null } : null;
+  if (identity.component !== component || !same(identity.value, value)) throw new TypeError("Guide anchor differs from its exact identity.");
+  return cloneAndFreeze({ identity, kind: "anchor", anchor });
 }
 export function guideAnimationKey(identity) {
   const value = normalizeGuideIdentity(identity);
@@ -59,6 +86,7 @@ export function normalizeGuideAnimationState(input) {
     if (!reasons.has(input.reason)) throw new TypeError("Unknown guide animation fallback reason.");
     return cloneAndFreeze({ identity: normalizeGuideIdentity(input.identity), reason: input.reason });
   }
+  if (input.kind === "anchor") return normalizeAnchorState(input);
   record(input, ["identity", "kind", "channel", "frame", input.kind === "line" ? "range" : "mapping", "policy"], "Guide animation state");
   const identity = normalizeGuideIdentity(input.identity);
   if (!kinds.has(input.kind) || identity.component !== input.kind || !["x", "y", "theta", "radius"].includes(input.channel)) {
@@ -92,6 +120,7 @@ export function normalizeGuideAnimationState(input) {
 }
 const scalarGeometry = properties => Object.fromEntries(Object.entries(properties).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
 function geometry(state) {
+  if (state.kind === "anchor") return resolveGuideAnchor(state.anchor);
   const { kind, channel, frame, policy } = state;
   const cartesian = channel === "x" || channel === "y";
   if (kind === "line") {
@@ -146,6 +175,10 @@ export function prepareGuideInterpolation(fromInput, toInput) {
   const from = normalizeGuideAnimationState(fromInput), to = normalizeGuideAnimationState(toInput);
   if (from.reason !== undefined || to.reason !== undefined) return fade(from.reason ?? to.reason);
   if (guideAnimationKey(from.identity) !== guideAnimationKey(to.identity) || from.kind !== to.kind || from.channel !== to.channel) return fade("guide-policy");
+  if (from.kind === "anchor") {
+    const prepared = prepareGuideAnchor(from.anchor, to.anchor);
+    return prepared.kind === "crossfade" ? prepared : cloneAndFreeze({ kind: "guide", version: ANIMATION_GUIDE_VERSION, from, to });
+  }
   for (const key of ["side", "align", "lineCount", "lineHeight"]) if (from.policy[key] !== to.policy[key]) return fade("guide-layout");
   if (from.kind !== "line") {
     const mapping = prepareCartesianPosition(from.mapping, to.mapping);
@@ -161,6 +194,12 @@ export function sampleGuideInterpolation(input, progress) {
   if (plan.kind !== "guide") throw new TypeError("Incompatible prepared guide states.");
   const { from, to } = plan, at = (a, b) => interpolateNumber(a, b, progress);
   try {
+    if (from.kind === "anchor") {
+      const sampled = sampleGuideAnchor(prepareGuideAnchor(from.anchor, to.anchor), progress);
+      if (sampled.kind === "crossfade") return sampled;
+      const state = normalizeAnchorState({ identity: from.identity, kind: "anchor", anchor: sampled.state });
+      return cloneAndFreeze({ kind: "guide", state, type: sampled.type, properties: sampled.properties });
+    }
     const mapping = from.kind === "line" ? undefined : sampleCartesianPosition(prepareCartesianPosition(from.mapping, to.mapping), progress);
     if (mapping?.kind === "crossfade") return mapping;
     const state = normalizeGuideAnimationState({ ...from,

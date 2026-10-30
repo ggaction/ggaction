@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:0900447432adccc31d4c25806b83c532c34308b749f356c76a1f3468748e60e7. Status: development. Runtime source: f599ec6760bc7f71f9f1149e26b22c3f655fc5aa. Release baseline: v0.0.13.
+Contract: sha256:450b9523da44dc65f475891af2cfb0936674545d1eddc56550406ec27dc588c0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11161,7 +11161,7 @@ Current angles stay unwrapped when a frame is reused as an endpoint. Offline rep
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
 
-## Move ticks, labels, and grids
+## Move axes, labels, and grids
 
 Cartesian axis lines, ticks, fixed-layout labels, and grids, plus polar axes,
 spokes, and circle grids, retain their raw guide values. Compatible transitions
@@ -11196,9 +11196,19 @@ enter/exit decisions with `reason: 'guide-ambiguity'`. A changed label string us
 an appearance crossfade. Current sampled guides can be reused as either endpoint.
 Offline restore validates their values, geometry, and version before replay.
 
-Flush, rotated, or responsive reflow labels and edited geometry retain explicit
-fallbacks. Band-boundary grids, titles, legends, and Parallel guides remain outside
-this typed guide kernel. They use the existing anonymous enter/exit behavior.
+Titles with explicit numeric offsets retain their native range role or numeric `at`
+value. Changing `at` on a log axis maps the interpolated value through the log scale;
+it does not interpolate screen coordinates. Polar titles use their native frame and
+shortest angular path. Title text or font changes crossfade safely.
+
+Band-boundary grids match the complete set of category edges that share each boundary.
+Parallel axes match by field name, component, and raw tick value when fields move,
+appear, or disappear. Neither uses array position as identity. If native band edges
+split during a transition, that boundary crossfades explicitly.
+
+Flush, rotated, or responsive reflow labels, inferred or label-relative title clearance,
+and edited geometry retain explicit fallbacks. Legends remain outside this typed guide
+kernel and use the existing anonymous enter/exit behavior.
 
 ## Move geographic cameras
 
@@ -37929,6 +37939,7 @@ export interface TransitionPlan {
   readonly easing: AnimationEasing;
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
+ * Guide geometry includes explicit native titles, band boundaries, and field-keyed Parallel axes.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
@@ -52622,12 +52633,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/f599ec6760bc7f71f9f1149e26b22c3f655fc5aa/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55754,9 +55765,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0900447432adccc31d4c25806b83c532c34308b749f356c76a1f3468748e60e7` |
+| Contract fingerprint | `sha256:450b9523da44dc65f475891af2cfb0936674545d1eddc56550406ec27dc588c0` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `f599ec6760bc7f71f9f1149e26b22c3f655fc5aa` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

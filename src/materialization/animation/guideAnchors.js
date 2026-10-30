@@ -12,10 +12,13 @@ import { valuesFromTickConfig, resolveParallelTickValues } from "../guides/tickV
 
 // Scope-local native meaning. The transition owner applies composition
 // namespaces and validates every anchor against its exact concrete endpoint.
-export function guideAnchorItems(program) {
+export function guideAnchorItems(program, accountWork) {
   const result = [], objects = program.graphicSpec.objects;
   let work = 0;
-  const spend = (count = 1) => validateWorkLimit(work += count, "Guide anchor preparation work");
+  const spend = (count = 1) => {
+    validateWorkLimit(work += count, "Guide anchor preparation work");
+    accountWork?.(count);
+  };
   const scaleWork = scale => scale.domain.reduce((sum, value) => sum + 1 + (typeof value === "string" ? value.length : 0), 0);
   const add = entry => {
     spend(entry.graphicId.length + entry.owner.length + 1);

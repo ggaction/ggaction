@@ -73,3 +73,10 @@ for(const decision of geoFrame.decisions)if(decision.kind==='geographic'){
 
 const currentTransitionVersion: 2 = plan.version;
 void currentTransitionVersion;
+
+const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
+ .createData({values:[{x:1,y:10},{x:100,y:20}]}).createPointMark()
+ .encodeX({field:'x',scale:{type:'log',domain:[1,1000],nice:false}}).encodeY({field:'y'})
+ .createXAxis({title:{text:'Amount',at:10,offset:35}});
+const guidePlan=planTransition({from:guideFrom,to:guideFrom.editXAxisTitle({at:100}),options:{durationMs:100}});
+renderToSVG(sampleTransition(deserializeAnimation(serializeAnimation(guidePlan)).plan,50));

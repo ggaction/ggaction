@@ -1665,6 +1665,7 @@ export interface TransitionPlan {
   readonly easing: AnimationEasing;
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
+ * Guide geometry includes explicit native titles, band boundaries, and field-keyed Parallel axes.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
