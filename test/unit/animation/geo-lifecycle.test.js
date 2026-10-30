@@ -132,3 +132,22 @@ test("hidden endpoint geometry cannot bypass the current frame generated-part li
   assert.equal(JSON.stringify(p),before);assert.deepEqual(sampleTransition(plan,0),first);
   assert.equal(sampleTransition(plan,100).scene.nodes.length,1);
 });
+
+test("current composite camera samples retain native inset identities and excluded source visibility", () => {
+  const from=make([feature("lower",[-100,40]),feature("north",[-150,64]),feature("island",[-157,20]),feature("outside",[0,0])],
+    "albers-usa","createGeoPointMark",{scalePx:100,translatePx:[100,100]});
+  const to=from.editProjection({scalePx:400,translatePx:[300,200]}),current=frame(from,to);
+  const expected=from.editProjection({scalePx:200,translatePx:[200,150]});
+  const native=projectAnimationEndpoint(expected).scene,actual=structuredClone(current.scene);
+  for(const [index,node] of actual.nodes.entries())if(node.type==="circle")for(const axis of ["x","y"]){
+    assert.ok(Math.abs(node.properties[axis]-native.nodes[index].properties[axis])<1e-10);
+    node.properties[axis]=native.nodes[index].properties[axis];
+  }
+  assert.deepEqual(actual,native);
+  const points=current.scene.nodes.filter(node=>node.type==="circle");assert.equal(points.length,3);
+  const decisions=current.decisions.filter(value=>value.kind==="geographic");
+  assert.equal(new Set(decisions.map(value=>value.itemKey)).size,3);
+  for(const point of points) assert.equal(hits(current,point).target.ownerId,"places");
+  const restored=deserializeAnimation(serializeAnimation(planTransition({from:current,to,options}))).plan;
+  assert.deepEqual(sampleTransition(restored,0).scene,current.scene);
+});
