@@ -1,0 +1,28 @@
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {readFileSync, writeFileSync, mkdtempSync, rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import path from 'node:path';
+import {compactPackageJavaScript} from '../../scripts/package-artifact.js';
+const root=process.cwd(), base='.artifacts/animation-geo-final';
+const manifest=JSON.parse(readFileSync(`${base}/package.json`));
+const owner=readFileSync('scripts/package-artifact.js','utf8');
+const constants=name=>new Set(JSON.parse(owner.match(new RegExp(`const ${name} = Object.freeze\\((\\[[\\s\\S]*?\\])\\);`))[1]));
+const json=constants('COMPACT_JSON_FILES'),js=constants('COMPACT_JAVASCRIPT_FILES');
+const dir=mkdtempSync(path.join(tmpdir(),'ggaction-archive-audit-'));
+try {
+  execFileSync('tar',['-xzf',manifest.file,'-C',dir]);
+  const files=[];
+  for(const {path:file} of manifest.files){
+    let expected=readFileSync(file);
+    let transform='identity';
+    if(json.has(file)){expected=Buffer.from(JSON.stringify(JSON.parse(expected)));transform='canonical-json';}
+    if(js.has(file)){expected=Buffer.from(compactPackageJavaScript(expected.toString(),{keepNames:file==='knowledge/task-resolver.js'}));transform='canonical-javascript';}
+    const archived=readFileSync(path.join(dir,'package',file));
+    if(!archived.equals(expected))throw new Error(`Archive differs from canonical staging: ${file}`);
+    files.push({path:file,transform,sha256:createHash('sha256').update(archived).digest('hex')});
+  }
+  const result={sourceCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),archiveSha256:manifest.sha256,files};
+  writeFileSync(`${base}/archive-current-bytes.json`,JSON.stringify(result,null,2)+'\n');
+  console.log(`Verified ${files.length} archived files against current source with canonical package staging transforms.`);
+}finally{rmSync(dir,{recursive:true,force:true});}
