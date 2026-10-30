@@ -4611,3 +4611,14 @@ track에 종속된 private 계산값이며 serialized source geometry와 두 번
 Node22 packed1,658,169 및 Node20 packed1,660,835bytes다. 기존 한도초과를 별도 기록하고
 최소 package 한도를1160/1,661,000/7,510,000으로 조정한다. 여섯 browser entry의 기존
 한도는 유지한다. 정확 검증 범위와 후행 통합은 [Geo Text 준비 기록](impl/roadmap9/animation/GEO_TEXT.md)을 따른다.
+
+### Source Text animation preparation
+
+Private `textGeometry.resolvePreparedSourceTextEntries` accepts explicit native item anchors and
+resolvers while reusing the ordinary source Text selection, formatting, overrides and placement.
+`materialization/animation/geoLabels` supplies source feature membership and resolved inherited
+appearance at an explicit preparation origin. It retains native feature keys, joined row references,
+LOD aliases and graticule projection lineage without copying source geometry or reversing pixels.
+This is preparation only; current-camera collision layout, final effects, hit admission and public
+sampling remain with the follow-up Geo Text integration. Basic keeps its constructor-scoped anchor
+resolver and does not import geographic mathematics through Text.
