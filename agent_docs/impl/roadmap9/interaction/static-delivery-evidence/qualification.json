@@ -146,5 +146,180 @@
     "Fresh-session command replay is tested; browser input witnesses remain B/C1/C2/native gesture evidence.",
     "Animation/player/plan/time-export and final AT53/54/55/89 remain pending.",
     "No package publication, documentation deployment, or PR."
-  ]
+  ],
+  "combinedIntegration": {
+    "sourceRevision": "92ea7f556",
+    "runtimeRevision": "d86e49cd3",
+    "archive": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a",
+    "boundariesAndDiscovery": 29,
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "canvasPeer": "1.0.9",
+        "archive": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a",
+        "case": "static-delivery/interacted-native-offline-four-formats",
+        "receipt": {
+          "node": "v20.20.2",
+          "freshProcess": true,
+          "networkCalls": 0,
+          "snapshotSha256": "e29266bf26771e0b510a6a2739858d915b43e1346fdae7d385d350cb317e3777",
+          "restoredDescriptionSha256": "99968b7284ed9efcf4f699521242a2ce11f6f072d9316fd0bc9c9f115b9006e9",
+          "original": {
+            "width": 836,
+            "height": 180,
+            "rgba": "0a995810da14ef5a6af7357bbb2790ab50ebe4524fa72ff07667b5a2beb8b99e",
+            "png": "caf9f8ff8eb30184a5ef145b5160019f003df4362ed4af806981a71a2fe6cc97",
+            "svg": "c8c18098258207753699c6c659b11062fa50449ad454fe3d922c0e8e396593fc",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "aeee3250ad6184ba2b066d65ff999b4991acdee9ff2e9a87de2e8e89c756b85a",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "edited": {
+            "width": 836,
+            "height": 180,
+            "rgba": "4466ef1be4a68f633420fc0fbcb45068767da68dffe7d44c96fc41a02e38cd15",
+            "png": "e5e107770ed5ef550c82b3272235f4ea1d0941a19c0d49da73fdc996fd070974",
+            "svg": "ef2d944085b60dfebf943e6d9efd75e802cc03ce544c878c8c69df79b84fc4f7",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "c412a2e12f1bfe9b156520fde3ae84da47d4cdb6d2ee9c2b2fe2d4d6123b973c",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "commands": [
+            "focusHierarchy",
+            "moveNode",
+            "setViewport",
+            "select",
+            "focus",
+            "undo",
+            "redo"
+          ],
+          "history": {
+            "undoCount": 1,
+            "redoCount": 1,
+            "limit": 100
+          }
+        }
+      },
+      {
+        "node": "v22.23.1",
+        "canvasPeer": "1.0.9",
+        "archive": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a",
+        "case": "static-delivery/interacted-native-offline-four-formats",
+        "receipt": {
+          "node": "v22.23.1",
+          "freshProcess": true,
+          "networkCalls": 0,
+          "snapshotSha256": "544673cdd1e22da3ce4d45f41141196037ca13e4f165dc4013d22d1e1ef0f514",
+          "restoredDescriptionSha256": "c29bfff3aac7d98639c67760be7a773429d69bbff36ba80697fed33c8091d2e3",
+          "original": {
+            "width": 836,
+            "height": 180,
+            "rgba": "0a995810da14ef5a6af7357bbb2790ab50ebe4524fa72ff07667b5a2beb8b99e",
+            "png": "caf9f8ff8eb30184a5ef145b5160019f003df4362ed4af806981a71a2fe6cc97",
+            "svg": "b16ac1775b7eb66022f1c61b17a373e4e396cb9593e434b0f367382b434f1593",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "aeee3250ad6184ba2b066d65ff999b4991acdee9ff2e9a87de2e8e89c756b85a",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "edited": {
+            "width": 836,
+            "height": 180,
+            "rgba": "4466ef1be4a68f633420fc0fbcb45068767da68dffe7d44c96fc41a02e38cd15",
+            "png": "e5e107770ed5ef550c82b3272235f4ea1d0941a19c0d49da73fdc996fd070974",
+            "svg": "f6ffbba2a3130d476fea087a4dbcd9d965e4183a1ecb427d0eb79765262209f3",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "c412a2e12f1bfe9b156520fde3ae84da47d4cdb6d2ee9c2b2fe2d4d6123b973c",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "commands": [
+            "focusHierarchy",
+            "moveNode",
+            "setViewport",
+            "select",
+            "focus",
+            "undo",
+            "redo"
+          ],
+          "history": {
+            "undoCount": 1,
+            "redoCount": 1,
+            "limit": 100
+          }
+        }
+      },
+      {
+        "node": "v24.22.1",
+        "canvasPeer": "1.0.9",
+        "archive": "9b3c3eea486b50efa7684890a2e9897f181a0abed73706ed01d689816da9e69a",
+        "case": "static-delivery/interacted-native-offline-four-formats",
+        "receipt": {
+          "node": "v24.22.1",
+          "freshProcess": true,
+          "networkCalls": 0,
+          "snapshotSha256": "8bbec0199bdbd2e3a4cca6b0ef89570803c59aee1e1c592f020be6efa1480d61",
+          "restoredDescriptionSha256": "00170833f339a6ccd7432534c052659f70d4309901b916a658cd931045900b2a",
+          "original": {
+            "width": 836,
+            "height": 180,
+            "rgba": "0a995810da14ef5a6af7357bbb2790ab50ebe4524fa72ff07667b5a2beb8b99e",
+            "png": "caf9f8ff8eb30184a5ef145b5160019f003df4362ed4af806981a71a2fe6cc97",
+            "svg": "acf040ed2224279d74875322ed5386b60029fb76b447ec0ebe978ea9004d951b",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "aeee3250ad6184ba2b066d65ff999b4991acdee9ff2e9a87de2e8e89c756b85a",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "edited": {
+            "width": 836,
+            "height": 180,
+            "rgba": "4466ef1be4a68f633420fc0fbcb45068767da68dffe7d44c96fc41a02e38cd15",
+            "png": "e5e107770ed5ef550c82b3272235f4ea1d0941a19c0d49da73fdc996fd070974",
+            "svg": "c7ab25abf56d0ed6f15202b6905ed649625e122176eafcd11a55985a99dde954",
+            "pdfStreams": [
+              "d9f822e8083f2f4d1c91e887454be5f75e8c7144b2853408f361e3c4a7a6b36d",
+              "eedd6debfc298a7bac7ce2ce47f45b8ba8fcd274a4deaa1b6908f686d0d0cceb",
+              "c412a2e12f1bfe9b156520fde3ae84da47d4cdb6d2ee9c2b2fe2d4d6123b973c",
+              "3e051aa61eb631e7a19115030fa9605e73b8eecd273c94548ec2111418daef10",
+              "49f883d0f0846d7e542cd20a6cb3e6b080396b8296fe2f7d27340f4c35ae5034"
+            ]
+          },
+          "commands": [
+            "focusHierarchy",
+            "moveNode",
+            "setViewport",
+            "select",
+            "focus",
+            "undo",
+            "redo"
+          ],
+          "history": {
+            "undoCount": 1,
+            "redoCount": 1,
+            "limit": 100
+          }
+        }
+      }
+    ],
+    "preservedFailure": "The first three harness attempts omitted the optional native Canvas peer. The repaired harness explicitly installs the lock-pinned @napi-rs/canvas@1.0.9; runtime sources and tolerance expectations are unchanged.",
+    "remaining": "Animation/session assets/current-frame and final AT54/55/89 qualification remain pending."
+  }
 }

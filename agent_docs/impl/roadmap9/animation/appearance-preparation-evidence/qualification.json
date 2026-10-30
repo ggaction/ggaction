@@ -1,0 +1,54 @@
+{
+  "status": "verified-private-preparation",
+  "sourceRevision": "c34e56e7417c28628fd781c9b6050a62bcb802fc",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "numericStyleCasesEachNode20_22_24": 6,
+    "sourceBoundariesDiscoveryPackageAndDocumentationTruth": 39,
+    "docs": 30,
+    "criticalOwnerCoverage": [
+      100,
+      100,
+      100
+    ]
+  },
+  "publicConnection": "pending; no public planner/sample or saved-plan behavior change",
+  "packageLimits": {
+    "entries": 1141,
+    "packedBytes": 1630000,
+    "unpackedBytes": 7381000
+  },
+  "packageMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1141,
+      "packedBytes": 1629786,
+      "unpackedBytes": 7380562
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1141,
+      "packedBytes": 1627349,
+      "unpackedBytes": 7380562
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1141,
+      "packedBytes": 1629786,
+      "unpackedBytes": 7380562
+    }
+  },
+  "firstFailure": "Two raw color assertions used exact normalized1 after RGB CSS roundtrip returned1-1ulp. Use existing independent numeric tolerance1e-12; preserve exact native endpoint strings.",
+  "remaining": [
+    "Wire shared native geometry tracks after Geo combined source freezes",
+    "Explicit transition version2 and color kernel manifest with closed restore",
+    "Current/types/public docs and exact same archive renderer/session/offline qualification"
+  ],
+  "reuse": "No public entry imports the new private owner yet, so existing browser import closures are unchanged. Package checks measure one actual new source module; no installed/browser animation result is inferred."
+}

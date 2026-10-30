@@ -68,6 +68,22 @@
       {
         "type": "prefix",
         "path": "charts/cross-feature-integration/variants/animation/"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-polar.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-polar-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-transitions.test.js"
       }
     ],
     "architecture": [

@@ -16,6 +16,14 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+Partition의 비공개 animation 입력은 `materialization/animation/partition.js`가 기존
+partition owner에서 저장된 normalized interval·focus와 명시 coordinate frame을 투영한다.
+Child namespace별 group은 exact layout/hierarchy refs와 label offset을 한 번 보유하며,
+scene 순서의 item vector가 group·key·role을 참조한다. `grammar/animation/partitionState.js`는
+명시 frame을 기존 hierarchy bend kernel에 연결하고, 현재 curved state를 보존해 재기준화한다.
+Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 공개 planner와 offline
+transport도 같은 owner를 사용하며 정확한 지원은 Current 계약이 소유한다.
+
 ### Boolean filter 의존성
 
 AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
@@ -788,6 +796,14 @@ commands를 연결하고 runtime bindings·event·listener 수명을 소유한�
 renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
 [Current INTERACTION](contract/current/INTERACTION.md)이 소유한다.
 
+### `ggaction/animation`
+
+Browser-safe planner/sampler는 명시 native program 또는 authentic current frame에서 준비된
+의미와 concrete scene을 사용한다. Player만 명시 host clock·render callback과 일시 수명을
+가지며 offline owner는 실제 endpoint/asset bytes 및 versioned kernel을 검증한다.
+Renderer·DOM·Node export dependency를 이 entry에 넣지 않는다. 정확한 지원 family와
+공개 계약은 [ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -887,11 +903,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 771,400 bytes |
-| `ggaction/basic` | 421,200 bytes |
+| `ggaction` | 774,400 bytes |
+| `ggaction/basic` | 422,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 122,100 bytes |
+| `ggaction/interaction` | 131,100 bytes |
+| `ggaction/animation` | 233,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3184,7 +3201,7 @@ owner에 두며, 기존 controller가 같은 playback 옵션 정규화를 재사
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
-`animation/planner.js`는 settled immutable program 두 개에서 기존 endpoint와 item key/role
+`animation/planner.js`는 settled immutable program 또는 authentic frame 두 개에서 기존 endpoint와 item key/role
 대응을 준비한다. `materialization/animation/point.js`는 exact child scope·final row identity와
 rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별도 mapper를 만들지 않는다.
 `animation/sample.js`는 기존 browser-safe concrete scene compiler를 공유하여 renderer-ready
@@ -3194,10 +3211,24 @@ rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별�
 item correspondence로 해석하지 않는다. 지원하지 않는 family·topology·appearance는 명시 이유와
 concrete weighted-blend로 남긴다. 이는 나머지 compatible family 구현을 대체하지 않는다.
 `core/programState.js`의 descriptor-safe settled-state admission을 hit preparation과 planner가 공유한다.
-이 checkpoint는 private authentic plan만 지원한다. 공개 entry·offline 복원·current-frame 재기준과
-player 연결은 후행 의무이며 새 semantic 상태나 public API는 없다. Node22 package는
+Private planner는 닫힌 payload의 엄격한 복원과 current-frame 의미 값 재기준을 지원한다.
+공개 entry와 player 연결은 후행 통합 의무이며 새 semantic 상태를 만들지 않는다. Node22 package는
 1118entries/1,592,653packed/7,244,281unpacked bytes이고 Node20/24 packed는1,595,412bytes다.
 최소 상한1118/1,596,000/7,245,000을 적용하며 공개 entry·browser bundle cap은 유지한다.
+
+`materialization/animation/graph.js`는 exact graph/layout/route와 scoped item identity를 native
+`graph/plot`에서 한 번 준비한다. 완료 layout 좌표·resolved origin·radius·label offset과 route
+center samples가 group당 한 번 저장되며 node마다 전체 model을 복제하지 않는다.
+`grammar/animation/graphState.js`는 이 닫힌 값을 기존 anchored route kernel과 함께 보간하고,
+`animation/graphTracks.js`는 current anchors를 native edge/inset/arrow materializer에 전달한다.
+매 frame inference·layout·bundling solver는 실행하지 않는다. Primitive geometry 편집, parallel
+ordering 변화와 route 붕괴는 명시 사유로 남기며 graph node의 호환 이동은 계속 유지한다.
+Authentic frame의 private provenance가 current graph groups와 node-order item refs를 보존하여
+재기준에 pixel 역산이 필요하지 않다. Export/restore도 이 단일 준비값과 kernel version을 검증한다.
+원 endpoint, scene schema와 renderer 입력은 그대로 유지하며 public entry는 후행 통합 대상이다.
+Graph private owner 추가의 같은 staging은 Node22에서1124entries/1,604,256packed/7,289,382unpacked,
+Node20/24에서는1,608,202packed bytes다. 최소 한도1124/1,609,000/7,290,000을 적용하며
+기존 browser bundle cap은 유지한다.
 
 `grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
 `scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만
@@ -4494,7 +4525,89 @@ Typed point restore·현재 frame 재기준·player adapter와 native hit의 합
 Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
 이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.
 
-Geo current-frame selection의 package는1134entries/7,332,934unpacked이며 Node20/24 packed1,618,319,
-Node22 packed1,614,704다. 최소 caps는1134/1,619,000/7,333,000이다. 같은 Node22 archive의
-Node20 최소 browser bundle은 Full774,102 및 interaction130,975gzip이므로 caps를774,200/131,000으로
-조정했다. Basic422,083·SVG24,954·graph44,076·animation186,070은 기존 ceilings를 유지한다.
+### Completed graph animation public integration
+
+공개 `ggaction/animation`의 기존6함수는 완료 graph layout/node/radius·ordinary edge와
+stored route를 같은 typed 준비 owner로 처리한다. Private graph group/item 벡터를
+flat frame proof에 한 번 보존하며, 현재 의미와 native origin만 보유하고 이전 plan을
+재귀적으로 참조하지 않는다. Current의 [Animation](contract/current/ANIMATION.md)이
+지원 범위와 offline/session 경계를 소유한다. Native current-frame hit는 같은 item role의
+실제 현재 geometry와 endpoint metadata를 공유한다.
+합산 package는1135entries이며 Node22 packed1,618,480 / Node20·24 packed1,620,916 /
+unpacked7,343,716bytes다. 최소 상한1135/1,621,000/7,344,000을 적용한다.
+
+동일 tar의 Node20/24 installed gzip 최대치는 Full774,063/Basic422,154/
+animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적용한다.
+기존 SVG/graph/interaction 한도는 유지하며 Node 전용 renderer를 animation entry에 넣지 않는다.
+공개 graph 단락 추가 후 search payload1,080,369bytes에 최소1000-byte 상한1,081,000을 적용한다.
+
+### Native Geo animation prepared values
+
+`materialization/animation/geo.js`는 명시 native Geo layer의 exact projection/binding과
+최종 feature grain에서 원 geometry, winding, 완료 fit parameters, mapped radius를 읽는다.
+`grammar/animation/geoState.js`는 이 닫힌 group을 검증하고 기존 cameraInterpolation 및
+Geo stream을 호출한다. 샘플에서 fit/추론을 재실행하거나 endpoint pixel을 역산하지 않는다.
+클립 밖 feature도 준비 상태에 남아 현재 camera의 part 수 변화와 재출현을 native 계산으로
+처리한다. 공개 planner/sample과 offline provenance는 아래 dynamic-part owner를 통해 연결되며,
+지원 범위와 남은 레이블·주석 경계는 Current Animation 계약을 따른다.
+
+두 private owner를 포함한 package는1137entries이며 Node22 1,621,186packed/
+7,354,400unpacked, Node20 1,623,611packed다. 최소천byte 한도는1,624,000/7,355,000이며
+공개 entry에 새 algorithm import를 추가하지 않았다. 현재 공개 animation 범위는 Current가 소유한다.
+
+
+### Native Geo dynamic-part preparation
+
+`materialization/animation/geoPresentation.js`는 숨겨진 native Geo feature도 보존한 source
+appearance/plot origin/collection frame과 exact lineage admission을 소유한다. Scene tree의 기존
+`collectTransitionGraphics` 순회가 collection별 현재 frame과 삽입 위치를 제공하며 empty collection도
+독립 슬롯을 유지한다. Scene snapshot의 이 private metadata는 공개 scene schema를 바꾸지 않는다.
+Native Geo style/part topology와 `materializeFillItemsInPlot`은 기존 materialization owner에서 공유한다.
+`animation/geoTracks`는 compatible source feature를 준비하고 `geoFrames`는 현재 native stream
+parts를 원 collection 순서로 방출한다. 현재 part는 endpoint에 없는 경우에도 실제 feature/role과
+lineage를 가진 닫힌 geographic decision을 사용한다. `sceneItemIdentity`가 native와 generated
+scene key를 공유하며 flat frame proof의 optional Geo state가 rebase/offline 검증에 재사용된다.
+
+Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/owner/logical feature key로
+닫힌다. 없는 endpoint scene index를 만들지 않고, offline clone에는 native program 권한을 주지 않는다.
+원 primitive와 source 의미가 다르면 명시 edited-geo-graphics fallback을 유지한다.
+
+정확한 지원·fallback 및 native authority 경계는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Cartesian animation meaning and geometry
+
+`materialization/animation/cartesian*`는 native final item/row identity와 실제 row/series owner를
+통해 rule·rect·bar·histogram·line·area의 준비값을 한 번 얻는다. `grammar/animation/cartesianPosition`은
+기존 continuous mapping 및 ordinal band resolver를 공유하고, `cartesianState`는 준비한 endpoint
+값을 기존 curve/rounded rectangle/bar geometry로 그린다. Aggregate bar placement는
+`grammar/bars/geometry`의 단일 helper를 native materializer와 sampler가 함께 사용한다.
+Sample은 집계·binning·stack/layout을 다시 실행하지 않는다. Flat frame proof와 optional versioned
+Cartesian vector는 동일한 현재 의미를 rebase/strict restore에 공급한다. 공개 함수와 renderer schema는
+변경하지 않으며 정확한 지원·fallback 범위는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+### Public partition animation integration
+
+기존 공개 animation planner/sampler가 `materialization/animation/partition`의 exact
+layout/view 의미를 namespace별 group/item vector로 소비한다. Current frame은 normalized
+cell·basis·bend 의미를 flat private provenance에 보존하고 offline payload도 같은 owner로
+검증한다. `grammar/hierarchy/partitionCell`이 이전 private partition frame과 공개 animation의
+현재 cell path/anchor 계산을 공유한다. Native endpoint renderer, ChartProgram semantic state,
+공개 함수 signature는 변하지 않으며 renderer는 완성된 graphicSpec만 읽는다. 정확한 지원과
+fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native-일반-방향-전환)이 소유한다.
+
+### Native polar animation coordinates
+
+`materialization/animation/polar`는 native point/line/arc mapping 및 sector owner를 준비 때만 호출한다.
+`grammar/animation/polarState`는 준비된 각도·반지름·member grid를 기존 polar/path 계산기에 전달한다.
+Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebase/strict restore에 보존한다.
+공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
+[Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Animation solid appearance ownership
+
+`animation/appearance`는 native geometry owner가 분리한 style slice의 공통 보간 정책을
+소유한다. 기존 color parser와 premultiplied linear-sRGB/numeric kernel을 사용하고 sampler가
+동일 현재 geometry에 concrete style patch를 적용한다. Geo는 feature별 prepared paint에 같은
+정책을 사용하며 이미 지원하던 동일 structured paint의 native materialization은 유지한다.
+색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
+Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
+정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.

@@ -1,13 +1,19 @@
+import { isPartitionAnimationFallbackReason } from "../grammar/animation/partitionState.js";
+import { isGeoAnimationFallbackReason } from "../grammar/animation/geoState.js";
+import { isPolarAnimationFallbackReason } from "../grammar/animation/polarState.js";
+import { isCartesianAnimationFallbackReason } from "../grammar/animation/cartesianState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
 import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { isPointAnimationFallbackReason } from "../grammar/animation/pointState.js";
 
+import { isGraphAnimationFallbackReason } from "../grammar/animation/graphState.js";
+
 const reasons=new Set(["primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
   "degenerate-domain","scale-direction","log-sign","canvas-background","collapsed-domain","nonfinite-position"]);
 export function validateAnimationFallbackReason(reason) {
-  if(!isPointAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
+  if(!isGeoAnimationFallbackReason(reason)&&!isPolarAnimationFallbackReason(reason)&&!isPartitionAnimationFallbackReason(reason)&&!isCartesianAnimationFallbackReason(reason)&&!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
 }
 
 export const sameConcreteValue = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -34,11 +40,6 @@ export function fadeAnimationNode(node, opacity, key = node.key) {
   const properties = {...node.properties,opacity:(node.properties.opacity??1)*opacity};
   validateConcreteGraphicProperties(node.type,properties);
   return cloneAndFreeze({...node,key,properties});
-}
-export function pointAppearanceCompatible(from, to) {
-  if (typeof from.fill === "object" || typeof to.fill === "object") return false;
-  const staticValues = value => Object.fromEntries(Object.entries(value).filter(([key]) => !["x","y","radius"].includes(key)));
-  return sameConcreteValue(staticValues(from),staticValues(to));
 }
 export function clipInterpolationCompatible(from,to) {
   return from.clips.length === to.clips.length && from.clips.every((clip,i) =>

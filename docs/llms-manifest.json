@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a6da71251ee7b6c878e5502d6388d08f3903b9d125f5b62feb2beb7d56a6cca7",
-    "sourceCommit": "c0b60b49799cdbfa0c461dfc6f32eeae831d0d90",
+    "contractId": "sha256:cfdc64d6dadccf1ee0cc2538d77fc5c0c719b5399f16105ec6c4ea966f726451",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "13163ae2581de2245615dac4e81bc04a2bf2085d94f444f5fb23011c2743b6dd"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1287,13 +1287,19 @@
       "headings": [
         "animate-and-export-chart-frames",
         "prepare-save-and-sample",
+        "animate-solid-color-and-opacity",
+        "move-a-completed-graph-layout",
+        "move-cartesian-shapes-and-series",
+        "bend-an-icicle-into-a-sunburst",
+        "move-native-polar-shapes",
+        "move-geographic-cameras",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 8032,
-      "sha256": "63d8da4cf73e2a2f820ccafcebadcf44a59bb45d590311f5f6b23e34e0013b5e"
+      "bytes": 15951,
+      "sha256": "7a4eab6eef11ecd41958ad3c3d8b3efbecaa11b986bc332fe95035bb0aed90e2"
     },
     {
       "order": 77,
@@ -2637,8 +2643,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 79700,
-      "sha256": "ba757aa1727d3f6658a0aeb680e11da49894a6a652ce4f2e51acee5ec194ad13"
+      "bytes": 80025,
+      "sha256": "0dd0941854718ebbeee674c33e1d6ebdfdac0ec21d2885c7d07c9ae528063da0"
     },
     {
       "order": 132,
@@ -3606,8 +3612,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "4fc5ac01089a860b7acb50ac4f53af46ce0e8238826c7f4602023ee1198239cc"
+      "bytes": 23199,
+      "sha256": "154898c835b60023d0d67cc82ef4faba7828ddafb6a46a5485b13b28f4ce8cb9"
     },
     {
       "order": 135,
@@ -3947,8 +3953,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "91255199cc79b6562ff0fe89ef18ef20138dc763e1de3b643c1c3a021cfd0420"
+      "bytes": 3000,
+      "sha256": "3ba464f464d4ca2c9c5e3072c62b4bb7e98dbcbb0743176bb80727f25dc4a74b"
     },
     {
       "order": 156,

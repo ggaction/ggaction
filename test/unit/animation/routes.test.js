@@ -93,3 +93,14 @@ test("route admission rejects malformed keys, points, options, sample limits and
   let calls = 0; const source = Object.defineProperty({ y: 0 }, "x", { enumerable: true, get() { calls++; return 0; } });
   assert.throws(() => sampleRouteInterpolation(plan, .5, { source, target: point(10, 0) }), /accessors/); assert.equal(calls, 0);
 });
+
+
+test("stationary nonuniform routes preserve every native corner between exact anchors",()=>{
+ const endpoint={edgeKey:"edge",sourceKey:"a",targetKey:"b",points:[{x:0,y:0},{x:1,y:0},{x:1,y:100}]};
+ const plan=prepareRouteInterpolation(endpoint,endpoint);
+ const sample=sampleRouteInterpolation(plan,.5,{source:{x:0,y:0},target:{x:1,y:100}});
+ assert.deepEqual(sample.points,endpoint.points);
+ assert.notDeepEqual(plan.source,endpoint.points);
+ const shifted=sampleRouteInterpolation(plan,.5,{source:{x:1,y:1},target:{x:2,y:101}});
+ assert.deepEqual(shifted.points[0],{x:1,y:1});assert.deepEqual(shifted.points.at(-1),{x:2,y:101});
+});
