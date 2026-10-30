@@ -1,6 +1,6 @@
 {
   "status": "verified-guide-and-native-legend-owner-integration; remaining native typed paths and STEP077 remain open",
-  "sourceRevision": null,
+  "sourceRevision": "22abce84094cb6c9ea1ecfae8c9537c74efa3c23",
   "base": "166060788",
   "guideSource": "9adf00e17",
   "timelineSource": "933cacad0da8e86b30a62cca09c5260cbc7a96d7",
@@ -118,5 +118,11 @@
     "GeoText camera with content/layout changes",
     "graph-route geographic adapter and remaining large-size performance",
     "complete STEP057–077 acceptance matrix and final qualification/delivery"
-  ]
+  ],
+  "sourcePin": {
+    "docs": 31,
+    "builtPages": 186,
+    "builtArtifacts": 1598,
+    "browserReuse": "Only provenance identity links changed. The8 freshly verified guide documentation page/width pairs and timeline full-page browser remain valid; body/CSS unchanged."
+  }
 }
