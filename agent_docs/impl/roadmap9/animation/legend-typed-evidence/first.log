@@ -1,0 +1,83 @@
+TAP version 13
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 1 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 450.895417
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 2 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 309.537291
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+not ok 3 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 226.83825
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/legend-transitions.test.js:52:1'
+  failureType: 'testCodeFailure'
+  error: 'Sampled decision differs from its concrete primitive.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    validateSampledEndpointMetadata (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/animation/frameEndpoint.js:106:539)
+    restoreEndpoint (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/animation/planner.js:196:29)
+    restoreTransitionPlan (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/animation/planner.js:239:14)
+    deserializeAnimation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/animation/envelope.js:20:16)
+    restoredEqual (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/legend-transitions.test.js:22:20)
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/legend-transitions.test.js:59:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 4 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 735.625417
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+not ok 5 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 7.276083
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/legend-transitions.test.js:74:1'
+  failureType: 'testCodeFailure'
+  error: 'Gradient legend creation uses omission for automatic values.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    normalizeLegendSampling (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/grammar/legendSampling.js:67:11)
+    normalizeContinuousLegend (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/legends/continuous/common.js:174:7)
+    resolveGradientLegendCreation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/legends/continuous/gradient.js:134:141)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/legends/continuous/gradient.js:211:22)
+    ChartProgram.wrappedAction [as createGradientLegend] (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:297:89)
+    applyLegendCreationPlan (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/legends/categorical/actions.js:574:144)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/legends/categorical/actions.js:584:72)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 6 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 47.445583
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 7 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 377.323375
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 5
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2616.412541

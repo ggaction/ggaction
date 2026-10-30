@@ -1,0 +1,132 @@
+{
+  "status": "verified-exact-gradient-legend-slice",
+  "source": "71d2eda28eb6215e6425ca687912c12e932500c0",
+  "base": "aa5d2ee27",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "guideKernel": "native-guide-values@3",
+  "transitionVersion": 2,
+  "sharedEdits": [
+    "sample.js imports guideTracks sampler",
+    "frameEndpoint guide geometry primitive list adds rect"
+  ],
+  "checks": {
+    "animation": 360,
+    "additionalFinalLegendTests": 11,
+    "nativeGuidesAndLegends": 1120,
+    "newCriticalOwners": 4,
+    "coverage": {
+      "lines": 99.48,
+      "branches": 97.71,
+      "functions": 100
+    },
+    "nativeSharedCoverage": {
+      "tests": 56,
+      "lines": 98.03,
+      "branches": 85.11,
+      "functions": 96.77
+    },
+    "renderAndBrowser": 7,
+    "actualData": {
+      "tests": 5,
+      "datasets": 5,
+      "recipesEach": 7,
+      "durationMs": 3907.348833
+    },
+    "boundaryDiscoveryDocumentation": 32,
+    "packageSharding": 17,
+    "finalCapCurrentContract": 9,
+    "pinnedDocs": 26,
+    "builtPages": 186,
+    "builtLlmArtifacts": 1598,
+    "installedEach": {
+      "runtime": 3,
+      "strictAnimationTypes": true,
+      "executedDoc": 1,
+      "optionalPeers": true,
+      "entryBundles": 6
+    }
+  },
+  "archive": {
+    "sha256": "bc45ebc1e0253041d311dc840034135d5bf801f337bc4d6b069be57efeeb873a",
+    "entries": 1176,
+    "packedNode22": 1678088,
+    "maximumPackedNode20_22_24": 1680646,
+    "unpacked": 7587157,
+    "previousArchiveREADMEOnlyDelta": [
+      "package/README.md"
+    ],
+    "limits": {
+      "entries": 1176,
+      "packed": 1680700,
+      "unpacked": 7587200
+    },
+    "browserLimitsChanged": {
+      "ggaction/basic": 423000,
+      "ggaction/animation": 266100
+    }
+  },
+  "remaining": [
+    "categorical, symbol and quantitative size legend layout",
+    "automatic sample, multi-block, border, group and inferred clearance",
+    "axis flush, rotation, responsive reflow and inferred title dependencies",
+    "timeline version3 combined qualification",
+    "whole061/062/063/077 acceptance"
+  ],
+  "firstFailures": [
+    "shared sampled guide admission originally excluded native rect; approved one-token repair",
+    "test caller mutation initially modified aliased cloned endpoint twice; corrected fixture uses distinct inputs",
+    "realistic new color fixture supplied unsupported nice option, then treated tagged guideKey value as untagged; corrected public input and exact literal; all source rows preserved",
+    "new executable documentation block lacked registry, then LLM/provenance became stale after source changes; canonical generators repaired",
+    "new2packageentries and size exceeded prior caps; measured3Node minimal caps",
+    "same-tar Basic and animation gzip exceeded old ceilings; retained original receipts; adjusted minimal ceilings and README; exact final tar rerun all3Node"
+  ],
+  "inputHashes": {
+    "scripts/browser-bundle-size.js": "c5017429bc716f2ee682752168ee6e8a6474df1d12fe54bde8092ea2161e0d0a",
+    "scripts/consumers/fixtures/animation.ts": "e7d6a863990bd120e705ae44c2f278b33faaacc3ec1f35c0172f7d7c213992a8",
+    "scripts/consumers/fixtures/node/animation.mjs": "a08c01a1e4a52dc0febc0c7e26329d6a2ea4ece47982c99bb291cbcf76788f1c",
+    "scripts/consumers/fixtures/node/manifest.json": "aa2ba34abd8c8b05b12f9a3756b40585ffa0d5b4ce5a3d0186b5be18f45abb34",
+    "scripts/package-artifact.js": "abdc8190b6f2ee0aac3e8ba8040a681aaa2b426c2847084deaa13a18c1e56471",
+    "src/actions/guides/legends/continuous/gradient.js": "e640c2d752228af6423550475b8489d79299b9431d2ac44fb4d4ef5883f1df71",
+    "src/actions/guides/legends/continuous/stroke.js": "3930b0419de040ab88a308b1834cc54964a1b861741ef4d509fc215f3d232866",
+    "src/animation/frameEndpoint.js": "a17ca97f8c3a20bd079498b1d8e3e745446c97b4dc2679a688cd79c71f9452ac",
+    "src/animation/guideTracks.js": "557f1df3ea0b01d36e41217c9327fd2eddc87f9717d93499fed24947416acfd3",
+    "src/animation/sample.js": "f4ac0501b6e43dcdf787b2c1e86060e909be9abe8a3253615293ab25565f85fa",
+    "src/grammar/animation/guideState.js": "834e80a532b49be7e9594fa7515e9bc0ee8aa69826a8cffed3e647df62a95d49",
+    "src/materialization/animation/guides.js": "fb225fe91f9375885646042e6f0d920df9d866a75c034ae6c29c41e3c78ff397",
+    "src/materialization/animation/legendGuides.js": "befb97c27e7265a1fae56cdff11e46938ece0dd6d55d6055242a70b4c9a8dafc",
+    "src/materialization/animation/legendState.js": "3a41fa644a384163851999dd85cc62aaa20dac766c508e1bcbc70dd83ef239dc",
+    "src/materialization/guides/legendGradient.js": "ea3917a0775f623de96de7ed8d0a43470a4cb8ac89ce17cb0c2bfff67137930f",
+    "src/materialization/legends.js": "5181c9af9bc46fae3669ea1392ca9b7385b3339669b8f03f7ed8e95641524cf7",
+    "test/contracts/realistic-guide-transitions.test.js": "f2056f1f57947c13971171046184c82368e94af682161904cc3ea3d1d123d8a7",
+    "test/realistic-timings.json": "fa71e57ad43e432b6cdf89a50b7c986a36406108c5f46977529da0e657f8e43a",
+    "test/support/animation-guide-frame.js": "a283b8b3683e5ff41915d1b721e5702baba6f7b57a940994fc613ed7ef59092b",
+    "test/unit/animation/guide-anchor-transitions.test.js": "6172fa0928854982f020034d24fb34a9b3b55834886b640ec1084ebe0067c095",
+    "test/unit/animation/guide-transition.test.js": "c68d032cca2df327dd7d99b4006b55456f87784faa18e59a9779acc99fbf89ad",
+    "test/unit/animation/legend-transitions.test.js": "b727132b3d49f00ab350a0f661c1219d49aa8985318e15e705e8b5ae6b6e573d",
+    "types/animation.d.ts": "d1d95bf7f4368ed7f6919784b9b4c83305f594b1c66271b1522ba24297bb32b0"
+  },
+  "evidenceHashes": {
+    "realistic-final3.log": "f265b4d4654e7a11f9c9dcb813dd68e01bdc51393c061e06b633c4574894183b",
+    "realistic-final2.log": "89ecc81b90018e86c6a12c6bdecf3054760e00c439817806b9f8eb81e751e1b3",
+    "installed-node22.json": "6895e4d4fa8b4aefce3f92303aa0bf395ae6f11cd11039ed9a1a8dd780cd7c04",
+    "docs-final.log": "4f62f1b8f8aae8d8df0fcf1964f8b05e292708d88212083e2390c3568a530c8c",
+    "first-installed-node22.json": "510a0a8fd5425c155772e5b51221ae39c2d74b51e0c22d74d097b4b31ac4e712",
+    "built-docs.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "coverage-final2.log": "2f5eb76d89e3630fd42803197717272391d1b03c529bab4ec05ca51c54061d17",
+    "first.log": "19badc948ddb219097a70cd4809036376d5aabeca36fa28fc63d43d1859a7894",
+    "installed-node24.json": "f65468b4f564cbf31b92c3297930ebcd5efd3f544f0026bda9086092ecd55c6a",
+    "first-installed-node24.json": "77654647edcdb3db2997ee28011794b8e56385cb99afa3a9e05de750f81be6fe",
+    "docs.log": "46fe9f18acfbab2d905948e884d7671b63f0c1db7fdaceb70f4d2533b63a071f",
+    "package-first.log": "548b3529fddcb57ac6fa90e34813ab72556d8a88f23f5eb69c4dc2699c182884",
+    "temporal-final.log": "a055111865a93083d7380cc1ebb9a0f587e04153f06e8b37eeb6f5eda7e83064",
+    "cache-regression.log": "19eee011359d3a847b7d4cab1f7e4bae5adbc158fb7bf648664be109b95119a5",
+    "native-coverage.log": "6f9827cf5b46368f9ad9025d9b1e4c420f8f14d7c5fc7cce1f4cff9b0182e7e3",
+    "docs-repair.log": "2380bd4c12dc562b359c773ce109766f9bc26a33be4333c16407d2a36a099d53",
+    "renderers-first.log": "c46aed16de991e2ee0bf09bc9ccfa987669fe747de05ab93060c75c9ed83c683",
+    "installed-node20.json": "8d5236bc93c1d5ddc677e3f8e1263a36f2ade33733906b5518e31b7a90439928",
+    "realistic-final.log": "de6810a4fcd0a9086a527a70259955b9cf6f2adc2086b4d12445187f188c5247",
+    "first-installed-node20.json": "35b6c75a1189f436cb27ad33553b9509d7bef71a85bea15751c76f33a8c5697e",
+    "pin-docs.log": "40fc7eadeef102777967e3a801151a0ec35e5d92b1efd078d44fb21f75ce412b"
+  }
+}

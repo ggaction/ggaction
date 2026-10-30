@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: browser guide planner samples renderer-ready frames in Canvas and SVG at both DPRs
+ok 1 - browser guide planner samples renderer-ready frames in Canvas and SVG at both DPRs
+  ---
+  duration_ms: 8990.178
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide cartesian preserves semantic midpoint in native PNG and PDF
+ok 2 - renderer-ready guide cartesian preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 149.926166
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide polar preserves semantic midpoint in native PNG and PDF
+ok 3 - renderer-ready guide polar preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 93.76025
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide title preserves semantic midpoint in native PNG and PDF
+ok 4 - renderer-ready guide title preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 47.337833
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide boundary preserves semantic midpoint in native PNG and PDF
+ok 5 - renderer-ready guide boundary preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 59.354375
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide parallel preserves semantic midpoint in native PNG and PDF
+ok 6 - renderer-ready guide parallel preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 45.470667
+  type: 'test'
+  ...
+# Subtest: renderer-ready guide legend preserves semantic midpoint in native PNG and PDF
+ok 7 - renderer-ready guide legend preserves semantic midpoint in native PNG and PDF
+  ---
+  duration_ms: 278.888667
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9589.52

@@ -1,0 +1,359 @@
+TAP version 13
+# Subtest: resolves continuous stroke legend steps through the shared facade planner
+ok 1 - resolves continuous stroke legend steps through the shared facade planner
+  ---
+  duration_ms: 100.314834
+  type: 'test'
+  ...
+# Subtest: rejects continuous legend sample counts above the generated item limit
+ok 2 - rejects continuous legend sample counts above the generated item limit
+  ---
+  duration_ms: 30.222291
+  type: 'test'
+  ...
+# Subtest: creates the approved right gradient legend as concrete strips
+ok 3 - creates the approved right gradient legend as concrete strips
+  ---
+  duration_ms: 37.517
+  type: 'test'
+  ...
+# Subtest: samples and labels full and close numeric legend domains without collapse
+ok 4 - samples and labels full and close numeric legend domains without collapse
+  ---
+  duration_ms: 38.61375
+  type: 'test'
+  ...
+# Subtest: lays gradient legends out in all four positions
+ok 5 - lays gradient legends out in all four positions
+  ---
+  duration_ms: 152.740792
+  type: 'test'
+  ...
+# Subtest: formats temporal gradient labels from normalized time domains
+ok 6 - formats temporal gradient labels from normalized time domains
+  ---
+  duration_ms: 22.231667
+  type: 'test'
+  ...
+# Subtest: uses the shared explicit formatter for quantitative and UTC legend labels
+ok 7 - uses the shared explicit formatter for quantitative and UTC legend labels
+  ---
+  duration_ms: 37.561125
+  type: 'test'
+  ...
+# Subtest: creates ascending opacity samples and removes them in constant mode
+ok 8 - creates ascending opacity samples and removes them in constant mode
+  ---
+  duration_ms: 19.667375
+  type: 'test'
+  ...
+# Subtest: infers the only field-opacity legend through createGuides
+ok 9 - infers the only field-opacity legend through createGuides
+  ---
+  duration_ms: 14.457334
+  type: 'test'
+  ...
+# Subtest: automatic opacity samples preserve exact nondecimal domain endpoints
+ok 10 - automatic opacity samples preserve exact nondecimal domain endpoints
+  ---
+  duration_ms: 9.895583
+  type: 'test'
+  ...
+# Subtest: lays opacity legends out in all four positions
+ok 11 - lays opacity legends out in all four positions
+  ---
+  duration_ms: 66.220042
+  type: 'test'
+  ...
+# Subtest: lays out a horizontal opacity title and samples on one reading line
+ok 12 - lays out a horizontal opacity title and samples on one reading line
+  ---
+  duration_ms: 5.833583
+  type: 'test'
+  ...
+# Subtest: rematerializes continuous legends after scale and Canvas edits
+ok 13 - rematerializes continuous legends after scale and Canvas edits
+  ---
+  duration_ms: 52.104708
+  type: 'test'
+  ...
+# Subtest: materializes optional continuous legend backgrounds before content
+ok 14 - materializes optional continuous legend backgrounds before content
+  ---
+  duration_ms: 66.438625
+  type: 'test'
+  ...
+# Subtest: rejects incompatible options and insufficient margins atomically
+ok 15 - rejects incompatible options and insufficient margins atomically
+  ---
+  duration_ms: 24.992541
+  type: 'test'
+  ...
+# Subtest: Full color exact ticks preserve scale, marks, ramp and caller values
+ok 16 - Full color exact ticks preserve scale, marks, ramp and caller values
+  ---
+  duration_ms: 162.636917
+  type: 'test'
+  ...
+# Subtest: Full stroke exact ticks preserve scale, marks, ramp and caller values
+ok 17 - Full stroke exact ticks preserve scale, marks, ramp and caller values
+  ---
+  duration_ms: 131.052916
+  type: 'test'
+  ...
+# Subtest: Basic color exact ticks preserve scale, marks, ramp and caller values
+ok 18 - Basic color exact ticks preserve scale, marks, ramp and caller values
+  ---
+  duration_ms: 52.64875
+  type: 'test'
+  ...
+# Subtest: Basic stroke exact ticks preserve scale, marks, ramp and caller values
+ok 19 - Basic stroke exact ticks preserve scale, marks, ramp and caller values
+  ---
+  duration_ms: 50.988333
+  type: 'test'
+  ...
+# Subtest: color exact sampling edits preserve remembered count and reset explicitly
+ok 20 - color exact sampling edits preserve remembered count and reset explicitly
+  ---
+  duration_ms: 79.21625
+  type: 'test'
+  ...
+# Subtest: stroke exact sampling edits preserve remembered count and reset explicitly
+ok 21 - stroke exact sampling edits preserve remembered count and reset explicitly
+  ---
+  duration_ms: 54.027292
+  type: 'test'
+  ...
+# Subtest: color invalid exact values and domain edits are atomic
+ok 22 - color invalid exact values and domain edits are atomic
+  ---
+  duration_ms: 68.0785
+  type: 'test'
+  ...
+# Subtest: stroke invalid exact values and domain edits are atomic
+ok 23 - stroke invalid exact values and domain edits are atomic
+  ---
+  duration_ms: 41.969375
+  type: 'test'
+  ...
+# Subtest: color explicit value geometry at left
+ok 24 - color explicit value geometry at left
+  ---
+  duration_ms: 35.265083
+  type: 'test'
+  ...
+# Subtest: color explicit value geometry at right
+ok 25 - color explicit value geometry at right
+  ---
+  duration_ms: 19.984083
+  type: 'test'
+  ...
+# Subtest: color explicit value geometry at top
+ok 26 - color explicit value geometry at top
+  ---
+  duration_ms: 16.234375
+  type: 'test'
+  ...
+# Subtest: color explicit value geometry at bottom
+ok 27 - color explicit value geometry at bottom
+  ---
+  duration_ms: 15.526125
+  type: 'test'
+  ...
+# Subtest: stroke explicit value geometry at left
+ok 28 - stroke explicit value geometry at left
+  ---
+  duration_ms: 11.095333
+  type: 'test'
+  ...
+# Subtest: stroke explicit value geometry at right
+ok 29 - stroke explicit value geometry at right
+  ---
+  duration_ms: 20.111709
+  type: 'test'
+  ...
+# Subtest: stroke explicit value geometry at top
+ok 30 - stroke explicit value geometry at top
+  ---
+  duration_ms: 11.3505
+  type: 'test'
+  ...
+# Subtest: stroke explicit value geometry at bottom
+ok 31 - stroke explicit value geometry at bottom
+  ---
+  duration_ms: 10.686167
+  type: 'test'
+  ...
+# Subtest: exact ticks use reversed positions without inserting values
+ok 32 - exact ticks use reversed positions without inserting values
+  ---
+  duration_ms: 19.004417
+  type: 'test'
+  ...
+# Subtest: exact ticks use log positions without inserting values
+ok 33 - exact ticks use log positions without inserting values
+  ---
+  duration_ms: 16.982417
+  type: 'test'
+  ...
+# Subtest: exact ticks use sqrt positions without inserting values
+ok 34 - exact ticks use sqrt positions without inserting values
+  ---
+  duration_ms: 26.200208
+  type: 'test'
+  ...
+# Subtest: exact ticks use pow positions without inserting values
+ok 35 - exact ticks use pow positions without inserting values
+  ---
+  duration_ms: 11.473
+  type: 'test'
+  ...
+# Subtest: exact ticks use symlog positions without inserting values
+ok 36 - exact ticks use symlog positions without inserting values
+  ---
+  duration_ms: 11.741291
+  type: 'test'
+  ...
+# Subtest: exact ticks use midpoint positions without inserting values
+ok 37 - exact ticks use midpoint positions without inserting values
+  ---
+  duration_ms: 13.955375
+  type: 'test'
+  ...
+# Subtest: representation changes retain exact values while removing symbol-only settings
+ok 38 - representation changes retain exact values while removing symbol-only settings
+  ---
+  duration_ms: 41.8825
+  type: 'test'
+  ...
+# Subtest: persistence rejects malformed gradient sampling even without an explicit representation tag
+ok 39 - persistence rejects malformed gradient sampling even without an explicit representation tag
+  ---
+  duration_ms: 69.24325
+  type: 'test'
+  ...
+# Subtest: shared facet legends retain matching exact samples and reject mismatches
+ok 40 - shared facet legends retain matching exact samples and reject mismatches
+  ---
+  duration_ms: 72.046875
+  type: 'test'
+  ...
+# Subtest: explicit gradient ticks render through SVG, PNG and PDF without changing the ramp
+ok 41 - explicit gradient ticks render through SVG, PNG and PDF without changing the ramp
+  ---
+  duration_ms: 304.294458
+  type: 'test'
+  ...
+# Subtest: rejects stroke-width legend counts above the generated item limit
+ok 42 - rejects stroke-width legend counts above the generated item limit
+  ---
+  duration_ms: 113.551792
+  type: 'test'
+  ...
+# Subtest: creates and rematerializes a quantitative stroke-width legend
+ok 43 - creates and rematerializes a quantitative stroke-width legend
+  ---
+  duration_ms: 60.204417
+  type: 'test'
+  ...
+# Subtest: keeps close stroke-width legend labels distinct
+ok 44 - keeps close stroke-width legend labels distinct
+  ---
+  duration_ms: 12.572333
+  type: 'test'
+  ...
+# Subtest: removes a stroke-width legend by its owning mark
+ok 45 - removes a stroke-width legend by its owning mark
+  ---
+  duration_ms: 18.283083
+  type: 'test'
+  ...
+# Subtest: edits the bounded stroke-width legend surface
+ok 46 - edits the bounded stroke-width legend surface
+  ---
+  duration_ms: 20.276833
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 47 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 1589.973583
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 48 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 791.427792
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 49 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 1411.529208
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 50 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 2589.132875
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 51 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 796.076625
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 52 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 89.19425
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 53 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 767.823625
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 54 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 23.037167
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 55 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 21.0215
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 56 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 26.505209
+  type: 'test'
+  ...
+1..56
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9303.1115
+# start of coverage report
+# ---------------------------------------------------------------------
+# file                 | line % | branch % | funcs % | uncovered lines
+# ---------------------------------------------------------------------
+# src                  |        |          |         | 
+#  materialization     |        |          |         | 
+#   guides             |        |          |         | 
+#    legendGradient.js |  98.53 |    89.19 |   95.83 | 86-88
+#   legends.js         |  96.00 |    70.00 |  100.00 | 21-22
+# ---------------------------------------------------------------------
+# all files            |  98.03 |    85.11 |   96.77 | 
+# ---------------------------------------------------------------------
+# end of coverage report

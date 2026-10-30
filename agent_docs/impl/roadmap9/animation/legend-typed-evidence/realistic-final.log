@@ -1,0 +1,115 @@
+TAP version 13
+# Subtest: tt-us-births preserves raw guide values across seven native transition recipes
+not ok 1 - tt-us-births preserves raw guide values across seven native transition recipes
+  ---
+  duration_ms: 89.03225
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js:12:31'
+  failureType: 'testCodeFailure'
+  error: 'Unknown scale option "nice".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateKeys (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/validation.js:45:27)
+    resolveSequentialColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:214:3)
+    resolveQuantitativeColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:299:12)
+    encodeContinuousColor (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/continuous.js:58:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/index.js:95:14)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    invokeWrappedActionImplementation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:81:25)
+  ...
+# Subtest: tt-trash-wheel preserves raw guide values across seven native transition recipes
+not ok 2 - tt-trash-wheel preserves raw guide values across seven native transition recipes
+  ---
+  duration_ms: 33.023125
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js:12:31'
+  failureType: 'testCodeFailure'
+  error: 'Unknown scale option "nice".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateKeys (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/validation.js:45:27)
+    resolveSequentialColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:214:3)
+    resolveQuantitativeColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:299:12)
+    encodeContinuousColor (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/continuous.js:58:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/index.js:95:14)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    invokeWrappedActionImplementation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:81:25)
+  ...
+# Subtest: tt-stock-prices preserves raw guide values across seven native transition recipes
+not ok 3 - tt-stock-prices preserves raw guide values across seven native transition recipes
+  ---
+  duration_ms: 512.84825
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js:12:31'
+  failureType: 'testCodeFailure'
+  error: 'Unknown scale option "nice".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateKeys (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/validation.js:45:27)
+    resolveSequentialColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:214:3)
+    resolveQuantitativeColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:299:12)
+    encodeContinuousColor (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/continuous.js:58:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/index.js:95:14)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    invokeWrappedActionImplementation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:81:25)
+  ...
+# Subtest: tt-animal-rescues preserves raw guide values across seven native transition recipes
+not ok 4 - tt-animal-rescues preserves raw guide values across seven native transition recipes
+  ---
+  duration_ms: 307.3535
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js:12:31'
+  failureType: 'testCodeFailure'
+  error: 'Unknown scale option "nice".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateKeys (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/validation.js:45:27)
+    resolveSequentialColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:214:3)
+    resolveQuantitativeColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:299:12)
+    encodeContinuousColor (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/continuous.js:58:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/index.js:95:14)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    invokeWrappedActionImplementation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:81:25)
+  ...
+# Subtest: tt-movie-profit preserves raw guide values across seven native transition recipes
+not ok 5 - tt-movie-profit preserves raw guide values across seven native transition recipes
+  ---
+  duration_ms: 49.433625
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js:12:31'
+  failureType: 'testCodeFailure'
+  error: 'Unknown scale option "nice".'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    validateKeys (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/validation.js:45:27)
+    resolveSequentialColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:214:3)
+    resolveQuantitativeColorScaleDefinition (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/scales/definitions.js:299:12)
+    encodeContinuousColor (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/continuous.js:58:17)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/encodings/color/index.js:95:14)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    invokeWrappedActionImplementation (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:81:25)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 0
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1432.124959
