@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { prepareCartesianInterpolation, validateCartesianAnimationState, unavailableCartesianAnimation } from "../grammar/animation/cartesianState.js";
@@ -21,7 +22,8 @@ export function prepareCartesianTrack(match,from,to,a,b) {
   if(sameConcreteValue(source,target)&&sameConcreteValue(a,b))return {...match,kind:"exact"};
   if(!clipInterpolationCompatible(source,target))return fade("clip-topology");
   const staticPaint=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","width","height","x1","x2","y1","y2","commands"].includes(key)));
-  if([source.properties.fill,target.properties.fill,source.properties.stroke,target.properties.stroke].some(value=>value!==null&&typeof value==="object")||!sameConcreteValue(staticPaint(source.properties),staticPaint(target.properties)))return fade("appearance");
+  const appearance=prepareAnimationAppearance(staticPaint(source.properties),staticPaint(target.properties));
+  if(appearance.kind==="crossfade")return fade(appearance.reason);
   const cartesian=prepareCartesianInterpolation(a,b);
-  return cartesian.kind==="crossfade"?fade(cartesian.reason):{...match,kind:"semantic-cartesian",cartesian};
+  return cartesian.kind==="crossfade"?fade(cartesian.reason):{...match,kind:"semantic-cartesian",cartesian,appearance};
 }

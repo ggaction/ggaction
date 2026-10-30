@@ -267,6 +267,16 @@ export function hitShapeAnchor(prepared, spend) {
   const state = states.get(prepared);
   if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
   const budget = { value: 0 }; spend ??= count => work(count, budget);
+  if (state.parts) {
+    // The union is flat and bounded by preparation. Keep source order stable;
+    // each part independently owns opacity, transform and clipping admission.
+    spend(1);
+    for (const part of state.parts) {
+      const point = hitShapeAnchor(part, spend);
+      if (point !== null) return point;
+    }
+    return null;
+  }
   spend(state.work);
   if (prepared.diagnostics.length || state.opacity === 0) return null;
   const inClips = point => state.clips.every(parts => parts.some(part => contains(part, point)));

@@ -720,5 +720,15 @@
     "result": "from,to",
     "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "animation-guides",
+    "file": "api/animation.md",
+    "contains": ".createVerticalGrid({ values: [5] })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
+    "rendering": "authoring-only"
   }
 ]

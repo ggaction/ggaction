@@ -1,7 +1,8 @@
 import { resolveItemSelection } from "./itemSelection.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { normalizeSelectionSelector } from "../../grammar/selectionExpression.js";
-import { resolveMarkItems, resolveMarkSourceItems } from "./policies/index.js";
+import { requireLayer } from "../../selectors/layers.js";
+import { requireSelectionPolicy, resolveMarkItems, resolveMarkSourceItems } from "./policies/index.js";
 import { selectionPredicate as resolveSelectionPredicate } from "./predicate.js";
 
 export function resolveMarkSelection(program, target, selector) {
@@ -25,7 +26,7 @@ export function selectionPredicate(program, definition) {
   return resolveSelectionPredicate(program, definition, { resolveMarkItems, resolveMarkSourceItems });
 }
 
-export function resolveStoredSelection(program, id, { sourceOnly = false } = {}) {
+export function resolveStoredSelection(program, id, { sourceOnly = false, membership = false } = {}) {
   const selections = program.materializationConfigs.selections ?? {};
   const requested = id ?? program.context.currentSelection;
   const resolvedId = requested ?? (
@@ -44,7 +45,13 @@ export function resolveStoredSelection(program, id, { sourceOnly = false } = {})
   }
   const predicate = selectionPredicate(program, definition);
   if (sourceOnly && predicate.property !== undefined) throw new Error("Facet source links cannot project a concrete-property selection; use fields or original rows.");
-  const resolved = sourceOnly ? resolveItemSelection(program, resolveMarkSourceItems(program, definition.target, definition.grain), predicate)
+  const sourceMembership = membership && requireSelectionPolicy(requireLayer(program, definition.target).mark.type).sourceMembership === true;
+  const sourceItems = sourceOnly || sourceMembership ? resolveMarkSourceItems(program, definition.target, definition.grain) : undefined;
+  const resolved = sourceOnly || sourceMembership && predicate.property === undefined
+    ? resolveItemSelection(program, sourceItems, predicate)
     : resolveMarkSelection(program, definition.target, predicate);
+  // Concrete-property predicates keep their actual picture evaluation while
+  // semantic availability still distinguishes projection clipping from removal.
+  if (sourceMembership) return Object.freeze({ id: resolvedId, definition, ...resolved, items: sourceItems });
   return Object.freeze({ id: resolvedId, definition, ...resolved });
 }

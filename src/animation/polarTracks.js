@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { preparePolarInterpolation, validatePolarAnimationState, unavailablePolarAnimation } from "../grammar/animation/polarState.js";
@@ -19,8 +20,9 @@ export function preparePolarTrack(match,from,to,a,b) {
   if(source.topology!==target.topology)return fade("topology");
   if(sameConcreteValue(source,target)&&sameConcreteValue(a,b))return {...match,kind:"exact"};
   if(!clipInterpolationCompatible(source,target))return fade("clip-topology");
-  const appearance=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","radius","commands"].includes(key)));
-  if([source.properties.fill,target.properties.fill,source.properties.stroke,target.properties.stroke].some(value=>value!==null&&typeof value==="object")||!sameConcreteValue(appearance(source.properties),appearance(target.properties)))return fade("appearance");
+  const style=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","radius","commands"].includes(key)));
+  const appearance=prepareAnimationAppearance(style(source.properties),style(target.properties));
+  if(appearance.kind==="crossfade")return fade(appearance.reason);
   const polar=preparePolarInterpolation(a,b);
-  return polar.kind==="crossfade"?fade(polar.reason):{...match,kind:"semantic-polar",polar};
+  return polar.kind==="crossfade"?fade(polar.reason):{...match,kind:"semantic-polar",polar,appearance};
 }

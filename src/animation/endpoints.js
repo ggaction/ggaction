@@ -37,7 +37,7 @@ export function projectAnimationEndpoint(program) {
     : freezeOwned({key: identity.key, role: identity.role}));
   matchItemIdentities(matching, []);
   const endpoint = freezeOwned({format:"native",graphicSpec, scene: snapshot.scene,
-    sources: snapshot.sources, canvases: snapshot.canvases,
+    sources: snapshot.sources, canvases: snapshot.canvases, collections: snapshot.collections,
     backgrounds: freezeOwned(snapshot.sources.flatMap((source,index)=>snapshot.canvases.some(canvas=>`${canvas.graphicId}/background`===source.graphicId)
       ? [freezeOwned({index,owner:source.graphicId})] : [])),
     identities: freezeOwned(identities), matching: freezeOwned(matching)});

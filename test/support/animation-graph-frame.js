@@ -1,6 +1,5 @@
 import {chart} from "../../src/index.js";
-import {planTransition} from "../../src/animation/planner.js";
-import {sampleTransition} from "../../src/animation/sample.js";
+import {planTransition,sampleTransition} from "../../src/animation.js";
 
 export function animationGraphFrame(rebased=false,routed=false) {
  let from=chart().createCanvas({width:300,height:200,margin:0})

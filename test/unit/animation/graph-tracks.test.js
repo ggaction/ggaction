@@ -113,14 +113,14 @@ test("screen routes, paint changes, direct geometry edits and primitive changes 
  const p=graph(),screen=p.bundleGraphEdges({id:"r",method:"edge-path",coordinateSpace:"screen"}).editGraphPlot({routes:"r"});
  assert.doesNotThrow(()=>sampleTransition(planTransition({from:screen,to:changed(screen),options}),50));
  const paint=p.editGraphPlot({nodes:{fill:"orange"}}),paintPlan=planTransition({from:p,to:paint,options});
- assert.equal(paintPlan.tracks.filter(track=>track.reason==="appearance").length,3);
+ assert.equal(paintPlan.tracks.filter(track=>track.kind==="semantic-graph" && track.appearance.entries.some(entry=>entry.key==="fill")).length,3);
  const label=p.editGraphPlot({labels:{overrides:[{key:"a",text:"Changed"}]}});
  assert.ok(planTransition({from:p,to:label,options}).tracks.some(track=>track.reason==="appearance"));
  const changedGraphic=structuredClone(p.graphicSpec),body=changedGraphic.objects.plot.items.find(item=>item.type==="circle");body.properties.x+=30;
  const edited=p._clone({graphicSpec:changedGraphic}),editedPlan=planTransition({from:edited,to:changed(p),options});
  assert.ok(editedPlan.tracks.some(track=>track.reason==="edited-graph-geometry"));
  assert.doesNotThrow(()=>restoreTransitionPlan(structuredClone(exportTransitionPlan(editedPlan))));
- const frame=sampleTransition(paintPlan,50);assert.ok(frame.scene.nodes.some(node=>node.type==="weighted-blend"));
+ const frame=sampleTransition(paintPlan,50);assert.equal(frame.scene.nodes.filter(node=>node.type==="circle").length,3);
  assert.doesNotThrow(()=>planTransition({from:frame,to:paint,options}));
 });
 

@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance } from "./appearance.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { prepareGraphInterpolation, sampleGraphInterpolation, animationGraphGroupWork } from "../grammar/animation/graphState.js";
@@ -25,14 +26,15 @@ export function graphTrackPreparation(from,to,a,b) {
     // also agrees. Compute shared group equality once, including collapsed routes.
     if(stationary[pair]&&sameConcreteValue(first,last))return {...match,kind:"exact"};
     const staticPaint=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","radius","commands"].includes(key)));
-    if(typeof first.properties.fill==="object"||typeof last.properties.fill==="object"||!sameConcreteValue(staticPaint(first.properties),staticPaint(last.properties)))return fade("appearance");
+    const appearance=prepareAnimationAppearance(staticPaint(first.properties),staticPaint(last.properties));
+    if(appearance.kind==="crossfade")return fade(appearance.reason);
     const prepared=pairs[pair];
     if(prepared.kind==="crossfade")return fade(prepared.reason);
     if(target.kind==="edge"){
       const index=edgeIndices[pair].get(target.key),edge=prepared.routes[index];
       if(edge?.kind==="crossfade")return fade(edge.reason);
     }
-    return {...match,kind:"semantic-graph",pair};
+    return {...match,kind:"semantic-graph",pair,appearance};
   };
   return {pairs,track};
 }

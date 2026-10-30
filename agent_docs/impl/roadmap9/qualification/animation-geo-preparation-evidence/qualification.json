@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "status": "private-geo-camera-preparation-checkpoint",
+  "sourceCommit": "52a420795fe16c538edc56f11b9a2eb1cc24a492",
+  "approval": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "cae8bfe43e256b0380963abe18bfc453a78939ef54ec13bc9ae977ae76a4a252"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo.md",
+      "sha256": "fdb531c1aa775be26e2a076ee10c023376b461a056ca89461ba7fd1cc053f99b"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "58a61f0f5a6ef13d9f0f2ef1123cab2f95b00cb328865da998fd397f856963ff"
+    },
+    {
+      "path": "src/grammar/animation/geoState.js",
+      "sha256": "8a4d2f4d14908def2e315ebf2fc3a86bcfbd3455c4e50740b3532cb494b31fda"
+    },
+    {
+      "path": "src/grammar/geo/mark.js",
+      "sha256": "d5d27cf6528b4e7a94cf4acd92fd7cb825624105bda1eb6d56ec5760d1fb9777"
+    },
+    {
+      "path": "src/grammar/geo/markGeometry.js",
+      "sha256": "dc6bc4ac009d60532043593392cb1671e759cf3fe6363dd18fdd7c5dea0dd2ec"
+    },
+    {
+      "path": "src/materialization/animation/geo.js",
+      "sha256": "af93767ee0987ec37d8929cf2e1e87a46bc646917c357304d738e36b4d7480ed"
+    },
+    {
+      "path": "test/unit/animation/geo-values.test.js",
+      "sha256": "461ecfa456bf02211b10307d9ab0f335bb131140ed24ae3871665870912895cb"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-initial.log.gz",
+      "sha256": "316da40e24991a4c4238102edb6ad7739587c08521814ec8b09b76144b3a027f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-repaired.log.gz",
+      "sha256": "c3ce4634c7570fc40baf4e489ceec7ea639a42524dabadb957ce826d5f41dee2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-owning.log.gz",
+      "sha256": "0b978f2bf679a59dc005b9d30ce705097a9c40c059b8084ed8c7f71900af4d7e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-coverage.log.gz",
+      "sha256": "b022ff0bf3b9023838f45ea1cdda621c63be105690a4d06b172ede6c8987bef7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-coverage-final.log.gz",
+      "sha256": "b3df51d9e113ebbd36a48420283ccf643ef0c8515fc347ec95056aa3f4c05054"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-coverage-final-2.log.gz",
+      "sha256": "fa7828d6843b9d365171cd3ed92ae42ac858fa7fbdce1bd3687938167cd2fc47"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/animation-geo-boundaries.log.gz",
+      "sha256": "a6221111da5b780f37a2c7dde2d868d474b3673d66222438dae09d09da2bf4fe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/clean-canonical.log.gz",
+      "sha256": "18defc0f44f476a030f1028098c3ce3d9924431b153bad18bd2b551b3d3da090"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/clean-canonical.receipt.json.gz",
+      "sha256": "149f4738c39645f16a4a398ad8596c599f351110178ebcdf1f9c0e729cfcc9b5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/clean-canonical.receipt.log.gz",
+      "sha256": "18defc0f44f476a030f1028098c3ce3d9924431b153bad18bd2b551b3d3da090"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/fit-owning.log.gz",
+      "sha256": "969b2816aba0de2dc20ff083ebb80bff690136fe5a57bb722e54c0ae23e6c58b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/node20-owning.log.gz",
+      "sha256": "e7f432bc071e1608f21f1ccaaf5a1762f160a557ad224cd74144eb7b8eb04004"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/node24-owning.log.gz",
+      "sha256": "192d0811ab06b1696d1b335ddf05e0caedc43134eacc444143b83eb28a272f69"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/contracts.log.gz",
+      "sha256": "723ca0d8d0fdc400cf2c585ba8e7771fea5146444eebe4374c31806d94135e40"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/docs-generate.log.gz",
+      "sha256": "5e84a92cd3fc1d0c84a2acba39fa05e9948714da5e636a24aba363c0c9f436c4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/docs-owning.log.gz",
+      "sha256": "4402f34c1cbfdb3e766ac50bb5f9aa3efbe53bdd05d573fdb2bd5ab73a1cedae"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-size-20.json.gz",
+      "sha256": "858a44b9a30fcc86df263d81fc77f5d21a3f77277a711ed95c4aa0f0d8d7c870"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-size-22.json.gz",
+      "sha256": "9173cc346b3fed4b6a117fa8fa35c69883819e60d7fc3ecc9c21a9bb3073e8db"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-size-24.json.gz",
+      "sha256": "10113e0978b22d96eb4d6b6571c329d0c3e7b59c5db37e932bcd258e35dfd9d7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-20.log.gz",
+      "sha256": "f3b63b62da7584dcba9fe84f66db4f587f64da6528b58e1a8b59c04623aa6e08"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-22.log.gz",
+      "sha256": "9acec75f52d10c84a18f49b4ea64d375b039d41a67077167cee18d07669be7be"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/qualification/animation-geo-preparation-evidence/package-24.log.gz",
+      "sha256": "bd4491c97025e474b686e9b986e5cdc1f839601189071daa6f04d161909c4b5b"
+    }
+  ],
+  "scope": {
+    "addedPublicExports": 0,
+    "newOwners": [
+      "src/grammar/animation/geoState.js",
+      "src/materialization/animation/geo.js"
+    ],
+    "nativeValidationExtraction": [
+      "src/grammar/geo/mark.js",
+      "src/grammar/geo/markGeometry.js"
+    ],
+    "runtimePoliciesChanged": false
+  },
+  "checks": {
+    "cleanCanonical": {
+      "passed": 398,
+      "failed": 0,
+      "receipt": "clean-canonical.receipt.json.gz"
+    },
+    "coverage": {
+      "passed": 234,
+      "failed": 0,
+      "lines": 100,
+      "branches": 97.32,
+      "functions": 100,
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "timing": "Before final additional completed-fit test; runtime identical"
+    },
+    "node20": {
+      "passed": 21,
+      "failed": 0
+    },
+    "node24": {
+      "passed": 21,
+      "failed": 0
+    },
+    "nodeQualificationTiming": "Before final additional completed-fit test; runtime identical",
+    "sourceBoundaries": {
+      "passed": 29,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 42,
+      "failed": 0
+    },
+    "docs": {
+      "generation": "passed",
+      "owningPassed": 34,
+      "owningFailed": 0
+    }
+  },
+  "package": {
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1137,
+        "packedBytes": 1623611,
+        "unpackedBytes": 7354400
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1137,
+        "packedBytes": 1621186,
+        "unpackedBytes": 7354400
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1137,
+        "packedBytes": 1623611,
+        "unpackedBytes": 7354400
+      }
+    ],
+    "limits": {
+      "entries": 1137,
+      "packedBytes": 1624000,
+      "unpackedBytes": 7355000
+    }
+  },
+  "originalFailures": [
+    {
+      "log": "animation-geo-initial.log.gz",
+      "reason": "New fixture read scene1 nodes as scene2 properties and guessed composition arguments"
+    },
+    {
+      "log": "animation-geo-repaired.log.gz",
+      "reason": "New composition fixture used children instead of programs"
+    },
+    {
+      "log": "animation-geo-owning.log.gz",
+      "reason": "New graticule fixture used nonexistent method rather than createGraticule"
+    },
+    {
+      "log": "animation-geo-coverage.log.gz",
+      "reason": "Initial function coverage below existing floor; meaningful failure sampling regression added"
+    },
+    {
+      "log": "animation-geo-coverage-final.log.gz",
+      "reason": "New primitive edit fixture targeted numeric array path rather than actual graphic child ID"
+    }
+  ],
+  "openObligations": [
+    "Shared planner/sample: dynamic horizon and seam parts, scoped identities, exact endpoints",
+    "Authentic frame rebase and strict offline export/restore for prepared Geo state",
+    "Labels and annotations typed geometry",
+    "Public native current-frame hit and four renderer/offline consumer verification",
+    "Final combined corpus and release qualification"
+  ],
+  "notClaimed": [
+    "Public Geo animation support",
+    "Full repository coverage",
+    "Whole installed consumer suite",
+    "New Geo public same-tar browser bundles",
+    "Built-site browser or deployment",
+    "Roadmap9 completion"
+  ]
+}

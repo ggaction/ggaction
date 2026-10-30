@@ -801,8 +801,17 @@
       "id": "AT-45",
       "expectation": "Animation endpoints, fonts, assets and kernel versions produce deterministic frames and reduced motion",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/animation/offline.test.js",
+          "test/unit/animation/offline-assets.test.js",
+          "test/unit/animation/native-player.test.js",
+          "test/browser/animation-offline.browser.js",
+          "test/contracts/animation-types.test.js"
+        ]
       },
       "input": "Save an animation envelope and replay offline in a fresh process"
     },
@@ -1548,6 +1557,18 @@
           "tests": [
             "test/charts/partition-layouts/png.render.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/partition-transition.test.js",
+            "test/browser/animation-partition.browser.js",
+            "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+          ]
         }
       }
     },
@@ -1629,6 +1650,18 @@
           ],
           "tests": [
             "test/charts/partition-layouts/png.render.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/partition-transition.test.js",
+            "test/browser/animation-partition.browser.js",
+            "test/charts/cross-feature-integration/variants/animation/partition.render.js"
           ]
         }
       }

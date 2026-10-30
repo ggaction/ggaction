@@ -1,0 +1,22 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/geo-source-archives/ggaction-e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11.tgz",
+  "sha256": "e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2550.872209
+    },
+    {
+      "id": "static-native-and-animation-two-cases",
+      "status": "passed",
+      "durationMs": 3662.0805419999997
+    }
+  ],
+  "status": "passed",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

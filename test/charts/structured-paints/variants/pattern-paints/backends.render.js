@@ -41,7 +41,7 @@ test("renders every pattern primitive through Canvas, SVG, PNG and PDF", async (
   const evidence = [];
   await mkdir(directory, { recursive: true });
   try {
-    server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
+    server = await startStaticServer(root, { dependencies: "repository" }); browser = await chromium.launch({ headless: true });
     const opened = await openBrowserPage(browser, `${server.baseUrl}test/charts/structured-paints/variants/pattern-paints/browser.html`, {
       waitFor: () => document.querySelector("#status").textContent === "Ready"
     });

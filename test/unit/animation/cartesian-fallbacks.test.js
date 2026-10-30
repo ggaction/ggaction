@@ -49,7 +49,8 @@ test("native Cartesian lineage must retain the exact final item membership",()=>
 
 test("Cartesian tracks fade on incompatible appearance, primitive, topology and clipping",()=>{
   const source=line(),changed=source.editLineMark({stroke:"red"});
-  assert.equal(plan(source,changed).tracks[0].reason,"appearance");
+  assert.equal(plan(source,changed).tracks[0].kind,"semantic-cartesian");
+  assert.equal(plan(source,changed).tracks[0].appearance.entries[0].key,"stroke");
   const endpoint=projectAnimationEndpoint(source),state=projectCartesianAnimationState(source,endpoint),index=endpoint.identities.findIndex(Boolean);
   const match={sourceIndex:index,targetIndex:index,key:"item",role:"body"};
   for(const [reason,mutate] of [

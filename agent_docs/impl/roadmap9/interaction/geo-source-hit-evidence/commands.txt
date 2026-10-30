@@ -1,0 +1,6 @@
+PATH=<node22>/bin:$PATH node --test --experimental-test-coverage --test-coverage-include=src/interaction/hitProgram.js --test-coverage-include=src/materialization/selection/itemResolver.js test/unit/interaction*.test.js test/unit/hit*.test.js test/unit/animation/current-hit.test.js test/unit/animation/geo-source-hit.test.js
+PATH=<node22>/bin:$PATH node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js
+PATH=<node22>/bin:$PATH node --test test/unit/animation/geo-source-hit.test.js test/docs/architecture-paths.test.js
+PATH=<node20-or24>/bin:$PATH node --test test/unit/animation/geo-source-hit.test.js test/unit/interaction-keyboard.test.js
+PATH=<node22>/bin:$PATH node scripts/package-artifact.js --pack
+PATH=<node20-or22-or24>/bin:$PATH ANIMATION_PACKAGE_SPEC=.artifacts/geo-source-archives/ggaction-e570671394157045fd971f3bcfcf36c896b1b43d1eac2390bba7c75bcbafbb11.tgz node .artifacts/qualify-geo-source.mjs

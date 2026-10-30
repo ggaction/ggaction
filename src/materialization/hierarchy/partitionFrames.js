@@ -4,10 +4,10 @@ import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit 
 import { requireLayer } from "../../selectors/layers.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 import { resolveCoordinatePolarFrame } from "../coordinateBounds.js";
-import { createPartitionBendAdapter, mapPartitionBendPoint, partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
+import { createPartitionBendAdapter, partitionBendSegments } from "../../grammar/hierarchy/partitionAdapter.js";
 import { interpolateNumber } from "../../grammar/numeric.js";
 import { preparePartitionInterpolation, samplePartitionInterpolation } from "../../grammar/hierarchy/partitionInterpolation.js";
-import { insetPartitionBendCell } from "../../grammar/hierarchy/partitionBend.js";
+import { partitionBendCellGeometry } from "../../grammar/hierarchy/partitionCell.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { pathFillContains, pathStrokeDistance } from "../../grammar/pathGeometry.js";
 import { resolvePartitionPlot } from "./partitionPlot.js";
@@ -87,14 +87,7 @@ function frameState(endpoint, adapter, bend) {
     }) };
 }
 function bentCell(node, state, segments) {
-  const { gap, ...basis } = state.frame, bend = state.bend;
-  const interval = insetPartitionBendCell(Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, node[key]])), basis.kernel, bend, gap);
-  if (!interval.visible) return null;
-  const count = Math.max(1, Math.ceil((interval.u1 - interval.u0) * segments)), points = [];
-  for (let i = 0; i <= count; i++) points.push(mapPartitionBendPoint(basis, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v0, bend }));
-  for (let i = count; i >= 0; i--) points.push(mapPartitionBendPoint(basis, { u: lerp(interval.u0, interval.u1, i / count), v: interval.v1, bend }));
-  const anchor = mapPartitionBendPoint(basis, { u: (interval.u0 + interval.u1) / 2, v: interval.anchorV, bend });
-  return { commands: points.map((point, index) => ({ op: index ? "L" : "M", ...point })).concat({ op: "Z" }), anchor };
+  return partitionBendCellGeometry(Object.fromEntries(["u0", "u1", "v0", "v1"].map(key => [key, node[key]])), state.frame, state.bend, segments);
 }
 
 export function samplePartitionFrame(plan, progress, options = {}) {

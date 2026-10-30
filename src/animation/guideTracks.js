@@ -1,3 +1,4 @@
+import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { validateWorkLimit } from "../core/validation.js";
@@ -12,7 +13,7 @@ export function validateAnimationGuides(states, endpoint) {
   return cloneAndFreeze(states.map((input, index) => {
     if (input === null) return null;
     const state = normalizeGuideAnimationState(input);
-    if (endpoint.identities[index] !== undefined) throw new TypeError("A guide cannot replace native mark identity.");
+    if (endpoint.identities[index] !== undefined || endpoint.backgrounds?.some(entry => entry.index === index)) throw new TypeError("A guide cannot replace native mark identity.");
     if (state.reason === undefined && !guideAnimationMatchesNode(state, endpoint.scene.nodes[index])) {
       throw new TypeError("Guide animation meaning differs from its concrete endpoint.");
     }
@@ -44,9 +45,10 @@ function prepareTrack(match, from, to, a, b) {
   if (!clipInterpolationCompatible(source, target)) return fade("clip-topology");
   const appearance = properties => Object.fromEntries(Object.entries(properties).filter(([key]) =>
     !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline"].includes(key)));
-  if (!sameConcreteValue(appearance(source.properties), appearance(target.properties))) return fade("appearance");
+  const style = prepareAnimationAppearance(appearance(source.properties), appearance(target.properties));
+  if (style.kind === "crossfade") return fade(style.reason);
   const guide = prepareGuideInterpolation(a, b);
-  return guide.kind === "crossfade" ? fade(guide.reason) : { ...match, kind: "semantic-guide", guide };
+  return guide.kind === "crossfade" ? fade(guide.reason) : { ...match, kind: "semantic-guide", guide, appearance: style };
 }
 export function prepareGuideTracks(from, to) {
   const a = from.guides ?? emptyAnimationGuides(from), b = to.guides ?? emptyAnimationGuides(to);
@@ -60,7 +62,7 @@ export function prepareGuideTracks(from, to) {
     }
     if (matches === undefined) continue;
     const sourceIndex = indices[0], targetIndex = matches[0];
-    tracks.push(prepareTrack({ guideKey, sourceIndex, targetIndex }, from, to, a[sourceIndex], b[targetIndex]));
+    tracks.push(prepareTrack({ guideKey, role: `guide-${a[sourceIndex].identity.component}`, sourceIndex, targetIndex }, from, to, a[sourceIndex], b[targetIndex]));
   }
   for (const [key, indices] of targets) if (!sources.has(key) && indices.length !== 1) ambiguous.target.push(...indices);
   return cloneAndFreeze({ tracks, ambiguous });

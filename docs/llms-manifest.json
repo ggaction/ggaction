@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:eb05a3c110157f454dae77ea8102c41e072fb495753d489dc244d406f3238dcc",
-    "sourceCommit": "d72114d9dbcce8078a1b8833aa888e08f59f9f63",
+    "contractId": "sha256:0900447432adccc31d4c25806b83c532c34308b749f356c76a1f3468748e60e7",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "7bdd9d9f8944b47da75a054e46343c9f574af302a293b892ca74bfcd513f8d7b"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1287,16 +1287,20 @@
       "headings": [
         "animate-and-export-chart-frames",
         "prepare-save-and-sample",
+        "animate-solid-color-and-opacity",
         "move-a-completed-graph-layout",
         "move-cartesian-shapes-and-series",
+        "bend-an-icicle-into-a-sunburst",
         "move-native-polar-shapes",
+        "move-ticks-labels-and-grids",
+        "move-geographic-cameras",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 11931,
-      "sha256": "d932dbad8cd23f4511b17e80f43469abcff2ef520847a67c0f37d94466fba9c3"
+      "bytes": 18082,
+      "sha256": "cfe7f397ea5edffddfdf8e3fa9724e8ae647db130e043a6eb670718f92114ca7"
     },
     {
       "order": 77,
@@ -1334,8 +1338,8 @@
         "accessible-tooltips-and-touch",
         "native-control-alternatives"
       ],
-      "bytes": 98116,
-      "sha256": "1342e7eef3beb031fd1fb078fecc9bb64f6a1aaa301a690999c2b436e35b7313"
+      "bytes": 100231,
+      "sha256": "bf04a5f203d2532fe4e0588a8924e76952d373cdc3cedce5126796654e122b97"
     },
     {
       "order": 78,
@@ -2640,8 +2644,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 78901,
-      "sha256": "6d9333f765efa694871536d73e9c506f80dc8d67e4e6b94c02d0a83f93f92471"
+      "bytes": 80143,
+      "sha256": "0e09da5521f2522f907c4db43861a2edf9ea88719740ac8a1396961ced24ed93"
     },
     {
       "order": 132,
@@ -3609,8 +3613,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "33515f0ea524115a52808ccdc67776c4f0ed670082f54fa8892f5d23f6e34e44"
+      "bytes": 23199,
+      "sha256": "154898c835b60023d0d67cc82ef4faba7828ddafb6a46a5485b13b28f4ce8cb9"
     },
     {
       "order": 135,
@@ -3950,8 +3954,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "1979ff54b06b69c3d3c93e9bd701ced014474461866cb3f128cd4cda518215f5"
+      "bytes": 3000,
+      "sha256": "22b4ad5c483f9db3724348e107cf7d4880079403efbf07b21b3cc85405dd0bd8"
     },
     {
       "order": 156,

@@ -245,6 +245,28 @@ Call `session.updateProgram(nextProgram)` after an authoring edit. Replacement i
 atomic and clears transient hits. It increments both `frameVersion` and
 `generation`; mounted listeners stay active.
 
+For frames returned by `sampleTransition` or `createAnimationPlayer` from
+[`ggaction/animation`](animation.md), dispatch
+`{ type: "frame", frame, version, generation }`. Supply the exact returned frame,
+not a clone, and keep the session's current native program as a displayed contributor
+or a direct endpoint of the plan. A restored offline plan can render, but it has no
+native program authority for session targeting. `frame` and `scene` are mutually exclusive.
+
+Maintain an increasing host counter greater than the current `frameVersion` and every
+previous request, including requests still preparing. Use the current session generation.
+Stale requests return `stale` without examining their frame. Entering, exiting and weighted
+shapes use their actual displayed geometry for inspection; keyboard activation additionally
+requires that the logical item exists in the session's current program. A geographic feature may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the feature.
+
+With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
+assets prepare, the previous accepted picture and focus remain active. A successful `frame`
+event publishes the exact `state.animationFrame`, scene, focus and `state.frameAssets` together.
+Render the accepted animation frame with those handles; `state.assets` remains bound to the
+committed native program. A failed or cancelled request preserves the previous display.
+Native edits and program replacements clear the transient animation frame and release its
+lease. Frames themselves add no history entry. The same flow accepts a reduced-motion player's
+final frame; the host owns playback policy.
+
 An animation host may supply a sampled version-2 Canvas scene whose node keys,
 types and topology belong to the current program. Render the accepted snapshot:
 

@@ -1582,7 +1582,11 @@
     "cases": [
       {
         "id": "static-delivery/interacted-native-offline-four-formats",
-        "statements": 16
+        "statements": 15
+      },
+      {
+        "id": "static-delivery/native-endpoints-animation-replay",
+        "statements": 20
       }
     ]
   },
@@ -1590,12 +1594,16 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/guides-offline-native",
+        "statements": 17
+      },
+      {
         "id": "animation/polar-offline-native",
         "statements": 4
       },
       {
         "id": "animation/bounded-repeated-interruption",
-        "statements": 12
+        "statements": 14
       },
       {
         "id": "animation/public-player-interruption",
@@ -1624,6 +1632,95 @@
       {
         "id": "animation/cartesian-offline-renderers",
         "statements": 13
+      }
+    ]
+  },
+  {
+    "file": "animation-graph.mjs",
+    "cases": [
+      {
+        "id": "animation-graph/offline-four-renderers",
+        "statements": 14
+      },
+      {
+        "id": "animation-graph/current-frame-interruption",
+        "statements": 12
+      },
+      {
+        "id": "animation-graph/topology-and-immutable-failure",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "animation-partition.mjs",
+    "cases": [
+      {
+        "id": "animation-partition/offline-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "animation-partition/current-frame-interruption",
+        "statements": 8
+      },
+      {
+        "id": "animation-partition/fallback-and-immutable-failure",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "interaction-animation.mjs",
+    "cases": [
+      {
+        "id": "interaction-animation/native-frame-four-formats",
+        "statements": 20
+      },
+      {
+        "id": "interaction-animation/player-frame-leases",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/fresh-offline-native-scope",
+        "statements": 3
+      },
+      {
+        "id": "interaction-animation/geographic-projection-membership",
+        "statements": 18
+      }
+    ]
+  },
+  {
+    "file": "animation-geo.mjs",
+    "cases": [
+      {
+        "id": "animation-geo/offline-four-renderers",
+        "statements": 14
+      },
+      {
+        "id": "animation-geo/current-frame-interruption",
+        "statements": 9
+      },
+      {
+        "id": "animation-geo/immutable-failure",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "animation-appearance.mjs",
+    "cases": [
+      {
+        "id": "animation-appearance/offline-four-renderers",
+        "statements": 11
+      },
+      {
+        "id": "animation-appearance/current-frame-interruption",
+        "statements": 2
+      },
+      {
+        "id": "animation-appearance/current-ink-selection",
+        "statements": 5
       }
     ]
   }

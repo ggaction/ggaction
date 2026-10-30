@@ -69,7 +69,7 @@ export function resolveRegionBinding(program, binding, allowMissing = false) {
   return owner;
 }
 
-export function prepareRegionGesture(program, binding, base, scene, rootTransform, start) {
+export function prepareRegionGesture(program, binding, base, scene, rootTransform, start, displayed = base) {
   const owner = resolveRegionBinding(program, binding, true);
   if (!owner) return null;
   const placement = programHitOwnerPlacement(base, owner.target.childPath), offset = placement.offset;
@@ -88,7 +88,7 @@ export function prepareRegionGesture(program, binding, base, scene, rootTransfor
   let work = 0;
   const spend = count => validateWorkLimit(work += count, "Region gesture work");
   const allowed = new Set(scopeSelectionKeys(program, owner.target, owner.resolved.items.filter(item => item.visible !== false).map(item => item.key), spend));
-  const frame = rebindProgramHitFrame(base, scene, base.version, rootTransform), items = new Map();
+  const frame = rebindProgramHitFrame(displayed, scene, displayed.version, rootTransform), items = new Map();
   const selectedEntries = frame.entries.filter(entry => entry.metadata.ownerId === owner.target.id && samePath(entry.metadata.childPath, owner.target.childPath) && allowed.has(entry.metadata.itemKey));
   if (binding.type === "brush") {
     // Stored scale inversion cannot infer an arbitrary sampled animation's scale.

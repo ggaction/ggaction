@@ -45,7 +45,7 @@ test('frame export preflights the entire explicit schedule and uses the exact fp
 test('public restore rejects corruption, unknown kernels, missing payloads and executable playback', () => {
   const from=points(),plan=prepare(from),text=serializeAnimation(plan),original=sampleTransition(plan,50);
   const payload=()=>structuredClone(decodeAnimationEnvelope(text));
-  for(const mutate of [p=>delete p.playback,p=>delete p.plan,p=>p.extra=true,p=>p.plan.kernels.transition=2,
+  for(const mutate of [p=>delete p.playback,p=>delete p.plan,p=>p.extra=true,p=>p.plan.kernels.transition=99,
     p=>p.plan.kernels.position='future',p=>p.plan.from.graphicSpec.objects.points.items[0].properties.x=999,
     p=>p.playback.repeat='forever',p=>p.playback.rate=NaN]){
     const p=payload();mutate(p);assert.throws(()=>deserializeAnimation(encodeAnimationEnvelope(p)));

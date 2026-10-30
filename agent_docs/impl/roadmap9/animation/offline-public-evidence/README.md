@@ -1,4 +1,4 @@
-# 공개 애니메이션 저장·출력 후보 증거
+# 공개 애니메이션 저장·출력 검증
 
 승인: [remainingApproval](../../AUTHORIZATION.json#remainingApproval). 공개 소유 계약은
 [ANIMATION](../../../../contract/current/ANIMATION.md)이며 전체 typed family/STEP077 완료를 뜻하지 않는다.
@@ -24,6 +24,18 @@ ANIMATION_PACKAGE_SPEC으로 위 exact tar를 고정한다. Node별 PATH도 해�
 Node20 bundle최종은 ANIMATION_BUNDLE_ONLY=1이다. 3Node의 원자적인 모든 runtime 검증을
 전체 release sweep으로 집계하지 않는다.
 
-source pin 뒤 provenance/generated references 및 built HTML/responsive browser 최종 검증을
-별도 기록한다. 실행/렌더의 원본은 test/unit/animation, test/browser/animation-offline.browser.js,
+source pin `4d7664861` 뒤 provenance owning19/19, built HTML186페이지/LLM1598자료,
+desktop search 및 모든 페이지의320/390/768px responsive browser가 모두 통과했다.
+마지막 fixture/discovery23/23도 통과했다. 실행/렌더의 원본은 test/unit/animation, test/browser/animation-offline.browser.js,
 test/charts/cross-feature-integration/variants/animation/offline.render.js이다.
+
+## 새 프로세스 import 경계 보강
+
+첫 fresh-process 검사는 public module의 static import 뒤 network guard를 설치했다.
+실제 module import 자체도 network0임을 증명하기 위해 test helper와 설치 fixture만
+fetch/http/https/net/tls guard → dynamic import 순서로 바꿨다. runtime/archive변경은0이며
+동일67d016 archive에서 두 fresh-process case를 Node20/22/24에 보충 검증했다.
+최초 render/type/install 결과는 보존하고 보강된 import-guard receipt를 함께 읽는다.
+
+공개 source4d7664861 이후 runtime·types·packed inputs 변경은 없다. 최종 metadata는
+source pin/generated provenance, 실제 import guard의 test-only 보강과 증거를 보존한다.

@@ -116,11 +116,18 @@ test('hierarchy grouped focus forwards original paths and missing neighbors stay
 });
 
 test('native item readers are exact-constructor builtins with immutable registration', async()=>{
- const {registerMarkItemResolver,resolveRegisteredMarkItems}=await import('../../src/materialization/selection/itemResolver.js');
+ const {registerMarkItemResolver,resolveRegisteredMarkItems,resolveRegisteredMarkSourceItems}=await import('../../src/materialization/selection/itemResolver.js');
  for(const args of [[{},()=>[]],[()=>{},()=>[]],[class {},null]]) assert.throws(()=>registerMarkItemResolver(...args),/constructor and resolver/);
  class Native{};class Other extends Native{};const result=Object.freeze([{key:'exact'}]);let calls=0;
  registerMarkItemResolver(Native,(program,target,grain,options)=>{calls++;assert.ok(program instanceof Native);assert.equal(target,'mark');assert.equal(grain,'item');assert.deepEqual(options,{channels:[]});return result;});
  assert.throws(()=>registerMarkItemResolver(Native,()=>[]),/already registered/);
  assert.equal(resolveRegisteredMarkItems(new Native(),'mark','item',{channels:[]}),result);assert.equal(calls,1);
  assert.throws(()=>resolveRegisteredMarkItems(new Other(),'mark'),/does not provide/);assert.equal(calls,1);
+ assert.throws(()=>resolveRegisteredMarkSourceItems(new Native(),'mark'),/does not provide native source/);
+ class Source{};class Inherited extends Source{};let sourceCalls=0;
+ assert.throws(()=>registerMarkItemResolver(Source,()=>[],{}),/source item resolution requires a resolver/);
+ registerMarkItemResolver(Source,()=>[],(program,target,grain,options)=>{sourceCalls++;assert.ok(program instanceof Source);assert.equal(target,'mark');assert.equal(grain,'item');assert.deepEqual(options,{channels:[]});return result;});
+ assert.equal(resolveRegisteredMarkSourceItems(new Source(),'mark','item',{channels:[]}),result);assert.equal(sourceCalls,1);
+ assert.throws(()=>resolveRegisteredMarkSourceItems(new Inherited(),'mark'),/does not provide/);
+ assert.throws(()=>registerMarkItemResolver(Source,()=>[],()=>[]),/already registered/);assert.equal(sourceCalls,1);
 });

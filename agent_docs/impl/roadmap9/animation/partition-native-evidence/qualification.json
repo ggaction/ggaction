@@ -1,0 +1,80 @@
+{
+  "status": "verified-private-preparation",
+  "sourceRevision": "9416d6fc7",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "node20": 18,
+    "node22": 18,
+    "node24": 18,
+    "animationNode22": 140,
+    "boundariesDiscoveryAndPackage": 35,
+    "packageNode20": 7,
+    "packageNode22": 7,
+    "packageNode24": 7,
+    "docs": 231
+  },
+  "changedOwnerCoverage": {
+    "partitionState": [
+      100,
+      98.04,
+      100
+    ],
+    "partitionProjection": [
+      100,
+      97.92,
+      100
+    ],
+    "combined": [
+      100,
+      98,
+      100
+    ]
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "entries": 1134,
+      "packed": 1616808,
+      "unpacked": 7326873,
+      "sha256": "abccf912706e8c1b15d0a691b1b560a5d608855af8a2452264dfe9a5738e207f"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "entries": 1134,
+      "packed": 1613028,
+      "unpacked": 7326873,
+      "sha256": "865ccbe53213a41412e0c5f838d127b9dcc5d0f411e96504f009e081f5f3fec7"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "entries": 1134,
+      "packed": 1616808,
+      "unpacked": 7326873,
+      "sha256": "abccf912706e8c1b15d0a691b1b560a5d608855af8a2452264dfe9a5738e207f"
+    }
+  },
+  "packageLimits": {
+    "entries": 1134,
+    "packedBytes": 1617000,
+    "unpackedBytes": 7327000
+  },
+  "verified": [
+    "Native stored hierarchy/view intervals and exact layout lineage; no layout solver",
+    "32 compatible general directions reproduce explicit native rectangle/polar mappings",
+    "Same-family size and radial depth policy; current curved state rebasing retains current coordinates and dimensions",
+    "Namespaced repeated placement, visible body/label roles, focus, hidden-root and automatic radius handling",
+    "Edited geometry and foreign role remain explicit fallback; stale or absent native identity fails",
+    "Closed direction decisions, immutable input snapshots, accessor rejection and early10000-node limit"
+  ],
+  "preservedFailures": [
+    "The first coverage run passed aggregate thresholds but the new projector had82.93 branch coverage. Added actual focus/pruned-view, auto radius, other-layer, mismatched layout and primitive-kind cases; final new projector97.92 and pure state98.04.",
+    "A copied diagnostic pack helper initially imported npm-command relative to.artifacts and failed before measuring. The helper now imports the canonical scripts owner. Original failures are preserved.",
+    "The canonical package would exceed the inherited1132 entries /7315000 unpacked ceiling. Two actual new source modules give1134 /7326873; Node20/24 packed maximum1616808. Only the minimal measured package ceilings change."
+  ],
+  "remaining": [
+    "Wire optional partition group/item metadata to the public planner and sampler",
+    "Strict endpoint forward validation and offline transport/replay",
+    "Canvas/SVG/PNG/PDF actual typed partition frame evidence and accepted-frame hit/session integration",
+    "Complete native consumer qualification and STEP077 release scope"
+  ]
+}

@@ -37,3 +37,11 @@ export function geoAppearanceValues(program, layer, features, resolvedScales = p
   }
   return result;
 }
+
+// Resolve semantic style once at the final feature grain, including invisible
+// features whose current camera may later reveal a native part.
+export function geoFeatureAppearance(config, binding, mapped, index) {
+  const { clip: _clip, radiusPx, ...style } = config;
+  return { style: mapped.color === undefined ? style : { ...style, [binding.mode === "line" ? "stroke" : "fill"]: mapped.color[index] },
+    radiusPx: mapped.size === undefined ? radiusPx : Math.sqrt(mapped.size[index] / Math.PI) };
+}
