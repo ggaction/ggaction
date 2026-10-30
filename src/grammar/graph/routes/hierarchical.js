@@ -7,7 +7,7 @@ import { prepareRouteInput, finalizeRouteResult } from "./common.js";
 import { normalizeSplineOptions, sampleClampedSpline } from "./spline.js";
 
 export function normalizeHierarchicalRouteOptions(input = {}) {
-  ownRecord(input, "Hierarchical route options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Hierarchical route options"));
   rejectUnknownProperties(input, ["strength", "tolerance", "maxSubdivisions", "zeroLength"], "hierarchical route options");
   const strength = input.strength === undefined ? 0.85 : input.strength;
   const zeroLength = input.zeroLength === undefined ? "point" : input.zeroLength;

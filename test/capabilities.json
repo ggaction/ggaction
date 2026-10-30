@@ -421,6 +421,10 @@
       },
       {
         "type": "file",
+        "path": "unit/resources/graph-route-own-request.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/resources/graph-route-lifecycle.test.js"
       },
       {

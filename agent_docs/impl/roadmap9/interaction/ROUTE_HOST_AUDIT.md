@@ -78,3 +78,30 @@ density10k에서 active samples13,400,000으로 거절됐다. 현재 field owner
 arc-length samples에 compact kernel을 누적하며 실제 비용을 guard로 제한한다. 성공시키려고
 work charge를 낮추거나 수치·sample 정책을 바꾸지 않았다. 후속 optimization은 독립 수치 oracle와
 현 guard를 보존하는 근거가 필요하며 이 기록으로 승인된 성능 요구를 축소하지 않는다.
+
+## 수치 옵션 own-data 보수
+
+AT82 후속 감사에서 네 method normalizer와 공유 spline이 생략한 옵션을 상속 조회했다.
+`normalizeDensityRouteOptions({})`에서 Object.prototype.zeroLength getter 1회 실행이
+대표 반례다. Intent의 limits/mapping과 request의 graph/layout/options/coordinateSpace,
+중첩 options의 hierarchy/hierarchyLayout/limits도 같은 원인이었다. Own accessor를 가진
+edit limits는 merge spread가 먼저 값을 읽어 descriptor 검증을 건너뛰었다. 공개 prepare 경로를
+검사해 result provenance의 optional hierarchy 조회도 함께 발견했다.
+
+검증한 own data만 null-prototype snapshot으로 읽고, nested limits는 spread 전에 기존
+ownRecord로 검사한다. 결과 검증기는 실제 own hierarchy가 있을 때만 사용한다. 필수 값,
+기본값, null/undefined 거부, 정확한 revision, caller/program 불변성은 유지한다. 새 API,
+저장 schema, 타입, algorithm, 작업 charge 또는 지원 한도는 없다. 별도 generic helper나
+renderer 경계도 추가하지 않았다.
+
+Source 회귀88개는 Node20/22/24에서 통과했다. 변경8 owner는 lines/functions100%,
+branches100%(routeRequest96.83)로 기존95/90/100 floor를 만족했다. 경계43개와 source-free
+동일 tar e52497df…7139의 공개2cases/6bundles×3Node도 통과했다. 최초 재현의 exponent0은
+기존 positive 계약에 맞지 않은 fixture여서1로 교정한 원본과 실제 상속 조회 실패를 모두 보존한다.
+추가 downstream hierarchy 최초 실패도 별도 보존한다.
+
+Package 실측 unpacked7,535,326, packed Node20 1,668,120으로 최소 상한7,535,400 /
+1,668,200을 적용했다. Full gzip779,421은 이전779,400을21bytes 초과하여779,500으로
+조정했다. 나머지5entry는 기존 상한 그대로다. 최초 cap 실패와 같은 archive 측정 재검증을
+분리한다. 상세 증거는 [수치 옵션 기록](route-own-options-evidence/summary.json)에 저장한다.
+Chromium stage P95/retained heap은 여전히 별도 후속이며 이 기능 검사로 통과를 주장하지 않는다.

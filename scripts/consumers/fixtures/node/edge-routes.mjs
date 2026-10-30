@@ -50,6 +50,26 @@ export const cases = [
         else Object.defineProperty(Object.prototype, key, previous);
       }
     }
+    const reference = await prepareGraphEdgeRoutes(base, request, { requestToken: "defaults" });
+    for (const key of ["zeroLength", "exponent", "maxStretch", "mapping", "limits", "hierarchy", "hierarchyLayout"]) {
+      let reads = 0;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() { reads++; throw new Error(`Inherited ${key} evaluated`); } });
+      try {
+        const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "numeric" });
+        assert.equal(prepared.inputHash, reference.inputHash);
+        assert.equal(reads, 0, key);
+      } finally {
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    const routed = base.bundleGraphEdges({ id: "routes", method: "edge-path" });
+    let reads = 0;
+    await assert.rejects(prepareGraphEdgeRoutes(routed, { kind: "edit", target: "routes", options: {
+      limits: { get maxSamples() { reads++; return 1000; } }
+    } }, { requestToken: "accessor" }), /accessors/);
+    assert.equal(reads, 0);
     assert.equal(serializeProgram(base), saved);
   } },
   { id: "edge-routes/responsive-source-and-guide-closure", run() {

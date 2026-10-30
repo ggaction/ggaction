@@ -6,7 +6,7 @@ import { routeLength, validateRoutePoints } from "./polyline.js";
 import { shortestRoutePath } from "./shortestPath.js";
 
 export function normalizeEdgePathOptions(input = {}) {
-  ownRecord(input, "Edge-path options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Edge-path options"));
   rejectUnknownProperties(input, ["exponent", "maxStretch", "zeroLength"], "edge-path options");
   const exponent = input.exponent === undefined ? 2 : input.exponent;
   const maxStretch = input.maxStretch === undefined ? 2 : input.maxStretch;

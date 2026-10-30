@@ -8,7 +8,7 @@ import { FDEB_EPSILON, forceEdgeMetric, forceCompatibility } from "./compatibili
 const STIFFNESS = 0.1, MAX_DISPLACEMENT = 0.1;
 
 export function normalizeForceRouteOptions(input = {}) {
-  ownRecord(input, "Force route options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Force route options"));
   rejectUnknownProperties(input, ["compatibilityThreshold", "zeroLength"], "force route options");
   const compatibilityThreshold = input.compatibilityThreshold === undefined ? 0.6 : input.compatibilityThreshold;
   const zeroLength = input.zeroLength === undefined ? "point" : input.zeroLength;

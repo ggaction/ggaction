@@ -1226,7 +1226,7 @@
     "cases": [
       {
         "id": "edge-routes/own-host-options",
-        "statements": 4
+        "statements": 5
       },
       {
         "id": "edge-routes/responsive-source-and-guide-closure",
