@@ -902,6 +902,9 @@ association (`materialization/guides/`). Composition traversal uses the shared
 `selectors/graphicScopes.js`; each caller retains its validation and work budget.
 Band boundaries retain all typed edge memberships while preserving native first-owner
 dash behavior. Parallel marks and field guides share the same slot calculation.
+Parallel tick selection is read by native actions and prepared anchors from
+`materialization/guides/tickValues.js`; prepared title, boundary, and field anchors
+reuse these native geometry owners without reading concrete coordinates as meaning.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same

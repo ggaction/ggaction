@@ -1,0 +1,46 @@
+{
+  "floors": {
+    "grammar/animation/guideAnchors.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/guides/tickValues.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "actions/guides/axes/parallel/resolve.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "grammar/animation/guideAnchors.js": {
+      "lines": 100,
+      "branches": 98.01,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 100,
+      "branches": 95.4,
+      "functions": 100
+    },
+    "materialization/guides/tickValues.js": {
+      "lines": 100,
+      "branches": 98.04,
+      "functions": 100
+    },
+    "actions/guides/axes/parallel/resolve.js": {
+      "lines": 100,
+      "branches": 97.62,
+      "functions": 100
+    }
+  }
+}

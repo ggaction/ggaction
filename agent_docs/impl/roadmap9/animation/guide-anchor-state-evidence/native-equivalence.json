@@ -1,0 +1,20 @@
+{
+  "baseline": "312026112",
+  "cases": [
+    {
+      "name": "title-linear",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "f6926638a1be76aa2f1ad00ca59b908f717d13848da2a748af33b55f2b4d7861"
+    },
+    {
+      "name": "band-boundary",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "4ae6058c848551494a0fc0caa0a7f10a8b47de269c63983bdc6d5a1127f70dc9"
+    },
+    {
+      "name": "parallel-guides",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "e91e9715a766c6bf26c7fc6c35802114fec6fa60318568dba2b72aa7ea26e4ad"
+    }
+  ]
+}

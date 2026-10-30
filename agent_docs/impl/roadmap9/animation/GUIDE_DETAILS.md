@@ -42,3 +42,33 @@ raw identity를 함께 검증하고 기존 guide manifest owner에 version을 �
 전체 STEP061/062/063/077 완료와는 별개다.
 
 독립 계산 추출의 실행·원 출력 동등성·설치 근거는 [anchor 증거](guide-anchor-evidence/README.md)에 둔다.
+
+## Closed anchor 의미 준비
+
+`grammar/animation/guideAnchors.js`는 제목·band 경계·Parallel field guide의 세 closed shape를
+정규화하고 native owner로 geometry를 재생한다. `materialization/animation/guideAnchors.js`의
+`guideAnchorItems`는 한 child scope에서 exact graphic ID와 owner/field/raw value를 연결한다.
+이 준비 checkpoint는 공용 guide vector/planner에 아직 연결하지 않으며 공개 manifest version도
+변경하지 않는다. `remainingApproval`은 이 결정을 포함하지만 공개 소비자 검증을 대신하지 않는다.
+
+- Cartesian title은 명시 numeric offset, side, alignment/baseline 및 range의 start/center/end 또는
+  numeric `at`+정규화된 native scale을 보존한다. 값 보간 후 같은 scale owner로 매핑하며 log 화면
+  좌표의 중간점을 의미값이라고 취급하지 않는다. Native에서 허용하는 음수 offset도 유지한다.
+  Inferred offset과 label-relative offset은 아직 ink dependency를 보존하지 못하므로 `guide-layout`
+  상태다. Polar title은 theta의 frame 역할과 radial inside/outside·offset·shortest angle을 재사용한다.
+- Band boundary는 `{value,edge}`의 canonical typed set을 보존한다. 선택 순서·객체 property 순서·
+  동일 member 중복으로 key가 달라지지 않는다. 서로 다른 edge를 한 boundary로 주장하는 입력을
+  거부한다. Range를 샘플링한 뒤 기존 band owner에서 경계를 재생하며 domain/padding/direction 또는
+  membership 변경은 기존 scale/guide fallback이다.
+- Parallel은 field를 identity로 보존하고 native slot의 `{index,count}`를 별도 geometry 의미로 둔다.
+  중간에는 두 값을 연속 보간해 기존 `width/(count-1)*index` 연산을 그대로 호출한다. Endpoint의
+  연산 순서를 바꿔 ULP 차이를 만들지 않는다. Field 추가·삭제·reorder 시 같은 field만 대응하며,
+  tick은 같은 typed raw value를 같은 scale owner로 다시 매핑한다. 줄·tick·label·title의 native
+  geometry를 재사용하며 표시 문자열·font·줄 배열 호환성 검사는 후속 track owner가 담당한다.
+- 모든 shape는 descriptor-safe own data, closed fields, finite geometry와 item/work 한도를 검사한다.
+  Source preparation은 semantic/config를 읽기만 하며 trace·materialization을 실행하지 않는다.
+  현재 native Parallel tick 선택만 `materialization/guides/tickValues.js`로 공유해 계산 복제를 막는다.
+
+실행 증거는 [closed anchor 증거](guide-anchor-state-evidence/README.md)에 기록한다. Title/legend/
+Parallel/reflow/band-boundary 공개 전환, namespace 대응·재기준·strict offline·4 backend의 후속
+통합 의무를 이 독립 준비로 완료 처리하지 않는다.

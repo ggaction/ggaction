@@ -1,0 +1,35 @@
+{
+  "status": "verified-private-native-anchor-preparation",
+  "base": "5a7082e19",
+  "publicAPISignatureChanges": false,
+  "sharedPlannerSampleProofChanges": false,
+  "publicGuideManifestChanges": false,
+  "nativeRegressionTests": 1124,
+  "finalOwningCoverageTests": 35,
+  "sourceTestsPerNode": 14,
+  "contractTests": 40,
+  "nativeExactProgramTraceCases": 3,
+  "archive": "bb679ffaac3ad9e0b2ae9fe3063333bb201eae44a5a8917d88f7946e695111bd",
+  "finalArchiveSourceMatches": true,
+  "installedPublicCasesPerNode": 3,
+  "installedEntriesPerNode": 6,
+  "nodes": [
+    20,
+    22,
+    24
+  ],
+  "packageCaps": {
+    "entries": 1168,
+    "packedBytes": 1674100,
+    "unpackedBytes": 7557200
+  },
+  "browserCapsChanged": false,
+  "pending": [
+    "public guide vector and identity integration",
+    "manifest extension",
+    "rebase and offline four-renderer consuming tests",
+    "inferred and label-relative title ink",
+    "label reflow flush rotation",
+    "legend meaning and placement"
+  ]
+}

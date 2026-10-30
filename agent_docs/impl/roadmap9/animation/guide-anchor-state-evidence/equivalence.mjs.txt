@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { chart } from '../src/index.js';
+import { serializeProgram, deserializeProgram } from '../src/persistence.js';
+import { deserializeProgram as oldDeserialize, serializeProgram as oldSerialize } from './guide-details-baseline/src/persistence.js';
+const cases = [
+  {name:'title-linear', base:()=>chart().createCanvas({width:400,height:300,margin:70}).createData({values:[{x:1,y:2},{x:10,y:8}]}).createScatterPlot({x:'x',y:'y',guides:false}),
+    edit:p=>p.createXAxisTitle({text:'Horizontal',at:'center'}).createYAxisTitle({text:'Vertical',at:'end',offset:30}).editXAxisTitle({at:5,alongOffset:2}).editCanvas({width:500})},
+  {name:'band-boundary',base:()=>chart().createCanvas({width:300,height:220,margin:50}).createData({values:[{x:'A',y:'Q',value:1},{x:'B',y:'R',value:2}]}).createHeatmap({x:{field:'x',scale:{paddingInner:0,paddingOuter:0}},y:{field:'y',scale:{paddingInner:0,paddingOuter:0}},guides:false}),
+    edit:p=>p.createGrid({horizontal:{bandPosition:'boundary'},vertical:{bandPosition:'boundary'}}).editXScale({reverse:true}).editCanvas({width:440})},
+  {name:'parallel-guides',base:()=>chart().createCanvas({width:600,height:400,margin:70}).createData({values:[{a:0,b:10,c:100},{a:10,b:20,c:200}]}).createParallelCoordinates({id:'lines',dimensions:['a','b','c'],guides:false}),
+    edit:p=>p.createParallelAxes().editParallelAxis({field:'b',ticksAndLabels:{values:[10,15,20],ticks:{length:10},labels:{align:'left'}},title:{text:'B',offset:30}}).editCanvas({width:700})}
+];
+const results=[];
+for(const item of cases){
+ const input=serializeProgram(item.base());
+ const before=oldSerialize(item.edit(oldDeserialize(input)));
+ const after=serializeProgram(item.edit(deserializeProgram(input)));
+ assert.deepEqual(after,before,item.name);
+ const content=JSON.stringify(after);
+ results.push({name:item.name,exactSerializedProgramAndTrace:true,sha256:createHash('sha256').update(content).digest('hex')});
+}
+await writeFile('.artifacts/guide-anchor-state-native-equivalence.json',JSON.stringify({baseline:'312026112',cases:results},null,2)+'\n');
+console.log(JSON.stringify(results));
