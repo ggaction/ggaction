@@ -1225,6 +1225,10 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/own-host-options",
+        "statements": 4
+      },
+      {
         "id": "edge-routes/responsive-source-and-guide-closure",
         "statements": 16
       },

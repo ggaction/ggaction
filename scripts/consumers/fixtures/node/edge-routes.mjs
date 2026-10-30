@@ -25,6 +25,33 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/own-host-options", async run() {
+    const base = source(), saved = serializeProgram(base);
+    const request = { kind: "create", id: "routes", method: "edge-path" };
+    for (const key of ["createWorker", "signal", "executor", "requestToken", "kind"]) {
+      let reads = 0, executor;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() {
+        reads++; throw new Error(`Inherited ${key} evaluated`);
+      } });
+      try {
+        executor = createGraphRouteExecutor({});
+        if (key === "requestToken") await assert.rejects(prepareGraphEdgeRoutes(base, request, {}), /nonempty requestToken/);
+        else if (key === "kind") await assert.rejects(prepareGraphEdgeRoutes(base, { id: "routes", method: "edge-path" }, { requestToken: "own" }), /kind must be/);
+        else {
+          const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "own" });
+          const cached = await prepareGraphEdgeRoutes(base, request, { requestToken: "owned", executor });
+          assert.equal(prepared.inputHash, cached.inputHash);
+        }
+        assert.equal(reads, 0, key);
+      } finally {
+        executor?.dispose();
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    assert.equal(serializeProgram(base), saved);
+  } },
   { id: "edge-routes/responsive-source-and-guide-closure", run() {
     const rows = [{ id: "a", x: 0, y: 1000 }, { id: "b", x: 1, y: 2000 }, { id: "c", x: 2, y: 3000 }];
     const initial = source().editCanvas({ width: 1000, height: 700, margin: 100 })
