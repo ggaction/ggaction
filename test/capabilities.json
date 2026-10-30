@@ -104,6 +104,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo-text.browser.js"
       }
     ],
     "architecture": [
