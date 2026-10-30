@@ -68,6 +68,14 @@
       {
         "type": "prefix",
         "path": "charts/cross-feature-integration/variants/animation/"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-polar.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-polar-transitions.test.js"
       }
     ],
     "architecture": [

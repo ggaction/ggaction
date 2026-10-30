@@ -902,7 +902,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 130,600 bytes |
-| `ggaction/animation` | 200,300 bytes |
+| `ggaction/animation` | 203,300 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4580,3 +4580,11 @@ cell·basis·bend 의미를 flat private provenance에 보존하고 offline payl
 현재 cell path/anchor 계산을 공유한다. Native endpoint renderer, ChartProgram semantic state,
 공개 함수 signature는 변하지 않으며 renderer는 완성된 graphicSpec만 읽는다. 정확한 지원과
 fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native-일반-방향-전환)이 소유한다.
+
+### Native polar animation coordinates
+
+`materialization/animation/polar`는 native point/line/arc mapping 및 sector owner를 준비 때만 호출한다.
+`grammar/animation/polarState`는 준비된 각도·반지름·member grid를 기존 polar/path 계산기에 전달한다.
+Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebase/strict restore에 보존한다.
+공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
+[Animation](contract/current/ANIMATION.md)이 소유한다.

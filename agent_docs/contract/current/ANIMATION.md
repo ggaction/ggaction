@@ -99,6 +99,32 @@ fallback한다. Structured paint를 의미별로 보간한다고 주장하지 �
 path hit는 현재 shape와 정확한 native item metadata를 재사용한다. Offline animation
 복원에는 editable native 프로그램 권한이 포함되지 않는다.
 
+## Polar point·line·arc 전환
+
+Native polar coordinate의 point(circle), ordered line, proportional/radial/measured arc는
+`polar-geometry` kernel을 사용한다. Native mapping/sector owner에서 준비한 각도(degree),
+반지름, frame, exact member-key grid를 보존하며 x/y 역산을 하지 않는다. 매 frame 기존
+polar projection·line·annular-sector builder를 재사용한다. 각도는 shortest 방향을 따르고
+180도 동률은 양의 방향이다. 현재 frame에는 unwrapped 각도를 보존한다. Arc의 signed sweep은
+별도로 보간하여 full turn을 유지하며 반대 sweep 방향은 crossfade한다.
+
+이 kernel은 resolved polar-coordinate 의미를 보간한다. Raw 값과 nonlinear scale 자체를
+동시에 보간한다고 주장하지 않는다. 원 native mapping descriptor(domain, range, clamp 및
+transform/padding policy)의 fingerprint가 다르면 `polar-mapping`이다. Radius range는 frame의
+available radius에 대한 비율로 비교하여 같은 상대 범위의 Canvas resize를 지원한다. Proportional
+arc는 실제 sector owner가 쓰는 theta range만 비교한다. Digest는 호환성 표식이고 실제 재생 값은
+payload의 angle/radius/frame/grid다.
+
+Line은 ordered member grid와 closed policy를 유지한다. 순서·누락·break·categorical domain 변경,
+conditional position, 비원형 point, edited geometry, appearance/structured paint 변경은 기존
+명시 fallback이다. Arc pad policy 변경도 fallback이다. Polar Rule/Rect authoring은 native vocabulary에
+없으며 새로 추가하지 않는다. Guide circle/rule의 typed 전환은 별도 범위다.
+
+Optional endpoint `polars` vector와 `native-polar-coordinates@1` version을 저장한다. Strict restore는
+closed shape, finite/ordered radius, node cardinality, exact lineage 및 native forward geometry를 검증한다.
+현재 polar 의미는 flat provenance에 보존되어 이전 plan 없이 양방향 재기준과 offline 재생이 가능하다.
+공개 6개 함수 원형과 concrete scene schema는 바뀌지 않는다.
+
 ## 오프라인 저장·복원
 
 `serializeAnimation(plan,playback?) → string`,

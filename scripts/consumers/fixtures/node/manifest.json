@@ -1590,6 +1590,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/polar-offline-native",
+        "statements": 4
+      },
+      {
         "id": "animation/bounded-repeated-interruption",
         "statements": 14
       },
