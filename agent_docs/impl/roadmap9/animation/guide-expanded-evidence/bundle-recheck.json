@@ -1,0 +1,133 @@
+{
+  "status": "passed",
+  "mode": "same installed archive measurements; no reinstall or bundle rebuild",
+  "archive": "39669c5908180098ce162cd8c8da36c1b4c1e4011edf5805406944938484e59e",
+  "measurements": [
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction",
+      "gzipBytes": 774703,
+      "firstLimit": 774800,
+      "limit": 774800
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 422705,
+      "firstLimit": 422800,
+      "limit": 422800
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "firstLimit": 26000,
+      "limit": 26000
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 44076,
+      "firstLimit": 46000,
+      "limit": 46000
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 248468,
+      "firstLimit": 243700,
+      "limit": 248500
+    },
+    {
+      "node": "v20.20.2",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131310,
+      "firstLimit": 131400,
+      "limit": 131400
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction",
+      "gzipBytes": 773078,
+      "firstLimit": 774800,
+      "limit": 774800
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 421792,
+      "firstLimit": 422800,
+      "limit": 422800
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24779,
+      "firstLimit": 26000,
+      "limit": 26000
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 43923,
+      "firstLimit": 46000,
+      "limit": 46000
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 247386,
+      "firstLimit": 243700,
+      "limit": 248500
+    },
+    {
+      "node": "v22.23.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 130785,
+      "firstLimit": 131400,
+      "limit": 131400
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction",
+      "gzipBytes": 774703,
+      "firstLimit": 774800,
+      "limit": 774800
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/basic",
+      "gzipBytes": 422705,
+      "firstLimit": 422800,
+      "limit": 422800
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/svg",
+      "gzipBytes": 24954,
+      "firstLimit": 26000,
+      "limit": 26000
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/graph",
+      "gzipBytes": 44076,
+      "firstLimit": 46000,
+      "limit": 46000
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/animation",
+      "gzipBytes": 248468,
+      "firstLimit": 243700,
+      "limit": 248500
+    },
+    {
+      "node": "v24.22.1",
+      "specifier": "ggaction/interaction",
+      "gzipBytes": 131310,
+      "firstLimit": 131400,
+      "limit": 131400
+    }
+  ]
+}

@@ -93,3 +93,10 @@ planTransition({from,to,options:{durationMs:100,tracks:[{target:{ownerKey:'owner
 planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item'},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:0}]}]}});
 // @ts-expect-error guide and item selectors are mutually exclusive
 planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item',guideKey:'guide'},property:'opacity',kernel:'number',keyframes:[{timeMs:0,value:1}]}]}});
+
+const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
+ .createData({values:[{x:1,y:10},{x:100,y:20}]}).createPointMark()
+ .encodeX({field:'x',scale:{type:'log',domain:[1,1000],nice:false}}).encodeY({field:'y'})
+ .createXAxis({title:{text:'Amount',at:10,offset:35}});
+const guidePlan=planTransition({from:guideFrom,to:guideFrom.editXAxisTitle({at:100}),options:{durationMs:100}});
+renderToSVG(sampleTransition(deserializeAnimation(serializeAnimation(guidePlan)).plan,50));

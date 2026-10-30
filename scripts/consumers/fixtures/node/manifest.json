@@ -1636,6 +1636,10 @@
       {
         "id": "animation/cartesian-offline-renderers",
         "statements": 13
+      },
+      {
+        "id": "animation/guide-anchors-offline-native",
+        "statements": 6
       }
     ]
   },

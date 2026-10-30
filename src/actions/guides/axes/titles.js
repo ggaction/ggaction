@@ -1,4 +1,4 @@
-import { resolveAxisTitleGeometry } from "../../../grammar/axisGeometry.js";
+import { resolveAxisTitleAlong, resolveAxisTitleGeometry } from "../../../grammar/axisGeometry.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { compositionChannel } from "../../../selectors/plotComposition.js";
@@ -19,16 +19,13 @@ import {
 } from "../../../core/validation.js";
 import { axisScaleBindings, resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import {
-  isTransformedScaleType,
-  mapContinuousScaleValues,
-  mapOrdinalPositionValues
+  isTransformedScaleType
 } from "../../../grammar/scales/index.js";
 import { AXIS_TITLE_FONT_WEIGHT, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
-import { finiteMidpoint } from "../../../grammar/numeric.js";
 import { defaultAxisPosition, defaultAxisTitleRotation, validateAxisPosition } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -56,25 +53,6 @@ function titleBounds(geometry, config, text, profile) {
   }, profile);
 }
 
-function resolveTitleAlong(scale, config) {
-  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
-  let along;
-  if (config.at === "center") {
-    along = finiteMidpoint(scale.range[0], scale.range[1]);
-  } else if (config.at === "start" || config.at === "end") {
-    along = scale.range[config.at === "start" ? 0 : 1];
-  } else {
-    if (discrete) {
-      if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
-      along = mapOrdinalPositionValues([config.at], scale)[0];
-    } else {
-      const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
-      if (config.at < low || config.at > high) throw new RangeError("Axis title at value must be inside the scale domain.");
-      along = mapContinuousScaleValues([config.at], scale)[0];
-    }
-  }
-  return along + (config.alongOffset ?? 0);
-}
 
 function axisLabelBounds(program, channel, axisId = channel) {
   const id = axisGraphicIds(channel, axisId)[2], labels = program.graphicSpec.objects[id];
@@ -123,7 +101,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
   const adjustment = Math.min(available - inkClearance, Math.max(0, needed));
   const candidateBounds = titleBounds(resolveAxisTitleGeometry({
     bounds: plot, channel, position: config.position,
-    along: resolveTitleAlong(program.resolvedScales[config.scale], config),
+    along: resolveAxisTitleAlong(program.resolvedScales[config.scale], config),
     offset: preferred + adjustment
   }), config, program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
   // Optional ink reserve must not introduce a label collision.
@@ -261,7 +239,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis title requires a supported resolved scale and Canvas bounds.");
-  const along = resolveTitleAlong(scale, config);
+  const along = resolveAxisTitleAlong(scale, config);
   const geometry = resolveAxisTitleGeometry({
     bounds,
     channel,

@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "parallel-guide-geometry": { prefix: "grammar/parallelGuides.js", floor: { lines: 100, branches: 100, functions: 100 }, rationale: "Native field axes and prepared transitions must share exact placement, component geometry and explicit alignment." },
   "animation": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics and item matching must preserve exact endpoints, bounded values and unambiguous semantic identity." },
   "animation-runtime": { prefix: "animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Playback must bound callbacks, preserve the current frame on interruption and settle every run exactly once." },
   "animation-meaning": { prefix: "materialization/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition inputs must preserve final item identity and resolved semantic values without inferring meaning from pixels." },
@@ -109,6 +110,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },
+  "axis-label-layout": { prefix: "materialization/axisLabelLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared guide labels must reuse native wrapping, measured clearance, rotation and flush without guessing pixel offsets." },
   "axis-label-text": { prefix: "materialization/axisLabelText", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared axis text and physical line grouping must retain semantic guide identity." },
   "interaction-history": { prefix: "interaction/history.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded session snapshots must preserve exact undo, redo, reset and disposal ownership without cloning programs." },
   "interaction-preparation": { prefix: "interaction/preparation.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Async candidates must preserve atomic commit, exact revision tags and bounded host lease lifetimes." },

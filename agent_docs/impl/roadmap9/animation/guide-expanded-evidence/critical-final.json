@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "coverage": {
+    "animation/cartesianTracks.js": {
+      "lines": 100,
+      "branches": 97.5,
+      "functions": 100
+    },
+    "animation/guideTracks.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "animation/planner.js": {
+      "lines": 100,
+      "branches": 92.7,
+      "functions": 100
+    },
+    "animation/polarTracks.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 100,
+      "branches": 97.67,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 100,
+      "branches": 98.85,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 100,
+      "branches": 98.94,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 96.53,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "animation/cartesianTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/guideTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/planner.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "animation/polarTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}

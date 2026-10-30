@@ -14,7 +14,7 @@ import {
 } from "./common.js";
 import { materializeGradientLegend, resolveGradientConfig, resolveGradientLegendCreation, createGradientLegendFromConfig } from "./gradient.js";
 import { normalizeIntervalLegend, resolveIntervalLayout, resolveIntervalConfig } from "./interval.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
 
 function requireChannels(args, operation) {
   if (

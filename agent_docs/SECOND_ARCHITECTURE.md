@@ -901,9 +901,18 @@ bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래
 ### Native guide geometry and scoped metadata ownership
 
 Native axis/grid actions, hit metadata, and animation preparation share pure geometry
-(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`) and read-only guide value/item
+(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`, `grammar/parallelGuides.js`) and read-only guide value/item
 association (`materialization/guides/`). Composition traversal uses the shared
 `selectors/graphicScopes.js`; each caller retains its validation and work budget.
+Band boundaries retain all typed edge memberships while preserving native first-owner
+dash behavior. Parallel marks and field guides share the same slot calculation.
+Parallel tick selection is read by native actions and prepared anchors from
+`materialization/guides/tickValues.js`; prepared title, boundary, and field anchors
+reuse these native geometry owners without reading concrete coordinates as meaning.
+`materialization/axisLabelLayout.js` separates settled text/line preparation from
+native measured placement. Axis actions reuse the same edge clearance, rotation and
+flush calculation while retaining their explicit Canvas and collision admission.
+Prepared placement never chooses a new wrap or responsive fallback during sampling.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
 animation preparation carries guide meaning in an optional endpoint vector. The same
@@ -917,12 +926,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 774,700 bytes |
-| `ggaction/basic` | 422,700 bytes |
+| `ggaction` | 775,000 bytes |
+| `ggaction/basic` | 423,100 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 136,600 bytes |
-| `ggaction/animation` | 262,200 bytes |
+| `ggaction/interaction` | 128,500 bytes |
+| `ggaction/animation` | 267,100 bytes |
 
 
 
@@ -4729,3 +4738,21 @@ Node22 packed1,690,756 및 Node20/24 packed1,693,299bytes다. 측정 상한은
 animation/interaction 상한만262,200/136,600으로 조정한다. 기존18측정과 최초 초과를
 보존해 새 상수로 다시 검증한다. 공개 설명의 검색 payload는1,084,689bytes여서 최소
 상한1,084,700을 적용한다. 이 수치는 이후 결합 source의 검증을 대신하지 않는다.
+
+### Shared native legend sample meaning
+
+`grammar/legendSampling`은 native quantitative sample의 정규화·scale validation·정확한 값 선택을
+소유한다. `materialization/guides/legendConfig`는 명시 block override와 categorical owner 조회·
+표시 label 선택을 소유하며, wrapped legend action과 hit metadata가 같은 읽기 전용 함수를 쓴다.
+`materialization/guides/legendLayout`, `legendSamples`, `legendGradient`는 native size/color-size/gradient의
+읽기 전용 layout 계산을 소유한다. `legendItems`는 raw category·interval·sample/title/summary와
+exact graphic item 역할을 연결하며 hit가 이를 재사용한다. 이 추출은 action·trace·materialization
+순서를 바꾸지 않는다. Animation의 준비된 legend 의미 연결은 별도 책임이며 final pixel 차이를
+의미값으로 추정하지 않는다. 공개 signature·저장 shape·renderer 경계는 유지한다.
+
+축·Parallel anchor와 shared native legend owner를 timeline version3에 결합한 실제 package는
+1,191entries / unpacked7,677,678bytes이며 Node20/24 최대 packed1,701,380bytes다.
+같은43adc archive의 세 Node gzip 최대는 Full774,980 / Basic423,068 / animation267,065 /
+interaction128,441bytes다. Current table과 README는 이 측정의 최소 여유 상한을 따른다.
+검증과 source-identical critical coverage 재사용의 정확한 경계는
+[통합 증거](impl/roadmap9/animation/guide-timeline-merged-evidence/qualification.json)가 소유한다.

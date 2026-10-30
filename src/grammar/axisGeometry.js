@@ -1,3 +1,7 @@
+import { finiteMidpoint } from "./numeric.js";
+import { mapContinuousScaleValues } from "./scales/mapping.js";
+import { mapOrdinalPositionValues } from "./scales/ordinal.js";
+
 // Native Cartesian axis geometry shared by explicit materialization and sampling.
 export function axisBaseline(bounds, channel, position) {
   if (channel === "x") {
@@ -79,4 +83,24 @@ export function resolveAxisLineRange(resolvedScale, bounds, channel, explicitRan
   if (explicitRange || resolvedScale?.type !== "time" || !Number.isFinite(resolvedScale.bandwidth)) return range;
   const plotRange = channel === "x" ? [bounds.x, bounds.x + bounds.width] : [bounds.y + bounds.height, bounds.y];
   return Math.sign(range[1] - range[0]) === Math.sign(plotRange[1] - plotRange[0]) ? plotRange : plotRange.reverse();
+}
+
+export function resolveAxisTitleAlong(scale, config) {
+  const discrete = ["ordinal", "band", "point"].includes(scale?.type);
+  let along;
+  if (config.at === "center") {
+    along = finiteMidpoint(scale.range[0], scale.range[1]);
+  } else if (config.at === "start" || config.at === "end") {
+    along = scale.range[config.at === "start" ? 0 : 1];
+  } else {
+    if (discrete) {
+      if (!scale.domain.includes(config.at)) throw new RangeError("Axis title at value must be inside the scale domain.");
+      along = mapOrdinalPositionValues([config.at], scale)[0];
+    } else {
+      const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
+      if (config.at < low || config.at > high) throw new RangeError("Axis title at value must be inside the scale domain.");
+      along = mapContinuousScaleValues([config.at], scale)[0];
+    }
+  }
+  return along + (config.alongOffset ?? 0);
 }

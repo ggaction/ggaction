@@ -1,3 +1,6 @@
+import { assertLegendBoundsInsideCanvas, resolveContinuousBounds, resolveLegendBackgroundFromBounds } from "../../../../materialization/guides/legendLayout.js";
+import { categoricalLegendLabels } from "../../../../materialization/guides/legendConfig.js";
+import { CATEGORICAL_LEGEND_KINDS } from "../../../../grammar/legendBlocks.js";
 import { themePatternForValues } from "../../../theme/palettes.js";
 import { validateLegendOverflow, categoricalLegendView } from "../../../../grammar/legendOverflow.js";
 import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
@@ -10,57 +13,15 @@ import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.
 import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
-import { formatVisibleText } from "../../../../core/textMetrics.js";
-import {
-  assertLegendBoundsInsideCanvas,
-  resolveContinuousBounds,
-  resolveLegendBackgroundFromBounds
-} from "../continuous/common.js";
+
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
-import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
 import {
   materializeRectItem,
   requestedRectStyleDetails
 } from "../../../../grammar/roundedRect.js";
 import { requestedStrokeDetails } from "../../../../grammar/strokeStyle.js";
-
-const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
-
-export function activeConfig(program, requested) {
-  if (requested !== undefined && !CATEGORICAL_KINDS.includes(requested)) {
-    throw new Error(`Unknown categorical legend kind "${requested}".`);
-  }
-  const kinds = CATEGORICAL_KINDS
-    .filter(kind => program.guideConfigs.legend?.[kind] !== undefined);
-  if (requested !== undefined) {
-    if (!kinds.includes(requested)) {
-      throw new Error(`Missing categorical legend config "${requested}".`);
-    }
-    return {
-      kind: requested,
-      config: resolveEffectiveLegendBlockConfig(
-        program,
-        requested,
-        program.guideConfigs.legend[requested]
-      )
-    };
-  }
-  if (kinds.length !== 1) {
-    throw new Error("Legend component requires one categorical legend config.");
-  }
-  const kind = kinds[0];
-  return {
-    kind,
-    config: resolveEffectiveLegendBlockConfig(
-      program,
-      kind,
-      program.guideConfigs.legend[kind]
-    )
-  };
-}
 
 function prefix(config) {
   return `${config.kind}Legend`;
@@ -79,17 +40,6 @@ export function symbolWidth(config) {
   }));
 }
 
-
-export function categoricalLegendLabels(config) {
-  config = categoricalLegendView(config);
-  const visible = config.hiddenCount > 0 ? config.domain.slice(0, config.overflow.maxItems) : config.domain;
-  const labels = visible.map(value => resolveDisplayLabel(
-    value,
-    [...(config.labelMap ?? []), ...(config.defaultLabelMap ?? [])],
-    formatVisibleText
-  ));
-  return config.hiddenCount > 0 ? [...labels, `…${config.hiddenCount} entries`] : labels;
-}
 
 function resolveSampleBounds(program, config, width) {
   const appearance = resolveAppearance(program, config);
@@ -202,7 +152,7 @@ export function resolveAppearance(program, config) {
 
 export function noOptions(args, operation) {
   validateOptionObject(args, ["kind"], operation);
-  if (args.kind !== undefined && !CATEGORICAL_KINDS.includes(args.kind)) {
+  if (args.kind !== undefined && !CATEGORICAL_LEGEND_KINDS.includes(args.kind)) {
     throw new Error(`Unknown categorical legend kind "${args.kind}".`);
   }
 }

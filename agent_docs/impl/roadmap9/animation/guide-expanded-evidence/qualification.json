@@ -1,0 +1,105 @@
+{
+  "status": "verified-source-checkpoint",
+  "baseCandidate": "bd8ce86d1",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "scope": [
+    "native explicit title anchors",
+    "all-member band boundaries",
+    "native Parallel field guides",
+    "retained fallback transport only"
+  ],
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1169,
+    "packedBytes": 1671863,
+    "unpackedBytes": 7566612,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-guide-anchors-39669c5908180098ce162cd8c8da36c1b4c1e4011edf5805406944938484e59e.tgz",
+    "sha1": "b870c3ad9facb7e59215cc75da1e96b0a79f53d2",
+    "sha256": "39669c5908180098ce162cd8c8da36c1b4c1e4011edf5805406944938484e59e"
+  },
+  "checks": {
+    "animationUnit": 350,
+    "criticalOwners": 7,
+    "criticalCoverage": {
+      "lines": 100,
+      "branches": 96.53,
+      "functions": 100
+    },
+    "sourceNode20_22_24": {
+      "each": 8,
+      "passed": true
+    },
+    "sourceFreeNode20_22_24": {
+      "eachRuntime": 2,
+      "strictTypes": true,
+      "optionalPeers": true,
+      "sameArchive": true,
+      "bundleMeasurements": 18,
+      "bundleLimitRecheck": "bundle-recheck.json"
+    },
+    "finalContracts": 29,
+    "packageNode20_22_24": {
+      "entries": 1169,
+      "maxPackedBytes": 1675963,
+      "unpackedBytes": 7566612,
+      "passed": true
+    },
+    "sourcePinnedDocs": {
+      "passed": 23,
+      "build": "passed",
+      "builtPages": 186,
+      "llmArtifacts": 1598
+    }
+  },
+  "reusedEvidence": {
+    "renderBrowser": {
+      "tests": 6,
+      "browserPairs": 10,
+      "reason": "Native guide geometry and sample/render sources unchanged; transport-only repair adds retained fallback reason vectors."
+    },
+    "realistic": {
+      "datasets": 5,
+      "recipes": 30,
+      "passed": 5,
+      "reason": "Same native sources and guide fixture."
+    },
+    "docs": {
+      "tests": 232,
+      "builtPages": 186,
+      "llmArtifacts": 1598,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true,
+      "sourcePinFollowup": "completed: generated provenance and image input identity only; body/layout/assets bytes unchanged"
+    }
+  },
+  "initialFailuresPreserved": [
+    "Parallel whole-frame fallback reason mismatch on current and 312026112; repaired by retained-vector transport predicate",
+    "Installed band example omitted fieldType nominal; fixture only corrected using same archive",
+    "Animation bundle 248468 exceeded243700; minimal248500 and same18measurements pass",
+    "Node20/24 packed1675963 exceeded1675300; minimal1676000 and canonical repack checks pass"
+  ],
+  "remaining": [
+    "legend meaning",
+    "inferred or label-relative title ink dependency",
+    "complex flush/rotation/responsive reflow",
+    "whole STEP061/062/063/077 qualification"
+  ],
+  "inputHashes": {
+    "src/animation/cartesianTracks.js": "f5b1f8d806adb7a7611178d95b80aa23264a197659e18a038c8979dec67f8d24",
+    "src/animation/polarTracks.js": "eed75379fd55c17e510de94a3a875a67e4f85433d762a6277ed1f1fefd79f9f3",
+    "src/animation/planner.js": "231439f497b3a426710523c960fa6ce14b55a5cd839dc72445642f79ab8c5c83",
+    "src/grammar/animation/guideState.js": "e3e6724cee46975d4f8449ca2d387fd476b4c75c2c2a43969fb46f34ae6ee406",
+    "src/materialization/animation/guideAnchors.js": "f060d3c48bf72b57b61665fe58c27a578ca439268b4b49527f96234528ac28ad",
+    "src/materialization/animation/guides.js": "6dbae56f215a7608c7a40f6cc72738eb08f177a7113918838a57e266c8fec5ce",
+    "test/unit/animation/guide-anchor-transitions.test.js": "c0fda0b178cfeb148af043901b2507c3f2418eb2381b4b011e51300ca8604230",
+    "scripts/consumers/fixtures/node/animation.mjs": "fb8b47cdb9e759544ae4b031ae35e7331338791838e08fa9504e53198a55c2ec",
+    "scripts/consumers/fixtures/animation.ts": "234ae3e1b9576eb6866ca97d18f66ae9faec47990657fbcef49c126cf08fd330"
+  },
+  "sourceRevision": "eade82663"
+}

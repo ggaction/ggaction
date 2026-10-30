@@ -1,3 +1,4 @@
+import { assertLegendBoundsInsideCanvas, formatContinuousValues, resolveContinuousBounds, resolveLegendBackgroundFromBounds, resolveLegendTextBounds } from "../../../../materialization/guides/legendLayout.js";
 import { alignLegendLabels } from "../../../../layout/legendText.js";
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
@@ -12,24 +13,11 @@ import { validateKeys } from "../../../../core/validation.js";
 import { mapLinearValues } from "../../../../grammar/scales/index.js";
 import { measureTextWidth } from "../../../../core/textMetrics.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
-import {
-  assertLegendBoundsInsideCanvas,
-  editLegendBackground,
-  formatContinuousValues,
-  normalizeContinuousLegend,
-  requireResolvedLegendScale,
-  resolveContinuousBounds,
-  resolveContinuousLegendLayer,
-  resolveLegendBackgroundFromBounds,
-  resolveLegendTextBounds,
-  styleContinuousText,
-  validateNonNegative,
-  validatePositive
-} from "./common.js";
+import { editLegendBackground, normalizeContinuousLegend, requireResolvedLegendScale, resolveContinuousLegendLayer, styleContinuousText, validateNonNegative, validatePositive } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
-import { resolveLegendSampleValues } from "../sampling.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { resolveLegendSampleValues } from "../../../../grammar/legendSampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
 import { legendLabelLineHeight } from "../../../../layout/legend.js";
 
 const SYMBOL_OPTIONS = Object.freeze([

@@ -1,0 +1,70 @@
+{
+  "node": "v24.22.1",
+  "archive": "39669c5908180098ce162cd8c8da36c1b4c1e4011edf5805406944938484e59e",
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1028,
+      "minifiedBytes": 2703860,
+      "gzipBytes": 774703,
+      "limit": 774800
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 612,
+      "minifiedBytes": 1442838,
+      "gzipBytes": 422705,
+      "limit": 422800
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954,
+      "limit": 26000
+    },
+    "ggaction/graph": {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 85,
+      "minifiedBytes": 147084,
+      "gzipBytes": 44076,
+      "limit": 46000
+    },
+    "ggaction/animation": {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 409,
+      "minifiedBytes": 818318,
+      "gzipBytes": 248468,
+      "limit": 243700
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 204,
+      "minifiedBytes": 409767,
+      "gzipBytes": 131310,
+      "limit": 131400
+    }
+  },
+  "errors": [
+    {
+      "specifier": "ggaction/animation",
+      "gzipBytes": 248468,
+      "limit": 243700
+    }
+  ],
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "cases": [
+    "animation/guide-anchors-offline-native",
+    "animation/guides-offline-native"
+  ],
+  "types": true
+}

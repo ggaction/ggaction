@@ -16,7 +16,7 @@
   {
     "file": "api/animation.md",
     "block": 2,
-    "heading": "Move ticks, labels, and grids",
+    "heading": "Move axes, labels, and grids",
     "mode": "complete",
     "environment": "node-esm",
     "receivers": [],

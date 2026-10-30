@@ -1,0 +1,34 @@
+{
+  "observedBeforeFix": true,
+  "domain": [
+    "a",
+    "b",
+    "c"
+  ],
+  "members": [
+    {
+      "value": "a",
+      "edge": "end"
+    },
+    {
+      "value": "b",
+      "edge": "start"
+    }
+  ],
+  "sourceRange": [
+    0.2857142857142857,
+    100.95238095238096
+  ],
+  "targetRange": [
+    1.5714285714285714,
+    105.23809523809524
+  ],
+  "progress": 0.37,
+  "originalError": "Band boundary members do not describe one native edge.",
+  "finalDecision": {
+    "kind": "crossfade",
+    "reason": "guide-layout"
+  },
+  "endpointGeometryUnchanged": true,
+  "toleranceAdded": false
+}

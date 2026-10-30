@@ -1,3 +1,5 @@
+
+import { resolveColorSizeLayout } from "../../../materialization/guides/legendSamples.js";
 import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import {findLayer} from '../../../selectors/layers.js';
 import {prepareLegendSpacingEdit} from '../../../grammar/legendSpacing.js';
@@ -6,19 +8,19 @@ import {legendBlockChannels} from '../../../grammar/legendBlocks.js';
 import {mergeLegendTitleStyle} from '../../../grammar/legendTitleStyle.js';
 import {validateOptionObject} from '../../../core/validation.js';
 import {resolveColorSizeMapping,normalizeColorSizeSymbol,isColorSizeChannels,validateColorSizeShapeSamples,colorSizeChannels} from '../../../grammar/colorSizeLegend.js';
-import {formatDiscretizedIntervals} from '../../../grammar/scales/index.js';
-import {createPointShapeGraphic} from '../../../grammar/pointShapes.js';
-import {resolveConcreteGraphicBounds} from '../../../grammar/schemas/graphicBounds.js';
-import {mapSizeValues} from '../../../grammar/scales/size.js';
-import {mapScaleConsumerValues} from '../../../materialization/scales/map.js';
-import {intrinsicLegendConfig} from '../../../materialization/legendGroups.js';
-import {resolveDisplayLabel} from '../../../grammar/displayLabels.js';
-import {clippedSampleBounds,validateLegendClip} from '../../../grammar/legendClip.js';
-import {resolveLegendItemLayout} from '../../../layout/legendItems.js';
+
+
+
+
+
+
+
+
+
 import {resolveLegendGraphicPlacement} from '../../../materialization/graphicHierarchy.js';
-import {normalizeItemLegendConfig,ITEM_LEGEND_OPTIONS,resolveContinuousBounds,formatContinuousValues,assertLegendBoundsInsideCanvas,resolveLegendBackgroundFromBounds,editLegendBackground,styleContinuousText,editGraphicProperties} from './continuous/common.js';
-import {normalizeLegendSampling,resolveLegendSampleValues,validateSamplingAgainstScale,readLegendSampling} from './sampling.js';
-import {resolveEffectiveLegendBlockConfig} from './blocks.js';
+import { normalizeItemLegendConfig, ITEM_LEGEND_OPTIONS, editLegendBackground, styleContinuousText, editGraphicProperties } from "./continuous/common.js";
+import { normalizeLegendSampling } from "../../../grammar/legendSampling.js";
+
 import {applyLegendClipGraphics} from '../../../materialization/legendClip.js';
 
 export function resolveColorSizeOwner(program,target,combine='color-size',channels) {
@@ -47,49 +49,6 @@ export function refreshColorSizeConfig(program,stored) {
  const mapping=resolveColorSizeOwner(program,stored.target,stored.combine,colorSizeChannels(stored));
  if(mapping.field!==stored.field)throw new Error('Color-size combination field changed; explicitly recreate the block.');
  return {...stored,...mapping,title:stored.inferredTitle?mapping.field:stored.title};
-}
-
-export function resolveColorSizeLayout(program,stored) {
- validateLegendClip('colorSize',stored);
- const config=intrinsicLegendConfig(program,resolveEffectiveLegendBlockConfig(program,'colorSize',stored));
- const color=program.resolvedScales[stored.colorScale],size=program.resolvedScales[stored.sizeScale];
- if(config.combine==='color-size-shape')return resolveShapeLayout(program,config,color,size);
- const sampling=readLegendSampling(config);validateSamplingAgainstScale(sampling,color,'Color-size samples');validateSamplingAgainstScale(sampling,size,'Color-size samples');
- const values=resolveLegendSampleValues(config,size,'Color-size legend');
- const colors=mapScaleConsumerValues(values,color,'color'),areas=mapSizeValues(values,size),radii=areas.map(area=>Math.sqrt(area/Math.PI));
- const labels=formatContinuousValues(values,stored.domain,'quantitative',config.labels.format)
-  .map((text,index)=>resolveDisplayLabel(values[index],config.labelMap,()=>text));
- const radius=Math.max(...radii),stroke=config.symbol.strokeWidth/2,width=2*(radius+stroke),height=Math.min(width,config.clipHeight??Infinity);
- const {plot,canvas}=resolveContinuousBounds(program);
- const layout=resolveLegendItemLayout(plot,config,labels,{width,height,itemBounds:radii.map(r=>clippedSampleBounds({left:width/2-r-stroke,right:width/2+r+stroke,top:-r-stroke,bottom:r+stroke},config.clipHeight))},canvas,program.materializationConfigs.textMetrics);
- assertLegendBoundsInsideCanvas(layout.bounds,canvas,'Color-size legend',config);
- const background=resolveLegendBackgroundFromBounds(layout.bounds,config.border,canvas,'Color-size legend',config);
- return {...layout,background,values,colors,areas,radii,text:labels,config,symbolX:layout.symbolX.map(x=>x+width/2)};
-}
-
-function resolveShapeLayout(program,config,color,size) {
- const values=validateColorSizeShapeSamples(readLegendSampling(config),color);
- const colors=mapScaleConsumerValues(values,color,config.colorChannel),areas=mapSizeValues(values,size);
- const shape=program.resolvedScales[config.shapeScale];
- const shapes=mapScaleConsumerValues(values,shape,'shape');
- const point=program.markConfigs[config.target];
- const symbol={fill:point.fill??'none',stroke:point.stroke,strokeWidth:point.strokeWidth??0,opacity:point.opacity??1,...config.symbol};
- const sample=(i,x,y)=>createPointShapeGraphic({shape:shapes[i],area:areas[i],x,y,
-  fill:config.colorChannel==='color'?colors[i]:symbol.fill,
-  stroke:config.colorChannel==='stroke'?colors[i]:symbol.stroke,strokeWidth:symbol.strokeWidth,opacity:symbol.opacity});
- const bounds=values.map((_,i)=>resolveConcreteGraphicBounds({objects:{sample:sample(i,0,0)},order:['sample']},'sample'));
- const left=Math.min(...bounds.map(b=>b.left)),right=Math.max(...bounds.map(b=>b.right));
- const top=Math.min(...bounds.map(b=>b.top)),bottom=Math.max(...bounds.map(b=>b.bottom));
- const width=right-left,height=Math.min(bottom-top,config.clipHeight??Infinity);
- const labels=formatDiscretizedIntervals(color.thresholds,config.labels.format)
-  .map((text,i)=>resolveDisplayLabel(values[i],config.labelMap,()=>text));
- const {plot,canvas}=resolveContinuousBounds(program);
- const layout=resolveLegendItemLayout(plot,config,labels,{width,height,itemBounds:bounds.map(b=>
-  clippedSampleBounds({...b,left:b.left-left,right:b.right-left},config.clipHeight))},canvas,program.materializationConfigs.textMetrics);
- assertLegendBoundsInsideCanvas(layout.bounds,canvas,'Color-size-shape legend',config);
- const background=resolveLegendBackgroundFromBounds(layout.bounds,config.border,canvas,'Color-size-shape legend',config);
- return {...layout,background,values,colors,areas,text:labels,config,
-  items:values.map((_,i)=>sample(i,layout.symbolX[i]-left,layout.itemY[i]))};
 }
 
 function writeSemantic(program,config) {

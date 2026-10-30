@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 1182,
-  packedBytes: 1694000,
-  unpackedBytes: 7646800
+  entries: 1191,
+  packedBytes: 1701400,
+  unpackedBytes: 7677700
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -104,7 +104,10 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/numeric.js",
   "src/actions/guides/legends/continuous/common.js",
   "src/actions/guides/legends/continuous/colorSymbols.js",
-  "src/actions/guides/legends/sampling.js",
+  "src/grammar/legendSampling.js",
+  "src/materialization/guides/legendLayout.js",
+  "src/materialization/guides/legendSamples.js",
+  "src/materialization/guides/legendGradient.js",
   "src/actions/guides/legends/continuous/gradient.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",

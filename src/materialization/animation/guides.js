@@ -10,6 +10,7 @@ import { namespaceGraphicId } from "../../selectors/graphicCapacity.js";
 import { graphicScopes } from "../../selectors/graphicScopes.js";
 import { resolveCartesianAxisFrameBounds, resolveGuideCoordinateBounds, resolveCoordinatePolarFrame } from "../coordinateBounds.js";
 import { axisGuideItems } from "../guides/axisItems.js";
+import { guideAnchorItems } from "./guideAnchors.js";
 import { valuesFromTickConfig, mapPolarGuideValues } from "../guides/tickValues.js";
 
 function scopedGuides(program, namespaces, spend) {
@@ -72,6 +73,12 @@ function scopedGuides(program, namespaces, spend) {
     const frame = cartesian ? resolveGuideCoordinateBounds(program, { channel, scale: config.scale, coordinate: config.coordinate }) : polarFrame(config);
     values.forEach((value, index) => add(object.items[index].id, { identity: identity(`grid:${direction}`, "grid", value), kind: "grid", channel,
       frame, mapping: mapping(value, config), policy: cartesian ? { alongOffset: config.alongOffset ?? 0 } : {} }));
+  }
+  for (const item of guideAnchorItems(program, spend)) {
+    const parallel = item.field !== undefined;
+    const id = identity(item.owner, parallel ? `parallel-${item.component}` : item.component,
+      parallel ? { field: item.field, value: item.value } : item.value, item.line);
+    add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
   return result;
 }

@@ -1,0 +1,122 @@
+{
+  "status": "verified-guide-and-native-legend-owner-integration; remaining native typed paths and STEP077 remain open",
+  "sourceRevision": null,
+  "base": "166060788",
+  "guideSource": "9adf00e17",
+  "timelineSource": "933cacad0da8e86b30a62cca09c5260cbc7a96d7",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1191,
+    "packedBytes": 1697521,
+    "unpackedBytes": 7677678,
+    "file": "ggaction-43adcdbc2568ac41b2428c55bb6db64b7f0bd1a2d14eac74a4b5eb5b36706fff.tgz",
+    "sha256": "43adcdbc2568ac41b2428c55bb6db64b7f0bd1a2d14eac74a4b5eb5b36706fff"
+  },
+  "checks": {
+    "animationAndGuideUnit": 1611,
+    "nativeLegendOwnerUnit": 21,
+    "boundaryTypesDiscovery": 37,
+    "packageArtifact": 7,
+    "docs": 232,
+    "realistic": 10,
+    "render": 5,
+    "browser": {
+      "tests": 1,
+      "pairs": 10
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeEach": 33,
+      "strictTypes": "passed",
+      "executableDocumentation": "passed",
+      "optionalPeers": "passed",
+      "bundlesEach": 6,
+      "sameArchive": true
+    },
+    "documentationBuild": {
+      "pages": 186,
+      "selectiveArtifacts": 1598
+    },
+    "changedDocumentationBrowser": {
+      "pages": [
+        "api/animation/",
+        "reference/runtime/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "checks": 8,
+      "overflow": 0,
+      "axe": 0,
+      "consoleErrors": 0
+    }
+  },
+  "coverageReuse": {
+    "freshCombinedCoverage": false,
+    "upstreamSourceIdentical": [
+      "src/grammar/animation/guideState.js",
+      "src/grammar/animation/guideAnchors.js",
+      "src/materialization/animation/guides.js",
+      "src/materialization/animation/guideAnchors.js",
+      "src/materialization/axisLabelLayout.js",
+      "src/grammar/legendSampling.js",
+      "src/materialization/guides/legendConfig.js",
+      "src/materialization/guides/legendItems.js",
+      "src/materialization/guides/legendLayout.js",
+      "src/materialization/guides/legendGradient.js",
+      "src/materialization/guides/legendSamples.js"
+    ],
+    "guideEvidence": "../guide-expanded-evidence/qualification.json",
+    "legendSampleConfigEvidence": "../legend-owner-evidence/qualification.json",
+    "legendLayoutEvidence": "../legend-layout-evidence/qualification.json",
+    "sharedSourceIdenticalTo933": {
+      "src/animation/planner.js": "3e6d02ce740c9ac1c34f56c74a46eca6173ce87f21fe1ddd3980f6c20b59661d",
+      "src/animation/sample.js": "7e42e9ada476a656a92fef0a1d74137df12c385469b9dd7910da0c63c97590c4",
+      "src/animation/frameEndpoint.js": "bf13e29c29d8523315a50eb636e21ebf02034cee21b9cbb03b419bc322bfef61",
+      "src/animation/frameProvenance.js": "4275cb56b53b5035237096777fbb6d89fab058c27957eab41341844e5994ac7d"
+    },
+    "timelineCriticalEvidence": "../timeline-public-evidence/qualification.json",
+    "reason": "Each reused critical owner is byte-identical to its qualified source; fresh integration unit/contract/render/browser/realistic and installed archive checks cover their composition. This is not final candidate coverage."
+  },
+  "bundleMaximums": {
+    "ggaction": 774980,
+    "ggaction/basic": 423068,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 43913,
+    "ggaction/animation": 267065,
+    "ggaction/interaction": 128441
+  },
+  "package3Node": {
+    "entries": 1191,
+    "maximumPacked": 1701380,
+    "unpacked": 7677678,
+    "ceilings": [
+      1191,
+      1701400,
+      7677700
+    ]
+  },
+  "failuresRetained": [
+    "First package entry cap and Node20 compressed cap failures",
+    "First installed bundle ceilings on obsolete d7a archive",
+    "README ceiling updated before final 43adc pack and all three final installed runs repeated",
+    "Historical upstream transport-repair.patch kept byte-exact as gzip to avoid diff whitespace errors"
+  ],
+  "remaining": [
+    "typed legend family expansion and reflow/inferred titles",
+    "Cartesian special placements and density/overlay",
+    "GeoText camera with content/layout changes",
+    "graph-route geographic adapter and remaining large-size performance",
+    "complete STEP057–077 acceptance matrix and final qualification/delivery"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "node": "v22.23.1",
+  "archive": "7027f21a7986f75c2f5ff57a2eb6db7ad924627c6cd11ab0e8317910d08c4c7b",
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1027,
+      "minifiedBytes": 2703095,
+      "gzipBytes": 772851,
+      "limit": 774400
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 611,
+      "minifiedBytes": 1442099,
+      "gzipBytes": 421555,
+      "limit": 422500
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779,
+      "limit": 26000
+    },
+    "ggaction/graph": {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 85,
+      "minifiedBytes": 147084,
+      "gzipBytes": 43923,
+      "limit": 46000
+    },
+    "ggaction/animation": {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 406,
+      "minifiedBytes": 800044,
+      "gzipBytes": 242621,
+      "limit": 243700
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 204,
+      "minifiedBytes": 409741,
+      "gzipBytes": 130829,
+      "limit": 131400
+    }
+  },
+  "errors": [],
+  "cases": [
+    "title",
+    "band-boundary",
+    "parallel"
+  ]
+}

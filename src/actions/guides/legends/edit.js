@@ -1,3 +1,4 @@
+import { resolveSizeLegendLayout } from "../../../materialization/guides/legendSamples.js";
 import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import {colorSizeChannels} from "../../../grammar/colorSizeLegend.js";
 import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
@@ -27,17 +28,10 @@ import { resolveLayout } from "./categorical/layout.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
 import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
 import { normalizeColorSymbols } from "./continuous/colorSymbols.js";
-import { readLegendSampling } from "./sampling.js";
+import { readLegendSampling } from "../../../grammar/legendSampling.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
 import { normalizeLegendGradient } from "../../../grammar/legendGradient.js";
-import {
-  normalizeItemLegendLayout,
-  normalizeLegendBorder,
-  normalizeLegendTextOptions,
-  normalizeLegendTitleOptions,
-  normalizeContinuousLegend,
-  validatePositive
-} from "./continuous/common.js";
+import { normalizeItemLegendLayout, normalizeLegendBorder, normalizeLegendTextOptions, normalizeLegendTitleOptions, normalizeContinuousLegend } from "./continuous/common.js";
 import { normalizeOpacitySymbol, createOpacityLegendFromConfig } from "./continuous/opacity.js";
 import { normalizeIntervalLegend, resolveIntervalConfig, resolveIntervalLayout, createIntervalLegendFromConfig } from "./continuous/interval.js";
 import {
@@ -51,14 +45,14 @@ import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendBlock, resolveLegendTarget, validateLegendChannels } from "./target.js";
 import { isEnumeratedSizeScaleType } from "../../../grammar/scales/index.js";
-import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, resolveSizeLegendLayout, createSizeLegendFromConfig } from "./size.js";
+import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, createSizeLegendFromConfig } from "./size.js";
 import {
   STROKE_WIDTH_LEGEND_LABELS,
   STROKE_WIDTH_LEGEND_TITLE_STYLE,
   resolveStrokeWidthLegendLayout,
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
-import { normalizeLegendSampling } from "./sampling.js";
+import { normalizeLegendSampling } from "../../../grammar/legendSampling.js";
 import { patchLegendBlockOverride } from "./blocks.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { planLegendBlockTransitions } from "./transition.js";

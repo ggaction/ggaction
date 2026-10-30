@@ -1,0 +1,81 @@
+{
+  "status": "verified-private-preparation",
+  "base": "3f67a6324",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "storedShapeChanged": false,
+  "typedLegendPublished": false,
+  "checks": {
+    "owning": 570,
+    "newOwnersCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "existingPublicVariantsUnchanged": 10,
+    "boundaryPackageDiscovery": 35,
+    "finalPackageDocumentationPolicy": 10,
+    "realistic": {
+      "tests": 4,
+      "datasets": 3,
+      "repetitions": 5,
+      "durationMs": 10914.213417,
+      "callerRepair": "Existing helper requires the points Y binding; authoring that original value mapping before exercising the same options preserves source rows and all witnesses."
+    },
+    "installedNode22": {
+      "runtime": 5,
+      "bundles": 6,
+      "archive": "616104152b9a07b5f6700012cfad971419ea9c524cb1940436de29fcd0fd6358"
+    },
+    "sourceNode20_24": {
+      "each": 5,
+      "passed": true
+    },
+    "canonicalPackage": {
+      "entries": 1170,
+      "maximumPacked": 1676232,
+      "unpacked": 7568208,
+      "limits": {
+        "entries": 1170,
+        "packed": 1676300,
+        "unpacked": 7568300
+      }
+    },
+    "sourcePinnedDocs": {
+      "tests": 23,
+      "builtPages": 186,
+      "selectiveArtifacts": 1598,
+      "browserReuse": "Existing guide desktop/responsive and installed renderer evidence is unchanged; extraction preserves all 10 public legend variants exactly."
+    }
+  },
+  "remaining": [
+    "size/color-size/gradient resolved sample and layout owner extraction",
+    "typed legend preparation, sampling, current-frame and offline integration",
+    "inferred title ink and complex responsive label reflow",
+    "final combined qualification"
+  ],
+  "inputHashes": {
+    "src/actions/guides/legends/blocks.js": "95a39e0ce2591da90fdc8eaa9e55a195abff68ea5e8ce93f4a088dded1874cc1",
+    "src/actions/guides/legends/categorical/actions.js": "13ee89e9069418c0843592d9c6571d7ab15fbdb61459530f705612c87d7b4310",
+    "src/actions/guides/legends/categorical/components.js": "ed20aed47d8a2ccfcfd32937a26f14e4f0fa21ce1b1861fef7ca840338f05bbd",
+    "src/actions/guides/legends/categorical/index.js": "894d2602e8d444b18689ad73bfa2d5ef3118595cb9f182cae63bb1b50e4e16ff",
+    "src/actions/guides/legends/categorical/layout.js": "95e7ba18f95f974c29e2155a860a0e630e0127a0d2df37df012a312aaf54678e",
+    "src/actions/guides/legends/categorical/symbols.js": "8e2068be63e9a637ea4faf7901943db4026d01c413feb93fd0e08c242a638c3d",
+    "src/actions/guides/legends/colorSize.js": "90e6f51f219620d47699b67f8abe934d68021ef748fc2d55ad299771dbd02d9e",
+    "src/actions/guides/legends/continuous/colorSymbols.js": "7991ea63740c2100a71d31c31aa0fadf1576de1b8a337c8f46cd47c8121208ea",
+    "src/actions/guides/legends/continuous/common.js": "d568839008a929ddcfa03c033fdd9bacc60d3fd4cb3bbbccd9cea569f200c912",
+    "src/actions/guides/legends/continuous/gradient.js": "0e378ea2ad0dbacaba2e3cdadbf3fb40488c921d1054fec5c23bd8bd69547eb6",
+    "src/actions/guides/legends/continuous/interval.js": "203c0419c7a0ad39a6915c7cc16c5162ccd4c347433603592eb2eb8d9a3edd04",
+    "src/actions/guides/legends/continuous/opacity.js": "1fedf8e269e301d5c20ef150f4c494c0cf59d3ba8929bdd79c39205c18dddf2f",
+    "src/actions/guides/legends/continuous/stroke.js": "e028e1f589dcb8073e675597c002c6669bbbdf90008a6e957a72793140f55ad9",
+    "src/actions/guides/legends/edit.js": "8b3802b52f7ed813e553326a830738fe5b897f6993d153b3697371d287a1ce45",
+    "src/actions/guides/legends/size.js": "588d3a712198271399fad0adb357c4039fdcd581ac381d0cc65fb8665cfaeb19",
+    "src/actions/guides/legends/strokeWidth.js": "5124015df536bb161289ea625bf0e317a165d9a976829c647e3df064367b378b",
+    "src/actions/scales/edit.js": "12daab3b0e816a5beb34b4c016705adbb477aab877189577c979eed37218fb6b",
+    "src/grammar/legendBlocks.js": "fdce19f38c53a5fd48a8aecb073b41e48034cc738cdebc62d83c49fac1e04d49",
+    "src/interaction/hitLegends.js": "94760d05da6fbbbc65931182759e821501bf3d9b1fff83e6a05f69a13c766bcf",
+    "src/grammar/legendSampling.js": "3026b81308736cdbf5edf9437b016b1ae2688f0dd625681fd6471d933dade77e",
+    "src/materialization/guides/legendConfig.js": "899b386f66e8cff1c7670959fa1bdd4d5738891f6054f45b1d64a53503a14bcc"
+  },
+  "sourceRevision": "d9ef22ad5"
+}

@@ -1,3 +1,4 @@
+import { resolveLegendBackgroundFromBounds } from "../../../materialization/guides/legendLayout.js";
 import { guideCanvasProperties } from "../../../materialization/guides/canvas.js";
 import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import { translateGraphic } from "../../../materialization/graphicTranslation.js";
@@ -5,7 +6,7 @@ import { editLegendBorderBounds } from "../../../materialization/legendBorder.js
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
 import { localLegendPosition, localLegendPlacement, retainsLegendSlot, legendGroup } from "../../../materialization/legendGroups.js";
-import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
+import { editLegendBackground } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
 import {

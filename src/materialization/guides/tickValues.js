@@ -54,3 +54,23 @@ export function mapPolarGuideValues(program, config) {
     : mapContinuousScaleValues(values, scale);
   return Object.freeze({ values, positions });
 }
+
+// Parallel axes deliberately use their existing numeric tick policy, including
+// time-valued dimensions. Keep preparation and native rendering on that owner.
+export function resolveParallelTickValues(scale, config, field) {
+  const discrete = ["ordinal", "band", "point"].includes(scale.type);
+  if (discrete && config.mode === "count") throw new Error("Ordinal Parallel axes use domain values, not count.");
+  const values = config.mode === "values" ? config.values : discrete ? scale.domain
+    : isTransformedScaleType(scale.type) ? transformedTicks(scale.type, scale.domain, config.count ?? 5, {
+      ...(scale.base === undefined ? {} : { base: scale.base }),
+      ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
+      ...(scale.constant === undefined ? {} : { constant: scale.constant })
+    }) : niceTicks(scale.domain, config.count ?? 5);
+  if (new Set(values).size !== values.length || values.some(value => discrete
+    ? !scale.domain.includes(value)
+    : !Number.isFinite(value) || value < Math.min(...scale.domain) || value > Math.max(...scale.domain))) {
+    throw new Error(`Parallel axis values must be distinct values inside the scale domain for "${field}".`);
+  }
+  if (config.labelMap !== undefined && !discrete) throw new Error("Parallel labelMap requires a categorical axis.");
+  return values;
+}

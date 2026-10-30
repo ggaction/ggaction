@@ -34,12 +34,11 @@ for (const variant of guideFrameVariants) test(`renderer-ready guide ${variant} 
     const actual = await renderToPNGBuffer(sampleTransition(plan, time)), expected = await renderToPNGBuffer(native);
     assert.deepEqual(actual.buffer, expected.buffer);
   }
-  if (variant === "cartesian") assert.doesNotMatch(pdf.buffer.toString("latin1"), /\/Subtype\s*\/Image\b/);
+  if (!["polar", "parallel"].includes(variant)) assert.doesNotMatch(pdf.buffer.toString("latin1"), /\/Subtype\s*\/Image\b/);
   else {
-    // A resized Canvas background uses the existing weighted raster lowering.
-    // The circle itself remains a native vector path. Isolate that already
-    // sampled layer through the existing concrete scene compiler to verify it.
-    assert.equal(frame.decisions.filter(value => value.reason === "canvas-background").length, 1);
+    // Resized backgrounds and unsupported Parallel bodies use existing weighted
+    // lowering. The sampled guide remains vector; isolate its concrete layer.
+    assert.equal(frame.decisions.filter(value => value.reason === "canvas-background").length, variant === "polar" ? 1 : 0);
     const guideNodes = frame.scene.nodes.filter((_, index) => frame.decisions[index].kernel === "guide-geometry");
     assert.equal(guideNodes.length, 1);
     const vector = await renderToPDFBuffer(canvasSceneProgram({ ...frame.scene, nodes: guideNodes }));

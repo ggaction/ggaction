@@ -1,12 +1,11 @@
+import { parallelAxisPosition } from "../../../../grammar/parallelGuides.js";
 import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
 import { validateUserId } from "../../../../core/identifiers.js";
 import {
-  isTransformedScaleType,
   mapContinuousScaleValues,
-  mapOrdinalPositionValues,
-  transformedTicks
+  mapOrdinalPositionValues
 } from "../../../../grammar/scales/index.js";
-import { niceTicks } from "../../../../grammar/ticks.js";
+import { resolveParallelTickValues } from "../../../../materialization/guides/tickValues.js";
 import { resolveCoordinateBounds } from "../../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../../selectors/coordinates.js";
 import { findLayer } from "../../../../selectors/layers.js";
@@ -47,18 +46,6 @@ export function resolveParallelAxisTarget(program, requested) {
   return candidates[0].id;
 }
 
-function ticksForScale(scale, count = 5) {
-  if (["ordinal", "band", "point"].includes(scale.type)) return scale.domain;
-  if (isTransformedScaleType(scale.type)) {
-    return transformedTicks(scale.type, scale.domain, count, {
-      ...(scale.base === undefined ? {} : { base: scale.base }),
-      ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
-      ...(scale.constant === undefined ? {} : { constant: scale.constant })
-    });
-  }
-  return niceTicks(scale.domain, count);
-}
-
 function formatValue(value) {
   if (Number.isFinite(value) && Math.abs(value) >= 1000 && value % 1000 === 0) {
     return `${value / 1000}k`;
@@ -70,14 +57,7 @@ function componentValues(program, dimension, config) {
   const scale = program.resolvedScales[dimension.scale];
   if (scale === undefined) throw new Error(`Parallel axis requires resolved scale "${dimension.scale}".`);
   const discrete = ["ordinal", "band", "point"].includes(scale.type);
-  if (discrete && config.mode === "count") throw new Error("Ordinal Parallel axes use domain values, not count.");
-  const values = config.mode === "values" ? config.values : ticksForScale(scale, config.count ?? 5);
-  if (new Set(values).size !== values.length || values.some(value => discrete
-    ? !scale.domain.includes(value)
-    : !Number.isFinite(value) || value < Math.min(...scale.domain) || value > Math.max(...scale.domain))) {
-    throw new Error(`Parallel axis values must be distinct values inside the scale domain for "${dimension.field}".`);
-  }
-  if (config.labelMap !== undefined && !discrete) throw new Error("Parallel labelMap requires a categorical axis.");
+  const values = resolveParallelTickValues(scale, config, dimension.field);
   return {
     values,
     y: discrete ? mapOrdinalPositionValues(values, scale) : mapContinuousScaleValues(values, scale),
@@ -93,7 +73,6 @@ export function resolveStyledParallelAxes(program, dimensions) {
     ? undefined
     : findLayer(program, stored.target);
   const bounds = resolveCoordinateBounds(program, layer?.coordinate);
-  const step = bounds.width / (dimensions.length - 1);
   const configs = resolveParallelAxisConfigs(program, dimensions);
   const titles = program.semanticSpec.guides.axis?.parallel?.titles ?? [];
   return {
@@ -103,7 +82,7 @@ export function resolveStyledParallelAxes(program, dimensions) {
       const config = configs.dimensions[index];
       return {
         ...dimension,
-        x: bounds.x + step * index,
+        x: parallelAxisPosition(bounds, index, dimensions.length),
         config,
         title: titles.find(title => title.field === dimension.field)?.text ?? dimension.title,
         ticks: config.ticks === undefined ? undefined : componentValues(program, dimension, config.ticks),

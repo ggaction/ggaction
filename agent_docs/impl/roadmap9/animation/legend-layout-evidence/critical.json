@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "floors": {
+    "materialization/guides/legendLayout.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/guides/legendSamples.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/guides/legendGradient.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/guides/legendItems.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  },
+  "coverage": {
+    "materialization/guides/legendGradient.js": {
+      "lines": 100,
+      "branches": 97.22,
+      "functions": 100
+    },
+    "materialization/guides/legendItems.js": {
+      "lines": 100,
+      "branches": 96.15,
+      "functions": 100
+    },
+    "materialization/guides/legendLayout.js": {
+      "lines": 96.36,
+      "branches": 90.24,
+      "functions": 100
+    },
+    "materialization/guides/legendSamples.js": {
+      "lines": 97.73,
+      "branches": 95.45,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 98.57,
+      "branches": 95.55,
+      "functions": 100
+    }
+  }
+}

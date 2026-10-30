@@ -377,7 +377,7 @@
     },
     "contracts/realistic-guide-transitions.test.js": {
       "record": ".artifacts/checks/suite-realistic.json",
-      "durationMs": 3653.4530409999998,
+      "durationMs": 2656.081125,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

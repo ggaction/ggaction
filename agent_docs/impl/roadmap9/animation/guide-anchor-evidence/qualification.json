@@ -1,0 +1,29 @@
+{
+  "status": "verified-private-preparation",
+  "baseline": "312026112",
+  "nativeTests": 98,
+  "newLiteralTests": 5,
+  "coverageTests": 45,
+  "geometryOwners": 3,
+  "geometryCoverage": {
+    "lines": 100,
+    "branches": 92.31,
+    "functions": 100
+  },
+  "criticalFloors": "gridGeometry/parallelGuides 100/100/100 passed",
+  "boundaryDiscoveryCoveragePolicy": 36,
+  "finalPackageDocumentationPolicy": 18,
+  "exactProgramAndTraceComparisons": 3,
+  "installed": {
+    "sha256": "7027f21a7986f75c2f5ff57a2eb6db7ad924627c6cd11ab0e8317910d08c4c7b",
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "nativeCasesEach": 3,
+    "bundleMeasurements": 18,
+    "sameMeasurementsUnderNewLimits": "passed"
+  },
+  "scope": "Private geometry ownership only; new typed guide details remain unconnected."
+}

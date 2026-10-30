@@ -206,7 +206,7 @@ Current angles stay unwrapped when a frame is reused as an endpoint. Offline rep
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
 
-## Move ticks, labels, and grids
+## Move axes, labels, and grids
 
 Cartesian axis lines, ticks, fixed-layout labels, and grids, plus polar axes,
 spokes, and circle grids, retain their raw guide values. Compatible transitions
@@ -245,9 +245,19 @@ enter/exit decisions with `reason: 'guide-ambiguity'`. A changed label string us
 an appearance crossfade. Current sampled guides can be reused as either endpoint.
 Offline restore validates their values, geometry, and version before replay.
 
-Flush, rotated, or responsive reflow labels and edited geometry retain explicit
-fallbacks. Band-boundary grids, titles, legends, and Parallel guides remain outside
-this typed guide kernel. They use the existing anonymous enter/exit behavior.
+Titles with explicit numeric offsets retain their native range role or numeric `at`
+value. Changing `at` on a log axis maps the interpolated value through the log scale;
+it does not interpolate screen coordinates. Polar titles use their native frame and
+shortest angular path. Title text or font changes crossfade safely.
+
+Band-boundary grids match the complete set of category edges that share each boundary.
+Parallel axes match by field name, component, and raw tick value when fields move,
+appear, or disappear. Neither uses array position as identity. If native band edges
+split during a transition, that boundary crossfades explicitly.
+
+Flush, rotated, or responsive reflow labels, inferred or label-relative title clearance,
+and edited geometry retain explicit fallbacks. Legends remain outside this typed guide
+kernel and use the existing anonymous enter/exit behavior.
 
 ## Move geographic cameras
 

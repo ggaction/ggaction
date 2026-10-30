@@ -65,3 +65,5 @@ Canvas resize 배경의 기존 weighted raster와 가이드 자체의 vector pat
 설치·문서·첫 실패·한도 측정 및 source pin 근거는 [공개 증거](./guide-public-evidence/README.md)다.
 이 체크포인트는 위에 표시한 native guide slice만 닫으며 전체 STEP061/062/063/077이나
 title·legend·Parallel·reflow·band-boundary guide와 timeline을 완료로 세지 않는다.
+
+남은 native 의미의 책임·정책·준비 상태는 [GUIDE_DETAILS](GUIDE_DETAILS.md)에 기록한다.

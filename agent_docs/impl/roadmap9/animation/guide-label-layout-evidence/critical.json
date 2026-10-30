@@ -1,0 +1,26 @@
+{
+  "floors": {
+    "materialization/axisLabelLayout.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/guides/axes/labels.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "coverage": {
+    "actions/guides/axes/labels.js": {
+      "lines": 97.2,
+      "branches": 93.14,
+      "functions": 100
+    },
+    "materialization/axisLabelLayout.js": {
+      "lines": 100,
+      "branches": 97.5,
+      "functions": 100
+    }
+  }
+}
