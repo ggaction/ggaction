@@ -1,3 +1,5 @@
+import { resolveAxisLabelGeometry, axisLabelLineOffset } from "../../../grammar/axisGeometry.js";
+import { valuesFromTickConfig } from "../../../materialization/guides/tickValues.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { normalizeResponsiveLabels } from "../../../grammar/responsiveLabels.js";
 import { annotateError, getErrorDetails } from "../../../core/diagnostics.js";
@@ -29,15 +31,10 @@ import {
 } from "../../../grammar/scales/index.js";
 import { validateTickRounding } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
-import { valuesFromTickConfig } from "../tickValues.js";
+
 import { AXIS_LABEL_FONT_WEIGHT, AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
-import {
-  defaultAxisPosition,
-  resolveAxisLabelGeometry,
-  validateAxisFormat,
-  validateAxisPosition
-} from "./policy.js";
+import { defaultAxisPosition, validateAxisFormat, validateAxisPosition } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
@@ -220,9 +217,7 @@ function expandWrappedLabels(resolved, text, config, channel, profile) {
     for (let line = 0; line < lines.length; line += 1) {
       expanded.text.push(lines[line]);
       expanded.x.push(baseX);
-      expanded.y.push(channel === "x"
-        ? baseY + (resolved.textBaseline === "top" ? line : -line) * lineHeight
-        : baseY + (line - (lines.length - 1) / 2) * lineHeight);
+      expanded.y.push(baseY + axisLabelLineOffset(channel, resolved.textBaseline, line, lines.length, lineHeight));
       expanded.groups.push(index);
     }
   }

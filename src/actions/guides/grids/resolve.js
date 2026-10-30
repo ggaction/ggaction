@@ -1,3 +1,4 @@
+import { valuesFromTickConfig } from "../../../materialization/guides/tickValues.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { cartesianAxisOwners } from "../../../selectors/axes.js";
 import { gridNames } from "../../../selectors/grids.js";
@@ -19,13 +20,10 @@ import {
   mapContinuousScaleValues
 } from "../../../grammar/scales/index.js";
 import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
-import { resolveGridLineGeometry } from "../../../layout/grid.js";
+import { resolveGridLineGeometry } from "../../../grammar/gridGeometry.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
-import {
-  inferGridTickConfig,
-  valuesFromTickConfig
-} from "../tickValues.js";
+import { inferGridTickConfig } from "../tickValues.js";
 import {
   findGraphicParent,
   graphicSiblings,

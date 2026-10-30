@@ -125,9 +125,32 @@ closed shape, finite/ordered radius, node cardinality, exact lineage 및 native 
 현재 polar 의미는 flat provenance에 보존되어 이전 plan 없이 양방향 재기준과 offline 재생이 가능하다.
 공개 6개 함수 원형과 concrete scene schema는 바뀌지 않는다.
 
+## Native guide 값 전환
+
+Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/circle grid는
+`guide-geometry` kernel을 사용한다. 기존 native geometry 및 scale owner의 값→위치 계산을
+재사용하며 현재 frame을 양방향 endpoint로 사용할 수 있다. 키는 실제 child namespace,
+명시 guide owner, component, typed raw value, label line role로 구성한다. 표시 문자열이나
+배열 index로 다른 값을 대응시키지 않는다. matched decision의 `guideKey`는 mark `itemKey`와
+별도이며 role은 `guide-line|guide-ticks|guide-labels|guide-grid`다.
+
+동일 raw value의 scale/domain/range와 frame을 먼저 보간한 뒤 native geometry를 만든다.
+새 값과 제거된 값은 enter/exit이며 중복 raw value는 `guide-ambiguity` reason의 별도 enter/exit다.
+같은 값의 label 문자열·font/static style 변경은 appearance crossfade다. 동일 label 줄 구성과
+정렬 정책을 유지하며 복잡한 flush·rotation·responsive reflow는 `guide-layout`, 명시 geometry
+편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
+다음 transition도 명시 fallback한다. Band-boundary grid, axis title, legend, Parallel guide는
+이 typed kernel에 포함되지 않으며 기존 anonymous enter/exit를 유지한다.
+
+Optional endpoint `guides` vector와 `native-guide-values@1` manifest를 보존한다. Strict restore는
+closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
+sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
+저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.
+Canvas resize background의 기존 weighted lowering과 guide 자체 vector 출력은 구분한다.
+
 ## Solid 색·투명도·선 두께 전환
 
-호환되는 point·Cartesian·polar·graph·partition geometry track과 native Geo feature는
+호환되는 point·Cartesian·polar·guide·graph·partition geometry track과 native Geo feature는
 같은 현재 geometry에 solid fill/stroke, opacity, 명시 strokeWidth를 함께 보간한다.
 색은 기존 host-independent parser와 premultiplied linear-sRGB kernel을 사용한다.
 예를 들어 black→white의 절반은 sRGB 약0.735357(8bit188)이며, none→red는 red chroma를

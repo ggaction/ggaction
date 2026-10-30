@@ -23,6 +23,11 @@ const from=chart(),to=chart();
 const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}});
 planTransition({from:basic(),to:basic(),options:{durationMs:0}});
 const frame=sampleTransition(plan,50);
+for(const decision of frame.decisions)if(decision.kind==='semantic-kernel'){
+  const guide:string|undefined=decision.guideKey;
+}else if(decision.kind==='enter'||decision.kind==='exit'){
+  const reason:'guide-ambiguity'|undefined=decision.reason;
+}
 for(const decision of frame.decisions)if(decision.kind==='geographic'){
   const key:string=decision.itemKey;const owner:string=decision.ownerKey;
   const kernel:'native-geo'=decision.kernel;

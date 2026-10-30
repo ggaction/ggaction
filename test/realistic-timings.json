@@ -63,7 +63,8 @@
     "contracts/realistic-trail-plots.test.js": 2968,
     "contracts/realistic-waterfall-plots.test.js": 3002,
     "contracts/realistic-geographic-transitions.test.js": 1468,
-    "contracts/realistic-polar-transitions.test.js": 1593
+    "contracts/realistic-polar-transitions.test.js": 1593,
+    "contracts/realistic-guide-transitions.test.js": 3654
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -352,6 +353,17 @@
     "contracts/realistic-composition-recipes.test.js": {
       "record": "1793318509594-54262.json",
       "durationMs": 1583.912208,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-guide-transitions.test.js": {
+      "record": ".artifacts/checks/suite-realistic.json",
+      "durationMs": 3653.4530409999998,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

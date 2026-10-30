@@ -1594,6 +1594,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/guides-offline-native",
+        "statements": 17
+      },
+      {
         "id": "animation/polar-offline-native",
         "statements": 4
       },

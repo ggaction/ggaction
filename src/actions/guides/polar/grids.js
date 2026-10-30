@@ -1,3 +1,4 @@
+import { mapPolarGuideValues } from "../../../materialization/guides/tickValues.js";
 import { withGuideVisibilityPaint } from "../../../materialization/guides/visibility.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
@@ -12,15 +13,7 @@ import {
   resolveRadialCircles,
   resolveThetaSpokes
 } from "../../../grammar/polarGuides.js";
-import {
-  POLAR_GRID_DEFAULTS,
-  mapPolarGuideValues,
-  normalizePolarTickMode,
-  polarGuideNames,
-  resolvePolarFrameForProgram,
-  resolvePolarGuideResources,
-  validatePolarTickConfig
-} from "./resolve.js";
+import { POLAR_GRID_DEFAULTS, normalizePolarTickMode, polarGuideNames, resolvePolarFrameForProgram, resolvePolarGuideResources, validatePolarTickConfig } from "./resolve.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "count", "values", "color", "lineWidth",

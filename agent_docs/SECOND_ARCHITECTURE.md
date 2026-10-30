@@ -893,6 +893,19 @@ bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래
 
 독립 Text 숫자 오프셋은 기존 encoding, 순수 Text grammar와 Text materializer를 재사용한다. 새 상태 owner나 renderer boundary는 없으며, 실측 Full gzip424768bytes에 따라 한도만425000으로 보정한다. Basic214000/SVG25000은 유지한다.
 
+### Native guide geometry and scoped metadata ownership
+
+Native axis/grid actions, hit metadata, and animation preparation share pure geometry
+(`grammar/axisGeometry.js`, `grammar/gridGeometry.js`) and read-only guide value/item
+association (`materialization/guides/`). Composition traversal uses the shared
+`selectors/graphicScopes.js`; each caller retains its validation and work budget.
+Actions still explicitly materialize graphics. These shared calculations do not add a
+semantic compiler, renderer access to meaning, or new stored graphic identity. Public
+animation preparation carries guide meaning in an optional endpoint vector. The same
+closed validator checks native forward geometry, sampled identity and offline restore;
+flat frame provenance retains current guide values without retaining previous plans.
+Exact supported guide families and fallbacks belong to the Current Animation contract.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
@@ -900,11 +913,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 774,400 bytes |
-| `ggaction/basic` | 422,400 bytes |
+| `ggaction/basic` | 422,500 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 131,100 bytes |
-| `ggaction/animation` | 233,000 bytes |
+| `ggaction/interaction` | 131,400 bytes |
+| `ggaction/animation` | 243,700 bytes |
+
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는

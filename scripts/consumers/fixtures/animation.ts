@@ -7,6 +7,13 @@ import {renderToPDFBuffer} from 'ggaction/pdf';
 const from=chart(),to=chart(),plan=planTransition({from,to,options:{durationMs:100}});
 planTransition({from:basic(),to:basic(),options:{durationMs:0}});
 const frame=sampleTransition(plan,50),frames=exportAnimationFrames(plan,{timesMs:[0,50,100]});
+for(const decision of frame.decisions){
+ if(decision.kind==='semantic-kernel'||decision.kind==='exact'||decision.kind==='crossfade'){
+  const guide:string|undefined=decision.guideKey;void guide;
+ }else if(decision.kind==='enter'||decision.kind==='exit'){
+  const reason:'guide-ambiguity'|undefined=decision.reason;void reason;
+ }
+}
 planTransition({from:frames[0],to:frame,options:{durationMs:10,easing:'linear'}});
 declare const context:CanvasRenderingContext2D;
 render(frame,context);renderToSVG(frame);renderToPNGBuffer(frame);renderToPDFBuffer(frame);
