@@ -92,12 +92,12 @@ import { createInteractionSession } from "ggaction/interaction";
 const assetSession = createInteractionSession({
   program,
   bindings: interactionBindings,
-  async assetResolver({ program, signal }) {
+  async assetResolver({ program, frame, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
     let ready = false;
     try {
-      const images = await prepareImageRendering(program, {
+      const images = await prepareImageRendering(frame ?? program, {
         signal,
         async decode({ bytes, mimeType }) {
           const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
@@ -114,8 +114,9 @@ const assetSession = createInteractionSession({
 const stopDrawing = assetSession.subscribe(event => {
   const state = event.state;
   if (state.destroyed) return;
-  const current = state.previewProgram ?? state.program;
-  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  const current = state.previewFrame ?? state.animationFrame ?? state.previewProgram ?? state.program;
+  const assets = state.previewFrame ? state.previewAssets : state.animationFrame ? state.frameAssets
+    : state.previewProgram ? state.previewAssets : state.assets;
   if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
@@ -1145,6 +1146,28 @@ flow layouts do not accept node movement. Gesture cancellation releases capture 
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
 when delivering external frames. General keyboard item navigation and unpin controls are not
 installed by this binding.
+
+### Drag a graph during animation
+
+A `moveNode` binding can start from an accepted authentic animation frame when its current graph
+meaning has the same native owner and complete node/edge topology. The initial pointer offset is
+preserved. During dragging, `state.previewFrame` contains the actual current graph presentation;
+`state.program`, history and the accepted `state.animationFrame` stay unchanged. Incident routed
+edges stay attached using their current shape. Independently altered plain scenes and fallback graph
+geometry cannot supply this semantic baseline.
+
+Use the prepared drawing callback in [Prepare assets before committing](../../../api/interaction/#prepare-assets-before-committing): select
+`previewFrame` before `animationFrame`, then `previewProgram` and the committed `program`, and pair each
+with its corresponding handles. A transient graph frame uses `previewAssets`; its accepted animation
+baseline keeps `frameAssets`.
+
+With an asset resolver, prepare `request.frame ?? request.program`; the preview and its assets become
+visible together. Escape and cancellation restore the accepted frame and its original handles.
+Release updates the native layout once and creates one history entry. Fixed layouts keep current
+positions; force layouts use them as starting positions, retain existing pins and add the dragged
+node's pin. The native force solver can move other nodes on release. To animate that final change,
+retain the last preview frame and explicitly pass it as `from` to `planTransition`, with the committed
+program as `to`. Undo/redo restores native programs. Transient frames are never stored in the program.
 
 ## Edit existing annotations
 

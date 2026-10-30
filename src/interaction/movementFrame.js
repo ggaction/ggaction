@@ -18,6 +18,10 @@ export function prepareMovementFrame(base, scene, rootTransform, target, start, 
     if (before === undefined || before !== after) throw new Error("Movement requires the owner's committed concrete frame.");
   }
   const offset = programHitOwnerPlacement(base, target.childPath).offset;
+  return prepareMovementCoordinates(scene, rootTransform, start, offset);
+}
+
+export function prepareMovementCoordinates(scene, rootTransform, start, offset) {
   const map = point => {
     const mapped = resolveHitCoordinates({ point, rect: { left: 0, top: 0, width: scene.width, height: scene.height }, rootTransform,
       childTransforms: [[1, 0, 0, 1, ...offset]] });

@@ -99,6 +99,18 @@ test("the frame association shared by interaction reaches only its lightweight c
   }
 });
 
+test("current graph presentation has no action assembly or host dependency in its import closure", () => {
+  const pending = [path.join(root, "animation", "graphPresentation.js")], seen = new Set();
+  while (pending.length) {
+    const file = pending.pop(); if (seen.has(file)) continue; seen.add(file);
+    const relative = path.relative(root, file);
+    assert.ok(!["actions", "entrypoints", "resources"].includes(layer(file)), relative);
+    assert.ok(relative !== "index.js" && relative !== "basic.js", relative);
+    for (const { specifier } of moduleSpecifiers(readFileSync(file, "utf8"))) assert.ok(specifier?.startsWith("."), `${relative}: ${specifier}`);
+    pending.push(...localImports(file));
+  }
+});
+
 test("keeps source imports inside their architectural boundaries", () => {
   for (const file of sourceFiles()) {
     const owner = layer(file);
@@ -109,6 +121,7 @@ test("keeps source imports inside their architectural boundaries", () => {
           (owner === "animation" && ["sceneSnapshot.js", "version.js", path.join("renderers", "canvasScene.js")].includes(path.relative(root, dependency))) ||
           (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === "sceneSnapshot.js") ||
           (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === path.join("animation", "frameProvenance.js")) ||
+          (path.relative(root, file) === path.join("interaction", "nodeMovement.js") && path.relative(root, dependency) === path.join("animation", "graphPresentation.js")) ||
           (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
           (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
             "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",

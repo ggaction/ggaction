@@ -66,6 +66,25 @@ test("node move rejects inapplicable layouts and malformed positions atomically 
   assert.throws(() => b.dispatch(move(1, 1, 1)), /editLayout/); b.destroy();
 });
 
+test("a current layout view can retain unchanged dormant coordinates in one native replacement", () => {
+  for (const method of ["fixed", "force"]) {
+    const initial = make(method), p = initial.reviseData({ source: "nodes", id: "reduced-view", values: rows.slice(0, 2) });
+    const before = serializeProgram(p), field = method === "fixed" ? "positions" : "initialPositions";
+    const coordinates = positions.map(position => position.key === "other" ? position : { ...position, x: position.x + 10, y: position.y + 20 });
+    const patch = { [field]: coordinates, ...(method === "force" ? { pinned: [{ key: "other", fx: 200, fy: 60 }, { key: 1, fx: 50, fy: 80 }] } : {}) };
+    const next = p.editLayout({ target: "layout", options: patch });
+    assert.equal(layout(next).revision, layout(p).revision + 1);
+    assert.deepEqual(layout(next).options.options[field].find(value => value.key === "other"), positions[2]);
+    const restored = next.reviseData({ source: "reduced-view", id: "restored-view", values: rows });
+    assert.equal(layout(restored).result.nodes.length, 3);
+    for (const invalid of [coordinates.map(value => value.key === "other" ? { ...value, x: 999 } : value),
+      [...coordinates, { key: "unknown", x: 0, y: 0 }],
+      coordinates.map(value => value.key === "other" ? { ...value, key: ["other"] } : value)]) assert.throws(() => p.editLayout({ target: "layout", options: { [field]: invalid } }));
+    if (method === "force") assert.throws(() => p.editLayout({ target: "layout", options: { pinned: [{ key: "other", fx: 201, fy: 60 }] } }));
+    assert.equal(serializeProgram(p), before);
+  }
+});
+
 function surface() {
   const listeners = new Map(), captures = new Set(), pending = new Map(); let id = 0;
   return { listeners, captures, pending, host: { getBoundingClientRect: () => ({ left: 10, top: 20, width: 360, height: 260 }),

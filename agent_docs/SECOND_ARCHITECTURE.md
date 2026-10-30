@@ -4611,3 +4611,21 @@ Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebas
 색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
 Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
 정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Current graph presentation and native drag commit
+
+현재 graph 의미의 forward geometry owner를 `materialization/graph/frameGeometry`로 분리해 native
+animation 준비와 `animation/graphPresentation`이 함께 사용한다. 후자는 기존 flat frame proof의
+source authority를 보존한 일시 frame만 만들며, 과거 frame/plan chain이나 새 저장 schema를 만들지 않는다.
+Interaction node movement는 exact current native membership을 검증한 뒤 이 작은 owner만 호출한다.
+Full action assembly는 import하지 않으며 public native `editLayout`은 release에 한 번 호출한다.
+Session은 `previewFrame`과 준비 lease를 원자 게시하고 기존 `animationFrame`을 취소 기준으로 유지한다.
+취소·source 변경·destroy는 기존 capture/preparation owner가 정리한다. Exact API/수명은
+[Current interaction](contract/current/INTERACTION.md#graph-node-dragging)이 소유한다.
+
+이 공개 연결의 동일 tar 검증은 package entries1161, packed 최대1,663,855 bytes, unpacked
+7,518,359 bytes를 측정해 상한을1161/1,664,000/7,519,000으로 맞췄다. Node20/22/24의
+여섯 browser entry 중 변경 상한은 Full774,500과 interaction136,100 gzip bytes이며, 실제 최대는
+774,417/136,076이다. Basic422,391과 animation232,964는 기존 상한을 유지한다. 새 사용 설명의
+검색 JSON은1,083,394 bytes여서 상한을1,083,400으로 최소 조정했다. 이전 실패와 정확한 archive
+및 소비자 증거는 [구현 기록](impl/roadmap9/interaction/GRAPH_PRESENTATION.md)에 보존한다.

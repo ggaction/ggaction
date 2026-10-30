@@ -33,6 +33,7 @@
     "contracts/realistic-geographic-join.test.js": 1652,
     "contracts/realistic-geographic-levels.test.js": 997,
     "contracts/realistic-geographic-marks.test.js": 1752,
+    "contracts/realistic-graph-drag.test.js": 25657,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-hierarchy-lifecycle.test.js": 9912,

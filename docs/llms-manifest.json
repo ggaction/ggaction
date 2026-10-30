@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:cfdc64d6dadccf1ee0cc2538d77fc5c0c719b5399f16105ec6c4ea966f726451",
+    "contractId": "sha256:c24acaaf530fcf4122003f047f5e9d15bb185089f0a83027776620df6ff856be",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1330,6 +1330,7 @@
         "adjust-a-geographic-view-from-host-controls",
         "navigate-a-map-with-drag-wheel-pinch-and-keyboard",
         "move-graph-nodes-with-pointer-or-keyboard",
+        "drag-a-graph-during-animation",
         "edit-existing-annotations",
         "prepare-native-work-before-replacing-the-program",
         "combine-editing-gestures",
@@ -1337,8 +1338,8 @@
         "accessible-tooltips-and-touch",
         "native-control-alternatives"
       ],
-      "bytes": 100231,
-      "sha256": "bf04a5f203d2532fe4e0588a8924e76952d373cdc3cedce5126796654e122b97"
+      "bytes": 102023,
+      "sha256": "1b205b4476385417ce65699cb70ae89313ff0072a11ab03e3b4301f64ae78242"
     },
     {
       "order": 78,
@@ -2643,8 +2644,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 80025,
-      "sha256": "0dd0941854718ebbeee674c33e1d6ebdfdac0ec21d2885c7d07c9ae528063da0"
+      "bytes": 80181,
+      "sha256": "fa89327c27880160dd98db520710985a4a57e39fc7bebcec0f483ce0d6422402"
     },
     {
       "order": 132,
@@ -3954,7 +3955,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "3ba464f464d4ca2c9c5e3072c62b4bb7e98dbcbb0743176bb80727f25dc4a74b"
+      "sha256": "eb020d56cd972e20e9d0df0c2b2593cf4698064cf9c52c0eec761d635d03c0c6"
     },
     {
       "order": 156,

@@ -84,6 +84,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-geographic-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
       }
     ],
     "architecture": [
@@ -1472,6 +1476,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
       }
     ],
     "rendering": [

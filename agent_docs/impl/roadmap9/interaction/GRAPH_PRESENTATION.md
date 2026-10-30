@@ -5,10 +5,10 @@
 - [x] STEP041 AT80/81 원문과 기존 native moveNode 차이 확인
 - [x] 현재 공개 scene bridge를 통한 두 overlap 후보와 selected-only 임시 geometry 실험
 - [x] 기존 native edge geometry와 공통 route sample owner를 재사용한 독립 pure 계산
-- [ ] authentic graph 의미벡터를 사용하는 실제 session 연결
+- [x] authentic graph 의미벡터를 사용하는 실제 session 연결
 - [ ] overlap keyboard 후보 순환·일시 unbundle·tooltip 통합
-- [ ] animated fixed/force drag, 한 native commit, cancel/undo/redo, 준비 lease 연결
-- [ ] 실제 공개 4 renderer·browser·동일 archive 소비자
+- [x] animated fixed/force drag, 한 native commit, cancel/undo/redo, 준비 lease 연결
+- [x] 그래프 드래그의 실제 공개 4 renderer·browser·동일 archive 소비자
 
 이 기록은 STEP041/070 전체 완료가 아니다. 과거 [edge-bundling 공개 기록](../chart/edge-bundling-public.md)의
 미완료 current-frame 의무를 이어받는다. 공통 승인 원문은 [AUTHORIZATION](../AUTHORIZATION.json)의
@@ -67,3 +67,26 @@ work bound가 있다. 아직 private 계산이므로 public session, installed c
 1135/1,620,000/7,337,000으로 최소 조정했다. Node22 실제 installed Full/Basic bundle은
 772,483/421,199 gzip bytes로 이전 source와 동일하다. 다른 entry와 public session의 설치
 검증을 이 private checkpoint에서 재실행했다고 주장하지 않는다.
+
+## 현재 의미에서 시작하는 드래그 공개 연결
+
+기존 `remainingApproval`과 사용자의 잔여 전체 승인 아래 다음 구체 선택을 적용한다.
+- `previewFrame: TransitionFrame|null`은 현재 native 의미에서 forward materialize한 일시 표시다.
+  원래 `animationFrame`/`frameAssets`는 취소 기준으로 유지하고, `previewAssets`는 새 표시와 함께 게시한다.
+- exact native graph/layout ID, scoped owner, 전체 node/edge membership 및 각 실제 role의 native geometry를
+  검사한다. 다른 source, 임의 scene clone, fallback geometry를 새 권한으로 승격하지 않는다.
+- current 의미 좌표에서 시작해 CSS delta만 역변환한다. Native layout editor는 preview에서 호출하지
+  않고 release에서 한 번 호출한다. Force는 현재 positions를 initialPositions로 주고 기존 pin과 drag pin만
+  유지한다. 원 카드 AT80/81은 current route endpoint 연속성을 요구하므로 preview에서 보장하며, native solver의
+  다른 노드까지 release pixel 동일성을 새 요구로 추가하지 않는다. Host는 마지막 preview→native result 전환을
+  기존 planTransition으로 명시 연결할 수 있다.
+- Native 배열 교체가 기존 dormant typed key와 두 좌표를 그대로 운반할 때만 보존한다. 새 dormant,
+  좌표 변경, 다른 typed key는 거부한다. 이는 current-view 전체 좌표의 한 native commit에 필요한 최소 경계다.
+- frameProvenance는 이전 frame을 보유하지 않고 기존 flat native authority와 각 family 의미를 재사용한다.
+  graph geometry의 공통 계산을 `materialization/graph/frameGeometry`로 추출해 animation projector와
+  interaction presentation이 동일 결과를 소비한다. Interaction은 Full/native assembly를 import하지 않는다.
+
+통과한 소스 증거: fixed/force 및 routed drag, nested negative CSS, cancel/reverse/source/teardown, exact handle
+준비·stale 결과·재진입, native 한 revision/history/undo/redo, Canvas/SVG DPR1·2 및 public 설치 소비자.
+이 절은 소스 진행 기록이며 최종 qualification 수치·archive·실패 로그는 별도 evidence에 고정한다.
+AT80의 공개 temporary edge 표시/후보 keyboard cycle 및 전체077 완료는 아직 주장하지 않는다.

@@ -15,7 +15,7 @@
 - Alternatively, `dispatch({type:"frame",frame:TransitionFrame,version,generation})` accepts an authentic native animation sample under the contract below. Exactly one of `scene` or `frame` is required.
 - `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
 - `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
-- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,focus,linkedSelections,history,assets,previewAssets,animationFrame,frameAssets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
+- `getState()` returns `{program,previewProgram,previewFrame,scene,frameVersion,generation,revision,hit,focus,linkedSelections,history,assets,previewAssets,animationFrame,frameAssets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
 Dispatch and updateProgram return `{status:"applied"|"queued"|"stale"|"unchanged"}`. Reentrant calls return queued; invalid operations throw. No inspection creates a selection resource, persistent hover, authoring transaction, history entry or asset request.
@@ -561,7 +561,25 @@ cancel the draft, cancel RAF and release capture. Cancelling a geometry preview 
 hit frame. Frame versions advance for previews and restoration as well as commit; an external frame
 that interrupts a preview may receive a later frameVersion to retain this ordering. Read the current
 frameVersion when producing the next external frame. Session revision still changes only on commit.
-A sampled moving node must return to its committed concrete geometry before a new drag can start.
+An authentic animation frame with complete current graph meanings can start a drag directly. The exact
+current native owner, scoped graph/layout identity, node keys and edge topology must still match. Every
+represented graph role must agree with the shared native forward geometry. Copied/plain altered scenes,
+fallback graph roles, partial topology and incompatible owners reject before capture.
+
+For that path, RAF computes `previewFrame` from the accepted frame's current semantic node coordinates.
+Other nodes retain their current coordinates; incident routed points follow endpoint displacement by
+route arc length and use the native clipping/arrow owner. No native layout action, committed program or
+history entry is created during preview. `animationFrame` and `frameAssets` remain the accepted baseline.
+The preview is itself an authentic TransitionFrame and can be passed to `planTransition` as a new start.
+Release creates one native layout replacement from current positions. Fixed layouts preserve them;
+force layouts use them as initial positions, preserve existing pins and pin the dragged node before
+running the existing solver once. Other nodes are not permanently pinned. Native solver and route output
+may differ from the last preview; the host may explicitly transition from that preview to the committed
+program. Undo/redo restore the exact native programs, not a transient picture.
+
+Cancel restores the exact accepted animation frame and its lease. Source/frame replacement and teardown
+cancel capture and pending jobs; stale results cannot replace the current frame. Explicit `moveNode`
+commands continue to mean native layout coordinates and do not implicitly inherit an animation frame.
 
 The host supplies capture, RAF and its touch-action policy. Keyboard controls may send `moveNode`
 with explicit typed key and layout coordinates. General keyboard focus, unpinning and
@@ -762,17 +780,17 @@ navigation browser snippet. Full camera animation remains separate.
 When assetResolver is configured, the existing editing gesture adapters prepare transient candidates
 through the same asset preparation owner. Initial committed preparation must be accepted before capture
 starts. Each RAF sample supersedes the preceding pending preview; a previously accepted preview remains
-visible while its replacement prepares. Success publishes previewProgram, readonly previewAssets and
+visible while its replacement prepares. Success publishes previewProgram (or previewFrame for an authentic animated graph drag), readonly previewAssets and
 the matching current hit frame together in one preview event. No committed program, revision, trace or
 history changes. Without a resolver, existing synchronous previews remain and previewAssets is null.
 
 state.preparation describes the current pending preview or native candidate using the existing four tags.
 whenSettled observes the most recently started preparation, including its settled/cancelled/error result.
-The callback receives the exact preview program and the same closed request shape. A gesture owns only
+The callback receives the exact preview program, or the current committed program plus `frame` for an animated graph preview, in the existing closed request shape. A gesture owns only
 one pending and one accepted transient lease; the committed lease stays separate and remains usable.
 
 Final pointer release calculates the latest candidate without starting another preview request, restores
-the committed frame, disposes transient leases and uses the ordinary final preparation/history path.
+the accepted baseline frame, disposes transient leases and uses the ordinary final preparation/history path.
 Preview rejection reports one gesture error and commit zero; capture and the accepted preview are released.
 Superseded results cannot publish, and each complete late lease is disposed once. Cancel, native replacement,
 frame replacement, remount, unmount and destroy discard all transient preparation. Host abort listeners
@@ -780,10 +798,11 @@ observe the restored committed state. Returned lease disposers remain exactly-on
 A disposer/subscriber exception after accepting a valid preview rejects that preparation Promise without
 rolling the accepted preview back; later cancellation/destroy still releases it.
 
-Host rendering selects state.previewProgram with state.previewAssets, or state.program with state.assets;
-it must not reuse committed handles for a preview. Existing image/font/shadow authentication is unchanged.
-This integration covers native gesture previews, not independently sampled animation scenes. Evidence:
-test/unit/interaction-preview-preparation.test.js and the actual browser bitmap lifecycle fixture.
+Host rendering selects previewFrame/previewAssets, then animationFrame/frameAssets, then
+previewProgram/previewAssets, then program/assets. It must not reuse baseline handles for a preview.
+Existing image/font/shadow authentication is unchanged. Animated graph gestures require an authentic
+current meaning; arbitrary host scenes do not gain native authority. Evidence:
+test/unit/interaction-preview-preparation.test.js, test/unit/animation/graph-drag.test.js and the actual browser bitmap lifecycle fixture.
 
 
 ## Editing gesture arbitration

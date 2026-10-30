@@ -2449,7 +2449,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "de7aebe5e0662ff0fd9ca445b98d8da78be71b2ce7f3a0481ba0c604f61c8b0d",
+    "sha256": "3cf82b6785d31dadcf7855d52345ae805e62a390973325d19cf268bc848ba096",
     "executable": false
   },
   {

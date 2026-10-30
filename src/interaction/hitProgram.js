@@ -198,7 +198,8 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: metadata.get(node.key), shape }));
   });
   const frame = freezeOwned({ scene: owned, entries: freezeOwned(entries), version });
-  registerHitFrameSource(frame, { ...source, nodes: new Map(owned.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { ...source, sample: owned === source.sample?.scene ? source.sample : undefined,
+    nodes: new Map(owned.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -209,6 +210,13 @@ export function requireAnimationFrameProgram(sample, program) {
   if (proof === undefined) throw new TypeError("Animation hit requires an authentic sampled frame.");
   if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   if (!proof.native.owners.includes(program)) throw new TypeError("Animation frame is not owned by the current native program.");
+}
+
+export function currentAnimationGraphFrame(frame, program) {
+  const source = hitFrameSource(frame);
+  if (source?.sample === undefined || !source.nativeOwners.has(program)) return undefined;
+  const proof = animationFrameProvenance(source.sample);
+  return proof.graphs === undefined ? undefined : { sample: source.sample, graphs: proof.graphs };
 }
 
 export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0]) {
@@ -268,7 +276,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (original.geographicSource !== undefined) geographicSources.set(original.metadata.itemKey, original.geographicSource);
   });
   const frame = freezeOwned({ scene: sample.scene, entries: freezeOwned(entries), version });
-  registerHitFrameSource(frame, { profiles, geographicSources, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
+  registerHitFrameSource(frame, { profiles, geographicSources, sample, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
     nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }
