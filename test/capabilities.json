@@ -627,6 +627,10 @@
     "graph": [
       {
         "type": "file",
+        "path": "unit/graph-presentation.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/graph-output.browser.js"
       },
       {

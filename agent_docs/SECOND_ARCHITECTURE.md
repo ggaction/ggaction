@@ -91,6 +91,10 @@ Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한
 materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
 screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
 Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Private `materialization/graph/presentation.js`는 검증된 현재 그래프 의미에서 일시 edge geometry와
+node 이동 값을 만든다. 기존 native edge owner와 공통 polyline의 endpoint 부착을 재사용하며
+layout·saved route·trace를 쓰지 않는다. 공개 session 연결 전의 독립 계산 경계이며, 정확한
+진행 범위는 [그래프 presentation 기록](impl/roadmap9/interaction/GRAPH_PRESENTATION.md)에 있다.
 Shared materialization의 `canvasResourceRevision` registry가 Canvas와 guide transaction의
 명시 resource adapter 경계를 소유한다. Responsive와 exact-plot guide transaction도 이를 호출한다. Responsive pass의
 domain action이 먼저 현재 후보 bounds로 source resource union을 닫고, guide-only viewport
