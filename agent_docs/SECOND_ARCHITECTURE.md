@@ -4649,3 +4649,16 @@ resolver and does not import geographic mathematics through Text.
 색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
 Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
 정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+
+### Geographic animation Text preparation
+
+`materialization/animation/geoText.js`는 native Geo source Text와 Geo annotation의 원 anchor,
+exact scoped identity/ref, source digest와 상대 Text 속성을 준비한다. Geometry·centroid·camera,
+Text content, fill/effects, collision/leader 정책은 기존 owner를 재사용한다. Shared animation
+planner는 optional `geotexts`를 단일 현재 의미값으로 보존하며 dynamic body와 Text의 실제
+collection 순서를 재사용한다. Scene의 private collection snapshot은 parent clip/offset을
+포함해 아직 생성되지 않은 leader의 placement를 endpoint pixel 역산 없이 결정한다.
+`layout/labels.js`는 기존 로컬 한도와 함께 호출자가 제공하는 transient work 누계를 받아
+한 sample의 여러 group이 합산 한도를 우회하지 않게 한다. Callback은 저장하지 않는다.
+정확한 지원/명시 crossfade/저장 검증은 Current [Animation](contract/current/ANIMATION.md)이 소유한다.

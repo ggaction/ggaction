@@ -6,8 +6,8 @@
 - [x] `AUTHORIZATION.json#remainingApproval`의 잔여 API·schema·architecture·visual 승인을 재사용한다.
 - [x] stored geographic/feature annotation의 독립 preparation·sample owner와 수치 시험.
 - [x] source Text labels의 기존 selection/format/override/placement 준비 owner 연결.
-- [ ] 현재 camera의 source Text collision layout·leaders·final effects 재실행.
-- [ ] root appearance v2 안정본 뒤 shared planner/sample/proof 연결.
+- [x] 현재 camera의 source Text collision layout·leaders·final effects 재실행.
+- [x] root appearance v2·guide 안정본 뒤 shared planner/sample/proof 연결.
 - [ ] 현재 frame hit/선택·hidden eligibility·graticule/inset·offline·네 renderer 및 설치 증거.
 
 이 문서는 계획과 구현 순서다. Current 지원이나 STEP062/AT44 완료를 선언하지 않는다.
@@ -121,3 +121,41 @@ Node20/24packed1,661,620bytes다. 기존상한을 통과했다고 주장하지 �
 현재상한 안이며 installed/public frame 검증은 아직 수행하지 않았다. 첫 owning fixture의
 placement 옵션 위치·empty constant·Line geometry 선택 오류는 원 실패로그를 보존하고
 현재 native 계약에 맞게 fixture를 수정한 뒤 다시 검증했다.
+
+## 공개 sampler 연결의 구체 계약
+
+2026-10-30 root와 `remainingApproval`을 재사용해 다음 작은 준비 경계를 채택했다.
+`geotexts`는 기존 의미 vector와 같은 optional `{groups,items}`이며, group은 scope/owner,
+exact projection/camera, Text의 raw source anchor, 원 source binding/key/geometry digest,
+상대 Text properties/font profile, layout policy/실제 bounds와 명시 collection drawing slot을 가진다.
+원 polygon은 body `geos`에만 남긴다. Native endpoint는 같은 geometry에서 기존 centroid owner로
+anchor와 digest를 검산한다. Camera sample은 검증한 raw anchor와 현재 camera만 보유하므로
+body의 structured-paint fallback과 독립적으로 Text를 forward-project할 수 있다.
+이 sampled-only payload는 과거 원 geometry의 역사적 인증을 주장하지 않는다. Point의 준비값처럼
+닫힌 source binding·digest·anchor·camera와 현재 concrete 출력의 내부 정합성을 검증하며,
+같은 source binding/key/digest에 모순되는 anchor는 두 endpoint를 포함해 거부한다.
+원 geometry·winding 변화는 digest가 달라져 명시 crossfade가 된다. Pixel을 역산하지 않는다.
+
+Native all/inline/named 선택·format·conditional content/paint는 preparation에서 원 Text owner가
+결정한다. 현재 camera에 맞춰 native collision layout/leader geometry와 fill bounds를 다시 계산한다.
+정확 endpoint는 원 객체를 반환한다. Dynamic Text/leader는 `native-geo-text` geographic decision으로
+실제 source identity를 갖고 가짜 endpoint index를 만들지 않는다. 현재 의미·font 자산·실제drawing
+slot은 rebase/closed offline에서도 유지한다. 일반 edited graphics나 지원하지 못하는 조합은 이유를
+보유한 concrete fade이며, 이를 해당 family 의무 완료로 세지 않는다.
+
+
+## 공개 source 체크포인트 검증
+
+현재 source는 typed camera Text와 exact endpoint/rebase/closed offline를 연결했다.
+`.artifacts/animation-geo-text/public-source-owning.log`는 누적 animation와 source/package/type
+384개 중 383개 통과이며 유일 실패는 기존 TypeScript fixture의 geographic kernel 단일 값
+기대였다. 새 native-geo-text union을 fixture에 동기화한 후
+`public-owning-final-2.log`에서 신규12개+strict types1개 13/13 통과했다.
+앞서 empty/null-only source에 존재하지 않는 field를 지정한 fixture와 clip reason 기대값,
+배경 node를 빠뜨린 budget fixture의 실패도 원 로그에 보존했다. Runtime 오류로 숨기지 않는다.
+
+양 endpoint가 모두 hidden인 5,001개 feature+label의 중간 10,002 item 출력을 실제 생성해
+공통 10,000 한도에서 sample/export 모두 거부하고 원 endpoint를 유지함을 확인했다.
+Source reader D bridge 합산 뒤 actual click/keyboard, critical coverage, 네 backend, browser,
+실데이터, 고정 tar 3Node와 최종 문서는 아직 진행 항목이며 이 source commit으로 완료를
+주장하지 않는다. Runtime 원안 전체 Text 의미 보간 의무도 위 fallback 설명과 구분한다.

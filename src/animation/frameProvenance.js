@@ -41,12 +41,14 @@ export function registerAnimationFrame(frame, input) {
   if (input.graphs !== undefined && (!Array.isArray(input.graphs.items) || input.graphs.items.length !== frame.scene.nodes.length)) {
     throw new TypeError("Animation frame graph items must follow its exact node order.");
   }
+  if(input.geotexts!==undefined&&(!Array.isArray(input.geotexts.items)||input.geotexts.items.length!==frame.scene.nodes.length))throw new TypeError("Geographic Text items must follow exact node order.");
   if(input.geos!==undefined&&(!Array.isArray(input.geos.items)||input.geos.items.length!==frame.scene.nodes.length))throw new TypeError("Animation Geo items must follow the exact node order.");
   if (input.partitions !== undefined && (!Array.isArray(input.partitions.items) || input.partitions.items.length !== frame.scene.nodes.length)) {
     throw new TypeError("Animation partition items must follow the exact node order.");
   }
   frames.set(frame, Object.freeze({ planIdentity: plan.identity, timeMs: input.timeMs,
     ...(input.positions === undefined ? {} : { positions: cloneAndFreeze(input.positions) }),
+    ...(input.geotexts === undefined ? {} : { geotexts: cloneAndFreeze(input.geotexts) }),
     ...(input.geos === undefined ? {} : { geos: cloneAndFreeze(input.geos) }),
     ...(input.graphs === undefined ? {} : { graphs: cloneAndFreeze(input.graphs) }),
     ...(input.guides === undefined ? {} : { guides: cloneAndFreeze(input.guides) }),

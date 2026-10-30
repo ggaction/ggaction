@@ -30,7 +30,7 @@ for(const decision of frame.decisions)if(decision.kind==='semantic-kernel'){
 }
 for(const decision of frame.decisions)if(decision.kind==='geographic'){
   const key:string=decision.itemKey;const owner:string=decision.ownerKey;
-  const kernel:'native-geo'=decision.kernel;
+  const kernel:'native-geo'|'native-geo-text'=decision.kernel;
   // @ts-expect-error a currently generated Geo part need not exist at an endpoint
   decision.targetIndex;
 }

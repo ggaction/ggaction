@@ -77,10 +77,7 @@ export function normalizeGeoAnimationPresentation(input) {
     if (!same(style, normalized)) throw new TypeError("Geo feature style must be normalized.");
   }
   tuple(value.plotOrigin, 2, "Geo plot origin");
-  closed(value.frame, ["offset", "clip", "clips"], "Geo animation frame");
-  tuple(value.frame.offset, 2, "Geo frame offset"); rectangle(value.frame.clip);
-  ownArray(value.frame.clips, "Geo frame clips");
-  for (const clip of value.frame.clips) Array.isArray(clip) ? rectangle(clip) : validateGraphicClip(clip);
+  validateGeoAnimationFrame(value.frame);
   return value;
 }
 
@@ -207,4 +204,12 @@ export function validateGeoAnimationPresentations(input, endpoint) {
   }
   for (const [index, group] of state.groups.entries()) if (!group.reason && represented[index].size !== expected[index].size) throw new TypeError("Geo state omitted a materialized native part.");
   return state;
+}
+
+export function validateGeoAnimationFrame(frame) {
+  closed(frame, ["offset", "clip", "clips"], "Geo animation frame");
+  tuple(frame.offset, 2, "Geo frame offset"); rectangle(frame.clip);
+  ownArray(frame.clips, "Geo frame clips");
+  for (const clip of frame.clips) Array.isArray(clip) ? rectangle(clip) : validateGraphicClip(clip);
+  return frame;
 }

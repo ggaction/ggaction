@@ -32,19 +32,7 @@ export function normalizeGeoAnnotationPresentation(input) {
   ownRecord(value.properties, "Geographic Text properties"); ownArray(value.plotOrigin, "Geographic Text plot origin");
   if (typeof value.properties.text !== "string") throw new TypeError("Geographic Text requires string content.");
   if (value.plotOrigin.length !== 2 || value.plotOrigin.some(n => !Number.isFinite(n))) throw new TypeError("Geographic Text plot origin requires two finite values.");
-  if (value.textMetrics !== null) {
-    (value.textMetrics.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(value.textMetrics);
-  }
-  const binding = fontMetricBinding(value.textMetrics, value.properties), font = value.properties.font;
-  if (binding === undefined ? font !== undefined : font === undefined ||
-      Object.entries(binding.identity).some(([key, expected]) => font[key] !== expected)) {
-    throw new TypeError("Geographic Text font must match its exact prepared measurement identity.");
-  }
-  if (binding !== undefined) {
-    for (const text of value.properties.lines?.map(line => line.text) ?? [value.properties.text]) {
-      measureTextWidth(text, value.properties, value.textMetrics);
-    }
-  }
+  validatePreparedGeoTextFont(value.properties, value.textMetrics);
   // Check even currently hidden Text. Bounds-dependent paint uses the native
   // owner at an explicit origin; its anchor is never inferred from old pixels.
   const candidates = materializeFillItemsInPlot([{ type: "text", properties: value.properties }], {
@@ -77,4 +65,20 @@ export function projectGeoAnnotationAnimation(program, layer, namespaces = []) {
   return normalizeGeoAnnotationPresentation({ state,
     properties: geoAnnotationTextProperties(program, config, { x: 0, y: 0 }, binding.text),
     plotOrigin: [plot.x, plot.y], textMetrics: program.materializationConfigs.textMetrics ?? null });
+}
+
+export function validatePreparedGeoTextFont(properties, textMetrics) {
+  if (textMetrics !== null) {
+    (textMetrics.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(textMetrics);
+  }
+  const binding = fontMetricBinding(textMetrics, properties), font = properties.font;
+  if (binding === undefined ? font !== undefined : font === undefined ||
+      Object.entries(binding.identity).some(([key, expected]) => font[key] !== expected)) {
+    throw new TypeError("Geographic Text font must match its exact prepared measurement identity.");
+  }
+  if (binding !== undefined) {
+    for (const text of properties.lines?.map(line => line.text) ?? [properties.text]) {
+      measureTextWidth(text, properties, textMetrics);
+    }
+  }
 }

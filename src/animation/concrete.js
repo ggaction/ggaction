@@ -11,7 +11,7 @@ import { isPointAnimationFallbackReason } from "../grammar/animation/pointState.
 
 import { isGraphAnimationFallbackReason } from "../grammar/animation/graphState.js";
 
-const reasons=new Set(["primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
+const reasons=new Set(["geo-text-layout","geo-text-membership","primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
   "degenerate-domain","scale-direction","log-sign","canvas-background","collapsed-domain","nonfinite-position"]);
 export function validateAnimationFallbackReason(reason) {
   if(!isGuideAnimationFallbackReason(reason)&&!isGeoAnimationFallbackReason(reason)&&!isPolarAnimationFallbackReason(reason)&&!isPartitionAnimationFallbackReason(reason)&&!isCartesianAnimationFallbackReason(reason)&&!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");

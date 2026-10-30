@@ -252,5 +252,26 @@ childPath/owner/source feature를 검증한다. Offline payload는 native progra
 source의 child scope/owner/resource kind+id/key 교집합을 사용한다. 각 source revision을 독립
 검증하며 서로 같다고 가정하지 않는다. Target hit lineage는 유지하고 선택 intent가 현재 native
 projection에서 숨겨지면 저장은 유지하되 visible highlight는 비어 있다.
-Geo labels/annotation의 camera-aware typed 이동은 별도 통합 의무이며 이 Geo body 경로의
-완료로 간주하지 않는다.
+
+### Geographic Text camera frames
+
+Geo source의 `createMarkLabels` Text와 `createGeoAnnotation`은 기존 centroid/지리 anchor를
+현재 camera에 forward-project한다. 같은 source key·binding·geometry digest와 호환 camera에서
+`native-geo-text` geographic decision을 사용한다. 정확 t0/t1은 원 endpoint를 유지하며,
+중간-only Text와 collision leader도 실제 현재 identity로 생성한다. Native Text의 content,
+conditional appearance, selection, placement offset, collision layout, leader, outline/shadow,
+fill bounds, prepared font profile과 composition clip/order를 동일 owner에서 재사용한다.
+
+같은 label group의 membership/content/static style/layout이 달라지면 명시 reason으로
+concrete crossfade한다. Camera 이동과 solid fill/opacity의 호환 변화는 함께 계산한다.
+Geo body가 appearance crossfade하더라도 독립적인 호환 Text는 camera 경로를 유지한다.
+고정 annotation이나 Geo source Text 외 일반 Text의 typed anchor 이동은 이 경로에 포함하지 않는다.
+
+Optional `geotexts`는 raw anchor, exact binding/key, digest, 현재 camera와 Text 상대 offsets를
+한 번 보존한다. Native endpoint에서는 원 geometry의 centroid/digest를 검산한다.
+Sampled-only payload의 digest는 과거 source의 인증서가 아니며 내부 forward consistency만
+검증한다. 같은 binding/key/digest가 모순된 anchor를 주장하면 거부한다. Closed restore,
+반복 rebase와 renderer-ready frame은 같은 prepared owner를 사용한다. 모든 Geo body/Text
+샘플의 stream/layout 작업은 합산 10,000,000, 실제 출력은 10,000 item 한도를 공유한다.
+Text content/style/layout 변경을 camera 이동과 동시에 의미적으로 보간하는 후행 의무는
+현재 명시 crossfade와 구분하며 전체 Text/Geo animation 완료로 간주하지 않는다.
