@@ -138,9 +138,11 @@ Incompatible projection policies, source geometry, winding, or appearance retain
 explicit crossfade reason. Other compatible features of the same owner still move
 through the native camera. Current native hit testing uses each actual feature and
 resource lineage. Offline replay preserves pixels and semantic camera state without
-creating authority to interact with a native program. Camera-aware Geo labels and
-annotations, and activation of features visible only in an intermediate frame, remain
-separate integration work.
+creating authority to interact with a native program. Native sessions can click or
+keyboard-activate a feature painted only midway when the same source key exists in
+the current program. Each source revision is checked independently; selection intent
+is retained even if the current native projection hides its highlight. Camera-aware
+Geo labels and annotations remain separate integration work.
 
 ## Functions
 

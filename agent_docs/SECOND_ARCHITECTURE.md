@@ -901,7 +901,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 422,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 130,600 bytes |
+| `ggaction/interaction` | 131,000 bytes |
 | `ggaction/animation` | 232,600 bytes |
 
 
@@ -3254,8 +3254,13 @@ owner·itemKey를 가진 private closed origin으로 표현한다. `hitProgram`�
 source arm을 통해 같은 native final-grain policy를 읽고 namespace와 resource revision을 대조한다.
 Class별 frozen registration에 기존 source resolver를 함께 전달하며 새 registry나 public plugin 경계는
 없다. Scope/owner별 source Map은 준비 호출 안에서만 유지하고 work budget에 합산한다.
-실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남으며, native selection
-권한은 계속 현재 최종 항목과의 교집합이다. 공개 Geo sampler 연결 상태와 증거는
+실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남는다. 현재 frame의
+Geo source association만 기존 prepared-frame WeakMap에 보존한다. 이 한 WeakMap은
+`interaction/hitFrameSource.js`로 분리해 keyboard reader가 native guide/policy 구현을 끌어오지 않는다.
+`interaction/frameSelection.js`가 keyboard/click에 그 association과
+current native source items의 scoped key·owner·resource kind/id 교집합을 사용한다. 각 revision은
+자기 실제 source에서 검증하며 서로 같은 revision으로 치환하지 않는다. Geo의 source-membership
+정책은 projection clipping을 원본 제거와 구분하고, native highlight와 property predicate는 계속 materialized items만 읽는다. 공개 Geo sampler 연결 상태와 증거는
 [Geo source hit 기록](impl/roadmap9/interaction/GEO_SOURCE_HIT.md)에 둔다.
 
 ### Cartesian title label-relative offset measurement
@@ -4537,7 +4542,8 @@ animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적�
 `grammar/animation/geoState.js`는 이 닫힌 group을 검증하고 기존 cameraInterpolation 및
 Geo stream을 호출한다. 샘플에서 fit/추론을 재실행하거나 endpoint pixel을 역산하지 않는다.
 클립 밖 feature도 준비 상태에 남아 현재 camera의 part 수 변화와 재출현을 native 계산으로
-처리한다. Public planner/sample 및 offline provenance 연결은 아직 별도 후행 의무다.
+처리한다. 공개 planner/sample과 offline provenance는 아래 dynamic-part owner를 통해 연결되며,
+지원 범위와 남은 레이블·주석 경계는 Current Animation 계약을 따른다.
 
 두 private owner를 포함한 package는1137entries이며 Node22 1,621,186packed/
 7,354,400unpacked, Node20 1,623,611packed다. 최소천byte 한도는1,624,000/7,355,000이며

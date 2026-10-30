@@ -7,6 +7,7 @@ import { hierarchyInputSources } from '../grammar/hierarchy/input.js';
 import { hitShapeAnchor, hitShape } from '../grammar/hitShapes.js';
 import { resolveRegisteredMarkItems } from '../materialization/selection/itemResolver.js';
 import { interactionOwner, scopeSelectionKeys } from './selection.js';
+import { currentFrameSelectionItems } from './frameSelection.js';
 import { normalizeClickSelection, clickSelectionCommand } from './clickSelection.js';
 import { interactionOptions as options } from './input.js';
 
@@ -58,7 +59,8 @@ export function prepareKeyboardFrame(program, binding, frame) {
     const resolved = owner(program, config.target, true), group = { config, entries: [], resolved, byKey: new Map(), byAlias: new Map() };
     byTarget.set(targetKey(config.target), group);
     if (!resolved) continue;
-    const items = resolveRegisteredMarkItems(resolved.view, config.target.id, 'item', { channels: [] });
+    const items = currentFrameSelectionItems(program, resolved,
+      resolveRegisteredMarkItems(resolved.view, config.target.id, 'item', { channels: [] }), frame, spend);
     spend(items.length); validateGeneratedItemLimit(entries.length + items.length, 'Keyboard item count', 100_000);
     for (const item of items) {
       if (item.visible === false) continue;
@@ -145,7 +147,7 @@ export function keyboardActivation(model, focus, parent = false) {
   const entry = entryFor(model, focus.target, focus.itemKey), activation = entry?.group.config.activation;
   if (!activation) return null;
   if (activation.type === 'select') return parent ? null : clickSelectionCommand(model.program,
-    { ...activation, target: entry.target, onMiss: 'ignore' }, { candidates: [entry.candidate] });
+    { ...activation, target: entry.target, onMiss: 'ignore' }, { candidates: [entry.candidate] }, model.frame);
   const { view, layer } = entry.group.resolved, { hierarchy, dataset } = resolveHierarchyLayerResources(view, layer);
   const key = parent ? entry.item.navigation.parent : entry.item.navigation.key;
   const sources = hierarchyInputSources(dataset.values, hierarchy.options), source = sources.get(key);

@@ -47,3 +47,19 @@ const partitionPlan=planTransition({from:partitionFrom,to:partitionTo,options:{d
 const partitionFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(partitionPlan)).plan,{timesMs:[0,50,100]});
 render(partitionFrames[1],context);renderToSVG(partitionFrames[1]);renderToPNGBuffer(partitionFrames[1]);renderToPDFBuffer(partitionFrames[1]);
 planTransition({from:partitionFrames[1],to:partitionFrom,options:{durationMs:100}});
+
+const geoFrom=chart().createCanvas({width:400,height:300,margin:0})
+ .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:['properties','id'],values:{
+  type:'FeatureCollection',features:[{type:'Feature',properties:{id:'place'},geometry:{type:'Point',coordinates:[0,0]}}]}})
+ .createProjection({id:'map',type:'orthographic',scalePx:100,translatePx:[-200,150],clipExtentPx:[[0,0],[400,300]]})
+ .createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
+const geoTo=geoFrom.editProjection({translatePx:[600,150]});
+const geoFrame=sampleTransition(planTransition({from:geoFrom,to:geoTo,options:{durationMs:100}}),50);
+render(geoFrame,context);renderToSVG(geoFrame);renderToPNGBuffer(geoFrame);renderToPDFBuffer(geoFrame);
+for(const decision of geoFrame.decisions)if(decision.kind==='geographic'){
+ const kernel:'native-geo'=decision.kernel;
+ const address:readonly string[]=[decision.ownerKey,decision.itemKey,decision.role];
+ // @ts-expect-error current geographic parts have no invented endpoint index
+ const index=decision.targetIndex;
+ void kernel;void address;void index;
+}

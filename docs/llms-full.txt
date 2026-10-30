@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:27cdb19760efaa708249efff9e689fb9bf21c4e83cde821c12e7563cbd45851e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3dc48c746888cb4ee0b584d6897dbde187bd502d6d54cf8ce5b8e3d29bdb70b7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11157,9 +11157,11 @@ Incompatible projection policies, source geometry, winding, or appearance retain
 explicit crossfade reason. Other compatible features of the same owner still move
 through the native camera. Current native hit testing uses each actual feature and
 resource lineage. Offline replay preserves pixels and semantic camera state without
-creating authority to interact with a native program. Camera-aware Geo labels and
-annotations, and activation of features visible only in an intermediate frame, remain
-separate integration work.
+creating authority to interact with a native program. Native sessions can click or
+keyboard-activate a feature painted only midway when the same source key exists in
+the current program. Each source revision is checked independently; selection intent
+is retained even if the current native projection hides its highlight. Camera-aware
+Geo labels and annotations remain separate integration work.
 
 ## Functions
 
@@ -11501,7 +11503,7 @@ Maintain an increasing host counter greater than the current `frameVersion` and 
 previous request, including requests still preparing. Use the current session generation.
 Stale requests return `stale` without examining their frame. Entering, exiting and weighted
 shapes use their actual displayed geometry for inspection; keyboard activation additionally
-requires that the logical item exists in the session's current program.
+requires that the logical item exists in the session's current program. A geographic feature may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the feature.
 
 With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
 assets prepare, the previous accepted picture and focus remain active. A successful `frame`
@@ -37768,7 +37770,9 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly scene: CanvasTransitionScene;
   readonly frame?: never;
 } | {
-  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners. */
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
+   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;
 }));
@@ -55690,7 +55694,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:27cdb19760efaa708249efff9e689fb9bf21c4e83cde821c12e7563cbd45851e` |
+| Contract fingerprint | `sha256:3dc48c746888cb4ee0b584d6897dbde187bd502d6d54cf8ce5b8e3d29bdb70b7` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

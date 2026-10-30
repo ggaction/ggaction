@@ -382,7 +382,9 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly scene: CanvasTransitionScene;
   readonly frame?: never;
 } | {
-  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners. */
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
+   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;
 }));

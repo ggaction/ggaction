@@ -204,5 +204,9 @@ proof에 유지한다. 양방향 rebase와 offline 저장은 같은 상태를 �
 않는다. Optional endpoint `geos`와 `native-geo-camera@1`을 저장하고 closed shape, feature/part,
 forward geometry, order, work bounds 및 version을 재검증한다. Native hit는 실제 target program의
 childPath/owner/source feature를 검증한다. Offline payload는 native program 권한을 만들지 않는다.
-Geo labels/annotation의 camera-aware typed 이동과 session의 중간-only feature activation은 별도
-통합 의무이며 이 Geo body 경로의 완료로 간주하지 않는다.
+중간-only feature의 session click/keyboard activation은 실제 그려진 source key와 현재 native
+source의 child scope/owner/resource kind+id/key 교집합을 사용한다. 각 source revision을 독립
+검증하며 서로 같다고 가정하지 않는다. Target hit lineage는 유지하고 선택 intent가 현재 native
+projection에서 숨겨지면 저장은 유지하되 visible highlight는 비어 있다.
+Geo labels/annotation의 camera-aware typed 이동은 별도 통합 의무이며 이 Geo body 경로의
+완료로 간주하지 않는다.

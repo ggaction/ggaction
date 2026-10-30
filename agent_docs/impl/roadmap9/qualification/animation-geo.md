@@ -166,3 +166,19 @@ First public source checkpoint evidence (before D activation merge and final ins
   Minimum package ceilings1,155/1,657,000/7,493,000. These source measurements do not claim
   installed consumers. Final same-tar Node20/22/24, source-pin docs and D actual activation
   remain required after its stable source is combined.
+
+
+## 실제 native session 결합
+
+D7174의 source c0b60b497를 body f9fa2541d와 합쳤다. Shared planner/sample/proof는 변경하지
+않았다. `geo-public-selection.test.js`는 private frame 생성 없이 실제 공개 planner/sample로
+양 끝 hidden point의 keyboard activation, graticule target projection revision1의 hit를
+current source revision0과 독립 검증한 click 선택을 확인한다. 두 검사는 통과했으며 이전
+program/trace 불변, 한 번의 history commit, hidden intent 유지와 listener 해제도 검증한다.
+이 결합은 body activation 의무만 닫는다. Geo labels/annotations, inset의 해당 소비자 교차,
+최종 동일 archive 설치 및 전체 합산 qualification은 별도 의무로 유지한다.
+
+결합 검증: actual public activation 2/2, animation + interaction + native hit 606/606,
+source/package/type/discovery/documentation owning 39/39, canonical docs generation exit0.
+원 f9fa body source와 D7174 source를 포함한 결합이며, 동일 tar3Node와 built docs는 아직
+마감 전이다. 이 시점 source 동결은 root의 appearance v2 후속 연결을 위한 인계다.

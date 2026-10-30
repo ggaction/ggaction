@@ -18,7 +18,7 @@ function items(program, layer, concrete) {
   return features.flatMap(feature => {
     const key = geoFeatureKey(layer, resource, feature), children = byKey.get(key) ?? [];
     if (concrete && !children.length) return [];
-    return [cloneAndFreeze({ key, layer: layer.id, markType: "geo", role: "feature", topology: children[0]?.identity.topology ?? "",
+    return [cloneAndFreeze({ ...(!concrete && feature.drawable === false ? { visible: false } : {}), key, layer: layer.id, markType: "geo", role: "feature", topology: children[0]?.identity.topology ?? "",
       ...(feature.representationKeys === undefined ? {} : { representationKeys: feature.representationKeys.map(key => geoFeatureKey(layer, resource, { key })) }),
       channels: channelMapFromRow(feature.fields, layer), rows: feature.rows ?? [], fields: feature.fields ?? feature.properties ?? {}, members: [], rowKeys: [], graphicRoles: children.map(child => child.identity.role),
       lineage: { kind: "resource", resource: layer.geoBinding.geometry ?? { kind: "projection", id: projection.id, revision: projection.revision } },
@@ -26,7 +26,7 @@ function items(program, layer, concrete) {
       ...(concrete ? { graphicIds: children.map(child => child.id) } : {}) })];
   });
 }
-export const geoSelectionPolicy = Object.freeze({ resourceBacked: true, supportedGrains: Object.freeze(["item"]),
+export const geoSelectionPolicy = Object.freeze({ resourceBacked: true, sourceMembership: true, supportedGrains: Object.freeze(["item"]),
   resolveItems: (program, layer) => items(program, layer, true), resolveSourceItems: (program, layer) => items(program, layer, false),
   normalizeHighlightStyle: args => normalizeAreaHighlightStyle(args, "Geographic mark"), applyHighlightOp: "applyPathHighlight", rematerializeOp: "materializeGeoMark",
   transformHighlightChild(child, style) {

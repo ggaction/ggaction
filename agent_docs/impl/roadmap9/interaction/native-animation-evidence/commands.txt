@@ -1,0 +1,5 @@
+PATH=<Node22 bin>:$PATH node .artifacts/qualify-native-animation.mjs
+PATH=<Node20 bin>:$PATH node .artifacts/qualify-native-animation.mjs
+PATH=<Node24 bin>:$PATH node .artifacts/qualify-native-animation.mjs
+node --test test/contracts/test-discovery.test.js test/contracts/package-boundaries.test.js
+node --test --test-name-pattern="installed fixture modules" test/contracts/package-artifact.test.js

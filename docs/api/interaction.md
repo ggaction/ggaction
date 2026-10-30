@@ -256,7 +256,7 @@ Maintain an increasing host counter greater than the current `frameVersion` and 
 previous request, including requests still preparing. Use the current session generation.
 Stale requests return `stale` without examining their frame. Entering, exiting and weighted
 shapes use their actual displayed geometry for inspection; keyboard activation additionally
-requires that the logical item exists in the session's current program.
+requires that the logical item exists in the session's current program. A geographic feature may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the feature.
 
 With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
 assets prepare, the previous accepted picture and focus remain active. A successful `frame`

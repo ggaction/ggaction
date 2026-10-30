@@ -10,7 +10,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 232_600, // Current native Geo stream, dynamic parts and all typed families: Node20 232,505 gzip bytes.
-  "ggaction/interaction": 130_600 // Shared admission and bounded native preparation work: Node20 128,607.
+  "ggaction/interaction": 131_000 // Geographic frame selection, same archive Node20: 130,975 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

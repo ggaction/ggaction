@@ -3,39 +3,10 @@ import test from "node:test";
 import { chart, hconcat, vconcat } from "../../../src/index.js";
 import { getMarkItems } from "../../../src/inspection.js";
 import { createInteractionSession } from "../../../src/interaction.js";
-import { planTransition, sampleTransition } from "../../../src/animation.js";
-import { animationFrameProvenance, registerAnimationFrame } from "../../../src/animation/frameProvenance.js";
-import { cloneAndFreeze } from "../../../src/core/immutable.js";
 import { prepareAnimationHitFrame, requireAnimationFrameProgram } from "../../../src/interaction/hitProgram.js";
+import { geo, dynamicFrame } from "../../support/animation-geo-source.js";
 import { createHitFrameBridge } from "../../../src/interaction/hitFrame.js";
 
-const geo = () => chart().createCanvas({ width: 240, height: 180, margin: 0 })
-  .createGeometryData({ id: "world", format: "geojson", coordinateKind: "geographic", featureKey: ["properties", "code"], values: {
-    type: "FeatureCollection", features: [
-      { type: "Feature", properties: { code: "front" }, geometry: { type: "Point", coordinates: [0, 0] } },
-      { type: "Feature", properties: { code: "back" }, geometry: { type: "MultiPoint", coordinates: [[180, 0], [180, 0]] } }
-    ] } })
-  .createProjection({ id: "map", type: "orthographic", scalePx: 70, translatePx: [120, 90] })
-  .createCoordinate({ id: "geo", type: "geo" }).createGeoPointMark({ id: "places", radiusPx: 10, strokeWidth: 0 });
-const options = { durationMs: 100, easing: "linear" };
-const ordinary = program => sampleTransition(planTransition({ from: program, to: program, options }), 0);
-
-// Supply only the private closed association under test. Geometry, identities,
-// source keys and scopes are produced by actual native Geo materialization.
-function dynamicFrame(native, picture, childPath = [], change = value => value, identityChange = value => value) {
-  const plan = planTransition({ from: native, to: native, options });
-  const visible = ordinary(picture), proof = animationFrameProvenance(visible);
-  const base = animationFrameProvenance(sampleTransition(plan, 50));
-  const nodes = proof.endpoint.identities.map((identity, index) => {
-    if (identity === undefined) return base.native.nodes.find((_, i) => base.endpoint.identities[i] === undefined);
-    const origin = change({ kind: "geo-feature", program: native, childPath, ownerId: "places", itemKey: identity.key });
-    return Object.freeze({ origin, metrics: Object.freeze([origin]) });
-  });
-  const frame = cloneAndFreeze({ ...visible });
-  registerAnimationFrame(frame, { plan, timeMs: 50, positions: proof.positions,
-    meaning: { endpoint: { ...proof.endpoint, identities: proof.endpoint.identities.map(identityChange) }, native: Object.freeze({ owners: Object.freeze([native]), placement: native, nodes: Object.freeze(nodes) }) } });
-  return frame;
-}
 const at = node => ({ x: node.properties.x + node.offset[0], y: node.properties.y + node.offset[1] });
 function hits(frame, point, options) {
   const bridge = createHitFrameBridge(prepareAnimationHitFrame(frame));
@@ -59,10 +30,8 @@ test("a newly projected source feature has exact native resource metadata withou
   session.dispatch({ type: "inspect", point: { x: 120, y: 90 } });
   assert.equal(session.getState().hit.target.itemKey, result.target.itemKey);
   session.dispatch({ type: "focus", move: "first" });
-  assert.equal(session.getState().focus, null);
-  const accepted = session.getState();
-  assert.throws(() => session.dispatch({ type: "focus", target: "places", itemKey: result.target.itemKey }), /absent, ambiguous or not painted/);
-  assert.equal(session.getState(), accepted);
+  assert.equal(session.getState().focus.itemKey, result.target.itemKey);
+  session.dispatch({ type: "focus", target: "places", itemKey: result.target.itemKey });
   assert.equal(session.getState().program, native); assert.equal(session.getState().history.undoCount, 0);
   session.destroy(); assert.equal(JSON.stringify(native), before);
 });
