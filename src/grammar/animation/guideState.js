@@ -10,9 +10,9 @@ import { interpolateNumber } from "./values.js";
 import { normalizeBandBoundaryMembers, normalizeGuideAnchor, resolveGuideAnchor, prepareGuideAnchor, sampleGuideAnchor } from "./guideAnchors.js";
 import { interpolatePolarAngle } from "./polarState.js";
 
-export const ANIMATION_GUIDE_VERSION = "native-guide-values@2";
+export const ANIMATION_GUIDE_VERSION = "native-guide-values@3";
 const kinds = new Set(["line", "ticks", "labels", "grid"]);
-const components = new Set([...kinds, "title", "boundary", "parallel-line", "parallel-ticks", "parallel-labels", "parallel-title"]);
+const components = new Set([...kinds, "title", "boundary", "parallel-line", "parallel-ticks", "parallel-labels", "parallel-title", "legend-strip", "legend-tick", "legend-label", "legend-title"]);
 const reasons = new Set(["guide-policy", "guide-layout", "guide-ambiguity", "guide-edited", "guide-unavailable", "nonfinite-guide"]);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
@@ -30,6 +30,17 @@ function scalar(value) {
   return typeof value === "string" || typeof value === "boolean" || Number.isFinite(value);
 }
 function identityValue(component, value) {
+  if (component.startsWith("legend-")) {
+    ownArray(value, "Legend identity value");
+    if (value.length !== 2 || !["gradient", "strokeGradient"].includes(value[0])) throw new TypeError("Legend identity requires an exact native family.");
+    const sample = ownArray(value[1], "Legend sample identity");
+    const valid = component === "legend-title" ? sample.length === 1 && sample[0] === "title"
+      : component === "legend-strip" ? sample.length === 3 && sample[0] === "segment" && Number.isSafeInteger(sample[1]) &&
+        Number.isSafeInteger(sample[2]) && sample[2] > 0 && sample[1] >= 0 && sample[1] < sample[2]
+      : sample.length === 2 && sample[0] === "value" && Number.isFinite(sample[1]);
+    if (!valid) throw new TypeError("Legend identity requires its exact raw value or normalized segment role.");
+    return value;
+  }
   if (component === "line" || component === "title") {
     if (value !== null) throw new TypeError("Guide line and title identity requires null values.");
     return null;

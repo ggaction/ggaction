@@ -140,7 +140,7 @@ Cartesian axis line/tick/fixed label/grid와 polar axis/tick/fixed label/spoke/c
 같은 값의 label 문자열·font/static style 변경은 appearance crossfade다. 동일 label 줄 구성과
 정렬 정책을 유지하며 복잡한 flush·rotation·responsive reflow는 `guide-layout`, 명시 geometry
 편집은 `guide-edited`다. 현재 crossfade guide는 identity만 보존한 `guide-unavailable` 상태에서
-다음 transition도 명시 fallback한다. Legend와 complex label reflow는 아직 이 typed 범위 밖이다.
+다음 transition도 명시 fallback한다. Complex axis label reflow는 아직 이 typed 범위 밖이다.
 
 명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
 보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
@@ -154,7 +154,18 @@ Parallel line/tick/label/title은 field와 component, typed raw tick으로 대�
 계산한다. Raw tick은 같은 scale owner를 쓰고 field 이름·표시 문자열·배열 순번을 혼동하지 않는다.
 이 확대는 기존 opaque plan과 optional guide vector 안에서 이루어지며 공개 함수 원형은 같다.
 
-Optional endpoint `guides` vector와 `native-guide-values@2` manifest를 보존한다. Strict restore는
+연속 color/stroke gradient 범례는 exact raw `values`, 명시 numeric offset, 하나의 edge block을
+준비한다. Tick/label은 raw value, title은 명시 title role, strip은 native 60분할의 정규화 segment
+role로 대응하며 표시 text나 데이터 행 순번을 identity로 쓰지 않는다. 현재 plot/Canvas frame,
+gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native layout/strip owner를 재생한다.
+동일 raw tick도 log scale은 현재 domain으로 다시 매핑한다. Solid 색은 공통 appearance owner다.
+새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
+필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
+중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, symbols/categorical/size
+범례, border/group/multi-block/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
+지원되는 gradient component에는 `guide-layout` reason을 보존한다.
+
+Optional endpoint `guides` vector와 `native-guide-values@3` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

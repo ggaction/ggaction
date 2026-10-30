@@ -1,4 +1,4 @@
-import { sampleGuideInterpolation } from "../grammar/animation/guideState.js";
+import { sampleGuideInterpolation } from "./guideTracks.js";
 import { sampleAnimationAppearance } from "./appearance.js";
 import { sampleGeoTracks } from "./geoTracks.js";
 import { geoFrameCollector } from "./geoFrames.js";

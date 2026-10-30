@@ -28,6 +28,35 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/legend-offline-native',async run(){
+    const base=chart().createCanvas({width:700,height:450,margin:{top:120,bottom:120,right:220,left:150}})
+      .createData({values:[{x:1,y:1},{x:100,y:2}]}).createPointMark()
+      .encodeX({field:'x'}).encodeY({field:'y'});
+    for(const channel of ['color','stroke']){
+      const encoded=channel==='color'?base.encodeColor({field:'x',fieldType:'quantitative',scale:{type:'log',domain:[1,100],range:['red','blue']}})
+        :base.encodeStroke({field:'x',fieldType:'quantitative',scale:{type:'log',domain:[1,100],range:['red','blue']}});
+      const from=encoded.createLegend({channels:[channel],values:[1,10,100],offset:20,title:'Amount'});
+      const to=from.editCanvas({width:900}).editScale({id:channel,domain:[1,10000]}).editLegend({gradient:{length:200,thickness:20}});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      const ticks=frame.decisions.flatMap((d,i)=>d.kernel==='guide-geometry'&&d.role==='guide-legend-tick'?[i]:[]);
+      assert.equal(ticks.length,3);
+      assert.ok(Math.abs(frame.scene.nodes[ticks[1]].properties.y1-(152.5+160*2/3))<1e-9);
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frames:exportAnimationFrames(deserializeAnimation(text).plan,{timesMs:[0,25,50,75,100]}),network}));
+      `],{input:serializeAnimation(plan),encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);
+      assert.deepEqual(JSON.parse(child.stdout),{frames:JSON.parse(JSON.stringify(exportAnimationFrames(plan,{timesMs:[0,25,50,75,100]}))),network:0});
+      const rebased=planTransition({from:frame,to,options:{durationMs:100,easing:'linear'}});
+      assert.strictEqual(sampleTransition(rebased,0),frame);
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,50),sampleTransition(rebased,50));
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+      assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/guide-anchors-offline-native',async run(){
     const source=chart().createCanvas({width:600,height:420,margin:90})
       .createData({values:[{a:1,b:10,c:'A'},{a:100,b:20,c:'B'}]});

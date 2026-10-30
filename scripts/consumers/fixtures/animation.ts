@@ -80,3 +80,10 @@ const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
  .createXAxis({title:{text:'Amount',at:10,offset:35}});
 const guidePlan=planTransition({from:guideFrom,to:guideFrom.editXAxisTitle({at:100}),options:{durationMs:100}});
 renderToSVG(sampleTransition(deserializeAnimation(serializeAnimation(guidePlan)).plan,50));
+
+
+const legendFrom=guideFrom.encodeColor({field:'x',fieldType:'quantitative',scale:{type:'log',domain:[1,100],range:['red','blue']}})
+ .createLegend({channels:['color'],values:[1,10,100],offset:20,title:false});
+const legendTo=legendFrom.editScale({id:'color',domain:[1,10000]}).editLegend({gradient:{length:160,thickness:20}});
+const legendFrame=sampleTransition(planTransition({from:legendFrom,to:legendTo,options:{durationMs:100,easing:'linear'}}),50);
+render(legendFrame,context);renderToSVG(legendFrame);renderToPNGBuffer(legendFrame);renderToPDFBuffer(legendFrame);

@@ -4,7 +4,7 @@ import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
-import { legendSampleFill } from "../../../../materialization/legends.js";
+import { legendSampleFill, legendSampleStrokeWidth } from "../../../../materialization/legends.js";
 import {
   editGraphicProperties,
   editLegendBackground,
@@ -26,19 +26,6 @@ function requireChannels(args, operation) {
   }
 }
 
-function strokeWidth(program, target) {
-  const config = program.markConfigs[target] ?? {};
-  return config.barAppearance?.strokeWidth ?? config.strokeWidth ?? ({
-    point: 1,
-    line: 2,
-    area: 1,
-    bar: 0.5,
-    rect: 1,
-    arc: 1,
-    rule: 2,
-    tick: 2
-  }[findLayer(program, target)?.mark?.type] ?? 1);
-}
 
 function sampleFill(program, target) {
   return legendSampleFill(program, target) ?? DEFAULT_COLORS.mark;
@@ -62,7 +49,7 @@ export const rematerializeStrokeGradientLegend = /* @__PURE__ */ closedAction(
     const resolved = resolveGradientConfig(this, stored, "stroke");
     return materializeGradientLegend(this, resolved, {
       fill: sampleFill(this, resolved.config.target),
-      strokeWidth: strokeWidth(this, resolved.config.target)
+      strokeWidth: legendSampleStrokeWidth(this, resolved.config.target)
     });
   }
 );
@@ -89,7 +76,7 @@ export function resolveStrokeIntervalConfig(program, stored) {
   const resolved = resolveIntervalConfig(program, stored, "stroke");
   if (stored.inferredStrokeWidth !== true) return resolved;
   return { ...resolved, config: { ...resolved.config,
-    symbol: { ...stored.symbol, strokeWidth: strokeWidth(program, resolved.config.target) }
+    symbol: { ...stored.symbol, strokeWidth: legendSampleStrokeWidth(program, resolved.config.target) }
   } };
 }
 
@@ -104,7 +91,7 @@ export function resolveStrokeIntervalLegendCreation(program, args = {}) {
   config.symbol = {
     ...config.symbol,
     ...(args.symbol?.strokeWidth === undefined
-      ? { strokeWidth: strokeWidth(program, layer.id) }
+      ? { strokeWidth: legendSampleStrokeWidth(program, layer.id) }
       : {})
   };
   config.inferredStrokeWidth = args.symbol?.strokeWidth === undefined;

@@ -1,3 +1,5 @@
+import { legendAnimationItems } from "./legendGuides.js";
+import { legendAnimationMatchesNode } from "./legendState.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateWorkLimit, validateGeneratedItemLimit } from "../../core/validation.js";
 import { cartesianPosition } from "../../grammar/animation/cartesianPosition.js";
@@ -80,6 +82,10 @@ function scopedGuides(program, namespaces, spend) {
       parallel ? { field: item.field, value: item.value } : item.value, item.line);
     add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
+  for (const item of legendAnimationItems(program, namespaces, spend)) {
+    spend(1 + item.graphicId.length);
+    result.set(item.graphicId, item.state);
+  }
   return result;
 }
 
@@ -99,6 +105,6 @@ export function projectGuideAnimationState(program, endpoint) {
   return cloneAndFreeze(endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
     if (state === undefined || state.reason !== undefined) return state ?? null;
-    return guideAnimationMatchesNode(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
+    return (state.kind === "legend" ? legendAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
   }));
 }

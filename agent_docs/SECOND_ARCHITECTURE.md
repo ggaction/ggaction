@@ -923,11 +923,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 774,800 bytes |
-| `ggaction/basic` | 422,800 bytes |
+| `ggaction/basic` | 423,000 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 248,500 bytes |
+| `ggaction/animation` | 266,100 bytes |
 
 
 
@@ -4642,3 +4642,12 @@ Strict transition version2/appearance kernel manifest가 저장·복원의 계�
 exact graphic item 역할을 연결하며 hit가 이를 재사용한다. 이 추출은 action·trace·materialization
 순서를 바꾸지 않는다. Animation의 준비된 legend 의미 연결은 별도 책임이며 final pixel 차이를
 의미값으로 추정하지 않는다. 공개 signature·저장 shape·renderer 경계는 유지한다.
+
+
+### Prepared native legend transitions
+
+`materialization/animation/legendState`는 exact gradient sample·native layout policy와 필요한 text
+query closure를 소유한다. 원 native gradient layout/strip 계산은 authoring과 같은 materialization
+owner를 재사용한다. `guideTracks`는 순수 axis/anchor 계산과 native legend 계산을 분기하며 같은
+semantic-guide 출력/forward proof를 유지한다. Renderer·trace·public signature는 바뀌지 않으며
+현재 지원 및 fallback은 [Animation Current](contract/current/ANIMATION.md)가 소유한다.

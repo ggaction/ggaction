@@ -1594,6 +1594,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/legend-offline-native",
+        "statements": 2
+      },
+      {
         "id": "animation/guide-anchors-offline-native",
         "statements": 6
       },

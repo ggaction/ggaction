@@ -117,7 +117,7 @@ test("guide anchor meaning stays flat through repeated sampled-frame rebase and 
 test("guide anchor strict restore rejects versions and forged field membership or geometry before sampling", () => {
   for (const from of [titles(), band(), parallel()]) {
     const prepared = plan(from, from.editCanvas({ width: 800 })), original = exportTransitionPlan(prepared);
-    assert.equal(original.kernels.guide, "native-guide-values@2");
+    assert.equal(original.kernels.guide, "native-guide-values@3");
     for (const change of [
       state => { state.anchor.frame.y += 1; },
       state => { state.identity.component = "grid"; },

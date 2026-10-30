@@ -9,7 +9,7 @@ import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 const sources = [{ id: "tt-us-births", field: "births" }, { id: "tt-trash-wheel", field: "Weight" },
   { id: "tt-stock-prices", field: "volume", eligible: row => row.stock_symbol === "AAPL" },
   { id: "tt-animal-rescues", field: "incident_notional_cost" }, { id: "tt-movie-profit", field: "production_budget" }];
-for (const source of sources) test(`${source.id} preserves raw guide values across six native transition recipes`, () => {
+for (const source of sources) test(`${source.id} preserves raw guide values across seven native transition recipes`, () => {
   try {
     const original = tidyTuesdaySourceRows(source.id);
     assert.match(tidyTuesdayFixtureReport(source.id).sha256, /^[a-f0-9]{64}$/);
@@ -31,14 +31,17 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       .encodeY({ field: source.field }).createVerticalGrid({ bandPosition: "boundary" });
     const parallel = sourceProgram.editCanvas({ width: 600, height: 420, margin: 90 })
       .createParallelCoordinates({ id: "fields", dimensions: [source.field, "sourceRowIndex"], guides: { legend: false } });
+    const legend = x.editCanvas({ width: 600, margin: { top: 60, bottom: 60, left: 40, right: 180 } })
+      .encodeColor({ field: source.field, fieldType: "quantitative", scale: { domain: [0, max], range: ["red", "blue"] } })
+      .createLegend({ channels: ["color"], values: [value], offset: 20, title: source.field });
     for (const [recipe, from] of [["axis", x.createXAxis({ ticksAndLabels: { values: [value] }, title: false })],
       ["grid", x.createVerticalGrid({ values: [value] })], ["polar", polar],
       ["title", x.createXAxis({ line: false, ticksAndLabels: false, title: { text: source.field, at: value, offset: 20 } })],
-      ["boundary", boundary], ["parallel", parallel]]) {
+      ["boundary", boundary], ["parallel", parallel], ["legend", legend]]) {
       const to = recipe === "polar" ? from.editCanvas({ width: 600, height: 600 })
         : recipe === "parallel" ? from.encodeParallelCoordinates({ target: "fields", dimensions: ["sourceRowIndex", source.field] })
         : recipe === "boundary" ? from.editCanvas({ width: 600 })
-        : from.editScale({ id: "x", domain: [0, max * 2] });
+        : from.editScale({ id: recipe === "legend" ? "color" : "x", domain: [0, max * 2] });
       const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
       const frame = sampleTransition(plan, 50), indices = frame.decisions.flatMap((decision, index) =>
         decision.kernel === "guide-geometry" ? [index] : []);
@@ -51,6 +54,10 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
         if (recipe === "polar") assert.deepEqual(properties.commands[0], { op: "M", x: 250, y: 145 });
         if (recipe === "title") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
         if (recipe === "parallel") assert.ok(key[3].startsWith("parallel-"));
+        if (recipe === "legend") {
+          assert.ok(key[3].startsWith("legend-"));
+          if (key[3] === "legend-tick" || key[3] === "legend-label") assert.deepEqual(key[4], ["array", ["gradient", ["array", ["value", value]]]]);
+        }
         if (recipe === "boundary") assert.equal(key[3], "boundary");
       }
       assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan, 50), frame);

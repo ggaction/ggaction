@@ -188,8 +188,35 @@ appear, or disappear. Neither uses array position as identity. If native band ed
 split during a transition, that boundary crossfades explicitly.
 
 Flush, rotated, or responsive reflow labels, inferred or label-relative title clearance,
-and edited geometry retain explicit fallbacks. Legends remain outside this typed guide
-kernel and use the existing anonymous enter/exit behavior.
+and edited geometry retain explicit fallbacks.
+
+Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
+use their native single-edge layout. Ticks and labels keep their raw values; the current
+scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
+move through that same layout. Current legend frames can be interrupted and restored
+offline. Text or font changes crossfade; exact font profiles must contain all required
+measurements. Automatic samples, symbol legends, borders, groups, multiple blocks on one
+edge, and inferred axis clearance retain safe fallbacks.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 500, height: 300,
+    margin: { top: 50, bottom: 50, left: 50, right: 150 } })
+  .createData({ values: [{ x: 1, y: 1 }, { x: 100, y: 2 }] })
+  .createPointMark().encodeX({ field: 'x' }).encodeY({ field: 'y' })
+  .encodeColor({ field: 'x', fieldType: 'quantitative',
+    scale: { type: 'log', domain: [1, 100], range: ['red', 'blue'] } })
+  .createLegend({ channels: ['color'], values: [1, 10, 100], offset: 20, title: false });
+const to = from.editScale({ id: 'color', domain: [1, 10000] })
+  .editLegend({ gradient: { length: 160, thickness: 20 } });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+console.log(renderToSVG(sampleTransition(plan, 500)));
+```
 
 ## Move geographic cameras
 

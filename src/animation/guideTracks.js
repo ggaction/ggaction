@@ -1,8 +1,9 @@
+import { normalizeLegendAnimationState, legendAnimationMatchesNode, prepareLegendInterpolation, sampleLegendInterpolation } from "../materialization/animation/legendState.js";
 import { prepareAnimationAppearance } from "./appearance.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { validateWorkLimit } from "../core/validation.js";
-import { guideAnimationKey, normalizeGuideAnimationState, guideAnimationMatchesNode, prepareGuideInterpolation } from "../grammar/animation/guideState.js";
+import { guideAnimationKey, normalizeGuideAnimationState, guideAnimationMatchesNode, prepareGuideInterpolation, sampleGuideInterpolation as sampleNativeGuide } from "../grammar/animation/guideState.js";
 import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
 export const emptyAnimationGuides = endpoint => Object.freeze(endpoint.scene.nodes.map(() => null));
@@ -12,9 +13,9 @@ export function validateAnimationGuides(states, endpoint) {
   if (states.length !== endpoint.scene.nodes.length) throw new TypeError("Guide states must follow exact endpoint node order.");
   return cloneAndFreeze(states.map((input, index) => {
     if (input === null) return null;
-    const state = normalizeGuideAnimationState(input);
+    const state = input.kind === "legend" ? normalizeLegendAnimationState(input) : normalizeGuideAnimationState(input);
     if (endpoint.identities[index] !== undefined || endpoint.backgrounds?.some(entry => entry.index === index)) throw new TypeError("A guide cannot replace native mark identity.");
-    if (state.reason === undefined && !guideAnimationMatchesNode(state, endpoint.scene.nodes[index])) {
+    if (state.reason === undefined && !(state.kind === "legend" ? legendAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index])) {
       throw new TypeError("Guide animation meaning differs from its concrete endpoint.");
     }
     return state;
@@ -44,10 +45,11 @@ function prepareTrack(match, from, to, a, b) {
   if (sameConcreteValue(source, target) && sameConcreteValue(a, b)) return { ...match, kind: "exact" };
   if (!clipInterpolationCompatible(source, target)) return fade("clip-topology");
   const appearance = properties => Object.fromEntries(Object.entries(properties).filter(([key]) =>
-    !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline"].includes(key)));
+    !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline", ...(a.kind === "legend" ? ["width", "height"] : [])].includes(key)));
   const style = prepareAnimationAppearance(appearance(source.properties), appearance(target.properties));
   if (style.kind === "crossfade") return fade(style.reason);
-  const guide = prepareGuideInterpolation(a, b);
+  const guide = a.kind === "legend" && b.kind === "legend" ? prepareLegendInterpolation(a, b)
+    : a.kind === "legend" || b.kind === "legend" ? { kind: "crossfade", reason: "guide-policy" } : prepareGuideInterpolation(a, b);
   return guide.kind === "crossfade" ? fade(guide.reason) : { ...match, kind: "semantic-guide", guide, appearance: style };
 }
 export function prepareGuideTracks(from, to) {
@@ -66,4 +68,10 @@ export function prepareGuideTracks(from, to) {
   }
   for (const [key, indices] of targets) if (!sources.has(key) && indices.length !== 1) ambiguous.target.push(...indices);
   return cloneAndFreeze({ tracks, ambiguous });
+}
+
+// The sampler delegates native guide meaning to its owning materializer. The
+// public sampler imports this wrapper, not a second layout implementation.
+export function sampleGuideInterpolation(plan, progress) {
+  return plan.from?.kind === "legend" ? sampleLegendInterpolation(plan, progress) : sampleNativeGuide(plan, progress);
 }
