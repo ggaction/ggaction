@@ -1,5 +1,5 @@
 {
-  "status": "runtime-and-package-qualified-documentation-pin-pending",
+  "status": "qualified-geographic-current-frame-selection",
   "previousCheckpoint": "dd0b51c43",
   "publicApiOrStoredSchemaChanges": false,
   "publicGeoTypedSamplerIntegrated": false,
@@ -141,5 +141,26 @@
     "Public Geo sampler generation with authentic dynamic source origins and actual installed/browser activation",
     "Cross-family typed animation integration and STEP074 full qualification",
     "Remaining STEP070 and077 requirements"
-  ]
+  ],
+  "sourceCommit": "c0b60b49799cdbfa0c461dfc6f32eeae831d0d90",
+  "documentation": {
+    "sourcePinnedTests": 32,
+    "preflight": true,
+    "build": true,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "page": "api/interaction/",
+    "widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "overflow": 0,
+    "axeViolations": 0,
+    "browserErrors": 0,
+    "visualInspectionWidths": [
+      320
+    ]
+  }
 }

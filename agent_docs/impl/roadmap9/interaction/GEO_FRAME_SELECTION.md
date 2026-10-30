@@ -68,3 +68,10 @@ Package는1134entries/7332934unpacked, Node20/24 packed1618319, Node22 packed161
 ceilings를 유지했다. 첫 문서 검사35개 중 stale runtime reference1개는 정본 generator로 갱신한
 뒤 owning38개가 통과했다. Source pin·built 문서 검증은 후속 metadata에서 닫는다.
 `geo-frame-selection-evidence/summary.json`과 압축 로그·설치 receipt가 각 검사 범위를 구분한다.
+
+Source `c0b60b49799cdbfa0c461dfc6f32eeae831d0d90`를 원격에 push한 뒤 provenance→machine→LLM을
+다시 생성했다. Source-pinned 문서32개, 환경 preflight, Jekyll build,186 built pages/1598LLM
+artifact link·hash 검사를 통과했다. 변경 interaction page의320/390/768/1280폭에서 overflow0,
+Axe0, browser error0이며320폭 화면도 직접 확인했다. 최종 metadata commit은 runtime/type/hash와
+검증한 archive를 바꾸지 않는다. 공개 Geo sampler와 실제 activation 통합은 peer에 이 안정 source를
+전달했으며 별도 합산 evidence로 닫는다.
