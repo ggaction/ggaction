@@ -1,7 +1,6 @@
 {
   "status": "verified-public-timeline; wider STEP077 integration pending",
-  "sourceRevision": null,
-  "sourceRevisionNote": "Source hashes are authoritative until the following metadata-only source pin.",
+  "sourceRevision": "933cacad0da8e86b30a62cca09c5260cbc7a96d7",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "archive": {
     "name": "ggaction",
@@ -55,7 +54,10 @@
       "pages": 186,
       "llmHashes": 1598,
       "browser": "desktop search and every page at320/390/768 passed"
-    }
+    },
+    "portableIndependentRepros": 8,
+    "sourcePinnedDocumentation": 48,
+    "sourcePinBrowserReuse": "Runtime/types, visible content, CSS and UI are unchanged; full prior 186-page/3-width browser pass retained; new pinned build and1598artifact checker pass."
   },
   "packageActualMaximum": {
     "entries": 1182,
