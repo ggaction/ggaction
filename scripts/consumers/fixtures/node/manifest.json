@@ -1702,5 +1702,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "animation-appearance.mjs",
+    "cases": [
+      {
+        "id": "animation-appearance/offline-four-renderers",
+        "statements": 11
+      },
+      {
+        "id": "animation-appearance/current-frame-interruption",
+        "statements": 2
+      },
+      {
+        "id": "animation-appearance/current-ink-selection",
+        "statements": 5
+      }
+    ]
   }
 ]

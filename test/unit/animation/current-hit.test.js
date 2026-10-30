@@ -48,7 +48,7 @@ test("current semantic point geometry retains reordered native identities and ex
 });
 
 test("a weighted representation has one semantic hit across its two painted endpoint geometries", () => {
-  const from = program([{ id: "a", x: 2, y: 5 }]), to = from.reviseData({ source: "rows", id: "next", values: [{ id: "a", x: 8, y: 5 }] }).encodeColor({ value: "red" });
+  const from = program([{ id: "a", x: 2, y: 5 }]), to = from.reviseData({ source: "rows", id: "next", values: [{ id: "a", x: 8, y: 5 }] }).encodeColor({ value: "red" }).editPointMark({shape:"square"});
   const frame = sample(from, to, 50), weighted = frame.scene.nodes.find(node => node.type === "weighted-blend" && node.properties.sources[0].type === "circle");
   assert.ok(weighted);
   for (const source of weighted.properties.sources) {
@@ -70,7 +70,7 @@ test("nested current-frame hits retain the exact child path and scoped item key"
 
 test("interrupted weighted geometry retains one hit and the current endpoint's native lineage", () => {
   const from = program([{ id: "a", x: 2, y: 5 }]);
-  const to = from.reviseData({ source: "rows", id: "next", values: [{ id: "a", x: 8, y: 5 }] }).encodeColor({ value: "red" });
+  const to = from.reviseData({ source: "rows", id: "next", values: [{ id: "a", x: 8, y: 5 }] }).encodeColor({ value: "red" }).editPointMark({shape:"square"});
   const middle = sample(from, to, 50);
   const goal = from.reviseData({ source: "rows", id: "goal", values: [{ id: "a", x: 5, y: 5 }] }).encodeColor({ value: "blue" });
   const frame = sample(middle, goal, 50);

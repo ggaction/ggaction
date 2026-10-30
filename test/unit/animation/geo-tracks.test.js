@@ -27,7 +27,7 @@ test("camera tracks generate a native middle feature when both endpoints contain
 
 test("changed feature appearance does not disable the other compatible camera features",()=>{
  const p=make([point("a",[0,0]),point("b",[20,0])]),a=state(p),b=structuredClone(state(p.editProjection({rotateDeg:[30,0,0]})));
- b.groups[0].presentation.styles[0].fill="red";
+ b.groups[0].presentation.styles[0].fill={type:"pattern",style:"dots",pitch:8,strokeWidth:1,foreground:"red",background:"none",coordinateSpace:"object"};
  const prepared=prepareGeoTracks(a,b),sample=sampleGeoTracks(prepared.state,.5);
  assert.equal(sample[0].presentation.geometry.features.length,1);assert.equal(prepared.state.groups[0].fallback[0].reason,"appearance");
  const aIndex=a.items.findIndex(item=>item?.key===b.groups[0].presentation.geometry.features[0].key),bIndex=b.items.findIndex(item=>item?.key===b.groups[0].presentation.geometry.features[0].key);

@@ -899,12 +899,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 774,200 bytes |
+| `ggaction` | 774,400 bytes |
 | `ggaction/basic` | 422,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 131,000 bytes |
-| `ggaction/animation` | 232,600 bytes |
+| `ggaction/interaction` | 131,100 bytes |
+| `ggaction/animation` | 233,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -4597,3 +4597,13 @@ fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native
 Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebase/strict restore에 보존한다.
 공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Animation solid appearance ownership
+
+`animation/appearance`는 native geometry owner가 분리한 style slice의 공통 보간 정책을
+소유한다. 기존 color parser와 premultiplied linear-sRGB/numeric kernel을 사용하고 sampler가
+동일 현재 geometry에 concrete style patch를 적용한다. Geo는 feature별 prepared paint에 같은
+정책을 사용하며 이미 지원하던 동일 structured paint의 native materialization은 유지한다.
+색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
+Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
+정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.

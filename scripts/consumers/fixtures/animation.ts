@@ -16,7 +16,7 @@ player.play().pause().seek(10).reverse().setRate(2).setRepeat(1);
 player.interrupt({to,options:{durationMs:100}});player.cancel();player.dispose();
 const settled:Promise<{readonly reason:string;readonly timeMs:number;readonly iteration:number}>=player.finished;
 // @ts-expect-error authored plans are not prepared handles
-const forged:TransitionPlan={kind:'transition-plan',version:1,durationMs:1,easing:'linear'};
+const forged:TransitionPlan={kind:'transition-plan',version:2,durationMs:1,easing:'linear'};
 // @ts-expect-error schedules choose one source of times
 exportAnimationFrames(plan,{fps:30,timesMs:[0]});
 // @ts-expect-error plain graphics are not authentic sampled endpoints
@@ -63,3 +63,6 @@ for(const decision of geoFrame.decisions)if(decision.kind==='geographic'){
  const index=decision.targetIndex;
  void kernel;void address;void index;
 }
+
+const currentTransitionVersion: 2 = plan.version;
+void currentTransitionVersion;

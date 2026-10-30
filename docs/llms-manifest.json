@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:ae72d4d32b34b931513e1583328c56fc6331d1afa1f4d6cfa8f5dacad7994506",
-    "sourceCommit": "c34e56e7417c28628fd781c9b6050a62bcb802fc",
+    "contractId": "sha256:cfdc64d6dadccf1ee0cc2538d77fc5c0c719b5399f16105ec6c4ea966f726451",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "b823219a93fdebbec5d9866efd2f96adf2da9707519aace8c5180ae5649808b9"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1287,15 +1287,19 @@
       "headings": [
         "animate-and-export-chart-frames",
         "prepare-save-and-sample",
+        "animate-solid-color-and-opacity",
         "move-a-completed-graph-layout",
+        "move-cartesian-shapes-and-series",
         "bend-an-icicle-into-a-sunburst",
+        "move-native-polar-shapes",
+        "move-geographic-cameras",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 10556,
-      "sha256": "45821c608c75a2daa807f7c24722d481d424449611579b5f44fe4348cb54ecc9"
+      "bytes": 15951,
+      "sha256": "7a4eab6eef11ecd41958ad3c3d8b3efbecaa11b986bc332fe95035bb0aed90e2"
     },
     {
       "order": 77,
@@ -1333,8 +1337,8 @@
         "accessible-tooltips-and-touch",
         "native-control-alternatives"
       ],
-      "bytes": 98116,
-      "sha256": "1342e7eef3beb031fd1fb078fecc9bb64f6a1aaa301a690999c2b436e35b7313"
+      "bytes": 100231,
+      "sha256": "bf04a5f203d2532fe4e0588a8924e76952d373cdc3cedce5126796654e122b97"
     },
     {
       "order": 78,
@@ -2639,8 +2643,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 78736,
-      "sha256": "58b40474a4588a554d7fb908bc8ca1741a233b17fdfb52eda4ee0dec25778b89"
+      "bytes": 80025,
+      "sha256": "0dd0941854718ebbeee674c33e1d6ebdfdac0ec21d2885c7d07c9ae528063da0"
     },
     {
       "order": 132,
@@ -3608,8 +3612,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "fb26692cebdb6703e3af2f07455dc5713e9367e042299477d53cd14d4f8bfd06"
+      "bytes": 23199,
+      "sha256": "154898c835b60023d0d67cc82ef4faba7828ddafb6a46a5485b13b28f4ce8cb9"
     },
     {
       "order": 135,
@@ -3949,8 +3953,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "31e09ff119fd10c700b833264a5172f6fa58926a7a737c7d6af3df0acd35d79c"
+      "bytes": 3000,
+      "sha256": "3ba464f464d4ca2c9c5e3072c62b4bb7e98dbcbb0743176bb80727f25dc4a74b"
     },
     {
       "order": 156,

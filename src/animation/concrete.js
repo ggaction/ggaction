@@ -41,11 +41,6 @@ export function fadeAnimationNode(node, opacity, key = node.key) {
   validateConcreteGraphicProperties(node.type,properties);
   return cloneAndFreeze({...node,key,properties});
 }
-export function pointAppearanceCompatible(from, to) {
-  if (typeof from.fill === "object" || typeof to.fill === "object") return false;
-  const staticValues = value => Object.fromEntries(Object.entries(value).filter(([key]) => !["x","y","radius"].includes(key)));
-  return sameConcreteValue(staticValues(from),staticValues(to));
-}
 export function clipInterpolationCompatible(from,to) {
   return from.clips.length === to.clips.length && from.clips.every((clip,i) =>
     Array.isArray(clip) && Array.isArray(to.clips[i]) || sameConcreteValue(clip,to.clips[i]));

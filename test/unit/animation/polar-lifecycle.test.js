@@ -46,7 +46,8 @@ test("polar mapping, order, appearance and authored geometry changes remain expl
   const point=builders.point(base()),line=builders.line(base());
   assert.equal(plan(point,point.encodeR({...radius,scale:{domain:[0,200],nice:false}})).tracks[0].reason,"polar-mapping");
   assert.equal(plan(line,line.editLineMark({closed:false})).tracks[0].reason,"geometry-policy");
-  assert.equal(plan(line,line.editLineMark({stroke:"red"})).tracks[0].reason,"appearance");
+  assert.equal(plan(line,line.editLineMark({stroke:"red"})).tracks[0].kind,"semantic-polar");
+  assert.equal(plan(line,line.editLineMark({stroke:"red"})).tracks[0].appearance.entries[0].key,"stroke");
   assert.equal(plan(line,line.reviseData({source:"d",id:"next",values:rows.map(r=>({...r,t:360-r.t}))})).tracks[0].reason,"topology");
   const edited=point.editGraphics({target:"m",property:"x",value:[10,20,30]});assert.equal(plan(point,edited).tracks[0].reason,"edited-position");
   const e=projectAnimationEndpoint(point),wrong=structuredClone(e);wrong.identities.find(Boolean).lineage.rowKeys=[];

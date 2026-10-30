@@ -1,3 +1,4 @@
+import { sampleAnimationAppearance } from "./appearance.js";
 import { sampleGeoTracks } from "./geoTracks.js";
 import { geoFrameCollector } from "./geoFrames.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
@@ -46,10 +47,11 @@ export function sampleTransition(input,timeMs) {
       ...(track.key===undefined?{owner:track.owner}:{itemKey:track.key}),role:track.role};
     if(track.kind==="exact"){appendGraph("to",targetIndex);appendPartition("to",targetIndex);decisions.push({...metadata,kind:"exact"});positions.push(meaning(toPositions[targetIndex]));cartesian.push(meaning(cartesianState.to[targetIndex]));polars.push(meaning(polarState.to[targetIndex]));return to;}
     let reason=track.reason;
+    const appearance=()=>sampleAnimationAppearance(track.appearance,progress);
     if(track.kind==="semantic-polar"){
       const sampled=samplePolarInterpolation(track.polar,progress);
       if(sampled.kind==="polar"){
-        const properties={...to.properties,...sampled.properties,...(to.type==="circle"?{radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)}:{})};validateConcreteGraphicProperties(to.type,properties);
+        const properties={...to.properties,...appearance(),...sampled.properties,...(to.type==="circle"?{radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)}:{})};validateConcreteGraphicProperties(to.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"polar-geometry"});positions.push(null);cartesian.push(null);polars.push(sampled.state);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
         return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
       }
@@ -58,7 +60,7 @@ export function sampleTransition(input,timeMs) {
     if(track.kind==="semantic-cartesian"){
       const sampled=sampleCartesianInterpolation(track.cartesian,progress);
       if(sampled.kind==="cartesian"&&sampled.type===to.type){
-        const properties={...to.properties,...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
+        const properties={...to.properties,...appearance(),...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-geometry"});positions.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);cartesian.push(sampled.state);polars.push(null);
         return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
       }
@@ -67,7 +69,7 @@ export function sampleTransition(input,timeMs) {
     if(track.kind==="semantic-partition"){
       const sampled=partitionSamples(track.pair),item=partitionState.to.items[targetIndex],geometry=samplePartitionTrack(sampled,item);
       if(geometry.properties){
-        const properties={...partitionAnimationPaint(to.properties),...geometry.properties};validateConcreteGraphicProperties(geometry.type,properties);
+        const properties={...partitionAnimationPaint(to.properties),...appearance(),...geometry.properties};validateConcreteGraphicProperties(geometry.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"partition"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(sampled.group,item);
         return cloneAndFreeze({...to,type:geometry.type,properties,...interpolateNodeFrame(from,to,progress)});
       }
@@ -76,7 +78,7 @@ export function sampleTransition(input,timeMs) {
     if(track.kind==="semantic-graph"){
       const sampled=graphSamples(track.pair),item=graphState.to.items[targetIndex],geometry=sampleGraphTrack(sampled,item);
       if(geometry.properties){
-        const properties={...to.properties,...geometry.properties};validateConcreteGraphicProperties(to.type,properties);
+        const properties={...to.properties,...appearance(),...geometry.properties};validateConcreteGraphicProperties(to.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"completed-graph"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(sampled.group,item);partitionFrame.append(undefined,null);
         return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});
       }
@@ -85,7 +87,7 @@ export function sampleTransition(input,timeMs) {
     if(track.kind==="semantic-point"){
       const x=samplePositionInterpolation(track.x,progress),y=samplePositionInterpolation(track.y,progress);
       if(x.kind==="position"&&y.kind==="position"){
-        const properties={...to.properties,x:x.position,y:y.position,radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)};
+        const properties={...to.properties,...appearance(),x:x.position,y:y.position,radius:interpolateNumber(from.properties.radius,to.properties.radius,progress)};
         validateConcreteGraphicProperties("circle",properties);decisions.push({...metadata,kind:"semantic-kernel",kernel:"cartesian-point"});
         positions.push({x:{value:x.value,scale:x.scale},y:{value:y.value,scale:y.scale}});cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);
         return cloneAndFreeze({...to,properties,...interpolateNodeFrame(from,to,progress)});

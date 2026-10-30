@@ -14,7 +14,7 @@ export interface TransitionOptions {
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 1;
+  readonly version: 2;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }

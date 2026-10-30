@@ -94,7 +94,7 @@ test("nested namespace scopes supply their own semantic values and resolved scal
 test("unsupported geometry and appearance retain explicit per-item crossfade reasons", () => {
   const from = points();
   for (const [to, reason] of [[from.editPointMark({ shape: "diamond" }), "primitive-kind"],
-    [from.editPointMark({ fill: "red" }), "appearance"],
+    [from.editPointMark({ fill: {type:"pattern",style:"dots",pitch:8} }), "appearance"],
     [from.editScale({ id: "x", clamp: true }), "scale-clamp"]]) {
     const plan = prepare(from, to);
     assert.ok(plan.tracks.every(t => t.kind === "crossfade" && t.reason === reason));

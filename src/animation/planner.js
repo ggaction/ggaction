@@ -1,3 +1,4 @@
+import { ANIMATION_APPEARANCE_VERSION, prepareAnimationAppearance } from "./appearance.js";
 import { projectGeoAnimationPresentations, validateGeoAnimationPresentations } from "../materialization/animation/geoPresentation.js";
 import { ANIMATION_GEO_VERSION } from "../grammar/animation/geoState.js";
 import { prepareGeoTracks, emptyAnimationGeos } from "./geoTracks.js";
@@ -25,14 +26,14 @@ import { ANIMATION_POSITION_VERSION, preparePositionInterpolation, samplePositio
 import { validateGraphic } from "../persistence/validation.js";
 import { validatePointAnimationPosition } from "../grammar/animation/pointState.js";
 import { easeProgress } from "../grammar/animation/values.js";
-import { sameConcreteValue, pointAppearanceCompatible, clipInterpolationCompatible, blendAnimationNodes, validateAnimationFallbackReason } from "./concrete.js";
+import { sameConcreteValue, clipInterpolationCompatible, blendAnimationNodes, validateAnimationFallbackReason } from "./concrete.js";
 
 import { projectGraphAnimationState, validateAnimationGraphState } from "../materialization/animation/graph.js";
 import { ANIMATION_GRAPH_VERSION } from "../grammar/animation/graphState.js";
 import { ANIMATION_ROUTE_VERSION } from "../grammar/animation/routes.js";
 import { graphTrackPreparation, emptyAnimationGraphs } from "./graphTracks.js";
 
-export const TRANSITION_PLAN_VERSION = 1;
+export const TRANSITION_PLAN_VERSION = 2;
 const plans = new WeakSet();
 const preparedPositions = new WeakMap();
 const preparedGeos = new WeakMap();
@@ -42,7 +43,7 @@ const preparedGraphs = new WeakMap();
 const preparedPartitions = new WeakMap();
 const exactFrames = new WeakMap();
 // Transition version also fixes timing/easing, correspondence and weighted blending.
-const kernels = Object.freeze({ transition: TRANSITION_PLAN_VERSION, position: ANIMATION_POSITION_VERSION });
+const kernels = Object.freeze({ transition: TRANSITION_PLAN_VERSION, position: ANIMATION_POSITION_VERSION, appearance: ANIMATION_APPEARANCE_VERSION });
 function native(program) {
   if (!(program instanceof ChartProgram)) throw new TypeError("Animation preparation requires an immutable ChartProgram.");
   requireClosedProgramState(program,"Animation preparation");
@@ -90,13 +91,15 @@ function track(match,from,to,a,b) {
   if(source.type!=="circle")return fade("unsupported-point-primitive");
   if(unchanged&&sameConcreteValue(a,b))return {...metadata,kind:"exact"};
   if(!clipInterpolationCompatible(source,target))return fade("clip-topology");
-  if(!pointAppearanceCompatible(source.properties,target.properties))return fade("appearance");
+  const style=value=>Object.fromEntries(Object.entries(value).filter(([key])=>!["x","y","radius"].includes(key)));
+  const appearance=prepareAnimationAppearance(style(source.properties),style(target.properties));
+  if(appearance.kind==="crossfade")return fade(appearance.reason);
   const x=preparePositionInterpolation(a.x,b.x),y=preparePositionInterpolation(a.y,b.y);
   if(x.kind==="crossfade"||y.kind==="crossfade")return fade(x.reason??y.reason);
   for(const [value,channel]of [[x,"x"],[y,"y"]]) {
     if(samplePositionInterpolation(value,0).position!==source.properties[channel]||samplePositionInterpolation(value,1).position!==target.properties[channel])return fade("edited-position");
   }
-  return {...metadata,kind:"semantic-point",x,y};
+  return {...metadata,kind:"semantic-point",x,y,appearance};
 }
 
 // Native typed families share exact keyed correspondence and endpoint admission.
@@ -214,13 +217,13 @@ export function restoreTransitionPlan(input) {
   const partitionKernel=Object.hasOwn(input.from,"partitions")||Object.hasOwn(input.to,"partitions");
   const polarKernel=Object.hasOwn(input.from,"polars")||Object.hasOwn(input.to,"polars");
   const cartesianKernel=Object.hasOwn(input.from,"cartesian")||Object.hasOwn(input.to,"cartesian");
-  closed(input.kernels,["transition","position",...(geoKernel?["geo"]:[]),...(polarKernel?["polar"]:[]),...(cartesianKernel?["cartesian"]:[]),...(graphKernel?["graph","route"]:[]),...(partitionKernel?["partition"]:[])],"Animation kernels");
+  closed(input.kernels,["transition","position","appearance",...(geoKernel?["geo"]:[]),...(polarKernel?["polar"]:[]),...(cartesianKernel?["cartesian"]:[]),...(graphKernel?["graph","route"]:[]),...(partitionKernel?["partition"]:[])],"Animation kernels");
   if(geoKernel&&input.kernels.geo!==ANIMATION_GEO_VERSION)throw new TypeError("Unsupported animation Geo kernel version.");
   if(partitionKernel&&input.kernels.partition!==PARTITION_ANIMATION_VERSION)throw new TypeError("Unsupported animation partition kernel version.");
   if(polarKernel&&input.kernels.polar!==ANIMATION_POLAR_VERSION)throw new TypeError("Unsupported polar animation kernel version.");
   if(cartesianKernel&&input.kernels.cartesian!==ANIMATION_CARTESIAN_VERSION)throw new TypeError("Unsupported Cartesian animation kernel version.");
   if(graphKernel&&(input.kernels.graph!==ANIMATION_GRAPH_VERSION||input.kernels.route!==ANIMATION_ROUTE_VERSION))throw new TypeError("Unsupported animation graph kernel version.");
-  if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position)throw new TypeError("Unsupported animation kernel version.");
+  if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position||input.kernels.appearance!==kernels.appearance)throw new TypeError("Unsupported animation kernel version.");
   const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
   const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs},{from:from.cartesian,to:to.cartesian},{from:from.partitions,to:to.partitions},{from:from.polars,to:to.polars},{from:from.geos,to:to.geos});

@@ -36,7 +36,7 @@ test("offline point preparation reconstructs correspondence and semantic samples
 test("restoration rejects unknown fields, kernels and malformed options before creating an authentic plan", () => {
   const p = points(), payload = exportTransitionPlan(prepare(p, p));
   const changes = [
-    v => { v.kind = "other"; }, v => { v.version = 99; }, v => { v.kernels.transition = 2; },
+    v => { v.kind = "other"; }, v => { v.version = 99; }, v => { v.kernels.transition = 99; },
     v => { v.kernels.position = "future"; }, v => { v.kernels.extra = true; }, v => { delete v.kernels.position; },
     v => { v.durationMs = -1; }, v => { v.easing = undefined; }, v => { v.easing = "spring"; },
     v => { v.tracks = []; }, v => { delete v.from; }, v => { v.to.extra = true; },

@@ -63,7 +63,7 @@ test('visibility, hierarchy topology, edited geometry and paint retain explicit 
  const focus=prepare(before,before.editPartitionPlot({focus:{key:'A'}}));assert.ok(focus.tracks.some(track=>track.reason==='visibility'));
  const changed=structuredClone(before.graphicSpec);changed.objects.partitionPlot.items[0].properties.x+=1;
  assert.ok(prepare(before._clone({graphicSpec:changed}),after).tracks.some(track=>track.reason==='partition-edited-geometry'));
- const color=prepare(before,before.editPartitionPlot({cells:{overrides:[{key:'R',fill:'#ff0000'}]}}));assert.ok(color.tracks.some(track=>track.reason==='appearance'));
+ const color=prepare(before,before.editPartitionPlot({cells:{overrides:[{key:'R',fill:'#ff0000'}]}}));assert.ok(color.tracks.some(track=>track.kind==='semantic-partition' && track.appearance.entries.some(entry=>entry.key==='fill')));
  const mirrored=prepare(before,after.editPartitionPlot({direction:'clockwise'}));assert.ok(mirrored.tracks.every(track=>track.reason==='handedness'));
  assert.deepEqual(sampleTransition(restored(focus),50),sampleTransition(focus,50));
 });

@@ -9,8 +9,14 @@
 - 현재 색/opacity는 concrete sampled properties에 이미 남으므로 frame 재기준에 새 semantic state나 이전 plan 보존이 필요하지 않다. Endpoint의 원 graphics는 정확히 유지한다.
 - 기존 version1 payload의 같은 입력을 새 sampler가 조용히 다른 결과로 바꾸지 않는다. 공개 연결 시 transition plan/kernel을 version2로 명시 상향하고 premultiplied-linear-srgb@1 appearance version을 kernel manifest에 넣는다. 미발행 개발 animation surface의 구 version은 기존 unknown-version 원칙대로 오류다. 새 public function·ChartProgram resource·compatibility layer는 추가하지 않는다.
 
-## 현재 상태
+## 공개 연결 상태
 
-공통 helper의 독립6개 검사와 line/branch/function100/100/100을 통과했다. Color의 해석은 host-independent owner를 사용하며 원 명명색과 CSS 문자열을 정확 endpoint에서 보존한다. Float conversion의1ulp는 수치 tolerance1e-12로 평가한다. 원 최초 실패는 보존한다.
+Point·Cartesian·polar·partition·graph track은 native owner가 geometry를 제외한 style을
+공통 appearance owner에 전달하고 같은 현재 geometry에 patch를 적용한다. Geo는 feature별
+동일 style의 기존 native structured-paint 동작을 보존하며 달라진 solid style만 함께 준비한다.
+재기준은 실제 concrete 현재 색을 다시 해석하고 version2 transport는 required appearance
+kernel을 검증한다. 기존 geometry decision과 public6함수는 유지한다.
 
-현재 helper는 공개 planner/sampler에 아직 연결하지 않았다. Geo·Cartesian·polar·partition shared seam이 고정된 뒤 한 번 합산하고 Current·타입·public docs·strict envelope·설치본·네 renderer와 current frame 검증을 같은 공개 checkpoint에서 닫는다. 이 준비를 AT42 또는 전체 STEP077 완료로 세지 않는다.
+집중 source·네 renderer·설치본·strict types·native session의 실제 qualification은 별도
+appearance-public-evidence에서 기록한다. 기존 준비 증거를 공개 실행 증거로 승격하지 않는다.
+전체 STEP077과 원안의 다른 paint/guide/timeline consumer 의무는 이 checkpoint로 닫지 않는다.
