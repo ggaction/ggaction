@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:450b9523da44dc65f475891af2cfb0936674545d1eddc56550406ec27dc588c0",
-  "sourceCommit": "bd8ce86d17f59d830c9990d48d9f2563d95cf1d3",
-  "sourceRef": "bd8ce86d17f59d830c9990d48d9f2563d95cf1d3",
+  "contractId": "sha256:09a89c6afad87904687d24ba8843781145d1c5cb794b1108afcf842d42ff1110",
+  "sourceCommit": "eade826638721973600102062c0b5bb24e49db1f",
+  "sourceRef": "eade826638721973600102062c0b5bb24e49db1f",
   "exampleSourceRef": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
   "baseline": {
     "tag": "v0.0.13",

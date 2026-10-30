@@ -82,3 +82,7 @@ Native guide geometry 및 sample/render source는 후보와 같으므로 앞선6
 실제5dataset×6recipe와 문서232개·built186/1598·responsive browser 증거를 재사용한다.
 Source pin 이후 owning 문서와 canonical build를 다시 확인하고 metadata commit에서 기록한다.
 Legend·inferred title ink·복잡한 reflow와 전체61/62/63/77은 계속 열린 의무다.
+
+최종 source `eade82663` pin 이후 문서 owning23/23·canonical Jekyll build·built186/1598을 통과했다.
+생성된 source links와 image input hash만 갱신했으며 문서 본문·실제 이미지·site assets는 같다.
+따라서 앞선 전체 desktop/mobile browser 증거를 명시적으로 재사용한다.
