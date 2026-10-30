@@ -16,6 +16,7 @@ import {
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
+import { centeredRuleSpan, boxRuleSpan } from "../../../grammar/ruleGeometry.js";
 import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { readRectItemGeometry } from "../../../grammar/roundedRect.js";
 import { findDataset } from "../../../selectors/datasets.js";
@@ -323,27 +324,11 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
         });
         if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
         const pixels = resolved.markConfigs[boxSpan]?.boxPlot?.median?.width?.pixels;
-        if (layer.encoding?.x?.fieldType === "quantitative") {
-          startX = endX = mapped.x[index];
-          const height = pixels ?? box.height;
-          startY = box.y + (box.height - height) / 2;
-          endY = startY + height;
-        } else {
-          const width = pixels ?? box.width;
-          startX = box.x + (box.width - width) / 2;
-          endX = startX + width;
-          startY = endY = mapped.y[index];
-        }
+        const span=boxRuleSpan(mapped.x[index],mapped.y[index],layer.encoding?.x?.fieldType==="quantitative"?"vertical":"horizontal",box,pixels);
+        ({x1:startX,y1:startY,x2:endX,y2:endY}=span);
       } else if (mode === "fixed-span") {
-        if (fixedSpan.orientation === "horizontal") {
-          startX = mapped.x[index] - fixedSpan.size / 2;
-          endX = mapped.x[index] + fixedSpan.size / 2;
-          startY = endY = mapped.y[index];
-        } else {
-          startX = endX = mapped.x[index];
-          startY = mapped.y[index] - fixedSpan.size / 2;
-          endY = mapped.y[index] + fixedSpan.size / 2;
-        }
+        const span=centeredRuleSpan(mapped.x[index],mapped.y[index],fixedSpan.orientation,fixedSpan.size);
+        ({x1:startX,y1:startY,x2:endX,y2:endY}=span);
       } else {
         startX = mapped.x[index];
         startY = mapped.y[index];

@@ -16,11 +16,12 @@ test("native point restrictions coexist with typed Cartesian and polar support",
   assert.deepEqual(prepare(polar).tracks.map(track=>track.kind), ["exact", "exact"]);
   const offset = base([{ id: "a", x: "A", group: "u", y: 20 }, { id: "b", x: "B", group: "v", y: 60 }])
     .createPointMark({ id: "points" }).encodeX({ field: "x", fieldType: "nominal" }).encodeY({ field: "y" }).encodeXOffset({ field: "group" });
-  assert.deepEqual(reasons(offset), ["offset-position", "offset-position"]);
+  assert.deepEqual(prepare(offset).tracks.map(track=>track.kind), ["exact", "exact"]);
+  assert.ok(prepare(offset,offset.editCanvas({width:500})).tracks.every(track=>track.kind==="semantic-cartesian"));
   const line = base().createLineMark({ id: "line" }).encodeX({ field: "x" }).encodeY({ field: "y" });
   assert.deepEqual(prepare(line).tracks.map(track=>track.kind), ["exact"]);
   const overlay = line.createOverlay({ id: "overlay", source: "line", type: "point" });
-  assert.ok(reasons(overlay).includes("overlay-position"));
+  assert.ok(prepare(overlay,overlay.editCanvas({width:500})).tracks.every(track=>track.kind==="semantic-cartesian"));
   const diamond = points().editPointMark({ shape: "diamond" });
   assert.deepEqual(reasons(diamond), ["unsupported-point-primitive", "unsupported-point-primitive"]);
 });

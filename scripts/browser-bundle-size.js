@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 774_700, // Geographic label source membership: Node20 774,677 gzip bytes.
-  "ggaction/basic": 422_700, // Shared Text source preparation: Node20 422,618 gzip bytes.
+  ggaction: 775_000, // Shared native Cartesian placement: Node20/24 installed bundle 774,964 gzip bytes.
+  "ggaction/basic": 422_900, // Shared native Cartesian placement: Node20/24 installed bundle 422,870 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 262_200, // Native keyframe/marker and Geo Text integration: Node20/24 262,122 gzip bytes.
+  "ggaction/animation": 267_800, // Native Cartesian meaning completion: Node20/24 installed bundle 267,765 gzip bytes.
   "ggaction/interaction": 136_600 // Exact geographic Text source authority: Node20/24 136,504 gzip bytes.
 });
 

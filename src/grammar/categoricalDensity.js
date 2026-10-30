@@ -102,7 +102,7 @@ export function deriveCategoricalDensitySeries(rows, layer, transform, options =
   });
 }
 
-function maximumFor(derived, series) {
+export function categoricalDensityMaximum(derived, series) {
   const candidates = derived.placement.width.resolve === "shared"
     ? derived.series
     : derived.series.filter(candidate => Object.is(
@@ -161,28 +161,34 @@ export function buildCategoricalDensityPaths(
   if (!Number.isFinite(categoryScale?.bandwidth) || categoryScale.bandwidth <= 0) {
     throw new Error("Categorical density placement requires a positive band scale.");
   }
-  const halfWidth = categoryScale.bandwidth * derived.placement.width.band / 2;
   const centers = mapOrdinalPositionValues(
     derived.series.map(series => series.category),
     categoryScale
   );
-  return cloneAndFreeze(derived.series.map((series, index) => {
-    const boundaries = pathBoundaries(
+  return cloneAndFreeze(derived.series.map((series, index) => buildCategoricalDensityPath(series, {
+    center:centers[index],categoryScale,valueScale,curve,channel:derived.placement.channel,widthBand:derived.placement.width.band,
+    maximum:categoricalDensityMaximum(derived,series),positions:positions?.[index]
+  })));
+}
+
+export function buildCategoricalDensityPath(series,{center,categoryScale,valueScale,curve="linear",channel,widthBand,maximum,positions}) {
+  const halfWidth=categoryScale.bandwidth*widthBand/2;
+  const boundaries = pathBoundaries(
       series,
-      centers[index],
+      center,
       halfWidth,
-      maximumFor(derived, series),
+      maximum,
       valueScale,
-      derived.placement.channel,
-      positions?.[index],
-      derived.placement.width.band
+      channel,
+      positions,
+      widthBand
     );
     if (curve !== "linear") {
       return buildAreaCurvePathCommands(
         boundaries.lower,
         boundaries.upper,
         curve,
-        derived.placement.channel === "x" ? { independentAxis: "y" } : {}
+        channel === "x" ? { independentAxis: "y" } : {}
       );
     }
     return buildLinearPathCommands(
@@ -192,5 +198,4 @@ export function buildCategoricalDensityPaths(
       ],
       { close: true }
     );
-  }));
 }

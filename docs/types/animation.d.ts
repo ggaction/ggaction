@@ -38,6 +38,8 @@ export interface TransitionPlan {
   readonly easing: AnimationEasing;
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
+ * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
+ * completed density samples, and compatible source-follow overlays.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;

@@ -93,3 +93,14 @@ planTransition({from,to,options:{durationMs:100,tracks:[{target:{ownerKey:'owner
 planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item'},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:0}]}]}});
 // @ts-expect-error guide and item selectors are mutually exclusive
 planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item',guideKey:'guide'},property:'opacity',kernel:'number',keyframes:[{timeMs:0,value:1}]}]}});
+
+const nativeRows=chart().createCanvas().createData({id:'raw',keyField:'id',values:[{id:'a',category:'A',value:2,lower:1,upper:3}]});
+const nativeRule=nativeRows.createRuleMark({id:'rule'}).encodeX({conditions:[{when:{version:2,registry:'standard@1',root:{type:'literal',value:false}},value:{field:'value',fieldType:'quantitative'}}],otherwise:{field:'lower',fieldType:'quantitative'}});
+const nativeCaps=nativeRows.createErrorBar({id:'interval',x:{field:'category',fieldType:'nominal'},y:{center:'value',lower:'lower',upper:'upper'},caps:true,capSize:20});
+const nativeDensity=nativeRows.createDensityPlot({id:'density',field:'value',bandwidth:1,extent:[0,4],steps:8,guides:false});
+const nativeOverlay=nativeRows.createBarMark({id:'bar'}).encodeX({field:'category',fieldType:'nominal'}).encodeY({field:'value',aggregate:'sum'}).createOverlay({id:'overlay',source:'bar',type:'point'});
+for(const endpoint of [nativeRule,nativeCaps,nativeDensity,nativeOverlay]){
+ const nativePlan=planTransition({from:endpoint,to:endpoint.editCanvas({width:600}),options:{durationMs:100}});
+ const nativeFrame=sampleTransition(deserializeAnimation(serializeAnimation(nativePlan)).plan,50);
+ render(nativeFrame,context);renderToSVG(nativeFrame);renderToPNGBuffer(nativeFrame);renderToPDFBuffer(nativeFrame);
+}

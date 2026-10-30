@@ -104,6 +104,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-cartesian-completion.browser.js"
       }
     ],
     "architecture": [
@@ -1500,6 +1508,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
       }
     ],
     "rendering": [

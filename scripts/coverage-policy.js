@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "native-position-offset": { prefix: "grammar/positionOffset.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native and animated offsets must share signed band placement, finite results and missing-value behavior." },
+  "native-rule-span": { prefix: "grammar/ruleGeometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static and animated rule caps and median spans share exact forward geometry." },
+  "native-density-boundary": { prefix: "grammar/densityAreaPath.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static and animated density paths share baseline closure and curve topology." },
   "animation": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics and item matching must preserve exact endpoints, bounded values and unambiguous semantic identity." },
   "animation-runtime": { prefix: "animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Playback must bound callbacks, preserve the current frame on interruption and settle every run exactly once." },
   "animation-meaning": { prefix: "materialization/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition inputs must preserve final item identity and resolved semantic values without inferring meaning from pixels." },

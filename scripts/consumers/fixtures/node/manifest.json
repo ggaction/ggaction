@@ -1748,5 +1748,22 @@
         "statements": 4
       }
     ]
+  },
+  {
+    "file": "animation-cartesian-completion.mjs",
+    "cases": [
+      {
+        "id": "animation-cartesian-completion/native-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-cartesian-completion/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+        "statements": 5
+      }
+    ]
   }
 ]

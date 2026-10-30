@@ -69,7 +69,7 @@ function itemGroups(items, source, binding) {
   return [...groups.values()];
 }
 
-export function resolveOverlaySeries(program, binding, { geometry = true, pointAppearance, resolvers } = {}) {
+export function resolveOverlaySeries(program, binding, { geometry = true, pointAppearance, resolvers, includePositionBindings = false } = {}) {
   const source = requireLayer(program, binding.source);
   const dataset = applyItemMissingPolicy(source, requireMaterializedDataset(program, source.data));
   const density = findUpstreamTransform(program, dataset, 'density');
@@ -136,7 +136,7 @@ export function resolveOverlaySeries(program, binding, { geometry = true, pointA
     }
     return groups;
   }
-  if (hasConditionalLinePosition(source) || hasConditionalAreaPosition(source)) return conditionalPathOverlaySeries(program, binding, source, dataset, resolvers);
+  if (hasConditionalLinePosition(source) || hasConditionalAreaPosition(source)) return conditionalPathOverlaySeries(program, binding, source, dataset, resolvers, includePositionBindings);
   const x = source.encoding.x;
   const derived = source.mark.type === "line"
     ? deriveLineSeries(dataset.values, source, { scales: program.semanticSpec.scales,
@@ -166,11 +166,12 @@ export function resolveOverlaySeries(program, binding, { geometry = true, pointA
           [overlayPositionEncoding(source, "y").field]: endpoint(point, "y") },
         x: mapPosition(program, source, "x", endpoint(point, "x")),
         y: mapPosition(program, source, "y", endpoint(point, "y")),
-        channels: { x: endpoint(point, "x"), y: endpoint(point, "y") } })) };
+        channels: { x: endpoint(point, "x"), y: endpoint(point, "y") },
+        ...(includePositionBindings?{positionBindings:{x:source.encoding.x,y:source.encoding.y}}:{}) })) };
   });
 }
 
-function conditionalPathOverlaySeries(program, binding, source, dataset, resolvers) {
+function conditionalPathOverlaySeries(program, binding, source, dataset, resolvers, includePositionBindings) {
   const line = source.mark.type === "line";
   const result = line ? conditionalLinePositions(program, source, dataset, resolvers) : conditionalAreaValues(program, source, dataset, resolvers);
   if (binding.series === "total" && result.derived.series.length > 1) throw new Error("Total overlays currently require stacked bars; use source series for line or area results.");
@@ -202,7 +203,11 @@ function conditionalPathOverlaySeries(program, binding, source, dataset, resolve
         if (field !== undefined) fields[field] = endpoint(channel);
       }
       return { key: JSON.stringify([series.key, x, y]), members, fields,
-        x: mapped("x"), y: mapped("y"), channels: { x, y } };
+        x: mapped("x"), y: mapped("y"), channels: { x, y },
+        ...(includePositionBindings?{positionBindings:Object.fromEntries(["x","y"].map(channel=>{
+          const useSecondary=!line&&!( (template.layout?.mode??"overlay")==="overlay"&&Object.hasOwn(template.encoding[`${channel}2`]??{},"datum"));
+          return [channel,(useSecondary?chosen(`${channel}2`):undefined)?.binding??chosen(channel)?.binding??template.encoding[channel]];
+        }))}:{}) };
     }) };
   });
 }
