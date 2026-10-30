@@ -105,3 +105,53 @@ Package 실측 unpacked7,535,326, packed Node20 1,668,120으로 최소 상한7,5
 조정했다. 나머지5entry는 기존 상한 그대로다. 최초 cap 실패와 같은 archive 측정 재검증을
 분리한다. 상세 증거는 [수치 옵션 기록](route-own-options-evidence/summary.json)에 저장한다.
 Chromium stage P95/retained heap은 여전히 별도 후속이며 이 기능 검사로 통과를 주장하지 않는다.
+
+## Chromium production 측정 — 일부 크기만 완료
+
+수리된 동일 `e52497df…7139` tar를 설치한 외부 consumer에서 minified browser bundle과
+실제 Blob worker를 만들었다. Apple M4 10cores/16GiB, Darwin27 arm64,
+Chromium153.0.8010.12, Node22.23.1의 한 desktop profile이다. 초기 localhost 번들을
+읽은 뒤 browser context를 offline으로 두었고 측정 중 HTTP request는0이다. 고정 원형
+입력과 star hierarchy를 그대로 쓰며 random/drop/sampling 변경은 없다. Canvas/SVG에
+Text·label·guide를 만들지 않으므로 폰트 독립 fixture이며 font-bearing chart 성능을 대신하지 않는다.
+
+성공 셀은 별도 첫 확인 뒤 warmup5+측정30회를 실행했다. `computeMs`는 worker의 공개
+computeGraphEdgeRoutes, `prepareComputeValidateMs`는 worker 시작·전달·계산·검증을
+포함한 prepare 호출, `applyMs`는 authentic prepared resource의 native commit이다.
+Bundling P95는 두 latter stage 합의 개별 표본에서 계산한다. Native GraphPlot materialization,
+Canvas 동기 명령, SVG serialization+DOM 삽입도 각각 기록했다. Browser compositor paint나
+GPU 완료 시간은 측정하지 않았다. Source 준비는 단발 진단이며 P95에 섞지 않았다.
+
+| Edges / method | DPR1 bundling P95 | DPR2 bundling P95 | 이 입력의 결과 |
+|---|---:|---:|---|
+| 100 hierarchical | 139.7ms | 139.3ms | 500ms 목표 이내 |
+| 100 force-directed | 196.4ms | 194.0ms | 500ms 목표 이내 |
+| 100 edge-path | 84.8ms | 86.2ms | 500ms 목표 이내 |
+| 1k hierarchical | 1081.5ms | 1091.4ms | 5s 목표 이내 |
+| 100 density | work limit | work limit | 성공 SLO 미측정 |
+| 1k 나머지3방식 | work limit | work limit | 성공 SLO 미측정 |
+| 10k 네 방식 | work/pair/sample limit | work/pair/sample limit | 성공 SLO 미측정 |
+
+총24셀 중8셀만 성공 P95이며16셀은 명시 limit이다. Density grid256×256/방향8채널/20회
+정책은 그대로이며 실패한 결과에 실제 fieldCells를 꾸며 넣지 않았다. FDEB candidate pair는
+100에서4,950,1k에서499,500,10k에서49,995,000이다. 10k의 pair 한도10M은 그대로다.
+따라서 AT82 전체 및 큰 크기 지원을 완료로 표시하지 않는다.
+
+첫 DPR1 1k HEB 구간에 peer의 guide coverage가 잠깐 겹쳤다. 최초1221ms와 부하 기록을
+보존하고, 해당 한 셀만 종료 후 같은5+30으로 보충하여1081.5ms를 얻었다. 첫 smoke의 잘못된
+GraphPlot graph 옵션도 runtime 결함으로 오인하지 않고 harness 입력을 공개 layout 계약에
+맞게 교정했다. 원본은 [별도 증거](route-browser-evidence/summary.json)에 남겼다.
+
+새 페이지에서 실제 DOM inspect mount, native worker, 완료/update/render50회와 즉시
+abort/dispose50회를 DPR마다 실행했다. Warmup5 뒤 기준점과 각 cycle 후 CDP 강제 GC 및
+Runtime.getHeapUsage를 측정했다. Main renderer JS retained heap 기울기는 DPR1
+4,227.10bytes/cycle, DPR2 4,552.79bytes/cycle이고 최종 증가772,000/798,684bytes다.
+각각 제안한10KiB/cycle·2MiB 이내다. Backing storage 증가는0이며 embedder heap은
+별도로 기록했다. 이는 전체 process RSS 측정이 아니다. Listener·worker·timer/RAF·capture 및
+파괴 후 subscriber callback 카운터는 모든 회차0이고, abort acknowledgement P95는
+두 DPR 모두 약0.2ms다. Native pointer drag/ResizeObserver/assets는 이 memory fixture가
+새로 검증한 항목이 아니며 기존 별도 lifecycle 증거와 구분한다.
+
+AT82 원문의 최종 all-size SLO·latest combined matrix, geographic GraphRoute binding과
+STEP070/074/077 전체 종료 의무는 유지한다. 이번 기록은 성공한 입력과 명시 거절·미검증 범위를
+분리한 측정 checkpoint다.
