@@ -4595,3 +4595,19 @@ fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native
 Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebase/strict restore에 보존한다.
 공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Geographic annotation animation preparation
+
+비공개 `grammar/animation/geoAnchor.js`는 원 geographic/feature anchor와 exact resource ref,
+정규화 camera를 닫힌 의미값으로 검증한다. 기존 camera interpolation과 projection forward만
+사용하며 pixel 역산·fit·새 centroid 정책을 추가하지 않는다. 반복 sampling의 centroid는 준비
+track에 종속된 private 계산값이며 serialized source geometry와 두 번째 정본을 만들지 않는다.
+`materialization/animation/geoAnnotation.js`는 native Text의 명시 상대배치·실제 font bytes와
+측정 profile·paint를 기존 owner에서 준비한다. `grammar/geo/annotationPosition.js`가 원 native
+주석과 animation의 source-space anchor 정책을 공유하며 Basic-safe shape validator에는
+수학 dependency를 넣지 않는다. 이 private 경계는 공개 planner의 Geo Text 지원 선언이 아니다.
+
+세 private/shared owner 추가 후 canonical package는1160 entries/7,509,649 unpacked bytes,
+Node22 packed1,658,169 및 Node20 packed1,660,835bytes다. 기존 한도초과를 별도 기록하고
+최소 package 한도를1160/1,661,000/7,510,000으로 조정한다. 여섯 browser entry의 기존
+한도는 유지한다. 정확 검증 범위와 후행 통합은 [Geo Text 준비 기록](impl/roadmap9/animation/GEO_TEXT.md)을 따른다.
