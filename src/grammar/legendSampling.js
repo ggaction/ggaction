@@ -1,7 +1,7 @@
-import { sampleNumericRange } from "../../../grammar/numeric.js";
+import { sampleNumericRange } from "./numeric.js";
 import {
   validateGeneratedItemLimit
-} from "../../../core/validation.js";
+} from "../core/validation.js";
 
 const DEFAULT_COUNT = 5;
 const MAX_EXACT_VALUES = 100;
@@ -133,11 +133,4 @@ export function resolveLegendSampleValues(config, scale, label = "Legend") {
   values[0] = scale.domain[0];
   values[values.length - 1] = scale.domain[1];
   return values;
-}
-
-export function hasExactLegendSamplingForScale(program, scaleId) {
-  return ["size", "opacity", "strokeWidth", "gradient", "strokeGradient"].some(kind => {
-    const config = program.guideConfigs.legend?.[kind];
-    return config?.scale === scaleId && readLegendSampling(config).mode === "values";
-  });
 }

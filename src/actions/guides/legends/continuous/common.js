@@ -42,7 +42,7 @@ import { findLegendLayer as findLayer } from "../../../../materialization/legend
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
-import { normalizeLegendSampling } from "../sampling.js";
+import { normalizeLegendSampling } from "../../../../grammar/legendSampling.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 
 const OPTIONS = [

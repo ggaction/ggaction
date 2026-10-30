@@ -34,12 +34,8 @@ import {
   selectLegendLayer
 } from "./continuous/common.js";
 import { legendResourcePolicies } from "../../../materialization/guides/resources.js";
-import {
-  normalizeLegendSampling,
-  readLegendSampling,
-  resolveLegendSampleValues
-} from "./sampling.js";
-import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
+import { normalizeLegendSampling, readLegendSampling, resolveLegendSampleValues } from "../../../grammar/legendSampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
 import { normalizeLegendOverflow } from "./categorical/options.js";
 
 

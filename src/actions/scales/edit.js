@@ -22,8 +22,7 @@ import {
   prepareScaleEdit,
   resolveScaleConsumerChannel
 } from "./editPolicy.js";
-import { hasExactLegendSamplingForScale } from
-  "../guides/legends/sampling.js";
+import { hasExactLegendSamplingForScale } from "../../materialization/guides/legendConfig.js";
 
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",

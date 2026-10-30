@@ -1,8 +1,9 @@
 import { legendResourcePolicies } from "../materialization/guides/resources.js";
 import { legendSampleGraphicGroups } from "../materialization/legendClip.js";
-import { resolveEffectiveLegendBlockConfig } from "../actions/guides/legends/blocks.js";
-import { activeConfig, categoricalLegendView, categoricalLegendLabels } from "../actions/guides/legends/categorical/layout.js";
-import { resolveLegendSampleValues } from "../actions/guides/legends/sampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../materialization/guides/legendConfig.js";
+import { resolveCategoricalLegendConfig as activeConfig, categoricalLegendLabels } from "../materialization/guides/legendConfig.js";
+import { categoricalLegendView } from "../grammar/legendOverflow.js";
+import { resolveLegendSampleValues } from "../grammar/legendSampling.js";
 import { resolveSizeLegendLayout } from "../actions/guides/legends/size.js";
 import { resolveColorSizeLayout } from "../actions/guides/legends/colorSize.js";
 import { resolveGradientLayout } from "../actions/guides/legends/continuous/gradient.js";

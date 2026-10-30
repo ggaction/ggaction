@@ -32,7 +32,10 @@ test('new legend option and selector witnesses retain five calls and three authe
  for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','tt-penguins']) for(let repetition=0;repetition<5;repetition++) {
   const view=realisticRecordView(dataset,{rowLimit:24});
   const rows=view.rows.map((row,index)=>({...row,rank:index+1}));
-  const source=chart().createCanvas({width:4400,height:3200,margin:1000}).createData({id:'analysisRows',values:rows});
+  const source=chart().createCanvas({width:4400,height:3200,margin:1000}).createData({id:'analysisRows',values:rows})
+   .createPointMark({id:'points',data:'analysisRows'})
+   .encodeX({field:'rank',scale:{id:'points-x'}})
+   .encodeY({field:'value',scale:{id:'points-y'}});
   const calls=[];
   // Observe successful public inputs before trace array summarization. Binding
   // each method to the real immutable program leaves its implementation intact.

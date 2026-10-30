@@ -31,8 +31,8 @@ import {
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
-import { readLegendSampling, validateSamplingAgainstScale } from "../sampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
+import { readLegendSampling, validateSamplingAgainstScale } from "../../../../grammar/legendSampling.js";
 
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 

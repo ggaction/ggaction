@@ -127,6 +127,12 @@ shared planner에서 별도로 보수한다. 첫 실패와 보수 후 결과를 
 선택, `resolveLegendSampleValues`, size/colorSize/gradient의 resolved sample/label 선택이다.
 Wrapped create/edit/materialize와 trace는 action owner에 남긴다.
 
+첫 추출에서 `grammar/legendSampling.js`와 `materialization/guides/legendConfig.js`를 만들고
+기존 action·hit caller의 import를 같은 owner로 옮겼다. 예전 sampling 모듈은 삭제하여 compatibility
+wrapper를 남기지 않는다. Categorical kind 목록은 기존 `grammar/legendBlocks.js`가 단일 소유한다.
+Native graphic/semantic/trace와 legend hit의10개 공개 예제 동등성,570개 owning 및 새 owner 두 개의
+100/100/100을 확인했다. 이 준비는 아직 공개 typed legend나 reflow 완료가 아니다.
+
 후속 metadata owner는 namespace와 native target/block family, component, typed raw category나
 interval endpoints를 보존한다. Overflow summary와 title은 별도 명시 role이며 현재 hit key와
 선택 결과를 바꾸지 않는다. Sample의 line/point/swatch layer와 clip window는 동일 native
@@ -137,3 +143,5 @@ Label reflow는 이미 준비된 wrapping/측정값을 native measured placement
 필요한 정확 측정치, field/scale/frame·정책을 닫힌 준비값으로 검증한 뒤 native edge/flush 배치를
 재생한다. Inferred title은 이 label bounds 의존성을 함께 보존해야 한다. 이 절은 구현 계획이며
 새 공개 typed 지원이나 qualifier 통과로 집계하지 않는다.
+
+범례 값·label 첫 추출의 source/설치/실제자료 근거는 [owner 증거](legend-owner-evidence/README.md)에 기록한다.

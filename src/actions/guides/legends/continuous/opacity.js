@@ -28,8 +28,8 @@ import {
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
-import { resolveLegendSampleValues } from "../sampling.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { resolveLegendSampleValues } from "../../../../grammar/legendSampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
 import { legendLabelLineHeight } from "../../../../layout/legend.js";
 
 const SYMBOL_OPTIONS = Object.freeze([

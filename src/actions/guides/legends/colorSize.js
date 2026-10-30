@@ -17,8 +17,8 @@ import {clippedSampleBounds,validateLegendClip} from '../../../grammar/legendCli
 import {resolveLegendItemLayout} from '../../../layout/legendItems.js';
 import {resolveLegendGraphicPlacement} from '../../../materialization/graphicHierarchy.js';
 import {normalizeItemLegendConfig,ITEM_LEGEND_OPTIONS,resolveContinuousBounds,formatContinuousValues,assertLegendBoundsInsideCanvas,resolveLegendBackgroundFromBounds,editLegendBackground,styleContinuousText,editGraphicProperties} from './continuous/common.js';
-import {normalizeLegendSampling,resolveLegendSampleValues,validateSamplingAgainstScale,readLegendSampling} from './sampling.js';
-import {resolveEffectiveLegendBlockConfig} from './blocks.js';
+import { normalizeLegendSampling, resolveLegendSampleValues, validateSamplingAgainstScale, readLegendSampling } from "../../../grammar/legendSampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
 import {applyLegendClipGraphics} from '../../../materialization/legendClip.js';
 
 export function resolveColorSizeOwner(program,target,combine='color-size',channels) {

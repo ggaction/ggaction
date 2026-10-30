@@ -25,11 +25,8 @@ import {
   formatContinuousValues,
   selectLegendLayer
 } from "./continuous/common.js";
-import {
-  normalizeLegendSampling,
-  resolveLegendSampleValues
-} from "./sampling.js";
-import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
+import { normalizeLegendSampling, resolveLegendSampleValues } from "../../../grammar/legendSampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
 
 
 

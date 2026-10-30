@@ -27,7 +27,7 @@ import { resolveLayout } from "./categorical/layout.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
 import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
 import { normalizeColorSymbols } from "./continuous/colorSymbols.js";
-import { readLegendSampling } from "./sampling.js";
+import { readLegendSampling } from "../../../grammar/legendSampling.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
 import { normalizeLegendGradient } from "../../../grammar/legendGradient.js";
 import {
@@ -58,7 +58,7 @@ import {
   resolveStrokeWidthLegendLayout,
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
-import { normalizeLegendSampling } from "./sampling.js";
+import { normalizeLegendSampling } from "../../../grammar/legendSampling.js";
 import { patchLegendBlockOverride } from "./blocks.js";
 import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { planLegendBlockTransitions } from "./transition.js";

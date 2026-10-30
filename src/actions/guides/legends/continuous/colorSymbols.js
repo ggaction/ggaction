@@ -8,7 +8,7 @@ import { mapScaleConsumerValues } from "../../../../materialization/scales/map.j
 import { transformedTicks } from "../../../../grammar/scales/index.js";
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
-import { normalizeLegendSampling, readLegendSampling, validateSamplingAgainstScale, resolveLegendSampleValues } from "../sampling.js";
+import { normalizeLegendSampling, readLegendSampling, validateSamplingAgainstScale, resolveLegendSampleValues } from "../../../../grammar/legendSampling.js";
 import { normalizeContinuousLegend, normalizeItemLegendLayout, resolveContinuousBounds, formatContinuousValues, assertLegendBoundsInsideCanvas, resolveLegendBackgroundFromBounds, editLegendBackground, styleContinuousText } from "./common.js";
 
 export function normalizeColorSymbol(value) {

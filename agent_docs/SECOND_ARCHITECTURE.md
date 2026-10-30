@@ -4631,3 +4631,12 @@ Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebas
 색과 수치는 실제 현재 properties에 남으므로 별도 의미 schema나 plan 연쇄를 추가하지 않는다.
 Strict transition version2/appearance kernel manifest가 저장·복원의 계산 정책을 고정한다.
 정확한 지원과 fallback은 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Shared native legend sample meaning
+
+`grammar/legendSampling`은 native quantitative sample의 정규화·scale validation·정확한 값 선택을
+소유한다. `materialization/guides/legendConfig`는 명시 block override와 categorical owner 조회·
+표시 label 선택을 소유하며, wrapped legend action과 hit metadata가 같은 읽기 전용 함수를 쓴다.
+이 추출은 action·trace·materialization 순서를 바꾸지 않는다. Native size/color-size/gradient의
+layout 계산과 animation의 준비된 legend 의미 연결은 별도 책임이며 final pixel 차이를 의미값으로
+추정하지 않는다. 공개 signature·저장 shape·renderer 경계는 유지한다.

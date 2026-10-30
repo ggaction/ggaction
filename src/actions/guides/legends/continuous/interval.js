@@ -29,7 +29,7 @@ import {
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
-import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../../materialization/guides/legendConfig.js";
 
 const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title",

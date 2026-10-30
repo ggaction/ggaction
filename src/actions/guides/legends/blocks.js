@@ -1,4 +1,5 @@
-import {colorSizeChannels,validateColorSizeShapeSamples} from "../../../grammar/colorSizeLegend.js";
+import { resolveEffectiveLegendBlockConfig } from "../../../materialization/guides/legendConfig.js";
+import {validateColorSizeShapeSamples} from "../../../grammar/colorSizeLegend.js";
 import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -19,10 +20,7 @@ import {
   preserveGraphicPlacement,
   resolveLegendGraphicPlacement
 } from "../../../materialization/graphicHierarchy.js";
-import {
-  normalizeLegendSampling,
-  validateSamplingAgainstScale
-} from "./sampling.js";
+import { normalizeLegendSampling, validateSamplingAgainstScale } from "../../../grammar/legendSampling.js";
 import {
   legendBlockKey,
   resolveLegendBlock
@@ -192,86 +190,6 @@ export function patchLegendBlockOverride(config, key, patch) {
   return Object.keys(blockOverrides).length === 0
     ? undefined
     : blockOverrides;
-}
-
-function applyCategoricalSymbol(symbol, patch) {
-  return {
-    ...symbol,
-    layers: symbol.layers.map(layer => ({
-      ...layer,
-      ...(patch.size !== undefined && layer.type === "point"
-        ? { size: Math.sqrt(patch.size / Math.PI) }
-        : {}),
-      ...(patch.fill !== undefined && ["point", "swatch"].includes(layer.type)
-        ? { fill: patch.fill }
-        : {}),
-      ...(patch.stroke !== undefined ? { stroke: patch.stroke } : {}),
-      ...(patch.strokeWidth !== undefined
-        ? layer.type === "line"
-          ? { lineWidth: patch.strokeWidth }
-          : { strokeWidth: patch.strokeWidth }
-        : {}),
-      ...(patch.opacity !== undefined ? { opacity: patch.opacity } : {})
-    }))
-  };
-}
-
-export function resolveEffectiveLegendBlockConfig(program, kind, config) {
-  const channels = kind === "colorSize" ? colorSizeChannels(config) : kind === "series" || kind === "color" || kind === "stroke"
-    ? config.channels
-    : [{ size: "size", opacity: "opacity", strokeWidth: "strokeWidth",
-      gradient: "color", interval: "color", strokeGradient: "stroke",
-      strokeInterval: "stroke" }[kind]];
-  const override = config.blockOverrides?.[legendBlockKey(channels)] ?? {};
-  const effective = {
-    ...config,
-    ...(override.title === undefined || override.title === ""
-      ? {}
-      : { title: override.title }),
-    ...(override.title === ""
-      ? { titleVisible: false }
-      : override.title === undefined
-        ? {}
-        : { titleVisible: true }),
-    ...(override.gap === undefined ? {} : { itemGap: override.gap, blockGap: override.gap }),
-    ...(override.text === undefined
-      ? {}
-      : { labels: { ...config.labels, ...override.text } }),
-    ...(Object.hasOwn(override, "labelMap")
-      ? { labelMap: override.labelMap }
-      : {})
-  };
-  if (override.symbol === undefined) return effective;
-  if(kind === "colorSize") return {...effective,symbol:{...config.symbol,...override.symbol}};
-  if (["series", "color", "stroke"].includes(kind)) {
-    return {
-      ...effective,
-      symbol: applyCategoricalSymbol(config.symbol, override.symbol),
-      blockSymbol: override.symbol
-    };
-  }
-  if (kind === "opacity" || kind === "gradient" && config.representation === "symbols") {
-    return {
-      ...effective,
-      symbol: {
-        ...config.symbol,
-        ...(override.symbol.size === undefined
-          ? {}
-          : { radius: Math.sqrt(override.symbol.size / Math.PI) }),
-        ...Object.fromEntries(Object.entries(override.symbol)
-          .filter(([key]) => ["fill", "stroke", "strokeWidth"].includes(key)))
-      },
-      blockSymbol: override.symbol
-    };
-  }
-  if (["interval", "strokeInterval"].includes(kind)) {
-    return {
-      ...effective,
-      symbol: { ...config.symbol, ...override.symbol },
-      blockSymbol: override.symbol
-    };
-  }
-  return { ...effective, blockSymbol: override.symbol };
 }
 
 function titleGraphicId(kind) {
