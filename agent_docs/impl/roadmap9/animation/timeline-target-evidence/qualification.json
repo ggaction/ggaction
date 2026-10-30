@@ -1,6 +1,6 @@
 {
   "status": "verified-private-native-target-preparation; public timeline pending",
-  "sourceRevision": "pending-source-commit",
+  "sourceRevision": "d3a4b0c23c1dece88ea613803167a7a1b5dbe3f0",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "checks": {
     "newOwnerAndTargetCasesEachNode20_22_24": 11,
@@ -21,7 +21,8 @@
     "separateCurrentHitCases": 12,
     "boundariesAndDiscovery": 35,
     "packageAndDocumentationTruth": 10,
-    "documentation": 39
+    "documentation": 39,
+    "sourcePinnedDocumentation": 39
   },
   "packageActual": {
     "20": {
