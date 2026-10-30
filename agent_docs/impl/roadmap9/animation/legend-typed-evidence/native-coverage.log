@@ -348,12 +348,12 @@ ok 56 - legend sample normalization does not cache mutable caller layout values
 # ---------------------------------------------------------------------
 # file                 | line % | branch % | funcs % | uncovered lines
 # ---------------------------------------------------------------------
-# src                  |        |          |         | 
-#  materialization     |        |          |         | 
-#   guides             |        |          |         | 
+# src                  |        |          |         |
+#  materialization     |        |          |         |
+#   guides             |        |          |         |
 #    legendGradient.js |  98.53 |    89.19 |   95.83 | 86-88
 #   legends.js         |  96.00 |    70.00 |  100.00 | 21-22
 # ---------------------------------------------------------------------
-# all files            |  98.03 |    85.11 |   96.77 | 
+# all files            |  98.03 |    85.11 |   96.77 |
 # ---------------------------------------------------------------------
 # end of coverage report

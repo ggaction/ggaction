@@ -9,7 +9,7 @@ not ok 1 - tt-us-births preserves raw guide values across seven native transitio
   error: |-
     Expected values to be strictly deep-equal:
     + actual - expected
-    
+
       [
     +   'array',
     -   'gradient',
@@ -26,7 +26,7 @@ not ok 1 - tt-us-births preserves raw guide values across seven native transitio
     -     6516
         ]
       ]
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:
@@ -61,7 +61,7 @@ not ok 2 - tt-trash-wheel preserves raw guide values across seven native transit
   error: |-
     Expected values to be strictly deep-equal:
     + actual - expected
-    
+
       [
     +   'array',
     -   'gradient',
@@ -78,7 +78,7 @@ not ok 2 - tt-trash-wheel preserves raw guide values across seven native transit
     -     2.155
         ]
       ]
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:
@@ -115,7 +115,7 @@ not ok 3 - tt-stock-prices preserves raw guide values across seven native transi
   error: |-
     Expected values to be strictly deep-equal:
     + actual - expected
-    
+
       [
     +   'array',
     -   'gradient',
@@ -132,7 +132,7 @@ not ok 3 - tt-stock-prices preserves raw guide values across seven native transi
     -     365003800
         ]
       ]
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:
@@ -169,7 +169,7 @@ not ok 4 - tt-animal-rescues preserves raw guide values across seven native tran
   error: |-
     Expected values to be strictly deep-equal:
     + actual - expected
-    
+
       [
     +   'array',
     -   'gradient',
@@ -186,7 +186,7 @@ not ok 4 - tt-animal-rescues preserves raw guide values across seven native tran
     -     255
         ]
       ]
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:
@@ -223,7 +223,7 @@ not ok 5 - tt-movie-profit preserves raw guide values across seven native transi
   error: |-
     Expected values to be strictly deep-equal:
     + actual - expected
-    
+
       [
     +   'array',
     -   'gradient',
@@ -240,7 +240,7 @@ not ok 5 - tt-movie-profit preserves raw guide values across seven native transi
     -     87500000
         ]
       ]
-    
+
   code: 'ERR_ASSERTION'
   name: 'AssertionError'
   expected:

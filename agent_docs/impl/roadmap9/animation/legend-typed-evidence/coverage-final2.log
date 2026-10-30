@@ -420,17 +420,17 @@ ok 68 - edited guide geometry and unsupported text layout remain explicit fallba
 # -------------------------------------------------------------------
 # file               | line % | branch % | funcs % | uncovered lines
 # -------------------------------------------------------------------
-# src                |        |          |         | 
-#  animation         |        |          |         | 
-#   guideTracks.js   | 100.00 |   100.00 |  100.00 | 
-#  grammar           |        |          |         | 
-#   animation        |        |          |         | 
-#    guideState.js   | 100.00 |    97.76 |  100.00 | 
-#  materialization   |        |          |         | 
-#   animation        |        |          |         | 
-#    legendGuides.js | 100.00 |   100.00 |  100.00 | 
+# src                |        |          |         |
+#  animation         |        |          |         |
+#   guideTracks.js   | 100.00 |   100.00 |  100.00 |
+#  grammar           |        |          |         |
+#   animation        |        |          |         |
+#    guideState.js   | 100.00 |    97.76 |  100.00 |
+#  materialization   |        |          |         |
+#   animation        |        |          |         |
+#    legendGuides.js | 100.00 |   100.00 |  100.00 |
 #    legendState.js  |  98.73 |    96.45 |  100.00 | 234-236
 # -------------------------------------------------------------------
-# all files          |  99.48 |    97.71 |  100.00 | 
+# all files          |  99.48 |    97.71 |  100.00 |
 # -------------------------------------------------------------------
 # end of coverage report

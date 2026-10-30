@@ -108,25 +108,35 @@
   },
   "evidenceHashes": {
     "realistic-final3.log": "f265b4d4654e7a11f9c9dcb813dd68e01bdc51393c061e06b633c4574894183b",
-    "realistic-final2.log": "89ecc81b90018e86c6a12c6bdecf3054760e00c439817806b9f8eb81e751e1b3",
+    "realistic-final2.log": "3bc06b7d577479855778c821e18689aea01f6646ea3f7878bc040204967a93a8",
     "installed-node22.json": "6895e4d4fa8b4aefce3f92303aa0bf395ae6f11cd11039ed9a1a8dd780cd7c04",
     "docs-final.log": "4f62f1b8f8aae8d8df0fcf1964f8b05e292708d88212083e2390c3568a530c8c",
     "first-installed-node22.json": "510a0a8fd5425c155772e5b51221ae39c2d74b51e0c22d74d097b4b31ac4e712",
     "built-docs.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
-    "coverage-final2.log": "2f5eb76d89e3630fd42803197717272391d1b03c529bab4ec05ca51c54061d17",
+    "coverage-final2.log": "99f0c003d2c4bdab93202491c1bfbd97fbb729fe953ad30a71cbed0e011f1c3f",
     "first.log": "19badc948ddb219097a70cd4809036376d5aabeca36fa28fc63d43d1859a7894",
     "installed-node24.json": "f65468b4f564cbf31b92c3297930ebcd5efd3f544f0026bda9086092ecd55c6a",
     "first-installed-node24.json": "77654647edcdb3db2997ee28011794b8e56385cb99afa3a9e05de750f81be6fe",
     "docs.log": "46fe9f18acfbab2d905948e884d7671b63f0c1db7fdaceb70f4d2533b63a071f",
     "package-first.log": "548b3529fddcb57ac6fa90e34813ab72556d8a88f23f5eb69c4dc2699c182884",
+    "README.md": "f50545d2f7c00b1796391f20c43aa43c4e14f52646db8cf19ae9d4ac5616af6a",
     "temporal-final.log": "a055111865a93083d7380cc1ebb9a0f587e04153f06e8b37eeb6f5eda7e83064",
     "cache-regression.log": "19eee011359d3a847b7d4cab1f7e4bae5adbc158fb7bf648664be109b95119a5",
-    "native-coverage.log": "6f9827cf5b46368f9ad9025d9b1e4c420f8f14d7c5fc7cce1f4cff9b0182e7e3",
-    "docs-repair.log": "2380bd4c12dc562b359c773ce109766f9bc26a33be4333c16407d2a36a099d53",
+    "native-coverage.log": "e43789b870c35232b67a885d7a959b11430a3ca091202e31aa4a6677504749b4",
+    "docs-repair.log": "95d866d6890f8e9be4a037ae56599fe5692c7c20afffe7068226006e0fbaf240",
     "renderers-first.log": "c46aed16de991e2ee0bf09bc9ccfa987669fe747de05ab93060c75c9ed83c683",
     "installed-node20.json": "8d5236bc93c1d5ddc677e3f8e1263a36f2ade33733906b5518e31b7a90439928",
     "realistic-final.log": "de6810a4fcd0a9086a527a70259955b9cf6f2adc2086b4d12445187f188c5247",
     "first-installed-node20.json": "35b6c75a1189f436cb27ad33553b9509d7bef71a85bea15751c76f33a8c5697e",
     "pin-docs.log": "40fc7eadeef102777967e3a801151a0ec35e5d92b1efd078d44fb21f75ce412b"
+  },
+  "logNormalization": {
+    "policy": "Display copies remove trailing whitespace; original local logs are retained and their original hashes follow. Test outcomes and content are unchanged.",
+    "originalHashes": {
+      "realistic-final2.log": "89ecc81b90018e86c6a12c6bdecf3054760e00c439817806b9f8eb81e751e1b3",
+      "coverage-final2.log": "2f5eb76d89e3630fd42803197717272391d1b03c529bab4ec05ca51c54061d17",
+      "native-coverage.log": "6f9827cf5b46368f9ad9025d9b1e4c420f8f14d7c5fc7cce1f4cff9b0182e7e3",
+      "docs-repair.log": "2380bd4c12dc562b359c773ce109766f9bc26a33be4333c16407d2a36a099d53"
+    }
   }
 }
