@@ -34,10 +34,11 @@ native revision을 잘못 비교하지 않는다.
 
 ## 활성화 권한
 
-Inspectable current feature가 native 프로그램의 최종 picture에 없을 수 있다. Current INTERACTION의
-정책대로 keyboard/click activation은 현재 native final items와 교집합을 유지한다. 숨겨진 native
-feature를 source membership만으로 선택 가능하다고 새로 약속하지 않는다. 현재 frame의 겹친 여러
-part는 같은 semantic item 후보 하나이며 opacity와 clip은 기존 hit geometry owner가 판단한다.
+D3 시점에는 inspectable current feature가 native 최종 picture에 없으면 keyboard/click activation을
+제한했다. 후속 [현재 Geo 프레임 선택](GEO_FRAME_SELECTION.md)은 exact current-native source와
+실제 표시된 frame의 교집합을 연결해 이 제한을 해소한다. Source membership만으로 화면에 없는
+항목을 활성화하지 않는다. 겹친 여러 part는 semantic 후보 하나이며 opacity와 clip은 기존 hit
+geometry owner가 판단한다. 아래 D3 검증 수치는 당시 source에 대한 기록으로 보존한다.
 
 ## 검증 계획과 결과
 

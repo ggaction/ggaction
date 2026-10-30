@@ -1633,6 +1633,10 @@
       {
         "id": "interaction-animation/fresh-offline-native-scope",
         "statements": 3
+      },
+      {
+        "id": "interaction-animation/geographic-projection-membership",
+        "statements": 18
       }
     ]
   }

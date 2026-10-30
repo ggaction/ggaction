@@ -3225,8 +3225,13 @@ owner·itemKey를 가진 private closed origin으로 표현한다. `hitProgram`�
 source arm을 통해 같은 native final-grain policy를 읽고 namespace와 resource revision을 대조한다.
 Class별 frozen registration에 기존 source resolver를 함께 전달하며 새 registry나 public plugin 경계는
 없다. Scope/owner별 source Map은 준비 호출 안에서만 유지하고 work budget에 합산한다.
-실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남으며, native selection
-권한은 계속 현재 최종 항목과의 교집합이다. 공개 Geo sampler 연결 상태와 증거는
+실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남는다. 현재 frame의
+Geo source association만 기존 prepared-frame WeakMap에 보존한다. 이 한 WeakMap은
+`interaction/hitFrameSource.js`로 분리해 keyboard reader가 native guide/policy 구현을 끌어오지 않는다.
+`interaction/frameSelection.js`가 keyboard/click에 그 association과
+current native source items의 scoped key·owner·resource kind/id 교집합을 사용한다. 각 revision은
+자기 실제 source에서 검증하며 서로 같은 revision으로 치환하지 않는다. Geo의 source-membership
+정책은 projection clipping을 원본 제거와 구분하고, native highlight와 property predicate는 계속 materialized items만 읽는다. 공개 Geo sampler 연결 상태와 증거는
 [Geo source hit 기록](impl/roadmap9/interaction/GEO_SOURCE_HIT.md)에 둔다.
 
 ### Cartesian title label-relative offset measurement
@@ -4484,3 +4489,8 @@ Typed point restore·현재 frame 재기준·player adapter와 native hit의 합
 적용한다. 같은 archive9b3c3eea…의 interaction128,129gzip만128,200으로 올리며
 Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
 이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.
+
+Geo current-frame selection의 package는1134entries/7,332,934unpacked이며 Node20/24 packed1,618,319,
+Node22 packed1,614,704다. 최소 caps는1134/1,619,000/7,333,000이다. 같은 Node22 archive의
+Node20 최소 browser bundle은 Full774,102 및 interaction130,975gzip이므로 caps를774,200/131,000으로
+조정했다. Basic422,083·SVG24,954·graph44,076·animation186,070은 기존 ceilings를 유지한다.

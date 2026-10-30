@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:4dfd29c2b32889d5dc7448b36d45726d19593ba288c4e431e7646d155f54affd. Status: development. Runtime source: 8cd965393e05f10e13931675fd87a12fa2f66e1f. Release baseline: v0.0.13.
+Contract: sha256:a6da71251ee7b6c878e5502d6388d08f3903b9d125f5b62feb2beb7d56a6cca7. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/8cd965393e05f10e13931675fd87a12fa2f66e1f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/8cd965393e05f10e13931675fd87a12fa2f66e1f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11398,7 +11398,7 @@ Maintain an increasing host counter greater than the current `frameVersion` and 
 previous request, including requests still preparing. Use the current session generation.
 Stale requests return `stale` without examining their frame. Entering, exiting and weighted
 shapes use their actual displayed geometry for inspection; keyboard activation additionally
-requires that the logical item exists in the session's current program.
+requires that the logical item exists in the session's current program. A geographic feature may be hidden by the committed projection yet appear in the sampled frame. It can be selected when its exact owner, child scope, logical feature key and geometry or projection resource still exist in the current native program. Each endpoint revision is validated independently. Fully clipped or transparent parts cannot gain activation through source membership. The command stores the existing logical key and returns to the native picture; highlights apply when that picture contains the feature.
 
 With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
 assets prepare, the previous accepted picture and focus remain active. A successful `frame`
@@ -37665,7 +37665,9 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly scene: CanvasTransitionScene;
   readonly frame?: never;
 } | {
-  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners. */
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
+   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;
 }));
@@ -52451,12 +52453,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8cd965393e05f10e13931675fd87a12fa2f66e1f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/8cd965393e05f10e13931675fd87a12fa2f66e1f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55583,9 +55585,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4dfd29c2b32889d5dc7448b36d45726d19593ba288c4e431e7646d155f54affd` |
+| Contract fingerprint | `sha256:a6da71251ee7b6c878e5502d6388d08f3903b9d125f5b62feb2beb7d56a6cca7` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `8cd965393e05f10e13931675fd87a12fa2f66e1f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

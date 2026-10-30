@@ -1,0 +1,145 @@
+{
+  "status": "runtime-and-package-qualified-documentation-pin-pending",
+  "previousCheckpoint": "dd0b51c43",
+  "publicApiOrStoredSchemaChanges": false,
+  "publicGeoTypedSamplerIntegrated": false,
+  "sourceSha256": {
+    "src/interaction/clickSelection.js": "164c30d020682a5f45e0a873fe08603668eb476419f5989b9e1affe22ca248bf",
+    "src/interaction/frameSelection.js": "7c7a6cb9b53b7f679b431e1177330bd7484fdaa17e387a3dfdea8990c0309a9f",
+    "src/interaction/hitFrameSource.js": "b49ecdd9bcbbfc9da0f49b3996447c33df77943227b295ebbb0f11705ea6ef7a",
+    "src/interaction/hitProgram.js": "7d4a0d2dd05a2b5573e0f029e5acdeabd7a4ac990dced3da68aecdb82e651095",
+    "src/interaction/keyboardFocus.js": "3b48f60a282a7e18d5cd18d8461801987895746c39f14d23c85ed6f191112440",
+    "src/interaction/reconciliation.js": "8f7d0dcc956af09369cdfa06febdbbef578b0ff5174e367d8958b46916448bfc",
+    "src/interaction/session.js": "d3bd9c8d048b59008875968c3548f85fcc9d4e394ac23b43611594d439534bb3",
+    "src/materialization/selection/policies/geo.js": "2ec6922989cc6e5e774c922a6c18389122fcef489a8110eb67411b49644618c4",
+    "src/materialization/selection/state.js": "6beaabd3f9e9b13be2d15168667511fd7ea0aad2b1e6df24710ace4bc0f04f68",
+    "types/interaction.d.ts": "0a415b19da171d1241a6de5643c21bcaa4e7b4fb2553de4a37f0bc7702161498",
+    "test/support/animation-geo-source.js": "ccc92bb17eae8cbfefe76ec81ff3180e0098aed97e940848ea47c8b78e1928ec",
+    "test/unit/animation/geo-frame-selection.test.js": "7913d3ff37a765ec30e2fdcaeb869473ce4afdd17148619203866eb8751babbd",
+    "test/unit/animation/geo-source-hit.test.js": "24f946257e1ba3bf6296aa4e7b13d20cf1cd0a164690292a81dd5338ce14ff39",
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "2d0b6f25905d5291b4c714e6b1017f0e4ba7e0bd8f870cdacf57cba3df432a5e"
+  },
+  "checks": {
+    "relatedCoverageTests": 415,
+    "node20Owning": 20,
+    "node24Owning": 20,
+    "sourcePackageDiscoveryFinal": 42,
+    "earlierTypesArchitectureBoundaries": 37,
+    "docsOwning": 38,
+    "actualSourceBrowserCases": 8,
+    "actualInstalledBrowserCases": 8,
+    "fullRepositorySuiteRerun": false
+  },
+  "coverage": {
+    "interaction/clickSelection.js": [
+      100,
+      98.04,
+      100
+    ],
+    "interaction/frameSelection.js": [
+      100,
+      95.45,
+      100
+    ],
+    "interaction/hitFrameSource.js": [
+      100,
+      100,
+      100
+    ],
+    "interaction/hitProgram.js": [
+      100,
+      95.21,
+      100
+    ],
+    "interaction/keyboardFocus.js": [
+      100,
+      95.17,
+      100
+    ],
+    "interaction/reconciliation.js": [
+      100,
+      100,
+      100
+    ],
+    "materialization/selection/policies/geo.js": [
+      100,
+      97.62,
+      100
+    ],
+    "materialization/selection/state.js": [
+      100,
+      100,
+      100
+    ]
+  },
+  "package": {
+    "sha256": "72c51d72c2261b6bd14b63a2cc56b5ac5e87777dd0359db0c7ffb24650a15e13",
+    "entryCount": 1134,
+    "unpackedBytes": 7332934,
+    "packedBytes": {
+      "20": 1618319,
+      "22": 1614704,
+      "24": 1618319
+    },
+    "caps": {
+      "entries": 1134,
+      "packedBytes": 1619000,
+      "unpackedBytes": 7333000
+    }
+  },
+  "installed": {
+    "sameArchive": true,
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "eachRuntimeCases": 4,
+    "strictTypes": true,
+    "optionalPeers": true,
+    "sixBrowserEntries": true,
+    "newPublicGeoProjectionMembershipCase": true,
+    "dynamicGeoSampleBrowserStillPending": true
+  },
+  "bundleGzipBytes": {
+    "20": {
+      "ggaction": 774102,
+      "ggaction/basic": 422083,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186070,
+      "ggaction/interaction": 130975
+    },
+    "22": {
+      "ggaction": 772483,
+      "ggaction/basic": 421199,
+      "ggaction/svg": 24779,
+      "ggaction/graph": 43923,
+      "ggaction/animation": 185664,
+      "ggaction/interaction": 130552
+    },
+    "24": {
+      "ggaction": 774102,
+      "ggaction/basic": 422083,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44076,
+      "ggaction/animation": 186070,
+      "ggaction/interaction": 130975
+    }
+  },
+  "sourceBoundary": "One existing prepared-frame WeakMap is shared without importing Full native preparation into the keyboard entry. Exact current native source and authenticated source-origin refs are independently validated. No new registry, public API or persisted state.",
+  "activation": "Actual painted geographic source parts intersect exact current native child/owner/resource kind+id/typed feature key; source-only membership never bypasses clip/opacity. Native selection key intent and current materialized highlights remain separate.",
+  "failureHistory": [
+    "Initial source-hit test expected the former final-item-only restriction and was updated to assert admitted semantic source focus.",
+    "First broad run passed378/380; null original geometry was incorrectly available under source membership. Marking non-drawable source features visible:false restored both existing LOD cases.",
+    "Initial keyboard import closure reached Full native policy through hitProgram. The existing single frame WeakMap was extracted to hitFrameSource; no boundary relaxation.",
+    "First package check found1134 entries above1132. Exact staging measured Node20/24 packed1618319 and unpacked7332934; minimum caps were applied.",
+    "Initial bundle measurement observed Full774102 and interaction130975 above old limits; final same-tar checks use774200/131000 caps.",
+    "First docs owning35 had one stale generated runtime reference; canonical reference regeneration plus owning38 passed."
+  ],
+  "remaining": [
+    "Public Geo sampler generation with authentic dynamic source origins and actual installed/browser activation",
+    "Cross-family typed animation integration and STEP074 full qualification",
+    "Remaining STEP070 and077 requirements"
+  ]
+}

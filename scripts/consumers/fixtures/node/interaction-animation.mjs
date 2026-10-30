@@ -4,7 +4,7 @@ import {chart,render,prepareImageRendering} from 'ggaction';
 import {planTransition,sampleTransition,createAnimationPlayer} from 'ggaction/animation';
 import {createInteractionSession} from 'ggaction/interaction';
 import {getMarkItems} from 'ggaction/inspection';
-import {serializeProgram} from 'ggaction/persistence';
+import {serializeProgram,deserializeProgram} from 'ggaction/persistence';
 import {renderToSVG} from 'ggaction/svg';
 import {renderToPNGBuffer} from 'ggaction/png';
 import {renderToPDFBuffer} from 'ggaction/pdf';
@@ -46,5 +46,21 @@ export const cases=[
    console.log(JSON.stringify({network,rejected,sameScene:JSON.stringify(frame.scene)===JSON.stringify(offline.scene),hit:!!s.getState().hit.target,version:s.getState().frameVersion}));s.destroy();
   `],{input:serializeProgram(source()),encoding:'utf8',timeout:30000});
   assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{network:0,rejected:true,sameScene:true,hit:true,version:1});
+ }},
+ {id:'interaction-animation/geographic-projection-membership',run(){
+  const data=codes=>({type:'FeatureCollection',features:codes.map(code=>({type:'Feature',properties:{code},geometry:{type:'Point',coordinates:code==='front'?[0,0]:[180,0]}}))});
+  const p=chart().createCanvas({width:240,height:180,margin:0})
+   .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:['properties','code'],values:data(['front','back'])})
+   .createProjection({id:'map',type:'orthographic',scalePx:70,translatePx:[120,90]}).createCoordinate({id:'geo',type:'geo'}).createGeoPointMark({id:'places',radiusPx:10});
+  const key=getMarkItems(p.editProjection({rotateDeg:[180,0]}))[0].key,chosen=p.selectMarks({id:'picked',target:'places',items:[key],empty:'none'});
+  const intent=value=>value.semanticSpec.resources.find(resource=>resource.id==='picked').options.itemKeys;
+  const s=createInteractionSession({program:chosen,selectionPolicy:'drop'}),events=[];s.subscribe(event=>events.push(event));
+  s.dispatch({type:'setViewport',target:'map',payload:{rotateDeg:[90,0]}});
+  assert.deepEqual(intent(s.getState().program),[key]);assert.deepEqual(events.at(-1).selectionChanges,[]);assert.equal(s.getState().history.undoCount,1);
+  const restored=deserializeProgram(serializeProgram(s.getState().program));assert.deepEqual(intent(restored),[key]);
+  assert.deepEqual(getMarkItems(restored.editProjection({rotateDeg:[180,0]})).map(item=>item.key),[key]);
+  s.updateProgram(restored.editGeometryData({target:'world',values:data(['front'])}));
+  assert.deepEqual(intent(s.getState().program),[]);assert.deepEqual(events.at(-1).selectionChanges[0].droppedKeys,[key]);
+  assert.deepEqual(intent(chosen),[key]);s.destroy();
  }}
 ];

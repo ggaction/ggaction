@@ -698,7 +698,7 @@ export function createInteractionSession(input) {
             const commandAt = (point, pointerType) => {
               const query = normalizeHitQuery({ pointerType, hitInvisible: binding.hitInvisible,
                 ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
-              return (binding.type === "legend" ? (binding.effect === "visibility" ? legendVisibilityCommand : legendSelectionCommand) : clickSelectionCommand)(program, binding, bridge.hit(point, query));
+              return (binding.type === "legend" ? (binding.effect === "visibility" ? legendVisibilityCommand : legendSelectionCommand) : clickSelectionCommand)(program, binding, bridge.hit(point, query), displayed);
             };
             const select = (point, pointerType, transactionId) => {
               const command = commandAt(point, pointerType);

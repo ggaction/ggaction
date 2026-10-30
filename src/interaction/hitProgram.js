@@ -17,7 +17,7 @@ import { requireLayer } from "../selectors/layers.js";
 import { resolveRegisteredMarkSourceItems } from "../materialization/selection/itemResolver.js";
 import { interactionOptions } from "./input.js";
 
-const frameSources = new WeakMap();
+import { hitFrameSource, registerHitFrameSource } from "./hitFrameSource.js";
 const nativeBases = new WeakMap();
 
 export function requireProgram(program) {
@@ -165,14 +165,14 @@ export function prepareProgramHitFrame(program, version = 0, budget = { work: 0 
     const context = owners.get(canvas.graphicId);
     if (context?.program.graphicSpec.order.includes(context.localId)) placements.set(JSON.stringify(context.childPath), canvas);
   }
-  frameSources.set(frame, { profiles, placements, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { profiles, placements, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
 // Read the concrete owner placement from the same scene traversal. Empty marks
 // still have an unambiguous Canvas; no first-item or first-dataset fallback.
 export function programHitOwnerPlacement(base, childPath) {
-  const source = frameSources.get(base);
+  const source = hitFrameSource(base);
   if (!source) throw new TypeError("Owner placement requires an authentic program hit frame.");
   const placement = source.placements.get(JSON.stringify(childPath));
   if (!placement) throw new Error("Interaction owner has no materialized Canvas placement.");
@@ -181,7 +181,7 @@ export function programHitOwnerPlacement(base, childPath) {
 
 /** Bind a sampled concrete frame only to the exact program's known node identities. */
 export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 0, 0, 1, 0, 0]) {
-  const source = frameSources.get(base);
+  const source = hitFrameSource(base);
   if (source === undefined) throw new TypeError("Frame binding requires an authentic program hit frame.");
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
@@ -198,7 +198,7 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: metadata.get(node.key), shape }));
   });
   const frame = freezeOwned({ scene: owned, entries: freezeOwned(entries), version });
-  frameSources.set(frame, { ...source, nodes: new Map(owned.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { ...source, nodes: new Map(owned.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -217,14 +217,14 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
   if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
-  const budget = { work: 0 }, entries = [], profiles = new Map(), counted = new Set();
+  const budget = { work: 0 }, entries = [], profiles = new Map(), counted = new Set(), geographicSources = new Map();
   spend(budget, proof.native.owners.length);
   const authorized = new Set(proof.native.owners), geoSource = geoSourceResolver(budget);
   const baseFor = program => {
     let value = nativeBases.get(program);
     if (value === undefined) {
       const base = prepareProgramHitFrame(program, 0, budget);
-      value = { base, source: frameSources.get(base), entries: new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata])) };
+      value = { base, source: hitFrameSource(base), entries: new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata])) };
       nativeBases.set(program, value);
     } else if (!counted.has(program)) spend(budget, value.source.work);
     counted.add(program);
@@ -249,7 +249,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
         itemMetadata = metadata(identity, context, budget);
         if (itemMetadata.ownerId !== origin.ownerId || itemMetadata.role !== "geo") throw new TypeError("Animation geographic identity differs from its native owner.");
       }
-      return { metadata: itemMetadata, metrics: context.program.materializationConfigs.textMetrics };
+      return { metadata: itemMetadata, metrics: context.program.materializationConfigs.textMetrics, geographicSource: item.lineage.resource };
     }
     const base = baseFor(origin.program), node = base.base.scene.nodes[origin.index];
     if (!Number.isSafeInteger(origin.index) || origin.index < 0 || node === undefined) throw new TypeError("Animation hit requires an exact native endpoint node.");
@@ -265,9 +265,10 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     const shape = prepareConcreteHitShape(node, metrics, rootTransform);
     spend(budget, hitShapeWork(shape)); profiles.set(node.key, metrics);
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: original.metadata, shape }));
+    if (original.geographicSource !== undefined) geographicSources.set(original.metadata.itemKey, original.geographicSource);
   });
   const frame = freezeOwned({ scene: sample.scene, entries: freezeOwned(entries), version });
-  frameSources.set(frame, { profiles, placements: baseFor(proof.native.placement).source.placements,
+  registerHitFrameSource(frame, { profiles, geographicSources, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
     nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }

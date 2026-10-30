@@ -1,0 +1,70 @@
+# 현재 Geo 프레임의 native 선택 연결
+
+## 진행 상태
+
+- [x] 기존 remainingApproval과 root의 구체안 확인 재사용
+- [x] source membership·현재 picture·저장 key intent 소유자 감사
+- [x] 현재 frame의 source-backed 항목만 keyboard/click에 연결
+- [x] 투영 clipping과 원본 제거의 lifecycle 구분
+- [x] current scope/revision·nested/clip/opacity·codec/history 회귀
+- [ ] 실제 공개 Geo typed sampler와 browser/설치 합산
+
+## 확정 최소 경계
+
+새 public API·저장 schema는 없다. `selectMarks`/`editMarkSelection`은 이미 opaque item-key intent를
+저장하고, native highlights는 현재 materialized items에만 적용한다. 확장 대상은 현재 frame에서만
+보이는 Geo source item과 session activation의 교집합이다. 일반 native mark와 plain scene의 권한은
+늘리지 않는다.
+
+Private `geo-feature` origin은 D3의 exact native program/source reader로 검증한다. Frame 준비의
+기존 private WeakMap에 현재 source association만 보관하며 과거 plan/frame을 보관하지 않는다.
+Session은 원래 native owners 중 exact current program에 속해야 한다. 현재 native childPath와 Geo
+owner의 source items를 다시 읽고, 실제 frame의 같은 scoped key와 resource kind/id가 겹친 항목만
+추가 후보로 삼는다. Source identity key에는 typed feature key와 geometry logical identity가 포함된다.
+
+중간 Geo 그림은 to endpoint의 geometry/projection revision을 사용한다. From 세션의 revision과
+같다고 가정하지 않는다. Frame ref는 실제 to source에서, current native ref는 실제 current source에서
+각각 검증한다. Geometry/projection kind/id, child scope, Geo owner, logical item key는 같아야 한다.
+원본에 없는 key·다른 owner/child/resource·다른 program·stale frame은 권한을 얻지 않는다.
+
+Focus는 기존 실제 hit-shape anchor와 clip/opacity admission을 통과해야 한다. Click 역시 실제 현재
+후보가 필요하며 source에 존재한다는 이유만으로 hidden 항목을 활성화하지 않는다. Native action은
+현재 program에 기존 item key intent를 저장하고 기존 원자 transaction/history/asset owner를 거친다.
+Commit 뒤에는 기존 규칙대로 native picture로 돌아온다. 원본에서 투영만으로 숨겨진 key는 semantic
+membership을 잃지 않으며, 명시 제거된 feature/owner/child는 keep-hidden/drop 정책을 따른다.
+
+이를 위해 Geo의 semantic membership policy만 source items를 사용한다. Drawing/highlight와 공개
+inspection의 현재 visible items는 그대로다. 그림상의 opacity/clip이 semantic membership 제거가
+아니라는 Current INTERACTION의 기존 규칙을 Geo horizon에도 적용한다. Property predicate의
+계산은 현재 concrete items에 남기고 source configuration을 graphic properties로 오해하지 않는다.
+
+## 검증 구분
+
+D3의 private origin fixture를 재사용해 native-hidden MultiPoint가 중간 그림에 나타날 때 semantic
+후보 하나·focus·click/keyboard selection·단일 history commit을 검사한다. Unrelated hidden key,
+다른 native resource ID 및 revision별 actual input, source removal, native commit 이후 stale frame,
+중첩 namespace, 실제 clip/opacity0, codec 복원, keep-hidden/drop을 독립 expected로 고정한다.
+Source/type/public prose를 동기화한 뒤 영향 검사와 동일 tar installed 경계를 검증한다. Geo typed
+sampler가 동적 origin을 생성하는 실제 browser/installed 조합은 peer와 합산 후 닫으며, private
+fixture만으로 STEP062/070/077 완료를 선언하지 않는다.
+
+## Source·설치 검증
+
+관련415개가 통과했고, 변경된8개 coverage owner의 line/functions는 모두100%, branch는
+95.17–100%다. 새 helper family도 기존95/90/100 floor를 유지한다. Node20/24의 신규 및
+기존 LOD owning20개씩, 최종 source/package/discovery42개, 선언/architecture를 포함한 앞선37개가
+통과했다. 초기 broad의 null geometry 가용성2실패 및 keyboard→Full import 경계 실패를 보존하고,
+각각 원본 drawable 상태 및 기존 단일 WeakMap 추출로 수리했다. Runtime 경계를 완화하지 않았다.
+
+동일 `72c51d72c2261b6bd14b63a2cc56b5ac5e87777dd0359db0c7ffb24650a15e13` archive로
+Node20.20.2/22.23.1/24.22.1에서 각각 공개4사례·strict types·optional peers·6entry bundle이
+통과했다. 새 public 사례는 projection clipping→camera→codec→원본삭제의 membership이다.
+동적 Geo sample 생성까지 검증했다고 확대하지 않는다. 기존 실제 Canvas/SVG·DPR1/2·겹친항목
+browser8개는 source 및 동일 tar 설치본에서 각각 통과했다.
+
+Package는1134entries/7332934unpacked, Node20/24 packed1618319, Node22 packed1614704다.
+첫 entry ceiling 실패를 보존했고 최소 caps1134/1619000/7333000을 적용했다. 동일 archive의
+최대 Full774102·interaction130975gzip에 caps774200/131000을 적용했으며 나머지4entry는 기존
+ceilings를 유지했다. 첫 문서 검사35개 중 stale runtime reference1개는 정본 generator로 갱신한
+뒤 owning38개가 통과했다. Source pin·built 문서 검증은 후속 metadata에서 닫는다.
+`geo-frame-selection-evidence/summary.json`과 압축 로그·설치 receipt가 각 검사 범위를 구분한다.

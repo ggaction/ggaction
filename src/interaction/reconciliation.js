@@ -48,7 +48,7 @@ function capture(program, owner, spend, policy) {
     if (policy === "drop") throw new Error("Selection drop cannot infer concrete-property membership for a facet source.");
     return { ...owner, grain: definition.grain, signature, availableKeys: [], selectedKeys: [], intentKeys: [], hiddenKeys: [], missing: false };
   }
-  const resolved = resolveRegisteredSelection(view, owner.selection, { sourceOnly: owner.target.facetSource === true });
+  const resolved = resolveRegisteredSelection(view, owner.selection, { sourceOnly: owner.target.facetSource === true, membership: true });
   const available = new Set(); let represented = false;
   for (const item of resolved.items) if (item.visible !== false) {
     represented ||= item.representationKeys !== undefined;

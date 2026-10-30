@@ -146,3 +146,16 @@ imports만 실행했고 network 호출은0이다. Package·types·6entry bundle 
 잘못된 fixture 가정으로 실패했다. 명시 numeric node key를 focus하도록 수정했고 원본 실패를
 보존했다. Runtime 수정이나 hit 우선순위 변경은 없었다. `native-animation-evidence/summary.json`
 및 압축 로그·receipt가 근거다. 전체 repository suite나 STEP069/070/077 완료를 주장하지 않는다.
+
+## D5 — 현재 Geo 프레임의 native 선택
+
+[현재 Geo 프레임 선택](GEO_FRAME_SELECTION.md)은 D3의 source-backed hit를 실제
+keyboard/click activation과 연결한다. 각 endpoint revision을 독립 actual source에 대조하고,
+현재 native scope·owner·resource kind/id·typed key 교집합만 기존 selection intent로 저장한다.
+현재 frame의 clip/opacity admission은 필수이며 unrelated hidden source는 권한을 얻지 않는다.
+Projection clipping과 원본 제거를 구분하는 semantic membership도 기존 keep-hidden/drop,
+codec, history 흐름 안에서 처리한다. 공개 API/저장 schema 변경은 없다.
+
+415개 관련 검사·8owner critical floors와 동일 tar3Node 공개4사례/type/6bundles,
+source/installed actual browser8개씩을 통과했다. 공개 Geo typed sampler 생성 조합은 peer 통합 후
+남아 있으며 private origin fixture만으로 STEP062/070/077 전체 완료를 주장하지 않는다.

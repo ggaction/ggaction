@@ -1,0 +1,8 @@
+Runtime source is frozen for all recorded final checks.
+Node22 focused coverage: node --experimental-test-coverage [--test-coverage-include=each of the eight summary coverage source files] --test test/unit/interaction*.test.js test/unit/hit*.test.js test/unit/animation/current-hit.test.js test/unit/animation/geo*.test.js test/unit/geo/marks.test.js test/unit/geo/mark-consumers.test.js test/unit/actions/selection/mark-selection.test.js
+Node20/24: node --test test/unit/animation/geo-source-hit.test.js test/unit/animation/geo-frame-selection.test.js test/unit/interaction-geo-representation.test.js
+Node22: node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/package-artifact.test.js test/contracts/test-discovery.test.js
+Node22: node scripts/run-tests.js browser browser/interaction-animation.browser.js
+Node22: node --test test/docs/documentation.test.js test/docs/interaction-regressions.test.js test/docs/action-reference.test.js test/docs/architecture-paths.test.js
+Canonical package: node scripts/package-artifact.js --pack --json (receipt includes exact hash).
+Same content-addressed archive: prepend each Node directory to PATH, set ANIMATION_PACKAGE_SPEC and run installed-runner.txt as .artifacts/qualify-geo-frame.mjs. Node22 also sets SESSION_FRAME_BROWSER=1.
