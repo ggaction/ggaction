@@ -1,0 +1,60 @@
+{
+  "status": "verified-private-preparation",
+  "sourceRevision": "pending metadata pin",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "numericAndLifecycleCasesEachNode20_22_24": 9,
+    "criticalOwnerCoverage": [
+      100,
+      94.81,
+      100
+    ],
+    "contracts": 45,
+    "documentation": 30
+  },
+  "packageMeasurements": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1159,
+      "packedBytes": 1662322,
+      "unpackedBytes": 7511990
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1159,
+      "packedBytes": 1659644,
+      "unpackedBytes": 7511990
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1159,
+      "packedBytes": 1662322,
+      "unpackedBytes": 7511990
+    }
+  },
+  "limits": {
+    "entries": 1159,
+    "packedBytes": 1663000,
+    "unpackedBytes": 7512000
+  },
+  "sourceSha256": "61d487640cbe6980df880a614e8a7525b874d663f85eb99022d0bdb9c697d654",
+  "publicConnection": "pending; public entry imports no timeline source, no installed timeline or marker API claimed",
+  "reuse": "Existing public source/import closures and export/type contracts are unchanged. This checkpoint measures the additional private package member and does not substitute earlier installed archive evidence for a new public runtime.",
+  "firstFailures": [
+    "Raw transparent-red assertion used exact1 despite one-ulp existing color conversion; independent tolerance now covers float outputs.",
+    "Capacity checks matched a different error word; assertions now match the actual10000 bound.",
+    "Old package ceilings failed for one new source member; all3Node real measurements determine minimal caps.",
+    "One shell preparation failed to parse UTF8 text; no source change occurred and apply_patch completed the intended record."
+  ],
+  "remaining": [
+    "Exact native target/property/kernel public preparation",
+    "Current meaning/provenance and strict offline timeline payload",
+    "Public player seek/repeat/interrupt/marker lifetime, all four renderers and installed qualification"
+  ]
+}
