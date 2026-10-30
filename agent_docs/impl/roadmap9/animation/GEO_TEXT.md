@@ -64,6 +64,9 @@ content는 제외한다. Graticule은 geometry ref를 꾸미지 않고 원래 pr
 Join 행 재정렬·LOD representationKeys·다른 mark selection의 실제 row/property 의미를 유지한다.
 새 DTO나 persisted schema를 만들지 않고 native transient Text definitions만 반환한다. 원 source
 geometry는 본체 group에 한 번 남기며 label 정의에 복제하지 않는다.
+Private helper의 마지막 `{sourceOnly:true}`는 같은 native membership/provenance 단계에서
+반환한다. 이는 font query·현재 projection clip에 의존하지 않는 D source-reader 연결용이며
+새 그래픽이나 실제 표시 권한을 만들지 않는다. 표시 여부는 authentic current frame이 증명한다.
 
 이 준비 결과는 collision-layout·leaders·highlight·conditional opacity·final mark effects 적용 전의
 native Text 입력이다. 따라서 공개 scene으로 그대로 내보내지 않는다. 후속 public 연결에서 현재

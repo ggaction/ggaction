@@ -175,6 +175,11 @@ test("prepared Text retains real font bytes and exact queries after projection c
   const unmeasured = hidden.editGeometryData({ values: collection([point("a", "ABC", [40, 60])]) });
   const original = serializeProgram(unmeasured), trace = unmeasured.trace;
   assert.throws(() => entries(unmeasured), error => error.assetCode === "metrics-required");
+  const nativeLayer = layer(unmeasured), sourceItems = resolveMarkSourceItems(unmeasured, "regions");
+  const definitions = resolvePreparedSourceTextEntries(unmeasured, nativeLayer, unmeasured.markConfigs[nativeLayer.id],
+    new Map(sourceItems.map(item => [item.key, { x: 0, y: 0 }])), { resolveMarkItems: () => sourceItems }, { sourceOnly: true });
+  assert.equal(definitions.length, 1); assert.equal(definitions[0].graphic, undefined);
+  assert.deepEqual(definitions[0].sourceItem.lineage, sourceItems[0].lineage);
   assert.equal(serializeProgram(unmeasured), original); assert.equal(unmeasured.trace, trace);
 });
 
@@ -184,6 +189,7 @@ test("private source-anchor preparation rejects malformed maps and preserves nat
     assert.throws(() => resolvePreparedSourceTextEntries(p, text, config, anchors, {}), /explicit finite anchors/);
   }
   assert.throws(() => resolvePreparedSourceTextEntries(p, { ...text, source: undefined }, config, new Map(), {}), /explicit finite anchors/);
+  assert.throws(() => resolvePreparedSourceTextEntries(p, text, config, new Map(), {}, { sourceOnly: null }), /explicit finite anchors/);
   const actual = resolveMarkSourceItems(p, "regions");
   const anchorMap = new Map(actual.map(item => [item.key, { x: 0, y: 0 }]));
   const resolvers = { resolveMarkItems: () => { throw new Error("source proof rejected"); } };
