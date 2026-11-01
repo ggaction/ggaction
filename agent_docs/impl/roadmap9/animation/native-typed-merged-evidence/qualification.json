@@ -1,6 +1,6 @@
 {
   "status": "verified-native-Cartesian-gradient-legend-fixed-label-integration; whole STEP077 remains open",
-  "sourceRevision": null,
+  "sourceRevision": "f3ee8a09f4ac34c2a3b3a39dc14a45f44d213d7b",
   "base": "8d38c3ca7",
   "cartesianMerge": "30a051d7b",
   "upstreamSources": [
@@ -187,5 +187,12 @@
     "GeoText camera with content/static-layout expressions",
     "GeoRoute adapter completion/integration and remaining large-route performance",
     "STEP057–077 final acceptance/coverage/qualification and separately authorized release operations"
-  ]
+  ],
+  "archiveReproduction": "Canonical package staging after source commit reproduces the exact same a066 SHA256. No packaged input changed.",
+  "sourcePin": {
+    "docs": 32,
+    "builtPages": 186,
+    "selectiveArtifacts": 1598,
+    "browserReuse": "Only source-provenance identity links changed; fresh8 guide/runtime viewport checks and previous unchanged-page evidence remain applicable."
+  }
 }
