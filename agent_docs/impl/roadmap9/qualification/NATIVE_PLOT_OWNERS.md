@@ -59,7 +59,7 @@ semantic/graphic output 존재를 검사하고 canonical example과 `assertEquiv
   replay의 픽셀 비교가 있다. 하지만 이 사실만으로 해당 family의 typed semantic transition,
   현재 중간 frame 및 interruption 의미까지 검증했다고 확대하지 않는다. scene-animation
   5셀도 이번에는 pending으로 유지한다.
-- 원 30요구, 79 AT group, 577필수 cell, required/N/A, AT owner, 실제 결과는 변경하지 않는다.
+- 이 checkpoint 당시의 30요구, 79 AT group, 577필수 cell, required/N/A, AT owner, 실제 결과는 변경하지 않는다. 후속 applicability 정합은 [별도 기록](IMAGE_APPLICABILITY.md)이며 이 증거를 소급 변경하지 않는다.
   새 package/public API/schema/test runner를 만들지 않는다. 85개 지정은 완료 결과가 아니다.
 
 ## 검사 범위

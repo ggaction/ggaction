@@ -1454,9 +1454,6 @@
         "create",
         "edit",
         "source-revise",
-        "encodings",
-        "scales",
-        "guides",
         "composition",
         "selection-highlight",
         "hit",
@@ -1471,7 +1468,23 @@
         "docs",
         "accessibility"
       ],
-      "notApplicable": {},
+      "notApplicable": {
+        "encodings": {
+          "reason": "Image marks reject their own data-field encodings; viewport, opacity and highlighting remain supported.",
+          "contract": "agent_docs/contract/current/MARKS.md",
+          "excerpt": "Image-owned field encodings, scale bindings and axis/legend bindings are not applicable."
+        },
+        "scales": {
+          "reason": "Image marks have no own scale binding; scales on companion native plots remain supported.",
+          "contract": "agent_docs/contract/current/MARKS.md",
+          "excerpt": "Image-owned field encodings, scale bindings and axis/legend bindings are not applicable."
+        },
+        "guides": {
+          "reason": "Image marks have no own axis or legend binding; companion plot guides, plot reflow and decorative composition remain supported.",
+          "contract": "agent_docs/contract/current/MARKS.md",
+          "excerpt": "Image-owned field encodings, scale bindings and axis/legend bindings are not applicable."
+        }
+      },
       "owner": {
         "status": "pending",
         "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."

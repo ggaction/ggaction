@@ -27,7 +27,7 @@ test owner를 지정했다. `scripts/consumers` 경로를 test owner인 것처�
 
 ## 유지하는 미완료 경계
 
-- 30요구 / 79 acceptance group / 577필수 consumer cell, required/N/A, 기존 다른 담당은 그대로다.
+- 이 checkpoint 당시의 30요구 / 79 acceptance group / 577필수 consumer cell, required/N/A, 기존 다른 담당은 그대로다. 후속 applicability 정합은 [별도 기록](../qualification/IMAGE_APPLICABILITY.md)이며 이 증거를 소급 변경하지 않는다.
 - AT44/AT53/AT55의 전체 통합 담당과 최종 판정은 pending이다. 새 GeoText family 행을 만들지 않는다.
 - 4행의 package/docs/accessibility, graticule의 source-revise/encodings/scales/guides는 이번 지정 대상이 아니다.
 - 현재 그려진 Text의 최대 weight 표현과 정적 native accessibility/formatter는 다르다. 새 sampled accessible Text API가 존재한다고 주장하지 않는다.
