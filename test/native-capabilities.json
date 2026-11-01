@@ -5232,6 +5232,16 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TABLE.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/domain-facade-fallbacks.test.js"
+          ]
         }
       }
     },
@@ -5428,6 +5438,16 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PYRAMID.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/domain-facade-fallbacks.test.js"
           ]
         }
       }
@@ -5627,6 +5647,16 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/OHLC.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/domain-facade-fallbacks.test.js"
+          ]
         }
       }
     },
@@ -5825,6 +5855,16 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/WATERFALL.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/domain-facade-fallbacks.test.js"
+          ]
         }
       }
     },
@@ -6022,6 +6062,16 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/TRAIL.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/domain-facade-fallbacks.test.js"
           ]
         }
       }
