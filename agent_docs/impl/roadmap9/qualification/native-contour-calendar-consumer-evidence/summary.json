@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "source-qualified-provenance-pending",
+  "status": "verified-conceptual-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "base": "b87cb3e61510921d7151b289079342090fbdfa83",
   "scope": [
@@ -8,7 +8,7 @@
     "contour-filled",
     "calendar"
   ],
-  "sourceCommit": null,
+  "sourceCommit": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
   "runtimeFiles": {
     "src/actions/contours/marks.js": "d96a227f1191710de6e50bc2d082d4547206fe4df4d5e5cde5fe43facf4b2331"
   },
@@ -95,6 +95,13 @@
       "passed": 13,
       "failed": 0,
       "log": "package-contracts.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "npm run docs:provenance && npm run docs:machine && npm run docs:llms && node --test test/docs/documentation-coverage.test.js",
+      "passed": 18,
+      "failed": 0,
+      "log": "source-pin.log.gz",
       "node": "v22.23.1"
     }
   ],
@@ -276,6 +283,23 @@
     "render.log.gz": {
       "rawSha256": "936ae2b1e9742bcbc14e66d3b7e4f6ca6516613e81a180afe40622308c2fa000",
       "bytes": 2908
+    },
+    "provenance.log.gz": {
+      "rawSha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "machine.log.gz": {
+      "rawSha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "llms.log.gz": {
+      "rawSha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin.log.gz": {
+      "rawSha256": "9ba7bcd73c51336265bf6d01213b2ba2a1aba2b5c729c4eb64aac9fbe3b44401",
+      "bytes": 4237
     }
-  }
+  },
+  "provenance": "sha256:c55d7145d7990b3350da1779a32121d55cef269afcb2989132b278810b3b744d"
 }

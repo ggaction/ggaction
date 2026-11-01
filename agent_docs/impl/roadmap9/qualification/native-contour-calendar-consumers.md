@@ -7,7 +7,7 @@
 - [x] Contour mixed scale 편집의 기존 계약 위반 수리
 - [x] 명시 concrete fallback, authentic frame rebase, offline frame 동등성
 - [x] 새 source의 동일 archive Node20/22/24 설치
-- [ ] source pin 생성과 최종 증거 마감
+- [x] source pin 생성과 최종 증거 마감
 - [ ] 발견 가능한 실제 package runtime owner와 최종 native candidate 검증
 
 기존 [전체 승인](../AUTHORIZATION.json)을 재사용한다. API·저장 schema·수치 정책·shared animation
@@ -65,6 +65,12 @@ group 79, target 577과 결과는 유지한다. Root 합산의 574 required+Imag
 이 세 행 delta만 합쳐 보존한다. Assigned는 candidate pass가 아니며 q pass를 생성하지 않는다.
 
 ## 검증과 한계
+
+Source `3f1355feba5da64c40f9fb9173b83ddd27a6b2f7`에서 owning 138, changed-owner coverage 30,
+renderer 16, browser 8, 문서 2+2 및 package 계약 13을 통과했다. 동일 archive
+`5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e`의 Node20/22/24
+각 Contour runtime 3개·strict types·optional peers·6 entry bundle이 통과했다.
+Provenance→machine→LLM 생성 후 source pin 문서 18개도 통과했다.
 
 정확 명령·해시·원본 실패·최종 결과는 [증거](native-contour-calendar-consumer-evidence/summary.json)에 둔다.
 Current 공개 의미를 복구하여 선언/공개 설명은 유지한다. Source pin은 새 runtime commit에
