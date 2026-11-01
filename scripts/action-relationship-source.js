@@ -607,6 +607,13 @@ export function buildActionRelationshipPrograms() {
       .createProjection({ id: "geoSphere", type: "equirectangular", translatePx: [200, 150] })
       .createCoordinate({ id: "sphere", type: "geo", projection: "geoSphere" }).createGraticule({ id: "geoGrid", coordinate: "sphere" })
       .editGraticule({ opacity: .3 }).editProjection({ target: "geoPlane", scalePx: 2 }).editCoordinate({ target: "geo", projection: "geoPlane" }),
+    chart().createData({ id: "routeNodes", values: [{ id: "a" }, { id: "b" }] })
+      .createData({ id: "routeEdges", values: [{ id: "ab", source: "a", target: "b" }] })
+      .createGraphData({ id: "routeGraph", nodes: "routeNodes", edges: "routeEdges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+      .layoutGraph({ id: "routeLayout", method: "fixed", options: { positions: [{ key: "a", x: 10, y: 20 }, { key: "b", x: 30, y: 40 }] } })
+      .bundleGraphEdges({ id: "routes", method: "edge-path" })
+      .createGeoRouteData({ id: "routeGeometry", routes: "routes", coordinateKind: "geographic" })
+      .editGeoRouteData({ target: "routeGeometry", routes: "routes" }),
     chart().createData({ id: "measurements", values: [{ code: "place", value: 10 }] })
       .createGeometryData({ id: "geometry", format: "geojson", coordinateKind: "planar", featureKey: "id",
         values: { type: "Feature", id: "place", properties: {}, geometry: { type: "Point", coordinates: [10, 20] } } })

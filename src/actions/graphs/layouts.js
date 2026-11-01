@@ -1,3 +1,4 @@
+import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { createInferredGraphResource } from "../../materialization/graph/inferredResource.js";
 import { orderResourceDependencies } from "../../materialization/resourceState.js";
 import { requireMaterializedDataset, requireDataset } from "../../selectors/datasets.js";
@@ -12,7 +13,7 @@ import { createGraphLayoutResource } from "../../materialization/graph/layoutRes
 import { withPreparedResourceResults, withPreparedProjectedResourceResults } from "../primitives/preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
-import { prepareEdgeRouteRevisions } from "./routeClosure.js";
+import { prepareEdgeRouteRevisions, edgeRouteGeoConsumers } from "./routeClosure.js";
 
 export function previewGraphLayouts(program, resources, layouts) {
   preflightFlowLayouts(program, resources, layouts);
@@ -32,8 +33,9 @@ export function previewGraphLayouts(program, resources, layouts) {
 function materializeLayouts(program, ids, routeIds = new Set()) {
   let next = materializeFlowLayouts(program, ids);
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id) || routeIds.has(layer.graphBinding?.routes?.id)) next = next.materializeGraphPlot({ id: layer.id });
-  return next;
+  return applyMaterializationPlan(next, planLayersDataRematerialization(next, edgeRouteGeoConsumers(next, routeIds)));
 }
+import { normalizeFlowLayout } from "../../grammar/flow/options.js";
 import { normalizeGraphLayout, patchGraphNodePosition, retainedGraphCoordinates, GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
@@ -58,7 +60,8 @@ export function editGraphLayout(program, args, previous) {
   } else {
     ownRecord(args.options, "Graph layout options patch");
     if (!Object.keys(args.options).length) throw new TypeError("Graph layout edits require nonempty options.");
-    intent = normalizeGraphLayout(previous.options.method, { ...previous.options.options, ...args.options });
+    const normalize = ["dag", "cyclic"].includes(previous.options.method) ? normalizeFlowLayout : normalizeGraphLayout;
+    intent = normalize(previous.options.method, { ...previous.options.options, ...args.options });
     retainedCoordinates = retainedGraphCoordinates(previous.options, intent, graph.result.model.nodes.map(node => node.key));
   }
   const resource = createGraphLayoutResource({ id: previous.id, revision: previous.revision + 1,

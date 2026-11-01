@@ -1,3 +1,4 @@
+import { prepareGeoResourceRevisions } from "../geo/closure.js";
 import { closedAction, actionSource } from "../../core/action.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { routeValueHash } from "../../grammar/graph/routes/job.js";
@@ -24,8 +25,10 @@ function prepare(program) {
   const resources = new Map(entries.map(entry => [entry.resource.id, entry.resource]));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => ref.kind === "edge-route" && resources.has(ref.id)
     ? { ...ref, revision: resources.get(ref.id).revision } : ref);
-  const preview = { ...program, semanticSpec: { ...program.semanticSpec, layers,
+  const candidate = { ...program, semanticSpec: { ...program.semanticSpec, layers,
     resources: program.semanticSpec.resources.map(resource => resource.kind === "edge-route" ? resources.get(resource.id) ?? resource : resource) } };
+  const geo = prepareGeoResourceRevisions(program, candidate.semanticSpec.resources), preview = geo.preview;
+  entries.push(...geo.entries);
   validateResourceGraph(preview, program.constructor);
   for (const layer of layers) if (resources.has(layer.graphBinding?.routes?.id)) resolveGraphPlot(preview, layer, program.materializationConfigs.marks[layer.id].graphPlot);
   const handle = Object.freeze({});

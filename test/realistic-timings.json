@@ -64,7 +64,8 @@
     "contracts/realistic-structured-paints.test.js": 184876,
     "contracts/realistic-table-plots.test.js": 3204,
     "contracts/realistic-trail-plots.test.js": 2968,
-    "contracts/realistic-waterfall-plots.test.js": 3002
+    "contracts/realistic-waterfall-plots.test.js": 3002,
+    "contracts/realistic-geographic-routes.test.js": 2355
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -393,6 +394,17 @@
         "runner": "local"
       },
       "record": "1793325189784-19693.json"
+    },
+    "contracts/realistic-geographic-routes.test.js": {
+      "durationMs": 2355.136542,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "record": "1793340798387-98757.json"
     }
   }
 }

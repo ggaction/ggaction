@@ -1,3 +1,4 @@
+import { graphNodeSourceKeys, graphEdgeFields } from "./sourceItems.js";
 import { validateGraphRecomputeView } from "./filterState.js";
 import { materializeMarkEffectProperties } from "../markEffects.js";
 import { applyGraphView } from "./view.js";
@@ -13,10 +14,6 @@ import { resolveInputReference } from "../../selectors/resources.js";
 import { materializeFillItems } from "../fillPaint.js";
 
 import { graphItemKey } from "../../grammar/graph/itemIdentity.js";
-function originalKey(dataset, node, definition) {
-  const row = dataset.values[node.sourceRows[0]], fields = definition.nodeKey;
-  return Array.isArray(fields) ? fields.map(field => row[field]) : row[fields];
-}
 function labelValue(value) {
   if (value === null || value === undefined) return "";
   if (!["string", "number", "boolean", "bigint"].includes(typeof value)) throw new TypeError("Graph label attributes must be scalar values.");
@@ -55,7 +52,7 @@ export function resolveGraphPlot(program, layer, config, { animationGeometry = f
   }
   const inference = graph.provenance.origin === "inferred" ? { rule: graph.options.definition.rule,
     ruleId: graph.options.definition.ruleId, metric: graph.options.definition.metric ?? null } : {};
-  const rawKeys = new Map(model.nodes.map(node => [node.key, originalKey(nodesData, node, graph.options.definition)]));
+  const rawKeys = graphNodeSourceKeys(nodesData, model, graph.options.definition);
   const memberItem = (source, dataset) => ({ members: source.sourceRows.map(index => dataset.values[index]),
     memberKeys: source.sourceRows.map(index => dataset.rowKeys[index]), dataset });
   const edgeStyle = config.edges;
@@ -76,7 +73,7 @@ export function resolveGraphPlot(program, layer, config, { animationGeometry = f
       graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) }, identity: { key, topology, role: "arrow", lineage: edgeLineage } });
     }
     items.push({ key, topology, role: "edge", properties, graphicIndices, graphicRoles, lineage: edgeLineage, ...memberItem(edge, edgesData),
-      fields: { ...inference, kind: "edge", key: edge.key, sourceKey: rawKeys.get(edge.sourceKey), targetKey: rawKeys.get(edge.targetKey), weight: edge.weight, origin: edge.origin, directed: edge.directed, ruleId: edge.ruleId } });
+      fields: graphEdgeFields(graph, edge, rawKeys) });
   }
   model.nodes.forEach((node, index) => {
     const key = graphItemKey(layer, graph, "node", node.key), properties = { ...located.get(node.key), ...bodyStyle(config.nodes, nodeStyles, node.key) };

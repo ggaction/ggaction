@@ -50,7 +50,9 @@ function bindPreparedResources(program, args, replacements, operation, dataRepla
     validateInputReference(replacement.previous);
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
-    if (screenRooted && (previous.kind !== "edge-route" || resource.options.coordinateSpace !== "screen")) throw new TypeError("Prepared screen replacements require screen edge routes.");
+    if (screenRooted && !(previous.kind === "edge-route" && resource.options.coordinateSpace === "screen" ||
+        previous.kind === "geometry" && ["geo-routes", "geo-join", "geo-lod"].includes(resource.options.method) ||
+        previous.kind === "projection")) throw new TypeError("Prepared screen replacements require screen edge routes or their geographic dependents.");
     if (!(dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route", "projection"] : ["data-source", "graph", "layout", "edge-route", "projection", "geometry"]).includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");

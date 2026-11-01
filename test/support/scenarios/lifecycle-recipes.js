@@ -1311,6 +1311,8 @@ function buildDirectDataResources(factors) {
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
     .bundleGraphEdges({ id: "directEdgeRoutes", layout: "directGraphLayout", method: "edge-path" })
     .editEdgeRoute({ target: "directEdgeRoutes", options: { exponent: 3 } })
+    .createGeoRouteData({ id: "directRouteGeometry", routes: "directEdgeRoutes", coordinateKind: "planar" })
+    .editGeoRouteData({ target: "directRouteGeometry", routes: "directEdgeRoutes", coordinateKind: "planar" })
     .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
     .editGraphPlot({ target: "directGraphPlot", routes: false, nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })

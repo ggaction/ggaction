@@ -99,6 +99,12 @@ Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한
 materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
 screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
 Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Route-derived GeometryData는 기존 edge-route 완료 M/L을 native GeoLine source로 해석한다.
+`actions/geo/closure`는 route→geometry→join/level→projection 후보를 의존 순서로 준비하며
+기존 private prepared-resource proof와 한 materialization plan에 연결한다. Canvas screen-route
+revision도 같은 지리 하위 resource closure를 검산한다. Solver·지리 stream·renderer를 복제하지
+않으며 source 행과 typed edge key는 공통 graph source-item owner에서 읽는다.
+정확한 API와 저장 의미는 [Geometry](contract/current/GEOMETRY.md)가 소유한다.
 Private `materialization/graph/presentation.js`는 검증된 현재 그래프 의미에서 일시 edge geometry와
 node 이동 값을 만든다. 기존 native edge owner와 공통 polyline의 endpoint 부착을 재사용하며
 layout·saved route·trace를 쓰지 않는다. 공개 session 연결 전의 독립 계산 경계이며, 정확한

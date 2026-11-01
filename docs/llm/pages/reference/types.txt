@@ -84,6 +84,8 @@ interface ChartProgramActions {
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+  editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -2895,6 +2897,20 @@ export interface CreateGeoLODDataOptions { readonly id: string; readonly levels:
 
 Related types: [`GeoLODLevels`](../../../reference/types/#type-geolodlevels).
 
+### `CreateGeoRouteDataOptions` {#type-creategeoroutedataoptions}
+
+ Expand CreateGeoRouteDataOptions
+
+```typescript
+export interface CreateGeoRouteDataOptions {
+  readonly id: string;
+  /** Exact retained edge-route resource; no route or dataset inference. */
+  readonly routes: string;
+  /** Geographic requires world route anchors; planar uses identity projection coordinates. */
+  readonly coordinateKind: "geographic" | "planar";
+}
+```
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -5659,6 +5675,16 @@ export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 ```
 
 Related types: [`GeoEditOptions`](../../../reference/types/#type-geoeditoptions) · [`GeoPointMarkOptions`](../../../reference/types/#type-geopointmarkoptions).
+
+### `EditGeoRouteDataOptions` {#type-editgeoroutedataoptions}
+
+ Expand EditGeoRouteDataOptions
+
+```typescript
+export interface EditGeoRouteDataOptions {
+  readonly target?: string; readonly routes?: string; readonly coordinateKind?: "geographic" | "planar";
+}
+```
 
 ### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
 

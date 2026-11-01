@@ -2,7 +2,7 @@ import { annotateError } from "../core/diagnostics.js";
 import { requireStoredResource } from "./resources.js";
 
 export function isGeographicGeometry(resource) {
-  return resource?.kind === "geometry" && ["geo", "geo-join", "geo-lod"].includes(resource.options.method);
+  return resource?.kind === "geometry" && ["geo", "geo-join", "geo-lod", "geo-routes"].includes(resource.options.method);
 }
 
 export function geographicCoordinateKind(resource) {

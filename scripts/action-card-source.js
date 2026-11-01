@@ -197,6 +197,10 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: ["explicit keyed geometry levels and parent mappings"], owns: ["geographic detail resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target"]
   };
+  if (["createGeoRouteData", "editGeoRouteData"].includes(action.name)) return {
+    prerequisites: ["explicit retained edge-route resource", "explicit coordinate interpretation"], owns: ["route-derived geometry resource"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "routes"]
+  };
   if (["createGeoJoinData", "editGeoJoinData"].includes(action.name)) return {
     prerequisites: ["geographic geometry resource", "materialized table"], owns: ["joined geometry resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "data"]

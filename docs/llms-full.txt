@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:d51efaa5c9eba1d88b8cd06d6f17078cb9310de7613bef4aaa31743b834dc596. Status: development. Runtime source: c7892a9fe0ae1269188b18d37822b8fbd77af0c9. Release baseline: v0.0.13.
+Contract: sha256:6a71352444b0f0c5eb6cc49026cc8b1475ebb931062a5b33e81fb64cc32f5f50. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c7892a9fe0ae1269188b18d37822b8fbd77af0c9/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c7892a9fe0ae1269188b18d37822b8fbd77af0c9/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -20805,6 +20805,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGeoLODData`](./reference/actions/charts-data/#creategeoloddata) | H2 | user-facing | core |
 | [`createGeometryData`](./reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
 | [`createGeoPointMark`](./reference/actions/marks/#creategeopointmark) | H2 | user-facing | marks |
+| [`createGeoRouteData`](./reference/actions/charts-data/#creategeoroutedata) | H2 | user-facing | core |
 | [`createGeoShapeMark`](./reference/actions/marks/#creategeoshapemark) | H2 | user-facing | marks |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
@@ -20949,6 +20950,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGeoLODData`](./reference/actions/charts-data/#editgeoloddata) | H3 | user-facing | core |
 | [`editGeometryData`](./reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
 | [`editGeoPointMark`](./reference/actions/marks/#editgeopointmark) | H3 | user-facing | marks |
+| [`editGeoRouteData`](./reference/actions/charts-data/#editgeoroutedata) | H2 | user-facing | core |
 | [`editGeoShapeMark`](./reference/actions/marks/#editgeoshapemark) | H3 | user-facing | marks |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
@@ -26194,6 +26196,69 @@ editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
 
 Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
 See [Geometry and projections](./api/geometry/#editgeojoindata).
+
+## `createGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateGeoRouteDataOptions`](./reference/types/#type-creategeoroutedataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `routes` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoRouteData({ id, routes, coordinateKind })
+```
+
+Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.
+See [Geometry and projections](./api/geometry/#creategeoroutedata).
+
+## `editGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoRouteDataOptions`](./reference/types/#type-editgeoroutedataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoRouteData({ target?, routes?, coordinateKind? })
+```
+
+Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.
+See [Geometry and projections](./api/geometry/#editgeoroutedata).
 
 ## `createGeoLODData`
 
@@ -36386,6 +36451,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { CreateGeoRouteDataOptions, EditGeoRouteDataOptions, GeoRouteResource } from "./program.js";
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
@@ -38251,6 +38317,8 @@ interface ChartProgramActions {
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+  editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -41062,6 +41130,20 @@ export interface CreateGeoLODDataOptions { readonly id: string; readonly levels:
 
 Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
 
+### `CreateGeoRouteDataOptions` {#type-creategeoroutedataoptions}
+
+ Expand CreateGeoRouteDataOptions
+
+```typescript
+export interface CreateGeoRouteDataOptions {
+  readonly id: string;
+  /** Exact retained edge-route resource; no route or dataset inference. */
+  readonly routes: string;
+  /** Geographic requires world route anchors; planar uses identity projection coordinates. */
+  readonly coordinateKind: "geographic" | "planar";
+}
+```
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -43826,6 +43908,16 @@ export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 ```
 
 Related types: [`GeoEditOptions`](./reference/types/#type-geoeditoptions) · [`GeoPointMarkOptions`](./reference/types/#type-geopointmarkoptions).
+
+### `EditGeoRouteDataOptions` {#type-editgeoroutedataoptions}
+
+ Expand EditGeoRouteDataOptions
+
+```typescript
+export interface EditGeoRouteDataOptions {
+  readonly target?: string; readonly routes?: string; readonly coordinateKind?: "geographic" | "planar";
+}
+```
 
 ### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
 
@@ -52735,12 +52827,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c7892a9fe0ae1269188b18d37822b8fbd77af0c9/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c7892a9fe0ae1269188b18d37822b8fbd77af0c9/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55867,11 +55959,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d51efaa5c9eba1d88b8cd06d6f17078cb9310de7613bef4aaa31743b834dc596` |
+| Contract fingerprint | `sha256:6a71352444b0f0c5eb6cc49026cc8b1475ebb931062a5b33e81fb64cc32f5f50` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `c7892a9fe0ae1269188b18d37822b8fbd77af0c9` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 377 |
+| Declared actions here | 379 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -58483,6 +58575,76 @@ Use the existing [attached Text labels](./api/marks/labels/#geographic-sources) 
 a geographic shape, point, line or graticule source. They share source feature
 identity and revisions while native Text owns content, style and collision layout.
 Graticules expose their existing axis names and numeric values.
+
+## `createGeoRouteData`
+
+**Chart authoring; Full only.**
+
+```typescript
+createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+```
+
+Provide an explicit new geometry `id`, retained edge-route ID `routes`, and
+`coordinateKind: "geographic" | "planar"`. The geometry keeps one LineString per
+original graph edge, including every sampled M/L point and repeated endpoints.
+All four [edge bundling methods](./api/graphs/) use the same adapter. Features expose
+`properties.edgeKey`, the typed opaque edge token, for explicit joins and levels.
+Mark fields and row provenance retain the native graph edge grain.
+
+Geographic input requires **world** routes whose x/y already represent longitude
+and latitude degrees. All positions must be finite and latitude within −90 to 90.
+Screen pixels are never inverted into coordinates. Planar input uses the existing
+identity projection and retains world or screen route units. The bundling solver
+keeps its existing plane-coordinate mathematics.
+
+Draw the resource with `createGeoLineMark`. Its explicit `source-segment` or
+`great-circle` interpolation, antipodal hint, date-line splitting and projection
+clipping apply to the retained samples. Camera changes affect projection without
+recomputing world bundles. Route/source/layout edits refresh this geometry,
+dependent joins, levels, fitted projections and marks atomically.
+
+The adapter retains at most 100,000 features and 1,000,000 positions under the
+existing cumulative work budget. It preserves all accepted edges and samples.
+Save editable programs with the existing persistence API; restoration validates
+the stored result against exact route inputs without running the solver again.
+
+This complete authoring example uses explicit longitude/latitude layout anchors:
+
+> **Executable complete.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
+
+```javascript
+import { chart } from "ggaction";
+
+const routeMap = chart().createCanvas({ width: 480, height: 240 })
+  .createData({ id: "ports", values: [{ id: "west" }, { id: "east" }] })
+  .createData({ id: "connections", values: [{ id: "crossing", from: "west", to: "east" }] })
+  .createGraphData({ id: "network", nodes: "ports", edges: "connections",
+    nodeKey: "id", edgeKey: "id", source: "from", target: "to" })
+  .layoutGraph({ id: "anchors", method: "fixed", options: {
+    positions: [{ key: "west", x: 170, y: 20 }, { key: "east", x: -170, y: 30 }]
+  } })
+  .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "world" })
+  .createGeoRouteData({ id: "routeGeometry", routes: "routes", coordinateKind: "geographic" })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 55, translatePx: [240, 120] })
+  .createCoordinate({ id: "geo", type: "geo", projection: "map" })
+  .createGeoLineMark({ id: "connections", geometry: "routeGeometry", coordinate: "geo",
+    interpolation: "great-circle", stroke: "#2563eb", strokeWidth: 2 });
+```
+
+## `editGeoRouteData`
+
+**Chart authoring; Full only.**
+
+```typescript
+editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
+```
+
+Provide a nonempty patch of `routes` or `coordinateKind`. Omission preserves the
+current intent; `undefined` and `null` are rejected. `target` may name the resource
+or a composition child, or be omitted for the current or unique eligible route
+geometry. Every accepted edit increments revision once and preserves its logical
+feature identity. Surviving typed edge keys remain stable. Incompatible samples
+or consumers reject the entire edit, preserving the earlier program and trace.
 
 <!-- Source: /api/contours/ -->
 

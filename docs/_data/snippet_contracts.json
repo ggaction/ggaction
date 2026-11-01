@@ -2155,6 +2155,21 @@
     "executable": true
   },
   {
+    "file": "api/geometry.md",
+    "block": 10,
+    "heading": "`createGeoRouteData`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\""
+    ],
+    "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.",
+    "sha256": "9288493ac18e3961286b940b85a63e33f85bb78bd887827c0e6a3073365960ce",
+    "executable": true
+  },
+  {
     "file": "api/gradient-plots.md",
     "block": 1,
     "heading": "Create a gradient plot",

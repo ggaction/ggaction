@@ -2269,6 +2269,31 @@ export interface GeometrySourceResource {
 }
 export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
   | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+export interface CreateGeoRouteDataOptions {
+  readonly id: string;
+  /** Exact retained edge-route resource; no route or dataset inference. */
+  readonly routes: string;
+  /** Geographic requires world route anchors; planar uses identity projection coordinates. */
+  readonly coordinateKind: "geographic" | "planar";
+}
+export interface EditGeoRouteDataOptions {
+  readonly target?: string; readonly routes?: string; readonly coordinateKind?: "geographic" | "planar";
+}
+export interface GeoRouteResource {
+  readonly kind: "geometry"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [{ readonly kind: "edge-route"; readonly id: string; readonly revision: number }];
+  readonly options: { readonly method: "geo-routes"; readonly coordinateKind: "geographic" | "planar" };
+  readonly result: {
+    readonly features: readonly { readonly properties: { readonly edgeKey: string };
+      readonly geometry: { readonly type: "LineString"; readonly coordinates: readonly GeometryPosition[] };
+      readonly sourcePath: readonly ["routes", number]; readonly drawable: true }[];
+    readonly identity: GeometrySourceResource["result"]["identity"];
+    readonly coordinateKind: "geographic" | "planar";
+    readonly diagnostics: GeometrySourceResource["result"]["diagnostics"];
+  };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
 export interface GeoJoinKeyOptions {
   /** Exact own field or nonempty own-property path. Null and absent keys never match. */
   readonly geometryKey: GeometryFeatureKey;
@@ -2704,7 +2729,7 @@ export interface SemanticGeoCoordinate {
 export type SemanticCoordinate = SemanticNativeCoordinate | SemanticGeoCoordinate;
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoRouteResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6867,6 +6892,8 @@ export class ChartProgram {
   /** Join geographic features to a materialized table without changing feature identity or source properties. */
   createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
   editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+  createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+  editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   /** Edit join inputs or keys and refresh every dependent projection and mark atomically. */
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;

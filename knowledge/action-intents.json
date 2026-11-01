@@ -1146,6 +1146,10 @@
       "formatted cells",
       "in-cell bars",
       "sparklines"
+    ],
+    "GeoRouteData": [
+      "geographic graph routes",
+      "retained edge route geometry"
     ]
   },
   "summaryOverrides": {
@@ -2408,6 +2412,16 @@
           "order": "descending"
         }
       ]
+    },
+    "createGeoRouteData": {
+      "id": "routeGeometry",
+      "routes": "routes",
+      "coordinateKind": "geographic"
+    },
+    "editGeoRouteData": {
+      "target": "routeGeometry",
+      "routes": "routes",
+      "coordinateKind": "geographic"
     }
   },
   "callPatternOverrides": {

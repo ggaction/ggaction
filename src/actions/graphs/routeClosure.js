@@ -1,3 +1,6 @@
+import { prepareGeoResourceRevisions, geographicConsumerIds } from "../geo/closure.js";
+import { orderResourceDependencies } from "../../materialization/resourceState.js";
+import { applyMaterializationPlan, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
@@ -31,7 +34,8 @@ export function prepareEdgeRouteRevisions(program, resources) {
     entries.push({ previous: { kind: previous.kind, id: previous.id, revision: previous.revision }, resource });
     candidates.set(key(resource), resource);
   }
-  const finalResources = resources.map(resource => candidates.get(key(resource)));
+  const geo = prepareGeoResourceRevisions(program, resources.map(resource => candidates.get(key(resource))));
+  const finalResources = geo.resources;
   const ids = new Set(entries.map(entry => entry.resource.id));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
     const candidate = candidates.get(key(ref));
@@ -39,11 +43,18 @@ export function prepareEdgeRouteRevisions(program, resources) {
   });
   const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources: finalResources, layers } };
   for (const layer of layers) if (ids.has(layer.graphBinding?.routes?.id)) resolveGraphPlot(preview, layer, program.markConfigs[layer.id].graphPlot);
-  return { resources: finalResources, entries, ids };
+  return { resources: finalResources, entries: [...entries, ...geo.entries], ids };
+}
+
+export function edgeRouteGeoConsumers(program, ids) {
+  const affected = new Set([...ids].map(id => key({ kind: "edge-route", id })));
+  for (const resource of orderResourceDependencies(program.semanticSpec.resources)) {
+    if (resource.inputs.some(ref => affected.has(key(ref)))) affected.add(key(resource));
+  }
+  return geographicConsumerIds(program, affected);
 }
 
 export function materializeEdgeRouteConsumers(program, ids) {
-  let next = program;
-  for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.routes?.id)) next = next.materializeGraphPlot({ id: layer.id });
-  return next;
+  const marks = program.semanticSpec.layers.filter(layer => ids.has(layer.graphBinding?.routes?.id)).map(layer => layer.id);
+  return applyMaterializationPlan(program, planLayersDataRematerialization(program, [...marks, ...edgeRouteGeoConsumers(program, ids)]));
 }

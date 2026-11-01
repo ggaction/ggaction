@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 377,
+  "count": 379,
   "cards": [
     {
       "schemaVersion": 3,
@@ -43946,6 +43946,179 @@
       "snippet": "program.editGeoJoinData({ target: \"joinedGeometry\", dataKey: \"code\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editgeojoindata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoRouteData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.",
+      "signature": "createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;",
+      "intents": [
+        "create geo route data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic graph routes",
+        "retained edge route geometry"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit retained edge-route resource",
+          "explicit coordinate interpretation"
+        ],
+        "owns": [
+          "route-derived geometry resource"
+        ],
+        "idOptions": [
+          "id",
+          "routes"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoRouteData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit retained edge-route resource",
+          "explicit coordinate interpretation"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "routes",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "coordinateKind",
+          "required": true,
+          "type": "\"geographic\" | \"planar\""
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoRouteData({ id, routes, coordinateKind, target? })"
+      ],
+      "snippet": "program.createGeoRouteData({ id: \"routeGeometry\", routes: \"routes\", coordinateKind: \"geographic\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeoroutedata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoRouteData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.",
+      "signature": "editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geo route data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic graph routes",
+        "retained edge route geometry"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit retained edge-route resource",
+          "explicit coordinate interpretation"
+        ],
+        "owns": [
+          "route-derived geometry resource"
+        ],
+        "idOptions": [
+          "target",
+          "routes"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoRouteData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit retained edge-route resource",
+          "explicit coordinate interpretation"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "routes",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinateKind",
+          "required": false,
+          "type": "\"geographic\" | \"planar\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoRouteData({ target?, routes?, coordinateKind? })"
+      ],
+      "snippet": "program.editGeoRouteData({ target: \"routeGeometry\", routes: \"routes\", coordinateKind: \"geographic\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeoroutedata"
     },
     {
       "schemaVersion": 3,

@@ -172,7 +172,7 @@ Removal uses [removeResource](CORE.md#removeresource). Failure preserves the old
   Exact geometry inputs own source references. Options retain ordered input roles, level intent, zoom
   and the current activeLevel decision. Result contains active features, independent explicit logical
   identity, coordinateKind, optional topology, all-level logical-key representation mapping and diagnostics.
-  At most128 levels,100000 total regions and10000000 units of mapping work are accepted; simplification
+  At most128 levels,100000 total regions and 10000000 units of mapping work are accepted; simplification
   also uses existing geometry budgets. Offline restore validates all retained inputs and bounded results.
 - All Geo mark modes and fitted projections consume the active geometry. Fields and original row references
   come from the active source/join. A subsequent join can replace fields without changing representation.
@@ -636,3 +636,68 @@ Full geographic Shape/Point/Line/Graticule marks are eligible existing Text sour
 for field/constant content, centroid anchors, native styles, membership, collision layout and removal.
 This source relationship follows geometry/join/LOD/projection revisions without a synthesized dataset.
 Graticules expose `axis` and numeric `value`. Fixed geographic annotations remain single-anchor resources.
+
+## `createGeoRouteData`
+
+- Signature: `createGeoRouteData({id,routes,coordinateKind})`. Full only; all three fields are explicit.
+  Requires a missing geometry ID and an existing retained edge-route resource. `coordinateKind` is
+  `geographic|planar`; unknown options, undefined/null, descriptors and incompatible inputs fail.
+- Every canonical hierarchical/force-directed/density/edge-path result becomes one LineString per
+  original edge in its original order, using every retained sampled M/L command. No route solver,
+  extra smoothing, implicit sampling or edge removal occurs. Repeated zero-length endpoints remain.
+- Geographic interprets **world** route x/y as longitude/latitude degrees. Every sample is finite;
+  latitude must be within −90 to 90. Finite unwrapped longitude follows the existing geometry contract.
+  Screen routes cannot be interpreted as geographic, and pixels are never inverted. Bundling retains
+  its existing planar numerical meaning; this adapter does not compute spherical bundles.
+- Planar consumes world or screen route positions in existing identity projection units. GeoLineMark
+  retains explicit `source-segment|great-circle`, antipodal hint, date-line splitting, projection clip
+  and resampling behavior. Camera changes update projection and marks without recomputing world routes.
+- Stores kind:geometry, algorithmVersion1, authored ownership, options `{method:'geo-routes',coordinateKind}`,
+  one exact edge-route input, and result features/identity/coordinateKind/diagnostics. Features contain
+  `properties.edgeKey` with the opaque typed graph edge token, a LineString, sourcePath and drawable.
+  The token is the explicit geometry feature key; numeric/string/tuple original edge keys stay distinct.
+  Diagnostics use the existing bounded geometry feature/position/work counts. Maximum 100000 features,
+  1000000 positions and 10000000 cumulative work are fixed; no new limit override is introduced.
+- The derived geometry owns a stable logical identity and retains exact route provenance. Source-item
+  fields use native graph edge fields; observed edges expose original edge rows, inferred edges expose
+  both original endpoint rows. Graphic lineage points to the exact geometry revision whose input DAG
+  identifies route, graph, layout, optional hierarchy and source data. No dataset is synthesized.
+- Route, graph, layout, source, hierarchy and screen viewport revision preflight the entire dependent
+  geometry/join/LOD/fit projection union, then rematerialize geographic consumers explicitly once.
+  Invalid geographic samples or incompatible projections fail atomically with old state and trace intact.
+  Native removal checks the retained input DAG. Editable restoration validates features and provenance
+  against retained exact route inputs without rerunning the route solver or performing I/O.
+
+### Formal values — `createGeoRouteData`
+
+- Implemented: `createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): automatic screen-to-geographic inversion and camera-driven world rebundling.
+
+### Value coverage — `createGeoRouteData`
+
+- ✅ Covered: canonical method membership, original samples and rows, typed identity, empty/inferred sources,
+  Basic rejection, own-data/range guards, native revision closure and corrupted editable restore.
+- Evidence: `test/unit/geo/route-resources.test.js`, `test/contracts/geometry-types.test.js`.
+
+## `editGeoRouteData`
+
+- Signature: `editGeoRouteData({target?,routes?,coordinateKind?})`. Full only. Resolve explicit target,
+  current eligible route geometry, then one unique route geometry; other geometry methods are ineligible.
+- Requires a nonempty patch without undefined values. Omitted route input or coordinate interpretation
+  is preserved. Every successful edit increments revision once, including a same-value edit.
+- Geometry logical identity remains stable; explicit opaque edge keys preserve surviving feature identity.
+  Input replacement uses its exact source graph/rows; unrelated resources do not gain authority from a
+  matching textual ID. Dependent joins/levels/projections/marks follow the same atomic closure as creation.
+
+### Formal values — `editGeoRouteData`
+
+- Implemented: `editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram`.
+- Planned: no additional values.
+- Proposed (NOT IMPLEMENTED): implicit nearest-resource resolution or geographic source-field inference.
+
+### Value coverage — `editGeoRouteData`
+
+- ✅ Covered: preserved intent, explicit replacement, current/unique/ambiguous targeting, scoped child edits,
+  one revision per dependent, selection identity, immutable errors and exact offline validation.
+- Evidence: `test/unit/geo/route-resources.test.js`, `test/contracts/geometry-types.test.js`.

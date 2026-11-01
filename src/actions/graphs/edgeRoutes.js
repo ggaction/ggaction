@@ -1,3 +1,6 @@
+import { prepareGeoResourceRevisions } from "../geo/closure.js";
+import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
+import { materializeEdgeRouteConsumers } from "./routeClosure.js";
 import { closedAction } from "../../core/action.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { createEdgeRouteResource } from "../../materialization/graph/routeResource.js";
@@ -12,11 +15,13 @@ import { findStoredResource } from "../../selectors/resources.js";
 function previewResource(program, resource, previous) {
   const resources = previous === undefined ? [...program.semanticSpec.resources, resource]
     : program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate);
-  const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => ref.kind === "edge-route" && ref.id === resource.id
+  const geo = prepareGeoResourceRevisions(program, resources);
+  const layers = mapLayerResourceBindings(geo.preview.semanticSpec.layers, ref => ref.kind === "edge-route" && ref.id === resource.id
     ? { ...ref, revision: resource.revision } : ref);
-  const preview = { ...program, semanticSpec: { ...program.semanticSpec, resources, layers } };
+  const preview = { ...geo.preview, semanticSpec: { ...geo.preview.semanticSpec, layers } };
   validateResourceGraph(preview, program.constructor);
   for (const layer of layers) if (layer.graphBinding?.routes?.id === resource.id) resolveGraphPlot(preview, layer, program.markConfigs[layer.id].graphPlot);
+  return geo.entries;
 }
 
 function facade(editing) {
@@ -33,10 +38,10 @@ function facade(editing) {
         const request = normalizeEdgeRouteRequest(this, args, editing);
         previous = request.previous; resource = createEdgeRouteResource(request.resolved);
       }
-      previewResource(this, resource, previous);
-      let next = this.editSemantic({ property: `resource[edge-route:${resource.id}]`, value: resource });
-      for (const layer of next.semanticSpec.layers) if (layer.graphBinding?.routes?.id === resource.id) next = next.materializeGraphPlot({ id: layer.id });
-      return next;
+      const entries = previewResource(this, resource, previous);
+      const next = withPreparedResourceResults(this, { property: `resource[edge-route:${resource.id}]`, value: resource }, entries,
+        input => this.editSemantic(input));
+      return materializeEdgeRouteConsumers(next, new Set([resource.id]));
     });
 }
 export const bundleGraphEdges = /* @__PURE__ */ facade(false);
