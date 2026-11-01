@@ -1229,6 +1229,10 @@
     "file": "edge-routes.mjs",
     "cases": [
       {
+        "id": "edge-routes/symmetric-force-pairs",
+        "statements": 4
+      },
+      {
         "id": "edge-routes/bounded-hierarchy-spans",
         "statements": 9
       },
