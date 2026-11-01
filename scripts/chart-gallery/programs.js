@@ -1,6 +1,7 @@
 import { source, localSource, palette, repositoryRoot } from "./data.js";
 import { nativeDataCharts } from "./native-programs.js";
 import { recipeDataCharts } from "./recipe-programs.js";
+import { graphDataCharts } from "./graph-programs.js";
 import { chart, vconcat } from "../../src/index.js";
 import { createCarsOriginScatterplotFacet } from "../../examples/cars-origin-scatterplot-facet/program.js";
 import { createCarsOriginHistogramFacet } from "../../examples/cars-origin-histogram-facet/program.js";
@@ -148,6 +149,7 @@ function cars() {
 export function* realDataCharts() {
   yield* recipeDataCharts();
   yield* nativeDataCharts();
+  yield* graphDataCharts();
   for (const build of [temperature, coffee, penguins, food, gapminder]) {
     try { yield build(); } catch (error) { throw new Error(`Gallery chart ${build.name}: ${error.message}`, { cause: error }); }
   }

@@ -33,18 +33,28 @@ export function createRouteDensityField(samples, bounds, { bandwidth, size, dire
   budget.charge(samples.length);
   for (const sample of samples) {
     if (sample.weight === 0) continue;
+    if (!Number.isFinite(sample.weight)) throw new RangeError("Route density must be finite.");
     const channels = directed ? directionChannels(sample.angle) : [[0, 1]];
     const x0 = Math.max(0, Math.ceil((sample.x - bandwidth - bounds.x) / dx)), x1 = Math.min(size - 1, Math.floor((sample.x + bandwidth - bounds.x) / dx));
     const y0 = Math.max(0, Math.ceil((sample.y - bandwidth - bounds.y) / dy)), y1 = Math.min(size - 1, Math.floor((sample.y + bandwidth - bounds.y) / dy));
-    budget.charge(Math.max(0, x1 - x0 + 1) * Math.max(0, y1 - y0 + 1) * channels.length);
-    for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
-      const value = sample.weight * compactRouteKernel(Math.hypot(bounds.x + x * dx - sample.x, bounds.y + y * dy - sample.y) / bandwidth);
-      if (value === 0) continue;
-      for (const [channel, fraction] of channels) {
-        const key = (channel * size + y) * size + x, next = (cells.get(key) ?? 0) + value * fraction;
-        if (!Number.isFinite(next)) throw new RangeError("Route density must be finite.");
-        if (!cells.has(key)) budget.samples(samples.length + cells.size + 1);
-        cells.set(key, next);
+    for (let y = y0; y <= y1; y++) {
+      const deltaY = bounds.y + y * dy - sample.y;
+      // A row intersects the compact kernel in a circle chord. Keep one extra
+      // column at either end so rounded boundary arithmetic cannot remove ink;
+      // the original radial kernel still decides every retained contribution.
+      const radius = Math.sqrt(Math.max(0, (bandwidth - Math.abs(deltaY)) * (bandwidth + Math.abs(deltaY))));
+      const first = Math.max(x0, Math.ceil((sample.x - radius - bounds.x) / dx) - 1);
+      const last = Math.min(x1, Math.floor((sample.x + radius - bounds.x) / dx) + 1);
+      budget.charge(1 + Math.max(0, last - first + 1) * channels.length);
+      for (let x = first; x <= last; x++) {
+        const value = sample.weight * compactRouteKernel(Math.hypot(bounds.x + x * dx - sample.x, deltaY) / bandwidth);
+        if (value === 0) continue;
+        for (const [channel, fraction] of channels) {
+          const key = (channel * size + y) * size + x, next = (cells.get(key) ?? 0) + value * fraction;
+          if (!Number.isFinite(next)) throw new RangeError("Route density must be finite.");
+          if (!cells.has(key)) budget.samples(samples.length + cells.size + 1);
+          cells.set(key, next);
+        }
       }
     }
   }
