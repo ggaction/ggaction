@@ -24,14 +24,14 @@ const percentile = (values, fraction) => [...values].sort((a, b) => a - b)[Math.
 const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(value))))].map(value => value.toString(16).padStart(2, '0')).join('');
 // Only documented, explicit native bounds are limits. Other exceptions are failures.
 export function isNativeLimit(error) {
-  return error.name === 'RangeError' && /(?:must not exceed|exceeds? (?:(?:the|its) )?(?:maximum|limit|(?:work )?budget)|work limit|node limit|budget exceeded)/i.test(error.message);
+  return error.name === 'RangeError' && /(?:must not exceed|exceeds? (?:(?:the|its) )?(?:maximum|limit|(?:(?:work|item) )?budget)|work limit|node limit|budget exceeded)/i.test(error.message);
 }
 function pointRows(count) {
   const side = Math.ceil(Math.sqrt(count));
   return Array.from({ length: count }, (_, id) => ({ id, x: (id % side + 1) / (side + 1), y: (Math.floor(id / side) + 1) / (side + 1) }));
 }
 function pointProgram(rows) {
-  return canvas().createData({ id: 'rows', keyField: 'id', values: rows }).createPointMark({ id: 'points' })
+  return canvas().createData({ id: 'rows', keyField: 'id', values: rows }).createPointMark({ id: 'points', maxItems: 100000 })
     .encodeX({ field: 'x', scale: { id: 'x', domain: [0, 1], nice: false } })
     .encodeY({ field: 'y', scale: { id: 'y', domain: [0, 1], nice: false } });
 }

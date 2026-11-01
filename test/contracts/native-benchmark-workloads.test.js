@@ -40,6 +40,8 @@ test('native benchmark rejects omitted data and distinguishes native bounds from
   }
   assert.equal(isNativeLimit(new RangeError('Animation nodes must not exceed 10000.')),true);
   assert.equal(isNativeLimit(new RangeError('Hit index exceeds its work budget.')),true);
+  assert.equal(isNativeLimit(new RangeError('Hit program exceeds its item budget.')),true);
+  assert.equal(isNativeLimit(new Error('Hit program exceeds its item budget.')),false);
   assert.equal(isNativeLimit(new Error('Workload assertion: missing source vertex')),false);
   assert.equal(isNativeLimit(new Error('unexpected limit message must not exceed')),false);
   assert.equal(isNativeLimit(new TypeError('unknown projection type')),false);
