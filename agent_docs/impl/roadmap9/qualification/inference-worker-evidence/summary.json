@@ -1,5 +1,5 @@
 {
-  "status": "source-verified-doc-pin-pending",
+  "status": "verified-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "decision": "32c26e969",
   "base": "2f768950d",
@@ -51,8 +51,38 @@
     "installed20.json"
   ],
   "pending": [
-    "source-pinned documentation final checks",
     "Final combined AT82 P95/retained heap/100cycle performance qualification"
   ],
-  "qualification": false
+  "qualification": false,
+  "source": "6644a8aefe0bb27990807bc1bbcd1ebf37e20912",
+  "docs": {
+    "sourceTests": 242,
+    "sourcePin": "6644a8aefe0bb27990807bc1bbcd1ebf37e20912",
+    "preflight": "passed",
+    "build": "passed",
+    "builtPages": 186,
+    "llmArtifacts": 1606,
+    "responsiveBrowser": "passed",
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearchAndAccessibility": "passed"
+  },
+  "package": {
+    "entries": 1246,
+    "packed20": 1787002,
+    "unpacked": 8054266,
+    "caps": {
+      "entries": 1246,
+      "packed": 1787100,
+      "unpacked": 8054300
+    },
+    "bundleCaps": {
+      "Full": 785700,
+      "graph": 67600
+    },
+    "canonicalRepackExact": true
+  }
 }

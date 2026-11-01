@@ -5,7 +5,7 @@
 - [x] 기존 동기 결과/기본 한도와 분리된 전용 worker executor 및 authentic 준비 결과 구현.
 - [x] exact receiver/kind/token/input revision, own-data/hash/bytes, 취소/늦은 응답/100회 수명과 원자 실패 검증.
 - [x] 실제 Chromium worker의100/1k/10k 원노드와 k10의 모든 간선·typed tie·direction·weight·sourceRows 독립 검산.
-- [ ] 동일 archive Node20/22/24, 최종 source pin 문서 및 패키지 자격 마감.
+- [x] 동일 archive Node20/22/24, 최종 source pin 문서 및 패키지 자격 마감.
 - [ ] 최종 combined AT82 P95/retained heap/100cycle 성능 자격. 본 checkpoint는 SLO 통과가 아니다.
 
 승인은 [AUTHORIZATION](../AUTHORIZATION.json)의 remainingApproval 및 root가 채택한 [32c26e969 구체안](inference-execution-design.md)을 재사용한다. 전 단계 explicit execution은2f768950d로 완료했다. 이 단계는 새 전역 한도·algorithmVersion·추론 수학·원10000nodes/100000edges·k·renderer를 변경하지 않는다.
@@ -26,3 +26,9 @@
 Chromium 측정은 functional single run이다. prepare 시간은 startup/message copy/worker compute/main validation을 포함하며 commit은 별도다. 따라서 medium/large SLO, final P95, retained heap 또는 AT82 완료로 집계하지 않는다. 원크기·간선·반복·한도를 줄이지 않았고 worker의 모든100000edge를 독립 lattice-shell oracle로 검사했다. Oracle는 제품 search/metric/key helper를 import하지 않으며 literal 및 small all-pairs 증거는 기존 `test/unit/grammar/graph/inference-grid-oracle.test.js`에 있다.
 
 정확한 공개 계약은 [Current GRAPHS](../../../contract/current/GRAPHS.md#inferred-graph-worker-preparation), 실행 로그·archive·최종 source ref는 [summary](inference-worker-evidence/summary.json)가 소유한다.
+
+## 검증된 checkpoint
+
+소스는 `6644a8aefe0bb27990807bc1bbcd1ebf37e20912`이며 최종 문서 핀 이후 정본 tar의 SHA-256은 `d0083b94a5fe141f53af9c39c5091438f73691ef52cfd55af37598e8b026faf2`로 동일하다. Node20.20.2/22.23.1/24.22.1에서 각각 실제 runtime5개(전체100k 간선 worker 포함), strict type fixture, 공개 문서2개, optional peers와6개 entry bundle을 확인했다. 최초 Node20의 bundle ceiling2개 실패는 보존했고 실측의 최소 상한을 적용해 동일 측정으로 재검산했다.
+
+문서242/242, built186페이지/1606 LLM artifact, desktop search·접근성 및 전체320/390/768px 검사가 통과했다. Critical source19개는 각각 해당 owning coverage로 확인했다. 전체 저장소 전수 검증으로 확대해 주장하지 않으며 최종 합산 AT82 성능 검사는 후행으로 유지한다.
