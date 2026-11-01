@@ -1797,9 +1797,54 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "The remaining required consumer owners have not yet been assigned in this manifest."
       },
-      "assignedOwners": {}
+      "assignedOwners": {
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/animation/offline-assets.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/charts/image-assets/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        }
+      }
     },
     {
       "id": "partition-cartesian",
@@ -4258,7 +4303,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "The remaining required consumer owners have not yet been assigned in this manifest."
       },
       "assignedOwners": {
         "create": {
@@ -4389,6 +4434,26 @@
           "tests": [
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
           ]
         }
       }
@@ -4425,7 +4490,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "The remaining required consumer owners have not yet been assigned in this manifest."
       },
       "assignedOwners": {
         "create": {
@@ -4556,6 +4621,26 @@
           "tests": [
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
           ]
         }
       }
@@ -4592,7 +4677,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "The remaining required consumer owners have not yet been assigned in this manifest."
       },
       "assignedOwners": {
         "create": {
@@ -4724,6 +4809,26 @@
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
           ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
         }
       }
     },
@@ -4758,7 +4863,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Graticule field/scale/guide consumers remain unassigned. The remaining required consumer owners have not yet been assigned in this manifest."
       },
       "assignedOwners": {
         "create": {
@@ -4851,6 +4956,35 @@
           "tests": [
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
           ]
         }
       }
