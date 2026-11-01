@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-  "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "create point mark",
     "create",
@@ -93,6 +93,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "maxItems",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
       "name": "blend",
       "required": false,
       "type": "BlendMode | undefined"
@@ -159,7 +164,7 @@
     }
   ],
   "callPatterns": [
-    "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
+    "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, maxItems?, blend? })"
   ],
   "snippet": "program.createPointMark({})",
   "errors": [],

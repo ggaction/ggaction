@@ -4779,6 +4779,8 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    /** Point raw and concrete item capacity; default 50000, maximum 100000. */
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -5128,6 +5130,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -5157,6 +5160,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;
@@ -6967,8 +6971,9 @@ export class ChartProgram {
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
 
-  /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
+  /** Point capacity defaults to 50,000 raw and concrete items; explicit maxItems supports up to 100,000. */
   createPointMark(options?: TargetedOptions<StrokeStyleDetails & {
+    maxItems?: number | undefined;
     blend?: BlendMode;
   shadow?: MarkShadow | false;
     clip?: boolean;
@@ -6983,6 +6988,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }>): ChartProgram;
   editPointMark(options: TargetedOptions<StrokeStyleDetails & {
+    maxItems?: number | undefined;
     blend?: BlendMode;
   shadow?: MarkShadow | false;
     clip?: boolean;

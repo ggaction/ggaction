@@ -1,0 +1,23 @@
+{
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "sha256": "9b3412521ef919d1e9f14631b2fbcce8fadc47855a9f1c9318cc02c9f3a2e95e",
+  "entries": 1239,
+  "packedBytes": 1777997,
+  "unpackedBytes": 8023985,
+  "results": [
+    {
+      "entry": "ggaction",
+      "raw": 100000,
+      "items": 100000,
+      "maxItems": 100000
+    },
+    {
+      "entry": "ggaction/basic",
+      "raw": 100000,
+      "items": 100000,
+      "maxItems": 100000
+    }
+  ]
+}

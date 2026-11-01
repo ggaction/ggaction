@@ -1,0 +1,52 @@
+{
+  "label": "suite-docs",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/docs/action-reference.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/docs/documentation-coverage.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/docs/documentation.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-point-capacity/ggactionnewbrand/test/docs/documented-behavior.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 24326,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-11-01T16:45:50.451Z",
+  "finishedAt": "2026-11-01T16:46:14.778Z",
+  "source": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "d736d911701f7d2d296d746f6f34a225eae144c2739008c98e6e0fc5af57d479"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "2ab9e9f64ea1689df5c3f75724019b92cd1c7efa",
+    "clean": false,
+    "statusSha256": "d736d911701f7d2d296d746f6f34a225eae144c2739008c98e6e0fc5af57d479"
+  },
+  "logSha256": "220820b7592c5579fc1090a8ba9e3890b571199268c21905b5d42a2a3b66d0b8",
+  "discovery": {
+    "suite": "docs",
+    "selectors": [
+      "docs/action-reference.test.js",
+      "docs/documentation.test.js",
+      "docs/documentation-coverage.test.js",
+      "docs/documented-behavior.test.js"
+    ],
+    "files": [
+      "test/docs/action-reference.test.js",
+      "test/docs/documentation-coverage.test.js",
+      "test/docs/documentation.test.js",
+      "test/docs/documented-behavior.test.js"
+    ]
+  },
+  "bytes": 12461,
+  "retainedBytes": 12461,
+  "truncated": false
+}

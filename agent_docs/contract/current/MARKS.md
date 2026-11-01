@@ -222,7 +222,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createPointMark`
 
-- Signature: `createPointMark({ blend?, clip?, id?, data?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createPointMark({ blend?, clip?, id?, data?, maxItems?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
@@ -231,13 +231,20 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
   `stroke: false`는 outline과 width를 끈다. Field-driven color와 constant fill은 충돌한다.
-- Capacity: selected materialized raw dataset은 layer별 50,000개 inclusive다. missing skip 이전 raw
-  cardinality와 concrete collection 양쪽을 검사한다. 50,001은 `resource-limit`,
-  `optionPath: "Point mark item count"`, `limit: 50000`, `actual: 50001`로 원자적으로 거부한다.
-  Full/Basic initial/incomplete, createScatterPlot, source revision/rebind, property arrays,
-  mixed shapes, Canvas/scale replay, selection/highlight, accessibility, facet/nested composition,
-  editable persistence가 같은 소유권 정책을 사용한다. Graphic-only structural validation은 기존
-  의미·capacity 미검사 경계를 유지한다. Evidence: `test/unit/actions/marks/point-capacity.test.js`.
+- Capacity: `maxItems?: PositiveInteger`는1..100000 safe integer이며 기본50000을 유지한다.
+  명시값만 `materializationConfigs.marks[id].maxItems`에 저장한다. missing skip 이전 selected raw
+  dataset과 concrete collection 양쪽이 같은 inclusive limit을 따르며 source/array 값을 줄이지 않는다.
+  초과는 `resource-limit`, `optionPath: "Point mark item count"`, 해당 `limit`과 `actual`로 원자 거부한다.
+  `undefined`는 생성 시 생략과 같다. Full/Basic initial/incomplete, 공유 point facade의
+  `point.maxItems`(Dumbbell은 startPoint/endPoint), source revision/rebind, property arrays, mixed shape,
+  Canvas/scale replay, selection/highlight, accessibility, facet/nested composition, editable restore가
+  실제 point/data/graphic ID·type 및 retained child owner에서 같은 정책을 읽는다. 각 owner는 독립
+  한도를 가지므로 composition 합계100000 초과도 가능하다. nonpoint/unowned graphic은 일반10000이다.
+  Editable codec는 무효값·nonpoint capacity·유실된 capacity의 초과 raw/output을 거부한다.
+  Graphic-only structural validation의 의미·capacity 미검사 경계와 일반 generated10000/work10M,
+  path·animation·hit의 별도 한도는 바꾸지 않는다. 이 옵션은 latency/SLO 보장이 아니다.
+  Evidence: `test/unit/actions/marks/point-capacity.test.js`,
+  `test/unit/actions/marks/point-explicit-capacity.test.js`, `test/contracts/point-capacity-types.test.js`.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
@@ -253,7 +260,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createPointMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; maxItems?: PositiveInteger; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -276,7 +283,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ blend?, clip?, target?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editPointMark({ blend?, clip?, target?, maxItems?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` named 14종 또는 명시적 단순 polygon이다. Field-driven `encodeShape`가 있으면 constant shape
@@ -287,13 +294,16 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
 - `strokeWidth`는 constant string stroke 또는 field-driven stroke encoding이 활성화되어 있어야 한다.
 - Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
-- 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
+- 최소 한 appearance 또는 `maxItems` property가 필요하며 omitted properties는 기존 stored config를 보존한다.
+- `maxItems`는 생성과 같은1..100000이며 생략 시 보존한다. 명시 `undefined`는 저장값을 제거하고
+  기본50000으로 복귀한다. 새 limit에 대한 현재 raw/output 검산을 첫 state-changing child 이전에
+  마치므로 낮추기·제거 실패는 이전 program과 trace를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
   circle, rect 또는 area/radius-normalized path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ blend?: BlendMode; clip?: boolean; target?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editPointMark({ blend?: BlendMode; clip?: boolean; target?: UserId; maxItems?: PositiveInteger | undefined; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —

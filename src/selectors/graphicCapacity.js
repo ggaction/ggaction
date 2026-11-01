@@ -12,7 +12,7 @@ export function namespaceGraphicId(namespace, id) {
 function pointOwners(program, id) {
   const layer = findLayer(program, id);
   const dataset = layer?.mark?.type === "point" ? findDataset(program, layer.data) : undefined;
-  const owners = Array.isArray(dataset?.values) ? [{ layer, dataset }] : [];
+  const owners = Array.isArray(dataset?.values) ? [{ layer, dataset, maxItems: program.markConfigs?.[id]?.maxItems }] : [];
   for (const childId of program.compositionSpec?.children ?? []) {
     const prefix = namespaceGraphicId(`${program.compositionSpec.id}-${childId}`, "");
     const child = program.children[childId];
@@ -32,6 +32,7 @@ export function resolveGraphicItemCapacity(program, { id, label, type }) {
   return {
     pointOwned: owners.length === 1,
     rawCount: owners[0]?.dataset.values.length,
+    ...(owners[0]?.maxItems === undefined ? {} : { maxItems: owners[0].maxItems }),
     graphicType: type ?? program.graphicSpec.objects[id]?.type,
     label
   };

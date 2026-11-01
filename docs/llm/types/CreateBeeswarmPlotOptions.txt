@@ -7,6 +7,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    maxItems?: number;
     clip?: boolean;
     radius?: number;
     shape?: PointShape;

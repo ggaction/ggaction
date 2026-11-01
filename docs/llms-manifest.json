@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:a7dc0f16938f63c787c6f9574c5bf3083d2e53a9e5ee0bcfb474295fcf0fd8b6",
-    "sourceCommit": "c80fea2d07512cd91a91bd9d7b3f395e9c59e7e8",
+    "contractId": "sha256:d5627b83680906e427814bf7fdb74c5ffc207e49606ffae6935dbccddca76e6c",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "d006070af57ac7018913fed721e3785c9b9681f2a52cef17219967a888d0da23"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -964,8 +964,8 @@
       "source": "api/marks/point.md",
       "headings": [
         "point-marks",
-        "createpointmark-id-data-missing-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
-        "editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "createpointmark-id-data-maxitems-missing-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "editpointmark-target-maxitems-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "explicit-polygon-shapes",
         "directional-shapes-and-area",
         "jitterpoints-target-channel-maxoffset-seed-key",
@@ -973,8 +973,8 @@
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 10786,
-      "sha256": "fa28df96a223073bc25bcfb36e84be528c36cae25de716677c4c06cc08ac0852"
+      "bytes": 11515,
+      "sha256": "cc136d35b26be7bd8e64a3b771a8149fbfce44525a3bea6f0698fda1f0c316ad"
     },
     {
       "order": 61,
@@ -2287,8 +2287,8 @@
         "removemarkvisibility",
         "related"
       ],
-      "bytes": 271821,
-      "sha256": "a65a9cefccaba9ecd5d917f2b90bf4965698da893783ed9cec0d259479c4e0d4"
+      "bytes": 272141,
+      "sha256": "d0a6f81beed256f70f74ac39c032f989f44c82f4523b7ad90f29d2708094864c"
     },
     {
       "order": 125,
@@ -2366,8 +2366,8 @@
         "edittableplot",
         "related"
       ],
-      "bytes": 167742,
-      "sha256": "e8d28fc68c79972b15015a080b7785d2725aaf0c59bb3c6751d77385b5c22e29"
+      "bytes": 168119,
+      "sha256": "a831692b92f5e6388c35150129a00f1578e02a253d4c029fde5436e696b36f26"
     },
     {
       "order": 126,
@@ -3585,8 +3585,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 513818,
-      "sha256": "16d2d98057e16bf4f76e7a4d435fbbb12a4177c71f55dd3163c96cd307c7a381"
+      "bytes": 514029,
+      "sha256": "9e78952eac2d7827a55f1f9f27a8506e2d008b8355f395e4ebb567df85fd72d2"
     },
     {
       "order": 133,
@@ -3621,8 +3621,8 @@
         "stored-selection-resources-and-concrete-identity",
         "blend-concrete-sources-for-one-item"
       ],
-      "bytes": 23271,
-      "sha256": "09036c73416e7e2e4c766682fa5d508f2a1cd5ecfe5f1a9398fb4cd4231fd378"
+      "bytes": 23199,
+      "sha256": "376f5edb8a6fc456b896f2a9be1eed88996ed0730a6b4999bb714121077bdd5b"
     },
     {
       "order": 135,
@@ -3962,8 +3962,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "b4e5a120c96449bd1e843e831fcef65e8c10e399de4e0e1c8912c138e71ddc83"
+      "bytes": 3000,
+      "sha256": "118636badd2938561b346e75a44a642a35121dae2f981e1cb7114569b5a2e996"
     },
     {
       "order": 156,

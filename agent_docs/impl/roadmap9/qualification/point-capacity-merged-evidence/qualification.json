@@ -1,0 +1,434 @@
+{
+  "status": "explicit-point-capacity-integrated-and-focused-verified; original-benchmark-and-native-qualification-pending",
+  "base": "15842b9298d060168d033d779302e4db8f502f0f",
+  "incoming": "9cb510f05028fed315c7cad2e62bff82c5e6f8e7",
+  "sourceRevision": null,
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "sourceInputEquality": {
+    "incoming": "9cb510f05",
+    "files": [
+      "src/actions/charts/endpoints.js",
+      "src/actions/charts/interval-regression.js",
+      "src/actions/charts/polar.js",
+      "src/actions/charts/rug-strip.js",
+      "src/actions/charts/scatter.js",
+      "src/actions/marks/point/create.js",
+      "src/actions/marks/point/edit.js",
+      "src/core/validation.js",
+      "src/inspectionDescriptors.js",
+      "src/persistence/validation.js",
+      "src/selectors/graphicCapacity.js",
+      "types/program.d.ts"
+    ],
+    "different": []
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1239,
+    "packedBytes": 1778464,
+    "unpackedBytes": 8025734,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-dfab734652c252a3979591786691eacee1048cd37d440c3543be0062183407e1.tgz",
+    "sha256": "dfab734652c252a3979591786691eacee1048cd37d440c3543be0062183407e1"
+  },
+  "checks": {
+    "owning-before-render-routing.log": 66,
+    "contracts.log": 40,
+    "docs.log": 241,
+    "docs-final.log": 241,
+    "render.log": 1,
+    "routing-contracts.log": 41,
+    "selector-coverage.log": 2,
+    "owning.log": 65
+  },
+  "installed": {
+    "scope": "Same actual installed runtime/types and18 bundle measurements, reassessed after minimal Full/Basic caps. No install/runtime rerun claimed.",
+    "limits": {
+      "ggaction": 784300,
+      "ggaction/basic": 424700,
+      "ggaction/svg": 26000,
+      "ggaction/graph": 46000,
+      "ggaction/animation": 333800,
+      "ggaction/interaction": 131400
+    },
+    "records": [
+      {
+        "node": "v20.20.2",
+        "archive": "dfab734652c252a3979591786691eacee1048cd37d440c3543be0062183407e1",
+        "runtime": [
+          {
+            "entry": "ggaction",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          },
+          {
+            "entry": "ggaction/basic",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2735450,
+            "gzipBytes": 784297
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447327,
+            "gzipBytes": 424647
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 333720
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        ],
+        "status": "passed-with-current-caps",
+        "peers": "passed",
+        "types": "passed",
+        "rawStatus": "bundle-limit-failed"
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "dfab734652c252a3979591786691eacee1048cd37d440c3543be0062183407e1",
+        "runtime": [
+          {
+            "entry": "ggaction",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          },
+          {
+            "entry": "ggaction/basic",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2735450,
+            "gzipBytes": 782881
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447327,
+            "gzipBytes": 423769
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44700
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 332599
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 130861
+          }
+        ],
+        "status": "passed-with-current-caps",
+        "peers": "passed",
+        "types": "passed",
+        "rawStatus": "passed"
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "dfab734652c252a3979591786691eacee1048cd37d440c3543be0062183407e1",
+        "runtime": [
+          {
+            "entry": "ggaction",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          },
+          {
+            "entry": "ggaction/basic",
+            "raw": 100000,
+            "concrete": 100000,
+            "exactAll": true,
+            "oneOverRejected": true
+          }
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2735450,
+            "gzipBytes": 784297
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1447327,
+            "gzipBytes": 424647
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 333720
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        ],
+        "status": "passed-with-current-caps",
+        "peers": "passed",
+        "types": "passed",
+        "rawStatus": "bundle-limit-failed"
+      }
+    ]
+  },
+  "coverage": {
+    "file": "src/selectors/graphicCapacity.js",
+    "lines": 100,
+    "branches": 92,
+    "functions": 100,
+    "unchangedFloor": "90/80/100"
+  },
+  "packageLimits": {
+    "entries": 1239,
+    "packedBytes": 1781500,
+    "unpackedBytes": 8025800,
+    "actualNode20and24PackedMaximum": 1781472
+  },
+  "evidenceFiles": {
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack22.json": {
+      "sha256": "68ff521de0d39fccde43580d8b7e43ae084bc0fc5989f93391ff4d6870baddab",
+      "bytes": 386
+    },
+    "installed20-missing-canvas.json": {
+      "sha256": "7ff618bf26805842859e95e8dc295a83fe2305371811247eabb623284bdf44fe",
+      "bytes": 184
+    },
+    "render.log": {
+      "sha256": "56e8c7b8ca1967bdabbf4560f55daf38df179f82a9f19d48f8b9fb3b094e5738",
+      "bytes": 438
+    },
+    "bundle-reassessment.json": {
+      "sha256": "23810b9fa7486d8ecc10aba7f416327867988ece9056cbde8fd5dff626d37293",
+      "bytes": 5502
+    },
+    "installed22-missing-canvas.json": {
+      "sha256": "38c459f725836b54472897b81704e4734c68e2539d2b58a85121c501816cab93",
+      "bytes": 184
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs-final.log": {
+      "sha256": "fe485f6dd49b8c1992cfdf3bbb5862dfc9582195aad2d28b0231c2660139d738",
+      "bytes": 73499
+    },
+    "installed24-missing-canvas.json": {
+      "sha256": "2de175e3f0bf9301639e882365562f5c44d354ca4029ac39e12be59e53bf1694",
+      "bytes": 184
+    },
+    "contracts.log": {
+      "sha256": "86b732c2339a318a7a02a5294b2adb59dac6cf7d4647a56280b69ab49ea53fec",
+      "bytes": 8166
+    },
+    "frozen.json": {
+      "sha256": "36824b4e8acc1879b08c36ae98bd65827ffb1986670094ddb04c079591473ab2",
+      "bytes": 436
+    },
+    "source-equality.json": {
+      "sha256": "dce77f9a231455108958f68eac9f095736f56222241ec3b09f0cb3d8773fb800",
+      "bytes": 514
+    },
+    "installed20-missing-canvas.log": {
+      "sha256": "7120fbe6af17e39c340397a5b835591a51db379dad05998919895aad3def7af3",
+      "bytes": 21366
+    },
+    "installed20.json": {
+      "sha256": "e1ff69c60917c3dd9b8df9bc6c3e917858e43f86faa273b9d0bbd72b69d4ef05",
+      "bytes": 1398
+    },
+    "pack24.json": {
+      "sha256": "7cf74bdc27065f3b4bf4bec2dac79cbf57ec5df18d497451872a940e88b2b6ec",
+      "bytes": 386
+    },
+    "docs.log": {
+      "sha256": "dd8b5332b019d8c9ec627da986b87bf2112572bdd50234b960e892c49c58a2e3",
+      "bytes": 73501
+    },
+    "installed22.json": {
+      "sha256": "f389a9d98e6f5525792ea9c49294708dbddac1f9d5bbf5827fb0e225931ef6bb",
+      "bytes": 1385
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed22-missing-canvas.log": {
+      "sha256": "9b02bc8a850305974e19d8b551d32311d00a73e57c2dbb3a0016ae9675ee50bb",
+      "bytes": 21341
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "routing-contracts.log": {
+      "sha256": "0e519a3b97bc9e404eafd07ad12fe7bd7971b010f77c74faa97176f023990976",
+      "bytes": 8690
+    },
+    "selector-coverage.log": {
+      "sha256": "a3d36c1783a6546380b7efed451c916661bcd4833e667398ad76d6fefe7d64a6",
+      "bytes": 1236
+    },
+    "pack20.json": {
+      "sha256": "dc21d75bede18acae5d74c9c477b27e1f18c903f2de05237b1dc9852322b82b4",
+      "bytes": 386
+    },
+    "installed22.log": {
+      "sha256": "81a08a9d0be2ace27be6aad8cf141aa062e1566251e8f226c8446a5906001b80",
+      "bytes": 950
+    },
+    "prepack.log": {
+      "sha256": "885219d8598515f9b1db5d7e98439dd2ef0633d63e344cea7fb5135cdeedc0dc",
+      "bytes": 506
+    },
+    "owning.log": {
+      "sha256": "1353c8b47e1431ace02c345d928041e7b34c07b6041cf6ea1a32cd1f4f404218",
+      "bytes": 14086
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "installed24.json": {
+      "sha256": "a329fd9388310a528191daa719eed1e35d70c33828453fed808f13ef9c7e8c0d",
+      "bytes": 1398
+    },
+    "installed20.log": {
+      "sha256": "5023d4d54250058233efafb9772ee9677b102c1d6ef72bcc788b06fe657fe4cb",
+      "bytes": 1455
+    },
+    "owning-before-render-routing.log": {
+      "sha256": "70914a2be5669b7385f21496cdb87b275b19c82dbd2f64e19a7436278f0c1118",
+      "bytes": 14409
+    },
+    "installed24.log": {
+      "sha256": "d9edae108cdf11db366b51c65727975023e2be67f3e15a20b1bb0988b0eeb657",
+      "bytes": 1474
+    },
+    "installed24-missing-canvas.log": {
+      "sha256": "d233bb6198597b06c887a20b83839ac6ec5614d28decd3954dd392978ab0c620",
+      "bytes": 21366
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack20-initial.stderr": {
+      "sha256": "0f96d4ef7bfcea59e5c3a74e7f8d0b24be49818635d2cdf768e2e38b0a68bfc8",
+      "bytes": 966
+    }
+  },
+  "remaining": [
+    "Original benchmark maxItems seam; full hit/animation/data slice and original all-size P95",
+    "All577consumer/79ATgroup and nine final commands",
+    "AT60 independent review/AT61 exact protected delivery; STEP077 incomplete"
+  ],
+  "testRouting": {
+    "normal": 65,
+    "render": 1,
+    "formerCombinedNormal": 66,
+    "unchangedAssertions": true,
+    "sharedFixture": "test/support/point-capacity.js",
+    "renderOwner": "test/charts/cross-feature-integration/variants/capacity/point.render.js"
+  }
+}
