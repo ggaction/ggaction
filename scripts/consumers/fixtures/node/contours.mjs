@@ -42,6 +42,18 @@ export const cases = [
     assert.throws(() => q.removeResource({ kind: "geometry", id: "inline", cascade: true }), /mark|referenc|consum/i);
     const removed = q.removeMark({ target: "contour" }).removeResource({ kind: "geometry", id: "inline" }).removeResource({ kind: "geometry", id: "density" });
     assert.deepEqual(removed.semanticSpec.resources, []); assert.equal(serializeProgram(p), saved);
+    for (const mode of ["line", "filled"]) {
+      const original = program(mode).editCanvas({ width: 480, margin: { top: 20, bottom: 20, left: 20, right: 140 } }).createLegend({ target: "contour" });
+      const snapshot = serializeProgram(original), items = getMarkItems(original, { target: "contour" });
+      const changed = original.selectMarks({ id: "picked", target: "contour", items: [items[0].key] })
+        .highlightMarks({ selection: "picked", ...(mode === "line" ? { stroke: "red" } : { fill: "red" }), dimOthers: false, bringToFront: false })
+        .editContourMark({ x: { reverse: true }, y: { id: "moved-y" }, color: { id: "new-color", type: "quantize", range: ["blue", "green"] } });
+      assert.deepEqual(getMarkItems(changed, { target: "contour" }).map(item => item.key), items.map(item => item.key));
+      assert.equal(changed.semanticSpec.guides.legend.color.scale, "new-color");
+      assert.equal(getMarkItems(changed, { target: "contour" })[0].properties[mode === "line" ? "stroke" : "fill"], "red");
+      assert.deepEqual(deserializeProgram(serializeProgram(changed)).graphicSpec, changed.graphicSpec);
+      assert.equal(serializeProgram(original), snapshot);
+    }
   } },
   { id: "contour/fresh-process-source-revision", run() {
     const p = program(), saved = serializeProgram(p);

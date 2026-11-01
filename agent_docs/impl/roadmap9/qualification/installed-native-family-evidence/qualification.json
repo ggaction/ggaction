@@ -1,0 +1,70 @@
+{
+  "status": "installed-runtime-package-owners-assigned; final-candidate-pending",
+  "base": "6ab977c33",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "sha256": "a2c8612d4c594026a1a91699b2712c429bce82aa36b58b8aa951faa2d3585e17",
+    "source": "74f7cfa54; runtime unchanged since dependent-title integration",
+    "entryCount": 1226,
+    "unpackedBytes": 7902038
+  },
+  "node": "v22.23.1",
+  "runtimeCases": 384,
+  "familySubtests": 30,
+  "checks": {
+    "first.log": 31,
+    "default-final.log": 31,
+    "boundaries.log": 40,
+    "docs.log": 238
+  },
+  "sourceAndDeclarationsUnchanged": true,
+  "packageInputsUnchanged": true,
+  "consumerRunner": "Canonical full fixture runner remains the owner; writes each case result immediately so a later failure leaves completed receipts. Wrapper invokes actual temporary installed consumer, checks distinct case IDs/status per family, and propagates any unrelated consumer failure.",
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "notApplicable": 3,
+    "previousAssignedConsumers": 420,
+    "assignedConsumers": 450,
+    "addedPackageOwners": 30,
+    "pendingRequiredConsumers": 124,
+    "assignedAcceptanceGroups": 55,
+    "pendingAcceptanceGroups": 24,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "scope": "Node22 focused installed runtime owner qualification. Existing same archive three-Node14 runtime/types/peers/six bundles remain separate. Neither independent final candidate receipts nor final nine commands are claimed.",
+  "evidenceFiles": {
+    "default-final-cases.json": {
+      "sha256": "e32e47c96db3c62fcba2e86570e11e16d9f7c323aef6636864f55fad7dca62d5",
+      "bytes": 44141
+    },
+    "first.log": {
+      "sha256": "9d0e89fe93202717fa49b3a41e7ef72f943a6d6c042dc1ba2d6309880fe420c5",
+      "bytes": 6278
+    },
+    "default-final.log": {
+      "sha256": "857e79e75677eda909a311093f467db29ad7edbda7f13060f14249c12fbd5be7",
+      "bytes": 6492
+    },
+    "docs.log": {
+      "sha256": "b37674ad690e02e140ba5fc8fcdb5166e95947870e915b951a5fab8302290505",
+      "bytes": 72572
+    },
+    "boundaries.log": {
+      "sha256": "ee5243dc2dbbc02235b3b76f94788ffdf1c192e563e391f7f2166070aa8d9fc2",
+      "bytes": 8732
+    },
+    "first-cases.json": {
+      "sha256": "415c8a6d7d1440d31febef43788a03b9d1775fec61d428eb1aee620477aa32a9",
+      "bytes": 44120
+    },
+    "pending.json": {
+      "sha256": "4029e1c3e782a238afdaf8f699616484cdec3e068194920c0d4602c4b5197c20",
+      "bytes": 29697
+    }
+  }
+}

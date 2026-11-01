@@ -128,10 +128,12 @@ test("categorical layout and text policy changes retain explicit fades and edite
   for (const to of [from.editLegend({ title: "Changed" }), from.editLegend({ position: "left" }), from.editLegend({ labels: { fontSize: 14 } })]) {
     assert.ok(entries(sampleTransition(plan(from, to), 50)).every(x => x.decision.kind === "crossfade"));
   }
-  for (const p of [base({ offset: undefined }), base({ border: true }), base({ symbol: { layers: [{ type: "line" }] }, overflow: { maxItems: 1, summarySymbol: "first-hidden" } })]) {
+  for (const p of [base({ border: true }), base({ symbol: { layers: [{ type: "line" }] }, overflow: { maxItems: 1, summarySymbol: "first-hidden" } })]) {
     const transition = plan(p, p.editCanvas({ width: 1000 }));
     assert.ok(entries(sampleTransition(transition, 50)).every(x => x.decision.reason === "guide-layout")); equalOffline(transition);
   }
+  const inferred = base({ offset: undefined }), automatic = plan(inferred, inferred.editCanvas({ width: 1000 }));
+  assert.ok(entries(sampleTransition(automatic, 50)).every(x => x.decision.kernel === "guide-geometry")); equalOffline(automatic);
   const edited = from.editGraphics({ target: "colorLegendSymbols", property: "width", value: 1 });
   assert.ok(entries(sampleTransition(plan(from, edited), 50)).some(x => x.decision.reason === "guide-edited"));
 });

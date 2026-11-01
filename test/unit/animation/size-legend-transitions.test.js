@@ -72,10 +72,12 @@ test("size legend changed membership, text, policy and dependent placement remai
   }
   const inserted = sampleTransition(plan(from, from.editLegend({ values: [25, 50, 100] })), 50);
   assert.equal(inserted.decisions.filter(x => x.kind === "enter").length, 2);
-  for (const p of [base().editLegend({ values: "auto" }), base({ border: true }), base({ offset: undefined })]) {
+  for (const p of [base().editLegend({ values: "auto" }), base({ border: true }) ]) {
     const transition = plan(p, p.editCanvas({ width: 800 }));
     assert.ok(entries(sampleTransition(transition, 50)).every(x => x.decision.reason === "guide-layout")); equalOffline(transition);
   }
+  const inferred = base({ offset: undefined }), automatic = plan(inferred, inferred.editCanvas({ width: 800 }));
+  assert.ok(entries(sampleTransition(automatic, 50)).every(item => item.decision.kernel === "guide-geometry")); equalOffline(automatic);
   const edited = from.editGraphics({ target: "sizeLegendSymbols", property: "radius", value: 30 });
   assert.ok(entries(sampleTransition(plan(from, edited), 50)).some(x => x.decision.reason === "guide-edited"));
 });

@@ -283,14 +283,14 @@ use their native single-edge layout. Ticks and labels keep their raw values; the
 scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
 move through that same layout. Current legend frames can be interrupted and restored
 offline. Text or font changes crossfade; exact font profiles must contain all required
-measurements. Automatic samples, symbol legends, borders, implicit shared lanes, and
+measurements. Automatic samples, symbol legends, borders, and
 inferred axis clearance retain safe fallbacks.
 
 Continuous size legends also support exact `values` and explicit numeric `offset` in one
 independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
 calculating the symbol radius. The native measured layout preserves multiline labels,
 hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
-and implicit dependent legend placement retain an explicit layout crossfade.
+and clipped or bordered legends retain an explicit layout crossfade.
 
 Categorical color, stroke, shape, and series legends retain typed category values and
 native line, point, or swatch roles. With an explicit offset in one independent edge
@@ -307,6 +307,14 @@ value and role through that change, interruption, and offline restoration. Use e
 offsets and exact continuous `values`; keep block order, text, fonts, and placement policy
 compatible. Unsupported siblings, automatic samples, inferred axis clearance, individual
 block placement, borders, clips, and overflow retain a complete-group fallback.
+
+Implicit edge lanes also retain native ordering and categorical-plus-size grouping.
+At each frame, the current symbol dimensions, size areas, and measured text bounds pass
+through the same static lane placement rules. This includes inferred offsets when no
+axis on that edge contributes additional clearance. Each block keeps its original target,
+raw values, and roles. Removing a block or changing an unsupported policy preserves a
+safe fade and valid interrupted offline replay; independent panels retain their own guide
+meaning. Axis-dependent inferred clearance and unsupported sibling families still fade.
 
 <!-- snippet-context:start -->
 

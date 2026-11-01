@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 424_300, // Shared native tokenizer: Node20/24 424,223 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 311_300, // Dependent title and shared axis config: Node20 311,207 gzip bytes.
+  "ggaction/animation": 317_900, // Implicit legend lane integration: Node20/24 317,874 gzip bytes.
   "ggaction/interaction": 131_400
 });
 

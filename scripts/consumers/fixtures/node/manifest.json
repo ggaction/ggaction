@@ -1680,6 +1680,10 @@
       {
         "id": "animation/guide-anchors-offline-native",
         "statements": 6
+      },
+      {
+        "id": "animation/implicit-legend-lanes-offline-native",
+        "statements": 1
       }
     ]
   },
