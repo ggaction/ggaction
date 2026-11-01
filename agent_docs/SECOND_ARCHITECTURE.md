@@ -974,7 +974,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 783,900 bytes |
+| `ggaction` | 784,100 bytes |
 | `ggaction/basic` | 424,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
@@ -4939,3 +4939,8 @@ adapter를 합쳐3entries가 추가된다. Canonical staging의 Node20/22/24 실
 최초1,236-entry 실패를 기록에 보존한다. 공개 entry나 renderer 경계는 추가하지 않는다.
 동일tar의 Node20 bundle 측정에서 Basic424,305/animation333,698bytes가 기존한도를 넘었다.
 최소100bytes 단위로424,400/333,700으로 조정하고 위 표/README와 동기화한다.
+
+기존 inference capacity 전달 보수는 graph source/rule/restore의 동일 한도를 일관되게 전달한다.
+공개 API·schema·work/graphic 한도·module 소유권 변경은 없으며 unpacked 실측8,022,770에 cap8,022,800,
+Full gzip Node20 실측784,092에 cap784,100을 적용했다. 근거와 미완료 large/worker 경계는
+[inference capacity 기록](impl/roadmap9/qualification/inference-capacity.md)을 따른다.

@@ -1,6 +1,6 @@
 import { chart, type InferredGraphResource, type CreateInferredGraphDataOptions } from "ggaction";
 import { chart as basicChart } from "ggaction/basic";
-const request: CreateInferredGraphDataOptions = { id: "g", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean", options: { k: 2, search: { mode: "approximate", seed: 42 } } };
+const request: CreateInferredGraphDataOptions = { maxNodes: 1001, maxEdges: 10010, id: "g", nodeKey: "id", ruleId: "nearest", rule: "knn", features: ["x"], metric: "euclidean", options: { k: 2, search: { mode: "approximate", seed: 42 } } };
 const p = chart().createInferredGraphData(request).editInferredGraphData({ target: { childPath: ["left"], id: "g" }, definition: { options: { k: 3 } } });
 p.createInferredGraphData({ id: "mst", nodeKey: "id", ruleId: "backbone", rule: "mst", candidateGraph: "g", options: { forest: true } });
 p.createInferredGraphData({ id: "groups", nodeKey: ["family", "id"], ruleId: "groups", rule: "group", options: { fields: ["group"], mode: "star", hubKey: ["a", 1] } });
