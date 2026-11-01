@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 3,
+  "name": "editGeoRouteData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.",
+  "signature": "editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;",
+  "intents": [
+    "edit geo route data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "geographic graph routes",
+    "retained edge route geometry"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "explicit retained edge-route resource",
+      "explicit coordinate interpretation"
+    ],
+    "owns": [
+      "route-derived geometry resource"
+    ],
+    "idOptions": [
+      "target",
+      "routes"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoRouteData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "explicit retained edge-route resource",
+      "explicit coordinate interpretation"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "routes",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinateKind",
+      "required": false,
+      "type": "\"geographic\" | \"planar\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGeoRouteData({ target?, routes?, coordinateKind? })"
+  ],
+  "snippet": "program.editGeoRouteData({ target: \"routeGeometry\", routes: \"routes\", coordinateKind: \"geographic\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgeoroutedata"
+}

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart, prepareDataUpdate } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
+import { createInteractionSession } from "../../../src/interaction.js";
 import { chart as basic } from "../../../src/basic.js";
 import { getMarkItems, inspectProgram } from "../../../src/inspection.js";
 import { exportAccessibleData } from "../../../src/accessibility.js";
@@ -14,6 +15,53 @@ const source = (values = rows) => chart().createCanvas({ plot: { width: 1000, he
   .createData({ id: "d", values, keyField: "id" }).createHierarchyData({ id: "h", key: "id", parent: "parent", value: "v" }).layoutHierarchy({ id: "l", method: "partition" });
 const resolved = p => resolveHierarchyPlot(p, p.semanticSpec.layers.find(layer => layer.id === "partitionPlot"), p.markConfigs.partitionPlot.hierarchyPlot);
 const item = (p, id) => getMarkItems(p).find(item => item.fields.id === id);
+
+for (const mapping of ["cartesian", "polar"]) test(`${mapping} partition keeps typed source rows, focused visibility and scoped accessible selection`, () => {
+  const values = [{ id: "root", parent: null }, { id: 1, parent: "root", v: 3 }, { id: "1", parent: "root", v: 1 }];
+  let p = chart().createCanvas({ width: 400, height: 300, margin: 0 }).createData({ id: "d", keyField: "id", values })
+    .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "v" }).layoutHierarchy({ id: "l", method: "partition" });
+  if (mapping === "polar") p = p.createCoordinate({ id: "polar", type: "polar" });
+  p = p.createPartitionPlot({ id: "partitionPlot", rootVisible: false, ...(mapping === "polar" ? { coordinate: "polar", outerRadius: 100 } : {}) });
+  const before = serializeProgram(p), original = getMarkItems(p);
+  assert.deepEqual(original.map(item => [item.fields.id, item.fields.value, item.visible]), [["root", 4, false], [1, 3, true], ["1", 1, true]]);
+  assert.notEqual(original[1].key, original[2].key);
+  if (mapping === "cartesian") assert.deepEqual(original.slice(1).map(item => [item.properties.x, item.properties.width, item.properties.height]), [[0, 300, 300], [300, 100, 300]]);
+  const session = createInteractionSession({ program: p });
+  try {
+    // The first leaf spans 3/4 of the width or the clockwise circle from noon;
+    // the last leaf occupies the final quarter, independently of source key type.
+    const points = mapping === "cartesian" ? [{ x: 100, y: 150 }, { x: 350, y: 150 }] : [{ x: 250, y: 150 }, { x: 150, y: 100 }];
+    for (const [index, point] of points.entries()) {
+      session.dispatch({ type: "inspect", point, slop: 0 });
+      assert.equal(session.getState().hit.target.itemKey, original[index + 1].key);
+    }
+  } finally { session.destroy(); }
+  const selected = p.selectMarks({ id: "picked", target: "partitionPlot", items: [original[2].key] })
+    .highlightMarks({ selection: "picked", fill: "red", bringToFront: false });
+  assert.deepEqual(selected.removeMarkHighlight({ selection: "picked" }).graphicSpec, p.graphicSpec);
+  const revised = selected.reviseData({ source: "d", id: "next", values: [values[0], { ...values[1], v: 6 }, values[2]] });
+  assert.deepEqual(getMarkItems(revised).map(item => item.key), original.map(item => item.key));
+  assert.deepEqual(getMarkItems(revised).map(item => item.fields.value), [7, 6, 1]);
+  assert.deepEqual(getMarkItems(revised).slice(1).map(item => item.rows.filter(row => row.data === "next").map(row => [row.index, row.revision])), [[[1, 1]], [[2, 1]]]);
+  assert.equal(item(revised, "1").properties.fill, "red");
+  const focused = revised.editPartitionPlot({ focus: { key: 1 } });
+  assert.equal(item(focused, "1").visible, false);
+  assert.deepEqual(item(focused, "1").geometry, []);
+  const exported = exportAccessibleData(focused, { format: "items" });
+  const hidden = exported.views[0].items.find(item => item.fields.id === "1");
+  assert.equal(hidden.visible, false); assert.deepEqual(hidden.selectedBy, ["picked"]);
+  assert.equal(focused.editPartitionPlot({ focus: null }).graphicSpec.objects.partitionPlot.items.find(item => item.identity.key === original[2].key).properties.fill, "red");
+  const joined = hconcat({ id: "outer", programs: [{ id: "left", program: focused }, { id: "right", program: p }] });
+  const views = exportAccessibleData(joined, { format: "items" }).views;
+  assert.deepEqual(views.map(view => view.childPath), [["left"], ["right"]]);
+  assert.equal(new Set(views.flatMap(view => view.items.map(item => item.key))).size, 6);
+  const edited = joined.editPartitionPlot({ target: { childPath: ["left"], id: "partitionPlot" }, focus: null });
+  assert.equal(edited.children.right, joined.children.right);
+  const restored = deserializeProgram(serializeProgram(edited));
+  assert.deepEqual(restored.graphicSpec, edited.graphicSpec);
+  assert.deepEqual(exportAccessibleData(restored, { format: "items" }), exportAccessibleData(edited, { format: "items" }));
+  assert.equal(serializeProgram(p), before);
+});
 
 test("shares stored intervals, node identity and values across Cartesian and polar mappings", () => {
   const p = source().createPartitionPlot({ labels: {} }), before = serializeProgram(p);

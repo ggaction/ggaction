@@ -35,7 +35,7 @@ export function normalizeRouteMapping(input, maximum) {
 export function normalizeRouteIntent(method, input = {}, coordinateSpace = "world") {
   if (!Object.hasOwn(normalizers, method)) throw new TypeError("Unsupported edge route method.");
   if (!["world", "screen"].includes(coordinateSpace)) throw new TypeError("Route coordinateSpace must be world or screen.");
-  ownRecord(input, "Edge route options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Edge route options"));
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Edge route options cannot contain null or undefined.");
   const { limits: rawLimits = {}, mapping, ...numeric } = input;
   const limits = normalizeRouteLimits(rawLimits);
@@ -46,6 +46,6 @@ export function normalizeRouteIntent(method, input = {}, coordinateSpace = "worl
 }
 
 export function routeNumericOptions(intent) {
-  const { limits: _limits, mapping: _mapping, ...options } = intent.options;
+  const { limits: _limits, mapping: _mapping, ...options } = Object.assign(Object.create(null), intent.options);
   return options;
 }

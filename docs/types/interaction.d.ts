@@ -84,7 +84,14 @@ export interface InteractionFocus {
   readonly role: string | null;
 }
 export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
-  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root'; readonly target?: never; readonly itemKey?: never };
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root' | 'nextCandidate' | 'previousCandidate'; readonly target?: never; readonly itemKey?: never };
+/** Temporarily show one painted GraphPlot edge without changing native routes or history. */
+export interface InteractionEdgePresentationCommand {
+  readonly type: 'unbundleEdge';
+  readonly target: InteractionTarget;
+  /** Current scoped logical edge key. Null restores the accepted baseline. */
+  readonly itemKey: string | null;
+}
 /** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
 export interface GestureBindingOptions {
   readonly priority?: number;
@@ -206,6 +213,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Authentic graph drag or temporary edge presentation; separate from the accepted animation baseline. */
+  readonly previewFrame: TransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
   readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
@@ -220,7 +229,7 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
-  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  /** Transient handles for the exact previewFrame or previewProgram; never reuse baseline assets. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Transient handles bound to animationFrame, separately from committed assets. */
   readonly frameAssets: Readonly<InteractionAssets> | null;
@@ -231,6 +240,12 @@ export interface InteractionState {
 }
 export interface InteractionLifecycleEvent {
   readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
+  readonly state: InteractionState;
+}
+export interface InteractionEdgePresentationEvent {
+  readonly type: 'unbundleEdge';
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly itemKey: string | null;
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -365,8 +380,8 @@ export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'typ
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
-export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | { readonly type: 'activate' } | {
+export type InteractionEvent = InteractionLifecycleEvent | InteractionEdgePresentationEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | InteractionEdgePresentationCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -383,7 +398,7 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
-   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;

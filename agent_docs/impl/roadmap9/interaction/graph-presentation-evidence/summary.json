@@ -1,0 +1,78 @@
+{
+  "status": "private-calculation-qualified",
+  "previousCheckpoint": "7174f35e629f6b304ceafb66025e01d13771b690",
+  "publicSessionIntegration": false,
+  "checks": {
+    "node20": 26,
+    "node22": 26,
+    "node24": 26,
+    "sourceDiscoveryArchitecture": 37,
+    "packageContracts": 7
+  },
+  "coverage": {
+    "src/grammar/graph/routes/polyline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "src/materialization/graph/presentation.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "sourceSha256": {
+    "src/grammar/graph/routes/polyline.js": "ad2762f7c2ba6f542a5506479dcb2a17c1a058018258a3a692a8395ea82d46be",
+    "src/materialization/graph/presentation.js": "3ad4ffeffc158ab6c7d10a4de62a409b60c1f6fd19bc4942a198b4047727e51f",
+    "test/unit/graph-presentation.test.js": "f8c5d58c709d57e1400c1170d0f9d7e340a9f4a5733f2dde2fa0dac0f3fb5ace"
+  },
+  "package": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1135,
+      "packedBytes": 1619293,
+      "unpackedBytes": 7336876
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1135,
+      "packedBytes": 1615844,
+      "unpackedBytes": 7336876
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1135,
+      "packedBytes": 1619293,
+      "unpackedBytes": 7336876
+    }
+  },
+  "caps": {
+    "entries": 1135,
+    "packedBytes": 1620000,
+    "unpackedBytes": 7337000
+  },
+  "bundle": {
+    "node": 22,
+    "full": 772483,
+    "basic": 421199,
+    "identicalToPriorGeographicCheckpoint": true,
+    "otherEntriesRerun": false
+  },
+  "firstFailures": [
+    "New test work-bound assertion initially expected the word limit; actual RangeError said must not exceed. Assertion corrected without runtime change.",
+    "Discovery initially reported the new test absent from a named capability; added to graph.",
+    "Package check and initial bundle staging rejected 1135 entries against previous 1134; final caps follow measured bytes."
+  ],
+  "remaining": [
+    "authentic graph current frame admission",
+    "selected edge overlay, keyboard cycling and tooltip",
+    "animated fixed/force node drag preview and single native commit",
+    "cancel undo redo assets and four renderer installed consumers"
+  ]
+}

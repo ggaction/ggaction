@@ -1,0 +1,541 @@
+{
+  "status": "owner-mapping-validated",
+  "baseRevision": "87d528bac9846bd139edc4f65bedf6fe07256e20",
+  "changedTargets": [
+    "table/create",
+    "table/edit",
+    "table/source-revise",
+    "table/encodings",
+    "table/scales",
+    "table/guides",
+    "table/composition",
+    "table/selection-highlight",
+    "table/hit",
+    "table/persistence",
+    "table/accessibility",
+    "table/svg",
+    "table/canvas",
+    "table/pdf",
+    "table/png",
+    "table/types",
+    "table/docs",
+    "pyramid/create",
+    "pyramid/edit",
+    "pyramid/source-revise",
+    "pyramid/encodings",
+    "pyramid/scales",
+    "pyramid/guides",
+    "pyramid/composition",
+    "pyramid/selection-highlight",
+    "pyramid/hit",
+    "pyramid/persistence",
+    "pyramid/accessibility",
+    "pyramid/svg",
+    "pyramid/canvas",
+    "pyramid/pdf",
+    "pyramid/png",
+    "pyramid/types",
+    "pyramid/docs",
+    "ohlc/create",
+    "ohlc/edit",
+    "ohlc/source-revise",
+    "ohlc/encodings",
+    "ohlc/scales",
+    "ohlc/guides",
+    "ohlc/composition",
+    "ohlc/selection-highlight",
+    "ohlc/hit",
+    "ohlc/persistence",
+    "ohlc/accessibility",
+    "ohlc/svg",
+    "ohlc/canvas",
+    "ohlc/pdf",
+    "ohlc/png",
+    "ohlc/types",
+    "ohlc/docs",
+    "waterfall/create",
+    "waterfall/edit",
+    "waterfall/source-revise",
+    "waterfall/encodings",
+    "waterfall/scales",
+    "waterfall/guides",
+    "waterfall/composition",
+    "waterfall/selection-highlight",
+    "waterfall/hit",
+    "waterfall/persistence",
+    "waterfall/accessibility",
+    "waterfall/svg",
+    "waterfall/canvas",
+    "waterfall/pdf",
+    "waterfall/png",
+    "waterfall/types",
+    "waterfall/docs",
+    "trail/create",
+    "trail/edit",
+    "trail/source-revise",
+    "trail/encodings",
+    "trail/scales",
+    "trail/guides",
+    "trail/composition",
+    "trail/selection-highlight",
+    "trail/hit",
+    "trail/persistence",
+    "trail/accessibility",
+    "trail/svg",
+    "trail/canvas",
+    "trail/pdf",
+    "trail/png",
+    "trail/types",
+    "trail/docs"
+  ],
+  "scope": {
+    "requirements": 30,
+    "groups": 79,
+    "requiredConsumerCells": 577
+  },
+  "structuralTests": {
+    "command": "node scripts/run-tests.js contracts contracts/native-capability-completion.test.js",
+    "passed": 16,
+    "failed": 0,
+    "log": {
+      "path": "agent_docs/impl/roadmap9/qualification/native-plot-owner-evidence/structure.log.gz",
+      "sha256": "f8b1211a61e007e43e64c3769f82af3d1fe4d6265c306296921b7d98f856d057"
+    }
+  },
+  "qualification": {
+    "status": "pending",
+    "candidate": null,
+    "groups": {
+      "total": 79,
+      "passed": 0,
+      "failed": 0,
+      "pending": 79,
+      "notApplicable": 0
+    },
+    "consumers": {
+      "total": 577,
+      "passed": 0,
+      "failed": 0,
+      "pending": 577,
+      "notApplicable": 0
+    }
+  },
+  "auditedLinks": [
+    {
+      "family": "table",
+      "documentation": {
+        "path": "docs/tutorials/table.md",
+        "canonical": {
+          "file": "examples/table/program.js",
+          "exported": "createTable"
+        },
+        "owner": "test/docs/executable-programs.test.js"
+      },
+      "installedFixture": {
+        "path": "scripts/consumers/fixtures/node/table-plots.mjs",
+        "cases": [
+          {
+            "id": "table/public-lifecycle",
+            "statements": 14
+          },
+          {
+            "id": "table/offline-clipped-scene-renderers",
+            "statements": 15
+          },
+          {
+            "id": "table/fresh-process-and-nested",
+            "statements": 10
+          }
+        ]
+      },
+      "unassigned": [
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "family": "pyramid",
+      "documentation": {
+        "path": "docs/tutorials/pyramid.md",
+        "canonical": {
+          "file": "examples/pyramid/program.js",
+          "exported": "createPyramid"
+        },
+        "owner": "test/docs/executable-programs.test.js"
+      },
+      "installedFixture": {
+        "path": "scripts/consumers/fixtures/node/pyramid-plots.mjs",
+        "cases": [
+          {
+            "id": "pyramid/public-lifecycle",
+            "statements": 16
+          },
+          {
+            "id": "pyramid/offline-scene-renderers",
+            "statements": 14
+          },
+          {
+            "id": "pyramid/fresh-process-and-nested",
+            "statements": 10
+          }
+        ]
+      },
+      "unassigned": [
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "family": "ohlc",
+      "documentation": {
+        "path": "docs/tutorials/ohlc.md",
+        "canonical": {
+          "file": "examples/ohlc/program.js",
+          "exported": "createOHLC"
+        },
+        "owner": "test/docs/executable-programs.test.js"
+      },
+      "installedFixture": {
+        "path": "scripts/consumers/fixtures/node/ohlc-plots.mjs",
+        "cases": [
+          {
+            "id": "ohlc/public-lifecycle",
+            "statements": 16
+          },
+          {
+            "id": "ohlc/offline-scene-renderers",
+            "statements": 13
+          },
+          {
+            "id": "ohlc/fresh-process-and-nested",
+            "statements": 10
+          }
+        ]
+      },
+      "unassigned": [
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "family": "waterfall",
+      "documentation": {
+        "path": "docs/tutorials/waterfall.md",
+        "canonical": {
+          "file": "examples/waterfall/program.js",
+          "exported": "createWaterfall"
+        },
+        "owner": "test/docs/executable-programs.test.js"
+      },
+      "installedFixture": {
+        "path": "scripts/consumers/fixtures/node/waterfall-plots.mjs",
+        "cases": [
+          {
+            "id": "waterfall/public-lifecycle",
+            "statements": 16
+          },
+          {
+            "id": "waterfall/offline-scene-renderers",
+            "statements": 13
+          },
+          {
+            "id": "waterfall/fresh-process-and-nested",
+            "statements": 10
+          }
+        ]
+      },
+      "unassigned": [
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "family": "trail",
+      "documentation": {
+        "path": "docs/tutorials/trail.md",
+        "canonical": {
+          "file": "examples/trail/program.js",
+          "exported": "createTrail"
+        },
+        "owner": "test/docs/executable-programs.test.js"
+      },
+      "installedFixture": {
+        "path": "scripts/consumers/fixtures/node/trail-plots.mjs",
+        "cases": [
+          {
+            "id": "trail/public-lifecycle",
+            "statements": 14
+          },
+          {
+            "id": "trail/offline-scene-renderers",
+            "statements": 11
+          },
+          {
+            "id": "trail/fresh-process-and-nested",
+            "statements": 10
+          }
+        ]
+      },
+      "unassigned": [
+        "scene-animation",
+        "package"
+      ]
+    }
+  ],
+  "sourceInputs": [
+    {
+      "path": "agent_docs/contract/current/OHLC.md",
+      "sha256": "883decdde31c97472d359ca4fe83e7b841a3f001789808e0e19653201b5e633a"
+    },
+    {
+      "path": "agent_docs/contract/current/PYRAMID.md",
+      "sha256": "b5dd6cf2c816d5f0a4fb3deb1f75a99aea8e2c204702f7e9938ea026b71c2581"
+    },
+    {
+      "path": "agent_docs/contract/current/TABLE.md",
+      "sha256": "f7d21d5a82796c4adc16481f199659dc78301c19822e40e7bb0634ea1a0fadc7"
+    },
+    {
+      "path": "agent_docs/contract/current/TRAIL.md",
+      "sha256": "f64f669feaea9e0cff1af4356d2e738c8ad449abe05eefa1b0324686bd8bc234"
+    },
+    {
+      "path": "agent_docs/contract/current/WATERFALL.md",
+      "sha256": "6a54239bb669386cd14a9f6c05dd3b0f993524633f74c2583a0efd277d9a2d98"
+    },
+    {
+      "path": "docs/_data/snippet_programs.json",
+      "sha256": "d5d8f6b1889430cecff3a765ab727f7c3e59301a2dae26c4ebd80da9fcff6e1b"
+    },
+    {
+      "path": "docs/tutorials/ohlc.md",
+      "sha256": "43f4dc9205eea277f1acd078af9eade837e8c0fa6af9a929bbb3d19baca3252f"
+    },
+    {
+      "path": "docs/tutorials/pyramid.md",
+      "sha256": "6d2b2ba3c44e059c92968865e253df164c20b2fff0d6d9e33319916587fe4792"
+    },
+    {
+      "path": "docs/tutorials/table.md",
+      "sha256": "cef27565e0cc66a5bb77d9fd61abe94239d903a287f48eed29ea0ec883722599"
+    },
+    {
+      "path": "docs/tutorials/trail.md",
+      "sha256": "86ce9fd3bd658414f3584af25ec5efcac1e76ef4752f5e1536368bb07f0bd00e"
+    },
+    {
+      "path": "docs/tutorials/waterfall.md",
+      "sha256": "83f382d1ddefb57cb1eb0f058fb890546bc02010b386c248a32d922d61f428a6"
+    },
+    {
+      "path": "examples/ohlc/program.js",
+      "sha256": "cc64e41ba7be4ca28f66d4d50e8fb8fde5f2d2e3db0ef3593b7af79440f8bcbd"
+    },
+    {
+      "path": "examples/pyramid/program.js",
+      "sha256": "fc3d49d138d303b3fa73323d260974735324e29b469fdabfb7de40e050f98521"
+    },
+    {
+      "path": "examples/table/program.js",
+      "sha256": "8d8fc075e5da8637b36941b46c34f76d67130564412322992b5f7617ad990649"
+    },
+    {
+      "path": "examples/trail/program.js",
+      "sha256": "341a1073970f6843a591b76e94705f3d64e550a258eb9db01cdbbe4eb934bf51"
+    },
+    {
+      "path": "examples/waterfall/program.js",
+      "sha256": "c0389cc3344f501f02b4345ce6e4475e2ef027b65abbabff14a90c848275b67f"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "c0ed5f8e8fa89f5a13391ed06b207aebcf8b6d7d38c1de66022b826917a3aee1"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/ohlc-plots.mjs",
+      "sha256": "b9b03cbb620543b00a0fbe9f35594af402ad0500a2c9628ee072bdee0bf04ddf"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/pyramid-plots.mjs",
+      "sha256": "630fada5c3018e4f44f6d7c5b14cb10dbfb10a9018f0689e9252a13fd4aa5e30"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/table-plots.mjs",
+      "sha256": "36f2e7b02834761b5a8728f3e4f48de658a4024389713e9d8606ed651ca58ec9"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/trail-plots.mjs",
+      "sha256": "4e2e8a4ad89b05fa8e08074dd85b5a0a8117b864f335f958061b92e301df519a"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/waterfall-plots.mjs",
+      "sha256": "064342dd081c6f5758f1c13afb00f7ecedcf34ddc4f2f08de1b66862c0acad05"
+    },
+    {
+      "path": "scripts/consumers/node.js",
+      "sha256": "6ce13d327dfe413f5ca60c1de13527cc0718788b976a9d3b8f831261d1137a82"
+    },
+    {
+      "path": "scripts/doc-snippets.js",
+      "sha256": "f66a2c10609af817c9a094aa701573c4efc09ce22e8122d2ff8296f3da0cdb1c"
+    },
+    {
+      "path": "scripts/native-capability-completion.js",
+      "sha256": "d375623241da3de4fdb6aa8e95752e6f53ba9ef973dec96ae0977116c2decf51"
+    },
+    {
+      "path": "scripts/tutorial-consumer.js",
+      "sha256": "0526573810e55b31f3ff603dde855704151b250e0930fbaf88180939d0380791"
+    },
+    {
+      "path": "test/charts/ohlc/manifest.js",
+      "sha256": "f9c3cde40a66a31e0ff67a40af2d31ff380e985e70b34dfcc29360d5243cca50"
+    },
+    {
+      "path": "test/charts/ohlc/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/ohlc/primitive.program.js",
+      "sha256": "c77760ab76372430d4331f10651dc51085e1f11907a9c42a221ce08987571fee"
+    },
+    {
+      "path": "test/charts/ohlc/renderer.render.js",
+      "sha256": "fef195332f8e70488f0d34c0087e794fdfb7ea4fc1fad0fbabe495c9968b6323"
+    },
+    {
+      "path": "test/charts/pyramid/manifest.js",
+      "sha256": "66233e28313bdd3f800496796edf72c85c7475536421bba8f20893f626f418e9"
+    },
+    {
+      "path": "test/charts/pyramid/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/pyramid/primitive.program.js",
+      "sha256": "4f8c29f4162a8dda5b9373fc8446ded2485aafe67b260c28b4bf6745610bf4f0"
+    },
+    {
+      "path": "test/charts/pyramid/renderer.render.js",
+      "sha256": "06989aec9a6384e13f783a465f01db56f1453c9f05c92fb43d9b68a3566a783f"
+    },
+    {
+      "path": "test/charts/table/manifest.js",
+      "sha256": "03e1ce41e31b0a58db316323765659dce3fcbfee15926512b7056192b1f2f3b3"
+    },
+    {
+      "path": "test/charts/table/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/table/primitive.program.js",
+      "sha256": "f0402704065b6ba6e10b25d752168d501c5aca2dbd682016409268ea9a0ff093"
+    },
+    {
+      "path": "test/charts/table/renderer.render.js",
+      "sha256": "109f4fa149828d93ae7381ec2ab299172d015eef67ee828f65c1823ad535009d"
+    },
+    {
+      "path": "test/charts/trail/manifest.js",
+      "sha256": "587d736c2db6c6b6170f5a13f466f154ca5f45972a100090637557c682c71643"
+    },
+    {
+      "path": "test/charts/trail/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/trail/primitive.program.js",
+      "sha256": "311a0cd5b5368f6568337f7831e2288c5b45dfe1dba5b3bf8dd2a27383363841"
+    },
+    {
+      "path": "test/charts/trail/renderer.render.js",
+      "sha256": "8cd06b9149eb2dc8d33dce498347804f3e9dffefbefd80b61c7ed9b45000ed13"
+    },
+    {
+      "path": "test/charts/waterfall/manifest.js",
+      "sha256": "11cbfd8e0c3f034694400cab6d8b01b5bb1949f05d30e7185fa464e0ae5e7a78"
+    },
+    {
+      "path": "test/charts/waterfall/png.render.js",
+      "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+    },
+    {
+      "path": "test/charts/waterfall/primitive.program.js",
+      "sha256": "4fce3f7d9e3c7379e996c0d3ef09b8cb9dcece711ac9f0469e0ebd669e76c4dd"
+    },
+    {
+      "path": "test/charts/waterfall/renderer.render.js",
+      "sha256": "90faa17a5b15db04531552ac8fec978ecff1ae0dce913368475615cd4cb5082b"
+    },
+    {
+      "path": "test/contracts/native-capability-completion.test.js",
+      "sha256": "8d503b224b9c541e4e89a403e6d3ebc9ec5996414abf2b9a6e10e730a0942c6c"
+    },
+    {
+      "path": "test/contracts/ohlc-types.test.js",
+      "sha256": "fa8fe30843b42a47a2cf8c7b1fc5b66823ee56a18da9589779fa8e9bc21301e5"
+    },
+    {
+      "path": "test/contracts/pyramid-types.test.js",
+      "sha256": "bf597becdac8b54c68bc695da8c1522181c34fafbc39716c987ecd87134a5c36"
+    },
+    {
+      "path": "test/contracts/table-types.test.js",
+      "sha256": "ab36078916912c71131d1ce5be1fa247d492d53e850466e0045463734ebd9970"
+    },
+    {
+      "path": "test/contracts/trail-types.test.js",
+      "sha256": "364259a8946b563bebe309f6dcb710f488763069caf03cf177a02ea22eaa684a"
+    },
+    {
+      "path": "test/contracts/waterfall-types.test.js",
+      "sha256": "84a904c88af0934eae40428c788dafd16844cccbb168208dcd463dcd2163b25a"
+    },
+    {
+      "path": "test/docs/executable-programs.test.js",
+      "sha256": "519bd7e0538915c5fac834480d6b6a2c1bf97560b9fcb98a638c4a6889f52e15"
+    },
+    {
+      "path": "test/native-capabilities.json",
+      "sha256": "cba1cb2f2b7d7b524551720e5daaa21a471a8554d98308ebe1cf51f46307abe5"
+    },
+    {
+      "path": "test/support/png.js",
+      "sha256": "5acca29a9128c29b7ec2a38a2cc89a5d4e6015b34e648f30b88ddff00d8bfca4"
+    },
+    {
+      "path": "test/support/visual-variants.js",
+      "sha256": "88873f5eab7c1608acdd04140f12eb7d2627ddd6a1abcb8be23effc3c1ce2f95"
+    },
+    {
+      "path": "test/unit/ohlc-plot.test.js",
+      "sha256": "500191882fe8267b4d90a80b8f98743b4325c9e0123b1cb5e9577a77e923b019"
+    },
+    {
+      "path": "test/unit/pyramid-plot.test.js",
+      "sha256": "e428d4e3f17099fcd9d8e73b07f735b2058c4dc843177f28d4882175b1fca0ee"
+    },
+    {
+      "path": "test/unit/table-consumers.test.js",
+      "sha256": "fcf747751e39c1b85dc66df0152dfbed1e3b2c0b67a2fac64f6cdf849d8eda9e"
+    },
+    {
+      "path": "test/unit/table-plot.test.js",
+      "sha256": "815b3c989d28b0887f30bee3add38aee1188f22e39192434e1ef03d983875398"
+    },
+    {
+      "path": "test/unit/trail-plot.test.js",
+      "sha256": "51057f3b8053d438250b361cde04212b020e2b3d6f53a900481434dc543efd71"
+    },
+    {
+      "path": "test/unit/waterfall-plot.test.js",
+      "sha256": "46263f68baba25425ab33f3d27cc1d7c17ed415d0c82a300e1097d818546eeae"
+    }
+  ],
+  "notes": [
+    "Exactly85 assignedOwners were added; every other manifest value equals the base.",
+    "Family runtime, renderer, installed and docs execution were read-only audit inputs, not newly executed qualification results.",
+    "Existing Geo8owner assignment and prior audit records remain unchanged.",
+    "Scene-animation5 and package5 remain pending; no invented result or exemption."
+  ]
+}

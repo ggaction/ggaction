@@ -1,0 +1,263 @@
+{
+  "status": "contour-mixed-scale-fix-and-native-consumers-integrated; final-qualification-pending",
+  "base": "fdcd46778",
+  "incomingSource": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+  "upstreamPin": "49f7190ec74133c6d1d28ac891d63bf099037a71",
+  "sourceRevision": "bfbd996c18d218b45c05aa5ea918890e675118e7",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "sourceRuntimeIdenticalToIncoming": true,
+  "runtimeChanges": [
+    "src/actions/contours/marks.js: create newly assigned preflighted scales before editing existing scale that rematerializes mark"
+  ],
+  "publicApiAndTypesUnchanged": true,
+  "shared5Unchanged": true,
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1226,
+    "packedBytes": 1749795,
+    "unpackedBytes": 7902439,
+    "file": "ggaction-e774b7af105393ed93f2d2d4bb8d4795aa774a2c768d8349708605b138543298.tgz",
+    "sha256": "e774b7af105393ed93f2d2d4bb8d4795aa774a2c768d8349708605b138543298"
+  },
+  "checks": {
+    "owning.log": 140,
+    "coverage.log": 30,
+    "render.log": 16,
+    "browser.log": 8,
+    "realistic.log": 32,
+    "docs.log": 238,
+    "package.log": 13
+  },
+  "coverage": {
+    "contourMarks": [
+      100,
+      95.05,
+      100
+    ],
+    "floors": [
+      95,
+      90,
+      100
+    ],
+    "scope": "Changed owner only; not global coverage."
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "runtime": 21,
+      "types": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "22": {
+      "node": "v22.23.1",
+      "runtime": 21,
+      "types": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "24": {
+      "node": "v24.22.1",
+      "runtime": 21,
+      "types": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "contourTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    }
+  },
+  "limits": {
+    "entries": 1226,
+    "packed": 1753300,
+    "unpacked": 7902500,
+    "maximumMeasuredPacked": 1753210,
+    "measuredUnpacked": 7902439,
+    "maxFullGzip": 783577,
+    "fullCeiling": 783600,
+    "otherBundleCeilingsUnchanged": true
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 450,
+    "addedAssignedConsumers": 39,
+    "assignedConsumers": 489,
+    "pendingRequiredConsumers": 85,
+    "assignedAcceptanceGroups": 55,
+    "pendingAcceptanceGroups": 24,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "rootPackageOwnersAndOtherRowsPreserved": true
+  },
+  "diagnostics": [
+    "First combined Node20 canonical pack1753210 exceeded1753100; minimum1753300.",
+    "Estimated unpacked7902400 failed actual7902439; minimum7902500. Both raw failures preserved."
+  ],
+  "remaining": [
+    "Dynamic axis reflow; implicit lane10/inferred clearance integration",
+    "85 native consumer owners and24 acceptance owners plus all actual final candidate results",
+    "Route SLO/admission and final nine commands/review/delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "f198729b711da4713414283a2c06643135802bb34aeed4a12d749a0fea9b6055",
+      "bytes": 8331
+    },
+    "pack20-second.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack22.json": {
+      "sha256": "1369bc2325af853a4dc300cb719504d595adadcf07690fc011e5c4c6c9b674d4",
+      "bytes": 394
+    },
+    "installed-24.json": {
+      "sha256": "b02fae8923d757f3e964cea381a52d52410516ccca3ecc89ca8e4e6ec1cbef34",
+      "bytes": 1728
+    },
+    "browser.log": {
+      "sha256": "ce151b8c9f88109274d28adc63fa54d112319d2c2b94a9bb6a3b38a38fd39d7e",
+      "bytes": 1862
+    },
+    "render.log": {
+      "sha256": "3202bd7c831f7a19e82bb994f47d9c324b70cb232ed2fc54de9f10e513a07bed",
+      "bytes": 2909
+    },
+    "frozen.json": {
+      "sha256": "b4a4e95214a1bc2b4876d156ccabe75f8fd3709068d42e38a717ff34519a7ce9",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "2ca94d31e23b8b4add564dc15d8c7d68c5a562e051a0f85aaa1e6bde99b3ebb7",
+      "bytes": 1395
+    },
+    "pack20-first.stderr": {
+      "sha256": "076909ae4446b684c5cb7b7c2d0ade7fe6a8a2601aca51697ab57e027a01544a",
+      "bytes": 966
+    },
+    "installed-22.json": {
+      "sha256": "1fa2e91a8a270f716329a53d4bcc0ec408b2ad42b6250158e74d80f741b06a23",
+      "bytes": 1728
+    },
+    "pack24.json": {
+      "sha256": "36e5bba40e45f5bad854362ca6c6839d35c814499e0de116a4491d446f450fed",
+      "bytes": 394
+    },
+    "installed-22.log": {
+      "sha256": "17c97bf5b289588c512e4a1013494c033bdc309e62111906d47b1156dec62084",
+      "bytes": 1395
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "f2a389acac0c25a85cbc71ed80553076e97d5ff27b9b2679cece613a809427f3",
+      "bytes": 72588
+    },
+    "installed-20.log": {
+      "sha256": "fe72ed1fef7f0f163e16328b1b559751ee35dc0aa35055ff0ce808a4f0294bfc",
+      "bytes": 1395
+    },
+    "installed-20.json": {
+      "sha256": "2ae6de020c18f061e46c2bec680685dedb9ae81943ad531151a8c47b053e713a",
+      "bytes": 1728
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "a84760440542d6bd1c3903f347765bc1e61fd25eaeef9f3fe9a569a74e84573b",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack20-second.stderr": {
+      "sha256": "772be8fb0aa1a33c476541d8bd5afaebf000e6681e90d6751a0decd5bd68052f",
+      "bytes": 891
+    },
+    "pack20.json": {
+      "sha256": "9462547dc839dcd51c9c44717900fd5d85576fb1a206fbf3a325bb341d701236",
+      "bytes": 394
+    },
+    "pending.json": {
+      "sha256": "69ee1817a066f542902590aa9c92bf164c475a717d03bad8e1fbb992371255e6",
+      "bytes": 28196
+    },
+    "owning.log": {
+      "sha256": "7286da1db8ca0e5c5b993851a1d65e7733582c82dfc706fbac581993ded35b25",
+      "bytes": 33501
+    },
+    "premeasure20.log": {
+      "sha256": "26d237f4756939fb75c90a431dd39a04ed1f04f2539cf263628afec7729dbbce",
+      "bytes": 253
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "d7cd2bdb514138fc7683b9601c46b86262cad3a3ed78ccefc1e6d0eab14e74bc",
+      "bytes": 7757
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.log": {
+      "sha256": "1cd9babeebb70acf8b99b6c3a6d26c7869342cbc13bd568388901642a43da00a",
+      "bytes": 2775
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "588efa67ca46c72adcfcd2072b926a003992f394420ef0afa73c3d4acafcfadf",
+      "bytes": 1807
+    },
+    "source-pin-pack.json": {
+      "sha256": "3373d367ddaae86c9e179c3766c3d0e85cd4ea30cfe24320cde0bd66a87ed55d",
+      "bytes": 393
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "All runtime and package inputs unchanged; no additional whole-suite claim."
+  }
+}

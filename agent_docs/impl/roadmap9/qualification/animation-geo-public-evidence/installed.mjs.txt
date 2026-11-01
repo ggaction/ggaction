@@ -1,0 +1,21 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';
+import {preparePackageConsumer} from '../../scripts/package-consumer.js';
+import {run,tscCommand} from '../../scripts/consumers/runtime.js';
+import {testOptionalDependencies} from '../../scripts/consumers/optional-peers.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../../scripts/browser-bundle-size.js';
+const artifact=JSON.parse(await fs.readFile('.artifacts/animation-geo-final/package.json','utf8')),consumer=await preparePackageConsumer({packageSpec:artifact.file});
+const report={node:process.version,zlib:process.versions.zlib,sha256:artifact.sha256,cases:[],bundles:{}};
+try{
+ await testOptionalDependencies(consumer);report.peers=consumer.resolvedPeers;
+ for(const name of ['animation','animation-graph','animation-partition','animation-geo','interaction-animation'])await fs.copyFile('scripts/consumers/fixtures/node/'+name+'.mjs',path.join(consumer.directory,name+'.mjs'));
+ await fs.writeFile(path.join(consumer.directory,'run.mjs'),`import fs from 'node:fs/promises';const out=[];for(const name of ['animation','animation-graph','animation-partition','animation-geo','interaction-animation']){const {cases}=await import('./'+name+'.mjs');for(const entry of cases){await entry.run();out.push({id:entry.id,status:'passed'});await fs.writeFile('cases.json',JSON.stringify(out));}}`);
+ run(process.execPath,['run.mjs'],consumer.directory);report.cases=JSON.parse(await fs.readFile(path.join(consumer.directory,'cases.json'),'utf8'));
+ await fs.copyFile('scripts/consumers/fixtures/animation.ts',path.join(consumer.directory,'animation.mts'));
+ run(process.execPath,[tscCommand,'--strict','--exactOptionalPropertyTypes','--noEmit','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext','animation.mts'],consumer.directory);report.types='strict Full/Basic typed families and geographic decisions passed';
+ for(const specifier of ['ggaction','ggaction/basic','ggaction/svg','ggaction/interaction','ggaction/graph','ggaction/animation']){
+  const result=await measureMinimalBrowserBundle(consumer.directory,{specifier});report.bundles[specifier]=result;
+ }
+ report.limits=Object.fromEntries(Object.entries(report.bundles).map(([specifier,result])=>[specifier,{actual:result.gzipBytes,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier],passed:result.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier]}]));
+ assert.ok(Object.values(report.limits).every(value=>value.passed),'One or more measured bundles exceed their current limit.');
+}finally{await fs.writeFile('.artifacts/animation-geo-final/installed-'+process.versions.node.split('.')[0]+'.json',JSON.stringify(report,null,2));await consumer.cleanup();}
+console.log(JSON.stringify(report,null,2));

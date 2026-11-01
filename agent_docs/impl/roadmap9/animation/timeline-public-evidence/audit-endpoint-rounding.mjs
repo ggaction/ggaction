@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { chart } from '../../../../../src/index.js';
+import { planTransition, sampleTransition } from '../../../../../src/animation.js';
+import { easeProgress } from '../../../../../src/grammar/animation/values.js';
+const from=chart().createCanvas({width:300,height:200,margin:0}).createData({id:'rows',keyField:'id',values:[{id:'a',x:1,y:2}]}).createPointMark({id:'points',fill:'black'}).encodeX({field:'x',scale:{domain:[0,10],nice:false}}).encodeY({field:'y',scale:{domain:[0,10],nice:false}});
+const to=from.reviseData({source:'rows',id:'next',values:[{id:'a',x:9,y:8}]}).editPointMark({fill:'white'});
+const ordinary=planTransition({from,to,options:{durationMs:100}});
+const key=sampleTransition(ordinary,50).decisions.find(d=>d.itemKey).itemKey;
+const plan=planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:key},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:'black'},{timeMs:99.9999,value:'red'},{timeMs:100,value:'white'}]}]}});
+const actual=sampleTransition(plan,99.9999);
+const shape=actual.scene.nodes.find(n=>n.type==='circle');
+console.log(JSON.stringify({timeMs:99.9999,globalProgress:easeProgress(99.9999/100),sameTargetGraphicSpec:actual.graphicSpec===to.graphicSpec,actual:shape.properties.fill,expected:'red'}));
+assert.equal(shape.properties.fill,'rgba(255,0,0,1)');

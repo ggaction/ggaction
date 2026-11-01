@@ -1,0 +1,202 @@
+{
+  "status": "qualified-bundling-only-graphic-limited",
+  "base": "4333470bd",
+  "date": "2026-11-01",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit bounded cycle proof approval",
+  "change": "Only a simple undirected cycle with conservatively finite total costs can prove stretch rejection along its unique alternative path. Other graphs use existing Dijkstra.",
+  "unchanged": [
+    "typed cost/lexicographic order",
+    "lock/skip and output order",
+    "all routes and endpoints",
+    "work/sample/abort limits",
+    "cost-overflow errors",
+    "algorithm version/schema/API"
+  ],
+  "checks": {
+    "sourceEachNode": 100,
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "coverage": {
+      "owner": "src/grammar/graph/routes/edgePath.js",
+      "lines": 99.26,
+      "branches": 99.07,
+      "functions": 100
+    },
+    "boundaryDiscoveryShardingPackage": 47,
+    "installedPerNode": 5,
+    "bundlesPerNode": 6
+  },
+  "comparison": {
+    "cases": 78,
+    "routesProvenanceOptionsDiagnosticsExceptWorkPeakSamplesIdentical": true,
+    "sha256IncludingNewline": "689aaefaaccc2d0e00ee5f141d59198c7a04676ceda48a2280e352d46ad2608e",
+    "independentOracle": "Exhaustive path enumeration; square literal, disconnected/locked components, branches/self/parallel and overflow guards."
+  },
+  "diagnosticPreflight": {
+    "kind": "single-diagnostic-not-SLO",
+    "count": 10000,
+    "offset": 3333,
+    "routes": 10000,
+    "diagnostics": {
+      "work": 7457490,
+      "candidatePairs": 0,
+      "peakSamples": 140004,
+      "processingOrder": 10000,
+      "lockedEdges": [],
+      "bundledEdges": []
+    },
+    "elapsedMs": 344.666791
+  },
+  "archive": {
+    "sha256": "58a048280eae62449c52ec7d69f67e5ebdd7c82f3301d1aed788664713bc0148",
+    "entryCount": 1170,
+    "size": 1670020,
+    "unpackedSize": 7561491,
+    "afterMetadataSHAUnchanged": true
+  },
+  "caps": {
+    "entries": 1170,
+    "packedBytes": 1674000,
+    "unpackedBytes": 7561500,
+    "FullGzip": 782100
+  },
+  "firstFailures": [
+    {
+      "scope": "test fixture",
+      "message": "maxSamples100 was above actual proof/output retention and did not reject",
+      "resolution": "explicit small maxSamples32 regression; original log preserved, no runtime guard change"
+    },
+    {
+      "scope": "package",
+      "message": "packed1673979 >1673300; unpacked7561491 >7559000 also measured",
+      "resolution": "minimal rounded1674000/7561500"
+    },
+    {
+      "scope": "Node20/24 bundle",
+      "message": "Full782010 >781600 after all5runtime passed per Node",
+      "resolution": "minimal782100; rechecked same18 measurements, no reinstall"
+    }
+  ],
+  "performance": {
+    "source": "1e3077170",
+    "archive": "58a048280eae62449c52ec7d69f67e5ebdd7c82f3301d1aed788664713bc0148",
+    "browser": "153.0.8010.12",
+    "cpu": "Apple M4",
+    "DPR": [
+      1,
+      2
+    ],
+    "warmup": 5,
+    "measuredPerCell": 30,
+    "stageThresholdMs": 30000,
+    "cases": [
+      {
+        "method": "hierarchical",
+        "ratio": 1,
+        "edgeCount": 10000,
+        "p95": {
+          "computeMs": 1341.2999999523163,
+          "prepareComputeValidateMs": 4012.5,
+          "applyMs": 5393.700000047684,
+          "bundlingMs": 9336.899999856949
+        },
+        "diagnostics": {
+          "work": 9723588,
+          "candidatePairs": 0,
+          "peakSamples": 88841
+        },
+        "status": "measured-bundling-only",
+        "successSLO": "not-complete-materialization-limited"
+      },
+      {
+        "method": "edge-path",
+        "ratio": 1,
+        "edgeCount": 10000,
+        "p95": {
+          "computeMs": 1025.2000000476837,
+          "prepareComputeValidateMs": 3206,
+          "applyMs": 3917.699999809265,
+          "bundlingMs": 7051.900000095367
+        },
+        "diagnostics": {
+          "work": 7457496,
+          "candidatePairs": 0,
+          "peakSamples": 140004,
+          "processingOrder": 10000,
+          "lockedEdges": 0,
+          "bundledEdges": 0
+        },
+        "status": "measured-bundling-only",
+        "successSLO": "not-complete-materialization-limited"
+      },
+      {
+        "method": "hierarchical",
+        "ratio": 2,
+        "edgeCount": 10000,
+        "p95": {
+          "computeMs": 1280,
+          "prepareComputeValidateMs": 3996,
+          "applyMs": 5329.799999952316,
+          "bundlingMs": 9288.099999904633
+        },
+        "diagnostics": {
+          "work": 9723588,
+          "candidatePairs": 0,
+          "peakSamples": 88841
+        },
+        "status": "measured-bundling-only",
+        "successSLO": "not-complete-materialization-limited"
+      },
+      {
+        "method": "edge-path",
+        "ratio": 2,
+        "edgeCount": 10000,
+        "p95": {
+          "computeMs": 949.3000001907349,
+          "prepareComputeValidateMs": 3092.5,
+          "applyMs": 3881.7999999523163,
+          "bundlingMs": 6944.799999952316
+        },
+        "diagnostics": {
+          "work": 7457496,
+          "candidatePairs": 0,
+          "peakSamples": 140004,
+          "processingOrder": 10000,
+          "lockedEdges": 0,
+          "bundledEdges": 0
+        },
+        "status": "measured-bundling-only",
+        "successSLO": "not-complete-materialization-limited"
+      }
+    ],
+    "allCountersZero": true,
+    "networkAfterInitialLoad": 0,
+    "fullRenderingSLO": false,
+    "graphicLimit": "Graph plot graphic count must not exceed 10000.",
+    "lifecycle100RetainedHeap": "Not rerun for this numeric/preparation source; only prior unchanged host lifetime evidence remains applicable.",
+    "originalMeasurementCells": "Original24 cells remain8passed/16limited; this4cell stage-only measurement does not convert any into full SLO passes.",
+    "previousHEBP95Ms": [
+      12732.2,
+      12747.9
+    ],
+    "comparison": "Same original fixture/hardware and5+30 methodology, earlier source3aeb/archive481be versus current1e307/archive58a. Stage timings only, no renderer result claimed."
+  },
+  "remaining": [
+    "all-item graphic limit",
+    "force/density large workloads",
+    "full AT82 stage matrix and retained heap qualification",
+    "AT82/STEP077 incomplete"
+  ],
+  "source": "1e3077170",
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningChecks": 47,
+    "publicContentChanged": false,
+    "builtBrowserReuse": "Private numeric optimization plus source identifiers only; public HTML/CSS/JS unchanged."
+  }
+}

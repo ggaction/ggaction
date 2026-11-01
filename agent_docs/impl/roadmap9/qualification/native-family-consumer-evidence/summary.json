@@ -1,0 +1,221 @@
+{
+  "recordedAt": "2026-11-01T12:58:35.145Z",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "9039879b298dfbc6e7bec8de708f3f5285556407",
+  "status": "owner assignment and focused regression checkpoint; not native candidate qualification",
+  "runtimeTypesPackageInputsUnchanged": true,
+  "sourceCoverageAndInstalledArchive": "not rerun: runtime and packed inputs unchanged",
+  "performance": "not measured; final combined candidate measurement remains pending",
+  "manifest": {
+    "path": "test/native-capabilities.json",
+    "beforeSha256": "c097699150aad11f5e80fff875342d27c7b656e97f1cf1e14d75103a95539e4d",
+    "afterSha256": "fe877f4cb5c2c985ae99be301e8cf8675cff55316b179708ed43516f34a0341c",
+    "addedOwners": 61,
+    "existingFiveRowOwners": 10,
+    "assignedFiveRowOwners": 71,
+    "unassignedFiveRowCells": 24,
+    "candidate": null,
+    "qualification": "pending",
+    "base": "9039879b298dfbc6e7bec8de708f3f5285556407",
+    "requirements": 30,
+    "groups": 79,
+    "consumerCells": 577,
+    "rows": [
+      {
+        "id": "tree",
+        "oldAssigned": 0,
+        "assigned": 14,
+        "remaining": [
+          "encodings",
+          "scales",
+          "guides",
+          "scene-animation",
+          "package"
+        ]
+      },
+      {
+        "id": "treemap",
+        "oldAssigned": 0,
+        "assigned": 14,
+        "remaining": [
+          "encodings",
+          "scales",
+          "guides",
+          "scene-animation",
+          "package"
+        ]
+      },
+      {
+        "id": "graph-nodes",
+        "oldAssigned": 0,
+        "assigned": 15,
+        "remaining": [
+          "encodings",
+          "scales",
+          "guides",
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-dag",
+        "oldAssigned": 5,
+        "assigned": 14,
+        "remaining": [
+          "encodings",
+          "scales",
+          "guides",
+          "scene-animation",
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-cyclic",
+        "oldAssigned": 5,
+        "assigned": 14,
+        "remaining": [
+          "encodings",
+          "scales",
+          "guides",
+          "scene-animation",
+          "package"
+        ]
+      }
+    ],
+    "othersUnchanged": true,
+    "existingAssignedOwnersPreserved": true
+  },
+  "commands": [
+    {
+      "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "args": [
+        "--test",
+        "test/unit/resources/hierarchy-consumers.test.js",
+        "test/unit/resources/hierarchy-plots.test.js",
+        "test/unit/resources/flow-consumers.test.js",
+        "test/unit/resources/flow-plots.test.js",
+        "test/unit/resources/graph-plots.test.js",
+        "test/unit/resources/graph-hit.test.js",
+        "test/unit/animation/graph-tracks.test.js",
+        "test/unit/animation/graph-public.test.js",
+        "test/contracts/hierarchy-types.test.js",
+        "test/contracts/flow-types.test.js",
+        "test/contracts/observed-graph-types.test.js",
+        "test/contracts/native-capability-completion.test.js",
+        "test/contracts/test-discovery.test.js",
+        "test/charts/tree-layouts/public.test.js",
+        "test/charts/treemap-layouts/public.test.js",
+        "test/charts/graph-plots/public.test.js",
+        "test/charts/flow-layouts/public.test.js"
+      ],
+      "exitCode": 0,
+      "passed": 121,
+      "log": "owning.log.gz"
+    },
+    {
+      "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "args": [
+        "--test",
+        "test/unit/resources/graph-plots.test.js",
+        "test/docs/documentation.test.js"
+      ],
+      "exitCode": 0,
+      "passed": 41,
+      "log": "graph-docs.log.gz"
+    },
+    {
+      "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "args": [
+        "--test",
+        "test/charts/tree-layouts/renderer.render.js",
+        "test/charts/treemap-layouts/renderer.render.js",
+        "test/charts/tree-layouts/png.render.js",
+        "test/charts/treemap-layouts/png.render.js",
+        "test/charts/graph-plots/png.render.js",
+        "test/charts/graph-plots/pdf.render.js",
+        "test/charts/flow-layouts/png.render.js",
+        "test/charts/flow-layouts/renderer.render.js"
+      ],
+      "exitCode": 0,
+      "passed": 28,
+      "log": "render-final.log.gz"
+    },
+    {
+      "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "args": [
+        "--test",
+        "test/browser/graph-output.browser.js",
+        "test/browser/animation-graph.browser.js"
+      ],
+      "exitCode": 0,
+      "passed": 3,
+      "log": "browser.log.gz"
+    },
+    {
+      "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+      "args": [
+        "--test",
+        "test/charts/tree-layouts/renderer.render.js",
+        "test/charts/treemap-layouts/renderer.render.js"
+      ],
+      "exitCode": 0,
+      "passed": 5,
+      "log": "render-wrapper.log.gz"
+    }
+  ],
+  "structuralCommand": {
+    "args": [
+      "node",
+      "scripts/native-capability-completion.js"
+    ],
+    "exitCode": 0,
+    "log": "pending.json.gz"
+  },
+  "reused": {
+    "flowBrowser": "9039879b2: 8/8, same runtime and fixture; not rerun in this checkpoint"
+  },
+  "artifacts": [
+    {
+      "path": "owning.log.gz",
+      "sha256": "f40373f547d5242c0661d6cc782a43a71aa2feb24b515155b4cb9debaa846ce7",
+      "uncompressedSha256": "6e2cf3ef06461f2fd1fc6801117c71afb99add0b86eea3e250f6c2ee6c7fc66a"
+    },
+    {
+      "path": "graph-docs.log.gz",
+      "sha256": "a0b028b60b8861179f669fabbe31d5cc8b7438f3c9dd168533ae214c2637522d",
+      "uncompressedSha256": "5530eb0455eeacbe2defd2553acb133c4093019cd17bfeca75737940ee9fbd27"
+    },
+    {
+      "path": "render-final.log.gz",
+      "sha256": "efe209fef274950cda7bd0534725a4001e61f0bd1d6257461010627982aa9433",
+      "uncompressedSha256": "13ee7deb4bf308b9a985bee62884fd09ae03b5848f7ac6c7d4b7c1a0e3662d43"
+    },
+    {
+      "path": "browser.log.gz",
+      "sha256": "fb629b0cc5ed54879cc2262eeb5b3e2a242f2e1aaedd0aee7547fd9728b01e72",
+      "uncompressedSha256": "021bc2557cee17931bae23545aec6eb06ef3a19e8b990446ba10445ed54032ec"
+    },
+    {
+      "path": "render-wrapper.log.gz",
+      "sha256": "0d00d904dc4c37999bab8784191c8f54ea1079d0bec5a6a4b5a886b8d136ae0a",
+      "uncompressedSha256": "3043a20f2abc04fb9a2d3206a8ca2d417cbb4cfac23c14cfe5f5e8cc65e4481c"
+    },
+    {
+      "path": "pending.json.gz",
+      "sha256": "ac9ba04e7e69ad4b362173f1aee02388bebd4ffbac3be48e98b0c4090bf96459",
+      "uncompressedSha256": "f014a809331bb90af7b42d6ebbb9baafeb20013418f62d9d4ac79afd060e4b0e"
+    },
+    {
+      "path": "lifecycle-first.log.gz",
+      "sha256": "06316f5e3c27178957b267349a9294b8707f9eeafcc1e1febe43cd0468531d8c",
+      "uncompressedSha256": "d501256e0ffc2f71fa74b14aacc77552ca2c2eaac7c1f54f15f5bf5d4b2e8d73"
+    }
+  ],
+  "limitations": [
+    "All group and consumer candidate results remain pending.",
+    "Tree/treemap/flow scene-animation and all five package cells remain unassigned.",
+    "All five encoding/scale/guide applicability cells remain required and unresolved.",
+    "Mapped pre-existing owner paths are not a claim that every mapped test was rerun.",
+    "Owning121 preceded the graph-accessibility assertions; graph-docs41 reruns that owner after the change.",
+    "render-final28 preceded the added SVG bare-group assertion; render-wrapper5 reruns its exact consumers."
+  ]
+}

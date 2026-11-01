@@ -329,7 +329,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   } else {
     throw new Error(`Unknown label selection kind "${requested.kind}".`);
   }
-  const anchors = resolveSourceTextAnchors(program, source, items);
+  const anchors = resolvers.sourceAnchors ?? resolveSourceTextAnchors(program, source, items);
   if (anchors !== undefined) items = items.filter(item => anchors.get(item.key) !== undefined);
   const provenanceFor = item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key], ...(anchors === undefined ? {} : { sourceItem: item }) });
   if (sourceOnly) return items.map(provenanceFor);
@@ -360,7 +360,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
         : values.get(item.key),
       layer.encoding.text.format
     );
-    if (text === undefined) return [];
+    if (text === undefined) return resolvers.retainEmptyText ? [{ ...identity, ...provenance }] : [];
     const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
     if (placement === undefined) {
       const anchor = anchors?.get(item.key) ?? sourceAnchor(program, itemSource, item);
@@ -384,7 +384,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
         dy: resolvedConfig.dy
       }
     }, program.materializationConfigs.textMetrics);
-    if (!resolved.visible) return [];
+    if (!resolved.visible) return resolvers.retainEmptyText ? [{ ...identity, ...provenance }] : [];
     if (
       resolved.anchor.startsWith("outside") &&
       config.fillExplicit !== true && !config.inheritColor && fillByKey === undefined
@@ -495,6 +495,18 @@ export function resolveTextGraphicEntries(program, layer, config, { identities =
   return layer.source === undefined
     ? resolveRowTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems })
     : resolveSourceTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems, skipAppearance }, sourceOnly);
+}
+
+// Private preparation at explicit source-space anchors. The caller supplies
+// native source membership; selection, content, overrides and placement remain
+// owned by the same Text implementation as ordinary materialization.
+export function resolvePreparedSourceTextEntries(program, layer, config, sourceAnchors, resolvers, { sourceOnly = false, retainEmptyText = false } = {}) {
+  if (typeof sourceOnly !== "boolean" || typeof retainEmptyText !== "boolean" || layer.source === undefined || !(sourceAnchors instanceof Map) ||
+      [...sourceAnchors].some(([key, point]) => typeof key !== "string" || point === null ||
+        !Number.isFinite(point?.x) || !Number.isFinite(point?.y))) {
+    throw new TypeError("Prepared source Text requires explicit finite anchors by item key.");
+  }
+  return resolveSourceTextItems(program, layer, config, false, true, { ...resolvers, sourceAnchors, retainEmptyText }, sourceOnly);
 }
 
 // Row membership is available before position materialization. Raw-field

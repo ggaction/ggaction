@@ -11,7 +11,7 @@ const MAX_EDGE_SAMPLES = 4096;
 export const densityRouteBandwidth = iteration => Math.max(2 / GRID_SIZE, 0.05 * 0.9 ** iteration);
 
 export function normalizeDensityRouteOptions(input = {}) {
-  ownRecord(input, "Density route options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Density route options"));
   rejectUnknownProperties(input, ["zeroLength"], "density route options");
   const zeroLength = input.zeroLength === undefined ? "point" : input.zeroLength;
   if (zeroLength !== "point") throw new TypeError("Density zeroLength must be point.");

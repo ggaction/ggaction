@@ -1,0 +1,9 @@
+import {createPackageArtifact} from '../scripts/package-artifact.js';
+import path from 'node:path';
+import {mkdir,copyFile,writeFile} from 'node:fs/promises';
+const artifact=await createPackageArtifact();
+const frozenFile=path.resolve(`.artifacts/heb-single-span-archives/ggaction-${artifact.sha256}.tgz`);
+await mkdir('.artifacts/heb-single-span-archives',{recursive:true});
+await copyFile(artifact.file,frozenFile);
+await writeFile('.artifacts/heb-single-span-fixed.json',JSON.stringify({...artifact,frozenFile},null,2)+'\n');
+console.log(JSON.stringify({...artifact,frozenFile},null,2));

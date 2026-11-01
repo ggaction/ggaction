@@ -1,0 +1,23 @@
+import {chart} from '../src/index.js';
+import {getErrorDetails} from '../src/core/diagnostics.js';
+import {encodeRowKey} from '../src/core/itemIdentity.js';
+import {writeFileSync} from 'node:fs';
+const results=[];
+for(const edgeCount of [100,1000,10000]){
+ const count=Math.min(edgeCount,9999),nodes=Array.from({length:count},(_,id)=>({id}));
+ const edges=Array.from({length:edgeCount},(_,id)=>({id,source:id%count,target:(id+Math.floor(count/3))%count}));
+ let p=chart().createData({id:'tree',values:[{key:'root',parent:null,value:0},...nodes.map(({id})=>({key:id,parent:'root',value:1}))]})
+ .createHierarchyData({id:'hierarchy',data:'tree',key:'key',parent:'parent',value:'value'})
+ .layoutHierarchy({id:'tree-layout',method:'tree',options:{nodeSize:[1,1],siblingGap:1,depthGap:100,orientation:'vertical'}});
+ const tree=p.semanticSpec.resources.find(r=>r.kind==='layout').result.nodes;
+ const anchors=new Map(tree.map(node=>[node.key,node]));
+ const positions=nodes.map(({id})=>({key:id,x:anchors.get(encodeRowKey(id)).x,y:anchors.get(encodeRowKey(id)).y}));
+ p=p.createData({id:'nodes',values:nodes,keyField:'id'}).createData({id:'edges',values:edges,keyField:'id'})
+ .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'source',target:'target'})
+ .layoutGraph({id:'layout',method:'fixed',options:{positions}});
+ const start=performance.now();
+ try{const next=p.bundleGraphEdges({id:'routes',graph:'graph',layout:'layout',method:'hierarchical',options:{hierarchy:'hierarchy',hierarchyLayout:'tree-layout',mapping:nodes.map(({id})=>({nodeKey:id,hierarchyKey:id}))}});const result=next.semanticSpec.resources.find(r=>r.kind==='edge-route').result;results.push({edges:edgeCount,nodes:count,hierarchyNodes:count+1,status:'complete',elapsedMs:performance.now()-start,work:result.diagnostics.work,peakSamples:result.diagnostics.peakSamples,routes:result.routes.length});}
+ catch(error){results.push({edges:edgeCount,nodes:count,hierarchyNodes:count+1,status:'error',elapsedMs:performance.now()-start,message:error.message,details:getErrorDetails(error)});}
+ console.log(JSON.stringify(results.at(-1)));
+}
+writeFileSync('.artifacts/route-hierarchy-size-preflight.json',JSON.stringify({kind:'diagnostic-preflight-not-SLO',runtime:process.version,geometry:'star hierarchy native tree anchors, offset floor(n/3) graph edges',results},null,2)+'\n');

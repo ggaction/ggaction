@@ -132,6 +132,14 @@ session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'zoom
 
 
 program.editLayout({target:'layout',node:{key:[1,'a'],x:10,y:20}});
+session.dispatch({type:'focus',move:'nextCandidate'});session.dispatch({type:'focus',move:'previousCandidate'});
+session.dispatch({type:'unbundleEdge',target:{childPath:['left'],id:'network'},itemKey:'opaque-key'});
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:null});
+session.subscribe(event=>{if(event.type==='unbundleEdge'){const key:string|null=event.itemKey;const owner:string=event.target.id;}});
+// @ts-expect-error edge presentation requires an explicit owner
+session.dispatch({type:'unbundleEdge',itemKey:'key'});
+// @ts-expect-error temporary presentation does not accept a native edit payload
+session.dispatch({type:'unbundleEdge',target:'network',itemKey:'key',payload:{}});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:1,x:10,y:20}});
 createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
 // @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
@@ -221,6 +229,7 @@ const animationSession=createInteractionSession({program:animationProgram,assetR
 }});
 animationSession.dispatch({type:'frame',frame:animationFrame,version:1,generation:0});
 const acceptedFrame:TransitionFrame|null=animationSession.getState().animationFrame;
+const graphPreviewFrame:TransitionFrame|null=animationSession.getState().previewFrame;
 const frameAssets=animationSession.getState().frameAssets;
 // @ts-expect-error scene and authentic sample are mutually exclusive
 animationSession.dispatch({type:'frame',frame:animationFrame,scene:animationFrame.scene,version:2,generation:0});

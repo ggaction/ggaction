@@ -49,7 +49,8 @@ export function replaceStoredResource(program, parsed, value, args) {
   for (const candidate of orderResourceDependencies(program.semanticSpec.resources)) {
     if (screenRooted && candidate.kind === "edge-route" && candidate.options.coordinateSpace === "screen" &&
         dataSourceValueHash(candidate.result.viewport) !== dataSourceValueHash(value.result.viewport)) {
-      allowed.add(JSON.stringify([candidate.kind, candidate.id]));
+      const routeKey = JSON.stringify([candidate.kind, candidate.id]);
+      allowed.add(routeKey); affected.add(routeKey);
       continue;
     }
     const owns = dataRooted ? ["hierarchy", "graph", "geometry", "layout", "edge-route", "projection"].includes(candidate.kind)
@@ -57,8 +58,9 @@ export function replaceStoredResource(program, parsed, value, args) {
         candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
         candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph" ||
         candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind) ||
-        candidate.kind === "projection" && value.kind === "geometry" ||
-        candidate.kind === "geometry" && ["geo-join", "geo-lod"].includes(candidate.options.method) && value.kind === "geometry";
+        candidate.kind === "projection" && ["geometry", "edge-route", "graph", "hierarchy", "layout"].includes(value.kind) ||
+        candidate.kind === "geometry" && ["geo-routes", "geo-join", "geo-lod"].includes(candidate.options.method) &&
+          ["geometry", "edge-route", "graph", "hierarchy", "layout"].includes(value.kind);
     if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
         dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);

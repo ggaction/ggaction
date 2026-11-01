@@ -1,0 +1,33 @@
+{
+  "status": "verified-combined-preparation; public timeline pending",
+  "sourceRevision": "ddfaee5e6",
+  "sourceInputs": [
+    "f599ec676",
+    "e9a0d64b4796fc7046dcea396f4d1f37ddf9595b",
+    "ae4a8f5f999c7fbfc5459077905cd68f9d56d745",
+    "598d2cccdbc93647705f9b7e71f99d13a9834ab7"
+  ],
+  "checks": {
+    "animationNativeHitInteractionAndScheduling": 364,
+    "contracts": 45,
+    "documentation": 30
+  },
+  "packageActual": {
+    "entries": 1166,
+    "node22PackedBytes": 1666865,
+    "node20_24PackedBytes": 1670791,
+    "unpackedBytes": 7543315
+  },
+  "packageLimits": {
+    "entries": 1166,
+    "packedBytes": 1671000,
+    "unpackedBytes": 7544000
+  },
+  "firstFailure": "Combined private schedule module adds one member; old package packed/unpacked ceilings fail. Actual all3Node measurements are retained and minimal caps updated.",
+  "remaining": [
+    "Public timeline target/property, player markers and offline preparation",
+    "Geo Text and graph preview combined qualification",
+    "Full STEP077 acceptance/consumer/release qualification"
+  ],
+  "reuse": "Timeline module is not imported by the public entry; no new installed timeline claim."
+}

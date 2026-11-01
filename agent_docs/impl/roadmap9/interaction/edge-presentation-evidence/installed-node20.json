@@ -1,0 +1,33 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "3093eefd9dc4d8d4b6d81437c42ad6e1e6dc3c574a02ec87707a941479e62cda",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2577.04725
+    },
+    {
+      "id": "overlapping-edge-four-renderers",
+      "status": "passed",
+      "durationMs": 1143.4780840000003
+    },
+    {
+      "id": "overlapping-edge-paired-documentation",
+      "status": "passed",
+      "durationMs": 3935.7059580000005
+    },
+    {
+      "id": "interaction-strict-types",
+      "status": "passed",
+      "durationMs": 231.05704200000037
+    },
+    {
+      "id": "ggaction",
+      "status": "failed",
+      "durationMs": 2555.587749999999,
+      "error": "AssertionError [ERR_ASSERTION]: {\"specifier\":\"ggaction\",\"chunks\":1,\"modules\":1035,\"minifiedBytes\":2719738,\"gzipBytes\":779346}\n    at file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-edge-presentation.mjs:33:115\n    at async check (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-edge-presentation.mjs:20:75)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/qualify-edge-presentation.mjs:32:132"
+    }
+  ]
+}

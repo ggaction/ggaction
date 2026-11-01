@@ -9,7 +9,8 @@
 - [x] B: native selection activation·hierarchy navigation
 - [x] C1: hover/focus/Escape tooltip와 touch native activation
 - [x] C2: 현재 native edit/history control의 keyboard/touch matrix
-- [ ] D: public animation/reduced-motion 합산 및 AT53 전체 matrix
+- [x] D 대표 public animation/reduced-motion 합산: STEP070 D1
+- [ ] 나머지 domain 결합과 AT53 전체 matrix
 - [ ] STEP074–077 최종 통합
 
 [기존 포괄 승인](../AUTHORIZATION.json)의 remainingApproval과 root의 2026-10-29 구체 지시를 재사용한다.
@@ -201,3 +202,12 @@ C2 source `cae13ebe4`와 [machine evidence](native-controls-evidence/qualificati
 fingerprint·같은tar·명령·기존/신규 검증·실패·문서 화면을 보존했다. 마지막 입력 기준 browser7+5,
 owning66, executable3, source-free 문서3, build172/1535 및4폭 overflow0/Axe0을 확인했다.
 320/1440 화면을 직접 확인했다. Library source/type 및 B package는 그대로다.
+
+## D 대표 공개 player 결합
+
+C2 시점 이후 [STEP070 D1](STEP070.md)에서 actual public player→authentic frame→atomic
+scene/hit/focus/assets를 결합했다. Canvas/SVG×DPR1/2, actual keyboard activation과 reduced-motion
+schedule0/render1/final focus·hit,100/1000 interruption의 focus/lease 수명을 같은 package에서
+검증했다. 이는 원본 C2의 당시 pending 기록을 소급 변경하지 않는 후속 증거다. D5는 Geo의
+실제 frame source와 current-native membership도 연결하며 peer typed sampler 합산은 남는다.
+`ACCESSIBILITY_MATRIX.md`는 이 대표 셀과 나머지 AT53·074–077의 완료 조건을 구분한다.

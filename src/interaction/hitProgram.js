@@ -15,6 +15,7 @@ import { animationFrameProvenance } from "../animation/frameProvenance.js";
 
 import { ownArray } from "../core/ownData.js";
 import { requireLayer } from "../selectors/layers.js";
+import { isGeoLabelSource } from "../grammar/geo/markKind.js";
 import { resolveRegisteredMarkSourceItems } from "../materialization/selection/itemResolver.js";
 import { interactionOptions } from "./input.js";
 
@@ -97,7 +98,14 @@ function geoSourceResolver(budget) {
     if (items === undefined) {
       spend(budget, context.program.semanticSpec.layers.length);
       const layer = requireLayer(context.program, origin.ownerId);
-      if (layer.mark.type !== "geo") throw new TypeError("Animation geographic source requires a geographic mark owner.");
+      let geographic = layer.mark.type === "geo";
+      if (!geographic && layer.mark.type === "text" && layer.source !== undefined) {
+        spend(budget, context.program.semanticSpec.layers.length);
+        geographic = isGeoLabelSource(requireLayer(context.program, layer.source));
+      }
+      if (!geographic) {
+        throw new TypeError("Animation geographic source requires a geographic mark owner or its native Text labels.");
+      }
       const source = resolveRegisteredMarkSourceItems(context.program, origin.ownerId, "item", { channels: [] });
       if (source.length > MAX_HIT_INDEX_ITEMS) throw new RangeError("Animation geographic source exceeds its item budget.");
       spend(budget, source.length);
@@ -108,11 +116,12 @@ function geoSourceResolver(budget) {
         if (items.has(scoped)) throw new TypeError("Animation geographic source has duplicate item keys.");
         items.set(scoped, item);
       }
+      items = { items, role: layer.mark.type === "text" ? "text" : "geo" };
       context.owners.set(origin.ownerId, items);
     }
-    const item = items.get(origin.itemKey);
+    const item = items.items.get(origin.itemKey);
     if (item === undefined) throw new TypeError("Animation geographic source item is not owned by its native program.");
-    return { context, item };
+    return { context, item, role: items.role };
   };
 }
 
@@ -193,7 +202,8 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
     entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: metadata.get(node.key), shape }));
   });
   const frame = freezeOwned({ scene: owned, entries: freezeOwned(entries), version });
-  registerHitFrameSource(frame, { ...source, nodes: new Map(owned.nodes.map(node => [node.key, node])) });
+  registerHitFrameSource(frame, { ...source, sample: owned === source.sample?.scene ? source.sample : undefined,
+    nodes: new Map(owned.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -204,6 +214,13 @@ export function requireAnimationFrameProgram(sample, program) {
   if (proof === undefined) throw new TypeError("Animation hit requires an authentic sampled frame.");
   if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   if (!proof.native.owners.includes(program)) throw new TypeError("Animation frame is not owned by the current native program.");
+}
+
+export function currentAnimationGraphFrame(frame, program) {
+  const source = hitFrameSource(frame);
+  if (source?.sample === undefined || !source.nativeOwners.has(program)) return undefined;
+  const proof = animationFrameProvenance(source.sample);
+  return proof.graphs === undefined ? undefined : { sample: source.sample, graphs: proof.graphs };
 }
 
 export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0]) {
@@ -232,7 +249,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (!authorized.has(origin.program)) throw new TypeError("Animation native source requires an exact authorized program.");
     if (dynamic) {
       if (origin.kind !== "geo-feature") throw new TypeError("Unsupported animation native source kind.");
-      const { context, item } = geoSource(origin);
+      const { context, item, role } = geoSource(origin);
       let itemMetadata;
       if (identity !== undefined) {
         validateGraphicIdentity(identity);
@@ -242,7 +259,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
           throw new TypeError("Animation geographic identity differs from its exact native source.");
         }
         itemMetadata = metadata(identity, context, budget);
-        if (itemMetadata.ownerId !== origin.ownerId || itemMetadata.role !== "geo") throw new TypeError("Animation geographic identity differs from its native owner.");
+        if (itemMetadata.ownerId !== origin.ownerId || itemMetadata.role !== role) throw new TypeError("Animation geographic identity differs from its native owner.");
       }
       return { metadata: itemMetadata, metrics: context.program.materializationConfigs.textMetrics, geographicSource: item.lineage.resource };
     }
@@ -263,7 +280,7 @@ export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1
     if (original.geographicSource !== undefined) geographicSources.set(original.metadata.itemKey, original.geographicSource);
   });
   const frame = freezeOwned({ scene: sample.scene, entries: freezeOwned(entries), version });
-  registerHitFrameSource(frame, { profiles, geographicSources, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
+  registerHitFrameSource(frame, { profiles, geographicSources, sample, nativeOwners: authorized, placements: baseFor(proof.native.placement).source.placements,
     nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }

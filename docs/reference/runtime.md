@@ -24,6 +24,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { CreateGeoRouteDataOptions, EditGeoRouteDataOptions, GeoRouteResource } from "./program.js";
 export type { GeoCameraOperation, NavigateProjectionOptions, ProjectionViewport } from "./program.js";
 export type { GeoAnnotationAnchor, GeoAnnotationOptions, EditGeoAnnotationOptions, GeoAnnotationBinding } from "./program.js";
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
@@ -1268,7 +1269,14 @@ export interface InteractionFocus {
   readonly role: string | null;
 }
 export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
-  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root'; readonly target?: never; readonly itemKey?: never };
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root' | 'nextCandidate' | 'previousCandidate'; readonly target?: never; readonly itemKey?: never };
+/** Temporarily show one painted GraphPlot edge without changing native routes or history. */
+export interface InteractionEdgePresentationCommand {
+  readonly type: 'unbundleEdge';
+  readonly target: InteractionTarget;
+  /** Current scoped logical edge key. Null restores the accepted baseline. */
+  readonly itemKey: string | null;
+}
 /** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
 export interface GestureBindingOptions {
   readonly priority?: number;
@@ -1390,6 +1398,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Authentic graph drag or temporary edge presentation; separate from the accepted animation baseline. */
+  readonly previewFrame: TransitionFrame | null;
   /** Exact accepted sampled frame; null for committed programs and plain scenes. */
   readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
@@ -1404,7 +1414,7 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
-  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  /** Transient handles for the exact previewFrame or previewProgram; never reuse baseline assets. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Transient handles bound to animationFrame, separately from committed assets. */
   readonly frameAssets: Readonly<InteractionAssets> | null;
@@ -1415,6 +1425,12 @@ export interface InteractionState {
 }
 export interface InteractionLifecycleEvent {
   readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
+  readonly state: InteractionState;
+}
+export interface InteractionEdgePresentationEvent {
+  readonly type: 'unbundleEdge';
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly itemKey: string | null;
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -1549,8 +1565,8 @@ export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'typ
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
-export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | { readonly type: 'activate' } | {
+export type InteractionEvent = InteractionLifecycleEvent | InteractionEdgePresentationEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | InteractionEdgePresentationCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -1567,7 +1583,7 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly frame?: never;
 } | {
   /** Authentic sample with the exact current native program in its displayed or direct endpoint owners.
-   * Painted geographic source parts may focus/activate only within the same current native owner,
+   * Painted geographic source parts and attached Text labels may focus/activate only within the same current native owner,
    * child scope, resource identity and logical feature membership. Endpoint revisions remain distinct. */
   readonly frame: TransitionFrame;
   readonly scene?: never;
@@ -1652,15 +1668,34 @@ declare const transitionPlan: unique symbol;
 declare const transitionFrame: unique symbol;
 export type AnimationProgram = ChartProgram | BasicChartProgram;
 export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface AnimationKeyframe<Value> {
+  readonly timeMs: number;
+  readonly value: Value;
+  readonly easingToNext?: AnimationEasing;
+}
+export type AnimationStyleTarget =
+  | { readonly itemKey: string; readonly role?: string; readonly guideKey?: never }
+  | { readonly guideKey: string; readonly itemKey?: never; readonly role?: never };
+export type AnimationTrack =
+  | { readonly target: { readonly ownerKey: string }; readonly property: 'geometry'; readonly kernel: 'native-progress';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'fill' | 'stroke'; readonly kernel: 'color';
+      readonly keyframes: readonly AnimationKeyframe<string>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'opacity' | 'strokeWidth'; readonly kernel: 'number' | 'positive-scale';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number };
+export interface AnimationMarker { readonly id: string; readonly timeMs: number; }
 export interface TransitionOptions {
   readonly durationMs: number;
   readonly easing?: AnimationEasing;
+  readonly tracks?: readonly AnimationTrack[];
+  readonly markers?: readonly AnimationMarker[];
+  readonly composite?: 'reject' | 'priority';
 }
 /** Created only by planTransition or deserializeAnimation. */
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 2;
+  readonly version: 3;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
@@ -1670,15 +1705,18 @@ export interface TransitionPlan {
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
  * row/column/wrap packing, axis-free implicit edge lanes using current measured bounds, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
+ * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
+ * completed density samples, and compatible source-follow overlays.
+ * Geo Text content/layout expressions follow the current native camera.
  * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
-  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
-  | { readonly kind: 'enter'; readonly targetIndex: number; readonly reason?: 'guide-ambiguity' }
-  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'enter'; readonly targetIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
-      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string;
+      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string; readonly ownerKey?: string;
       readonly role: string; readonly kernel?: string; readonly reason?: string };
 /** An authentic immutable sample, directly accepted by all four renderers. */
 export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
@@ -1734,10 +1772,14 @@ export interface AnimationSettlement {
   readonly timeMs: number;
   readonly iteration: number;
 }
+export interface AnimationMarkerEvent extends AnimationMarker {
+  readonly iteration: number;
+  readonly frame: TransitionFrame;
+}
 export interface AnimationPlayer {
   play(): AnimationPlayer;
   pause(): AnimationPlayer;
-  seek(timeMs: number): AnimationPlayer;
+  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer;
   reverse(): AnimationPlayer;
   setRate(rate: number): AnimationPlayer;
   setRepeat(repeat: number): AnimationPlayer;
@@ -1753,6 +1795,7 @@ export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
   readonly clock: AnimationClock<Handle>;
   readonly render: (frame: TransitionFrame) => void;
   readonly commit?: (frame: TransitionFrame) => void;
+  readonly onMarker?: (event: AnimationMarkerEvent) => void;
 }): AnimationPlayer;
 ```
 

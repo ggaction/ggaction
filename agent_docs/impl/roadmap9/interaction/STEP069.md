@@ -8,7 +8,7 @@
 - [x] 선택·focus intent·layout/projection revision·lineage·clip의 독립 기대값
 - [x] 새 session의 편집·undo/redo와 SVG/Canvas/PNG/PDF 같은 run 검증
 - [x] exact archive Node 20/22/24와 증거 checkpoint
-- [ ] 공개 animation bundle/player가 준비된 뒤 current-frame/offline 시간표 결합
+- [x] 대표 공개 current-frame/offline 시간표 결합: STEP070 D1/D4
 - [ ] AT-54/55/89 전체 후행 matrix 종료
 
 ## 범위와 소유자
@@ -29,7 +29,7 @@
 
 ## 남은 통합
 
-이 checkpoint는 static native delivery만 증명한다. 공개 animation 시간표/plan envelope, reduced-motion/current-frame player 결합 및 최종 AT-53/54/55/89 전체 완료는 후행이다. 기존 independent renderer·domain·gesture 증거는 관련 입력이 변하지 않은 셀에서만 재사용한다. publish/deploy/PR 권한을 뜻하지 않는다.
+원 static checkpoint는 native delivery만 증명했다. 이후 STEP070 D1/D4가 공개 current-frame/reduced-motion 및 별도 native from/to 저장→재계획·5시점 renderer/asset 동일성의 대표 셀을 닫았다. 최종 AT-53/54/55/89 전체 완료는 domain별 후행 matrix와 구분한다. 기존 independent renderer·domain·gesture 증거는 관련 입력이 변하지 않은 셀에서만 재사용한다. publish/deploy/PR 권한을 뜻하지 않는다.
 
 ## Static native 판정
 
@@ -49,7 +49,16 @@
 | Canvas/PNG/SVG/PDF | passed — 같은 원본·복원·재편집 run 비교 |
 | types/public docs/package exports | unchanged — parent의 동일 archive 3Node types 및 bundle 증거 재사용 |
 | browser gesture | unchanged — B/C1/C2와 각 native gesture owner의 실제 입력 증거 재사용; 이 셀은 fresh-process delivery |
-| animation/current-frame time export | pending — 공개 player/plan/codec 통합 뒤 AT-54/55 후행 |
+| animation/current-frame time export | 대표 셀 passed — STEP070 D1/D4; 새 native endpoint plan만 권한 복원, animation envelope는 renderer replay만. 전체 domain matrix는 pending |
 | release/전체077 | pending — 별도 qualification과 권한 범위 유지 |
 
 증거: [static delivery qualification](static-delivery-evidence/qualification.json). source `2dc92a47e622dd55d33e7dedd7b855beb2a7ae17`, package/discovery 23/23, 동일 archive 새 case 1×3Node 통과.
+
+## 후속 native endpoint·시간표 증거
+
+[STEP070 D4](STEP070.md)는 같은 e570 archive Node20/22/24에서 기존 사례와 새로운
+`static-delivery/native-endpoints-animation-replay`를 각각 실행했다. Native from/to의 별도 저장본을
+fresh process에서 복원해 새 계획을 만들고0/25/50/75/100 시각의 scene/graphics/assets와
+Canvas/PNG RGBA·SVG·PDF decompressed streams를 비교했다. Import 전 network guard 호출0이며
+animation envelope는 renderer replay를 제공하되 native session 권한은 복원하지 않는다.
+이 검증은 `native-animation-evidence/summary.json`에 고정됐고 다른 domain/AT89 종료를 대신하지 않는다.

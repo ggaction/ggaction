@@ -25,6 +25,105 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/bounded-hierarchy-spans", run() {
+    const count = 9999, edgeCount = 10000;
+    const nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = Array.from({ length: edgeCount }, (_, id) => ({ id, source: id % count, target: (id + 3333) % count }));
+    let base = chart().createData({ id: "tree", values: [{ key: "root", parent: null, value: 0 },
+      ...nodes.map(({ id }) => ({ key: id, parent: "root", value: 1 }))] })
+      .createHierarchyData({ id: "hierarchy", data: "tree", key: "key", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [1, 1], siblingGap: 1, depthGap: 100, orientation: "vertical" } });
+    const hierarchy = base.semanticSpec.resources.find(r => r.kind === "hierarchy");
+    const anchors = new Map(base.semanticSpec.resources.find(r => r.kind === "layout").result.nodes.map(n => [n.key, n]));
+    const positions = hierarchy.result.nodes.filter(n => n.depth === 1)
+      .map(n => ({ key: nodes[n.sourceRows[0] - 1].id, x: anchors.get(n.key).x, y: anchors.get(n.key).y }));
+    const byKey = new Map(positions.map(p => [p.key, p]));
+    base = base.createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target" })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const saved = serializeProgram(base);
+    const routed = base.bundleGraphEdges({ id: "routes", graph: "graph", layout: "layout", method: "hierarchical",
+      options: { hierarchy: "hierarchy", hierarchyLayout: "tree-layout", mapping: nodes.map(({ id }) => ({ nodeKey: id, hierarchyKey: id })) } });
+    const result = route(routed).result;
+    assert.equal(result.routes.length, edgeCount); assert.ok(result.diagnostics.work <= 10_000_000);
+    assert.ok(result.diagnostics.peakSamples < 10_000_000);
+    result.routes.forEach((item, i) => {
+      const from = byKey.get(edges[i].source), to = byKey.get(edges[i].target);
+      assert.deepEqual(item.commands[0], { op: "M", x: from.x, y: from.y });
+      assert.deepEqual(item.commands.at(-1), { op: "L", x: to.x, y: to.y });
+      assert.equal(item.controlPoints.length, 3); assert.equal(item.provenance.hierarchyKeys.length, 3);
+      assert.equal(item.provenance.splineVersion, "clamped-uniform@1"); assert.equal(item.provenance.degree, 2);
+    });
+    assert.deepEqual(route(deserializeProgram(serializeProgram(routed))).result, result);
+    assert.equal(serializeProgram(base), saved);
+  } },
+  { id: "edge-routes/bounded-long-paths", run() {
+    const count = 10000, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + 3333) % count }));
+    const positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
+    const base = chart().createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+    const saved = serializeProgram(base), routed = base.bundleGraphEdges({ id: "routes", method: "edge-path" }), result = route(routed).result;
+    assert.equal(result.routes.length, count);
+    assert.ok(result.diagnostics.work <= 10_000_000);
+    assert.deepEqual(result.diagnostics.lockedEdges, []); assert.deepEqual(result.diagnostics.bundledEdges, []);
+    result.routes.forEach((item, index) => {
+      const source = positions[index], target = positions[(index + 3333) % count];
+      assert.equal(item.provenance.reason, "stretch");
+      assert.deepEqual(item.commands, [{ op: "M", x: source.x, y: source.y }, { op: "L", x: target.x, y: target.y }]);
+    });
+    const restored = deserializeProgram(serializeProgram(routed));
+    assert.deepEqual(route(restored).result, result);
+    assert.equal(serializeProgram(base), saved);
+  } },
+  { id: "edge-routes/own-host-options", async run() {
+    const base = source(), saved = serializeProgram(base);
+    const request = { kind: "create", id: "routes", method: "edge-path" };
+    for (const key of ["createWorker", "signal", "executor", "requestToken", "kind"]) {
+      let reads = 0, executor;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() {
+        reads++; throw new Error(`Inherited ${key} evaluated`);
+      } });
+      try {
+        executor = createGraphRouteExecutor({});
+        if (key === "requestToken") await assert.rejects(prepareGraphEdgeRoutes(base, request, {}), /nonempty requestToken/);
+        else if (key === "kind") await assert.rejects(prepareGraphEdgeRoutes(base, { id: "routes", method: "edge-path" }, { requestToken: "own" }), /kind must be/);
+        else {
+          const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "own" });
+          const cached = await prepareGraphEdgeRoutes(base, request, { requestToken: "owned", executor });
+          assert.equal(prepared.inputHash, cached.inputHash);
+        }
+        assert.equal(reads, 0, key);
+      } finally {
+        executor?.dispose();
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    const reference = await prepareGraphEdgeRoutes(base, request, { requestToken: "defaults" });
+    for (const key of ["zeroLength", "exponent", "maxStretch", "mapping", "limits", "hierarchy", "hierarchyLayout"]) {
+      let reads = 0;
+      const previous = Object.getOwnPropertyDescriptor(Object.prototype, key);
+      Object.defineProperty(Object.prototype, key, { configurable: true, get() { reads++; throw new Error(`Inherited ${key} evaluated`); } });
+      try {
+        const prepared = await prepareGraphEdgeRoutes(base, request, { requestToken: "numeric" });
+        assert.equal(prepared.inputHash, reference.inputHash);
+        assert.equal(reads, 0, key);
+      } finally {
+        if (previous === undefined) delete Object.prototype[key];
+        else Object.defineProperty(Object.prototype, key, previous);
+      }
+    }
+    const routed = base.bundleGraphEdges({ id: "routes", method: "edge-path" });
+    let reads = 0;
+    await assert.rejects(prepareGraphEdgeRoutes(routed, { kind: "edit", target: "routes", options: {
+      limits: { get maxSamples() { reads++; return 1000; } }
+    } }, { requestToken: "accessor" }), /accessors/);
+    assert.equal(reads, 0);
+    assert.equal(serializeProgram(base), saved);
+  } },
   { id: "edge-routes/responsive-source-and-guide-closure", run() {
     const rows = [{ id: "a", x: 0, y: 1000 }, { id: "b", x: 1, y: 2000 }, { id: "c", x: 2, y: 3000 }];
     const initial = source().editCanvas({ width: 1000, height: 700, margin: 100 })

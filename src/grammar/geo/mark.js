@@ -11,9 +11,7 @@ import { resolveStrokeDetails, STROKE_STYLE_PROPERTIES } from "../strokeStyle.js
 import { projectionTuple } from "./projectionOptions.js";
 
 export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule", "annotation"]);
-export function isGeoLabelSource(layer) {
-  return layer?.mark?.type === "geo" && ["shape", "point", "line", "graticule"].includes(layer.geoBinding?.mode);
-}
+export { isGeoLabelSource } from "./markKind.js";
 
 const REQUIRED_STYLE = ["fill", "stroke", "strokeWidth", "opacity", "radiusPx", "clip", ...STROKE_STYLE_PROPERTIES];
 export const GEO_STYLE_FIELDS = Object.freeze([...REQUIRED_STYLE, "blend", ...MARK_EFFECT_PROPERTIES]);

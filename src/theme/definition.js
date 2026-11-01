@@ -107,4 +107,3 @@ export function axisThemeOffset(state, component) {
   if (resolveEffectiveThemeFrame(state) === undefined) return undefined;
   return resolveEffectiveThemeTokens(state)[component === "labels" ? "axisLabelGap" : "axisTitleGap"];
 }
-

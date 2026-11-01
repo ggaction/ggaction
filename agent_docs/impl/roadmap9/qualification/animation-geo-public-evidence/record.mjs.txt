@@ -1,0 +1,28 @@
+import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {evidenceHash,evidenceFile,evidenceSourceFile} from '../../scripts/verification-evidence.js';
+const root=process.cwd(),base='agent_docs/impl/roadmap9/qualification/animation-geo-public-evidence';
+const revision=ref=>execFileSync('git',['rev-parse',ref],{encoding:'utf8'}).trim();
+const sourceCommit=revision('268caa065'),runtimeCommit=revision('c8470d1e8');
+const ref=path=>({path,sha256:evidenceHash(fs.readFileSync(path))});
+const inputs=new Set(execFileSync('git',['diff','--name-only','777951786',sourceCommit,'--','src','types','test/unit/animation','test/browser/animation-geo.browser.js','test/contracts/realistic-geographic-transitions.test.js','test/charts/cross-feature-integration/variants/animation/geo.render.js','test/support/animation-geo-frame.js','scripts/consumers/fixtures/animation.ts','scripts/consumers/fixtures/node/animation-geo.mjs','scripts/browser-bundle-size.js','scripts/package-artifact.js','scripts/generate-doc-search-index.js'],{encoding:'utf8'}).trim().split('\n').filter(Boolean));
+const sourceInputs=[...inputs].sort().map(ref);for(const input of sourceInputs)evidenceSourceFile(root,sourceCommit,input);
+const artifacts=fs.readdirSync(base).filter(file=>file.endsWith('.gz')||file.endsWith('.txt')).sort().map(file=>ref(`${base}/${file}`));
+for(const artifact of artifacts)evidenceFile(root,artifact);
+const archive=JSON.parse(fs.readFileSync('.artifacts/animation-geo-final/package.json'));
+const installs=[20,22,24].map(n=>JSON.parse(fs.readFileSync(`.artifacts/animation-geo-final/installed-${n}.json`)));
+const result={schemaVersion:1,status:'geographic-body-checkpoint',sourceCommit,runtimeCommit,
+ approval:'agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval',sourceInputs,artifacts,
+ scope:{entry:'ggaction/animation',addedPublicExports:0,kernel:'native-geo-camera@1',decision:'geographic',families:['shape','point','line','graticule'],dynamicParts:true,nativeFrameSelection:true,compositeInsets:true},
+ checks:{source:{passed:606,failed:0},publicActivation:{passed:2,failed:0},canonicalFinalGeo:{passed:12,failed:0},contracts:{passed:39,failed:0},coverage:{passed:264,failed:0,lines:100,branches:95.99,functions:100,changedOwners:11,floors:{lines:95,branches:90,functions:100},scope:'focused pre-D source; all measured Geo/shared sampler bytes retained'},realistic:{passed:16,failed:0,datasets:5,recipesPerDataset:3},render:{passed:4,failed:0,backends:['PNG','PDF'],nativeExact:true},browser:{passed:1,failed:0,variants:4,backends:['Canvas','SVG'],pixelRatios:[1,2]},evidenceOwners:{passed:23,failed:0},docs:{original:{passed:229,failed:2,total:231},owningRepair:{passed:44,failed:0,includesFinalGeo:10},builtPages:186,machineArtifacts:1598,browserWidths:[320,390,768],browser:'passed',sourcePin:'passed'}},
+ package:{sha256:archive.sha256,entries:archive.entryCount,packedBytes:archive.size,unpackedBytes:archive.unpackedSize,artifact:archive.file,canonicalStagingMatchedFiles:1157,measurements:[20,22].map(n=>JSON.parse(fs.readFileSync(`.artifacts/animation-geo-final/package-size-${n}.json`))),limits:{entries:1157,packedBytes:1659000,unpackedBytes:7498000}},
+ installed:{sameArchive:true,nodes:installs.map(r=>({node:r.node,zlib:r.zlib,runtimePassed:r.cases.length,types:r.types,peers:r.peers,originalCommandExit:r.node.startsWith('v22')?0:1})),bundleRepair:{sameMeasurements:true,passed:18,artifact:'final-bundle-requalification.json.gz',runtimeRerun:false}},
+ originalFailures:[{artifact:'body-contracts.log.gz',reason:'Realistic inventory omitted the newly added file',repair:'Explicit inventory 60 plus feature assertion; owning19 passed'},
+ {artifact:'final-package.log.gz',reason:'Relative archive destination resolved inside canonical staging',repair:'Absolute destination produced the identified archive'},
+ {artifacts:['final-installed-20.log.gz','final-installed-24.log.gz'],reason:'Interaction gzip131056 exceeded131000 after all runtime/type checks passed',repair:'Minimum131100 cap; same18 measurements pass'},
+ {artifact:'final-docs-source.log.gz',reason:'Search payload1082299 exceeded1081400 in two assertions',repair:'Minimum1082300 cap and owning44 pass'},
+ {artifact:'final-inset-lifecycle.log.gz',reason:'Independent mathematical scale200 differs from log interpolation by floating roundoff',repair:'x/y tolerance1e-10, remaining geometry/identity/order exact; final12 canonical pass'}],
+ openObligations:['Camera-aware native source labels and geographic/feature annotations','Graticule/inset Text current-frame and offline consumers','Offline replay has no native session authority','Root combined corpus and final release qualification','Whole Geo/AT44/STEP062/STEP077 completion'],
+ notClaimed:['Whole repository coverage','Full installed corpus','Publication or deployment']};
+fs.writeFileSync(`${base}/qualification.json`,JSON.stringify(result,null,2)+'\n');
+console.log(`Verified ${sourceInputs.length} committed source inputs and ${artifacts.length} durable artifacts.`);

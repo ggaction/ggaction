@@ -4,6 +4,7 @@
   "environment": "Ubuntu, Node 22",
   "measurement": "Sum of per-test duration_ms from the successful realistic run; scheduling estimates, not per-file elapsed-time guarantees.",
   "durationMs": {
+    "contracts/realistic-animation-timeline.test.js": 2038,
     "contracts/dataset-fixtures.test.js": 22252,
     "contracts/generated-lifecycle-scenarios.test.js": 20882,
     "contracts/generated-scenario-effective-factors.test.js": 2529,
@@ -62,9 +63,12 @@
     "contracts/realistic-table-plots.test.js": 3204,
     "contracts/realistic-trail-plots.test.js": 2968,
     "contracts/realistic-waterfall-plots.test.js": 3002,
-    "contracts/realistic-guide-transitions.test.js": 7292,
     "contracts/realistic-geographic-transitions.test.js": 1468,
-    "contracts/realistic-polar-transitions.test.js": 1593
+    "contracts/realistic-polar-transitions.test.js": 1593,
+    "contracts/realistic-guide-transitions.test.js": 7633,
+    "contracts/realistic-graph-drag.test.js": 26125,
+    "contracts/realistic-cartesian-transitions.test.js": 3697,
+    "contracts/realistic-geographic-routes.test.js": 2355
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -151,6 +155,18 @@
     }
   },
   "localMeasurements": {
+    "contracts/realistic-animation-timeline.test.js": {
+      "record": "1793337670561-67567.json",
+      "durationMs": 2037.9862919999998,
+      "maxRssKiB": 209328,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
     "contracts/realistic-combined-legend-witness.test.js": {
       "environment": "Darwin, Node 22",
       "source": "local integration run",
@@ -363,7 +379,7 @@
     },
     "contracts/realistic-guide-transitions.test.js": {
       "record": ".artifacts/checks/suite-realistic.json",
-      "durationMs": 7291.545334,
+      "durationMs": 5007.620958,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",
@@ -387,6 +403,17 @@
     "contracts/realistic-polar-transitions.test.js": {
       "record": "1793321149672-80964.json",
       "durationMs": 1592.425458,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-graph-drag.test.js": {
+      "record": "1793322193413-95600.json",
+      "durationMs": 26124.708666,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",

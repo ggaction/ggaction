@@ -1,0 +1,298 @@
+{
+  "status": "explicit-native-axis-font-preparation-integrated; dynamic-reflow-pending",
+  "sourceRevision": "bb23315f89869d1e3ae0f1f255d9e702a6d70cb6",
+  "base": "bb365b31a",
+  "incomingSource": "1507df9294d71d57137f0a7c627c596914b6bb8c",
+  "upstreamPin": "969ca158e",
+  "approval": "../../AUTHORIZATION.json#remainingApproval; adoption in ../AXIS_LABEL_REFLOW.md",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1224,
+    "packedBytes": 1745416,
+    "unpackedBytes": 7878657,
+    "file": "ggaction-b33c80bc49bc598992fc04503b6ba64592af930a6ad85e9170d07f9bafb34b00.tgz",
+    "sha256": "b33c80bc49bc598992fc04503b6ba64592af930a6ad85e9170d07f9bafb34b00"
+  },
+  "checks": {
+    "owning.log": 89,
+    "coverage.log": 19,
+    "boundaries.log": 52,
+    "docs.log": 238,
+    "package.log": 7
+  },
+  "installed": {
+    "20": {
+      "runtime": 13,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v20.20.2"
+    },
+    "22": {
+      "runtime": 13,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v22.23.1"
+    },
+    "24": {
+      "runtime": 13,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v24.22.1"
+    }
+  },
+  "coverage": {
+    "axisLabelQueries": [
+      100,
+      100,
+      100
+    ],
+    "textMetricsFull": [
+      100,
+      93.33,
+      100
+    ],
+    "scope": "Two targeted owners only; existing floors preserved, not global coverage."
+  },
+  "sourceAndTypesIdenticalToIncoming": [
+    "src/layout/text.js",
+    "src/materialization/axisLabelQueries.js",
+    "src/resources/textMetricsFull.js",
+    "types/program.d.ts"
+  ],
+  "shared5Unchanged": true,
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@7",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@2"
+  },
+  "built": {
+    "pages": 186,
+    "selectiveLlm": 1603
+  },
+  "docsBrowser": {
+    "pages": [
+      "api/rendering",
+      "reference/actions/charts-data"
+    ],
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "pairs": 8,
+    "overflow": 0,
+    "axe": 0,
+    "errors": 0
+  },
+  "limits": {
+    "entries": 1224,
+    "packed": 1748300,
+    "unpacked": 7878700,
+    "maximumMeasuredPacked": 1748242,
+    "measuredUnpacked": 7878657,
+    "fullGzip": 783600,
+    "basicGzip": 424300,
+    "animationGzip": 306200,
+    "measuredFull": 783544,
+    "measuredBasic": 424223,
+    "measuredAnimation": 306107,
+    "otherCeilingsUnchanged": true
+  },
+  "diagnostics": [
+    "Node20 canonical packed1748242 exceeded1747000; minimal1748300.",
+    "Measured animation306107 exceeded306100 by7; minimal306200; Full783544/Basic424223 synchronized to783600/424300 before final archive.",
+    "Initial changed-doc browser guessed a nonexistent reference/core path; preserved failure then checked actual generated reference/actions/charts-data path.",
+    "First upstream-pin selection guard expected only evidence paths and rejected the additionally changed AXIS_LABEL_REFLOW record before writing; inspected exact diff then adopted those ten metadata files only."
+  ],
+  "nativeManifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "assignedAcceptanceOwners": 55,
+    "assignedConsumerOwners": 376,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "a5c3ea0448cdb9148b6b1194dde7708311dad3153be507b09fbe7f92f53f3a8a",
+      "bytes": 5431
+    },
+    "docs-browser.log": {
+      "sha256": "abd513c69c15904f3c87a24d23e29b9635479927d115a7f41478ecb496770a03",
+      "bytes": 531
+    },
+    "pack22.json": {
+      "sha256": "894d5e5d7e83260f248481d9de7e221f91922c47c6b5fa4f0aa0a17a208850d6",
+      "bytes": 381
+    },
+    "installed-24.json": {
+      "sha256": "24eed0cdf2be63b930529930537f0a3dcf19d3a7f4104ea243e9c662272b2f85",
+      "bytes": 1368
+    },
+    "frozen.json": {
+      "sha256": "ca5615429798eea08d858ef8aa2321a3c71a61aa3594bf7aa93b7b4d76127908",
+      "bytes": 436
+    },
+    "docs-browser-corrected.log": {
+      "sha256": "9d092a2581e06a46904f585d642e78be2a7c5f94c7871e2bdd6ea9f189b92e78",
+      "bytes": 658
+    },
+    "installed-24.log": {
+      "sha256": "063d7fd4177f5daaa51b1f3139763d8e5f9d72bc2f627513cadd34c9476759f5",
+      "bytes": 1079
+    },
+    "pack20-first.stderr": {
+      "sha256": "3f1dd5716501f52f06f27f8807a6c43840cd28ad9a7999ae14e8070e1283564b",
+      "bytes": 966
+    },
+    "docs-browser.mjs": {
+      "sha256": "5e0f53db87d2a9a7e53bf27f4df0fcbf09786db6afaf6482d7f650bc17d16571",
+      "bytes": 2487
+    },
+    "installed-22.json": {
+      "sha256": "dd7ac132aec2a062d0c1828d04f649129f470ac74b65a0e924f6e0f2352d4734",
+      "bytes": 1368
+    },
+    "pack24.json": {
+      "sha256": "f53955a72d86ff5d1cf86d3bd647636cc1d6a83eaaa392bb267b011e06efe47e",
+      "bytes": 381
+    },
+    "installed-22.log": {
+      "sha256": "bd5754e3f200f4d57866cbb36958b8edae53691a26ff7f666d07bf5c242f6491",
+      "bytes": 1079
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "3b699e414820d36be11b2d0386a4515b234763249fd37c7cb99d4c75ce59c9cb",
+      "bytes": 72391
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "33899ec8a2e85eb6feda36ec8451933d3f8969d915d35e1482523dd4ed0f9f21",
+      "bytes": 11506
+    },
+    "installed-20.log": {
+      "sha256": "bf2ccef9a3ec97554208a94614fae0c4bdaf3459fc7ef15d3b886b0b500b26d0",
+      "bytes": 1079
+    },
+    "installed-20.json": {
+      "sha256": "f2585d75025b5e73e6b3c011b2392d73f731d237947e93f50b7b35c95d0c29a6",
+      "bytes": 1368
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "278d6258355b0f12b013b53b5e68ed1d95535b2557e0f0edb20308a048982b9f",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "docs-browser-first.log": {
+      "sha256": "abd513c69c15904f3c87a24d23e29b9635479927d115a7f41478ecb496770a03",
+      "bytes": 531
+    },
+    "prepack.json": {
+      "sha256": "1112d1be63fa9a9e9f176097a66f3176d390bd454926995f8b26bd51fe235d80",
+      "bytes": 293
+    },
+    "pack20.json": {
+      "sha256": "d55b7e8367b7ae33dc86ba5d669554e1f9c207f4d7dff37a08e31d1f68b0a718",
+      "bytes": 381
+    },
+    "owning.log": {
+      "sha256": "21db30a1e397ca8f31bb01312c013394eecf0d4066d5e6bb712f473148522b8f",
+      "bytes": 20778
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "premeasure20.log": {
+      "sha256": "66cf3ec8183f938c2f9337893fbe3e7fb61042221241470f42edfd2a0fbda405",
+      "bytes": 253
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.log": {
+      "sha256": "4dfb643a9e48fb5b0d2a6843eed49a1bf319c53305901d0c6db600fdb0d2207a",
+      "bytes": 1717
+    },
+    "build.log": {
+      "sha256": "fed306823b398af8c29dc5aecbb8ed595d8716d946be12238964ec8fc70341e4",
+      "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-pack.json": {
+      "sha256": "ac46a0d1e51f0a2bc58d84c88d92aabf4d2eb1b2d1fbbc4ec9ac51cc58fa32b4",
+      "bytes": 390
+    },
+    "source-pin-docs.log": {
+      "sha256": "a3b06662d2ff107068b6dbdfa91fdc605ee61f3085a6f53464882aed858c5f5d",
+      "bytes": 6134
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    }
+  },
+  "remaining": [
+    "Dynamic axis label state/group emissions",
+    "Dependent title guide9 and implicit legend lane integration",
+    "Remaining route SLO/native matrix/nine final commands; STEP077 incomplete"
+  ],
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 31,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Unchanged runtime/archive/focused source, page content and browser assets; no clean whole-suite execution claimed."
+  }
+}

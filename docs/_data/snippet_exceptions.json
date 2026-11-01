@@ -2885,10 +2885,10 @@
   },
   {
     "id": "docs/api/interaction.md#prepare-assets-before-committing:1",
-    "sha256": "de7aebe5e0662ff0fd9ca445b98d8da78be71b2ce7f3a0481ba0c604f61c8b0d",
+    "sha256": "3cf82b6785d31dadcf7855d52345ae805e62a390973325d19cf268bc848ba096",
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
-    "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for both committed commands and pointer previews, including pending/cancelled bitmap cleanup, in test/browser/interaction-session.browser.js."
+    "reason": "Requires the retained-image program, Canvas context and explicit interactionBindings supplied in the text. The exact fragment is executed with real browser image bytes for committed commands and pointer previews in test/browser/interaction-session.browser.js. Authentic graph frame preparation and matching preview/frame assets are additionally verified by the public current-graph drag browser and installed consumers."
   },
   {
     "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",

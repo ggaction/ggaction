@@ -1,0 +1,233 @@
+{
+  "status": "qualified-conceptual-checkpoint",
+  "sourceCommit": "4e26d4cb41c6b634e4351a6538b4814f22bbb40b",
+  "baseMerge": "ccf1ca864",
+  "parentSource": "01ae2001fea92fcb24d185affa4ae148524ecfe3",
+  "authorization": "../AUTHORIZATION.json remainingApproval; user approved all remaining work without repeated questions",
+  "scope": [
+    "authentic current graph meaning to transient previewFrame",
+    "fixed and force drag with one native layout revision and history transaction",
+    "native source key, role, topology and membership authority",
+    "baseline frame and exact renderer lease restoration",
+    "four renderer public consumer and actual browser input"
+  ],
+  "coverage": {
+    "src/actions/graphs/layouts.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "src/animation/frameProvenance.js": {
+      "lines": 97.5,
+      "branches": 95.45,
+      "functions": 100
+    },
+    "src/animation/graphPresentation.js": {
+      "lines": 96.88,
+      "branches": 95.45,
+      "functions": 100
+    },
+    "src/grammar/graph/layoutOptions.js": {
+      "lines": 100,
+      "branches": 91.55,
+      "functions": 100
+    },
+    "src/interaction/hitProgram.js": {
+      "lines": 100,
+      "branches": 91.19,
+      "functions": 100
+    },
+    "src/interaction/movementFrame.js": {
+      "lines": 100,
+      "branches": 93.75,
+      "functions": 100
+    },
+    "src/interaction/nodeMovement.js": {
+      "lines": 97.94,
+      "branches": 90.32,
+      "functions": 100
+    },
+    "src/interaction/session.js": {
+      "lines": 100,
+      "branches": 95.47,
+      "functions": 100
+    },
+    "src/materialization/animation/graph.js": {
+      "lines": 100,
+      "branches": 94.44,
+      "functions": 100
+    },
+    "src/materialization/graph/frameGeometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "checks": {
+    "focusedOwning": {
+      "tests": 56,
+      "passed": 56
+    },
+    "node20Focused": {
+      "tests": 32,
+      "passed": 32
+    },
+    "node24Focused": {
+      "tests": 32,
+      "passed": 32
+    },
+    "finalGraphDrag": {
+      "tests": 9,
+      "passed": 9
+    },
+    "broadOwningOriginal": {
+      "tests": 635,
+      "passed": 634,
+      "failed": 1,
+      "reason": "Existing appearance witness used color-only change which is now typed; root598 exact square fix and weighted-node assertion verified by final owning."
+    },
+    "finalOwningOriginal": {
+      "tests": 55,
+      "passed": 54,
+      "failed": 1,
+      "reason": "New corpus fixture increased inventory from60 to61; all runtime assertions passed."
+    },
+    "nativeLayoutCoverage": {
+      "tests": 129,
+      "passed": 129
+    },
+    "discoveryAndShardingFinal": {
+      "tests": 20,
+      "passed": 20
+    },
+    "realistic": {
+      "tests": 16,
+      "passed": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "rowsPerDataset": 32,
+      "runner": "canonical realistic",
+      "record": "1793322193413-95600.json"
+    },
+    "browserSource": {
+      "tests": 4,
+      "passed": 4,
+      "renderers": [
+        "Canvas",
+        "SVG"
+      ],
+      "devicePixelRatios": [
+        1,
+        2
+      ]
+    },
+    "documentationOriginal": {
+      "tests": 231,
+      "passed": 230,
+      "failed": 1,
+      "reason": "Changed existing asset callback fragment required reviewed hash update."
+    },
+    "documentationOwnerFinal": {
+      "tests": 18,
+      "passed": 18
+    },
+    "exactDocumentationFragmentBrowser": {
+      "tests": 2,
+      "passed": 2
+    },
+    "packageAndDocumentationContracts": {
+      "tests": 36,
+      "passed": 36
+    },
+    "builtLinks": {
+      "pages": 186,
+      "llmArtifacts": 1598
+    },
+    "builtBrowser": {
+      "status": "passed",
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true,
+      "navigationKeyboardAndAxe": true
+    }
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1161,
+    "packedBytes": 1660984,
+    "unpackedBytes": 7518359,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "0c65b9182a6251720e4da0f2cf5466b2d2da1cf5",
+    "sha256": "d1073ea836a756a7d8793945f9c9c7521e4100fe1c9a4299a8809fafdb4f7f73",
+    "finalRepackIdentical": true,
+    "finalRepackRecord": "graph-drag-final-package.json.gz"
+  },
+  "installed": {
+    "sameTar": true,
+    "nodeVersions": [
+      20,
+      22,
+      24
+    ],
+    "runtimeCasesPerNode": 5,
+    "strictTypes": true,
+    "optionalPeers": true,
+    "browserEntries": [
+      "ggaction",
+      "ggaction/basic",
+      "ggaction/svg",
+      "ggaction/graph",
+      "ggaction/animation",
+      "ggaction/interaction"
+    ],
+    "node22SourceFreeChromiumCases": 4,
+    "fullInstalledSuiteRerun": false
+  },
+  "measuredCaps": {
+    "entries": 1161,
+    "packedBytes": 1664000,
+    "unpackedBytes": 7519000,
+    "fullGzip": 774500,
+    "interactionGzip": 136100,
+    "searchBytes": 1083400
+  },
+  "sourceSha256": {
+    "scripts/consumers/fixtures/node/interaction-animation.mjs": "4ffa74ca822a1a6a7b2f078080ef564d9be775099e87efac175cfebf418aef91",
+    "src/actions/graphs/layouts.js": "1a95da486ca0de98a14645e5802fc92fdae0fb7ea67f146ff515ddbf79710820",
+    "src/animation/frameProvenance.js": "8ed42ec2b9022cc183a81f89dae3bdf64b31087c6619de94164f76bc4580b3c9",
+    "src/animation/graphPresentation.js": "90d4f2885dc12fbd5b5c2df0400febd7d92749575e704f476772e058a9a11f28",
+    "src/grammar/graph/layoutOptions.js": "c354b22ab15ea719f99fa913df1d18f390f2ab07f5a6d8020e59e2fa8b4f3bcd",
+    "src/interaction/hitProgram.js": "a3f47cc5c59dc4ab85154687423aa1f37d3706b16b73840f11db3c64fcaefddc",
+    "src/interaction/movementFrame.js": "49927d839211670b654664d012d1d50c2db5dfaa7d3c0f5fc5baa137aa3ba296",
+    "src/interaction/nodeMovement.js": "966ed845577e2316b64f1ad0f89bfb215ec791f954ace498be5527c9d1615713",
+    "src/interaction/session.js": "758606d1770292cf0c58108913d8d5d38d486d247e31c48dbb89ef13653a8528",
+    "src/materialization/animation/graph.js": "19cda874bf22a7c1d5eee1d918a72ff1359ecadc0ff77d272813a5464f73b4e1",
+    "src/materialization/graph/frameGeometry.js": "bb8fa47741fe24168cbe849162a8a8da9fc9195685178404a7af13101da60a1e",
+    "test/browser/interaction-animation.browser.js": "28a3554cc0b2442a6e02832afebaf86dc52d139dc11311a2c6907ca67e3128e9",
+    "test/unit/animation/graph-drag.test.js": "985dacc918a2e23e86df0e941911c4afdce6baa92edefbe7c27eefac19e59791",
+    "test/unit/animation/graph-presentation.test.js": "5409f62faf3132eeb986eaa832f841a67f036f0210b1bf807c9236225f800fa3",
+    "types/interaction.d.ts": "56c8d666a28d468184de7efe346df5cf43c4df17d04637d83d3da5db0c57e9a5"
+  },
+  "firstFailures": [
+    "Stale dormant-coordinate rejection witness changed to exact unchanged typed coordinate acceptance; changed/new/typed-different cases still reject.",
+    "New test capability/discovery entries needed registration.",
+    "Prior package caps rejected1161 entries; bounded measured adjustment only.",
+    "Initial corpus run lacked configured shared cache; second12-row run could not retain required source witness rows; canonical32-row final passed.",
+    "Old weighted color-only fixture fixed from root598; actual weighted-blend node now asserted.",
+    "Source coverage native layout branch count required existing source-plan/facet tests;129 owning tests reach100/100/100 without runtime changes.",
+    "New corpus inventory61 and local timing registration repaired; root598 Geo/polar timing records retained.",
+    "Documentation source suite found old asset-fragment hash; exact fragment Chromium2 passed and reviewed hash updated.",
+    "First preflight used system Ruby2.6; locked Ruby3.2 environment passed.",
+    "Final archive audit first used a relative staging output; fixed to explicit absolute output."
+  ],
+  "remaining": [
+    "Public selected-edge temporary presentation and overlapping keyboard candidate cycle/tooltip",
+    "Whole STEP041/070 acceptance across families and final077 integration",
+    "New Geo Text source-grain hit/activation closure is a separate checkpoint"
+  ]
+}

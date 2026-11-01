@@ -1,0 +1,89 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/geo-label-source-archives/ggaction-daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42.tgz",
+  "sha256": "daac12aed8152ba21a824805c0ab028e0e616f0a37920d0f8614c1cad4ec5c42",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2575.790292
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2629.369208,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1025,
+        "minifiedBytes": 2704025,
+        "gzipBytes": 774677
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1373.4867920000006,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 609,
+        "minifiedBytes": 1442605,
+        "gzipBytes": 422618
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 73.96062500000062,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24954
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 212.62987500000054,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 83,
+        "minifiedBytes": 146684,
+        "gzipBytes": 43913
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 850.3472499999989,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 393,
+        "minifiedBytes": 766897,
+        "gzipBytes": 233184
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 619.7608749999999,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 212,
+        "minifiedBytes": 424930,
+        "gzipBytes": 136155
+      }
+    }
+  ],
+  "status": "measured",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

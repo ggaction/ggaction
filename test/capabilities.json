@@ -50,6 +50,10 @@
       {
         "type": "prefix",
         "path": "unit/actions/"
+      },
+      {
+        "type": "file",
+        "path": "unit/profile-facade-consumers.test.js"
       }
     ],
     "animation": [
@@ -91,7 +95,35 @@
       },
       {
         "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/animation-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-timeline.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo-text.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-cartesian-completion.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geotext-expressions.browser.js"
       }
     ],
     "architecture": [
@@ -270,6 +302,10 @@
       {
         "type": "file",
         "path": "unit/resources/source-resource-plan.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "center-stack": [
@@ -338,6 +374,10 @@
       {
         "type": "file",
         "path": "unit/resources/contour-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "data": [
@@ -422,6 +462,10 @@
       {
         "type": "file",
         "path": "unit/resources/graph-route-input.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-route-own-request.test.js"
       },
       {
         "type": "file",
@@ -539,6 +583,10 @@
       }
     ],
     "font-assets": [
+      {
+        "type": "file",
+        "path": "unit/resources/font-axis-reflow.test.js"
+      },
       {
         "type": "prefix",
         "path": "charts/font-assets/"
@@ -720,6 +768,10 @@
       {
         "type": "file",
         "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/graph-presentation.test.js"
       }
     ],
     "guides": [
@@ -1032,6 +1084,10 @@
       {
         "type": "file",
         "path": "unit/interaction-native-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-edge-presentation.test.js"
       }
     ],
     "label-layout": [
@@ -1419,6 +1475,10 @@
     "realistic": [
       {
         "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/dataset-fixtures.test.js"
       },
       {
@@ -1476,6 +1536,14 @@
       {
         "type": "file",
         "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
       }
     ],
     "rendering": [

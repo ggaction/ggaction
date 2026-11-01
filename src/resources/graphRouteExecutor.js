@@ -13,7 +13,7 @@ export const isGraphRouteExecutor = value => executors.has(value);
 // Each host owns its worker instances and bounded completion cache. No renderer
 // or ChartProgram stores host objects, listeners, promises or mutable buffers.
 export function createGraphRouteExecutor(options = {}) {
-  ownRecord(options, "Graph route executor options");
+  options = Object.assign(Object.create(null), ownRecord(options, "Graph route executor options"));
   rejectUnknownProperties(options, ["createWorker"], "graph route executor");
   if (Object.hasOwn(options, "createWorker") && typeof options.createWorker !== "function") throw new TypeError("Route createWorker must be a function.");
   const createWorker = options.createWorker;
@@ -35,7 +35,7 @@ export function createGraphRouteExecutor(options = {}) {
   }
   async function compute(input, args = {}) {
     if (disposed) throw inactive();
-    ownRecord(args, "Route computation options");
+    args = Object.assign(Object.create(null), ownRecord(args, "Route computation options"));
     rejectUnknownProperties(args, ["signal"], "route computation");
     const signal = args.signal; assertActive(signal);
     const job = validateRouteJob(input), cached = cache.get(job.inputHash);

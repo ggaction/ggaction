@@ -13,10 +13,8 @@ import {
   mapOrdinalPositionValues,
   readScaleField
 } from "../grammar/scales/index.js";
-import {
-  finiteMidpoint,
-  requireFiniteResult
-} from "../grammar/numeric.js";
+import { applyOffsetPositionValues } from "../grammar/positionOffset.js";
+export { applyOffsetPositionValues } from "../grammar/positionOffset.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 
@@ -53,30 +51,6 @@ export function resolveRowEncodingValues(program, layer, dataset, channel, resol
     : categorical && POSITION_CHANNELS.includes(channel) ? mapOrdinalPositionValues(values, scale)
     : mapScaleConsumerValues(values, scale, channel);
   return includeScale ? output.map(value => ({ value, scale })) : output;
-}
-
-export function applyOffsetPositionValues({
-  base,
-  offset,
-  parentScale,
-  offsetScale,
-  channel
-}) {
-  if (base.length !== offset.length) {
-    throw new Error(`${channel} offset values must match the base position grain.`);
-  }
-  const midpoint = finiteMidpoint(offsetScale.range[0], offsetScale.range[1]);
-  const direction = Math.sign(parentScale.step) ||
-    Math.sign(parentScale.range[1] - parentScale.range[0]) || 1;
-  return Object.freeze(base.map((value, index) => {
-    if (!Number.isFinite(value) || !Number.isFinite(offset[index])) {
-      return undefined;
-    }
-    return requireFiniteResult(
-      value + direction * (offset[index] - midpoint),
-      `${channel} offset position`
-    );
-  }));
 }
 
 export function resolveRowPositionValues(program, layer, dataset, channel, resolvers) {

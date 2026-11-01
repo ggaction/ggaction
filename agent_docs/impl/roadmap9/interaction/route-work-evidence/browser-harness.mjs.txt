@@ -1,0 +1,49 @@
+import assert from 'node:assert/strict';
+import { readFile, writeFile, copyFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import os from 'node:os';
+import path from 'node:path';
+import { build } from 'esbuild';
+import { chromium } from 'playwright';
+import { preparePackageConsumer } from '../scripts/package-consumer.js';
+import { startStaticServer } from '../test/support/static-server.js';
+import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserContextEvidence } from '../test/support/browser.js';
+const smoke = false, prefix = 'edge-path-linked-browser';
+const fixed = JSON.parse(await readFile('.artifacts/edge-path-linked-fixed.json', 'utf8'));
+assert.equal(createHash('sha256').update(await readFile(fixed.frozenFile)).digest('hex'), fixed.sha256);
+const out = '.artifacts/' + prefix; await mkdir(out, { recursive: true });
+const report = { kind: smoke ? 'harness-smoke-not-SLO' : 'production-chromium-fixture-measurement', archive: fixed.sha256, source: 'c7892a9fe', seed: 0,
+ environment: { cpu: os.cpus()[0].model, cores: os.cpus().length, ramBytes: os.totalmem(), os: `${os.type()} ${os.release()} ${os.arch()}`, node: process.version, start: new Date().toISOString(), loadStart: os.loadavg() },
+ font: 'No Text, labels or guides are emitted; Canvas/SVG workload is font independent. Host status HTML is outside measured stages.',
+ network: 'Initial localhost bundle/worker-text load allowed; context offline before measurements, Blob worker contains bundled dependencies.',
+ stages: { sourcePreparationMs: 'one-time diagnostic, not P95', computeMs: 'worker public computeGraphEdgeRoutes only', prepareComputeValidateMs: 'public prepareGraphEdgeRoutes including startup, cloning, compute and validation', applyMs: 'native prepared resource commit', bundlingMs: 'prepareComputeValidateMs + applyMs', materializeMs: 'native createGraphPlot', canvasRenderMs: 'synchronous Canvas commands at DPR', svgSerializeDomMs: 'SVG serialization and DOM insertion, not compositor paint' }, cases: [], lifecycle: [] };
+const consumer = await preparePackageConsumer({ packageSpec: fixed.frozenFile }); let browser, server;
+try {
+ const directory = consumer.directory, dist = path.join(directory, 'dist'); await mkdir(dist);
+ for (const [file, dest] of [['route-browser-entry.mjs', 'entry.js'], ['route-browser-worker.mjs', 'worker-entry.js']]) await copyFile('.artifacts/' + file, path.join(directory, dest));
+ for (const [entry, outfile] of [['entry.js', 'app.js'], ['worker-entry.js', 'worker.js']]) await build({ absWorkingDir: directory, entryPoints: [entry], outfile: path.join(dist, outfile), bundle: true, minify: true, format: 'esm', platform: 'browser', target: 'es2022' });
+ report.bundles = {};
+ for (const file of ['app.js', 'worker.js']) { const bytes = await readFile(path.join(dist, file)); report.bundles[file] = { bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') }; }
+ await writeFile(path.join(dist, 'index.html'), '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Route measurement</title></head><body><main><p id="status">Loading</p><canvas aria-label="Measured graph" style="width:400px;height:400px"></canvas><div id="svg" aria-hidden="true"></div></main><script type="module" src="app.js"></script></body></html>');
+ server = await startStaticServer(dist); browser = await chromium.launch({ headless: true, args: ['--js-flags=--expose-gc', '--enable-precise-memory-info'] }); report.environment.browser = browser.version();
+ report.environment.processesBefore = execFileSync('ps', ['-axo', 'pid,pcpu,pmem,comm'], { encoding: 'utf8' }).split('\n').filter(line => /node|Chrom|ruby|vite|playwright/i.test(line)).map(line => { const match = line.trim().match(/^(\d+)\s+(\S+)\s+(\S+)\s+(.+)$/); return match ? { pid: Number(match[1]), cpuPercent: Number(match[2]), memoryPercent: Number(match[3]), executable: path.basename(match[4]) } : { unparsed: true }; });
+ for (const ratio of [1, 2]) {
+  const context = await browser.newContext({ deviceScaleFactor: ratio, viewport: { width: 900, height: 600 } });
+  try {
+   const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => document.querySelector('#status')?.textContent === 'Ready' });
+   await context.setOffline(true); const networkRequests = []; page.on('request', request => { if (/^https?:/.test(request.url())) networkRequests.push(request.url()); });
+   for (const count of [1000]) for (const method of ['edge-path']) {
+    const value = await page.evaluate(async ({ count, method, ratio, smoke }) => routeBenchmark.benchmarkCase(count, method, ratio, smoke ? 1 : 30, smoke ? 0 : 5), { count, method, ratio, smoke });
+    assert.ok(Object.values(value.counters).every(value => value === 0), JSON.stringify(value.counters));
+    report.cases.push(value); console.log(JSON.stringify({ ratio, count, method, status: value.status, p95: value.p95, failure: value.first?.message }));
+    await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
+   }
+   assert.deepEqual(networkRequests, []); assertNoBrowserErrors(errors, 'Route stage measurement'); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+ }
+ report.environment.end = new Date().toISOString(); report.environment.loadEnd = os.loadavg(); report.status = 'measurement-completed';
+} catch (error) { report.status = 'harness-failed'; report.error = error.stack; throw error; }
+finally { await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2)); await closeBrowserWithEvidence(browser); await server?.close(); await consumer.cleanup(); }
+console.log(JSON.stringify({ status: report.status, cases: report.cases.length, lifecycle: report.lifecycle.map(x => ({ ratio: x.ratio, cycles: x.cycles, slope: x.slopeBytesPerCycle, growth: x.growthBytes })) }));

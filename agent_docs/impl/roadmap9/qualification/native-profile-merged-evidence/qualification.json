@@ -1,0 +1,68 @@
+{
+  "status": "focused-profile-consumer-integration-verified; final-native-pending",
+  "sourceBase": "4597da1b39f4739ba2d02972381d0ab7c8653b00",
+  "incoming": "becd50c8cb68ce6e2cdcf0561e0330101ebe9eb2",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "checks": {
+    "owning.log": 146,
+    "render.log": 21,
+    "docs-examples.log": 2
+  },
+  "manifest": {
+    "addedConsumerOwners": 72,
+    "incomingAdded": 71,
+    "rootAddedViolinAnimation": 1,
+    "assignedConsumerOwners": 376,
+    "unassignedRequiredConsumers": 198,
+    "assignedAcceptanceOwners": 55,
+    "pendingAcceptanceOwners": 24,
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndAllApplicabilityUnchanged": true
+  },
+  "integrationRepair": {
+    "Violin": "Root Current semantic-cartesian-geometry@2 already supports completed categorical density. Replaced old branch unsupported-series expectation with native semantic-cartesian/cartesian-geometry assertions, restored authentic-current rebase and exact offline equality. No runtime/shared module change.",
+    "additionalOwner": "test/unit/animation/cartesian-density.test.js independently compares all six horizontal/vertical/side native midpoint paths and rejects altered density maximum; actual facade test covers source-change/rebase/offline."
+  },
+  "packageReuse": {
+    "sha256": "26ad0f4b6cdc4ddd0c08463da39680cb02113dc05b2128006d7dd77935c48991",
+    "note": "All packaged inputs unchanged; no profile installed qualification, repack, coverage or P95 claimed; four package owner cells still pending."
+  },
+  "evidenceFiles": {
+    "render.log": {
+      "sha256": "4ec28e7748357612361f57da029ac07d73fd2845508c026324b9b399f6b05aec",
+      "bytes": 3770
+    },
+    "profile-facade-root-probe.log": {
+      "sha256": "434d6b5ae6a4ad70be7f677bceafd0c4155943a8e2f6c498eaa894d85dd4727e",
+      "bytes": 2368
+    },
+    "profile-facade-root-probe.test.js": {
+      "sha256": "95880fbab45e27caf5d2c5077fc3e6151b4dcd4c3cb703de612e3e83cdd05967",
+      "bytes": 6406
+    },
+    "docs-examples.log": {
+      "sha256": "290d81cce22c97b4909d6acfdc4535d5cb2159d6fa76e6b87996998d47cef9d1",
+      "bytes": 575
+    },
+    "pending.json": {
+      "sha256": "9029a006fae22ea61feadf6add7b2c45f1d449957befe3c345d57e5f97f93f34",
+      "bytes": 32548
+    },
+    "owning.log": {
+      "sha256": "3e5b49c830f92a6f020ae5e0c08b5e7835ab63d9c2cdfa28687ec931844a9468",
+      "bytes": 31864
+    }
+  },
+  "remaining": [
+    "Package owners and other required consumer gaps",
+    "Public dynamic axis/title integration and large route SLO",
+    "Native target execution/nine final commands/independent review; STEP077 incomplete"
+  ]
+}

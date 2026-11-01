@@ -28,20 +28,44 @@ for(const dataset of datasets)for(const recipe of ["planar-points","spherical-po
     // Spherical views explicitly map the observed extents to [-60,60]×[-30,30].
     // Properties retain the original observations and source-row membership.
     const coordinates=rows.map(row=>planar?[row.orderNumeric,row.value]:[spanX?(row.orderNumeric-minX)/spanX*120-60:0,spanY?(row.value-minY)/spanY*60-30:0]);
-    const features=line?[{type:"Feature",id:"cohort",properties:{observations:rows},geometry:{type:"LineString",coordinates}}]
+    const features=line?[{type:"Feature",id:"cohort",properties:{observations:rows,label:dataset},geometry:{type:"LineString",coordinates}}]
       :rows.map((row,index)=>({type:"Feature",id:row.key,properties:{...row},geometry:{type:"Point",coordinates:coordinates[index]}}));
     let from=chart().createCanvas({width:600,height:400,margin:0}).createGeometryData({id:"source",format:"geojson",coordinateKind:planar?"planar":"geographic",featureKey:"id",values:{type:"FeatureCollection",features}})
       .createProjection(planar?{id:"map",type:"identity",fit:{geometry:"source",width:600,height:400,padding:40}}:{id:"map",type:"equirectangular",scalePx:80,translatePx:[300,200]}).createCoordinate({type:"geo"});
     from=line?from.createGeoLineMark({id:"marks"}):from.createGeoPointMark({id:"marks"});
+    from=from.createMarkLabels({source:"marks",id:"names",field:line?"label":"value",fontSize:10,dx:4,dy:-4})
+      .layoutLabels({target:"names",axis:"both",padding:1,maxDisplacement:4,leader:{}});
     const original=JSON.stringify(from),initial=getProjectionView(from).parameters;
     const to=from.editProjection({scalePx:initial.scalePx*(planar?1:4),translatePx:initial.translatePx.map((value,index)=>value+(index?20:40)),...(!planar?{rotateDeg:[30,0,0]}:{})});
     const plan=planTransition({from,to,options:{durationMs:100,easing:"linear"}}),current=sampleTransition(plan,50);
     const native=from.editProjection({scalePx:initial.scalePx*(planar?1:2),translatePx:initial.translatePx.map((value,index)=>value+(index?10:20)),...(!planar?{rotateDeg:[15,0,0]}:{})});
     nearTree(current.scene,projectAnimationEndpoint(native).scene);
-    assert.ok(current.decisions.some(decision=>decision.kind==="geographic"));
+    assert.ok(current.decisions.some(decision=>decision.kernel==="native-geo"));
+    assert.ok(current.decisions.some(decision=>decision.kernel==="native-geo-text"));
     assert.ok(current.decisions.every(decision=>decision.kind!=="crossfade"));
     assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),current);
     assertSvgIntegrity(renderToSVG(current),`${dataset}/${recipe}`);assert.equal(JSON.stringify(from),original);
+    if(planar) {
+      const labels=from.createMarkLabels({id:"labels",field:"category",fontFamily:"monospace",fontSize:12,fill:"red"});
+      const changed=labels.editTextMark({target:"labels",fontSize:18,fill:"blue",textOverrides:[{match:{fields:{key:rows[0].key}},occurrence:0,text:`${rows[0].category} total`}]});
+      const labelTarget=changed.editProjection({translatePx:initial.translatePx.map((value,index)=>value+(index?20:40))});
+      const labelPlan=planTransition({from:labels,to:labelTarget,options:{durationMs:100,easing:"linear"}}),labelFrame=sampleTransition(labelPlan,50);
+      const translation=initial.translatePx.map((value,index)=>value+(index?10:20));
+      const native=[labels,changed].map(program=>{
+        const endpoint=projectAnimationEndpoint(program.editProjection({translatePx:translation}));
+        return new Map(endpoint.scene.nodes.flatMap((node,index)=>node.type==="text"&&endpoint.identities[index]?.role==="body"
+          ? [[endpoint.identities[index].key,node.properties]] : []));
+      });
+      const samples=labelFrame.scene.nodes.flatMap((node,index)=>{
+        const decision=labelFrame.decisions[index];
+        return decision?.kernel==="native-geo-text"&&decision.ownerKey===JSON.stringify([[],"labels"])&&decision.role==="body"
+          ? [{node,itemKey:decision.itemKey}] : [];
+      });
+      assert.equal(samples.length,rows.length);
+      for(const {node,itemKey} of samples){assert.equal(node.type,"weighted-blend");assert.deepEqual(node.properties.sources.map(source=>source.weight),[.5,.5]);assert.deepEqual(node.properties.sources.map(source=>source.properties),native.map(items=>items.get(itemKey)));}
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(labelPlan)).plan,50),labelFrame);
+      assertSvgIntegrity(renderToSVG(labelFrame),`${dataset}/current-camera-text`);
+    }
     if(!witness.has(dataset))witness.set(dataset,new Set());witness.get(dataset).add(recipe);
   }finally{releaseTidyTuesdaySourceCache(dataset);}
 });

@@ -12,7 +12,7 @@ test("geometry declarations preserve format, feature identity and immutable sour
   try {
     const file = path.join(directory, "consumer.mts");
     await writeFile(file, `
-import { chart, type GeometrySourceResource, type GeoJoinResource, type GeoLODResource, type GeoLODLevels, type GeoJSONInput, type TopoJSONInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import { chart, type GeometrySourceResource, type GeoJoinResource, type GeoRouteResource, type GeoLODResource, type GeoLODLevels, type GeoJSONInput, type TopoJSONInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 const source: GeoJSONInput = { type: "Feature", id: "a", properties: { nested: { code: 1 } }, geometry: { type: "Point", coordinates: [1, 2, 3], bbox: [0, 0, 2, 3] } };
 const p = chart().createGeometryData({ id: "source", format: "geojson", values: source, coordinateKind: "geographic", featureKey: ["properties", "nested", "code"] });
@@ -45,6 +45,20 @@ p.editGeoLODData({zoom:null});
 basic().createGeoLODData({id:'details',levels});
 // @ts-expect-error Representation mappings are immutable.
 lod.result.mapping[0].regions[0].representations.push('key');
+p.createGeoRouteData({id:'routes-geometry',routes:'routes',coordinateKind:'geographic'})
+ .editGeoRouteData({target:{childPath:['left'],id:'routes-geometry'},routes:'routes'});
+declare const route: GeoRouteResource;
+const edgeKey:string=route.result.features[0].properties.edgeKey; void edgeKey;
+// @ts-expect-error Route source is explicit.
+p.createGeoRouteData({id:'missing',coordinateKind:'planar'});
+// @ts-expect-error Coordinate interpretation is explicit.
+p.createGeoRouteData({id:'missing',routes:'routes'});
+// @ts-expect-error No inverse pixel inference.
+p.editGeoRouteData({coordinateKind:'auto'});
+// @ts-expect-error Route geometry is Full only.
+basic().createGeoRouteData({id:'routes-geometry',routes:'routes',coordinateKind:'planar'});
+// @ts-expect-error Stored route samples are immutable.
+route.result.features[0].geometry.coordinates.push([1,2]);
 declare const joined: GeoJoinResource;
 const matched: number | null | undefined = joined.result.rowMap[0]; void matched;
 const input: string = joined.inputs[1].logicalId; void input;

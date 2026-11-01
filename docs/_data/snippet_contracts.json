@@ -10,7 +10,7 @@
       "source: \"rows\""
     ],
     "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
-    "sha256": "c0fca538e59f2d5bd064b0f409e2577f25d2e1ba5af1f071c6a0c030a9e916a7",
+    "sha256": "c2ccc563e44b49321685320603637f1a36f7e8dc8c37f08d3673b668d7779469",
     "executable": true
   },
   {
@@ -2217,6 +2217,21 @@
     "executable": true
   },
   {
+    "file": "api/geometry.md",
+    "block": 10,
+    "heading": "`createGeoRouteData`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\""
+    ],
+    "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.",
+    "sha256": "9288493ac18e3961286b940b85a63e33f85bb78bd887827c0e6a3073365960ce",
+    "executable": true
+  },
+  {
     "file": "api/gradient-plots.md",
     "block": 1,
     "heading": "Create a gradient plot",
@@ -2511,7 +2526,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "de7aebe5e0662ff0fd9ca445b98d8da78be71b2ce7f3a0481ba0c604f61c8b0d",
+    "sha256": "3cf82b6785d31dadcf7855d52345ae805e62a390973325d19cf268bc848ba096",
     "executable": false
   },
   {
@@ -2876,6 +2891,28 @@
     "host": "paired-html",
     "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e",
     "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 28,
+    "heading": "Inspect overlapping graph edges",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [
+      "canvas",
+      "restore"
+    ],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\"",
+      "target: \"network\"",
+      "selection: \"chosen\""
+    ],
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover the shared edge, focus the chart and use PageDown/PageUp, Enter and the expansion buttons.",
+    "host": "paired-html",
+    "htmlSha256": "e9e351048652ac9680603910fe50a34d995b3b24c40ed05cec7cd7e7ef589694",
+    "sha256": "1134843570a19927bebc9d05d817f22631e722ea79f6d7df92dbfbeda893f22b",
     "executable": true
   },
   {

@@ -34,14 +34,16 @@ test("fixed and force source revisions preserve dormant coordinate intent and re
   }
 });
 
-test("layout edits retain omitted coordinates and validate explicitly replaced arrays against current nodes", () => {
+test("layout edits retain only unchanged dormant coordinates in explicit replacement arrays", () => {
   for (const method of ["fixed", "force"]) {
     const reduced = base(method).reviseData({ source: "nodes", id: "reduced", values: [rows[0], rows[2]] });
     const edited = reduced.editLayout({ options: { maxNodes: 10 } });
     assert.deepEqual(layout(edited).options.options.positions ?? layout(edited).options.options.initialPositions, positions);
     const snapshot = serializeProgram(edited);
     const coordinateField = method === "fixed" ? "positions" : "initialPositions";
-    assert.throws(() => edited.editLayout({ options: { [coordinateField]: positions } }), /position|key|node/i);
+    const retained = edited.editLayout({ options: { [coordinateField]: positions } });
+    assert.deepEqual(layout(retained).options.options[coordinateField], positions);
+    assert.throws(() => edited.editLayout({ options: { [coordinateField]: positions.map(p => p.key === "b" ? { ...p, x: 1 } : p) } }), /position|key|node/i);
     if (method === "force") assert.throws(() => edited.editLayout({ options: { pinned: [{ key: "b", fx: 1, fy: 2 }] } }), /pin|key|node/i);
     const reset = edited.editLayout({ options: { [coordinateField]: [positions[0], positions[2]], ...(method === "force" ? { pinned: [] } : {}) } });
     assert.throws(() => reset.reviseData({ source: "reduced", id: "expanded", values: rows }), /position|node/i);

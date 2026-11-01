@@ -1,6 +1,6 @@
 {
   "status": "verified-public-appearance; broader integration audit pending",
-  "sourceRevision": "to be pinned after this source commit",
+  "sourceRevision": "01ae2001fea92fcb24d185affa4ae148524ecfe3",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "archive": {
     "name": "ggaction",
@@ -37,7 +37,13 @@
       "executableDoc": "passed",
       "optionalPeers": "canvas1.0.9/sdk1.32.1"
     },
-    "installedBundles": "same18 actual measurements asserted against current minimal caps; original20/24 commands failed solely old limits and remain preserved"
+    "installedBundles": "same18 actual measurements asserted against current minimal caps; original20/24 commands failed solely old limits and remain preserved",
+    "builtDocumentation": {
+      "pages": 186,
+      "llmHashes": 1598,
+      "browser": "desktop search and every page at320/390/768 passed"
+    },
+    "sourcePinnedDocumentation": 30
   },
   "packageActualMaximum": {
     "entries": 1158,
@@ -54,7 +60,7 @@
   "remaining": [
     "Guide/timeline and remaining Geo text/presentation integration",
     "Entire STEP077/global AT and consumer qualification",
-    "Post-source-pin built documentation and complete integration audit"
+    "Whole-unit final candidate sweep after remaining families; the first broad sweep and focused repairs are separately retained."
   ],
   "sourceHashes": {
     "src/animation/appearance.js": "143f9f9968267ab542bb092262a355e072eb393584917b5a09f3ff12f94db0a9",
@@ -75,5 +81,20 @@
     "test/browser/animation-appearance.browser.js": "99b237e890b63c0a4f96beac2eae798f3014f29d3cd7d054fe7c3443ec6acae5",
     "test/charts/cross-feature-integration/variants/animation/appearance.render.js": "514f23e4360902b088f6977c0cc7d58f7acad9dcdca2ebdf322711e23c3d1aac",
     "scripts/consumers/fixtures/node/animation-appearance.mjs": "995a20a4744a5e1449ef50f362bc65c67384130ce20c511ccee389aebad5d067"
+  },
+  "broaderAudit": {
+    "unit": {
+      "total": 7481,
+      "passed": 7479,
+      "failed": 2,
+      "repair": "Old color-only weighted mount fixture now uses changed shape; two new realistic files receive measured scheduling weights. Owning repair is recorded separately, no whole-suite rerun pass inferred."
+    },
+    "contracts": {
+      "total": 791,
+      "passed": 791,
+      "failed": 0
+    },
+    "newRealisticCases": 21,
+    "owningRepairs": 19
   }
 }

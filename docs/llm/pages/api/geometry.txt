@@ -625,3 +625,73 @@ Use the existing [attached Text labels](../../../api/marks/labels/#geographic-so
 a geographic shape, point, line or graticule source. They share source feature
 identity and revisions while native Text owns content, style and collision layout.
 Graticules expose their existing axis names and numeric values.
+
+## `createGeoRouteData`
+
+**Chart authoring; Full only.**
+
+```typescript
+createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+```
+
+Provide an explicit new geometry `id`, retained edge-route ID `routes`, and
+`coordinateKind: "geographic" | "planar"`. The geometry keeps one LineString per
+original graph edge, including every sampled M/L point and repeated endpoints.
+All four [edge bundling methods](../../../api/graphs/) use the same adapter. Features expose
+`properties.edgeKey`, the typed opaque edge token, for explicit joins and levels.
+Mark fields and row provenance retain the native graph edge grain.
+
+Geographic input requires **world** routes whose x/y already represent longitude
+and latitude degrees. All positions must be finite and latitude within −90 to 90.
+Screen pixels are never inverted into coordinates. Planar input uses the existing
+identity projection and retains world or screen route units. The bundling solver
+keeps its existing plane-coordinate mathematics.
+
+Draw the resource with `createGeoLineMark`. Its explicit `source-segment` or
+`great-circle` interpolation, antipodal hint, date-line splitting and projection
+clipping apply to the retained samples. Camera changes affect projection without
+recomputing world bundles. Route/source/layout edits refresh this geometry,
+dependent joins, levels, fitted projections and marks atomically.
+
+The adapter retains at most 100,000 features and 1,000,000 positions under the
+existing cumulative work budget. It preserves all accepted edges and samples.
+Save editable programs with the existing persistence API; restoration validates
+the stored result against exact route inputs without running the solver again.
+
+This complete authoring example uses explicit longitude/latitude layout anchors:
+
+> **Executable complete.** Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors.
+
+```javascript
+import { chart } from "ggaction";
+
+const routeMap = chart().createCanvas({ width: 480, height: 240 })
+  .createData({ id: "ports", values: [{ id: "west" }, { id: "east" }] })
+  .createData({ id: "connections", values: [{ id: "crossing", from: "west", to: "east" }] })
+  .createGraphData({ id: "network", nodes: "ports", edges: "connections",
+    nodeKey: "id", edgeKey: "id", source: "from", target: "to" })
+  .layoutGraph({ id: "anchors", method: "fixed", options: {
+    positions: [{ key: "west", x: 170, y: 20 }, { key: "east", x: -170, y: 30 }]
+  } })
+  .bundleGraphEdges({ id: "routes", method: "edge-path", coordinateSpace: "world" })
+  .createGeoRouteData({ id: "routeGeometry", routes: "routes", coordinateKind: "geographic" })
+  .createProjection({ id: "map", type: "equirectangular", scalePx: 55, translatePx: [240, 120] })
+  .createCoordinate({ id: "geo", type: "geo", projection: "map" })
+  .createGeoLineMark({ id: "connections", geometry: "routeGeometry", coordinate: "geo",
+    interpolation: "great-circle", stroke: "#2563eb", strokeWidth: 2 });
+```
+
+## `editGeoRouteData`
+
+**Chart authoring; Full only.**
+
+```typescript
+editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
+```
+
+Provide a nonempty patch of `routes` or `coordinateKind`. Omission preserves the
+current intent; `undefined` and `null` are rejected. `target` may name the resource
+or a composition child, or be omitted for the current or unique eligible route
+geometry. Every accepted edit increments revision once and preserves its logical
+feature identity. Surviving typed edge keys remain stable. Incompatible samples
+or consumers reject the entire edit, preserving the earlier program and trace.

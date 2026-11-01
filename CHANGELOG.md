@@ -8,6 +8,11 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add explicit `prepareTextMetrics` option `axisLabelReflow` to prepare bounded native wrapping queries for current Cartesian axis labels without changing the default measurement path.
+
+- Add Full-only `createGeoRouteData` and `editGeoRouteData` to interpret every retained graph route sample as a geographic or planar GeoLine source, preserving original edge identity, rows and atomic revision closure through native interpolation, clipping and offline restoration.
+- Keep geographic Text content, fonts, layout and leaders at the current native camera during expression crossfades, with bounded flat rebasing, exact source metrics and offline replay.
+
 - Animate completed GraphPlot nodes, labels, ordinary edges, and stored routes through the existing animation API, including current-frame rebasing and offline replay.
 
 - Prepare native asynchronous session replacements atomically, with revision guards, cancellation and existing worker/asset lifetimes.

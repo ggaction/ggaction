@@ -1,0 +1,232 @@
+{
+  "authorization": "../../AUTHORIZATION.json",
+  "baseCommit": "becd50c8cb68ce6e2cdcf0561e0330101ebe9eb2",
+  "scope": [
+    "compound-path",
+    "pattern",
+    "partition-cartesian",
+    "partition-polar"
+  ],
+  "runtimeSourceChanged": false,
+  "publicDeclarationsChanged": false,
+  "sharedAnimationChanged": false,
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "os": "27.0.1"
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "previousOwners": 22,
+    "newOwners": 43,
+    "totalRowOwners": 65,
+    "remainingRowConsumers": 11,
+    "otherRowsAndFieldsDeepEqual": true,
+    "existingOwnerContractsAndTestPathsPreserved": true,
+    "rootApplicability": "Root retains its 574 required and three Image N/A cells when applying only these four row deltas."
+  },
+  "rows": [
+    {
+      "id": "compound-path",
+      "assigned": 17,
+      "pending": [
+        "scene-animation",
+        "package"
+      ]
+    },
+    {
+      "id": "pattern",
+      "assigned": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "partition-cartesian",
+      "assigned": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    },
+    {
+      "id": "partition-polar",
+      "assigned": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "log": "owning-final-second.log.gz",
+      "command": "node --test test/charts/compound-path/public.test.js test/unit/actions/marks/structured-fill.test.js test/unit/resources/partition-plots.test.js test/unit/geo/mark-consumers.test.js test/contracts/compound-path-types.test.js test/contracts/structured-paint-types.test.js test/contracts/hierarchy-types.test.js test/unit/animation/partition-transition.test.js test/unit/animation/partition-session.test.js test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js",
+      "passed": 91,
+      "total": 94,
+      "status": "Three metadata assertions failed on one duplicate contract entry; remaining assertions passed."
+    },
+    {
+      "log": "manifest-final.log.gz",
+      "command": "node --test test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js",
+      "passed": 32,
+      "total": 32,
+      "status": "passed after removing only the duplicate contract entry"
+    },
+    {
+      "log": "new-render-types-final.log.gz",
+      "command": "node --test test/charts/structured-paints/renderer.render.js test/charts/partition-layouts/renderer.render.js test/contracts/compound-path-types.test.js",
+      "passed": 10,
+      "total": 10
+    },
+    {
+      "log": "render-existing.log.gz",
+      "command": "node --test --test-concurrency=1 test/charts/compound-path/backends.render.js test/charts/compound-path/png.render.js test/charts/structured-paints/png.render.js test/charts/partition-layouts/png.render.js test/charts/cross-feature-integration/variants/animation/partition.render.js",
+      "passed": 28,
+      "total": 29,
+      "status": "Compound browser server lacked repository dependency map; other renderer assertions passed."
+    },
+    {
+      "log": "compound-backends-final.log.gz",
+      "command": "node --test test/charts/compound-path/backends.render.js",
+      "passed": 1,
+      "total": 1,
+      "status": "passed after canonical repository dependency mapping"
+    },
+    {
+      "log": "browser.log.gz",
+      "command": "node --test test/browser/animation-partition.browser.js test/browser/structured-paint.browser.js",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "log": "docs.log.gz",
+      "command": "node --test --test-name-pattern='chart-example catalog|public example index|documented tutorials/partition.md' test/docs/documentation.test.js test/docs/executable-programs.test.js",
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "log": "native-pending.json.gz",
+      "command": "node scripts/native-capability-completion.js",
+      "status": "pending",
+      "candidate": null
+    },
+    {
+      "log": "compound-rebase-original.log.gz",
+      "command": "node .artifacts/native-paint-partition-consumers/compound-rebase.mjs",
+      "status": "known source-snapshot gap; exit 1",
+      "reproducer": "compound-rebase.mjs.txt",
+      "details": "Rebased original reason sampled-concrete differs from offline unsupported-family; scene and graphic equality pass."
+    }
+  ],
+  "notRun": [
+    "Full normal/coverage",
+    "New package archive or installed consumer matrix",
+    "Performance measurement",
+    "Deployment"
+  ],
+  "inputs": {
+    "test/browser/animation-partition.browser.js": "536afd6969c2613f9ccc9b8cf2b0cf65c7761a823e27dd645de5e116b92036ce",
+    "test/charts/compound-path/backends.render.js": "a8f4576005b083d2e6dafb25febe6e40d39908d61c822e1236483417b854445d",
+    "test/charts/compound-path/png.render.js": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d",
+    "test/charts/compound-path/public.test.js": "e25c49d702d833b47486d973c295369a483c5ae1fcac9ec078b0a83a6ab7ba4e",
+    "test/charts/cross-feature-integration/variants/animation/partition.render.js": "eaa3b66e22142fe45829962c051840c6e682f7084931c1f7547de70e51ef6ef6",
+    "test/charts/partition-layouts/backends.render.js": "06a9770520df48d65f4f6d82516498d0de7e8c62763b84f7be6374514da59c62",
+    "test/charts/partition-layouts/png.render.js": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d",
+    "test/charts/partition-layouts/public.test.js": "bd1e5531042eae29c908d8ccc412f20c1454f5c79ab33f28e6d84522c0e38aa8",
+    "test/charts/partition-layouts/renderer.render.js": "8605a1b338471333e298c6be2094714c072417462499e971c5bd2571a4335143",
+    "test/charts/structured-paints/png.render.js": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d",
+    "test/charts/structured-paints/public.test.js": "92cc0a506a18e168c797a4c4f73237c894990dec4d7f64029c52b7e58f4e2295",
+    "test/charts/structured-paints/renderer.render.js": "54d79e7a8d27d4e859a26e020f274d2c98100013b968daff79b139817b270fdc",
+    "test/charts/structured-paints/variants/pattern-paints/backends.render.js": "c9ceb87650a9deac197b99854389d1faaee679ae4f6565152743540976f77923",
+    "test/contracts/compound-path-types.test.js": "3c5e17afa9e5fe54e41a21f19143e719ec1da934e91ee9ab4c6372765202e908",
+    "test/contracts/hierarchy-types.test.js": "59249573cadc58ab91f173f90606aff9a9b98e1c72ba3eba739cc611667ca3ab",
+    "test/contracts/structured-paint-types.test.js": "6d1bf770897264e2ee17a3c9d3851c609a624f6e9002751f6647a9e1880629ec",
+    "test/docs/documentation.test.js": "08a2fc5821dc673344acec900b9daf09ead0cfc486e086716626cb709ec14bd1",
+    "test/docs/executable-programs.test.js": "519bd7e0538915c5fac834480d6b6a2c1bf97560b9fcb98a638c4a6889f52e15",
+    "test/native-capabilities.json": "f56cdd320c6a1ee42ce8c1643f5ab4ee1a3e09d75910885a00c37e65022a57ff",
+    "test/unit/actions/marks/structured-fill.test.js": "ec91220326c276435be59fd78acbeb7d5acebba690a2c9a18b5ee68cbae02746",
+    "test/unit/animation/partition-transition.test.js": "516f3039fc60841ba1d2a1d28da7278df1ec75832152a665baf0195b560c1e9b",
+    "test/unit/geo/mark-consumers.test.js": "2534894b21f7d3e4ed11d0f98cbeafb64d5878db049b551933ab8da988d31184",
+    "test/unit/resources/partition-plots.test.js": "63e76a07a28641b4314bdd3cdc205117d60467e4d5217f287f7ab8a855a2f10c"
+  },
+  "logs": [
+    {
+      "file": "browser.log.gz",
+      "sha256": "4ca9eb4bec039a46b735231ddcd15b23ae16f4e784affc7926fa6748a38b2d8c",
+      "compressedSha256": "6c566df8523039dd0956b7d7377f63fc867d71d9192f49f7fe08629c240d30a5"
+    },
+    {
+      "file": "compound-backends-final.log.gz",
+      "sha256": "3d078fca027379c191ab0b740bcfc599ba694ddd4be17c93c821e3fc8e639149",
+      "compressedSha256": "54dcd4a49657e85b0abde401a942eec060fa4d1cc980b52eb7cd410f63c7c5bf"
+    },
+    {
+      "file": "compound-geo-first.log.gz",
+      "sha256": "9f82539ef09f6efd969ce1d8138ace481f27e0bdac78011240be7fdf8958d40b",
+      "compressedSha256": "ed29852063b1ea8d7e73d14e91d837ee62b537403da9f3be6f3c2da526d8bf27"
+    },
+    {
+      "file": "compound-rebase-original.log.gz",
+      "sha256": "47740d0e9f42d3563e756434f0c339ab66f867efe30f517e1d68c0fe4e7534ca",
+      "compressedSha256": "ea7545de28d94108d3ec70388630ce5d4a49d1b4c41df2a995b3af0e0765aeec"
+    },
+    {
+      "file": "docs.log.gz",
+      "sha256": "36dbf0cc49095fa9ba8244249bfcc02aceca570ba4218b4994bf9e85584a65ab",
+      "compressedSha256": "42a7208c8e4c32851ce34424f39e0ee8e02a6ee6eed96f41213196d11e23c399"
+    },
+    {
+      "file": "focused-first.log.gz",
+      "sha256": "b806ab2a5bd0ca625899b0cec73204587f312a983eb13cd8b93094e3bca7a8c9",
+      "compressedSha256": "ba57ef728726bc217413c76ef11b49ceea9bcc63b92a623fd7361612eae049b8"
+    },
+    {
+      "file": "focused-second.log.gz",
+      "sha256": "3222652e7bd2c476e5f2777f4ccaba0d22ccadad633f5f68865e4a92d31747b9",
+      "compressedSha256": "a0ca22db5fa1b5f40172866eacdf0300d9f8a3d4d65a526e0a160bd6747300c1"
+    },
+    {
+      "file": "manifest-final.log.gz",
+      "sha256": "b3e3fdd0e3afe3930bd84f1db5674fceb7214981841598e795bba3cbb79366d3",
+      "compressedSha256": "1bf983e4e0ac7c04483f393c2f3295f12f823fc9aa1c40b5f896f26322744ea9"
+    },
+    {
+      "file": "native-pending.json.gz",
+      "sha256": "ca7f12db1cba6b03c14660bb0d2a767523b58e67eec70d7f1106552985570358",
+      "compressedSha256": "7eca0e52df80ddc5563423cc9983c02e1bd9cca017fd72c1c7c9d9c9419d935b"
+    },
+    {
+      "file": "new-render-types-final.log.gz",
+      "sha256": "13bb40e86cd58765e1831e412c8df37f78fb6a621b42da10a1a1a543c167bbd4",
+      "compressedSha256": "d0e56c606a5dd8318b85bd55a239a6c71ab49689d15969f451d08b837378a55f"
+    },
+    {
+      "file": "new-render-types-first.log.gz",
+      "sha256": "9df10d8582a4f3d1096cc2946189a846a731688cf00b93d05fced742a97a4bc5",
+      "compressedSha256": "0aa1cbd836153075a4eb5b92f6ea57782441da86b2c6a2095fd6206a9b748ece"
+    },
+    {
+      "file": "owning-final-second.log.gz",
+      "sha256": "c8cb6238c0502f938bd878912532efc64aedb5996caad819da5c64ad31e517ae",
+      "compressedSha256": "3663dfbe15b69602d979f3e719649a118df5136d254dd5f9140381274b28c393"
+    },
+    {
+      "file": "owning-final.log.gz",
+      "sha256": "08bf21a99872eebb62f8c651e8c90f9e818c794a0348fa42d40b0ae1cd01f8fb",
+      "compressedSha256": "833f17b1beb21cfc4cff0b46a715c4b0aa44b08e39792157b2460a77a8a5a66c"
+    },
+    {
+      "file": "render-existing.log.gz",
+      "sha256": "905479d7444fe578872b3a19275c8c1a6379595f117991ae09f98dc68c8c5db9",
+      "compressedSha256": "83caa0800f729ae221eccade716a25d86438ced3b328a02a666545d8f3ca000f"
+    }
+  ]
+}

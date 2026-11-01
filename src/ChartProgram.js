@@ -1,3 +1,5 @@
+import { registerGraphPresentationReader } from "./materialization/graph/presentationReader.js";
+import { prepareNativeGraphPresentation } from "./animation/nativeGraphPresentation.js";
 import { registerMarkItemResolver } from "./materialization/selection/itemResolver.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "./materialization/selection/policies/index.js";
 import { registerGeoLabelAnchorResolver } from "./materialization/textSourceAnchors.js";
@@ -18,6 +20,7 @@ import { projectionResourceHandler } from "./materialization/geo/projectionState
 export class ChartProgram extends CoreChartProgram {}
 
 registerMarkItemResolver(ChartProgram, resolveMarkItems, resolveMarkSourceItems);
+registerGraphPresentationReader(ChartProgram, prepareNativeGraphPresentation);
 
 registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: geometryResourceHandler, "edge-route": edgeRouteResourceHandler, projection: projectionResourceHandler });
 registerGeoLabelAnchorResolver(ChartProgram, geoLabelAnchors);

@@ -80,6 +80,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGeoLODData`](./actions/charts-data.md#creategeoloddata) | H2 | user-facing | core |
 | [`createGeometryData`](./actions/charts-data.md#creategeometrydata) | H2 | user-facing | core |
 | [`createGeoPointMark`](./actions/marks.md#creategeopointmark) | H2 | user-facing | marks |
+| [`createGeoRouteData`](./actions/charts-data.md#creategeoroutedata) | H2 | user-facing | core |
 | [`createGeoShapeMark`](./actions/marks.md#creategeoshapemark) | H2 | user-facing | marks |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
@@ -224,6 +225,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGeoLODData`](./actions/charts-data.md#editgeoloddata) | H3 | user-facing | core |
 | [`editGeometryData`](./actions/charts-data.md#editgeometrydata) | H3 | user-facing | core |
 | [`editGeoPointMark`](./actions/marks.md#editgeopointmark) | H3 | user-facing | marks |
+| [`editGeoRouteData`](./actions/charts-data.md#editgeoroutedata) | H2 | user-facing | core |
 | [`editGeoShapeMark`](./actions/marks.md#editgeoshapemark) | H3 | user-facing | marks |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |

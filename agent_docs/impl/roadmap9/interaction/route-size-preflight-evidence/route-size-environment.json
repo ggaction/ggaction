@@ -1,0 +1,10 @@
+{
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "osRelease": "27.0.0",
+  "cpu": "Apple M4",
+  "logicalCores": 10,
+  "memoryBytes": 17179869184,
+  "profile": "Node diagnostic only; no Chromium production P95 claim"
+}

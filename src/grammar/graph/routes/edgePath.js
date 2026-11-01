@@ -6,7 +6,7 @@ import { routeLength, validateRoutePoints } from "./polyline.js";
 import { shortestRoutePath } from "./shortestPath.js";
 
 export function normalizeEdgePathOptions(input = {}) {
-  ownRecord(input, "Edge-path options");
+  input = Object.assign(Object.create(null), ownRecord(input, "Edge-path options"));
   rejectUnknownProperties(input, ["exponent", "maxStretch", "zeroLength"], "edge-path options");
   const exponent = input.exponent === undefined ? 2 : input.exponent;
   const maxStretch = input.maxStretch === undefined ? 2 : input.maxStretch;
@@ -33,6 +33,49 @@ export function smoothRouteCorners(points, maximumLength, budget, heldSamples = 
   return length <= maximumLength ? { points: result, length, smoothing: 0.25 } : { points: points.map(point => ({ ...point })), length: originalLength, smoothing: 0 };
 }
 
+// Removing one edge from a simple undirected cycle leaves exactly one path.
+// Keep this call-local proof separate from mutable skip/lock processing state.
+function cycleComponents(adjacency, costs, budget, heldSamples) {
+  const groups = new Map();
+  let cells = 0;
+  for (const start of adjacency.keys()) {
+    if (groups.has(start)) continue;
+    const group = { eligible: true, count: 0, maximumCost: 0 }, queue = [start];
+    cells += 12; budget.samples(heldSamples + cells + 2); groups.set(start, group);
+    for (let cursor = 0; cursor < queue.length; cursor++) {
+      budget.check();
+      const node = queue[cursor], links = adjacency.get(node);
+      budget.charge(5 + links.length * 4); group.count++;
+      if (links.length !== 2 || links[0].target === node || links[1].target === node || links[0].target === links[1].target) group.eligible = false;
+      for (const next of links) {
+        group.maximumCost = Math.max(group.maximumCost, costs[next.edge]);
+        if (!groups.has(next.target)) {
+          cells += 8; budget.samples(heldSamples + cells + (queue.length + 1) * 2);
+          groups.set(next.target, group); queue.push(next.target);
+        }
+      }
+    }
+    // The factor two leaves a conservative margin for sequential rounding.
+    // Otherwise preserve the general search's possible cost-overflow error.
+    group.eligible &&= group.count >= 3 && group.maximumCost <= Number.MAX_VALUE / (group.count * 2);
+  }
+  return { groups, cells };
+}
+
+function cycleExceedsStretch(group, adjacency, lengths, excluded, source, target, maximumLength, budget) {
+  if (!group?.eligible || !Number.isFinite(maximumLength)) return false;
+  let node = source, previous = excluded, length = 0;
+  for (let count = 1; count < group.count; count++) {
+    budget.charge(6);
+    const links = adjacency.get(node), next = links[0].edge === previous ? links[1] : links[0];
+    length += lengths[next.edge];
+    if (length > maximumLength) return true;
+    if (next.target === target) return false;
+    node = next.target; previous = next.edge;
+  }
+  return false;
+}
+
 export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {
   const options = normalizeEdgePathOptions(optionsInput), context = prepareRouteInput(input, signal), { edges, budget } = context;
   budget.charge(edges.length * (Math.ceil(Math.log2(Math.max(1, edges.length))) + 8));
@@ -47,6 +90,8 @@ export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {
   const order = edges.map((_, index) => index).sort((a, b) => costs[b] - costs[a] || a - b);
   const skip = edges.map(() => false), lock = edges.map(() => false), routes = new Array(edges.length), provenance = new Map();
   let heldSamples = edges.length * 2;
+  const cycles = context.model.directed ? null : cycleComponents(adjacency, costs, budget, heldSamples);
+  if (cycles !== null) heldSamples += cycles.cells;
   for (const index of order) {
     budget.check(); budget.charge(1);
     const edge = edges[index], original = context.model.edges[edge.index];
@@ -56,11 +101,13 @@ export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {
     else if (lock[index]) reason = "locked";
     else {
       skip[index] = true;
-      const path = shortestRoutePath(adjacency, costs, skip, original.sourceKey, original.targetKey, budget, heldSamples);
-      if (path === undefined) { skip[index] = false; reason = "disconnected"; }
+      const group = cycles?.groups.get(original.sourceKey), maximumLength = options.maxStretch * lengths[index];
+      const exceeds = cycleExceedsStretch(group, adjacency, lengths, index, original.sourceKey, original.targetKey, maximumLength, budget);
+      const path = exceeds ? undefined : shortestRoutePath(adjacency, costs, skip, original.sourceKey, original.targetKey, budget, heldSamples);
+      if (exceeds) { skip[index] = false; reason = "stretch"; }
+      else if (path === undefined) { skip[index] = false; reason = "disconnected"; }
       else {
         const candidateLength = path.edges.reduce((sum, edgeIndex) => sum + lengths[edgeIndex], 0);
-        const maximumLength = options.maxStretch * lengths[index];
         if (!Number.isFinite(maximumLength)) throw new RangeError("Edge route stretch bound must be finite.");
         if (candidateLength > maximumLength) { skip[index] = false; reason = "stretch"; }
         else {
@@ -70,6 +117,7 @@ export function bundleEdgePathRoutes(input, optionsInput = {}, signal) {
           points = smoothed.points; finalLength = smoothed.length; smoothing = smoothed.smoothing;
           pathLength = candidateLength; pathEdges = path.edges; pathNodes = path.nodes;
           for (const edgeIndex of path.edges) lock[edgeIndex] = true;
+          if (group !== undefined) group.eligible = false;
         }
       }
     }

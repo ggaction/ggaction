@@ -1,0 +1,28 @@
+{
+  "baseCommit": "d3fd845dd",
+  "scope": "Flow tooltip acceptance tests and AT-23 owner assignment",
+  "runtimeChanged": false,
+  "packageInputsChanged": false,
+  "manifestChange": "AT-23.owner only",
+  "requirements": 30,
+  "groups": 79,
+  "consumerCells": 577,
+  "candidate": null,
+  "qualification": "pending",
+  "newAcceptanceResults": [],
+  "execution": {
+    "relatedUnitAndContracts": 111,
+    "flowBrowserTests": 8,
+    "newFlowBrowserConfigurations": 8
+  },
+  "initialFailures": [
+    {
+      "file": "flow-tooltip-first.log.gz",
+      "reason": "Revised-ribbon probe x=41 remained within the native node hit slop; moved the probe to x=50 inside the ribbon."
+    },
+    {
+      "file": "flow-tooltip-browser-first.log.gz",
+      "reason": "Host tooltip changed a centered main element size and invalidated the next pointer rectangle; reserved tooltip space and removed the inherited Canvas border."
+    }
+  ]
+}

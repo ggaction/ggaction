@@ -1,0 +1,19 @@
+import {chart} from '../src/index.js';
+import {getErrorDetails} from '../src/core/diagnostics.js';
+import {writeFileSync} from 'node:fs';
+const count=Number(process.argv[2] ?? 100);
+const nodes=Array.from({length:count},(_,i)=>({id:i}));
+const edges=Array.from({length:count},(_,i)=>({id:i,source:i,target:(i+Math.floor(count/3))%count}));
+const positions=nodes.map(({id})=>({key:id,x:200+150*Math.cos(2*Math.PI*id/count),y:200+150*Math.sin(2*Math.PI*id/count)}));
+const p=chart().createCanvas({width:400,height:400,margin:0})
+ .createData({id:'nodes',values:nodes,keyField:'id'}).createData({id:'edges',values:edges,keyField:'id'})
+ .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'source',target:'target'})
+ .layoutGraph({id:'layout',method:'fixed',options:{positions}});
+const results=[];
+for(const method of ['force-directed','density','edge-path']){
+ const start=performance.now();
+ try{const result=p.bundleGraphEdges({id:'routes',method});const routes=result.semanticSpec.resources.find(r=>r.kind==='edge-route');results.push({method,status:'complete',elapsedMs:performance.now()-start,diagnostics:routes.result.diagnostics,routes:routes.result.routes.length});}
+ catch(error){results.push({method,status:'error',elapsedMs:performance.now()-start,message:error.message,details:getErrorDetails(error)});}
+}
+const report={kind:'diagnostic-preflight-not-SLO',runtime:process.version,count,geometry:count+' circle nodes, offset floor(n/3) edges, radius150, explicit fixed layout',results};
+writeFileSync('.artifacts/route-size-preflight-'+count+'.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));

@@ -5619,6 +5619,77 @@ Revise join inputs or key paths and refresh all dependent projections and geogra
 See [Geometry and projections](../../api/geometry.md#editgeojoindata).
 
 
+## `createGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeoRouteData(options: TargetedOptions<CreateGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeoRouteDataOptions`](./../types.md#type-creategeoroutedataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `routes` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoRouteData({ id, routes, coordinateKind })
+```
+
+Interpret retained graph edge samples as geographic or planar LineStrings with original edge identity and rows.
+See [Geometry and projections](../../api/geometry.md#creategeoroutedata).
+
+
+## `editGeoRouteData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeoRouteData(options: TargetedOptions<EditGeoRouteDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeoRouteDataOptions`](./../types.md#type-editgeoroutedataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `routes` | Optional / branch-dependent | `string \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoRouteData({ target?, routes?, coordinateKind? })
+```
+
+Revise the route source or coordinate interpretation and refresh dependent geographic consumers atomically.
+See [Geometry and projections](../../api/geometry.md#editgeoroutedata).
+
+
 ## `createGeoLODData`
 
 **API layer:** user-facing. **Authoring roles:** H2.

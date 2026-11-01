@@ -14,6 +14,9 @@ import { bundleEdgePathRoutes } from "./edgePath.js";
 
 export const routeValueHash = value => contentDigest(canonicalJSON(encodeValue(value)));
 const same = (a, b) => routeValueHash(a) === routeValueHash(b);
+// Only this module's fully validated, deeply owned snapshots can reuse proof.
+// Worker/structured copies and caller-frozen records still take the full path.
+const validatedJobs = new WeakSet();
 
 export function createRouteJob(payload, viewport = null) {
   ownRecord(payload, "Route job payload");
@@ -45,10 +48,13 @@ export function createRouteJob(payload, viewport = null) {
   // Shared graph/hierarchy owners inspect nested descriptors before cloning.
   const body = cloneAndFreeze({ schemaVersion: 1, algorithmVersion: ROUTE_VERSIONS[intent.method], inputs: payload.inputs,
     intent, input: payload.input, viewport, ...(hierarchical ? { hierarchy: payload.hierarchy } : {}) });
-  return cloneAndFreeze({ ...body, inputHash: routeValueHash(body) });
+  const job = cloneAndFreeze({ ...body, inputHash: routeValueHash(body) });
+  validatedJobs.add(job);
+  return job;
 }
 
 export function validateRouteJob(job) {
+  if (validatedJobs.has(job)) return job;
   ownRecord(job, "Route job");
   rejectUnknownProperties(job, ["schemaVersion", "algorithmVersion", "inputs", "intent", "input", "viewport", "hierarchy", "inputHash"], "route job");
   if (!["schemaVersion", "algorithmVersion", "inputs", "intent", "input", "viewport", "inputHash"].every(key => Object.hasOwn(job, key))) throw new TypeError("Route job requires all own version, input and hash fields.");

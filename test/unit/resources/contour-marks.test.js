@@ -9,6 +9,7 @@ import { encodeValue, decodeValue } from "../../../src/persistence/codec.js";
 import { contourSelectionPolicy } from "../../../src/materialization/selection/policies/contour.js";
 import { contourScaleValues } from "../../../src/materialization/contour/scaleValues.js";
 import { exportAccessibleData } from "../../../src/accessibility.js";
+import { createInteractionSession } from "../../../src/interaction.js";
 
 const grid = { origin: [0, 0], dx: 1, dy: 1, width: 5, height: 5,
   values: [0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 3, 0, 3, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0] };
@@ -16,6 +17,94 @@ const base = () => chart().createCanvas({ width: 500, height: 400, margin: { top
   .createContourData({ id: "geometry", grid, thresholds: [1, 2, 3] });
 const data = p => p.semanticSpec.resources.find(resource => resource.kind === "geometry");
 const commands = p => p.graphicSpec.objects.contour.items.map(item => item.properties.commands);
+
+for (const mode of ["line", "filled"]) {
+  test(`${mode} contour mixed scale edits create all new bindings before rematerializing existing scales`, () => {
+    const p = base().createContourMark({ mode }).createXAxis({ scale: "contour-x" }).createLegend({ target: "contour" });
+    const before = serializeProgram(p), trace = p.trace;
+    const next = p.editContourMark({ x: { reverse: true }, y: { id: "new-y" }, color: { id: "new-color", type: "quantize", range: ["red", "blue"] } });
+    assert.equal(next.semanticSpec.layers[0].encoding.y.scale, "new-y");
+    assert.equal(next.semanticSpec.guides.legend.color.scale, "new-color");
+    assert.notDeepEqual(commands(next), commands(p));
+    const operations = [];
+    const walk = node => { operations.push([node.op, node.args?.id]); for (const child of node.children ?? []) walk(child); };
+    walk(next.trace.children.at(-1));
+    const firstEdit = operations.findIndex(([op, id]) => op === "editScale" && id === "contour-x");
+    assert.ok(firstEdit > 0);
+    for (const id of ["new-y", "new-color"]) assert.ok(operations.findIndex(([op, value]) => op === "createScale" && value === id) < firstEdit);
+    assert.deepEqual(deserializeProgram(serializeProgram(next)).graphicSpec, next.graphicSpec);
+    assert.throws(() => p.editContourMark({ x: { reverse: true }, color: { id: "new-color", type: "quantize", range: [] } }));
+    assert.equal(serializeProgram(p), before); assert.equal(p.trace, trace);
+  });
+
+  test(`${mode} contours hit their intrinsic levels or bands and exclude the interior hole`, () => {
+    const p = chart().createCanvas({ width: 240, height: 240, margin: 20 })
+      .createContourData({ id: "surface", grid: { origin: [0, 0], dx: 1, dy: 1, width: 3, height: 3,
+        values: [0, 1, 2, 0, 1, 2, 0, 1, 2] }, thresholds: [.5, 1.5, 2] })
+      .createContourMark({ mode, color: false, fill: mode === "line" ? "none" : "orange", stroke: "black", strokeWidth: 2 });
+    const items = getMarkItems(p, { target: "contour" });
+    assert.deepEqual(items.map(item => item.fields.value), [.5, 1.5]);
+    if (mode === "filled") assert.deepEqual(items.map(item => [item.fields.lower, item.fields.upper, item.fields.upperInclusive]), [[.5, 1.5, false], [1.5, 2, true]]);
+    const session = createInteractionSession({ program: p });
+    try {
+      // On the scalar plane value=x, x=.5 and x=1.5 map to 70 and 170.
+      for (const [x, expected] of mode === "line" ? [[70, items[0]], [170, items[1]], [100, null]] : [[100, items[0]], [200, items[1]], [40, null]]) {
+        session.dispatch({ type: "inspect", point: { x, y: 120 }, slop: 0 });
+        const target = session.getState().hit.target;
+        assert.equal(target?.itemKey ?? null, expected?.key ?? null);
+        if (expected) assert.deepEqual(target.resourceRefs, [{ kind: "geometry", id: "surface", revision: 0 }]);
+      }
+    } finally { session.destroy(); }
+    const donut = p.editContourData({ grid: { origin: [0, 0], dx: 1, dy: 1, width: 3, height: 3,
+      values: [2, 2, 2, 2, 0, 2, 2, 2, 2] }, thresholds: [1, 2] });
+    assert.equal(donut.graphicSpec.objects.contour.items[0].properties.commands.filter(c => c.op === "M").length, 2);
+    const hole = createInteractionSession({ program: deserializeProgram(serializeProgram(donut)) });
+    try {
+      for (const [point, expected] of [[{ x: 120, y: 120 }, false], [{ x: 95, y: 95 }, true], [{ x: 40, y: 40 }, mode === "filled"]]) {
+        hole.dispatch({ type: "inspect", point, slop: 0 });
+        assert.equal(hole.getState().hit.target !== null, expected);
+      }
+    } finally { hole.destroy(); }
+  });
+
+  test(`${mode} density contours preserve typed contributors through mapping, selection, revision and child scope`, () => {
+    const rows = [{ id: 1, x: 0, y: 0, weight: 2 }, { id: "1", x: 1, y: 1, weight: 3 }];
+    const p = chart().createCanvas({ width: 480, height: 320, margin: { top: 20, bottom: 50, left: 60, right: 120 } })
+      .createData({ id: "samples", keyField: "id", values: rows })
+      .createDensityContourData({ id: "density", x: "x", y: "y", weight: "weight", estimator: "histogram", normalization: "count",
+        grid: { origin: [0, 0], dx: 1, dy: 1, width: 2, height: 2 }, thresholds: [.5, 1, 1.5] })
+      .createContourMark({ mode }).createXAxis({ scale: "contour-x" }).createYAxis({ scale: "contour-y" }).createLegend({ target: "contour" });
+    const before = serializeProgram(p), original = getMarkItems(p, { target: "contour" }), selectedKey = original[0].key;
+    assert.equal(new Set(original[0].rows.map(row => row.rowKey)).size, 2);
+    const selected = p.selectMarks({ id: "picked", target: "contour", items: [selectedKey] })
+      .highlightMarks({ selection: "picked", ...(mode === "line" ? { stroke: "red" } : { fill: "red" }), dimOthers: false, bringToFront: false });
+    const revised = selected.reviseData({ source: "samples", id: "revised", values: [...rows].reverse().map(row => ({ ...row, weight: row.weight + 1 })) })
+      .editContourMark({ x: { reverse: true }, color: { id: "discrete", type: "quantize", domain: [.5, 1.5], range: ["blue", "green"] } });
+    const actual = getMarkItems(revised, { target: "contour" });
+    assert.deepEqual(actual.map(item => item.key), original.map(item => item.key));
+    assert.deepEqual(actual[0].rows.map(row => row.rowKey), [...original[0].rows].reverse().map(row => row.rowKey));
+    assert.ok(actual.every(item => item.rows.every(row => row.data === "revised" && row.revision === 1)));
+    assert.deepEqual(data(revised).result.contours.grid.values, [3, 0, 0, 4]);
+    assert.equal(revised.semanticSpec.layers[0].contourBinding.geometry.revision, 1);
+    assert.equal(revised.semanticSpec.guides.legend.color.scale, "discrete");
+    assert.equal(revised.semanticSpec.guides.axis.x.scale, "contour-x");
+    assert.equal(actual[0].properties[mode === "line" ? "stroke" : "fill"], "red");
+    assert.deepEqual(revised.resolvedScales["contour-x"].domain, [0, 1]);
+    assert.equal(revised.semanticSpec.scales.find(scale => scale.id === "contour-x").reverse, true);
+    assert.throws(() => revised.encodeColor({ target: "contour", field: "weight", fieldType: "quantitative" }), /support|intrinsic|contour/i);
+    const restored = deserializeProgram(serializeProgram(revised));
+    assert.deepEqual(restored.graphicSpec, revised.graphicSpec);
+    const joined = hconcat({ id: "pair", programs: [{ id: "left", program: restored }, { id: "right", program: p }] });
+    const views = exportAccessibleData(joined, { format: "items" }).views;
+    assert.deepEqual(views.map(view => view.childPath), [["left"], ["right"]]);
+    assert.equal(new Set(views.flatMap(view => view.items.map(item => item.key))).size, original.length * 2);
+    assert.deepEqual(views[0].items.map(item => item.selectedBy), actual.map((_, i) => i === 0 ? ["picked"] : []));
+    assert.ok(views[1].items.every(item => item.selectedBy.length === 0));
+    assert.deepEqual(views[0].items.map(item => item.fields.value), actual.map(item => item.fields.value));
+    assert.deepEqual(exportAccessibleData(deserializeProgram(serializeProgram(joined)), { format: "items" }), exportAccessibleData(joined, { format: "items" }));
+    assert.equal(serializeProgram(p), before);
+  });
+}
 
 test("line and filled contours keep opposite hole winding and stable level or band identities", () => {
   for (const mode of ["line", "filled"]) {

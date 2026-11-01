@@ -930,6 +930,10 @@
     "file": "fonts.mjs",
     "cases": [
       {
+        "id": "fonts/axis-reflow-closure",
+        "statements": 14
+      },
+      {
         "id": "fonts/resource-metrics-offline",
         "statements": 15
       },
@@ -1224,6 +1228,18 @@
   {
     "file": "edge-routes.mjs",
     "cases": [
+      {
+        "id": "edge-routes/bounded-hierarchy-spans",
+        "statements": 9
+      },
+      {
+        "id": "edge-routes/bounded-long-paths",
+        "statements": 5
+      },
+      {
+        "id": "edge-routes/own-host-options",
+        "statements": 5
+      },
       {
         "id": "edge-routes/responsive-source-and-guide-closure",
         "statements": 16
@@ -1618,8 +1634,8 @@
         "statements": 2
       },
       {
-        "id": "animation/guide-anchors-offline-native",
-        "statements": 6
+        "id": "animation/geographic-text-offline-native",
+        "statements": 1
       },
       {
         "id": "animation/guides-offline-native",
@@ -1631,7 +1647,7 @@
       },
       {
         "id": "animation/bounded-repeated-interruption",
-        "statements": 14
+        "statements": 12
       },
       {
         "id": "animation/public-player-interruption",
@@ -1660,6 +1676,10 @@
       {
         "id": "animation/cartesian-offline-renderers",
         "statements": 13
+      },
+      {
+        "id": "animation/guide-anchors-offline-native",
+        "statements": 6
       },
       {
         "id": "animation/implicit-legend-lanes-offline-native",
@@ -1705,6 +1725,18 @@
     "file": "interaction-animation.mjs",
     "cases": [
       {
+        "id": "interaction-animation/four-route-player-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "interaction-animation/geographic-route-seam-current-hit",
+        "statements": 12
+      },
+      {
+        "id": "interaction-animation/overlapping-edge-four-formats",
+        "statements": 5
+      },
+      {
         "id": "interaction-animation/native-frame-four-formats",
         "statements": 20
       },
@@ -1719,6 +1751,14 @@
       {
         "id": "interaction-animation/geographic-projection-membership",
         "statements": 18
+      },
+      {
+        "id": "interaction-animation/geographic-label-source-lifecycle",
+        "statements": 18
+      },
+      {
+        "id": "interaction-animation/current-graph-drag-four-formats",
+        "statements": 43
       }
     ]
   },
@@ -1752,6 +1792,74 @@
       },
       {
         "id": "animation-appearance/current-ink-selection",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "animation-timeline.mjs",
+    "cases": [
+      {
+        "id": "animation-timeline/nonlinear-offline-four-renderers",
+        "statements": 17
+      },
+      {
+        "id": "animation-timeline/player-marker-lifetimes",
+        "statements": 6
+      },
+      {
+        "id": "animation-timeline/current-hit-selection-rebase",
+        "statements": 4
+      }
+    ]
+  },
+  {
+    "file": "animation-cartesian-completion.mjs",
+    "cases": [
+      {
+        "id": "animation-cartesian-completion/native-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-cartesian-completion/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "geographic-routes.mjs",
+    "cases": [
+      {
+        "id": "geographic-routes/source-and-atomic-revision",
+        "statements": 9
+      },
+      {
+        "id": "geographic-routes/offline-restored-edit",
+        "statements": 4
+      },
+      {
+        "id": "geographic-routes/four-renderer-native-line-parity",
+        "statements": 11
+      }
+    ]
+  },
+  {
+    "file": "animation-geotext-expressions.mjs",
+    "cases": [
+      {
+        "id": "animation-geotext-expressions/current-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-geotext-expressions/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-geotext-expressions/current-hit-rebase",
         "statements": 5
       }
     ]

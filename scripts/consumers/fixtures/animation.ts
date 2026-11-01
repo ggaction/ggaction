@@ -23,7 +23,7 @@ player.play().pause().seek(10).reverse().setRate(2).setRepeat(1);
 player.interrupt({to,options:{durationMs:100}});player.cancel();player.dispose();
 const settled:Promise<{readonly reason:string;readonly timeMs:number;readonly iteration:number}>=player.finished;
 // @ts-expect-error authored plans are not prepared handles
-const forged:TransitionPlan={kind:'transition-plan',version:2,durationMs:1,easing:'linear'};
+const forged:TransitionPlan={kind:'transition-plan',version:3,durationMs:1,easing:'linear'};
 // @ts-expect-error schedules choose one source of times
 exportAnimationFrames(plan,{fps:30,timesMs:[0]});
 // @ts-expect-error plain graphics are not authentic sampled endpoints
@@ -64,15 +64,35 @@ const geoTo=geoFrom.editProjection({translatePx:[600,150]});
 const geoFrame=sampleTransition(planTransition({from:geoFrom,to:geoTo,options:{durationMs:100}}),50);
 render(geoFrame,context);renderToSVG(geoFrame);renderToPNGBuffer(geoFrame);renderToPDFBuffer(geoFrame);
 for(const decision of geoFrame.decisions)if(decision.kind==='geographic'){
- const kernel:'native-geo'=decision.kernel;
+ const kernel:'native-geo'|'native-geo-text'=decision.kernel;
  const address:readonly string[]=[decision.ownerKey,decision.itemKey,decision.role];
  // @ts-expect-error current geographic parts have no invented endpoint index
  const index=decision.targetIndex;
  void kernel;void address;void index;
 }
 
-const currentTransitionVersion: 2 = plan.version;
+const currentTransitionVersion: 3 = plan.version;
 void currentTransitionVersion;
+
+const timeline=planTransition({from,to,options:{durationMs:100,easing:'linear',composite:'priority',tracks:[
+ {target:{ownerKey:'exact-native-owner'},property:'geometry',kernel:'native-progress',priority:0,keyframes:[{timeMs:0,value:0},{timeMs:100,value:1,easingToNext:'linear'}]},
+ {target:{itemKey:'exact-native-item',role:'body'},property:'fill',kernel:'color',priority:1,keyframes:[{timeMs:0,value:'black'},{timeMs:100,value:'white'}]},
+ {target:{guideKey:'exact-native-guide'},property:'strokeWidth',kernel:'positive-scale',priority:2,keyframes:[{timeMs:0,value:1},{timeMs:100,value:2}]}
+],markers:[{id:'half',timeMs:50}]}});
+const markerPlayer=createAnimationPlayer({plan:timeline,clock:{now:()=>0,requestFrame:()=>1,cancelFrame(){}},render(){},onMarker(event){
+ const id:string=event.id,time:number=event.timeMs,iteration:number=event.iteration;renderToSVG(event.frame);void id;void time;void iteration;
+ // @ts-expect-error marker events are immutable
+ event.iteration++;
+}});
+markerPlayer.seek(50,{emit:true});
+// @ts-expect-error seek emission is boolean
+markerPlayer.seek(50,{emit:1});
+// @ts-expect-error geometry keyframes require numeric native progress
+planTransition({from,to,options:{durationMs:100,tracks:[{target:{ownerKey:'owner'},property:'geometry',kernel:'native-progress',keyframes:[{timeMs:0,value:'zero'}]}]}});
+// @ts-expect-error color keyframes require CSS strings
+planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item'},property:'fill',kernel:'color',keyframes:[{timeMs:0,value:0}]}]}});
+// @ts-expect-error guide and item selectors are mutually exclusive
+planTransition({from,to,options:{durationMs:100,tracks:[{target:{itemKey:'item',guideKey:'guide'},property:'opacity',kernel:'number',keyframes:[{timeMs:0,value:1}]}]}});
 
 const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
  .createData({values:[{x:1,y:10},{x:100,y:20}]}).createPointMark()
@@ -80,6 +100,16 @@ const guideFrom=chart().createCanvas({width:600,height:420,margin:90})
  .createXAxis({title:{text:'Amount',at:10,offset:35}});
 const guidePlan=planTransition({from:guideFrom,to:guideFrom.editXAxisTitle({at:100}),options:{durationMs:100}});
 renderToSVG(sampleTransition(deserializeAnimation(serializeAnimation(guidePlan)).plan,50));
+const nativeRows=chart().createCanvas().createData({id:'raw',keyField:'id',values:[{id:'a',category:'A',value:2,lower:1,upper:3}]});
+const nativeRule=nativeRows.createRuleMark({id:'rule'}).encodeX({conditions:[{when:{version:2,registry:'standard@1',root:{type:'literal',value:false}},value:{field:'value',fieldType:'quantitative'}}],otherwise:{field:'lower',fieldType:'quantitative'}});
+const nativeCaps=nativeRows.createErrorBar({id:'interval',x:{field:'category',fieldType:'nominal'},y:{center:'value',lower:'lower',upper:'upper'},caps:true,capSize:20});
+const nativeDensity=nativeRows.createDensityPlot({id:'density',field:'value',bandwidth:1,extent:[0,4],steps:8,guides:false});
+const nativeOverlay=nativeRows.createBarMark({id:'bar'}).encodeX({field:'category',fieldType:'nominal'}).encodeY({field:'value',aggregate:'sum'}).createOverlay({id:'overlay',source:'bar',type:'point'});
+for(const endpoint of [nativeRule,nativeCaps,nativeDensity,nativeOverlay]){
+ const nativePlan=planTransition({from:endpoint,to:endpoint.editCanvas({width:600}),options:{durationMs:100}});
+ const nativeFrame=sampleTransition(deserializeAnimation(serializeAnimation(nativePlan)).plan,50);
+ render(nativeFrame,context);renderToSVG(nativeFrame);renderToPNGBuffer(nativeFrame);renderToPDFBuffer(nativeFrame);
+}
 
 
 const legendFrom=guideFrom.encodeColor({field:'x',fieldType:'quantitative',scale:{type:'log',domain:[1,100],range:['red','blue']}})

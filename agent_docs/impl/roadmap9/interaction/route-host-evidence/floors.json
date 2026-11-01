@@ -1,0 +1,27 @@
+{
+  "floors": {
+    "resources/graphRouteExecutor.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "resources/graphRoutes.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "resources/graphRouteExecutor.js": {
+      "lines": 100,
+      "branches": 97.18,
+      "functions": 100
+    },
+    "resources/graphRoutes.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "status": "passed"
+}

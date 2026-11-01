@@ -182,3 +182,34 @@ program/trace 불변, 한 번의 history commit, hidden intent 유지와 listene
 source/package/type/discovery/documentation owning 39/39, canonical docs generation exit0.
 원 f9fa body source와 D7174 source를 포함한 결합이며, 동일 tar3Node와 built docs는 아직
 마감 전이다. 이 시점 source 동결은 root의 appearance v2 후속 연결을 위한 인계다.
+
+## 본체 최종 qualification 범위
+
+런타임 정본은 c8470d1e8이며 root0118/Polar2100 후속은 증거·문서·consumer 등록만 병합했다.
+같은 archive `c1ffc1d2b01de652a688ea06745b1907bf8ba9d113e773e1c8065d8de1628c42`를
+Node22/20/24에서 각각22개 typed animation/Geo/session runtime, strict 타입, optional peers로
+검사했다. Node22 명령은 exit0이며 Node20/24는 interaction gzip131056이 기존131000을
+초과해 마지막 cap assertion에서 exit1이다. Runtime/type는 먼저 모두 통과했고 원로그를
+보존한다. 최소131100 cap으로 같은18개 bundle 측정을 독립 재검증했다. 새 tar 재포장이나
+전체 반복은 하지 않았다. Full774352/Basic422391/animation232544는 현재한도 이내다.
+
+합산 canonical package는1157entries, Node22 packed1655447 / Node20 packed1658090,
+unpacked7497485이다. 최소한도1157/1659000/7498000을 적용했다. 최초 상대 outputDirectory
+호출은 staging 경로에서 ENOENT였고 절대경로를 사용해 위 archive를 생성했다.
+
+문서 source231개 중229통과·2실패는 검색payload1082299가 이전1081400을 넘은 동일 원인이다.
+최소1082300 상한과 owning44/44로 수리했다. 추가 inset 검사는 독립200 log중간값과 native
+구현 사이의2.8e-14 반올림 차이 때문에 최초strict equality가 실패했다. x/y만1e-10 tolerance,
+나머지identity/role/order/paint는exact로 검증하여3inset 및 outside hidden/current hit를 확인했다.
+Canonical actual-session+Geo lifecycle12/12는 해당 최종fixture에서 통과했다.
+
+남은 의무는 별도로 유지한다. `resolveTextGraphicEntries`/`geoLabelAnchors`를 재사용하는
+source label의 camera-aware anchor, stored geographic/feature anchor의 annotation 이동,
+그들의 hidden/current-frame/renderer/offline 교차는 후속 구현 대상이다. Body graticule와
+composite inset geometry/hit는 위 근거로 확인했으나 graticule/inset의 Text 소비자는 아직
+닫지 않았다. 전체AT44/STEP062/STEP077, 전체repositorycoverage 및 root공통corpus의 완료를
+이 checkpoint로 주장하지 않는다.
+
+최종 built 문서186페이지와1598개 machine artifact, desktop search 및 전체320/390/768px
+브라우저 검사가 통과했다. Source pin과 package staging1157파일 byte 감사도 통과했다.
+정확 source/evidence hash와 원실패·owning수리는 [qualification](animation-geo-public-evidence/qualification.json)에 보존한다.

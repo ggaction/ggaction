@@ -13,7 +13,7 @@ import { interactionOptions as options } from './input.js';
 
 const targetKey = target => JSON.stringify([target.childPath, target.id]);
 const itemId = (target, key) => JSON.stringify([targetKey(target), key]);
-const moves = ['next', 'previous', 'first', 'last', 'parent', 'firstChild', 'previousSibling', 'nextSibling', 'root'];
+const moves = ['next', 'previous', 'first', 'last', 'parent', 'firstChild', 'previousSibling', 'nextSibling', 'root', 'nextCandidate', 'previousCandidate'];
 function budget() { let work = 0; return count => validateWorkLimit(work += count, 'Keyboard focus work'); }
 function owner(program, target, allowMissing = false) {
   const result = interactionOwner(program, target, allowMissing);
@@ -121,7 +121,22 @@ export function normalizeFocusCommand(program, binding, command) {
   validateWorkLimit(request.itemKey?.length ?? 0, 'Keyboard focus key');
   return cloneAndFreeze({ type: 'focus', target: config.target, itemKey: request.itemKey });
 }
-export function moveKeyboardFocus(model, focus, command) {
+export function moveKeyboardFocus(model, focus, command, hit) {
+  if (['nextCandidate', 'previousCandidate'].includes(command.move)) {
+    if (hit?.frameVersion !== model.frame.version) return focus;
+    const seen = new Set(), candidates = [];
+    const spend = budget();
+    for (const candidate of hit.candidates) {
+      spend(1 + candidate.itemKey.length);
+      const entry = entryFor(model, { id: candidate.ownerId, childPath: candidate.childPath }, candidate.itemKey);
+      if (entry !== null && !seen.has(entry)) { seen.add(entry); candidates.push(entry); }
+    }
+    if (!candidates.length) return focus;
+    const current = focus?.itemKey ? entryFor(model, focus.target, focus.itemKey) : null;
+    const index = candidates.indexOf(current), forward = command.move === 'nextCandidate';
+    return focusEntry(candidates[index < 0 ? (forward ? 0 : candidates.length - 1)
+      : (index + (forward ? 1 : candidates.length - 1)) % candidates.length]);
+  }
   if (command.move === undefined) {
     if (command.itemKey === null) return container(command.target);
     const entry = entryFor(model, command.target, command.itemKey);
@@ -155,6 +170,7 @@ export function keyboardActivation(model, focus, parent = false) {
   return { type: 'focusHierarchy', target: entry.target, payload: { focus: native }, origin: 'user' };
 }
 export function keyboardKeyCommand(model, focus, key) {
+  if (key === 'PageDown' || key === 'PageUp') return { type: 'focus', move: key === 'PageDown' ? 'nextCandidate' : 'previousCandidate' };
   if (key === 'Enter' || key === ' ') return { type: 'activate' };
   if (key === 'Escape') return { type: 'activate', parent: true };
   const current = focus?.itemKey ? entryFor(model, focus.target, focus.itemKey) : null, tree = current?.item.navigation;

@@ -58,9 +58,24 @@ export function graphLayoutKernelOptions(intent, { nodeKeys, retainedCoordinates
   return options;
 }
 
+// Replacing active coordinates may carry unchanged dormant authored entries.
+// This never admits a new inactive key or edits an inactive coordinate.
+export function retainedGraphCoordinates(previous, next, nodeKeys) {
+  const active = new Set(nodeKeys);
+  return GRAPH_COORDINATE_FIELDS.filter(field => {
+    if (!Object.hasOwn(next.options, field)) return false;
+    const existing = new Map((previous.options[field] ?? []).map(value => [encodeRowKey(value.key), value]));
+    return next.options[field].every(value => {
+      const key = encodeRowKey(value.key), before = existing.get(key);
+      if (active.has(key)) return true;
+      const coordinates = field === "pinned" ? ["fx", "fy"] : ["x", "y"];
+      return before !== undefined && coordinates.every(name => Object.is(value[name], before[name]));
+    });
+  });
+}
 
-// A single-node edit retains dormant source coordinates. Replacing an authored
-// array continues to use the stricter current-membership rules in the action.
+
+// A single-node edit retains dormant source coordinates without changing them.
 export function patchGraphNodePosition(intent, nodeKeys, value) {
   if (!["fixed", "force"].includes(intent.method)) throw new TypeError("Node movement requires a fixed or force graph layout.");
   const [position] = coordinates([value], false), encoded = encodeRowKey(position.key);
