@@ -4845,8 +4845,11 @@ forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 �
 [Animation Current](contract/current/ANIMATION.md)가 소유한다.
 독립 `axisLabelReflowState`는 같은 config/query/candidate owner를 사용하여 현재 raw value와
 실제 line 목록·ink bounds를 검산한다. Host preparation과 animation은 같은 bounded wrap query
-collector를 공유한다. 현재 이 준비 owner는 공개 sampler에 미연결이며 동적 collection 수집·emission은
-후속 경계다. Native action의 기본 query/trace/renderer 입력은 바꾸지 않는다.
+collector를 공유한다. `axisLabelGroups`는 실제 native collection의 빈 drawing slot까지 수집하고
+raw별 style/font와 현재 line vector를 닫힌 준비 상태로 검산한다. 아직 공개 sampler에 연결하지
+않았으며 dynamic emission은 후속 경계다. Geo와 이 준비 상태의 동일 concrete placement 검증은
+`grammar/animation/placement`가 소유하고 Geo의 기존 alias/오류를 유지한다. Native action의
+기본 query/trace/renderer 입력은 바꾸지 않는다.
 
 Native Cartesian@2와 gradient/fixed-label guide@4를 root timeline version3에 결합했다.
 sample은 순수 axis state와 materialization legend/label state를 guideTracks facade로 분기하고

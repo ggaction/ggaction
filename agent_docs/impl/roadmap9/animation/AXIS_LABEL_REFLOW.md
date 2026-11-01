@@ -238,3 +238,37 @@ Private 준비 상태 checkpoint는 신규15개를 포함한 Node22 누적55개,
 font opt-in1사례·strict types·6bundle을 확인했다. 이는 아직 연결하지 않은 dynamic sampler의
 설치 검증이 아니다. 최초 cap 초과와 회복, 원 fixture/coverage 실패는
 [준비 상태 증거](axis-reflow-evidence/state-foundation.json)에 분리 보존한다.
+
+## Native group 준비와 현재 출력 검산
+
+`axisLabelGroups.js`는 실제 graphic scopes/axis owners/collection을 읽어 `{groups,items}`를
+준비한다. Layout의 실제 필드명은 `values`이고, presentation은 raw 값 순서의 `styles`와
+단일 concrete `font`다. Placement는 native collection의 `insertion`, 전체 collection의
+`ordinal`, concrete `frame`이다. 빈 collection에도 같은 주소가 존재하며 임의 endpoint index를
+합성하지 않는다. 각 현재 item은 raw 값/실제 line 순서와 정확히 대응해야 한다.
+
+전체 raw 값의 colorMap을 먼저 보존하고 현재 표시된 줄들의 실제 appearance를 검산한다.
+같은 raw 값의 모든 줄에 공통인 opacity 등은 준비 style로 보존한다. 개별 줄만 바뀐 font/geometry/
+appearance는 원 `guide-edited` fallback이며 native raw 의미를 새로 추정하지 않는다. 복원할 때
+mark identity나 background 자리를 대신 차지할 수 없고, 누락/중복/순서/slot/metric/font 변조는
+거부한다. Metadata의 native origin은 실제 program+childPath+ownerId+typed raw value만 WeakMap에
+보유한다. 직렬화된 준비 상태가 native 권한을 생성하지 않는다.
+
+같은 concrete offset/clip/clip-chain validator의 실제 두 소비자를 위해
+`grammar/animation/placement.js`를 추출했다. 기존 `validateGeoAnimationFrame` alias/diagnostic과
+rect/path/empty clip 계약은 그대로다. Parent가 2026-11-01에 이 소유 분리를 채택했다.
+
+Public emission에서 원 timeline이 특정 raw+line의 style만 바꾸는 경우 실제 current drawing을
+그대로 만든다. 그 raw의 모든 줄에서 공통 style을 증명할 수 없으면 captured group은
+`guide-edited` fallback으로만 재기준한다. 모든 줄의 공통 style이면 typed 의미를 보존한다.
+이는 root가 채택한 기존 primitive 편집 경계이며 새 per-line authoring 의미를 만들지 않는다.
+이 부분의 public/offline/interrupt 회귀는 아직 후속 작업이다.
+
+준비 그룹 신규11개와 관련40개 Node22 검사, Node20/24 각각 기존39개 및 최종11개를 통과했다.
+새 group owner100/95.77/100, 공통 placement100/100/100으로 기존95/90/100 floor를 유지했다.
+구조/package/documentation40개도 통과했다. 같은6afb6405…tar의 Node20 기존 font opt-in1사례,
+strict types,6entry bundle을 확인했으며 이는 공개 dynamic reflow 설치 검증이 아니다.
+추가 source2파일 때문에 package entries1229, Node22packed1757086/Node20packed1760130,
+unpacked7935303을 측정해 한도를1229/1760200/7935400으로 최소 보정했다. Bundle 상한은
+변경하지 않았다. 원 fixture 실패/회복과 정확 source hash는
+[native group 준비 증거](axis-reflow-evidence/group-foundation.json)에 보존한다.
