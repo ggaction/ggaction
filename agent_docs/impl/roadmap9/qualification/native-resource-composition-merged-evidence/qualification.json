@@ -3,7 +3,7 @@
   "base": "d2bbf53c8",
   "incomingSource": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
   "upstreamPin": "6f02b07870ba96c7e9bcbdd433cb25e84fa12be7",
-  "sourceRevision": null,
+  "sourceRevision": "ac5f2191f2796c8bd256668704158add5ddcd105",
   "approval": "../../AUTHORIZATION.json#remainingApproval; root chose concrete Current compositional consumer interpretation",
   "archive": {
     "name": "ggaction",
@@ -153,6 +153,41 @@
     "build.log": {
       "sha256": "2f208d559eefcd998f8ff1afb2ad24078a4afbdc91449bf61163997faa56f91c",
       "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "5aa186d55af524f6081b6283bdf01e479b1fb077d4d2629963cce76ec09901d1",
+      "bytes": 1810
+    },
+    "source-pin-pack.json": {
+      "sha256": "dcb75a62aa53159e5b1269831c3bf69b1e8cc5c7452514d80e9cc94e54dea89d",
+      "bytes": 397
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }

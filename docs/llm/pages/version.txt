@@ -10,7 +10,7 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:b2f1b068f5ef2e38bbd775b0555c48ab1abc70eddcdf0fae25afae0371c54d16` |
-| Example and dataset source | `codex/roadmap9-animation-timeline-public` |
+| Example and dataset source | `951b130748b3a1d9b008f9b3c2797ca28f810cfa` |
 | Runtime source commit | `d165696d6ef93fa5b1c4c6e9c26b881d66567dcb` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
