@@ -1,0 +1,201 @@
+TAP version 13
+# Subtest: animation declarations keep plans and frames opaque and directly renderable
+ok 1 - animation declarations keep plans and frames opaque and directly renderable
+  ---
+  duration_ms: 264.842042
+  type: 'test'
+  ...
+# Subtest: isolates npm pack from the caller's global cache
+ok 2 - isolates npm pack from the caller's global cache
+  ---
+  duration_ms: 2.140833
+  type: 'test'
+  ...
+# npm notice
+# npm notice New major version of npm available! 10.9.8 -> 12.2.1
+# npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+# npm notice To update run: npm install -g npm@12.2.1
+# npm notice
+# Subtest: publishes only the bounded public package artifact
+ok 3 - publishes only the bounded public package artifact
+  ---
+  duration_ms: 3897.811
+  type: 'test'
+  ...
+# Subtest: rejects missing, forbidden, and oversized package manifests
+ok 4 - rejects missing, forbidden, and oversized package manifests
+  ---
+  duration_ms: 0.576833
+  type: 'test'
+  ...
+# Subtest: packed scale compaction preserves exports and numeric color results
+ok 5 - packed scale compaction preserves exports and numeric color results
+  ---
+  duration_ms: 160.26775
+  type: 'test'
+  ...
+# Subtest: consumer setup removes its temporary directory when installation fails
+ok 6 - consumer setup removes its temporary directory when installation fails
+  ---
+  duration_ms: 320.371375
+  type: 'test'
+  ...
+# Subtest: independent installed cases continue after a failure and retain case identities
+ok 7 - independent installed cases continue after a failure and retain case identities
+  ---
+  duration_ms: 2.967167
+  type: 'test'
+  ...
+# Subtest: installed fixture modules and their case manifest are exhaustive
+ok 8 - installed fixture modules and their case manifest are exhaustive
+  ---
+  duration_ms: 131.692333
+  type: 'test'
+  ...
+# Subtest: exports the public module boundaries
+ok 9 - exports the public module boundaries
+  ---
+  duration_ms: 1.191375
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 10 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.37575
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 11 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 1.376708
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 12 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 222.622334
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 13 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 2.066584
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 14 - keeps library terminology source-neutral
+  ---
+  duration_ms: 997.967792
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 15 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 229.7865
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 16 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 69.897042
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 17 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.555875
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 18 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 11.675709
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 19 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 672.551916
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 20 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.621541
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 21 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 136.863
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 22 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 97.249125
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 23 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 126.361458
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 24 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.918125
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 25 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.336834
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 26 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 2709.194
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 27 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 24.440583
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 28 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.118083
+  type: 'test'
+  ...
+# Subtest: runner rejects each unmatched selector before executing any selected tests
+ok 29 - runner rejects each unmatched selector before executing any selected tests
+  ---
+  duration_ms: 496.854208
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 30 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 1.44975
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 31 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 2.61225
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5539.078583
