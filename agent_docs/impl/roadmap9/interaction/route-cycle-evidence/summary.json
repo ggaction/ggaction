@@ -1,5 +1,5 @@
 {
-  "status": "source-and-installed-qualified-provenance-pending",
+  "status": "qualified-browser-p95-pending",
   "base": "4333470bd",
   "date": "2026-11-01",
   "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit bounded cycle proof approval",
@@ -54,7 +54,8 @@
     "sha256": "58a048280eae62449c52ec7d69f67e5ebdd7c82f3301d1aed788664713bc0148",
     "entryCount": 1170,
     "size": 1670020,
-    "unpackedSize": 7561491
+    "unpackedSize": 7561491,
+    "afterMetadataSHAUnchanged": true
   },
   "caps": {
     "entries": 1170,
@@ -81,10 +82,18 @@
   ],
   "performance": "Single Node diagnostic is not P95. Same-source Chromium and exact-job effect not measured yet.",
   "remaining": [
-    "source pin",
     "actual Chromium DPR1/2 P95",
     "all-item graphic limit",
     "force/density large workloads",
     "AT82/STEP077 incomplete"
-  ]
+  ],
+  "source": "1e3077170",
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningChecks": 47,
+    "publicContentChanged": false,
+    "builtBrowserReuse": "Private numeric optimization plus source identifiers only; public HTML/CSS/JS unchanged."
+  }
 }
