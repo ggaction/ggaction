@@ -1594,6 +1594,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/grouped-legend-offline-native",
+        "statements": 1
+      },
+      {
         "id": "animation/categorical-legend-offline-native",
         "statements": 1
       },

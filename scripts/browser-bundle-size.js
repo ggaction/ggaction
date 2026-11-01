@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 423_200, // Shared categorical legend owners: Node20 423,184 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 276_800, // Native categorical legend geometry: Node20 276,707 gzip bytes.
+  "ggaction/animation": 281_400, // Native grouped legend geometry: Node20 281,317 gzip bytes.
   "ggaction/interaction": 131_400 // Shared guide metadata: Node20/24 131,347 gzip bytes.
 });
 

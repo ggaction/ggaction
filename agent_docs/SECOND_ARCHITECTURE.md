@@ -915,6 +915,12 @@ animation preparation carries guide meaning in an optional endpoint vector. The 
 closed validator checks native forward geometry, sampled identity and offline restore;
 flat frame provenance retains current guide values without retaining previous plans.
 Exact supported guide families and fallbacks belong to the Current Animation contract.
+Native legend actions and animation share `materialization/guides/legendLaneState.js`
+for family ordering and occupied block bounds. Group preparation stores one frame with
+its native placement and intrinsic block values; `legendGroupState.js` reuses each
+family's pure native layout plus `layout/legendGroup.js` packing. The action still owns
+all graphic writes and trace nodes. Sampling neither invokes an action nor derives
+meaning from final coordinates, and unsupported dependent blocks keep a group fallback.
 
 ### Browser bundle regression ceilings
 
@@ -927,7 +933,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 276,800 bytes |
+| `ggaction/animation` | 281,400 bytes |
 
 
 
@@ -4689,3 +4695,5 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 1182/1,694,300/7,641,100으로 교정한다. 최초1179entry 한도 실패는 검증 기록에 남긴다.
 동일 설치본의 Node20 Full774,919/Basic423,184/animation276,707gzip bytes에 따라
 현재 표를775,000/423,200/276,800으로만 올린다. SVG/graph/interaction 한도는 유지한다.
+
+명시 그룹 범례 owner 3개를 추가한 artifact는 1185 entries, packed1,696,696 및 unpacked7,669,973 bytes로 측정되어 한도를1185/1,696,700/7,670,000으로 맞췄다. Native packing을 포함한 animation entry는 Node20에서281,317 gzip bytes여서 현재한도281,400을 적용한다. 나머지entry한도와 README Basic한도는 유지한다. 첫기존상한실패와 동일archive실측은 그룹검증기록에 보존한다.

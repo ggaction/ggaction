@@ -1,3 +1,4 @@
+import { legendGroupAnimationMatchesNode } from "./legendGroupState.js";
 import { categoricalLegendAnimationMatchesNode } from "./categoricalLegendState.js";
 import { sizeLegendAnimationMatchesNode } from "./sizeLegendState.js";
 import { prepareAxisAnimationLayout, normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode } from "./axisLabelState.js";
@@ -116,9 +117,15 @@ export function projectGuideAnimationState(program, endpoint) {
       states.set(qualified, state);
     }
   }
-  return cloneAndFreeze(endpoint.sources.map((source, index) => {
+  const editedGroups = new Set();
+  const groupKey = state => JSON.stringify([state.identity.namespaces, state.identity.owner]);
+  const projected = endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
     if (state === undefined || state.reason !== undefined) return state ?? null;
-    return (state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
-  }));
+    const matches = (state.kind === "legend-group" ? legendGroupAnimationMatchesNode : state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]);
+    if (!matches && state.kind === "legend-group") editedGroups.add(groupKey(state));
+    return matches ? state : { identity: state.identity, reason: "guide-edited" };
+  });
+  return cloneAndFreeze(projected.map(state => state?.kind === "legend-group" && editedGroups.has(groupKey(state))
+    ? { identity: state.identity, reason: "guide-edited" } : state));
 }

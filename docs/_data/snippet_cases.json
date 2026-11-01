@@ -742,9 +742,19 @@
     "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
   },
   {
+    "id": "animation-grouped-legend",
+    "file": "api/animation.md",
+    "contains": ".editLegendLayout({ target: \"points\", position: \"bottom\", blockLayout: \"row\", offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change."
+  },
+  {
     "id": "animation-categorical-legend",
     "file": "api/animation.md",
-    "contains": ".encodeColor({ field: \"group\" })",
+    "contains": "const to = from.editLegend({ symbol: { layers: [{ type: \"point\", size: 8 }] } });",
     "environment": "node-esm",
     "rendering": "authoring-only",
     "mode": "complete",

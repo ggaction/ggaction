@@ -229,3 +229,35 @@ shape·문자열·font·layout policy에서 frame/offset/간격/기호 크기를
 rebase/offline forward proof를 검사한다. 문자열/font/shape/policy 변경, overflow/clip/border,
 그룹 또는 여러 block의 종속 배치와 inferred clearance는 후속 범위이며 현재 typed 완료로
 세지 않는다. Canonical native layout/appearance는 source와 caller 입력을 바꾸지 않는다.
+
+## 명시 그룹과 native block packing
+
+같은 remainingApproval 아래 후속 그룹은 원 `resolveLegendGroupPlacement`를 재사용한다.
+Action lane의 그래픽 경계·블록 순서 계산만 `legendLaneState`로 이동하고 wrapped 쓰기 순서와
+trace를 그대로 둔다. 임의 endpoint pixel 이동량을 의미로 저장하지 않는다.
+
+닫힌 `legend-group` 값은 공통 frame/plot fit policy, 원 group placement/blockLayout,
+각 block의 원 config/scale/필요 font query를 보존한다. Frame은 그룹에서 한 번만 저장한다.
+기존 gradient/size/categorical owner의 private intrinsic 계산 경로에서 현재 block을 만들고,
+실제 occupied bounds를 같은 그룹 배치 함수에 전달한다. row/column/wrap, 네 edge·네 corner,
+plot-relative at 및 explicit offset/alongOffset을 같은 정책 안에서 재계산한다. wrap으로 행이
+바뀌면 현재 plot 폭의 native 결과를 사용한다. 각 block의 text baseline과 sample stroke도
+기존 정적 그룹의 bounds 계산을 공유한다.
+
+초기 공개 지원은 effect/border/clip 없는 categorical·exact continuous size·gradient block이다.
+한 종속 block이라도 지원 밖이면 지원되는 일부만 움직이지 않고 전체 그룹을 명시 fallback으로
+남긴다. 자동 axis clearance, implicit shared edge lane, overflow/clip/border 및 동적 text
+wrap/skip/추론 title은 별도 후행 의무다. Guide manifest는 새 closed group 값을 나타내는
+`native-guide-values@7`이며 global transition version/shared4는 변경하지 않는다.
+
+
+그룹 forward proof는 개별 component의 현재 좌표만 맞는 것으로 끝내지 않는다. 같은
+namespace/owner의 모든 group state가 동일한 layout 의미와 완전한 raw value/role 집합을
+가져야 한다. 다른 sibling의 scale·간격을 바꾸면서 첫 block의 현재 좌표가 우연히 같은 payload도
+거부한다. Authoring primitive가 한 component를 바꾸면 동일 그룹 전체가 `guide-edited`가 된다.
+Composition이 수집한 deferred-fit group은 별도 lane/frame 의존 구현 전까지 typed로 추정하지 않는다.
+
+검증 fixture에는 fixed-origin rect의 midpoint `(210,40,20,20)`, 원래 면적에서 계산한
+circle radius `sqrt(500)`, 두 occupied block 사이 native24px gap의 독립 literal을 둔다.
+다른 회귀는 기존 public static authoring으로 같은 중간 의미를 작성한 결과와 전환의 concrete
+출력을 비교한다. 원 source rows/단위·옵션을 바꾸는 샘플 교체는 하지 않는다.
