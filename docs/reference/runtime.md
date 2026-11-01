@@ -1668,7 +1668,7 @@ export interface TransitionPlan {
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
  * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
- * row/column/wrap packing, and fixed
+ * row/column/wrap packing, axis-free implicit edge lanes using current measured bounds, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */

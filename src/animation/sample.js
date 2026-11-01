@@ -1,4 +1,4 @@
-import { sampleGuideInterpolation } from "./guideTracks.js";
+import { sampleGuideInterpolation, retainSampledGuideMeaning } from "./guideTracks.js";
 import { sampleAnimationAppearance } from "./appearance.js";
 import { sampleGeoTracks } from "./geoTracks.js";
 import { geoFrameCollector } from "./geoFrames.js";
@@ -28,7 +28,7 @@ export function sampleTransition(input,timeMs) {
   const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress),graphFrame=graphFrameCollector();
   const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress),partitionFrame=partitionFrameCollector();
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
-  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides,meaning:captureFrameMeaning(frame,plan,timeMs,geographic)}):frame;
+  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides),meaning:captureFrameMeaning(frame,plan,timeMs,geographic)}):frame;
   const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
   const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
   const meaning=position=>position.reason?null:position;

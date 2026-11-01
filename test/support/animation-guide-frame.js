@@ -1,7 +1,7 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend", "title-layout"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend", "title-layout", "implicit-lane"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
@@ -15,7 +15,7 @@ export function animationGuideFrame(variant) {
       .createXAxisTitle({ text: "I", at: 6, offset: { from: "labels", gap: 8 }, fontSize: 40, fontWeight: "bold", color: "red" });
     to = from.editScale({ id: "x", domain: [0, 14] });
     points = [[100, 228], [125, 228]];
-  } else if (variant === "grouped-legend") {
+  } else if (["grouped-legend", "implicit-lane"].includes(variant)) {
     from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
       .createData({ values: [{ x: 0, y: 0, category: "A" }, { x: 10, y: 10, category: "A" }] }).createPointMark({ id: "m", opacity: 0 })
       .encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -25,11 +25,12 @@ export function animationGuideFrame(variant) {
         symbol: { layers: [{ type: "swatch", width: 10, height: 10, stroke: "none", strokeWidth: 0 }] } })
       .editLegendBlock({ target: "m", channel: "color", labelMap: [{ value: "A", label: "" }] })
       .createLegend({ channels: ["size"], values: [10], offset: 20, title: false })
-      .editLegendBlock({ target: "m", channel: "size", symbol: { fill: "red", opacity: 1, stroke: "none" }, labelMap: [{ value: 10, label: "" }] })
-      .editLegendLayout({ target: "m", position: "right", blockLayout: "column", offset: 20 });
+      .editLegendBlock({ target: "m", channel: "size", symbol: { fill: "red", opacity: 1, stroke: "none" }, labelMap: [{ value: 10, label: "" }] });
+    if (variant === "grouped-legend") from = from.editLegendLayout({ target: "m", position: "right", blockLayout: "column", offset: 20 });
     to = from.editLegend({ target: "m", channel: "color", symbol: { layers: [{ type: "swatch", width: 30, height: 30, stroke: "none", strokeWidth: 0 }] } })
-      .editScale({ id: "size", range: [0, Math.PI * 900] }).editLegendLayout({ target: "m", offset: 40 });
-    points = [[220, 50], [260, 106]];
+      .editScale({ id: "size", range: [0, Math.PI * 900] });
+    if (variant === "grouped-legend") to = to.editLegendLayout({ target: "m", offset: 40 });
+    points = variant === "grouped-legend" ? [[220, 50], [260, 106]] : [[210, 50], [270, 106]];
   } else if (variant === "categorical-legend") {
     from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
       .createData({ values: [{ x: 0, y: 0, category: "A" }, { x: 10, y: 10, category: "A" }] }).createPointMark({ id: "m", opacity: 0 })

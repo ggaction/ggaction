@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { ChartProgram } from 'ggaction/extension';
 import { chart, render } from 'ggaction';
+import { chart as basicChart } from 'ggaction/basic';
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation, exportAnimationFrames, createAnimationPlayer } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 import { renderToPNGBuffer } from 'ggaction/png';
@@ -397,5 +398,32 @@ export const cases=[
     assert.deepEqual([...canvas.getContext('2d').getImageData(106,100,1,1).data],[255,255,255,255]);
     assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
     assert.match(renderToSVG(frame),/<rect/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+  }},
+  {id:'animation/implicit-legend-lanes-offline-native',async run(){
+    const build=(factory,width,range)=>factory().createCanvas({width,height:700,margin:200})
+      .createData({id:'rows',values:[{id:1,x:0,y:0,g:'A',s:1},{id:'1',x:1,y:1,g:'B',s:4}],keyField:'id'})
+      .createPointMark({id:'m'}).encodeX({field:'x'}).encodeY({field:'y'})
+      .encodeColor({field:'g'}).encodeSize({field:'s',scale:{range}})
+      .createLegend({channels:['color'],title:'Native lane'})
+      .createLegend({channels:['size'],values:[1,4],title:'Native lane'});
+    const from=build(chart,900,[16*Math.PI,64*Math.PI]),to=from.editCanvas({width:1000}).editScale({id:'size',range:[64*Math.PI,144*Math.PI]});
+    const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+    const geometry=f=>f.decisions.flatMap((d,i)=>d.guideKey?[{type:f.scene.nodes[i].type,properties:f.scene.nodes[i].properties}]:[]);
+    assert.ok(frame.decisions.some(d=>d.kernel==='guide-geometry'));
+    const native=build(basicChart,950,[40*Math.PI,104*Math.PI]);
+    assert.deepEqual(geometry(frame),geometry(sampleTransition(planTransition({from:native,to:native,options:{durationMs:100}}),50)));
+    const next=planTransition({from:frame,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(next);
+    assert.strictEqual(sampleTransition(next,0),frame);
+    const timesMs=[0,25,50,75,100],expected=createHash('sha256').update(JSON.stringify(exportAnimationFrames(next,{timesMs}))).digest('hex');
+    const child=spawnSync(process.execPath,['--input-type=module','-e',offlineNetworkGuard+`
+      import {createHash} from 'node:crypto';import {deserializeAnimation,exportAnimationFrames} from 'ggaction/animation';
+      let saved='';for await(const c of process.stdin)saved+=c;
+      const frames=exportAnimationFrames(deserializeAnimation(saved).plan,{timesMs:[0,25,50,75,100]});
+      console.log(JSON.stringify({hash:createHash('sha256').update(JSON.stringify(frames)).digest('hex'),network}));
+    `],{input:saved,encoding:'utf8',timeout:30000});
+    assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{hash:expected,network:0});
+    const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+    assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+    assert.match(renderToSVG(frame),/<circle/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
   }}
 ];

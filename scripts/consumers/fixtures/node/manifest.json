@@ -1660,6 +1660,10 @@
       {
         "id": "animation/cartesian-offline-renderers",
         "statements": 13
+      },
+      {
+        "id": "animation/implicit-legend-lanes-offline-native",
+        "statements": 1
       }
     ]
   },
