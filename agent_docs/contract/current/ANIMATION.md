@@ -148,12 +148,18 @@ Cartesian label의 고정 회전, flush/flushThreshold, plot-edge 정렬은 `lab
 중간 배치가 불가능하면 `guide-layout`으로 fade한다. 필요한 정확 metric query만 보존하고 schema2
 font resource/content identity와 측정 누락 오류를 유지한다. LabelMap의 숨긴 값은 다시 나타나지 않고
 중복 문자열은 raw value/line identity를 합치지 않는다. maxWidth wrapping, responsiveResult에 따른
-줄 수·skip·rotation 선택 변화 및 inferred title clearance는 이 고정 배치 범위에 포함되지 않는다.
+줄 수·skip·rotation 선택 변화는 이 고정 배치 범위에 포함되지 않는다.
 
 명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
 보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
-Inferred·label-relative clearance는 현재 `guide-layout`이며 최종 pixel offset을 의미로 추정하지
-않는다. Polar title은 native theta frame 또는 radial inside/outside·shortest angle을 재사용한다.
+Inferred·label-relative clearance는 `title-layout`에서 같은 native label recipe와 exact font metrics를
+보존한다. 현재 scale/frame의 실제 nonempty label bounds와 union으로 원 4px gap, theme/default
+preferred offset, legacy Canvas clamp 또는 plot-edge 정책, label-relative gap을 다시 계산한다.
+같은 owner의 전체 label sibling 의미를 forward proof로 검증하며 label을 직접 편집하면 title도
+`guide-edited`다. 중간 Canvas fit/overlap 실패는 `guide-layout`으로 fade한다. No-label inferred
+제목은 native preferred offset을 유지한다. Title strings/font 변경은 기존 appearance fade이며
+maxWidth/responsive label reflow는 아직 이 title-layout 범위 밖이다. 최종 pixel offset을 의미로
+추정하거나 endpoint label bounds를 보간하지 않는다. Polar title은 native theta frame 또는 radial inside/outside·shortest angle을 재사용한다.
 Band-boundary grid는 같은 경계를 공유하는 모든 typed `{value,edge}`의 canonical set으로
 대응한다. Membership이 달라지면 enter/exit이며 중간 native 계산에서 경계가 분리되면
 `guide-layout` fade다. 임의 epsilon이나 첫 member 선택으로 합치지 않는다.
@@ -200,7 +206,7 @@ occupied-bounds와 group packing owner가 현재 경계·행을 계산하므로 
 opacity/strokeWidth 등 아직 typed 의미가 없는 sibling은 이 그룹 확대에 포함되지 않는다.
 현재 그룹 frame 재기준과 strict offline 복원은 같은 native 의미를 유지한다.
 
-Optional endpoint `guides` vector와 `native-guide-values@7` manifest를 보존한다. Strict restore는
+Optional endpoint `guides` vector와 `native-guide-values@9` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

@@ -29,4 +29,10 @@
 
 부모가 채택한 구체 경계에 따라 `actions/theme/definition.js`의 pure normalize/resolve 본문을 `theme/definition.js`로 이동했다. 기존 `resolveEffectiveThemeFrame(state)`, `resolveEffectiveThemeTokens(state)`, `axisThemeOffset(state,component)`만 같은 owner로 옮기고 기존 내부 action state 경로는 named re-export를 유지한다. Mutation/typography/wrapped action·public exports는 그대로다. Native materialization이 action 모듈을 import하거나 token 검증을 복제하지 않는다. Source boundary는 이 정확한 파일의 paint/validation 의존만 허용하고 일반 theme 권한을 넓히지 않는다.
 
-Full/Basic × light/dark/custom × theme-first/axis-first 12개 실제 공개 차트의 guide/config/graphics/theme/trace와 잘못된 theme 4개의 오류를 전후 동일 bytes로 비교했다. 기존 theme palette/spacing/state/defaults의 실제 공개 검사로 공유 definition의 100/100/100을 유지했다. 최초 좁은 subset의 palette 분기 미도달을 보존하고 기존 palette owner 회귀를 함께 실행했다. 패키지 module 개수 증감은 0이다. 새 public title admission은 다음 checkpoint다.
+Full/Basic × light/dark/custom × theme-first/axis-first 12개 실제 공개 차트의 guide/config/graphics/theme/trace와 잘못된 theme 4개의 오류를 기존 allocation-independent 비교 owner로 대조했다. 원시 JSON은 실행마다 생성된 dataset/item identity 때문에 다르며, 해당 identity만 정규화한 의미·graphics·trace와 오류는 모두 동일하다. 기존 theme palette/spacing/state/defaults의 실제 공개 검사로 공유 definition의 100/100/100을 유지했다. 최초 좁은 subset의 palette 분기 미도달을 보존하고 기존 palette owner 회귀를 함께 실행했다. 패키지 module 개수 증감은 0이다. 새 public title admission은 다음 checkpoint다.
+
+## 공개 고정 라벨 종속 제목 @9
+
+Root가 R의 dynamic @8와 이후 union할 @9를 채택했다. 공유4는 수정하지 않고 native projection → guideTracks normalize/match/prepare/sample wrapper만 연결했다. Title recipe의 exact current label states를 같은 namespace+axis owner의 siblings와 검증한다. Label collection 누락·직접 수정은 title도 guide-edited이며 strict restore에서 누락/서로 다른 label recipe를 거부한다. 표시문자열 변경은 appearance fade, native 중간 fit 실패는 guide-layout다. 기존 frameProvenance의 guides vector를 그대로 보존해 양방향 재기준과 offline 같은 time equality를 유지한다.
+
+테마 읽기 owner12b8f6e8a를 재사용한다. 수치 offset title/Polar/Parallel은 기존 owner에 남긴다. maxWidth/responsiveResult/사용자 지정 lineHeight 및 empty raw tick list는 아직 title-layout 밖이다. R의 native dynamic group interface로 이어야 하며, hidden display label과 hard-break는 고정 recipe 안에서 보존한다. @9가 전체 dynamic @8 구현을 포함했다는 뜻은 아니다. Inferred legend clearance/implicit lanes와 전체077는 계속 미완료다.

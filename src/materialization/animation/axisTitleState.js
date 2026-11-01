@@ -11,7 +11,7 @@ import { resolveCartesianPosition } from "../../grammar/animation/cartesianPosit
 import { guideAnimationKey, normalizeGuideIdentity, ANIMATION_GUIDE_VERSION } from "../../grammar/animation/guideState.js";
 import { interpolateNumber } from "../../grammar/animation/values.js";
 import { axisTitleBounds, resolveInferredAxisTitleOffset, resolveLabelRelativeAxisTitleOffset } from "../guides/axisTitleLayout.js";
-import { normalizeAxisAnimationLayout, resolveAxisAnimationLabelBounds, prepareAxisAnimationLayoutPair, sampleAxisAnimationLayout } from "./axisLabelState.js";
+import { normalizeAxisAnimationLayout, resolveAxisAnimationLabelBounds, axisAnimationLabelEntries, normalizeAxisLabelAnimationState, prepareAxisAnimationLayoutPair, sampleAxisAnimationLayout } from "./axisLabelState.js";
 import { normalizeGuideMetrics, prepareGuideMetrics } from "./guideMetrics.js";
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
@@ -113,14 +113,14 @@ export function prepareAxisTitleAnimationLayout({ anchor, canvas, config, text, 
 export function normalizeAxisTitleAnimationState(input) {
   record(input, ["identity", "kind", "layout"], "Dependent title animation state");
   const identity = normalizeGuideIdentity(input.identity);
-  if (input.kind !== "title-layout" || identity.component !== "title" || identity.line !== 0) throw new TypeError("Dependent title requires its native title identity.");
+  if (input.kind !== "title-layout" || identity.component !== "title" || identity.line !== 0 || identity.value !== null) throw new TypeError("Dependent title requires its native title identity.");
   return cloneAndFreeze({ identity, kind: "title-layout", layout: normalizeLayout(input.layout) });
 }
 export function resolveAxisTitleAnimationGeometry(input) { return geometry(normalizeAxisTitleAnimationState(input).layout); }
 export function axisTitleAnimationMatchesNode(input, node) {
   const state = normalizeAxisTitleAnimationState(input), output = geometry(state.layout), style = state.layout.style;
   return node.type === output.type && Object.entries(output.properties).every(([key, value]) => same(value, node.properties[key])) &&
-    (node.properties.rotation ?? 0) === style.rotation && (node.properties.fontFamily ?? DEFAULT_FONT_FAMILY) === style.fontFamily &&
+    (node.properties.rotation ?? 0) === style.rotation && (node.properties.fontStyle ?? "normal") === "normal" && (node.properties.fontFamily ?? DEFAULT_FONT_FAMILY) === style.fontFamily &&
     node.properties.fontSize === style.fontSize && textMetricFontWeight(node.properties.fontWeight) === style.fontWeight &&
     (Object.hasOwn(output.properties, "lines") || !Object.hasOwn(node.properties, "lines"));
 }
@@ -160,4 +160,14 @@ export function sampleAxisTitleInterpolation(input, progress) {
     if (!(error instanceof RangeError)) throw error;
     return fade("guide-layout");
   }
+}
+
+// Exact siblings are part of a title's native occupied-ink dependency.
+export function axisTitleAnimationLabels(input) {
+  const state = normalizeAxisTitleAnimationState(input), layout = labelsOf(state.layout);
+  if (layout === null) return Object.freeze([]);
+  return cloneAndFreeze(axisAnimationLabelEntries(layout).map(entry => normalizeAxisLabelAnimationState({
+    identity: { ...state.identity, component: "labels", value: entry.value, line: entry.line },
+    kind: "label-layout", layout
+  })));
 }

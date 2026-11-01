@@ -29,5 +29,7 @@
     "title-theme-boundaries.log": "798d87056de2d54db81fe33724db096033d6b4ee45bd4efb258a3073fb545a2b",
     "title-theme-package.log": "d282e50640e4e49234f34cd49f9831608b984578f5f6017bbe96e5f38f4444b2",
     "title-theme-parity.mjs": "2ca38e2ca49569496bf4d1013c15383215c943282cd79b770caffaf6fff12682"
-  }
+  },
+  "nativeMeaningAndTraceEqual": true,
+  "comparison": "Canonical test/support/identity-equivalence.js withoutAllocatedIdentity; raw allocation-bearing JSON remains unequal."
 }

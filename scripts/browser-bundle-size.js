@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 423_400, // Shared native title clearance: Node20 423,325 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 281_500, // Shared native label layout: Node20 281,404 gzip bytes.
+  "ggaction/animation": 285_800, // Dependent native title layout: Node20 285,771 gzip bytes.
   "ggaction/interaction": 131_400 // Shared guide metadata: Node20/24 131,347 gzip bytes.
 });
 

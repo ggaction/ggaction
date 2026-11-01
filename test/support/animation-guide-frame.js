@@ -1,13 +1,21 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend", "title-layout"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
     .createPointMark({ id: "m", opacity: 0 });
   let to, points;
-  if (variant === "grouped-legend") {
+  if (variant === "title-layout") {
+    from = chart().createCanvas({ width: 200, height: 280, margin: { left: 20, right: 20, top: 20, bottom: 100 } })
+      .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
+      .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } }).encodeY({ field: "y" })
+      .createXAxisLabels({ values: [6], flush: true, fontSize: 12, offset: 8 })
+      .createXAxisTitle({ text: "I", at: 6, offset: { from: "labels", gap: 8 }, fontSize: 40, fontWeight: "bold", color: "red" });
+    to = from.editScale({ id: "x", domain: [0, 14] });
+    points = [[100, 228], [125, 228]];
+  } else if (variant === "grouped-legend") {
     from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
       .createData({ values: [{ x: 0, y: 0, category: "A" }, { x: 10, y: 10, category: "A" }] }).createPointMark({ id: "m", opacity: 0 })
       .encodeX({ field: "x" }).encodeY({ field: "y" })

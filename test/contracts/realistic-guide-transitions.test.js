@@ -9,7 +9,7 @@ import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 const sources = [{ id: "tt-us-births", field: "births" }, { id: "tt-trash-wheel", field: "Weight" },
   { id: "tt-stock-prices", field: "volume", eligible: row => row.stock_symbol === "AAPL" },
   { id: "tt-animal-rescues", field: "incident_notional_cost" }, { id: "tt-movie-profit", field: "production_budget" }];
-for (const source of sources) test(`${source.id} preserves raw guide values across eleven native transition recipes`, () => {
+for (const source of sources) test(`${source.id} preserves raw guide values across thirteen native transition recipes`, () => {
   try {
     const original = tidyTuesdaySourceRows(source.id);
     assert.match(tidyTuesdayFixtureReport(source.id).sha256, /^[a-f0-9]{64}$/);
@@ -46,7 +46,10 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       .encodeSize({ field: source.field, scale: { domain: [0, max], range: [0, 100] } })
       .createLegend({ channels: ["size"], values: [value], offset: 20, title: source.field })
       .editLegendLayout({ target: "m", position: "right", blockLayout: "column", offset: 20 });
-    for (const [recipe, from] of [["axis", x.createXAxis({ ticksAndLabels: { values: [value] }, title: false })],
+    const titleBase = x.editCanvas({ width: 700, height: 600, margin: 150 });
+    const inferredTitle = titleBase.createXAxis({ ticksAndLabels: { values: [value], labels: { flush: true } }, title: { text: source.field, at: value } });
+    const relativeTitle = titleBase.createXAxis({ ticksAndLabels: { values: [value], labels: { flush: true } }, title: { text: source.field, at: value, offset: { from: "labels", gap: 7 } } });
+    for (const [recipe, from] of [["inferred-title", inferredTitle], ["relative-title", relativeTitle], ["axis", x.createXAxis({ ticksAndLabels: { values: [value] }, title: false })],
       ["label-layout", x.createXAxisLabels({ values: [value], flush: true })],
       ["grid", x.createVerticalGrid({ values: [value] })], ["polar", polar],
       ["title", x.createXAxis({ line: false, ticksAndLabels: false, title: { text: source.field, at: value, offset: 20 } })],
@@ -62,13 +65,15 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       const frame = sampleTransition(plan, 50), indices = frame.decisions.flatMap((decision, index) =>
         decision.kernel === "guide-geometry" ? [index] : []);
       assert.ok(indices.length > 0);
+      if (["inferred-title", "relative-title"].includes(recipe)) assert.ok(frame.decisions.some(item => item.role === "guide-title" && item.kernel === "guide-geometry"));
       for (const index of indices) {
         const key = JSON.parse(frame.decisions[index].guideKey);
         if (["axis", "grid", "polar", "label-layout"].includes(recipe) && key[3] !== "line") assert.equal(key[4], value);
         const properties = frame.scene.nodes[index].properties;
-        if (["ticks", "grid"].includes(key[3]) && recipe !== "polar") assert.ok(Math.abs(properties.x1 - (40 + 320 / 3)) < 1e-9);
+        if (["ticks", "grid"].includes(key[3]) && !["polar", "inferred-title", "relative-title"].includes(recipe)) assert.ok(Math.abs(properties.x1 - (40 + 320 / 3)) < 1e-9);
         if (recipe === "polar") assert.deepEqual(properties.commands[0], { op: "M", x: 250, y: 145 });
         if (recipe === "label-layout") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
+        if (["inferred-title", "relative-title"].includes(recipe) && key[3] === "title") assert.ok(Math.abs(properties.x - (150 + 400 / 3)) < 1e-9);
         if (recipe === "title") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
         if (recipe === "parallel") assert.ok(key[3].startsWith("parallel-"));
         if (recipe === "legend") {

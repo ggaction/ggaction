@@ -119,6 +119,7 @@ export function resolveAxisAnimationLabelBounds(input) {
   geometryList(layout);
   return occupiedBounds.get(layout);
 }
+export function axisAnimationLabelEntries(input) { return geometryList(normalizeLayout(input)); }
 function findEntry(layout, identity) {
   if (!entries.has(layout)) entries.set(layout, new Map(geometryList(layout).map(entry => [entryKey(entry.value, entry.line), entry])));
   return entries.get(layout).get(entryKey(identity.value, identity.line));
@@ -147,7 +148,10 @@ export function resolveAxisLabelAnimationGeometry(input) {
 export function axisLabelAnimationMatchesNode(state, node) {
   const geometry = resolveAxisLabelAnimationGeometry(state);
   return node.type === geometry.type && Object.entries(geometry.properties).every(([key, value]) => same(value, node.properties[key])) &&
-    (node.properties.rotation ?? 0) === state.layout.config.rotation;
+    (node.properties.rotation ?? 0) === state.layout.config.rotation &&
+    (node.properties.fontFamily ?? DEFAULT_FONT_FAMILY) === state.layout.config.fontFamily &&
+    node.properties.fontSize === state.layout.config.fontSize && textMetricFontWeight(node.properties.fontWeight) === state.layout.config.fontWeight &&
+    (node.properties.fontStyle ?? "normal") === "normal" && !Object.hasOwn(node.properties, "lines");
 }
 export function prepareAxisLabelInterpolation(fromInput, toInput) {
   const from = normalizeAxisLabelAnimationState(fromInput), to = normalizeAxisLabelAnimationState(toInput);

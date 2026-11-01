@@ -1,0 +1,147 @@
+{
+  "sourceParent": "12b8f6e8a",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Public fixed native-label dependent Cartesian inferred and label-relative title interpolation; guide manifest9, existing public signatures unchanged",
+  "shared4Changes": [],
+  "checks": {
+    "finalAnimationTests": 416,
+    "coverage": {
+      "guideTracks": [
+        100,
+        99.19,
+        100
+      ],
+      "axisLabelState": [
+        98.54,
+        95.27,
+        100
+      ],
+      "axisTitleGuides": [
+        100,
+        100,
+        100
+      ],
+      "axisTitleState": [
+        100,
+        93.83,
+        100
+      ]
+    },
+    "finalContracts": 30,
+    "newPublicAndPrivateOwnerTests": 16,
+    "sourceDocumentation": 32,
+    "realistic": {
+      "datasets": 5,
+      "recipesEach": 13,
+      "checks": 65,
+      "durationMs": 5007.620958
+    },
+    "render": {
+      "tests": 1,
+      "newVariant": "title-layout",
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ]
+    },
+    "browser": {
+      "tests": 1,
+      "variants": 11,
+      "dpr": [
+        1,
+        2
+      ],
+      "backends": [
+        "Canvas",
+        "SVG"
+      ]
+    },
+    "visualInspection": "Local 200x280 PNG: scalar tick6 and red title I preserve native 8px label-relative spacing; geometry/pixel literals independently tested.",
+    "positiveRendererEvidenceReuse": "Render/browser used identical positive fixture inputs before the final duplicate-title and null identity-value rejection guards. Final owning tests, coverage and exact packed consumers include those guards.",
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeEach": 6,
+      "strictTypes": true,
+      "actualDocExample": true,
+      "optionalPeers": true,
+      "bundlesEach": 6,
+      "sameFinalArchive": "9b931419e51d57cb005ba0a0a51349a3fc37827bd48932f317aec1ffd9549038",
+      "originalNode20Status": "bundle-limit-failed; all runtime/type/doc/peer checks passed",
+      "sameMeasurementsRechecked": true
+    }
+  },
+  "package": {
+    "entries": 1188,
+    "packedBytes": 1705964,
+    "unpackedBytes": 7696036,
+    "sha256": "9b931419e51d57cb005ba0a0a51349a3fc37827bd48932f317aec1ffd9549038",
+    "inputDelta": [],
+    "limits": {
+      "entries": 1188,
+      "packedBytes": 1706000,
+      "unpackedBytes": 7697000
+    }
+  },
+  "animationBundle": {
+    "maximum": 285771,
+    "oldLimit": 281500,
+    "currentLimit": 285800
+  },
+  "sourceHashes": {
+    "src/animation/guideTracks.js": "e0e06ad1cb7bcdb98d2810b40329b0c8d56c6a580e560172e2a98349dc32b8ea",
+    "src/grammar/animation/guideState.js": "abfd30f0408cb04041433240c2d465f3b49216bbf9d486743a9a8eaa1f1bd584",
+    "src/materialization/animation/axisLabelState.js": "ff9c0b5cd032b810643676f7bbea7b077ed0163be830690529a88c39b8ad3847",
+    "src/materialization/animation/axisTitleState.js": "bb1f786dd64c7cad647ce2759ec267f6859fa6d953379e33e96cecdac837ea10",
+    "src/materialization/animation/axisTitleGuides.js": "855593d9491b1a27dc4101fa734865b60fa8b6c9af9b5ba565ad8c1bfb5d0dfb",
+    "src/materialization/animation/guides.js": "eb34e8a202b8c1a6ab7bcba478640d193de80070be45243bf99b53917235cb13",
+    "src/theme/definition.js": "e2efcb97632924dfb1725f3d012c4e35f333328a264a0614ee23ccdb9fb127eb",
+    "types/animation.d.ts": "16cd03ab6e19e9ce44112e85ef0dcd8a985ebe111730fb191d31f4eaf1668ab8"
+  },
+  "logsSha256": {
+    "title-public-first.log": "04420268c7f2b379d3aa51f6bd60e10b323f5f2a908baca35dc3bf977b8e3be4",
+    "title-public-new.log": "414b1c569dbfe82c044606e8600ba775e4af49541c86a7600a686c91c9465ce1",
+    "title-public-repaired.log": "2c60dfff2da2f9bb37175d0dddec966a4054f93a424e64f4bb132ce31c6bf470",
+    "title-public-coverage-ink-final.log": "c86b41eb5ab864c5cfaaa6ed499ed2e643cfce290166ea4241d8bf5b53bf267b",
+    "title-public-exact-font-final.log": "2c59933667412409103f07df46718cfc721e7e32dc7ae8e1929235977d6a3618",
+    "title-public-final-owner.log": "b04a2d925524b8aee7a675ea1951c13abce1ee271e88f2ffa116896baffbfa4a",
+    "title-public-final-coverage.log": "1d4a20fb15e7fae9b842bec6843c70c6c645697bc5e9a4d6af4f7711c0338143",
+    "title-public-render-first.log": "0651121bc10f75d35488629f21761e7a740c7cc4c40fc1163db1da9fee89c511",
+    "title-public-browser.log": "05b6b8c852cd514b6804f84e29a20d222a6430bc91bc76dcabdd49bc9678c55e",
+    "title-public-realistic-owning.log": "1fbd68b9d6c6cfb345ce611c4f27fa28bb142761f6e56c39e1f5ccc877f7fe5e",
+    "title-public-final-contracts.log": "5c86918c7ec6bfb2418d775abf3a9c65f1c5909ff807cf9bf627a9843555b1ed",
+    "title-public-docs.log": "37bb8486d6c7fd3533b62845cd94627227be0dc5ffe275f08fd8124482fd0aa8",
+    "title-public-final-doc-generation.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "title-public-build.log": "e629a657f1b3832f8d87396fa55a7f2e1076cc2ccae7b0ca8e58f048bc31ee35",
+    "title-public-final-measure-node20.json": "0f76a311142cf05958f436f05f0527547a7423ae4117d8d6e9355a3357015b25",
+    "title-public-frozen-pack.json": "c20bddecf225862577bb18387ab9573faaedf75624936c8b6a862c13ad5b433d",
+    "title-public-final-bundle-recheck.json": "3693d66d8bff7bef284a46da60009308c48ea41d1c22efe88fb0522169d94ee0",
+    "title-theme-normalized-parity.json": "5d7bb9ad6515ee8178032bac9b3efdfdd2b27322b06ba1a967607571f33329ee",
+    "qualify-dependent-title-public.mjs": "a956be88aa9795b409d59f9a3524407e10677613936f3b3c201ef80e765c5afc",
+    "title-public-installed-node20.log": "dabf1c4839991e0325e807e5eb860da41c0e4655e260f93d8bbd39c413e3d1b3",
+    "title-public-final-installed-node20.log": "266ea33f6b5241ac5f92509648259b90f955d669a9aff1a4f55178da4c1e1018",
+    "title-public-installed-node22.log": "1f9adc94a962633406654498ee6b18c89d36079b8afcd501507961662e053e87",
+    "title-public-final-installed-node22.log": "e1ea7977f77ad0f983dc7d518d1164ee481aeb6af9da564e2708936688aad063",
+    "title-public-installed-node24.log": "f671de75f368acbc498b72484c265d3af0beabb15ecb10ce46200bf95c5dd8cc",
+    "title-public-final-installed-node24.log": "69d9ee0593430f109916f0efa830915b623d32384b946eb466022d9344a81321"
+  },
+  "firstFailuresPreserved": [
+    "Old guide version7 fixture was updated to current9.",
+    "Basic fixture attempted editCanvas, absent from Basic; native independently authored endpoints were used.",
+    "Schema2 literal fixture omitted metricsProviderVersion; required native metric identity was added.",
+    "Final negative schema guards were added after the intermediate archive, so that archive was not reused as final source evidence.",
+    "Final archive Node20 animation bundle exceeded old cap; exact 18 Node20/22/24 measurements were checked with minimally rounded cap285800.",
+    "Package unpacked size exceeded prior7696000 by36bytes; measured current ceiling7697000."
+  ],
+  "pending": [
+    "Dynamic axis-label reflow/group integration (R) with current ink bounds and schema2 query closure",
+    "Inferred legend clearance and implicit lanes",
+    "Root combined transition3/timeline version integration",
+    "Final overall roadmap/STEP077 qualification"
+  ]
+}

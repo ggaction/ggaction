@@ -1670,6 +1670,7 @@ export interface TransitionPlan {
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
  * row/column/wrap packing, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
+ * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;

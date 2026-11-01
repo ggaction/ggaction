@@ -101,7 +101,7 @@ test("inferred titles without labels preserve preferred and theme offsets", () =
 test("dependent title closed proof rejects corrupt bounds, metrics, roles and accessor inputs", () => {
   const a = base().createXAxis({ ticksAndLabels: { values: [0, 10], labels: { flush: true } }, title: { text: "Title", offset: { from: "labels", gap: 7 } } });
   const original = state(a);
-  const bad = [s => s.extra = true, s => s.identity.line = 1, s => s.layout.anchor.frame = s.layout.frame,
+  const bad = [s => s.extra = true, s => s.identity.line = 1, s => s.identity.value = 1, s => s.layout.anchor.frame = s.layout.frame,
     s => s.layout.anchor.policy.offset = 3, s => s.layout.canvas.width = 0, s => s.layout.text = "", s => s.layout.style.fontWeight = 450,
     s => s.layout.style.fontFamily = "", s => s.layout.style.rotation = Infinity, s => s.layout.style.overlap = "ignore",
     s => s.layout.clearance.gap = -1, s => s.layout.clearance.kind = "other", s => s.layout.labels.frame = s.layout.frame,
@@ -159,4 +159,18 @@ test("dependent title defaults, null-label policy and query proof remain closed"
   assert.throws(() => prepareAxisTitleAnimationLayout({ anchor, canvas: original.layout.canvas, config,
     text: "No labels", preferred: 42, labels: { ...state(withLabels).layout.labels,
       frame: { ...original.layout.frame, x: 1 }, canvas: original.layout.canvas } }), /share their native frame/);
+});
+
+test("dependent title exact font metrics retain resource identity and reject missing queries", () => {
+  const p = base().createXAxis({ ticksAndLabels: false, title: { text: "Exact" } }), original = state(p);
+  const binding = { resource: { kind: "font", id: "face", revision: 2 }, identity: { family: "sans-serif", style: "normal", weight: 600,
+    contentHash: "f".repeat(64), metricsProviderVersion: "literal@1" } };
+  const profile = { schemaVersion: 2, id: "exact", fonts: [binding], measurements: original.layout.metrics.measurements };
+  const args = { anchor: { ...original.layout.anchor, frame: original.layout.frame }, canvas: original.layout.canvas,
+    config: p.guideConfigs.axis.x.title, text: "Exact", profile, preferred: 42 };
+  const layout = prepareAxisTitleAnimationLayout(args);
+  assert.deepEqual(layout.metrics.fonts, [binding]);
+  assert.throws(() => prepareAxisTitleAnimationLayout({ ...args, profile: { ...profile, measurements: [] } }), error => error.assetCode === "metrics-required");
+  const from = { ...original, layout }, changed = structuredClone(from); changed.layout.metrics.fonts[0].resource.revision++;
+  assert.equal(prepareAxisTitleInterpolation(from, changed).reason, "guide-layout");
 });

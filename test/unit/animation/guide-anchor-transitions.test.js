@@ -42,7 +42,7 @@ test("public titles map the interpolated semantic value through the native scale
   near(moved.node.properties.x, 93 + 520 / 3);
 });
 
-test("title strings, font and inferred clearance preserve explicit appearance or layout fades", () => {
+test("title strings and font preserve appearance fades while inferred clearance uses native layout", () => {
   const from = titles();
   for (const next of [from.editXAxisTitle({ text: "Changed" }), from.editXAxisTitle({ fontSize: 18 })]) {
     const prepared = plan(from, next), item = typed(sampleTransition(prepared, 50), "title")[0];
@@ -50,7 +50,7 @@ test("title strings, font and inferred clearance preserve explicit appearance or
   }
   for (const p of [base().createXAxis(), base().createXAxis({ title: { text: "Amount", offset: { from: "labels", gap: 12 } } })]) {
     const prepared = plan(p, p.editCanvas({ width: 800 }));
-    assert.equal(typed(sampleTransition(prepared, 50), "title")[0].decision.reason, "guide-layout"); restore(prepared);
+    assert.equal(typed(sampleTransition(prepared, 50), "title")[0].decision.kernel, "guide-geometry"); restore(prepared);
   }
   assert.equal(typed(sampleTransition(plan(from, from.editXAxisTitle({ align: "left" })), 50), "title")[0].decision.reason, "guide-layout");
 });
@@ -117,7 +117,7 @@ test("guide anchor meaning stays flat through repeated sampled-frame rebase and 
 test("guide anchor strict restore rejects versions and forged field membership or geometry before sampling", () => {
   for (const from of [titles(), band(), parallel()]) {
     const prepared = plan(from, from.editCanvas({ width: 800 })), original = exportTransitionPlan(prepared);
-    assert.equal(original.kernels.guide, "native-guide-values@7");
+    assert.equal(original.kernels.guide, "native-guide-values@9");
     for (const change of [
       state => { state.anchor.frame.y += 1; },
       state => { state.identity.component = "grid"; },

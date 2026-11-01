@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:1df54528e6021ff030fe5f057301d76d3603adee058927f8fe3950fbbb4f8fde. Status: development. Runtime source: 0d91cfeb77eddc08e3000fcccebbbbc112fe5572. Release baseline: v0.0.13.
+Contract: sha256:3ce8ae0ed1c6f7546e7bf39e92a7b6e4d0428820236809cca99c39b0b64d6369. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0d91cfeb77eddc08e3000fcccebbbbc112fe5572/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0d91cfeb77eddc08e3000fcccebbbbc112fe5572/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11181,11 +11181,12 @@ import { planTransition, serializeAnimation, deserializeAnimation,
   sampleTransition } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
-const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
+const from = chart().createCanvas({ width: 500, height: 400, margin: 80 })
   .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
   .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
   .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
-  .createXAxisLabels({ values: [0, 5, 10], flush: true });
+  .createXAxisLabels({ values: [0, 5, 10], flush: true })
+  .createXAxisTitle({ text: 'Amount', at: 5, offset: { from: 'labels', gap: 7 } });
 const to = from.editScale({ id: 'x', domain: [0, 20] });
 const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
 const restored = deserializeAnimation(serializeAnimation(plan));
@@ -11211,8 +11212,13 @@ Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the
 measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
 policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
 profiles must contain every required measurement. Current layouts support interruption
-and offline replay. Width-based wrapping, responsive skip/rotation selection, inferred or
-label-relative title clearance, and edited geometry retain explicit fallbacks.
+and offline replay. Inferred and label-relative Cartesian titles reuse those current
+measured label bounds. Native theme/default gaps, label-relative gaps, and Canvas fit
+rules remain intact as scales or frames change. A title never treats its final offset
+as the original meaning. The complete same-axis label dependency is checked during
+restoration; editing a label also makes its dependent title fade safely. Text or font
+changes, width-based wrapping, responsive skip/rotation selection, and unsafe intermediate
+placements retain explicit fallbacks.
 
 Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
 use their native single-edge layout. Ticks and labels keep their raw values; the current
@@ -38058,6 +38064,7 @@ export interface TransitionPlan {
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
  * row/column/wrap packing, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
+ * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
@@ -52751,12 +52758,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0d91cfeb77eddc08e3000fcccebbbbc112fe5572/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0d91cfeb77eddc08e3000fcccebbbbc112fe5572/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55883,9 +55890,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1df54528e6021ff030fe5f057301d76d3603adee058927f8fe3950fbbb4f8fde` |
+| Contract fingerprint | `sha256:3ce8ae0ed1c6f7546e7bf39e92a7b6e4d0428820236809cca99c39b0b64d6369` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `0d91cfeb77eddc08e3000fcccebbbbc112fe5572` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |
