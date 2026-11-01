@@ -1651,6 +1651,16 @@
           "tests": [
             "test/charts/compound-path/public.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -1861,6 +1871,16 @@
           "tests": [
             "test/unit/animation/partition-transition.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -2038,6 +2058,17 @@
           ],
           "tests": [
             "test/contracts/image-types.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -2226,6 +2257,16 @@
             "test/charts/partition-layouts/public.test.js",
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -2413,6 +2454,16 @@
             "test/charts/partition-layouts/public.test.js",
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -2578,6 +2629,16 @@
             "test/charts/tree-layouts/public.test.js",
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -2741,6 +2802,16 @@
           "tests": [
             "test/docs/documentation.test.js",
             "test/charts/treemap-layouts/public.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -2924,6 +2995,16 @@
             "test/docs/executable-programs.test.js",
             "test/charts/graph-plots/public.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -3071,6 +3152,17 @@
           ],
           "tests": [
             "test/contracts/graph-route-types.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -3220,6 +3312,17 @@
           "tests": [
             "test/contracts/graph-route-types.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -3368,6 +3471,17 @@
           "tests": [
             "test/contracts/graph-route-types.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -3515,6 +3629,17 @@
           ],
           "tests": [
             "test/contracts/graph-route-types.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -3682,6 +3807,16 @@
             "test/charts/flow-layouts/public.test.js",
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -3847,6 +3982,16 @@
             "test/docs/documentation.test.js",
             "test/charts/flow-layouts/public.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -3925,6 +4070,16 @@
           ],
           "tests": [
             "test/charts/contours/png.render.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -4005,6 +4160,16 @@
           "tests": [
             "test/charts/contours/png.render.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -4083,6 +4248,16 @@
           ],
           "tests": [
             "test/charts/calendar/png.render.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -4274,6 +4449,16 @@
           "tests": [
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/TABLE.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -4460,6 +4645,16 @@
           ],
           "tests": [
             "test/docs/executable-programs.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/PYRAMID.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -4649,6 +4844,16 @@
           "tests": [
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/OHLC.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -4836,6 +5041,16 @@
           ],
           "tests": [
             "test/docs/executable-programs.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/WATERFALL.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -5025,6 +5240,16 @@
           "tests": [
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/TRAIL.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -5213,6 +5438,16 @@
           "tests": [
             "test/contracts/geo-mark-types.test.js",
             "test/contracts/animation-types.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -5409,6 +5644,16 @@
             "test/contracts/geo-mark-types.test.js",
             "test/contracts/animation-types.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -5598,6 +5843,16 @@
             "test/contracts/geo-mark-types.test.js",
             "test/contracts/animation-types.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -5749,6 +6004,16 @@
           "tests": [
             "test/contracts/geo-mark-types.test.js",
             "test/contracts/animation-types.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -5965,6 +6230,16 @@
           ],
           "tests": [
             "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -6183,6 +6458,16 @@
           ],
           "tests": [
             "test/unit/profile-facade-consumers.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }
@@ -6409,6 +6694,16 @@
           "tests": [
             "test/unit/profile-facade-consumers.test.js"
           ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/COMPLETE_CHARTS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
+          ]
         }
       }
     },
@@ -6628,6 +6923,16 @@
           "tests": [
             "test/unit/profile-facade-consumers.test.js",
             "test/unit/animation/cartesian-density.test.js"
+          ]
+        },
+        "package": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/VIOLIN_PLOTS.md"
+          ],
+          "tests": [
+            "test/contracts/installed-native-families.test.js"
           ]
         }
       }

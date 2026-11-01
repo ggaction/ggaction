@@ -55,9 +55,9 @@ export async function testNodeConsumer(directory) {
         const start = performance.now();
         try { await entry.run(); records.push({ id: entry.id, status: "passed", durationMs: performance.now() - start }); }
         catch (error) { records.push({ id: entry.id, status: "failed", durationMs: performance.now() - start, error: error.stack }); }
+        await writeFile("node-cases.json", JSON.stringify(records, null, 2));
       }
     }
-    await writeFile("node-cases.json", JSON.stringify(records, null, 2));
     const failures = records.filter(record => record.status === "failed");
     if (failures.length) { console.error(JSON.stringify(failures, null, 2)); process.exitCode = 1; }
   `;
