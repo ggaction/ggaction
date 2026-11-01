@@ -8,7 +8,7 @@
     "graticule/guides"
   ],
   "addedOwners": 3,
-  "status": "source qualification passed; source-pinned documentation build remains pending",
+  "status": "verified conceptual checkpoint; combined candidate and whole Roadmap9 qualification remain pending",
   "runtimeChange": false,
   "checks": {
     "owning": 62,
@@ -34,7 +34,58 @@
       ],
       "status": "passed"
     },
-    "preflight": "passed"
+    "preflight": "passed",
+    "docs": 51,
+    "built": {
+      "pages": 186,
+      "llmArtifacts": 1603
+    },
+    "builtBrowser": {
+      "page": "tutorials/geographic-marks/",
+      "results": [
+        {
+          "width": 320,
+          "dimensions": {
+            "width": 320,
+            "scroll": 320,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 390,
+          "dimensions": {
+            "width": 390,
+            "scroll": 390,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 768,
+          "dimensions": {
+            "width": 768,
+            "scroll": 768,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        },
+        {
+          "width": 1280,
+          "dimensions": {
+            "width": 1280,
+            "scroll": 1280,
+            "escapes": 0
+          },
+          "violations": 0,
+          "errors": 0
+        }
+      ]
+    },
+    "imageManifest": "existing canonical images remain fresh; no renderer/source input changed"
   },
   "preserved": {
     "nativeRows": 30,
@@ -50,5 +101,13 @@
     "Combined candidate qualification",
     "Whole Roadmap9 through STEP077",
     "Large route performance and rendering limits"
-  ]
+  ],
+  "sourceCommit": "8c0b2e979",
+  "searchBudget": {
+    "firstResult": "50/51 docs; search exceeded old cap",
+    "old": 1089900,
+    "measuredIncludingNewline": 1090602,
+    "new": 1090700
+  },
+  "proofScope": "Only new analytical recipe and its consumer evidence; no runtime/types/public API/solver/renderer/large SLO changes."
 }

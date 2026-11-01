@@ -22,3 +22,7 @@ DPR1/2의 실제 Canvas/SVG 각각에서 분석 수정, grid 수정, 명시 refr
 런타임·types·packed 입력은 edge source `56640916a`에서 바뀌지 않았다. 따라서 그 exact archive `c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4`를 다시 사용해 새 문서 하나를 실제 source-free package에서 실행한다. 기존 3Node 전체 qualification를 새로 수행했다고 집계하지 않는다. 신규 source/support 검사는 Node20/22/24에서 실행한다.
 
 검증 명령·수치·실패/재시도·고정 archive 및 최종 source pin은 [evidence summary](native-graticule-evidence/summary.json)에 기록한다. 다른 29개 native 행, 79개 AT group, 577개 target, package30, Image3 N/A 및 결과 상태는 보존한다.
+
+## 최종 검증
+
+소스 `8c0b2e979`를 정본으로 pin했다. 관련62검사, Node20/24 각4검사, 실제브라우저1검사(Canvas/SVG 각각DPR1/2), source-free 새문서1개, 문서51개, built186페이지/1603 LLM파일 및320/390/768/1280 화면의 overflow·Axe·console 모두0을 확인했다. 390px 새 절을 직접 확인했다. 기존 이미지manifest도fresh이다. 최초문서50/51의 검색크기 실패는1,090,602byte 실측으로 기존1,089,900→최소1,090,700 한도를 조정해 해결했으며 원본로그를 보존한다. 패키지 입력과bundle은 변경되지 않았다.

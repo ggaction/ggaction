@@ -107,7 +107,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/56640916a5b12ae9c185ce05b738c6446ddf4243/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/8c0b2e97964b83f091cea807e0b439905ec78289/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](../../../api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
