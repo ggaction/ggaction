@@ -2641,6 +2641,28 @@
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/geo-public.test.js",
+            "test/unit/animation/geo-lifecycle.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/contracts/geo-mark-types.test.js",
+            "test/contracts/animation-types.test.js"
+          ]
         }
       }
     },
@@ -2807,6 +2829,34 @@
           "tests": [
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/geo-public.test.js",
+            "test/unit/animation/geo-lifecycle.test.js",
+            "test/unit/animation/geo-text-public.test.js",
+            "test/unit/animation/geo-text-expressions.test.js",
+            "test/unit/animation/geo-text-state.test.js",
+            "test/unit/animation/geo-public-selection.test.js",
+            "test/charts/cross-feature-integration/variants/animation/geotext-expressions.render.js",
+            "test/browser/animation-geotext-expressions.browser.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/contracts/geo-mark-types.test.js",
+            "test/contracts/animation-types.test.js"
           ]
         }
       }
@@ -2975,6 +3025,28 @@
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/geo-public.test.js",
+            "test/unit/animation/geo-lifecycle.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/contracts/geo-mark-types.test.js",
+            "test/contracts/animation-types.test.js"
+          ]
         }
       }
     },
@@ -3102,6 +3174,30 @@
           "tests": [
             "test/unit/geo/marks.test.js",
             "test/unit/geo/coordinates.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/geo-public.test.js",
+            "test/unit/animation/geo-lifecycle.test.js",
+            "test/unit/animation/geo-text-public.test.js",
+            "test/unit/animation/geo-public-selection.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/contracts/geo-mark-types.test.js",
+            "test/contracts/animation-types.test.js"
           ]
         }
       }
