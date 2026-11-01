@@ -8,6 +8,7 @@ import { getMarkItems, inspectProgram } from "../../../src/inspection.js";
 import { exportAccessibleData } from "../../../src/accessibility.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
 import { calendarSourcePoints } from "../../../src/grammar/calendar/input.js";
+import { createInteractionSession } from "../../../src/interaction.js";
 
 const rows = [{ id: "a", day: "2024-02-28", amount: 0 }, { id: "b", day: "2024-02-29", amount: 7 }, { id: "c", day: "2024-02-29", amount: -2 }];
 const intent = { date: "day", value: "amount", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" };
@@ -15,6 +16,74 @@ const base = (values = rows) => chart().createCanvas({ width: 1100, height: 300,
   .createData({ id: "days", keyField: "id", values }).createCalendarLayout(intent);
 const resource = p => p.semanticSpec.resources.find(value => value.kind === "layout");
 const cells = p => getMarkItems(p, { target: "calendar" });
+
+test("Calendar hit and accessible selection retain leap-day duplicates, zero and absent days through revision", () => {
+  const input = [{ id: "zero", day: "2024-02-28", amount: 0 }, { id: 1, day: "2024-02-29", amount: 7 }, { id: "1", day: "2024-02-29", amount: -2 }];
+  const p = chart().createCanvas({ width: 1100, height: 260, margin: 20 })
+    .createData({ id: "days", keyField: "id", values: input })
+    .createCalendarLayout({ ...intent, start: "2024-01-01", end: "2024-12-31" }).createCalendarPlot({ color: false });
+  const before = serializeProgram(p), initial = cells(p), leap = initial.find(item => item.fields.date === "2024-02-29");
+  assert.equal(initial.length, 366);
+  assert.equal(initial.filter(item => item.fields.month === 2).length, 29);
+  assert.deepEqual(initial.filter(item => !item.fields.empty).map(item => [item.fields.date, item.fields.value, item.rows.length]), [["2024-02-28", 0, 1], ["2024-02-29", 5, 2]]);
+  assert.equal(new Set(leap.rows.map(row => row.rowKey)).size, 2);
+  const selected = p.selectMarks({ id: "picked", target: "calendar", items: [leap.key] })
+    .highlightMarks({ selection: "picked", fill: "red", dimOthers: false, bringToFront: false });
+  const revised = selected.reviseData({ source: "days", id: "revised", values: [...input].reverse().map(row => ({ ...row, amount: row.amount + 1 })) });
+  const restored = deserializeProgram(serializeProgram(revised));
+  assert.deepEqual(restored.graphicSpec, revised.graphicSpec);
+  assert.deepEqual(cells(restored).map(item => item.key), initial.map(item => item.key));
+  const currentLeap = cells(restored).find(item => item.key === leap.key);
+  assert.equal(currentLeap.fields.value, 7); assert.equal(currentLeap.properties.fill, "red");
+  assert.deepEqual(currentLeap.rows.map(row => row.rowKey), [...leap.rows].reverse().map(row => row.rowKey));
+  assert.ok(currentLeap.rows.every(row => row.data === "revised" && row.revision === 1));
+  const session = createInteractionSession({ program: restored });
+  try {
+    for (const date of ["2024-02-28", "2024-02-29", "2024-03-01"]) {
+      const item = cells(restored).find(item => item.fields.date === date), { x, y, width, height } = item.geometry[0].properties;
+      session.dispatch({ type: "inspect", point: { x: x + width / 2, y: y + height / 2 }, slop: 0 });
+      const target = session.getState().hit.target;
+      assert.equal(target.itemKey, item.key); assert.equal(target.role, "calendar-day");
+      assert.deepEqual(target.resourceRefs, [{ kind: "layout", id: "calendarLayout", revision: 1 }]);
+      // Resource hits identify the layout; inspection resolves its contributors.
+      assert.deepEqual(target.rowKeys, []);
+      assert.deepEqual(cells(restored).find(value => value.key === target.itemKey).rows, item.rows);
+    }
+  } finally { session.destroy(); }
+  const joined = hconcat({ id: "pair", programs: [{ id: "left", program: restored }, { id: "right", program: p }] });
+  const views = exportAccessibleData(joined, { format: "items" }).views;
+  assert.deepEqual(views.map(view => view.childPath), [["left"], ["right"]]);
+  assert.deepEqual(views.map(view => view.items.length), [366, 366]);
+  assert.equal(new Set(views.flatMap(view => view.items.map(item => item.key))).size, 732);
+  const exportedLeap = views[0].items.find(item => item.fields.date === "2024-02-29");
+  assert.equal(exportedLeap.fields.value, 7); assert.deepEqual(exportedLeap.selectedBy, ["picked"]);
+  const absent = views[0].items.find(item => item.fields.date === "2024-03-01");
+  assert.equal(absent.fields.value, null); assert.equal(absent.fields.empty, true);
+  assert.deepEqual(cells(restored).find(item => item.fields.date === "2024-03-01").rows, []);
+  assert.ok(views[1].items.every(item => item.selectedBy.length === 0));
+  const omitted = restored.editLayout({ options: { missing: "omit" } });
+  assert.deepEqual(cells(omitted).map(item => item.fields.date), ["2024-02-28", "2024-02-29"]);
+  assert.deepEqual(cells(omitted).at(-1).rows, currentLeap.rows);
+  assert.equal(serializeProgram(p), before);
+});
+
+test("Calendar intrinsic color mapping keeps day geometry and explicit legend while rejecting row coordinates", () => {
+  const p = base().createCalendarPlot({ color: { type: "quantize", domain: [0, 10], range: ["blue", "red"] } }).createLegend({ target: "calendar" });
+  const before = serializeProgram(p), original = cells(p);
+  const next = p.editScale({ id: "calendar-color", domain: [0, 20] });
+  assert.deepEqual(cells(next).map(item => item.key), original.map(item => item.key));
+  assert.deepEqual(cells(next).map(item => [item.properties.x, item.properties.y, item.properties.width, item.properties.height]), original.map(item => [item.properties.x, item.properties.y, item.properties.width, item.properties.height]));
+  assert.equal(original.at(-1).properties.fill, "red"); assert.equal(cells(next).at(-1).properties.fill, "blue");
+  assert.equal(next.semanticSpec.guides.legend.color.scale, "calendar-color");
+  assert.equal(next.guideConfigs.legend.interval.scale, "calendar-color");
+  assert.deepEqual(next.resolvedScales["calendar-color"].domain, [0, 20]);
+  assert.equal(cells(next)[0].properties.fill, "#f1f5f9");
+  for (const method of ["encodeX", "encodeY", "encodeColor"]) {
+    assert.throws(() => p[method]({ target: "calendar", field: "amount", fieldType: "quantitative" }), /calendar|support|intrinsic/i);
+    assert.equal(serializeProgram(p), before);
+  }
+  assert.deepEqual(deserializeProgram(serializeProgram(next)).graphicSpec, next.graphicSpec);
+});
 
 test("calendar public layout preserves exact civil aggregation and empty versus zero cells", () => {
   const p = base().createCalendarPlot(), stored = resource(p), items = cells(p);

@@ -4,6 +4,7 @@ import { normalizeContourStyle, CONTOUR_STYLE_FIELDS } from "../../grammar/conto
 import { resolveContourResource } from "../../selectors/contours.js";
 import { findCoordinate, resolveCartesianCoordinate } from "../../selectors/coordinates.js";
 import { requireLayer, resolveEligibleLayer } from "../../selectors/layers.js";
+import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveContourPlot } from "../../materialization/contour/plot.js";
 import { resolveMarkGraphicPlacement } from "../../materialization/graphicHierarchy.js";
 import { applyMaterializationPlan, planLayerDataRematerialization } from "../../materialization/dependencies.js";
@@ -75,7 +76,11 @@ function facade(editing) {
         for (const [channel, value] of Object.entries(encoding)) for (const [property, field] of Object.entries(value)) {
           next = next.editSemantic({ property: `layer[${id}].encoding.${channel}.${property}`, value: field });
         }
-        for (const [channel, definition] of Object.entries(definitions)) next = applyEncodingScale(next, definition, options[channel], { reassignment: editing });
+        const added = [], existing = [];
+        for (const entry of Object.entries(definitions)) (findSemanticScale(next, entry[1].id) === undefined ? added : existing).push(entry);
+        // Editing a live scale can rematerialize this mark immediately. All of
+        // its newly assigned scale references must exist before that happens.
+        for (const [channel, definition] of [...added, ...existing]) next = applyEncodingScale(next, definition, options[channel], { reassignment: editing });
         next = applyMaterializationPlan(next, [
           ...planLayerDataRematerialization(next, id),
           ...(hasMaterializedLegend(next) ? [{ op: "rematerializeLegend" }] : [])

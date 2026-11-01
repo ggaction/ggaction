@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "status": "source-qualified-provenance-pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "b87cb3e61510921d7151b289079342090fbdfa83",
+  "scope": [
+    "contour-line",
+    "contour-filled",
+    "calendar"
+  ],
+  "sourceCommit": null,
+  "runtimeFiles": {
+    "src/actions/contours/marks.js": "d96a227f1191710de6e50bc2d082d4547206fe4df4d5e5cde5fe43facf4b2331"
+  },
+  "runtimeChange": "Create preflighted newly assigned contour scales before editing a live scale that can rematerialize the mark. Restore existing Current behavior.",
+  "publicApiChanged": false,
+  "typesChanged": false,
+  "sharedAnimationOwnersChanged": false,
+  "candidateQualification": false,
+  "mapping": {
+    "rows": [
+      {
+        "id": "contour-line",
+        "before": 5,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "contour-filled",
+        "before": 5,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "calendar",
+        "before": 5,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      }
+    ],
+    "otherRowsAndFieldsDeepEqual": true,
+    "existingOwnersPreserved": true
+  },
+  "checks": [
+    {
+      "command": "node --test test/unit/resources/contour-marks.test.js test/unit/resources/contour-resources.test.js test/unit/resources/calendar-plots.test.js test/unit/contour-layouts.test.js test/unit/contour-density.test.js test/unit/calendar-layout.test.js test/unit/interaction-calendar-region.test.js test/unit/actions/theme-calendar.test.js test/unit/animation/resource-mark-fallbacks.test.js test/contracts/contour-types.test.js test/contracts/calendar-plot-types.test.js test/charts/contours/public.test.js test/charts/calendar/public.test.js test/contracts/native-capability-completion.test.js test/contracts/test-discovery.test.js test/contracts/source-boundaries.test.js",
+      "passed": 138,
+      "failed": 0,
+      "log": "owning-combined.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include=src/actions/contours/marks.js --test-coverage-lines=95 --test-coverage-branches=90 --test-coverage-functions=100 test/unit/resources/contour-marks.test.js test/unit/resources/contour-resources.test.js test/charts/contours/public.test.js",
+      "passed": 30,
+      "failed": 0,
+      "log": "coverage.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test test/charts/contours/renderer.render.js test/charts/contours/png.render.js test/charts/calendar/renderer.render.js test/charts/calendar/png.render.js",
+      "passed": 16,
+      "failed": 0,
+      "log": "render.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test test/browser/contours.browser.js test/browser/calendar.browser.js",
+      "passed": 8,
+      "failed": 0,
+      "log": "browser.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test --test-name-pattern='documented tutorials/(contours|calendar)' test/docs/executable-programs.test.js",
+      "passed": 2,
+      "failed": 0,
+      "log": "docs.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test --test-name-pattern='chart-example catalog|routes entry documentation' test/docs/documentation.test.js",
+      "passed": 2,
+      "failed": 0,
+      "log": "docs-catalog.log.gz",
+      "node": "v22.23.1"
+    },
+    {
+      "command": "node --test test/contracts/package-boundaries.test.js test/contracts/package-artifact.test.js",
+      "passed": 13,
+      "failed": 0,
+      "log": "package-contracts.log.gz",
+      "node": "v22.23.1"
+    }
+  ],
+  "coverage": {
+    "owner": "src/actions/contours/marks.js",
+    "actual": [
+      100,
+      95.05,
+      100
+    ],
+    "required": [
+      95,
+      90,
+      100
+    ]
+  },
+  "installed": {
+    "archive": {
+      "sha256": "5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e",
+      "sha1": "0f1e250ca9dcde75493975233f31e7305c6b209e",
+      "integrity": "sha512-36TigVKpuVtvxCR/uX9v8lXJfr18pSbq+gBYaX0HQwq2zGyvUvt8NqdujFfPXYwsLSQGNPZtxHTxDBvQS2yrMw==",
+      "size": 1670227,
+      "unpackedSize": 7562156,
+      "entryCount": 1170,
+      "frozenFile": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/native-contour-calendar/archives/ggaction-5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e.tgz"
+    },
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "perNode": {
+      "runtimeCases": 3,
+      "strictTypes": true,
+      "optionalPeers": true,
+      "browserBundles": 6
+    },
+    "bundleMax": {
+      "ggaction": 782078,
+      "ggaction/basic": 422951,
+      "ggaction/svg": 24954,
+      "ggaction/graph": 44580,
+      "ggaction/animation": 233459,
+      "ggaction/interaction": 137439
+    }
+  },
+  "budget": {
+    "unpackedPrevious": 7561800,
+    "unpackedActual": 7562156,
+    "unpackedLimit": 7562200,
+    "entries": 1170,
+    "packedActual": 1670227,
+    "packedLimit": 1674100,
+    "bundleCapsChanged": false
+  },
+  "initialFailures": [
+    {
+      "log": "owning-first.log.gz",
+      "reason": "Actual mixed existing/new contour scale order defect; separate Calendar hit role assertion mistake."
+    },
+    {
+      "logs": [
+        "owning-second.log.gz",
+        "owning-third.log.gz",
+        "owning-fourth.log.gz",
+        "owning-final.log.gz"
+      ],
+      "reason": "Fixture expectations corrected to existing public resource rowKeys, intrinsic role, line stroke highlight, semantic scale, accessible item fields and animation exit semantics; no runtime changes beyond scale order."
+    },
+    {
+      "log": "package-first.log.gz",
+      "reason": "Measured unpacked bytes exceeded the prior limit; actual +401 runtime bytes, minimum cap correction only."
+    },
+    {
+      "log": "installed20-first.log.gz",
+      "receipt": "node20-first.json",
+      "diagnostic": "installed-fixture-margin.txt.gz",
+      "reason": "Fixture legend margin too small. Original incomplete failure receipt preserved. Diagnostic reconstructed separately; corrected fixture and same archive passed all three nodes."
+    }
+  ],
+  "remaining": [
+    "Three package manifest cells remain pending until a discoverable installed-runtime owner exists.",
+    "Final combined native qualification, route SLO and STEP077 remain pending.",
+    "No full normal/realistic/source coverage sweep or new performance claim."
+  ],
+  "files": {
+    "animation-final.log.gz": {
+      "rawSha256": "8d8474cec0f959268d6bc2699d2e390f0b5a976c07a1842d779480b7aa140167",
+      "bytes": 921
+    },
+    "browser.log.gz": {
+      "rawSha256": "0b8f716fcd615c0febe5411c6e1f0c594c2fc4e10f67245900b8a7b85c36d092",
+      "bytes": 1860
+    },
+    "coverage.log.gz": {
+      "rawSha256": "ed7d5945b7b30eecf0324997b53627bf57ed0c0063ce9a7134c7f49cb5581c61",
+      "bytes": 8317
+    },
+    "docs-catalog.log.gz": {
+      "rawSha256": "8a9b6c6503a2b17d6a6bac1273c3bda079ba7d3e5743ea57c3346888297e041f",
+      "bytes": 482
+    },
+    "docs.log.gz": {
+      "rawSha256": "e8dd0f67954bf949dfb4bfa41594f554054d39aeb8c24fa616a0eb2fd684adfd",
+      "bytes": 574
+    },
+    "installed-fixture-margin.txt.gz": {
+      "rawSha256": "68d8393e5c7396aa6d6fdf581a84d5a3031645f553b117d7f7bf185ea379cac0",
+      "bytes": 804
+    },
+    "installed20-first.log.gz": {
+      "rawSha256": "cbbcf0757749df1ea74b1a9d7952c19551a29448d5335a404c7e639dd61fe183",
+      "bytes": 759
+    },
+    "installed20.log.gz": {
+      "rawSha256": "89315ec94852b9889996332d6cf381f20fffd83c6ed1bfdd40c104c406512eb5",
+      "bytes": 1785
+    },
+    "installed22.log.gz": {
+      "rawSha256": "65414245e58ebb0e546a77b18da8fc420f3d4b78000df0406ddedf933e5b9218",
+      "bytes": 1801
+    },
+    "installed24.log.gz": {
+      "rawSha256": "62f2d3a55c27e296a24de7f0925527d00a9b3420f888f8933cad943034c2bd70",
+      "bytes": 1817
+    },
+    "manifest-before.json.gz": {
+      "rawSha256": "f56cdd320c6a1ee42ce8c1643f5ab4ee1a3e09d75910885a00c37e65022a57ff",
+      "bytes": 151873
+    },
+    "native-pending.json.gz": {
+      "rawSha256": "4800bc48f7f8d9307954324da18f2029245840ddc1a85bc39e1b69b1f475f121",
+      "bytes": 34651
+    },
+    "owning-combined.log.gz": {
+      "rawSha256": "4e592337cdf1d61f0a941e9f34fa9f42da54165095358902dee4555784e92d7f",
+      "bytes": 32994
+    },
+    "owning-final.log.gz": {
+      "rawSha256": "b8b9ec1f1103da6ae763a19f4107bec8154c1499ba1515baabf98dda68da7d16",
+      "bytes": 11203
+    },
+    "owning-first.log.gz": {
+      "rawSha256": "2fd207c00192be9bc4111cb8f87b5ce16f1d0694d3ad4390f485ec6edfd8514f",
+      "bytes": 13233
+    },
+    "owning-fourth.log.gz": {
+      "rawSha256": "aa61c8595a8a71316a820d85a718657575bc9fa5f58b9dc7f5e48e18c9443b30",
+      "bytes": 13855
+    },
+    "owning-second.log.gz": {
+      "rawSha256": "b446d7f25accbea4ecf5a6afe0859888226c3bfa2497ecc7fd41bbf8aa91c6bf",
+      "bytes": 12083
+    },
+    "owning-third.log.gz": {
+      "rawSha256": "8d2989cb550ec95d51fbeb240e2de2d7f1d3a27052bed910e132663a11f2edc3",
+      "bytes": 9955
+    },
+    "package-contracts.log.gz": {
+      "rawSha256": "688e2028ab95f8c863f892601333a4b3450fd93770d4127d52145f9fd32f0eda",
+      "bytes": 2776
+    },
+    "package-final.log.gz": {
+      "rawSha256": "c263b07ba72766ef0ab42a174c640851fe9908206587f35d39ea5fa5c30cfc31",
+      "bytes": 541
+    },
+    "package-first.log.gz": {
+      "rawSha256": "d4fddbad16fb5bc812728a547616bda90f5abf0181de03c958d166b871a8c8a3",
+      "bytes": 821
+    },
+    "probe.log.gz": {
+      "rawSha256": "22688a4811496f9f53702cf0c0e58a09a92e1d384eea2ec8a6170ef5ac1d5289",
+      "bytes": 20046
+    },
+    "reassignment-repro.log.gz": {
+      "rawSha256": "4e73b73fcb6ed60cd37d23ce54c4e3f2ab0cdcad08882a5d94f4f878b1f96065",
+      "bytes": 1526
+    },
+    "render.log.gz": {
+      "rawSha256": "936ae2b1e9742bcbc14e66d3b7e4f6ca6516613e81a180afe40622308c2fa000",
+      "bytes": 2908
+    }
+  }
+}

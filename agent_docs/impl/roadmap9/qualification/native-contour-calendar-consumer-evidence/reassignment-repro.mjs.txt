@@ -1,0 +1,5 @@
+import {chart} from '../../src/index.js';
+const p=chart().createCanvas().createContourData({id:'g',grid:{origin:[0,0],dx:1,dy:1,width:2,height:2,values:[0,1,1,2]},thresholds:[0,1,2]}).createContourMark();
+for(const [name,patch] of [['new-color-only',{color:{id:'new-color',type:'quantize',range:['red','blue']}}],['position-and-color',{x:{reverse:true},color:{id:'new-color',type:'quantize',range:['red','blue']}}]]){
+ try{p.editContourMark(patch);console.log(name,'pass')}catch(error){console.log(name,error.stack)}
+}

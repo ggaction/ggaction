@@ -3194,7 +3194,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Package remains pending: explicit installed family fixtures exist, but no discoverable package runtime test owner is assigned. Scene-animation evidence asserts concrete crossfade, current-frame rebase and exact offline replay, not typed family interpolation."
       },
       "assignedOwners": {
         "create": {
@@ -3240,6 +3240,127 @@
           ],
           "tests": [
             "test/charts/contours/png.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-mark-fallbacks.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/contracts/contour-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js",
+            "test/charts/contours/public.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
           ]
         }
       }
@@ -3273,7 +3394,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Package remains pending: explicit installed family fixtures exist, but no discoverable package runtime test owner is assigned. Scene-animation evidence asserts concrete crossfade, current-frame rebase and exact offline replay, not typed family interpolation."
       },
       "assignedOwners": {
         "create": {
@@ -3320,6 +3441,127 @@
           "tests": [
             "test/charts/contours/png.render.js"
           ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-mark-fallbacks.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/contracts/contour-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js",
+            "test/charts/contours/public.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CONTOURS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/contour-marks.test.js"
+          ]
         }
       }
     },
@@ -3352,7 +3594,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Package remains pending: explicit installed family fixtures exist, but no discoverable package runtime test owner is assigned. Scene-animation evidence asserts concrete crossfade, current-frame rebase and exact offline replay, not typed family interpolation."
       },
       "assignedOwners": {
         "create": {
@@ -3398,6 +3640,128 @@
           ],
           "tests": [
             "test/charts/calendar/png.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js",
+            "test/unit/interaction-calendar-region.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-mark-fallbacks.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/contracts/calendar-plot-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md"
+          ],
+          "tests": [
+            "test/docs/executable-programs.test.js",
+            "test/charts/calendar/public.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CALENDAR.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/calendar-plots.test.js"
           ]
         }
       }
