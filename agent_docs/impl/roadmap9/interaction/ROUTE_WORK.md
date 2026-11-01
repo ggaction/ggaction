@@ -207,4 +207,19 @@ Node20/22/24 각100 source 검사를 통과했고 변경 owner99.26/99.07/100으
 
 Same58a04828…bc0148 tar에서 Node20/22/24 각 공개5사례가 통과했다. Node20/24 Full
 gzip782010>781600 최초 실패는 보존하고 최소782100으로 같은18개 bundle 측정을 다시
-검산했다. 나머지 상한은 그대로다. 실제 P95는 아직 수행 전이다.
+검산했다. 나머지 상한은 그대로다. 이후 같은 source/archive의 실제 P95를 아래에 기록한다.
+
+
+같은58a04828…bc0148 archive·source1e3077170에서 Chromium153/M4/16GiB, DPR1/2 각각
+5회 warmup+30회 측정을 완료했다. HEB10k bundling P95는 **9,336.9 / 9,288.1 ms**,
+edge-path10k는 **7,051.9 / 6,944.8 ms**다. 원 workload와 모든 route를 보존했다. 이전
+HEB12,732.2 / 12,747.9 ms와 비교할 수 있는 준비·적용 단계 측정이며, 이번 source는 exact job
+검증 재사용과 cycle proof를 함께 포함한다. Solver work는 각각9,723,588 / 7,457,490이다.
+
+네 셀 모두 원본 GraphPlot의 `Graph plot graphic count must not exceed 10000.` 제한으로
+materialization/Canvas/SVG 단계는 수행할 수 없다. 30,000ms bundling 단계 기준만 통과하고
+full SLO·large workload·AT82 완료로 세지 않는다. 최초 graphic 오류는 앞 span 증거에 그대로
+보존하고 이번에도 guard·fixture·sample을 바꾸지 않았다. 초기 로드 뒤 HTTP0, 종료 worker/
+listener/timer/capture/callback-after-destroy0을 확인했다. 새로운 lifecycle100·retained heap
+검사는 없으며 원본24셀8성공/16한계 집계도 소급 변경하지 않는다. 환경·process snapshot·
+전체 sample·bundle hash와 실행 harness는 [이번 증거](route-cycle-evidence/summary.json)에 있다.
