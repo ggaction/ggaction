@@ -835,5 +835,15 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "interaction-selection-handles",
+    "file": "api/interaction.md",
+    "contains": "const handles = session.getSelectionHandles()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.",
+    "rendering": "authoring-only"
   }
 ]

@@ -12,6 +12,15 @@
     figure { margin: 0; }
     canvas, svg { display: block; }
     #inspection { min-height: 2em; }
+    #handles { display:flex;flex-wrap:wrap;gap:20px; }
+    .handle-view { position:relative;width:420px;height:300px;touch-action:none; }
+    .handle-surface { display:block;width:420px;height:300px; }
+    .handle-overlay { position:absolute;inset:0;pointer-events:none; }
+    .selection-handle { position:absolute;width:12px;height:12px;padding:0;border:2px solid #991b1b;background:white;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none; }
+    .selection-handle:focus-visible { outline:3px solid #1d4ed8;outline-offset:3px; }
+    .handle-controls { display:flex;gap:8px; }
+    .handle-controls button { min-height:44px; }
+    main { overflow-x:auto; }
   </style>
 </head>
 <body><main>
@@ -23,5 +32,8 @@
     <figure><figcaption>SVG</figcaption><div id="vector"></div></figure>
   </div>
   <p id="inspection" role="status">Move over a point or guide.</p>
+  <h2>Edit selections and category order</h2>
+  <p>Drag a red selection boundary, or drag a category tick or label. Tab to a handle or category button and use the arrow keys for the equivalent native edit. Escape cancels an active drag.</p>
+  <div id="handles"></div>
 </main><script type="module" src="../browser-host/load.js" data-example-module="./main.js"></script></body>
 </html>

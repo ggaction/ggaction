@@ -1070,6 +1070,18 @@
       {
         "type": "file",
         "path": "unit/grammar/mark-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/selection-handles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-handles.browser.js"
       }
     ],
     "horizon": [

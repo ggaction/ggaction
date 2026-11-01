@@ -52,7 +52,7 @@ its source measurements. Each child owns its data, marks, scales and guides.
 The analytical axis and legend explain the point chart; the resource view keeps
 its native layout, thickness and styles.
 
-Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/8c0b2e97964b83f091cea807e0b439905ec78289/examples/program-composition/resource-comparison.js)
+Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/codex/roadmap9-animation-timeline-public/examples/program-composition/resource-comparison.js)
 beside this browser module, set its `chart`/`hconcat` import to `from "ggaction"`,
 and provide `<canvas id="chart"></canvas>`. The helper
 builds both children from the same rows, including distinct numeric `1` and

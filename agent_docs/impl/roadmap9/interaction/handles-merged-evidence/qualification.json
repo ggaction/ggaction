@@ -1,0 +1,540 @@
+{
+  "status": "native-selection-category-handles-integrated; post-commit-doc-pin-and-final-native-qualification-pending",
+  "base": "76ec184c2d344e09b8b68132f29280e83d9a2e1e",
+  "incoming": "ada99b510e4e3c631963099fa93d94a97aa51fce",
+  "sourceRevision": null,
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1244,
+    "packedBytes": 1785422,
+    "unpackedBytes": 8053389,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-411d78ac5c768398bf76b5dd8eb0466e4dc8b7cacfdbc776a136078cac3f64fa.tgz",
+    "sha256": "411d78ac5c768398bf76b5dd8eb0466e4dc8b7cacfdbc776a136078cac3f64fa"
+  },
+  "sourceInputEquality": {
+    "incoming": "ada99b510",
+    "files": [
+      "src/actions/categoryOrder/index.js",
+      "src/grammar/selectionHandles.js",
+      "src/interaction/categoryReorder.js",
+      "src/interaction/hitProgram.js",
+      "src/interaction/regionCoordinates.js",
+      "src/interaction/regionResize.js",
+      "src/interaction/regionSelection.js",
+      "src/interaction/session.js",
+      "src/materialization/categoryOrder.js",
+      "types/interaction.d.ts"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 35,
+    "hit.log": 326,
+    "browser.log": 4,
+    "boundaries.log": 39,
+    "coverage.log": 333,
+    "coverage-policy.log": 7,
+    "package-docs.log": 10
+  },
+  "coverage": {
+    "floors": {
+      "grammar/selectionHandles.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/regionResize.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "interaction/categoryReorder.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/categoryOrder.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "grammar/selectionHandles.js": {
+        "lines": 100,
+        "branches": 92.68,
+        "functions": 100
+      },
+      "interaction/categoryReorder.js": {
+        "lines": 100,
+        "branches": 90.14,
+        "functions": 100
+      },
+      "interaction/regionResize.js": {
+        "lines": 100,
+        "branches": 90,
+        "functions": 100
+      },
+      "materialization/categoryOrder.js": {
+        "lines": 95.12,
+        "branches": 94.12,
+        "functions": 100
+      }
+    }
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "411d78ac5c768398bf76b5dd8eb0466e4dc8b7cacfdbc776a136078cac3f64fa",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 784296
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112941,
+          "gzipBytes": 333720
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 784296,
+          "limit": 784300,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 424647,
+          "limit": 424700,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135989,
+          "limit": 136000,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 44851,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 333720,
+          "limit": 333800,
+          "passed": true
+        }
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "411d78ac5c768398bf76b5dd8eb0466e4dc8b7cacfdbc776a136078cac3f64fa",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 782879
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 423769
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44700
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112941,
+          "gzipBytes": 332599
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 782879,
+          "limit": 784300,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 423769,
+          "limit": 424700,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24779,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135493,
+          "limit": 136000,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 44700,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 332599,
+          "limit": 333800,
+          "passed": true
+        }
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "411d78ac5c768398bf76b5dd8eb0466e4dc8b7cacfdbc776a136078cac3f64fa",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2735450,
+          "gzipBytes": 784296
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1447327,
+          "gzipBytes": 424647
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112941,
+          "gzipBytes": 333720
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 784296,
+          "limit": 784300,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 424647,
+          "limit": 424700,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135989,
+          "limit": 136000,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 44851,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 333720,
+          "limit": 333800,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "packageLimits": {
+    "entries": 1244,
+    "packedBytes": 1788700,
+    "unpackedBytes": 8053400,
+    "actualNode20and24PackedMaximum": 1788682
+  },
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "4ca1db14931abe2e37affc038bbb97683985581a4406aadb5d7b8c8382eed5d8",
+      "bytes": 82652
+    },
+    "pack22.json": {
+      "sha256": "7c726c1679e5abe4540f37d9167e5a89cde21a2a913176fe23eca4ff51b6eb47",
+      "bytes": 379
+    },
+    "installed-24.json": {
+      "sha256": "19800765c766eb368af973cef8a56aa21bb3944fc04f6c0e5cfa4a3466758804",
+      "bytes": 2436
+    },
+    "browser.log": {
+      "sha256": "9cb99bcaa40572a8eec5e5e895f726a9844e3f2ca1dba30f38a476c157ef3089",
+      "bytes": 1154
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "frozen.json": {
+      "sha256": "36d8c44456cc3f10e6d8bb62ae25a78503e8c9bc28586f90e5bd257f9964cd31",
+      "bytes": 436
+    },
+    "source-equality.json": {
+      "sha256": "18e3fead3dde8c07a21865d69f3689905d4079bf7203e761fc4b637d77328589",
+      "bytes": 459
+    },
+    "hit.log": {
+      "sha256": "985997b9b0b1df23988a8e11baacc676d6bc812586a4bd91c1a9bf01840af1b5",
+      "bytes": 79908
+    },
+    "installed-22.json": {
+      "sha256": "312e268a96bb1c5291dcb7d4784d889e370f68aec49297dd1639e5e987bf43ce",
+      "bytes": 2420
+    },
+    "pack24.json": {
+      "sha256": "c34e7653978c9706fd71f7c9b9fc81d75838d1cbabaf64461823808a0cfd0ce0",
+      "bytes": 379
+    },
+    "boundaries.log": {
+      "sha256": "e69ba89d8bdc1f7c121b796545bcadc9caea237fe8b77179471c8bb4353d1310",
+      "bytes": 8005
+    },
+    "installed-20.json": {
+      "sha256": "ebca5340b4bc45ba18d6e759ab7f62320cb0d085ba5de272fa73715da87f4a7d",
+      "bytes": 2427
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "726410fe0a966fae9c03d9dcf8995fa944e1f2a5538f296933dcab1018c613f5",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "coverage.json": {
+      "sha256": "d6a8cd003e4555d95d32b687bf9f13618ccdc51c2ee24fbb1692ec9e9658b4d7",
+      "bytes": 934
+    },
+    "docs-initial.log": {
+      "sha256": "fbc9554e012d10924ce4a8da62ffb54562d79a2ccd0ef613c166791418135170",
+      "bytes": 78000
+    },
+    "pack20.json": {
+      "sha256": "da8171f2a4a7fc46bfb49d2d5283b308f223d238e49554bf2bf2c4ee0ad49b6a",
+      "bytes": 379
+    },
+    "installed22.log": {
+      "sha256": "0a87b1336e7edc1bd90cf510996913015c501698828bc4010474d7f5fa1b3592",
+      "bytes": 2421
+    },
+    "prepack.log": {
+      "sha256": "c5abcc16f59dd0660808d651ee9afdca3aeca8eb55a89e29bb5e27615261b083",
+      "bytes": 499
+    },
+    "owning.log": {
+      "sha256": "1b641563f5ac6ed7578215b1ffb4178c9ef70aeb67e577250dedc859762cb879",
+      "bytes": 8404
+    },
+    "package-docs.log": {
+      "sha256": "6463a17342741d712559aeb297d6a22b5bafed3dbbf73ef097be0c36ea23d9ac",
+      "bytes": 2357
+    },
+    "premeasure20.log": {
+      "sha256": "96649528d3934ec3f2756e4eb3158d7707d332b70bcff099d2e8f70f8572cda5",
+      "bytes": 253
+    },
+    "installed20.log": {
+      "sha256": "02e4f355156bda5ad121cbe73e47c136069dae609d45d24012a459cabbe7d339",
+      "bytes": 2428
+    },
+    "coverage-policy.log": {
+      "sha256": "744ed9788a879c3e8ef086cec8d924fa5d7b372b6b30d739c379cf5a77f61112",
+      "bytes": 1392
+    },
+    "installed24.log": {
+      "sha256": "24f0ce55668d62b95faa4dad386d4e807980d7e399e8952af004a60fe543a484",
+      "bytes": 2437
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack20-initial.stderr": {
+      "sha256": "3c2038c078c2c8a66f78642400d1b6ca2d8bbbeea8a2d63e9a18f1442ac4df21",
+      "bytes": 966
+    }
+  },
+  "remaining": [
+    "Postcommit canonical example provenance/doc full rerun",
+    "Original large hit/animation/data blocking and P95",
+    "All577consumers/79groups/nine final commands/fresh independent review/protected delivery; STEP077 incomplete"
+  ],
+  "docsInitial": {
+    "tests": 242,
+    "pass": 241,
+    "fail": 1,
+    "reason": "Canonical changed example cannot be pinned until its source commit."
+  }
+}

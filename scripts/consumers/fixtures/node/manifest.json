@@ -1896,5 +1896,22 @@
         "statements": 2
       }
     ]
+  },
+  {
+    "file": "interaction-handles.mjs",
+    "cases": [
+      {
+        "id": "interaction-handles/scoped-region-pointer-and-command",
+        "statements": 22
+      },
+      {
+        "id": "interaction-handles/typed-category-pointer-and-command",
+        "statements": 22
+      },
+      {
+        "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+        "statements": 19
+      }
+    ]
   }
 ]

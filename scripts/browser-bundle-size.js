@@ -10,7 +10,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 333_800, // Owned position preparation: Node20/24 333,720 gzip bytes.
-  "ggaction/interaction": 131_400
+  "ggaction/interaction": 136_000
 });
 
 function minimalBrowserSource(specifier) {

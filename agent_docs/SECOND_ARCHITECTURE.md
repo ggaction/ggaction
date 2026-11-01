@@ -818,6 +818,13 @@ Worker 결과와 저장 route는 같은 exact ref·hash·결과 validator를 거
 
 ### `ggaction/interaction`
 
+선택영역 resize/category reorder의 pointer adapter는 기존 session transaction과
+native select/orderCategories를 재사용한다. `getSelectionHandles()`는 기존 frameVersion과
+native region→CSS forward 좌표의 불변 파생 조회이며 idle UI/ARIA는 host가 소유한다.
+정확한 clip은 hitProgram의 기존 authentic traversal association에서 읽고, category assignment는
+`materialization/categoryOrder.js` 한 곳을 action/interaction이 공유한다. 세부 계약은
+[INTERACTION](contract/current/INTERACTION.md#selection-region-and-category-handles)에 둔다.
+
 Browser-safe session/controller entry다. Explicit current scene inspection과 Full native selection·parameter
 commands를 연결하고 runtime bindings·event·listener 수명을 소유한다. Default authoring entry나
 renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
@@ -978,7 +985,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 424,700 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 131,400 bytes |
+| `ggaction/interaction` | 136,000 bytes |
 | `ggaction/animation` | 333,800 bytes |
 
 
@@ -4946,3 +4953,14 @@ adapter를 합쳐3entries가 추가된다. Canonical staging의 Node20/22/24 실
 공개 API·schema·work/graphic 한도·module 소유권 변경은 없으며 unpacked 실측8,022,770에 cap8,022,800,
 Full gzip Node20 실측784,092에 cap784,100을 적용했다. 근거와 미완료 large/worker 경계는
 [inference capacity 기록](impl/roadmap9/qualification/inference-capacity.md)을 따른다.
+
+2026-11-01 selection-region resize/category reorder handles의 canonical staged package는
+Node20/24에서 1,787,562 packed bytes, Node22에서 1,784,332 bytes, 공통 1,244 entries /
+8,048,978 unpacked bytes다. 새 pure handle/adapter와 기존 category assignment의 공유 owner
+반영으로 현재 package ceilings를 1,244 / 1,787,600 / 8,049,000으로 측정에 맞춘다.
+이 artifact-size 증분은 성능 SLO나 runtime work 한도의 변경이 아니다.
+
+동일 handles archive의 여섯 entry 설치 측정에서 interaction만 기존 131,400 상한을 넘었다.
+Node20/24 135,989 / Node22 135,493 gzip bytes로 현재 상한은 136,000이다. 실제 native
+region forward/inverse·scoped clip·category assignment 공유를 포함한 213개 browser modules이며
+나머지 다섯 entry 크기는 기준과 같다. 첫 상한 실패와 동일 저장 측정의 재검증을 구분해 보존한다.

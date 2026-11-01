@@ -47,6 +47,69 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Resize a selection or reorder categories
+
+Use a `resize` binding to edit an existing region selection, or a `reorder` binding
+to drag a categorical axis tick or label. These are Full authoring bindings.
+Selection resize is separate from resizing a Canvas or observing a DOM element.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run the complete ES module with its inline observations and public imports. Inspect native CSS handle coordinates and replace the same persistent region with an explicit command.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: "y" })
+  .selectMarks({ id: "window", target: "points",
+    region: { x: { ranges: [{ min: 2, max: 6 }] } } });
+const session = createInteractionSession({ program, bindings: [
+  { type: "resize", target: "points", selection: "window", axis: "x" }
+] });
+const handles = session.getSelectionHandles();
+console.log(handles.handles.map(({ handle, point }) => ({ handle, point })));
+session.dispatch({ type: "select", target: "points", payload: {
+  id: "window", mode: "replace", select: { region: { x: { ranges: [{ min: 2, max: 8 }] } } }
+} });
+session.destroy();
+```
+
+Mount the session on the rendered surface to enable pointer dragging. Draw idle UI
+from `getSelectionHandles()` and give it focusable host controls with descriptive
+ARIA labels. The query returns immutable `{frameVersion,handles}`; each handle has
+an exact scoped `target`, `selection`, `axis`, `handle` name and CSS-local `point`.
+Its frameVersion is the existing scene version, not a new handle counter. Root
+transforms and child placement are already applied. Use these same points when
+drawing the UI; do not multiply by DPR. The [browser recipe](../recipes/inspect-chart.md)
+includes mouse, touch and keyboard controls for Canvas and SVG.
+
+Axes are `x`, `y`, `xy`, or directed `theta`. XY supplies four edge midpoints and
+four corners. Linear, log, time and contiguous categorical regions reuse their
+native forward/inverse scales. Empty, non-region or clipped-away boundaries have
+no handles. Coincident or equally nearest different handles reject explicitly.
+The pointer uses the standard 3 CSS-pixel mouse/pen slop or 6 for touch. Resize
+replaces the region and keeps the untouched numeric endpoint's inclusivity.
+
+For an existing categorical mark and its native axis, bind
+`{type:"reorder",target:"bars",channel:"x"}`. `channel` also accepts `y` or `theta`.
+Only the actual axis tick/label identifies the typed category; mark bodies and
+axis titles do not. Moving across category centers uses the native `orderCategories`
+action and updates dependent marks, axes and legends. A keyboard control can use
+`session.dispatch({type:"reorder",target:"bars",payload:{channel:"x",values:["B","C","A"]}})`
+to apply the same order.
+
+Both bindings default to priority 60. Use explicit priorities or disjoint modifiers
+when competing bindings could apply. A drag previews on host RAF, then commits one
+history entry. Escape and capture loss cancel; a tap or unchanged result creates no
+history. The existing native scale must still describe the displayed owner;
+independently transformed animation pixels are not inverted into data values.
+
 ## Observe the mounted surface size
 
 Opt into `mount(element, { observeResize: true })` to receive `resize` events from the
