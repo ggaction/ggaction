@@ -26,3 +26,5 @@ Node22 archive1239entries/1778464packed/8025734unpacked, 실제 Node20/24 npm pa
 이 변경은 원100k benchmark를 native 옵션에 연결하거나 hit/animation과 동기50ms slice를
 완료하지 않는다. 해당 도구 변경과 모든 원 크기·DPR·SLO 검증은 후속 개념이다. 전체
 577consumer/79ATgroup,9개 최종 명령, 독립 검토와 보호된 최종 전달도 계속 남아 있다.
+
+소스 고정 때 README의 Basic ceiling 문구가 archive에 포함됨을 확인했다. 모든 runtime/type 등 다른 entry는 byte-identical했고, 최종0f38bed7 archive를3Node에 실제 재설치해 모든 runtime/type/peer/bundle 검사를 다시 통과했다. 이전dfab7346 archive의 실제 기록도 별도 보존한다.
