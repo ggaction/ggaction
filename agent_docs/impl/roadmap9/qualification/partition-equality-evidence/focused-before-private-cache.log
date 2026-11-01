@@ -1,0 +1,274 @@
+TAP version 13
+# Subtest: public offline plans preserve keyed meaning, canonical frames and playback defaults
+ok 1 - public offline plans preserve keyed meaning, canonical frames and playback defaults
+  ---
+  duration_ms: 80.81375
+  type: 'test'
+  ...
+# Subtest: frame export preflights the entire explicit schedule and uses the exact fps grid
+ok 2 - frame export preflights the entire explicit schedule and uses the exact fps grid
+  ---
+  duration_ms: 9.438667
+  type: 'test'
+  ...
+# Subtest: public restore rejects corruption, unknown kernels, missing payloads and executable playback
+ok 3 - public restore rejects corruption, unknown kernels, missing payloads and executable playback
+  ---
+  duration_ms: 35.729584
+  type: 'test'
+  ...
+# Subtest: exported frames retain authentic meaning across rebasing and offline restoration
+ok 4 - exported frames retain authentic meaning across rebasing and offline restoration
+  ---
+  duration_ms: 25.158208
+  type: 'test'
+  ...
+# Subtest: frame export rejects cumulative output work before materializing a first frame
+ok 5 - frame export rejects cumulative output work before materializing a first frame
+  ---
+  duration_ms: 105.918209
+  type: 'test'
+  ...
+# Subtest: the shared builder retains exact rectangular corners and bounded current curved cells
+ok 6 - the shared builder retains exact rectangular corners and bounded current curved cells
+  ---
+  duration_ms: 15.046583
+  type: 'test'
+  ...
+# Subtest: native angle normalization agrees with stored projection for very large authored angles
+ok 7 - native angle normalization agrees with stored projection for very large authored angles
+  ---
+  duration_ms: 1.557375
+  type: 'test'
+  ...
+# Subtest: invalid frames and tessellation requests fail before allocating cell paths
+ok 8 - invalid frames and tessellation requests fail before allocating cell paths
+  ---
+  duration_ms: 0.393959
+  type: 'test'
+  ...
+# Subtest: owned equal and unequal partition groups are compared once per exact pair
+ok 9 - owned equal and unequal partition groups are compared once per exact pair
+  ---
+  duration_ms: 62.440458
+  type: 'test'
+  ...
+# Subtest: nested partition groups retain independent equality and every native offline and rebase item
+ok 10 - nested partition groups retain independent equality and every native offline and rebase item
+  ---
+  duration_ms: 448.778625
+  type: 'test'
+  ...
+# Subtest: caller-owned and shallow-frozen partition groups do not acquire cached equality authority
+ok 11 - caller-owned and shallow-frozen partition groups do not acquire cached equality authority
+  ---
+  duration_ms: 15.486209
+  type: 'test'
+  ...
+# Subtest: an owned group replacement cannot borrow the preceding pair equality
+ok 12 - an owned group replacement cannot borrow the preceding pair equality
+  ---
+  duration_ms: 8.857042
+  type: 'test'
+  ...
+# Subtest: native partition projection joins exact visible body and label roles to stored hierarchy intervals
+ok 13 - native partition projection joins exact visible body and label roles to stored hierarchy intervals
+  ---
+  duration_ms: 34.068041
+  type: 'test'
+  ...
+# Subtest: repeated placement of the same child preserves separate exact hierarchy namespaces
+ok 14 - repeated placement of the same child preserves separate exact hierarchy namespaces
+  ---
+  duration_ms: 16.801
+  type: 'test'
+  ...
+# Subtest: concrete edits and foreign roles retain explicit fallback while stale and absent native grain fail
+ok 15 - concrete edits and foreign roles retain explicit fallback while stale and absent native grain fail
+  ---
+  duration_ms: 15.243833
+  type: 'test'
+  ...
+# Subtest: focus, hidden root, automatic radii and unrelated mark owners keep their exact stored grain
+ok 16 - focus, hidden root, automatic radii and unrelated mark owners keep their exact stored grain
+  ---
+  duration_ms: 35.54475
+  type: 'test'
+  ...
+# Subtest: native rectangular and polar normalized states preserve fixed screen values without layout
+ok 17 - native rectangular and polar normalized states preserve fixed screen values without layout
+  ---
+  duration_ms: 10.866875
+  type: 'test'
+  ...
+# Subtest: all native coordinate directions and compatible bend endpoints preserve native mapping
+ok 18 - all native coordinate directions and compatible bend endpoints preserve native mapping
+  ---
+  duration_ms: 39.201458
+  type: 'test'
+  ...
+# Subtest: current curved meaning rebases exactly while native dimensions remain explicit
+ok 19 - current curved meaning rebases exactly while native dimensions remain explicit
+  ---
+  duration_ms: 1.5565
+  type: 'test'
+  ...
+# Subtest: closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+ok 20 - closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+  ---
+  duration_ms: 1.284667
+  type: 'test'
+  ...
+# Subtest: public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+ok 21 - public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+  ---
+  duration_ms: 218.168
+  type: 'test'
+  ...
+# Subtest: native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+ok 22 - native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+  ---
+  duration_ms: 236.545083
+  type: 'test'
+  ...
+# Subtest: interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+ok 23 - interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+  ---
+  duration_ms: 312.494875
+  type: 'test'
+  ...
+# Subtest: scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+ok 24 - scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+  ---
+  duration_ms: 680.580667
+  type: 'test'
+  ...
+# Subtest: visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+ok 25 - visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+  ---
+  duration_ms: 38.79075
+  type: 'test'
+  ...
+# Subtest: closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+ok 26 - closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+  ---
+  duration_ms: 46.29975
+  type: 'test'
+  ...
+# Subtest: the public plan preserves every compatible native general direction through offline replay
+ok 27 - the public plan preserves every compatible native general direction through offline replay
+  ---
+  duration_ms: 2404.176292
+  type: 'test'
+  ...
+# Subtest: incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+ok 28 - incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+  ---
+  duration_ms: 107.564042
+  type: 'test'
+  ...
+# Subtest: a gap that consumes an intermediate cell falls back with both body and label preserved
+ok 29 - a gap that consumes an intermediate cell falls back with both body and label preserved
+  ---
+  duration_ms: 11.134958
+  type: 'test'
+  ...
+# Subtest: typed partition tracks preserve exact immutable endpoints and offline numeric identity
+ok 30 - typed partition tracks preserve exact immutable endpoints and offline numeric identity
+  ---
+  duration_ms: 13.85025
+  type: 'test'
+  ...
+# Subtest: icicle to sunburst samples agree with independent bend values and reverse sampling
+ok 31 - icicle to sunburst samples agree with independent bend values and reverse sampling
+  ---
+  duration_ms: 2.596833
+  type: 'test'
+  ...
+# Subtest: canonical frames support every compatible general direction without a second coordinate formula
+ok 32 - canonical frames support every compatible general direction without a second coordinate formula
+  ---
+  duration_ms: 18.894
+  type: 'test'
+  ...
+# Subtest: same-family size center hole and focus changes interpolate without changing hierarchy identity
+ok 33 - same-family size center hole and focus changes interpolate without changing hierarchy identity
+  ---
+  duration_ms: 0.499709
+  type: 'test'
+  ...
+# Subtest: current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+ok 34 - current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+  ---
+  duration_ms: 2.074792
+  type: 'test'
+  ...
+# Subtest: topology visibility reflection and radius policy changes report distinct crossfades
+ok 35 - topology visibility reflection and radius policy changes report distinct crossfades
+  ---
+  duration_ms: 1.499583
+  type: 'test'
+  ...
+# Subtest: CSS gap at exact native boundaries agrees with rectangle and sector mapping
+ok 36 - CSS gap at exact native boundaries agrees with rectangle and sector mapping
+  ---
+  duration_ms: 1.494291
+  type: 'test'
+  ...
+# Subtest: intermediate gaps use current curved arc and radial distances including area depths
+ok 37 - intermediate gaps use current curved arc and radial distances including area depths
+  ---
+  duration_ms: 5.811875
+  type: 'test'
+  ...
+# Subtest: track restoration rejects unknown versions malformed topology and inconsistent decisions
+ok 38 - track restoration rejects unknown versions malformed topology and inconsistent decisions
+  ---
+  duration_ms: 1.875666
+  type: 'test'
+  ...
+# Subtest: descriptor checks and global work limits reject before callbacks or oversized traversal
+ok 39 - descriptor checks and global work limits reject before callbacks or oversized traversal
+  ---
+  duration_ms: 290.237
+  type: 'test'
+  ...
+# Subtest: current semantic values and resolved scales rebase without pixel inversion in either direction
+ok 40 - current semantic values and resolved scales rebase without pixel inversion in either direction
+  ---
+  duration_ms: 57.746042
+  type: 'test'
+  ...
+# Subtest: timed exported frames retain authenticity and exact captured endpoint views
+ok 41 - timed exported frames retain authenticity and exact captured endpoint views
+  ---
+  duration_ms: 18.702083
+  type: 'test'
+  ...
+# Subtest: repeated topology interruption flattens weighted sources and preserves node identity
+ok 42 - repeated topology interruption flattens weighted sources and preserves node identity
+  ---
+  duration_ms: 293.794417
+  type: 'test'
+  ...
+# Subtest: nested enter and exit frames retain keyed correspondence at the actual displayed state
+ok 43 - nested enter and exit frames retain keyed correspondence at the actual displayed state
+  ---
+  duration_ms: 15.735708
+  type: 'test'
+  ...
+# Subtest: sampled endpoint restoration rejects identity, view, topology and semantic corruption
+ok 44 - sampled endpoint restoration rejects identity, view, topology and semantic corruption
+  ---
+  duration_ms: 18.513959
+  type: 'test'
+  ...
+1..44
+# tests 44
+# suites 0
+# pass 44
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4931.028834

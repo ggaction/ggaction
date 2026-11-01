@@ -1,0 +1,18 @@
+{
+  "base": "def731fe2",
+  "scope": "Private exact-owned group pair equality reuse only; unchanged public APIs, kernels, transport version and resource charges. Diagnostic timings are not a P95 or SLO claim.",
+  "sourceSHA256": "f733b66e7d011b693ba4d32112e84f9ac31638527839fa0ca9cbb5faff92b7f5",
+  "fixtureSHA256": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+  "diagnosticPrepareMs": {
+    "before": 116958.65462500001,
+    "after": 3799.0046249999996
+  },
+  "sameGuardCallsAndMaximum": true,
+  "partitionTrackWork": 16950544,
+  "fullOriginalItemsVerified": 10000,
+  "unchangedProduct10kRejected": {
+    "status": "rejected",
+    "name": "RangeError",
+    "message": "Animation guide endpoint size must not exceed 10000."
+  }
+}
