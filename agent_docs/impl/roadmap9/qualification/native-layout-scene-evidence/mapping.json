@@ -1,0 +1,50 @@
+{
+  "rows": [
+    {
+      "id": "tree",
+      "before": 14,
+      "after": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    },
+    {
+      "id": "treemap",
+      "before": 14,
+      "after": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-dag",
+      "before": 14,
+      "after": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-cyclic",
+      "before": 14,
+      "after": 15,
+      "pending": [
+        "encodings",
+        "scales",
+        "guides",
+        "package"
+      ]
+    }
+  ],
+  "otherRowsAndFieldsDeepEqual": true,
+  "existingOwnersPreserved": true
+}

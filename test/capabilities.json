@@ -548,6 +548,10 @@
       {
         "type": "file",
         "path": "unit/resources/flow-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-layout-fallbacks.test.js"
       }
     ],
     "font-assets": [
@@ -836,6 +840,10 @@
       {
         "type": "file",
         "path": "unit/resources/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-layout-fallbacks.test.js"
       }
     ],
     "hit-testing": [
