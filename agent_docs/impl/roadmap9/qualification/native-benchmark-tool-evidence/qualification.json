@@ -1,0 +1,83 @@
+{
+  "status": "reproducible-route-and-lifecycle-tool; final-qualification-pending",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeArchive": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0",
+  "toolInputs": {
+    "scripts/benchmark-native.js": "fbfe1dec7adfe5d36dcb9b0e5f32af57acaa4a3094a25fc863f272a7cce50554",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "app.js": {
+      "sha256": "3ec19373a10fcf326fada2259e7947c8d9d91807def970a75987607058360df5",
+      "bytes": 2796984
+    },
+    "worker.js": {
+      "sha256": "fc51259225ffb13147d7a41f54333d17c3c5b44fe2f67bf312bcf09235e15770",
+      "bytes": 56868
+    }
+  },
+  "runtimeTypesAndPackageInputsUnchanged": true,
+  "migration": "Stable benchmark imports no implementation history; original complete fixtures, thresholds, primitive counts and route algorithms unchanged. Failed route cells retain their actual error and remaining independent cells continue.",
+  "checks": {
+    "syntaxFiles": 3,
+    "diagnosticRouteCells": 8,
+    "diagnosticMemoryCyclesPerDpr": 4,
+    "fullMemoryCyclesPerDpr": 100,
+    "dpr": [
+      1,
+      2
+    ],
+    "boundaries": 23
+  },
+  "memory": [
+    {
+      "ratio": 1,
+      "cycles": 100,
+      "slopeBytesPerCycle": 4826.419662201514,
+      "growthBytes": 886508,
+      "heapStatus": "passed-this-fixture"
+    },
+    {
+      "ratio": 2,
+      "cycles": 100,
+      "slopeBytesPerCycle": 4964.742737332557,
+      "growthBytes": 896372,
+      "heapStatus": "passed-this-fixture"
+    }
+  ],
+  "notClaimed": [
+    "Diagnostic runs have no qualification status; one sample is not the required30-sample performance run.",
+    "Memory proof covers inspect mount and real route worker completion/abort only, excluding gesture/ResizeObserver/asset combined heap.",
+    "No latency SLO measured with exclusive CPU; no AT56/82, STEP071 or STEP077 completion.",
+    "Final same-candidate archive changes still require new measurement."
+  ],
+  "evidenceFiles": {
+    "diagnostic-memory-report.json": {
+      "sha256": "a44d3f96139b8dfc32888be80955fd370914ef4b0b76fa93e73fe638a0e83f15",
+      "bytes": 7850
+    },
+    "diagnostic-routes-report.json": {
+      "sha256": "67f40e8f5a18d0fff7b7078f80745ac8ea793c6f7911b1f38e826cef487f7326",
+      "bytes": 22542
+    },
+    "memory-report.json": {
+      "sha256": "1fbee7e5211f1a0409502bf8785d16e2823bbf2e165aad70885b956ff2a7d16e",
+      "bytes": 104570
+    },
+    "memory.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "routes.log": {
+      "sha256": "3b151208adf50a919818e083b2e59df150f0b07e62628ec782e8df9577097ad2",
+      "bytes": 1944
+    },
+    "memory-full.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "boundaries.log": {
+      "sha256": "f08be80128b82bc7c507d4024dea4911f19868b5e0e9542daf064f0790025703",
+      "bytes": 4350
+    }
+  }
+}
