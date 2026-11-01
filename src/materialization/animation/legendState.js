@@ -28,13 +28,13 @@ function record(value, keys, label) {
 function finite(value, positive = false) {
   if (!Number.isFinite(value) || value < 0 || positive && value === 0) throw new RangeError("Legend dimensions must be finite and nonnegative.");
 }
-function style(input, labels) {
+export function normalizeLegendTextStyle(input, labels) {
   record(input, labels ? [...fontKeys, "offset", "format"] : fontKeys, "Prepared legend text style");
   if (typeof input.fontFamily !== "string" || !input.fontFamily.length || !["normal", "italic"].includes(input.fontStyle) ||
       !Number.isInteger(input.fontWeight) || input.fontWeight < 100 || input.fontWeight > 900 || input.fontWeight % 100 !== 0 ||
       ![null, "left", "center", "right"].includes(input.align)) throw new TypeError("Prepared legend requires exact text style.");
   finite(input.fontSize, true);
-  if (labels) { finite(input.offset); validateValueFormat(input.format, "Prepared legend format"); }
+  if (labels) { finite(input.offset); if (typeof input.format !== "string") throw new TypeError("Prepared legend format must be a native format string."); validateValueFormat(input.format, "Prepared legend format"); }
   return input;
 }
 function nativeConfig(config) {
@@ -58,10 +58,10 @@ function normalizeConfig(input) {
   ownArray(input.sampling.values, "Prepared gradient samples");
   if (input.sampling.mode !== "values") throw new TypeError("Prepared gradient requires exact raw sample values.");
   const sampling = normalizeLegendSampling({ values: input.sampling.values }, { previous: { count: input.sampling.count } });
-  style(input.labels, true); style(input.titleStyle, false);
+  normalizeLegendTextStyle(input.labels, true); normalizeLegendTextStyle(input.titleStyle, false);
   return { ...input, sampling };
 }
-function queries(config, texts) {
+export function legendTextQueries(config, texts) {
   const result = new Map();
   const append = (text, style) => {
     for (const line of text.split(/\r\n|\r|\n/u)) {
@@ -93,7 +93,7 @@ function normalizeLayout(input) {
   const metrics = normalizeGuideMetrics(input.metrics);
   const result = { ...input, config, mapping, metrics };
   const layout = intrinsic(result);
-  const expected = queries(config, layout.texts).map(textMetricKey).sort();
+  const expected = legendTextQueries(config, layout.texts).map(textMetricKey).sort();
   if (!same(expected, metrics.measurements.map(textMetricKey).sort())) throw new TypeError("Prepared legend metrics must contain the exact required query closure.");
   const normalized = cloneAndFreeze(result);
   layouts.set(normalized, normalized);
@@ -104,7 +104,7 @@ function intrinsic(layout) {
   return resolveGradientLayoutValues({ ...layout.frame, config: nativeConfig(layout.config), scale: layout.mapping.scale,
     profile: layout.metrics, stripStrokeWidth: layout.stripStrokeWidth });
 }
-function textGeometry(text, point, style, metrics, side) {
+export function legendTextGeometry(text, point, style, metrics, side = false) {
   const lines = resolveLegendTitleText(text, style, metrics).lines;
   return { x: point.x, y: point.y - (side ? style.fontSize / 2 : 0), text,
     textAlign: point.align, textBaseline: side ? "top" : "middle", ...(lines === undefined ? {} : { lines }) };
@@ -118,9 +118,9 @@ function geometryList(input) {
   }));
   layout.ticks.forEach((properties, index) => entries.push({ component: "legend-tick", sample: ["value", layout.values[index]], type: "line", properties }));
   layout.labels.forEach((point, index) => entries.push({ component: "legend-label", sample: ["value", layout.values[index]], type: "text",
-    properties: textGeometry(layout.texts[index], point, config.labels, metrics, side) }));
+    properties: legendTextGeometry(layout.texts[index], point, config.labels, metrics, side) }));
   if (config.titleVisible) entries.push({ component: "legend-title", sample: ["title"], type: "text",
-    properties: textGeometry(config.title, layout.title, config.titleStyle, metrics, side) });
+    properties: legendTextGeometry(config.title, layout.title, config.titleStyle, metrics, side) });
   const bounds = unionBounds(entries.map(entry => {
     const p = entry.properties;
     if (entry.type === "text") return resolveTextBounds({ ...p, ...(entry.component === "legend-title" ? config.titleStyle : config.labels) }, metrics);
@@ -151,7 +151,7 @@ export function prepareGradientLegendLayout({ config, scale, frame, profile, str
   const mapping = cartesianPosition(canonical.sampling.values[0], { ...scale, type: scale.type === "sequential" ? "linear" : scale.type, range: [0, 1] });
   const initial = { frame, config: canonical, mapping, metrics: profile, stripStrokeWidth };
   const texts = intrinsic(initial).texts;
-  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(queries(canonical, texts), profile, "animation-legend") });
+  return normalizeLayout({ ...initial, metrics: prepareGuideMetrics(legendTextQueries(canonical, texts), profile, "animation-legend") });
 }
 export function normalizeLegendAnimationState(input) {
   record(input, ["identity", "kind", "layout"], "Legend animation state");

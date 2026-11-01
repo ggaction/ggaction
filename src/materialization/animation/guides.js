@@ -1,3 +1,4 @@
+import { sizeLegendAnimationMatchesNode } from "./sizeLegendState.js";
 import { prepareAxisAnimationLayout, normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode } from "./axisLabelState.js";
 import { findCanvasGraphic } from "../graphicHierarchy.js";
 import { legendAnimationItems } from "./legendGuides.js";
@@ -117,6 +118,6 @@ export function projectGuideAnimationState(program, endpoint) {
   return cloneAndFreeze(endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
     if (state === undefined || state.reason !== undefined) return state ?? null;
-    return (state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
+    return (state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
   }));
 }

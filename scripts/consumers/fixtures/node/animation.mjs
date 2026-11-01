@@ -28,6 +28,32 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/size-legend-offline-native',async run(){
+    for(const position of ['right','bottom']){
+      const from=chart().createCanvas({width:700,height:450,margin:{top:120,bottom:120,right:220,left:150}})
+        .createData({values:[{x:1,y:1},{x:100,y:2}]}).createPointMark({id:'points'})
+        .encodeX({field:'x'}).encodeY({field:'y'})
+        .encodeSize({field:'x',scale:{domain:[0,100],range:[0,100]}})
+        .createLegend({channels:['size'],values:[25,100],offset:20,title:'Size',position});
+      const to=from.editCanvas({width:800}).editScale({id:'size',range:[0,400]});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      const symbols=frame.decisions.flatMap((d,i)=>d.kernel==='guide-geometry'&&d.role==='guide-legend-symbol'?[frame.scene.nodes[i]]:[]);
+      assert.equal(symbols.length,2);assert.ok(Math.abs(symbols[0].properties.radius-Math.sqrt(62.5/Math.PI))<1e-10);
+      const rebased=planTransition({from:frame,to,options:{durationMs:100,easing:'linear'}});
+      assert.strictEqual(sampleTransition(rebased,0),frame);
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frames:exportAnimationFrames(deserializeAnimation(text).plan,{timesMs:[0,25,50,75,100]}),network}));
+      `],{input:serializeAnimation(rebased),encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);
+      assert.deepEqual(JSON.parse(child.stdout),{frames:JSON.parse(JSON.stringify(exportAnimationFrames(rebased,{timesMs:[0,25,50,75,100]}))),network:0});
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+      assert.match(renderToSVG(frame),/<circle/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/axis-label-layout-offline-native',async run(){
     const base=chart().createCanvas({width:500,height:400,margin:80})
       .createData({values:[{x:0,y:0},{x:10,y:10}]}).createPointMark().encodeX({field:'x'}).encodeY({field:'y'});

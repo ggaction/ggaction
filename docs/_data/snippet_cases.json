@@ -740,5 +740,15 @@
     "mode": "complete",
     "result": "from, to",
     "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
+  },
+  {
+    "id": "animation-size-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: [\"size\"], values: [5, 10], offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included."
   }
 ]

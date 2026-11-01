@@ -194,3 +194,19 @@ proof, 현재 frame 재기준, 오프라인 동일 시각과 네 renderer를 검
 회전 옵션 fixture의 잘못된 단위 형식과 ticks/labels 값 불일치였다. 원 로그를 보존하고 정식 API
 입력으로 수리한다. 범례 categorical/size/group 및 동적 responsive reflow는 여전히 진행 중이며
 이번 고정 label checkpoint를 전체061/062/063/077 완료로 집계하지 않는다.
+
+## 연속 크기 범례 준비값 확장
+
+`AUTHORIZATION.json#remainingApproval`의 남은 저장·시각 결정 승인을 재사용한다. 새 공개 함수나
+별도 renderer 경로 없이 기존 semantic-guide vector를 사용한다. 현재 구현 선택은 exact raw
+size sample + native linear/log/sqrt/pow 면적 mapping + 기존 measured item layout이다.
+`resolveSizeLegendLayoutValues`가 원 정적 범례와 transition의 단일 배치 계산을 소유한다.
+반지름은 각 시점의 면적에서 native `sqrt(area / PI)`로 계산하며 endpoint 반지름을 직접
+보간하지 않는다. raw value/owner/scope/role가 identity이며 label 문자열·표시 순번은 키가 아니다.
+같은 label/query/font binding closure와 배치 policy에서 Canvas/plot·offset·간격·domain/range를
+재생한다. 모든 배치는 실제 native fit 검사를 통과해야 한다. 같은 frame의 재기준/strict offline
+복원은 circle guide admission 한 토큰을 root shared owner와 결합한다.
+
+Guide kernel은 closed size state 추가를 나타내는 `native-guide-values@5`로 올린다. 전역
+transition/timeline version은 이 branch에서 변경하지 않는다. 범주형/그룹·자동 sample·border/
+clip/inferred clearance·동적 wrap/skip은 현재 slice의 완료로 집계하지 않으며 후속 구현한다.
