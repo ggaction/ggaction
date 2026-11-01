@@ -187,3 +187,13 @@ Canonical staged minification/JSON 형식으로957개 입력을 대조해 현재
 문서183/183, built168pages/1,448machine artifacts,320/390/768px 실제 브라우저 검증도 통과했다.
 AT80/81/82의 남은 session·animation·geo·SLO 통합은 STEP070 closure/074 qualification에
 계속 연결하며, 공통 realistic3파일은 parent의 합산 통합에서 한 번 실행한다.
+
+## Density compact support 계산 절감
+
+원형 kernel이 0인 사각 support 모서리의 순회를 행별 원 구간으로 줄였다. 반올림 경계는
+한 열씩 더 포함하고 최종 기여 계산과 누적 순서는 기존 수식을 유지한다. 독립 dense
+oracle와 120개 이전/현재 field, 8개 전체 solver의 수치 결과가 일치한다. 집중 13개 시험을
+Node20/22/24에서 실행했고 해당 field owner의 coverage는 100/100/100이다.
+[정확한 집중 증거](density-support-evidence/qualification.json)에 실행과 한계를 기록한다.
+이 변경은 AT82 전체 규모의 성능 통과가 아니며, 남은 density admission과 실제 브라우저
+지연시간 검증을 계속해야 한다.

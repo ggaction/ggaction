@@ -1,0 +1,11 @@
+import { chart } from '../src/index.js';
+import { writeFile } from 'node:fs/promises';
+const base=(left=51)=>chart().createCanvas({width:1000,height:800,margin:200})
+ .createData({values:[{x:0,y:0},{x:100,y:140}]}).createScatterPlot({x:'x',y:'y',guides:false});
+const entries=[];
+for(const channel of ['x','y'])for(const side of channel==='x'?['top','bottom']:['left','right'])for(const offset of [undefined,44,{from:'labels',gap:7}]){
+ const program=base(100).createAxes({x:channel==='x'?{position:side,title:{text:'Measured\nvalue',fontSize:14,fontWeight:700,...(offset===undefined?{}:{offset})}}:false,
+ y:channel==='y'?{position:side,title:{text:'Measured\nvalue',fontSize:14,fontWeight:700,...(offset===undefined?{}:{offset})}}:false});
+ entries.push({channel,side,offset,config:program.guideConfigs.axis,graphics:Object.fromEntries(Object.entries(program.graphicSpec.objects).filter(([id])=>id.includes('Axis'))),trace:program.trace.children.at(-1)});
+}
+await writeFile(process.argv[2],JSON.stringify(entries,null,2)+'\n');

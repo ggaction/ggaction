@@ -1,0 +1,20 @@
+{
+  "baseline": "312026112",
+  "cases": [
+    {
+      "name": "rotated-wrapped-resize",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "2ebfd49338b912377a04ae544eb95088d7e6ee2b72dc519593de4a5414a2803e"
+    },
+    {
+      "name": "both-axis-flush-relative-title",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "2f8fd45b76a768094bcdbac30581a141e675ebcd6ac8275e095d24fdda971cb4"
+    },
+    {
+      "name": "responsive-skip-rotate",
+      "exactSerializedProgramAndTrace": true,
+      "sha256": "1e768b99164ad0087746801441e5c01fb8a4fd2443fe6ab156ebe311bd5fedc0"
+    }
+  ]
+}

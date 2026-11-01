@@ -1,0 +1,159 @@
+TAP version 13
+# Subtest: current architecture source module references resolve in this repository
+ok 1 - current architecture source module references resolve in this repository
+  ---
+  duration_ms: 6.573291
+  type: 'test'
+  ...
+# Subtest: covers every maintained chart program or an explicit documentation-only exclusion
+ok 2 - covers every maintained chart program or an explicit documentation-only exclusion
+  ---
+  duration_ms: 13.249709
+  type: 'test'
+  ...
+# Subtest: matches the public derived-transform union to its one normative tag table
+ok 3 - matches the public derived-transform union to its one normative tag table
+  ---
+  duration_ms: 1.852042
+  type: 'test'
+  ...
+# Subtest: keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+ok 4 - keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+  ---
+  duration_ms: 478.286292
+  type: 'test'
+  ...
+# Subtest: release provenance requires the matching version and exact runtime fingerprint
+ok 5 - release provenance requires the matching version and exact runtime fingerprint
+  ---
+  duration_ms: 713.72175
+  type: 'test'
+  ...
+# Subtest: keeps the hierarchical lesson geometrically equivalent before intentional styling
+ok 6 - keeps the hierarchical lesson geometrically equivalent before intentional styling
+  ---
+  duration_ms: 24.937958
+  type: 'test'
+  ...
+# Subtest: anchors completion, imputation, and window prose to literal expected values
+ok 7 - anchors completion, imputation, and window prose to literal expected values
+  ---
+  duration_ms: 26.371125
+  type: 'test'
+  ...
+# Subtest: distinguishes required runtime failures from CI-version recommendations
+ok 8 - distinguishes required runtime failures from CI-version recommendations
+  ---
+  duration_ms: 2.099542
+  type: 'test'
+  ...
+# Subtest: the resource cleanup recipe demonstrates rejection before dependency-safe removal
+ok 9 - the resource cleanup recipe demonstrates rejection before dependency-safe removal
+  ---
+  duration_ms: 19.35775
+  type: 'test'
+  ...
+# Subtest: Related navigation remains the final section of public documentation
+ok 10 - Related navigation remains the final section of public documentation
+  ---
+  duration_ms: 28.956583
+  type: 'test'
+  ...
+# Subtest: every authoring workflow has exact-code execution metadata and a browser entry
+ok 11 - every authoring workflow has exact-code execution metadata and a browser entry
+  ---
+  duration_ms: 0.980541
+  type: 'test'
+  ...
+# Subtest: example source links resolve to the exact checked-in canonical programs
+ok 12 - example source links resolve to the exact checked-in canonical programs
+  ---
+  duration_ms: 2018.6715
+  type: 'test'
+  ...
+# Subtest: weighted distribution recipes preserve mass and separate density from cumulative probability
+ok 13 - weighted distribution recipes preserve mass and separate density from cumulative probability
+  ---
+  duration_ms: 36.047958
+  type: 'test'
+  ...
+# Subtest: every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+not ok 14 - every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+  ---
+  duration_ms: 74.781583
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/docs/documentation-coverage.test.js:208:1'
+  failureType: 'testCodeFailure'
+  error: 'Register execution or a specific contextual exception: docs/api/animation.md#move-axes-labels-and-grids:2'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/docs/documentation-coverage.test.js:217:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: selective LLM artifacts retain current content, dependency routes, and shared identity
+ok 15 - selective LLM artifacts retain current content, dependency routes, and shared identity
+  ---
+  duration_ms: 608.825334
+  type: 'test'
+  ...
+# Subtest: all published declarations compile in isolation without skipLibCheck
+ok 16 - all published declarations compile in isolation without skipLibCheck
+  ---
+  duration_ms: 251.75275
+  type: 'test'
+  ...
+# Subtest: each manifest module has an exact runtime reference and architecture owner
+ok 17 - each manifest module has an exact runtime reference and architecture owner
+  ---
+  duration_ms: 1.602875
+  type: 'test'
+  ...
+# Subtest: compatibility guidance follows the CI Node and browser matrix
+ok 18 - compatibility guidance follows the CI Node and browser matrix
+  ---
+  duration_ms: 0.756083
+  type: 'test'
+  ...
+# Subtest: page editing links resolve to maintained sources including generated workflow owners
+ok 19 - page editing links resolve to maintained sources including generated workflow owners
+  ---
+  duration_ms: 23.104417
+  type: 'test'
+  ...
+# Subtest: keeps one generated gallery image for every public chart
+ok 20 - keeps one generated gallery image for every public chart
+  ---
+  duration_ms: 18.920042
+  type: 'test'
+  ...
+# Subtest: keeps the generated Getting Started image aligned with its exact program
+ok 21 - keeps the generated Getting Started image aligned with its exact program
+  ---
+  duration_ms: 0.615417
+  type: 'test'
+  ...
+# Subtest: keeps generated mark-selection tutorial images canonical and fresh
+ok 22 - keeps generated mark-selection tutorial images canonical and fresh
+  ---
+  duration_ms: 1.166458
+  type: 'test'
+  ...
+# Subtest: keeps the composition asset legible as two distinct child panels
+ok 23 - keeps the composition asset legible as two distinct child panels
+  ---
+  duration_ms: 21.198792
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 22
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5530.61875

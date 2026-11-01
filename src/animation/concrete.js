@@ -1,3 +1,4 @@
+import { isGuideAnimationFallbackReason } from "../grammar/animation/guideState.js";
 import { isPartitionAnimationFallbackReason } from "../grammar/animation/partitionState.js";
 import { isGeoAnimationFallbackReason } from "../grammar/animation/geoState.js";
 import { isPolarAnimationFallbackReason } from "../grammar/animation/polarState.js";
@@ -10,10 +11,10 @@ import { isPointAnimationFallbackReason } from "../grammar/animation/pointState.
 
 import { isGraphAnimationFallbackReason } from "../grammar/animation/graphState.js";
 
-const reasons=new Set(["primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
+const reasons=new Set(["geo-text-layout","geo-text-membership","primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
   "degenerate-domain","scale-direction","log-sign","canvas-background","collapsed-domain","nonfinite-position"]);
 export function validateAnimationFallbackReason(reason) {
-  if(!isGeoAnimationFallbackReason(reason)&&!isPolarAnimationFallbackReason(reason)&&!isPartitionAnimationFallbackReason(reason)&&!isCartesianAnimationFallbackReason(reason)&&!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
+  if(!isGuideAnimationFallbackReason(reason)&&!isGeoAnimationFallbackReason(reason)&&!isPolarAnimationFallbackReason(reason)&&!isPartitionAnimationFallbackReason(reason)&&!isCartesianAnimationFallbackReason(reason)&&!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
 }
 
 export const sameConcreteValue = (a, b) => JSON.stringify(a) === JSON.stringify(b);

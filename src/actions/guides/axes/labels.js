@@ -1,50 +1,34 @@
+import { valuesFromTickConfig } from "../../../materialization/guides/tickValues.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { normalizeResponsiveLabels } from "../../../grammar/responsiveLabels.js";
-import { annotateError, getErrorDetails } from "../../../core/diagnostics.js";
-import { axisLabelTexts, axisLabelLines } from "../../../materialization/axisLabelText.js";
+import { resolveAxisLabelCandidates } from "../../../materialization/axisLabelCandidates.js";
 import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds, hasPendingAxisTitleRematerialization } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography, axisThemeOffset } from "../../theme/state.js";
 import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
-import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   sameOrderedValues,
   validateGeneratedItemLimit,
-  validateWorkLimit,
   validateTextStyle,
   validateOptionObject,
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
 import { resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
-import {
-  isTransformedScaleType,
-  mapContinuousScaleValues,
-  mapOrdinalPositionValues
-} from "../../../grammar/scales/index.js";
+import { isTransformedScaleType } from "../../../grammar/scales/index.js";
 import { validateTickRounding } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
-import { valuesFromTickConfig } from "../tickValues.js";
+
 import { AXIS_LABEL_FONT_WEIGHT, AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
-import {
-  defaultAxisPosition,
-  resolveAxisLabelGeometry,
-  validateAxisFormat,
-  validateAxisPosition
-} from "./policy.js";
+import { defaultAxisPosition, validateAxisFormat, validateAxisPosition } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
-import {
-  resolveTextBounds,
-  textBoundsFitCanvas,
-  textBoundsIntersect
-} from "../../../core/textMetrics.js";
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import {
@@ -199,51 +183,7 @@ function assertTickCompatibility(ticks, config, operation) {
   if (config.mode === "values" && !sameOrderedValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
 }
 
-function expandWrappedLabels(resolved, text, config, channel, profile) {
-  if (config.maxWidth === undefined && !text.some(value => /[\r\n]/u.test(value))) {
-    return {
-      ...resolved,
-      text,
-      groups: text.map((_, index) => index)
-    };
-  }
-  const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
-  const expanded = { text: [], x: [], y: [], groups: [] };
-  for (let index = 0; index < text.length; index += 1) {
-    const lines = axisLabelLines(text[index], config, profile);
-    validateGeneratedItemLimit(
-      expanded.text.length + lines.length,
-      "Axis label line count"
-    );
-    const baseX = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
-    const baseY = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;
-    for (let line = 0; line < lines.length; line += 1) {
-      expanded.text.push(lines[line]);
-      expanded.x.push(baseX);
-      expanded.y.push(channel === "x"
-        ? baseY + (resolved.textBaseline === "top" ? line : -line) * lineHeight
-        : baseY + (line - (lines.length - 1) / 2) * lineHeight);
-      expanded.groups.push(index);
-    }
-  }
-  return { ...resolved, ...expanded };
-}
-
-function unionLabelBounds(records) {
-  const byGroup = new Map();
-  for (const { bounds, group } of records) {
-    const previous = byGroup.get(group);
-    byGroup.set(group, previous === undefined ? bounds : {
-      left: Math.min(previous.left, bounds.left),
-      right: Math.max(previous.right, bounds.right),
-      top: Math.min(previous.top, bounds.top),
-      bottom: Math.max(previous.bottom, bounds.bottom)
-    });
-  }
-  return [...byGroup.values()];
-}
-
-function resolveAxisLabelCandidate(program, channel, config, axisId, indices) {
+export function resolveAxisLabels(program, channel, config, axisId = channel) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
@@ -253,7 +193,7 @@ function resolveAxisLabelCandidate(program, channel, config, axisId, indices) {
     !isTransformedScaleType(scale?.type)
   ) || !bounds) throw new Error("Axis labels require a supported resolved scale and Canvas bounds.");
   if (discrete && config.mode !== "values") throw new Error("Discrete axis labels require explicit or inferred values, not count.");
-  let values = valuesFromTickConfig(program, config);
+  const values = valuesFromTickConfig(program, config);
   validateGeneratedItemLimit(values.length, "Label value count");
   if (discrete) {
     const domainValues = new Set(scale.domain);
@@ -262,209 +202,22 @@ function resolveAxisLabelCandidate(program, channel, config, axisId, indices) {
     const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Label values must be inside the scale domain.");
   }
-  indices ??= values.map((_, index) => index);
-  values = indices.map(index => values[index]);
-  let positions = discrete
-    ? mapOrdinalPositionValues(values, scale)
-    : mapContinuousScaleValues(values, scale);
-  let text = axisLabelTexts(values, scale, config);
-  // Empty mapped text suppresses the label, never its raw tick or scale value.
-  // Filter all aligned arrays before wrapping so group/color indices stay dense.
-  if (text.includes("")) {
-    const visible = text.map((value, index) => value === "" ? -1 : index)
-      .filter(index => index !== -1);
-    indices = visible.map(index => indices[index]);
-    values = visible.map(index => values[index]);
-    positions = visible.map(index => positions[index]);
-    text = visible.map(index => text[index]);
-  }
-  const geometry = {
-    values, indices,
-    ...resolveAxisLabelGeometry({
-      bounds,
-      channel,
-      position: config.position,
-      positions: positions.map(value => value + (config.alongOffset ?? 0)),
-      offset: config.offset
-    })
-  };
-  const resolved = expandWrappedLabels(geometry, text, config, channel, program.materializationConfigs.textMetrics);
-  if (channel === "x" && Math.abs(Math.sin(config.rotation)) > 1e-9) {
-    const outward = config.position === "bottom" ? 1 : -1;
-    resolved.textAlign = Math.sin(config.rotation) * outward < 0 ? "right" : "left";
-    resolved.textBaseline = "middle";
-  }
-  const canvas = findCanvasGraphic(program)?.properties;
-  const measuredBounds = () => resolved.text.map((value, index) => resolveTextBounds({
-    x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
-    y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
-    text: value,
-    fontSize: config.fontSize,
-    fontFamily: config.fontFamily,
-    fontWeight: config.fontWeight,
-    textAlign: resolved.textAlign,
-    textBaseline: resolved.textBaseline,
-    rotation: config.rotation
-  }, program.materializationConfigs.textMetrics));
-  let labelBounds = measuredBounds();
-  if (program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined || config.rotation !== 0) {
-    const horizontal = channel === "x";
-    const near = ["bottom", "right"].includes(config.position);
-    const edge = horizontal ? bounds.y + (near ? bounds.height : 0)
-      : bounds.x + (near ? bounds.width : 0);
-    const boundKey = horizontal ? (near ? "top" : "bottom") : (near ? "left" : "right");
-    const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
-    const shifts = grouped.map(item => edge + (near ? config.offset : -config.offset) - item[boundKey]);
-    const axis = horizontal ? "y" : "x";
-    const positions = resolved[axis];
-    resolved[axis] = resolved.text.map((_, index) =>
-      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
-    labelBounds = labelBounds.map((item, index) => {
-      const delta = shifts[resolved.groups[index]];
-      return horizontal ? { ...item, top: item.top + delta, bottom: item.bottom + delta }
-        : { ...item, left: item.left + delta, right: item.right + delta };
-    });
-  }
-  if (config.flush === true) {
-    const along = channel === "x" ? "x" : "y";
-    const lowKey = channel === "x" ? "left" : "top";
-    const highKey = channel === "x" ? "right" : "bottom";
-    const low = Math.min(...scale.range) + (config.alongOffset ?? 0);
-    const high = Math.max(...scale.range) + (config.alongOffset ?? 0);
-    const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
-    const shifts = grouped.map((item, index) => {
-      const position = positions[index] + (config.alongOffset ?? 0);
-      if (config.flushThreshold !== undefined &&
-          Math.min(Math.abs(position - low), Math.abs(position - high)) > config.flushThreshold) return 0;
-      if (item[highKey] - item[lowKey] > high - low + 1e-9) {
-        throw new Error(`The ${channel}-axis label cannot flush inside the scale span.`);
-      }
-      return item[lowKey] < low ? low - item[lowKey]
-        : item[highKey] > high ? high - item[highKey] : 0;
-    });
-    const labelPositions = resolved[along];
-    resolved[along] = resolved.text.map((_, index) =>
-      (Array.isArray(labelPositions) ? labelPositions[index] : labelPositions) + shifts[resolved.groups[index]]);
-    labelBounds = labelBounds.map((item, index) => {
-      const delta = shifts[resolved.groups[index]];
-      return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
-    });
-  }
-  if (config.align !== undefined) {
-    resolved.textAlign = config.align;
-    labelBounds = measuredBounds();
-  }
-  const rotatedOverlap = config.rotation !== 0;
-  const collisionBounds = rotatedOverlap ? resolved.text.map((text, index) => {
-    const x = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
-    const y = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;
-    const cosine = Math.cos(config.rotation), sine = Math.sin(config.rotation);
-    return resolveTextBounds({
-      x: x * cosine + y * sine, y: -x * sine + y * cosine, text,
-      fontSize: config.fontSize, fontFamily: config.fontFamily, fontWeight: config.fontWeight,
-      textAlign: resolved.textAlign, textBaseline: resolved.textBaseline
-    }, program.materializationConfigs.textMetrics);
-  }) : labelBounds;
-  const groupedBounds = unionLabelBounds(collisionBounds.map((bounds, index) => ({
-    bounds,
-    group: resolved.groups[index]
-  })));
-  const orderedBounds = groupedBounds.sort((left, right) => channel === "x"
-    ? left.left - right.left
-    : left.top - right.top);
-  const requiredBounds = labelBounds.length === 0 ? undefined
-    : unionLabelBounds(labelBounds.map(bounds => ({ bounds, group: 0 })))[0];
-  if (!canvas || program.context.responsiveMeasuring !== true && !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
-    throw canvasOverflowError(`The ${channel}-axis labels do not fit the Canvas margin.`, labelBounds, canvas);
-  }
-  if (config.overlap === "error" && orderedBounds.some((item, index) => rotatedOverlap
-    ? orderedBounds.slice(0, index).some(previous => textBoundsIntersect(previous, item))
-    : index > 0 && textBoundsIntersect(orderedBounds[index - 1], item))) {
-    throw annotateError(new Error(`The ${channel}-axis labels overlap each other.`), { reason: "label-overlap", requiredBounds });
-  }
   const title = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[3]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
     : undefined;
-  if (title && !axisTitleAllowsLabelOverlap(program.guideConfigs.axis?.[axisId]?.title) &&
-    !axisTitleFollowsLabels(program.guideConfigs.axis?.[axisId]?.title) &&
-    !hasPendingAxisTitleRematerialization(program, channel, axisId) &&
-    labelBounds.some(item => textBoundsIntersect(item, title))) {
-    throw new Error(`The ${channel}-axis labels overlap the axis title.`);
-  }
-  return { ...resolved, requiredBounds };
-}
-
-const RESPONSIVE_FAILURES = new Set(["label-overlap", "label-lines", "label-size"]);
-
-function responsiveLabelWidth(program, channel, config, indices, axisId) {
-  const scale = program.resolvedScales[config.scale];
-  const frame = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
-  if (config.maxWidth !== undefined) return config.maxWidth;
-  if (channel === "y") {
-    const canvas = program.graphicSpec.objects.canvas.properties;
-    const policy = program.materializationConfigs.canvas;
-    return Math.max(1, canvas.width - policy.responsive.minPlotSize.width -
-      (config.position === "left" ? policy.margin.right : policy.margin.left) - config.offset);
-  }
-  const values = valuesFromTickConfig(program, config);
-  const chosen = indices.map(index => values[index]);
-  const positions = (["ordinal", "band", "point"].includes(scale.type)
-    ? mapOrdinalPositionValues(chosen, scale) : mapContinuousScaleValues(chosen, scale)).toSorted((a, b) => a - b);
-  let width = frame.width;
-  for (let index = 1; index < positions.length; index += 1) width = Math.min(width, positions[index] - positions[index - 1]);
-  return Math.max(1, width);
-}
-
-export function resolveAxisLabels(program, channel, config, axisId = channel) {
-  const policy = config.responsive;
-  if (policy === undefined || program.materializationConfigs.canvas?.responsive === undefined) {
-    return resolveAxisLabelCandidate(program, channel, config, axisId);
-  }
-  const values = valuesFromTickConfig(program, config);
-  validateWorkLimit(values.length * (3 + policy.rotationCandidates.length), "Responsive label candidate work");
-  const all = values.map((_, index) => index);
-  const skipped = all.filter(index => index % policy.skipStride === 0);
-  let lastReason = "native-fit";
-  let requiredBounds;
-  const candidates = [
-    { stage: "native", indices: all, options: config },
-    { stage: "wrap", indices: all, options: { ...config, maxWidth: responsiveLabelWidth(program, channel, config, all, axisId), wrap: config.wrap ?? "word" } },
-    { stage: "skip", indices: skipped, options: { ...config, maxWidth: responsiveLabelWidth(program, channel, config, skipped, axisId), wrap: config.wrap ?? "word" } }
-  ];
-  const rotated = candidates.at(-1);
-  for (const rotation of policy.rotationCandidates) {
-    if (config.flush === true && rotation !== 0) continue;
-    candidates.push({ ...rotated, stage: "rotate", options: { ...rotated.options, rotation } });
-  }
-  for (const candidate of candidates) {
-    try {
-      const resolved = resolveAxisLabelCandidate(program, channel, candidate.options, axisId, candidate.indices);
-      requiredBounds = resolved.requiredBounds;
-      const counts = new Map();
-      for (const group of resolved.groups) counts.set(group, (counts.get(group) ?? 0) + 1);
-      if ([...counts.values()].some(count => count > policy.maxLines)) {
-        throw annotateError(new Error("Responsive label exceeds maxLines."), { reason: "label-lines" });
-      }
-      const canvas = program.graphicSpec.objects.canvas.properties;
-      if (resolved.text.some(text => {
-        const measured = resolveTextBounds({ text, x: 0, y: 0, fontSize: config.fontSize,
-          fontFamily: config.fontFamily, fontWeight: config.fontWeight, rotation: candidate.options.rotation }, program.materializationConfigs.textMetrics);
-        return measured.right - measured.left > canvas.width || measured.bottom - measured.top > canvas.height;
-      })) throw annotateError(new Error("Responsive label exceeds Canvas dimensions."), { reason: "label-size" });
-      return { ...resolved, responsiveResult: { stage: candidate.stage, reason: lastReason,
-        indices: resolved.indices, rotation: candidate.options.rotation,
-        ...(candidate.options.maxWidth === undefined ? {} : { maxWidth: candidate.options.maxWidth, wrap: candidate.options.wrap }) } };
-    } catch (error) {
-      const reason = getErrorDetails(error)?.reason;
-      if (!RESPONSIVE_FAILURES.has(reason)) throw error;
-      requiredBounds = getErrorDetails(error)?.requiredBounds ?? requiredBounds;
-      lastReason = reason;
-    }
-  }
-  throw annotateError(new Error(`Responsive ${channel}-axis labels cannot satisfy the declared fallback policy.`), {
-    reason: "layout-unsatisfied", layout: { owner: axisId, reason: lastReason, requiredBounds,
-      requiredPlotSize: program.materializationConfigs.canvas.responsive.minPlotSize }
+  const titleConfig = program.guideConfigs.axis?.[axisId]?.title;
+  const canvasConfig = program.materializationConfigs.canvas;
+  const { labelBounds, ...resolved } = resolveAxisLabelCandidates({
+    values, scale, config, channel, axisId, bounds,
+    profile: program.materializationConfigs.textMetrics,
+    canvas: findCanvasGraphic(program)?.properties,
+    edgeAligned: canvasConfig?.plot !== undefined || canvasConfig?.responsive !== undefined,
+    responsive: canvasConfig?.responsive, margin: canvasConfig?.margin,
+    measuring: program.context.responsiveMeasuring === true,
+    titleBounds: title && !axisTitleAllowsLabelOverlap(titleConfig) && !axisTitleFollowsLabels(titleConfig) &&
+      !hasPendingAxisTitleRematerialization(program, channel, axisId) ? title : undefined
   });
+  return resolved;
 }
 
 export function resolveAxisLabelEditConfig(program, channel, args, axisId = channel) {

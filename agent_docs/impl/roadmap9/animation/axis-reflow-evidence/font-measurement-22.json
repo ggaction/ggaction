@@ -1,0 +1,63 @@
+{
+  "node": "v22.23.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/font-closure.tgz",
+  "sha256": "35eede05802472b9707b91cab05a6025db155b4f524dc6c0c1918d7d142be525",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1055,
+      "minifiedBytes": 2731059,
+      "gzipBytes": 781330,
+      "limit": 782500,
+      "pass": true
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 622,
+      "minifiedBytes": 1445819,
+      "gzipBytes": 423185,
+      "limit": 424000,
+      "pass": true
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24779,
+      "limit": 26000,
+      "pass": true
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 147567,
+      "gzipBytes": 43973,
+      "limit": 46000,
+      "pass": true
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 484,
+      "minifiedBytes": 1004000,
+      "gzipBytes": 300669,
+      "limit": 301700,
+      "pass": true
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 202,
+      "minifiedBytes": 404809,
+      "gzipBytes": 129460,
+      "limit": 131400,
+      "pass": true
+    }
+  ],
+  "runtimeCases": 4,
+  "strictTypes": true
+}

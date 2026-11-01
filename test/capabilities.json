@@ -91,7 +91,39 @@
       },
       {
         "type": "file",
+        "path": "contracts/realistic-guide-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-timeline.browser.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geo-text.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-cartesian-completion.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geotext-expressions.browser.js"
       }
     ],
     "architecture": [
@@ -572,6 +604,10 @@
     ],
     "font-assets": [
       {
+        "type": "file",
+        "path": "unit/resources/font-axis-reflow.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/font-assets/"
       },
@@ -683,10 +719,6 @@
     "graph": [
       {
         "type": "file",
-        "path": "unit/graph-presentation.test.js"
-      },
-      {
-        "type": "file",
         "path": "browser/graph-output.browser.js"
       },
       {
@@ -756,6 +788,10 @@
       {
         "type": "file",
         "path": "unit/resources/graph-recompute.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/graph-presentation.test.js"
       },
       {
         "type": "file",
@@ -1487,6 +1523,10 @@
     "realistic": [
       {
         "type": "file",
+        "path": "contracts/realistic-animation-timeline.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/dataset-fixtures.test.js"
       },
       {
@@ -1548,6 +1588,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-graph-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-cartesian-transitions.test.js"
       }
     ],
     "rendering": [

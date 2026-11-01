@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import {createServer} from 'node:http';
+import {readFile,stat,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {chromium} from 'playwright';
+import AxeBuilder from '@axe-core/playwright';
+const root=path.resolve('_site');
+const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.json':'application/json','.png':'image/png'};
+const server=createServer(async(req,res)=>{try{
+ let name=decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\/ggaction(?=\/|$)/,'');
+ let file=path.resolve(root,'.'+name);assert.ok(file.startsWith(root+path.sep)||file===root);
+ if((await stat(file)).isDirectory())file=path.join(file,'index.html');
+ res.writeHead(200,{'content-type':types[path.extname(file)]??'application/octet-stream'});res.end(await readFile(file));
+}catch{res.writeHead(404);res.end('Not found')}});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const base=`http://127.0.0.1:${server.address().port}/ggaction/`;
+const browser=await chromium.launch({headless:true});const evidence=[];
+try{
+ for(const width of [1440,320,390,768]){
+  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  assert.ok((await page.goto(base+'api/animation/#move-axes-labels-and-grids',{waitUntil:'networkidle'})).ok());
+  assert.match(await page.locator('#move-axes-labels-and-grids').textContent(),/^Move axes, labels, and grids#?$/);
+  const bounds=await page.evaluate(()=>({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,
+   right:document.querySelector('.docs-content').getBoundingClientRect().right}));
+  assert.equal(bounds.client,bounds.scroll);assert.ok(bounds.right<=width+1);
+  const accessibility=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze();
+  assert.deepEqual(accessibility.violations.map(v=>v.id),[]);
+  if(width===1440){
+   await page.keyboard.press('Control+K');const input=page.locator('#docs-search-input');
+   await input.fill('Move axes, labels, and grids');const result=page.locator('#docs-search-results a[href*="api/animation/#move-axes-labels-and-grids"]');
+   await result.first().waitFor({state:'visible'});await result.first().click();
+   await page.waitForURL('**/api/animation/#move-axes-labels-and-grids');
+   await page.keyboard.press('Escape');
+  }
+  assert.deepEqual(errors,[]);evidence.push({width,contained:true,axeViolations:0,pageErrors:0,search:width===1440?'passed':'desktop-only'});
+  await context.close();
+ }
+ await writeFile('.artifacts/group-legend-doc-browser.json',JSON.stringify({affectedPage:'api/animation',results:evidence,
+  unchangedSiteEvidence:'unchanged site behavior; changed animation page checked at four widths'},null,2)+'\n');
+ console.log(JSON.stringify(evidence));
+}finally{await browser.close();await new Promise(resolve=>server.close(resolve))}

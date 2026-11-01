@@ -12,6 +12,7 @@ import { validateResourceGraph } from "../materialization/resourceState.js";
 import { getBuiltinResourceKindHandler } from "../materialization/resourceKinds.js";
 import { fontResourceHandler, concreteFontValue, fontResourceIdentity } from "../materialization/fontState.js";
 import { applyTextMetricProfile } from "../actions/textMetrics/index.js";
+import { prepareAxisLabelReflowQueries } from "../materialization/axisLabelQueries.js";
 import { prepareStoredFontAsset, prepareFontMeasurements } from "./resolveFonts.js";
 import { preparedTextMetricHandle } from "./textMetrics.js";
 
@@ -36,7 +37,10 @@ export function fontPreparationHost(host, keys) {
 // Run the existing synchronous layout until every required width is measured.
 // Candidates and traces are private; an unmeasured width is never an estimate.
 export async function prepareFontMetricProfile(program, request, host) {
-  request = exactAssetRecord(request, ["id", "fonts"], "Text metrics request");
+  request = exactAssetRecord(request, ["id", "fonts", "axisLabelReflow"], "Text metrics request");
+  if (Object.hasOwn(request, "axisLabelReflow") && typeof request.axisLabelReflow !== "boolean") {
+    throw new TypeError("Text metrics axisLabelReflow must be a boolean.");
+  }
   validateUserId(request.id, "Text metrics profile id");
   ownArray(request.fonts, "Text metric font IDs");
   if (!request.fonts.length || request.fonts.length > FONT_METRIC_MAX_FONTS) throw new RangeError("Font metric binding count exceeds its budget.");
@@ -45,6 +49,7 @@ export async function prepareFontMetricProfile(program, request, host) {
   const fonts = resources.map(resource => ({ resource: { kind: "font", id: resource.id, revision: resource.revision }, identity: fontResourceIdentity(resource) }));
   let profile = normalizeFontMetricProfile({ schemaVersion: 2, id: request.id, fonts, measurements: [] });
   if (typeof host.decode !== "function" || typeof host.measure !== "function") throw new TypeError("Text metrics require host decode and measure callbacks.");
+  const axisQueries = request.axisLabelReflow === true ? prepareAxisLabelReflowQueries(program, profile) : [];
   const unique = new Set(); let byteLength = 0;
   for (const resource of resources) {
     if (unique.has(resource.options.expectedHash)) continue;
@@ -58,6 +63,21 @@ export async function prepareFontMetricProfile(program, request, host) {
     decode: host.decode, ...(host.signal === undefined ? {} : { signal: host.signal })
   }));
   const measurements = [], seen = new Set(); let textUnits = 0;
+  if (axisQueries.length) {
+    const batches = new Map();
+    for (const { resource, query } of axisQueries) {
+      seen.add(textMetricKey(query)); textUnits += query.text.length;
+      if (!batches.has(resource.id)) batches.set(resource.id, []);
+      batches.get(resource.id).push({ text: query.text, fontSize: query.fontSize });
+    }
+    for (const [id, queries] of batches) {
+      const result = await prepareFontMeasurements(assets.get(id), queries, {
+        measure: host.measure, ...(host.signal === undefined ? {} : { signal: host.signal })
+      });
+      measurements.push(...result.measurements);
+    }
+    profile = normalizeFontMetricProfile({ schemaVersion: 2, id: request.id, fonts, measurements });
+  }
   for (let pass = 0; pass < MAX_PASSES; pass++) {
     assertAssetActive(host.signal, "Font");
     let missing;

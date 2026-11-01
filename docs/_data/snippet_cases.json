@@ -722,6 +722,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "animation-guides",
+    "file": "api/animation.md",
+    "contains": ".createVerticalGrid({ values: [5] })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "interaction-overlapping-edges",
     "file": "api/interaction.md",
     "contains": "const edgeSession = createInteractionSession",
@@ -733,6 +743,16 @@
     "host": "paired-html"
   },
   {
+    "id": "animation-gradient-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: ['color'], values: [1, 10, 100]",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from, to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
+  },
+  {
     "id": "geographic-route-map",
     "file": "api/geometry.md",
     "contains": "const routeMap =",
@@ -741,6 +761,36 @@
     "result": "routeMap",
     "rendering": "authoring-only",
     "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors."
+  },
+  {
+    "id": "animation-size-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: [\"size\"], values: [5, 10], offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included."
+  },
+  {
+    "id": "animation-categorical-legend",
+    "file": "api/animation.md",
+    "contains": "const to = from.editLegend({ symbol: { layers: [{ type: \"point\", size: 8 }] } });",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included."
+  },
+  {
+    "id": "animation-grouped-legend",
+    "file": "api/animation.md",
+    "contains": ".editLegendLayout({ target: \"points\", position: \"bottom\", blockLayout: \"row\", offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change."
   },
   {
     "id": "resource-analytical-comparison",

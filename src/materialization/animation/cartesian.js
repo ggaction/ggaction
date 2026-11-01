@@ -1,4 +1,4 @@
-import { validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -11,21 +11,20 @@ import { unavailableCartesianAnimation as unavailable, cartesianAnimationMatches
 import { resolveMarkIdentities } from "../selection/policies/index.js";
 import { projectCartesianRows } from "./cartesianRows.js";
 import { projectCartesianSeries } from "./cartesianSeries.js";
+import { projectCartesianOverlay } from "./cartesianOverlay.js";
+import { validateCartesianMappingWork } from "./cartesianWork.js";
 
-const families=new Set(["rule","rect","bar","line","area"]);
+const families=new Set(["point","rule","rect","bar","line","area"]);
 function projectLayer(program,layer) {
   if(!families.has(layer.mark.type))return unavailable("unsupported-family");
-  if(layer.derivedBindings?.overlay)return unavailable("overlay-position");
+  if(layer.derivedBindings?.overlay)return projectCartesianOverlay(program,layer);
+  if(layer.mark.type==="point"&&(!program.markConfigs[layer.id]?.categorySlotOffset&&!["xOffset","yOffset"].some(channel=>hasPositionBinding(layer,channel))||
+    program.materializationConfigs.jitters?.[layer.id]||program.materializationConfigs.pointPacking?.[layer.id]))return unavailable("unsupported-family");
   if(requireCoordinate(program,layer.coordinate).type!=="cartesian")return unavailable("coordinate-family");
-  if(layer.mark.type!=="bar"&&["xOffset","yOffset"].some(channel=>hasPositionBinding(layer,channel)))return unavailable("offset-position");
-  if(["x","y","x2","y2"].some(channel=>layer.conditionals?.[channel]!==undefined))return unavailable("conditional-position");
   if(["line","area"].includes(layer.mark.type)&&["x","y"].some(channel=>!hasPositionBinding(layer,channel)))return unavailable("incomplete-position");
   const dataset=applyItemMissingPolicy(layer,requireDataset(program,layer.data));
   validateGeneratedItemLimit(dataset.values.length,"Cartesian animation source rows");
-  // Bound repeated mapping descriptors before constructing per-item states.
-  const mappings=Object.values(layer.encoding??{}).flatMap(binding=>binding?.scale===undefined?[]:[program.resolvedScales[binding.scale]]);
-  const mappingWork=mappings.reduce((sum,scale)=>sum+(scale?.domain??[]).reduce((total,value)=>total+1+(typeof value==="string"?value.length:0),0),0);
-  validateWorkLimit(dataset.values.length*Math.max(1,mappingWork)*2,"Cartesian animation mapping work");
+  validateCartesianMappingWork(program,layer,dataset.values.length);
   return ["line","area"].includes(layer.mark.type)?projectCartesianSeries(program,layer,dataset):projectCartesianRows(program,layer,dataset);
 }
 
@@ -49,6 +48,7 @@ export function projectCartesianAnimationState(program,endpoint) {
     const state=prepared.get(JSON.stringify([key,identity.role]));
     if(state===undefined)return unavailable("primitive-role");
     if(state.reason)return state;
+    if(["point","overlay-point"].includes(state.kind)&&endpoint.scene.nodes[index].type!=="circle")return unavailable("unsupported-family");
     return cartesianAnimationMatchesNode(state,endpoint.scene.nodes[index])?state:unavailable("edited-position");
   }));
 }

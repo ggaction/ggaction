@@ -1,0 +1,43 @@
+{
+  "status": "verified-private-native-label-layout-preparation",
+  "baseline": "af8451bd9",
+  "authorization": "../AUTHORIZATION.json#remainingApproval",
+  "publicSignaturesChanged": false,
+  "publicTypedGuideExpansion": false,
+  "runtimeFiles": [
+    "src/actions/guides/axes/labels.js",
+    "src/materialization/axisLabelLayout.js"
+  ],
+  "nativeAndOwningTests": 1130,
+  "contracts": 47,
+  "finalMetadataTests": 11,
+  "sourceTestsPerNode": 5,
+  "installedCasesPerNode": 3,
+  "browserEntriesPerNode": 6,
+  "archive": {
+    "sha256": "7b20ca99f15a6bf24a4785584cd69a3e2f3aeaa9199265a3acaf7f2f21b4e88f",
+    "entryCount": 1169,
+    "size": 1671088,
+    "unpackedSize": 7562939
+  },
+  "packageCeilings": {
+    "entries": 1169,
+    "packedBytes": 1675300,
+    "unpackedBytes": 7563000
+  },
+  "bundleMaxima": {
+    "ggaction": 774703,
+    "ggaction/basic": 422705,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44076,
+    "ggaction/animation": 243697,
+    "ggaction/interaction": 131310
+  },
+  "pending": [
+    "closed prepared label-group animation state and metric identity",
+    "inferred/relative title dependency closure",
+    "title/band/Parallel public guide connection",
+    "legend semantic correspondence and native layout",
+    "current frame/offline/four renderer verification for those new typed families"
+  ]
+}

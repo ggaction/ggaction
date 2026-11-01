@@ -5,6 +5,7 @@ import { prepareCartesianInterpolation, validateCartesianAnimationState, unavail
 import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
 export const emptyAnimationCartesian = endpoint => Object.freeze(endpoint.identities.map(identity=>unavailableCartesianAnimation(identity===undefined?"anonymous":"unsupported-family")));
+export const hasRetainedAnimationCartesian = (states,endpoint) => !sameConcreteValue(states,emptyAnimationCartesian(endpoint));
 export const hasAnimationCartesian = states => states.some(state=>state.kind!==undefined || !["anonymous","unsupported-family","semantic-unavailable","primitive-role","sampled-concrete"].includes(state.reason));
 export function validateAnimationCartesian(states,endpoint) {
   ownArray(states,"Animation Cartesian states");

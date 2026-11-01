@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "parallel-guide-geometry": { prefix: "grammar/parallelGuides.js", floor: { lines: 100, branches: 100, functions: 100 }, rationale: "Native field axes and prepared transitions must share exact placement, component geometry and explicit alignment." },
+  "native-position-offset": { prefix: "grammar/positionOffset.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native and animated offsets must share signed band placement, finite results and missing-value behavior." },
+  "native-rule-span": { prefix: "grammar/ruleGeometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static and animated rule caps and median spans share exact forward geometry." },
+  "native-density-boundary": { prefix: "grammar/densityAreaPath.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static and animated density paths share baseline closure and curve topology." },
   "animation": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics and item matching must preserve exact endpoints, bounded values and unambiguous semantic identity." },
   "animation-runtime": { prefix: "animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Playback must bound callbacks, preserve the current frame on interruption and settle every run exactly once." },
   "animation-meaning": { prefix: "materialization/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition inputs must preserve final item identity and resolved semantic values without inferring meaning from pixels." },
@@ -109,6 +113,10 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },
   "graph-filter-action": { prefix: "actions/data/graphFilter.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph view changes must preflight the complete node recipe and preserve immutable resource topology." },
   "graph-filter-view": { prefix: "materialization/graph/view.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Induced views must retain exact endpoints, drawing order, source identity and bounded selector work." },
+  "axis-title-layout": { prefix: "materialization/guides/axisTitleLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native inferred and label-relative titles share exact ink clearance, Canvas clamps and label-side failures." },
+  "axis-label-candidates": { prefix: "materialization/axisLabelCandidates.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Native and prepared responsive labels must share bounded candidate selection, raw indices and exact measured placement." },
+  "axis-label-queries": { prefix: "materialization/axisLabelQueries.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit axis reflow preparation must cover native wrap queries within existing budgets before host work." },
+  "axis-label-layout": { prefix: "materialization/axisLabelLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared guide labels must reuse native wrapping, measured clearance, rotation and flush without guessing pixel offsets." },
   "axis-label-text": { prefix: "materialization/axisLabelText", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared axis text and physical line grouping must retain semantic guide identity." },
   "interaction-history": { prefix: "interaction/history.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded session snapshots must preserve exact undo, redo, reset and disposal ownership without cloning programs." },
   "interaction-preparation": { prefix: "interaction/preparation.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Async candidates must preserve atomic commit, exact revision tags and bounded host lease lifetimes." },
@@ -124,7 +132,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "scene-snapshot": { prefix: "sceneSnapshot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact node associations must retain concrete scene cache identity without semantic materialization." },
   "hit-frame": { prefix: "interaction/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Current frame lifecycle must reject stale updates, preserve atomic index replacement and release disposed state." },
   "hit-geometry": { prefix: "grammar/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "CSS coordinate, transform and exact hit decisions must reject stale or non-finite geometry without mutating chart state." },
-  "theme-definition": { prefix: "actions/theme/definition.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme tokens require closed, descriptor-safe normalization and bounded structured paint palettes." },
+  "theme-definition": { prefix: "theme/definition.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme tokens require closed, descriptor-safe normalization and bounded structured paint palettes." },
   "theme-palettes": { prefix: "actions/theme/palettes.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Categorical paint must preserve typed category identity, authored ranges and named overlays." },
   "legend-highlight-membership": { prefix: "materialization/selection/legend.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Legend pixels and inspection share exact final-item membership and component style eligibility." },
   "theme-provenance": { prefix: "actions/theme/provenance.js", floor: { lines: 95, branches: 85, functions: 100 }, rationale: "Read-only appearance evidence must distinguish authored authority from unknown legacy state." },
@@ -398,7 +406,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
     branches: 75,
     functions: 100
   }),
-  "layout/grid.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
+  "grammar/gridGeometry.js": Object.freeze({ lines: 100, branches: 100, functions: 100 }),
   "layout/legend.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "layout/title.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "materialization/planner.js": Object.freeze({

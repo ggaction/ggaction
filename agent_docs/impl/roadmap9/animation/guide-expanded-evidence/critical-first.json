@@ -1,0 +1,52 @@
+{
+  "status": "coverage-passed-runtime-parallel-roundtrip-pending",
+  "coverage": {
+    "animation/guideTracks.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 100,
+      "branches": 97.67,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 100,
+      "branches": 97.73,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 100,
+      "branches": 97.89,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 98.04,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "animation/guideTracks.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/animation/guideState.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guideAnchors.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/animation/guides.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "status": "verified-native-Cartesian-gradient-legend-fixed-label-integration; whole STEP077 remains open",
+  "sourceRevision": "f3ee8a09f4ac34c2a3b3a39dc14a45f44d213d7b",
+  "base": "8d38c3ca7",
+  "cartesianMerge": "30a051d7b",
+  "upstreamSources": [
+    "6830445aa86cc56134910400c3d3f6f4cc95830a",
+    "0eee2a254"
+  ],
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@4",
+    "cartesian": "semantic-cartesian-geometry@2"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1206,
+    "packedBytes": 1718792,
+    "unpackedBytes": 7762829,
+    "file": "ggaction-a0664978df5113246a17b447632c5d120524a98f102329b8d2f8481851a9f3e8.tgz",
+    "sha256": "a0664978df5113246a17b447632c5d120524a98f102329b8d2f8481851a9f3e8"
+  },
+  "checks": {
+    "animationNativeGuidesUnit": 1652,
+    "boundariesTypesDiscovery": 37,
+    "realistic": {
+      "tests": 15,
+      "sources": 5,
+      "groups": [
+        "Cartesian completion",
+        "native guides8recipes",
+        "native timeline"
+      ]
+    },
+    "render": 11,
+    "browser": {
+      "tests": 2,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "docs": 234,
+    "finalLimitDocs": 30,
+    "packageArtifact": {
+      "firstPassed": 6,
+      "firstFailed": 1,
+      "repairedPassed": 7
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameArchive": true,
+      "runtimeEach": 50,
+      "types": "passed",
+      "firstPublicExample": "passed",
+      "optionalPeers": "passed",
+      "bundlesEach": 6
+    },
+    "built": {
+      "pages": 186,
+      "selectiveArtifacts": 1598
+    },
+    "changedDocsBrowser": {
+      "pages": [
+        "api/animation/",
+        "reference/runtime/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "consoleErrors": 0
+    }
+  },
+  "coverage": {
+    "freshSharedOwners": {
+      "tests": 544,
+      "aggregate": [
+        100,
+        97.33,
+        100
+      ],
+      "owners": {
+        "src/animation/frameEndpoint.js": [
+          100,
+          95.88,
+          100
+        ],
+        "src/animation/sample.js": [
+          100,
+          99.23,
+          100
+        ]
+      },
+      "floor": [
+        95,
+        90,
+        100
+      ],
+      "passed": true
+    },
+    "sourceIdenticalReusedOwners": {
+      "d939c695a": [
+        "src/actions/marks/area/materialize.js",
+        "src/actions/marks/rule/actions.js",
+        "src/grammar/animation/cartesianDensity.js",
+        "src/grammar/animation/cartesianOverlay.js",
+        "src/grammar/animation/cartesianPlacement.js",
+        "src/grammar/animation/cartesianPosition.js",
+        "src/grammar/animation/cartesianState.js",
+        "src/grammar/areaSeries.js",
+        "src/grammar/categoricalDensity.js",
+        "src/grammar/densityAreaPath.js",
+        "src/grammar/positionOffset.js",
+        "src/grammar/ruleGeometry.js",
+        "src/materialization/animation/cartesian.js",
+        "src/materialization/animation/cartesianOverlay.js",
+        "src/materialization/animation/cartesianRows.js",
+        "src/materialization/animation/cartesianSeries.js",
+        "src/materialization/animation/cartesianWork.js",
+        "src/materialization/categorySlotOffset.js",
+        "src/materialization/overlayItems.js",
+        "src/materialization/rowEncoding.js",
+        "src/materialization/selection/items/overlay.js"
+      ],
+      "0eee2a254": [
+        "src/animation/guideTracks.js",
+        "src/grammar/animation/guideState.js",
+        "src/materialization/animation/axisLabelState.js",
+        "src/materialization/animation/guideMetrics.js",
+        "src/materialization/animation/guides.js",
+        "src/materialization/animation/legendState.js"
+      ]
+    },
+    "upstreamEvidence": [
+      "../cartesian-completion-evidence/qualification.json",
+      "../legend-typed-evidence/qualification.json",
+      "../axis-label-evidence/qualification.json"
+    ],
+    "note": "Historical axis-label source used transition2. The merged source retains root transition3 and receives fresh same-archive50cases per Node, shared-owner coverage, render/browser and realistic verification. No full repository coverage pass is claimed."
+  },
+  "sharedSeams": [
+    "sampleGuideInterpolation imports guideTracks wrapper; preserve root GeoText/timeline code.",
+    "guide-geometry permits rect and cartesian-geometry permits circle only alongside their strict native forward validators.",
+    "planner/frameProvenance remain unchanged."
+  ],
+  "package3Node": {
+    "entries": 1206,
+    "maxPacked": 1721725,
+    "unpacked": 7762829,
+    "ceilings": [
+      1206,
+      1721800,
+      7762829
+    ]
+  },
+  "bundleMaximums": {
+    "ggaction": 780241,
+    "ggaction/basic": 423358,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44077,
+    "ggaction/animation": 293189,
+    "ggaction/interaction": 129620
+  },
+  "failuresPreserved": [
+    "Initial package entry ceiling failure",
+    "First archive used only for Node20 premeasurement; README/basic ceiling finalized before final a066 archive installation",
+    "Merged consumer case registry initially retained correct identities with wrong order; AST order repaired and7contract tests passed without changing packaged runtime"
+  ],
+  "remaining": [
+    "Categorical/size/group legend, dynamic wrap/skip and inferred title dependency",
+    "GeoText camera with content/static-layout expressions",
+    "GeoRoute adapter completion/integration and remaining large-route performance",
+    "STEP057–077 final acceptance/coverage/qualification and separately authorized release operations"
+  ],
+  "archiveReproduction": "Canonical package staging after source commit reproduces the exact same a066 SHA256. No packaged input changed.",
+  "sourcePin": {
+    "docs": 32,
+    "builtPages": 186,
+    "selectiveArtifacts": 1598,
+    "browserReuse": "Only source-provenance identity links changed; fresh8 guide/runtime viewport checks and previous unchanged-page evidence remain applicable."
+  }
+}

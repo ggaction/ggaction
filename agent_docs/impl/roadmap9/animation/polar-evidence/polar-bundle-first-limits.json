@@ -1,0 +1,32 @@
+[
+  {
+    "node": "v20.20.2",
+    "exceeded": [
+      {
+        "entry": "ggaction/animation",
+        "measured": 203265,
+        "limit": 200300
+      }
+    ]
+  },
+  {
+    "node": "v22.23.1",
+    "exceeded": [
+      {
+        "entry": "ggaction/animation",
+        "measured": 202690,
+        "limit": 200300
+      }
+    ]
+  },
+  {
+    "node": "v24.22.1",
+    "exceeded": [
+      {
+        "entry": "ggaction/animation",
+        "measured": 203265,
+        "limit": 200300
+      }
+    ]
+  }
+]

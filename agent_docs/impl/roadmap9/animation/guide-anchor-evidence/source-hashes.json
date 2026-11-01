@@ -1,0 +1,14 @@
+{
+  "src/grammar/axisGeometry.js": "bb47e1319640a48aaab088ed19af177a710237beda79bae62a80666893750916",
+  "src/grammar/gridGeometry.js": "f924fcd768e80763f53b75671ea4450920c67d48c46f560537cc46d4316ff6a8",
+  "src/grammar/parallelGuides.js": "da4e6ea3da7a5a6cf476e610112181f50c5f2ebc914cd0d87a5f8e49441f4003",
+  "src/grammar/parallelCoordinates.js": "93a9de45d5acd557b5ea7b8860ad5407f86c26f4ba9f815dfb0794b4a70d8b45",
+  "src/actions/guides/axes/titles.js": "2de41145eef443de00c3b2b09419d502744b5a1185626e7d9ff486b9ebc32f24",
+  "src/actions/guides/axes/parallel.js": "7342bde52b739a0d4f41f661a40d695b9988e6f1d619f896d5f5bfc76d1f6286",
+  "src/actions/guides/axes/parallel/resolve.js": "1fb6de8d24bb737f01760b38df85001c348512fea16b053b929892723745b13c",
+  "src/actions/guides/grids/resolve.js": "d450d49d83e0d6b287f952facb0c1b57b0a1974ee1bf1316d55c39be233b7c33",
+  "test/unit/grammar/guide-anchor-geometry.test.js": "976c012eb53bcc8de3a070ac69b9c57cd0be51bcd05f440167b0b61cae5342ed",
+  "scripts/coverage-policy.js": "507fa01b60c1833bf600a1a9149c8a307876884cdd115af7d1c90f805486d003",
+  "scripts/package-artifact.js": "c87a5de7fd597919c5b83a1010e0c427009974f7c907080ee057d65bee389896",
+  "scripts/browser-bundle-size.js": "c61db3b14ac3521a27c0cbc07a672e9ac7d2e82be0e2913e78051c72eb8fedc8"
+}

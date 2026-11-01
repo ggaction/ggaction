@@ -1,0 +1,231 @@
+{
+  "sourceParent": "45be2234b",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Native axis-free implicit legend lanes; categorical color/series/stroke, explicit size samples, gradient and stroke gradient, four edges and native occupied bounds; guide manifest10, public signatures unchanged",
+  "shared4Delta": {
+    "sample.js": [
+      "Import retainSampledGuideMeaning from guideTracks",
+      "Apply it only to finish guide vector; incomplete lane/group/title dependencies retain identity+guide-unavailable"
+    ],
+    "otherShared3": []
+  },
+  "checks": {
+    "animation": 427,
+    "finalTextRotationProof": 11,
+    "nativeGuideRegression": 576,
+    "contracts": 21,
+    "finalMetadataContracts": 4,
+    "finalPackageAndTruthContracts": 10,
+    "sourceDocs": 175,
+    "coverage": {
+      "guideTracks": [
+        100,
+        99.44,
+        100
+      ],
+      "sample": [
+        100,
+        99.09,
+        100
+      ],
+      "legendBlockState": [
+        100,
+        100,
+        100
+      ],
+      "legendLaneGuides": [
+        100,
+        100,
+        100
+      ],
+      "legendLaneState": [
+        98.64,
+        93.1,
+        100
+      ]
+    },
+    "coverageReuse": "The final bounds-proof rotation guard changes only legendLaneState; its owning 11 tests and instrumented owner were rerun. Remaining 427-test critical evidence retains identical inputs for other owners.",
+    "realistic": {
+      "datasets": 5,
+      "recipesEach": 14,
+      "checks": 70,
+      "durationMs": 7291.545334
+    },
+    "render": {
+      "tests": 12,
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "finalSourceRerun": true
+    },
+    "browser": {
+      "tests": 1,
+      "variants": 12,
+      "dpr": [
+        1,
+        2
+      ],
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "reuse": "Positive fixture inputs and output unchanged by final rotation rejection guard; final native renderer and packed consumers rerun."
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimeEach": 6,
+      "strictTypes": true,
+      "actualDocExample": true,
+      "optionalPeers": true,
+      "bundlesEach": 6,
+      "sameFinalArchive": "4f93e00117ac29762aa003f3387a50dc90a95dcf94dcf62b73565957f1e9f2ff",
+      "status": "passed"
+    }
+  },
+  "package": {
+    "entries": 1191,
+    "packedBytes": 1707630,
+    "unpackedBytes": 7720652,
+    "sha256": "4f93e00117ac29762aa003f3387a50dc90a95dcf94dcf62b73565957f1e9f2ff",
+    "inputDelta": [],
+    "limits": {
+      "entries": 1191,
+      "packedBytes": 1711000,
+      "unpackedBytes": 7721000
+    }
+  },
+  "animationBundle": {
+    "maximum": 292935,
+    "oldLimit": 285800,
+    "currentLimit": 293000
+  },
+  "sourceHashes": {
+    "src/animation/guideTracks.js": "70143900d176e2797ff3f2a63a771763d0b399a632a82b176dee23dbf0d1b3f9",
+    "src/animation/sample.js": "a264ed396596a52dff9c160410279495f883d70a50b83f6d2fe294f4dd655fcb",
+    "src/grammar/animation/guideState.js": "0b19f002ea5b850be924e1f00f47f4fb5ccbd981fd58a5443e0caac66d228a03",
+    "src/materialization/animation/guides.js": "8a62e6b67ec7733ffbb1e11b93d3cba10cd055d7556881b1f66f8748773be022",
+    "src/materialization/animation/legendGroupState.js": "843730ae3a6e91bc0580d2935dc25c72504a8689dd760a21224133e24a36a535",
+    "src/materialization/animation/legendGuides.js": "bd058fc0a011b69e66a94291570b894269896b28c551209030dda6c4546427d1",
+    "src/materialization/guides/legendSamples.js": "473fdb079dc8229e920ae0c65a476dc91f7719bf1decf8ba8cbb2ff69a41ac91",
+    "types/animation.d.ts": "a235f9846323d22b2dc28580563db0ccc1ae7d4cb81df01fecd7490c8edde698",
+    "src/materialization/animation/legendBlockState.js": "fb87a255a1ce37e588bad5f0d043a0425d93942bd38cc9006309212e7a4ab0a6",
+    "src/materialization/animation/legendLaneState.js": "ee05cef3ee74d8982e67216d91c64763587579e35cae267859529552e25bd453",
+    "src/materialization/animation/legendLaneGuides.js": "e999153360b4ad825591d644a8c335d646bed1fa79fab218e89daf09c6953681"
+  },
+  "logsSha256": {
+    "implicit-lane-package-measured.json": "3474dc412aa510d9f005f01cdf8d6d9103f28d8ffd83dfde75824bf27f80ff49",
+    "implicit-lane-public-second.log": "9cf8ef0c3fcd4e314738b74bfca83a73c0b519599de07c73fc5f5ebaea832a1e",
+    "implicit-lane-retention-second.log": "ec63cab645b1c0382bfec942d1df8d316ae9c105ef029709ae8c5da786014316",
+    "implicit-lane-pack-first-error.log": "a6963ff43077800cba99d6508365454acb1f3774cbb5e00867340df20f52cf85",
+    "implicit-lane-coverage-final.log": "7fde752ac3acdfee2b114744cf1b998128f867d2a2847f8ae416327bdaa29276",
+    "implicit-lane-installed-node24.log": "5c0e658724e622308df36a13878de4fbe6dab931bc25b428aae4d663f61734a2",
+    "implicit-lane-measure-node24.json": "25ea4acc3d7c45ba8bfd6f6123f28154bbb3562f52f2a7a2016718b282be7532",
+    "implicit-lane-installed-node20.log": "76718bf6ae6e04bbd79bc6095ffbd59d9f6bec28fd0891abe419b03bb052e807",
+    "implicit-lane-package-measured.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "implicit-lane-retention-first.log": "f08a4add10abbea9c45d1cac162f739037610bf58f4d5458c32898d4714210ff",
+    "implicit-lane-realistic-first.log": "3f85c824a21d367bc1ce185fb2ba611b0fe12e4efc1130317a44e07ecb54b0c2",
+    "implicit-lane-final-render.log": "befef910d5c701bfe7f481f2314511547afd4b274d6507a8fc65ceaa7fcba696",
+    "implicit-lane-installed-node22.log": "48ef741f436af21be8ba125450e7d165f6ea2ffbbd3e56e364cbe3e5557a0be5",
+    "implicit-lane-retention-third.log": "b213d2dd748e9c8819b51ffc7243c0b2fddc4d51cdc6ce5172a868609755b11c",
+    "implicit-lane-final-text-proof.log": "51018b83ab9a3efff8411f01581dbab235ed9b94615f6ad740b324b8c1a6b4ba",
+    "implicit-lane-native-regression.log": "c4565dfad14976fe38325fef4c4ac24687bdab6ceea6a1041552155c0f004b78",
+    "implicit-lane-coverage-second.log": "f6d37d48e48825ae67fe5e2f288114e69eee70c2ec98d4be4fb5d90b4edf91f2",
+    "implicit-lane-contracts.log": "627b1f85ad4fed7270e88b22cbba01c76a361414cc9e820a0e1137d3b177e717",
+    "implicit-lane-final-frozen-pack.json": "5a724be1edb56e14745ebf306139362cee05a9fd668ee59692c5c58fde9a2b4c",
+    "implicit-lane-lifecycle-first.log": "1c427d5baf466eac294ad984a22a2500e7026362f15affbdd0400fe1d7d1f438",
+    "implicit-lane-public-fourth.log": "2de869e8be9532e52319ebcd6674f34e25ceb9389e7ae328bb11d6f408bf2a59",
+    "implicit-lane-doc-generation.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "implicit-lane-public-third.log": "69fb01c69348ac2b7644b1f6078c780ecc3e23027f9a22032cb6c50ff8f8f5b6",
+    "implicit-lane-final-installed-node24.log": "a5dce4c215b53d512b35380d1199930bdbd5e528246f12d4864d07aac893539c",
+    "implicit-lane-final-package-contracts.log": "067144233b8f3f5a7f6f1e615608d3c27b61a3d5f609571195e9fa65c375cffc",
+    "implicit-lane-public-first.log": "29b64351807b40dfe27f73f37700d4dec0ff7bfe311cfc8de40156615def359f",
+    "implicit-lane-pack-first.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "implicit-lane-browser.log": "76f86d1b3cd638e3825a5945e8380fb0c2d741231313a5cb86e0b31aee35f931",
+    "implicit-lane-final-installed-node22.log": "66e11e804639de219cf4d643b950a45c553ad627edf9b8d10bff73bf1219b753",
+    "implicit-lane-owning-final.log": "c83ef065ea027a40fa357fa82b670c0ffc6d2a6b056c2aaff43f7a6f281052a6",
+    "implicit-lane-final-installed-node20.log": "c1ebac954e2111707f30e46ab5ec2f2d7f64daf9099251c4b54af914d8f140b9",
+    "implicit-lane-measure-node20.json": "25ea4acc3d7c45ba8bfd6f6123f28154bbb3562f52f2a7a2016718b282be7532",
+    "implicit-lane-frozen-pack.json": "c63617df0a1c49a58864b7b1a4104cad19eb8524bd02f6756b9c645b9f1aa795",
+    "implicit-lane-final-pack.log": "e0a7484bf0143df0b34453c9dc809758800127a465cf9c26f2af867ff79305ef",
+    "implicit-lane-measure-node24.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "implicit-lane-docs.log": "b2bd2186ba945ca7b0cb08f517652536c4b843971bfb66e32c3bde635e2ce91e",
+    "implicit-lane-realistic-final.log": "6df60827f85f15d73ace90f71d6495e80f75e7ba946ad400c807133293e2e97c",
+    "implicit-lane-foundation-third.log": "696cb2e777b54771252fb628fc31a8178954616e0c3855ab21ccf64552525d4b",
+    "implicit-lane-final-metadata-contracts.log": "e8748df9cb3a80f0bdfa669d60d5eb2438559934f58d5cdab81320d94d7c9b22",
+    "implicit-lane-coverage-first.log": "e921a035e786e83bc78d45cf73c6ee788da63739d8b6b84653280a6471c7aa44",
+    "implicit-lane-measure-node20.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "implicit-lane-foundation-first.log": "c94243bf2284e3549796544ff49b640d875baaecd1cb92ccd649c03a0de6c1b5",
+    "implicit-lane-coverage-third.log": "3af6eb24ca7600cfedaaf11ffbc3c48dbc327b8b0c671cf16d04dce422cf566d",
+    "implicit-lane-render-first.log": "e79816acf0353db56ff62b583cf78c1ce58dc4b732257b09ee352a5c8d4828a0",
+    "implicit-lane-foundation-second.log": "12b15a27574ab3a94a01ae10e940ebe8728142a75909888048e06a5fc4e88e81",
+    "qualify-implicit-lanes-final.mjs": "682d3bd0d6e252ae58651b39a8f99be6cfae9556bcaeea9f376eeed92c5f0f9c",
+    "freeze-implicit-lane.mjs": "905ccf5802112e39c762c8b7c152827f774537a20591b13c71e00edf3d2aacc0",
+    "implicit-lane-source-pin-doc-browser.json": "1a30f7304a0792a72caae29170919875f726b820afb6a310670aac4b80ae3549",
+    "implicit-lane-source-pin-doc-browser.log": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0",
+    "implicit-lane-source-pin-built.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "implicit-lane-source-pin-build.log": "b5887ed0e6803cf80c8049f4c6e760a743d3cdf5b368adb1435c8678cbf2b73c",
+    "implicit-lane-source-pin-generation.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "implicit-lane-source-pin-docs.log": "bf2e53cabfe12d19835e058352f507e6417d018e8c30fae6138776480439f9cf"
+  },
+  "firstFailuresPreserved": [
+    "Native left size legend inherits categorical placement; shared native config resolver extracted rather than duplicating policy.",
+    "Sampled partial lane/group exiting sibling caused strict restore complete-group rejection; narrow retainSampledGuideMeaning seam preserves identities and rejects false typed meaning.",
+    "Interim archive three Node runtimes passed but old animation bundle limit failed.",
+    "Final text rotation boundary was tightened after initial archive, so final archive was repacked and all three focused installed consumers rerun.",
+    "First package entry count1191 exceeded1188; three responsible owners measured and exact minimum caps updated.",
+    "Initial expected packed hash script omitted canonical keepNames:false setting; corrected helper now verifies all source/type/package/README entries without input delta."
+  ],
+  "pending": [
+    "Axis-dependent inferred legend clearance/current dynamic label and title bounds",
+    "Root union with transition3/timeline and dynamic reflow",
+    "Final overall roadmap/STEP077 qualification"
+  ],
+  "sourceCommit": "dc704e9f6",
+  "sourcePin": {
+    "docs": 30,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "changedPageBrowser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
+    },
+    "runtimeChanged": false
+  }
+}

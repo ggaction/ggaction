@@ -1,0 +1,13 @@
+#!/bin/zsh
+set -u
+result=0
+for version in 20 22 24; do
+  case "$version" in
+    20) runtime=/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ;;
+    22) runtime=/opt/homebrew/Cellar/node@22/22.23.1/bin/node ;;
+    24) runtime=/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node ;;
+  esac
+  PATH="${runtime:h}:$PATH" "$runtime" .artifacts/guide-anchor-state-installed.mjs ".artifacts/guide-anchor-state-installed${version}.json" > ".artifacts/guide-anchor-state-installed${version}.log" 2>&1 || result=1
+  PATH="${runtime:h}:$PATH" "$runtime" --test test/unit/animation/guide-anchors.test.js test/unit/animation/native-guide-anchors.test.js > ".artifacts/guide-anchor-state-source${version}.log" 2>&1 || result=1
+done
+exit $result

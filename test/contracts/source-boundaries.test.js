@@ -124,8 +124,7 @@ test("keeps source imports inside their architectural boundaries", () => {
           (["nodeMovement.js", "edgePresentation.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && path.relative(root, dependency) === path.join("animation", "graphPresentation.js")) ||
           (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
           (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
-            "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
-            "legends/sampling.js", "legends/size.js", "legends/colorSize.js", "legends/continuous/gradient.js"
+            "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js"
           ].some(name => path.relative(root, dependency) === path.join("actions", "guides", name))) ||
           (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js"), path.join("materialization", "frameState.js"), path.join("materialization", "imageState.js"), path.join("materialization", "fontState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
@@ -148,6 +147,8 @@ test("keeps source imports inside their architectural boundaries", () => {
             ["assetHost.js", "ownData.js", "contentDigest.js", "pngEncoding.js", "validation.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
           (owner === "theme" && path.relative(root, dependency) === path.join("core", "ownData.js")) ||
+          (path.relative(root, file) === path.join("theme", "definition.js") &&
+            [path.join("grammar", "paint.js"), path.join("core", "validation.js")].includes(path.relative(root, dependency))) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,

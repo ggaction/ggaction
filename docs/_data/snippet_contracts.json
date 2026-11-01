@@ -10,12 +10,74 @@
       "source: \"rows\""
     ],
     "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
-    "sha256": "c0fca538e59f2d5bd064b0f409e2577f25d2e1ba5af1f071c6a0c030a9e916a7",
+    "sha256": "c2ccc563e44b49321685320603637f1a36f7e8dc8c37f08d3673b668d7779469",
     "executable": true
   },
   {
     "file": "api/animation.md",
     "block": 2,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.",
+    "sha256": "38cc9e1facf4a5347b938049f54d79f48d55d1d551a999cb5fa18f57f4942c00",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 3,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.",
+    "sha256": "ee3e428352200bc842a1e131b6fc2078bab7550f4909adfc9c12e498b5efb015",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 4,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.",
+    "sha256": "8f922a80b17ea98d07c2f560ec4b27e6ee5ea6009812a05dfc51671b4d7b70ab",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 5,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.",
+    "sha256": "90a80fa2fcada3cf9a3f7b415986d0915d42173809bb212a99e0b0f1d977d5f9",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 6,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.",
+    "sha256": "61a3a17fe5d6a348f9e7513caad259e39680ba6c0cf2d6cb5251adf0cfa609a5",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 7,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -27,7 +89,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 3,
+    "block": 8,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

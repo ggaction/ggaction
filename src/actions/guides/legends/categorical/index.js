@@ -28,7 +28,8 @@ import {
   rematerializeLegendSymbols,
   rematerializeBasicLegendHighlights
 } from "./symbols.js";
-import { activeConfig, noOptions, symbolGraphic } from "./layout.js";
+import { resolveCategoricalLegendConfig as activeConfig } from "../../../../materialization/guides/legendConfig.js";
+import { noOptions, symbolGraphic } from "./layout.js";
 import {
   rematerializeLegendGroups,
   rematerializeHorizontalLegendLane,

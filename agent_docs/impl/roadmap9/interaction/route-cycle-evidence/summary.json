@@ -2,7 +2,7 @@
   "status": "qualified-bundling-only-graphic-limited",
   "base": "4333470bd",
   "date": "2026-11-01",
-  "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit bounded cycle proof approval",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit bounded cycle proof approval",
   "change": "Only a simple undirected cycle with conservatively finite total costs can prove stretch rejection along its unique alternative path. Other graphs use existing Dijkstra.",
   "unchanged": [
     "typed cost/lexicographic order",

@@ -1,0 +1,68 @@
+{
+  "status": "consumer-owner-integration; final-native-results-pending",
+  "base": "efbaeec45",
+  "incoming": "b87cb3e61510921d7151b289079342090fbdfa83",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "sourceAndTypesUnchanged": true,
+  "shared5Unchanged": true,
+  "archiveReuse": {
+    "sha256": "a2c8612d4c594026a1a91699b2712c429bce82aa36b58b8aa951faa2d3585e17",
+    "reason": "Runtime/package/type inputs unchanged; previous final-title canonical installed archive reused; no new installed execution claimed."
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "notApplicable": 3,
+    "previousAssignedConsumers": 376,
+    "addedAssignedConsumers": 44,
+    "assignedConsumers": 420,
+    "pendingRequiredConsumers": 154,
+    "assignedGroups": 55,
+    "pendingGroups": 24,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "allOtherRowsAndFieldsDeepEqual": true
+  },
+  "compoundRepair": "No runtime change. Root retained-vector implementation already preserves interrupted offline decisions/scene/graphic exactly. Extended native compound regression to compare full frames at0/20/40/80 and assigned scene-animation; old branch failure remains unchanged in incoming history.",
+  "checks": {
+    "browser.log": 4,
+    "render.log": 10,
+    "docs.log": 238,
+    "owning.log": 96
+  },
+  "remaining": [
+    "Package owner requires actual discovered installed runtime evidence",
+    "Partition encoding/scale/guide current contract validation",
+    "Other native owners/actual candidate evidence and final nine commands",
+    "Dynamic axis reflow, implicit lanes/inferred axis clearance and route SLO; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "browser.log": {
+      "sha256": "e7e8f1295a0d3f22d7e12e6531eef146b4b3c63f0021f17bf03b2f8060e00edd",
+      "bytes": 1004
+    },
+    "render.log": {
+      "sha256": "d662eecaa98d1f5e0d844f72236044edb1a6e7bcdcd9c9967a381488cc01fbf7",
+      "bytes": 2455
+    },
+    "manifest-before-root.json": {
+      "sha256": "dee36d0e92480bd337bcdaca36742d09e4f19682319027074545f37c72f35d38",
+      "bytes": 198602
+    },
+    "docs.log": {
+      "sha256": "020436426221a69092c6ea1cf5acf7851158d917a0fdb44c6b172ed9e5fdb258",
+      "bytes": 72563
+    },
+    "pending.json": {
+      "sha256": "996f3ae1205578fd020b57cf2fb014dd41345a0822fd98ed021f5e5a2cddf504",
+      "bytes": 30786
+    },
+    "owning.log": {
+      "sha256": "18808479118ab56e8aa7d690507d5ccf71e602552b3bc30aff200b10990212d2",
+      "bytes": 23137
+    }
+  }
+}

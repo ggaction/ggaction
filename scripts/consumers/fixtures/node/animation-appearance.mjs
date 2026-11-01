@@ -24,7 +24,7 @@ function endpoints() {
 export const cases = [
   { id: 'animation-appearance/offline-four-renderers', async run() {
     const { plan } = endpoints(), frame = sampleTransition(plan, 50), canvas = createCanvas(1, 1);
-    assert.equal(plan.version, 2); render(frame, canvas.getContext('2d'));
+    assert.equal(plan.version, 3); render(frame, canvas.getContext('2d'));
     assert.deepEqual([...canvas.getContext('2d').getImageData(100, 50, 1, 1).data], [188, 188, 188, 255]);
     const png = await renderToPNGBuffer(frame), pdf = await renderToPDFBuffer(frame);
     assert.deepEqual(png.buffer, await canvas.encode('png'));

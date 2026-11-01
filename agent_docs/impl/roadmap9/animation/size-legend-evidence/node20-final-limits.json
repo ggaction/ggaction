@@ -1,0 +1,39 @@
+{
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-size-legend-ee8c91a9503c45eb314e09e66534213d402d7e4ed3904ec61cf6623e93a5a178.tgz",
+  "sha256": "ee8c91a9503c45eb314e09e66534213d402d7e4ed3904ec61cf6623e93a5a178",
+  "node": "v20.20.2",
+  "checks": [
+    {
+      "specifier": "ggaction",
+      "actual": 774699,
+      "limit": 774800
+    },
+    {
+      "specifier": "ggaction/basic",
+      "actual": 422968,
+      "limit": 423000
+    },
+    {
+      "specifier": "ggaction/svg",
+      "actual": 24954,
+      "limit": 26000
+    },
+    {
+      "specifier": "ggaction/graph",
+      "actual": 44076,
+      "limit": 46000
+    },
+    {
+      "specifier": "ggaction/animation",
+      "actual": 272457,
+      "limit": 272500
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "actual": 123507,
+      "limit": 131400
+    }
+  ],
+  "status": "passed",
+  "reuse": "Exact archive and completed measurements; limit-only repair, no runtime or fixture rerun."
+}

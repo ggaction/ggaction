@@ -94,16 +94,8 @@ for (const [family, { build, point, appearance }] of Object.entries(families)) {
     const frame = sampleTransition(plan, 40);
     const restored = deserializeAnimation(serializeAnimation(plan)).plan;
     for (const time of [0, 40, 100]) assert.deepEqual(sampleTransition(restored, time), sampleTransition(plan, time));
-    if (family === "violin") {
-      // The density profile is an explicitly unsupported typed series in this
-      // source snapshot. Renderer replay is covered; rebase reason transport
-      // remains a separately recorded gap, not an assigned animation owner.
-      assert.deepEqual(plan.tracks.map(track => [track.kind, track.reason]), [["crossfade", "unsupported-series"], ["crossfade", "unsupported-series"]]);
-      assert.deepEqual(frame.scene.nodes.slice(1).map(node => node.type), ["weighted-blend", "weighted-blend"]);
-      return;
-    }
-    const kind = family === "streamgraph" ? "semantic-cartesian" : "semantic-polar";
-    const kernel = family === "streamgraph" ? "cartesian-geometry" : "polar-geometry";
+    const kind = ["streamgraph", "violin"].includes(family) ? "semantic-cartesian" : "semantic-polar";
+    const kernel = ["streamgraph", "violin"].includes(family) ? "cartesian-geometry" : "polar-geometry";
     assert.ok(plan.tracks.some(track => track.kind === kind));
     assert.ok(plan.tracks.every(track => [kind, "exact"].includes(track.kind)));
     assert.ok(frame.decisions.some(decision => decision.kernel === kernel));

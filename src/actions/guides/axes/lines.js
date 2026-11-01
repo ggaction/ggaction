@@ -1,3 +1,4 @@
+import { resolveAxisLineGeometry, resolveAxisLineRange } from "../../../grammar/axisGeometry.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
@@ -15,11 +16,7 @@ import {
 } from "../../../core/validation.js";
 import { axisScaleBindings, resolveCartesianAxisFrameBounds } from "../../../materialization/coordinateBounds.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
-import {
-  defaultAxisPosition,
-  resolveAxisLineGeometry,
-  validateAxisPosition
-} from "./policy.js";
+import { defaultAxisPosition, validateAxisPosition } from "./policy.js";
 import { resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
@@ -31,20 +28,6 @@ const EDIT_OPTIONS = Object.freeze(["target", "position", "color", "lineWidth"])
 function validateStyle({ color, lineWidth }) {
   validateNonEmptyString(color, "Axis line color");
   validateNonNegativeFinite(lineWidth, "Axis lineWidth");
-}
-
-function resolveLineRange(resolvedScale, bounds, channel, explicitRange) {
-  const range = resolvedScale?.range;
-  if (
-    explicitRange || resolvedScale?.type !== "time" ||
-    !Number.isFinite(resolvedScale.bandwidth)
-  ) return range;
-  const plotRange = channel === "x"
-    ? [bounds.x, bounds.x + bounds.width]
-    : [bounds.y + bounds.height, bounds.y];
-  return Math.sign(range[1] - range[0]) === Math.sign(plotRange[1] - plotRange[0])
-    ? plotRange
-    : plotRange.reverse();
 }
 
 function resolveGeometry(program, channel, scaleId, position, axisId = channel) {
@@ -77,7 +60,7 @@ function resolveGeometry(program, channel, scaleId, position, axisId = channel) 
     bounds,
     channel,
     position,
-    resolveLineRange(resolvedScale, bounds, channel, Array.isArray(requireSemanticScale(program, scaleId).range))
+    resolveAxisLineRange(resolvedScale, bounds, channel, Array.isArray(requireSemanticScale(program, scaleId).range))
   );
 }
 

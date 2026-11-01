@@ -1668,27 +1668,55 @@ declare const transitionPlan: unique symbol;
 declare const transitionFrame: unique symbol;
 export type AnimationProgram = ChartProgram | BasicChartProgram;
 export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface AnimationKeyframe<Value> {
+  readonly timeMs: number;
+  readonly value: Value;
+  readonly easingToNext?: AnimationEasing;
+}
+export type AnimationStyleTarget =
+  | { readonly itemKey: string; readonly role?: string; readonly guideKey?: never }
+  | { readonly guideKey: string; readonly itemKey?: never; readonly role?: never };
+export type AnimationTrack =
+  | { readonly target: { readonly ownerKey: string }; readonly property: 'geometry'; readonly kernel: 'native-progress';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'fill' | 'stroke'; readonly kernel: 'color';
+      readonly keyframes: readonly AnimationKeyframe<string>[]; readonly priority?: number }
+  | { readonly target: AnimationStyleTarget; readonly property: 'opacity' | 'strokeWidth'; readonly kernel: 'number' | 'positive-scale';
+      readonly keyframes: readonly AnimationKeyframe<number>[]; readonly priority?: number };
+export interface AnimationMarker { readonly id: string; readonly timeMs: number; }
 export interface TransitionOptions {
   readonly durationMs: number;
   readonly easing?: AnimationEasing;
+  readonly tracks?: readonly AnimationTrack[];
+  readonly markers?: readonly AnimationMarker[];
+  readonly composite?: 'reject' | 'priority';
 }
 /** Created only by planTransition or deserializeAnimation. */
 export interface TransitionPlan {
   readonly [transitionPlan]: true;
   readonly kind: 'transition-plan';
-  readonly version: 2;
+  readonly version: 3;
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
-/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, partition, or completed-graph.
+/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
+ * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
+ * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
+ * typed category/recipe roles and explicit offsets, explicit native legend groups with
+ * row/column/wrap packing, axis-free implicit edge lanes using current measured bounds, and fixed
+ * Cartesian label flush/rotation/edge layout with retained exact text measurements.
+ * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
+ * completed density samples, and compatible source-follow overlays.
+ * Geo Text content/layout expressions follow the current native camera.
+ * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
-  | { readonly kind: 'geographic'; readonly kernel: 'native-geo'; readonly ownerKey: string;
+  | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;
       readonly itemKey: string; readonly role: string }
-  | { readonly kind: 'enter'; readonly targetIndex: number }
-  | { readonly kind: 'exit'; readonly sourceIndex: number }
+  | { readonly kind: 'enter'; readonly targetIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
+  | { readonly kind: 'exit'; readonly sourceIndex: number; readonly ownerKey?: string; readonly reason?: 'guide-ambiguity' }
   | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
-      readonly targetIndex: number; readonly itemKey?: string; readonly owner?: string;
+      readonly targetIndex: number; readonly itemKey?: string; readonly guideKey?: string; readonly owner?: string; readonly ownerKey?: string;
       readonly role: string; readonly kernel?: string; readonly reason?: string };
 /** An authentic immutable sample, directly accepted by all four renderers. */
 export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
@@ -1744,10 +1772,14 @@ export interface AnimationSettlement {
   readonly timeMs: number;
   readonly iteration: number;
 }
+export interface AnimationMarkerEvent extends AnimationMarker {
+  readonly iteration: number;
+  readonly frame: TransitionFrame;
+}
 export interface AnimationPlayer {
   play(): AnimationPlayer;
   pause(): AnimationPlayer;
-  seek(timeMs: number): AnimationPlayer;
+  seek(timeMs: number, options?: { readonly emit?: boolean }): AnimationPlayer;
   reverse(): AnimationPlayer;
   setRate(rate: number): AnimationPlayer;
   setRepeat(repeat: number): AnimationPlayer;
@@ -1763,6 +1795,7 @@ export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
   readonly clock: AnimationClock<Handle>;
   readonly render: (frame: TransitionFrame) => void;
   readonly commit?: (frame: TransitionFrame) => void;
+  readonly onMarker?: (event: AnimationMarkerEvent) => void;
 }): AnimationPlayer;
 ```
 

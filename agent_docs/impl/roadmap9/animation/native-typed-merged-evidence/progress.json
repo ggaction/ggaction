@@ -1,0 +1,17 @@
+{
+  "status": "source integration verified; see qualification.json; full roadmap remains open",
+  "base": "8d38c3ca7",
+  "cartesian": "6830445aa86cc56134910400c3d3f6f4cc95830a",
+  "sourceChecks": {
+    "animationAndNativePlacementUnit": 525,
+    "boundariesTypesDiscovery": 37
+  },
+  "sharedSeam": "Only add circle to cartesian-geometry sampled primitive list, as explicitly reproduced and authorized. planner/sample/frameProvenance unchanged.",
+  "upstreamQualification": "../cartesian-completion-evidence/qualification.json",
+  "remaining": [
+    "Categorical/size/group legend, dynamic wrap/skip and inferred title dependency",
+    "GeoText camera with content/static-layout expressions",
+    "GeoRoute adapter completion/integration and remaining large-route performance",
+    "STEP057–077 final acceptance/coverage/qualification and separately authorized release operations"
+  ]
+}

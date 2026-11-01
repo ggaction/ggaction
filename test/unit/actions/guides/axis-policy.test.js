@@ -1,14 +1,8 @@
+import { resolveAxisLabelGeometry, resolveAxisTickGeometry } from "../../../../src/grammar/axisGeometry.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  defaultAxisTitleRotation,
-  formatAxisValue,
-  resolveAxisLabelGeometry,
-  resolveAxisTickGeometry,
-  validateAxisFormat,
-  validateAxisPosition
-} from "../../../../src/actions/guides/axes/policy.js";
+import { defaultAxisTitleRotation, formatAxisValue, validateAxisFormat, validateAxisPosition } from "../../../../src/actions/guides/axes/policy.js";
 
 test("owns mirrored positions and outward guide geometry", () => {
   const bounds = { x: 20, y: 30, width: 160, height: 100 };

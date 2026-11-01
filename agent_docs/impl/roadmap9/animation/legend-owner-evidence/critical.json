@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "floors": {
+    "grammar/legendSampling.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "materialization/guides/legendConfig.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  },
+  "coverage": {
+    "grammar/legendSampling.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/guides/legendConfig.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  }
+}

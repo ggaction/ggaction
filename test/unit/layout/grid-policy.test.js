@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { resolveGridLineGeometry } from "../../../src/layout/grid.js";
+import { resolveGridLineGeometry } from "../../../src/grammar/gridGeometry.js";
 
 const bounds = Object.freeze({ x: 10, y: 20, width: 100, height: 60 });
 

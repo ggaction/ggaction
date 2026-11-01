@@ -1,0 +1,471 @@
+{
+  "status": "verified-private-preparation",
+  "sourceRevision": "6d6994f10f8c07cd2f4c35ab56c900d5a0902eb1",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "scope": "Native geographic source Text selection, content, overrides, placement and exact font preparation only. No public sampler connection.",
+  "checks": {
+    "owningAndNative": {
+      "20": 27,
+      "22": 27,
+      "24": 27
+    },
+    "cumulativeAnimationAndGeo": 530,
+    "existingText": 177,
+    "contracts": 48,
+    "coverage": {
+      "owningTests": 27,
+      "owner": "materialization/animation/geoLabels.js",
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1161,
+      "packedBytes": 1661620,
+      "unpackedBytes": 7512892
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1161,
+      "packedBytes": 1658889,
+      "unpackedBytes": 7512892
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1161,
+      "packedBytes": 1661620,
+      "unpackedBytes": 7512892
+    }
+  },
+  "sourceBundles": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "scope": "current-source-not-installed",
+      "entries": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1025,
+          "minifiedBytes": 2703065,
+          "gzipBytes": 774345
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 608,
+          "minifiedBytes": 1441925,
+          "gzipBytes": 422362
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 85,
+          "minifiedBytes": 147084,
+          "gzipBytes": 44075
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 190,
+          "minifiedBytes": 383139,
+          "gzipBytes": 123037
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 390,
+          "minifiedBytes": 763862,
+          "gzipBytes": 232545
+        }
+      ]
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "scope": "current-source-not-installed",
+      "entries": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1025,
+          "minifiedBytes": 2703065,
+          "gzipBytes": 772716
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 608,
+          "minifiedBytes": 1441925,
+          "gzipBytes": 421458
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24778
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 85,
+          "minifiedBytes": 147084,
+          "gzipBytes": 43923
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 190,
+          "minifiedBytes": 383139,
+          "gzipBytes": 122537
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 390,
+          "minifiedBytes": 763862,
+          "gzipBytes": 231491
+        }
+      ]
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "scope": "current-source-not-installed",
+      "entries": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1025,
+          "minifiedBytes": 2703065,
+          "gzipBytes": 774345
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 608,
+          "minifiedBytes": 1441925,
+          "gzipBytes": 422362
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 85,
+          "minifiedBytes": 147084,
+          "gzipBytes": 44075
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 190,
+          "minifiedBytes": 383139,
+          "gzipBytes": 123037
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 390,
+          "minifiedBytes": 763862,
+          "gzipBytes": 232545
+        }
+      ]
+    }
+  },
+  "originalFailures": [
+    {
+      "origin": ".artifacts/animation-geo-labels-first.log",
+      "passed": 7,
+      "failed": 2,
+      "resolution": "Corrected placement dx/dy location and used field empty content because empty constant is forbidden by native encoding."
+    },
+    {
+      "origin": ".artifacts/animation-geo-labels-owning.log",
+      "passed": 24,
+      "failed": 1,
+      "resolution": "Created Line mode directly instead of creating a Point mark on a LineString. Corrected unused structured paint fixture to the existing closed grammar."
+    }
+  ],
+  "limitations": [
+    "No public Geo Text plan/frame support in this checkpoint.",
+    "Current-camera collision layout, leaders, highlight/final effects, dynamic hit and activation remain required.",
+    "Projection-hidden Text with no prepared font query rejects metrics-required; preparation does not estimate measurements.",
+    "Package and browser bundles are current source measurements; no installed public frame or full corpus sweep was repeated."
+  ],
+  "sourceInputs": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "0e03f6e10e362719f6946263b9a0646c4c6be612f4980115df8581cc3e781c6b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/GEO_TEXT.md",
+      "sha256": "62c719946d52ede6cd61e088daafaf4a509f16f059c37e19537f785bcb1618d9"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "3f7a4baecf4c6877caee20a60dbcd32a639be7108de4a4ac48e12d01dd8692c7"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "e0c4c03e40519714929d7f78c971769a3a0a346be6819b52fd6b4d77102906c0"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "4b3aa15e243b1bed73c4f591f424b0af4a6c161b498b121c3f493322bd88068c"
+    },
+    {
+      "path": "src/grammar/text.js",
+      "sha256": "19e104db05c7f51a694858d14445c9e5c8a4da7e7942260735d90737e38d0761"
+    },
+    {
+      "path": "src/layout/labels.js",
+      "sha256": "ab01e64fb5b78ce5be74baad1ff55c51b99bb0876cfd77e3823843880d4e8b91"
+    },
+    {
+      "path": "src/materialization/animation/geoLabels.js",
+      "sha256": "636e24274764b459413df4d11e2df4a632d78ceb3fc95b5d80a3c218e510bd10"
+    },
+    {
+      "path": "src/materialization/geo/appearance.js",
+      "sha256": "4990ff16df3885257e05f4395ac816ca973e9698bddbdc3d074f435ebacdebd2"
+    },
+    {
+      "path": "src/materialization/geo/labels.js",
+      "sha256": "f8d3f29452cbf6289181d00545ebe2941c918f15659c87a9a49d92a12ec0cd99"
+    },
+    {
+      "path": "src/materialization/geo/source.js",
+      "sha256": "e63f635ed6c6a0b17d239ecb84dbbb600e7c25a273fd4ed44ae439239eccc1cf"
+    },
+    {
+      "path": "src/materialization/selection/policies/geo.js",
+      "sha256": "2ec6922989cc6e5e774c922a6c18389122fcef489a8110eb67411b49644618c4"
+    },
+    {
+      "path": "src/materialization/selection/policies/index.js",
+      "sha256": "0c33152bcb65ad2e990267a45b194f5379580a82550110a30a284e40d75a4bef"
+    },
+    {
+      "path": "src/materialization/textContent.js",
+      "sha256": "b23701b8ece0a030e296b7d00512f4e1209ffdc858daff6bd2b170243cecfcef"
+    },
+    {
+      "path": "src/materialization/textFont.js",
+      "sha256": "cb9f4caa8fa7d56491297a5a11040e546b5a6ab504baf079606729524c50f740"
+    },
+    {
+      "path": "src/materialization/textGeometry.js",
+      "sha256": "ad8a91492d7538cddf6676cece7c44eaf8cd7a67465caabe10f7671152bd0056"
+    },
+    {
+      "path": "src/materialization/textItem.js",
+      "sha256": "4077be44b5cddd1d20d10037d00aa82641f84ced13100dc3b334e2a396359038"
+    },
+    {
+      "path": "src/materialization/textSourceAnchors.js",
+      "sha256": "7c80f1bc246807cf10cdbbccb215d246d78a0b2ba238386025f2d09cf67e8725"
+    },
+    {
+      "path": "test/contracts/geo-label-boundaries.test.js",
+      "sha256": "dde8d241e298b4b42610d271df85be68be662aa9460284129db2bd6c1cc2d8cd"
+    },
+    {
+      "path": "test/unit/animation/geo-labels.test.js",
+      "sha256": "b2527df47a1ae44dcbf9a75a16ab9afeee0294710796f4eb4102099987ec2fbf"
+    },
+    {
+      "path": "test/unit/geo/labels.test.js",
+      "sha256": "3dccd14a77c41022d3734bc8802f31200daf9c859fdb1cf044f227883198fa21"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-20.json.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-20.json",
+      "sha256": "1df8879092702e03534d184867d90108149113541f67790393f34c46ab9376b4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-22.json.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-22.json",
+      "sha256": "a915278ba3269789f1c9d27599ffa8332b54a17dd0a698f36a743298b9aa6d1a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-24.json.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-24.json",
+      "sha256": "c00079a48f4a45523e3db30d3dccf394a5f1a0eb2cb4923db83f531252722048"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-measure-20.log.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-measure-20.log",
+      "sha256": "74653d9f4dbf769fc0b76691f67047af5c37ebe0b4387cba95fec57e9171ec52"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-measure-22.log.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-measure-22.log",
+      "sha256": "0f73eb824881c5fee392840e4188500ce3ef53033701ae5f76fe6134afd23cc2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-measure-24.log.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-measure-24.log",
+      "sha256": "cbf0d22ebcf854d7cce9f7bca275faceec94b7f2338601ed22dd9c726f8bbd16"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/bundles-validation.json.gz",
+      "origin": ".artifacts/animation-geo-labels/bundles-validation.json",
+      "sha256": "7df69c2b64e1d24f990b5bb465ce9983a33e37c804827c28b1efcf1c0255fc43"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/contracts-final.log.gz",
+      "origin": ".artifacts/animation-geo-labels/contracts-final.log",
+      "sha256": "145c6f4327c792f17d090c69fb89fe1581b01eda3e02aa07e2572eb9a560eead"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/coverage-final.log.gz",
+      "origin": ".artifacts/animation-geo-labels/coverage-final.log",
+      "sha256": "adbaf611f86a59c4356ae5c12033eba14294ad2fbe90d0376563589480c4e933"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/coverage-owner.log.gz",
+      "origin": ".artifacts/animation-geo-labels/coverage-owner.log",
+      "sha256": "8ae4e40ca847c1349841d7ed6bda109ae5a69ad170f9fa5e10c17504a0aef3c7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/coverage-policy.log.gz",
+      "origin": ".artifacts/animation-geo-labels/coverage-policy.log",
+      "sha256": "f949398eaebe1b0cdaa7fa60597f88121d2da68f8400ac9a25c8b694e5243e82"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/coverage.log.gz",
+      "origin": ".artifacts/animation-geo-labels/coverage.log",
+      "sha256": "c5b844d396f20360789d750aaf5dbb5f5591be2d91922221cba2944fb71438d9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/cumulative-final.log.gz",
+      "origin": ".artifacts/animation-geo-labels/cumulative-final.log",
+      "sha256": "2fd01a39ca977e4398563ff98f7d0d421eda6753d9fbe3b7df4384ffc6ccbe8a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/final-owning.log.gz",
+      "origin": ".artifacts/animation-geo-labels/final-owning.log",
+      "sha256": "73884c8d49fb58595dae494127aa5f69bb5c65cade4f1485149bbec2f1df2384"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/node20-final.log.gz",
+      "origin": ".artifacts/animation-geo-labels/node20-final.log",
+      "sha256": "7401625a1dbf987c9e7a6f74f5163a78858b557715d5c89a7e7cd3bf95adde07"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/node20.log.gz",
+      "origin": ".artifacts/animation-geo-labels/node20.log",
+      "sha256": "a06fc3727ab0500d036d838af1d41b27e830e5d25d8c22926ac4188e23c36dd5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/node24-final.log.gz",
+      "origin": ".artifacts/animation-geo-labels/node24-final.log",
+      "sha256": "0c51f3a22346dd935d2f659d42f884db3bfe6ca4eafec1b599293ec7700c43b0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/node24.log.gz",
+      "origin": ".artifacts/animation-geo-labels/node24.log",
+      "sha256": "44650eaca9580178e683f308a648c95ef25b06459ab8dd763e0ac8df90e9d834"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-measure-20.log.gz",
+      "origin": ".artifacts/animation-geo-labels/package-measure-20.log",
+      "sha256": "a92cdfa62c1d7aad720bebb790b1d0ed222dc54b1196670461e6324df05bcc58"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-measure-22.log.gz",
+      "origin": ".artifacts/animation-geo-labels/package-measure-22.log",
+      "sha256": "a1d127bc971b6c02f07547380fc3b0e5d465dc0beb48c75c108891f33c9a413a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-measure-24.log.gz",
+      "origin": ".artifacts/animation-geo-labels/package-measure-24.log",
+      "sha256": "03a8d7df32c98b84075f5f6ab8fdd79f31b1c0154008851e26d1d06fcd7a1dc7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-size-20.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-size-20.json",
+      "sha256": "c1c18b9e05daab8b8b89bb21984912510ed8297e400e0885fe71a7fa085aad57"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-size-22.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-size-22.json",
+      "sha256": "e8eb0aab1844090fdeb5116601b2a84976ec83e35dfbbf7b7f398ad5e3d0859e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-size-24.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-size-24.json",
+      "sha256": "c0f174889c01df36967a163ffe719dfddc472a7486a846486bdb0fa40965b353"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-validated-20.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-validated-20.json",
+      "sha256": "1ed714868331116aea91f4f91f7f2e08273f1493e785b1a959fa4e4fabbbae3c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-validated-22.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-validated-22.json",
+      "sha256": "b43a5038e947f3c15b9295e5525e200b4ffaf3a9b9527b149be4a19e67da52c2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/package-validated-24.json.gz",
+      "origin": ".artifacts/animation-geo-labels/package-validated-24.json",
+      "sha256": "1ed714868331116aea91f4f91f7f2e08273f1493e785b1a959fa4e4fabbbae3c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/text-regression.log.gz",
+      "origin": ".artifacts/animation-geo-labels/text-regression.log",
+      "sha256": "916dd6497f81a1c9915d0f0143848a67d3da0ab39e1f29e62d801a4d78c60578"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/animation-geo-labels-first.log.gz",
+      "origin": ".artifacts/animation-geo-labels-first.log",
+      "sha256": "2eea7edaf0cff8502cdb48cb8cbca4da447e6ac938679c600b30ab047e4cb481"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/animation-geo-labels-owning.log.gz",
+      "origin": ".artifacts/animation-geo-labels-owning.log",
+      "sha256": "e345386a2a5f18ced9edc88d06ee2109e389c1bc3681bd3970fe4708af12655d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geo-label-evidence/animation-geo-labels-owning-2.log.gz",
+      "origin": ".artifacts/animation-geo-labels-owning-2.log",
+      "sha256": "1cd15fc831bd7f69aada4bdcf421e0366438abe54816742ba4b5141eab5c2a7c"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "label": "suite-realistic",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/contracts/realistic-guide-transitions.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 4430,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-30T00:47:10.733Z",
+  "finishedAt": "2026-10-30T00:47:15.164Z",
+  "source": {
+    "available": true,
+    "commit": "fdc6511d7dc3eb553b47abacbd6a6393dfc7a4e6",
+    "clean": false,
+    "statusSha256": "0d97d541d876716b2c4ad021dadad0454cf0303f73e911ea2a0ea25dc311728d"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "fdc6511d7dc3eb553b47abacbd6a6393dfc7a4e6",
+    "clean": false,
+    "statusSha256": "0d97d541d876716b2c4ad021dadad0454cf0303f73e911ea2a0ea25dc311728d"
+  },
+  "logSha256": "0e0f626c90914b315a5f4bde3cb9ff616ebcb8a3f4601d3141f8a35d7fb1f0dd",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [
+      "test/contracts/realistic-guide-transitions.test.js"
+    ],
+    "files": [
+      "test/contracts/realistic-guide-transitions.test.js"
+    ]
+  },
+  "bytes": 1292,
+  "retainedBytes": 1292,
+  "truncated": false
+}

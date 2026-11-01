@@ -5,6 +5,7 @@ import { preparePolarInterpolation, validatePolarAnimationState, unavailablePola
 import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
 export const emptyAnimationPolars = endpoint => Object.freeze(endpoint.identities.map(identity=>unavailablePolarAnimation(identity===undefined?"anonymous":"unsupported-family")));
+export const hasRetainedAnimationPolars = (states,endpoint) => !sameConcreteValue(states,emptyAnimationPolars(endpoint));
 export const hasAnimationPolars = states => states.some(state=>state.kind!==undefined||!["anonymous","unsupported-family","semantic-unavailable","primitive-role","sampled-concrete"].includes(state.reason));
 export function validateAnimationPolars(states,endpoint) {
   ownArray(states,"Animation polar states");

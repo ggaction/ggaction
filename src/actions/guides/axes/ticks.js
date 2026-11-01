@@ -1,3 +1,5 @@
+import { resolveAxisTickGeometry } from "../../../grammar/axisGeometry.js";
+import { valuesFromTickConfig } from "../../../materialization/guides/tickValues.js";
 import { assertAxisFrame, previewAxisFrame } from "./frame.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
@@ -22,18 +24,10 @@ import {
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
 import { numericExtent } from "../../../grammar/numeric.js";
-import {
-  DEFAULT_TICK_COUNT,
-  inferHistogramBoundaries,
-  valuesFromTickConfig
-} from "../tickValues.js";
+import { DEFAULT_TICK_COUNT, inferHistogramBoundaries } from "../tickValues.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { validateTickRounding } from "../../../grammar/ticks.js";
-import {
-  defaultAxisPosition,
-  resolveAxisTickGeometry,
-  validateAxisPosition
-} from "./policy.js";
+import { defaultAxisPosition, validateAxisPosition } from "./policy.js";
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 

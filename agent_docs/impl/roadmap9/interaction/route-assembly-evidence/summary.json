@@ -1,7 +1,7 @@
 {
   "status": "qualified",
   "base": "9785f63d3",
-  "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit same-job completion assembly approval",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit same-job completion assembly approval",
   "change": "Pass the existing immutable prepared job explicitly to the existing resource assembly owner; remove one duplicate native-input lowering, normalization, hash and clone.",
   "unchanged": [
     "public API and stored schemas",

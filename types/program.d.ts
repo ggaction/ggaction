@@ -64,7 +64,12 @@ export interface PreparedTextMetrics {
   readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
   readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
 }
-export interface TextMetricsRequest { id: string; fonts: readonly string[]; }
+export interface TextMetricsRequest {
+  id: string;
+  fonts: readonly string[];
+  /** Prepare bounded wrap queries for current Cartesian axis labels. Reprepare after changing their text, font, or bound font resource. Default: false. */
+  axisLabelReflow?: boolean;
+}
 export interface FontResource {
   readonly kind: "font"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
   readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];

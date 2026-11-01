@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "base": "3f67a6324",
+  "variants": [
+    {
+      "id": "two-combined-blocks",
+      "sha256": "3ee727c8e6b01460cb889565c8d60eb3ac36ea09a9e120889540dcf376f1b680"
+    },
+    {
+      "id": "shared-numeric-samples",
+      "sha256": "af0e3a5f4bf7e04684aab093502a8e6971a7c25e83f56a838d28a57daa87af62"
+    },
+    {
+      "id": "physical-categorical-areas",
+      "sha256": "74e52f811b0aabba61aa090b1da6b223c1b13f4e58778bee74efc2723c8da869"
+    },
+    {
+      "id": "numeric-display-map",
+      "sha256": "6513931539b8bb05806d0b5cc881384fc008a440f0c592cf11878d8b4091c17f"
+    },
+    {
+      "id": "selected-opacity-font",
+      "sha256": "92267fae158ec3f09352bcf0346212f76331b3c0fcc981fa608648415a20e5da"
+    },
+    {
+      "id": "single-opacity",
+      "sha256": "c68ea657779c414a2fc42b489028b7dd9e9a688da6f3807ca53bc069bb906d32"
+    },
+    {
+      "id": "gradient-and-local-size",
+      "sha256": "88e5fd6e35179934db62279e202d821e8a628cd786a32df9ef1dbbd59c2a643c"
+    },
+    {
+      "id": "recipe-opacity-0",
+      "sha256": "16d11fc8b68d87ed8175c63e5e29a1c78720677b341d5eab6640d43fa67e71dd"
+    },
+    {
+      "id": "recipe-opacity-0-7",
+      "sha256": "89f5c960c4a835131c15f0f3758f5e1211b26ca7b736916f2aca9fa9e8688046"
+    },
+    {
+      "id": "recipe-opacity-1",
+      "sha256": "a733558bea38093637fdeea0e0e30775594d47ce991d2af4083c1835d7a3fc8f"
+    }
+  ],
+  "scope": [
+    "semanticSpec",
+    "graphicSpec",
+    "full wrapped trace",
+    "legend hit entries"
+  ],
+  "normalization": "existing withoutAllocatedIdentity and JSON data serialization; unrelated mark hit allocation IDs excluded",
+  "verifiedBy": ".artifacts/legend-owner-baseline.mjs",
+  "firstHarnessFailures": [
+    "unrelated randomly allocated mark hit IDs",
+    "JSON dropped undefined before reloaded comparison; both sides now serialized equally"
+  ]
+}

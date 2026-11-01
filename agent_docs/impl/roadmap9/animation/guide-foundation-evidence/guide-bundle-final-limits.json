@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "limits": {
+    "ggaction": 774100,
+    "ggaction/basic": 422400,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 46000,
+    "ggaction/interaction": 128900,
+    "ggaction/animation": 203300
+  },
+  "actualMaximum": {
+    "ggaction": 774091,
+    "ggaction/basic": 422320,
+    "ggaction/svg": 24954,
+    "ggaction/graph": 44076,
+    "ggaction/interaction": 128881,
+    "ggaction/animation": 203265
+  },
+  "archiveSha256": "bcb9d46da1d6404e729ecaa91dd2415413b2c667974d2b5e460eaf835f66d614"
+}

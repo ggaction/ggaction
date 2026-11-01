@@ -1,0 +1,90 @@
+{
+  "node": "v22.23.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/animation-archives/ggaction-guide-private-bcb9d46d.tgz",
+  "sha256": "bcb9d46da1d6404e729ecaa91dd2415413b2c667974d2b5e460eaf835f66d614",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2264.9907920000005
+    },
+    {
+      "id": "six-existing-native-guide-consumers",
+      "status": "passed",
+      "durationMs": 1253.437833
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2396.750709,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 1026,
+        "minifiedBytes": 2702093,
+        "gzipBytes": 772456
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1469.073292,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 610,
+        "minifiedBytes": 1441533,
+        "gzipBytes": 421412
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 66.60429199999999,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 44,
+        "minifiedBytes": 73991,
+        "gzipBytes": 24779
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 185.9757920000011,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 85,
+        "minifiedBytes": 147084,
+        "gzipBytes": 43923
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 523.6356659999983,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 200,
+        "minifiedBytes": 401145,
+        "gzipBytes": 128372
+      }
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 688.1920839999984,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 322,
+        "minifiedBytes": 674661,
+        "gzipBytes": 202690
+      }
+    }
+  ],
+  "status": "measured"
+}

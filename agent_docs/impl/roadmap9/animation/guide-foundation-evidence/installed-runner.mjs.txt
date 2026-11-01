@@ -1,0 +1,30 @@
+import {readFile,writeFile,mkdir,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+import {root,run} from '../scripts/consumers/runtime.js';
+import {measureMinimalBrowserBundle} from '../scripts/browser-bundle-size.js';
+const packageSpec=path.resolve('.artifacts/animation-archives/ggaction-guide-private-bcb9d46d.tgz');
+const directory=path.resolve('.artifacts/guide-private-installed/node'+process.versions.node.split('.')[0]);
+await mkdir(directory,{recursive:true});
+const receipt={node:process.version,archive:packageSpec,sha256:createHash('sha256').update(await readFile(packageSpec)).digest('hex'),records:[]};
+const save=()=>writeFile(path.join(directory,'receipt.json'),JSON.stringify(receipt,null,2)+'\n');
+const consumer=await preparePackageConsumer({packageSpec});
+async function check(id,fn){const start=performance.now();try{const value=await fn();receipt.records.push({id,status:'passed',durationMs:performance.now()-start,value});}catch(error){receipt.records.push({id,status:'failed',error:error.stack});throw error;}finally{await save();}}
+try{
+ await check('optional-peers',()=>testOptionalDependencies(consumer));
+ for(const file of ['guides.mjs','interaction.mjs'])await copyFile(path.join(root,'scripts/consumers/fixtures/node',file),path.join(consumer.directory,file));
+ for(const [source,target,from,to] of [
+  ['examples/linear-nearest-ticks/program.js','linear-nearest-ticks-public.js','../../src/index.js','ggaction'],
+  ['test/support/identity-equivalence.js','identity-equivalence.js','../../src/renderers/svg.js','ggaction/svg'],
+  ['examples/facet-shared-top-lane/program.js','facet-lane-public.js','../../src/index.js','ggaction'],
+  ['examples/plot-guide-underlays/program.js','plot-underlay-public.js','../../src/index.js','ggaction']
+ ])await writeFile(path.join(consumer.directory,target),(await readFile(path.join(root,source),'utf8')).replace(from,to));
+ await writeFile(path.join(consumer.directory,'run.mjs'),`import {cases as guides} from './guides.mjs';import {cases as interaction} from './interaction.mjs';
+const ids=['guides/create-horizontal-grid','guides/installed-display-axis','guides/polar-base','guides/axis-lifecycle','guides/standalone-axis','interaction/guide-and-host-cleanup'];
+for(const id of ids){const entry=[...guides,...interaction].find(entry=>entry.id===id);if(!entry)throw Error(id);await entry.run();console.log(id+' passed');}`);
+ await check('six-existing-native-guide-consumers',()=>run(process.execPath,['run.mjs'],consumer.directory,{stdio:'inherit'}));
+ for(const specifier of ['ggaction','ggaction/basic','ggaction/svg','ggaction/graph','ggaction/interaction','ggaction/animation'])await check(specifier,()=>measureMinimalBrowserBundle(consumer.directory,{specifier}));
+ receipt.status='measured';await save();console.log(JSON.stringify(receipt,null,2));
+}finally{await consumer.cleanup();}

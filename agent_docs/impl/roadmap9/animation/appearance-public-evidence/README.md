@@ -15,3 +15,7 @@ node agent_docs/impl/roadmap9/animation/appearance-public-evidence/installed.mjs
 ```
 
 첫실패와수정은qualification에명시하고원로그를압축보존한다. Primitive/geometry와분리한공통styleowner를각typedfamily와Geofeature가사용하며색·opacity의현재값은concreteproperties에서재기준한다. 중간partition선택/포커스/history/reducedmotion3회귀도실제합산본에서통과했다. 전체077과모든paint/guide/timelineconsumer완료로이기록을해석하지않는다.
+
+## 합산 감사와 source 고정
+
+Source01ae2001f의 전체계약791개와 문서231개, built186pages/1598hashes, 모든page320/390/768browser가 통과했다. 전체unit7481개는7479통과/2실패였고, 색 변경만으로 weighted를 기대하던mountfixture 및 새realistic2파일timing누락을 수리한 owning19개가 통과했다. 새realistic21개 실행과 실제filetiming1467.864083/1592.425458ms를 기록했다. 전체unit을 재실행한 성공으로 합성하지 않는다. Source pin후owningdocs30개와 built artifact hash검사를 다시 통과했다.

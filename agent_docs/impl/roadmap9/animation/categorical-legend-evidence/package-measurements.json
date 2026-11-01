@@ -1,0 +1,23 @@
+[
+  {
+    "node": "20",
+    "entries": 1182,
+    "packed": 1694230,
+    "unpacked": 7641072,
+    "sha256": "c54b65c6c3265e460434036caf1e9db62d1cd9ac8c3cfbe7df600f75b30b21cf"
+  },
+  {
+    "node": "22",
+    "entries": 1182,
+    "packed": 1691404,
+    "unpacked": 7641072,
+    "sha256": "046d591161f1235ae7e2347516394a4f81f098e78836e01f73bd9f0770ec71db"
+  },
+  {
+    "node": "24",
+    "entries": 1182,
+    "packed": 1694230,
+    "unpacked": 7641072,
+    "sha256": "c54b65c6c3265e460434036caf1e9db62d1cd9ac8c3cfbe7df600f75b30b21cf"
+  }
+]

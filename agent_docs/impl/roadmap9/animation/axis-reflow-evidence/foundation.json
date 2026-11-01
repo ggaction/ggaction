@@ -1,0 +1,210 @@
+{
+  "scope": "Native responsive axis candidate extraction only; dynamic animation reflow remains pending.",
+  "base": "f4a6f9aa28779c20d0a61f0cd51c547f110e65ea",
+  "node": "v22.23.1",
+  "inputs": [
+    {
+      "path": "src/actions/guides/axes/labels.js",
+      "sha256": "b9eaf53fd5345d1ed6884fda31aa11852b768eda7cc6316f6cc22db08201338a"
+    },
+    {
+      "path": "src/materialization/axisLabelCandidates.js",
+      "sha256": "6d37a494edb7bf6e0005ebc51a2e4f6deb66288402b2e7326cb63532f1ce0fb4"
+    },
+    {
+      "path": "src/materialization/axisLabelLayout.js",
+      "sha256": "63c5e6d588b70551b91b2854863776a07c4f6afe71fd282ef66a375addee2a61"
+    },
+    {
+      "path": "test/unit/animation/axis-label-candidates.test.js",
+      "sha256": "22c5de34871fcbf18e929894441e4bf73797d9c910110a2cb5fbd63a1df66483"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "c7caf0c5407fd38e720e29a1761769d538a9abfce303ee7c389a519f2c08cffc"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "d19d3e9fab8cbd08fb059849fe92fad21d39cc4a8d1cdb742c4f9b135581b480"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/actions/guides/ unit/actions/canvas/ unit/animation/axis-label-candidates.test.js unit/animation/guide-label-layout.test.js",
+      "exitCode": 0,
+      "tests": 1181,
+      "durationMs": 35982.262416
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include=src/materialization/axisLabelCandidates.js --test-coverage-lines=95 --test-coverage-branches=90 --test-coverage-functions=100 test/unit/animation/axis-label-candidates.test.js test/unit/actions/canvas/responsive-layout.test.js",
+      "exitCode": 0,
+      "tests": 17,
+      "coverage": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/documentation-truth.test.js",
+      "exitCode": 0,
+      "tests": 33
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/package-artifact.test.js",
+      "exitCode": 0,
+      "tests": 7
+    },
+    {
+      "command": "node .artifacts/axis-reflow/equivalence.mjs",
+      "exitCode": 0,
+      "result": {
+        "cases": 26,
+        "success": 20,
+        "failures": 6,
+        "equal": true,
+        "excluded": "generated mark identity UUIDs and derived identity IDs from independent program creation"
+      }
+    },
+    {
+      "command": "node scripts/measure-browser-bundle.js",
+      "exitCode": 0,
+      "fullGzip": 781070,
+      "basicGzip": 423180
+    },
+    {
+      "command": "node .artifacts/axis-reflow/native-installed.mjs",
+      "exitCode": 0,
+      "cases": 2,
+      "formatChecks": [
+        "Canvas equals PNG",
+        "SVG",
+        "PDF",
+        "scene",
+        "codec"
+      ],
+      "sameArchive": true
+    }
+  ],
+  "firstFailures": [
+    {
+      "log": "candidates-1.log",
+      "cause": "Two test inputs: incomplete resolved ordinal scale and missing native responsive measuring context; corrected fixture, source unchanged."
+    },
+    {
+      "log": "native-bundles-1.log",
+      "cause": "One new package file exceeds previous exact entry cap."
+    },
+    {
+      "log": "native-bundles-2.log",
+      "cause": "New owner unpacked bytes exceed previous cap."
+    },
+    {
+      "log": "native-installed.log",
+      "cause": "Focused harness omitted canonical optional peer installation; corrected harness on same archive."
+    }
+  ],
+  "archive": {
+    "sha256": "ac0b1794fb0347621e28cf86a3611605db4df4ab408a7af315acce06f289181a",
+    "entries": 1219,
+    "packedBytes": 1736043,
+    "unpackedBytes": 7838354
+  },
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-owning-2.log.gz",
+      "sha256": "9c138407f6aae183e5c69baf863c7b75e8c442014bb1e3e83921d0bb0a5b15c1",
+      "uncompressedSha256": "dbbf3cb4b2a29c7bd5ed6c1beae8d467d27e263a654741f344de2b7b7d8ee500"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/candidates-1.log.gz",
+      "sha256": "77385ac98ed542e4da5bca0ca79b39cfe52f929eab02af19cb34dc762fa7b704",
+      "uncompressedSha256": "bcfee913cc493da746926042096aaa303fe646ceec92ac601f82d65a5198fcb9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/candidates-coverage-1.log.gz",
+      "sha256": "d47cc8980423ab16174e171676224f958a48f41c9b78052252341213126a593b",
+      "uncompressedSha256": "12ac8cdb27d20aaebe5fbe1c5a2d1420c8e68b607e212285392ac49f644b4b23"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/boundaries-1.log.gz",
+      "sha256": "8e22e3786e177f6eed1ef5d7ebf970b5e5863c69166420b0da65e4e15ed84091",
+      "uncompressedSha256": "a17a10b77cfba1bb97d9d845a11eb38b2d277a8381c35613e60bf47c05b80b22"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/package-contracts.log.gz",
+      "sha256": "c8f8983391f832eb59d5284e21c68bda6b1d1870134deeb18d984e861a150b72",
+      "uncompressedSha256": "f7551d2ebf35519394c5a7f4aeb56b0dcf579c8fcf0199ea3fd553d5c2f7dde2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-bundles-1.log.gz",
+      "sha256": "d7d7917f10240592e194e6be9b976c62f7475d473b2864a70ca8e4bc962dc905",
+      "uncompressedSha256": "e46484b28198a2ac0d66221e8f7905377fe0a56e513eb025d8b57a750b8f5735"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-bundles-2.log.gz",
+      "sha256": "0d4f63d1f2651c6bc18e7e46b32dd7d81599021144ecc91a76c434056145bf42",
+      "uncompressedSha256": "34de728211671bbdee1e9ce53cc5db6b0ae1213b9cfffbe8251118bb1c2a0279"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-bundles-3.log.gz",
+      "sha256": "afaddb216f5acd4a5d909c7567cf4036e12e6d427aabe3103f9fef0bba4b845f",
+      "uncompressedSha256": "b111e0f7474be75f6621dd834de623f91d22d0547e60e17b8362503beefae40d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-installed.log.gz",
+      "sha256": "c5eac3b78985645308c72f0a10cbe594596ed8104b8e2768676a400549ad0d24",
+      "uncompressedSha256": "2acf33f767160e96c13ee90d21044241fc5e73dfd59c8a3ac2c79b7d7079348b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-installed-2.log.gz",
+      "sha256": "c85159500b9f952ecaebdcc3697c84940822a6021ea2e0ae81123b7c7c041a0c",
+      "uncompressedSha256": "32fc273972c832639d38ddbe5d1eecceb3fd000dcb255234545f6b5bef8835e4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/equivalence.log.gz",
+      "sha256": "667a0524828928cc6c9bc1020def0f5d4f7f87479f395da3920245a1dd71d6e9",
+      "uncompressedSha256": "786ae0b6f64a2472e9c86c441b96f0614de5c6ffb6572ae9d46ee81af115d2b3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-before.json.gz",
+      "sha256": "c4a753227b2d17943e0bf25bf507c5a0624a3cb73dc4d66d39990ba0d73df33a",
+      "uncompressedSha256": "99650b1e09d2f23ff0ecdb712407f82155ee7975f0d949a509a97704d87b8fe2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-after.json.gz",
+      "sha256": "1fb4a12fe7b247a6d075d09f798defe6cde8c262c88db6c2d96f9a01b0069d8a",
+      "uncompressedSha256": "79694b19f70811849486139609874c35debd8a7021f4068f4a29aa663cd94904"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-snapshot.mjs.gz",
+      "sha256": "fb7f6a73e248bc662e95f03446f58e85e441605b8da1da674fb0bf922e481933",
+      "uncompressedSha256": "6e850891dd37746fc3a076718f6c85c2a4541d26e5b0c68e9c5be502e1008fbc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/equivalence.mjs.gz",
+      "sha256": "96ca163e96c658fe479f6a4a9df370aecf627b03212c2908f2af764555b728af",
+      "uncompressedSha256": "a8fa79461778a771fae06c46b97843013c31f77e93014786ef577dd3d8b071d4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/native-installed.mjs.gz",
+      "sha256": "146592d09d710af7720ef2218f7ec814409e0217751d55d02eb9e6a03f72b199",
+      "uncompressedSha256": "6111102d269d04a6008f00bf436bb14d2e0efc8ef52d87ee0faaf94f1bb80581"
+    }
+  ],
+  "pending": [
+    "Dynamic group collection/emission and guide version 8",
+    "Schema2 explicit axisLabelReflow preparation",
+    "Strict dynamic frame restore/rebase/current hit",
+    "Dynamic reflow public types/docs/4backend/3Node qualification",
+    "Root final AT60/STEP077"
+  ]
+}

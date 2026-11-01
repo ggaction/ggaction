@@ -1,4 +1,4 @@
-import { normalizeThemeDefinition, resolveThemeTokens } from "../../../src/actions/theme/definition.js";
+import { normalizeThemeDefinition, resolveThemeTokens } from "../../../src/theme/definition.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 

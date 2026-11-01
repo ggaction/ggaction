@@ -930,6 +930,10 @@
     "file": "fonts.mjs",
     "cases": [
       {
+        "id": "fonts/axis-reflow-closure",
+        "statements": 14
+      },
+      {
         "id": "fonts/resource-metrics-offline",
         "statements": 15
       },
@@ -1606,12 +1610,44 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/grouped-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/categorical-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/size-legend-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/dependent-title-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/axis-label-layout-offline-native",
+        "statements": 2
+      },
+      {
+        "id": "animation/legend-offline-native",
+        "statements": 2
+      },
+      {
+        "id": "animation/geographic-text-offline-native",
+        "statements": 1
+      },
+      {
+        "id": "animation/guides-offline-native",
+        "statements": 17
+      },
+      {
         "id": "animation/polar-offline-native",
         "statements": 4
       },
       {
         "id": "animation/bounded-repeated-interruption",
-        "statements": 14
+        "statements": 12
       },
       {
         "id": "animation/public-player-interruption",
@@ -1640,6 +1676,14 @@
       {
         "id": "animation/cartesian-offline-renderers",
         "statements": 13
+      },
+      {
+        "id": "animation/guide-anchors-offline-native",
+        "statements": 6
+      },
+      {
+        "id": "animation/implicit-legend-lanes-offline-native",
+        "statements": 1
       }
     ]
   },
@@ -1753,6 +1797,40 @@
     ]
   },
   {
+    "file": "animation-timeline.mjs",
+    "cases": [
+      {
+        "id": "animation-timeline/nonlinear-offline-four-renderers",
+        "statements": 17
+      },
+      {
+        "id": "animation-timeline/player-marker-lifetimes",
+        "statements": 6
+      },
+      {
+        "id": "animation-timeline/current-hit-selection-rebase",
+        "statements": 4
+      }
+    ]
+  },
+  {
+    "file": "animation-cartesian-completion.mjs",
+    "cases": [
+      {
+        "id": "animation-cartesian-completion/native-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-cartesian-completion/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-cartesian-completion/current-hit-selection-interrupt",
+        "statements": 5
+      }
+    ]
+  },
+  {
     "file": "geographic-routes.mjs",
     "cases": [
       {
@@ -1766,6 +1844,23 @@
       {
         "id": "geographic-routes/four-renderer-native-line-parity",
         "statements": 11
+      }
+    ]
+  },
+  {
+    "file": "animation-geotext-expressions.mjs",
+    "cases": [
+      {
+        "id": "animation-geotext-expressions/current-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-geotext-expressions/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-geotext-expressions/current-hit-rebase",
+        "statements": 5
       }
     ]
   }

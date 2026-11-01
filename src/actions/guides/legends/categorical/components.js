@@ -3,13 +3,8 @@ import { materializeLegendBorder } from "../../../../materialization/legendBorde
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
 import { action } from "../../../../core/action.js";
-import {
-  activeConfig,
-  categoricalLegendLabels,
-  graphic,
-  noOptions,
-  resolveLayout
-} from "./layout.js";
+import { resolveCategoricalLegendConfig as activeConfig, categoricalLegendLabels } from "../../../../materialization/guides/legendConfig.js";
+import { graphic, noOptions, resolveLayout } from "./layout.js";
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 
 export const rematerializeLegendLabels = /* @__PURE__ */ action(

@@ -2,7 +2,7 @@
   "status": "qualified",
   "date": "2026-11-01",
   "base": "5ec16aab2",
-  "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit exact-owned WeakSet approval",
+  "authorization": "../../AUTHORIZATION.json remainingApproval and parent explicit exact-owned WeakSet approval",
   "change": "Reuse completed private own-data/deep-clone/hash validation for the exact immutable job only. External/frozen/worker copies still validate fully.",
   "unchanged": [
     "public API/types/schema",

@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: exports the public module boundaries
+ok 1 - exports the public module boundaries
+  ---
+  duration_ms: 0.536542
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 2 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.258042
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 3 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 0.882041
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 4 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 56.512666
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 5 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 1.663584
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 6 - keeps library terminology source-neutral
+  ---
+  duration_ms: 985.256417
+  type: 'test'
+  ...
+# Subtest: realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations
+ok 7 - realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations
+  ---
+  duration_ms: 20.862833
+  type: 'test'
+  ...
+# Subtest: weighted scheduling spreads long tests and rejects invalid input
+ok 8 - weighted scheduling spreads long tests and rejects invalid input
+  ---
+  duration_ms: 0.18425
+  type: 'test'
+  ...
+# Subtest: the aggregate accepts only complete successful prerequisites
+ok 9 - the aggregate accepts only complete successful prerequisites
+  ---
+  duration_ms: 0.170791
+  type: 'test'
+  ...
+# Subtest: timing summaries separate environments and exclude failures from scheduling quantiles
+ok 10 - timing summaries separate environments and exclude failures from scheduling quantiles
+  ---
+  duration_ms: 6.43475
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1426.5265

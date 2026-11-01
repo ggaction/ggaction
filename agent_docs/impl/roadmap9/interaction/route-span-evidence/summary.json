@@ -3,7 +3,7 @@
   "date": "2026-11-01",
   "base": "ee374aec1",
   "source": "3aeb5a822",
-  "authorization": "../AUTHORIZATION.json remainingApproval; parent approved exact single-span math and unchanged guards",
+  "authorization": "../../AUTHORIZATION.json remainingApproval; parent approved exact single-span math and unchanged guards",
   "change": "Single clamped span with 2-4 controls uses direct endpoint derivatives; arithmetic order and shared flattening unchanged.",
   "unchanged": [
     "public APIs/types/schema",

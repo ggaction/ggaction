@@ -1,6 +1,6 @@
 # Curated data gallery
 
-This development gallery renders twenty-two real-data charts, including fourteen new native chart types with the public chart actions, and copies existing feature previews into a self-contained static directory. It adds no library API or package export. CSV loading reuses the hash-verified full-source corpus loader; it does not use the smaller test samples.
+This development gallery renders curated real-data charts and new native chart types with the public chart actions, and copies existing feature previews into a self-contained static directory. The generated manifest and tabs contain the current counts. It adds no library API or package export. CSV loading reuses the hash-verified full-source corpus loader; it does not use the smaller test samples.
 
 ```sh
 npm run datasets:sync
@@ -17,3 +17,5 @@ Real-data cards document source counts, selection and missing-value rules, origi
 Validate a build by checking all asset hashes and image loads, both image modes, dialog close/ESC, search/category controls, and overflow at narrow and wide widths. The gallery is a preview of pinned datasets, not a live feed or a package release.
 
 Pinned daily IBM OHLCV, USGS event coordinates and Natural Earth land outlines live in `data/`, with upstream URLs and exact raw byte hashes in `data/manifest.json`. The build verifies those hashes before using any snapshot. Other charts reuse the full corpus snapshots. These are observed source data; all aggregations, width transforms, selected cohorts and missing-value rules are stated on each card.
+
+The penguin network compares all four native edge-routing methods on the same observed island/species memberships and fixed node positions. A count panel shows the original pair frequencies. Its hierarchy is explicitly authored for routing; it does not imply ancestry or travel. Paths without an alternative in the observed graph retain their original edges.

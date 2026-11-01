@@ -24,7 +24,7 @@ Run this complete ES module in Node.js 20+ after installing `ggaction`:
 
 ```javascript
 import { chart } from 'ggaction';
-import { planTransition, serializeAnimation, deserializeAnimation,
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation,
   exportAnimationFrames } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
@@ -35,7 +35,14 @@ const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
   .encodeY({ field: 'y', scale: { domain: [0, 100], nice: false } });
 const to = from.reviseData({ source: 'rows', id: 'next',
   values: [{ id: 'a', x: 100, y: 50 }] });
-const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const ordinary = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const point = sampleTransition(ordinary, 500).decisions.find(value => value.itemKey);
+const plan = planTransition({ from, to, options: {
+  durationMs: 1000, easing: 'linear',
+  tracks: [{ target: { ownerKey: point.ownerKey }, property: 'geometry', kernel: 'native-progress',
+    keyframes: [{ timeMs: 0, value: 0 }, { timeMs: 500, value: 0.25 }, { timeMs: 1000, value: 1 }] }],
+  markers: [{ id: 'halfway', timeMs: 500 }]
+} });
 const saved = serializeAnimation(plan, { rate: 1, repeat: 0, reducedMotion: false });
 const restored = deserializeAnimation(saved);
 const frames = exportAnimationFrames(restored.plan, { timesMs: [0, 500, 1000] });
@@ -52,7 +59,7 @@ decisions. This surface does not promise semantic interpolation for every chart 
 
 ## Animate solid color and opacity
 
-Compatible point, Cartesian, polar, graph, partition, and geographic geometry can
+Compatible point, Cartesian, polar, guide, graph, partition, and geographic geometry can
 change solid `fill`, `stroke`, `opacity`, and explicit `strokeWidth` while moving.
 Color interpolation uses premultiplied linear sRGB: halfway from black to white
 is approximately RGB(188, 188, 188). A transparent `none` paint gaining red retains
@@ -66,10 +73,56 @@ Patterns, gradients, unresolved host colors, changed text/fonts, and other chang
 static effects use the explicit `appearance` crossfade. An unchanged geographic
 pattern continues to use the native geometry and paint materialization rules.
 
-Saved transition plans use version 2 and the required
+Saved transition plans use version 3 and the required
 `premultiplied-linear-srgb@1` appearance kernel. Earlier development plan versions
 and missing or unknown kernels are rejected on restore. The outer animation
 envelope remains schema 1.
+
+## Set keyframes and markers
+
+Use a sampled decision's `ownerKey` to control the progress of its native chart or
+guide owner. A geometry track uses `property: 'geometry'`, `kernel: 'native-progress'`,
+and values from zero to one. Graph nodes and edges, partition cells and labels, and
+geographic parts retain their shared owner clock. Existing native geometry calculations
+produce the result. The frame's `progress` and Canvas dimensions still use the whole plan's time.
+
+Style tracks address an exact `{itemKey, role?}` or `{guideKey}`. `fill` and `stroke`
+use `kernel: 'color'` with CSS color strings. `opacity` and `strokeWidth` use
+`'number'` or `'positive-scale'`; positive-scale values must be positive. Opacity
+stays within zero to one and stroke widths are nonnegative. Omit `role` only when
+one compatible primitive is uniquely identified. Geographic paint follows the whole
+feature, including features hidden at both endpoints. Geographic label/body styles
+also update their current prepared values; individual leader styles are unsupported.
+Specify the label/body role when the group can produce leaders.
+
+Keyframe times are nondecreasing within the duration. A repeated time uses its last
+value from that instant. `easingToNext` defaults to the plan's easing. Gaps hold the
+latest completed track. Overlap rejects by default; `composite: 'priority'` requires
+an explicit integer priority on every track and rejects overlapping ties. The highest
+active priority wins. The resolved values at zero and duration must match the actual
+native endpoints, preserving their exact graphics and authored color strings.
+Exact endpoint admission follows the original time, so floating-point easing cannot
+hide a keyframe immediately before the ending time. Interior progress stays strictly
+between zero and one even at floating-point underflow or rounding boundaries.
+Missing or ambiguous targets, incompatible style targets, and unsupported properties
+reject preparation. Raw pixel coordinates are not keyframe properties.
+
+Supply `onMarker(event)` to `createAnimationPlayer` to receive unique marker crossings
+after rendering. Events contain `id`, `timeMs`, `iteration`, and the actual current
+`frame`; a skipped marker need not have the same time as the displayed frame. Forward
+playback emits each marker once per iteration, including zero when starting at zero.
+Reverse crossings are silent. `seek(timeMs, {emit: true})` emits forward crossings;
+ordinary `seek` is silent after synchronizing any time already played.
+
+Skipped repetitions retain iteration/time order. Marker batches are checked against
+10,000 callbacks and 10,000,000 ID-work units before delivery. A failed batch cancels
+the run without partial delivery. Reduced motion uses the same bounds; infinite repeat
+finishes at iteration zero. Disposal stops remaining callbacks and the completion
+commit. A callback error cancels the run. Reentrant controls use the same bounded queue.
+
+Saved timelines retain authored values and `keyframe-schedule@1`, then validate exact
+targets and endpoint values again when restored. Callbacks, clocks, and current playback
+state are not persisted. Native keyframes and marker timing work with all four renderers.
 
 ## Move a completed graph layout
 
@@ -107,11 +160,20 @@ the same typed domain order, item value, and padding policy; their ranges may ch
 
 Changed sample membership, curve/layout/width/corner policy, categorical domain,
 scale policy, unsupported style, or structured paint uses an explicit crossfade reason.
-Conditional positions, non-Cartesian coordinates, overlay or offset rules, special
-fixed/category-slot placements, and density-derived areas are outside this typed
-kernel. All remain renderable through the shared concrete fallback. Authentic
-samples retain current values for interruption and offline replay; unknown kernel
-versions or inconsistent stored geometry reject the restore.
+Conditional positions use the branch values and scales selected at each endpoint;
+the sampler does not rerun expressions. Native ordinal offsets, error-bar caps,
+box-plot median spans, and raincloud category slots use the same placement rules
+as static charts. Compatible span sizes and slot offsets can change continuously.
+
+Density areas retain their completed sample grid and width normalization. Density
+estimation is not repeated per frame. Source-follow point and line overlays follow
+the current value-space anchors of compatible point, bar, line, or area items.
+Changed source membership or segment topology retains explicit enter/exit or fade
+behavior. Jitter, packing, and noncircular point anchors remain concrete fallbacks.
+Other coordinate families use their own typed kernels.
+
+Authentic samples retain current values for interruption and offline replay;
+unknown kernel versions or inconsistent stored geometry reject the restore.
 ## Bend an icicle into a sunburst
 
 PartitionPlot transitions use the stored hierarchy cells and their stable parent
@@ -153,6 +215,203 @@ Current angles stay unwrapped when a frame is reused as an endpoint. Offline rep
 stores the actual polar coordinates and membership with a versioned kernel, validates
 them against the endpoint geometry, and feeds the same frame to all four renderers.
 
+## Move axes, labels, and grids
+
+Cartesian axis lines, ticks, fixed-layout labels, and grids, plus polar axes,
+spokes, and circle grids, retain their raw guide values. Compatible transitions
+interpolate the scale and frame before applying the native guide geometry.
+Matched decisions report `kernel: 'guide-geometry'` and a separate `guideKey`.
+The key preserves the child scope, guide owner, component, typed value, and label
+line role. It never matches different values by their array position or text.
+
+For example, this complete Node.js module moves the grid at value 5 through a
+changing domain and exports the offline midpoint:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native endpoints and the offline guide sample are included.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, serializeAnimation, deserializeAnimation,
+  sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 500, height: 400, margin: 80 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+  .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
+  .createXAxisLabels({ values: [0, 5, 10], flush: true })
+  .createXAxisTitle({ text: 'Amount', at: 5, offset: { from: 'labels', gap: 7 } });
+const to = from.editScale({ id: 'x', domain: [0, 20] });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 500)));
+```
+
+New values enter and removed values exit. Duplicated raw values keep separate
+enter/exit decisions with `reason: 'guide-ambiguity'`. A changed label string uses
+an appearance crossfade. Current sampled guides can be reused as either endpoint.
+Offline restore validates their values, geometry, and version before replay.
+
+Titles with explicit numeric offsets retain their native range role or numeric `at`
+value. Changing `at` on a log axis maps the interpolated value through the log scale;
+it does not interpolate screen coordinates. Polar titles use their native frame and
+shortest angular path. Title text or font changes crossfade safely.
+
+Band-boundary grids match the complete set of category edges that share each boundary.
+Parallel axes match by field name, component, and raw tick value when fields move,
+appear, or disappear. Neither uses array position as identity. If native band edges
+split during a transition, that boundary crossfades explicitly.
+
+Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the native
+measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
+policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
+profiles must contain every required measurement. Current layouts support interruption
+and offline replay. Inferred and label-relative Cartesian titles reuse those current
+measured label bounds. Native theme/default gaps, label-relative gaps, and Canvas fit
+rules remain intact as scales or frames change. A title never treats its final offset
+as the original meaning. The complete same-axis label dependency is checked during
+restoration; editing a label also makes its dependent title fade safely. Text or font
+changes, width-based wrapping, responsive skip/rotation selection, and unsafe intermediate
+placements retain explicit fallbacks.
+
+Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
+use their native single-edge layout. Ticks and labels keep their raw values; the current
+scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
+move through that same layout. Current legend frames can be interrupted and restored
+offline. Text or font changes crossfade; exact font profiles must contain all required
+measurements. Automatic samples, symbol legends, borders, and
+inferred axis clearance retain safe fallbacks.
+
+Continuous size legends also support exact `values` and explicit numeric `offset` in one
+independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
+calculating the symbol radius. The native measured layout preserves multiline labels,
+hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
+and clipped or bordered legends retain an explicit layout crossfade.
+
+Categorical color, stroke, shape, and series legends retain typed category values and
+native line, point, or swatch roles. With an explicit offset in one independent edge
+block, compatible symbol dimensions, spacing, and frame changes use the same measured
+layout as the static legend. Hidden and multiline labels remain associated with their
+original values. Changed text, fonts, shapes, domain order, or layout policies fade
+explicitly; clipped, bordered, or overflow layouts retain their explicit fallbacks.
+
+Explicit `editLegendLayout` groups can combine categorical, size, and color/stroke-gradient
+blocks. The current frame uses the same measured block bounds and `row`, `column`, or
+`wrap` packing as a static legend, including edge, corner, and plot-relative `at` placement.
+A wrap layout can change rows as the available width changes. Each item keeps its raw
+value and role through that change, interruption, and offline restoration. Use explicit
+offsets and exact continuous `values`; keep block order, text, fonts, and placement policy
+compatible. Unsupported siblings, automatic samples, inferred axis clearance, individual
+block placement, borders, clips, and overflow retain a complete-group fallback.
+
+Implicit edge lanes also retain native ordering and categorical-plus-size grouping.
+At each frame, the current symbol dimensions, size areas, and measured text bounds pass
+through the same static lane placement rules. This includes inferred offsets when no
+axis on that edge contributes additional clearance. Each block keeps its original target,
+raw values, and roles. Removing a block or changing an unsupported policy preserves a
+safe fade and valid interrupted offline replay; independent panels retain their own guide
+meaning. Axis-dependent inferred clearance and unsupported sibling families still fade.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 800, height: 500, margin: 140 })
+  .createData({ values: [{ x: 1, value: 1, group: "A" }, { x: 2, value: 4, group: "B" }] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "value" })
+  .encodeColor({ field: "group" })
+  .encodeSize({ field: "value", scale: { range: [20, 80] } })
+  .createLegend({ channels: ["color"], title: "Group", offset: 20 })
+  .createLegend({ channels: ["size"], title: "Value", values: [1, 4], offset: 20 })
+  .editLegendLayout({ target: "points", position: "bottom", blockLayout: "row", offset: 20 });
+const to = from.editCanvas({ width: 1000 }).editScale({ id: "size", range: [80, 320] });
+const transition = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const restored = deserializeAnimation(serializeAnimation(transition));
+console.log(renderToSVG(sampleTransition(restored.plan, 50)));
+```
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+  .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodeColor({ field: "group" })
+  .createLegend({ channels: ["color"], offset: 20,
+    symbol: { layers: [{ type: "point", size: 4 }] } });
+const to = from.editLegend({ symbol: { layers: [{ type: "point", size: 8 }] } });
+const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 50)));
+```
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 0, amount: 0 }, { x: 10, amount: 10 }] })
+  .createPointMark().encodeX({ field: "x" }).encodeY({ field: "amount" })
+  .encodeSize({ field: "amount", scale: { domain: [0, 10], range: [0, 100] } })
+  .createLegend({ channels: ["size"], values: [5, 10], offset: 20 });
+const to = from.editScale({ id: "size", range: [0, 400] });
+const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const svg = renderToSVG(sampleTransition(plan, 50));
+console.log(svg);
+```
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 500, height: 300,
+    margin: { top: 50, bottom: 50, left: 50, right: 150 } })
+  .createData({ values: [{ x: 1, y: 1 }, { x: 100, y: 2 }] })
+  .createPointMark().encodeX({ field: 'x' }).encodeY({ field: 'y' })
+  .encodeColor({ field: 'x', fieldType: 'quantitative',
+    scale: { type: 'log', domain: [1, 100], range: ['red', 'blue'] } })
+  .createLegend({ channels: ['color'], values: [1, 10, 100], offset: 20, title: false });
+const to = from.editScale({ id: 'color', domain: [1, 10000] })
+  .editLegend({ gradient: { length: 160, thickness: 20 } });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+console.log(renderToSVG(sampleTransition(plan, 500)));
+```
+
 ## Move geographic cameras
 
 Native Geo shape, point, line, and graticule items use their original geometry and
@@ -173,14 +432,40 @@ resource lineage. Offline replay preserves pixels and semantic camera state with
 creating authority to interact with a native program. Native sessions can click or
 keyboard-activate a feature painted only midway when the same source key exists in
 the current program. Each source revision is checked independently; selection intent
-is retained even if the current native projection hides its highlight. Camera-aware
-Geo labels and annotations remain separate integration work.
+is retained even if the current native projection hides its highlight.
+
+Geo source labels and geographic annotations use their native centroid or geographic
+anchor at the current camera. Their `geographic` decisions use `kernel: 'native-geo-text'`.
+This includes labels visible only midway, collision leaders, graticule labels, and
+inset projections. Native Text content, resolved styles, explicit offsets, prepared
+fonts, collection clips, and drawing order are retained. A label painted only midway
+can be clicked or keyboard-selected when its exact source key still exists in the
+current native program. Compatible solid color and
+opacity changes use the same appearance interpolation as other typed frames.
+
+When text, fonts, static styles, or layout change with a compatible camera, both
+expressions are placed at the current native anchor before their pixels are blended.
+Collision leaders follow the same layout, including leaders present at only one
+endpoint. Missing formatted labels remain absent; explicit empty Text retains its
+native primitive. Membership, geometry, incompatible camera, and clip changes keep
+their explicit fallback. Different backdrop blend modes cannot be combined.
+
+Rebasing retains the current camera and at most 64 flat expressions, each with its
+actual font profile. Current hit geometry includes the visible expressions while raw
+lineage remains the target source. The largest weight determines the representative
+drawn Text; ties choose the later expression. Static accessibility and native item
+formatters still read the native program's text, not this displayed representative.
+Timeline style tracks apply to every expression and require an unambiguous endpoint
+value. A body appearance fallback does not stop a compatible label's camera motion.
+Current labels and annotations can be rebased or replayed offline. Stored sampled
+anchors are checked for internal consistency; their digest does not certify historical
+source data. General Text anchor interpolation remains outside this camera kernel.
 
 ## Functions
 
 | Function | Result and behavior |
 | --- | --- |
-| `planTransition({from, to, options:{durationMs, easing?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `planTransition({from, to, options:{durationMs, easing?, tracks?, markers?, composite?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
 | `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
 | `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
 | `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |

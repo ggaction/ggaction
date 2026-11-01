@@ -150,7 +150,7 @@ test("native compound overrides use fill-rule holes and owner clips without chan
   assert.equal(serializeProgram(p), before);
 });
 
-test("native compound overrides report edited-position fallback and replay their original animation offline", () => {
+test("native compound overrides preserve fallback and interrupted animation offline", () => {
   const commands = pixelCommands(variants[0]);
   const from = chart().createCanvas().createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }] })
     .createLinePlot({ id: "line", x: "x", y: "y", guides: false })
@@ -166,6 +166,8 @@ test("native compound overrides report edited-position fallback and replay their
   assert.ok(frame.scene.nodes.at(-1).properties.sources.every(source => source.properties.fillRule === "evenodd"));
   const rebased = planTransition({ from: frame, to: from, options: { durationMs: 80, easing: "linear" } });
   assert.equal(sampleTransition(rebased, 0), frame);
-  // The separate rebase/offline reason-transport audit remains pending in this
-  // source snapshot; the original-plan renderer replay is not evidence for it.
+  const rebasedOffline = deserializeAnimation(serializeAnimation(rebased)).plan;
+  for (const time of [0, 20, 40, 80]) {
+    assert.deepEqual(sampleTransition(rebasedOffline, time), sampleTransition(rebased, time));
+  }
 });

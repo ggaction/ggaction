@@ -1,0 +1,35 @@
+{
+  "sourceParent": "ad88aee46",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Shared read-only theme definition owner; no new public title admission",
+  "beforeAfterEqual": false,
+  "checks": {
+    "themeTests": 43,
+    "coverage": [
+      100,
+      100,
+      100
+    ],
+    "boundariesPolicyTheme": 19,
+    "packageBoundaries": 6
+  },
+  "packageEntryDelta": 0,
+  "firstFailures": [
+    "source boundary required exact new theme/definition.js pure paint and validation edges",
+    "palette coverage reached by adding its existing owning tests",
+    "singular package test filename typo corrected"
+  ],
+  "logsSha256": {
+    "title-theme-after.json": "9fd3b9cc37c81f10cbf1218649cf7def251bd26643ce5f4b795de04c24ce83f7",
+    "title-theme-package-final.log": "b299e66b11028fb71e0c196b24fb93556b578b25f96cd411109050ab566b2efb",
+    "title-theme-before.json": "70bb7737439f0bb765c59b0587044e699df6968eadbef0941004afd39d8775b7",
+    "title-theme-coverage-final.log": "c40a257472968d1c943dd9b9225186c7e1539a4b6bc06f127b3062c4c456475d",
+    "title-theme-extraction.log": "3901a699d7ff8b0819a5cead825d505c02cd51a359b77b8598738613e15cfa69",
+    "title-theme-coverage.log": "7df85df163d1c389f76d4dfe3769e8371a59ec5f34c99193b5e3bb464514a6f4",
+    "title-theme-boundaries.log": "798d87056de2d54db81fe33724db096033d6b4ee45bd4efb258a3073fb545a2b",
+    "title-theme-package.log": "d282e50640e4e49234f34cd49f9831608b984578f5f6017bbe96e5f38f4444b2",
+    "title-theme-parity.mjs": "2ca38e2ca49569496bf4d1013c15383215c943282cd79b770caffaf6fff12682"
+  },
+  "nativeMeaningAndTraceEqual": true,
+  "comparison": "Canonical test/support/identity-equivalence.js withoutAllocatedIdentity; raw allocation-bearing JSON remains unequal."
+}

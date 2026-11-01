@@ -1,0 +1,8 @@
+{
+  "src/grammar/animation/guideAnchors.js": "20d1855fa6074021a2222776b11b76c1c747a351c69a6e4a0218eedfad94f61b",
+  "src/materialization/animation/guideAnchors.js": "36f8bd2213bbe6bcd458b7b87de0adbf725f7143d2edea87d88a282cc775d984",
+  "src/materialization/guides/tickValues.js": "b456f3e9b9f6d1efe26713db717369b9fa537dd04816fd48c6a2cefc17513ae1",
+  "src/actions/guides/axes/parallel/resolve.js": "adfcbe165be4d88e81c39bbc34fe1e4f6746fbbf6c85243f6b7513100daa94a3",
+  "test/unit/animation/guide-anchors.test.js": "6eb4d2c5c7f9dc587e33880a99245bb3da62f5e6237a2c6ce5b801e2ff224b92",
+  "test/unit/animation/native-guide-anchors.test.js": "41d217e6d597fe3a340548303371e84863a5317a7dce0e77504d5f02f0a3e37f"
+}

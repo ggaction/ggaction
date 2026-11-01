@@ -1,0 +1,300 @@
+{
+  "status": "verified-focused-categorical-guide-integration; whole-native-qualification-pending",
+  "sourceRevision": "bec9fe3cfaece065e9726c1c4730c7ddb525c8a8",
+  "base": "178a540ce",
+  "incoming": "621eba5ca",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@6",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@1"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1215,
+    "packedBytes": 1731951,
+    "unpackedBytes": 7822877,
+    "file": "ggaction-39f832446f2ba4ed8c6b002d25f1cc8c6db4c86480930c11393b68cc460241f3.tgz",
+    "sha256": "39f832446f2ba4ed8c6b002d25f1cc8c6db4c86480930c11393b68cc460241f3"
+  },
+  "checks": {
+    "animation": 562,
+    "focusedCoverage": {
+      "tests": 1135,
+      "legendSymbolRecipe": [
+        97.1,
+        90.7,
+        100
+      ],
+      "categoricalLegendState": [
+        98.48,
+        93.02,
+        100
+      ],
+      "nativeCategoricalLayout": [
+        100,
+        95.56,
+        100
+      ]
+    },
+    "boundaries": 24,
+    "realistic": 5,
+    "render": 9,
+    "browser": 1,
+    "docs": 44,
+    "finalPackageAndTruth": 10,
+    "installed": {
+      "20": {
+        "runtime": 55,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v20.20.2"
+      },
+      "22": {
+        "runtime": 55,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v22.23.1"
+      },
+      "24": {
+        "runtime": 55,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v24.22.1"
+      }
+    },
+    "build": {
+      "pages": 186,
+      "llmArtifacts": 1603
+    },
+    "docsBrowser": {
+      "pairs": 8,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "pages": [
+        "api/animation/",
+        "reference/runtime/"
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "errors": 0
+    }
+  },
+  "reuse": {
+    "runtimeOwnersIdenticalToIncoming": [
+      "src/actions/guides/legends/categorical/actions.js",
+      "src/actions/guides/legends/categorical/layout.js",
+      "src/actions/guides/legends/categorical/options.js",
+      "src/actions/guides/legends/categorical/recipes.js",
+      "src/actions/guides/legends/lifecycle.js",
+      "src/animation/guideTracks.js",
+      "src/grammar/animation/guideState.js",
+      "src/grammar/legendSymbolRecipe.js",
+      "src/materialization/animation/categoricalLegendState.js",
+      "src/materialization/animation/guides.js",
+      "src/materialization/animation/legendGuides.js",
+      "src/materialization/guides/categoricalLegend.js",
+      "src/materialization/legends.js"
+    ],
+    "shared4UnchangedFrom": "178a540ce",
+    "sharedCoverage": "../size-guide-merged-evidence/qualification.json",
+    "upstream": "../categorical-legend-evidence/qualification.json"
+  },
+  "limits": {
+    "entries": 1215,
+    "packed": 1736100,
+    "unpacked": 7822900,
+    "measuredPackedMaximum": 1736015,
+    "measuredUnpacked": 7822877,
+    "fullGzip": 782400,
+    "basicGzip": 424000,
+    "animationGzip": 299800
+  },
+  "preservedDiagnostics": [
+    "First dry diagnostic archive304d preceded the final README limit update; installed qualification uses only39f832.",
+    "Node20/24 canonical packed1736015 exceeded provisional1736000 by15 bytes; final1736100 cap and selected-Node canonical reruns passed.",
+    "The first ad-hoc consumer identity probe compared IDs against descriptor objects; corrected probe compares descriptor.id and verifies all16 exact ordered cases. No product source repair was required."
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "3a96ebd723c9ed6220d47476fc6b6e3196cdb9457a87440730ed5ac42cc5d6e1",
+      "bytes": 249173
+    },
+    "premeasure-20.json": {
+      "sha256": "ebfe7934427665a0c4992e2128c9b9281dbe529c056763da330430c5697d886f",
+      "bytes": 305
+    },
+    "docs-browser.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "canonical20.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "installed-24.json": {
+      "sha256": "1e5d9f5ebf92fba6d147f195e17119f82a7e0c676d8e1852a8f0020575d323be",
+      "bytes": 3513
+    },
+    "browser.log": {
+      "sha256": "66d7beb79a341d46c0a7f72f6047331a5769c7e2d46d5851a72d156a3d80ea9c",
+      "bytes": 360
+    },
+    "render.log": {
+      "sha256": "6633602dddeb4d66a9a874accec24fde05a302530e1f1be4a8f5015f05c5ff97",
+      "bytes": 2286
+    },
+    "canonical24.stderr": {
+      "sha256": "461172630f1e28408f5c0dd53098b6ce39a351bc8b846bc26102e172a934b76d",
+      "bytes": 966
+    },
+    "frozen.json": {
+      "sha256": "e36f9dba89d88e3adbfbea2ec50991ed978a2ff6bb71e545a246b17300e41901",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "8dadba83ad07f6d6e66e64205b7cf5c784a85826bb0001e95cad479ac894ccb7",
+      "bytes": 3018
+    },
+    "canonical20.stderr": {
+      "sha256": "6c27e9a9c373a6bf45ead5776d33b50b1b420f553a6f694c682bef75cf1481c7",
+      "bytes": 966
+    },
+    "coverage.mjs": {
+      "sha256": "cf6cf764df38ac65b7d044cca59f0e6efddaa33003f67c22410760707bcf209c",
+      "bytes": 853
+    },
+    "docs-browser.mjs": {
+      "sha256": "d13aa3ec00e978e4caccc364198a8fc747e4af2e85d44fb9d0e7edc470dece1e",
+      "bytes": 2475
+    },
+    "installed-22.json": {
+      "sha256": "7dccdb07ef7bd3ff345bf5f965c1c0f978e3467d8ccedc58b5cbef93d428361e",
+      "bytes": 3513
+    },
+    "resolve.mjs": {
+      "sha256": "c17156f67d07bf99a242ea2b210231004917eccaed91b46f0e1d1081d4752916",
+      "bytes": 1750
+    },
+    "installed-22.log": {
+      "sha256": "0ee6f376aaa886a673d5a70f56e8c01595d8cd24a6c83d4158878e1b780bcb3f",
+      "bytes": 3018
+    },
+    "package-final.log": {
+      "sha256": "0d6783e96eccaf6f77ce9f9627cf70ce45b8770410e0b107a28dd6c4afbe5984",
+      "bytes": 2358
+    },
+    "final24.json": {
+      "sha256": "e8cf80c56a65c59b031e5a066a78c3ed7a13d1cf197a9a2aa4fc7969a247dbc6",
+      "bytes": 390
+    },
+    "docs.log": {
+      "sha256": "b78800d2c5da6d0b30b4cce505a1037b9159f38f4689281dbdcb7ae2052f8ee6",
+      "bytes": 9139
+    },
+    "canonical22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "fa491f60eda741e2589846f9f5f27dfaaaa07b0bb3390222db0c2688d7f43d3c",
+      "bytes": 4980
+    },
+    "installed-20.log": {
+      "sha256": "a3d38f058d37a109f26b868e6945efff535dead5c88fee12a99e43a2473ed9c3",
+      "bytes": 3018
+    },
+    "premeasure-22.log": {
+      "sha256": "b591aedf4730e01e92deee3d5aae4ef04a9deaf6ab99e7ec29a0c9656cbf05ac",
+      "bytes": 253
+    },
+    "animation.log": {
+      "sha256": "e335d3c51242b269eb210c425d6bf103e6095c1b914f1589e167d429562304e7",
+      "bytes": 132604
+    },
+    "installed-20.json": {
+      "sha256": "91b63e27af9b280ab93b28059af3c3983113ba242f7001cef6cef6758f004fff",
+      "bytes": 3513
+    },
+    "canonical24.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "final20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure-20.log": {
+      "sha256": "9c9cdb75ba9a80ec550ea91e47c36f54d28e5520f248e4b95ee4ec6f28f3927f",
+      "bytes": 253
+    },
+    "premeasure-24.json": {
+      "sha256": "8286be81e4218550d6f9686c034b2e9feace323ddc7c411eb7802ebf8104ec4c",
+      "bytes": 305
+    },
+    "limits-final.log": {
+      "sha256": "729bfab93cd609535c160b368b2e390e4dc969bc9e317f92e36bfd2bf1fee007",
+      "bytes": 2360
+    },
+    "premeasure-24.log": {
+      "sha256": "310ea1bd233bf68060dda476c8fc47775ecb0d9835f8aa78d24dfbcca3508496",
+      "bytes": 253
+    },
+    "prepack.log": {
+      "sha256": "77679ffb4af58d4eb4e6a653b9ac9d93f98b8c7b2edaae5f61df88fb73344c6a",
+      "bytes": 509
+    },
+    "canonical22.json": {
+      "sha256": "380c685d0dfa6ab3ebaad59e40c7c40ca9dd947c81fa4fbc3f417aca261e63ec",
+      "bytes": 394
+    },
+    "premeasure-22.json": {
+      "sha256": "3e4a5697652644972b719ec52bf3aa74823cb5a8d411a6c964364e7c67d8362a",
+      "bytes": 305
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "docs-generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "ac0dfc91386982d229db39c61c7cbc09eb470b41670a1f45110e3496fbb37386",
+      "bytes": 1274
+    },
+    "final20.json": {
+      "sha256": "8dbb1f26f6f03e7a0d9e92eb8370d38247e200b60aac36efd0d74f07259106bc",
+      "bytes": 390
+    },
+    "final24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "build.log": {
+      "sha256": "318d69a8afa3d13774bd5d9c980f029f1050c1f62cf54ac1ce4b1d3aeb5107b7",
+      "bytes": 420
+    }
+  },
+  "remaining": [
+    "Source-pin metadata",
+    "GeoText2 and exact route improvements integration",
+    "Group/lane and dynamic label/title clearances",
+    "Native target matrix and nine final qualification commands; no STEP077 completion claimed"
+  ],
+  "sourcePinNote": "Runtime source bec9fe3cf; later GeoText integration supersedes generated provenance without retroactive clean-source execution claims."
+}

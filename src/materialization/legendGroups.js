@@ -17,13 +17,17 @@ export function intrinsicLegendConfig(program, config) {
   const group = local === undefined ? legendGroup(program, config.target) ??
     (program.context.facetLegendIntrinsic === true ? { placement: { position: config.position } } : undefined) : {placement: local};
   if (group === undefined) return config;
-  const anchor = group.placement.position;
+  return intrinsicLegendConfigValues(config, group.placement, local?.position);
+}
+
+export function intrinsicLegendConfigValues(config, placement, localPosition) {
+  const anchor = placement.position;
   const corner = PLOT_LEGEND_POSITIONS.includes(anchor);
   const position = corner ? (config.direction === "horizontal" ? "top" : "right") : anchor ??
     (PLOT_LEGEND_POSITIONS.includes(config.position)
       ? config.direction === "horizontal" ? "top" : "right"
       : config.position ?? "right");
-  return { ...config, ...(local === undefined ? {} : {blockLocalPosition: local.position}), position, offset: 0, align: "left", groupIntrinsic: true,
+  return { ...config, ...(localPosition === undefined ? {} : {blockLocalPosition: localPosition}), position, offset: 0, align: "left", groupIntrinsic: true,
     ...(corner ? { groupCorner: true } : {}),
     ...(position === "right" ? { align: "center" } : {}) };
 }

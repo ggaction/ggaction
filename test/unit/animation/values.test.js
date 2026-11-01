@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   ANIMATION_COLOR_VERSION, easeProgress, interpolateNumber, interpolatePositiveScale,
-  interpolateRGBA, interpolateRotation, transitionProgress
+  interpolateRGBA, interpolateRotation, transitionProgress, transitionSampleState
 } from "../../../src/grammar/animation/values.js";
 
 const close = (actual, expected, tolerance = 1e-12) => assert.ok(
@@ -27,6 +27,17 @@ test("linear and cubic-in-out easing agree with independent literal anchors", ()
     assert.ok(easeProgress(u) >= 0 && easeProgress(u) <= 1);
     if (i) assert.ok(easeProgress(u) >= easeProgress((i - 1) / 100));
   }
+});
+
+test('sample endpoint admission follows raw time through easing and division rounding', () => {
+  for (const [time,duration,side] of [[-1,100,'from'],[0,100,'from'],[100,100,'to'],[101,100,'to'],[-Number.MIN_VALUE,0,'from'],[0,0,'to'],[1,0,'to']]) {
+    const state=transitionSampleState(time,duration,'linear');assert.equal(state.side,side);assert.equal(state.progress,side==='from'?0:1);
+  }
+  for (const [time,duration,easing] of [[99.9999,100,'cubic-in-out'],[Number.MIN_VALUE,Number.MAX_VALUE,'linear'],[Number.MIN_VALUE,100,'cubic-in-out'],[50,100,'linear']]) {
+    const state=transitionSampleState(time,duration,easing);assert.equal(state.side,undefined);assert.ok(state.progress>0&&state.progress<1);
+  }
+  assert.equal(transitionSampleState(50,100,'linear').progress,.5);
+  for(const [time,duration,easing]of[[NaN,100,'linear'],[0,-1,'linear'],[0,100,'future']])assert.throws(()=>transitionSampleState(time,duration,easing));
 });
 
 test("linear interpolation preserves exact signed endpoints and bounded extreme values", () => {

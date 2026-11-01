@@ -28,6 +28,12 @@ const next = p.createFontResource({ prepared: created, requestToken: "now" });
 const replaced = await prepareFontResource(next, { kind: "replace", target: "font", ...source }, host);
 next.replaceFontResource({ prepared: replaced, requestToken: "now" });
 const metrics = await prepareTextMetrics(next, { id: "metric", fonts: ["font"] }, metricsHost);
+await prepareTextMetrics(next, { id: "reflow", fonts: ["font"], axisLabelReflow: true }, metricsHost);
+await prepareTextMetrics(next, { id: "native", fonts: ["font"], axisLabelReflow: false }, metricsHost);
+// @ts-expect-error opt-in requires a boolean
+await prepareTextMetrics(next, { id: "bad", fonts: ["font"], axisLabelReflow: "true" }, metricsHost);
+// @ts-expect-error present undefined is not an opt-in value
+await prepareTextMetrics(next, { id: "bad", fonts: ["font"], axisLabelReflow: undefined }, metricsHost);
 const measured = next.applyTextMetrics({ prepared: metrics, requestToken: "now" });
 measured.applyTextMetrics({ profile: { schemaVersion: 1, id: "legacy", measurements: [] } });
 measured.removeResource({ kind: "font", id: "font", cascade: true });
