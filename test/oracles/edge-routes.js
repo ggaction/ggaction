@@ -52,3 +52,28 @@ export function denseRouteGradient(grid, bounds, x, y) {
   return { x: (grid[y][horizontal[1]] - grid[y][horizontal[0]]) * last / (bounds.width * (horizontal[1] - horizontal[0])),
     y: (grid[vertical[1]][x] - grid[vertical[0]][x]) * last / (bounds.height * (vertical[1] - vertical[0])) };
 }
+
+// Scalar ordered force accumulation: evaluate each directed neighbor separately.
+// This intentionally does not share pair distances or force buffers.
+export function scalarRouteForceStep(routes, lengths, neighbors, step) {
+  let displacementCaps = 0;
+  const output = routes.map((points, edge) => points.map((point, index) => {
+    if (index === 0 || index === points.length - 1) return { ...point };
+    const spring = lengths[edge] <= 1e-9 ? 0 : 0.1 / (lengths[edge] * (points.length - 1));
+    let x = spring * (points[index - 1].x + points[index + 1].x - 2 * point.x);
+    let y = spring * (points[index - 1].y + points[index + 1].y - 2 * point.y);
+    for (const neighbor of neighbors[edge]) {
+      const line = routes[neighbor.edge], q = line[neighbor.reverse ? line.length - 1 - index : index];
+      const dx = q.x - point.x, dy = q.y - point.y, distance = Math.hypot(dx, dy);
+      if (distance <= 1e-9) continue;
+      const attraction = neighbor.compatibility / (distance * distance);
+      x += attraction * dx; y += attraction * dy;
+    }
+    let dx = step * x, dy = step * y;
+    const length = Math.hypot(dx, dy);
+    if (!Number.isFinite(length)) throw new RangeError('Nonfinite scalar displacement.');
+    if (length > 0.1) { const factor = 0.1 / length; dx *= factor; dy *= factor; displacementCaps++; }
+    return { x: point.x + dx, y: point.y + dy };
+  }));
+  return { routes: output, displacementCaps };
+}

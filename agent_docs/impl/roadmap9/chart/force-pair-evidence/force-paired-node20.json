@@ -1,0 +1,58 @@
+{
+  "node": "v20.20.2",
+  "sha256": "edae8f34fb8101dee9354b34bda482fcd0d9449513b8ef0848ee413aca0ea783",
+  "checks": [
+    "edge-routes/symmetric-force-pairs",
+    "edge-routes/worker-authority-and-cache",
+    "edge-routes/offline-restore-and-revision"
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1057,
+      "minifiedBytes": 2733858,
+      "gzipBytes": 783810
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 624,
+      "minifiedBytes": 1446376,
+      "gzipBytes": 424224
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 149522,
+      "gzipBytes": 44851
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 496,
+      "minifiedBytes": 1061372,
+      "gzipBytes": 317874
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 202,
+      "minifiedBytes": 404943,
+      "gzipBytes": 129667
+    }
+  ],
+  "types": "passed",
+  "docs": [
+    "edge-route-analytical-comparison"
+  ],
+  "status": "bundle-limit-failed"
+}

@@ -17,33 +17,60 @@ export function normalizeForceRouteOptions(input = {}) {
   return Object.freeze({ compatibilityThreshold, zeroLength });
 }
 
-// Trusted solver buffers only. Read every force from the old routes, producing
-// fresh points in a separate buffer. No iteration can observe an earlier write.
-export function advanceForceRoutes(routes, lengths, neighbors, step) {
-  let displacementCaps = 0;
+// Trusted solver buffers only: the solver builds symmetric neighbors in ascending
+// edge order. One pair contributes to both fresh force buffers. Iterating lower
+// edges first retains each edge's original neighbor addition order exactly.
+export function advanceForceRoutes(routes, lengths, neighbors, step, symmetric = false) {
   const next = routes.map((points, edge) => {
     const spring = lengths[edge] <= FDEB_EPSILON ? 0 : STIFFNESS / (lengths[edge] * (points.length - 1));
-    return points.map((point, index) => {
-      if (index === 0 || index === points.length - 1) return { ...point };
-      let fx = spring * (points[index - 1].x + points[index + 1].x - 2 * point.x);
-      let fy = spring * (points[index - 1].y + points[index + 1].y - 2 * point.y);
-      for (const neighbor of neighbors[edge]) {
-        const other = routes[neighbor.edge], q = other[neighbor.reverse ? other.length - 1 - index : index];
-        const dx = q.x - point.x, dy = q.y - point.y, distance = Math.hypot(dx, dy);
-        if (distance <= FDEB_EPSILON) continue;
-        const attraction = neighbor.compatibility / (distance * distance);
-        fx += attraction * dx; fy += attraction * dy;
-      }
-      let dx = step * fx, dy = step * fy;
+    return points.map((point, index) => index === 0 || index === points.length - 1 ? { ...point } : {
+      x: spring * (points[index - 1].x + points[index + 1].x - 2 * point.x),
+      y: spring * (points[index - 1].y + points[index + 1].y - 2 * point.y)
+    });
+  });
+  // Direct private-helper callers retain the ordered scalar path. Only this
+  // solver's locally constructed symmetric neighbor table enables pair reuse.
+  if (!symmetric) for (let edge = 0; edge < routes.length; edge++) {
+    const points = routes[edge];
+    for (let index = 1; index < points.length - 1; index++) for (const neighbor of neighbors[edge]) {
+      const other = routes[neighbor.edge], point = points[index];
+      const q = other[neighbor.reverse ? other.length - 1 - index : index];
+      const dx = q.x - point.x, dy = q.y - point.y, distance = Math.hypot(dx, dy);
+      if (distance <= FDEB_EPSILON) continue;
+      const attraction = neighbor.compatibility / (distance * distance);
+      next[edge][index].x += attraction * dx; next[edge][index].y += attraction * dy;
+    }
+  }
+  else for (let edge = 0; edge < routes.length; edge++) for (const neighbor of neighbors[edge]) {
+    if (neighbor.edge <= edge) continue;
+    const points = routes[edge], other = routes[neighbor.edge];
+    for (let index = 1; index < points.length - 1; index++) {
+      const pairedIndex = neighbor.reverse ? other.length - 1 - index : index;
+      const point = points[index], q = other[pairedIndex];
+      const dx = q.x - point.x, dy = q.y - point.y, distance = Math.hypot(dx, dy);
+      if (distance <= FDEB_EPSILON) continue;
+      const attraction = neighbor.compatibility / (distance * distance);
+      next[edge][index].x += attraction * dx; next[edge][index].y += attraction * dy;
+      // Keep the original subtractions, including signed zero, on the reverse side.
+      next[neighbor.edge][pairedIndex].x += attraction * (point.x - q.x);
+      next[neighbor.edge][pairedIndex].y += attraction * (point.y - q.y);
+    }
+  }
+  let displacementCaps = 0;
+  for (let edge = 0; edge < routes.length; edge++) {
+    const points = routes[edge];
+    for (let index = 1; index < points.length - 1; index++) {
+      const force = next[edge][index], point = points[index];
+      let dx = step * force.x, dy = step * force.y;
       const displacement = Math.hypot(dx, dy);
       if (!Number.isFinite(displacement)) throw new RangeError("Force route displacement must be finite.");
       if (displacement > MAX_DISPLACEMENT) {
         const factor = MAX_DISPLACEMENT / displacement;
         dx *= factor; dy *= factor; displacementCaps++;
       }
-      return { x: point.x + dx, y: point.y + dy };
-    });
-  });
+      force.x = point.x + dx; force.y = point.y + dy;
+    }
+  }
   return { routes: next, displacementCaps };
 }
 
@@ -77,11 +104,12 @@ export function bundleForceDirectedRoutes(input, optionsInput = {}, signal) {
   }
   const cycles = active.length ? forceRouteSchedule() : [];
   // The exact fixed schedule is known before allocating mutable sample buffers.
+  // Each symmetric pair now evaluates its distance and attraction once per sample.
   let work = 0;
   for (const cycle of cycles) {
     const points = active.length * (cycle.internalSamples + 2) + (metrics.length - active.length) * 2;
     context.budget.samples(2 * points + metrics.length * 2);
-    work += points + cycle.iterations * (metrics.length * 2 + active.length * cycle.internalSamples * 5 + 2 * compatibilityPairs * cycle.internalSamples);
+    work += points + cycle.iterations * (metrics.length * 2 + active.length * cycle.internalSamples * 5 + compatibilityPairs * cycle.internalSamples);
   }
   context.budget.charge(work);
   const lengths = metrics.map(metric => metric.length);
@@ -91,7 +119,7 @@ export function bundleForceDirectedRoutes(input, optionsInput = {}, signal) {
     routes = routes.map((points, index) => lengths[index] <= FDEB_EPSILON ? points : resampleRoute(points, cycle.internalSamples + 2));
     for (let iteration = 0; iteration < cycle.iterations; iteration++) {
       context.budget.check();
-      const next = advanceForceRoutes(routes, lengths, neighbors, cycle.step);
+      const next = advanceForceRoutes(routes, lengths, neighbors, cycle.step, true);
       routes = next.routes; displacementCaps += next.displacementCaps;
     }
   }

@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "365e0b6a0",
+  "fixtureReference": "0bd402486:scripts/benchmarks/routes.browser.js",
+  "status": "runtime, same archive and consumer qualification passed; source-pinned documentation build remains pending",
+  "changes": [
+    "One distance/attraction per symmetric pair sample; original typed force sum order",
+    "Scalar default for private asymmetric/unsorted callers",
+    "Only eliminated pair evaluations removed from work diagnostics; corresponding resultHash changes"
+  ],
+  "preserved": [
+    "coordinates",
+    "bounds",
+    "inputHash",
+    "algorithmVersion",
+    "endpoint signed zero",
+    "165 iterations",
+    "all original edge rows and keys",
+    "candidate/sample/work limits",
+    "large-input and SLO requirements",
+    "shared animation4"
+  ],
+  "checks": {
+    "owning": 110,
+    "forceDirectedCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "boundaries": 36,
+    "node20Source": 13,
+    "node24Source": 13,
+    "render": {
+      "tests": 1,
+      "backends": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "completeAndClipped": true
+    },
+    "sameOutput": [
+      {
+        "size": 3,
+        "before": 16488,
+        "after": 16488,
+        "oldHash": "76a8e8588d443bfd544714ea97ac141564c5df1426d0e760c99c3c6bf807d413",
+        "newHash": "76a8e8588d443bfd544714ea97ac141564c5df1426d0e760c99c3c6bf807d413",
+        "unchangedResultSHA256": "af19ae77cc6e0a6052948744775976aba6828b7ee9427f91d9dd79cfe5b33400"
+      },
+      {
+        "size": 7,
+        "before": 38724,
+        "after": 38724,
+        "oldHash": "c5c735a723e3d00d15ff578b1fd2473b90971fc65eb51348ef27c1f077eb0f18",
+        "newHash": "c5c735a723e3d00d15ff578b1fd2473b90971fc65eb51348ef27c1f077eb0f18",
+        "unchangedResultSHA256": "eb33d7957c15592228a6c2f30b0b51b316001ba3258e26cc7446f0d2fe2cbc7c"
+      },
+      {
+        "size": 20,
+        "before": 146710,
+        "after": 129910,
+        "oldHash": "766bdf95eb1103222db349fb9fc34906928be90b86f6306fc50e79c4c0b7572d",
+        "newHash": "f58dcbe96602dada543fe0c10a5584602c970ed2cac8bda04eef23017d81300a",
+        "unchangedResultSHA256": "ec57ed89d6c697b52d7fa09f51d77161ff6541da55522fe205bd9dab58fc3eff"
+      },
+      {
+        "size": 100,
+        "before": 1894670,
+        "after": 1264670,
+        "oldHash": "041305a81def55d83e94fca6a7c365a7c547a704d94b698f3625100c8e1e729f",
+        "newHash": "212ae9c180c0db17f20d80728de1e12309e20ce7765bb732059b0ac030996322",
+        "unchangedResultSHA256": "0ecd0ad971fbe6f7de93578c6d319e4a79af1e1321d084edac4d33d97507dee6"
+      }
+    ],
+    "browser": {
+      "tests": 1,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "DPR": [
+        1,
+        2
+      ]
+    },
+    "finalPackageBoundaries": 22,
+    "installed": {
+      "nodes": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "runtimeCasesEach": 3,
+      "strictTypesEach": 1,
+      "executableDocEach": 1,
+      "bundleEntriesEach": 6,
+      "node20": "runtime/types/doc passed; six measured bundles passed separate minimum cap recheck without reinstall"
+    }
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1756521,
+    "unpackedBytes": 7929395,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/force-paired-archives/ggaction-edae8f34fb8101dee9354b34bda482fcd0d9449513b8ef0848ee413aca0ea783.tgz",
+    "sha1": "e5b5ba2bb64d266029f3b317a67764a99ba1b89c",
+    "sha256": "edae8f34fb8101dee9354b34bda482fcd0d9449513b8ef0848ee413aca0ea783"
+  },
+  "budgets": {
+    "unpacked": {
+      "old": 7927700,
+      "actual": 7929395,
+      "new": 7929400
+    },
+    "FullGzip": {
+      "old": 783700,
+      "actualNode20": 783810,
+      "new": 783900
+    }
+  },
+  "remaining": [
+    "Density100/1000/10000 admission",
+    "FDEB1000/10000 admission",
+    "Final combined Chromium warmup5+30 DPR1/2 P95 and100cycles",
+    "Whole Roadmap9 through077"
+  ],
+  "diagnostic": "Single-call work instrumentation is not a performance qualification. charged in raw logs includes attempted rejected units.",
+  "failures": [
+    "Initial diagnostic used unauthentic executor and stopped before computation; corrected harness uses the default public owner.",
+    "First complete-output comparison also compared resultHash despite changed work diagnostics; corrected proof explicitly separates only work and its dependent hash.",
+    "Unpacked7929395 exceeded7927700; minimum7929400 applied.",
+    "Node20 six bundle measurements found Full783810>783700; minimum783900 applied and same six values rechecked."
+  ]
+}
