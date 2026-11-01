@@ -1,5 +1,5 @@
 {
-  "status": "source-qualified-documentation-pin-pending",
+  "status": "verified-checkpoint",
   "base": "90eb027cca2363514d1e78588b09c769cc811a59",
   "authorization": "../../AUTHORIZATION.json",
   "scope": "Existing inferred capacities only; no new API, schema, algorithmVersion, work guard or graphics admission",
@@ -24,10 +24,17 @@
     "docs-owning.log.gz"
   ],
   "pending": [
-    "source-pinned documentation",
     "original 10k nodes and 100k edges bounded work",
     "public inference worker and async lifecycle",
     "final AT82 qualification"
   ],
-  "qualification": false
+  "qualification": false,
+  "source": "c48f89e9d",
+  "docs": {
+    "passed": 57,
+    "sourcePin": "c48f89e9d",
+    "build": "passed",
+    "links": "built-links.log.gz",
+    "browser": "not rerun: prose-only change, no visual/UI/layout source changed"
+  }
 }

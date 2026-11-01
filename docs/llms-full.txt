@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:81c8a7d577efc3fc588fa2ed6eee7595159b938efecb719e113946bf9a3731d0. Status: development. Runtime source: dbe0f00ac4717716e079ecfa6d69be54f0a5337d. Release baseline: v0.0.13.
+Contract: sha256:e14c101a53418c59c60eb968445e8b81cc4b3fe59ca8199e1cf14b6026972d86. Status: development. Runtime source: c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/dbe0f00ac4717716e079ecfa6d69be54f0a5337d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/dbe0f00ac4717716e079ecfa6d69be54f0a5337d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -53225,12 +53225,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dbe0f00ac4717716e079ecfa6d69be54f0a5337d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dbe0f00ac4717716e079ecfa6d69be54f0a5337d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56357,9 +56357,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:81c8a7d577efc3fc588fa2ed6eee7595159b938efecb719e113946bf9a3731d0` |
+| Contract fingerprint | `sha256:e14c101a53418c59c60eb968445e8b81cc4b3fe59ca8199e1cf14b6026972d86` |
 | Example and dataset source | `8c0b2e97964b83f091cea807e0b439905ec78289` |
-| Runtime source commit | `dbe0f00ac4717716e079ecfa6d69be54f0a5337d` |
+| Runtime source commit | `c48f89e9d2cff32b0c414f9b1ff939bcfd9bf64b` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |
@@ -57494,6 +57494,13 @@ rule requires its new `ruleId` and applicable definition. Source revisions also
 refresh dependent inferred graphs; layout, canvas, and paint edits preserve the
 topology. `candidateGraph: null` removes a candidate input, so provide metric
 features in the same edit when switching to a complete metric MST.
+
+`maxNodes` and `maxEdges` each default to 10,000. Explicit values apply to source
+preparation, generated relationships, revisions, and restore. An MST candidate
+uses its own stored capacity; the inferred output uses its own edge limit.
+These capacities do not increase the computation work budget or graphical item
+limits. A request that exceeds either applicable limit fails without changing
+the previous program.
 
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;

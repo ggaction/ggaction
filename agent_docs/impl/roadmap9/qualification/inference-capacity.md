@@ -7,7 +7,7 @@
 - [x] 원본 모든 간선·행·typed 순서·가중치와 immutable revision/codec 검증
 - [x] 집중 source 135개 및 변경 10 owner의 기존 critical floor 통과
 - [x] 동일 archive의 Node20/22/24 공개 소비자·types·문서·6entry bundle 검증
-- [ ] source pin 및 문서 정합 마감
+- [x] source pin 및 문서 정합 마감
 - [ ] 원래 10k nodes × k10 전체 100k edges의 work-bound 지원
 - [ ] 실제 inference worker·취소·늦은 결과·atomic prepared commit 및 최종 AT82 성능 검증
 
@@ -63,3 +63,6 @@ Node20 첫 Full gzip784,092bytes 초과는 원본 failed receipt를 보존하고
 Capacity 전달 성공을 large 지원이나 worker/SLO 성공으로 세지 않는다. 기존 exact model/key 검증
 비용과 가능한 중복 제거, 명시 bounded execution 정책 및 전용 inference preparation/worker는
 별도 구체 설계와 checkpoint로 이어간다. 현재 이 checkpoint에는 그런 새 API가 없다.
+
+Source `c48f89e9d` pin 뒤 문서57개·Jekyll build 및 built 링크 검사가 통과했다.
+문장만 추가했으므로 새 전체 browser/renderer sweep을 수행했다고 기록하지 않는다.
