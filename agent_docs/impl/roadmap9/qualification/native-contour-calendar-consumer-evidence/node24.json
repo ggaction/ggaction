@@ -1,0 +1,71 @@
+{
+  "node": "v24.22.1",
+  "sha256": "5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e",
+  "checks": [
+    {
+      "id": "contour/full-basic-lifecycle",
+      "status": "passed",
+      "durationMs": 103.43870900000002
+    },
+    {
+      "id": "contour/fresh-process-source-revision",
+      "status": "passed",
+      "durationMs": 349.05437500000005
+    },
+    {
+      "id": "contour/renderers-scene-codec",
+      "status": "passed",
+      "durationMs": 3409.0232909999995
+    }
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1040,
+      "minifiedBytes": 2729720,
+      "gzipBytes": 782078
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 610,
+      "minifiedBytes": 1443539,
+      "gzipBytes": 422951
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 148658,
+      "gzipBytes": 44580
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 767691,
+      "gzipBytes": 233459
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 214,
+      "minifiedBytes": 429949,
+      "gzipBytes": 137439
+    }
+  ],
+  "types": "passed",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "status": "passed"
+}

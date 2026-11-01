@@ -302,6 +302,10 @@
       {
         "type": "file",
         "path": "unit/resources/source-resource-plan.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "center-stack": [
@@ -370,6 +374,10 @@
       {
         "type": "file",
         "path": "unit/resources/contour-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/animation/resource-mark-fallbacks.test.js"
       }
     ],
     "data": [
