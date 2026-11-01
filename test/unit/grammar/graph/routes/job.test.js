@@ -197,3 +197,36 @@ test("edge-path completion validates adjacency, lengths, lock sets and original 
     value => value.result.diagnostics.processingOrder.pop(), value => value.result.diagnostics.lockedEdges.pop(),
     value => value.result.diagnostics.bundledEdges.push(value.result.diagnostics.bundledEdges[0])]) corrupt(job, envelope, change);
 });
+
+
+test("density stored diagnostics allow one binary64 rounding step while constants, types and hashes stay exact", () => {
+  const { job, envelope } = completion("density");
+  const adjacent = (value, delta) => {
+    const data = new DataView(new ArrayBuffer(8)); data.setFloat64(0, value);
+    data.setBigUint64(0, data.getBigUint64(0) + BigInt(delta)); return data.getFloat64(0);
+  };
+  const changed = (index, bandwidth) => {
+    const copy = structuredClone(envelope); copy.result.diagnostics.schedule[index].bandwidth = bandwidth;
+    copy.resultHash = routeValueHash(copy.result); return copy;
+  };
+  // The two actual supported-engine outputs of 0.05 * 0.9 ** 4.
+  for (const bandwidth of [0.032805, 0.03280500000000001]) {
+    const copy = changed(4, bandwidth), before = structuredClone(copy);
+    assert.deepEqual(validateRouteResult(job, copy), copy); assert.deepEqual(copy, before);
+    assert.deepEqual(copy.result.routes, envelope.result.routes);
+  }
+  for (let index = 1; index < 18; index++) {
+    const expected = envelope.result.diagnostics.schedule[index].bandwidth;
+    for (const delta of [-1, 1]) assert.deepEqual(validateRouteResult(job, changed(index, adjacent(expected, delta))).result.routes, envelope.result.routes);
+    for (const delta of [-2, 2]) assert.throws(() => validateRouteResult(job, changed(index, adjacent(expected, delta))), /bandwidth/);
+  }
+  for (const index of [0, 18, 19]) for (const delta of [-1, 1])
+    assert.throws(() => validateRouteResult(job, changed(index, adjacent(envelope.result.diagnostics.schedule[index].bandwidth, delta))), /bandwidth/);
+  for (const value of [NaN, Infinity, -Infinity, null, "0.032805", {}, -0, 0.1]) {
+    const copy = structuredClone(envelope); copy.result.diagnostics.schedule[4].bandwidth = value;
+    assert.throws(() => validateRouteResult(job, copy), /bandwidth/);
+  }
+  const unhashed = changed(4, adjacent(envelope.result.diagnostics.schedule[4].bandwidth, 1));
+  unhashed.resultHash = envelope.resultHash;
+  assert.throws(() => validateRouteResult(job, unhashed), /hash/);
+});

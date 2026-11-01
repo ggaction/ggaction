@@ -12,6 +12,7 @@
 - 모든 method는 공통 normalized bounding frame에서 계산하고 최종 원 좌표로 복원한다. Signed zero를 포함한 원 node endpoint를 보존한다. limits의 maxNodes/maxEdges/maxCandidatePairs/maxSamples 기본 및 최대는100000/1000000/10000000/10000000이고 positive safe integer이며 더 낮출 수 있다. 공통 work budget과 route당30000 sampled command 한도도 적용한다. 한도 초과·overflow는 incomplete resource 없이 실패한다.
 - coordinateSpace 기본world, screen은 현재 Canvas plot bounds를 exact job 입력으로 추가한다. 현재 GraphPlot은 layout을 translation하므로 동일 anchor 수치를 쓸 수 있다. World route는 Canvas resize에 revision이 바뀌지 않고, screen route는 새 plot bounds에서 모두 preflight한 후 다음 revision으로 한 번 갱신한다. Responsive solve와 exact plot의 guide margin 확장도 이 경계를 공유한다. 데이터와 viewport가 함께 변하면 source DAG와 독립 screen route를 하나의 후보 union으로 검증하여 각 route를 한 번 갱신하며, viewport만 바뀐 sibling의 options와 inputs는 유지한다.
 - 저장 입력은 exact graph/layout refs이며 hierarchical만 exact hierarchy/anchor layout refs를 추가한다. options는 단일 해석된 수치 intent다. result는 viewport, inputHash/resultHash, complete:true, 원 edge 순서의 controlPoints/M/L commands/bounds/provenance 및 diagnostics다. Source rows는 graph와 optional hierarchy 원 참조다. Callback/worker/cache/promise/partial preview는 저장하지 않는다.
+- Density 저장 diagnostics의 bandwidth는 유한 number만 허용한다. index0과 clamp floor는 exact, 나머지는 현재 공식 값에서 relative binary64 epsilon 이내(해당 schedule에서 인접1값)만 허용해 engine exponentiation의1ULP 차이를 수용한다. 저장 좌표·hash·algorithmVersion은 변경하지 않으며 engine 사이 solver 전체 bit 동일성을 보장하지 않는다.
 - 저장 복원은 closed shape·refs·hash·endpoint·bounds·method provenance와 budget을 검사하며 solver를 실행하지 않는다. Hash는 정합성 digest이며 임의 JSON의 계산을 암호학적으로 인증하지 않는다. Renderer는 route resource를 읽지 않고 concrete path를 소비한다.
 - `createGraphPlot({routes:id})`는 같은 graph/layout의 route를 선택한다. `editGraphPlot({routes:false})`는 native path로 복원한다. 생략은 생성에서 native, 편집에서 현재 binding을 보존한다. Node-radius trimming/arrow tangent는 concrete materializer가 맡으며 canonical route는 그대로다. Native parallelGap/loopRadius는 route를 해제했을 때 적용된다. Edge body/arrow는 route InputRef, node/label은 layout InputRef를 가지며 원 logical item key·row membership·topology를 유지한다.
 - Graph/source/layout/hierarchy edit는 영향 resource DAG 전체와 소비 plot을 먼저 검사한 후 exact revision과 mark를 한 번씩 갱신한다. 실패는 old program/trace 불변이다. Restrict/cascade 제거는 live mark와 authored dependent resource를 자동으로 지우지 않는다. 먼저 plot binding 및 dependent resource를 명시 해제한다. Selection/highlight, inspection/sourceRefs, accessible export, scene, Canvas/SVG/PNG/PDF와 scoped concat을 공유한다.
@@ -56,3 +57,16 @@ Geographic and planar route maps use Full `createGeoRouteData`/`editGeoRouteData
 to retain the existing sampled route in a GeometryData resource, then native
 `createGeoLineMark` consumes it. [Geometry contracts](GEOMETRY.md#creategeoroutedata)
 own explicit coordinate interpretation, source rows and revision closure.
+
+## Paired analytical consumers
+
+네 route method의 field encoding·scale·guide 비교는 원 edge source를 명시적으로 공유한
+별도 native analytical child로 구성한다. Route child는 graph/layout/route의 실제 위치·경로·
+stroke와 native GraphPlot 범례 지원 범위를 유지한다. Analytical child의 `encodeColor`,
+`editScale`, axis/legend 편집은 route resource, geometry, identity, 참조를 바꾸지 않는다.
+같은 row key만으로 두 child를 자동 갱신하지 않으며 `reviseData`의 명시 두 child target으로
+각 source revision을 갱신한다. Hierarchical의 별도 hierarchy/anchor source는 영향이 없으면
+기존 revision을 보존한다. 이는 route geometry가 Cartesian field/scale로 결정된다는 의미가 아니다.
+예제와 검증: `examples/edge-routes/comparison.js`, `test/unit/resources/edge-route-composition.test.js`,
+`test/browser/edge-route-composition.browser.js`, `test/charts/edge-routes/methods.test.js`,
+`test/charts/edge-routes/backends.render.js`.

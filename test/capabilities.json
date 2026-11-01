@@ -482,6 +482,14 @@
       {
         "type": "file",
         "path": "unit/resources/graph-routes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/edge-route-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/edge-route-composition.browser.js"
       }
     ],
     "expressions": [

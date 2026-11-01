@@ -3481,6 +3481,94 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -3639,6 +3727,94 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -3799,6 +3975,94 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -3957,6 +4221,94 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/browser/edge-route-composition.browser.js"
+          ]
+        },
+        "svg": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "canvas": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "png": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "pdf": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md",
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/charts/edge-routes/backends.render.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/EDGE_ROUTES.md"
+          ],
+          "tests": [
+            "test/charts/edge-routes/methods.test.js",
+            "test/unit/resources/edge-route-composition.test.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
