@@ -65,7 +65,7 @@
     "contracts/realistic-waterfall-plots.test.js": 3002,
     "contracts/realistic-geographic-transitions.test.js": 1468,
     "contracts/realistic-polar-transitions.test.js": 1593,
-    "contracts/realistic-guide-transitions.test.js": 7633,
+    "contracts/realistic-guide-transitions.test.js": 11547.75675,
     "contracts/realistic-graph-drag.test.js": 26125,
     "contracts/realistic-cartesian-transitions.test.js": 3697,
     "contracts/realistic-geographic-routes.test.js": 2355
@@ -379,7 +379,7 @@
     },
     "contracts/realistic-guide-transitions.test.js": {
       "record": ".artifacts/checks/suite-realistic.json",
-      "durationMs": 5007.620958,
+      "durationMs": 11547.75675,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",
@@ -387,7 +387,7 @@
         "runner": "local"
       },
       "status": "passed",
-      "note": "Canonical focused runner; five real sources, thirteen native guide recipes including dependent titles; source rows and units unchanged."
+      "note": "Canonical focused runner; five real sources and fifteen native guide recipes including axis-dependent legend clearance; original rows and units preserved."
     },
     "contracts/realistic-geographic-transitions.test.js": {
       "record": "1793321149548-80963.json",

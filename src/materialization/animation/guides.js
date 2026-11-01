@@ -1,3 +1,6 @@
+import { hasInferredLegendLane } from "./legendLaneGuides.js";
+import { legendAxisReferenceKeys, legendAxisLaneMatchesNode } from "./legendAxisLaneState.js";
+import { guideAnimationKey } from "../../grammar/animation/guideState.js";
 import { legendLaneAnimationMatchesNode } from "./legendLaneState.js";
 import { axisTitleAnimationItems } from "./axisTitleGuides.js";
 import { axisTitleAnimationMatchesNode } from "./axisTitleState.js";
@@ -38,9 +41,9 @@ function scopedGuides(program, namespaces, spend) {
     const { channel, component: kind, config } = item;
     const id = identity(item.ownerId, kind, item.rawValue, item.line);
     const cartesian = channel === "x" || channel === "y";
-    if (kind === "labels" && cartesian && (config.flush === true || config.rotation !== 0 ||
+    if (kind === "labels" && cartesian && (hasInferredLegendLane(program, config.position) || config.flush === true || config.rotation !== 0 ||
         program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined)) {
-      if (config.maxWidth !== undefined || config.responsive !== undefined || config.responsiveResult !== undefined) {
+      if (config.maxWidth !== undefined || config.responsive !== undefined || config.responsiveResult !== undefined || config.lineHeight !== undefined && config.lineHeight !== config.fontSize * 1.2) {
         add(item.graphicId, { identity: id, reason: "guide-layout" });
       } else {
         if (!labelLayouts.has(config)) {
@@ -101,7 +104,7 @@ function scopedGuides(program, namespaces, spend) {
     add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
   for (const item of axisTitleAnimationItems(program, namespaces, spend)) result.set(item.graphicId, item.state);
-  for (const item of legendAnimationItems(program, namespaces, spend)) {
+  for (const item of legendAnimationItems(program, namespaces, spend, [...result.values()])) {
     spend(1 + item.graphicId.length);
     result.set(item.graphicId, item.state);
   }
@@ -126,14 +129,25 @@ export function projectGuideAnimationState(program, endpoint) {
   const groupKey = state => JSON.stringify([state.identity.namespaces, state.identity.owner]);
   const projected = endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
-    if (state === undefined || state.reason !== undefined) return state ?? null;
+    if (state === undefined || state.reason !== undefined || state.kind === "legend-axis-lane") return state ?? null;
     const matches = (state.kind === "legend-lane" ? legendLaneAnimationMatchesNode : state.kind === "title-layout" ? axisTitleAnimationMatchesNode : state.kind === "legend-group" ? legendGroupAnimationMatchesNode : state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]);
     if (!matches && state.kind === "legend-group") editedGroups.add(groupKey(state));
     if (!matches && state.kind === "legend-lane") editedLanes.add(laneKey(state));
     return matches ? state : { identity: state.identity, reason: "guide-edited" };
   });
+  for (const [index, state] of projected.entries()) {
+    if (state?.kind !== "legend-axis-lane") continue;
+    spend(projected.length * 2 + state.axes.length);
+    const keys = legendAxisReferenceKeys(projected, state.identity.namespaces, state.layout.edge);
+    const references = new Set(state.axes);
+    const dependencies = projected.flatMap((axis, position) => axis !== null && references.has(guideAnimationKey(axis.identity))
+      ? [{ state: axis, node: endpoint.scene.nodes[position] }] : []);
+    if (JSON.stringify(keys) !== JSON.stringify(state.axes) || !legendAxisLaneMatchesNode(state, endpoint.scene.nodes[index], dependencies)) {
+      editedLanes.add(laneKey(state)); projected[index] = { identity: state.identity, reason: "guide-edited" };
+    }
+  }
   const editedLabels = new Set(projected.filter(state => state?.identity.component === "labels" && state.reason !== undefined).map(groupKey));
-  return cloneAndFreeze(projected.map(state => state?.kind === "legend-lane" && editedLanes.has(laneKey(state))
+  return cloneAndFreeze(projected.map(state => ["legend-lane", "legend-axis-lane"].includes(state?.kind) && editedLanes.has(laneKey(state))
     ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "title-layout" && editedLabels.has(groupKey(state))
     ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "legend-group" && editedGroups.has(groupKey(state))
     ? { identity: state.identity, reason: "guide-edited" } : state));

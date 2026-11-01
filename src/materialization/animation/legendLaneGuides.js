@@ -1,6 +1,6 @@
 import { edgeKinds } from "../guides/legendLaneState.js";
 import { localLegendPlacement } from "../legendGroups.js";
-import { resolveGuideCollisionBlocks } from "../guides/resources.js";
+import { resolveGuideCollisionBlocks, effectiveLegendOffsetConfig } from "../guides/resources.js";
 import { resolveEffectiveLegendBlockConfig } from "../guides/legendConfig.js";
 import { resolveContinuousBounds } from "../guides/legendLayout.js";
 import { resolveSizeLegendConfig } from "../guides/legendSamples.js";
@@ -12,14 +12,14 @@ import { prepareLegendLaneLayout } from "./legendLaneState.js";
 
 // A native edge lane owns every dependent block. Axis-dependent clearance is
 // admitted separately once the current axis geometry is proven at each frame.
-export function prepareAnimationLegendLanes(program, spend) {
+export function prepareAnimationLegendLanes(program, spend, { allowAxis = false } = {}) {
   const result = new Map();
   if (program.context.facetLegendIntrinsic === true) return result;
   const axes = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined, program.materializationConfigs.textMetrics).filter(block => block.kind === "axis");
   for (const edge of ["left", "right", "top", "bottom"]) {
     const entries = edgeKinds(program, edge);
     if (!entries.length || entries.length === 1 && entries[0][1].inferredOffset === false ||
-        axes.some(block => block.position === edge && entries.some(([, config]) => config.inferredOffset === true))) continue;
+        !allowAxis && axes.some(block => block.position === edge && entries.some(([kind, config]) => effectiveLegendOffsetConfig(program, kind, config).inferredOffset === true))) continue;
     if (entries.some(([kind, config]) => program.context.compositionCollectedLegends?.includes(kind) ||
       !["color", "series", "stroke", "gradient", "strokeGradient", "size"].includes(kind) ||
       config.border !== false || config.clipHeight !== undefined || config.overflow || localLegendPlacement(config) !== undefined ||
@@ -43,4 +43,8 @@ export function prepareAnimationLegendLanes(program, spend) {
     for (const { kind } of blocks) result.set(kind, layout);
   }
   return result;
+}
+
+export function hasInferredLegendLane(program, edge) {
+  return edgeKinds(program, edge).some(([kind, config]) => effectiveLegendOffsetConfig(program, kind, config).inferredOffset === true);
 }

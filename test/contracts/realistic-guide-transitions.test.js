@@ -9,7 +9,7 @@ import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 const sources = [{ id: "tt-us-births", field: "births" }, { id: "tt-trash-wheel", field: "Weight" },
   { id: "tt-stock-prices", field: "volume", eligible: row => row.stock_symbol === "AAPL" },
   { id: "tt-animal-rescues", field: "incident_notional_cost" }, { id: "tt-movie-profit", field: "production_budget" }];
-for (const source of sources) test(`${source.id} preserves raw guide values across fourteen native transition recipes`, () => {
+for (const source of sources) test(`${source.id} preserves raw guide values across fifteen native transition recipes`, () => {
   try {
     const original = tidyTuesdaySourceRows(source.id);
     assert.match(tidyTuesdayFixtureReport(source.id).sha256, /^[a-f0-9]{64}$/);
@@ -45,6 +45,12 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
     const implicitLegend = categoricalLegend
       .encodeSize({ field: source.field, scale: { domain: [0, max], range: [0, 100] } })
       .createLegend({ channels: ["size"], values: [value], title: source.field });
+    const axisLegend = x.editCanvas({ width: 800, height: 700, margin: { top: 60, bottom: 60, left: 40, right: 250 } })
+      .encodeColor({ field: source.field, fieldType: "nominal" })
+      .createLegend({ channels: ["color"], title: source.field, symbol: { layers: [{ type: "point", size: 4 }] } })
+      .encodeSize({ field: source.field, scale: { domain: [0, max], range: [0, 100] } })
+      .createLegend({ channels: ["size"], values: [value], title: source.field })
+      .createYAxis({ position: "right", title: false });
     const groupedLegend = categoricalLegend
       .encodeSize({ field: source.field, scale: { domain: [0, max], range: [0, 100] } })
       .createLegend({ channels: ["size"], values: [value], offset: 20, title: source.field })
@@ -56,8 +62,8 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
       ["label-layout", x.createXAxisLabels({ values: [value], flush: true })],
       ["grid", x.createVerticalGrid({ values: [value] })], ["polar", polar],
       ["title", x.createXAxis({ line: false, ticksAndLabels: false, title: { text: source.field, at: value, offset: 20 } })],
-      ["boundary", boundary], ["parallel", parallel], ["legend", legend], ["size-legend", sizeLegend], ["categorical-legend", categoricalLegend], ["grouped-legend", groupedLegend], ["implicit-lane", implicitLegend]]) {
-      const to = ["grouped-legend", "implicit-lane"].includes(recipe) ? from.editCanvas({ width: 900 }).editScale({ id: "size", range: [0, 400] })
+      ["boundary", boundary], ["parallel", parallel], ["legend", legend], ["size-legend", sizeLegend], ["categorical-legend", categoricalLegend], ["grouped-legend", groupedLegend], ["implicit-lane", implicitLegend], ["axis-lane", axisLegend]]) {
+      const to = ["grouped-legend", "implicit-lane", "axis-lane"].includes(recipe) ? from.editCanvas({ width: 900 }).editScale({ id: "size", range: [0, 400] })
         : recipe === "categorical-legend" ? from.editLegend({ symbol: { layers: [{ type: "point", size: 8 }] } })
         : recipe === "size-legend" ? from.editScale({ id: "size", range: [0, 400] })
         : recipe === "polar" ? from.editCanvas({ width: 600, height: 600 })
@@ -73,7 +79,7 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
         const key = JSON.parse(frame.decisions[index].guideKey);
         if (["axis", "grid", "polar", "label-layout"].includes(recipe) && key[3] !== "line") assert.equal(key[4], value);
         const properties = frame.scene.nodes[index].properties;
-        if (["ticks", "grid"].includes(key[3]) && !["polar", "inferred-title", "relative-title"].includes(recipe)) assert.ok(Math.abs(properties.x1 - (40 + 320 / 3)) < 1e-9);
+        if (["ticks", "grid"].includes(key[3]) && !["polar", "inferred-title", "relative-title", "axis-lane"].includes(recipe)) assert.ok(Math.abs(properties.x1 - (40 + 320 / 3)) < 1e-9);
         if (recipe === "polar") assert.deepEqual(properties.commands[0], { op: "M", x: 250, y: 145 });
         if (recipe === "label-layout") assert.ok(Math.abs(properties.x - (40 + 320 / 3)) < 1e-9);
         if (["inferred-title", "relative-title"].includes(recipe) && key[3] === "title") assert.ok(Math.abs(properties.x - (150 + 400 / 3)) < 1e-9);
@@ -92,12 +98,19 @@ for (const source of sources) test(`${source.id} preserves raw guide values acro
           const originalCategory = key[4][1][1][1][1];
           assert.ok(rows.some(row => row[source.field] === originalCategory));
         }
-        if (["grouped-legend", "implicit-lane"].includes(recipe) && key[3] === "legend-symbol") {
+        if (["grouped-legend", "implicit-lane", "axis-lane"].includes(recipe) && key[3] === "legend-symbol") {
           const family = key[4][1][0];
           if (family === "size") assert.ok(Math.abs(properties.radius - Math.sqrt(125 / Math.PI)) < 1e-9);
           else assert.ok(rows.some(row => row[source.field] === key[4][1][1][1][1]));
         }
         if (recipe === "boundary") assert.equal(key[3], "boundary");
+      }
+      if (recipe === "axis-lane") {
+        const expected = from.editCanvas({ width: 850 }).editScale({ id: "size", range: [0, 250] });
+        const native = sampleTransition(planTransition({ from: expected, to: expected, options: { durationMs: 100 } }), 50);
+        const legendGeometry = frame => frame.decisions.flatMap((decision, index) => decision.role?.startsWith("guide-legend-") ? [frame.scene.nodes[index].properties] : []);
+        assert.ok(frame.decisions.filter(decision => decision.role?.startsWith("guide-legend-")).every(decision => decision.kernel === "guide-geometry"));
+        assert.deepEqual(legendGeometry(frame), legendGeometry(native));
       }
       assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan, 50), frame);
       assertSvgIntegrity(renderToSVG(frame), `${source.id}/${recipe}`);

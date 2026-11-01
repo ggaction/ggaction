@@ -1,3 +1,5 @@
+import { legendAxisReferenceKeys, normalizeLegendAxisLaneState } from "./legendAxisLaneState.js";
+import { effectiveLegendOffsetConfig } from "../guides/resources.js";
 import { prepareAnimationLegendLanes } from "./legendLaneGuides.js";
 import { normalizeLegendLaneAnimationState } from "./legendLaneState.js";
 import { prepareCategoricalLegendLayout, normalizeCategoricalLegendAnimationState } from "./categoricalLegendState.js";
@@ -16,15 +18,31 @@ import { GRADIENT_STRIP_COUNT } from "../guides/legendGradient.js";
 
 // The native config remains the authority. Unsupported group/axis clearance
 // dependencies keep their exact native identity and an explicit layout reason.
-export function legendAnimationItems(program, namespaces, spend) {
+export function legendAnimationItems(program, namespaces, spend, axisStates = []) {
   const result = [], prepared = new Map(), configs = program.guideConfigs.legend ?? {};
   const groups = prepareAnimationLegendGroups(program, spend), lanes = prepareAnimationLegendLanes(program, spend);
+  const axisLanes = new Map();
+  if (axisStates.length) for (const [kind, layout] of prepareAnimationLegendLanes(program, spend, { allowAxis: true })) {
+    if (lanes.has(kind)) continue;
+    const axes = legendAxisReferenceKeys(axisStates, namespaces, layout.edge);
+    if (!axes?.length) continue;
+    const offsets = layout.blocks.filter(block => effectiveLegendOffsetConfig(program, block.kind, configs[block.kind]).inferredOffset === true).map(block => {
+      const categorical = block.kind === "size" && configs.size.inheritPosition !== false
+        ? ["series", "color", "stroke"].find(kind => configs[kind]?.target === block.target) : undefined;
+      return { kind: block.kind, owner: categorical ?? block.kind };
+    });
+    if (offsets.length) axisLanes.set(kind, { layout, axes, offsets });
+  }
   for (const item of legendGuideItems(program, spend)) {
     const categorical = ["series", "color", "stroke"].includes(item.kind);
     if (!categorical && (!["gradient", "strokeGradient", "size"].includes(item.kind) || item.kind !== "size" && item.component === "symbol")) continue;
     const component = `legend-${item.component}`, config = resolveEffectiveLegendBlockConfig(program, item.kind, configs[item.kind]);
     const value = item.component === "strip" ? [item.kind, ["segment", item.line, GRADIENT_STRIP_COUNT]] : categorical && item.component === "symbol" ? [item.kind, [...item.value[1], item.part]] : item.value;
     const identity = { namespaces, owner: item.ownerId, component, value, line: 0 };
+    if (axisLanes.has(item.kind)) {
+      result.push({ graphicId: item.graphicId, state: normalizeLegendAxisLaneState({ identity, kind: "legend-axis-lane", ...axisLanes.get(item.kind) }) });
+      continue;
+    }
     if (lanes.has(item.kind)) {
       result.push({ graphicId: item.graphicId, state: normalizeLegendLaneAnimationState({ identity, kind: "legend-lane", layout: lanes.get(item.kind) }) });
       continue;

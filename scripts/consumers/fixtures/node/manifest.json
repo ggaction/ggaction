@@ -1682,6 +1682,10 @@
         "statements": 6
       },
       {
+        "id": "animation/axis-legend-clearance-offline-native",
+        "statements": 21
+      },
+      {
         "id": "animation/implicit-legend-lanes-offline-native",
         "statements": 1
       }

@@ -8,7 +8,7 @@ import { normalizeGuideIdentity, guideAnimationKey, ANIMATION_GUIDE_VERSION } fr
 import { legendAnimationFamily, legendBlockEntryProperties } from "./legendBlockState.js";
 import { normalizeGuideMetrics } from "./guideMetrics.js";
 import { blockDescriptor, groupBlocks, horizontalGroups, unionLegendBounds } from "../guides/legendLaneState.js";
-import { resolveSideLegendLane, resolveSingleSideLegendPlacement, resolveHorizontalLegendLane, resolveHorizontalLegendGroup } from "../../layout/legendLane.js";
+import { resolveSideLegendLane, resolveSingleSideLegendPlacement, resolveSingleHorizontalLegendPlacement, resolveHorizontalLegendLane, resolveHorizontalLegendGroup } from "../../layout/legendLane.js";
 import { translatedProperties } from "../graphicTranslation.js";
 
 const same = (a, b) => JSON.stringify(encodeValue(a)) === JSON.stringify(encodeValue(b));
@@ -84,17 +84,35 @@ function horizontalPlan(entries, groups, plan) {
   }
   return entries;
 }
-function geometryList(layout) {
-  if (geometry.has(layout)) return geometry.get(layout);
+function geometryList(layout, clearance) {
+  if (clearance === undefined && geometry.has(layout)) return geometry.get(layout);
+  const offsetOwner = new Map(clearance?.offsets.map(item => [item.kind, item.owner]) ?? []);
+  const gap = block => layout.blocks.find(item => item.kind === (offsetOwner.get(block.kind) ?? block.kind)).values.config.offset +
+    (offsetOwner.has(block.kind) ? clearance.clearance : 0);
+  const translate = (items, dx, dy) => items.map(entry => ({ ...entry, properties: translatedProperties(entry.type, entry.properties, dx, dy) }));
+  const horizontalSingle = (items, block) => {
+    const program = programFor({ ...layout, blocks: [block] }, items), bounds = unionLegendBounds(program, program.graphicSpec.order);
+    const { dx, dy } = resolveSingleHorizontalLegendPlacement({ ...layout.frame, config: { ...configOf(block), offset: gap(block) }, bounds });
+    return translate(items, dx, dy);
+  };
   let work = 0;
   let entries = layout.blocks.flatMap(block => {
     const prepared = blockLayout(block, layout.frame), result = legendAnimationFamily(block.kind).entries(prepared);
     validateWorkLimit(work += result.length, "Native legend lane work");
     return result.map(entry => ({ ...entry, family: block.kind, target: block.target }));
   });
+  if (clearance !== undefined && ["top", "bottom"].includes(layout.edge)) {
+    if (layout.blocks.length === 1) entries = horizontalSingle(entries, layout.blocks[0]);
+    else if (clearance.clearance > 0) entries = layout.blocks.flatMap(block => {
+      const items = entries.filter(entry => entry.family === block.kind);
+      return offsetOwner.has(block.kind) ? horizontalSingle(items, block) : items;
+    });
+  }
   if (layout.blocks.length > 1) {
     let program = programFor(layout, entries), configs = program.guideConfigs.legend;
-    let blocks = layout.blocks.map(block => blockDescriptor(program, block.kind, configs[block.kind]));
+    let blocks = layout.blocks.map(block => blockDescriptor(program, block.kind,
+      clearance !== undefined && ["left", "right"].includes(layout.edge)
+        ? { ...configs[block.kind], offset: block.values.config.offset + (offsetOwner.has(block.kind) ? clearance.clearance : 0) } : configs[block.kind]));
     if (["left", "right"].includes(layout.edge)) {
       const plan = resolveSideLegendLane({ side: layout.edge, ...layout.frame, groups: groupBlocks(blocks, configs) });
       for (const placement of plan.placements) {
@@ -103,7 +121,14 @@ function geometryList(layout) {
           placement.dy, placement.dy, entry => !block.preserveAlignment && (entry.component === "legend-title" || entry.component === "legend-label" && !block.preserveLabelAlignment));
       }
       program = programFor(layout, entries);
-      const bounds = unionLegendBounds(program, program.graphicSpec.order), { dy } = resolveSingleSideLegendPlacement({ side: layout.edge, ...layout.frame, bounds });
+      let bounds = unionLegendBounds(program, program.graphicSpec.order);
+      if (clearance?.clearance > 0 && offsetOwner.size > 0) {
+        const offset = Math.max(...layout.blocks.filter(block => offsetOwner.has(block.kind)).map(gap));
+        const dx = layout.edge === "right" ? layout.frame.plot.x + layout.frame.plot.width + offset - bounds.left : layout.frame.plot.x - offset - bounds.right;
+        entries = translate(entries, dx, 0); program = programFor(layout, entries);
+        bounds = unionLegendBounds(program, program.graphicSpec.order);
+      }
+      const { dy } = resolveSingleSideLegendPlacement({ side: layout.edge, ...layout.frame, bounds });
       entries = entries.map(entry => ({ ...entry, properties: translatedProperties(entry.type, entry.properties, 0, dy) }));
     } else {
       let groups = groupBlocks(blocks, configs);
@@ -112,7 +137,7 @@ function geometryList(layout) {
         const children = horizontalGroups(program, group.blocks.map(block => ({ id: block.id, blocks: [block], border: false })))
           .map(child => ({ ...child, element: child.content }));
         const plan = resolveHorizontalLegendGroup({ edge: layout.edge, ...layout.frame, groups: children,
-          align: config.align, offset: config.offset, border: false, allowOverflow: layout.allowOverflow });
+          align: config.align, offset: clearance === undefined ? config.offset : gap(layout.blocks.find(block => block.kind === group.blocks[0].kind)), border: false, allowOverflow: layout.allowOverflow });
         entries = horizontalPlan(entries, children, plan);
         program = programFor(layout, entries);
       }
@@ -124,7 +149,16 @@ function geometryList(layout) {
       }
     }
   }
-  const result = cloneAndFreeze(entries); if (isOwned(layout)) geometry.set(layout, result); return result;
+  if (layout.blocks.length === 1 && clearance?.clearance > 0 && ["left", "right"].includes(layout.edge) && offsetOwner.size > 0) {
+    let program = programFor(layout, entries), bounds = unionLegendBounds(program, program.graphicSpec.order);
+    const offset = gap(layout.blocks[0]);
+    const dx = layout.edge === "right" ? layout.frame.plot.x + layout.frame.plot.width + offset - bounds.left : layout.frame.plot.x - offset - bounds.right;
+    entries = translate(entries, dx, 0); program = programFor(layout, entries);
+    bounds = unionLegendBounds(program, program.graphicSpec.order);
+    const { dy } = resolveSingleSideLegendPlacement({ side: layout.edge, ...layout.frame, bounds });
+    entries = translate(entries, 0, dy);
+  }
+  const result = cloneAndFreeze(entries); if (clearance === undefined && isOwned(layout)) geometry.set(layout, result); return result;
 }
 function normalizeLayout(input) {
   if (layouts.has(input)) return layouts.get(input);
@@ -219,3 +253,19 @@ export function sampleLegendLaneInterpolation(plan, progress) {
   }
 }
 export { geometryList as resolveLegendLaneEntries };
+
+// Axis ink is a current sample input, never an interpolated or stored offset.
+export function resolveLegendLaneClearanceEntries(input, clearance) {
+  const layout = normalizeLayout(input);
+  record(clearance, ["clearance", "offsets"], "Current legend lane clearance");
+  if (!Number.isFinite(clearance.clearance) || clearance.clearance < 0) throw new RangeError("Current axis clearance must be finite and nonnegative.");
+  ownArray(clearance.offsets, "Legend lane inference policies");
+  if (!clearance.offsets.length || clearance.offsets.length > layout.blocks.length) throw new TypeError("Legend lane clearance requires its inferred blocks.");
+  const kinds = new Set(layout.blocks.map(block => block.kind)), seen = new Set();
+  for (const item of clearance.offsets) {
+    record(item, ["kind", "owner"], "Legend lane inference policy");
+    if (!kinds.has(item.kind) || !kinds.has(item.owner) || seen.has(item.kind)) throw new TypeError("Legend lane inference must name unique native block owners.");
+    seen.add(item.kind);
+  }
+  return geometryList(layout, clearance);
+}

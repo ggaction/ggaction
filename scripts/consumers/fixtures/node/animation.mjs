@@ -429,6 +429,34 @@ export const cases=[
       assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
     }
   }},
+{id:'animation/axis-legend-clearance-offline-native',async run(){
+    const from=chart().createCanvas({width:900,height:700,margin:200})
+      .createData({id:'rows',keyField:'id',values:[{id:1,x:0,y:0,g:'A'},{id:'1',x:1,y:1,g:'B'}]})
+      .createPointMark({id:'m'}).encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'g'})
+      .createLegend({channels:['color'],title:'Legend'}).createYAxis({position:'right',title:false,ticksAndLabels:false});
+    const to=from.editCanvas({width:1100}),options={durationMs:100,easing:'linear'};
+    const reference=sampleTransition(planTransition({from,to,options}),50);
+    const axis=reference.decisions.find(d=>d.role==='guide-line'),legend=reference.decisions.find(d=>d.role==='guide-legend-symbol');
+    const track=(ownerKey,value)=>({target:{ownerKey},property:'geometry',kernel:'native-progress',keyframes:[{timeMs:0,value:0},{timeMs:50,value},{timeMs:100,value:1}]});
+    const plan=planTransition({from,to,options:{...options,tracks:[track(axis.ownerKey,.75),track(legend.ownerKey,.25),
+      {target:{guideKey:axis.guideKey},property:'strokeWidth',kernel:'number',keyframes:[{timeMs:0,value:1},{timeMs:50,value:20},{timeMs:100,value:1}]}]}});
+    const frame=sampleTransition(plan,50),line=frame.scene.nodes[frame.decisions.findIndex(d=>d.guideKey===axis.guideKey)];
+    assert.equal(line.properties.x1,850);assert.equal(line.properties.strokeWidth,20);
+    assert.ok(frame.decisions.filter(d=>d.role?.startsWith('guide-legend-')).every(d=>d.kernel==='guide-geometry'));
+    const next=planTransition({from:frame,to,options}),saved=serializeAnimation(next),timesMs=[0,25,50,75,100];
+    assert.strictEqual(sampleTransition(next,0),frame);
+    const expected=createHash('sha256').update(JSON.stringify(exportAnimationFrames(next,{timesMs}))).digest('hex');
+    const child=spawnSync(process.execPath,['--input-type=module','-e',offlineNetworkGuard+`
+      import {createHash} from 'node:crypto';import {deserializeAnimation,exportAnimationFrames} from 'ggaction/animation';
+      let saved='';for await(const c of process.stdin)saved+=c;
+      const frames=exportAnimationFrames(deserializeAnimation(saved).plan,{timesMs:[0,25,50,75,100]});
+      console.log(JSON.stringify({hash:createHash('sha256').update(JSON.stringify(frames)).digest('hex'),network}));
+    `],{input:saved,encoding:'utf8',timeout:30000});
+    assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{hash:expected,network:0});
+    const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+    assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+    assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+  }},
 {id:'animation/implicit-legend-lanes-offline-native',async run(){
     const build=(factory,width,range)=>factory().createCanvas({width,height:700,margin:200})
       .createData({id:'rows',values:[{id:1,x:0,y:0,g:'A',s:1},{id:'1',x:1,y:1,g:'B',s:4}],keyField:'id'})

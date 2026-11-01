@@ -416,6 +416,17 @@ function intersectVisibleBounds(bounds,clip) {
   return result.right<=result.left||result.bottom<=result.top?undefined:result;
 }
 
+// Canonical scene nodes already contain their complete parent offset and clip
+// stack. Reuse the same occupied-ink and visible-bound policies as graphicSpec.
+export function resolveSceneNodeOccupiedBounds(node, profile) {
+  let bounds = translateBounds(resolvePrimitiveOccupiedBounds(node.type, node.properties, profile), ...node.offset);
+  for (const clip of [node.clip, ...node.clips]) {
+    const descriptor = Array.isArray(clip) ? { x: clip[0], y: clip[1], width: clip[2], height: clip[3] } : clip;
+    bounds = intersectVisibleBounds(bounds, graphicClipBounds(descriptor));
+  }
+  return bounds;
+}
+
 function clipAncestorBounds(graphicSpec,id,bounds,includeOwnerClips) {
   let parent=findGraphicParent(graphicSpec,id);
   while(parent!==undefined){

@@ -12,6 +12,13 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
+`animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,
+`materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로
+여백을 계산한다. Scene의 실제 잉크는 기존 primitive bounds·translation·clip owner를
+재사용한다. 축 layout을 lane에 복사하거나 endpoint pixel을 의미로 역추정하지 않는다.
+정확한 지원과 fallback은 [Current ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 > 작업에 필요한 section만 빠르게 찾으려면
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
@@ -956,12 +963,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 783,600 bytes |
+| `ggaction` | 783,700 bytes |
 | `ggaction/basic` | 424,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 317,900 bytes |
+| `ggaction/animation` | 321,500 bytes |
 
 
 

@@ -67,7 +67,7 @@ export function sampleTransition(input,timeMs) {
     let reason=track.reason;
     const appearance=()=>sampleAnimationAppearance(track.appearance,progress);
     if(track.kind==="semantic-guide"){
-      const sampled=sampleGuideInterpolation(track.guide,progress);
+      const sampled=sampleGuideInterpolation(track.guide,progress,timeline);
       if(sampled.kind==="guide"&&sampled.type===to.type){
         const properties={...to.properties,...appearance(),...sampled.properties};validateConcreteGraphicProperties(to.type,properties);
         decisions.push({...metadata,kind:"semantic-kernel",kernel:"guide-geometry"});positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);guides[guides.length-1]=sampled.state;

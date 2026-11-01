@@ -110,7 +110,7 @@ test("unsupported lane dependencies and a manually edited sibling keep the entir
   offline(transition(from, moved));
   const changed = from.editLegendBlock({ target: "points", channel: "size", title: "Changed" });
   assert.ok(visible(sampleTransition(transition(from, changed), 50)).every(item => item.decision.kind === "crossfade"));
-  const unprepared = source("right", false, true).createYAxis({ position: "right" });
+  const unprepared = source("right", false, true).createYAxis({ position: "right" }).editYAxisLabels({ maxWidth: 20 });
   assert.ok(visible(sampleTransition(transition(unprepared, unprepared.editCanvas({ width: 1400 })), 50)).every(item => item.decision.reason === "guide-layout"));
   const badPaint = from.editLegend({ target: "points", channels: ["size"], labels: { color: "currentColor" } });
   const sampled = sampleTransition(transition(from, badPaint), 50);

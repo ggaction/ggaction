@@ -283,8 +283,8 @@ use their native single-edge layout. Ticks and labels keep their raw values; the
 scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
 move through that same layout. Current legend frames can be interrupted and restored
 offline. Text or font changes crossfade; exact font profiles must contain all required
-measurements. Automatic samples, symbol legends, borders, and
-inferred axis clearance retain safe fallbacks.
+measurements. Automatic samples, symbol legends, and borders retain safe fallbacks.
+Inferred axis clearance follows the implicit lane rules below.
 
 Continuous size legends also support exact `values` and explicit numeric `offset` in one
 independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
@@ -314,7 +314,14 @@ through the same static lane placement rules. This includes inferred offsets whe
 axis on that edge contributes additional clearance. Each block keeps its original target,
 raw values, and roles. Removing a block or changing an unsupported policy preserves a
 safe fade and valid interrupted offline replay; independent panels retain their own guide
-meaning. Axis-dependent inferred clearance and unsupported sibling families still fade.
+meaning. Inferred edge lanes can also depend on Cartesian axis lines, ticks, fixed labels,
+and inferred, label-relative, or fixed-offset titles. Each frame replays the axis at its
+own owner progress, applies its current stroke width and scene clips, and measures that
+actual ink before native lane placement. A legend can therefore run on a different
+geometry clock without overlapping a faster-moving axis. The saved lane retains exact
+axis references and gap policy, rather than copied axis layouts or endpoint offsets.
+Incomplete or edited dependencies fade as a complete lane. Dynamic wrap, skip, rotation
+selection, and other unsupported sibling policies still retain explicit fallbacks.
 
 <!-- snippet-context:start -->
 

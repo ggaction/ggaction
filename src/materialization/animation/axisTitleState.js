@@ -33,7 +33,7 @@ function configOf(layout) {
   return { ...layout.style, position: anchor.policy.side, align: anchor.policy.align ?? undefined,
     baseline: anchor.policy.baseline, at: anchor.anchor.kind === "range" ? anchor.anchor.at : anchor.anchor.mapping.value,
     alongOffset: anchor.anchor.alongOffset,
-    ...(layout.clearance.kind === "labels" ? { offset: { from: "labels", gap: layout.clearance.gap } } : {}) };
+    ...(layout.clearance.kind === "labels" ? { offset: { from: "labels", gap: layout.clearance.gap } } : layout.clearance.kind === "fixed" ? { offset: layout.clearance.offset } : {}) };
 }
 function queries(layout) {
   const config = configOf(layout), lines = axisTitleTextLines(layout.text, config);
@@ -61,6 +61,9 @@ function normalizeLayout(input) {
     record(input.clearance, ["kind", "preferred", "unclamped"], "Prepared inferred title clearance");
     finite(input.clearance.preferred);
     if (typeof input.clearance.unclamped !== "boolean") throw new TypeError("Prepared title requires its native clamp policy.");
+  } else if (input.clearance.kind === "fixed") {
+    record(input.clearance, ["kind", "offset"], "Prepared fixed title clearance"); finite(input.clearance.offset);
+    if (input.labels !== null) throw new TypeError("Fixed title offset has no label dependency.");
   } else {
     record(input.clearance, ["kind", "gap"], "Prepared label-relative title clearance");
     finite(input.clearance.gap);
@@ -89,7 +92,7 @@ function geometry(layout) {
   const input = { channel: anchor.channel, config, text: layout.text, profile: layout.metrics, frame: layout.frame,
     canvas: layout.canvas, scale, labels: ink.requiredBounds, labelBounds: ink.labelBounds,
     along: resolveAxisTitleAlong(scale, config), labelPosition: labels?.config.position };
-  const offset = layout.clearance.kind === "inferred" ? resolveInferredAxisTitleOffset({ ...input,
+  const offset = layout.clearance.kind === "fixed" ? layout.clearance.offset : layout.clearance.kind === "inferred" ? resolveInferredAxisTitleOffset({ ...input,
     preferred: layout.clearance.preferred, unclamped: layout.clearance.unclamped }) : resolveLabelRelativeAxisTitleOffset(input);
   const resolved = resolveGuideAnchor({ ...anchor, policy: { ...anchor.policy, offset } });
   const bounds = axisTitleBounds(resolved.properties, config, layout.text, layout.metrics);
@@ -107,7 +110,7 @@ export function prepareAxisTitleAnimationLayout({ anchor, canvas, config, text, 
     style: { fontFamily: config.fontFamily ?? DEFAULT_FONT_FAMILY, fontSize: config.fontSize,
       fontWeight: textMetricFontWeight(config.fontWeight), rotation: config.rotation, overlap: config.overlap ?? "error" },
     labels: labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels),
-    clearance: config.inferredOffset === true ? { kind: "inferred", preferred, unclamped } : { kind: "labels", gap: config.offset.gap }, metrics: profile };
+    clearance: config.inferredOffset === true ? { kind: "inferred", preferred, unclamped } : typeof config.offset === "number" ? { kind: "fixed", offset: config.offset } : { kind: "labels", gap: config.offset.gap }, metrics: profile };
   return normalizeLayout({ ...layout, metrics: prepareGuideMetrics(queries(layout), profile, "animation-title") });
 }
 export function normalizeAxisTitleAnimationState(input) {
@@ -154,7 +157,7 @@ export function sampleAxisTitleInterpolation(input, progress) {
       canvas: { width: at(a.canvas.width, b.canvas.width), height: at(a.canvas.height, b.canvas.height) },
       labels: labels === null ? null : (({ frame: ignored, canvas: ignoredCanvas, ...value }) => value)(labels.layout),
       clearance: a.clearance.kind === "inferred" ? { ...a.clearance, preferred: at(a.clearance.preferred, b.clearance.preferred) }
-        : { ...a.clearance, gap: at(a.clearance.gap, b.clearance.gap) } } });
+        : a.clearance.kind === "fixed" ? { ...a.clearance, offset: at(a.clearance.offset, b.clearance.offset) } : { ...a.clearance, gap: at(a.clearance.gap, b.clearance.gap) } } });
     return cloneAndFreeze({ kind: "guide", state, ...geometry(state.layout) });
   } catch (error) {
     if (!(error instanceof RangeError)) throw error;

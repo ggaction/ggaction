@@ -5,13 +5,14 @@
 - [x] Native 네 방향 clearance를 read-only owner로 추출했다.
 - [x] Full/Basic 네 edge의 기존 작성·편집 및 Full 삭제 20개 의미/trace가 동일하다.
 - [x] 독립 literal·native56검사·새 owner coverage100/100/100, source boundaries13을 확인했다.
-- [ ] Canonical current axis line/tick/label/title meaning의 complete dependency proof.
+- [x] Canonical current fixed axis line/tick/label/title meaning의 complete dependency proof.
 - [ ] R의 dynamic label group/current bounds와 종속 제목을 참조하는 typed lane 연결.
-- [ ] Strict rebase/offline/네renderer/실제data/설치/public 문서 qualification.
+- [x] 고정 축 범위의 strict rebase/offline/네renderer/실제data/동일 archive 3Node qualification.
+- [ ] 합산된 R dynamic emission 의존성의 추가 qualification.
 
 [AUTHORIZATION.json](../AUTHORIZATION.json)의 remainingApproval과 기존 inferred lane 승인을
-재사용한다. 이 checkpoint는 기존 native 정책의 순수 owner 추출이며 공개 지원 범위를
-넓혔다고 집계하지 않는다. 기존 lane10 source는 dc704e9f6, pin은5c054738f다.
+재사용한다. 처음의 순수 owner 추출과 후속 Guide12 공개 고정 축 확대를 아래에서 구분한다.
+기존 lane10 source는 dc704e9f6, pin은5c054738f다.
 
 ## Native 식과 경계
 
@@ -49,3 +50,34 @@ package entry 실패 및 각 Node 실측을 보존한다. 프로브 첫 초안�
 공개 Basic에 없는 메서드여서 Full만 삭제를 검사하도록 정정했다. 또한 최초 operations
 필드는 실제 trace가 아니므로 의미 비교만 가능했으며, 최종 프로브는 canonical trace 전체를
 포함해 양쪽을 다시 실행했다. 실행 소스의 reset/임시 교체는 하지 않았다.
+
+
+## Guide12 공개 고정 축 의존 확대
+
+기존 remainingApproval을 재사용하여 `legend-axis-lane`의 닫힌 상태는 기존 lane layout,
+정렬된 exact `axes` guide key 배열, native `{kind,owner}` offset 상속만 저장한다. 축의
+scale/layout/metric은 각 axis state가 소유하며 lane에 복사하지 않는다. Guide manifest12는
+이 새 meaning을 식별하며 이전10 payload는 조용히 다른 결과로 재생하지 않고 거부한다.
+Transition3/Cartesian2/GeoText2와 공개 signatures는 보존한다. R dynamic11의 합산은 후속이다.
+
+`guideTracks`는 준비 시 동일 scope/edge와 전체 sibling/axis refs를 검산하고 private WeakMap에
+정확한 axis kernel만 둔다. 샘플은 승인된 `sampleGuideInterpolation(plan,progress,timeline)`
+한 호출로 각 axis owner의 실제 progress 및 actual targetIndex의 `timeline.node`를 읽는다.
+현재 strokeWidth, child offset, rectangular/path clip은 기존 `graphicBounds`의 occupied 수식으로
+계산한다. 축 전체가 clip 밖이면 ink가0인 것이며, fallback weighted geometry를 native
+경계로 추정하지 않는다. Node key나 endpoint offset은 의미값 보간에 사용하지 않는다.
+
+명시 숫자 title offset도 inferred lane이 요구할 때 exact font metric을 가진 고정 title-layout으로
+준비한다. 문구·font·lines가 실제 native text와 다르면 forward proof가 거부한다. 기존 inferred/
+label-relative title owner는 그대로 재사용한다. 축과 범례를 서로 다른 속도로 재생해 transient
+lane fit이 불가능하면 native `canvas-overflow` 진단을 전체 lane `guide-layout` fade로 보존한다.
+이 오류는 최초 installed 사례에서 발견되었으며 단순 샘플 오류나 합격으로 덮지 않았다.
+
+실제 static size placement의 inherited offset은 `effectiveLegendOffsetConfig`가 정본이다.
+Categorical explicit offset을 size가 상속하는 경우 size 저장 flag만 보고 축 의존으로 분류하던
+불필요한 fallback을 같은 owner 호출로 교정했다. 해당 원 실패와 explicit/inferred 혼합 회귀를
+보존한다. 저장 gap을 늘리거나 원 데이터를 바꾸는 수리는 하지 않았다.
+
+Dynamic label group의 최종 emitted bounds lookup, 빈 raw tick 소유자와 inferred title의 동적
+의존성은 R11과 후속 union에서 완료할 항목이다. 현재 pending은 전체 STEP077 또는 원 reflow
+요구 완료로 집계하지 않는다. 새 renderer/schema/API 또는 자동 compiler는 추가하지 않았다.
