@@ -1,6 +1,6 @@
 {
   "checkpoint": "guide13 current dynamic-axis title and implicit-lane dependencies",
-  "status": "runtime and same-artifact qualification passed; source pin/build follows source commit",
+  "status": "qualified source and source-pinned documentation completed",
   "approval": "../../AUTHORIZATION.json#remainingApproval; parent-approved read-only prepared axis state, flat retention and shared work callbacks",
   "base": "7fadd5a5ecea25e8340c47e946e9a387a48ae434",
   "mergedSource": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
@@ -175,5 +175,23 @@
     "axis/lane independent timeline clocks and current line styling",
     "work charged by visited multiline/path/clip structures; cache hits not charged again; exact 10M passes and next step fails atomically",
     "native supported scene, rebase and offline full equality"
-  ]
+  ],
+  "sourceCommit": "68ff7c62fa9d6eefde9049ba81f5a72e0dba6926",
+  "sourcePin": {
+    "tests": 29,
+    "jekyllBuild": "passed",
+    "builtPages": 186,
+    "selectiveLlmArtifacts": 1603,
+    "changedPageWidths": [
+      1440,
+      320,
+      390,
+      768
+    ],
+    "overflow": 0,
+    "axeViolations": 0,
+    "pageErrors": 0,
+    "desktopSearch": "passed",
+    "sourceCommit": "68ff7c62fa9d6eefde9049ba81f5a72e0dba6926"
+  }
 }

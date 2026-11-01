@@ -143,3 +143,16 @@ cache는 없다. Lane 계산 cache는 같은 immutable 현재 dependencies/label
 
 최종 source/동일 tar/문서 검증 영수증은 후속 qualification 기록이 소유한다. 이 checkpoint는
 non-Cartesian inferred clearance, 변경된 정책 또는 STEP077 전체 완료를 주장하지 않는다.
+
+
+### Guide13 최종 qualification
+
+공개 소스 `68ff7c62f`는 R의 동적 label source `0811878a9`를 병합한다.
+[재현 기록](dynamic-dependency-evidence/qualification.json)에 전체 animation 696,
+14개 신규 owning을 포함한 보충45, 타입·경계26 및 최종 package/cap11, 문서238, 실제5개 source,
+실제 font의 네 renderer와 Chromium Canvas/SVG DPR1/2 결과를 보존했다.
+정확 archive `46f17f22714c9aa9ccb04a14d9c29a98aa19d7086816c999cb37b56ef190acf3`의
+1,239개 canonical 입력 차이는 0이며 Node20/22/24 각각11 runtime·strict 타입·실행 문서·optional peers·
+6개 bundle이 통과했다. 최초 fixture/limit/cap 실패는 별도 로그로 남겼다.
+소스 pin 후29개 검사, Jekyll186 pages/1,603 LLM artifacts 및 변경 페이지4폭의 overflow/Axe/console0,
+desktop search가 통과했다. 이 결과를 다른 transition family 또는 전체 STEP077 완료로 집계하지 않는다.
