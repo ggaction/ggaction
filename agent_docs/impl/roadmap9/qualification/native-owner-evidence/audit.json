@@ -20,7 +20,8 @@
         "status": "assigned",
         "contracts": [
           "agent_docs/contract/current/CORE.md",
-          "agent_docs/contract/current/PRIMITIVES.md"
+          "agent_docs/contract/current/PRIMITIVES.md",
+          "agent_docs/contract/current/MARKS.md"
         ],
         "tests": [
           "test/unit/resources/image-preparation.test.js",
@@ -140,7 +141,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -151,7 +153,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -162,7 +165,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -173,7 +177,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -184,7 +189,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -195,7 +201,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -206,7 +213,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -217,7 +225,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -228,7 +237,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -239,7 +249,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -250,7 +261,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/contracts/image-types.test.js"
@@ -744,7 +756,11 @@
         "notApplicable": 0
       }
     },
-    "internalDocumentation": 1
+    "internalDocumentation": 1,
+    "imageMarkContractFollowup": {
+      "tests": 16,
+      "reason": "Image mark API is owned by MARKS.md; include that input alongside image resource/concrete contracts."
+    }
   },
   "remaining": "실행 receipt, input/call/independent expected/actual/diff hashes 및 같은 최종 candidate archive로 79/577을 닫아야 한다. 이번 배정은 runtime 추가 또는 STEP 종료가 아니다."
 }

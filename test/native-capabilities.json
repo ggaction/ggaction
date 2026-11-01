@@ -436,7 +436,8 @@
         "status": "assigned",
         "contracts": [
           "agent_docs/contract/current/CORE.md",
-          "agent_docs/contract/current/PRIMITIVES.md"
+          "agent_docs/contract/current/PRIMITIVES.md",
+          "agent_docs/contract/current/MARKS.md"
         ],
         "tests": [
           "test/unit/resources/image-preparation.test.js",
@@ -1566,7 +1567,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1577,7 +1579,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1588,7 +1591,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1599,7 +1603,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1610,7 +1615,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1621,7 +1627,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/resources/image-resource-lifecycle.test.js",
@@ -1632,7 +1639,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -1643,7 +1651,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -1654,7 +1663,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -1665,7 +1675,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/unit/renderers/image-rendering.test.js",
@@ -1676,7 +1687,8 @@
           "status": "assigned",
           "contracts": [
             "agent_docs/contract/current/CORE.md",
-            "agent_docs/contract/current/PRIMITIVES.md"
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md"
           ],
           "tests": [
             "test/contracts/image-types.test.js"
