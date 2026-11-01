@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { normalizeObservedGraph } from "../src/grammar/graph/normalize.js";
+import { normalizeHierarchyNodes } from "../src/grammar/hierarchy/normalize.js";
+import { normalizeRouteIntent } from "../src/grammar/graph/routes/options.js";
+import { createRouteJob, validateRouteJob, computeRouteJob, routeValueHash } from "../src/grammar/graph/routes/job.js";
+import { validateRouteResult } from "../src/grammar/graph/routes/result.js";
+
+const methods = ["hierarchical", "force-directed", "density", "edge-path"];
+function payload(method, { empty = false, zero = false, options = {}, coordinateSpace = "world" } = {}) {
+  const keys = empty ? [] : ["a", "b", "c"];
+  const model = normalizeObservedGraph(keys.map(key => ({ key })), empty ? [] : [
+    { key: 10, sourceKey: "a", targetKey: "c" }, { key: 2, sourceKey: "a", targetKey: "b" }, { key: "2", sourceKey: "b", targetKey: "c" }
+  ], { directed: true, selfLoops: true });
+  const positions = model.nodes.map((node, i) => ({ key: node.key, x: zero ? -0 : i, y: zero ? 0 : i === 1 ? 1 : 0 }));
+  const mapping = keys.map(key => ({ nodeKey: key, hierarchyKey: key }));
+  const intent = normalizeRouteIntent(method, { ...(method === "hierarchical" ? { mapping } : {}), ...options }, coordinateSpace);
+  const inputs = [{ kind: "graph", id: "graph", revision: 2 }, { kind: "layout", id: "layout", revision: 4 }];
+  const result = { inputs, intent, input: { model, positions, order: { nodes: keys, edges: empty ? [] : [10, 2, "2"] }, limits: intent.options.limits } };
+  if (method === "hierarchical") {
+    const hierarchy = normalizeHierarchyNodes([{ key: "root", parentKey: null, value: 1 }, ...keys.map(key => ({ key, parentKey: "root", value: 1 }))], { forest: false });
+    result.inputs.push({ kind: "hierarchy", id: "hierarchy", revision: 1 }, { kind: "layout", id: "tree", revision: 1 });
+    result.hierarchy = { model: hierarchy, mapping: model.nodes.map(node => ({ nodeKey: node.key, hierarchyKey: node.key })), positions: hierarchy.nodes.map(node => positions.find(position => position.key === node.key) ?? { key: node.key, x: 1, y: 2 }) };
+  }
+  return result;
+}
+
+console.log(JSON.stringify(methods.flatMap(method => [{}, {empty:true}, {zero:true}].map(options => {const job=createRouteJob(payload(method,options));return {method,options,completion:computeRouteJob(job)};}))));

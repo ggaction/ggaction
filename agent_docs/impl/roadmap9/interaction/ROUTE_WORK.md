@@ -152,3 +152,29 @@ fixture·guard·원 edge 집합을 바꾸지 않았다. 두 셀을 전체 성공
 새 lifecycle100/retained-heap 실행은 없으며 이전 host 불변 범위의 증거만 분리 재사용한다.
 AT82·large workload·STEP077 전체는 미완료다. 다음 개념은 exact immutable job의 반복
 검증 제거이며 solver/result 검증과 work 한도는 그대로 유지한다.
+
+
+## Exact immutable job 검증 재사용 — 2026-11-01
+
+`AUTHORIZATION.json`의 remainingApproval과 root의 명시 단축 승인에 따라 같은 private
+job owner 안에서만 검증 proof를 재사용한다. `createRouteJob`은 기존 순서대로 own-data,
+closed shape, graph/hierarchy/mapping/viewport/revision, limits와 content hash를 검증하고
+마지막 `cloneAndFreeze`로 분리한 깊은 불변 객체만 private WeakSet에 등록한다.
+`validateRouteJob`은 그 exact 객체만 즉시 반환한다. 외부 freeze·구조 복제·worker 전송값은
+권한이 없으므로 기존 전체 검증 후 새 owned 객체가 된다. Strong cache나 public API는 없다.
+
+반복 schema/graph/hierarchy 순회·canonical hash·clone 준비를 실제로 제거하지만 수치 계산을
+줄였다고 집계하지 않는다. 네 solver는 매 호출 새로운 context/budget으로 계산하며 diagnostics도
+동일하다. AbortSignal은 validate 전에 검사한다. Completion은 기존 result owner가 각 명령,
+endpoint, bounds, provenance, schedule, digest를 다시 검증한다. Result hash 재계산만으로
+잘못된 endpoint를 승인할 수 없다. 외부 getter 호출0, 원 입력 mutation 격리, frozen clone의
+전체 검증, stale revision/hash, forged result, abort 우선 회귀를 추가했다.
+
+이번 source·동일 archive qualification은 별도 기록으로 닫는다. 앞 HEB P95를 이 source의
+성능으로 소급하지 않는다. 다음 cycle stretch proof, force/density의 큰 입력·AT82는 미완료다.
+
+Source96개×3Node와 job owner100/100/100, boundary/sharding24·discovery/package23이
+통과했다. 같은4cb4826d…5b223 tar에서 세 Node 각각 route5사례·peers·6bundle이 통과했다.
+12개 normal/empty/zero completion은 진단 전체를 포함하여 이전 source와 byte-identical이다.
+최초 package 상한과 최소 packed/unpacked 교정, 상세 로그는 [증거](route-job-evidence/summary.json)에
+보존한다. 이 변경은 private proof를 재사용할 뿐 새 공개 데이터나 계산 결과를 저장하지 않는다.
