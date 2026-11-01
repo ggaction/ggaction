@@ -1,0 +1,208 @@
+{
+  "status": "native-axis-candidate-foundation-integrated; dynamic-public-reflow-pending",
+  "sourceRevision": null,
+  "base": "bb5842ec9",
+  "incoming": "3415839355f3f3a5d9e63ebe7ab5bdf0cecf83f3",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1223,
+    "packedBytes": 1744117,
+    "unpackedBytes": 7873854,
+    "file": "ggaction-26ad0f4b6cdc4ddd0c08463da39680cb02113dc05b2128006d7dd77935c48991.tgz",
+    "sha256": "26ad0f4b6cdc4ddd0c08463da39680cb02113dc05b2128006d7dd77935c48991"
+  },
+  "checks": {
+    "owning.log": 1181,
+    "coverage.log": 17,
+    "boundaries.log": 33,
+    "browser.log": 2,
+    "render.log": 2,
+    "package.log": 7,
+    "docs.log": 31
+  },
+  "installed": {
+    "20": {
+      "runtime": 9,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v20.20.2"
+    },
+    "22": {
+      "runtime": 9,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v22.23.1"
+    },
+    "24": {
+      "runtime": 9,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "doc": "passed",
+      "bundles": 6,
+      "node": "v24.22.1"
+    }
+  },
+  "coverage": {
+    "owner": "src/materialization/axisLabelCandidates.js",
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "scope": "Only the extracted owner, not repository coverage."
+  },
+  "runtimeIdenticalToIncoming": [
+    "src/actions/guides/axes/labels.js",
+    "src/materialization/axisLabelCandidates.js"
+  ],
+  "shared5Unchanged": true,
+  "publicBehaviorChanged": false,
+  "limits": {
+    "entries": 1223,
+    "packed": 1747000,
+    "unpacked": 7873900,
+    "maximumMeasuredPacked": 1746943,
+    "measuredUnpacked": 7873854,
+    "bundleCeilingsUnchanged": true,
+    "maximumFullGzip": 783283,
+    "maximumBasicGzip": 424183
+  },
+  "diagnostics": [
+    "Node20 canonical packed1746943 exceeds prior1746600; minimal1747000 with1223entries/7873900unpacked. No bundle ceiling changed."
+  ],
+  "docs": {
+    "fullGeneration": true,
+    "noPngBytesChanged": true,
+    "builtBrowserReuse": "Group integration source b9ad2a122: public page content/examples/HTML/CSS/JS unchanged; source provenance/image manifests regenerated and docs31 rerun. No new build execution claimed."
+  },
+  "nativeManifest": {
+    "groupsAssigned": 55,
+    "consumerOwnersAssigned": 243,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3
+  },
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "c1ca2f1c5fe01d595171973fa1a22274891b2dc6b826c94d152f67ce9cbd7b9c",
+      "bytes": 4921
+    },
+    "pack22.json": {
+      "sha256": "3b23bfea9dd41d18dcd4198440435b725bf30c9b37bb0b7b9e97384b567828bd",
+      "bytes": 387
+    },
+    "installed-24.json": {
+      "sha256": "0859cbf708a8243b1000a34256d8de98d4266e0e52888a41c40b836731ac096e",
+      "bytes": 1199
+    },
+    "browser.log": {
+      "sha256": "cba70ee81ddc0302bedd1e5117c8f0e74c17915a2d01b6b9585cc3ea1d37cda5",
+      "bytes": 607
+    },
+    "render.log": {
+      "sha256": "dbe0997cbd1a7c20e2324aed0a0d637fc6c27926c537304a9ec797d0a2247078",
+      "bytes": 603
+    },
+    "frozen.json": {
+      "sha256": "99c08653fcae86785c12a97cef7fe4bf566475cf65c266951f1e3b4c80553902",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "3c07981fd798a7f86f60f6ad63c428c3130cb4f07b9c9c7b00be6dc76787439e",
+      "bytes": 934
+    },
+    "pack20-first.stderr": {
+      "sha256": "048a2739d426c2f92c67643524e85fc4a247d7a9b45e1a384e95c3ba22cdd808",
+      "bytes": 966
+    },
+    "installed-22.json": {
+      "sha256": "9541f506e2377b2c66c8d47feaa730fa9cff4006e7ccbdc9c0005e3b81ea56b9",
+      "bytes": 1199
+    },
+    "pack24.json": {
+      "sha256": "6ba0585f528f0157b1db9095de56003bd54982483a5aff965870469c7c344ddd",
+      "bytes": 387
+    },
+    "installed-22.log": {
+      "sha256": "48b3d1079d98e0d71373486b71a25461971f3113fed4a80fe773072c315fd7c0",
+      "bytes": 934
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "7cb89ae94b4bbf7cb8350e936e2650034c593121d7a12ce66b6ca5022a20e300",
+      "bytes": 6141
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "a37f32f9c315f8a76ffcbe2a9c81302f4acf0d019b1f5fef40f91e8f586c9b01",
+      "bytes": 6864
+    },
+    "installed-20.log": {
+      "sha256": "994abd9f72547a12cf65d88009d765554f1dc449a6fa8cbff93a3d202568aee0",
+      "bytes": 934
+    },
+    "installed-20.json": {
+      "sha256": "7c6bf442217fbc70a4b02e8fca1dcfadfd719fb1f5c606382d3fd681bd3a6119",
+      "bytes": 1199
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "f76db905fcd139dd3e8413f2a4917f41959a78cce47b8dd68e86d5003731d673",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "470b20f5b28dc93d0f4d4bcc960de96984456cb021a47f78b9b482f0857698bf",
+      "bytes": 299
+    },
+    "pack20.json": {
+      "sha256": "65f519724c793767e4a427852f1148567ae71ab0bb986acada21ef6bb6d03dfc",
+      "bytes": 387
+    },
+    "owning.log": {
+      "sha256": "ef80f20e20cb926f4a1357a981cb71abc554d0c4dc68e59628a3e5dde2e17a20",
+      "bytes": 257774
+    },
+    "premeasure20.log": {
+      "sha256": "6905edf5d1fae975d2caa8ddca81c2dec26430ffc3fe2cad3f79564e8af863e3",
+      "bytes": 253
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.log": {
+      "sha256": "9fbe4e41f02a36dccf118e21263b8e898a5272eaba8d37bc85d06b5816dd925b",
+      "bytes": 1713
+    }
+  },
+  "remaining": [
+    "Source-pin metadata",
+    "Explicit exact font wrap-query preparation and dynamic label sample emissions",
+    "Dependent title public connection and implicit legend lanes",
+    "Remaining route SLO/native matrix/final nine commands; STEP077 incomplete"
+  ]
+}
