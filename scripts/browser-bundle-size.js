@@ -6,10 +6,10 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 775_000, // Shared native Cartesian placement: Node20/24 installed bundle 774,964 gzip bytes.
-  "ggaction/basic": 422_900, // Shared native Cartesian placement: Node20/24 installed bundle 422,870 gzip bytes.
+  "ggaction/basic": 423_000, // Current-camera Geo Text native helper: Node20 installed bundle 422,903 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 267_800, // Native Cartesian meaning completion: Node20/24 installed bundle 267,765 gzip bytes.
+  "ggaction/animation": 269_800, // Current-camera Geo Text expressions: Node20/24 measured bundle 269,753 gzip bytes.
   "ggaction/interaction": 136_600 // Exact geographic Text source authority: Node20/24 136,504 gzip bytes.
 });
 

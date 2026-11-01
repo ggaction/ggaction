@@ -21,7 +21,10 @@ import { projectGeoAnnotationAnimation } from "./geoAnnotation.js";
 import { validateGeoAnimationFrame } from "./geoPresentation.js";
 import { normalizeGeoTextPresentation, resolveGeoTextPresentation, closedGeoText, sameGeoTextValue as same, geoTextSourceToken } from "./geoTextGeometry.js";
 
+import { nativeGeoTextPresentation, geoTextHasLeaders } from "./geoTextExpressions.js";
+
 const nativeOrigins = new WeakMap();
+const expressionOrigins = new WeakMap();
 const token = identity => JSON.stringify([identity.key, identity.role]);
 export const geoTextFeatureDigest = (feature, coordinateKind) => contentDigest(canonicalJSON({ coordinateKind, geometry: feature.geometry,
   ...(coordinateKind === "geographic" ? { polygonWinding: feature.polygonWinding ?? "right-hand" } : {}) }));
@@ -37,32 +40,32 @@ function bounds(program, kind) {
 function labelPresentation(program, layer, scope, source) {
   const native = geoMarkSource(program, source, program.materializationConfigs.marks[source.id].geo);
   const features = new Map(native.drawableFeatures.map(feature => [geoFeatureKey(source, native.resource, feature), feature]));
-  const config = program.markConfigs[layer.id], entries = projectGeoLabelEntries(program, layer);
+  const config = program.markConfigs[layer.id], entries = projectGeoLabelEntries(program, layer, { retainEmptyText: true });
   const values = Object.fromEntries(Object.keys(layer.conditionals ?? {}).filter(channel => CONDITIONAL_APPEARANCE_CHANNELS.includes(channel) && !["size", "shape", "angle"].includes(channel))
     .map(channel => [channel === "color" ? "fill" : channel, resolveConditionalValues(program, layer, channel, entries)]));
   const layout = program.materializationConfigs.labelLayouts?.[layer.id], placement = config.labelAuthoring?.placement;
   const policy = layout === undefined ? null : Object.fromEntries(["axis", "padding", "maxDisplacement", "bounds"].map(key => [key, layout[key]]));
   const leader = layout?.leader !== false && layout?.leader !== undefined ? layout.leader : placement?.leader === undefined || placement.leader === false ? false : { ...placement.leader, opacity: 1, strokeDash: [] };
   const plot = resolveCoordinateBounds(program, layer.coordinate);
-  return normalizeGeoTextPresentation({ key: JSON.stringify([scope, layer.id]), coordinateKind: native.coordinateKind,
+  return normalizeGeoTextPresentation(nativeGeoTextPresentation({ key: JSON.stringify([scope, layer.id]), coordinateKind: native.coordinateKind,
     projection: { kind: "projection", id: native.projection.id, revision: native.projection.revision }, parameters: native.parameters,
     entries: entries.map((entry, index) => {
       const feature = features.get(entry.sourceItem.key);
       if (feature === undefined) throw new TypeError("Geographic Text preparation requires its actual source feature.");
       return { identity: { key: qualify(entry.key, scope), topology: "text", role: "body", lineage: entry.lineage },
         source: { key: entry.sourceItem.key, digest: geoTextFeatureDigest(feature, native.coordinateKind) },
-        anchor: geoLabelPosition(feature, native.coordinateKind), properties: resolveMarkEffectProperties(layer, config,
+        anchor: geoLabelPosition(feature, native.coordinateKind), properties: entry.graphic === undefined ? null : resolveMarkEffectProperties(layer, config,
           { ...entry.graphic.properties, ...Object.fromEntries(Object.entries(values).map(([key, values]) => [key, values[index]])) }) };
     }), textMetrics: program.materializationConfigs.textMetrics ?? null, plotOrigin: [plot.x, plot.y],
-    layout: policy, leader, bounds: bounds(program, policy?.bounds ?? "plot") });
+    layout: policy, leader, bounds: bounds(program, policy?.bounds ?? "plot") }));
 }
 function annotationPresentation(program, layer, scope) {
   const prepared = projectGeoAnnotationAnimation(program, layer, scope), state = prepared.state;
-  return normalizeGeoTextPresentation({ key: JSON.stringify([scope, layer.id]), coordinateKind: state.coordinateKind,
+  return normalizeGeoTextPresentation(nativeGeoTextPresentation({ key: JSON.stringify([scope, layer.id]), coordinateKind: state.coordinateKind,
     projection: state.projection, parameters: state.parameters, entries: [{ identity: state.identity,
       source: { key: state.identity.key, digest: contentDigest(canonicalJSON({ anchor: state.anchor, feature: state.feature })) },
       anchor: resolveGeoAnnotationPosition(state.anchor, state.feature, state.coordinateKind), properties: prepared.properties }],
-    textMetrics: prepared.textMetrics, plotOrigin: prepared.plotOrigin, layout: null, leader: false, bounds: bounds(program, "plot") });
+    textMetrics: prepared.textMetrics, plotOrigin: prepared.plotOrigin, layout: null, leader: false, bounds: bounds(program, "plot") }));
 }
 
 export function projectGeoTextAnimations(program, endpoint, geos) {
@@ -86,17 +89,17 @@ export function projectGeoTextAnimations(program, endpoint, geos) {
       const leaderPlacement = placements.get(qualifyGraphic(leaderId, scope));
       const before = source === undefined ? placement : placements.get(qualifyGraphic(source.id, scope)) ?? placement;
       groups.push({ presentation, insertion: placement.index, frame: frame(placement),
-        leaderInsertion: presentation.leader === false ? null : leaderPlacement?.index ?? before.index,
-        leaderFrame: presentation.leader === false ? null : leaderPlacement === undefined ? placement.parentFrame : frame(leaderPlacement) });
+        leaderInsertion: !geoTextHasLeaders(presentation) ? null : leaderPlacement?.index ?? before.index,
+        leaderFrame: leaderPlacement === undefined ? placement.parentFrame : frame(leaderPlacement) });
       order.push({ value: ["labels", presentation.key], index: ordinals.get(placement.graphicId) });
-      if (presentation.leader !== false) order.push({ value: ["leaders", presentation.key], index: leaderPlacement === undefined ? ordinals.get(before.graphicId) - .5 : ordinals.get(leaderPlacement.graphicId) });
+      if (geoTextHasLeaders(presentation)) order.push({ value: ["leaders", presentation.key], index: leaderPlacement === undefined ? ordinals.get(before.graphicId) - .5 : ordinals.get(leaderPlacement.graphicId) });
       origins.set(presentation.key, new Map(presentation.entries.map(entry => [entry.identity.key, Object.freeze({ kind: "geo-feature", program,
         childPath: Object.freeze([...childPath]), ownerId: layer.id, itemKey: entry.identity.key })])));
     }
   }
   groups.sort((a, b) => a.insertion - b.insertion);
   const byOwner = new Map(groups.map((group, index) => [group.presentation.key, index]));
-  const expected = groups.map(({ presentation }) => { const result = resolveGeoTextPresentation(presentation, spend); return new Map([...result.labels, ...result.leaders].map(graphic => [token(graphic.identity), graphic])); });
+  const expected = groups.map(group => { const result = resolveGeoTextPresentation(group.presentation, spend, group); return new Map([...result.labels, ...result.leaders].map(graphic => [token(graphic.identity), graphic])); });
   const items = endpoint.identities.map((identity, index) => {
     if (identity === undefined) return null;
     const group = byOwner.get(JSON.stringify(JSON.parse(identity.key).slice(0, 2)));
@@ -104,7 +107,7 @@ export function projectGeoTextAnimations(program, endpoint, geos) {
     const graphic = expected[group].get(token(identity)), node = endpoint.scene.nodes[index];
     if (graphic === undefined) { groups[group].reason = "edited-geo-graphics"; return null; }
     expected[group].delete(token(identity));
-    const currentFrame = identity.role === "leader" ? groups[group].leaderFrame : groups[group].frame;
+    const currentFrame = graphic.frame ?? (identity.role === "leader" ? groups[group].leaderFrame : groups[group].frame);
     const edited = !same(identity, graphic.identity) || node.type !== graphic.type || !same(node.properties, graphic.properties) || !same(frame(node), currentFrame);
     if (edited) groups[group].reason = "edited-geo-graphics";
     return { group, key: identity.key, role: identity.role, ...(edited ? { reason: "edited-geo-graphics" } : {}) };
@@ -113,6 +116,7 @@ export function projectGeoTextAnimations(program, endpoint, geos) {
   const state = cloneAndFreeze({ groups, items, order: order.sort((a, b) => a.index - b.index).map(entry => entry.value) });
   validateGeoTextAnimations(state, endpoint, geos);
   nativeOrigins.set(state, groups.map(group => origins.get(group.presentation.key)));
+  expressionOrigins.set(state, groups.map(group => [origins.get(group.presentation.key)]));
   return state;
 }
 
@@ -132,8 +136,8 @@ export function validateGeoTextAnimations(input, endpoint, geos) {
     const p = normalizeGeoTextPresentation(group.presentation);
     if (owners.has(p.key)) throw new TypeError("Geographic Text group owners must be unique."); owners.set(p.key, index);
     for (const slot of [group.insertion, ...(group.leaderInsertion === null ? [] : [group.leaderInsertion])]) if (!Number.isSafeInteger(slot) || slot < 0 || slot > endpoint.scene.nodes.length) throw new TypeError("Geographic Text requires a bounded drawing slot.");
-    if (group.insertion < previous || (p.leader === false) !== (group.leaderInsertion === null) || (p.leader === false) !== (group.leaderFrame === null)) throw new TypeError("Geographic Text drawing order or leader placement is inconsistent.");
-    previous = group.insertion; validateGeoAnimationFrame(group.frame); if (group.leaderFrame !== null) validateGeoAnimationFrame(group.leaderFrame);
+    if (group.insertion < previous || (!geoTextHasLeaders(p)) !== (group.leaderInsertion === null)) throw new TypeError("Geographic Text drawing order or leader placement is inconsistent.");
+    previous = group.insertion; validateGeoAnimationFrame(group.frame); validateGeoAnimationFrame(group.leaderFrame);
     if (group.reason !== undefined && group.reason !== "edited-geo-graphics") throw new TypeError("Unknown geographic Text fallback reason.");
     for (const entry of p.entries) {
       validateWorkLimit(++work, "Geographic Text state work");
@@ -147,7 +151,7 @@ export function validateGeoTextAnimations(input, endpoint, geos) {
       if (feature === undefined || !same(entry.identity.lineage.resource, geometry.binding.geometry ?? geometry.projection) ||
           geoTextFeatureDigest(feature, geometry.coordinateKind) !== entry.source.digest || !same(geoLabelPosition(feature, geometry.coordinateKind), entry.anchor) || !same(p.parameters, geometry.parameters) || !same(p.projection, geometry.projection)) throw new TypeError("Native geographic Text differs from its exact source geometry and camera.");
     }
-    const output = resolveGeoTextPresentation(p, account);
+    const output = resolveGeoTextPresentation(p, account, group);
     expected.push(new Map([...output.labels, ...output.leaders].map(graphic => [token(graphic.identity), graphic]))); represented.push(new Set());
   }
   for (const [index, item] of value.items.entries()) {
@@ -159,7 +163,7 @@ export function validateGeoTextAnimations(input, endpoint, geos) {
     closedGeoText(item, ["group", "key", "role", ...(Object.hasOwn(item, "reason") ? ["reason"] : [])], "Geographic Text item");
     const group = value.groups[item.group], graphic = expected[item.group]?.get(token(identity));
     if (!Number.isSafeInteger(item.group) || owner !== item.group || graphic === undefined || item.key !== identity.key || item.role !== identity.role || !same(identity, graphic.identity)) throw new TypeError("Geographic Text item differs from its native source identity.");
-    const node = endpoint.scene.nodes[index], currentFrame = item.role === "leader" ? group.leaderFrame : group.frame;
+    const node = endpoint.scene.nodes[index], currentFrame = graphic.frame ?? (item.role === "leader" ? group.leaderFrame : group.frame);
     if (item.reason !== undefined && (item.reason !== "edited-geo-graphics" || group.reason !== item.reason)) throw new TypeError("Geographic Text item fallback is inconsistent.");
     if (!group.reason && (node.type !== graphic.type || !same(node.properties, graphic.properties) || !same(frame(node), currentFrame))) throw new TypeError("Geographic Text meaning differs from its concrete endpoint.");
     if (index < (item.role === "leader" ? group.leaderInsertion : group.insertion)) throw new TypeError("Geographic Text item precedes its drawing slot.");
@@ -167,7 +171,7 @@ export function validateGeoTextAnimations(input, endpoint, geos) {
   }
   value.groups.forEach((group, index) => { if (!group.reason && represented[index].size !== expected[index].size) throw new TypeError("Geographic Text state omitted a materialized item."); });
   ownArray(value.order, "Geographic Text drawing order");
-  const expectedOrder = new Set([...value.groups.flatMap(group => [["labels", group.presentation.key], ...(group.presentation.leader === false ? [] : [["leaders", group.presentation.key]])]), ...(geos?.groups ?? []).map(group => ["geo", group.presentation.geometry.key])].map(JSON.stringify));
+  const expectedOrder = new Set([...value.groups.flatMap(group => [["labels", group.presentation.key], ...(!geoTextHasLeaders(group.presentation) ? [] : [["leaders", group.presentation.key]])]), ...(geos?.groups ?? []).map(group => ["geo", group.presentation.geometry.key])].map(JSON.stringify));
   const drawingSlots = new Map([...(geos?.groups ?? []).map(group => [JSON.stringify(["geo", group.presentation.geometry.key]), group.insertion]),
     ...value.groups.flatMap(group => [[JSON.stringify(["labels", group.presentation.key]), group.insertion], [JSON.stringify(["leaders", group.presentation.key]), group.leaderInsertion]])]);
   let lastSlot = -1;
@@ -182,11 +186,14 @@ export function validateGeoTextAnimations(input, endpoint, geos) {
   return value;
 }
 export function geoTextAnimationOrigin(state, group, key) { return nativeOrigins.get(state)?.[group]?.get(key); }
-export function inheritGeoTextOrigins(state, source, indices) {
+export function geoTextExpressionOrigins(state, group) { return expressionOrigins.get(state)?.[group]; }
+export function inheritGeoTextOrigins(state, source, indices, expressions) {
   const origins = nativeOrigins.get(source); if (origins === undefined) return state;
   nativeOrigins.set(state, state.groups.map((group, index) => {
     const old = source.groups[indices[index]];
     if (old === undefined || group.presentation.key !== old.presentation.key) throw new TypeError("Geographic Text origin must retain its target owner.");
     return origins[indices[index]];
-  })); return state;
+  }));
+  expressionOrigins.set(state, expressions);
+  return state;
 }

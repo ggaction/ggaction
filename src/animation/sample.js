@@ -49,11 +49,11 @@ export function sampleTransition(input,timeMs) {
   const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork,timeline),geoTextState.to);
   const nodes=[];
   const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);}};
-  const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);}};
-  const geographicSlots=new Map(),geographicOrder=new Map(geoTextState.to.order.map((entry,index)=>[JSON.stringify(entry),index]));
+  const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin,metrics:value.metrics};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);}};
+  const geographicSlots=new Map(),geographicOrder=new Map(geoTextFrame.order.map((entry,index)=>[JSON.stringify(entry),index]));
   const addGeographicSlot=(slot,role,key)=>{if(!geographicSlots.has(slot))geographicSlots.set(slot,[]);geographicSlots.get(slot).push([role,key]);};
   for(const [slot,keys]of geoFrame.slots)for(const key of keys)addGeographicSlot(slot,"geo",key);
-  for(const group of geoTextState.state.groups){const target=geoTextState.to.groups[group.targetGroup];addGeographicSlot(target.insertion,"labels",target.presentation.key);if(target.leaderInsertion!==null)addGeographicSlot(target.leaderInsertion,"leaders",target.presentation.key);}
+  for(const [slot,role,key]of geoTextFrame.slots)addGeographicSlot(slot,role,key);
   for(const values of geographicSlots.values())values.sort((a,b)=>geographicOrder.get(JSON.stringify(a))-geographicOrder.get(JSON.stringify(b)));
   const appendGeographic=slot=>{for(const [role,key]of geographicSlots.get(slot)??[]){if(role==="geo")appendGeo(slot,key);else appendGeoText(slot,role,key);}};
   const sampleNode=(to,targetIndex)=>{

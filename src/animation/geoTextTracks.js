@@ -3,11 +3,11 @@ import { validateWorkLimit, validateUnitInterval } from "../core/validation.js";
 import { prepareGeoCameraInterpolation, sampleGeoCameraInterpolation } from "../grammar/geo/cameraInterpolation.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
 import { normalizeGeoTextPresentation, resolveGeoTextPresentation, geoTextSourceToken, sameGeoTextValue as same } from "../materialization/animation/geoTextGeometry.js";
-import { prepareAnimationAppearance, sampleAnimationAppearance } from "./appearance.js";
+import { geoTextExpressionOrigins } from "../materialization/animation/geoText.js";
+import { prepareGeoTextExpressions, sampleGeoTextExpressions } from "./geoTextExpressionTracks.js";
 import { clipInterpolationCompatible, interpolateNodeFrame } from "./concrete.js";
 
-const prepared = new WeakSet();
-const style = properties => Object.fromEntries(Object.entries(properties).filter(([key]) => !["x", "y"].includes(key)));
+const prepared = new WeakMap();
 export function prepareGeoTextTracks(from, to) {
   const groups = [], skipFrom = new Set(), skipTo = new Set(), failures = new Map();
   const indices = state => {
@@ -29,26 +29,23 @@ export function prepareGeoTextTracks(from, to) {
     if (sourceGroup === undefined) continue;
     const source = from.groups[sourceGroup], a = source.presentation, b = target.presentation;
     const camera = prepareGeoCameraInterpolation(a.parameters, b.parameters);
-    const previous = new Map(a.entries.map(entry => [entry.identity.key, entry])), appearances = [];
+    const previous = new Map(a.entries.map((entry, index) => [entry.identity.key, { entry, index }]));
     let reason = source.reason ?? target.reason ?? (a.coordinateKind !== b.coordinateKind || a.projection.id !== b.projection.id ? "geo-binding" : camera.reason);
-    if (!clipInterpolationCompatible(source.frame, target.frame) || (source.leaderFrame === null) !== (target.leaderFrame === null) || source.leaderFrame !== null && !clipInterpolationCompatible(source.leaderFrame, target.leaderFrame)) reason ??= "clip-topology";
-    if (!same(a.layout, b.layout) || !same(a.leader, b.leader)) reason ??= "geo-text-layout";
+    if (!clipInterpolationCompatible(source.frame, target.frame) || !clipInterpolationCompatible(source.leaderFrame, target.leaderFrame)) reason ??= "clip-topology";
     if (a.entries.length !== b.entries.length) reason ??= "geo-text-membership";
     for (const entry of b.entries) {
       validateWorkLimit(++work, "Geographic Text track work"); const old = previous.get(entry.identity.key);
       if (old === undefined) { reason ??= "geo-text-membership"; continue; }
-      if (geoTextSourceToken(old) !== geoTextSourceToken(entry)) reason ??= "geo-feature-geometry";
-      const appearance = same(style(old.properties), style(entry.properties)) ? null : prepareAnimationAppearance(style(old.properties), style(entry.properties));
-      if (appearance?.kind === "crossfade") reason ??= appearance.reason;
-      appearances.push(appearance);
+      if (geoTextSourceToken(old.entry) !== geoTextSourceToken(entry)) reason ??= "geo-feature-geometry";
     }
+    const expressions = reason === undefined ? prepareGeoTextExpressions(a, b, b.entries.map(entry => previous.get(entry.identity.key).index)) : undefined;
+    reason ??= expressions?.reason;
     if (reason !== undefined) { failures.set(targetGroup, reason); continue; }
     for (const index of fromIndices[sourceGroup]) skipFrom.add(index);
     for (const index of toIndices[targetGroup]) skipTo.add(index);
-    groups.push({ sourceGroup, targetGroup, from: source, to: target, camera, appearances,
-      entries: b.entries.map(entry => previous.get(entry.identity.key)) });
+    groups.push({ sourceGroup, targetGroup, from: source, to: target, camera, expressions });
   }
-  const state = cloneAndFreeze({ groups }); prepared.add(state);
+  const state = cloneAndFreeze({ groups }); prepared.set(state, { from, to });
   return { state, skipFrom, skipTo, fallbackTrack(match) {
     const a = from.items[match.sourceIndex], b = to.items[match.targetIndex];
     if (a === null && b === null) return undefined;
@@ -63,17 +60,17 @@ export function sampleGeoTextTracks(state, progress, accountWork, timeline) {
   return state.groups.map(group => {
     const a = group.from.presentation, b = group.to.presentation;
     const current = timeline?.progress(b.key) ?? progress;
+    const expressionState = sampleGeoTextExpressions(group.expressions, b.entries, current, key => timeline?.textStyle(group.targetGroup, key));
     const presentation = normalizeGeoTextPresentation({ ...b, parameters: sampleGeoCameraInterpolation(group.camera, current).parameters,
       plotOrigin: b.plotOrigin.map((value, index) => interpolateNumber(a.plotOrigin[index], value, current)),
       bounds: Object.fromEntries(Object.entries(b.bounds).map(([key, value]) => [key, interpolateNumber(a.bounds[key], value, current)])),
-      entries: b.entries.map((entry, index) => ({ ...entry, properties: { ...entry.properties,
-        ...(group.appearances[index] === null ? {} : sampleAnimationAppearance(group.appearances[index], current)),
-        ...timeline?.textStyle(group.targetGroup,entry.identity.key),
-        x: interpolateNumber(group.entries[index].properties.x, entry.properties.x, current),
-        y: interpolateNumber(group.entries[index].properties.y, entry.properties.y, current) } })) });
-    return { sourceGroup: group.sourceGroup, targetGroup: group.targetGroup, presentation,
-      frame: interpolateNodeFrame(group.from.frame, group.to.frame, current),
-      leaderFrame: group.to.leaderFrame === null ? null : interpolateNodeFrame(group.from.leaderFrame, group.to.leaderFrame, current),
-      graphics: resolveGeoTextPresentation(presentation, account) };
+      expressions: expressionState.expressions });
+    const frame = interpolateNodeFrame(group.from.frame, group.to.frame, current);
+    // Even an absent leader has its exact native parent collection frame.
+    const leaderFrame = interpolateNodeFrame(group.from.leaderFrame, group.to.leaderFrame, current);
+    const endpoints = prepared.get(state);
+    const origins = expressionState.origins.map(origin => geoTextExpressionOrigins(endpoints[origin.side], origin.side === "from" ? group.sourceGroup : group.targetGroup)?.[origin.index]);
+    return { sourceGroup: group.sourceGroup, targetGroup: group.targetGroup, presentation, frame, leaderFrame, origins,
+      graphics: resolveGeoTextPresentation(presentation, account, { frame, leaderFrame }) };
   });
 }

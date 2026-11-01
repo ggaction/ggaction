@@ -9,7 +9,7 @@ import { resolvePreparedSourceTextEntries } from "../textGeometry.js";
 // This is transient preparation, not a second Text schema. Geometry remains
 // in the source group's native features; each entry retains its exact source
 // key, rows and resource lineage and is placed at an explicit origin.
-export function projectGeoLabelEntries(program, layer) {
+export function projectGeoLabelEntries(program, layer, { retainEmptyText = false } = {}) {
   if (requireLayer(program, layer.id) !== layer) throw new TypeError("Geographic labels require their exact native layer.");
   const source = geoLabelSource(program, layer);
   if (source === undefined) throw new TypeError("Geographic labels require a native geographic source.");
@@ -29,6 +29,6 @@ export function projectGeoLabelEntries(program, layer) {
     resolveMarkItems: (receiver, target, grain, options) => receiver === program && target === source.id
       ? sourceItems(receiver, target, grain, options) : resolveMarkItems(receiver, target, grain, options),
     resolveMarkSourceItems: sourceItems
-  });
+  }, { retainEmptyText });
   return cloneAndFreeze(identifyGeoLabelItems(layer, entries));
 }

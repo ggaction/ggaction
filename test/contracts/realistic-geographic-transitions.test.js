@@ -42,6 +42,19 @@ for(const dataset of datasets)for(const recipe of ["planar-points","spherical-po
     assert.ok(current.decisions.every(decision=>decision.kind!=="crossfade"));
     assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),current);
     assertSvgIntegrity(renderToSVG(current),`${dataset}/${recipe}`);assert.equal(JSON.stringify(from),original);
+    if(planar) {
+      const labels=from.createMarkLabels({id:"labels",field:"category",fontFamily:"monospace",fontSize:12,fill:"red"});
+      const changed=labels.editTextMark({target:"labels",fontSize:18,fill:"blue",textOverrides:[{match:{fields:{key:rows[0].key}},occurrence:0,text:`${rows[0].category} total`}]});
+      const labelTarget=changed.editProjection({translatePx:initial.translatePx.map((value,index)=>value+(index?20:40))});
+      const labelPlan=planTransition({from:labels,to:labelTarget,options:{durationMs:100,easing:"linear"}}),labelFrame=sampleTransition(labelPlan,50);
+      const translation=initial.translatePx.map((value,index)=>value+(index?10:20));
+      const native=[labels,changed].map(program=>new Map(projectAnimationEndpoint(program.editProjection({translatePx:translation})).scene.nodes.filter(node=>node.type==="text").map(node=>[node.key,node])));
+      const samples=labelFrame.scene.nodes.filter((node,index)=>labelFrame.decisions[index]?.kernel==="native-geo-text");
+      assert.equal(samples.length,rows.length);
+      for(const node of samples){assert.equal(node.type,"weighted-blend");assert.deepEqual(node.properties.sources.map(source=>source.weight),[.5,.5]);assert.deepEqual(node.properties.sources.map(source=>source.properties),native.map(items=>items.get(node.key).properties));}
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(labelPlan)).plan,50),labelFrame);
+      assertSvgIntegrity(renderToSVG(labelFrame),`${dataset}/current-camera-text`);
+    }
     if(!witness.has(dataset))witness.set(dataset,new Set());witness.get(dataset).add(recipe);
   }finally{releaseTidyTuesdaySourceCache(dataset);}
 });

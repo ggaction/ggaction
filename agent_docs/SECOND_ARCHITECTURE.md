@@ -918,11 +918,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 775,000 bytes |
-| `ggaction/basic` | 422,900 bytes |
+| `ggaction/basic` | 423,000 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 136,600 bytes |
-| `ggaction/animation` | 267,800 bytes |
+| `ggaction/animation` | 269,800 bytes |
 
 
 
@@ -4693,6 +4693,18 @@ Session은 `previewFrame`과 준비 lease를 원자 게시하고 기존 `animati
 
 
 ### Geographic Text current-source authority
+
+`materialization/animation/geoTextExpressions`는 공통 raw anchor/source/camera와 분리한
+평탄한 Text 표현을 검증한다. `geoTextGeometry`는 각 표현의 기존 native Text·layout·leader
+계산을 재사용하고 `geoTextBlend`는 실제 per-item concrete 결과만 공통 weighted primitive로
+결합한다. `animation/geoTextExpressionTracks`는 표현 대응·weight·중복 결합을 소유하며 별도
+clock이나 pixel 역산을 만들지 않는다. Native source reader의 private empty-entry 보존 옵션은
+animation 준비에서만 사용하고 일반 materialization 출력은 바꾸지 않는다.
+
+현재 frame의 primary lineage는 target source로 유지하고 표현별 metrics origin은 각 실제
+native 출처를 따른다. 표현에서 생긴 leader의 slot은 collection drawing order에서 결정한다.
+Strict restore는 같은 native forward 계산을 수행하며 renderer나 interaction에 의미 계산을
+넘기지 않는다. 정확한 한도·fallback·접근성 경계는 [Animation](contract/current/ANIMATION.md)이 소유한다.
 
 `grammar/geo/markKind`는 native label source 종류만 판별해 현재-frame reader가 Geo style/projection
 assembly를 import하지 않게 한다. Native Text policy는 기존 source-only Text preparation으로 원본

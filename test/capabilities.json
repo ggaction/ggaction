@@ -112,6 +112,10 @@
       {
         "type": "file",
         "path": "browser/animation-cartesian-completion.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-geotext-expressions.browser.js"
       }
     ],
     "architecture": [

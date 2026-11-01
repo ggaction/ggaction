@@ -83,14 +83,14 @@ test("body appearance fallback cannot freeze compatible geographic Text camera m
   assert.deepEqual(sampleTransition(offline,50).scene,sampleTransition(rebased,50).scene);
 });
 
-test("conditional content and appearance resolve through native Text and use explicit fallback", () => {
+test("conditional content and appearance resolve through current native Text expressions", () => {
   const ast=value=>({version:2,registry:"standard@1",root:{type:"literal",value}});
   const from=base().createMarkLabels({field:"name"}).editTextMark({target:"places-mark-labels",opacity:0}).encodeColor({target:"places-mark-labels",conditions:[{when:ast(true),value:{value:"red"}}],otherwise:{value:"blue"}});
   const transition=plan(from,from.editProjection({scalePx:4}));
   assert.ok(texts(sampleTransition(transition,50)).every(node=>node.properties.opacity===0));
   const text=from.editTextMark({target:"places-mark-labels",textOverrides:[{match:{fields:{name:"Alpha"}},occurrence:0,text:"Changed"}]}).editProjection({scalePx:4});
   const changed=plan(from,text);
-  assert.ok(changed.tracks.some(track=>track.kind==="crossfade"&&track.reason==="appearance"));
+  assert.ok(sampleTransition(changed,50).scene.nodes.some(node=>node.type==="weighted-blend"&&node.properties.sources.some(source=>source.properties.text==="Changed")));
 });
 
 test("closed Text transport rejects anchor, digest, binding, camera and decision contamination", () => {
