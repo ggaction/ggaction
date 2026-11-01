@@ -1,6 +1,6 @@
 {
   "status": "verified-geographic-route-adapter; final STEP077 and large-route performance remain open",
-  "sourceRevision": null,
+  "sourceRevision": "8710ce08ea3938066173b9d9d2d3a70e76a99277",
   "base": "04539ff7a",
   "authorization": "../../AUTHORIZATION.json#remainingApproval",
   "publicActions": [
@@ -151,5 +151,11 @@
     "Remaining large-route workloads and target performance budget",
     "GeoText expressions and remaining native legend/reflow obligations",
     "Complete STEP057–077 acceptance matrix, full qualification and separately authorized release operations"
-  ]
+  ],
+  "sourcePin": {
+    "docs": 32,
+    "builtPages": 186,
+    "selectiveArtifacts": 1603,
+    "browserReuse": "Only source identity links changed. Geometry content/CSS retain fresh4viewport browser checks; unchanged pages retain previous full browser evidence."
+  }
 }
