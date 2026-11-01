@@ -1833,7 +1833,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "Field encoding, general scale and guide consumers require a complete partition-specific contract and executable owner; a discoverable installed package runtime owner remains unassigned. Native coordinate mapping, labels and static scenes are not replacements."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -1983,6 +1983,42 @@
           "tests": [
             "test/docs/documentation.test.js",
             "test/charts/partition-layouts/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
             "test/docs/executable-programs.test.js"
           ]
         }
@@ -2020,7 +2056,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "Field encoding, general scale and guide consumers require a complete partition-specific contract and executable owner; a discoverable installed package runtime owner remains unassigned. Native coordinate mapping, labels and static scenes are not replacements."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -2172,6 +2208,42 @@
             "test/charts/partition-layouts/public.test.js",
             "test/docs/executable-programs.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2204,7 +2276,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "General field encoding, scale and guide consumers remain pending: stored resource layout geometry and native styles/labels do not establish a field-to-scale-to-guide path. A discoverable installed-package runtime owner remains unassigned. Explicit concrete fallback, authentic rebase and offline full-frame equivalence are now verified; this is not typed layout interpolation."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -2347,6 +2419,42 @@
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2379,7 +2487,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "General field encoding, scale and guide consumers remain pending: stored resource layout geometry and native styles/labels do not establish a field-to-scale-to-guide path. A discoverable installed-package runtime owner remains unassigned. Explicit concrete fallback, authentic rebase and offline full-frame equivalence are now verified; this is not typed layout interpolation."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -2521,6 +2629,42 @@
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2554,7 +2698,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "Position encodings, axes and scale legends do not apply to the stored graph layout under the current contract; the required encoding, scale and guide cells still need their explicit applicability decision. A discoverable family-specific installed-package test owner remains unassigned; source execution of consumer fixtures is not installed-package evidence."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -2702,6 +2846,42 @@
             "test/docs/documentation.test.js",
             "test/docs/executable-programs.test.js",
             "test/charts/graph-plots/public.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -2883,7 +3063,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "General field encoding, scale and guide consumers remain pending: stored resource layout geometry and native styles/labels do not establish a field-to-scale-to-guide path. A discoverable installed-package runtime owner remains unassigned. Explicit concrete fallback, authentic rebase and offline full-frame equivalence are now verified; this is not typed layout interpolation."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -3027,6 +3207,42 @@
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -3059,7 +3275,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "General field encoding, scale and guide consumers remain pending: stored resource layout geometry and native styles/labels do not establish a field-to-scale-to-guide path. A discoverable installed-package runtime owner remains unassigned. Explicit concrete fallback, authentic rebase and offline full-frame equivalence are now verified; this is not typed layout interpolation."
+        "reason": "A discoverable installed-package runtime owner remains unassigned in this branch. Field, scale and guide consumers are verified through the explicit paired analytical child contract; resource-native positions, thickness and styles retain their existing domain ownership."
       },
       "assignedOwners": {
         "create": {
@@ -3201,6 +3417,42 @@
           ],
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }

@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "id": "partition-cartesian",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "partition-polar",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "tree",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "treemap",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "graph-nodes",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-dag",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    },
+    {
+      "id": "sankey-cyclic",
+      "before": 15,
+      "after": 18,
+      "pending": [
+        "package"
+      ]
+    }
+  ],
+  "addedOwners": 21,
+  "otherRowsAndFieldsDeepEqual": true,
+  "existingOwnersPreserved": true,
+  "archiveSHA256": "5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e",
+  "archiveRuntimeSourceCommit": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+  "sourceTypesPackageManifestUnchangedSinceArchiveSource": true,
+  "runtimeChanged": false,
+  "note": "Canonical packaging minifies selected modules. Runtime equality is checked against the frozen archive source commit, not raw source versus transformed package bytes."
+}

@@ -741,5 +741,18 @@
     "result": "routeMap",
     "rendering": "authoring-only",
     "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors."
+  },
+  {
+    "id": "resource-analytical-comparison",
+    "file": "recipes/composition.md",
+    "contains": "const comparison = createResourceComparison(\"tree\");",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "revised",
+    "prerequisites": "Copy the linked resource-comparison.js beside this module, use its public ggaction import, and provide a Canvas with id chart. The helper contains typed source rows and both complete child programs.",
+    "rendering": "renders-canvas",
+    "supportFiles": {
+      "resource-comparison.js": "examples/program-composition/resource-comparison.js"
+    }
   }
 ]

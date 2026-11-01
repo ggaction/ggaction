@@ -56,6 +56,52 @@ no longer move it. Independent axis scales require explicit axis selection when 
 The [runnable overlay example](https://ggaction.github.io/ggaction/examples/linked-overlay/) uses the same public program as
 the primitive-equivalence and rendering tests.
 
+## Pair a resource view with an analytical chart
+
+Show a tree, treemap, partition, graph or flow beside a point chart that explains
+its source measurements. Each child owns its data, marks, scales and guides.
+The analytical axis and legend explain the point chart; the resource view keeps
+its native layout, thickness and styles.
+
+Copy the [resource comparison module](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/program-composition/resource-comparison.js)
+beside this browser module, set its `chart`/`hconcat` import to `from "ggaction"`,
+and provide `<canvas id="chart"></canvas>`. The helper
+builds both children from the same rows, including distinct numeric `1` and
+string `"1"` keys. Run this complete example in an ES module with `ggaction`
+available through your bundler or import map.
+
+```javascript
+import { render } from "ggaction";
+import { createResourceComparison, reviseResourceComparison } from "./resource-comparison.js";
+
+const comparison = createResourceComparison("tree");
+const mapped = comparison.encodeColor({
+  target: { childPath: ["analysis"], id: "values" },
+  field: "alternative"
+});
+const scaled = mapped.editScale({
+  target: { childPath: ["analysis"] },
+  id: "measure", domain: [0, 20]
+});
+const revised = reviseResourceComparison(scaled, "tree");
+render(revised, document.querySelector("#chart").getContext("2d"));
+```
+
+The field edit changes the point colors and legend. Doubling the analytical
+scale domain moves the points and ticks without editing the tree. The revision
+helper then doubles each measurement and calls `reviseData` with both explicit
+child paths in one action. Both sources and their dependent graphics update
+atomically. A source error in either child leaves the earlier program intact.
+Equal row keys do not synchronize children automatically; a revision addressed
+to one child changes only that child.
+
+The same module accepts `treemap`, `partition-cartesian`, `partition-polar`,
+`graph-nodes`, `sankey-dag` and `sankey-cyclic`. Their native positions, thickness,
+color styles and labels follow their existing resource contracts. This recipe
+does not create a resource-native field mapping or legend. See
+[explicit action targets](../api/composition/editing.md#target-one-view-one-mark-or-several-marks)
+for selecting a view separately from an action's native mark or scale ID.
+
 ## You must decide
 
 - Horizontal `hconcat` or vertical `vconcat`
