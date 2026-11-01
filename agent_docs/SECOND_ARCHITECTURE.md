@@ -2868,7 +2868,9 @@ Corner item block은 기존 layout owner가 실제 title/item bounds와12px gap�
 
 Point 생성·편집과 editable persistence는 selector가 증명한 semantic point/selected values/graphic
 ID·type 소유권을 공통 core guard에 전달한다. Namespace가 적용된 composition snapshot은 실제
-retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 일반 generated-item/work
+retained child owner까지 추적하며 별도 bypass state를 저장하지 않는다. 명시 point capacity는 기존
+`materializationConfigs.marks`에 한 번 저장하고 selector가 retained owner의 값을 전달한다.
+기본 한도와 raw/output 검산, 편집 제거 및 restore는 같은 core guard를 공유한다. 일반 generated-item/work
 및 graphic-only structural validation 경계는 바꾸지 않았다. 정확한 수치는 MARKS/PRIMITIVES가 소유한다.
 Node22.23.1/npm10.9.8/macOS canonical artifact 실측은570entries, packed803124, unpacked3939523이다.
 승인된 유한 기능 증가에 따라 entries570/packed804000/unpacked3940000으로 최소 상향했다.

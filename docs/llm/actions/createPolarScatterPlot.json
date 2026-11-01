@@ -114,7 +114,7 @@
     {
       "name": "point",
       "required": false,
-      "type": "Omit<StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
+      "type": "Omit<StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
     },
     {
       "name": "guides",

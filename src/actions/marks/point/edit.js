@@ -10,8 +10,11 @@ import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateNonEmptyString,
   validateNonNegativeFinite,
-  validateUnitInterval
+  validateUnitInterval,
+  validatePointItemCapacity,
+  validateGraphicItemLimit
 } from "../../../core/validation.js";
+import { resolveGraphicItemCapacity } from "../../../selectors/graphicCapacity.js";
 import { validatePointShape } from "../../../grammar/pointShapes.js";
 import {
   requestedStrokeDetails,
@@ -24,7 +27,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
   "blend",
-  "target", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
+  "target", "maxItems", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -38,13 +41,14 @@ export const editPointMark = /* @__PURE__ */ action(
     validateRequestedMarkBlend(args, "point");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
+    if (Object.hasOwn(args, "maxItems")) validatePointItemCapacity(args.maxItems);
     const editable = [
-      "blend", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
+      "blend", "maxItems", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
       throw new Error(
-        "editPointMark requires shape, fill, opacity, stroke, strokeWidth, or missing."
+        "editPointMark requires shape, fill, opacity, stroke, strokeWidth, missing, or maxItems."
       );
     }
     if (args.target !== undefined) validateUserId(args.target, "Point mark id");
@@ -55,6 +59,12 @@ export const editPointMark = /* @__PURE__ */ action(
     });
     if (Object.hasOwn(args, "missing")) assertIndependentOverlayGeometry(layer, "editPointMark missing");
     const id = layer.id;
+    if (Object.hasOwn(args, "maxItems")) {
+      validateGraphicItemLimit(this.graphicSpec.objects[id]?.items?.length ?? 0, {
+        ...resolveGraphicItemCapacity(this, { id, label: "Point mark item count" }),
+        maxItems: args.maxItems
+      });
+    }
     if (Object.hasOwn(args, "shape") && layer.encoding?.shape !== undefined) {
       throw new Error(
         "editPointMark shape cannot be combined with a shape encoding."
@@ -82,6 +92,10 @@ export const editPointMark = /* @__PURE__ */ action(
       : this;
     semantic = applyMarkBlend(semantic, layer.id, args);
     const config = { ...semantic.markConfigs[id], ...requestedMarkClip(args) };
+    if (Object.hasOwn(args, "maxItems")) {
+      if (args.maxItems === undefined) delete config.maxItems;
+      else config.maxItems = args.maxItems;
+    }
     Object.assign(config, strokeDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);

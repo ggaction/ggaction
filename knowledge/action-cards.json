@@ -6777,7 +6777,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6866,6 +6866,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "maxItems",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "blend",
           "required": false,
           "type": "BlendMode | undefined"
@@ -6932,7 +6937,7 @@
         }
       ],
       "callPatterns": [
-        "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
+        "createPointMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, maxItems?, blend? })"
       ],
       "snippet": "program.createPointMark({})",
       "errors": [],
@@ -9449,8 +9454,8 @@
       "name": "editPointMark",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "summary": "Change point shape, appearance, or maxItems capacity and rematerialize its concrete items.",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { maxItems?: number | undefined; blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -9522,6 +9527,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "maxItems",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "blend",
           "required": false,
           "type": "BlendMode | undefined"
@@ -9578,7 +9588,7 @@
         }
       ],
       "callPatterns": [
-        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
+        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, maxItems?, blend?, shadow?, clip? })"
       ],
       "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -34136,7 +34146,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -34374,7 +34384,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -34526,7 +34536,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "stem",
@@ -34683,12 +34693,12 @@
         {
           "name": "startPoint",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "endPoint",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "connector",
@@ -35271,7 +35281,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "errorBar",
@@ -35422,7 +35432,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -35773,7 +35783,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "Omit<StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
+          "type": "Omit<StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
         },
         {
           "name": "guides",
@@ -36395,7 +36405,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36540,7 +36550,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { maxItems?: number | undefined; clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "packing",

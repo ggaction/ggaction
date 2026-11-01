@@ -38,6 +38,7 @@ const DUMBBELL_OPTIONS = Object.freeze([
 const CATEGORY_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const VALUE_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const POINT_OPTIONS = Object.freeze([
+  "maxItems",
   "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);

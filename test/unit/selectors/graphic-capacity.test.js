@@ -34,3 +34,17 @@ test("composed point capacities resolve the matching raw owner and reject ambigu
   });
   assert.equal(namespaceGraphicId("😀", "points"), "g01f600_points");
 });
+
+
+test("retained point capacity comes from the exact child rather than parent configuration", () => {
+  const id = namespaceGraphicId("layout-cell", "points");
+  const child = pointProgram("points", 3);
+  child.markConfigs = { points: { maxItems: 3 } };
+  const parent = { semanticSpec: { datasets: [], layers: [] },
+    graphicSpec: { objects: { [id]: { type: "circle" } } },
+    compositionSpec: { id: "layout", children: ["cell"] }, children: { cell: child },
+    markConfigs: { [id]: { maxItems: 100000 } } };
+  assert.deepEqual(resolveGraphicItemCapacity(parent, { id, label: "Point samples" }), {
+    pointOwned: true, rawCount: 3, maxItems: 3, graphicType: "circle", label: "Point samples"
+  });
+});

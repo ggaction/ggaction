@@ -1442,7 +1442,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`\" on docs/api/marks/line-area.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/marks/point.md#-editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit-:1",
+    "id": "docs/api/marks/point.md#-editpointmark-target-maxitems-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit-:1",
     "sha256": "8ce349070e5ca728fca6adcad4a8b85c91062df010aee15e458aeb33e26edf7f",
     "mode": "contextual-fragment",
     "owner": "docs/api/marks/point.md",

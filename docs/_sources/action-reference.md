@@ -50,8 +50,8 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
-  createPointMark(options?: { blend?: BlendMode; id?: string; data?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { blend?: BlendMode; target?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { blend?: BlendMode; id?: string; data?: string; maxItems?: number; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { blend?: BlendMode; target?: string; maxItems?: number | undefined; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { blend?: BlendMode; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
@@ -1553,19 +1553,20 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
-`stroke: false` disables the outline and its width at creation. [Marks](../api/marks.md)
+`stroke: false` disables the outline and its width at creation. Point `maxItems` defaults to 50,000 and accepts explicit values through 100,000. [Marks](../api/marks.md)
 
 ### `editPointMark`
 
 ```javascript
-editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, maxItems?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+Change point shape, appearance, or `maxItems` capacity and rematerialize its concrete items.
+Explicit `maxItems: undefined` restores the 50,000 default after raw/item preflight.
 `stroke: false` disables the outline and its width. [Marks](../api/marks.md)
 
 ### `createTickMark`

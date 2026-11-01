@@ -1197,7 +1197,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
+      "update": "`editPointMark` and encoding actions; explicit bounded point maxItems preserves the default capacity and is editable/removable; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1467,7 +1467,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
+      "update": "Edits constant point shape, appearance, and bounded maxItems capacity; explicit undefined restores the default capacity; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

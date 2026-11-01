@@ -3790,7 +3790,7 @@
   {
     "file": "api/marks/point.md",
     "block": 1,
-    "heading": "`createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createPointMark({ id?, data?, maxItems?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "complete",
     "environment": "node-esm",
     "receivers": [],
@@ -3802,7 +3802,7 @@
   {
     "file": "api/marks/point.md",
     "block": 2,
-    "heading": "`editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`",
+    "heading": "`editPointMark({ target?, maxItems?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
