@@ -75,5 +75,19 @@
       "sha256": "bd505441ecce1e9340dcde117eb92b1788c5159b59f1cd646653e20b413e4923",
       "bytes": 6420
     }
+  },
+  "progressRecordRefresh": {
+    "steps": [
+      "STEP061",
+      "STEP063"
+    ],
+    "scope": "Refresh stale private-checkpoint checkboxes to already implemented public planner/player; retain dynamic guide/native matrix obligations and all historical prose. No runtime/types/package change.",
+    "checks": 47,
+    "localLinks": "all existing",
+    "log": {
+      "path": "progress-docs.log.gz",
+      "uncompressedSha256": "fdb18a80ee42ec24b0cd34eee019eb2ce0d36e8bf8e97f4d177bf14c7cb12245",
+      "uncompressedBytes": 10037
+    }
   }
 }

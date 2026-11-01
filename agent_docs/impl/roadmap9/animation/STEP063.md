@@ -8,7 +8,20 @@
 - [x] 주입 clock과 frame 예약을 소유하는 비공개 controller
 - [x] pause·seek·interrupt의 현재 frame capture와 연속성
 - [x] run별 finished Promise와 commit의 정확히 한 번 종료
-- [ ] reduced motion·dispose·session 연결·공개 API와 소비자 검증
+- [x] reduced motion·dispose·session 연결·공개 API와 소비자 검증 checkpoint
+- [ ] 후행 domain별 current-frame 합산 및 최종 native matrix 종료
+
+## 현재 통합 상태
+
+2026-11-01: 공개 `createAnimationPlayer`와 session의 authentic frame 연결은 구현되어 있다.
+주입 clock의 pause/seek/rate/reverse/repeat, run별 단일 종료, reduced motion의 RAF 없는 최종 commit,
+dispose와 late callback 거부는 `player.test.js`와 `native-player.test.js`가 실제로 검사한다.
+[현재 frame 교차](../interaction/STEP070.md),
+[실제 pointer·keyboard·touch와 수명 합산](../qualification/native-interaction-owner-evidence/qualification.json),
+[설치 환경의 static/offline 실행](../qualification/native-acceptance-owner-evidence/qualification.json)을 연결한다.
+정확한 공개 동작은 [Current Animation](../../../contract/current/ANIMATION.md)이 소유한다.
+아래 비공개 controller 문단은 당시 checkpoint의 이력이며 공개 player의 현재 미구현 상태가 아니다.
+후행 domain 및 최종 qualification 의무는 별도로 남아 있다.
 
 `src/grammar/animation/timing.js`는 `bounded-playback-clock@1` 버전의 순수 경과 시간 계산을 소유한다. 명시 time/duration/elapsed/rate/iteration/repeat만 받고 ChartProgram·callback·wall clock·RAF를 읽지 않는다. rate 0은 시간을 유지하고 음수 rate는 현재 시간에서 역방향으로 이동한다. repeat는 추가 반복 수이며 runtime의 Infinity를 허용한다. 실제 controller의 clock은 이 함수 밖에 있다.
 

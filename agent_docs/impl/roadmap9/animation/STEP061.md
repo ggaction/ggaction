@@ -8,10 +8,24 @@
 - [x] 실제 graphic-only endpoint의 scene·identity·lineage 투영과 중복 검증
 - [x] [그래프 경로의 arc-length 대응·현재 node anchor 보정](routes.md)
 - [x] [연속 semantic value·scale 기반 순수 위치 커널](positions.md)
-- [ ] item identity·primitive role별 transition planner
-- [ ] 정확한 두 endpoint와 typed scene 연결
-- [ ] 의미 좌표 및 곡선·partition·graph·Geo 통합
-- [ ] 공개 API·타입·Current 계약·소비자 검증
+- [x] item identity·primitive role별 transition planner
+- [x] 정확한 두 endpoint와 typed scene 연결
+- [x] 의미 좌표 및 곡선·partition·graph·Geo 통합과 명시 fallback
+- [x] 공개 API·타입·Current 계약·소비자 검증 checkpoint
+- [ ] 동적 축 라벨·축 종속 범례 합산 및 최종 native matrix 종료
+
+## 현재 통합 상태
+
+2026-11-01: 위 네 구현 항목은 초기 비공개 커널 기록 뒤의 공개 통합을 반영한다.
+현재 API와 typed 지원/fallback 범위는 [Current Animation](../../../contract/current/ANIMATION.md)이 소유한다.
+`planTransition`/`sampleTransition`은 실제 item key·role과 exact endpoints를 사용하며,
+지원하지 않는 topology/primitive/layout을 typed morph로 위장하지 않는다.
+[Cartesian·guide 통합](implicit-lane-merged-evidence/qualification.json),
+[native layout fallback](../qualification/native-layout-scene-merged-evidence/qualification.json),
+[native facade fallback](../qualification/native-domain-scene-merged-evidence/qualification.json)과
+[실제 설치 실행](../qualification/native-acceptance-owner-evidence/qualification.json)이 후행 증거다.
+아래 본문은 각 초기 checkpoint 당시의 범위와 미완료 항목을 보존한 이력이며 현재 미구현 목록이 아니다.
+동적 guide 합산과 최종79group/577consumer qualification은 남아 있어 STEP061–070 전체 종료를 주장하지 않는다.
 
 공개 승인 범위 안에서 먼저 내부 수치 커널을 구현했다. `src/grammar/animation/values.js`는 ChartProgram·trace·렌더러·clock을 읽거나 변경하지 않는다. 시간 정규화, linear/cubic-in-out easing, 유한 convex 수치 보간, 양수 scale의 log 보간, 최단 회전(정확한 반바퀴는 양의 방향), 정규화 RGBA의 premultiplied linear-light 보간을 소유한다. 색 커널 버전은 `premultiplied-linear-srgb@1`이다. 끝점은 정확히 반환하며 RGBA 배열은 소유 복사 후 동결한다. 입력 accessor는 실행하지 않고 거절한다.
 
