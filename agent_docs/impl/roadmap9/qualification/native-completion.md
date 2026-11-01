@@ -67,8 +67,8 @@ node scripts/native-capability-completion.js test/native-capabilities.json candi
 
 첫 명령은 현재 구조 검증과 pending 목록을 반환한다. 정상 종료는 completion을 뜻하지 않는다.
 결과가 `status: pending` 또는 `failed`이면 완료가 아니며, 마지막 명령은 이 상태를 오류로 종료한다.
-현재 manifest에는 55개 acceptance owner와 243개 consumer owner를 실제 경로에 연결했다.
-24개 acceptance owner와 331개 required consumer owner는 pending이다. 최근 배정은 이미지·LOD·현재 프레임·partition·경로 탐색·단일 Y 정책의 실제 현재 계약과 시험 내용을 대조한 결과다. 배정과 최종 후보의 실행 통과는 별개다. 상세 근거는 [소유자 감사](native-owner-evidence/audit.json)에 기록한다. 실행 결과는 모두 별개로
+현재 manifest에는 55개 acceptance owner와 304개 consumer owner를 실제 경로에 연결했다.
+24개 acceptance owner와 270개 required consumer owner는 pending이다. 최근 배정은 이미지·LOD·현재 프레임·partition·경로 탐색·단일 Y 정책의 실제 현재 계약과 시험 내용을 대조한 결과다. 배정과 최종 후보의 실행 통과는 별개다. 상세 근거는 [소유자 감사](native-owner-evidence/audit.json)에 기록한다. 실행 결과는 모두 별개로
 79개 그룹과 577개 consumer가 pending이고 passed는 0이다. 추가 interaction 7축 중
 `current-frame`은 AT-34/43/65/80/81의 기존 의무를 명시한 열이다. 기존 570개 consumer target을 삭제하지 않았다. Image-owned encoding/scale/guide binding3개는 기존 I2 승인 계약에 따라 N/A이며, 함께 배치한 plot/guide 소비자는 그대로 required다.
 
