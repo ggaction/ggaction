@@ -1,6 +1,6 @@
 {
   "status": "native-axis-candidate-foundation-integrated; dynamic-public-reflow-pending",
-  "sourceRevision": null,
+  "sourceRevision": "0b2c8e41a461ed490b046dc7b93f8cd575c0973c",
   "base": "bb5842ec9",
   "incoming": "3415839355f3f3a5d9e63ebe7ab5bdf0cecf83f3",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -197,12 +197,46 @@
     "package.log": {
       "sha256": "9fbe4e41f02a36dccf118e21263b8e898a5272eaba8d37bc85d06b5816dd925b",
       "bytes": 1713
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-pack.json": {
+      "sha256": "5c5d45a9b667eee0c2adfdf373004e95d79e6ae5227e2ad79432ad7f245862e3",
+      "bytes": 396
+    },
+    "source-pin-docs.log": {
+      "sha256": "d3578de3497d3e5b977fd5e446a98c5a56541e0f946954f02e8a230e661ec183",
+      "bytes": 6139
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
     }
   },
   "remaining": [
-    "Source-pin metadata",
     "Explicit exact font wrap-query preparation and dynamic label sample emissions",
     "Dependent title public connection and implicit legend lanes",
     "Remaining route SLO/native matrix/final nine commands; STEP077 incomplete"
-  ]
+  ],
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 31,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Unchanged runtime/archive/focused source; no clean whole-suite execution claimed."
+  }
 }
