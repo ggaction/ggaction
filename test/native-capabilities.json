@@ -312,8 +312,20 @@
       "id": "AT-04",
       "expectation": "Offline native data, image, font and map assets with exact hashes and abort handling",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/MARKS.md",
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/resources/data-update-preparation.test.js",
+          "test/unit/resources/prepared-data-public.test.js",
+          "test/unit/resources/image-preparation.test.js",
+          "test/unit/resources/font-preparation.test.js",
+          "test/unit/geo/geometry-data.test.js",
+          "test/unit/animation/offline-assets.test.js"
+        ]
       },
       "input": "Offline replay of native data, font, map and image resources"
     },
@@ -379,8 +391,15 @@
       "id": "AT-10",
       "expectation": "Resource and action codec round trips preserve refs, inspection and trace without transient state",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/unit/persistence/program.test.js",
+          "test/unit/persistence/codec.test.js",
+          "test/contracts/installed-native-families.test.js"
+        ]
       },
       "input": "Serialize every new resource and action, load in a fresh process and edit"
     },
@@ -531,8 +550,19 @@
       "id": "AT-20",
       "expectation": "One Y mapping per Cartesian frame with independent panels and responsive occupied bounds",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/COMPOSITION.md"
+        ],
+        "tests": [
+          "test/unit/grammar/frame-policy.test.js",
+          "test/unit/frame-state.test.js",
+          "test/unit/single-y-admission.test.js",
+          "test/unit/single-y-aggregate-admission.test.js",
+          "test/unit/actions/canvas/responsive-lifecycle.test.js",
+          "test/contracts/composition-family-matrix.test.js"
+        ]
       },
       "input": "Unit, overlay, facet, concat and repeat with each permitted scale and guide scope"
     },
@@ -629,8 +659,16 @@
       "id": "AT-26",
       "expectation": "Native chart families preserve meaning, geometry, guides and behavior",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/COMPOSITION.md"
+        ],
+        "tests": [
+          "test/contracts/installed-native-families.test.js",
+          "test/contracts/composition-family-matrix.test.js",
+          "test/unit/resources/resource-composition.test.js"
+        ]
       },
       "input": "All native chart capabilities and composition recipes"
     },
@@ -769,8 +807,19 @@
       "id": "AT-33",
       "expectation": "Semantic hit uses CSS coordinates, clip, occlusion, stroke tolerance and provenance",
       "owner": {
-        "status": "pending",
-        "reason": "All mark and guide geometry at DPR 1, 2 and 3 still needs one qualified acceptance owner."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/grammar/hit-coordinates.test.js",
+          "test/unit/grammar/hit-shapes.test.js",
+          "test/unit/grammar/hit-stroke.test.js",
+          "test/unit/grammar/hit-index.test.js",
+          "test/unit/hit-program.test.js",
+          "test/unit/hit-guides.test.js",
+          "test/unit/hit-frame.test.js"
+        ]
       },
       "input": "Every geometry plus legend, axis, header and title hits at DPR 1, 2 and 3"
     },
@@ -929,8 +978,21 @@
       "id": "AT-42",
       "expectation": "Animation endpoints, interpolation and topology match independent numeric and state expectations",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/animation/values.test.js",
+          "test/unit/animation/matching.test.js",
+          "test/unit/animation/timing.test.js",
+          "test/unit/animation/planner.test.js",
+          "test/unit/animation/cartesian-values.test.js",
+          "test/unit/animation/polar-kernel.test.js",
+          "test/unit/animation/partition-transition.test.js",
+          "test/unit/animation/graph-tracks.test.js",
+          "test/unit/animation/geo-lifecycle.test.js"
+        ]
       },
       "input": "Deterministic transition samples at 0, 0.25, 0.5, 0.75 and 1, and zero duration"
     },
@@ -938,8 +1000,18 @@
       "id": "AT-43",
       "expectation": "Interruption starts at the current frame and deterministic clocks control playback and completion",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/unit/animation/player.test.js",
+          "test/unit/animation/rebase.test.js",
+          "test/unit/animation/timeline-public.test.js",
+          "test/unit/interaction-animation.test.js",
+          "test/unit/animation/route-session.test.js"
+        ]
       },
       "input": "Play, pause, seek, reverse, rate, repeat and interrupt"
     },
@@ -947,8 +1019,20 @@
       "id": "AT-44",
       "expectation": "Transformed-space and geographic camera transitions avoid incompatible topology morphs",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/GEOMETRY.md"
+        ],
+        "tests": [
+          "test/unit/animation/cartesian-fallbacks.test.js",
+          "test/unit/animation/cartesian-values.test.js",
+          "test/unit/animation/polar-lifecycle.test.js",
+          "test/unit/animation/partition-transition.test.js",
+          "test/unit/animation/graph-tracks.test.js",
+          "test/unit/animation/geo-lifecycle.test.js",
+          "test/unit/animation/resource-layout-fallbacks.test.js"
+        ]
       },
       "input": "Simultaneous log scale, polar, geographic, layout and data changes"
     },
@@ -998,8 +1082,16 @@
       "id": "AT-54",
       "expectation": "Static exports preserve interacted geometry, fonts, clips and embedded assets across four formats",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/contracts/installed-native-families.test.js",
+          "test/unit/animation/offline-assets.test.js",
+          "test/unit/animation/geo-text-assets.test.js"
+        ]
       },
       "input": "Compare SVG, Canvas, PNG, PDF and exported animation frames"
     },
@@ -1007,8 +1099,19 @@
       "id": "AT-55",
       "expectation": "Offline fresh-process restore preserves resources, selections and viewport without hidden network state",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/ANIMATION.md",
+          "agent_docs/contract/current/INTERACTION.md"
+        ],
+        "tests": [
+          "test/contracts/installed-native-families.test.js",
+          "test/unit/geo/interaction.test.js",
+          "test/unit/animation/offline-assets.test.js",
+          "test/unit/animation/geo-lifecycle.test.js",
+          "test/unit/animation/offline.test.js"
+        ]
       },
       "input": "Resume a saved interacted chart, geographic view and animation offline"
     },
@@ -1056,8 +1159,14 @@
       "id": "AT-59",
       "expectation": "Every active native requirement links to completed acceptance evidence without reference-only denominators",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/verification-evidence.test.js"
+        ]
       },
       "input": "Trace every active native requirement through assigned work, tests and execution evidence"
     },
@@ -1449,8 +1558,15 @@
       "id": "AT-89",
       "expectation": "All domain resources preserve versions, refs and lineage in offline installed codec round trips",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/installed-native-families.test.js",
+          "test/unit/persistence/program.test.js",
+          "test/unit/persistence/image-resources.test.js"
+        ]
       },
       "input": "New resource and action save, load, types, schemas and clean installed consumers"
     },
@@ -1458,8 +1574,16 @@
       "id": "AT-90",
       "expectation": "Human and agent documentation pins defaults, versions, executable examples and negative cases",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/docs/documentation-coverage.test.js",
+          "test/docs/executable-programs.test.js",
+          "test/docs/documentation.test.js",
+          "test/contracts/documentation-truth.test.js"
+        ]
       },
       "input": "New domain documentation, agent packets, recipes and option presets"
     },
@@ -1467,8 +1591,15 @@
       "id": "AT-91",
       "expectation": "All native requirements and the public artifact share final qualification evidence",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/CORE.md"
+        ],
+        "tests": [
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/verification-evidence.test.js",
+          "test/contracts/installed-native-families.test.js"
+        ]
       },
       "input": "Native completion manifest and existing CI"
     },

@@ -55,6 +55,10 @@ test("installed native families execute against one canonical package", { timeou
     const records = JSON.parse(await readFile(path.join(consumer.directory, "node-cases.json"), "utf8"));
     assert.equal(new Set(records.map(record => record.id)).size, records.length, "duplicate runtime receipt");
     const actual = new Map(records.map(record => [record.id, record]));
+    for (const id of ["static-delivery/interacted-native-offline-four-formats", "static-delivery/native-endpoints-animation-replay",
+      "animation/offline-fresh-process", "fonts/resource-metrics-offline", "interaction-animation/fresh-offline-native-scope"]) {
+      assert.equal(actual.get(id)?.status, "passed", `${id}: ${actual.get(id)?.error ?? "missing receipt"}`);
+    }
     for (const [family, ids] of Object.entries(families)) {
       await t.test(`${family} has executed installed runtime evidence`, () => {
         for (const id of ids) assert.equal(actual.get(id)?.status, "passed", `${id}: ${actual.get(id)?.error ?? "missing receipt"}`);
