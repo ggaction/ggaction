@@ -166,7 +166,13 @@
     "implicit-lane-render-first.log": "e79816acf0353db56ff62b583cf78c1ce58dc4b732257b09ee352a5c8d4828a0",
     "implicit-lane-foundation-second.log": "12b15a27574ab3a94a01ae10e940ebe8728142a75909888048e06a5fc4e88e81",
     "qualify-implicit-lanes-final.mjs": "682d3bd0d6e252ae58651b39a8f99be6cfae9556bcaeea9f376eeed92c5f0f9c",
-    "freeze-implicit-lane.mjs": "905ccf5802112e39c762c8b7c152827f774537a20591b13c71e00edf3d2aacc0"
+    "freeze-implicit-lane.mjs": "905ccf5802112e39c762c8b7c152827f774537a20591b13c71e00edf3d2aacc0",
+    "implicit-lane-source-pin-doc-browser.json": "1a30f7304a0792a72caae29170919875f726b820afb6a310670aac4b80ae3549",
+    "implicit-lane-source-pin-doc-browser.log": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0",
+    "implicit-lane-source-pin-built.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "implicit-lane-source-pin-build.log": "b5887ed0e6803cf80c8049f4c6e760a743d3cdf5b368adb1435c8678cbf2b73c",
+    "implicit-lane-source-pin-generation.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "implicit-lane-source-pin-docs.log": "bf2e53cabfe12d19835e058352f507e6417d018e8c30fae6138776480439f9cf"
   },
   "firstFailuresPreserved": [
     "Native left size legend inherits categorical placement; shared native config resolver extracted rather than duplicating policy.",
@@ -180,5 +186,46 @@
     "Axis-dependent inferred legend clearance/current dynamic label and title bounds",
     "Root union with transition3/timeline and dynamic reflow",
     "Final overall roadmap/STEP077 qualification"
-  ]
+  ],
+  "sourceCommit": "dc704e9f6",
+  "sourcePin": {
+    "docs": 30,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "changedPageBrowser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
+    },
+    "runtimeChanged": false
+  }
 }

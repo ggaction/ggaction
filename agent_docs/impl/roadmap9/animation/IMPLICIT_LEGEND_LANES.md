@@ -6,7 +6,7 @@
 - [x] Axis-free 네 edge와 categorical/size/gradient 공통 lane의 native 계산을 재사용한다.
 - [x] 불완전한 중간 의존 그룹은 identity + guide-unavailable로 보존하고 strict restore 검증은 유지한다.
 - [x] 집중/critical/네 renderer/browser/실제데이터/같은 tar 세 Node 검증.
-- [ ] Source pin과 문서 빌드 마감.
+- [x] Source dc704e9f6 pin, 문서30/빌드186pages·1598artifacts/변경페이지4width 접근성·overflow·console0.
 - [ ] Same-edge axis-dependent inferred clearance와 dynamic reflow 의존 연결은 후속 의무다.
 
 승인은 [AUTHORIZATION.json](../AUTHORIZATION.json)의 `remainingApproval`을 재사용한다.
