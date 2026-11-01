@@ -40,5 +40,11 @@
     "크기가 작은 support는 행별 검사 비용이 더 클 수 있다. 표본120개의 총 work는81739→75173이며 실행 지연시간 결과가 아니다.",
     "100/1k/10k 전체 density admission/SLO를 통과했다고 주장하지 않는다.",
     "정확한 최종 통합 source/archive의 package/render/browser/전체 coverage 검증은 후행 통합에서 수행한다."
-  ]
+  ],
+  "baseline": {
+    "commit": "0aedbe0a7a0a4ab8f35bb4d610272c9e895eafe7",
+    "file": "src/grammar/graph/routes/densityField.js",
+    "sha256": "259652565d465cf61bdeb8892347b1ea104998e476c30be5ec51d29c2b86ddd9",
+    "reproduction": "gunzip baseline and compare.mjs into .artifacts/density-work/ retaining their original filenames; run node .artifacts/density-work/compare.mjs from repository root."
+  }
 }
