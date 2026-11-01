@@ -134,6 +134,8 @@ test("keeps source imports inside their architectural boundaries", () => {
             ["assetHost.js", "ownData.js", "contentDigest.js", "pngEncoding.js", "validation.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
           (owner === "theme" && path.relative(root, dependency) === path.join("core", "ownData.js")) ||
+          (path.relative(root, file) === path.join("theme", "definition.js") &&
+            [path.join("grammar", "paint.js"), path.join("core", "validation.js")].includes(path.relative(root, dependency))) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,

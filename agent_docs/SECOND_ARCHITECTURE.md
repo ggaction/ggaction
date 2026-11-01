@@ -2080,7 +2080,7 @@ Theme는 이 기본값과 authored override를 구분하고 기존 plot material
 갱신한다. 마지막 frame 제거는 해당 family 기본값을 복원한다. 저장된 graph/hierarchy/layout 계산은
 다시 실행하지 않으며 named highlight는 새 baseline에서 기존 selection owner가 다시 적용한다.
 
-Theme 정의 정규화는 `actions/theme/definition.js`에서 core own-data·paint grammar를 재사용한다.
+Theme 정의 정규화와 effective frame/token/guide offset 읽기는 `theme/definition.js`에서 core own-data·paint grammar를 재사용한다. Action state와 native animation projection은 같은 read-only owner를 소비하며 정의 검증·오류 순서를 유지한다.
 `theme/defaults.js`는 공유 token/default 값만 소유한다. Optional categorical palette는 자동 appearance scale의
 resolved range와 기존 mark/legend materializer를 갱신한다. Pattern palette는 final item의 typed category와
 기존 fill materializer를 사용하며 scalar scale range에 구조화 paint를 저장하지 않는다.

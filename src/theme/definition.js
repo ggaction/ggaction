@@ -1,7 +1,7 @@
-import { validateFillPaint, isPatternPaint } from "../../grammar/paint.js";
-import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { ownRecord, ownArray } from "../../core/ownData.js";
-import { THEME_NAMES, THEME_TOKEN_KEYS, GUIDE_NUMERIC_THEME_TOKENS, THEME_TOKENS } from "../../theme/defaults.js";
+import { validateFillPaint, isPatternPaint } from "../grammar/paint.js";
+import { validateGeneratedItemLimit } from "../core/validation.js";
+import { ownRecord, ownArray } from "../core/ownData.js";
+import { THEME_NAMES, THEME_TOKEN_KEYS, GUIDE_NUMERIC_THEME_TOKENS, THEME_TOKENS } from "./defaults.js";
 
 const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
 
@@ -89,3 +89,22 @@ export function resolveThemeTokens(definition = "light") {
     ...normalized.tokens
   });
 }
+
+export function resolveEffectiveThemeFrame(state) {
+  const frames = state?.frames;
+  return Array.isArray(frames) ? frames.at(-1) : undefined;
+}
+
+export function resolveEffectiveThemeTokens(state) {
+  const frame = resolveEffectiveThemeFrame(state);
+  return frame === undefined
+    ? resolveThemeTokens("light")
+    : resolveThemeTokens({ base: frame.name, tokens: frame.tokens });
+}
+
+// Native guide offsets retain their own anchors and collision policies.
+export function axisThemeOffset(state, component) {
+  if (resolveEffectiveThemeFrame(state) === undefined) return undefined;
+  return resolveEffectiveThemeTokens(state)[component === "labels" ? "axisLabelGap" : "axisTitleGap"];
+}
+

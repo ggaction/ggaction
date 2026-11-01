@@ -24,3 +24,9 @@
 검증은 네 side×inferred/relative에서 공개 native action의 다섯 시점과 정확한 geometry 대응, numeric at의 비선형 중간값, current-state 재기준, hard-break/hidden label, theme/default preferred와 labels없는 inferred 제목, getter/extra/잘못된 query closure 거부를 포함한다. 두 끝점 제목이 x50에서 정상이어도 중간 scale에서 x가 Canvas를 벗어나는 literal을 만들어 native와 똑같이 `guide-layout` fade로 처리한다. 위치를 잘라 맞추지 않는다. 새 owner는 100/92.57/100, 기존 label owner는 98.51/95.06/100이다.
 
 다음 공개 연결에는 기존 theme preferred offset의 read-only owner 최소 추출, exact native dependency projection, 전체 endpoint proof와 offline/rebase/네 renderer/설치 소비자가 필요하다. 이 private 계산 통과를 공개 inferred title 완료로 집계하지 않는다. 처음 만든 fixture의 잘못된 `applyTheme({name})`와 flush+rotation 조합은 원 실패로 보존하고 실제 공개 계약에 맞게 수정했다.
+
+## 공유 theme 읽기 owner
+
+부모가 채택한 구체 경계에 따라 `actions/theme/definition.js`의 pure normalize/resolve 본문을 `theme/definition.js`로 이동했다. 기존 `resolveEffectiveThemeFrame(state)`, `resolveEffectiveThemeTokens(state)`, `axisThemeOffset(state,component)`만 같은 owner로 옮기고 기존 내부 action state 경로는 named re-export를 유지한다. Mutation/typography/wrapped action·public exports는 그대로다. Native materialization이 action 모듈을 import하거나 token 검증을 복제하지 않는다. Source boundary는 이 정확한 파일의 paint/validation 의존만 허용하고 일반 theme 권한을 넓히지 않는다.
+
+Full/Basic × light/dark/custom × theme-first/axis-first 12개 실제 공개 차트의 guide/config/graphics/theme/trace와 잘못된 theme 4개의 오류를 전후 동일 bytes로 비교했다. 기존 theme palette/spacing/state/defaults의 실제 공개 검사로 공유 definition의 100/100/100을 유지했다. 최초 좁은 subset의 palette 분기 미도달을 보존하고 기존 palette owner 회귀를 함께 실행했다. 패키지 module 개수 증감은 0이다. 새 public title admission은 다음 checkpoint다.
