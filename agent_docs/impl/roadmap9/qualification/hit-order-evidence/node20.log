@@ -1,0 +1,245 @@
+TAP version 13
+# Subtest: index returns every overlapping owner in scene z-order with exact immutable provenance
+ok 1 - index returns every overlapping owner in scene z-order with exact immutable provenance
+  ---
+  duration_ms: 4.044334
+  ...
+# Subtest: decorative primitives collapse by semantic owner and child path without dropping edge bundles
+ok 2 - decorative primitives collapse by semantic owner and child path without dropping edge bundles
+  ---
+  duration_ms: 0.932
+  ...
+# Subtest: guide roles remain explicit and do not infer marks or datasets from graphic identifiers
+ok 3 - guide roles remain explicit and do not infer marks or datasets from graphic identifiers
+  ---
+  duration_ms: 1.366208
+  ...
+# Subtest: broad phase preserves narrow holes, clips, CSS dash slop, opacity and local coordinates
+ok 4 - broad phase preserves narrow holes, clips, CSS dash slop, opacity and local coordinates
+  ---
+  duration_ms: 2.096208
+  ...
+# Subtest: balanced spatial search agrees with an independent rectangle oracle and prunes distant items
+ok 5 - balanced spatial search agrees with an independent rectangle oracle and prunes distant items
+  ---
+  duration_ms: 264.504
+  ...
+# Subtest: empty and unpainted scenes have no targets, and exact current scene identity rejects stale copies
+ok 6 - empty and unpainted scenes have no targets, and exact current scene identity rejects stale copies
+  ---
+  duration_ms: 0.450583
+  ...
+# Subtest: index accepts existing immutable Canvas scene output with explicit semantic mapping
+ok 7 - index accepts existing immutable Canvas scene output with explicit semantic mapping
+  ---
+  duration_ms: 1.976791
+  ...
+# Subtest: closed metadata, ownership, duplicate, accessor and size failures remain atomic
+ok 8 - closed metadata, ownership, duplicate, accessor and size failures remain atomic
+  ---
+  duration_ms: 0.819083
+  ...
+# Subtest: overlapping complex narrow phases stop at the cumulative query work bound
+ok 9 - overlapping complex narrow phases stop at the cumulative query work bound
+  ---
+  duration_ms: 1849.794083
+  ...
+# Subtest: equal z-order uses painted distance then stable item key and explicit child scope
+ok 10 - equal z-order uses painted distance then stable item key and explicit child scope
+  ---
+  duration_ms: 1.479917
+  ...
+# Subtest: inherited scene and reference accessors are never evaluated
+ok 11 - inherited scene and reference accessors are never evaluated
+  ---
+  duration_ms: 0.322791
+  ...
+# Subtest: bounded hit text ordering matches UTF-16 lexical order and charges inspected units once
+ok 12 - bounded hit text ordering matches UTF-16 lexical order and charges inspected units once
+  ---
+  duration_ms: 2.728084
+  ...
+# Subtest: equal-center BVH nodes preserve Unicode ties, signed-zero bounds and duplicate validation
+ok 13 - equal-center BVH nodes preserve Unicode ties, signed-zero bounds and duplicate validation
+  ---
+  duration_ms: 19.558875
+  ...
+# Subtest: current intermediate frame hits its visible location and excludes both endpoints
+ok 14 - current intermediate frame hits its visible location and excludes both endpoints
+  ---
+  duration_ms: 5.774084
+  ...
+# Subtest: rendered intermediate Canvas at DPR1/2/3 agrees with the CSS semantic target
+ok 15 - rendered intermediate Canvas at DPR1/2/3 agrees with the CSS semantic target
+  ---
+  duration_ms: 5.866375
+  ...
+# Subtest: enter/exit visibility and crossfade decorative duplicates retain one logical candidate
+ok 16 - enter/exit visibility and crossfade decorative duplicates retain one logical candidate
+  ---
+  duration_ms: 8.469375
+  ...
+# Subtest: late async completions are ignored by explicit version without rebuilding stale geometry
+ok 17 - late async completions are ignored by explicit version without rebuilding stale geometry
+  ---
+  duration_ms: 3.284458
+  ...
+# Subtest: invalid next frame preserves the exact previous snapshot, scene, targets and caller inputs
+ok 18 - invalid next frame preserves the exact previous snapshot, scene, targets and caller inputs
+  ---
+  duration_ms: 3.39475
+  ...
+# Subtest: empty frames remove hits atomically and an unchanged scene may advance its explicit version
+ok 19 - empty frames remove hits atomically and an unchanged scene may advance its explicit version
+  ---
+  duration_ms: 0.543958
+  ...
+# Subtest: destroy is idempotent and rejects late callbacks or queries after releasing current state
+ok 20 - destroy is idempotent and rejects late callbacks or queries after releasing current state
+  ---
+  duration_ms: 0.945833
+  ...
+# Subtest: closed frame envelope rejects accessors and invalid versions before current state can change
+ok 21 - closed frame envelope rejects accessors and invalid versions before current state can change
+  ---
+  duration_ms: 0.600792
+  ...
+# Subtest: current-frame queries retain inverse-overflow diagnostics without selecting a slop-only phantom
+ok 22 - current-frame queries retain inverse-overflow diagnostics without selecting a slop-only phantom
+  ---
+  duration_ms: 1.252166
+  ...
+# Subtest: actual Full and Basic points share scene identity and preserve exact final row grain
+ok 23 - actual Full and Basic points share scene identity and preserve exact final row grain
+  ---
+  duration_ms: 41.333917
+  ...
+# Subtest: ten thousand native points retain every item and exact CSS hits within the original index budget
+ok 24 - ten thousand native points retain every item and exact CSS hits within the original index budget
+  ---
+  duration_ms: 5806.148166
+  ...
+# Subtest: nested composition uses exact child path and local coordinates without double translation
+ok 25 - nested composition uses exact child path and local coordinates without double translation
+  ---
+  duration_ms: 13.037666
+  ...
+# Subtest: revisions and editable codec restoration retain current lineage and previous immutable targets
+ok 26 - revisions and editable codec restoration retain current lineage and previous immutable targets
+  ---
+  duration_ms: 13.466167
+  ...
+# Subtest: resource node labels collapse with their body while distinct overlapping owners remain
+ok 27 - resource node labels collapse with their body while distinct overlapping owners remain
+  ---
+  duration_ms: 25.656875
+  ...
+# Subtest: concrete adapter uses painted dash runs, outline and filled path holes with actual clipping
+ok 28 - concrete adapter uses painted dash runs, outline and filled path holes with actual clipping
+  ---
+  duration_ms: 2.652542
+  ...
+# Subtest: rotated multiline Text uses each metric line box and keeps the gap empty
+ok 29 - rotated multiline Text uses each metric line box and keeps the gap empty
+  ---
+  duration_ms: 1.296667
+  ...
+# Subtest: Image viewport, opacity, nested clip and shadow exclusion consume only source geometry
+ok 30 - Image viewport, opacity, nested clip and shadow exclusion consume only source geometry
+  ---
+  duration_ms: 0.67075
+  ...
+# Subtest: unsupported, open-stack, forged namespace and malformed concrete inputs fail without a partial frame
+ok 31 - unsupported, open-stack, forged namespace and malformed concrete inputs fail without a partial frame
+  ---
+  duration_ms: 6.430583
+  ...
+# Subtest: preparation rejects excessive item and namespace work before scene allocation
+ok 32 - preparation rejects excessive item and namespace work before scene allocation
+  ---
+  duration_ms: 117.945
+  ...
+# Subtest: ordinary concrete variants, source-only objects and scene format cache retain their behavior
+ok 33 - ordinary concrete variants, source-only objects and scene format cache retain their behavior
+  ---
+  duration_ms: 3.959625
+  ...
+# Subtest: actual materialized point scenes hit the same CSS targets at DPR1, DPR2 and DPR3
+ok 34 - actual materialized point scenes hit the same CSS targets at DPR1, DPR2 and DPR3
+  ---
+  duration_ms: 10.331541
+  ...
+# Subtest: owner placement uses the authentic empty scene and exact nested path
+ok 35 - owner placement uses the authentic empty scene and exact nested path
+  ---
+  duration_ms: 4.971125
+  ...
+# Subtest: numeric nearest uses explicit metrics, stable keys and finite raw tuple units
+ok 36 - numeric nearest uses explicit metrics, stable keys and finite raw tuple units
+  ---
+  duration_ms: 3.336458
+  ...
+# Subtest: nearest numeric validation covers inactive items, null, missing grain, accessors and cumulative work
+ok 37 - nearest numeric validation covers inactive items, null, missing grain, accessors and cumulative work
+  ---
+  duration_ms: 0.728666
+  ...
+# Subtest: screen nearest measures fill edges, implicit path closure and dash footprints without changing inspection
+ok 38 - screen nearest measures fill edges, implicit path closure and dash footprints without changing inspection
+  ---
+  duration_ms: 2.992041
+  ...
+# Subtest: nearest preserves holes, CSS negative scales, clip admission and invisible policy
+ok 39 - nearest preserves holes, CSS negative scales, clip admission and invisible policy
+  ---
+  duration_ms: 2.616625
+  ...
+# Subtest: nearest spatial index chooses distance then stable key within exact owner, path and grain
+ok 40 - nearest spatial index chooses distance then stable key within exact owner, path and grain
+  ---
+  duration_ms: 1.029958
+  ...
+# Subtest: nearest commands reuse native modes, clear misses, codec and atomic linked transactions
+ok 41 - nearest commands reuse native modes, clear misses, codec and atomic linked transactions
+  ---
+  duration_ms: 106.777042
+  ...
+# Subtest: screen commands use accepted sampled geometry and explicit child namespaces
+ok 42 - screen commands use accepted sampled geometry and explicit child namespaces
+  ---
+  duration_ms: 35.884792
+  ...
+# Subtest: nearest malformed commands and unsupported owner grains fail without partial state
+ok 43 - nearest malformed commands and unsupported owner grains fail without partial state
+  ---
+  duration_ms: 41.882375
+  ...
+# Subtest: nearest excludes fully clipped geometry and measures only admitted boundary intervals
+ok 44 - nearest excludes fully clipped geometry and measures only admitted boundary intervals
+  ---
+  duration_ms: 6.343541
+  ...
+# Subtest: clipped stroke interiors stay zero-distance and index clip work is cumulative
+ok 45 - clipped stroke interiors stay zero-distance and index clip work is cumulative
+  ---
+  duration_ms: 1.098167
+  ...
+# Subtest: nearest spatial queries agree with an independent rectangle distance oracle
+ok 46 - nearest spatial queries agree with an independent rectangle distance oracle
+  ---
+  duration_ms: 6.45975
+  ...
+# Subtest: screen nearest uses CSS root transform and preserves prior frame on validation failure
+ok 47 - screen nearest uses CSS root transform and preserves prior frame on validation failure
+  ---
+  duration_ms: 15.123708
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6589.784083

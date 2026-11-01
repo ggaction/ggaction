@@ -46,6 +46,8 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
+Hit tie ordering uses exact UTF-16 lexicographic comparison and charges the code units actually read, including shared prefixes; it does not repeatedly charge unread key suffixes. Input validation and metadata serialization retain their full work accounting. Item, preparation and query limits are unchanged. Evidence: `test/unit/grammar/hit-index.test.js` and the full 10,000-point CSS-hit regression in `test/unit/hit-program.test.js`; these correctness checks are not a performance qualification.
+
 Native navigation, keyboard focus and async asset preparation follow their sections below. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.

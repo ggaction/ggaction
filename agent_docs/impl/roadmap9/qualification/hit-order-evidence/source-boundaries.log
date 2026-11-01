@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: the frame association shared by interaction reaches only its lightweight core owners
+ok 1 - the frame association shared by interaction reaches only its lightweight core owners
+  ---
+  duration_ms: 1.634791
+  type: 'test'
+  ...
+# Subtest: current graph presentation has no action assembly or host dependency in its import closure
+ok 2 - current graph presentation has no action assembly or host dependency in its import closure
+  ---
+  duration_ms: 5.879333
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 3 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 122.313083
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 4 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 0.759625
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 5 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 33.359916
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 6 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.095583
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 7 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.149208
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 8 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 66.045917
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 9 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 140.718583
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 10 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 326.531709
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 11 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.184041
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 12 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.081041
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 13 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.317917
+  type: 'test'
+  ...
+# Subtest: keyboard focus uses native item readers without importing the complete mark policy graph
+ok 14 - keyboard focus uses native item readers without importing the complete mark policy graph
+  ---
+  duration_ms: 2.485166
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 786.615459
