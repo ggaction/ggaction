@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { chart } from '../../src/index.js';
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from '../../src/animation.js';
+const commands=[{op:'M',x:20,y:20},{op:'L',x:180,y:20},{op:'L',x:180,y:180},{op:'Z'},{op:'M',x:70,y:70},{op:'L',x:130,y:70},{op:'L',x:130,y:130},{op:'Z'}];
+const from=chart().createCanvas({width:200,height:200,margin:0}).createData({values:[{x:0,y:1},{x:1,y:2}]}).createLinePlot({id:'line',x:'x',y:'y',guides:false}).editGraphics({target:'line',property:'commands',value:[commands]}).editGraphics({target:'line',property:'fillRule',value:'evenodd'});
+const to=from.editGraphics({target:'line',property:'opacity',value:.5});
+const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,40),rebased=planTransition({from:frame,to:from,options:{durationMs:80,easing:'linear'}});
+const actual=sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,30),expected=sampleTransition(rebased,30);
+console.log(JSON.stringify({initial:plan.tracks.map(t=>[t.kind,t.reason]),startSameObject:sampleTransition(rebased,0)===frame,originalReasons:expected.decisions.map(d=>d.reason??null),restoredReasons:actual.decisions.map(d=>d.reason??null)}));
+assert.deepEqual(actual.graphicSpec,expected.graphicSpec);assert.deepEqual(actual.scene,expected.scene);
+assert.deepEqual(actual,expected);

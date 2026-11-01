@@ -1,13 +1,17 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { chart } from "../../../src/index.js";
+import { chart, hconcat } from "../../../src/index.js";
+import { getMarkItems } from "../../../src/inspection.js";
+import { exportAccessibleData } from "../../../src/accessibility.js";
+import { createInteractionSession } from "../../../src/interaction.js";
 import { createCompoundPathExample } from "../../../examples/compound-path/program.js";
 import { variants, pixelCommands } from "../../../examples/compound-path/data.js";
 import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "../../../src/persistence.js";
 import { encodeValue, decodeValue } from "../../../src/persistence/codec.js";
 import { renderToSVG } from "../../../src/renderers/svg.js";
 import { createTransitionScene } from "../../../src/scene.js";
+import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../../src/animation.js";
 for(const variant of variants) test(`${variant.id}: immutable edits, persistence and scenes preserve authored topology`,()=>{
   const program=createCompoundPathExample(variant),before=serializeProgram(program);
   assert.equal(JSON.parse(before).schemaVersion,4);assert.equal(JSON.parse(serializeGraphic(program)).schemaVersion,1);
@@ -91,4 +95,77 @@ test("compound graphics keep mark identity, accessible rows and compatible overr
   assert.equal(getMarkItems(resized,{target:"line"})[0].key,original.key);
   assert.notDeepEqual(resized.graphicSpec.objects.line.items[0].properties.commands,commands);
   assert.deepEqual(deserializeProgram(serializeProgram(resized)).graphicSpec,resized.graphicSpec);
+});
+
+test("native compound overrides use fill-rule holes and owner clips without changing source grain", () => {
+  const square = (a, b) => [{ op: "M", x: a, y: a }, { op: "L", x: b, y: a },
+    { op: "L", x: b, y: b }, { op: "L", x: a, y: b }, { op: "Z" }];
+  const values = [{ id: "a", x: 0, y: 1, group: "A" }, { id: "b", x: 1, y: 2, group: "A" }];
+  const native = chart().createCanvas({ width: 200, height: 200, margin: 0 }).createData({ id: "d", keyField: "id", values })
+    .createLinePlot({ id: "line", x: "x", y: "y", groupBy: "group", guides: false });
+  const commands = [...square(20, 180), ...square(70, 130)];
+  const p = native.editGraphics({ target: "line", property: "commands", value: [commands] })
+    .editGraphics({ target: "line", property: "fill", value: "#2563eb" })
+    .editGraphics({ target: "line", property: "strokeWidth", value: 0 })
+    .editGraphics({ target: "line", property: "fillRule", value: "evenodd" })
+    .editGraphics({ target: "line", property: "clip", value: { x: 0, y: 0, width: 150, height: 200 } });
+  const before = serializeProgram(p), original = getMarkItems(native, { target: "line" })[0];
+  const session = createInteractionSession({ program: p });
+  try {
+    for (const [point, expected] of [[{ x: 40, y: 40 }, original.key], [{ x: 100, y: 100 }, null], [{ x: 170, y: 40 }, null]]) {
+      session.dispatch({ type: "inspect", point, slop: 0 });
+      assert.equal(session.getState().hit.target?.itemKey ?? null, expected);
+    }
+  } finally { session.destroy(); }
+  const selected = p.selectMarks({ id: "picked", target: "line", items: [original.key] });
+  const exported = exportAccessibleData(selected, { format: "items" }).views[0].items;
+  assert.equal(exported.length, 1);
+  assert.equal(exported[0].key, original.key);
+  assert.deepEqual(exported[0].selectedBy, ["picked"]);
+  assert.deepEqual(getMarkItems(selected, { target: "line" })[0].rows, original.rows);
+  assert.deepEqual(original.rows.map(row => [row.data, row.index]), [["d", 0], ["d", 1]]);
+  const joined = hconcat({ programs: [{ id: "left", program: selected }, { id: "right", program: p }] });
+  const views = exportAccessibleData(joined, { format: "items" }).views;
+  assert.deepEqual(views.map(view => view.childPath), [["left"], ["right"]]);
+  assert.deepEqual(views.map(view => view.items[0].selectedBy), [["picked"], []]);
+  assert.notEqual(views[0].items[0].key, views[1].items[0].key);
+  assert.deepEqual(deserializeProgram(serializeProgram(joined)).graphicSpec, joined.graphicSpec);
+
+  const replay = selected.editCanvas({ width: 300, height: 300, margin: 50 })
+    .encodeColor({ target: "line", field: "group", scale: { domain: ["A"], range: ["#112233"] } })
+    .editScale({ id: "y", domain: [0, 5] }).createGuides({ legend: false }).editXAxis({ labels: { fontSize: 13 } })
+    .reviseData({ source: "d", id: "next", values: values.map(row => ({ ...row, y: row.y + 1 })) });
+  // Positional replay regenerates native line commands. Compatible concrete
+  // fill-rule and owner-clip overrides remain; the extension is not a data compiler.
+  assert.notDeepEqual(replay.graphicSpec.objects.line.items[0].properties.commands, commands);
+  assert.equal(replay.graphicSpec.objects.line.items[0].properties.fillRule, "evenodd");
+  assert.deepEqual(replay.graphicSpec.objects.line.clip, p.graphicSpec.objects.line.clip);
+  assert.equal(replay.graphicSpec.objects.line.items[0].properties.stroke, "#112233");
+  assert.deepEqual(replay.resolvedScales.y.domain, [0, 5]);
+  assert.equal(replay.guideConfigs.axis.x.labels.fontSize, 13);
+  const item = getMarkItems(replay, { target: "line" })[0];
+  assert.equal(item.key, original.key);
+  assert.deepEqual(item.rows.map(row => [row.data, row.index, row.revision]), [["next", 0, 1], ["next", 1, 1]]);
+  assert.deepEqual(deserializeProgram(serializeProgram(replay)).graphicSpec, replay.graphicSpec);
+  assert.equal(serializeProgram(p), before);
+});
+
+test("native compound overrides report edited-position fallback and replay their original animation offline", () => {
+  const commands = pixelCommands(variants[0]);
+  const from = chart().createCanvas().createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }] })
+    .createLinePlot({ id: "line", x: "x", y: "y", guides: false })
+    .editGraphics({ target: "line", property: "commands", value: [commands] })
+    .editGraphics({ target: "line", property: "fillRule", value: "evenodd" });
+  const to = from.editGraphics({ target: "line", property: "opacity", value: .5 });
+  const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+  assert.deepEqual(plan.tracks.map(track => [track.kind, track.reason]), [["crossfade", "edited-position"]]);
+  const restored = deserializeAnimation(serializeAnimation(plan)).plan;
+  for (const time of [0, 40, 100]) assert.deepEqual(sampleTransition(restored, time), sampleTransition(plan, time));
+  const frame = sampleTransition(plan, 40);
+  assert.equal(frame.scene.nodes.at(-1).type, "weighted-blend");
+  assert.ok(frame.scene.nodes.at(-1).properties.sources.every(source => source.properties.fillRule === "evenodd"));
+  const rebased = planTransition({ from: frame, to: from, options: { durationMs: 80, easing: "linear" } });
+  assert.equal(sampleTransition(rebased, 0), frame);
+  // The separate rebase/offline reason-transport audit remains pending in this
+  // source snapshot; the original-plan renderer replay is not evidence for it.
 });

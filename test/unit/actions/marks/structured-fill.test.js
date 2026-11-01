@@ -6,6 +6,9 @@ import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGrap
 import { renderToSVG } from "../../../../src/renderers/svg.js";
 import { decodeValue, encodeValue } from "../../../../src/persistence/codec.js";
 import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
+import { getMarkItems } from "../../../../src/inspection.js";
+import { exportAccessibleData } from "../../../../src/accessibility.js";
+import { createInteractionSession } from "../../../../src/interaction.js";
 const rows = [{ x: 0, y: 2, c: "A", r: "north", text: "First" }, { x: 1, y: 4, c: "B", r: "south", text: "Second" }];
 const pattern = (extra = {}) => ({ type: "pattern", style: "cross", pitch: 12, strokeWidth: 2, phase: [-1, 2], foreground: "red", background: "#00f8", ...extra });
 const radial = () => ({ type: "radial-gradient", center: { x: .5, y: .5 }, radius: .5,
@@ -19,6 +22,35 @@ const recipes = [
   ["area", "createAreaMark", "editAreaMark", p => p.encodeX({ field: "x" }).encodeYRange({ lower: "y", upper: { datum: 0 } }).layoutSeries({ mode: "overlay" })],
   ["text", "createTextMark", "editTextMark", p => p.encodeX({ field: "x" }).encodeY({ field: "y" }).encodeText({ field: "text" })]
 ];
+
+test("pattern-filled native points follow explicit scales while hit and accessible data keep row identity", () => {
+  const p = chart().createCanvas({ width: 200, height: 200, margin: 0 })
+    .createData({ id: "d", keyField: "id", values: [{ id: "a", x: 1, y: 1 }, { id: "b", x: 3, y: 3 }] })
+    .createPointMark({ id: "points" }).encodeX({ field: "x", scale: { domain: [0, 4], nice: false } })
+    .encodeY({ field: "y", scale: { domain: [0, 4], nice: false } })
+    .encodePointRadius({ value: 10 })
+    .editPointMark({ target: "points", fill: pattern({ coordinateSpace: "object", phase: [0, 0] }) });
+  const before = serializeProgram(p), original = getMarkItems(p, { target: "points" });
+  const q = p.editScale({ id: "x", domain: [0, 8] });
+  assert.deepEqual(q.graphicSpec.objects.points.items.map(item => [item.properties.x, item.properties.y]), [[25, 150], [75, 50]]);
+  assert.deepEqual(q.graphicSpec.objects.points.items.map(item => item.properties.fill.origin), [{ x: 15, y: 140 }, { x: 65, y: 40 }]);
+  assert.deepEqual(getMarkItems(q, { target: "points" }).map(item => item.key), original.map(item => item.key));
+  const session = createInteractionSession({ program: q });
+  try {
+    session.dispatch({ type: "inspect", point: { x: 25, y: 150 }, slop: 0 });
+    assert.equal(session.getState().hit.target.itemKey, original[0].key);
+    session.dispatch({ type: "inspect", point: { x: 50, y: 150 }, slop: 0 });
+    assert.equal(session.getState().hit.target, null);
+  } finally { session.destroy(); }
+  const selected = q.selectMarks({ id: "picked", target: "points", items: [original[0].key] })
+    .highlightMarks({ selection: "picked", fill: "red", bringToFront: false });
+  const exported = exportAccessibleData(selected, { format: "items" });
+  assert.deepEqual(exported.views[0].items.map(item => [item.fields.id, item.selectedBy, item.visible]), [["a", ["picked"], true], ["b", [], true]]);
+  assert.deepEqual(getMarkItems(selected, { target: "points" }).map(item => item.rows.map(row => [row.data, row.index])), [[["d", 0]], [["d", 1]]]);
+  assert.deepEqual(selected.removeMarkHighlight({ selection: "picked" }).graphicSpec, q.graphicSpec);
+  assert.deepEqual(exportAccessibleData(deserializeProgram(serializeProgram(selected)), { format: "items" }), exported);
+  assert.equal(serializeProgram(p), before);
+});
 
 test("all filled mark owners normalize both paints and preserve creation/edit equivalence", () => {
   for (const fill of [pattern(), radial()]) for (const [id, create, edit, encode] of recipes) {
