@@ -33,13 +33,25 @@
     "environment": "node-esm",
     "receivers": [],
     "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.",
+    "sha256": "90a80fa2fcada3cf9a3f7b415986d0915d42173809bb212a99e0b0f1d977d5f9",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 4,
+    "heading": "Move axes, labels, and grids",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
     "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.",
     "sha256": "61a3a17fe5d6a348f9e7513caad259e39680ba6c0cf2d6cb5251adf0cfa609a5",
     "executable": true
   },
   {
     "file": "api/animation.md",
-    "block": 4,
+    "block": 5,
     "heading": "Render the same frame",
     "mode": "fragment",
     "environment": "esm-context",
@@ -51,7 +63,7 @@
   },
   {
     "file": "api/animation.md",
-    "block": 5,
+    "block": 6,
     "heading": "Play with an explicit clock",
     "mode": "fragment",
     "environment": "browser-module",

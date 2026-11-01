@@ -18,3 +18,5 @@ README와 runtime payload는 바뀌지 않아 canonical repack도 동일 SHA다.
 첫 로그로 보존했다. 이후 각 owner 검사는 통과했다. 표시용 log는 줄끝 공백만 제거했으며
 raw SHA와 원 `.artifacts` 파일은 유지한다. 동적 wrap/skip/rotation 선택, inferred title,
 categorical/size/group 범례 및 전체061/062/063/077는 이 checkpoint의 완료 범위가 아니다.
+
+Source pin 이후 문서26개, built186페이지·1598선별 LLM artifact도 통과했다. 원 source와 증거는 그대로이며 후속 root 통합 검증은 별도 기록을 따른다.

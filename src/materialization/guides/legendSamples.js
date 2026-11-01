@@ -38,8 +38,6 @@ export function resolveSizeLegendLayout(program, config) {
     labels: inheritedLabels,
     titleStyle: inheritedTitleStyle
   });
-  const labels = effective.labels;
-  const titleStyle = effective.titleStyle;
   // Group ownership replaces placement inheritance, never shared typography.
   const placementCategorical = config.blockLocalPosition === undefined && legendGroup(program, config.target) === undefined &&
     (config.inheritPosition !== false || categorical?.position === config.position)
@@ -54,8 +52,18 @@ export function resolveSizeLegendLayout(program, config) {
     columns: categorical.columns, titlePosition: categorical.titlePosition,
     offset: categorical.offset, itemGap: effective.blockGap ?? categorical.itemGap
   } : { position };
+  const { plot, canvas } = resolveContinuousBounds(program);
+  const layout = resolveSizeLegendLayoutValues({ plot, canvas, config: { ...effective, ...geometry },
+    scale, format: config.labels.format, profile: program.materializationConfigs.textMetrics });
+  return { ...layout, config: effective };
+}
+
+// Both authored legends and prepared transitions use the same explicit native
+// value-to-area mapping and measured item placement.
+export function resolveSizeLegendLayoutValues({ plot, canvas, config, scale, format = config.labels.format, profile }) {
+  const effective = config, labels = config.labels, titleStyle = config.titleStyle;
   const ordinalSize = scale.type === "ordinal";
-  if (ordinalSize && config.labels.format !== undefined && config.labels.format !== "auto") {
+  if (ordinalSize && format !== undefined && format !== "auto") {
     throw new Error("Categorical size legends retain original category labels.");
   }
   const discrete = isDiscreteSizeScaleType(scale.type);
@@ -78,14 +86,13 @@ export function resolveSizeLegendLayout(program, config) {
   const radii = areas.map(area => Math.sqrt(area / Math.PI));
   const radius = Math.max(...radii);
   const width = Math.max(32, radius * 2);
-  const { plot, canvas } = resolveContinuousBounds(program);
   const itemText = discrete
-    ? formatDiscretizedIntervals(scale.thresholds, config.labels.format)
+    ? formatDiscretizedIntervals(scale.thresholds, format)
     : ordinalSize ? values.map(formatVisibleText) : formatContinuousValues(
         values,
         scale.domain,
         "quantitative",
-        config.labels.format
+        format
       );
   const mappedText = !discrete && effective.labelMap !== undefined
     ? itemText.map((label, index) => resolveDisplayLabel(values[index], effective.labelMap, () => label))
@@ -94,7 +101,7 @@ export function resolveSizeLegendLayout(program, config) {
   const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
   const symbolExtent = symbolStroke / 2;
   const sampleWidth = width + symbolStroke;
-  const layout = resolveLegendItemLayout(plot, { ...effective, ...geometry, labels, titleStyle }, text, {
+  const layout = resolveLegendItemLayout(plot, { ...effective, labels, titleStyle }, text, {
     width: sampleWidth, height: Math.min(radius * 2 + symbolStroke, effective.clipHeight??Infinity),
     itemBounds: radii.map(r => clippedSampleBounds({
       left: sampleWidth / 2 - r - symbolExtent,
@@ -102,9 +109,9 @@ export function resolveSizeLegendLayout(program, config) {
       top: -r - symbolExtent,
       bottom: r + symbolExtent
     },effective.clipHeight))
-  }, undefined, program.materializationConfigs.textMetrics);
-  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
-  const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
+  }, undefined, profile);
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", effective);
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", effective);
   return { ...layout, symbolX: layout.symbolX.slice(0, radii.length).map(x => x + sampleWidth / 2),
     symbolY: layout.itemY.slice(0, radii.length), radii, text, values, hiddenCount,
     ...(effective.labelMap === undefined ? {} : {

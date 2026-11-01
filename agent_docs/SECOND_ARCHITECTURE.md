@@ -932,12 +932,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 782,200 bytes |
+| `ggaction` | 782,300 bytes |
 | `ggaction/basic` | 423,800 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 129,600 bytes |
-| `ggaction/animation` | 293,600 bytes |
+| `ggaction/interaction` | 131,400 bytes |
+| `ggaction/animation` | 295,500 bytes |
 
 
 
@@ -4828,3 +4828,15 @@ Package는1,211entries / unpacked7,784,462 / 최대packed1,726,223bytes이며 �
 Full782,156 / Basic423,716 / animation293,500 / interaction129,579bytes다.
 [통합 증거](impl/roadmap9/integration/geographic-route-merged-evidence/qualification.json)는
 unchanged shared source와 공통 인벤토리의 byte-identical 재사용을 구분한다.
+
+### Prepared native size legend geometry
+
+`materialization/guides/legendSamples`의 explicit `resolveSizeLegendLayoutValues`가 원 size 범례와
+transition의 값→면적 mapping·측정 item 배치를 공유한다. `animation/sizeLegendState`는 exact
+raw sample·현재 scale/frame·font query closure만 준비하고 기존 native 함수를 재생한다. 원형
+symbol은 기존 circle primitive이며 guideTracks가 geometry radius를 style 보간과 분리한다.
+
+크기 범례 native owner 추가의 package 실측은1179entries, Node20/24 packed1,688,787 및
+unpacked7,619,363bytes다. 기존 한도 실패를 보존하고1179/1,688,800/7,619,400으로만
+조정한다. 동일 archive animation gzip272,457에272,500 상한을 적용하며 Full/Basic/SVG/graph/
+interaction 한도는 유지한다. 정확 증거는 [size legend qualification](impl/roadmap9/animation/size-legend-evidence/qualification.json)에 있다.

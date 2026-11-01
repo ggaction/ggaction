@@ -1,6 +1,6 @@
 import {chart,render} from 'ggaction';
 import {chart as basic} from 'ggaction/basic';
-import {planTransition,sampleTransition,exportAnimationFrames,serializeAnimation,deserializeAnimation,createAnimationPlayer,type TransitionPlan} from 'ggaction/animation';
+import {planTransition,sampleTransition,exportAnimationFrames,serializeAnimation,deserializeAnimation,createAnimationPlayer,type TransitionPlan,type TransitionFrame} from 'ggaction/animation';
 import {renderToSVG} from 'ggaction/svg';
 import {renderToPNGBuffer} from 'ggaction/png';
 import {renderToPDFBuffer} from 'ggaction/pdf';
@@ -121,3 +121,12 @@ render(legendFrame,context);renderToSVG(legendFrame);renderToPNGBuffer(legendFra
 const fixedLabels=guideFrom.editXAxisLabels({flush:true});
 const fixedLabelFrame=sampleTransition(planTransition({from:fixedLabels,to:fixedLabels.editCanvas({width:680}),options:{durationMs:100}}),50);
 renderToSVG(fixedLabelFrame);
+
+const sized = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark()
+  .encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodeSize({ field: "y", scale: { domain: [0, 10], range: [0, 100] } })
+  .createLegend({ channels: ["size"], values: [5, 10], offset: 20 });
+const sizeFrame: TransitionFrame = sampleTransition(planTransition({ from: sized,
+  to: sized.editScale({ id: "size", range: [0, 400] }), options: { durationMs: 100 } }), 50);
+void sizeFrame;

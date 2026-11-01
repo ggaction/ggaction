@@ -1,0 +1,236 @@
+{
+  "status": "verified-focused-size-guide-integration; final-native-qualification-pending",
+  "sourceRevision": null,
+  "base": "3eccdef54",
+  "incoming": "9c6ec0736",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@5",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@1"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1212,
+    "packedBytes": 1727133,
+    "unpackedBytes": 7801168,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "9b834e45c15082de12c0831d8e12029924d8dff4a218fccfed793301736e7066"
+  },
+  "checks": {
+    "animation": 554,
+    "sharedCoverage": {
+      "tests": 554,
+      "frameEndpoint": [
+        100,
+        95.88,
+        100
+      ]
+    },
+    "boundaries": 24,
+    "realistic": 5,
+    "render": 8,
+    "docs": 35,
+    "packageArtifact": 7,
+    "installed": {
+      "20": {
+        "runtime": 54,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v20.20.2"
+      },
+      "22": {
+        "runtime": 54,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v22.23.1"
+      },
+      "24": {
+        "runtime": 54,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v24.22.1"
+      }
+    }
+  },
+  "reuse": {
+    "exactIncomingOwners": [
+      "src/animation/guideTracks.js",
+      "src/grammar/animation/guideState.js",
+      "src/materialization/animation/guides.js",
+      "src/materialization/animation/legendGuides.js",
+      "src/materialization/animation/legendState.js",
+      "src/materialization/animation/sizeLegendState.js",
+      "src/materialization/guides/legendSamples.js"
+    ],
+    "upstream": "../size-legend-evidence/qualification.json",
+    "note": "The only nonidentical changed runtime owner is root frameEndpoint; guide-circle admission added while preserving timeline3, Cartesian2 and geographic route integration. Focused coverage rerun covers this seam."
+  },
+  "limits": {
+    "entries": 1212,
+    "packed": 1731000,
+    "unpacked": 7801200,
+    "measuredPackedMaximum": 1730814,
+    "measuredUnpacked": 7801168,
+    "fullGzip": 782300,
+    "animationGzip": 295500
+  },
+  "diagnostics": [
+    "A diagnostic loader exposed the private canonical runPack only for premeasurement; final9b834e archive uses unmodified canonical createPackageArtifact with manifest validation.",
+    "First direct selected-Node pack used npm fallback and did not measure the selected npm runtime. selected20/24 reruns set npm_execpath; their packed1730814 bytes are the correct matrix maximum. All installed runtime children use their selected Node and one Node22 archive.",
+    "No nonexistent docs selector tests executed in docs.log; corrected canonical selector passed35 and the original selector failure is preserved."
+  ],
+  "evidenceFiles": {
+    "selected24.json": {
+      "sha256": "f0b23b79e791c2f328e085e6f266828873e8f79d6df0415fea54e5dfb18b8c39",
+      "bytes": 386
+    },
+    "premeasure-20.json": {
+      "sha256": "75256ade0b35fe939b36deef56832c006e612cf3d59ab7089e48ce3de7cd8f2e",
+      "bytes": 305
+    },
+    "canonical24-npm-fallback.json": {
+      "sha256": "d7cdb0a83e60265ab96a5f36de18a79059b15e82d8d671b1b0c1e22bb02ecd07",
+      "bytes": 387
+    },
+    "package-artifact.log": {
+      "sha256": "b8c3684b04234a2548da39fd4f64669ebee9023743fa8daa3791609c3d804609",
+      "bytes": 1717
+    },
+    "installed-24.json": {
+      "sha256": "0d365e0d0f5afd02572b81387a9f4fbb56bc9b8e6db77dde5347200480ce98af",
+      "bytes": 3462
+    },
+    "render.log": {
+      "sha256": "5d8563c9ee730351d58e2f0b4770b17e150772715ee327712ab50ac328761893",
+      "bytes": 2035
+    },
+    "canonical24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "canonical20-npm-fallback.json": {
+      "sha256": "e60f12e7c9302b3bc6ee707e66fc6372d195bc99dd2525f6c397b8ff99ef8d61",
+      "bytes": 387
+    },
+    "installed-24.log": {
+      "sha256": "eff150e25a73c7d39a96932171bfe033cff92cab4de6b71842a621fb3f3d637d",
+      "bytes": 2972
+    },
+    "canonical20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "shared-coverage.log": {
+      "sha256": "6ecbc73bd7f70b86469085ea7452f6664c9176858785504e2329cb7c227f011a",
+      "bytes": 131284
+    },
+    "installed-22.json": {
+      "sha256": "3bff631427eb6b8a16584fa1d776ce2eaeb9f70a22209d3e87e39bbbbdd14f5a",
+      "bytes": 3462
+    },
+    "resolve.mjs": {
+      "sha256": "1f7a9ac42a1d41660ec5c14e38dcad6b33524ce3903c966db57353c2437dd8af",
+      "bytes": 2779
+    },
+    "installed-22.log": {
+      "sha256": "2265c3e946ce465a19ddf2de05de1b775be189920178d9f148f8157271f4d653",
+      "bytes": 2972
+    },
+    "docs-corrected.log": {
+      "sha256": "731bf498ee73c7e06261dca55e7ed390b769360c378f73b2bc72bf9556a29185",
+      "bytes": 6944
+    },
+    "docs.log": {
+      "sha256": "62557c7b4d750b3b5c769bf4f699a4c99b0eff251abf065b80e7e24ba30842bc",
+      "bytes": 520
+    },
+    "canonical22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "a32d49b414f3bf492e0439912169c37dcca4910c8008f245564a49454e672f31",
+      "bytes": 4983
+    },
+    "installed-20.log": {
+      "sha256": "92ac715de2139e6b7ee01674f92a0c9050c7f437bc5ba7fcbbe898d2ea6223dd",
+      "bytes": 2972
+    },
+    "selected20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure-22.log": {
+      "sha256": "cbb0b50028972347aa49e137da41eb502a65e4899da612e227a30b619fccefb0",
+      "bytes": 253
+    },
+    "animation.log": {
+      "sha256": "d57e00fb181037906134ace9e745506616e5395c698764fcc4c7146157100a6d",
+      "bytes": 130449
+    },
+    "installed-20.json": {
+      "sha256": "1c34569798f17dbd026f1e2f34deaf6c4ac7e7c80b1282945d146371cd8b813a",
+      "bytes": 3462
+    },
+    "premeasure-20.log": {
+      "sha256": "b8e6cc6d8b0f0f2f0d8fc1404c6db49ea9b3e068b6208fa3c2f7ecbf9eda3073",
+      "bytes": 253
+    },
+    "premeasure-24.json": {
+      "sha256": "e936bb90c4d2a3660fb7aca91bb2b98ebb727c688b8697e9b5b4cf45ef2c6f8d",
+      "bytes": 305
+    },
+    "selected20.json": {
+      "sha256": "b25e422d461e9a84ac0d407c992de9548f25962688a9be627301067271aad3e3",
+      "bytes": 386
+    },
+    "prepack.mjs": {
+      "sha256": "a54af6555037cc72ea27bbd6d5387de3630bc844c24b8fe5d3cfbbec3742c412",
+      "bytes": 1189
+    },
+    "premeasure-24.log": {
+      "sha256": "1fdcb863bcdefeb7c41f9576e99df410b3bd0224903d963fce22e9e998f36bce",
+      "bytes": 253
+    },
+    "prepack.log": {
+      "sha256": "3756f2e1f19eb6ae1328c2acff11f490399610b97ecaf2de231e0712e6e1f83e",
+      "bytes": 502
+    },
+    "canonical22.json": {
+      "sha256": "096e95362df31491418b3f2b9a34af91bbaf66992f394434195b6155e07dfee9",
+      "bytes": 387
+    },
+    "premeasure-22.json": {
+      "sha256": "37361553bdae7ecf2c7f5aef64eda96ffc498a3308f8137cee0dfd8e7423b996",
+      "bytes": 305
+    },
+    "docs-generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "ac1f87f13d6704ee6edc59b34de940e39bbcd13b5c02d4870ad0d2fca861742b",
+      "bytes": 1284
+    },
+    "selected24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "remaining": [
+    "Source-pin generated provenance and docs build after benchmark CPU slot",
+    "Categorical/group legends and dynamic guide obligations",
+    "GeoText2 and route performance integration",
+    "Whole native matrix and nine final qualification commands; no STEP077 completion claimed"
+  ]
+}

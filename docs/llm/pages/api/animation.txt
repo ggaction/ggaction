@@ -265,6 +265,30 @@ offline. Text or font changes crossfade; exact font profiles must contain all re
 measurements. Automatic samples, symbol legends, borders, groups, multiple blocks on one
 edge, and inferred axis clearance retain safe fallbacks.
 
+Continuous size legends also support exact `values` and explicit numeric `offset` in one
+independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
+calculating the symbol radius. The native measured layout preserves multiline labels,
+hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
+and grouped or dependent legend placement currently retain an explicit layout crossfade.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 0, amount: 0 }, { x: 10, amount: 10 }] })
+  .createPointMark().encodeX({ field: "x" }).encodeY({ field: "amount" })
+  .encodeSize({ field: "amount", scale: { domain: [0, 10], range: [0, 100] } })
+  .createLegend({ channels: ["size"], values: [5, 10], offset: 20 });
+const to = from.editScale({ id: "size", range: [0, 400] });
+const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const svg = renderToSVG(sampleTransition(plan, 50));
+console.log(svg);
+```
+
 > **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
 
 ```js

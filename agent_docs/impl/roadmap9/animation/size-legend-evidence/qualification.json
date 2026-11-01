@@ -1,0 +1,132 @@
+{
+  "sourceParent": "40be9e869b11a2a5df5b0ce4fc75e6963c7dfd8e",
+  "scope": "continuous exact-value size legend native layout; not whole guide/animation/Roadmap9 completion",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "guideKernel": "native-guide-values@5",
+  "transitionVersion": 2,
+  "shared4Changes": [
+    "frameEndpoint guide-geometry admission adds circle only"
+  ],
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1179,
+    "packedBytes": 1686185,
+    "unpackedBytes": 7619363,
+    "file": ".artifacts/animation-archives/ggaction-size-legend-ee8c91a9503c45eb314e09e66534213d402d7e4ed3904ec61cf6623e93a5a178.tgz",
+    "sha1": "cc500e8a7eb3d0b9a36d1ed4590c4cd9f737031e",
+    "sha256": "ee8c91a9503c45eb314e09e66534213d402d7e4ed3904ec61cf6623e93a5a178"
+  },
+  "checks": {
+    "owning": {
+      "passed": 26,
+      "newCases": 10,
+      "newOwner": {
+        "lines": 100,
+        "branches": 92.06,
+        "functions": 100
+      },
+      "changedThreeOwners": {
+        "lines": 99.36,
+        "branches": 94.32,
+        "functions": 100
+      }
+    },
+    "cumulative": {
+      "total": 422,
+      "passed": 421,
+      "testExpectationFailure": 1,
+      "resolution": "Range reversal is interpolable; domain-direction reversal fades. Corrected test passes in final owning 26. No failed run relabelled as success."
+    },
+    "boundaries": 42,
+    "packageAndCoveragePolicy": 14,
+    "docs": 23,
+    "documentationTruth": 3,
+    "builtPages": 186,
+    "builtLlmArtifacts": 1598,
+    "realistic": {
+      "tests": 5,
+      "recipes": 45,
+      "durationMs": 5029.037333,
+      "rows": "five unchanged real cohorts and original units"
+    },
+    "renderAndBrowser": {
+      "tests": 9,
+      "outputs": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameArchive": true,
+      "runtimeCasesEach": 4,
+      "strictTypes": true,
+      "documentExample": true,
+      "optionalPeers": true,
+      "bundleEntries": 6,
+      "limitRepair": "Node20 runtime/TS/doc/6 measurements all completed; animation limit-only failure retained, exact same measurements revalidated with 272500 cap."
+    },
+    "sourcePinnedDocs": 26
+  },
+  "limits": {
+    "entries": 1179,
+    "packedBytes": 1688800,
+    "unpackedBytes": 7619400,
+    "animationGzip": 272500
+  },
+  "pending": [
+    "categorical/group legends",
+    "automatic samples, border, clip and inferred clearance",
+    "dynamic wrap/skip/rotation",
+    "inferred title dependencies",
+    "combined transition v3 qualification",
+    "whole STEP061/062/063/077"
+  ],
+  "rawLogsSha256": {
+    "size-legend-archive.json": "5ca06071f5ec08e71327d79a353cda3d98d4c05f5eba1e60c3f7c28d14535263",
+    "size-legend-boundaries.log": "5ab583d594a9f6db2b14fdbee39459507aa25eeaefae465247ee99f8ffce4c59",
+    "size-legend-built-docs.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "size-legend-coverage-final.log": "d869052073e47be5cf20c2c287c107e6af3670bbd393e4e4c6dbc41d1f575346",
+    "size-legend-coverage-first.log": "56addbb0bb8993439a9c0acfde802e4c62f985ef39f5d2910a6a3d6ff73a181c",
+    "size-legend-coverage-second.log": "2368432fe6f4ead5511a18f062e88152da5567c7c015c33160ba0b23a4edceee",
+    "size-legend-cumulative.log": "22bf21d8a06abdd4ee30ed9ab2ec597838e6a08ae08809e9cf81967c95f3edda",
+    "size-legend-doc-generation.log": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+    "size-legend-docs-build.log": "74f369c07653bd486d9ba2d88c35c4cf95cbba7315d9cdcf90a2c251b1230c2b",
+    "size-legend-docs-first.log": "71244ceca71777d06c32ac3586e4e20b27ccd9a1973941e8a3a7210225c29a17",
+    "size-legend-documentation-truth.log": "5e2ae71f2e95dc986718ea015e51f92bf07c523c925a9e489d54a2689b51787a",
+    "size-legend-installed-node20.log": "5a5723ac1e0945fcdd8c3e02b2c34f05533d8c01bd633aef4f060a35756af66c",
+    "size-legend-installed-node22.log": "72bb627b048131ad6189937b8e9740797d12442d87cd27d9e43fd1641e46c4a5",
+    "size-legend-installed-node24.log": "68d8c88e10c315d1d96bc6e4a7aa9080568aa16ab0821add3755924af6f8d465",
+    "size-legend-owning-first.log": "8d84719957322ce2862b8291f0129aa2384c58723e63a8c4c4fecd4c67bf18e0",
+    "size-legend-owning-second.log": "0f6f1b1a0bb19942437d5a60c31fc6df9864dc244c1e69cc4769ac2e87cb8cbc",
+    "size-legend-owning-third.log": "40f452f9c5286d815647dfc2b7b95e3c583e417d247897f781205af5bee19f2a",
+    "size-legend-package-contracts.log": "e8e7a45ab6efcc7d47e6b399720fb1389d6bdb5ae66da8b1ba19f842cdc4a672",
+    "size-legend-package-final.json": "124755c12509add472c96e6ec171bfe92d4106af640b1d52628eb2baa0b72ebf",
+    "size-legend-package-first.log": "7767bdd6756096351ea555728455c76667deba06c7aceb283fa1bad4cd02314d",
+    "size-legend-package-node20.json": "8d3eb175d50e1d3aaf04092a0736a5ad2a01cb2e1cc749bb16888fc750b74ce5",
+    "size-legend-package-node22.json": "c12ad07bd8add1ca3e1eb9fb7bd6eb17832345d66e685944c0e6d9e78a574771",
+    "size-legend-package-node24.json": "8d3eb175d50e1d3aaf04092a0736a5ad2a01cb2e1cc749bb16888fc750b74ce5",
+    "size-legend-realistic.log": "33c24deac4406791a41baaf83497eb4aa71b37ac8f88bdc7b1c8c24af8a7ad84",
+    "size-legend-render.log": "cd0ce969f8552236ef42684471310e7872b408ca42fba396d84262a33eac20e5",
+    "size-legend-shared-seam-first.log": "3b219dab7fbea98ceb6f84dd3281f8da43ccb89f5a087d9b2f11cb83bad0bd04",
+    "node20-receipt.json": "7b8d0c82e7dbc7d56fd7463f8ff9755570c58d4b39de17cbe88eab4e3ea0793b",
+    "node22-receipt.json": "c4aea73e993ad8e949fe4c588741dcaf1546407fb18550ec412187444b9d0011",
+    "node24-receipt.json": "9a78e649dc628b6528eedc0693cb0301e35fdcd2d489bc4f42e8203ee414734b",
+    "size-legend-docs-pin.log": "9feb7a94be165516d4cd8c3fe291077fd3d995e69cfdf997c5bb6b8769042eff",
+    "size-legend-docs-pinned.log": "582ac425a6788d541536fdadd1260399cd32e4b8df6c8b76654a4180d3398527",
+    "size-legend-documentation-truth-final.log": "a11aaa0e130ccda751b2d457f121452093bcf90b30939d7bf5ea16cc09acc163"
+  },
+  "source": "509a5e839"
+}

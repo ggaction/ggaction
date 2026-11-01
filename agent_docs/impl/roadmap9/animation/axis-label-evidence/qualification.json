@@ -110,5 +110,17 @@
     "src/materialization/animation/guides.js": "6061a59db90321fe48961e3d8a1c1bff0ece5deecf62daae95677c73bfac6609",
     "test/unit/animation/axis-label-transitions.test.js": "bd29f0ea00e1e8b38ef88353a879e0029f6c80e4c0c60125be71257fbad87303",
     "scripts/consumers/fixtures/node/animation.mjs": "73656895ee776a5dc822fd1c86a2319479ab00d3141a3df50090e3cd2a3aff5c"
+  },
+  "pinnedDocumentation": {
+    "source": "0eee2a254",
+    "tests": 26,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "status": "passed"
+  },
+  "pinnedDocumentationLogs": {
+    "axis-label-docs-pinned.log": "8ab005c44ab9ecd2e204e38dde3a2c7a3034b15b88ff622ac511210e9da63dd2",
+    "axis-label-docs-build.log": "fb5716de0cf4387de9d33c28057b8e3f19f96d661a4fa05df500bc386e7a0119",
+    "axis-label-docs-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
   }
 }

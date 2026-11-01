@@ -761,5 +761,15 @@
     "result": "routeMap",
     "rendering": "authoring-only",
     "prerequisites": "Import the Full package; this example declares graph nodes, edge rows and longitude/latitude anchors."
+  },
+  {
+    "id": "animation-size-legend",
+    "file": "api/animation.md",
+    "contains": ".createLegend({ channels: [\"size\"], values: [5, 10], offset: 20 })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included."
   }
 ]
