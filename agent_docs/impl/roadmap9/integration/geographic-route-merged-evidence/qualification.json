@@ -1,6 +1,6 @@
 {
   "status": "verified-geographic-route-and-native-transition-integration; whole STEP077 remains open",
-  "sourceRevision": null,
+  "sourceRevision": "e4946aeff98f49529a1c7364b5541375d5e797dd",
   "base": "95f085366",
   "routeSource": "ee374aec1",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -139,5 +139,15 @@
     "Remaining large-route work and actual target performance budgets",
     "Complete STEP057–077 acceptance matrix and full qualification",
     "Separately authorized protected release operations"
-  ]
+  ],
+  "sourcePin": {
+    "canonicalRepack": "same archive SHA-256",
+    "initialRelativeOutputAttempt": "ENOENT; corrected to absolute artifact directory; no runtime test failure",
+    "docs": {
+      "focused": 32,
+      "build": "passed",
+      "built": "passed; see raw log",
+      "browser": "reuse 8 pairs; only provenance metadata changed"
+    }
+  }
 }
