@@ -1,0 +1,263 @@
+{
+  "scope": "Diagnostic only: two work rejection sites observed through 200M temporary safety ceiling, production guard unchanged. Not a supported-size or timing qualification.",
+  "source": "c48f89e9d",
+  "node": "v22.23.1",
+  "oracleRevision": "06d497cf0096e057c414fcda57a185562055d2f6",
+  "oracleSHA256": "9def3438a82a59590be540bf2b5f079cc77ad208c429db59d4276f724a06dc1f",
+  "cases": [
+    {
+      "n": 100,
+      "k": 10,
+      "edges": 1000,
+      "inputHash": "fce20cc838f845aee8653e28abcdf74727e48ce0a84cd68cf4bb58c4599125f3",
+      "resultHash": "ce3ac0a3731b02b67819f0cd01ef554f83b646b6046922d0b68f3e7ad968fd9a",
+      "search": {
+        "mode": "exact",
+        "algorithm": "kd-tree",
+        "algorithmVersion": "kd-tree@1",
+        "distanceEvaluations": 2560,
+        "work": 172331
+      },
+      "constructionWork": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 6400
+        },
+        "Graph source fields": {
+          "calls": 100,
+          "maximum": 2400
+        },
+        "Graph feature work": {
+          "calls": 100,
+          "maximum": 1600
+        },
+        "Graph metric vector work": {
+          "calls": 5220,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 7715,
+          "maximum": 172331
+        },
+        "Graph model work": {
+          "calls": 5402,
+          "maximum": 851308
+        }
+      },
+      "indexWork": 864772,
+      "afterIndex": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 6400
+        },
+        "Graph source fields": {
+          "calls": 100,
+          "maximum": 2400
+        },
+        "Graph feature work": {
+          "calls": 100,
+          "maximum": 1600
+        },
+        "Graph metric vector work": {
+          "calls": 5220,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 7715,
+          "maximum": 172331
+        },
+        "Graph model work": {
+          "calls": 11106,
+          "maximum": 864772
+        }
+      },
+      "productStatus": "exact-full-result-equal",
+      "diagnosticElapsedMs": 32.19691700000001,
+      "modelJSONBytes": 775077,
+      "transport": {
+        "scope": "Proposed ordinary data-job and normalized model completion; no candidate graph. Hash text has the exact SHA-256 length; no public job schema exists yet.",
+        "jobJSONBytes": 2637,
+        "completionJSONBytes": 776004,
+        "jobEncodedBytes": 4480,
+        "completionEncodedBytes": 821911,
+        "diagnosticEncodingMs": 12.343166999999994
+      },
+      "keyText": {
+        "nodeUnits": 2590,
+        "edgeUnits": 141806,
+        "endpointUnits": 51806,
+        "adjacencyUnits": 316414
+      }
+    },
+    {
+      "n": 1000,
+      "k": 10,
+      "edges": 10000,
+      "inputHash": "599b856519a0d8a10c76cfa72dd361c840154b55f3baa0f0620d2038e218db34",
+      "resultHash": "b64c524e52679f007af9a851be10fc86ef8efd9d23a9e20de86e59afe28ea4df",
+      "search": {
+        "mode": "exact",
+        "algorithm": "kd-tree",
+        "algorithmVersion": "kd-tree@1",
+        "distanceEvaluations": 34397,
+        "work": 2451722
+      },
+      "constructionWork": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 64000
+        },
+        "Graph source fields": {
+          "calls": 1000,
+          "maximum": 24000
+        },
+        "Graph feature work": {
+          "calls": 1000,
+          "maximum": 16000
+        },
+        "Graph metric vector work": {
+          "calls": 69794,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 108125,
+          "maximum": 2451722
+        },
+        "Graph model work": {
+          "calls": 54002,
+          "maximum": 8674208
+        }
+      },
+      "indexWork": 8809552,
+      "afterIndex": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 64000
+        },
+        "Graph source fields": {
+          "calls": 1000,
+          "maximum": 24000
+        },
+        "Graph feature work": {
+          "calls": 1000,
+          "maximum": 16000
+        },
+        "Graph metric vector work": {
+          "calls": 69794,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 108125,
+          "maximum": 2451722
+        },
+        "Graph model work": {
+          "calls": 111006,
+          "maximum": 8809552
+        }
+      },
+      "productStatus": "exact-full-result-equal",
+      "diagnosticElapsedMs": 191.32891700000002,
+      "modelJSONBytes": 7868738,
+      "transport": {
+        "scope": "Proposed ordinary data-job and normalized model completion; no candidate graph. Hash text has the exact SHA-256 length; no public job schema exists yet.",
+        "jobJSONBytes": 24701,
+        "completionJSONBytes": 7873269,
+        "jobEncodedBytes": 41844,
+        "completionEncodedBytes": 8330476,
+        "diagnosticEncodingMs": 92.50045799999998
+      },
+      "keyText": {
+        "nodeUnits": 26890,
+        "edgeUnits": 1437706,
+        "endpointUnits": 537706,
+        "adjacencyUnits": 3220654
+      }
+    },
+    {
+      "n": 10000,
+      "k": 10,
+      "edges": 100000,
+      "inputHash": "85bf9876dd097ce27cfeccafd500f93f3b69fac4361cea27ec0f6d8a8d48f48b",
+      "resultHash": "a1d7d0aa28747f7caeb81a83319deb9c2c9b2395a8eb11a722f9d8440f64de5e",
+      "search": {
+        "mode": "exact",
+        "algorithm": "kd-tree",
+        "algorithmVersion": "kd-tree@1",
+        "distanceEvaluations": 415782,
+        "work": 31318394
+      },
+      "constructionWork": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 640000
+        },
+        "Graph source fields": {
+          "calls": 10000,
+          "maximum": 240000
+        },
+        "Graph feature work": {
+          "calls": 10000,
+          "maximum": 160000
+        },
+        "Graph metric vector work": {
+          "calls": 841564,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 1310625,
+          "maximum": 31318394
+        },
+        "Graph model work": {
+          "calls": 540002,
+          "maximum": 88385616
+        }
+      },
+      "indexWork": 89743320,
+      "afterIndex": {
+        "Graph source work": {
+          "calls": 1,
+          "maximum": 640000
+        },
+        "Graph source fields": {
+          "calls": 10000,
+          "maximum": 240000
+        },
+        "Graph feature work": {
+          "calls": 10000,
+          "maximum": 160000
+        },
+        "Graph metric vector work": {
+          "calls": 841564,
+          "maximum": 8
+        },
+        "Graph exact search work": {
+          "calls": 1310625,
+          "maximum": 31318394
+        },
+        "Graph model work": {
+          "calls": 1110006,
+          "maximum": 89743320
+        }
+      },
+      "productStatus": {
+        "error": "Graph exact search work must not exceed 10000000."
+      },
+      "diagnosticElapsedMs": 2076.143,
+      "modelJSONBytes": 79872413,
+      "transport": {
+        "scope": "Proposed ordinary data-job and normalized model completion; no candidate graph. Hash text has the exact SHA-256 length; no public job schema exists yet.",
+        "jobJSONBytes": 257341,
+        "completionJSONBytes": 79921948,
+        "jobEncodedBytes": 427484,
+        "completionEncodedBytes": 84492155,
+        "diagnosticEncodingMs": 988.4189170000004
+      },
+      "keyText": {
+        "nodeUnits": 278890,
+        "edgeUnits": 14577507,
+        "endpointUnits": 5577507,
+        "adjacencyUnits": 32765025
+      }
+    }
+  ]
+}
