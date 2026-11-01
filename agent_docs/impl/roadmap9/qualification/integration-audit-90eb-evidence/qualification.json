@@ -1,0 +1,69 @@
+{
+  "status": "integration-audit-completed-with-one-cli-regression; focused-repair-verified; final-whole-sweep-pending",
+  "candidate": "90eb027cca2363514d1e78588b09c769cc811a59",
+  "archiveSHA256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+  "normal": {
+    "tests": 10139,
+    "passed": 10138,
+    "failed": 1,
+    "durationMs": 519108.268584,
+    "sourceCleanBeforeAfter": true,
+    "discoveredFiles": 1585,
+    "command": "GGACTION_PACKAGE_SPEC=<same canonical37634db7 tar> npm test",
+    "failure": "canonical test runner exits unsuccessfully when a selector discovers no test files; expected existing No test files found diagnostic"
+  },
+  "installed": {
+    "actualBarePackageCases": 391,
+    "passed": 391,
+    "sameArchive": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+    "notWholePackageMatrixQualification": true
+  },
+  "repair": {
+    "scope": "Keep empty-suite diagnostics before validating each unmatched selector in nonempty selections. Mixed typo rejection and no-test-spawn remain. No library/runtime/type/public change.",
+    "focusedChecks": 45,
+    "expected": "Existing empty-suite contract and mixed-valid/invalid contract both pass",
+    "archiveSHAUnchanged": true,
+    "postRepairWholeNormalRun": false
+  },
+  "remaining": [
+    "Final exact-candidate ninecommands after remaining public handle/worker changes",
+    "Actual577consumers/79ATgroup closure, performance/lifecycle, independentreview andprotected exactartifactdelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "initial/normal.log": {
+      "sha256": "6564af19e22e7a09eeb9af1ef6d188bdf88b51d51e5986a1a4431ef0ffc4faf9",
+      "bytes": 2262146,
+      "saved": "initial-normal.log.gz"
+    },
+    "initial/normal-receipt.json": {
+      "sha256": "fecc7c6000bd53bc03a4f03bf20abc5ece0020d9758d94e9b2c87f2bfbe0708a",
+      "bytes": 291129,
+      "saved": "initial-normal-receipt.json.gz"
+    },
+    "initial/normal-retained.log": {
+      "sha256": "ec26306c2f89d331c4f9ce6ae6e0ebee8ae999f7b72397ca47375e2b43824b9b",
+      "bytes": 2097152,
+      "saved": "initial-normal-retained.log.gz"
+    },
+    "initial/node-cases.json": {
+      "sha256": "1ca86ed49fd6485740d43ba3d0cfba16cf1ed8e2ee585aea08ffd3b2d747ea5f",
+      "bytes": 45059,
+      "saved": "initial-node-cases.json.gz"
+    },
+    "repair/contracts.log": {
+      "sha256": "773572f085aa032731a52c6aedf9a29a421a5f802441701a8316f7d76a879ae1",
+      "bytes": 10286,
+      "saved": "repair-contracts.log.gz"
+    },
+    "repair/pack.json": {
+      "sha256": "d99b861f0483b35533c3c1fc87fca16a60b7975a9550c79034b53b14640b1287",
+      "bytes": 388,
+      "saved": "repair-pack.json.gz"
+    },
+    "repair/pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "saved": "repair-pack.stderr.gz"
+    }
+  }
+}
