@@ -916,7 +916,10 @@ closed validator checks native forward geometry, sampled identity and offline re
 flat frame provenance retains current guide values without retaining previous plans.
 Exact supported guide families and fallbacks belong to the Current Animation contract.
 Native legend actions and animation share `materialization/guides/legendLaneState.js`
-for family ordering and occupied block bounds. Group preparation stores one frame with
+for family ordering and occupied block bounds. `materialization/guides/axisClearance.js`
+owns the same-edge outside-ink distance; native placement retains its explicit/inferred
+intent short-circuit and does not treat endpoint clearance as authored meaning.
+Group preparation stores one frame with
 its native placement and intrinsic block values; `legendGroupState.js` reuses each
 family's pure native layout plus `layout/legendGroup.js` packing. The action still owns
 all graphic writes and trace nodes. Sampling neither invokes an action nor derives

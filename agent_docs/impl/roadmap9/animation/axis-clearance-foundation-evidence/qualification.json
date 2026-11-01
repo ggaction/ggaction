@@ -1,0 +1,140 @@
+{
+  "sourceParent": "5c054738f",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Pure existing same-edge axis ink clearance ownership extraction; no new public typed animation support",
+  "checks": {
+    "nativeAndLiteralTests": 56,
+    "newOwnerCoverage": [
+      100,
+      100,
+      100
+    ],
+    "node20And24SourceTestsEach": 3,
+    "beforeAfterCanonicalMeaningAndFullTrace": 20,
+    "sourceBoundaries": 13,
+    "packageAndDocumentationContracts": 10,
+    "packageBoundaries": 6,
+    "packedNode20": {
+      "node": "v20.20.2",
+      "archive": "56b1c89d8b0ec2b33fb206929641f8221162641d669bcb812537c4933dd8af0b",
+      "package": {
+        "entries": 1192,
+        "packed": 1710895,
+        "unpacked": 7721116
+      },
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1037,
+          "minifiedBytes": 2704913,
+          "gzipBytes": 775042
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 621,
+          "minifiedBytes": 1443890,
+          "gzipBytes": 423334
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 85,
+          "minifiedBytes": 147084,
+          "gzipBytes": 44076
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 458,
+          "minifiedBytes": 973358,
+          "gzipBytes": 292935
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 190,
+          "minifiedBytes": 384230,
+          "gzipBytes": 123529
+        }
+      ],
+      "runtime": 1,
+      "limitFailures": []
+    }
+  },
+  "packageMeasurements": {
+    "axis-clearance-package-measured.json": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1192,
+      "packedBytes": 1707852,
+      "unpackedBytes": 7721116
+    },
+    "axis-clearance-package-node20.json": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1192,
+      "packedBytes": 1710895,
+      "unpackedBytes": 7721116
+    },
+    "axis-clearance-package-node24.json": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 1192,
+      "packedBytes": 1710895,
+      "unpackedBytes": 7721116
+    }
+  },
+  "sourceHashes": {
+    "src/materialization/guides/axisClearance.js": "58597c0b4f06a91f84a7b2d5e7c46163cf56db084e6836fe76fe70a4e8d8c065",
+    "src/materialization/guides/resources.js": "6818d90aee642080a53aee39d59dcd306619ef7d45d19bee632f4f54fcd76c29",
+    "test/unit/materialization/axis-clearance.test.js": "831d78cb626b627ca40d6a215bb5442e2370403c57fccddab8e16142bcb5a0c0"
+  },
+  "logsSha256": {
+    "axis-clearance-package-measured.json": "025186b7030bcec8fb9c3bc0e8ac8fef0ad1c1c240e0c41762a0bf5b2d5eeba5",
+    "axis-clearance-baseline-trace.log": "3bc3e13819aae22f94a3bf92c35a814921e437a5ccdf82035cd57fc3ceeb6ed7",
+    "axis-clearance-package-first.log": "541e4e1fa5e1988ef920a81a68e6453dab5d5cdb7d0b9cd764b99aa7b5e38270",
+    "axis-clearance-installed-node20.json": "0ede338af8ed1f12ca12a2d8ac9301a7eeb0df3d7024b5f5b71780203e9af1a0",
+    "axis-clearance-native-coverage.log": "430a9c99d7c2868ca9e76920d3d47e983d71b62549f16063c4eaa5e392470747",
+    "axis-clearance-node24.log": "06105f22f17c1615a2acf8754d051b1f9fd6322ea054ac8ba06b9e5f5b3804c4",
+    "axis-clearance-package-node24.json": "946f5187568d5c25c6ba8ba1c5a8e60f548b88bcb42fe0fc8eb02dd5e7bf59f8",
+    "axis-clearance-after-trace.json": "f6479b204fa91a9e7fdcb6f64a1d3c90e7e92cfdb1d99727151b65686a68aa08",
+    "axis-clearance-before-resources.js": "1a0a91a8eb9a2daa002c959d1412068a2c3bd804193abff41509734f1ded62cf",
+    "axis-clearance-node20.log": "f5dd6a363a494fef18c511698f5a2491a79a7c0563732b487efc75b55d341cbd",
+    "axis-clearance-installed-node20-first.log": "df4437835833a72d4e593a4ff4fe3da5c5adf4babe502f2eb6dbc671fcdd647d",
+    "axis-clearance-package-contracts.log": "174497e93fb8dd033feae1a53e8f246005aa1c4313b28d4258c0809d0a0e3efa",
+    "axis-clearance-installed-node20-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "axis-clearance-package-boundaries.log": "094e08136bea280d07921dfa7a24e84dec2839fdced96a7330134b9caff10a7a",
+    "axis-clearance-boundaries.log": "9db541796a128e0071b75aa7533e15e551adca71cfec28a583cad84e34fca34b",
+    "axis-clearance-parity.json": "b56ed060033fc23f9834284d72b571f7935208a27533e33713cedea7fe8d6380",
+    "axis-clearance-before-trace.json": "f6479b204fa91a9e7fdcb6f64a1d3c90e7e92cfdb1d99727151b65686a68aa08",
+    "axis-clearance-package-node20.json": "946f5187568d5c25c6ba8ba1c5a8e60f548b88bcb42fe0fc8eb02dd5e7bf59f8",
+    "axis-clearance-installed-node20.log": "df4437835833a72d4e593a4ff4fe3da5c5adf4babe502f2eb6dbc671fcdd647d",
+    "axis-clearance-after.json": "b608ecbc15543ee423277c62b30294bdbb85e1c11db55a65646ba90cb8e6b7af",
+    "axis-clearance-baseline-loader.mjs": "b19405ceb3c9b10b79062b99b011452ba314af6b1d31266a14a251f506153b74",
+    "axis-clearance-before.json": "b608ecbc15543ee423277c62b30294bdbb85e1c11db55a65646ba90cb8e6b7af"
+  },
+  "firstFailuresPreserved": [
+    "First package count1192 exceeded1191; measured new owner added464 unpacked bytes, with same packed ceiling1711000 and minimum unpacked ceiling7722000.",
+    "First parity probe called unsupported Basic removeAxis; final20 probes restrict removal to Full.",
+    "First parity probe used absent operations field; final probe uses whole canonical trace and reruns exact original source through a load hook.",
+    "First packed smoke omitted optional native Canvas dependency setup; same archive rerun through canonical optional-peer setup passed."
+  ],
+  "pending": [
+    "Native typed axis dependency refs/current occupied bounds, including per-owner timeline progress/style/frame",
+    "Dynamic axis label/title/group union with R",
+    "Public inferred legend clearance strict rebase/offline/renderers/3Node qualification",
+    "Overall STEP077 completion"
+  ]
+}

@@ -1,4 +1,5 @@
 import { axisGraphicIds, selectCartesianAxis } from "../../selectors/axes.js";
+import { resolveAxisLaneClearance } from "./axisClearance.js";
 export { axisGraphicIds };
 import { localLegendPosition, localLegendPlacement } from "../legendGroups.js";
 import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
@@ -209,14 +210,7 @@ function axisLaneBlocks(program) {
 
 export function resolveLegendAxisOffset(program, config, plot) {
   if (config.inferredOffset !== true || !["top", "bottom", "left", "right"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
-  const axes = axisLaneBlocks(program).filter(block => block.position === config.position);
-  const clearance = Math.max(0, ...axes.map(block => ({
-    bottom: block.bounds.bottom - plot.y - plot.height,
-    top: plot.y - block.bounds.top,
-    left: plot.x - block.bounds.left,
-    right: block.bounds.right - plot.x - plot.width
-  })[config.position]));
-  return config.offset + clearance;
+  return config.offset + resolveAxisLaneClearance(config.position, plot, axisLaneBlocks(program));
 }
 
 export function effectiveLegendOffsetConfig(program, kind, config) {
