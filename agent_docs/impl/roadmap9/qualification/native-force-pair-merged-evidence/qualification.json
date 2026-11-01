@@ -1,0 +1,413 @@
+{
+  "status": "exact-force-pair-reuse-integrated; large-size-admission-and-final-performance-pending",
+  "base": "56166b378",
+  "sourceRevision": null,
+  "incomingSource": "aea5bd365",
+  "upstreamPin": "1b91a9fed",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1236,
+    "packedBytes": 1769076,
+    "unpackedBytes": 7985299,
+    "file": "ggaction-280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc.tgz",
+    "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc"
+  },
+  "sourceInputEquality": {
+    "base": "365e0b6a08f0ccd203caec94e78b1bf29b5cf09a",
+    "incoming": "1b91a9fed",
+    "files": [
+      "src/grammar/graph/routes/forceDirected.js"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 85,
+    "render.log": 4,
+    "browser.log": 2,
+    "boundaries-final.log": 46,
+    "docs.log": 241
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc",
+      "checks": [
+        "edge-routes/symmetric-force-pairs",
+        "edge-routes/worker-authority-and-cache",
+        "edge-routes/offline-restore-and-revision"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 783863
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "edge-route-analytical-comparison"
+      ],
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc",
+      "checks": [
+        "edge-routes/symmetric-force-pairs",
+        "edge-routes/worker-authority-and-cache",
+        "edge-routes/offline-restore-and-revision"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 782466
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 423405
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44700
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 326698
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 130829
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "edge-route-analytical-comparison"
+      ],
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc",
+      "checks": [
+        "edge-routes/symmetric-force-pairs",
+        "edge-routes/worker-authority-and-cache",
+        "edge-routes/offline-restore-and-revision"
+      ],
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1057,
+          "minifiedBytes": 2733993,
+          "gzipBytes": 783863
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 624,
+          "minifiedBytes": 1446511,
+          "gzipBytes": 424277
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 506,
+          "minifiedBytes": 1093639,
+          "gzipBytes": 327739
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 205,
+          "minifiedBytes": 410425,
+          "gzipBytes": 131286
+        }
+      ],
+      "types": "passed",
+      "docs": [
+        "edge-route-analytical-comparison"
+      ],
+      "status": "passed"
+    }
+  ],
+  "reusedCoverage": {
+    "record": "../../chart/force-pair-evidence/qualification.json#checks.forceDirectedCoverage",
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "reason": "Only changed production module forceDirected.js is byte-identical to incoming; root reran85 owning tests on integration."
+  },
+  "reusedBuiltDoc": {
+    "record": "../../chart/force-pair-evidence/qualification.json#checks.documentation",
+    "pages": 186,
+    "llmArtifacts": 1603,
+    "widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "reason": "Identical public edge-route page, unchanged site CSS/layout. Root reran all241docs tests and regenerated all157image source manifests; output PNG bytes unchanged."
+  },
+  "repairs": [
+    {
+      "file": "boundaries.log",
+      "reason": "New installed symmetric-force-pairs case missing from canonical fixture manifest. Registered exactcase with4statements; final46contracts passed."
+    },
+    {
+      "file": "boundaries-initial.log",
+      "reason": "Initial selector included two nonexistent route-specific contract names, which runner did not reject. Treat only actual36discovered tests as evidence; final corrected selection46 is canonical."
+    },
+    {
+      "file": "pack20-initial.stderr",
+      "reason": "Actual packed1772271 exceeded prior1772000. Minimal measuredcap1772300; unpacked7985299 cap7985300. Full20/24actual783863 cap783900."
+    }
+  ],
+  "remaining": [
+    "Density100/1000/10000 and FDEB1000/10000 admission/SLO remain unsatisfied; no budget/fixture/schedule/sampling guard changed",
+    "P dynamictitle/lane and native combined qualification",
+    "All actual577consumers/79groups and ninecommands; AT56/82 performance, AT60review, AT61protecteddelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "boundaries-final.log": {
+      "sha256": "76c4aa96aa153a5b80e46be382c81bfa1964871ad6a62368735a5f4e487cba97",
+      "bytes": 9530
+    },
+    "boundaries-initial.log": {
+      "sha256": "40e4f5db9a44ecea8d6ceee1bb180b7473ad0eaa41661f7845eb41fdaa97b25f",
+      "bytes": 7285
+    },
+    "boundaries.log": {
+      "sha256": "6bc4bcbeccf384e0c66f3f8262b20ead2a116108cac13b0e44caa94d84294464",
+      "bytes": 11181
+    },
+    "browser.log": {
+      "sha256": "0fbc6bdcaf34b419e4e62b0f9f240c1f5f6791adc17f44664ad9db59302cda89",
+      "bytes": 488
+    },
+    "bundles20.json": {
+      "sha256": "269e7c320f9bebeafd2c2089e317c3c47eed68cd5b53eac4ccdad61d75f6fbf8",
+      "bytes": 305
+    },
+    "bundles20.log": {
+      "sha256": "2ce29c1c41f65f4e508eb89b5c57ae8f361f7cc6d17f07f433c9b0ed88a8e190",
+      "bytes": 253
+    },
+    "bundles22.json": {
+      "sha256": "10c48844d3d506151b440099007c1ad2d4a3f814a1b3ba236958399ffcaf0a3c",
+      "bytes": 305
+    },
+    "bundles22.log": {
+      "sha256": "197438405223b7989703b96981710b5b395c2f165fa69f6922d53c50d7961c8d",
+      "bytes": 253
+    },
+    "bundles24.json": {
+      "sha256": "ff7cb0ffe328fafe06e10fccfca2bfc1f38ad7c179bd7c96f7a6e68015c1e11f",
+      "bytes": 305
+    },
+    "bundles24.log": {
+      "sha256": "1a835d54f6309dd0d7c4a10ee2088bf83da8a634b22ea5935033cfc9de1ee037",
+      "bytes": 253
+    },
+    "docs.log": {
+      "sha256": "0f7bec1930f9296a97c71bb227f8e4ff25db36523a8a3210fa1569d51275fc05",
+      "bytes": 73474
+    },
+    "frozen.json": {
+      "sha256": "a6be91c487ba4680d83314c92b625de969066126f86af067083b556c675a20f4",
+      "bytes": 436
+    },
+    "images.log": {
+      "sha256": "dced161bd76d4d238de851fdb312d634fcea66e0e840bc4d8c90d2f43d49cf44",
+      "bytes": 11112
+    },
+    "installed.mjs": {
+      "sha256": "d3cf7b2797716a8170bb6ddae34585ecc2c5cc15d3d102957ba3bc70a13a2180",
+      "bytes": 3116
+    },
+    "installed20.json": {
+      "sha256": "404cbd45b75ffc3359af9ff3debc3320e949f953b3193be46de57defb0525e68",
+      "bytes": 1265
+    },
+    "installed20.json.doc.json": {
+      "sha256": "7626fa56b04c6af1d58444a05b5a61db5f593649fe4ff11a6ef0e7016c45082e",
+      "bytes": 338
+    },
+    "installed20.log": {
+      "sha256": "0cde1c41b96958da8f6bc53bb9c99e26e1ea5c34bbe736d6c9d4e78c95d27c43",
+      "bytes": 907
+    },
+    "installed22.json": {
+      "sha256": "9f6a9cc7b6db4f97ea324c01b016ee950b5e1329eb28d5b2379f65b1c38738c9",
+      "bytes": 1265
+    },
+    "installed22.json.doc.json": {
+      "sha256": "778f21c8b3f04f5c845d88ffc45d3416ee419669533dcd21245fc292daa43b0b",
+      "bytes": 345
+    },
+    "installed22.log": {
+      "sha256": "d19944513cd6be8648e0defc9e66227bf8ac172b7c5edf8e32aea905b224bfb3",
+      "bytes": 907
+    },
+    "installed24.json": {
+      "sha256": "1e9d694b786c69a550a56f2ca915b547b9f18ec7d3e1765a0f72a3d33966dfba",
+      "bytes": 1265
+    },
+    "installed24.json.doc.json": {
+      "sha256": "63f17fd5f0d0c8d7e17dfb5c904538960d392297d1ad4e43498f188118db89a0",
+      "bytes": 345
+    },
+    "installed24.log": {
+      "sha256": "7f73468c10b41fe087658b3ca7c009676ec5b8c1973b9dc125820dec8e6d24ff",
+      "bytes": 907
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "measure-descriptor.json": {
+      "sha256": "cf501e3fd7cf179b40b0cbdf6a66958f600af72297ae2d39dbfe90c5b3a5603c",
+      "bytes": 218
+    },
+    "owning.log": {
+      "sha256": "d783aa856a6a83cd26224406aa1ec58a675af67d361a2f444e646f35a9330c1d",
+      "bytes": 22072
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-initial.stderr": {
+      "sha256": "1c14cc67c44ab1557a78ff25eab0a8012e2c1e6b25fca556c13be518cf5eb69b",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "0e4bdc24984a1d6e0f176bc674335ad11940903f6f710710affeeec1510c35bf",
+      "bytes": 382
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "81c654f5fa380392c82fc591140024a9877615b9c0c8b22e2205b09418623da6",
+      "bytes": 382
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "4ae414dafc082e7c11005941738cb6021f08453f2acf04ffbcd45434fb22a644",
+      "bytes": 382
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "56fbd75453b891ea1527d9dd78bbf77a4891d612f4609f1b67298f5658205405",
+      "bytes": 294
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "render.log": {
+      "sha256": "bb5621079458a8bd3cb1af5995ed15e48e85f291ed6ef672331e33a19ba8cfc8",
+      "bytes": 1144
+    },
+    "search.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "source-files.json": {
+      "sha256": "5c73fed9e85313a149fff090fd1528716d6c4b8ad5fd6cf5fa2ee2d3ed20fa77",
+      "bytes": 169
+    }
+  }
+}

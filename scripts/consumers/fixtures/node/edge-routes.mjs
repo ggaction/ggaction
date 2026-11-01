@@ -25,6 +25,33 @@ const streams = buffer => [...buffer.toString("latin1").matchAll(/stream\r?\n([\
 });
 
 export const cases = [
+  { id: "edge-routes/symmetric-force-pairs", async run() {
+    const base = chart().createCanvas({ width: 320, height: 240, margin: 0 })
+      .createData({ id: "nodes", keyField: "id", values: ["a", "b", "c", "d"].map(id => ({ id })) })
+      .createData({ id: "edges", keyField: "id", values: [{ id: 10, source: "a", target: "b" }, { id: 2, source: "d", target: "c" }] })
+      .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
+      .layoutGraph({ id: "layout", method: "fixed", options: { positions: [
+        { key: "a", x: 20, y: 100 }, { key: "b", x: 300, y: 100 }, { key: "c", x: 20, y: 120 }, { key: "d", x: 300, y: 120 }
+      ] } });
+    const before = serializeProgram(base), direct = base.bundleGraphEdges({ id: "routes", method: "force-directed" });
+    const executor = createGraphRouteExecutor();
+    try {
+      const prepared = await prepareGraphEdgeRoutes(base, { kind: "create", id: "routes", method: "force-directed" }, { requestToken: "pairs", executor });
+      const applied = base.bundleGraphEdges({ prepared, requestToken: "pairs" }), result = route(applied).result;
+      assert.deepEqual(result, route(direct).result);
+      assert.equal(result.diagnostics.compatibilityPairs, 1); assert.equal(result.diagnostics.totalIterations, 165);
+      assert.deepEqual(result.routes.map(r => r.commands.length), [34, 34]);
+      assert.deepEqual(result.routes.map(r => [r.commands[0], r.commands.at(-1)]), [
+        [{ op: "M", x: 20, y: 100 }, { op: "L", x: 300, y: 100 }],
+        [{ op: "M", x: 300, y: 120 }, { op: "L", x: 20, y: 120 }]
+      ]);
+      assert.ok(result.routes.every(r => r.commands.every(p => Number.isFinite(p.x) && Number.isFinite(p.y))));
+      const complete = plot(applied);
+      assert.deepEqual(deserializeProgram(serializeProgram(complete)).graphicSpec, complete.graphicSpec);
+      assert.deepEqual(route(deserializeProgram(serializeProgram(complete))).result, result);
+      assert.equal(serializeProgram(base), before);
+    } finally { executor.dispose(); }
+  } },
   { id: "edge-routes/bounded-hierarchy-spans", run() {
     const count = 9999, edgeCount = 10000;
     const nodes = Array.from({ length: count }, (_, id) => ({ id }));
