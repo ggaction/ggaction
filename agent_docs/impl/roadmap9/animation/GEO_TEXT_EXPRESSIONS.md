@@ -4,11 +4,11 @@
 
 - [x] Current의 camera + content/static-layout 동시 전환 후행 의무와 기존 owner를 확인했다.
 - [x] `AUTHORIZATION.json#remainingApproval` 및 부모의 구체안 승인을 재사용한다.
-- [ ] 공통 raw 의미와 최대 64개의 평탄한 표현을 준비·검증한다.
-- [ ] 현재 카메라의 native Text/layout/leader 결과를 per-item blend로 합친다.
-- [ ] 현재 frame 재기준·strict offline·정확 endpoint·한도와 원자 실패를 검증한다.
-- [ ] 현재 hit/접근성 대표 표현·실제 font metrics와 네 renderer를 검증한다.
-- [ ] Current/types/docs 및 같은 archive 3 Node 증거를 고정하고 push한다.
+- [x] 공통 raw 의미와 최대 64개의 평탄한 표현을 준비·검증한다.
+- [x] 현재 카메라의 native Text/layout/leader 결과를 per-item blend로 합친다.
+- [x] 현재 frame 재기준·strict offline·정확 endpoint·한도와 원자 실패를 검증한다.
+- [x] 현재 hit/접근성 대표 표현·실제 font metrics와 네 renderer를 검증한다.
+- [x] Current/types/docs 및 같은 archive 3 Node 증거를 고정한다.
 
 시작점은 Cartesian 완료 `6830445aa`(source `d939c695a`)이며 독립 branch
 `codex/roadmap9-animation-geotext-expressions`에서 진행한다. 새 일반 Text family나
@@ -98,5 +98,21 @@ accessor에 한정했다. planner/frameProvenance는 수정하지 않았다. Nat
 parent collection frame은 보존해 역방향/재기준에서 label clip을 leader frame으로 추정하지 않는다.
 
 첫 renderer 검사는 서로 다른 Text rasterization의 가장자리까지 동일 좌표로 비교해 실패했다.
-원 로그를 보존하고 SVG는 같은 backend의 두 native endpoint glyph 내부, PDF는 충분한 내부
-픽셀을 비교하도록 owning oracle을 수정한다. 성공 여부는 최종 qualification 기록에 분리한다.
+원 로그를 보존하고 각 backend의 현재 native camera로 작성한 두 expression을 독립 weighted
+primitive로 조합한 결과와 exact 비교한다. Canvas의 실제 두 native source 공통 내부 픽셀에는
+선형광 literal `[188,0,188,255]`를 별도로 검산한다. SVG·PDF의 glyph antialias를 서로 같은
+픽셀로 강제하지 않는다. 성공 여부와 원 실패는 최종 qualification 기록에 분리한다.
+
+## Source checkpoint 검증
+
+Source는 `5a958cd1d118b5a7bc53ebd2d44c78ec5b7774cb`이며 다음 증거를 보존한다.
+
+- Animation 및 영향 Text owning 544/544, 변경9 owner100/94.68/100; 기존각95/90/100 floor 유지.
+- Labels/layout/annotation3종의 Canvas·PNG·SVG·PDF와 Chromium Canvas/SVG DPR1·2 통과.
+- 기존5실데이터×3 native camera 레시피의 planar cell에 현재 label content/font 표현 비교를 추가, canonical16/16 통과. 새 corpus파일/분모 없음.
+- Source 소비자3건 및 같은 archive `ca26ce2c45656c03b4e5e01225470410d83381d5bb5aa9b840c27a8a02da4f5a`의 Node20/22/24 각각3 runtime·strict types·optional peers·6bundle 통과.
+- Source/discovery/문서 상한33, package/type14, 문서 원232중230(생성물 stale2) 후 owning47 통과.
+- Package1193entries / packed최대1704713 / unpacked7690735, 최소cap1193/1705000/7691000.
+  Animation installed269758→269800, Basic422903→423000. 이전 Basic422900초과3bytes 원로그 보존.
+- Source pin 이후 owning47/47, built186페이지·1598 선택 LLM 산출물 및 전체 페이지 320·390·768px browser 검사를 마쳤다. 최초 system Ruby2.6 build 실패는 보존하고 설치된 Ruby3.3 도구로 preflight/build/built/browser를 복구했다.
+- [고정 증거](geotext-expression-evidence/qualification.json)는 source input·원 실패·회복 로그·동일 archive·대표 renderer 산출물의 hash를 보존한다. 소스 고정 뒤 변경은 문서 provenance와 이 기록·증거뿐이다. 최종 전체AT60/077은 root 합산 의무다.
