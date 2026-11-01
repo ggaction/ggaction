@@ -1,6 +1,6 @@
 {
   "status": "focused-grouped-guide-integration-verified; final-native-pending",
-  "sourceRevision": null,
+  "sourceRevision": "b9ad2a122590293663a03fd52906f2e2a991396d",
   "base": "f02dfe82f",
   "incoming": "7f813a1ee",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -299,12 +299,46 @@
     "build.log": {
       "sha256": "07a7e9d8b45abbae59dbc2ddcbd31c7456ecfd45b790b267e7cacd4141280c11",
       "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-pack.json": {
+      "sha256": "33fb8e103feb47e900031855377fb2b8ff0f125afc199042aca65d571cf8f0c1",
+      "bytes": 394
+    },
+    "source-pin-docs.log": {
+      "sha256": "b7af4556c4a69f86f3911dbcacfc27f9dc61c5f8d7926b2981e328b7234e21c9",
+      "bytes": 6143
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
     }
   },
   "remaining": [
-    "Source-pin metadata",
     "Dynamic axis label/title clearance and implicit legend lanes",
     "Remaining large-route native rendering/SLO",
     "Native target matrix and nine final commands; STEP077 incomplete"
-  ]
+  ],
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 31,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Unchanged runtime/archive/focused source, page content and browser assets; no clean whole-suite execution claimed."
+  }
 }
