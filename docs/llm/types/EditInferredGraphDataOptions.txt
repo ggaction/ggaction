@@ -1,4 +1,7 @@
 export interface EditInferredGraphDataOptions {
+  readonly prepared?: never; readonly requestToken?: never;
   readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
   readonly definition?: Partial<InferredGraphDefinition>;
 }
+declare const preparedInferredGraph: unique symbol;
+/** Opaque result bound to the exact Full receiver, action kind and request token. */

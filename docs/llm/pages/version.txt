@@ -9,9 +9,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:96be7356ab0600f84eaa97c21485d3b18932fda2f8890e90aedaa669cc8523d9` |
-| Example and dataset source | `8c0b2e97964b83f091cea807e0b439905ec78289` |
-| Runtime source commit | `5e48aa3024d008b509e5673529f93ae02d1911b0` |
+| Contract fingerprint | `sha256:f5048097a42e21091df5626582af9fdb373c2b84bc570a00c65cbeaeaa8ff6a9` |
+| Example and dataset source | `codex/roadmap9-inference-capacity` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

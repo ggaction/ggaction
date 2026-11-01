@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1090900; // Explicit inference execution signature: 1090861 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1092000; // Inference worker signatures and helper guide: 1091986 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

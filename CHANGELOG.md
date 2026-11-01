@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Prepare inferred graphs in a dedicated worker with bounded complete jobs, exact input revisions, cancellation and atomic application through the existing Full create/edit actions.
+
 - Animate native Cartesian axis wrapping, responsive skipping, rotation and line-count changes at the current viewport, with exact font preparation, raw tick hit identity, bounded rebasing and offline frames.
 
 - Add explicit `prepareTextMetrics` option `axisLabelReflow` to prepare bounded native wrapping queries for current Cartesian axis labels without changing the default measurement path.

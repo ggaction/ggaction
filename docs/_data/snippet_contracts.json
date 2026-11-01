@@ -2314,6 +2314,18 @@
     "executable": true
   },
   {
+    "file": "api/graphs.md",
+    "block": 2,
+    "heading": "Prepare inference in a worker",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "2dc2d94e53c93d1b8c754336235f3fbe50c0029a58677bfda99139ad5113e831",
+    "executable": true
+  },
+  {
     "file": "api/grids.md",
     "block": 1,
     "heading": "`createGrid(options?)`",

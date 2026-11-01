@@ -25,8 +25,8 @@ function columnStatistics(values, method) {
 
 // The later graph authoring owner supplies extracted vectors and source identity.
 // This kernel keeps source indexes, exclusion reasons, and reusable scaled statistics.
-export function prepareGraphMetricVectors(vectors, options, limits = {}, execution) {
-  const validateWorkLimit = inferenceWorkValidator(execution);
+export function prepareGraphMetricVectors(vectors, options, limits = {}, execution, signal) {
+  const validateWorkLimit = inferenceWorkValidator(execution, signal);
   const { maxNodes } = graphLimits(limits);
   ownRecord(options, "Graph feature options");
   rejectUnknownProperties(options, ["metric", "zeroVector", "preprocess", "missing"], "graph feature");

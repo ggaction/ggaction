@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Revise an inferred graph and its dependent layouts and plots.",
-  "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;",
+  "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;",
   "intents": [
     "edit inferred graph data",
     "edit",
@@ -61,6 +61,16 @@
   },
   "options": [
     {
+      "name": "prepared",
+      "required": false,
+      "type": "PreparedInferredGraphData | undefined"
+    },
+    {
+      "name": "requestToken",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
@@ -82,7 +92,7 @@
     }
   ],
   "callPatterns": [
-    "editInferredGraphData({ target?, data?, candidateGraph?, definition? })"
+    "editInferredGraphData({ target?, data?, prepared?, requestToken?, candidateGraph?, definition? })"
   ],
   "snippet": "program.editInferredGraphData({ target: \"neighbors\", definition: { options: { k: 2 } } })",
   "errors": [],

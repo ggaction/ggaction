@@ -295,7 +295,7 @@
   {
     "id": "graph-inference",
     "file": "api/graphs.md",
-    "contains": "id: 'neighbors'",
+    "contains": ".createInferredGraphData({\n    id: 'neighbors'",
     "environment": "node-esm",
     "rendering": "authoring-only",
     "mode": "complete",
@@ -835,5 +835,18 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "graph-inference-worker",
+    "file": "api/graphs.md",
+    "contains": "requestToken: 'neighbors-1'",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "program",
+    "supportFiles": {
+      "inference-worker.mjs": "examples/graph-inference/worker.mjs"
+    },
+    "resultKind": "semantic"
   }
 ]

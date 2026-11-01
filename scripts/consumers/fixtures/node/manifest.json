@@ -1900,5 +1900,18 @@
         "statements": 2
       }
     ]
+  },
+  {
+    "file": "graph-inference-worker.mjs",
+    "cases": [
+      {
+        "id": "data/inferred-graph-worker-lifecycle",
+        "statements": 3
+      },
+      {
+        "id": "data/inferred-graph-worker-complete-grid",
+        "statements": 3
+      }
+    ]
   }
 ]

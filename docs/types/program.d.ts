@@ -1826,11 +1826,21 @@ export type GraphStructuralDefinition = InferredGraphSource & { readonly feature
 export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
 export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
   (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
-  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+  GraphCandidateMstDefinition & { readonly candidateGraph: string }) & { readonly prepared?: never; readonly requestToken?: never };
 export interface EditInferredGraphDataOptions {
+  readonly prepared?: never; readonly requestToken?: never;
   readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
   readonly definition?: Partial<InferredGraphDefinition>;
 }
+declare const preparedInferredGraph: unique symbol;
+/** Opaque result bound to the exact Full receiver, action kind and request token. */
+export interface PreparedInferredGraphData {
+  readonly [preparedInferredGraph]: true; readonly kind: "graph-inference-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+export type ApplyInferredGraphOptions = { readonly prepared: PreparedInferredGraphData; readonly requestToken: string } & {
+  readonly [K in "id" | "data" | "candidateGraph" | "nodeKey" | "ruleId" | "rule" | "features" | "metric" | "preprocess" | "attributes" | "options" | "maxNodes" | "maxEdges" | "execution" | "target" | "definition"]?: never;
+};
 export interface GraphInferenceDiagnostics {
   readonly options: Readonly<Record<string, unknown>>;
   readonly preparation?: { readonly metric: GraphMetric; readonly preprocess: "none" | "standardize" | "minmax";
@@ -6931,8 +6941,8 @@ export class ChartProgram {
   createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
   editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
-  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
-  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;

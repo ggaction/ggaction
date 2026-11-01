@@ -117,7 +117,7 @@
 
 ## `createInferredGraphData`
 
-- Signature: `createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })`.
+- Signature: `createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? }) or createInferredGraphData({ prepared, requestToken })`.
 - Full chart-authoring action이다. id/nodeKey/ruleId/rule은 필수이며 source key·attribute·한도·불변성은 관측 graph와 같은 owner를 사용한다. data는 explicit→current materialized→unique eligible 순서이며 ambiguity/missing은 오류다. Graphics 없이 `editSemantic` child로 graph를 저장한다.
 - `maxNodes`/`maxEdges`는 각각 기본10000이며 source rows, feature preparation, 각 rule의 생성 결과, edit/revision 및 restore까지 전달된다. MST candidate는 candidate resource 자체의 저장 한도로 검증하며 결과 graph의 더 작은 `maxEdges`와 혼동하지 않는다. 이 두 capacity는 기존 공통10M work 한도나 graphic item 한도를 변경하지 않는다. Capacity를 명시해도 작업량 한도를 넘는 계산은 원자적으로 거부된다.
 - rule은 knn/radius/similarity/mst/group/sequence다. Numeric features는1–64개 field 배열, jaccard는 field 배열 또는 `{set}`, great-circle은 `[longitudeField,latitudeField]` 또는 `{longitude,latitude}`다. Metric은 euclidean/manhattan/cosine/jaccard/great-circle이며 preprocessing은 none(default)/standardize/minmax다. Standardize는 모집단 표준편차, minmax는 열 범위를 사용하고 constant column은0이다. Overflow를 피하기 위해 scale/center/spread 통계를 저장한다. Jaccard/great-circle은 preprocess:none만 허용한다.
@@ -137,7 +137,7 @@
 
 ### Formal values — `createInferredGraphData`
 
-- Implemented: `createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram`.
+- Implemented: `createInferredGraphData(options: CreateInferredGraphDataOptions | ApplyInferredGraphOptions): ChartProgram`.
 - Planned: 이 action의 추가 값 없음.
 - Proposed (NOT IMPLEMENTED): implicit metric selection, silent approximation, imputation.
 
@@ -148,7 +148,7 @@
 
 ## `editInferredGraphData`
 
-- Signature: `editInferredGraphData({ target?, data?, candidateGraph?, definition? })`.
+- Signature: `editInferredGraphData({ target?, data?, candidateGraph?, definition? }) or editInferredGraphData({ prepared, requestToken })`.
 - target은 explicit/current eligible/unique inferred graph이며 observed graph를 수정하지 않는다. Scoped child target을 지원한다. data와 candidateGraph를 생략하면 exact 입력을 보존한다. candidateGraph:null은 후보 입력을 제거한다. definition은 source definition partial patch이며 options를 지정하면 rule options 전체를 교체한다. rule을 바꿀 때는 nodeKey/attributes/limits만 이어받고 새 ruleId와 applicable intent를 받는다. 빈 편집과 explicit undefined/null definition, unknown/inapplicable options는 오류다.
 - topology를 다시 계산하여 graph revision을1 올린다. 살아 있는 같은 ruleId/direction/endpoints의 edge key는 유지한다. Candidate graph를 소비하는 추론 graph chain과 각 layout/plot을 의존 순서대로 preflight하고 한 번씩 명시 갱신한다. Cyclic candidate refs와 실패하는 downstream geometry는 전체 편집을 거부한다.
 - DATA revision의 전체 source replacement map은 exact graph action receiver의 private context에만 존재한다. Prepared primitive는 unique exact next graph/layout revisions, 유지된 options, 동적 dataset의 동일 logicalId와 later revision을 검사한다. 이 authority는 public option이나 저장 state가 아니다.
@@ -156,7 +156,7 @@
 
 ### Formal values — `editInferredGraphData`
 
-- Implemented: `editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram`.
+- Implemented: `editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions> | ApplyInferredGraphOptions): ChartProgram`.
 - Planned: 이 action의 추가 값 없음.
 - Proposed (NOT IMPLEMENTED): origin conversion, screen-coordinate inference.
 
@@ -170,3 +170,15 @@
 The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
 
 Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.
+
+## Inferred graph worker preparation
+
+- `ggaction/graph`의 advanced resource helpers는 `createGraphInferenceExecutor({createWorker})`, `computeGraphInference(job, signal?)`, `prepareInferredGraphData(program, request, {executor,requestToken,signal?})`다. Request는 `{kind:'create', ...createOptions}` 또는 `{kind:'edit', ...editOptions}`이고 동일 기존 source/target/candidate 해석 owner를 사용한다. Executor와 createWorker는 필수이며 동기 fallback을 만들지 않는다.
+- exact Full constructor의 등록된 graph handler와 immutable closed native program을 요구한다. Basic/미등록/파생 constructor는 권한을 상속하지 않는다. Prepare는 원 receiver/trace/resources/graphics를 바꾸지 않고 authentic frozen handle을 반환한다.
+- 기존 create/edit의 배타적 `{prepared,requestToken}` 형태로 적용한다. 다른 입력과 혼합, 다른 receiver/restore clone/token/action kind, 구조복사한 handle은 오류다. Handle의 입력 resource revision vector와 완성 결과는 exact 원 receiver에 결합되어 있고, edit은 기존 명시 dependency closure를 실행한다. 후속 소비자 오류도 원 program/trace를 보존한다.
+- Job은 schemaVersion1/algorithmVersion1, exact inputs, normalized definition, 원 source rows, optional candidate model 및 그 자체 limits/execution, inputHash를 갖는 deep-owned value다. Completion은 schemaVersion1/complete:true/inputHash/resultHash와 기존 model/diagnostics다. Worker·program·promise·token·handle은 resource에 저장하지 않는다. 원 sourceRow provenance는 receiver의 native data에서 조립한다.
+- Job/completion 각각의 기존 typed-value canonical UTF-8 encoding은128MiB 또는 명시 execution.maxBytes 이하이며 own-data/길이/bytes/hash를 clone 전 검사한다. Default10M와 지정work, 노드/간선 capacity, layout/graphic한도는 그대로다. maxBytes는 전체 JS heap 한도가 아니다. editable program codec에 존재하지 않는 전체 byte guard를 추가하지 않는다.
+- Host worker는 공개 compute 함수를 실행하는 신뢰된 계산 provider다. Hash는 consistency만 증명한다. Main은 기존 stored/source binding/identity/metric weight/diagnostics 검증을 모두 유지하며 최적성을 검증하려고 solver를 다시 실행하지 않는다.
+- Executor는 cache 없이 pending1개, 요청마다 fresh worker1개를 소유한다. 추가 요청은 resource-limit 오류이며 implicit queue가 없다. complete/error/abort/dispose 중 첫 terminal에서 worker/listener/pending을 해제하며 늦은 callback은 입력을 읽지 않는다. dispose는 동기/idempotent, 이후 compute는 stale 오류다. AbortSignal은 job/request를 읽기 전에 검사하고 계산 단계마다 확인하며 worker abort는 terminate한다. Prepared handle의 원 signal은 적용까지 재검사한다.
+- Preparation은 요청한 inferred resource 한 개만 계산한다. Source revision의 기존 동기 resource closure와 dependency writer를 암묵적인 async transaction으로 바꾸지 않는다. Startup/copy/main validation/commit 비용과 최종 worker SLO·retained heap은 별도 측정한다.
+- Evidence: `test/unit/grammar/graph/inference-job.test.js`, `test/unit/resources/graph-inference-host.test.js`, `test/contracts/inferred-graph-types.test.js`.

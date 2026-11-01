@@ -45,3 +45,20 @@ p.filterMarks({ field: "key", op: "eq", value: "a", recompute: "true" });
 chart().createInferredGraphData({ ...request, execution: { policy: "unbounded", maxWork: 1, maxBytes: 1 } });
 // @ts-expect-error Both execution limits must be explicit.
 chart().createInferredGraphData({ ...request, execution: { policy: "bounded-inference@1", maxWork: 1 } });
+
+import { createGraphInferenceExecutor, prepareInferredGraphData, computeGraphInference, type GraphInferenceJob } from "ggaction/graph";
+const executor = createGraphInferenceExecutor({ createWorker: () => new Worker("inference-worker.js", { type: "module" }) });
+const prepared = await prepareInferredGraphData(p, { kind: "create", ...request }, { executor, requestToken: "run" });
+p.createInferredGraphData({ prepared, requestToken: "run" });
+p.editInferredGraphData({ prepared, requestToken: "run" });
+const completion = computeGraphInference({} as GraphInferenceJob);
+const complete: true = completion.complete;
+executor.dispose();
+// @ts-expect-error Inference requires a real worker factory.
+createGraphInferenceExecutor();
+// @ts-expect-error Preparation never silently uses synchronous inference.
+prepareInferredGraphData(p, { kind: "create", ...request }, { requestToken: "run" });
+// @ts-expect-error Prepared and ordinary inference options are exclusive.
+p.createInferredGraphData({ prepared, requestToken: "run", id: "mixed" });
+// @ts-expect-error Prepared edits cannot carry a target or definition patch.
+p.editInferredGraphData({ prepared, requestToken: "run", target: "mixed" });

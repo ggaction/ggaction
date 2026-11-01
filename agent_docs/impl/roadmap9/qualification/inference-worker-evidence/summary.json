@@ -1,0 +1,58 @@
+{
+  "status": "source-verified-doc-pin-pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "decision": "32c26e969",
+  "base": "2f768950d",
+  "scope": "Dedicated inferred-graph worker, unchanged native math/default limits, authentic atomic application",
+  "owning": {
+    "first": 161,
+    "supplement": 15,
+    "latestJobHost": 17,
+    "overlap": true,
+    "criticalOwners": 19
+  },
+  "boundaries": 38,
+  "contracts": 35,
+  "archive": "d0083b94a5fe141f53af9c39c5091438f73691ef52cfd55af37598e8b026faf2",
+  "installed": {
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "eachRuntime": 5,
+    "eachTypes": 1,
+    "eachSnippets": 2,
+    "eachBundles": 6,
+    "worker10000Nodes100000Edges": true,
+    "initialNode20BundleFailure": "installed20.json",
+    "sameMeasurementReassessment": "installed20-reassessed.json"
+  },
+  "browser": {
+    "actualWorker": true,
+    "sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "k": 10,
+    "allEdges": true,
+    "oracle": "test/oracles/inference-grid.js",
+    "qualification": false,
+    "log": "browser-final.log.gz"
+  },
+  "firstFailures": [
+    "initial.log.gz",
+    "host-third.log.gz",
+    "browser-first.log.gz",
+    "types-first.log.gz",
+    "snippets-first.log.gz",
+    "docs-first.log.gz",
+    "installed20.json"
+  ],
+  "pending": [
+    "source-pinned documentation final checks",
+    "Final combined AT82 P95/retained heap/100cycle performance qualification"
+  ],
+  "qualification": false
+}
