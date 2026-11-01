@@ -167,6 +167,11 @@ titles, facet-header edits and existing shared-legend editors/removal are explic
 child first, then replace its slot when a concat dashboard needs a changed
 chart.
 
+Full programs also accept [explicit child targets](./composition/editing.md#target-one-view-one-mark-or-several-marks)
+for ordinary actions. The [resource comparison recipe](../recipes/composition.md#pair-a-resource-view-with-an-analytical-chart)
+uses them to edit an analytical sibling's fields, scales and guides, then revise
+both child sources in one atomic action while retaining their separate identities.
+
 
 ## Path layer color
 

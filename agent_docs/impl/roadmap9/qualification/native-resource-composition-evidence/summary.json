@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-conceptual-checkpoint",
+  "authorization": "../../AUTHORIZATION.json",
+  "base": "71c0cedddc515234c91ef5486ed4a2af2aaf5092",
+  "runtimeChanged": false,
+  "publicApiChanged": false,
+  "typesChanged": false,
+  "sharedAnimationOwnersChanged": false,
+  "candidateQualification": false,
+  "scope": "Seven resource families: encodings/scales/guides via an explicit paired analytical sibling. Native resource layout/style contracts remain unchanged.",
+  "mapping": {
+    "rows": [
+      {
+        "id": "partition-cartesian",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "partition-polar",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "tree",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "treemap",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "graph-nodes",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-dag",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      },
+      {
+        "id": "sankey-cyclic",
+        "before": 15,
+        "after": 18,
+        "pending": [
+          "package"
+        ]
+      }
+    ],
+    "addedOwners": 21,
+    "otherRowsAndFieldsDeepEqual": true,
+    "existingOwnersPreserved": true,
+    "archiveSHA256": "5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e",
+    "archiveRuntimeSourceCommit": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+    "sourceTypesPackageManifestUnchangedSinceArchiveSource": true,
+    "runtimeChanged": false,
+    "note": "Canonical packaging minifies selected modules. Runtime equality is checked against the frozen archive source commit, not raw source versus transformed package bytes."
+  },
+  "checks": {
+    "normalOwning": {
+      "passed": 51,
+      "command": "node --test test/contracts/composition-phase10-types.test.js test/contracts/test-discovery.test.js test/contracts/native-capability-completion.test.js test/unit/resources/resource-composition.test.js test/unit/animation/resource-layout-fallbacks.test.js test/unit/actions/composition/explicit-targets.test.js",
+      "log": "contracts.log.gz"
+    },
+    "sourceNode20": {
+      "passed": 14,
+      "version": "20.20.2",
+      "log": "node20.log.gz"
+    },
+    "sourceNode22": {
+      "passed": 14,
+      "version": "22.23.1",
+      "log": "owning.log.gz"
+    },
+    "sourceNode24": {
+      "passed": 14,
+      "version": "24.22.1",
+      "log": "node24.log.gz"
+    },
+    "browser": {
+      "passed": 7,
+      "families": 7,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "DPR": [
+        1,
+        2
+      ],
+      "assertions": "exact unchanged resource crop; analytical edits and revision visibly differ; same-backend restored whole-program pixels exact",
+      "log": "browser-ready.log.gz"
+    },
+    "executableDocumentation": {
+      "passed": 1,
+      "log": "docs-example-final.log.gz"
+    },
+    "documentationCoverage": {
+      "passed": 2,
+      "log": "docs-coverage.log.gz"
+    },
+    "installedDocumentation": {
+      "passed": 1,
+      "node": "22.23.1",
+      "archive": "5bb29c9cb31ad342d3f9a7bd0c45b513ad39f18963a39fac3f528464c924bc3e",
+      "runtimeSource": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+      "fixture": "Current displayed recipe + public support module via canonical tutorial consumer",
+      "receipt": "installed-doc.json",
+      "note": "Archive reused with unchanged runtime/type/package inputs. No repack, bundle change or new family package-owner assignment."
+    },
+    "documentation": {
+      "passed": 49,
+      "log": "documentation-final.log.gz"
+    },
+    "builtDocumentation": {
+      "pages": 186,
+      "selectiveLLMArtifacts": 1603,
+      "log": "built.log.gz",
+      "buildLog": "build.log.gz"
+    },
+    "builtBrowser": {
+      "page": "recipes/composition/",
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "horizontalOverflow": 0,
+      "axeViolations": 0,
+      "browserErrors": 0,
+      "receipt": "built-browser.json"
+    },
+    "sourcePin": {
+      "runtimeSource": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+      "exampleSource": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
+      "generators": [
+        "docs:provenance",
+        "docs:metadata",
+        "docs:search",
+        "docs:machine",
+        "docs:llms"
+      ]
+    }
+  },
+  "initialFailures": [
+    "Seven negative assertions used the wrong error regex; all seven positive tests already passed. Corrected to the existing hierarchy/graph errors without changing runtime.",
+    "Initial browser wait referenced an unavailable window flag; stopped only the owned runner and reused the existing shared status readiness.",
+    "The documented Canvas lookup used getElementById, absent from the bounded documentation host; changed to the existing querySelector public example convention.",
+    "Exploratory argument placement errors (scale properties must be nested; scoped editScale uses a view selector and native id) were fixed in the example before acceptance.",
+    "Initial preflight found system Ruby2.6; rerun used repository-documented Ruby3.2.11/Bundler path and passed. CI Ruby3.2.6 exact environment was not claimed.",
+    "New recipe search index exceeded its existing ceiling by677 bytes; original46/47 result preserved, measured ceiling increased by700 bytes."
+  ],
+  "remaining": [
+    "Package owner remains pending only in this branch; root separately owns the discovered installed runtime suite. Preserve its assignments during merge.",
+    "Native field mapping/scale-driven topology/automatic linked source synchronization are not claimed.",
+    "No native completion pass records or overall STEP077 completion is generated."
+  ],
+  "sourceCommit": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
+  "searchBudget": {
+    "previousBytes": 1087185,
+    "currentBytes": 1087877,
+    "deltaBytes": 692,
+    "previousLimit": 1087200,
+    "newLimit": 1087900,
+    "originalFailure": "documentation.log.gz",
+    "result": "49/49 after minimum measured ceiling update"
+  }
+}

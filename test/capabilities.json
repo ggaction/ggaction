@@ -344,6 +344,14 @@
       {
         "type": "prefix",
         "path": "charts/bullet/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "contour": [
@@ -584,6 +592,14 @@
       {
         "type": "file",
         "path": "unit/animation/resource-layout-fallbacks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "font-assets": [
@@ -776,6 +792,14 @@
       {
         "type": "file",
         "path": "unit/graph-presentation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "guides": [
@@ -880,6 +904,14 @@
       {
         "type": "file",
         "path": "unit/animation/resource-layout-fallbacks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "hit-testing": [
@@ -1360,6 +1392,14 @@
       {
         "type": "file",
         "path": "unit/resources/partition-frames.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/resource-composition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/resource-composition.browser.js"
       }
     ],
     "pattern-paints": [

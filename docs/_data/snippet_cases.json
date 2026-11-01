@@ -791,5 +791,18 @@
     "mode": "complete",
     "result": "from,to",
     "prerequisites": "Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change."
+  },
+  {
+    "id": "resource-analytical-comparison",
+    "file": "recipes/composition.md",
+    "contains": "const comparison = createResourceComparison(\"tree\");",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "revised",
+    "prerequisites": "Copy the linked resource-comparison.js beside this module, use its public ggaction import, and provide a Canvas with id chart. The helper contains typed source rows and both complete child programs.",
+    "rendering": "renders-canvas",
+    "supportFiles": {
+      "resource-comparison.js": "examples/program-composition/resource-comparison.js"
+    }
   }
 ]

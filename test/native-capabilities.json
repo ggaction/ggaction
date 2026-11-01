@@ -2340,6 +2340,42 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2537,6 +2573,42 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2722,6 +2794,42 @@
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -2905,6 +3013,42 @@
           ],
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/HIERARCHY.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -3097,6 +3241,42 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/GRAPHS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -3920,6 +4100,42 @@
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -4104,6 +4320,42 @@
           ],
           "tests": [
             "test/unit/animation/resource-layout-fallbacks.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/COMPOSITION.md",
+            "agent_docs/contract/current/FLOWS.md"
+          ],
+          "tests": [
+            "test/unit/resources/resource-composition.test.js",
+            "test/browser/resource-composition.browser.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
