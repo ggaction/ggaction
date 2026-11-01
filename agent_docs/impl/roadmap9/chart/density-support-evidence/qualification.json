@@ -1,7 +1,7 @@
 {
   "status": "집중 수치 검증 완료; AT82 성능/통합 검증 미완료",
   "sourceBase": "0aedbe0a7a0a4ab8f35bb4d610272c9e895eafe7",
-  "sourceRevision": null,
+  "sourceRevision": "dfa2a3ccfaac91a11072c0cd2f7d39d44570260a",
   "change": "원형 compact density support의 각 행에서 기여가 없는 사각 모서리 순회를 제거한다. 경계 양쪽 한 열을 보수적으로 유지하고 기존 radial kernel과 sample/cell 누적 순서를 보존한다. 실제 계산한 행과 후보 셀을 work에 반영하며 기존 한도를 유지한다.",
   "invariants": [
     "256×256 grid, 20 iterations, bandwidth/step/8 tangent channels 불변",
@@ -33,7 +33,8 @@
         "be3039d401533383139426aac7081369d8a0f661621989bc3531a11b32744769"
       ],
       "comparison": "Exact ordered sparse entries and complete route outputs; only intentional work diagnostic excluded."
-    }
+    },
+    "internalDocumentation": 1
   },
   "limitations": [
     "크기가 작은 support는 행별 검사 비용이 더 클 수 있다. 표본120개의 총 work는81739→75173이며 실행 지연시간 결과가 아니다.",
