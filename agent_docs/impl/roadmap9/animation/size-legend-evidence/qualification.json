@@ -77,7 +77,8 @@
       "optionalPeers": true,
       "bundleEntries": 6,
       "limitRepair": "Node20 runtime/TS/doc/6 measurements all completed; animation limit-only failure retained, exact same measurements revalidated with 272500 cap."
-    }
+    },
+    "sourcePinnedDocs": 26
   },
   "limits": {
     "entries": 1179,
@@ -122,6 +123,10 @@
     "size-legend-shared-seam-first.log": "3b219dab7fbea98ceb6f84dd3281f8da43ccb89f5a087d9b2f11cb83bad0bd04",
     "node20-receipt.json": "7b8d0c82e7dbc7d56fd7463f8ff9755570c58d4b39de17cbe88eab4e3ea0793b",
     "node22-receipt.json": "c4aea73e993ad8e949fe4c588741dcaf1546407fb18550ec412187444b9d0011",
-    "node24-receipt.json": "9a78e649dc628b6528eedc0693cb0301e35fdcd2d489bc4f42e8203ee414734b"
-  }
+    "node24-receipt.json": "9a78e649dc628b6528eedc0693cb0301e35fdcd2d489bc4f42e8203ee414734b",
+    "size-legend-docs-pin.log": "9feb7a94be165516d4cd8c3fe291077fd3d995e69cfdf997c5bb6b8769042eff",
+    "size-legend-docs-pinned.log": "582ac425a6788d541536fdadd1260399cd32e4b8df6c8b76654a4180d3398527",
+    "size-legend-documentation-truth-final.log": "a11aaa0e130ccda751b2d457f121452093bcf90b30939d7bf5ea16cc09acc163"
+  },
+  "source": "509a5e839"
 }
