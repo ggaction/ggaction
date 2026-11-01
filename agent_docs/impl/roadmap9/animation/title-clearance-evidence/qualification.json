@@ -50,6 +50,13 @@
       "groupDocumentExample": true,
       "optionalPeers": true,
       "bundleEntries": 6
+    },
+    "pinnedDocumentation": 29,
+    "builtPages": 186,
+    "builtLlmArtifacts": 1598,
+    "publicPageBrowserReuse": {
+      "source": "../grouped-legend-evidence/qualification.json",
+      "reason": "Public page content, examples and browser assets are unchanged; source provenance links are regenerated and the new build link/hash checks pass. Native title browser is independently rerun in this checkpoint."
     }
   },
   "limits": {
@@ -91,6 +98,10 @@
     "title-clearance-native-first.log": "14142c4a04f07b5ad6805f9f42170f232e3694b422b1d49e3633adbefe5c070b",
     "title-clearance-package-contracts.log": "88307806b4323bf171d5bec4250e896eb016ec5687169af0362c032bbd8d9260",
     "title-clearance-package-first.log": "5dec7ee6b2ab04b0109949d2e5702a0ad708064e2b9c78e0c9965d54f51ab59b",
-    "title-clearance-package-measure.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
-  }
+    "title-clearance-package-measure.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "title-clearance-pinned-docs.log": "7ff38b5128cda8aa5de2d74afc3795552734c5d6e70fb0ef923608bbed1f995f",
+    "title-clearance-doc-build.log": "6d3d022471906de06de57d5af370794ca9b46e26bf26862aa8176436feaf17df",
+    "title-clearance-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
+  },
+  "sourceCommit": "8daa43f5f3f545d233bf9006cdedf6f3d9fd60c0"
 }
