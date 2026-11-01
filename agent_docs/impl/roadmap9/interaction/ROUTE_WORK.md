@@ -9,7 +9,7 @@
 - [x] 같은 archive 세 Node 및 문서·경계 검증 마감
 - [x] 새 source의 실제 Chromium edge-path1k P95
 - [x] 단일 spline span 준비의 실제 연산 제거와 HEB10k 원 경로 보존
-- [ ] 새 source의 HEB10k Chromium P95
+- [x] 새 source의 HEB10k Chromium bundling-only P95; graphic limit 별도 미완료
 - [ ] HEB 입력 준비 중복의 추가 검토
 - [x] Geographic GraphRoute 연결 — [공개 adapter](../chart/geo-route-data.md)
 - [ ] Density/force의 나머지 크기 지원
@@ -139,4 +139,16 @@ hierarchy nodes를 모두 유지하며 work9,723,588·peakSamples88,841로 완�
 집중 source94개 ×Node20/22/24, spline owner100/100/100, boundary/discovery40, package7을
 통과했다. 같은481be548…69f16 archive에서 세 Node 각각 공개5사례와6bundle을 검증했다.
 최초 package 상한·설치 상대경로·Full gzip19byte 초과와 교정을 [증거](route-span-evidence/summary.json)에
-보존한다. 아직 browser P95와 source-pin metadata는 별도 마감 전이다.
+보존한다. Source-pin 생성과 문서 coverage18·links29를 통과했다.
+
+같은 archive·Chromium153·M4/16GiB에서 다른 agent의 큰 검사를 중단한 뒤 DPR1/2 각각
+5회 warmup+30회 측정을 완료했다. 번들 계산 P95는 **12,732.2 / 12,747.9 ms**, worker
+계산은1,327.7 / 1,273.4 ms다. 30,000ms 번들 단계 기준만 통과했다. 원본9,999nodes+10kedges의
+GraphPlot은 `Graph plot graphic count must not exceed 10000.` 오류로 그리기 전 거부되므로
+materialization/Canvas/SVG SLO는 미완료다. 최초 실패와 final partial report를 모두 보존했고
+fixture·guard·원 edge 집합을 바꾸지 않았다. 두 셀을 전체 성공으로 합산하지 않는다.
+
+초기 bundle 로드 뒤 offline/HTTP0, 완료 worker/listener/timer/capture/callback-after-destroy0이다.
+새 lifecycle100/retained-heap 실행은 없으며 이전 host 불변 범위의 증거만 분리 재사용한다.
+AT82·large workload·STEP077 전체는 미완료다. 다음 개념은 exact immutable job의 반복
+검증 제거이며 solver/result 검증과 work 한도는 그대로 유지한다.

@@ -1,8 +1,8 @@
 {
-  "status": "source-qualified-browser-p95-pending",
+  "status": "qualified-bundling-only-graphic-limited",
   "date": "2026-11-01",
   "base": "ee374aec1",
-  "source": null,
+  "source": "3aeb5a822",
   "authorization": "../AUTHORIZATION.json remainingApproval; parent approved exact single-span math and unchanged guards",
   "change": "Single clamped span with 2-4 controls uses direct endpoint derivatives; arithmetic order and shared flattening unchanged.",
   "unchanged": [
@@ -50,7 +50,8 @@
     "sha256": "481be548bf4f77a26c3215f76e38fc9425f2a46009c8d7b9278693a960069f16",
     "entryCount": 1170,
     "size": 1669099,
-    "unpackedSize": 7558637
+    "unpackedSize": 7558637,
+    "afterMetadataSHAUnchanged": true
   },
   "packageMeasurementNode20": {
     "name": "ggaction",
@@ -118,16 +119,132 @@
       "scope": "bundle",
       "message": "Node20 Full781519 >781500 after all5runtime passed",
       "resolution": "781600; all18 saved measurements revalidated; no reinstall"
+    },
+    {
+      "scope": "actual Chromium materialization",
+      "message": "Graph plot graphic count must not exceed 10000.",
+      "resolution": "Preserved original fixture and first report; measured only available bundling stages, no guard/item change."
     }
   ],
-  "pending": [
-    "actual Chromium DPR1/2 warmup5+30 HEB10k P95",
-    "source-pinned documentation metadata"
-  ],
+  "pending": [],
   "remaining": [
     "authentic preparation duplicate validation audit",
     "force1k/10k and edgepath10k algorithmic limits",
     "density owned by root",
     "AT82 full and STEP077 not complete"
-  ]
+  ],
+  "documentation": {
+    "sourcePin": true,
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "coverageChecks": 18,
+    "linkLLMChecks": 29,
+    "publicContentChanged": false,
+    "builtBrowserReused": "Private math change; generated source identifiers only. No HTML/CSS/JS public UI change."
+  },
+  "browser": {
+    "report": "browser-report.json",
+    "status": "measurement-completed",
+    "archive": "481be548bf4f77a26c3215f76e38fc9425f2a46009c8d7b9278693a960069f16",
+    "source": "3aeb5a822",
+    "environment": {
+      "cpu": "Apple M4",
+      "cores": 10,
+      "ramBytes": 17179869184,
+      "os": "Darwin 27.0.0 arm64",
+      "node": "v22.23.1",
+      "start": "2026-11-01T11:22:16.957Z",
+      "loadStart": [
+        1.41015625,
+        4.6103515625,
+        5.12939453125
+      ],
+      "browser": "153.0.8010.12",
+      "end": "2026-11-01T11:37:28.107Z",
+      "loadEnd": [
+        1.873046875,
+        2.533203125,
+        3.4287109375
+      ]
+    },
+    "cases": [
+      {
+        "edgeCount": 10000,
+        "nodes": 9999,
+        "method": "hierarchical",
+        "ratio": 1,
+        "status": "measured-bundling-only",
+        "warmups": 5,
+        "measured": 30,
+        "p95": {
+          "computeMs": 1327.7000000476837,
+          "prepareComputeValidateMs": 5667.700000047684,
+          "applyMs": 7161.800000190735,
+          "bundlingMs": 12732.200000047684
+        },
+        "thresholdMs": 30000,
+        "successSLO": "not-complete-materialization-limited",
+        "bundlingSLO": "passed-stage-only",
+        "materializationLimit": {
+          "name": "RangeError",
+          "message": "Graph plot graphic count must not exceed 10000.",
+          "stages": [
+            "materializeGraphPlot",
+            "canvasRender",
+            "svgSerializeDom"
+          ],
+          "policy": "Original nodes/edges kept; no graphic guard change or item drop."
+        },
+        "counters": {
+          "workers": 0,
+          "workerListeners": 0,
+          "listeners": 0,
+          "timers": 0,
+          "captures": 0,
+          "callbacksAfterDestroy": 0
+        }
+      },
+      {
+        "edgeCount": 10000,
+        "nodes": 9999,
+        "method": "hierarchical",
+        "ratio": 2,
+        "status": "measured-bundling-only",
+        "warmups": 5,
+        "measured": 30,
+        "p95": {
+          "computeMs": 1273.4000000953674,
+          "prepareComputeValidateMs": 5735,
+          "applyMs": 7117.799999952316,
+          "bundlingMs": 12747.900000095367
+        },
+        "thresholdMs": 30000,
+        "successSLO": "not-complete-materialization-limited",
+        "bundlingSLO": "passed-stage-only",
+        "materializationLimit": {
+          "name": "RangeError",
+          "message": "Graph plot graphic count must not exceed 10000.",
+          "stages": [
+            "materializeGraphPlot",
+            "canvasRender",
+            "svgSerializeDom"
+          ],
+          "policy": "Original nodes/edges kept; no graphic guard change or item drop."
+        },
+        "counters": {
+          "workers": 0,
+          "workerListeners": 0,
+          "listeners": 0,
+          "timers": 0,
+          "captures": 0,
+          "callbacksAfterDestroy": 0
+        }
+      }
+    ],
+    "network": "Initial localhost only; offline before all measurements; HTTP requests 0.",
+    "scope": "Both original all-item workloads preserve 10000 edges and 9999 nodes. Bundling stage passes only; GraphPlot graphic limit prevents materialization/Canvas/SVG.",
+    "lifecycleReuse": "No new lifecycle100 or retained-heap measurement. Prior route-work/AT82 host evidence is reused only for unchanged executor/host lifecycle, not claimed as new 10k rendering evidence.",
+    "cellAccounting": "Original24cells remain8success/16limits; earlier edge-path1k adds2 success; this source adds2 partial bundling-only cells, not full successes."
+  }
 }

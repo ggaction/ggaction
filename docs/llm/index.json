@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:6a71352444b0f0c5eb6cc49026cc8b1475ebb931062a5b33e81fb64cc32f5f50",
+  "contractId": "sha256:09d5192b4a3f07edaeb1c2258e71da125c360e9e62f9808f3ab89d0883f5cb04",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
@@ -40,7 +40,7 @@
       "count": 186,
       "path": "llm/pages.json",
       "bytes": 46015,
-      "sha256": "fb633f92c1423e815a1af0ce6fc2de44f9287a2be21518ac5fd1b9063feadb78"
+      "sha256": "9f9432cf1b5f65b9282d52cac44403678eb8b75dee1451de4146ca782147630f"
     },
     "actions": {
       "count": 379,
