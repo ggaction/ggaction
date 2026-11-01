@@ -7,10 +7,14 @@ export {
 
 const graphemeSegmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
 
+export const textGraphemeSegments = text => graphemeSegmenter.segment(text);
+export const textWordTokens = text => text.trim().split(/\s+/u);
+export const textHardLines = text => text.split(/\r\n|\r|\n/u);
+
 function wrapGraphemes(text, maxWidth, style, profile) {
   const lines = [];
   let line = "";
-  for (const { segment } of graphemeSegmenter.segment(text)) {
+  for (const { segment } of textGraphemeSegments(text)) {
     const candidate = line + segment;
     if (line !== "" && measureTextWidth(candidate, style, profile) > maxWidth) {
       lines.push(line);
@@ -26,7 +30,7 @@ function wrapGraphemes(text, maxWidth, style, profile) {
 function wrapWords(text, maxWidth, style, profile) {
   const lines = [];
   let line = "";
-  for (const word of text.trim().split(/\s+/u)) {
+  for (const word of textWordTokens(text)) {
     if (measureTextWidth(word, style, profile) > maxWidth) {
       if (line !== "") {
         lines.push(line);
@@ -65,7 +69,7 @@ export function wrapText(text, {
   const wrapLine = line => mode === "word"
     ? wrapWords(line, maxWidth, style, profile)
     : wrapGraphemes(line, maxWidth, style, profile);
-  const hardLines = text.split(/\r\n|\r|\n/u);
+  const hardLines = textHardLines(text);
   return hardLines.length === 1 ? wrapLine(text)
     : hardLines.flatMap(line => line === "" ? [""] : wrapLine(line));
 }

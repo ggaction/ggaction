@@ -1,0 +1,344 @@
+{
+  "scope": "Explicit schema2 axisLabelReflow font query preparation only. Public dynamic animation reflow remains pending.",
+  "base": "3415839355f3f3a5d9e63ebe7ab5bdf0cecf83f3",
+  "approval": "../../AUTHORIZATION.json#remainingApproval and root adoption recorded in ../AXIS_LABEL_REFLOW.md",
+  "inputs": [
+    {
+      "path": "src/layout/text.js",
+      "sha256": "161ca31d1f35940cd8d143b8b6e3c94e717075301c8ceedcdda3e378346cee00"
+    },
+    {
+      "path": "src/materialization/axisLabelQueries.js",
+      "sha256": "fae23f59edcc107da587efe7f9df57771644302c30a1c598e2d94f0413d4e6f6"
+    },
+    {
+      "path": "src/resources/textMetricsFull.js",
+      "sha256": "21e2b76dfc75bac67409d19ea90825057f30c587d5234b8204dfc630904e43fa"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "377ea670dd3c77465aa7f0ccd939148a72d84639911711ff46400d460601d39b"
+    },
+    {
+      "path": "test/unit/resources/font-axis-reflow.test.js",
+      "sha256": "bdd63cc25b7f42010cef74fb25d87116f736441e1fc4479ff928ea9ebca9e882"
+    },
+    {
+      "path": "test/contracts/font-types.test.js",
+      "sha256": "55b628f924e339e42e4b8398e8ce577ba3d022d496c2310e73f54b0bd2476e10"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/fonts.mjs",
+      "sha256": "2a547df6a28b4496e29ff143c4389fed338a872e791e34569ca6a6d78aa222c8"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "0966dec42c99fc45371d06f3ab4f2d754485ef79df18085b425044532dd9e748"
+    },
+    {
+      "path": "scripts/consumers/fixtures/types-2.ts",
+      "sha256": "6c9f86a60187f93378010c7f54b3f4a85372f61b9a97a3f5934d92f6bd2b2379"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "97bda996fabe830f44678d81c0e1cbee050428e709f61bf248a776191f7b4b00"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "b9016c99485ca4fbc3feace825ccdad4e13a53448a845c03081e6deeca49f6f2"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "5bb81ac7703c8816cc9bacfb0d24a5a45e4c0f7cee3ae2b61595d90ef5cd5d43"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/resources/font-axis-reflow.test.js unit/resources/font-public-preparation.test.js unit/actions/guides/grapheme-wrapping.test.js",
+      "tests": 22,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js unit capability:font-assets",
+      "tests": 78,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/font-types.test.js contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/documentation-truth.test.js",
+      "tests": 34,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/package-artifact.test.js contracts/documentation-truth.test.js contracts/source-boundaries.test.js contracts/test-discovery.test.js",
+      "tests": 40,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "tests": 237,
+      "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/resources/font-axis-reflow.test.js",
+      "nodeVersions": [
+        "20.20.2",
+        "24.22.1"
+      ],
+      "testsPerNode": 8,
+      "exitCode": 0
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include=src/materialization/axisLabelQueries.js --test-coverage-include=src/resources/textMetricsFull.js --test-coverage-lines=95 --test-coverage-branches=90 --test-coverage-functions=100 test/unit/resources/font-axis-reflow.test.js test/unit/resources/font-public-preparation.test.js",
+      "tests": 19,
+      "exitCode": 0,
+      "coverage": {
+        "materialization/axisLabelQueries.js": [
+          100,
+          100,
+          100
+        ],
+        "resources/textMetricsFull.js": [
+          100,
+          93.33,
+          100
+        ]
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/package-artifact.test.js",
+      "tests": 7,
+      "exitCode": 0
+    }
+  ],
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/font-closure.tgz",
+      "sha256": "b9822bcd07a07bd23c93e05cc16bc58b33e32ebfb91f679853b06ee96a9507d0",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1055,
+          "minifiedBytes": 2731059,
+          "gzipBytes": 782756,
+          "limit": 782800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 622,
+          "minifiedBytes": 1445819,
+          "gzipBytes": 424051,
+          "limit": 424100,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 147567,
+          "gzipBytes": 44127,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 484,
+          "minifiedBytes": 1004000,
+          "gzipBytes": 301664,
+          "limit": 301700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 202,
+          "minifiedBytes": 404809,
+          "gzipBytes": 129639,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 4,
+      "strictTypes": true
+    },
+    {
+      "node": "v22.23.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/font-closure.tgz",
+      "sha256": "b9822bcd07a07bd23c93e05cc16bc58b33e32ebfb91f679853b06ee96a9507d0",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1055,
+          "minifiedBytes": 2731059,
+          "gzipBytes": 781330,
+          "limit": 782800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 622,
+          "minifiedBytes": 1445819,
+          "gzipBytes": 423185,
+          "limit": 424100,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 147567,
+          "gzipBytes": 43973,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 484,
+          "minifiedBytes": 1004000,
+          "gzipBytes": 300669,
+          "limit": 301700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 202,
+          "minifiedBytes": 404809,
+          "gzipBytes": 129460,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 4,
+      "strictTypes": true
+    },
+    {
+      "node": "v24.22.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-contour/ggactionnewbrand/.artifacts/axis-reflow/font-closure.tgz",
+      "sha256": "b9822bcd07a07bd23c93e05cc16bc58b33e32ebfb91f679853b06ee96a9507d0",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1055,
+          "minifiedBytes": 2731059,
+          "gzipBytes": 782756,
+          "limit": 782800,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 622,
+          "minifiedBytes": 1445819,
+          "gzipBytes": 424051,
+          "limit": 424100,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954,
+          "limit": 26000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 147567,
+          "gzipBytes": 44127,
+          "limit": 46000,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 484,
+          "minifiedBytes": 1004000,
+          "gzipBytes": 301664,
+          "limit": 301700,
+          "pass": true
+        },
+        {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 202,
+          "minifiedBytes": 404809,
+          "gzipBytes": 129639,
+          "limit": 131400,
+          "pass": true
+        }
+      ],
+      "runtimeCases": 4,
+      "strictTypes": true
+    }
+  ],
+  "originalFailures": [
+    "font-closure-1.log: fixture maxWidth false plus retained wrap/lineHeight and Canvas margin setup were invalid; corrected fixtures only.",
+    "font-closure-2.log: responsive fixture lacked Canvas responsive mode and work-limit regex did not match native error; corrected fixtures only.",
+    "font-package-contracts.log: new capability entry used suite instead of canonical type; repaired metadata.",
+    "font-package-check-1.log and font-package-check-2.log: one source file and exact unpacked growth; cap 1220/7843200.",
+    "font-installed-20.log: runtime/types passed, Full782756>782500 and Basic424051>424000; caps minimally raised to782800/424100; final README-consistent archive reran all3Nodes.",
+    "font-package-20.log and font-package-24.log: Node20/24 compression1740485 exceeded1740000; cap1740500, same source check re-run0. Runtime archive remains the same b9822bcd Node22 artifact."
+  ],
+  "notClaimed": [
+    "Dynamic axis-label sampling/restore/hit/cardinality integration",
+    "Whole-repository coverage or final AT60/077",
+    "Published package or deployed documentation"
+  ],
+  "pending": [
+    "Source pin and built documentation checks",
+    "Closed group/empty slot/current raw-tick dynamic emission and strict rebase",
+    "Same current native label bounds for dependent titles"
+  ],
+  "package": {
+    "entries": 1220,
+    "unpackedBytes": 7843157,
+    "packedBytesByNode": {
+      "20": 1740485,
+      "22": 1737352,
+      "24": 1740485
+    },
+    "limits": {
+      "entries": 1220,
+      "unpackedBytes": 7843200,
+      "packedBytes": 1740500
+    }
+  }
+}

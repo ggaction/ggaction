@@ -930,6 +930,10 @@
     "file": "fonts.mjs",
     "cases": [
       {
+        "id": "fonts/axis-reflow-closure",
+        "statements": 14
+      },
+      {
         "id": "fonts/resource-metrics-offline",
         "statements": 15
       },

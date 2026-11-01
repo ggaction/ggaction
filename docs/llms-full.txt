@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:1e502d277d6d156af266a4d9309358682c3adedcd6507e531f1a0820c3544325. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4f5d1ddd4f247307ed0b7fa830e75fb5c93843432471fbf0f8e0a9a43bd797fe. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -10886,6 +10886,18 @@ The helper prepares the queries required by existing text layout, including
 bounded grapheme prefixes for wrapping. It never treats a missing width as zero
 or an estimate. Preparation allows 64 font bindings, 64 MiB of unique bytes,
 10,000 queries, 1,048,576 total UTF-16 units, and 256 layout passes.
+
+For Cartesian axis labels with `maxWidth` or `responsive`, explicitly pass
+`axisLabelReflow: true` in the request to prepare wrapping at additional widths.
+This prepares a conservative set of contiguous grapheme strings from the current
+labels, using the native hard-line and word tokenizer. It deduplicates exact
+font/text/size queries across nested charts and checks the query, text and
+10-million-work limits before decoding or measuring. Omission or `false` retains
+the existing preparation path. No caller-provided query list is accepted.
+The flag is not stored in the profile; its measured widths are. Prepare this
+option again after changing label text, font styles, or a bound font resource.
+It does not supply new automatically formatted text or enable unsupported
+animation layout; missing exact queries still fail.
 
 An exact profile requires a unique resource for each family/style/weight tuple.
 New labels or typography may require new measurements. Such edits fail atomically;
@@ -56210,7 +56222,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1e502d277d6d156af266a4d9309358682c3adedcd6507e531f1a0820c3544325` |
+| Contract fingerprint | `sha256:4f5d1ddd4f247307ed0b7fa830e75fb5c93843432471fbf0f8e0a9a43bd797fe` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

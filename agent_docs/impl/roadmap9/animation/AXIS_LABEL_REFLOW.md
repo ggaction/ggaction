@@ -10,7 +10,7 @@
 
 - [x] 구체 closed group/동적 decision/shared seam 설계 채택.
 - [x] Native candidate 계산 단일 owner와 기존 결과·오류·trace 동등 검증.
-- [ ] Schema2의 bounded 중간 query 공급 경계 확정·검증.
+- [x] Schema2의 bounded 중간 query 공급 경계 확정; source owning/strict types 검증. 설치·문서 증거는 아래 후속 기록.
 - [ ] Closed group 준비/중간 native emission/strict restore·rebase 연결.
 - [ ] 실제 현재 hit·offline·4 backend·동일 tar3Node 검증 및 공개 문서 동기화.
 
@@ -99,10 +99,10 @@ Guide는 data/resource mark lineage가 아니므로 Geo lineage나 가짜 datase
 query 수를 사전 계산해 기존 FONT_METRIC_MAX_QUERIES/TEXT_UNITS 및 10M work를 적용한다.
 새 중복 cap을 만들거나 무제한 O(n²) 열거 후 뒤늦게 검사하지 않는다.
 
-중요한 현 경계: schema2 prepareTextMetrics는 실제 endpoint native layout의 쿼리만 host에 요청한다.
+Schema2의 기본 prepareTextMetrics는 실제 endpoint native layout의 쿼리만 host에 요청한다.
 양끝 query 합집합이 모든 중간 문자열을 덮는다고 가정할 수 없다. sampler는 host/Canvas를 호출하지
-않고 missing query를 명시 오류로 유지한다. 정확 closure를 기존 font 준비 경로에 공급하는 좁은
-방법은 구현 전 추가 검토한다. 모든 native font 요청에 무조건 quadratic 측정을 추가하거나 기존
+않고 missing query를 명시 오류로 유지한다. 아래 명시 opt-in만 native tokenizer의 유한 closure를
+기존 font 준비 경로에 공급한다. 모든 native font 요청에 무조건 quadratic 측정을 추가하거나 기존
 성공 요청을 animation 준비 없이 더 엄격하게 만들지 않는다. Schema1의 기존 estimate 의미도
 exact font 측정으로 잘못 표기하지 않는다.
 
@@ -137,8 +137,24 @@ Root는 2026-11-01 `prepareTextMetrics(program, {id, fonts, axisLabelReflow:true
 고정 표시문자열의 bounded wrap closure를 준비한다. `false`/생략은 기존 준비이며 잘못된 타입은
 host 호출 전에 거부한다. Native tokenizer를 공유하고 query 수·문자 단위·work의 현재 상한으로
 사전 검산한다. 임의 사용자가 제공하는 query 옵션은 없다. 자동 domain-dependent format의 중간
-문자열을 증명하지 못하면 typed content fallback을 유지한다. 이 옵션의 실제 구현·types·Current·
-docs·설치 증거는 다음 checkpoint이며 현재 source에는 추가되지 않았다.
+문자열을 증명하지 못하면 typed content fallback을 유지한다.
+
+구현 owner는 `materialization/axisLabelQueries.js`이며 `layout/text.js`의 기존 tokenizer를 공유한다.
+현재 raw tick→표시 문자열의 hard line과 native word 공백 정규화 후 연속 grapheme 문자열을
+보수적으로 열거한다. 이는 실제 width별 query의 유한 상위집합이며 최소 query 집합이라는 주장은
+하지 않는다. String allocation 전에 누적 work를, query 저장 전에 unique query/UTF-16 한도를
+검사하고 전체 collector가 성공한 뒤에만 font decoder/measure를 호출한다. Nested exact tuple은
+deduplicate한다. 조합형 문자/ZWJ grapheme을 잘라 임의 query로 만들지 않는다.
+
+`resources/textMetricsFull.js`는 명시 true일 때만 closure를 기존 prepared measurements에 넣고
+원래 native missing-query pass를 그대로 이어간다. handle/profile 저장형식은 그대로다. Font 교체는
+기존 정책대로 새 native layout에 필요한 profile을 준비하므로 과거 opt-in closure를 암묵 유지하지
+않는다. 교체 후 새 receiver에서 opt-in 재준비가 필요함을 Current/types/docs와 실제 회귀로 고정한다.
+
+새 owning 8개와 기존 font/grapheme14개가 통과했다. 새 query owner100/100/100,
+기존 font preparation100/93.33/100으로 해당95/90/100 floor를 유지했다. 전체 repository coverage나
+동적 공개 animation reflow 완료로 확대하지 않는다. 최초 owning fixture의 잘못된 native width/
+responsive 설정과 regex 기대 오류는 원 로그를 보존하고 source 변화 없이 수리했다.
 
 ## Native candidate foundation 검증
 
@@ -161,3 +177,22 @@ native→wrap→skip→rotate를 단독 계산한다. Action은 기존 resource 
   optional-peer 준비를 재사용한 같은 archive 재실행을 별도로 보존한다.
 
 정확 명령·hash·원 실패와 성공 로그는 [foundation evidence](axis-reflow-evidence/foundation.json)에 있다.
+
+## 명시 font closure checkpoint 검증
+
+기본/false 준비 batch·profile 일치, 추가 폭의 word/character 재배치, hard break·ZWJ/combining
+문자 단위, nested dedup·hidden/nonwrapped no-op, accessor 미실행, 사전 query/text/work 한도,
+exact font binding/token/receiver/abort 및 font 교체 후 명시 재준비를 검사했다. Font capability
+78개, 신규8개×지원3Node, strict types를 포함한 경계34개·최종 package/경계40개와 docs237개가
+통과했다. 동적 sampled guide output은 아직 이 checkpoint의 범위가 아니다.
+
+같은 `b9822bcd07a07bd23c93e05cc16bc58b33e32ebfb91f679853b06ee96a9507d0` archive를
+Node20/22/24 각각 font public4사례·strict type·6entry bundle에서 검증했다. 실제 원본 font bytes로
+새 width 줄바꿈·offline 새 process·Canvas=PNG·SVG·vector PDF를 확인했다. 최초 Node20의
+Full782756>782500/Basic424051>424000 측정은 보존하고 현재 상한을782800/424100으로 최소 보정,
+README/architecture를 동기화한 최종 archive를 세Node에서 다시 검증했다. Node20/24 자체 pack의
+1740485>1740000도 별도 원 로그를 보존하며 compressed cap만1740500으로 최소 보정한다.
+Source 새1파일과 총 unpacked7843157에 맞춘 package cap은1220/7843200이다.
+
+[정확 입력과 원 실패/회복 증거](axis-reflow-evidence/font-closure.json)를 보존한다. 최종 source pin과
+built 문서 결과는 metadata checkpoint에서 추가하며 전체 release/AT60/077를 대신하지 않는다.

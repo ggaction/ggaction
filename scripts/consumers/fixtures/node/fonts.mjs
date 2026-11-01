@@ -38,6 +38,33 @@ async function example() {
     { requestToken: "current", decode, measure }), requestToken: "current" });
 }
 export const cases = [
+  { id: "fonts/axis-reflow-closure", async run() {
+    const base = chart().createCanvas({ width: 700, height: 500, margin: 160 })
+      .createData({ values: [{ x: 0, y: 1 }, { x: 1, y: 2 }] })
+      .createScatterPlot({ x: "x", y: "y", guides: false })
+      .createXAxis({ title: false, ticksAndLabels: { values: [0], labels: {
+        fontFamily: family, fontSize: 20, fontWeight: 400, maxWidth: 100,
+        labelMap: [{ value: 0, label: "AB AB AB" }] } } });
+    const font = base.createFontResource({ prepared: await prepareFontResource(base, { kind: "create", id: "font", ...source }, host), requestToken: "current" });
+    const program = font.applyTextMetrics({ prepared: await prepareTextMetrics(font,
+      { id: "reflow", fonts: ["font"], axisLabelReflow: true }, { requestToken: "current", decode, measure }), requestToken: "current" });
+    const before = serializeProgram(program), restored = deserializeProgram(before);
+    assert.equal(program.materializationConfigs.textMetrics.measurements.find(query => query.text === "B AB").width, 49);
+    const narrow = restored.editXAxisLabels({ maxWidth: 28 });
+    assert.deepEqual(narrow.graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text), ["AB", "AB", "AB"]);
+    assert.deepEqual(restored.editXAxisLabels({ maxWidth: 61 }).graphicSpec.objects.xAxisLabels.items.map(item => item.properties.text), ["AB AB", "AB"]);
+    const fonts = await prepareFontRendering(narrow, { register });
+    try {
+      const canvas = createCanvas(1, 1); render(narrow, canvas.getContext("2d"), { fonts });
+      assert.deepEqual(canvas.toBuffer("image/png"), (await renderToPNGBuffer(narrow)).buffer);
+      assert.match(renderToSVG(narrow), /@font-face/);
+      assert.match((await renderToPDFBuffer(narrow)).buffer.toString("latin1"), /\/ToUnicode/);
+    } finally { fonts.dispose(); }
+    await writeFile("font-axis-reflow.json", before);
+    const replay = execFileSync(process.execPath, ["--input-type=module", "-e", 'import{readFileSync}from"node:fs";import{deserializeProgram}from"ggaction/persistence";globalThis.fetch=()=>{throw Error("Unexpected network");};const p=deserializeProgram(readFileSync("font-axis-reflow.json","utf8")).editXAxisLabels({maxWidth:61});console.log(JSON.stringify(p.graphicSpec.objects.xAxisLabels.items.map(x=>x.properties.text)));'], { encoding: "utf8" });
+    assert.deepEqual(JSON.parse(replay), ["AB AB", "AB"]);
+    assert.equal(serializeProgram(program), before);
+  } },
   { id: "fonts/resource-metrics-offline", async run() {
     assert.equal(createHash("sha256").update(bytes).digest("hex"), expectedHash);
     const program = await example(), before = serializeProgram(program);
