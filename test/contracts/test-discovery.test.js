@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 import {
   classifyTestFile,
@@ -361,6 +362,17 @@ test("validates every selector before short-circuit matching", () => {
     ["unit", "contracts", "charts", "docs", "gates", "capability:does-not-exist"],
     ["capability:does-not-exist", "unit"]
   ]) assert.throws(() => collectTestFiles("all", undefined, selectors), /Unknown test capability/);
+});
+
+test("runner rejects each unmatched selector before executing any selected tests", () => {
+  const runner = fileURLToPath(new URL("../../scripts/run-tests.js", import.meta.url));
+  for (const invalid of ["unit/no-such-test.test.js", "unit/no-such-directory", "contracts/test-discovery.test.js"]) {
+    const result = spawnSync(process.execPath, [runner, "unit", "unit/support/test-sharding.test.js", invalid], { encoding: "utf8", timeout: 30_000 });
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 1);
+    assert.ok(result.stderr.includes(`Test selector "${invalid}" matches no tests in suite "unit".`), result.stderr);
+    assert.doesNotMatch(result.stdout, /# tests|Subtest:/);
+  }
 });
 
 

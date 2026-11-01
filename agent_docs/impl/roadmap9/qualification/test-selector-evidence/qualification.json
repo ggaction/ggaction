@@ -1,0 +1,31 @@
+{
+  "status": "verified",
+  "base": "1d5a66ae9",
+  "scope": "CLI rejects any selector with no matches in requested suite before spawning tests; collectTestFiles read-only empty query semantics preserved",
+  "checks": {
+    "contracts": 30,
+    "negativeCliCases": 3,
+    "cases": [
+      "missing test file mixed with valid file",
+      "missing directory mixed with valid file",
+      "existing test in a different suite mixed with valid file"
+    ],
+    "noTestSpawnOnError": true
+  },
+  "archiveSHAUnchanged": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc",
+  "runtimeTypesPublicContractsChanged": false,
+  "evidenceFiles": {
+    "pack.json": {
+      "sha256": "44fe53719370d719b56b600784f19b7f0af0912760041fde643e1feb6da519a8",
+      "bytes": 387
+    },
+    "contracts.log": {
+      "sha256": "4664a10e57172a574b13841aff3bbfe3ff2acae3e52028e1fc7b9b397733741c",
+      "bytes": 6215
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  }
+}
