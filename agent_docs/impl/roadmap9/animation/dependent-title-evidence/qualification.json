@@ -31,6 +31,15 @@
       "privateTitleModuleIsNotPublicConsumerEvidence": true,
       "bundleEntries": 6,
       "sameMeasurementsRechecked": true
+    },
+    "sourcePinnedDocumentation": 29,
+    "builtDocumentation": {
+      "pages": 186,
+      "llm": 1598
+    },
+    "browserReuse": {
+      "source": "7f813a1ee",
+      "reason": "Private calculation only; public guide browser inputs unchanged. Native title public output parity was verified at the pure clearance checkpoint."
     }
   },
   "package": {
@@ -81,7 +90,11 @@
     "dependent-title-package-measure.log": "21d28fedf43cfd30d6e5f9d46662197c9cba702e5b2890853530eaf1d641664d",
     "dependent-title-package-node20.log": "874ae39ac1a114db88d62b7c18f47432ac94244c14203690cb4736144d3eb59d",
     "dependent-title-package-node22.log": "c490779fd025ac75a4c9d8e493bfeb556a58365859dba25feba9a91a2c115e9c",
-    "dependent-title-package-node24.log": "874ae39ac1a114db88d62b7c18f47432ac94244c14203690cb4736144d3eb59d"
+    "dependent-title-package-node24.log": "874ae39ac1a114db88d62b7c18f47432ac94244c14203690cb4736144d3eb59d",
+    "dependent-title-pin.log": "b49fccc0e8217de9ba95b3f8062882e74b9c8dc530366c557e4b4bf9ae94fd84",
+    "dependent-title-pinned-docs.log": "51e73700d235f85fba680ecfa2a05a338c82c66ef09ecb48fddd178e9ae9cbaa",
+    "dependent-title-pinned-build.log": "7acce9b325c599e873f31e1867649b64cadc62dc11cef247c2f49fcc90fcc06d",
+    "dependent-title-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
   },
   "pending": [
     "Public native title projection and shared guide wrapper wiring",
@@ -90,5 +103,6 @@
     "Public plan/rebase/offline four-renderer and3Node installation of dependent titles",
     "Inferred legend clearance and implicit lanes",
     "Final combined timeline3 and STEP077 qualification"
-  ]
+  ],
+  "sourceCommit": "0d91cfeb7"
 }
