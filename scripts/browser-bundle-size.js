@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 783_600, // Axis font query integration: Node20/24 783,544 gzip bytes.
+  ggaction: 783_700, // Density diagnostic portability: Node20/24 783,623 gzip bytes.
   "ggaction/basic": 424_300, // Shared native tokenizer: Node20/24 424,223 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,

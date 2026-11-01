@@ -1,0 +1,156 @@
+{
+  "status": "native-edge-consumers-and-portable-density-codec-integrated; source-pin-pending",
+  "base": "eb6c68dcdbbd5733f165cbfe654c7ac3eb0117ba",
+  "incomingSource": "56640916a",
+  "upstreamPin": "0fe36dd16",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1756116,
+    "unpackedBytes": 7927698,
+    "file": "ggaction-0.0.26.tgz",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "sourceDelta": "Only resultProvenance.js bandwidth diagnostics validation, byte-identical to incoming7d3e10ac SHA256. Solver, coordinates, hashes, schema, algorithm version and public types unchanged.",
+  "scope": "Four route methods: paired encoding/scale/guide3, four backends4 and docs1 each =32 owner cells. Independent numeric oracles remain separate from complete static renderer vectors.",
+  "checks": {
+    "owning.log": 85,
+    "node20.log": 10,
+    "node24.log": 10,
+    "render.log": 6,
+    "browser.log": 4,
+    "boundaries.log": 54
+  },
+  "installed": {
+    "node": "22.23.1",
+    "runtime": 6,
+    "strictTypeFixtures": 1,
+    "executableDocs": 1,
+    "sourceFreeBrowser": true,
+    "optionalPeers": true,
+    "bundles": 6,
+    "archive": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "reused": {
+    "sameArchiveNode20And24": "../native-edge-route-evidence/summary.json",
+    "criticalCoverage": {
+      "tests": 130,
+      "lines": 100,
+      "branches": 99.31,
+      "functions": 100,
+      "reason": "same changed runtime owner byte-for-byte; root owning85/node20/24 checks additionally passed"
+    },
+    "images": "Incoming source-pinned canonical157 manifest; all image bytes unchanged; relevant public inputs identical."
+  },
+  "docsInitial": {
+    "total": 240,
+    "passed": 239,
+    "failed": 1,
+    "reason": "Canonical example source link still points to pre-merge HEAD; source-pin must repair and verify before this conceptual checkpoint closes."
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 539,
+    "addedAssignedConsumers": 32,
+    "assignedConsumers": 571,
+    "pendingRequiredConsumers": 3,
+    "assignedGroups": 75,
+    "pendingGroups": 4,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "remaining": [
+    "source-pin/docs actual repair before next root source integration",
+    "R dynamic labels/P axis-dependent inferred clearance union",
+    "Graticule3, route/heap/SLO, nine final commands/review/protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "owning.log": {
+      "sha256": "70d966bb2d6bf09559c9249de0f409107a4dc4c6c8e65cebcd2eb2d1fe56b697",
+      "bytes": 22149,
+      "tests": 85
+    },
+    "node20.log": {
+      "sha256": "dbef6698b79edadaaabdc9bd7fbd018d0978b944b8dcd7d082091548a47c49c5",
+      "bytes": 2852,
+      "tests": 10
+    },
+    "node24.log": {
+      "sha256": "1c556d6cc243a0784906c5f380f390832573f02ba27f8568068f948ec938e0eb",
+      "bytes": 3005,
+      "tests": 10
+    },
+    "render.log": {
+      "sha256": "bd150c0c2f96415bb8e19a83a2ee3182f1a1a1a3d50088879f42492d8df3534d",
+      "bytes": 1474,
+      "tests": 6
+    },
+    "browser.log": {
+      "sha256": "98541c8e0bb3f63def89b4a68d4ae819b35ef6f8f4508313f2eda349c2f140e4",
+      "bytes": 1187,
+      "tests": 4
+    },
+    "boundaries.log": {
+      "sha256": "00b5bdc3485980a5592936fda26e4dc642f75c17b44da61c0ba3382f89da22b9",
+      "bytes": 11672,
+      "tests": 54
+    },
+    "docs.log": {
+      "sha256": "546406381c89e7e28a10891266962d06d82c52eb921a07ae41a675c8cf18e6db",
+      "bytes": 76114
+    },
+    "pack.json": {
+      "sha256": "6ad7f4fd656294904e7edfdc7e4e67222bec18a939b2c3699c8c4002ee0e7a2a",
+      "bytes": 380
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "search.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed22.json": {
+      "sha256": "d69d8732e4a504d1e8a565da9a4fd663c1099435725c7aa79f75a607d8e98170",
+      "bytes": 1396
+    },
+    "installed22.json.doc.json": {
+      "sha256": "e01d2cdd37d5544f5dfd747526afa0be9aa433674a7935eceb579964f89422b4",
+      "bytes": 345
+    },
+    "installed22.log": {
+      "sha256": "07ed48fe60715a37abd155c3877261a7de78d6182341685981b28db01b4d76d0",
+      "bytes": 1023
+    },
+    "owner-delta.json": {
+      "sha256": "beafcc4cdccf51ad0d600c2c86efa00ba89b1c43c8d9b30f2b68c3f0e45eaedf",
+      "bytes": 1459
+    },
+    "pending.json": {
+      "sha256": "06d2c4f800cef0805f3e2579599d6e17580de4af69fc77f33d1567d04728c939",
+      "bytes": 24806
+    }
+  }
+}

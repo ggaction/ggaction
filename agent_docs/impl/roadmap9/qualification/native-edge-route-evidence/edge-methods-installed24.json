@@ -1,0 +1,61 @@
+{
+  "node": "v24.22.1",
+  "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4",
+  "checks": [
+    "edge-routes/bounded-long-paths",
+    "edge-routes/worker-authority-and-cache",
+    "edge-routes/offline-restore-and-revision",
+    "edge-routes/four-renderers-and-scene",
+    "density/from-node22-fresh-exact-codec",
+    "density/from-node24-fresh-exact-codec"
+  ],
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 1057,
+      "minifiedBytes": 2733311,
+      "gzipBytes": 783623
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 624,
+      "minifiedBytes": 1446376,
+      "gzipBytes": 424224
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 44,
+      "minifiedBytes": 73991,
+      "gzipBytes": 24954
+    },
+    {
+      "specifier": "ggaction/graph",
+      "chunks": 1,
+      "modules": 83,
+      "minifiedBytes": 148980,
+      "gzipBytes": 44683
+    },
+    {
+      "specifier": "ggaction/animation",
+      "chunks": 1,
+      "modules": 496,
+      "minifiedBytes": 1061372,
+      "gzipBytes": 317874
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 202,
+      "minifiedBytes": 404943,
+      "gzipBytes": 129667
+    }
+  ],
+  "types": "passed",
+  "docs": [
+    "edge-route-analytical-comparison"
+  ],
+  "status": "bundle-limit-failed"
+}

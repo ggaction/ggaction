@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "authorization": "../../AUTHORIZATION.json",
+  "baseline": "d2bbf53c8",
+  "status": "verified conceptual checkpoint; full roadmap and large-input SLO remain pending",
+  "scope": [
+    "edges-hierarchical",
+    "edges-force-directed",
+    "edges-density",
+    "edges-edge-path"
+  ],
+  "addedOwners": 32,
+  "runtimeChange": "Only density stored diagnostic bandwidth validation; solver formula, coordinates, hashes, algorithmVersion and public signatures unchanged.",
+  "checks": {
+    "owningCoverage": {
+      "passed": 130,
+      "resultProvenance": {
+        "lines": 100,
+        "branches": 99.31,
+        "functions": 100
+      }
+    },
+    "boundaries": 42,
+    "snippetCases": 2,
+    "browser": 4,
+    "node20": 10,
+    "node24": 20,
+    "renderNode22": 4,
+    "docs": 51,
+    "built": {
+      "pages": 186,
+      "llmArtifacts": 1603
+    },
+    "builtBrowser": {
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "overflow": 0,
+      "axeViolations": 0,
+      "browserErrors": 0
+    },
+    "installed": {
+      "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4",
+      "nodes": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "runtimeCasesPerNode": 6,
+      "strictTypesPerNode": 1,
+      "executableDocPerNode": 1,
+      "bundleEntriesPerNode": 6
+    }
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1229,
+    "packedBytes": 1756116,
+    "unpackedBytes": 7927698,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/edge-methods-archives/ggaction-c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4.tgz",
+    "sha1": "045baba70c8e781f4553544ced750dcedd0c31bc",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "failures": [
+    "Canonical Node22 static density coordinate equality on Node24 was a test scope error; exponentiation at iteration4 differs by1ULP.",
+    "Actual Node22 density program restore in Node24 rejected diagnostic bandwidth. Fixed only the finite narrow diagnostic envelope.",
+    "First owning coverage129/130 failed discovery of subprocess helper; inline fresh-process owner fixes discovery18/18 and final130/130.",
+    "Package unpacked7927698 exceeded7927100; minimum7927700 applied.",
+    "Node20 first installed offline child hit the existing30s timeout; same archive and unchanged runner retry passed all checks.",
+    "Node24 installed runtime/types/doc passed but Full gzip783623 exceeded783600. Minimum783700 applied; same measured six bundles rechecked without reinstall."
+  ],
+  "remaining": "Three graticule analytical cells and integration; performance/large-input SLO and entire roadmap are separate.",
+  "source": "56640916a",
+  "limits": {
+    "packageEntries": 1229,
+    "packedBytes": 1756116,
+    "unpackedBytes": 7927698,
+    "unpackedCap": 7927700,
+    "fullBundleMax": 783623,
+    "fullBundleCap": 783700,
+    "docsSearchCap": 1089900
+  }
+}

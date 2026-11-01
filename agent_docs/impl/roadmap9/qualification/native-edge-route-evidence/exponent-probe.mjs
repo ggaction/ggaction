@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import { pathToFileURL } from 'node:url';
+import { createEdgeRoutes } from '../../../../../examples/edge-routes/program.js';
+import { normalizeObservedGraph } from '../../../../../src/grammar/graph/normalize.js';
+import { routeNodes, routeEdges, routePositions } from '../../../../../examples/edge-routes/data.js';
+const file = new URL('../../../../../src/grammar/graph/routes/density.js', import.meta.url);
+let code = fs.readFileSync(file, 'utf8').replace(/from "([.][^\"]+)"/g, (_, specifier) => `from ${JSON.stringify(new URL(specifier, file).href)}`);
+code = code.replace('schedule.push({ iteration, bandwidth,', 'globalThis.__routeIterations.push(structuredClone({iteration, bandwidth, routes})); schedule.push({ iteration, bandwidth,');
+if (process.argv[3] === 'pinned') code = code.replace('0.05 * 0.9 ** iteration', '0.05 * [1,.9,.81,.7290000000000001,.6561000000000001,.5904900000000001,.531441,.4782969000000001,.4304672100000001,.3874204890000001,.3486784401000001,.31381059609000006,.2824295364810001,.2541865828329001,.2287679245496101,.20589113209464907,.18530201888518416,.16677181699666577,.15009463529699918,.13508517176729928][iteration]');
+globalThis.__routeIterations = [];
+const { bundleDensityRoutes } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const model = normalizeObservedGraph(routeNodes.map(row => ({key:row.id})),routeEdges.map(row=>({key:row.id,sourceKey:row.source,targetKey:row.target})),{directed:false,selfLoops:true});
+const result = bundleDensityRoutes({model,positions:routePositions.map((p,i)=>({...p,key:model.nodes[i].key})),order:{nodes:routeNodes.map(row=>row.id),edges:routeEdges.map(row=>row.id)}});
+fs.writeFileSync(process.argv[2],JSON.stringify({node:process.version,iterations:globalThis.__routeIterations,result}));

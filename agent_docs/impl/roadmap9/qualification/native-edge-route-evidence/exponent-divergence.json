@@ -1,0 +1,156 @@
+{
+  "node22": "v22.23.1",
+  "node24": "v24.22.1",
+  "math": {
+    "input": [
+      0.9,
+      4
+    ],
+    "node22": 0.6561000000000001,
+    "node24": 0.6561
+  },
+  "iterations": [
+    {
+      "index": 0,
+      "bandwidth22": 0.05,
+      "bandwidth24": 0.05,
+      "sameRoutes": true,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 1,
+      "bandwidth22": 0.045000000000000005,
+      "bandwidth24": 0.045000000000000005,
+      "sameRoutes": true,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 2,
+      "bandwidth22": 0.04050000000000001,
+      "bandwidth24": 0.04050000000000001,
+      "sameRoutes": true,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 3,
+      "bandwidth22": 0.03645,
+      "bandwidth24": 0.03645,
+      "sameRoutes": true,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 4,
+      "bandwidth22": 0.03280500000000001,
+      "bandwidth24": 0.032805,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 5,
+      "bandwidth22": 0.029524500000000006,
+      "bandwidth24": 0.029524500000000006,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 6,
+      "bandwidth22": 0.026572050000000003,
+      "bandwidth24": 0.026572050000000003,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 7,
+      "bandwidth22": 0.023914845000000004,
+      "bandwidth24": 0.023914845000000004,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 8,
+      "bandwidth22": 0.021523360500000005,
+      "bandwidth24": 0.021523360500000005,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 9,
+      "bandwidth22": 0.019371024450000007,
+      "bandwidth24": 0.019371024450000007,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 10,
+      "bandwidth22": 0.017433922005000005,
+      "bandwidth24": 0.017433922005000005,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 11,
+      "bandwidth22": 0.015690529804500003,
+      "bandwidth24": 0.015690529804500003,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 12,
+      "bandwidth22": 0.014121476824050006,
+      "bandwidth24": 0.014121476824050006,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 13,
+      "bandwidth22": 0.012709329141645005,
+      "bandwidth24": 0.012709329141645005,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 14,
+      "bandwidth22": 0.011438396227480505,
+      "bandwidth24": 0.011438396227480505,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 15,
+      "bandwidth22": 0.010294556604732455,
+      "bandwidth24": 0.010294556604732455,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 16,
+      "bandwidth22": 0.009265100944259209,
+      "bandwidth24": 0.009265100944259209,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 17,
+      "bandwidth22": 0.008338590849833289,
+      "bandwidth24": 0.008338590849833289,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 18,
+      "bandwidth22": 0.0078125,
+      "bandwidth24": 0.0078125,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    },
+    {
+      "index": 19,
+      "bandwidth22": 0.0078125,
+      "bandwidth24": 0.0078125,
+      "sameRoutes": false,
+      "diagnosticPinnedSameRoutes": true
+    }
+  ],
+  "diagnosticPinnedWholeResultEqual": true,
+  "sourceUnchangedByProbe": true
+}
