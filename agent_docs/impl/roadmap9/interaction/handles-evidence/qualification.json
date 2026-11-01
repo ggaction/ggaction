@@ -1,0 +1,1082 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-selection-region-and-category-handle-component",
+  "sourceRevision": "5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf",
+  "approval": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "design": "agent_docs/impl/roadmap9/interaction/HANDLES_AUDIT.md",
+  "scope": {
+    "entry": "ggaction/interaction",
+    "method": "InteractionSession.getSelectionHandles()",
+    "bindings": [
+      "resize",
+      "reorder"
+    ],
+    "newPersistedAction": false,
+    "newRegistry": false,
+    "workLimitUnchanged": 10000000,
+    "handles": "Native raw region forward projection with exact child/root transform and current collection clip; native category axis ticks/labels and existing orderCategories."
+  },
+  "checks": {
+    "newOwning": {
+      "tests": 23,
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "passed": true
+    },
+    "canonicalHit": {
+      "tests": 326,
+      "passed": 326
+    },
+    "focusedCoverage": {
+      "tests": 333,
+      "passed": 333,
+      "owners": {
+        "grammar/selectionHandles.js": [
+          100,
+          92.68,
+          100
+        ],
+        "interaction/regionResize.js": [
+          100,
+          90,
+          100
+        ],
+        "interaction/categoryReorder.js": [
+          100,
+          90.14,
+          100
+        ]
+      },
+      "criticalFloors": [
+        95,
+        90,
+        100
+      ],
+      "partialExistingHitProgram": [
+        56.58,
+        90.7,
+        80.95
+      ],
+      "scope": "New three critical owners and changed shared helper paths; not whole repository or whole hitProgram coverage."
+    },
+    "boundariesTypesDiscovery": 38,
+    "packageDocCaps": 10,
+    "browser": {
+      "tests": 4,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "dpr": [
+        1,
+        2
+      ],
+      "inputs": [
+        "mouse",
+        "touch",
+        "keyboard"
+      ],
+      "assertions": [
+        "same native region and graphicSpec",
+        "same typed category order",
+        "one committed history entry",
+        "Escape/cancel atomicity",
+        "exact CSS handles and native tick/label hit"
+      ]
+    },
+    "docs": {
+      "initial": {
+        "tests": 241,
+        "pass": 237,
+        "fail": 4
+      },
+      "prepinOwning": {
+        "tests": 49,
+        "pass": 48,
+        "fail": 1
+      },
+      "pinnedOwning": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0
+      },
+      "wholeDocsRerun": false,
+      "builtPages": 186,
+      "selectiveArtifacts": 1603,
+      "changedPages": [
+        "api/interaction/",
+        "recipes/inspect-chart/"
+      ],
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "browserCases": 8,
+      "axeViolations": 0,
+      "consoleErrors": 0
+    },
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": true,
+      "executableSnippet": true,
+      "optionalPeers": true,
+      "bundles": 6,
+      "initialRunnerExit": 1,
+      "initialExitReason": "Only interaction bundle exceeded prior cap; runtime/types/snippet/peers all passed.",
+      "sameMeasurementCapRecheckExit": 0
+    },
+    "finalPinnedDocumentationAndTypes": 4
+  },
+  "package": {
+    "sha256": "1142aa0c72c4e2d89d3affc5dc2a39b6a6fadf8945c0177e16a7318053b85c9c",
+    "entryCount": 1244,
+    "packedBytes": 1784332,
+    "unpackedBytes": 8048978,
+    "identicalAfterSourcePin": true
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1244,
+      "packedBytes": 1787562,
+      "unpackedBytes": 8048978
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1244,
+      "packedBytes": 1784332,
+      "unpackedBytes": 8048978
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1244,
+      "packedBytes": 1787562,
+      "unpackedBytes": 8048978
+    }
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "1142aa0c72c4e2d89d3affc5dc2a39b6a6fadf8945c0177e16a7318053b85c9c",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2733998,
+          "gzipBytes": 783882
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1446516,
+          "gzipBytes": 424305
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112884,
+          "gzipBytes": 333698
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 783882,
+          "limit": 783900,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 424305,
+          "limit": 424400,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135989,
+          "limit": 131400,
+          "passed": false
+        },
+        "ggaction/graph": {
+          "actual": 44851,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 333698,
+          "limit": 333700,
+          "passed": true
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "1142aa0c72c4e2d89d3affc5dc2a39b6a6fadf8945c0177e16a7318053b85c9c",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2733998,
+          "gzipBytes": 782475
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1446516,
+          "gzipBytes": 423440
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135493
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44700
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112884,
+          "gzipBytes": 332580
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 782475,
+          "limit": 783900,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 423440,
+          "limit": 424400,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24779,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135493,
+          "limit": 131400,
+          "passed": false
+        },
+        "ggaction/graph": {
+          "actual": 44700,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 332580,
+          "limit": 333700,
+          "passed": true
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "1142aa0c72c4e2d89d3affc5dc2a39b6a6fadf8945c0177e16a7318053b85c9c",
+      "cases": [
+        {
+          "id": "interaction-handles/scoped-region-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/typed-category-pointer-and-command",
+          "status": "passed"
+        },
+        {
+          "id": "interaction-handles/ambiguity-and-cancel-atomicity",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1059,
+          "minifiedBytes": 2733998,
+          "gzipBytes": 783882
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 625,
+          "minifiedBytes": 1446516,
+          "gzipBytes": 424305
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425129,
+          "gzipBytes": 135989
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 149522,
+          "gzipBytes": 44851
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 509,
+          "minifiedBytes": 1112884,
+          "gzipBytes": 333698
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "snippet": {
+        "id": "interaction-selection-handles",
+        "sha256": "0c89bcf6d00d602bae637430428c852502af7b2cd7c003c9cf09e0bbead4469e",
+        "status": "passed"
+      },
+      "types": "strict selection resize and category reorder types passed",
+      "limits": {
+        "ggaction": {
+          "actual": 783882,
+          "limit": 783900,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 424305,
+          "limit": 424400,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135989,
+          "limit": 131400,
+          "passed": false
+        },
+        "ggaction/graph": {
+          "actual": 44851,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 333698,
+          "limit": 333700,
+          "passed": true
+        }
+      }
+    }
+  },
+  "limits": {
+    "package": {
+      "entries": 1244,
+      "packedBytes": 1787600,
+      "unpackedBytes": 8049000
+    },
+    "interactionGzip": {
+      "previous": 131400,
+      "current": 136000,
+      "maximumMeasured": 135989
+    },
+    "otherFiveBundleCapsUnchanged": true,
+    "searchPayload": {
+      "actual": 1091249,
+      "previousCap": 1090700,
+      "currentCap": 1091300
+    }
+  },
+  "originalFailures": [
+    {
+      "file": ".artifacts/handles-boundaries.log",
+      "resolution": "Source ownership/import boundary and test capability registration corrected; assignment uses materialization owner and resize reads existing authenticated hit snapshot association."
+    },
+    {
+      "file": ".artifacts/handles-boundaries-second.log",
+      "resolution": "New capability paths registered; nested collection clip uses already-global root coordinates once. Final nested/touch/clip assertions pass."
+    },
+    {
+      "file": ".artifacts/handles-browser-first.log",
+      "resolution": "Host example ignored destroyed notification before readonly query; actual four browser cases rerun passed."
+    },
+    {
+      "file": ".artifacts/handles-docs.log",
+      "resolution": "Search byte cap and snippet execution registration repaired; source links regenerated after immutable source commit. Full241 was not rerun; relevant49 passed."
+    },
+    {
+      "file": ".artifacts/handles/docs-owning-prepin.log",
+      "resolution": "Only uncommitted example source link remained; pinned49 passed."
+    },
+    {
+      "file": ".artifacts/handles/installed-20.log",
+      "resolution": "Runtime/type/snippet/peers passed. Interaction cap adjusted to measured135989→136000; all18 saved bundle measurements passed recheck, identical tar bytes."
+    },
+    {
+      "file": ".artifacts/handles/installed-22.log",
+      "resolution": "Runtime/type/snippet/peers passed. Interaction cap adjusted to measured135989→136000; all18 saved bundle measurements passed recheck, identical tar bytes."
+    },
+    {
+      "file": ".artifacts/handles/installed-24.log",
+      "resolution": "Runtime/type/snippet/peers passed. Interaction cap adjusted to measured135989→136000; all18 saved bundle measurements passed recheck, identical tar bytes."
+    },
+    {
+      "file": ".artifacts/handles-hit-owning.log",
+      "resolution": "First invocation omitted capability: selector prefix; corrected canonical hit selection executed326 tests."
+    },
+    {
+      "file": ".artifacts/handles/docs-browser.log",
+      "resolution": "Local changed-page probe had a regex syntax typo; fixed script ran8 responsive/axe/error checks."
+    },
+    {
+      "file": ".artifacts/handles/example-visual.log",
+      "resolution": "Local screenshot probe initially waited for an invented Ready string and was cancelled; corrected exact existing status signal rendered four panels."
+    }
+  ],
+  "limitations": [
+    "Component verification only; not fresh final AT60 or STEP074/077 completion.",
+    "No new continuous/interval legend interaction or applicability/required cell change.",
+    "Host owns idle controls and ARIA; keyboard uses existing explicit select/reorder commands.",
+    "No lasso/item-key rectangle inference, no arbitrary sampled pixel inversion, no new category inference.",
+    "Original installed runner exit1 is preserved; cap recheck does not relabel it exit0.",
+    "No whole corpus, full installed sweep, or dedicated P95 claimed.",
+    "Root owns latest combined-source integration and final candidate qualification."
+  ],
+  "sourceInputs": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "f9464550cb567407a8ea970b9fb32744955abbdf5179bc0c4cb57697b3600437"
+    },
+    {
+      "path": "README.md",
+      "sha256": "87628c47af9922d3d34715b45a3f161a7bab4bb031a40b6e21c890900c870b31"
+    },
+    {
+      "path": "agent_docs/contract/current/INTERACTION.md",
+      "sha256": "cc722d356b7d05fe49f9f8395e994632a802a280bbbbdee78faf24abf3965e72"
+    },
+    {
+      "path": "docs/api/interaction.md",
+      "sha256": "bd2d3e7a4996ff815a18a280b58146400ae6642b9bf42bd825fd18abc6f4f1f4"
+    },
+    {
+      "path": "examples/inspect-chart/handles.js",
+      "sha256": "c4ed902a34116fe9e28273fa98da6d29b2049d578a8d38e79d31e9b8269a854f"
+    },
+    {
+      "path": "examples/inspect-chart/index.html",
+      "sha256": "4d241b03044971b625b6d1e6a0d589f1e8bdff90c415dd3ea309cdf2b9b090c2"
+    },
+    {
+      "path": "examples/inspect-chart/main.js",
+      "sha256": "515f72dfc8f3e3d12c4c8daf123f9ec3cf716d35fd04650fc762754e48cef2da"
+    },
+    {
+      "path": "examples/inspect-chart/program.js",
+      "sha256": "240afa81b8c77c649038850a1957c84d2a68a696f65ce0dd9de7524b41b92d1f"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "160433393fedd820a3913d0607f53aed2f25ff36a077243a8129ad9288f905bb"
+    },
+    {
+      "path": "scripts/consumers/fixtures/interaction.ts",
+      "sha256": "dfbfbafc80c7f0a2086ddbd0c026185273cc0a086cb82e847290ca143a748ab7"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/interaction-handles.mjs",
+      "sha256": "59ba6ecb552bd57cd43a25956cd1c342206b29b07ad0e7fab70067a2881237d3"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "91368bb9c2d35c4c0e42b7e99b1db912719b84cb5630e394102af4489cb38bfe"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "cf42555797b4c15bed945e66b65ef8c04b09639730526350b4d8b95dd32ebb80"
+    },
+    {
+      "path": "scripts/generate-doc-search-index.js",
+      "sha256": "8167596a65f4ff5cc1e24be76154f97005e3eb016de28623b754e5ef5929b7d0"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "3cbf28df97213549de61b86423084ff2da4bab55ed0910145cc18225f53867e2"
+    },
+    {
+      "path": "src/actions/categoryOrder/index.js",
+      "sha256": "6127269d14456179d2f9729542a416b4770843eb175230ff7c8313490404abf6"
+    },
+    {
+      "path": "src/grammar/selectionHandles.js",
+      "sha256": "5987aa4793b2276a08429d18a4fe35dc81500aa6dbbb19c2076eb976b3671458"
+    },
+    {
+      "path": "src/interaction/categoryReorder.js",
+      "sha256": "34ae9205485a7dde976b33329f234cf0255c5193ae3ea066e86123897212e755"
+    },
+    {
+      "path": "src/interaction/gestures.js",
+      "sha256": "179368f233e30c79f71b106c54c0e3d5581b9f178aa5fba4383559debd811f89"
+    },
+    {
+      "path": "src/interaction/hitProgram.js",
+      "sha256": "54851fc7f076bd667f869266465143a057db12db699023021d0fdc8a1d16b5bd"
+    },
+    {
+      "path": "src/interaction/pointerBindings.js",
+      "sha256": "6bef83f1bdaa14fae6d19f3dce46067ae0905198d54121d87616bed929122c98"
+    },
+    {
+      "path": "src/interaction/pointerCapture.js",
+      "sha256": "f08dd1823de0a19f5503f5f23e0dc9d0cf46ba9ad8322aa5023b467c5eb7f91e"
+    },
+    {
+      "path": "src/interaction/regionCoordinates.js",
+      "sha256": "aabc4be0bda9ed788921226bf953378d9084eebe1ddb0e50e6c30403e6dc1431"
+    },
+    {
+      "path": "src/interaction/regionResize.js",
+      "sha256": "302c20b0faef3ba723f09409acd89d74d7ed53150a5b3b396478f188c6bab3cc"
+    },
+    {
+      "path": "src/interaction/regionSelection.js",
+      "sha256": "c632a521321e142f4a2e8efa1b16dd1968e2bfe09c61b6c9ede1f1234233b696"
+    },
+    {
+      "path": "src/interaction/session.js",
+      "sha256": "91a5fd79e1268fdac00feff24220b9a166289f5d49417cb0c3c03084adeb6dd5"
+    },
+    {
+      "path": "src/materialization/categoryOrder.js",
+      "sha256": "9812fde6db91b785ec864d2943f16a0be250fd622b358a5341a8202927a36add"
+    },
+    {
+      "path": "test/browser/interaction-handles.browser.js",
+      "sha256": "5050e0fd91d4537c88d8803840d0c8e5482156e11b398074b0c91fe263c2a56b"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "1e353ab451556a696a88f3895dd2e377d8dd82a01ecda921bd5901be1b3ff71d"
+    },
+    {
+      "path": "test/contracts/interaction-types.test.js",
+      "sha256": "c5bd5bb5734f0775c771c250d143058f8c4635fc496b57aefa730d85f62660d3"
+    },
+    {
+      "path": "test/support/browser.js",
+      "sha256": "90d2e617372af13ebd6ac8c9dedcbfc74559962060cfb4ce39ab084d9afbe26b"
+    },
+    {
+      "path": "test/support/static-server.js",
+      "sha256": "99f40ff2d2c03c93f5e1281c2e4530eb3e2c301f316b0f6d61fcc4cdb1a60295"
+    },
+    {
+      "path": "test/unit/interaction-handles.test.js",
+      "sha256": "77ae9b14f8c15ccd9c5283d0bf14bcabf9d5e43a3894fa6a09f35957833a366d"
+    },
+    {
+      "path": "test/unit/selection-handles.test.js",
+      "sha256": "04ceddc84e6cc38c842671563aa5ab57de8d29f67614cc33b8d1fbb9b4c010a2"
+    },
+    {
+      "path": "types/interaction.d.ts",
+      "sha256": "9898ca78cefd3967316bcb74fc419fcbba38eb024e3f663601a01ec4bdf16492"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-boundaries-second.log.gz",
+      "origin": ".artifacts/handles-boundaries-second.log",
+      "sha256": "1b190d09c3545fda674743adf2e0221a0a188e4636c03900ccf23d61ab7e7b9c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-boundaries.log.gz",
+      "origin": ".artifacts/handles-boundaries.log",
+      "sha256": "40c00c6a4b7a75dab395c49e29ac5c2e2854d5cc24e1811c75f820a737b4b2de"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-boundary-first.log.gz",
+      "origin": ".artifacts/handles-boundary-first.log",
+      "sha256": "9fd84afcbc4270570829d79a23b566f7cb3a1b3f7d9ea2c66807f9a9eb19c2a7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-browser-first.log.gz",
+      "origin": ".artifacts/handles-browser-first.log",
+      "sha256": "a3f1adc1a598b83fccffcd846be3f295ea0b4683762cff252921c79125aca992"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-browser-second.log.gz",
+      "origin": ".artifacts/handles-browser-second.log",
+      "sha256": "987332e095320394f72777b14018cf0d6be8a4b9121f4a5222da903b24648f17"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-coverage-first.log.gz",
+      "origin": ".artifacts/handles-coverage-first.log",
+      "sha256": "9dd10238f63b1eb105b759373d25d2a8dd4006733d509c473d6821cdbd23aa71"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-coverage-second.log.gz",
+      "origin": ".artifacts/handles-coverage-second.log",
+      "sha256": "c3cdc1dc18f3f1fd978d8934e8f5c47b1f973276929b3eb2472d476ec3eab370"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-coverage-third.log.gz",
+      "origin": ".artifacts/handles-coverage-third.log",
+      "sha256": "56f2361c877ef4d2f6f7dd67815a9dc50b184e5acb6efbb2b5dae7165caeb08b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-docs-generate.log.gz",
+      "origin": ".artifacts/handles-docs-generate.log",
+      "sha256": "bd674209e94b40a64e38145c399ffc1df7058b685873909360c3b3247cd35c23"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-docs.log.gz",
+      "origin": ".artifacts/handles-docs.log",
+      "sha256": "ae38b9949e47c02ea2f6f4153f03b78ad6f7b38f54687a85e26e6630ae00ec89"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-final-contracts.log.gz",
+      "origin": ".artifacts/handles-final-contracts.log",
+      "sha256": "fd7524150e53adba256ddcfad41f1eff72344f273b7bbb117c957182549651b3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-foundation-owning.log.gz",
+      "origin": ".artifacts/handles-foundation-owning.log",
+      "sha256": "9d06977b86012c3bbeb8097ab1b66afc1574822fd3626ec40d909baab14d6dc8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-hit-owning-canonical.log.gz",
+      "origin": ".artifacts/handles-hit-owning-canonical.log",
+      "sha256": "17916e617609e1f847e3c1d3839868ee3278380f7fd2d9165e51f2f9637d8dff"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-hit-owning.log.gz",
+      "origin": ".artifacts/handles-hit-owning.log",
+      "sha256": "8a20972e42e3873c45065268d23946ed9767321e833bd99e0ac91793e4d72314"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-reorder-directions.log.gz",
+      "origin": ".artifacts/handles-reorder-directions.log",
+      "sha256": "ddf044bdf8b7d9d2fde544c414827a712d24c158cba264ae5de612544bda4d82"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-shared-owning.log.gz",
+      "origin": ".artifacts/handles-shared-owning.log",
+      "sha256": "58ff7de0e0850fad65a1b2a139bcb1a849b94f76b11d5c9a124f163188dbc9c6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/handles-types-owning.log.gz",
+      "origin": ".artifacts/handles-types-owning.log",
+      "sha256": "e93fe8286c0bad298ed1fcb6b73d512adc5e53cb30c6097c2f9017703d7447c6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/archive-recheck.log.gz",
+      "origin": ".artifacts/handles/archive-recheck.log",
+      "sha256": "aafc3dc13add61f239f7020adbcf5b1a2c8fd487164942fe5e977900cc746cd3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/bundle-limits-recheck.log.gz",
+      "origin": ".artifacts/handles/bundle-limits-recheck.log",
+      "sha256": "ac884fbcd3eaf8756423210ef8a375014620cdbec9c5c13feb3e3350ed2cde7e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/changed-docs-browser.mjs.gz",
+      "origin": ".artifacts/handles/changed-docs-browser.mjs",
+      "sha256": "df4ccffc9f567caa17cfcdbc045f9be4edc87a501330d26ef61f397eebbf1e9c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/coverage-owning.log.gz",
+      "origin": ".artifacts/handles/coverage-owning.log",
+      "sha256": "ae032404602132d016bc03bada5aafa3276660be5d505ec78bfe70a8fdfdff04"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/coverage.mjs.gz",
+      "origin": ".artifacts/handles/coverage.mjs",
+      "sha256": "f1e8e97ec5c81fda70932350e14fe33249147c00e60058267627a3cfc456b912"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-api-1280.png.gz",
+      "origin": ".artifacts/handles/docs-api-1280.png",
+      "sha256": "a1ddb876b49f7399b5fd6e05397628edccfc45c6f5119323eda59b64c3ec487b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-api-320.png.gz",
+      "origin": ".artifacts/handles/docs-api-320.png",
+      "sha256": "3312baebf32b9e760ee17a1aa81c0d4a47b2dbc794a1e9955e3fdb03f043c848"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-api-390.png.gz",
+      "origin": ".artifacts/handles/docs-api-390.png",
+      "sha256": "634094554496eded67bbcd1a6e9c7cc366a1fa90f3c959dfd68110e5fbc50200"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-api-768.png.gz",
+      "origin": ".artifacts/handles/docs-api-768.png",
+      "sha256": "529c6c110a61830c28c46db0057b59a0a19f4306f79365fa5142f885bbedc4e4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-browser-fixed.log.gz",
+      "origin": ".artifacts/handles/docs-browser-fixed.log",
+      "sha256": "7110fb6268404463c9a64435c410ab6407e9e526d8868f91db0a01167e89c415"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-browser.log.gz",
+      "origin": ".artifacts/handles/docs-browser.log",
+      "sha256": "07fdb42a3a228f98d569d0fb6bb982f77e9a13c2c0cc74d260539085ec6c2993"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-build.log.gz",
+      "origin": ".artifacts/handles/docs-build.log",
+      "sha256": "ca8d8ae3e6b5be302b6187f4a768dae86c450d09156dcc0bd1416b385dd93c92"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-built.log.gz",
+      "origin": ".artifacts/handles/docs-built.log",
+      "sha256": "74dab9f69ef202f562c120dd3353e13dcfe0fb39cad903478dd43543992e6844"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-llms-pin.log.gz",
+      "origin": ".artifacts/handles/docs-llms-pin.log",
+      "sha256": "0f6dbbaaee26923d36138c3d75c819b08b8cbcb78c006d3d9fcf1a9c534243fe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-machine-pin.log.gz",
+      "origin": ".artifacts/handles/docs-machine-pin.log",
+      "sha256": "cbf35f227587ab5bc6f2c34b0f1e7bc50d25ccaffaccad45aa8af5f589c4c974"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-owning-pinned.log.gz",
+      "origin": ".artifacts/handles/docs-owning-pinned.log",
+      "sha256": "aadb03f3c5d17c3b151079020043027058802d0c23ca92c675b4eca126c33721"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-owning-prepin.log.gz",
+      "origin": ".artifacts/handles/docs-owning-prepin.log",
+      "sha256": "c9d9dca94faab13b940029609952d0d82c12d776ce2930687faa959fd29f4fb0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-preflight.log.gz",
+      "origin": ".artifacts/handles/docs-preflight.log",
+      "sha256": "cdb35423f0220753ffecb6241f14665f4ce7d8d60ccaed5e18e7b46f7cd18363"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-provenance-pin.log.gz",
+      "origin": ".artifacts/handles/docs-provenance-pin.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-recipes-1280.png.gz",
+      "origin": ".artifacts/handles/docs-recipes-1280.png",
+      "sha256": "b0773e8b5019fbeaa63e4ad4f5766f517e4877ac7e356847dbd9e6303abf088b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-recipes-320.png.gz",
+      "origin": ".artifacts/handles/docs-recipes-320.png",
+      "sha256": "a44894f549dd595ad0120a97830965c348ba04211df7ecca7f988ce258eb6feb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-recipes-390.png.gz",
+      "origin": ".artifacts/handles/docs-recipes-390.png",
+      "sha256": "3d59b9c3fd61640f7228f9f27ea817bc2c98fce4f86873e04c0c4f5632ac78e8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-recipes-768.png.gz",
+      "origin": ".artifacts/handles/docs-recipes-768.png",
+      "sha256": "edcbd0b1b2832e1b8ea38a2fea7a1b42e89cae7f893cbf6ca9dd0e918d11a87a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-search-pin.log.gz",
+      "origin": ".artifacts/handles/docs-search-pin.log",
+      "sha256": "fcc3e47cb8444e15dea34f2895be62e2d3a2470e3475102d79a6fa261cddcef3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/docs-workflows-pin.log.gz",
+      "origin": ".artifacts/handles/docs-workflows-pin.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/evidence.log.gz",
+      "origin": ".artifacts/handles/evidence.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/example-handles.png.gz",
+      "origin": ".artifacts/handles/example-handles.png",
+      "sha256": "c473106c6a2d48d37f8a319a24060eee99830d9f66446a2ec57fda6c5615e839"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/example-visual-fixed.log.gz",
+      "origin": ".artifacts/handles/example-visual-fixed.log",
+      "sha256": "cc247d8d32221d11ae7813b317d34846d6d3de0a8421fa1c7a6eb40250b5b40a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/example-visual.log.gz",
+      "origin": ".artifacts/handles/example-visual.log",
+      "sha256": "fbda27c96c830ff06be04b89a50c8984c8950b05a270801e0e7210c230cf9220"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/example-visual.mjs.gz",
+      "origin": ".artifacts/handles/example-visual.mjs",
+      "sha256": "49b124928da481254bf04292a37c3e98999a78d54684c9b5a46fad2e6d527fec"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-20.exit.json.gz",
+      "origin": ".artifacts/handles/installed-20.exit.json",
+      "sha256": "c36feafd5b225d499b77d35ee8911c2e79e90cbc88a6e2aeeffb10c1c0a99beb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-20.json.gz",
+      "origin": ".artifacts/handles/installed-20.json",
+      "sha256": "c56ad42831d1ea820d745a4b765010f525fa96e249830dc259f9544d07b1c4fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-20.log.gz",
+      "origin": ".artifacts/handles/installed-20.log",
+      "sha256": "92c1b5b2c477111c43d61673c1cb449309a429c5b644e7e783a5344e915e2f96"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-22.exit.json.gz",
+      "origin": ".artifacts/handles/installed-22.exit.json",
+      "sha256": "4b91d09a786914d0ff3247719c6c9f3e711c909ae8739308cb1a8058be98d2a0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-22.json.gz",
+      "origin": ".artifacts/handles/installed-22.json",
+      "sha256": "9c1946d741128495090dd510376bfbee8d7a6cba2bc8b9813fbffbdb0e812d09"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-22.log.gz",
+      "origin": ".artifacts/handles/installed-22.log",
+      "sha256": "f5c7fec019920498df45994d9b0ef02339f373b2ad28f04412251f693c14bdb2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-24.exit.json.gz",
+      "origin": ".artifacts/handles/installed-24.exit.json",
+      "sha256": "40db399eeecea5b235560fc12f7a2a8a170be58ba9347ddfd7979818954aed6c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-24.json.gz",
+      "origin": ".artifacts/handles/installed-24.json",
+      "sha256": "64ca9e131695006db797cf2239c1305285588f79b3b7fffeb4a89d3604e33265"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-24.log.gz",
+      "origin": ".artifacts/handles/installed-24.log",
+      "sha256": "f99ef29232fc9d13e97f16a25a9a5619126c021f38547095699fc05a9a07e603"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed-matrix.log.gz",
+      "origin": ".artifacts/handles/installed-matrix.log",
+      "sha256": "8a2a9ea1013ba4733204157459ac3bfa23ced71eb49daacb45883f64ff2fc023"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/installed.mjs.gz",
+      "origin": ".artifacts/handles/installed.mjs",
+      "sha256": "c17e8c8e452bf1cf02806d2dd0c8f0150f5d2fd58ef3afcbbd6e650b14eac1b3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/measure-package.mjs.gz",
+      "origin": ".artifacts/handles/measure-package.mjs",
+      "sha256": "daf0eeb98de1a3d4e60d44a76229e7aebc98f122cf382cf9f58dab454e56366a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/owning-20.exit.json.gz",
+      "origin": ".artifacts/handles/owning-20.exit.json",
+      "sha256": "b88942ba261e1e94c8fca1fba01b6c517150c8f7dadc737b643c2ac2f70541e1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/owning-20.log.gz",
+      "origin": ".artifacts/handles/owning-20.log",
+      "sha256": "b797e6443fbb1764456a5cd1bd2e0944d484697f4642303d82a92ffb964425b4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/owning-24.exit.json.gz",
+      "origin": ".artifacts/handles/owning-24.exit.json",
+      "sha256": "abff839a221881a2ccd7cdecef34ed21be05dc6007faa66ba70219050f5fd137"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/owning-24.log.gz",
+      "origin": ".artifacts/handles/owning-24.log",
+      "sha256": "50a0fb402a7daa4d7bf9151089e6d9a4e05efb3c46310c1afb0ee935f1d1b0cc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-doc-caps.log.gz",
+      "origin": ".artifacts/handles/package-doc-caps.log",
+      "sha256": "7ba48d1f297c5afa29ab8a6815929ae79649b60ab58462183f16efcf5b60dbb4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-measure-20.log.gz",
+      "origin": ".artifacts/handles/package-measure-20.log",
+      "sha256": "bb2f524eef90e0156d7363970c4be7eaca30fb5451319c43d641dfb1ba3ca80f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-measure-22.log.gz",
+      "origin": ".artifacts/handles/package-measure-22.log",
+      "sha256": "06fb005d82c5c7e78c319336ced09ee9f54a111d4718f330f5ad15daf18957ba"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-measure-24.log.gz",
+      "origin": ".artifacts/handles/package-measure-24.log",
+      "sha256": "d3dc537adb1163f218a497bbd2049df4aaefccee3566afb6eaef7bd9f9f1b19e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-size-20.json.gz",
+      "origin": ".artifacts/handles/package-size-20.json",
+      "sha256": "5d6883689182df9798d4bcd988b24d98dda447fd6a7968df7fe7b6d4fcafe5d5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-size-22.json.gz",
+      "origin": ".artifacts/handles/package-size-22.json",
+      "sha256": "4e3356d0484c3abaf2d9e78a2f2acab7f9ab211b0690b184c96d89af4c7d51e7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package-size-24.json.gz",
+      "origin": ".artifacts/handles/package-size-24.json",
+      "sha256": "e30b0cce99f2b8f186450c7fd8cae4c101dd3b78ec979cc51da9ee00f1980bc4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/package.json.gz",
+      "origin": ".artifacts/handles/package.json",
+      "sha256": "dc3068339af06865f059ddbfda898282115b44a35fd86abf24f8f2bbebb1ce8a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/run-installed.mjs.gz",
+      "origin": ".artifacts/handles/run-installed.mjs",
+      "sha256": "09fd56cb7473a03db17bbc61da9ebb84b34f5fd8307be4e243a4b4e7725eac5a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/search-final.log.gz",
+      "origin": ".artifacts/handles/search-final.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/pinned-contracts.log.gz",
+      "origin": ".artifacts/handles/pinned-contracts.log",
+      "sha256": "c2eee201a18c3e246a2d0175594c6b6e4cd4f7367bb06d82557f5a3cc6eeb456"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/interaction/handles-evidence/evidence-validation.log.gz",
+      "origin": ".artifacts/handles/evidence-validation.log",
+      "sha256": "defebff1debe69f50e5777cd107e60832f34b1e0495ac7cb97d72213367f1fbf"
+    }
+  ]
+}

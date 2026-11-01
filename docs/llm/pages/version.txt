@@ -10,8 +10,8 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:ad3137691cdcec9ba671536a2bd8d68c6edced171c2313ff189dd194dd1534cd` |
-| Example and dataset source | `codex/roadmap9-interaction-handles` |
-| Runtime source commit | `current` |
+| Example and dataset source | `5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf` |
+| Runtime source commit | `5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

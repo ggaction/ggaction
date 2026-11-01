@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:ad3137691cdcec9ba671536a2bd8d68c6edced171c2313ff189dd194dd1534cd",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-interaction-handles",
+  "sourceCommit": "5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf",
+  "sourceRef": "5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf",
+  "exampleSourceRef": "5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
