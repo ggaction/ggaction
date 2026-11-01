@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "verified-source-and-consumer-checkpoint",
+  "status": "verified-conceptual-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "base": "71c0cedddc515234c91ef5486ed4a2af2aaf5092",
   "runtimeChanged": false,
@@ -128,18 +128,63 @@
       "fixture": "Current displayed recipe + public support module via canonical tutorial consumer",
       "receipt": "installed-doc.json",
       "note": "Archive reused with unchanged runtime/type/package inputs. No repack, bundle change or new family package-owner assignment."
+    },
+    "documentation": {
+      "passed": 49,
+      "log": "documentation-final.log.gz"
+    },
+    "builtDocumentation": {
+      "pages": 186,
+      "selectiveLLMArtifacts": 1603,
+      "log": "built.log.gz",
+      "buildLog": "build.log.gz"
+    },
+    "builtBrowser": {
+      "page": "recipes/composition/",
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "horizontalOverflow": 0,
+      "axeViolations": 0,
+      "browserErrors": 0,
+      "receipt": "built-browser.json"
+    },
+    "sourcePin": {
+      "runtimeSource": "3f1355feba5da64c40f9fb9173b83ddd27a6b2f7",
+      "exampleSource": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
+      "generators": [
+        "docs:provenance",
+        "docs:metadata",
+        "docs:search",
+        "docs:machine",
+        "docs:llms"
+      ]
     }
   },
   "initialFailures": [
     "Seven negative assertions used the wrong error regex; all seven positive tests already passed. Corrected to the existing hierarchy/graph errors without changing runtime.",
     "Initial browser wait referenced an unavailable window flag; stopped only the owned runner and reused the existing shared status readiness.",
     "The documented Canvas lookup used getElementById, absent from the bounded documentation host; changed to the existing querySelector public example convention.",
-    "Exploratory argument placement errors (scale properties must be nested; scoped editScale uses a view selector and native id) were fixed in the example before acceptance."
+    "Exploratory argument placement errors (scale properties must be nested; scoped editScale uses a view selector and native id) were fixed in the example before acceptance.",
+    "Initial preflight found system Ruby2.6; rerun used repository-documented Ruby3.2.11/Bundler path and passed. CI Ruby3.2.6 exact environment was not claimed.",
+    "New recipe search index exceeded its existing ceiling by677 bytes; original46/47 result preserved, measured ceiling increased by700 bytes."
   ],
   "remaining": [
     "Package owner remains pending only in this branch; root separately owns the discovered installed runtime suite. Preserve its assignments during merge.",
     "Native field mapping/scale-driven topology/automatic linked source synchronization are not claimed.",
-    "No native completion pass records or overall STEP077 completion is generated.",
-    "Final source pin and built documentation validation follow the source commit."
-  ]
+    "No native completion pass records or overall STEP077 completion is generated."
+  ],
+  "sourceCommit": "951b130748b3a1d9b008f9b3c2797ca28f810cfa",
+  "searchBudget": {
+    "previousBytes": 1087185,
+    "currentBytes": 1087877,
+    "deltaBytes": 692,
+    "previousLimit": 1087200,
+    "newLimit": 1087900,
+    "originalFailure": "documentation.log.gz",
+    "result": "49/49 after minimum measured ceiling update"
+  }
 }

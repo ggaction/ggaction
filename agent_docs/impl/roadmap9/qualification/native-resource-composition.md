@@ -27,3 +27,9 @@
 초기 fixture의 옵션 위치, 오류 정규식, browser readiness, 문서 host의 Canvas lookup 실패는 보존했다. 런타임 결함은 없었으며 가드·허용값을 완화하지 않았다. [증거 요약](native-resource-composition-evidence/summary.json)은 성공과 최초 실패를 구분한다.
 
 기존 owner·다른 행·79 acceptance groups·577 consumer targets·결과 상태·분모는 유지했다. 이 브랜치의 package 셀은 pending이며 root의 별도 installed runtime owner를 후속 합산 때 보존한다. Native 완료 판정이나 STEP077 완료를 기록하지 않는다.
+
+## 최종 문서 자격
+
+Source `951b13074`를 고정한 뒤 provenance→metadata/search→machine→LLM 정본을 재생성했다. 문서 49/49, Jekyll 186 pages·1,603 selective LLM artifacts, recipe 320/390/768/1280px의 overflow 0·Axe 0·browser error 0을 확인했다. Ruby 시스템 기본값 2.6의 최초 preflight 실패와 올바른 3.2.11 경로의 성공을 구분한다. CI 3.2.6과 완전히 같은 환경이라고 주장하지 않는다.
+
+새 공개 recipe로 compact search가 1,087,185→1,087,877 bytes(+692)로 늘어 기존 1,087,200 상한을 넘었다. 원본 46/47 실패를 보존하고 최소 1,087,900으로 교정한 뒤 49/49 owning 검사를 통과했다. 다른 package/bundle 한도는 바꾸지 않았다.
