@@ -8,6 +8,7 @@ import { interpolateNumber, interpolatePositiveScale } from "./values.js";
 export const ANIMATION_POSITION_VERSION = "semantic-continuous-position@1";
 const types = new Set(["linear", "time", "log", "pow", "sqrt", "symlog"]);
 const fade = reason => Object.freeze({ kind: "crossfade", reason });
+const preparedPositions = new WeakSet();
 
 function pair(value, label) {
   ownArray(value, label);
@@ -54,7 +55,10 @@ function compatibility(from, to) {
 export function preparePositionInterpolation(fromInput, toInput) {
   const from = normalizePositionEndpoint(fromInput), to = normalizePositionEndpoint(toInput);
   const reason = compatibility(from, to);
-  return reason === undefined ? cloneAndFreeze({ kind: "position", version: ANIMATION_POSITION_VERSION, from, to }) : fade(reason);
+  if (reason !== undefined) return fade(reason);
+  const plan = cloneAndFreeze({ kind: "position", version: ANIMATION_POSITION_VERSION, from, to });
+  preparedPositions.add(plan);
+  return plan;
 }
 
 export function samplePositionInterpolation(plan, progress) {
@@ -62,7 +66,9 @@ export function samplePositionInterpolation(plan, progress) {
   ownRecord(plan, "Prepared animation position");
   rejectUnknownProperties(plan, ["kind", "version", "from", "to"], "prepared animation position");
   if (plan.kind !== "position" || plan.version !== ANIMATION_POSITION_VERSION) throw new TypeError("Animation position sampling requires a supported prepared position.");
-  const prepared = preparePositionInterpolation(plan.from, plan.to);
+  // Only this module's exact deeply owned result can reuse endpoint validation.
+  // Structural copies and caller-frozen records retain the full data boundary.
+  const prepared = preparedPositions.has(plan) ? plan : preparePositionInterpolation(plan.from, plan.to);
   if (prepared.kind !== "position") throw new TypeError("Prepared animation position endpoints are incompatible.");
   const { from, to } = prepared;
   if (progress === 0 || progress === 1) {

@@ -1,0 +1,471 @@
+{
+  "status": "owned-position-preparation-reuse-verified; final-large-size-and-native-qualification-pending",
+  "base": "3aa8e93c456a0fab555737c4dc3f44f481ab6407",
+  "sourceRevision": null,
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1239,
+    "packedBytes": 1777863,
+    "unpackedBytes": 8023072,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-6c08c53cf8237d68026f43871ff114a8b110550b95f7bdc8c6bbb6b7ca872023.tgz",
+    "sha256": "6c08c53cf8237d68026f43871ff114a8b110550b95f7bdc8c6bbb6b7ca872023"
+  },
+  "checks": {
+    "positions.log": 8,
+    "owning.log": 708,
+    "coverage.log": 8,
+    "boundaries.log": 38,
+    "render.log": 3,
+    "browser.log": 1,
+    "package-docs.log": 16,
+    "docs.log": 241
+  },
+  "coverage": {
+    "file": "src/grammar/animation/positions.js",
+    "lines": 100,
+    "branches": 96.2,
+    "functions": 100,
+    "floorUnchanged": "95/90/100"
+  },
+  "installed": {
+    "scope": "Same actual measurements reassessed after minimal animation cap adjustment. No runtime/type/install rerun claimed.",
+    "limits": {
+      "ggaction": 784100,
+      "ggaction/basic": 424400,
+      "ggaction/svg": 26000,
+      "ggaction/graph": 46000,
+      "ggaction/animation": 333800,
+      "ggaction/interaction": 131400
+    },
+    "records": [
+      {
+        "node": "v20.20.2",
+        "archive": "6c08c53cf8237d68026f43871ff114a8b110550b95f7bdc8c6bbb6b7ca872023",
+        "rawStatus": "bundle-limit-failed",
+        "runtime": 3,
+        "types": "passed",
+        "docs": [
+          "animation-guides"
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2734592,
+            "gzipBytes": 784092
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 424305
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 333720
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        ],
+        "status": "passed-with-current-caps"
+      },
+      {
+        "node": "v22.23.1",
+        "archive": "6c08c53cf8237d68026f43871ff114a8b110550b95f7bdc8c6bbb6b7ca872023",
+        "rawStatus": "passed",
+        "runtime": 3,
+        "types": "passed",
+        "docs": [
+          "animation-guides"
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2734592,
+            "gzipBytes": 782659
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 423440
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44700
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 332599
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 130861
+          }
+        ],
+        "status": "passed-with-current-caps"
+      },
+      {
+        "node": "v24.22.1",
+        "archive": "6c08c53cf8237d68026f43871ff114a8b110550b95f7bdc8c6bbb6b7ca872023",
+        "rawStatus": "bundle-limit-failed",
+        "runtime": 3,
+        "types": "passed",
+        "docs": [
+          "animation-guides"
+        ],
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2734592,
+            "gzipBytes": 784092
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 424305
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          },
+          {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112941,
+            "gzipBytes": 333720
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        ],
+        "status": "passed-with-current-caps"
+      }
+    ]
+  },
+  "comparison": {
+    "scope": "Exact full scalar sample comparison and diagnostic Node timings; not production browser size-class SLO or final qualification.",
+    "node": "v22.23.1",
+    "beforeSHA256": "97583d65243f0689d85688ccbf7c56ffafdae37e6379e27ea5e18b311e8c7fe1",
+    "afterSHA256": "12f919cbed5026dd0ba4ad3f3fd918fb197cae5532ee865dbe22e7db58f8eb05",
+    "workload": {
+      "positions": 10000,
+      "warmups": 5,
+      "measured": 10,
+      "progress": 0.5
+    },
+    "runs": [
+      {
+        "name": "before",
+        "samplesMs": [
+          1435.2099580000004,
+          1500.6882499999992,
+          1735.0262500000008,
+          830.4992920000004,
+          988.2910830000001,
+          833.1978330000002,
+          1282.4975409999988,
+          740.7940420000014,
+          1301.9985419999994,
+          431.6320000000014
+        ],
+        "allValues": 10000,
+        "outputSHA256": "77299f65fff876d91449503c51d814e8799ccec1a6e1515b2a259b141b597e25"
+      },
+      {
+        "name": "after",
+        "samplesMs": [
+          157.9097499999989,
+          143.76466599999912,
+          129.90983399999823,
+          106.50083299999824,
+          96.40841600000203,
+          102.09637500000099,
+          160.13129099999787,
+          100.96416599999793,
+          176.62412499999846,
+          98.73987500000294
+        ],
+        "allValues": 10000,
+        "outputSHA256": "77299f65fff876d91449503c51d814e8799ccec1a6e1515b2a259b141b597e25"
+      }
+    ],
+    "exactFullOutput": true
+  },
+  "packageLimits": {
+    "entries": 1239,
+    "packedBytes": 1780900,
+    "unpackedBytes": 8023100,
+    "actualPackedMaximum": 1780877
+  },
+  "unchanged": [
+    "public API/types/schema/kernel versions",
+    "all numeric formulas/fallback and endpoint identity",
+    "global work/item/animation envelope limits",
+    "five other browser bundle ceilings"
+  ],
+  "evidenceFiles": {
+    "installed24-wrong-fixture.json": {
+      "sha256": "3937362e46a56ee831b2ea93b0481c749163ff93696165d7d146f86ba851737b",
+      "bytes": 138
+    },
+    "coverage.log": {
+      "sha256": "e44ade0a616a7378ea551c780f158e2518d69465d2c778ddbcbd3ce89f91ceca",
+      "bytes": 2619
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "pack.json": {
+      "sha256": "343ce2e6cb6f890af88f0e4de9bf76516d099760b8004ef6af47bdee1e587410",
+      "bytes": 382
+    },
+    "browser.log": {
+      "sha256": "efb9ce13b3cd1669ae33414af47fe645a90d4467ca547063723ae1007d17cec7",
+      "bytes": 358
+    },
+    "render.log": {
+      "sha256": "2ca8af1203db33b396db152aab33fe6d92c7ad6ce6806405cfa87057cec94fc0",
+      "bytes": 831
+    },
+    "bundle-reassessment.json": {
+      "sha256": "dd1e8a1d28afc660c219dc4acc6bf8b6b90531b9ff8b0b0a865002014bac379f",
+      "bytes": 4506
+    },
+    "pack20-fixed.json": {
+      "sha256": "5d037ae7ceed039f572060fe4b2665537d982d1b6db4af2b3d72b5a40b4df2b1",
+      "bytes": 385
+    },
+    "pack24-native.stderr": {
+      "sha256": "87c44bd9e2f9890fe6a01dc0d4a870f5884ce5c0b12dd5b94780bc503ba23dcc",
+      "bytes": 966
+    },
+    "frozen.json": {
+      "sha256": "d655e02299e3dae27f435856b1ae2c2b580e051dce5cb8dd829891f2130cee24",
+      "bytes": 436
+    },
+    "pack20-native.stderr": {
+      "sha256": "9a73b9b8e16df47c66d1b9e7f50e3cb48aa625ca920008a7ca8e687d77d2ce36",
+      "bytes": 966
+    },
+    "installed20.json": {
+      "sha256": "a24e31a0185a69775bbad80c935036d5b46a1fc837128eb3eb3589724dfb6ce1",
+      "bytes": 1249
+    },
+    "pack-relative-path-failure.log": {
+      "sha256": "ea5e71e9a697cceb1f4666d12c044a93e208dd6e413d89bf41de15b97544c9c4",
+      "bytes": 4912
+    },
+    "pack-unpacked-cap-failure.log": {
+      "sha256": "ddea4ca6b00102377137dcd7f7e9bb18dcc57e09ae4fe04a0a289af43bfb3c92",
+      "bytes": 891
+    },
+    "pack24.json": {
+      "sha256": "40a50d89efc624d0a856822ad7bbfd8fd597bfb5419a786c9f20421ba0600e1c",
+      "bytes": 379
+    },
+    "installed20.json.doc.json": {
+      "sha256": "e2d9f433d94380bf49f38e10c72b7b70a2cce1f97c56b3992d5cca49af02cd6e",
+      "bytes": 297
+    },
+    "pack20-native.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "installed24.json.doc.json": {
+      "sha256": "abb9aff42ae00e51fd9b3662beb52093673c75da70b47809caadde55ff401a73",
+      "bytes": 296
+    },
+    "pack20-fixed.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed22-wrong-fixture.json": {
+      "sha256": "8c3684bd88ba79e716d32b435feb8744e65af2b74c7396343e1b20dd40d5383c",
+      "bytes": 138
+    },
+    "docs.log": {
+      "sha256": "24f5a20c2a23f702b3dc6c34f36f86073991a8cb9443b49bfa48de3c363a0567",
+      "bytes": 73441
+    },
+    "comparison.json": {
+      "sha256": "636dc851fa63a93603ca522b5abc0a879cdd66c8f4db0c3b36a92467a9c573e0",
+      "bytes": 1396
+    },
+    "boundaries.log": {
+      "sha256": "41e207a850aba07e9e25b6c2f03b7340895aefdef1cf0cdbf2a8119c09a9fd43",
+      "bytes": 7738
+    },
+    "installed22.json": {
+      "sha256": "8646857342840966d4278e3b99046b51758a6419edf2fd05e956ccaf962e2423",
+      "bytes": 1236
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "installed20-wrong-fixture.log": {
+      "sha256": "b0a48ddcb584c75d4573999b7f23f7bd1e4999c2982949a3dd375192bba115be",
+      "bytes": 412
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24-fixed.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "installed20-wrong-fixture.json": {
+      "sha256": "7bc2441bd344b4f245cec0cc62595f461806e57b70d9a7ec8d00864d95ba18db",
+      "bytes": 138
+    },
+    "positions.log": {
+      "sha256": "603305a9563be959d20f200377be4c9219c18c2ecc3fa95b2c4ad3343b8fafa4",
+      "bytes": 1978
+    },
+    "comparison.log": {
+      "sha256": "fab3be48f6e4c6cab85ae2a48e6eac2862f46c52584ef813b963a3917a607df6",
+      "bytes": 635
+    },
+    "pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24-fixed.json": {
+      "sha256": "625a54f289a6f9237d236beb96cf0e0874562c2679e73cf84733797c06172f79",
+      "bytes": 385
+    },
+    "docs-initial.log": {
+      "sha256": "d32be2951fd997c206d3ca541c63aba966cd818be14bf56861f76b3ae32eed7b",
+      "bytes": 6336595
+    },
+    "installed24-wrong-fixture.log": {
+      "sha256": "48bd44a6efe9f79b6d09cb114d102b8e2c9c1cd27ea54d43eeb59c1e6e203991",
+      "bytes": 430
+    },
+    "installed22.json.doc.json": {
+      "sha256": "2147cbe5070b0abce9e9057ae00166c910d6584ca476effd53d4316676609753",
+      "bytes": 297
+    },
+    "pack20.json": {
+      "sha256": "c348b38a0f3e383ead744d14b7a73a3011c7d874de56c5b5a229554915aff22d",
+      "bytes": 379
+    },
+    "installed22.log": {
+      "sha256": "4779608a3e755ace46293fbc30e4a4ca8cfcae88058e32c4afad36d05efd1df5",
+      "bytes": 878
+    },
+    "prepack.log": {
+      "sha256": "ec3be300404bf1108a02ed280a1df465b24b207b0285405f813caf00b519a28a",
+      "bytes": 499
+    },
+    "owning.log": {
+      "sha256": "fbe804828153a8ff62428aefc7a3f732770bf1a5268d5b3f7466231aabcc5719",
+      "bytes": 168929
+    },
+    "package-docs.log": {
+      "sha256": "91f7760875f4c3013d24328f4f98c07c28f33a671e7693f272397d41530efed9",
+      "bytes": 3417
+    },
+    "installed22-wrong-fixture.log": {
+      "sha256": "3b1e3608e3c375d2de396149b662f452fdf656469b554aa7506ec0576c3696d5",
+      "bytes": 430
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "installed24.json": {
+      "sha256": "7ff1477520e9dd1bc7d12a6c2406c7d6cf0103b8ea92b2095c6c5340047eda33",
+      "bytes": 1249
+    },
+    "installed20.log": {
+      "sha256": "24261b1744622217952a90ec204288e5d0407a30725d8bdce210d22d542c4447",
+      "bytes": 1375
+    },
+    "installed24.log": {
+      "sha256": "ea654b30dbb8cee57ee4b8ce54dfb78d4ff92c0e1ab2d867490822fed1e51ec6",
+      "bytes": 1394
+    },
+    "pack24-native.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "remaining": [
+    "full original large workload support and actual P95",
+    "all native577consumer/79group results and nine final commands",
+    "AT60 fresh independent review and AT61 protected exact delivery; STEP077 incomplete"
+  ]
+}

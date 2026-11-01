@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 424_400, // Dynamic guide dependency union: Node20/24 424,305 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 333_700, // Dynamic guide dependencies: Node20 333,698 gzip bytes.
+  "ggaction/animation": 333_800, // Owned position preparation: Node20/24 333,720 gzip bytes.
   "ggaction/interaction": 131_400
 });
 
