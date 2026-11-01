@@ -916,8 +916,10 @@ Parallel tick selection is read by native actions and prepared anchors from
 `materialization/guides/tickValues.js`; prepared title, boundary, and field anchors
 reuse these native geometry owners without reading concrete coordinates as meaning.
 `materialization/axisLabelLayout.js` separates settled text/line preparation from
-native measured placement. Axis actions reuse the same edge clearance, rotation and
-flush calculation while retaining their explicit Canvas and collision admission.
+native measured placement. `materialization/axisLabelCandidates.js` owns native responsive
+width and native/wrap/skip/rotation selection from resolved values, frames and exact metrics.
+Axis actions retain resource lookup, authored-option validation and trace orchestration;
+the shared candidate owner applies explicit Canvas and title collision constraints.
 Prepared placement never chooses a new wrap or responsive fallback during sampling.
 Actions still explicitly materialize graphics. These shared calculations do not add a
 semantic compiler, renderer access to meaning, or new stored graphic identity. Public
