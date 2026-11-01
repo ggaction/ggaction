@@ -1,5 +1,5 @@
 {
-  "status": "source-verified-pin-pending",
+  "status": "verified-checkpoint",
   "authorization": "../../AUTHORIZATION.json",
   "decision": "32c26e969",
   "base": "32c26e96913d579012b3acc9d78cb0e168972de1",
@@ -46,9 +46,18 @@
     "installed20.json"
   ],
   "pending": [
-    "source pin and built documentation",
     "public inference worker and authentic preparation lifecycle",
     "actual final AT82 P95/heap/100 cycles"
   ],
-  "qualification": false
+  "qualification": false,
+  "source": "5e48aa302",
+  "docs": {
+    "passed": 211,
+    "sourcePin": "5e48aa302",
+    "preflight": "passed",
+    "build": "passed",
+    "builtPages": 186,
+    "llmArtifacts": 1604,
+    "browser": "Not rerun: prose-only option addition; no UI, layout, examples or renderer changed."
+  }
 }

@@ -7,7 +7,7 @@
 - [x] 원100/1000/10000, k10의 전체 결과·작업량 계측과 독립 oracle 검산
 - [x] 공개·저장·worker 후보를 구체화해 root 검토 자료로 기록
 - [x] root의 구체안 정합 확인: 기존 remainingApproval 범위로 채택, 2026-11-01
-- [ ] 채택된 execution 정책 구현·검증 checkpoint ([진행 기록](inference-execution.md))
+- [x] 채택된 execution 정책 구현·검증 checkpoint ([진행 기록](inference-execution.md))
 - [ ] 실제 worker·source revise·취소/오류/늦은 결과·3Node·Chromium 검증
 - [ ] 최종 combined archive의 원 AT82 P95/heap/100cycle qualification
 

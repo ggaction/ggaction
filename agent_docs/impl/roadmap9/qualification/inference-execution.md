@@ -7,7 +7,7 @@
 - [x] 원10000nodes/k10의100000간선 전체 독립 oracle 및 immutable/codec 검증
 - [x] 여섯 rule·candidate 자체 정책·source revise·recompute·Basic·stored corruption 회귀
 - [x] 변경16owner canonical critical floors와 source/package/discovery/type 경계
-- [ ] 동일 고정 archive3Node 및 source pin·문서 마감
+- [x] 동일 고정 archive3Node 및 source pin·문서 마감
 - [ ] 전용 worker·prepared commit·취소/늦은 결과/실제 browser stage
 - [ ] 최종 combined archive의 AT82 P95·retained heap·100cycle qualification
 
@@ -65,3 +65,11 @@ editable program codec에64MiB 한도는 없다. 별도 animation envelope의 �
 원 large worker는 아직 없다. 정책으로 전체 입력 계산이 가능해진 사실을 worker10s·원 AT82 전체
 지원·STEP077 완료로 확대하지 않는다. 전용 immutable job/completion와 authentic prepared lifecycle은
 채택 설계의 다음 단계이며 최종 성능은 root가 합산 archive로 별도 검증한다.
+
+Source `5e48aa302`의 고정 archive `4159c10d76121eae2e2a775424c15529980476c65dc6ce30b27cbe8a25437f64`를
+Node20/22/24에 각각 설치해 기존 lifecycle·capacity와 새 bounded execution3runtime, strict 타입,
+실제 문서 snippet, optional peers,6entry bundle를 검증했다. Node20 Full 최초 실패는 같은 측정의
+최소cap 재평가로 구분하고 원 receipt를 보존했다. Node24도785,207bytes로 확인했다.
+소스 pin 후211문서/카드 검사와 preflight/Jekyll build/built186pages·1604LLM검사가 통과했다.
+재생성 뒤 canonical archive의 byte-identical hash도 다시 확인했다. 렌더러·시각적UI가 바뀌지 않아
+기존 browser/pixel 증거를 재사용하며 새 전체 브라우저 검사를 했다고 세지 않는다.
