@@ -12,6 +12,17 @@ identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생�
 endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
 일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
+축에 의존하는 animation 범례 lane은 같은 scope의 canonical guide 참조만 저장한다.
+`animation/guideTracks.js`는 각 축의 현재 timeline 의미와 실제 node style을 읽고,
+`materialization/animation/legendAxisLaneState.js`가 공통 native clearance/lane owner로
+여백을 계산한다. Scene의 실제 잉크는 기존 primitive bounds·translation·clip owner를
+재사용한다. 축 layout을 lane에 복사하거나 endpoint pixel을 의미로 역추정하지 않는다.
+동적 label 의존은 `materialization/animation/axisLabelDependencies.js`가 기존 raw 그룹의
+exact owner 참조와 현재 metrics/graphics를 연결한다. Native label 계산은 R collector가 한 번
+소유하고 title/lane은 실제 현재 clip을 포함한 occupied ink만 소비한다. 슬롯·layout 복제나
+과거 plan 참조는 추가하지 않으며 같은 work callback으로 실제 방문을 합산한다.
+정확한 지원과 fallback은 [Current ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 > 작업에 필요한 section만 빠르게 찾으려면
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
@@ -948,7 +959,10 @@ closed validator checks native forward geometry, sampled identity and offline re
 flat frame provenance retains current guide values without retaining previous plans.
 Exact supported guide families and fallbacks belong to the Current Animation contract.
 Native legend actions and animation share `materialization/guides/legendLaneState.js`
-for family ordering and occupied block bounds. Group preparation stores one frame with
+for family ordering and occupied block bounds. `materialization/guides/axisClearance.js`
+owns the same-edge outside-ink distance; native placement retains its explicit/inferred
+intent short-circuit and does not treat endpoint clearance as authored meaning.
+Group preparation stores one frame with
 its native placement and intrinsic block values; `legendGroupState.js` reuses each
 family's pure native layout plus `layout/legendGroup.js` packing. The action still owns
 all graphic writes and trace nodes. Sampling neither invokes an action nor derives
@@ -961,11 +975,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 783,900 bytes |
-| `ggaction/basic` | 424,300 bytes |
+| `ggaction/basic` | 424,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 327,800 bytes |
+| `ggaction/animation` | 333,700 bytes |
 
 
 
@@ -4854,7 +4868,7 @@ forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 �
 실제 line 목록·ink bounds를 검산한다. Host preparation과 animation은 같은 bounded wrap query
 collector를 공유한다. `axisLabelGroups`는 실제 native collection의 빈 drawing slot까지 수집하고
 raw별 style/font와 현재 line vector를 닫힌 준비 상태로 검산한다. 공개 sampler는 이 현재 group 의미를 사용하며
-동적 title/lane 소비는 별도 후행 경계다. Geo와 이 준비 상태의 동일 concrete placement 검증은
+Guide13의 동적 title/lane은 같은 현재 group을 읽기 전용으로 소비한다. Geo와 이 준비 상태의 동일 concrete placement 검증은
 `grammar/animation/placement`가 소유하고 Geo의 기존 alias/오류를 유지한다. Native action의
 기본 query/trace/renderer 입력은 바꾸지 않는다.
 
@@ -4914,3 +4928,14 @@ final-current lookup으로 dependent guide에 읽기 전용 graphics/bounds/prof
 공통 style을 증명하지 못하면 drawing은 보존하되 lookup을 제공하지 않는다. 같은 source package는
 1,236entries/7,982,959unpacked, Node22 1,768,442/Node24 1,771,737packed bytes로 측정했다.
 최소 상한은1,236/1,771,800/7,983,000이며 현재 six-entry ceilings는 위 executable owner 표가 정본이다.
+
+
+### 동적 guide 의존성 package 경계
+
+Guide13은 R native axis emission과 고정 축 lane owner를 결합하고 읽기 전용
+`axisLabelDependencies.js`를 추가한다. R package 기준 대비 고정 lane의 두 owner와 이
+adapter를 합쳐3entries가 추가된다. Canonical staging의 Node20/22/24 실측은1,239entries,
+8,018,552unpacked, 최대1,779,682packed이며 최소cap은1,239/1,780,000/8,019,000이다.
+최초1,236-entry 실패를 기록에 보존한다. 공개 entry나 renderer 경계는 추가하지 않는다.
+동일tar의 Node20 bundle 측정에서 Basic424,305/animation333,698bytes가 기존한도를 넘었다.
+최소100bytes 단위로424,400/333,700으로 조정하고 위 표/README와 동기화한다.

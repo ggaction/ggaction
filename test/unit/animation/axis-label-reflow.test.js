@@ -85,7 +85,7 @@ test("current group meaning stays flat through repeated interruption and schedul
 
 test("strict group transport rejects changed versions, source meaning, placement and dynamic decisions",()=>{
   const from=rows(),to=rows(600),plan=prepare(from,to),payload=exportTransitionPlan(plan);
-  assert.equal(payload.kernels.guide,"native-guide-values@11");
+  assert.equal(payload.kernels.guide,"native-guide-values@13");
   for(const change of [p=>p.kernels.guide="native-guide-values@10",p=>p.from.axislabels.groups[0].placement.geographicBefore=1,
     p=>p.from.axislabels.groups[0].placement.geographicBefore=-1,p=>p.from.axislabels.groups[0].placement.ordinal++,
     p=>p.from.axislabels.items.find(Boolean).line=99,p=>p.from.axislabels.groups[0].layout.values.reverse(),

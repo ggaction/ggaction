@@ -13,21 +13,39 @@ const bytes = Buffer.from("AAEAAAAKAIAAAwAgT1MvMkVARxsAAAEoAAAAYGNtYXAAVwOLAAABn
 const family="ggaction Metric Fixture",identity=value=>Object.fromEntries(["contentHash","family","style","weight","metricsProviderVersion"].map(key=>[key,value[key]]));
 const hash=value=>createHash("sha256").update(value).digest("hex"),options={durationMs:100,easing:"linear"};
 const register=request=>{const key=GlobalFonts.register(request.bytes,request.family);assert.ok(key);return{...identity(request),dispose(){assert.ok(GlobalFonts.remove(key));}};};
-function picture(width=240,label="AB AB"){
-  return chart().createCanvas({width,height:300,background:"transparent",margin:80,responsive:{minPlotSize:{width:40,height:40}}})
-    .createData({id:"rows",keyField:"id",values:[{id:"a",x:0,y:0},{id:"b",x:2,y:2}]}).createPointMark({id:"points",opacity:0})
+function picture(width=240,label="AB AB",dependencies=false){
+  let program= chart().createCanvas({width,height:dependencies?400:300,background:"transparent",margin:dependencies?120:80,responsive:{minPlotSize:{width:40,height:40}}})
+    .createData({id:"rows",keyField:"id",values:[{id:"a",x:0,y:0,g:"A"},{id:"b",x:2,y:2,g:"B"}]}).createPointMark({id:"points",opacity:0})
     .encodeX({field:"x",scale:{domain:[0,2],nice:false}}).encodeY({field:"y"})
-    .createXAxis({line:false,title:false,ticksAndLabels:{values:[0,1,2],labels:{fontFamily:family,fontSize:20,fontWeight:400,color:"red",labelMap:[0,1,2].map(value=>({value,label})),responsive:{maxLines:2}}}});
+    .createXAxis({line:false,title:dependencies?{text:"AB",fontFamily:family,fontSize:20,fontWeight:400,offset:{from:"labels",gap:8}}:false,ticksAndLabels:{values:[0,1,2],labels:{fontFamily:family,fontSize:20,fontWeight:400,color:"red",labelMap:[0,1,2].map(value=>({value,label})),responsive:{maxLines:2}}}});
+  if(dependencies) program=program.encodeColor({field:"g"}).createLegend({channels:["color"],position:"bottom",title:false,labels:{fontFamily:family,fontSize:20,fontWeight:400}});
+  return program;
 }
-async function prepared(){
-  const p=picture(),requestToken="axis",font=await prepareFontResource(p,{kind:"create",id:"font",uri:"fixture:axis",expectedHash:hash(bytes),mimeType:"font/ttf",family,style:"normal",weight:400,metricsProviderVersion:"installed-axis@1"},{requestToken,load:()=>({bytes,mimeType:"font/ttf"}),decode:identity});
+async function prepared(dependencies=false){
+  const p=picture(dependencies?320:240,"AB AB",dependencies),requestToken="axis",font=await prepareFontResource(p,{kind:"create",id:"font",uri:"fixture:axis",expectedHash:hash(bytes),mimeType:"font/ttf",family,style:"normal",weight:400,metricsProviderVersion:"installed-axis@1"},{requestToken,load:()=>({bytes,mimeType:"font/ttf"}),decode:identity});
   const withFont=p.createFontResource({prepared:font,requestToken}),metrics=await prepareTextMetrics(withFont,{id:"metrics",fonts:["font"],axisLabelReflow:true},{requestToken,decode:identity,measure:({asset,queries})=>{
     const lease=register({...asset,bytes:Buffer.from(asset.payload.data,"base64")});try{const ctx=createCanvas(1,1).getContext("2d");return{contentHash:asset.contentHash,metricsProviderVersion:asset.metricsProviderVersion,widths:queries.map(({text,fontSize})=>{ctx.font=`${asset.weight} ${fontSize}px "${asset.family}"`;return ctx.measureText(text).width;})};}finally{lease.dispose();}
   }});
-  const from=withFont.applyTextMetrics({prepared:metrics,requestToken}),to=from.editCanvas({width:420}),plan=planTransition({from,to,options});
-  return{from,to,plan,frame:sampleTransition(plan,50),native:from.editCanvas({width:330})};
+  const from=withFont.applyTextMetrics({prepared:metrics,requestToken}),to=from.editCanvas({width:dependencies?620:420}),plan=planTransition({from,to,options});
+  return{from,to,plan,frame:sampleTransition(plan,50),native:from.editCanvas({width:dependencies?470:330})};
 }
 export const cases=[
+  {id:"animation-axis-reflow/dependent-title-legend-native-offline",async run(){
+    const {from,to,plan,frame,native}=await prepared(true),fonts=await prepareFontRendering(frame,{register});
+    try{
+      assert.equal(from.graphicSpec.objects.xAxisLabels.items.length,6);assert.equal(to.graphicSpec.objects.xAxisLabels.items.length,3);
+      const dependencies=frame.decisions.filter(d=>d.role==='guide-title'||d.role?.startsWith('guide-legend-'));
+      assert.ok(dependencies.length>0&&dependencies.every(d=>d.kernel==='guide-geometry'));
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'),{fonts});
+      const png=(await renderToPNGBuffer(frame)).buffer;assert.deepEqual(png,await canvas.encode('png'));assert.deepEqual(png,(await renderToPNGBuffer(native)).buffer);
+      assert.match(renderToSVG(frame),/@font-face/);assert.match((await renderToPDFBuffer(frame)).buffer.toString('latin1'),/\/ToUnicode/);
+      for(const endpoint of [plan,planTransition({from:frame,to,options})]){
+        const saved=serializeAnimation(endpoint),restored=deserializeAnimation(saved).plan;
+        assert.deepEqual(exportAnimationFrames(restored,{timesMs:[0,25,50,75,100]}),exportAnimationFrames(endpoint,{timesMs:[0,25,50,75,100]}));
+        for(const version of [11,12])assert.throws(()=>deserializeAnimation(saved.replaceAll('native-guide-values@13','native-guide-values@'+version)));
+      }
+    }finally{fonts.dispose();}
+  }},
   {id:"animation-axis-reflow/current-native-fonts-four-renderers",async run(){
     const {from,to,plan,frame,native}=await prepared(),fonts=await prepareFontRendering(frame,{register});
     try{
@@ -41,7 +59,8 @@ export const cases=[
     }finally{fonts.dispose();}
   }},
   {id:"animation-axis-reflow/offline-fonts-network-free",async run(){
-    const {plan,frame}=await prepared(),saved=serializeAnimation(plan),expected={scene:hash(JSON.stringify(frame.scene)),svg:hash(renderToSVG(frame)),png:hash((await renderToPNGBuffer(frame)).buffer)};
+    for(const dependencies of [false,true]) {
+    const {plan,frame}=await prepared(dependencies),saved=serializeAnimation(plan),expected={scene:hash(JSON.stringify(frame.scene)),svg:hash(renderToSVG(frame)),png:hash((await renderToPNGBuffer(frame)).buffer)};
     const child=spawnSync(process.execPath,["--input-type=module","-e",`
       import http from 'node:http';import https from 'node:https';import net from 'node:net';import tls from 'node:tls';import{syncBuiltinESMExports}from'node:module';
       let network=0;const deny=()=>{network++;throw Error('offline');};globalThis.fetch=deny;for(const m of[http,https]){m.get=deny;m.request=deny;}net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;syncBuiltinESMExports();
@@ -52,6 +71,7 @@ export const cases=[
     `],{input:saved,encoding:"utf8",timeout:30000,maxBuffer:1024*1024});
     assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{result:{...expected,canvas:expected.png},network:0,registered:1,removed:1});
     assert.deepEqual(sampleTransition(deserializeAnimation(saved).plan,50),frame);
+    }
   }},
   {id:"animation-axis-reflow/raw-current-hit-retime-rebase",async run(){
     const {from,to,plan,frame}=await prepared(),session=createInteractionSession({program:from});

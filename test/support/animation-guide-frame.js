@@ -1,13 +1,24 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend", "title-layout", "implicit-lane"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend", "grouped-legend", "title-layout", "implicit-lane", "axis-lane"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
     .createPointMark({ id: "m", opacity: 0 });
   let to, points;
-  if (variant === "title-layout") {
+  if (variant === "axis-lane") {
+    from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
+      .createData({ values: [{ x: 0, y: 0, category: "A" }, { x: 10, y: 10, category: "A" }] }).createPointMark({ id: "m", opacity: 0 })
+      .encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeColor({ field: "category", scale: { range: ["red"] } })
+      .createLegend({ channels: ["color"], title: false,
+        symbol: { layers: [{ type: "swatch", width: 10, height: 10, stroke: "none", strokeWidth: 0 }] } })
+      .editLegendBlock({ target: "m", channel: "color", labelMap: [{ value: "A", label: "" }] })
+      .createYAxis({ position: "right", line: { lineWidth: 4 }, ticksAndLabels: false, title: false });
+    to = from.editYAxis({ line: { lineWidth: 20 } });
+    points = [[199, 45], [192, 45]];
+  } else if (variant === "title-layout") {
     from = chart().createCanvas({ width: 200, height: 280, margin: { left: 20, right: 20, top: 20, bottom: 100 } })
       .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
       .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } }).encodeY({ field: "y" })

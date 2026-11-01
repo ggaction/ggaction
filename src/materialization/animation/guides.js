@@ -1,3 +1,7 @@
+import { axisLabelDependencyGroup, axisLabelDependencySnapshot, axisLabelDependencyInk } from "./axisLabelDependencies.js";
+import { hasInferredLegendLane } from "./legendLaneGuides.js";
+import { legendAxisReferenceKeys, legendAxisLaneMatchesNode } from "./legendAxisLaneState.js";
+import { guideAnimationKey } from "../../grammar/animation/guideState.js";
 import { legendLaneAnimationMatchesNode } from "./legendLaneState.js";
 import { axisTitleAnimationItems } from "./axisTitleGuides.js";
 import { axisTitleAnimationMatchesNode } from "./axisTitleState.js";
@@ -23,7 +27,7 @@ import { axisGuideItems } from "../guides/axisItems.js";
 import { guideAnchorItems } from "./guideAnchors.js";
 import { valuesFromTickConfig, mapPolarGuideValues } from "../guides/tickValues.js";
 
-function scopedGuides(program, namespaces, spend) {
+function scopedGuides(program, namespaces, spend, axislabels) {
   const result = new Map(), labelLayouts = new Map(), objects = program.graphicSpec.objects;
   const identity = (owner, component, value, line = 0) => ({ namespaces, owner, component, value, line });
   const add = (id, state) => { spend(1 + id.length); result.set(id, normalizeGuideAnimationState(state)); };
@@ -38,9 +42,9 @@ function scopedGuides(program, namespaces, spend) {
     const { channel, component: kind, config } = item;
     const id = identity(item.ownerId, kind, item.rawValue, item.line);
     const cartesian = channel === "x" || channel === "y";
-    if (kind === "labels" && cartesian && (config.flush === true || config.rotation !== 0 ||
+    if (kind === "labels" && cartesian && (hasInferredLegendLane(program, config.position) || config.flush === true || config.rotation !== 0 ||
         program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined)) {
-      if (config.maxWidth !== undefined || config.responsive !== undefined || config.responsiveResult !== undefined) {
+      if (config.maxWidth !== undefined || config.responsive !== undefined || config.responsiveResult !== undefined || config.lineHeight !== undefined && config.lineHeight !== config.fontSize * 1.2) {
         add(item.graphicId, { identity: id, reason: "guide-layout" });
       } else {
         if (!labelLayouts.has(config)) {
@@ -100,21 +104,21 @@ function scopedGuides(program, namespaces, spend) {
       parallel ? { field: item.field, value: item.value } : item.value, item.line);
     add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
-  for (const item of axisTitleAnimationItems(program, namespaces, spend)) result.set(item.graphicId, item.state);
-  for (const item of legendAnimationItems(program, namespaces, spend)) {
+  for (const item of axisTitleAnimationItems(program, namespaces, spend, axislabels)) result.set(item.graphicId, item.state);
+  for (const item of legendAnimationItems(program, namespaces, spend, [...result.values()], axislabels)) {
     spend(1 + item.graphicId.length);
     result.set(item.graphicId, item.state);
   }
   return result;
 }
 
-export function projectGuideAnimationState(program, endpoint) {
+export function projectGuideAnimationState(program, endpoint, axislabels) {
   validateGeneratedItemLimit(endpoint.scene.nodes.length, "Animation guide endpoint size");
   const states = new Map();
   let work = 0;
   const spend = (count = 1) => validateWorkLimit(work += count, "Animation guide preparation work");
   for (const context of graphicScopes(program, spend)) {
-    for (const [id, state] of scopedGuides(context.program, context.namespaces, spend)) {
+    for (const [id, state] of scopedGuides(context.program, context.namespaces, spend, axislabels)) {
       spend(id.length + context.namespaces.reduce((sum, value) => sum + 6 * value.length + 2, 0));
       const qualified = context.namespaces.reduceRight((value, namespace) => namespaceGraphicId(namespace, value), id);
       if (states.has(qualified)) throw new TypeError("Animation guides contain ambiguous native ownership.");
@@ -126,15 +130,26 @@ export function projectGuideAnimationState(program, endpoint) {
   const groupKey = state => JSON.stringify([state.identity.namespaces, state.identity.owner]);
   const projected = endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
-    if (state === undefined || state.reason !== undefined) return state ?? null;
-    const matches = (state.kind === "legend-lane" ? legendLaneAnimationMatchesNode : state.kind === "title-layout" ? axisTitleAnimationMatchesNode : state.kind === "legend-group" ? legendGroupAnimationMatchesNode : state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]);
+    if (state === undefined || state.reason !== undefined || state.kind === "legend-axis-lane") return state ?? null;
+    const matches = (state.kind === "legend-lane" ? legendLaneAnimationMatchesNode : state.kind === "title-layout" ? axisTitleAnimationMatchesNode : state.kind === "legend-group" ? legendGroupAnimationMatchesNode : state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index], state.layout?.labels?.group === undefined ? undefined : axisLabelDependencyInk(axisLabelDependencySnapshot(axisLabelDependencyGroup(axislabels, state.layout.labels.group)), endpoint.scene.nodes[index]));
     if (!matches && state.kind === "legend-group") editedGroups.add(groupKey(state));
     if (!matches && state.kind === "legend-lane") editedLanes.add(laneKey(state));
     return matches ? state : { identity: state.identity, reason: "guide-edited" };
   });
+  for (const [index, state] of projected.entries()) {
+    if (state?.kind !== "legend-axis-lane") continue;
+    spend(projected.length * 2 + state.axes.length);
+    const keys = legendAxisReferenceKeys(projected, state.identity.namespaces, state.layout.edge, axislabels);
+    const references = new Set(state.axes);
+    const dependencies = projected.flatMap((axis, position) => axis !== null && references.has(guideAnimationKey(axis.identity))
+      ? [{ state: axis, node: endpoint.scene.nodes[position] }] : []);
+    if (JSON.stringify(keys) !== JSON.stringify(state.axes) || !legendAxisLaneMatchesNode(state, endpoint.scene.nodes[index], dependencies, (state.labelGroups ?? []).map(key => ({ key, current: axisLabelDependencySnapshot(axisLabelDependencyGroup(axislabels, key)) })))) {
+      editedLanes.add(laneKey(state)); projected[index] = { identity: state.identity, reason: "guide-edited" };
+    }
+  }
   const editedLabels = new Set(projected.filter(state => state?.identity.component === "labels" && state.reason !== undefined).map(groupKey));
-  return cloneAndFreeze(projected.map(state => state?.kind === "legend-lane" && editedLanes.has(laneKey(state))
-    ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "title-layout" && editedLabels.has(groupKey(state))
+  return cloneAndFreeze(projected.map(state => ["legend-lane", "legend-axis-lane"].includes(state?.kind) && editedLanes.has(laneKey(state))
+    ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "title-layout" && state.layout.labels?.group === undefined && editedLabels.has(groupKey(state))
     ? { identity: state.identity, reason: "guide-edited" } : state?.kind === "legend-group" && editedGroups.has(groupKey(state))
     ? { identity: state.identity, reason: "guide-edited" } : state));
 }

@@ -12,7 +12,8 @@
 - [x] 정확한 두 endpoint와 typed scene 연결
 - [x] 의미 좌표 및 곡선·partition·graph·Geo 통합과 명시 fallback
 - [x] 공개 API·타입·Current 계약·소비자 검증 checkpoint
-- [ ] 동적 축 라벨·축 종속 범례 합산 및 최종 native matrix 종료
+- [x] 동적 축 라벨·축 종속 범례·제목 합산 component 검증([기록](dynamic-guide-merged-evidence/qualification.json)).
+- [ ] 최종 native matrix 종료
 
 ## 현재 통합 상태
 

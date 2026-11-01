@@ -37,6 +37,11 @@ test("guide keys distinguish typed values, scopes, component and multiline roles
   assert.throws(() => normalizeGuideIdentity({ ...identity("line"), value: 5 }), /identity/);
   assert.throws(() => normalizeGuideIdentity({ ...identity("ticks"), line: 1 }), /identity/);
   assert.throws(() => normalizeGuideIdentity({ ...identity("ticks"), value: Infinity }), /identity/);
+  for (const interval of [[null, 1], [1, null], [-2, 5]]) {
+    const input = identity("legend-label", ["size", ["interval", ...interval]]);
+    assert.deepEqual(normalizeGuideIdentity(input).value, input.value);
+  }
+  assert.throws(() => normalizeGuideIdentity(identity("legend-label", ["size", ["interval", 0, Infinity]])), /identity/);
 });
 
 test("native Cartesian grid, baseline, and multiline label use shared geometry", () => {

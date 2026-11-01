@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:f5a54fe5ba7823aa349a756241819cf7b2f404b5d5aef54ec52078d651ee4e8d. Status: development. Runtime source: c960448ac92da407d08c5a0ee83bd7612cdef948. Release baseline: v0.0.13.
+Contract: sha256:81c8a7d577efc3fc588fa2ed6eee7595159b938efecb719e113946bf9a3731d0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c960448ac92da407d08c5a0ee83bd7612cdef948/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c960448ac92da407d08c5a0ee83bd7612cdef948/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11352,8 +11352,10 @@ For exact font profiles, prepare the required intermediate wrapping queries with
 the `axisLabelReflow: true` request option to
 [`prepareTextMetrics`](./api/rendering/#embedded-fonts) and apply that profile
 before planning. Prepare again after changing the font. Missing exact queries remain
-errors. Dynamic label groups do not yet supply inferred title or legend clearance;
-those dependent layouts retain their explicit fallback. Sampling, interruption, and
+errors. Inferred and label-relative titles and same-edge implicit legend lanes use
+the current dynamic labels and exact font metrics, including their actual scene clips.
+Each axis runs on its own geometry clock; a dependent legend does not retime that axis.
+Hidden raw values and empty label collections retain their owner identity. Sampling, interruption, and
 offline replay preserve native drawing order and current guide hit metadata. Exported
 frame batches count native layout work even when no label is painted, and fail before
 returning a partial batch if the shared work limit is exceeded.
@@ -11363,8 +11365,8 @@ use their native single-edge layout. Ticks and labels keep their raw values; the
 scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
 move through that same layout. Current legend frames can be interrupted and restored
 offline. Text or font changes crossfade; exact font profiles must contain all required
-measurements. Automatic samples, symbol legends, borders, and
-inferred axis clearance retain safe fallbacks.
+measurements. Automatic samples, symbol legends, and borders retain safe fallbacks.
+Inferred axis clearance follows the implicit lane rules below.
 
 Continuous size legends also support exact `values` and explicit numeric `offset` in one
 independent edge block. Linear, log, sqrt, and pow size mappings interpolate area before
@@ -11394,7 +11396,18 @@ through the same static lane placement rules. This includes inferred offsets whe
 axis on that edge contributes additional clearance. Each block keeps its original target,
 raw values, and roles. Removing a block or changing an unsupported policy preserves a
 safe fade and valid interrupted offline replay; independent panels retain their own guide
-meaning. Axis-dependent inferred clearance and unsupported sibling families still fade.
+meaning. Inferred edge lanes can also depend on Cartesian axis lines, ticks, fixed labels,
+and inferred, label-relative, or fixed-offset titles. Each frame replays the axis at its
+own owner progress, applies its current stroke width and scene clips, and measures that
+actual ink before native lane placement. A legend can therefore run on a different
+geometry clock without overlapping a faster-moving axis. The saved lane retains exact
+axis references and gap policy, rather than copied axis layouts or endpoint offsets.
+Dynamic wrapping, skip selection, and rotation supply their actual current label ink to
+that same placement. Incomplete or edited dependencies fade as a complete lane; changing
+the wrapping policy also keeps an explicit fallback. A label-relative title with no
+current label cannot invent an anchor. Inferred titles retain the native preferred gap.
+Current label, line, and clip work shares the frame-export budget, including frames with
+no visible labels. Unsupported sibling and non-Cartesian clearance policies still fade.
 
 > **Executable complete.** Run this ES module with ggaction installed. A color-and-size group retains its native packing while the Canvas width and size scale change.
 
@@ -38476,14 +38489,16 @@ export interface TransitionPlan {
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
  * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
  * typed category/recipe roles and explicit offsets, explicit native legend groups with
- * row/column/wrap packing, axis-free implicit edge lanes using current measured bounds, and fixed
+ * row/column/wrap packing, implicit edge lanes using current measured bounds and exact current
+ * Cartesian axis ink at its own timeline progress, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
  * completed density samples, and compatible source-follow overlays.
  * Geo Text content/layout expressions follow the current native camera.
  * Native Cartesian maxWidth/responsive labels emit current raw-value/line identities,
  * including newly visible lines without fabricated endpoint indices.
- * Inferred and label-relative Cartesian titles replay the same fixed native label ink dependency.
+ * Inferred and label-relative Cartesian titles replay the same current fixed or dynamic native label ink dependency.
+ * Dynamic dependencies retain exact axis owners, current clips and prepared font metrics.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'guide'; readonly kernel: 'native-axis-label'; readonly ownerKey: string;
@@ -53210,12 +53225,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c960448ac92da407d08c5a0ee83bd7612cdef948/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c960448ac92da407d08c5a0ee83bd7612cdef948/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56342,9 +56357,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:f5a54fe5ba7823aa349a756241819cf7b2f404b5d5aef54ec52078d651ee4e8d` |
+| Contract fingerprint | `sha256:81c8a7d577efc3fc588fa2ed6eee7595159b938efecb719e113946bf9a3731d0` |
 | Example and dataset source | `8c0b2e97964b83f091cea807e0b439905ec78289` |
-| Runtime source commit | `c960448ac92da407d08c5a0ee83bd7612cdef948` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |

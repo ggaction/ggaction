@@ -10,8 +10,8 @@ import { renderToPDFBuffer } from "../../../../../src/renderers/pdf.js";
 import { renderToSVG } from "../../../../../src/renderers/svg.js";
 import { nativeAxisReflowFontFrame } from "../../../../support/animation-axis-reflow-node.js";
 
-test("dynamic axis lines use current native font layout in Canvas, PNG, SVG and vector PDF",async()=>{
-  const {frame,expected}=await nativeAxisReflowFontFrame(),directory=new URL("../../../../../.artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/",import.meta.url);
+for(const dependencies of [false,true]) test(`dynamic axis lines${dependencies?" and dependent title/legend":""} use current native font layout in Canvas, PNG, SVG and vector PDF`,async()=>{
+  const {frame,expected}=await nativeAxisReflowFontFrame({dependencies}),width=dependencies?470:330,height=dependencies?400:300,directory=new URL(`../../../../../.artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/${dependencies?"dependencies":"labels"}/`,import.meta.url);
   await mkdir(directory,{recursive:true});
   const fonts=await prepareFontRendering(frame,{register:request=>{
     const key=GlobalFonts.register(request.bytes,request.family);assert.ok(key);
@@ -21,7 +21,7 @@ test("dynamic axis lines use current native font layout in Canvas, PNG, SVG and 
     const canvas=createCanvas(1,1);render(frame,canvas.getContext("2d"),{fonts});
     const actual=await renderToPNGBuffer(frame),native=await renderToPNGBuffer(expected);
     assert.deepEqual(actual.buffer,native.buffer);assert.deepEqual(actual.buffer,await canvas.encode("png"));
-    const pixels=async input=>{const image=await loadImage(input),c=createCanvas(330,300);c.getContext("2d").drawImage(image,0,0);return c.getContext("2d").getImageData(0,0,330,300).data;};
+    const pixels=async input=>{const image=await loadImage(input),c=createCanvas(width,height);c.getContext("2d").drawImage(image,0,0);return c.getContext("2d").getImageData(0,0,width,height).data;};
     await writeFile(new URL("middle.png",directory),actual.buffer);
     for(const [name,input] of [["middle",frame],["native",expected]]){
       const svg=renderToSVG(input),pdf=(await renderToPDFBuffer(input)).buffer;

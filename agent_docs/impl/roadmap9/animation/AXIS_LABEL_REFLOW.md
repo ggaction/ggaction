@@ -15,7 +15,8 @@
 - [x] Closed group 준비/중간 native emission/strict restore·rebase 연결.
 - [x] 실제 현재 hit·offline·4 backend·동일 tar3Node 검증 및 공개 문서 동기화.
 - [x] Source pin 뒤 변경 문서 페이지 build/browser 마감.
-- [ ] 후행 P의 동적 title/lane 실제 dependency 소비 및 최종 통합 qualification.
+- [x] P의 동적 title/lane 실제 dependency 소비 및 합산 component qualification([기록](dynamic-guide-merged-evidence/qualification.json)).
+- [ ] 최종 native matrix·전체9명령·독립 검토 및 STEP077 전달.
 
 P가 담당하는 group/lane7과 title pure owner는 별도 source로 병합한다. Reflow의 guide kernel
 최초 설계의 manifest8 예약 이후 통합이 guide10까지 진행되어, 공개 동적 emission은

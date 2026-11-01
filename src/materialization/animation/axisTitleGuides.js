@@ -1,3 +1,6 @@
+import { animationOwnerKey } from "../../grammar/animation/ownerKey.js";
+import { axisLabelDependencyGroup } from "./axisLabelDependencies.js";
+import { hasInferredLegendLane } from "./legendLaneGuides.js";
 import { cartesianAxisOwners, axisGraphicIds } from "../../selectors/axes.js";
 import { cartesianPosition } from "../../grammar/animation/cartesianPosition.js";
 import { guideAnimationKey } from "../../grammar/animation/guideState.js";
@@ -10,7 +13,7 @@ import { prepareAxisAnimationLayout } from "./axisLabelState.js";
 import { prepareAxisTitleAnimationLayout, normalizeAxisTitleAnimationState, axisTitleAnimationLabels } from "./axisTitleState.js";
 
 // Build from native authoring policy, never the final numeric title offset.
-export function axisTitleAnimationItems(program, namespaces, spend) {
+export function axisTitleAnimationItems(program, namespaces, spend, axislabels) {
   const result = [], objects = program.graphicSpec.objects;
   const axisItems = axisGuideItems(program, spend), profile = program.materializationConfigs.textMetrics, labelItems = new Map();
   for (const item of axisItems) {
@@ -20,20 +23,24 @@ export function axisTitleAnimationItems(program, namespaces, spend) {
   }
   for (const owner of cartesianAxisOwners(program)) {
     const config = owner.config?.title, ids = axisGraphicIds(owner.channel, owner.id);
-    if (config === undefined || objects[ids[3]] === undefined || typeof config.offset === "number" && config.inferredOffset !== true) continue;
+    if (config === undefined || objects[ids[3]] === undefined) continue;
+    const fixed = typeof config.offset === "number" && config.inferredOffset !== true;
+    if (fixed && !hasInferredLegendLane(program, config.position)) continue;
     const identity = { namespaces, owner: owner.id, component: "title", value: null, line: 0 };
     const fail = reason => result.push({ graphicId: ids[3], state: { identity, reason } });
-    const labelConfig = owner.config?.labels;
-    if (labelConfig !== undefined && (labelConfig.maxWidth !== undefined || labelConfig.responsive !== undefined || labelConfig.responsiveResult !== undefined ||
+    const labelConfig = fixed ? undefined : owner.config?.labels;
+    const dynamic = labelConfig === undefined ? undefined : axisLabelDependencyGroup(axislabels, animationOwnerKey(namespaces, owner.id));
+    if (dynamic?.reason !== undefined) { fail("guide-edited"); continue; }
+    if (dynamic === undefined && labelConfig !== undefined && (labelConfig.maxWidth !== undefined || labelConfig.responsive !== undefined || labelConfig.responsiveResult !== undefined ||
         labelConfig.lineHeight !== undefined && labelConfig.lineHeight !== labelConfig.fontSize * 1.2)) { fail("guide-layout"); continue; }
-    if ((labelConfig === undefined) !== (objects[ids[2]] === undefined)) { fail("guide-edited"); continue; }
+    if (!fixed && (labelConfig === undefined) !== (objects[ids[2]] === undefined)) { fail("guide-edited"); continue; }
     const frame = resolveCartesianAxisFrameBounds(program, owner.channel, config.position, config.scale, owner.id);
     const { width, height } = findCanvasGraphic(program).properties, canvas = { width, height };
     const edgeAligned = program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined;
     const values = labelConfig === undefined ? null : valuesFromTickConfig(program, labelConfig);
     if (values?.length === 0) { fail("guide-layout"); continue; }
     spend(1 + (values?.length ?? 0));
-    const labels = labelConfig === undefined ? null : prepareAxisAnimationLayout({ values, config: labelConfig,
+    const labels = dynamic !== undefined ? { group: animationOwnerKey(namespaces, owner.id) } : labelConfig === undefined ? null : prepareAxisAnimationLayout({ values, config: labelConfig,
       scale: program.resolvedScales[labelConfig.scale], channel: owner.channel,
       frame: resolveCartesianAxisFrameBounds(program, owner.channel, labelConfig.position, labelConfig.scale, owner.id), canvas, profile, edgeAligned });
     const scale = program.resolvedScales[config.scale];
@@ -44,6 +51,7 @@ export function axisTitleAnimationItems(program, namespaces, spend) {
     const state = normalizeAxisTitleAnimationState({ identity, kind: "title-layout", layout: prepareAxisTitleAnimationLayout({ anchor,
       canvas, config, text: program.semanticSpec.guides.axis[owner.id].title, profile, labels,
       preferred: axisThemeOffset(program.materializationConfigs.theme, "title") ?? (owner.channel === "x" ? 42 : 52), unclamped: edgeAligned }) });
+    if (fixed || dynamic !== undefined) { result.push({ graphicId: ids[3], state }); continue; }
     const expected = axisTitleAnimationLabels(state), items = labelItems.get(owner.id) ?? [];
     const keyed = new Map(items.map(item => [guideAnimationKey({ ...identity, component: "labels", value: item.rawValue, line: item.line }), item]));
     if (keyed.size !== items.length || expected.length !== items.length) { fail("guide-layout"); continue; }

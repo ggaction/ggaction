@@ -137,7 +137,7 @@ function assemble(from,to,a,b,options,graphs,cartesian,partitions,polars,geos,gu
   const geoPreparation=prepareGeoTracks(geos.from,geos.to);
   const geoTextPreparation=prepareGeoTextTracks(geotexts.from,geotexts.to);
   budget([cartesian.from,cartesian.to,polars.from,polars.to,guides.from,guides.to]);
-  const guidePreparation=prepareGuideTracks({...from,guides:guides.from},{...to,guides:guides.to});
+  const guidePreparation=prepareGuideTracks({...from,guides:guides.from,axislabels:axislabels.from},{...to,guides:guides.to,axislabels:axislabels.to});
   const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
   const partitionPreparation=partitionTrackPreparation(from,to,partitions.from,partitions.to);
   let tracks=matching.matches.filter(match=>!geoPreparation.skipFrom.has(match.sourceIndex)&&!geoPreparation.skipTo.has(match.targetIndex)&&!geoTextPreparation.skipFrom.has(match.sourceIndex)&&!geoTextPreparation.skipTo.has(match.targetIndex)).map(match=>geoTextPreparation.fallbackTrack(match)??geoPreparation.fallbackTrack(match)??partitionPreparation.track(match)??graphPreparation.track(match)??preparePolarTrack(match,from,to,polars.from[match.sourceIndex],polars.to[match.targetIndex])??prepareCartesianTrack(match,from,to,cartesian.from[match.sourceIndex],cartesian.to[match.targetIndex])??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
@@ -159,7 +159,7 @@ export function planTransition(input) {
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
     if(proof!==undefined)return prepareFrameEndpoint(value,proof);
-    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint),geos,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
+    const endpoint=projectAnimationEndpoint(value),geos=projectGeoAnimationPresentations(value,endpoint),geotexts=projectGeoTextAnimations(value,endpoint,geos),axislabels=projectAxisLabelGroups(value,endpoint,geotexts);validateAxisLabelDrawingOrder(axislabels,geos,geotexts);return{endpoint,axislabels,geotexts,guides:projectGuideAnimationState(value,endpoint,axislabels),geos,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint),cartesian:projectCartesianAnimationState(value,endpoint),polars:projectPolarAnimationState(value,endpoint),partitions:validateAnimationPartitionState(projectPartitionAnimations(value,endpoint),endpoint)};
   };
   const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)},{from:from.cartesian??emptyAnimationCartesian(from.endpoint),to:to.cartesian??emptyAnimationCartesian(to.endpoint)},{from:from.partitions??emptyAnimationPartitions(from.endpoint.scene.nodes.length),to:to.partitions??emptyAnimationPartitions(to.endpoint.scene.nodes.length)},{from:from.polars??emptyAnimationPolars(from.endpoint),to:to.polars??emptyAnimationPolars(to.endpoint)},{from:from.geos??emptyAnimationGeos(from.endpoint.scene.nodes.length),to:to.geos??emptyAnimationGeos(to.endpoint.scene.nodes.length)},{from:from.guides??emptyAnimationGuides(from.endpoint),to:to.guides??emptyAnimationGuides(to.endpoint)},{from:from.geotexts??emptyAnimationGeoTexts(from.endpoint.scene.nodes.length),to:to.geotexts??emptyAnimationGeoTexts(to.endpoint.scene.nodes.length)},{from:from.axislabels??emptyAxisLabelGroups(from.endpoint.scene.nodes.length),to:to.axislabels??emptyAxisLabelGroups(to.endpoint.scene.nodes.length)});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});
@@ -219,7 +219,7 @@ function restoreEndpoint(input) {
   }
   const axislabels=Object.hasOwn(input,"axislabels")?validateAxisLabelGroups(input.axislabels,endpoint):emptyAxisLabelGroups(endpoint.scene.nodes.length);
   if(Object.hasOwn(input,"axislabels")&&!axislabels.groups.length)throw new TypeError("Empty axis label groups must be omitted.");
-  const guides=Object.hasOwn(input,"guides")?validateAnimationGuides(input.guides,endpoint):emptyAnimationGuides(endpoint);
+  const guides=Object.hasOwn(input,"guides")?validateAnimationGuides(input.guides,endpoint,axislabels):emptyAnimationGuides(endpoint);
   if(Object.hasOwn(input,"guides")&&!hasAnimationGuides(guides))throw new TypeError("Empty animation guide states must be omitted.");
   if(input.view!==undefined)validateSampledEndpointMetadata(endpoint.scene,endpoint.identities,endpoint.backgrounds,input.view,guides,axislabels);
   ownArray(input.positions,"Restored animation positions");

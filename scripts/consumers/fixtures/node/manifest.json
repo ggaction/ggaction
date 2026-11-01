@@ -1686,6 +1686,10 @@
         "statements": 6
       },
       {
+        "id": "animation/axis-legend-clearance-offline-native",
+        "statements": 21
+      },
+      {
         "id": "animation/implicit-legend-lanes-offline-native",
         "statements": 1
       }
@@ -1871,6 +1875,10 @@
   {
     "file": "animation-axis-reflow.mjs",
     "cases": [
+      {
+        "id": "animation-axis-reflow/dependent-title-legend-native-offline",
+        "statements": 2
+      },
       {
         "id": "animation-axis-reflow/current-native-fonts-four-renderers",
         "statements": 2

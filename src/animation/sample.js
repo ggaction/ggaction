@@ -42,7 +42,7 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   const graphState=transitionGraphs(plan),graphSamples=graphTrackSamples(graphState.pairs,progress,timeline.progress),graphFrame=graphFrameCollector();
   const partitionState=transitionPartitions(plan),partitionSamples=partitionTrackSamples(partitionState,progress,timeline.progress),partitionFrame=partitionFrameCollector();
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
-  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides),geotexts,axislabels:axisState,meaning:captureFrameMeaning(frame,plan,timeMs,geographic,axislabels)}):frame;
+  const finish=(frame,positions,graphs,cartesian,partitions,polars,geos,guides,geotexts,axisState)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,graphs,cartesian,partitions,polars,geos,guides:retainSampledGuideMeaning(guides,axisState),geotexts,axislabels:axisState,meaning:captureFrameMeaning(frame,plan,timeMs,geographic,axislabels)}):frame;
   const appendGraph=(side,index)=>{const state=graphState[side],item=state.items[index];graphFrame.append(item===null?undefined:state.groups[item.group],item);};
   const appendPartition=(side,index)=>{const state=partitionState[side],item=state.items[index];partitionFrame.append(item===null?undefined:state.groups[item.group],item);};
   const meaning=position=>position.reason?null:position;
@@ -58,6 +58,7 @@ export function sampleTransitionWithBudget(input,timeMs,accountWork) {
   const geoTextFrame=geoTextFrameCollector(sampleGeoTextTracks(geoTextState.state,progress,accountGeographicWork,timeline),geoTextState.to);
   const axisFrame=axisLabelFrameCollector(sampleAxisLabelTracks(axisState.state,progress,accountGeographicWork,timeline),axisState.to,timeline);
   timeline.axisLabelGroup=axisFrame.current;
+  timeline.accountWork=accountGeographicWork;
   const nodes=[];
   const appendGeo=(slot,ownerKey)=>{for(const value of geoFrame.at(slot,nodes.length,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(value.item);geoTextFrame.append(null);axisFrame.append(null);}};
   const appendGeoText=(slot,role,ownerKey)=>{for(const value of geoTextFrame.at(slot,nodes.length,role,ownerKey)){guides.push(null);geographic[nodes.length]={identity:value.identity,origin:value.origin,metrics:value.metrics};nodes.push(value.node);decisions.push(value.decision);positions.push(null);cartesian.push(null);polars.push(null);graphFrame.append(undefined,null);partitionFrame.append(undefined,null);geoFrame.append(null);geoTextFrame.append(value.item);axisFrame.append(null);}};

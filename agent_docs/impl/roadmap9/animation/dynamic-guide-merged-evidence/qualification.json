@@ -1,0 +1,591 @@
+{
+  "status": "dynamic-label-title-lane-union-integrated; final-native-qualification-pending",
+  "base": "09cf70a0c",
+  "sourceRevision": null,
+  "incomingSource": "68ff7c62fa9d6eefde9049ba81f5a72e0dba6926",
+  "upstreamPin": "e772b7b2c",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": 13,
+    "cartesian": 2,
+    "geoText": 2
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1239,
+    "packedBytes": 1777400,
+    "unpackedBytes": 8021323,
+    "file": "ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+    "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9"
+  },
+  "sourceInputEquality": {
+    "base": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
+    "incoming": "e772b7b2c",
+    "files": [
+      "src/animation/guideTracks.js",
+      "src/animation/planner.js",
+      "src/animation/sample.js",
+      "src/grammar/animation/guideState.js",
+      "src/grammar/schemas/graphicBounds.js",
+      "src/materialization/animation/axisLabelDependencies.js",
+      "src/materialization/animation/axisTitleGuides.js",
+      "src/materialization/animation/axisTitleState.js",
+      "src/materialization/animation/guides.js",
+      "src/materialization/animation/legendAxisLaneState.js",
+      "src/materialization/animation/legendGuides.js",
+      "src/materialization/animation/legendLaneGuides.js",
+      "src/materialization/animation/legendLaneState.js",
+      "src/materialization/guides/axisClearance.js",
+      "src/materialization/guides/resources.js",
+      "types/animation.d.ts"
+    ],
+    "different": []
+  },
+  "checks": {
+    "owning.log": 762,
+    "render.log": 2,
+    "browser.log": 1,
+    "realistic.log": 10,
+    "contracts.log": 48,
+    "docs.log": 241
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+      "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 4163.8835420000005
+        },
+        {
+          "id": "eleven-native-dynamic-guide-cases",
+          "status": "passed",
+          "durationMs": 10563.19125,
+          "value": [
+            "animation/grouped-legend-offline-native",
+            "animation/categorical-legend-offline-native",
+            "animation/size-legend-offline-native",
+            "animation/dependent-title-offline-native",
+            "animation/legend-offline-native",
+            "animation/axis-legend-clearance-offline-native",
+            "animation/implicit-legend-lanes-offline-native",
+            "animation-axis-reflow/dependent-title-legend-native-offline",
+            "animation-axis-reflow/current-native-fonts-four-renderers",
+            "animation-axis-reflow/offline-fonts-network-free",
+            "animation-axis-reflow/raw-current-hit-retime-rebase"
+          ]
+        },
+        {
+          "id": "animation-strict-types",
+          "status": "passed",
+          "durationMs": 197.7233329999981
+        },
+        {
+          "id": "native-guide-doc-example",
+          "status": "passed",
+          "durationMs": 493.184709000001
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 3208.3521669999973,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2733998,
+            "gzipBytes": 783882
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1644.3427080000001,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 424305
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 117.18379199999981,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 274.63487499999974,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          }
+        },
+        {
+          "id": "ggaction/animation",
+          "status": "passed",
+          "durationMs": 1298.3345840000002,
+          "value": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112884,
+            "gzipBytes": 333698
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 509.83595799999966,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        }
+      ],
+      "limitFailures": [],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v22.23.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+      "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 4199.09775
+        },
+        {
+          "id": "eleven-native-dynamic-guide-cases",
+          "status": "passed",
+          "durationMs": 11102.269125,
+          "value": [
+            "animation/grouped-legend-offline-native",
+            "animation/categorical-legend-offline-native",
+            "animation/size-legend-offline-native",
+            "animation/dependent-title-offline-native",
+            "animation/legend-offline-native",
+            "animation/axis-legend-clearance-offline-native",
+            "animation/implicit-legend-lanes-offline-native",
+            "animation-axis-reflow/dependent-title-legend-native-offline",
+            "animation-axis-reflow/current-native-fonts-four-renderers",
+            "animation-axis-reflow/offline-fonts-network-free",
+            "animation-axis-reflow/raw-current-hit-retime-rebase"
+          ]
+        },
+        {
+          "id": "animation-strict-types",
+          "status": "passed",
+          "durationMs": 234.16304200000013
+        },
+        {
+          "id": "native-guide-doc-example",
+          "status": "passed",
+          "durationMs": 546.9206659999982
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 3095.037083000003,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2733998,
+            "gzipBytes": 782477
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1555.6886670000022,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 423440
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 85.95237500000076,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24779
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 327.08954099999755,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44700
+          }
+        },
+        {
+          "id": "ggaction/animation",
+          "status": "passed",
+          "durationMs": 1109.2799999999988,
+          "value": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112884,
+            "gzipBytes": 332580
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 553.5659999999989,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 130861
+          }
+        }
+      ],
+      "limitFailures": [],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    },
+    {
+      "node": "v24.22.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9.tgz",
+      "sha256": "37634db751d6a5760b7c7c04a1f081ad5249ca578123208b8fb4ba6b402d81b9",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 4187.8087080000005
+        },
+        {
+          "id": "eleven-native-dynamic-guide-cases",
+          "status": "passed",
+          "durationMs": 9832.3325,
+          "value": [
+            "animation/grouped-legend-offline-native",
+            "animation/categorical-legend-offline-native",
+            "animation/size-legend-offline-native",
+            "animation/dependent-title-offline-native",
+            "animation/legend-offline-native",
+            "animation/axis-legend-clearance-offline-native",
+            "animation/implicit-legend-lanes-offline-native",
+            "animation-axis-reflow/dependent-title-legend-native-offline",
+            "animation-axis-reflow/current-native-fonts-four-renderers",
+            "animation-axis-reflow/offline-fonts-network-free",
+            "animation-axis-reflow/raw-current-hit-retime-rebase"
+          ]
+        },
+        {
+          "id": "animation-strict-types",
+          "status": "passed",
+          "durationMs": 223.6389999999992
+        },
+        {
+          "id": "native-guide-doc-example",
+          "status": "passed",
+          "durationMs": 468.401167
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 2877.1017079999983,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 1058,
+            "minifiedBytes": 2733998,
+            "gzipBytes": 783882
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1372.2776250000024,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 625,
+            "minifiedBytes": 1446516,
+            "gzipBytes": 424305
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 87.72716600000058,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 44,
+            "minifiedBytes": 73991,
+            "gzipBytes": 24954
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 233.74333299999853,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 83,
+            "minifiedBytes": 149522,
+            "gzipBytes": 44851
+          }
+        },
+        {
+          "id": "ggaction/animation",
+          "status": "passed",
+          "durationMs": 1096.5498340000013,
+          "value": {
+            "specifier": "ggaction/animation",
+            "chunks": 1,
+            "modules": 509,
+            "minifiedBytes": 1112884,
+            "gzipBytes": 333698
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 503.06262499999866,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 205,
+            "minifiedBytes": 410499,
+            "gzipBytes": 131316
+          }
+        }
+      ],
+      "limitFailures": [],
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "status": "passed"
+    }
+  ],
+  "reusedCoverage": {
+    "record": "../dynamic-dependency-evidence/qualification.json#qualification.coverage",
+    "owners": 10,
+    "reason": "All16incoming source/type files byte-identical. Root reran762owning tests on union. Nine owners exceed95/90/100; graphicBounds87.27/80.47/92.59 exceeds its unchanged85/75/90 floor."
+  },
+  "reusedBuiltDoc": {
+    "record": "../dynamic-dependency-evidence/qualification.json#sourcePin",
+    "pages": 186,
+    "llmArtifacts": 1603,
+    "widths": [
+      1440,
+      320,
+      390,
+      768
+    ],
+    "reason": "Same animation public page and site CSS/layout. Root actualall241docs and all157image regeneration; only image sourceHash manifest changes."
+  },
+  "initialLimitFailure": {
+    "file": "pack20-initial.stderr",
+    "reason": "Actual packed1780431 exceeded incoming1780000; minimum1780500. Actualunpacked8021323 cap8021400. Gzip Full783882 Basic424305 animation333698 retain783900/424400/333700."
+  },
+  "remaining": [
+    "STEP057-070 resize/reorder handle and final combined native matrix obligations",
+    "AT56/82 original all-size actual performance and100cyclefull lifecycle; capacity proposals unimplemented",
+    "Actual577consumer/79groups plus ninefinalcommands; AT60independentreview/AT61protectedexact-artifactdelivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "browser.log": {
+      "sha256": "ac09c98164fcdc2ed712ca4694e64bf6af527df8736e64a06709f5ffc24ed16f",
+      "bytes": 360
+    },
+    "bundles20.json": {
+      "sha256": "05e0c3068dfa00b7f2f8ddd5bdf08df1fe63a053e3aa6fb384164077c87437b4",
+      "bytes": 305
+    },
+    "bundles20.log": {
+      "sha256": "7230f65b82ca361267701cabb42e8be208f720a4b229ce09d506f3b74efd8f22",
+      "bytes": 253
+    },
+    "bundles22.json": {
+      "sha256": "6b0d1a59ddcf3d8061f22f85c4ca70b626ed1a5ebe9b6a58bad0ca03d13d46f8",
+      "bytes": 305
+    },
+    "bundles22.log": {
+      "sha256": "20c8144ab13e378e2fc32794a8cfa5659ed970fa2c9f35227ca74991f384d7b8",
+      "bytes": 253
+    },
+    "bundles24.json": {
+      "sha256": "57f5f1af35178d40e4e11f3ce35b5ae3b64d2e8c87b7cc36147a27dc51ebbacc",
+      "bytes": 305
+    },
+    "bundles24.log": {
+      "sha256": "9a4ac3fef80d55a883e0a37bf966af82ae8d51efe78d720056e3950a5988ed27",
+      "bytes": 253
+    },
+    "contracts.log": {
+      "sha256": "3103ee40f1093fac392c15d2ad98333c38135585fd871c2e36a5ff85ef11fd2e",
+      "bytes": 9980
+    },
+    "descriptor.json": {
+      "sha256": "f186d1383869d0ab6be33f995447103fdbd4980a979af10d1de6bffb80afa40a",
+      "bytes": 221
+    },
+    "docs.log": {
+      "sha256": "393558797fc1d6fe56c385908da339a8ab996dba859c47b5bb61dd104fe5216d",
+      "bytes": 73448
+    },
+    "frozen.json": {
+      "sha256": "b931c951640803435aabdadcebae5b2f808bc22ef24f2e227de820c30273bd54",
+      "bytes": 436
+    },
+    "images.log": {
+      "sha256": "dced161bd76d4d238de851fdb312d634fcea66e0e840bc4d8c90d2f43d49cf44",
+      "bytes": 11112
+    },
+    "installed-original.mjs": {
+      "sha256": "50cb0dee8ab1cf92a05876cbc7c0ec49418f80fc01bf5026ba7451be9b44fd94",
+      "bytes": 4024
+    },
+    "installed.mjs": {
+      "sha256": "f8c4612237be92c8581585f0dbcc959b1b1ceaca75a0a829a373be04e14a4a9a",
+      "bytes": 4398
+    },
+    "installed20.json": {
+      "sha256": "2823e5541481259dfd5aed76281553c577dc0e79ac68b8f4f39cd58014a17ecc",
+      "bytes": 3248
+    },
+    "installed20.log": {
+      "sha256": "6041f1130261ad69bc953b10ec858ddd5f0877dd39e84a3e2caa5922232ab6a6",
+      "bytes": 2357
+    },
+    "installed22.json": {
+      "sha256": "025c2639efba75d1cd0026102e906229d2dd718a980f9c0c077eb4143579a0f6",
+      "bytes": 3240
+    },
+    "installed22.log": {
+      "sha256": "1488f2490cbcf6e00b90005bf9c14b1a08906584c3f21375d253b5b79c4bf6cf",
+      "bytes": 2349
+    },
+    "installed24.json": {
+      "sha256": "64935b91e3efd6ad9e86554c8846f7cf2d82507cfeb2177347c3680771706567",
+      "bytes": 3239
+    },
+    "installed24.log": {
+      "sha256": "dd300009bcb98af64b46f122c451840eab53b8f4d723096f4e92f87d809cae4e",
+      "bytes": 2348
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "owning.log": {
+      "sha256": "e735790fce76c1903b286784bf2fed81c33323f53f7c6779e044ac1cf48787df",
+      "bytes": 182256
+    },
+    "pack20-initial.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "pack20-initial.stderr": {
+      "sha256": "5c3fd7f3b2d766bf655003a6edb2ef4be04157a720dced2822ef86aa97149134",
+      "bytes": 966
+    },
+    "pack20.json": {
+      "sha256": "ca44d61807cb9a03c8c66418bc653be87c39ff06bb1b90b33c8c4c16cdc8b34a",
+      "bytes": 385
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack22.json": {
+      "sha256": "22afa8117101ba242c95bcc2e82c1298a68b8ad45702070037e86ea3f7cf3304",
+      "bytes": 385
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "pack24.json": {
+      "sha256": "577b7289afe25cfb63e312b8035d4ed02d190b8047e72ddfc79724d4293cfd35",
+      "bytes": 385
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "08f2cc0db8be25573704288f2948db85eee2c808dd62917b44fbea52a212d2d9",
+      "bytes": 297
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "realistic.log": {
+      "sha256": "b84ad39c17a3e68a9820316ffa88d53bef6bb52c5b8260c68bc18ea6afc57e19",
+      "bytes": 2459
+    },
+    "render.log": {
+      "sha256": "052b44811a2bb0d9c52a9319648f757c54cc0847048579977895e1ee945df765",
+      "bytes": 655
+    },
+    "search.log": {
+      "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574",
+      "bytes": 121
+    },
+    "source-files.json": {
+      "sha256": "d1ae05ab33a841ef05c7e227ba2c316e17c151aad4fd87fbd7354d53e1c71fee",
+      "bytes": 878
+    }
+  }
+}

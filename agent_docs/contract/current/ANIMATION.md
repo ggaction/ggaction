@@ -173,8 +173,8 @@ Dynamic decision은 `{kind:'guide',kernel:'native-axis-label',ownerKey,guideKey,
 실제 slot과 owner 의미를 유지하므로 geometry retime 대상이다. 기존 줄의 개별 style keyframe은 현재
 그림에 반영한다. 같은 raw의 줄들이 서로 다른 style을 가지면 다음 전환은 `guide-edited` fallback이고,
 공통 style이면 현재 typed 의미를 유지한다. 실제 native source의 raw membership과 exact metrics로
-현재 hit metadata를 만들지만 mark selection 권한을 추가하지 않는다. MaxWidth/responsive 그룹을
-의존하는 title/legend clearance는 아직 별도 연결 범위이며 원 fallback을 유지한다.
+현재 hit metadata를 만들지만 mark selection 권한을 추가하지 않는다. MaxWidth/responsive 그룹의
+현재 native 결과는 아래 title/legend clearance에도 같은 owner 참조로 연결한다.
 
 명시 numeric offset의 Cartesian title은 `start/center/end` range 역할 또는 numeric `at` 값을
 보존한다. Numeric at와 scale을 보간한 후 native mapping을 적용하며 text/font 변경은 fade다.
@@ -184,7 +184,8 @@ preferred offset, legacy Canvas clamp 또는 plot-edge 정책, label-relative ga
 같은 owner의 전체 label sibling 의미를 forward proof로 검증하며 label을 직접 편집하면 title도
 `guide-edited`다. 중간 Canvas fit/overlap 실패는 `guide-layout`으로 fade한다. No-label inferred
 제목은 native preferred offset을 유지한다. Title strings/font 변경은 기존 appearance fade이며
-maxWidth/responsive label reflow는 아직 이 title-layout 범위 밖이다. 최종 pixel offset을 의미로
+maxWidth/responsive label reflow도 현재 그룹의 exact metrics와 실제 clipped label ink를 사용한다.
+최종 pixel offset을 의미로
 추정하거나 endpoint label bounds를 보간하지 않는다. Polar title은 native theta frame 또는 radial inside/outside·shortest angle을 재사용한다.
 Band-boundary grid는 같은 경계를 공유하는 모든 typed `{value,edge}`의 canonical set으로
 대응한다. Membership이 달라지면 enter/exit이며 중간 native 계산에서 경계가 분리되면
@@ -202,8 +203,8 @@ gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native lay
 새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
 필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
 중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, gradient symbol
-범례, border/inferred axis clearance 및 그에 의존하는 동적 label reflow는 아직 이 gradient 범위 밖이며
-지원되는 gradient component에는 `guide-layout` reason을 보존한다.
+범례, border와 복잡한 label reflow는 아직 typed 범위 밖이며 지원되는 gradient component에는
+`guide-layout` reason을 보존한다. Inferred axis clearance는 아래 implicit lane 조건을 따른다.
 
 연속 size 범례도 exact raw `values`와 명시 offset의 독립 edge block을 지원한다. Native
 linear/log/sqrt/pow size scale의 값→면적 mapping을 먼저 계산하고 그 면적에서 반지름을 얻는다.
@@ -218,8 +219,9 @@ Auto sampling, ordinal/discrete size와 clip/border는 이 size slice에
 보간하고 기존 measured layout과 shape builder를 재생한다. Typed category와 symbol 역할이
 key이며 같은 표시 문자열도 합치지 않는다. 숨김과 hard-break, 네 edge·nested scope·현재 frame
 재기준 및 strict offline이 같다. Solid appearance는 공통 owner가 보간한다. Domain/shape/layout
-정책 변경, overflow/clip/border/inferred clearance는 명시 fade 또는 enter/exit이며 새
-배치를 임의로 추정하지 않는다. 원 native block symbol override도 같은 geometry proof를 따른다.
+정책 변경, overflow/clip/border는 명시 fade 또는 enter/exit이며 새 배치를 임의로 추정하지 않는다.
+Inferred clearance는 아래 implicit lane 조건을 따른다. 원 native block symbol override도
+같은 geometry proof를 따른다.
 
 명시 `editLegendLayout` 그룹은 같은 target의 categorical·size·gradient/strokeGradient 블록을
 하나의 종속 배치로 준비한다. `row/column/wrap`, 네 edge·네 corner·plot-relative `at`와
@@ -240,11 +242,29 @@ value·role을 유지하고 현재 lane의 완전한 sibling 집합·동일 배�
 font/선 두께를 직접 수정해 bounds 의미가 달라지면 lane 전체가 `guide-edited`다. 블록 제거·
 정책/문자열 변화로 중간 fade/exit가 lane/group/title 의존을 끊으면 그 불완전한 typed owner는
 identity와 `guide-unavailable`만 보존한다. 관계없는 scope의 정상 guide는 유지하며 같은
-중간 frame→재기준→strict offline 복원 결과가 같다. Same-edge axis-dependent clearance,
-자동 sample·border/clip/overflow·개별 local placement·미지원 sibling은 명시 fallback을 유지한다.
+중간 frame→재기준→strict offline 복원 결과가 같다. 자동 sample·border/clip/overflow·개별
+local placement·미지원 sibling은 명시 fallback을 유지한다.
 
-Optional endpoint `guides` vector 및 dynamic `axislabels:{groups,items}`와 `native-guide-values@11`
-manifest를 보존한다. Version10은 명시 거부한다. Strict restore는
+Same-edge Cartesian axis-dependent inferred clearance도 native line/ticks, 고정 label layout,
+inferred/label-relative/fixed-offset title의 실제 현재 ink에서 계산한다. Lane 저장은 정렬된
+exact guide refs와 native offset 상속 정책뿐이며 축 layout·이전 plan을 복제하지 않는다.
+준비 시 완전한 scope/edge/sibling 의미를 검산하고 sample은 각 축 owner의 실제 timeline
+progress와 해당 target node의 현재 strokeWidth/style, nested offset/clip을 반영한다.
+범례 자체의 progress와 축의 progress가 달라도 현재 경계에서 원 네 방향 clearance 식과
+native lane placement를 재생한다. Title font metric·lines가 오염되거나 dependency가 fade/
+enter/exit로 불완전해지면 전체 종속 lane을 명시 fallback한다. 중간 재기준·offline full frame이
+동일하다. 동적 wrap/skip/rotation도 같은 native raw group의 현재 출력과 exact metrics를 소비한다.
+Lane의 `labelGroups`와 title의 `labels:{group}`는 exact axis ownerKey만 저장하며 raw layout·
+metric·slot 또는 이전 plan을 복제하지 않는다. 숨긴 raw 값과 0줄 그룹도 참조를 보존한다.
+각 축의 실제 timeline progress와 최종 line style을 한 번 적용한 graphics에서 occupied bounds를
+계산하므로 범례의 clock과 독립적이며 nested offset/clip을 보존한다. 같은 raw의 line style이
+불일치하거나 그룹이 fade·source-only·target-only가 되면 전체 종속 owner는 명시 fallback이다.
+현재 label이 없는 label-relative title은 native 배치 실패를 유지하고 inferred title은 preferred
+정책을 따른다. 바뀐 maxWidth/responsive 정책과 비Cartesian 의존 여백은 여전히 fallback이다.
+실제 label/line/text/clip command 방문량은 기존 sample·batch work 한도에 합산한다. 동일
+current dependency의 cache hit는 중복 과금하지 않고 예산 오류를 배치 fade로 삼키지 않는다.
+
+Optional endpoint `guides` vector 및 dynamic `axislabels:{groups,items}`와 `native-guide-values@13` manifest를 보존한다. 이전 guide11/12는 명시 거부한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

@@ -1,0 +1,24 @@
+{
+  "baseline": "d165696d6",
+  "foundation": "c0d82b2b9",
+  "runtimePolicy": "transition3 guide10 Cartesian2 GeoText2 unchanged; native clearance helper only",
+  "tests": {
+    "timelineAndLiteral": 71,
+    "lanesAndLiteral": 14
+  },
+  "package": {
+    "entries": 1230,
+    "packedBytes": 1756119,
+    "unpackedBytes": 7927519
+  },
+  "firstFailures": [
+    "New pure owner makes entry count1230 exceed1229; preserved native unpacked7927519 exceeds7927100; ceilings minimally adjusted to1230 and7927600."
+  ],
+  "logs": {
+    "axis-clearance-union-package.log": "d5c4a6b690bdef3508d9b06d2526b604cec7d488d2f1ce2cda94f382e453cfa5",
+    "axis-clearance-union-owning.log": "c73ee3e4627620edf0db5c9a4ea43fa45a98ad3f2621496b080b5a7d23a3eedb",
+    "axis-clearance-union-package-final.log": "b0e40fdd23a9bb68570fa99a0e2077e1f8559b68e9d358206d11971697f8e87a",
+    "axis-clearance-union-lanes.log": "bfe7605ffcc45e37f249bcda9e327371e3204cd135f529252f763e612a89054e",
+    "axis-clearance-union-generate.log": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5"
+  }
+}
