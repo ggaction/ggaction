@@ -4,7 +4,8 @@
 후속 `09cf70a0c5bf24847050bec50e6531fd19784225`의 관련 구현도 읽었다. 이 기록은 새 실행 성공,
 AT 전체 통과, STEP074/077 완료 또는 native manifest applicability 변경이 아니다.
 Source/type/Current/test/manifest는 이 감사 checkpoint에서 수정하지 않았다. 아래 계약은
-2026-11-01 root가 기존 remainingApproval 범위로 채택한 후속 구현안이며 아직 구현된 API가 아니다.
+2026-11-01 root가 기존 remainingApproval 범위로 채택한 당시 후속 구현안이다.
+구현 결과와 검증은 별도 [HANDLES_IMPLEMENTATION.md](HANDLES_IMPLEMENTATION.md)를 따른다.
 
 ## 원문과 현재 구현 판정
 
@@ -193,3 +194,14 @@ final up without RAF, no-op, reentry/dispose, late asset, domain/source revision
 codec/undo/redo와 old input/program 불변을 포함한다. 원 arithmetic/native domain과 raw typed 값으로
 검산하며 구현 결과를 다시 oracle로 사용하지 않는다. AT35/36/38 관련 소유자 증거를 추가하되
 그것만으로 전체 AT53/55/60/65/074/077을 닫지 않는다.
+
+## 구현 중 확정한 최소 경계
+
+- `getSelectionHandles()`는 format version을 만들지 않고 기존 accepted `frameVersion`만 반환한다.
+- Band padding0의 inclusive inverse는 바깥 경계에 접한 이웃도 포함하므로 고정 category의 native center를 inverse anchor로 쓰고, 표시/preview는 선택된 band 외곽으로 다시 forward한다. 원 경계로 돌아오면 기존 predicate를 그대로 복구한다. 별도 epsilon/category 추정은 없다.
+- 서로 다른 nearest handle의 최종 동일 거리와 CSS 수치 정밀도로 겹친 점은 명시 오류다. 더 먼 후보의 임시 동률로 가까운 후보를 누락하지 않는다.
+- Full-circle theta reorder의 동일 위치 두 끝은 native resolved range[0]의 명시 directed cut을 사용한다. 다른 모호한 cut은 오류다.
+- Native category assignment의 기존 action 본문은 `materialization/categoryOrder.js`로 옮겨 공유했다. selector 계층에 materializer를 역수입하지 않는다.
+- Collection clip은 기존 `interaction/hitProgram.js`의 authenticated snapshot association에서 actual childPath/localId로 읽는다. 새 scene collector나 renderer import를 interaction adapter에 추가하지 않는다. 빈 collection도 기존 traversal로 조회한다.
+- Host 예제는 idle handles와 ARIA만 그리며 같은 readonly CSS point를 사용한다. keyboard는 기존 select/reorder command를 호출한다. 새 접근성/DOM widget API는 없다.
+- 신규 owner+shared helper 검증과 현재 component 검증은 전체 AT/077 및 dedicated P95를 대신하지 않는다.

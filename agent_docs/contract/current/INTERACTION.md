@@ -15,6 +15,7 @@
 - Alternatively, `dispatch({type:"frame",frame:TransitionFrame,version,generation})` accepts an authentic native animation sample under the contract below. Exactly one of `scene` or `frame` is required.
 - `updateProgram(program, {history?,origin?} = {})` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
 - `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges`, `origin` and the history policy below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `getSelectionHandles()` returns the frozen derived resize view described under selection-region handles below. It uses the existing accepted `frameVersion`; it does not allocate a new counter or persist state. It throws after destruction.
 - `getState()` returns `{program,previewProgram,previewFrame,scene,frameVersion,generation,revision,hit,focus,linkedSelections,history,assets,previewAssets,animationFrame,frameAssets,preparation,mounted,destroyed}`. It remains readable after destruction and contains no DOM nodes; prepared handles are runtime-only.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
@@ -387,6 +388,66 @@ Region bindings participate in the common pointer arbitration below; they do not
 Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
 `test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
 
+
+### Selection-region and category handles
+
+Full sessions accept `{type:"resize",target,selection,axis,channels?,slop?,priority?,modifiers?}`.
+`axis` is required and is exactly `x`, `y`, `xy`, or `theta`; channels use the same matching
+x/x2, y/y2 and theta bindings as brush. Resize always replaces an existing persistent region
+through the native `select` command. It does not resize the Canvas or observe its host size.
+Item-key and lasso selections, empty regions, noncontiguous category runs, regions with unmatched
+channels, and boundaries outside the native domain have no handles. Cartesian numeric regions
+must contain one interval per axis. A zero-width interval, coincident projected handles or an
+equidistant nearest hit rejects explicitly. No array-order choice resolves different handles.
+
+`getSelectionHandles()` returns `{frameVersion,handles}`. Each frozen handle contains
+`{target,selection,axis,handle,point:{x,y}}`; target is the normalized scoped native mark target,
+and selection is its exact existing selection ID. There is no format version or separate handle
+counter. `frameVersion` is the existing accepted scene version, including during a selection
+preview. Values are recomputed for the current native program or accepted preview; the query
+never writes state. The handle vocabulary is `x-min|x-max`, `y-min|y-max`, the four
+`x-min-y-min|x-min-y-max|x-max-y-min|x-max-y-max` corners for xy, and `theta-start|theta-end`.
+Single-axis handles use the other plot dimension's midpoint; xy includes four edge midpoints
+and four corners. Min/max name domain endpoints even under reversed scales. Theta preserves
+the authored directed arc, using consistent saved screenAngles or an unambiguous native inverse.
+A full coincident arc and contradictory metadata do not invent a direction.
+
+Points are CSS-local to the mounted surface, with native child placement and the declared
+rootTransform applied once. DPR is not multiplied. Plot, Canvas and collection clips restrict
+eligibility. The host draws idle handles and provides ARIA/focus controls from this exact query;
+the controller draws no idle DOM or graphics. Pointer hit uses these same points and the existing
+CSS slop (mouse/pen 3, touch 6 by default). A singular transform rejects. Bounds use the native
+linear/log/time or resolved ordinal/band/point forward mapper; drag values use the existing native
+inverse. For categories, the fixed category's center anchors the inverse so touching band edges
+do not add its neighbor; the queried handles and preview remain on the selected bands' outer
+edges. Returning to the authored boundary restores the original predicate. Crossing a numeric
+boundary preserves the untouched endpoint's inclusive flag. Arbitrary independently sampled
+geometry cannot supply an inferred native scale and rejects before capture or publication.
+
+`{type:"reorder",target,channel,slop?,priority?,modifiers?}` binds an existing nominal/ordinal
+x, y or theta position to its actual painted native axis tick/label values. It never parses displayed
+label strings. Missing ticks, titles and mark bodies are not handles. The owner, source field,
+resolved scale and shared-scale compatibility use the native category-order resolver. The dragged
+typed value is inserted into the ordered native domain as the pointer crosses other category
+centers, then the existing `reorder` command calls `orderCategories`; marks, axes and linked
+legends rematerialize through that action. Reversed ranges use their resolved direction once.
+Theta uses the scale's explicit directed domain cut, including the full-circle start. An ambiguous
+non-native cut rejects rather than guessing a rotation.
+
+Both bindings use default priority 60 and the existing modifier/ambiguity rules. A click-sized tap
+or a final order/region equal to the baseline adds no history. Accepted previews use one host RAF,
+retain the exact down program, and commit once on up. Resize reuses the transient region overlay;
+reorder previews the immutable native candidate. Escape, pointercancel, lost capture, blur,
+replacement, unmount and destruction discard previews and pending callbacks. Invalid inverse,
+capability, clip or native command results preserve the committed program/history. Existing
+asset preparation and linked-selection atomic closure apply. Host keyboard controls use the same
+`dispatch({type:"select",...mode:"replace"})` or `dispatch({type:"reorder",...values})` commands;
+this API does not add a second keyboard model. The inspected-chart browser example demonstrates
+both paths for Canvas and SVG. Existing 10M work bounds also cover derived handle queries.
+
+Evidence: `test/unit/selection-handles.test.js`, `test/unit/interaction-handles.test.js`,
+`test/browser/interaction-handles.browser.js`, `test/contracts/interaction-types.test.js`, and
+`scripts/consumers/fixtures/node/interaction-handles.mjs`.
 
 ### Angular brush
 

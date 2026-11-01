@@ -165,12 +165,17 @@ export function prepareProgramHitFrame(program, version = 0, budget = { work: 0 
     entries.push(freezeOwned({ nodeKey: source.nodeKey, zIndex: i, metadata: itemMetadata, shape }));
   }
   const frame = freezeOwned({ scene: snapshot.scene, entries: freezeOwned(entries), version });
-  const placements = new Map();
+  const placements = new Map(), collections = new Map();
   for (const canvas of snapshot.canvases) {
     const context = owners.get(canvas.graphicId);
     if (context?.program.graphicSpec.order.includes(context.localId)) placements.set(JSON.stringify(context.childPath), canvas);
   }
-  registerHitFrameSource(frame, { profiles, placements, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  for (const collection of snapshot.collections) {
+    spend(budget, 1);
+    const context = owners.get(collection.graphicId);
+    if (context) collections.set(JSON.stringify([context.childPath, context.localId]), collection);
+  }
+  registerHitFrameSource(frame, { profiles, placements, collections, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -182,6 +187,15 @@ export function programHitOwnerPlacement(base, childPath) {
   const placement = source.placements.get(JSON.stringify(childPath));
   if (!placement) throw new Error("Interaction owner has no materialized Canvas placement.");
   return placement;
+}
+
+// Read clips from the same authenticated native traversal as placement and hits.
+export function programHitOwnerCollection(base, target) {
+  const source = hitFrameSource(base);
+  if (!source) throw new TypeError("Owner collection requires an authentic program hit frame.");
+  const collection = source.collections?.get(JSON.stringify([target.childPath, target.id]));
+  if (!collection) throw new Error("Interaction owner has no materialized mark collection.");
+  return collection;
 }
 
 /** Bind a sampled concrete frame only to the exact program's known node identities. */

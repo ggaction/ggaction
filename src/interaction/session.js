@@ -1,3 +1,4 @@
+import { validateWorkLimit } from "../core/validation.js";
 import { normalizeEdgePresentation, prepareEdgePresentation } from "./edgePresentation.js";
 import { normalizeKeyboardBinding, prepareKeyboardFrame, reconcileKeyboardFocus, normalizeFocusCommand, moveKeyboardFocus, keyboardActivation, keyboardKeyCommand } from "./keyboardFocus.js";
 import { normalizeCameraNavigation, resolveCameraNavigation, prepareCameraNavigation, joinCameraNavigation, cameraNavigationDraft, navigationCenter, cameraWheelCommand, cameraKeyboardCommand } from "./cameraNavigation.js";
@@ -9,6 +10,8 @@ import { normalizeLegendSelection, resolveLegendSelection, legendSelectionComman
 import { prepareEditingCapture, pointerBindingChooser } from "./pointerBindings.js";
 import { normalizeGestureBindings } from "./gestures.js";
 import { normalizeRegionBinding, resolveRegionBinding, prepareRegionGesture, regionGestureCommand } from "./regionSelection.js";
+import { normalizeResizeBinding, resolveResizeBinding, prepareResizeHandles, prepareResizeGesture, resizeGestureCommand } from "./regionResize.js";
+import { normalizeReorderBinding, resolveReorderBinding, prepareReorderGesture, reorderGestureCommand } from "./categoryReorder.js";
 import { materializeRegisteredSelectionPreview } from "../materialization/selection/expression.js";
 import { normalizeSelectionPolicy, reconcileSelections } from "./reconciliation.js";
 import { prepareNearestSelection } from "./nearest.js";
@@ -40,7 +43,7 @@ function bindings(program, value) {
   const inspect = [], context = [], linked = [], editing = [], keyboard = [];
   for (const binding of value) {
     const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain", "scaleExtent", "initial", "rotationStepDeg", "priority", "modifiers", "targets"], "Interaction binding");
-    (head.type === "keyboard" ? keyboard : ["select", "legend", "brush", "lasso", "moveNode", "annotate", "navigate"].includes(head.type) ? editing : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : inspect).push(head);
+    (head.type === "keyboard" ? keyboard : ["select", "legend", "brush", "lasso", "resize", "reorder", "moveNode", "annotate", "navigate"].includes(head.type) ? editing : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : inspect).push(head);
   }
   if (inspect.length > 1 || context.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one context menu.");
   if (keyboard.length > 1) throw new TypeError("Interaction bindings support at most one keyboard binding.");
@@ -50,7 +53,7 @@ function bindings(program, value) {
   const pointers = editing.map((head, index) => {
     const { priority, modifiers, ...domain } = head;
     const normalize = head.type === "navigate" ? normalizeCameraNavigation : head.type === "annotate" ? normalizeAnnotationMovement : head.type === "moveNode" ? normalizeNodeMovement
-      : ["brush", "lasso"].includes(head.type) ? normalizeRegionBinding : head.type === "legend" ? (head.effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection;
+      : head.type === "reorder" ? normalizeReorderBinding : head.type === "resize" ? normalizeResizeBinding : ["brush", "lasso"].includes(head.type) ? normalizeRegionBinding : head.type === "legend" ? (head.effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection;
     return { binding: normalize(program, domain, links), policy: policies[index] };
   });
   return { pointers, linked: links, keyboard: keyboard.length ? normalizeKeyboardBinding(program, keyboard[0], links) : null, inspect: freezeOwned([...inspect, ...context].map(binding => {
@@ -86,7 +89,7 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 export function createInteractionSession(input) {
   const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit", "assetResolver"], "Interaction session");
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
-  const hasMoving = configured.pointers.some(({ binding }) => ["moveNode", "annotate", "navigate"].includes(binding.type));
+  const hasMoving = configured.pointers.some(({ binding }) => ["moveNode", "annotate", "navigate", "reorder"].includes(binding.type));
   const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base), displayed = base;
   const keyboardFrames = new WeakMap();
@@ -109,6 +112,7 @@ export function createInteractionSession(input) {
   let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
   let edgePresentation = null, lastInspection = null;
   let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null, previewFrame = null, previewPreparation = null, animationFrame = null, framePreparation = null, frameRequestVersion = -1;
+  let resizePreview = null;
   const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
   const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
@@ -381,7 +385,7 @@ export function createInteractionSession(input) {
     }
     for (const {binding} of configured.pointers) {
       const resolve = binding.type === "navigate" ? resolveCameraNavigation : binding.type === "annotate" ? resolveAnnotationMovement : binding.type === "moveNode" ? resolveNodeMovement
-        : ["brush", "lasso"].includes(binding.type) ? resolveRegionBinding : resolvePointerSelection;
+        : binding.type === "reorder" ? resolveReorderBinding : binding.type === "resize" ? resolveResizeBinding : ["brush", "lasso"].includes(binding.type) ? resolveRegionBinding : resolvePointerSelection;
       resolve(linked.program, binding, true);
     }
     const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
@@ -530,6 +534,15 @@ export function createInteractionSession(input) {
   };
   const session = Object.freeze({
     getState() { return state; },
+    getSelectionHandles() {
+      live();
+      let work = 0;
+      const account = count => validateWorkLimit(work += count, "Selection handle query work");
+      const handles = configured.pointers.filter(({ binding }) => binding.type === "resize").flatMap(({ binding }) =>
+        resizePreview?.binding === binding ? resizePreview.handles
+          : prepareResizeHandles(previewProgram ?? program, binding, previewProgram === null ? base : displayed, bridge.getState().scene, rootTransform, displayed, account)?.handles ?? []);
+      return freezeOwned({ frameVersion: bridge.getState().version, handles: freezeOwned(handles) });
+    },
     whenSettled() { return activePreparation.whenSettled(); },
     dispatch,
     updateProgram(next, configuration = {}) {
@@ -609,7 +622,7 @@ export function createInteractionSession(input) {
           }
           const editing = [];
           for (const { binding, policy } of configured.pointers.filter(({ binding }) => !["select", "legend"].includes(binding.type))) {
-            const navigating = binding.type === "navigate", moving = navigating || binding.type === "moveNode" || binding.type === "annotate", eventType = navigating ? "setViewport" : moving ? binding.type : "select";
+            const resizing = binding.type === "resize", reordering = binding.type === "reorder", navigating = binding.type === "navigate", moving = reordering || navigating || binding.type === "moveNode" || binding.type === "annotate", eventType = navigating ? "setViewport" : moving ? binding.type : "select";
             const movement = binding.type === "annotate" ? { prepare: prepareAnnotationMovement, command: annotationMovementCommand }
               : { prepare: prepareNodeMovement, command: nodeMovementCommand };
             const scheduler = element.ownerDocument?.defaultView ?? element;
@@ -622,6 +635,7 @@ export function createInteractionSession(input) {
               }
               finally {
                 if (token) token.raf = undefined; gesture = undefined; previewProgram = null; previewFrame = null;
+                if (resizePreview?.binding === binding) resizePreview = null;
                 const previous = previewPreparation; previewPreparation = null; snapshot(); previous?.dispose();
               }
             };
@@ -634,7 +648,8 @@ export function createInteractionSession(input) {
             };
             const preview = (token, final = false) => {
               if (token.previous !== program) throw new Error("Selection gesture baseline is stale.");
-              const result = navigating ? cameraNavigationDraft(token.context, token.pointers) : (moving ? movement.command : regionGestureCommand)(token.context, token.points, final);
+              const result = navigating ? cameraNavigationDraft(token.context, token.pointers) : (reordering ? reorderGestureCommand : resizing ? resizeGestureCommand : moving ? movement.command : regionGestureCommand)(token.context, token.points, final);
+              if ((resizing || reordering) && final && result.unchanged) return { unchanged: true };
               const command = interactionTransaction(result.command, token.transactionId), draft = result.frame && !final ? null : prepareEdit(command, result.prepared);
               if (final && preparation.enabled) return { command, draft };
               const next = moving ? draft?.prepared.program ?? program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
@@ -651,6 +666,7 @@ export function createInteractionSession(input) {
                 if (frame) keyboardFrameFor(frameProgram, frame);
                 return () => {
                   previewProgram = result.frame ? null : next; previewFrame = result.frame ?? null;
+                  if (resizing) resizePreview = { binding, handles: result.handles };
                   if (frame) { setFrame(frame, frameProgram); token.previewed = true; lastHit = null; }
                   publish(eventType, { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
                 };
@@ -672,10 +688,12 @@ export function createInteractionSession(input) {
               current: () => !destroyed && mounted === lease,
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
-              candidate: point => {
+              candidate: (point, pointerType) => {
                 if (preparation.enabled && preparation.inspect().assets === null && framePreparation?.inspect().assets == null) return null;
                 const effective = edgePresentation?.baseline ?? displayed, scene = effective.scene;
-                const context = navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }), effective)
+                const context = reordering ? prepareReorderGesture(program, binding, base, scene, transform, point,
+                  bridge.hit(point, { pointerType, ...(binding.slop === undefined ? {} : { slop: binding.slop }) }), effective)
+                  : resizing ? prepareResizeGesture(program, binding, base, scene, transform, point, effective, pointerType) : navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }), effective)
                   : prepareRegionGesture(program, binding, base, scene, transform, point, effective);
                 return context;
               },
@@ -693,7 +711,7 @@ export function createInteractionSession(input) {
                 if (navigating) return;
                 const previous = token.points.at(-1);
                 if (previous.x === point.x && previous.y === point.y) return;
-                if (moving || binding.type === "brush") token.points = [token.points[0], point];
+                if (resizing || moving || binding.type === "brush") token.points = [token.points[0], point];
                 else {
                   if (token.points.length >= 10_000) throw new RangeError("Lasso exceeds its screen point budget.");
                   token.points.push(point);
@@ -713,7 +731,7 @@ export function createInteractionSession(input) {
               },
               drag: (token, _point, _pointerType, gestureKind, pointers) => {
                 if (navigating) token.pointers = pointers;
-                if (moving && gestureKind === "click") {
+                if ((resizing || moving) && gestureKind === "click") {
                   discard(token); publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }]));
                   return outcome("unchanged");
                 }
@@ -726,6 +744,7 @@ export function createInteractionSession(input) {
                   // baseline must be the committed frame throughout that wait.
                   discard(token, navigating || preparation.enabled);
                 } catch (error) { failure(token, error); throw error; }
+                if (result.unchanged) { publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }])); return outcome("unchanged"); }
                 if (navigating && result.draft === null) { publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }])); return outcome("unchanged"); }
                 return edit(result.command, result.draft);
               },
