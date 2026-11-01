@@ -558,8 +558,27 @@
       "id": "AT-23",
       "expectation": "Graph and flow layouts preserve deterministic topology, lineage, width, cycles and adjacency",
       "owner": {
-        "status": "pending",
-        "reason": "Deterministic graph/flow layout, adjacency, lineage and graph tooltip owners exist; a native flow node/link tooltip owner that checks displayed flow meaning against exact source/target and original-row lineage is not yet assigned."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md",
+          "agent_docs/contract/current/FLOWS.md",
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/ACCESSIBILITY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph-normalize.test.js",
+          "test/unit/grammar/graph-model.test.js",
+          "test/unit/grammar/graph-layout.test.js",
+          "test/unit/grammar/graph-force.test.js",
+          "test/unit/actions/data/observed-graph.test.js",
+          "test/unit/resources/graph-layouts.test.js",
+          "test/unit/resources/graph-hit.test.js",
+          "test/unit/flow-layouts.test.js",
+          "test/unit/resources/flow-plots.test.js",
+          "test/unit/resources/flow-consumers.test.js",
+          "test/browser/flow-layouts.browser.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
       },
       "input": "Graph, circular and force layouts plus acyclic, cyclic and boundary-case flows"
     },

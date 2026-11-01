@@ -50,7 +50,7 @@ width가 음수라는 경우와 관측값이 음수라는 경우를 혼동하지
 거부, 유효 데이터, degenerate, missing run을 구분한 기존 담당 시험을 연결한다. 모든 가능한
 옵션 조합을 전수 검증했다는 의미는 아니며, 최종 후보의 expected/actual/diff 제출은 후행이다.
 
-## AT-23: pending을 유지하는 정확한 이유
+## AT-23: 첫 감사 checkpoint에서 pending을 유지한 이유
 
 `GRAPHS.md`와 `FLOWS.md`에는 deterministic seed, topology/adjacency, node/edge source rows,
 flow total/common thickness scale, DAG cycle 거부와 cyclic lane 계약이 있다. 기존
@@ -87,3 +87,58 @@ candidate-results 또는 qualification pass 파일을 만들지 않는다. 구�
 
 이 파일과 매핑을 별도 metadata checkpoint로 commit/push한다. AT-23 후속 인수 시험과 전체
 STEP-077 목표는 남아 있다.
+
+## AT-23 후속: native Flow tooltip 인수 증거
+
+앞 절의 owner 매핑은 `d3fd845dd`로 검증·push했다. 그 뒤 원 요구의 누락 시험을 채우라는
+root 지시와 기존 전체 승인을 재사용했다. 아래는 별도 개념 checkpoint다.
+
+기존 `createInteractionSession().mount()`의 inspect binding, `getMarkItems`와
+`exportAccessibleData({format:"items"})`를 실제 hit item key로 연결했다. Host tooltip은
+기존 계약대로 DOM을 소유하며, public program의 graph adjacency와 exact source row 참조를
+읽는다. 별도 tooltip API, endpoint 수정, hash 변경, lineage 대체나 runtime 수정은 없다.
+
+- `test/support/flow-inspection.js`: 숫자 `1`과 문자열 `"1"`을 구별하는 세 node 및 3/1 유량의
+  두 edge. Cyclic은 `"1"→1`, 유량 2의 return edge를 추가한다. Host description과
+  source 조회를 Node/browser가 같은 공개 호출로 소비한다.
+- `test/unit/resources/flow-consumers.test.js`: 새 3개 사례. DAG/cyclic 실제 node/link hit의
+  동일 item key, 4/3/1 및 return 2 유량, incoming/outgoing/imbalance, typed neighbors,
+  layout ref와 원행 rowKey/index/revision을 독립 literal로 확인한다. 원본 edge 재정렬·값 두 배·
+  source revision·editable codec 뒤 같은 key가 새 원행과 유량 6을 읽고 이전 program은 보존된다.
+- `test/browser/flow-layouts.browser.js`: 새 4개 test가 각각 DPR 1/2에서 실행된다.
+  DAG/cyclic × 실제 Canvas/SVG에 포인터를 움직여 node와 ribbon을 가리킨다. 표시문뿐 아니라
+  실제 hit role/key, native 접근성 fields, typed adjacency, 원본 행과 layout revision을
+  Node의 독립 기대값과 대조한다. 선택 지점에 실제 ink가 있으며 physical Canvas 크기가
+  DPR과 일치한다. 빈 영역에서 tooltip/ARIA가 해제되고 unmount/destroy 뒤 callback이 없다.
+  기존 네 primitive/public renderer pair 시험도 함께 실행했다.
+
+최초 실패 두 개는 시험 fixture 문제로 보존했다. Revised ribbon의 x=41 probe는 node의
+기존 hit slop 안이었으므로 실제 ribbon 내부 x=50으로 옮겼다. Browser host는 tooltip을
+표시할 때 중앙정렬 main의 크기가 바뀌어 다음 pointer 좌표가 낡았다. 기존 공개 문서와 같이
+tooltip 공간을 고정하고 상속된 Canvas border를 없앴다. Hit 알고리즘·guard·event policy를
+완화하지 않았다.
+
+실행(Node 22.23.1):
+
+- 새 unit owner `node --test test/unit/resources/flow-consumers.test.js`: 8/8.
+- `node --test test/browser/flow-layouts.browser.js`: 8/8. 새 실제 browser 구성은
+  2 methods × 2 renderers × 2 DPR = 8개이며, 각 구성에서 node/forward link 및 cyclic return을 확인했다.
+- AT-23의 관련 graph normalize/model/fixed/circular/force·observed graph·layout/hit·Flow
+  수치/plots/consumers 10개 unit 파일과 native manifest/discovery 2개 contract 파일: 111/111.
+- 구조 validator exit 0. AT-23 owner만 변경한 뒤 다른 JSON 값 전체가 동일함을 확인했다.
+  Assigned group 46→47, pending owner group 33→32. Candidate null, group 결과 79/79 pending,
+  consumer 결과 577/577 pending, qualification pending은 유지한다.
+- 패키지/runtime/types/public contract 입력이 그대로여서 새 archive·coverage·설치·성능 측정은
+  실행하지 않았다. 기존 graph-tooltip browser owner는 경로를 등록했고 이 후속에서 재실행하지
+  않았다. 최종 후보의 해당 owner 실행과 expected/actual/diff qualification은 여전히 필요하다.
+
+[범위와 실행 기록](flow-tooltip-evidence/scope.json),
+[관련 111개 검사](flow-tooltip-evidence/flow-tooltip-owning.log.gz),
+[실제 browser 검사](flow-tooltip-evidence/flow-tooltip-browser.log.gz),
+[최초 unit 실패](flow-tooltip-evidence/flow-tooltip-first.log.gz),
+[최초 browser 실패](flow-tooltip-evidence/flow-tooltip-browser-first.log.gz),
+[최종 pending 집계](flow-tooltip-evidence/flow-tooltip-pending.json.gz).
+
+AT-23에는 이제 `GRAPHS.md`/`FLOWS.md`/`INTERACTION.md`/`ACCESSIBILITY.md`와 발견 가능한
+기존 graph owners 및 위 Flow owners를 등록한다. 시험 담당자 매핑의 빈칸을 메운 것이며,
+native 전체 acceptance 통과나 STEP-077 완료로 계산하지 않는다.
