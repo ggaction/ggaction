@@ -19,8 +19,8 @@ test("geographic Text restoration rejects malformed scoped meanings without chan
     p => p.plotOrigin[0] = Infinity,
     p => p.bounds.right = p.bounds.left,
     p => p.bounds.extra = 1,
-    p => p.layout.axis = "diagonal",
-    p => p.leader.strokeWidth = -1,
+    p => p.expressions[0].layout.axis = "diagonal",
+    p => p.expressions[0].leader.strokeWidth = -1,
     p => p.entries.push(copy(p.entries[0])),
     p => p.entries[0].identity.role = "label",
     p => p.entries[0].identity.topology = "line",
@@ -30,9 +30,9 @@ test("geographic Text restoration rejects malformed scoped meanings without chan
     p => p.entries[0].source.key = JSON.stringify([[],"points","geo",["feature","missing"]]),
     p => p.entries[0].source.digest = "not-a-digest",
     p => p.entries[0].anchor = [1],
-    p => p.entries[0].properties.text = 3,
-    p => p.entries[0].properties.fontSize = -1,
-    p => p.entries[0].properties.extra = true,
+    p => p.expressions[0].properties[0].text = 3,
+    p => p.expressions[0].properties[0].fontSize = -1,
+    p => p.expressions[0].properties[0].extra = true,
     p => p.entries[0].source.extra = true,
     p => p.entries[0].extra = true
   ];
@@ -64,17 +64,18 @@ test("geographic Text restored roles, slots and groups are exact and exhaustive"
   for (const mutate of changes) {const payload=copy(original); mutate(payload.from.geotexts);assert.throws(()=>restoreTransitionPlan(payload));}
 });
 
-test("geographic Text native edits retain explicit appearance and layout fallback", () => {
+test("geographic Text native edits use expressions and reserve fallback for edited graphics", () => {
   const {from}=animationGeoTextFrame("collision");
   const moved=from.editProjection({scalePx:4});
-  for(const target of [
-    moved.editTextMark({target:"names",fontSize:24}),
-    moved.layoutLabels({target:"names",axis:"x",leader:{}}),
-    moved.editGraphics({target:"names",property:"x",value:1000})
+  for(const [target, fallback] of [
+    [moved.editTextMark({target:"names",fontSize:24}),false],
+    [moved.layoutLabels({target:"names",axis:"x",leader:{}}),false],
+    [moved.editGraphics({target:"names",property:"x",value:1000}),true]
   ]) {
     const transition=plan(from,target);
-    assert.ok(transition.tracks.some(track=>track.kind==="crossfade"));
+    assert.equal(transition.tracks.some(track=>track.kind==="crossfade"),fallback);
     const middle=sampleTransition(transition,50);
+    if(!fallback)assert.ok(middle.decisions.some(decision=>decision.kernel==="native-geo-text"&&decision.ownerKey===JSON.stringify([[],"names"])));
     const next=plan(middle,from);
     assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(next)).plan,50),sampleTransition(next,50));
   }

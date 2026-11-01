@@ -5,6 +5,7 @@ import { parsePaintColor } from '../grammar/color.js';
 import { animationOwnerKey, graphicAnimationOwnerKey, guideAnimationOwnerKey, validateAnimationOwnerKey } from '../grammar/animation/ownerKey.js';
 import { prepareTimelineSchedule, sampleTimelineSchedule, ANIMATION_TIMELINE_VERSION } from '../grammar/animation/timeline.js';
 import { easeProgress } from '../grammar/animation/values.js';
+import { geoTextEndpointStyle, geoTextHasLeaders } from '../materialization/animation/geoTextExpressions.js';
 import { geoAnimationItemKey } from '../materialization/animation/geoPresentation.js';
 
 const prepared = new WeakMap();
@@ -73,13 +74,13 @@ function targetIndex(context, spend) {
     }
   }
   for (const pair of context.geotexts?.state.groups ?? []) {
-    const previous = new Map(pair.from.presentation.entries.map(entry => [entry.identity.key, entry]));
-    for (const entry of pair.to.presentation.entries) {
+    const previous = new Map(pair.from.presentation.entries.map((entry,index) => [entry.identity.key, index]));
+    for (const [index,entry] of pair.to.presentation.entries.entries()) {
       const key = entry.identity.key;
       add(items, key, { id: JSON.stringify(['geo-text', key]), kind: 'geo-text', compatible: true,
         role: entry.identity.role, ownerKey: pair.to.presentation.key, sourceGroup: pair.sourceGroup,
-        targetGroup: pair.targetGroup, entryKey: key, from: styleValues(previous.get(key).properties), to: styleValues(entry.properties) });
-      if (pair.to.presentation.leader !== false) add(items, key, { id: JSON.stringify(['geo-text-leader', key]), kind: 'geo-text-leader',
+        targetGroup: pair.targetGroup, entryKey: key, from: geoTextEndpointStyle(pair.from.presentation,previous.get(key)), to: geoTextEndpointStyle(pair.to.presentation,index) });
+      if (geoTextHasLeaders(pair.from.presentation) || geoTextHasLeaders(pair.to.presentation)) add(items, key, { id: JSON.stringify(['geo-text-leader', key]), kind: 'geo-text-leader',
         role: 'leader', compatible: false });
     }
   }

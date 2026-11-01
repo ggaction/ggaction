@@ -15,6 +15,25 @@ const groupIds = "01 02 04 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23
 const rowIds = "compound-path pattern image partition-cartesian partition-polar tree treemap graph-nodes edges-hierarchical edges-force-directed edges-density edges-edge-path sankey-dag sankey-cyclic contour-line contour-filled calendar table pyramid ohlc waterfall trail geo-shape geo-point geo-line graticule rose-regression radar-regression streamgraph-regression violin-regression".split(" ");
 const columns = "create edit source-revise encodings scales guides composition selection-highlight hit scene-animation svg canvas png pdf persistence types package docs accessibility".split(" ");
 const clone = value => structuredClone(value);
+const imageApplicability = Object.fromEntries(Object.entries({
+  encodings: "Image marks reject their own data-field encodings; viewport, opacity and highlighting remain supported.",
+  scales: "Image marks have no own scale binding; scales on companion native plots remain supported.",
+  guides: "Image marks have no own axis or legend binding; companion plot guides, plot reflow and decorative composition remain supported."
+}).map(([column, reason]) => [column, { reason, contract: "agent_docs/contract/current/MARKS.md",
+  excerpt: "Image-owned field encodings, scale bindings and axis/legend bindings are not applicable." }]));
+
+function assertCanonicalConsumers(input) {
+  assert.deepEqual(input.consumers.map(row => row.id), rowIds);
+  assert.deepEqual(input.consumerColumns, columns);
+  for (const row of input.consumers) {
+    const exemptions = row.id === "image" ? imageApplicability : {};
+    assert.deepEqual(row.requiredConsumers, columns.filter(column => !Object.hasOwn(exemptions, column)));
+    assert.deepEqual(row.notApplicable, exemptions);
+  }
+  assert.deepEqual(input.interactionColumns, ["pointer-keyboard-touch", "preview-commit-cancel", "undo-redo", "linked", "async-dispose", "restore", "current-frame"]);
+  assert.deepEqual(input.interaction.requiredConsumers, input.interactionColumns);
+  assert.deepEqual(input.interaction.notApplicable, {});
+}
 
 test("native active requirements, acceptance groups and consumer obligations cannot silently shrink", () => {
   const scope = validateNativeManifest(manifest, { root });
@@ -22,17 +41,43 @@ test("native active requirements, acceptance groups and consumer obligations can
     .concat(Array.from({ length: 10 }, (_, i) => `GGA-${String(i + 1).padStart(2, "0")}`));
   assert.deepEqual([...scope.requirements.keys()].sort(), requirementIds.sort());
   assert.deepEqual([...scope.groups.keys()].sort(), groupIds);
-  assert.deepEqual(manifest.consumers.map(row => row.id), rowIds);
-  assert.deepEqual(manifest.consumerColumns, columns);
-  for (const row of manifest.consumers) {
-    assert.deepEqual(row.requiredConsumers, columns);
-    assert.deepEqual(row.notApplicable, {});
-  }
-  assert.deepEqual(manifest.interactionColumns, ["pointer-keyboard-touch", "preview-commit-cancel", "undo-redo", "linked", "async-dispose", "restore", "current-frame"]);
-  assert.deepEqual(manifest.interaction.requiredConsumers, manifest.interactionColumns);
-  assert.deepEqual(manifest.interaction.notApplicable, {});
+  assertCanonicalConsumers(manifest);
   assert.equal(scope.cells.size, 577);
+  assert.equal([...scope.cells.values()].filter(cell => cell.required).length, 574);
+  assert.deepEqual([...scope.cells].filter(([, cell]) => !cell.required).map(([id]) => id), ["image/encodings", "image/scales", "image/guides"]);
   assert.deepEqual([...scope.checks.keys()], ["normal", "realistic", "coverage", "browser", "render", "package", "platform", "package-artifact", "documentation"]);
+});
+
+test("only the three image-owned binding cells may differ from required applicability", () => {
+  for (const row of [...manifest.consumers, manifest.interaction]) {
+    for (const column of row.requiredConsumers) {
+      const copy = clone(manifest), target = row.id === "interaction" ? copy.interaction : copy.consumers.find(item => item.id === row.id);
+      target.requiredConsumers = target.requiredConsumers.filter(item => item !== column);
+      target.notApplicable[column] = clone(imageApplicability.encodings);
+      assert.throws(() => assertCanonicalConsumers(copy), { name: "AssertionError" });
+    }
+  }
+  for (const change of [
+    m => { m.consumers.pop(); },
+    m => { m.consumerColumns.pop(); m.consumers.forEach(row => { row.requiredConsumers = row.requiredConsumers.filter(column => column !== "accessibility"); }); },
+    m => { m.interactionColumns.pop(); m.interaction.requiredConsumers.pop(); },
+    ...Object.keys(imageApplicability).flatMap(column => [
+      m => { const row = m.consumers.find(item => item.id === "image"); delete row.notApplicable[column]; row.requiredConsumers.push(column); },
+      ...["reason", "contract", "excerpt"].map(field => m => { m.consumers.find(item => item.id === "image").notApplicable[column][field] = "changed"; })
+    ])
+  ]) {
+    const copy = clone(manifest); change(copy);
+    assert.throws(() => assertCanonicalConsumers(copy), { name: "AssertionError" });
+  }
+});
+
+test("canonical image non-applicability never creates a candidate or a passing result", () => {
+  for (const [column, note] of Object.entries(imageApplicability)) {
+    const target = `consumer:image/${column}`;
+    assert.throws(() => assessNativeCompletion(manifest, { results: [{ target, status: "passed", evidence: ["imaginary"] }] }, { root }), /N\/A cell cannot count as passed/);
+    assert.throws(() => assessNativeCompletion(manifest, { results: [{ target, status: "not-applicable", reason: note.reason }] }, { root }), /requires a candidate contract/);
+    assert.throws(() => assessNativeCompletion(manifest, { results: [{ target, status: "not-applicable", reason: "unverified exemption" }] }, { root }), /cannot be exempted/);
+  }
 });
 
 test("existing owners and unassigned work remain separate from actual candidate qualification", () => {

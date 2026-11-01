@@ -1826,5 +1826,22 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "animation-geotext-expressions.mjs",
+    "cases": [
+      {
+        "id": "animation-geotext-expressions/current-four-renderers",
+        "statements": 2
+      },
+      {
+        "id": "animation-geotext-expressions/offline-network-free",
+        "statements": 6
+      },
+      {
+        "id": "animation-geotext-expressions/current-hit-rebase",
+        "statements": 5
+      }
+    ]
   }
 ]

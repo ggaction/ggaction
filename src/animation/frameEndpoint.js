@@ -41,7 +41,7 @@ export function captureFrameMeaning(frame, plan, timeMs, geographic = []) {
   let native;
   if (proof?.from !== undefined && proof.to !== undefined) {
     const nodes = exact ? proof[side].nodes : frame.decisions.map((decision,index) => {
-      if(decision.kind==="geographic"){const origin=geographic[index]?.origin;if(origin===undefined)throw new TypeError("Geographic hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze([origin])});}
+      if(decision.kind==="geographic"){const origin=geographic[index]?.origin;if(origin===undefined)throw new TypeError("Geographic hit requires its actual native source.");return Object.freeze({origin,metrics:Object.freeze(geographic[index].metrics??[origin])});}
       const origin = decision.kind === "exit" ? proof.from.nodes[decision.sourceIndex] : proof.to.nodes[decision.targetIndex];
       if (origin === undefined) throw new TypeError("Animation hit requires an exact native source.");
       if (decision.kind !== "crossfade") return origin;
@@ -86,7 +86,7 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
   if(scene.nodes.length>0&&((view.progress===0||view.progress===1)!==(view.decisions.length===0)))throw new TypeError("Sampled decisions disagree with endpoint progress.");
   for(const [index,decision]of view.decisions.entries()){
     ownRecord(decision,"Sampled decision");
-    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
+    if(decision.kind==="geographic"){validateGeoAnimationDecision(decision,identities[index]);if(!(decision.kernel==="native-geo-text"?["text","line","weighted-blend"]:["circle","path"]).includes(scene.nodes[index].type))throw new TypeError("Geographic decision requires a native geographic primitive.");continue;}
     const ownerKey=identities[index]!==undefined?graphicAnimationOwnerKey(identities[index]):guides[index]==null?undefined:guideAnimationOwnerKey(guides[index].identity);
     const singular=decision.kind==="enter"?"targetIndex":decision.kind==="exit"?"sourceIndex":undefined;
     const identityFields=Object.hasOwn(decision,"guideKey")?["guideKey","role"]:Object.hasOwn(decision,"itemKey")?["itemKey","role"]:["owner","role"];

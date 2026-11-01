@@ -73,7 +73,7 @@ test('geographic feature and label paint update retained current meaning before 
   const middle=sampleTransition(plan,50),proof=animationFrameProvenance(middle);
   close(circle(middle).properties.x,40*Math.sqrt(2));
   assert.equal(parsePaintColor(proof.geos.groups[0].presentation.styles[0].fill).r,1);
-  assert.equal(parsePaintColor(proof.geotexts.groups[0].presentation.entries[0].properties.fill).r,1);
+  assert.equal(parsePaintColor(proof.geotexts.groups[0].presentation.expressions[0].properties[0].fill).r,1);
   assert.deepEqual(sampleTransition(restore(plan),50),middle);
   const next=prepare(middle,from);assert.equal(sampleTransition(next,0),middle);
   assert.deepEqual(sampleTransition(restore(next),50),sampleTransition(next,50));

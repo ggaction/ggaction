@@ -394,12 +394,23 @@ can be clicked or keyboard-selected when its exact source key still exists in th
 current native program. Compatible solid color and
 opacity changes use the same appearance interpolation as other typed frames.
 
-A change to a label group's membership, text, other static styles, or layout policy
-uses an explicit crossfade. A body appearance fallback does not stop a compatible
-label's camera motion. Current labels and annotations can be rebased or replayed
-offline. Stored sampled anchors are checked for internal consistency; their digest
-does not certify historical source data. General Text anchor interpolation and
-simultaneous content/layout changes remain outside this camera kernel.
+When text, fonts, static styles, or layout change with a compatible camera, both
+expressions are placed at the current native anchor before their pixels are blended.
+Collision leaders follow the same layout, including leaders present at only one
+endpoint. Missing formatted labels remain absent; explicit empty Text retains its
+native primitive. Membership, geometry, incompatible camera, and clip changes keep
+their explicit fallback. Different backdrop blend modes cannot be combined.
+
+Rebasing retains the current camera and at most 64 flat expressions, each with its
+actual font profile. Current hit geometry includes the visible expressions while raw
+lineage remains the target source. The largest weight determines the representative
+drawn Text; ties choose the later expression. Static accessibility and native item
+formatters still read the native program's text, not this displayed representative.
+Timeline style tracks apply to every expression and require an unambiguous endpoint
+value. A body appearance fallback does not stop a compatible label's camera motion.
+Current labels and annotations can be rebased or replayed offline. Stored sampled
+anchors are checked for internal consistency; their digest does not certify historical
+source data. General Text anchor interpolation remains outside this camera kernel.
 
 ## Functions
 

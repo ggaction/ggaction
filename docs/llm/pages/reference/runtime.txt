@@ -1699,6 +1699,7 @@ export interface TransitionPlan {
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
  * completed density samples, and compatible source-follow overlays.
+ * Geo Text content/layout expressions follow the current native camera.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'geographic'; readonly kernel: 'native-geo' | 'native-geo-text'; readonly ownerKey: string;

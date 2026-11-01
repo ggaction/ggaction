@@ -1,0 +1,1324 @@
+{
+  "status": "verified-geographic-text-expressions",
+  "sourceRevision": "5a958cd1d118b5a7bc53ebd2d44c78ec5b7774cb",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Current native camera/raw anchors with flat bounded Text content/font/static-layout expressions, exact source-specific metrics and target lineage, from-only leaders, strict current rebase/offline transport, and unchanged public signatures.",
+  "checks": {
+    "focusedCoverage": {
+      "tests": 544,
+      "passed": 544,
+      "lines": 100,
+      "branches": 94.68,
+      "functions": 100,
+      "criticalOwners": 9,
+      "floors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "scope": "All animation tests plus selected changed native Text owner tests; not repository-wide coverage."
+    },
+    "newFocusedTests": 14,
+    "realistic": {
+      "sources": 5,
+      "nativeCameraRecipes": 3,
+      "tests": 16,
+      "newTextWitnesses": 5,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-geographic-transitions.test.js"
+    },
+    "renderer": {
+      "cases": 3,
+      "variants": [
+        "labels",
+        "layout",
+        "annotation"
+      ],
+      "backends": [
+        "Canvas",
+        "PNG",
+        "SVG",
+        "PDF"
+      ],
+      "oracle": "Independent native current-camera expression pair assembled as concrete weighted primitive; exact same-backend output, with literal linear-light Canvas overlap [188,0,188,255]."
+    },
+    "browser": {
+      "tests": 1,
+      "variants": 3,
+      "dpr": [
+        1,
+        2
+      ],
+      "backends": [
+        "Canvas",
+        "SVG"
+      ]
+    },
+    "sourceDiscoveryAndDocCaps": 33,
+    "packageAndTypes": 14,
+    "finalDocCaps": 3,
+    "docs": {
+      "initial": {
+        "tests": 232,
+        "passed": 230,
+        "failed": 2
+      },
+      "regeneratedOwning": 47,
+      "sourcePinnedOwning": 47,
+      "builtPages": 186,
+      "selectiveArtifacts": 1598,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "installedPerNode": {
+      "runtime": 3,
+      "strictTypes": true,
+      "optionalPeers": true,
+      "browserBundles": 6
+    }
+  },
+  "package": {
+    "sha256": "ca26ce2c45656c03b4e5e01225470410d83381d5bb5aa9b840c27a8a02da4f5a",
+    "entries": 1193,
+    "packedBytes": 1700552,
+    "unpackedBytes": 7690735
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 1193,
+      "packedBytes": 1704713,
+      "unpackedBytes": 7690735
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 1193,
+      "packedBytes": 1700552,
+      "unpackedBytes": 7690735
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 1193,
+      "packedBytes": 1704713,
+      "unpackedBytes": 7690735
+    }
+  },
+  "sourceBundles": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705361,
+          "gzipBytes": 774968
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443573,
+          "gzipBytes": 422853
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 128451
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43912
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889970,
+          "gzipBytes": 269753
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705361,
+          "gzipBytes": 773323
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443573,
+          "gzipBytes": 421964
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24778
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 127976
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43762
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889970,
+          "gzipBytes": 268740
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705361,
+          "gzipBytes": 774968
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443573,
+          "gzipBytes": 422853
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73993,
+          "gzipBytes": 24959
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 201,
+          "minifiedBytes": 399153,
+          "gzipBytes": 128451
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43912
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889970,
+          "gzipBytes": 269753
+        }
+      }
+    }
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "ca26ce2c45656c03b4e5e01225470410d83381d5bb5aa9b840c27a8a02da4f5a",
+      "cases": [
+        {
+          "id": "animation-geotext-expressions/current-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/current-hit-rebase",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705304,
+          "gzipBytes": 774994
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443538,
+          "gzipBytes": 422903
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 136504
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43913
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889948,
+          "gzipBytes": 269758
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including current-camera Geo Text expressions passed",
+      "limits": {
+        "ggaction": {
+          "actual": 774994,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 422903,
+          "limit": 423000,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 136504,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43913,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 269758,
+          "limit": 269800,
+          "passed": true
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "ca26ce2c45656c03b4e5e01225470410d83381d5bb5aa9b840c27a8a02da4f5a",
+      "cases": [
+        {
+          "id": "animation-geotext-expressions/current-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/current-hit-rebase",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705304,
+          "gzipBytes": 773395
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443538,
+          "gzipBytes": 421986
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24779
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 135951
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43763
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889948,
+          "gzipBytes": 268753
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including current-camera Geo Text expressions passed",
+      "limits": {
+        "ggaction": {
+          "actual": 773395,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 421986,
+          "limit": 423000,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24779,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 135951,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43763,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 268753,
+          "limit": 269800,
+          "passed": true
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "ca26ce2c45656c03b4e5e01225470410d83381d5bb5aa9b840c27a8a02da4f5a",
+      "cases": [
+        {
+          "id": "animation-geotext-expressions/current-four-renderers",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/offline-network-free",
+          "status": "passed"
+        },
+        {
+          "id": "animation-geotext-expressions/current-hit-rebase",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 1031,
+          "minifiedBytes": 2705304,
+          "gzipBytes": 774994
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 612,
+          "minifiedBytes": 1443538,
+          "gzipBytes": 422903
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 44,
+          "minifiedBytes": 73991,
+          "gzipBytes": 24954
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 213,
+          "minifiedBytes": 425373,
+          "gzipBytes": 136504
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 83,
+          "minifiedBytes": 146684,
+          "gzipBytes": 43913
+        },
+        "ggaction/animation": {
+          "specifier": "ggaction/animation",
+          "chunks": 1,
+          "modules": 444,
+          "minifiedBytes": 889948,
+          "gzipBytes": 269758
+        }
+      },
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "types": "strict Full/Basic animation including current-camera Geo Text expressions passed",
+      "limits": {
+        "ggaction": {
+          "actual": 774994,
+          "limit": 775000,
+          "passed": true
+        },
+        "ggaction/basic": {
+          "actual": 422903,
+          "limit": 423000,
+          "passed": true
+        },
+        "ggaction/svg": {
+          "actual": 24954,
+          "limit": 26000,
+          "passed": true
+        },
+        "ggaction/interaction": {
+          "actual": 136504,
+          "limit": 136600,
+          "passed": true
+        },
+        "ggaction/graph": {
+          "actual": 43913,
+          "limit": 46000,
+          "passed": true
+        },
+        "ggaction/animation": {
+          "actual": 269758,
+          "limit": 269800,
+          "passed": true
+        }
+      }
+    }
+  },
+  "originalFailures": [
+    {
+      "path": ".artifacts/geotext-expressions/seam-repro.log",
+      "resolution": "Preserved original from-only leader failure; parent-approved collector slots/order and actual expression metrics repair."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/rotation.log",
+      "resolution": "Independent rotation arithmetic differs by floating roundoff. Positional comparison uses 1e-9 with exact static styles; source math unchanged."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/coverage-before-owner-boundary.log",
+      "resolution": "All runtime tests passed, but native source owner branch floor was initially89.42. Added actual missing-source/drawing-slot/owner-authority negative assertions; final90.43 passes the unchanged90 floor."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/render-1.log",
+      "resolution": "Corrected the test renderer import."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/render-2.log",
+      "resolution": "Original cross-backend glyph-edge oracle replaced with independently assembled native same-backend weighted primitive equality."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/render-final.log",
+      "resolution": "Native glyph erosion yielded too few label overlap pixels. Final same-backend PDF primitive equality retained; literal color verified independently in Canvas."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/browser-1.log",
+      "resolution": "Removed cross-backend glyph-edge comparison; exact native same-SVG weighted primitive is the browser oracle."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/browser-final.log",
+      "resolution": "DPR2 filter rasterization differs from direct native SVG glyph edges; public SVG and independently assembled weighted SVG were already pixel-exact. Final oracle preserves exact same-backend comparison and separate Canvas numeric witness."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/docs-final.log",
+      "tests": 232,
+      "passed": 230,
+      "failed": 2,
+      "resolution": "Regenerated provenance and runtime reference, followed by owning47 and pinned47; full232 was not rerun."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/installed-20.log",
+      "resolution": "Three runtime cases and strict types passed; Basic422903 exceeded422900 by3. Minimal423000 ceiling and README sync; final changed README archive rerun on all3Nodes."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/realistic-final.log",
+      "tests": 16,
+      "passed": 10,
+      "failed": 6,
+      "resolution": "New witness used nonexistent group alias; corrected to canonical original category field. Same16 canonical cases pass."
+    },
+    {
+      "path": ".artifacts/geotext-expressions/docs-build.log",
+      "resolution": "System Ruby2.6 lacked locked Bundler. Reused installed Ruby3.3 toolchain, passed preflight/build/built/browser without source change."
+    }
+  ],
+  "limitations": [
+    "Focused component qualification only; not final AT60 or whole STEP061/062/077 completion.",
+    "General Text typed anchors are not added. Source membership/geometry/incompatible camera or clip keep existing explicit fallback; distinct backdrop modes are rejected.",
+    "Static accessibility/native formatters still use native program text. The current drawn maximum-weight Text (tie later) is a scene representation, not a new public accessible-text API.",
+    "Offline frames preserve concrete/font/profile bytes and internal forward consistency, not historical source authentication or new native program authority.",
+    "Root owns combined final/corpus qualification; common lifecycle builder inputs were unchanged."
+  ],
+  "sourceInputs": [
+    {
+      "path": "README.md",
+      "sha256": "b6f24dff6e71b06271326e5dedc96b1015b8d8190bea37a5ad1e887a0ed64418"
+    },
+    {
+      "path": "agent_docs/contract/current/ANIMATION.md",
+      "sha256": "50c47e3d101fcf21a06254efef333e695e899c919ffca3a71900c487eb0a4da4"
+    },
+    {
+      "path": "docs/api/animation.md",
+      "sha256": "262e3bfb82f7704621a6d646bb218ee585410c5b4121c4013cf9bb827ed2df57"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37"
+    },
+    {
+      "path": "package.json",
+      "sha256": "9bdaa6a6b531ccb37533d6079120cad92b16ffe7c029e00868eac2a1f30c62ee"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "e27de8e2b9994154f4cd2399c6debbf73aaebabfef5651a5160273428863edfe"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/animation-geotext-expressions.mjs",
+      "sha256": "21535a52f5c378c892265a79b866f656ef6df20a9e797fb3f437b7f710261e87"
+    },
+    {
+      "path": "scripts/consumers/fixtures/node/manifest.json",
+      "sha256": "c0ed5f8e8fa89f5a13391ed06b207aebcf8b6d7d38c1de66022b826917a3aee1"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "85b9c6d65884b96bf360d5183197f94db2978d13829b796ad0e039964b602016"
+    },
+    {
+      "path": "src/animation/frameEndpoint.js",
+      "sha256": "e6c9f88e01ed4ce33d31dc69d68a5efa8ae932377aede27c9d55ee1e8444332e"
+    },
+    {
+      "path": "src/animation/geoTextExpressionTracks.js",
+      "sha256": "7010df03bfaf39768ecf514b6d16244efc57691a74452e2744c0d36c53e9d5a4"
+    },
+    {
+      "path": "src/animation/geoTextFrames.js",
+      "sha256": "adae083232d87dc4b031081c9f78dcb904404afe08711f0fe4716834463a8532"
+    },
+    {
+      "path": "src/animation/geoTextTracks.js",
+      "sha256": "27f24db32d8dbab660ce15d4a412121faaa6e98caf24b784c14d11ad80c68ad0"
+    },
+    {
+      "path": "src/animation/sample.js",
+      "sha256": "53e3d7f8a8d1f03c5fb8661fb21b213e149d3a2f6de0a3ca93a2751cb0c25630"
+    },
+    {
+      "path": "src/animation/timelineTracks.js",
+      "sha256": "44aea1cdd6510f2b19603d79f8d1fafdb7e657ffe89c7e65458b3510ffeb4267"
+    },
+    {
+      "path": "src/materialization/animation/geoAnnotation.js",
+      "sha256": "cc0280b2fa7c4b0a68eda15f3d6bb9f58fbeac91cb848cfc2de09d6c3742e538"
+    },
+    {
+      "path": "src/materialization/animation/geoLabels.js",
+      "sha256": "898925efabe3384a3d5d494ee67dc0d83819c35eeea74c4f9434dd0157cd66ef"
+    },
+    {
+      "path": "src/materialization/animation/geoText.js",
+      "sha256": "c3928ec77b054a80f8744dd2899a6debd44f8053dae08076dfbe8bb63a3ff182"
+    },
+    {
+      "path": "src/materialization/animation/geoTextBlend.js",
+      "sha256": "b73fc7039ce51ab3e1fabaf31fdc992550888d311566f7eb4e3133995f04af3b"
+    },
+    {
+      "path": "src/materialization/animation/geoTextExpressions.js",
+      "sha256": "82f0c87b24cc5143c33a1d8fbba2ca7a0c8ae3e6de55ed12b1b6c8c6a975f3f6"
+    },
+    {
+      "path": "src/materialization/animation/geoTextGeometry.js",
+      "sha256": "1e1a54ad8dcebfa28544987a8a4fa96c436a7812c32212e561ce5f04725318ce"
+    },
+    {
+      "path": "src/materialization/textGeometry.js",
+      "sha256": "79cf0343b22493f53cd77ecccab8ffa516e0ffab646cd08af851991b3879959f"
+    },
+    {
+      "path": "test/browser/animation-geotext-expressions.browser.js",
+      "sha256": "a93198684a54f901761bf78ef2a81bc747083454974d120a582620c9286c9a16"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "157e28128110d97361354b1f036164c0dcf33cc6a6a5b7bafcac6af229b0ebcb"
+    },
+    {
+      "path": "test/charts/cross-feature-integration/variants/animation/geotext-expressions.render.js",
+      "sha256": "d93bf35b5d9a36d27bf2c59751f90362067759837bc192bd9b891f34d616e381"
+    },
+    {
+      "path": "test/contracts/realistic-geographic-transitions.test.js",
+      "sha256": "2c6eab83ba1e4bc83aeb24a3728d89edaa8482920a17a096c5bef60bcc4c9d67"
+    },
+    {
+      "path": "test/fixtures/fonts/metric-fixture.ttf",
+      "sha256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878"
+    },
+    {
+      "path": "test/oracles/geo-text-expressions.js",
+      "sha256": "92b2007e2e1094aeefec5e044ce06f85a14bf57f1553e58e356b79759f53d1f2"
+    },
+    {
+      "path": "test/support/animation-geotext-expressions.js",
+      "sha256": "e630dbdb98c5b2e4724a1622bb63e4ae483a1e7695b87ce640b800f885c6074a"
+    },
+    {
+      "path": "test/unit/animation/geo-text-expressions.test.js",
+      "sha256": "00330f51cd4365d3eb2219e6ead5772b31514443d61b93fde18f3bb737648768"
+    },
+    {
+      "path": "test/unit/animation/geo-text-public.test.js",
+      "sha256": "e7918a3df95f41e3e2f34f5c48a4d2c78887146244af07a480451136b81da98b"
+    },
+    {
+      "path": "test/unit/animation/geo-text-state.test.js",
+      "sha256": "bcba456395afd2fc9b9657d646d7b44a0ba1279e624488d486e423b3970ace7d"
+    },
+    {
+      "path": "test/unit/animation/timeline-public.test.js",
+      "sha256": "9e904e629a0e7866f6c02a78867af74f41f1951666d0172eccb7d0462643b379"
+    },
+    {
+      "path": "types/animation.d.ts",
+      "sha256": "f194776e980bb2b6c3bdb226743f75fa2431e794f4ac5719174cbef641406752"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/animation-regressions-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/animation-regressions-1.log",
+      "sha256": "9d6e7aa06455241587e2aabd1f2db48888e8a9914d9faf9b82f8511a61ae45a4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/boundaries.log.gz",
+      "origin": ".artifacts/geotext-expressions/boundaries.log",
+      "sha256": "b7e1a321a8cb0a505d1cbcee2e070c9fe214ffa017ca388c3dcf798b28726044"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/browser-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/browser-1.log",
+      "sha256": "37fc4bacd11c4b9562ee6958de38f79a0044f03bc50807a02a98baf30a74f7e3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/browser-final-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/browser-final-2.log",
+      "sha256": "fd7b2a265b1caf0a13f4d19712e0a065a5752ea1e0d28967be3a86c3b38e487b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/browser-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/browser-final.log",
+      "sha256": "9af19c56b733974c2ae57849a1da4dd6f166dce7e539c2d92acbf2a805306ec6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/caps-docs-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/caps-docs-final.log",
+      "sha256": "06f5bf62efb8cc8a1812d88097ca4e8596fcf87c51a0cacb511c6ad839aefae2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/consumer-frame.log.gz",
+      "origin": ".artifacts/geotext-expressions/consumer-frame.log",
+      "sha256": "41ec632109289e4bcb780165ae366f8ca94258a1082ee1d5f3bbd728bd708fbc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/consumers-source-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/consumers-source-1.log",
+      "sha256": "b14f39b5431ee6a033cbd992f8ea9471cd497cdc8830c47be53041f6d9e34adb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/consumers-source-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/consumers-source-2.log",
+      "sha256": "005219c450a130ba28f1c75e7e1253d284ba2867dc938a5c742fa721ba5a365d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/consumers-source-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/consumers-source-final.log",
+      "sha256": "5e9e569a34a3047237116a39a77a907ba41c47a9d68b8fafbb343909c74c3d34"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/contracts-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/contracts-final.log",
+      "sha256": "1569f9150d7fdf8578f8ab9f2a67a2e0b1e275ecd3d244918c146896b3ee7fe8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-before-owner-boundary.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-before-owner-boundary.log",
+      "sha256": "02beb031fffb82a4ae7d4e30746fab0559a2d759922504d58b66509b512f7953"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-check-final-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-check-final-2.log",
+      "sha256": "cd433087dcff96ab844d9e719242cc78aab52722658e4f82b133a7e81e542982"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-check-final-3.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-check-final-3.log",
+      "sha256": "1ec10b8e623ced869749696c0af4860d8fdf886e95870e319c2a7417cbe6f812"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-check-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-check-final.log",
+      "sha256": "7c5426a106004bae635f268da15afa7fa4e75df06c95be1892d2855af421b4de"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-check.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-check.log",
+      "sha256": "6f08561d97cda64273cec7f5b7908889a3e6ad7956bcc7c46ad0d5df1bb71a3a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-final.json.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-final.json",
+      "sha256": "56b41f8f1300a4189d1456931d728cc2d0e13db8506837edd996d4ebb6564a28"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage-final.log",
+      "sha256": "11f61bd08c922c89027528b56a3ca63a5ec84e3826dc288f839cb815b4bdc787"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage.json.gz",
+      "origin": ".artifacts/geotext-expressions/coverage.json",
+      "sha256": "357a404670b39a3139478a58e44e8ab365ca8b4f3f57d5d65ea0e3e1fb30d943"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage.log.gz",
+      "origin": ".artifacts/geotext-expressions/coverage.log",
+      "sha256": "fa8bfe428668f828575fb1e1a43b335175cb9b0848fa40377eee24efef7663a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/coverage.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/coverage.mjs",
+      "sha256": "b2be5a3fc5d41fcd26761f03d930ebe834007a22b18f5b2dbf8d159f98242763"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-browser.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-browser.log",
+      "sha256": "b3cd704e2c59feee4afeb77aeff6a8746f1cdfca7d74619229979efdf7bb0819"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-build-fixed.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-build-fixed.log",
+      "sha256": "0f1a4edc125df38c7fc75399eb5f4c5fd87d5aed34082ea7b554c8062f11fc89"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-build.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-build.log",
+      "sha256": "42dad2fb288af4961dd6a406e2962f669e14d2eb89e26dc07b116eb235c347a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-built.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-built.log",
+      "sha256": "2181ce1e3ffc1daa0082c73dbfd3ba7e72c9f82cdd672b1f6e84e31c4d3c9729"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-final.log",
+      "sha256": "550202e60df0725ef78b31d563da9f33bb909c13a58c4d300a6e322763d65b56"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-llms-pin.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-llms-pin.log",
+      "sha256": "0f6dbbaaee26923d36138c3d75c819b08b8cbcb78c006d3d9fcf1a9c534243fe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-llms.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-llms.log",
+      "sha256": "0f6dbbaaee26923d36138c3d75c819b08b8cbcb78c006d3d9fcf1a9c534243fe"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-machine-pin.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-machine-pin.log",
+      "sha256": "cbf35f227587ab5bc6f2c34b0f1e7bc50d25ccaffaccad45aa8af5f589c4c974"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-machine.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-machine.log",
+      "sha256": "cbf35f227587ab5bc6f2c34b0f1e7bc50d25ccaffaccad45aa8af5f589c4c974"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-owning-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-owning-final.log",
+      "sha256": "22f73e7c6b5fa0c9e1f176810b7802951fc2cd4ffd8cc74868033dbf5abcfad4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-pinned.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-pinned.log",
+      "sha256": "c11dbd4d2c1a366645439d8e942392497bf9afeb7d3fbdef99bc38178d9c33d4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-preflight.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-preflight.log",
+      "sha256": "46a8936cd6637907d7657da5e7f50dd142c71d3318e84dc467c894c4514d9a3c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-provenance-pin.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-provenance-pin.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-provenance.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-provenance.log",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-reference-pin.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-reference-pin.log",
+      "sha256": "78fb0e814a39752a6ee5cfed27ab902067a74c9c56fa1d0e7a27a9445aeb6306"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-reference.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-reference.log",
+      "sha256": "78fb0e814a39752a6ee5cfed27ab902067a74c9c56fa1d0e7a27a9445aeb6306"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-search-pin.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-search-pin.log",
+      "sha256": "fcc3e47cb8444e15dea34f2895be62e2d3a2470e3475102d79a6fa261cddcef3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/docs-search.log.gz",
+      "origin": ".artifacts/geotext-expressions/docs-search.log",
+      "sha256": "fcc3e47cb8444e15dea34f2895be62e2d3a2470e3475102d79a6fa261cddcef3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/empty-debug.json.gz",
+      "origin": ".artifacts/geotext-expressions/empty-debug.json",
+      "sha256": "ff7d5fd20e4a024a7a3481f4e9b765a671f68f287d0597cf5f7859efcf747650"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/empty-repro.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/empty-repro.mjs",
+      "sha256": "5415691e52ee56341fa9497d7a40cb52553f994a06f3e0ba0e1646168216b63a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-1.log",
+      "sha256": "220fcf84ba512e5fd6bf41ac8d7fda059bd44beba8de32cb09b6336de0c95724"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-2.log",
+      "sha256": "b45ac583839d6f149ba34ceefb1c4b7d0b186bcc7d4fdae19684082020d59d1e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-3.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-3.log",
+      "sha256": "7969befc81dba6c47ab2932d660cdcd43c1519ce405240c99e830d4742f608dd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-4.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-4.log",
+      "sha256": "0f20aa510cfe795da707ef533f25d1cd63dcb227bb0b660521ce038cdb18f361"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-5.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-5.log",
+      "sha256": "eeeeae91fe9cbb5479004ae47203562186343d593e3e54b6d0dc3f486db50e12"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/expressions-6.log.gz",
+      "origin": ".artifacts/geotext-expressions/expressions-6.log",
+      "sha256": "2f706e95d0f518db56f5a06efbe20a9ab9b8bc5f0c0a1abf870fa8bf8028b561"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/fixture-manifest.log.gz",
+      "origin": ".artifacts/geotext-expressions/fixture-manifest.log",
+      "sha256": "dfaf7f08a348b0b3cffc06b506c928e88e2860e7887a7bde534dcd61bdfe0460"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-20-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/installed-20-final.log",
+      "sha256": "d80c56c770c61a7ab2d74c81e5fe39dd507630b6c05fec7b7d6b6c79319e1607"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-20-original-cap.json.gz",
+      "origin": ".artifacts/geotext-expressions/installed-20-original-cap.json",
+      "sha256": "e2b436ad319601eb8e7de2f5cfc2c0fbbcbad5780c853f1dc67eed2274ba0b52"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-20.json.gz",
+      "origin": ".artifacts/geotext-expressions/installed-20.json",
+      "sha256": "9428f63ac69f443da43168bab1642007d4cadd5c70a65cf8f4a3145fa50671b1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-20.log.gz",
+      "origin": ".artifacts/geotext-expressions/installed-20.log",
+      "sha256": "5130bec2974474ef4ce7aa9f79c3373920ea63e591b05e75a4b1d338dbc0044d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-22-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/installed-22-final.log",
+      "sha256": "3b454e2d0449560d7901fd5c881b9850168f1f1f24a22b4b92ac16ecdc4cd2ac"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-22.json.gz",
+      "origin": ".artifacts/geotext-expressions/installed-22.json",
+      "sha256": "1125135d4e02279aa2057bd3d376cfa19df47ed3405c80ca6f67ff1d0baaa4f0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-24-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/installed-24-final.log",
+      "sha256": "7b5e7924574925037b4229cf58070bf7e461d21d10195e8f9160f8fca96ef50b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed-24.json.gz",
+      "origin": ".artifacts/geotext-expressions/installed-24.json",
+      "sha256": "0e3e0518d3a5cdf752e05cb5d1aa9275f8ba63835bcaa227ff41f349d6ce7079"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/installed.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/installed.mjs",
+      "sha256": "c8c6d9bb7d0a03fb5b2de1289f36cf85f3da074132af5adc919ed41e39a23dbc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/measure-bundles.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/measure-bundles.mjs",
+      "sha256": "8be9fb75b53094f40f4eae69fd92e9930b1bdba70a4a78170ee95f3c4e19a1fc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/measure-package.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/measure-package.mjs",
+      "sha256": "9dd86b97858794f266c04df867836ef23246701576877e0cb0ab2ecfd9a4034e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/native-regressions-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/native-regressions-1.log",
+      "sha256": "cfe317ec524ec06e58c5a4c8309bfbf69158ab743d76c7f4b6d6f668a3990ce0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/owning-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/owning-1.log",
+      "sha256": "d22cb3aa299396484a63bf2fb993006dabe10b3822da5b4c209274e5ff3b8ca4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/owning-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/owning-2.log",
+      "sha256": "5e54637b04e27f9f202e7bea4a7c8e553a1c358a3d9b9391d850c283aa80d472"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-before-basic-cap.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-before-basic-cap.json",
+      "sha256": "97cbab530e312d162c4d340cb16b8051591ce9b6449b263239b64ca3fd39a9fd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-contracts-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-contracts-final.log",
+      "sha256": "2575fa69da32832c34a6a7c42c71b8afd1e02a9ee2c4c479affa6b622f9ca926"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-final-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-final-2.log",
+      "sha256": "af176f513f6ff6224bb03ac0fa14ecec99ae96776ceaf13b4e69e2aa49d9b1cb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-final.log",
+      "sha256": "687d66d9f230d4fcc2b041c0edd33b0cf387d22743e63699996f04b342519988"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-20.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-20.json",
+      "sha256": "44cf46e92d1b39dc80723a34b632e679e0b3a4cab46d808a41cf345eceeb32b1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-20.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-20.log",
+      "sha256": "0407f46ea4c52719d4390f2c075537089dd9239534cfc77805fb0790ba1be873"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-22.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-22.json",
+      "sha256": "4eac58d61d7b7d2391b9591fa548ca6c83f44e658cfa604e400723c7129f1d5d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-22.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-22.log",
+      "sha256": "006ae26a562141518e1c761536a17d2c7229fc61cf27b41fd07d6ac5159efb61"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-24.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-24.json",
+      "sha256": "efdc85913f58c86af704da59846fb468d623e315c6fd4587cdafd9df5f0c94fb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-size-24.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-size-24.log",
+      "sha256": "07b7740a063ace26756521be6adc140e7f97a4a9335365c0c6adc69a4195d6ab"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-20.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-20.json",
+      "sha256": "ca8f28d103082c8e4634a500331b3555fc44fa779065782db447d36f219ca428"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-20.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-20.log",
+      "sha256": "46851f746f67fd621d6a88e7ab5b45b27a545665859d4000d087118057f58b60"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-22.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-22.json",
+      "sha256": "239640701eb610b40ada2c64bcfcbe8fe8e3e59624e1b5bfd8d5c1d74bfc0799"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-22.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-22.log",
+      "sha256": "5bef6ebbd75dd538257b31db0fd0c8131639cd5b5df560ef4c95e5724bd2818c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-24.json.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-24.json",
+      "sha256": "405b1e3d023bac27b44aad0fd08bc97c6241793edb2ad46c0a3c5d3d11bac2f7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package-validated-24.log.gz",
+      "origin": ".artifacts/geotext-expressions/package-validated-24.log",
+      "sha256": "6c90a421633e59de40288247fdd99f2381bb43e0c6d3a04136bf6628256e4069"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/package.json.gz",
+      "origin": ".artifacts/geotext-expressions/package.json",
+      "sha256": "4cf5803fd57baaeba0d554d793f8407f9eccadca532706a688fa095742133a8e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/realistic-final-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/realistic-final-2.log",
+      "sha256": "c6025e0c951a9090c4a7dd573c02e4dfce1148bc136effd1992f5ccefc1be1de"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/realistic-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/realistic-final.log",
+      "sha256": "0a71d3e22f31ddfdd6307475089cf850e937dfb17c3ac5adfdcbe78772c44d17"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/render-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/render-1.log",
+      "sha256": "69805d46f45b9a3fc8bcbcd76a9c3b18c7c0a24552603defcbec93f799aee806"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/render-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/render-2.log",
+      "sha256": "fc60674118ed9c748b8dd2c6a8624f2ffef9f06c6a219e7063779bb1c5c14e61"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/render-final-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/render-final-2.log",
+      "sha256": "62bb02426f3ec3850a5148ea98b39bcf45def1505d6f3ef243c1cb025e98e89e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/render-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/render-final.log",
+      "sha256": "be8bd73a075af94d06fc919bde9cfe016385339b4e9907526d5f45ed65603303"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/rotation-fixed.log.gz",
+      "origin": ".artifacts/geotext-expressions/rotation-fixed.log",
+      "sha256": "3ad3906446466b210a6283f6ae1615c19f1e41b46571312f60da63f523e173ee"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/rotation.log.gz",
+      "origin": ".artifacts/geotext-expressions/rotation.log",
+      "sha256": "3910709cde77a75f599256df62940b8271a8b91d24a31870a2c0aadad7730c45"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/seam-repro-fixed.log.gz",
+      "origin": ".artifacts/geotext-expressions/seam-repro-fixed.log",
+      "sha256": "98978cfa392683e37e831d2a5d273e215269f3cefe82869e158083e0351aa185"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/seam-repro.log.gz",
+      "origin": ".artifacts/geotext-expressions/seam-repro.log",
+      "sha256": "4d978112e906b8af9d747687cb4dc1435ef862b73a524be7ba737313ba414eea"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/seam-repro.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/seam-repro.mjs",
+      "sha256": "c006c33497da5be1f8506c5831cf69aded5a260c4108b0cc81a854cf5c6b82b5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-20.json.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-20.json",
+      "sha256": "89712c59525817a03bcb4294a524624b1204ad6216d8ed2e9a9cde86e8f7e3b6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-20.log.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-20.log",
+      "sha256": "476a19c3d00aae8ad0c3827ca8bac596e1c89e82f98de6e5647f32bcf0618c90"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-22.json.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-22.json",
+      "sha256": "5cd197da448742ba1a35a10fb85c701ad2630563277a59ddc2c4ac1df802c47a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-22.log.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-22.log",
+      "sha256": "db684b8c07c3266a42b4e6ef72f79b37efb528701d8ccf8d6b51acc435e58809"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-24.json.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-24.json",
+      "sha256": "3bddf615f2bece6b504360d440a3a43085b89907c262aa7201cffac359339d35"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/source-bundles-24.log.gz",
+      "origin": ".artifacts/geotext-expressions/source-bundles-24.log",
+      "sha256": "e2eae98d58ea71b4cfcd0f8c5bbf3c1b8787c76928a4fdc07d73072abb592b94"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/state-1.log.gz",
+      "origin": ".artifacts/geotext-expressions/state-1.log",
+      "sha256": "763f10201060afe3c0e2aa77261111cd67c7b4a55de8c33a82c5a5839584a9c9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/state-2.log.gz",
+      "origin": ".artifacts/geotext-expressions/state-2.log",
+      "sha256": "ef1d9beb334551262d3d965056f305008b7b9752c0387a7c1e542d8948dbdd2e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/state-final.log.gz",
+      "origin": ".artifacts/geotext-expressions/state-final.log",
+      "sha256": "393d0b365b0819ff7cbb3ec58392fe7997b979078747cfc8a9184315e0d4d11e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/validate-package.mjs.gz",
+      "origin": ".artifacts/geotext-expressions/validate-package.mjs",
+      "sha256": "5f20543d5dff2ccb42652f93a21ab322ab7ffd15329c0d95b7dbde7fe61faa5d"
+    }
+  ],
+  "visual": [
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/labels.png.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/labels/current.png",
+      "sha256": "5ee0a8e271e360ad935e0a3607335c555f607625bcbc27683ef4a85533eabac7"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/labels.svg.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/labels/current.svg",
+      "sha256": "5e604cf3f0cd3df8c14a336e52a475a6fa2cd69b04cce5f094f66bdb494adb45"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/labels.pdf.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/labels/current.pdf",
+      "sha256": "23e51a0cff952fde353587aecd94a585f257676c6ded2af63794b26e7cacf998"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/labels.json.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/labels/current.json",
+      "sha256": "a6c9859072da496f571fe84690486c6b40fca80338b63992f97bca3f570d58aa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/layout.png.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/layout/current.png",
+      "sha256": "16f4e0f4bdc049f959c1449b9b29cf38b6454c39cd8bd9d135acb229568a3c81"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/layout.svg.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/layout/current.svg",
+      "sha256": "e45ecc7620fc500047e91629efc2b622a83d7f209d25a67b73e447f5fe93e8ff"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/layout.pdf.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/layout/current.pdf",
+      "sha256": "5f96d7bf1b7b7c3a039e01605c00ae71711eb09c471d4df35bd388d141ef74d6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/layout.json.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/layout/current.json",
+      "sha256": "3e375c148e9efdb7271015f716952418589920b94e6c8aacbaecd170fdc6431d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/annotation.png.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/annotation/current.png",
+      "sha256": "308014d092a40dec970e131e0f005c16446316fa130e9c3a8cb611de1cddca36"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/annotation.svg.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/annotation/current.svg",
+      "sha256": "91020a3db1a4b03e9a4ffa44e49e5fe69f00f2b95ed6a9ac0b33c2a9fd2e4585"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/annotation.pdf.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/annotation/current.pdf",
+      "sha256": "2781171b679eb86ceb02205bd51751588b0684427e39e3d5d3736ccb4682946b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/geotext-expression-evidence/annotation.json.gz",
+      "origin": ".artifacts/test/png/charts/cross-feature-integration/animation/geotext-expressions/annotation/current.json",
+      "sha256": "27d0231292018ad3612cde55e4949f1352aa98aa1062be935c5a8bf1b08decf7"
+    }
+  ]
+}

@@ -371,13 +371,20 @@ Geo source의 `createMarkLabels` Text와 `createGeoAnnotation`은 기존 centroi
 conditional appearance, selection, placement offset, collision layout, leader, outline/shadow,
 fill bounds, prepared font profile과 composition clip/order를 동일 owner에서 재사용한다.
 
-같은 label group의 membership/content/static style/layout이 달라지면 명시 reason으로
-concrete crossfade한다. Camera 이동과 solid fill/opacity의 호환 변화는 함께 계산한다.
+같은 source key·binding·geometry digest를 유지하는 content/font/static style/layout 변경은
+각 표현을 현재 native camera와 raw anchor에서 독립 배치한 뒤 per-item weighted blend한다.
+각 표현의 collision layout과 leader는 기존 native owner를 재사용하며, leader가 한쪽에만
+있어도 현재 geometry와 원 drawing order를 유지한다. 호환 solid fill/opacity 변화는 기존
+appearance 보간을 유지한다. Membership/geometry/비호환 camera·clip 변화는 기존 명시 fallback이며,
+서로 다른 backdrop blend mode의 조합은 거부한다.
 Geo body가 appearance crossfade하더라도 독립적인 호환 Text는 camera 경로를 유지한다.
 고정 annotation이나 Geo source Text 외 일반 Text의 typed anchor 이동은 이 경로에 포함하지 않는다.
 
 Optional `geotexts`는 raw anchor, exact binding/key, digest, 현재 camera와 Text 상대 offsets를
-한 번 보존한다. Native endpoint에서는 원 geometry의 centroid/digest를 검산한다.
+한 번 보존한다. `native-geo-text@2`는 문자열·font/profile·상대 offset·layout·leader를
+최대 64개의 평탄한 표현으로 보존한다. 실제 누락된 formatted Text는 null entry이며,
+명시 empty Text primitive와 구분한다. 동일 표현은 합치고 양의 weight는 임의 삭제하지 않는다.
+Native endpoint에서는 원 geometry의 centroid/digest를 검산한다.
 Sampled-only payload의 digest는 과거 source의 인증서가 아니며 내부 forward consistency만
 검증한다. 같은 binding/key/digest가 모순된 anchor를 주장하면 거부한다. Closed restore,
 반복 rebase와 renderer-ready frame은 같은 prepared owner를 사용한다. 모든 Geo body/Text
@@ -385,5 +392,10 @@ Sampled-only payload의 digest는 과거 source의 인증서가 아니며 내부
 Native session은 실제 current frame이 그린 Geo Text의 exact source key를 현재 native Text
 source reader로 다시 확인해 click/keyboard를 허용한다. 양 endpoint의 projection에서 숨겨진
 label도 source key가 존재하면 선택 intent를 유지하고 visible highlight는 현재 native 결과에 따른다.
-Text content/style/layout 변경을 camera 이동과 동시에 의미적으로 보간하는 후행 의무는
-현재 명시 crossfade와 구분하며 전체 Text/Geo animation 완료로 간주하지 않는다.
+현재 hit는 각 표현의 실제 font metrics와 visible geometry를 사용하지만 primary raw lineage는
+target source에 고정한다. 현재 scene에서 최대 weight의 Text 표현이 대표이며 동률은 뒤 표현이다.
+이 대표가 native item의 `channels.text`를 덮어쓰지는 않는다. 기존 정적 accessibility/formatter는
+native program 값을 읽으며, sampled display 문자열을 제공하는 새 공개 API는 없다.
+반복 rebase는 현재 camera/표현 weight만 평탄하게 보존하고 과거 plan/program chain을 저장하지 않는다.
+Timeline style은 모든 표현에 적용하며 서로 다른 scalar endpoint 값을 단일 값으로 추정하지 않는다.
+일반 Text family와 전체 animation의 후행 qualification은 이 범위의 완료와 구분한다.

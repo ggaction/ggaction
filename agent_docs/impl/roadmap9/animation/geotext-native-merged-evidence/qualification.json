@@ -1,0 +1,378 @@
+{
+  "status": "verified-focused-geographic-text-expression-integration; whole-native-qualification-pending",
+  "sourceRevision": null,
+  "base": "bec9fe3cf",
+  "incoming": "a63c1db354b55ebddec20b53d170855db2f04f41",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@6",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@2"
+  },
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1218,
+    "packedBytes": 1735620,
+    "unpackedBytes": 7835885,
+    "file": "ggaction-a688255777698aa7f6835860f901410a0a4c1b7e014d83c71e2a391a80ff718c.tgz",
+    "sha256": "a688255777698aa7f6835860f901410a0a4c1b7e014d83c71e2a391a80ff718c"
+  },
+  "checks": {
+    "animation": 576,
+    "focusedCoverage": {
+      "tests": 617,
+      "criticalOwners": {
+        "animation/frameEndpoint.js": {
+          "lines": 100,
+          "branches": 95.91,
+          "functions": 100
+        },
+        "animation/geoTextExpressionTracks.js": {
+          "lines": 100,
+          "branches": 98.04,
+          "functions": 100
+        },
+        "animation/geoTextFrames.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "animation/geoTextTracks.js": {
+          "lines": 100,
+          "branches": 96.43,
+          "functions": 100
+        },
+        "animation/sample.js": {
+          "lines": 100,
+          "branches": 99.25,
+          "functions": 100
+        },
+        "animation/timelineTracks.js": {
+          "lines": 100,
+          "branches": 99.34,
+          "functions": 100
+        },
+        "materialization/animation/geoAnnotation.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/animation/geoLabels.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/animation/geoText.js": {
+          "lines": 100,
+          "branches": 93.43,
+          "functions": 100
+        },
+        "materialization/animation/geoTextBlend.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/animation/geoTextExpressions.js": {
+          "lines": 100,
+          "branches": 96.55,
+          "functions": 100
+        },
+        "materialization/animation/geoTextGeometry.js": {
+          "lines": 100,
+          "branches": 96.43,
+          "functions": 100
+        }
+      },
+      "additionalPartialTextGeometry": {
+        "lines": 65.08,
+        "branches": 72.25,
+        "functions": 67.39
+      },
+      "note": "Only12critical owners claim their unchanged floors. Existing textGeometry partial65.08/72.25/67.39 is not a whole-Text or repository pass; changed360/384/503\u2013511 hunks executed."
+    },
+    "boundariesAndNativeStructure": 42,
+    "realistic": 16,
+    "render": {
+      "existing": 2,
+      "expressions": 3,
+      "formats": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ]
+    },
+    "browser": 3,
+    "docs": 44,
+    "finalPackageTruthAndNativeStructure": 28,
+    "installed": {
+      "20": {
+        "runtime": 58,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v20.20.2"
+      },
+      "22": {
+        "runtime": 58,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v22.23.1"
+      },
+      "24": {
+        "runtime": 58,
+        "types": "passed",
+        "geoTypes": "passed",
+        "doc": "passed",
+        "bundles": 6,
+        "node": "v24.22.1"
+      }
+    },
+    "build": {
+      "pages": 186,
+      "llmArtifacts": 1603
+    },
+    "docsBrowser": {
+      "pairs": 8,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "pages": [
+        "api/animation/",
+        "reference/runtime/"
+      ],
+      "overflow": 0,
+      "axe": 0,
+      "errors": 0
+    }
+  },
+  "reuse": {
+    "runtimeOwnersIdenticalToIncoming": [
+      "src/animation/geoTextExpressionTracks.js",
+      "src/animation/geoTextFrames.js",
+      "src/animation/geoTextTracks.js",
+      "src/animation/timelineTracks.js",
+      "src/materialization/animation/geoAnnotation.js",
+      "src/materialization/animation/geoLabels.js",
+      "src/materialization/animation/geoText.js",
+      "src/materialization/animation/geoTextBlend.js",
+      "src/materialization/animation/geoTextExpressions.js",
+      "src/materialization/animation/geoTextGeometry.js",
+      "src/materialization/textGeometry.js"
+    ],
+    "sharedChanges": [
+      "sample: actual expression metric origins and native drawing slots",
+      "frameEndpoint: actual metrics and native Text weighted-blend; retain root guide circle",
+      "timelineTracks: expression style/leader accessors; retain timeline3 logic"
+    ],
+    "upstream": "../geotext-expression-evidence/qualification.json",
+    "noSharedPlannerOrFrameProvenanceChange": true
+  },
+  "nativeManifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "assignedAcceptanceOwners": 52,
+    "assignedConsumerOwners": 243,
+    "actualPassed": 0,
+    "actualNotApplicable": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "limits": {
+    "entries": 1218,
+    "packed": 1740000,
+    "unpacked": 7835900,
+    "measuredPackedMaximum": 1739111,
+    "measuredUnpacked": 7835885,
+    "fullGzip": 782500,
+    "basicGzip": 424000,
+    "animationGzip": 301700,
+    "interactionGzip": 131400
+  },
+  "preservedDiagnostics": [
+    "Initial unit576 had574pass/2old-schema failures. Negative mutations moved to approved expression fields; font/layout now assert native decisions while edited graphics still assert fallback.",
+    "Initial real16 had10pass/6fail because root also has names labels/leaders. New witnesses select exact labels/body owner and compare semantic itemKey against two independently materialized native current-camera endpoints; original rows and15camera recipes remain.",
+    "Repaired upstream approval relative link to canonical roadmap9/AUTHORIZATION; no approval invented.",
+    "Actual combined interaction129621 remains under prior root131400; incoming larger136600 cap was not adopted."
+  ],
+  "evidenceFiles": {
+    "premeasure-20.json": {
+      "sha256": "a1a1ffea5cfd50bfb84d933ea55c8ce937db6d89109474227dfda2f4dab97500",
+      "bytes": 305
+    },
+    "docs-browser.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "canonical20.json": {
+      "sha256": "6538d292af766e21247056e86794b0fc35ab76ba584da2896cb7a358c728113b",
+      "bytes": 391
+    },
+    "installed-24.json": {
+      "sha256": "6cf6a00b5d28d17a6e2f88d0c4c6954a01720bbe134e039472b19d1a5452ee32",
+      "bytes": 3687
+    },
+    "browser.log": {
+      "sha256": "519448ce05a407b03a8856274e8c1a12d9a471c7c3c9d0f4c142f2cd3e227149",
+      "bytes": 1591
+    },
+    "render.log": {
+      "sha256": "5c7777a247693cba704f07cf44f8cc540bf8af730d6240c46040ecdb11b7b06a",
+      "bytes": 672
+    },
+    "canonical24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "frozen.json": {
+      "sha256": "16c752ed8bb46319d72e8ada88f6afaa363869c0dcc45958844ff09b4c6d1a00",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "71563e59e4a7365fe7ac3ca533bda5f0b3906bc8f6bb76a9fe414b155b085320",
+      "bytes": 3177
+    },
+    "coverage-command.log": {
+      "sha256": "45da27cd0300fc643de5a801fcf809272bebd370fc09ee93a28ca86a18c02697",
+      "bytes": 17036
+    },
+    "canonical20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "coverage.mjs": {
+      "sha256": "ef6f87fc08ea29fb8f4a1d24d8db1a3fdec552cfca6f7dc0e88f72adb89fa11d",
+      "bytes": 1803
+    },
+    "installed-22.json": {
+      "sha256": "6ef5e681d9ad4d719434d9f408d9e99ebfe3f17b1ab0b60757e9e82d78ccab62",
+      "bytes": 3687
+    },
+    "resolve.mjs": {
+      "sha256": "e7bbe5e089a109d4355e6739b5269daf149208be7c43aa489d0f2854647f4ea8",
+      "bytes": 2969
+    },
+    "installed-22.log": {
+      "sha256": "9e71011a60f7da985823d7b7e18c413013c3f56abe5e309680446695e5ff61ec",
+      "bytes": 3177
+    },
+    "realistic-corrected.log": {
+      "sha256": "8d6406072d2b6d89066d5508f97c539fff97ee599a5132a94a12022358e6f0e7",
+      "bytes": 3907
+    },
+    "docs.log": {
+      "sha256": "a1a97e2de5bc0cfdca92c9348fca0f09a9aaba771a02eb6da5d69a7cab56d6d3",
+      "bytes": 9139
+    },
+    "canonical22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "cb83eac6a3ccaf8e61ee81a098d4fb37eb13e38512f2c7cec53d9c08e1eec940",
+      "bytes": 9371
+    },
+    "installed-20.log": {
+      "sha256": "dcb3acbcfa2e0957e4335790d6af9227578d9cd110ced7fc935cd302d8e14a55",
+      "bytes": 3177
+    },
+    "premeasure-22.log": {
+      "sha256": "c3065fea5047320c9614f0aee1e589a8350ddb83fe679bf6b918f1ffeafd9657",
+      "bytes": 253
+    },
+    "animation.log": {
+      "sha256": "bad69c467beb0c063d0684c969485fdb3dbe8ed7784cf75daa216824334da8d4",
+      "bytes": 137952
+    },
+    "installed-20.json": {
+      "sha256": "eeb23012b04e7d24f5d794dc9ae833178e771b79c1af1c879e837032279bc62d",
+      "bytes": 3687
+    },
+    "canonical24.json": {
+      "sha256": "bc757ee1cf672282c514d067db382fa1a2ac59126aa89eccc2b6690825906348",
+      "bytes": 391
+    },
+    "premeasure-20.log": {
+      "sha256": "411d09547a88529e05bb3a12c5a2880efbea4df56847521b7064ca3990ed7f6f",
+      "bytes": 253
+    },
+    "premeasure-24.json": {
+      "sha256": "91591b74164f27fe25ab4922dfa73fbbef09e9ac55dfa4310b8230d94f9ebb50",
+      "bytes": 305
+    },
+    "limits-final.log": {
+      "sha256": "4a3c80512808db32575f0eb3375d522d22f8c23dbca741a5e2cac17fef793be7",
+      "bytes": 6745
+    },
+    "premeasure-24.log": {
+      "sha256": "e815f7cc66e52658150575009cf0b60c7b0283cf4159a1b8f3dfcfb699f74799",
+      "bytes": 253
+    },
+    "expressions-render.log": {
+      "sha256": "2898586bac74fa3cefddfd51ddc4cc2a0ec9a7b52c28f055a83042b8521c6d8c",
+      "bytes": 849
+    },
+    "record.py": {
+      "sha256": "db0a8f27e81468e33810048755d5866ba6ec8ab355a3933b08c0db3cdd7f6768",
+      "bytes": 6902
+    },
+    "prepack.log": {
+      "sha256": "c32cee36ca9bcbae69f3d2651a5b5ce592be3984810ca38be8c2f77db5f6f3dd",
+      "bytes": 506
+    },
+    "canonical22.json": {
+      "sha256": "660aa2c3fa6d036c21fc7d75e7d3e7541d5c01e50861fcd535c3e32d885d2fe4",
+      "bytes": 391
+    },
+    "premeasure-22.json": {
+      "sha256": "1445f0923b82bf0da0d82982fc00deb1d6fba7484743e83070b0fd63bd82fbd6",
+      "bytes": 305
+    },
+    "animation-corrected.log": {
+      "sha256": "73b11187f74769409c020fa2c56313bbd7b10015dc04d3b7e42e8b68b6ba61a6",
+      "bytes": 136161
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "docs-generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "f944a43c27bddfd4fc577db458887be27aebd9d92a639ad703d7ef0a148df873",
+      "bytes": 9262
+    },
+    "coverage-final.log": {
+      "sha256": "529850be1a1d74282d3b3f98a8bd4bba62fc91b6561e63e10202fcf6894c984d",
+      "bytes": 147121
+    },
+    "build.log": {
+      "sha256": "5d47e0eb840f82e1e60aa8d965f66ee0999495e3176848bd95a1b7d0fc992657",
+      "bytes": 420
+    },
+    "coverage-final.json": {
+      "sha256": "2aa19ad1438c20d0ad255bb287a1dc9aaf0d141951ad7b3833e784bf79c3cec9",
+      "bytes": 1500
+    }
+  },
+  "remaining": [
+    "Source-pin metadata",
+    "Group/lane and dynamic label/title clearance",
+    "Exact route improvements and remaining large-route support",
+    "Native target matrix and nine final commands; no STEP077 completion claimed"
+  ]
+}

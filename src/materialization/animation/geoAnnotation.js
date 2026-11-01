@@ -67,10 +67,12 @@ export function projectGeoAnnotationAnimation(program, layer, namespaces = []) {
     plotOrigin: [plot.x, plot.y], textMetrics: program.materializationConfigs.textMetrics ?? null });
 }
 
+export function validatePreparedGeoTextMetrics(textMetrics) {
+  if (textMetrics !== null) (textMetrics.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(textMetrics);
+}
+
 export function validatePreparedGeoTextFont(properties, textMetrics) {
-  if (textMetrics !== null) {
-    (textMetrics.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(textMetrics);
-  }
+  validatePreparedGeoTextMetrics(textMetrics);
   const binding = fontMetricBinding(textMetrics, properties), font = properties.font;
   if (binding === undefined ? font !== undefined : font === undefined ||
       Object.entries(binding.identity).some(([key, expected]) => font[key] !== expected)) {

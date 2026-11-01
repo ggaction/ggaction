@@ -1,6 +1,6 @@
 {
   "status": "verified-focused-categorical-guide-integration; whole-native-qualification-pending",
-  "sourceRevision": null,
+  "sourceRevision": "bec9fe3cfaece065e9726c1c4730c7ddb525c8a8",
   "base": "178a540ce",
   "incoming": "621eba5ca",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -295,5 +295,6 @@
     "GeoText2 and exact route improvements integration",
     "Group/lane and dynamic label/title clearances",
     "Native target matrix and nine final qualification commands; no STEP077 completion claimed"
-  ]
+  ],
+  "sourcePinNote": "Runtime source bec9fe3cf; later GeoText integration supersedes generated provenance without retroactive clean-source execution claims."
 }
