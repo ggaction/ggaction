@@ -5,7 +5,7 @@
   "contractId": "sha256:0be0a07439c60868cdb452f74d8c3f41e558d127aac26075fd6ec38647c7d7d2",
   "sourceCommit": "56640916a5b12ae9c185ce05b738c6446ddf4243",
   "sourceRef": "56640916a5b12ae9c185ce05b738c6446ddf4243",
-  "exampleSourceRef": "codex/roadmap9-animation-timeline-public",
+  "exampleSourceRef": "8c0b2e97964b83f091cea807e0b439905ec78289",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
