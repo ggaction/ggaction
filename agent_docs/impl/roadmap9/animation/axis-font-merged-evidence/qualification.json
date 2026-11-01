@@ -1,6 +1,6 @@
 {
   "status": "explicit-native-axis-font-preparation-integrated; dynamic-reflow-pending",
-  "sourceRevision": null,
+  "sourceRevision": "bb23315f89869d1e3ae0f1f255d9e702a6d70cb6",
   "base": "bb365b31a",
   "incomingSource": "1507df9294d71d57137f0a7c627c596914b6bb8c",
   "upstreamPin": "969ca158e",
@@ -253,12 +253,46 @@
     "build.log": {
       "sha256": "fed306823b398af8c29dc5aecbb8ed595d8716d946be12238964ec8fc70341e4",
       "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-pack.json": {
+      "sha256": "ac46a0d1e51f0a2bc58d84c88d92aabf4d2eb1b2d1fbbc4ec9ac51cc58fa32b4",
+      "bytes": 390
+    },
+    "source-pin-docs.log": {
+      "sha256": "a3b06662d2ff107068b6dbdfa91fdc605ee61f3085a6f53464882aed858c5f5d",
+      "bytes": 6134
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
     }
   },
   "remaining": [
-    "Source-pin metadata",
     "Dynamic axis label state/group emissions",
     "Dependent title guide9 and implicit legend lane integration",
     "Remaining route SLO/native matrix/nine final commands; STEP077 incomplete"
-  ]
+  ],
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 31,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Unchanged runtime/archive/focused source, page content and browser assets; no clean whole-suite execution claimed."
+  }
 }
