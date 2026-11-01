@@ -74,6 +74,45 @@
       "sameFinalArchive": "9b931419e51d57cb005ba0a0a51349a3fc37827bd48932f317aec1ffd9549038",
       "originalNode20Status": "bundle-limit-failed; all runtime/type/doc/peer checks passed",
       "sameMeasurementsRechecked": true
+    },
+    "sourcePinnedDocumentation": 50,
+    "builtDocumentation": {
+      "pages": 186,
+      "llmArtifacts": 1598
+    },
+    "changedPageBrowser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
     }
   },
   "package": {
@@ -128,7 +167,14 @@
     "title-public-installed-node22.log": "1f9adc94a962633406654498ee6b18c89d36079b8afcd501507961662e053e87",
     "title-public-final-installed-node22.log": "e1ea7977f77ad0f983dc7d518d1164ee481aeb6af9da564e2708936688aad063",
     "title-public-installed-node24.log": "f671de75f368acbc498b72484c265d3af0beabb15ecb10ce46200bf95c5dd8cc",
-    "title-public-final-installed-node24.log": "69d9ee0593430f109916f0efa830915b623d32384b946eb466022d9344a81321"
+    "title-public-final-installed-node24.log": "69d9ee0593430f109916f0efa830915b623d32384b946eb466022d9344a81321",
+    "title-public-pin.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "title-public-pinned-docs.log": "f4732e3d724767726d7abd21344eb0a2987ab5b422a33b4d53f56946293c1fdc",
+    "title-public-pinned-build.log": "ba8cb203b9073a27f80f9da9b534e2b69524747fe242c68c2ee810454790d958",
+    "title-public-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "title-public-doc-browser.log": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0",
+    "title-public-doc-browser.json": "1a30f7304a0792a72caae29170919875f726b820afb6a310670aac4b80ae3549",
+    "title-public-doc-browser.mjs": "dade83888104b1b8ec05259ccd2c6c305a06ac0da79a32d37b70db9b3f5a6fa8"
   },
   "firstFailuresPreserved": [
     "Old guide version7 fixture was updated to current9.",
@@ -143,5 +189,6 @@
     "Inferred legend clearance and implicit lanes",
     "Root combined transition3/timeline version integration",
     "Final overall roadmap/STEP077 qualification"
-  ]
+  ],
+  "sourceCommit": "c58201d21"
 }
