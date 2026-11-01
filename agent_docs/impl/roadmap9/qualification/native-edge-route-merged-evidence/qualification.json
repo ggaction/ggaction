@@ -1,5 +1,5 @@
 {
-  "status": "native-edge-consumers-and-portable-density-codec-integrated; source-pin-pending",
+  "status": "native-edge-consumers-and-portable-density-codec-integrated; final-results-pending",
   "base": "eb6c68dcdbbd5733f165cbfe654c7ac3eb0117ba",
   "incomingSource": "56640916a",
   "upstreamPin": "0fe36dd16",
@@ -22,7 +22,8 @@
     "node24.log": 10,
     "render.log": 6,
     "browser.log": 4,
-    "boundaries.log": 54
+    "boundaries.log": 54,
+    "docs-final.log": 240
   },
   "installed": {
     "node": "22.23.1",
@@ -49,7 +50,8 @@
     "total": 240,
     "passed": 239,
     "failed": 1,
-    "reason": "Canonical example source link still points to pre-merge HEAD; source-pin must repair and verify before this conceptual checkpoint closes."
+    "reason": "Canonical example source link still points to pre-merge HEAD; source-pin must repair and verify before this conceptual checkpoint closes.",
+    "resolution": "Source pinned to0bd402486; full documentation240/240 and source-pin truth/package9 passed; same canonical archive unchanged."
   },
   "manifest": {
     "requirements": 30,
@@ -69,7 +71,6 @@
     "otherRowsAndFieldsPreserved": true
   },
   "remaining": [
-    "source-pin/docs actual repair before next root source integration",
     "R dynamic labels/P axis-dependent inferred clearance union",
     "Graticule3, route/heap/SLO, nine final commands/review/protected delivery; STEP077 incomplete"
   ],
@@ -151,6 +152,47 @@
     "pending.json": {
       "sha256": "06d2c4f800cef0805f3e2579599d6e17580de4af69fc77f33d1567d04728c939",
       "bytes": 24806
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "58fdb7fd165e97876816d887016262b1d4b64fba9b59b304b94136413794a639",
+      "bytes": 1808
+    },
+    "source-pin-pack.json": {
+      "sha256": "a592350eaadad0372a1adf4d7f78dd38b4f510533fc3d2dea2983754ab0a1be4",
+      "bytes": 387
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "docs-final.log": {
+      "sha256": "16e6f93ebdb72b09261bfbd6a0b0a04e127d6421df43278b0f05b87ecc671935",
+      "bytes": 73131,
+      "tests": 240
     }
+  },
+  "sourceRevision": "0bd4024868bca986baf818af28716debbe2a27f0",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
