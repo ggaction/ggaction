@@ -26,3 +26,5 @@ Commit 후 source pin과 후행 전체 docs 결과를 qualification에 분리 �
 Incoming exact example/type/docs의186 built pages·1603 selective artifacts 및 변경 두 페이지×4폭
 overflow0/Axe0 증거는 해당 inputs가 동일한 범위에서 재사용한다. 최종 전체 native matrix,
 large native admission/실제 P95,9개 qualification 명령·fresh 독립 검토·보호된 최종 전달은 남아 있다.
+
+Source93d1c1109 고정 후 canonical example source link를 복구해 전체 docs242/242와 source-pin9를 실제 재실행했다. Runtime/type/packed입력은 동일하고 canonical411d78ac SHA도 그대로다.

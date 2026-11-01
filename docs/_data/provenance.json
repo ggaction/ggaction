@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:eb84d380a0cd556a755f080a6f729e043113f5870270762d2b827c8c39dec4f9",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-animation-timeline-public",
+  "sourceCommit": "93d1c11096f30ecce617dd31e953427f307e7507",
+  "sourceRef": "93d1c11096f30ecce617dd31e953427f307e7507",
+  "exampleSourceRef": "5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
