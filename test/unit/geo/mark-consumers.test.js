@@ -8,10 +8,55 @@ import { prepareProgramHitFrame } from "../../../src/interaction/hitProgram.js";
 import { createHitFrameBridge } from "../../../src/interaction/hitFrame.js";
 import { geoMarkSource } from "../../../src/materialization/geo/source.js";
 import { createGeographicMarks } from "../../../examples/geographic-marks/program.js";
+import { createInteractionSession } from "../../../src/interaction.js";
+import { exportAccessibleData } from "../../../src/accessibility.js";
 
 const items = (program, id) => program.graphicSpec.objects[id].items;
 const pattern = { type: "pattern", style: "cross", pitch: 12, strokeWidth: 2, phase: [-1, 2], foreground: "#f00", background: "#00f8", coordinateSpace: "object" };
 const radial = { type: "radial-gradient", center: { x: .5, y: .5 }, radius: .5, stops: [{ offset: 0, color: "white" }, { offset: 1, color: "navy" }] };
+
+test("native multipolygon holes retain compound fill, feature selection and exact source revision", () => {
+  const ring = (a, b) => [[a, a], [b, a], [b, b], [a, b], [a, a]];
+  const values = (a, b) => ({ type: "Feature", id: "region", properties: { name: "Region" }, geometry: {
+    type: "MultiPolygon", coordinates: [[ring(10, 110), [...ring(a, b)].reverse()], [ring(130, 170)]]
+  } });
+  const p = chart().createCanvas({ width: 200, height: 200, margin: 0 })
+    .createGeometryData({ id: "world", format: "geojson", coordinateKind: "planar", featureKey: "id", values: values(30, 70) })
+    .createProjection({ id: "map", type: "identity" }).createCoordinate({ id: "geo", type: "geo" })
+    .createGeoShapeMark({ id: "regions", fill: "orange", strokeWidth: 0 });
+  const before = serializeProgram(p), key = getMarkItems(p, { target: "regions" })[0].key;
+  const assertCompound = program => {
+    const paths = items(program, "regions").map(item => item.properties);
+    assert.ok(paths.every(properties => properties.fillRule === "evenodd"));
+    assert.equal(paths.flatMap(properties => properties.commands).filter(command => command.op === "M").length, 3);
+    assert.ok(paths.some(properties => properties.commands.filter(command => command.op === "M").length > 1));
+    assert.ok(items(program, "regions").every(item => item.identity.key === key));
+  };
+  assertCompound(p);
+  const selected = p.selectMarks({ id: "picked", target: "regions", items: [key] })
+    .highlightMarks({ selection: "picked", fill: "red", bringToFront: false });
+  assert.deepEqual(selected.removeMarkHighlight({ selection: "picked" }).graphicSpec, p.graphicSpec);
+  const next = selected.editGeometryData({ target: "world", values: values(40, 60) }).editProjection({ target: "map", translatePx: [5, 10] });
+  assertCompound(next);
+  assert.ok(items(next, "regions").every(item => item.properties.fill === "red"));
+  const logical = getMarkItems(next, { target: "regions" });
+  assert.equal(logical.length, 1); assert.equal(logical[0].key, key);
+  const restored = deserializeProgram(serializeProgram(next));
+  assert.deepEqual(restored.graphicSpec, next.graphicSpec);
+  const session = createInteractionSession({ program: restored });
+  try {
+    for (const [point, expected] of [[{ x: 40, y: 45 }, key], [{ x: 55, y: 60 }, null], [{ x: 155, y: 160 }, key]]) {
+      session.dispatch({ type: "inspect", point, slop: 0 });
+      assert.equal(session.getState().hit.target?.itemKey ?? null, expected);
+      if (expected) assert.deepEqual(session.getState().hit.target.resourceRefs, [{ kind: "geometry", id: "world", revision: 1 }]);
+    }
+  } finally { session.destroy(); }
+  const accessible = exportAccessibleData(restored, { format: "items" }).views[0].items;
+  assert.equal(accessible.length, 1); assert.equal(accessible[0].key, key);
+  assert.deepEqual(accessible[0].selectedBy, ["picked"]);
+  assert.equal(accessible[0].fields.name, "Region");
+  assert.equal(serializeProgram(p), before);
+});
 
 test("geographic filled paths and points preserve structured paint and effects across projection edits", () => {
   for (const [target, edit] of [["geo-shape", "editGeoShapeMark"], ["geo-point", "editGeoPointMark"]]) for (const fill of [pattern, radial]) {

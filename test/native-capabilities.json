@@ -1468,7 +1468,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "An installed package runtime owner remains unassigned. Original-plan edited-position fallback and offline replay are covered, but interrupted-frame offline decision transport remains a separately recorded gap in this source snapshot."
       },
       "assignedOwners": {
         "create": {
@@ -1515,6 +1515,142 @@
           "tests": [
             "test/charts/compound-path/png.render.js"
           ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/INTERACTION.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md",
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js",
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/contracts/compound-path-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PRIMITIVES.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/compound-path/public.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/charts/compound-path/public.test.js"
+          ]
         }
       }
     },
@@ -1547,7 +1683,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "A discoverable installed runtime test must execute the real pattern-filled native mark from one canonical archive; generic source AST coverage is not an installed package owner."
       },
       "assignedOwners": {
         "create": {
@@ -1565,7 +1701,8 @@
             "agent_docs/contract/current/PRIMITIVES.md"
           ],
           "tests": [
-            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+            "test/charts/structured-paints/renderer.render.js"
           ]
         },
         "canvas": {
@@ -1574,7 +1711,8 @@
             "agent_docs/contract/current/PRIMITIVES.md"
           ],
           "tests": [
-            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+            "test/charts/structured-paints/renderer.render.js"
           ]
         },
         "pdf": {
@@ -1583,7 +1721,8 @@
             "agent_docs/contract/current/PRIMITIVES.md"
           ],
           "tests": [
-            "test/charts/structured-paints/variants/pattern-paints/backends.render.js"
+            "test/charts/structured-paints/variants/pattern-paints/backends.render.js",
+            "test/charts/structured-paints/renderer.render.js"
           ]
         },
         "png": {
@@ -1593,6 +1732,134 @@
           ],
           "tests": [
             "test/charts/structured-paints/png.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/actions/marks/structured-fill.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/contracts/structured-paint-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/structured-paints/public.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/partition-transition.test.js"
           ]
         }
       }
@@ -1807,7 +2074,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encoding, general scale and guide consumers require a complete partition-specific contract and executable owner; a discoverable installed package runtime owner remains unassigned. Native coordinate mapping, labels and static scenes are not replacements."
       },
       "assignedOwners": {
         "create": {
@@ -1825,7 +2092,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "canvas": {
@@ -1834,7 +2102,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "pdf": {
@@ -1843,7 +2112,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "png": {
@@ -1865,6 +2135,96 @@
             "test/unit/animation/partition-transition.test.js",
             "test/browser/animation-partition.browser.js",
             "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/contracts/hierarchy-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/partition-layouts/public.test.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
@@ -1901,7 +2261,7 @@
       "notApplicable": {},
       "owner": {
         "status": "pending",
-        "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
+        "reason": "Field encoding, general scale and guide consumers require a complete partition-specific contract and executable owner; a discoverable installed package runtime owner remains unassigned. Native coordinate mapping, labels and static scenes are not replacements."
       },
       "assignedOwners": {
         "create": {
@@ -1919,7 +2279,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "canvas": {
@@ -1928,7 +2289,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "pdf": {
@@ -1937,7 +2299,8 @@
             "agent_docs/contract/current/PARTITION.md"
           ],
           "tests": [
-            "test/charts/partition-layouts/backends.render.js"
+            "test/charts/partition-layouts/backends.render.js",
+            "test/charts/partition-layouts/renderer.render.js"
           ]
         },
         "png": {
@@ -1959,6 +2322,96 @@
             "test/unit/animation/partition-transition.test.js",
             "test/browser/animation-partition.browser.js",
             "test/charts/cross-feature-integration/variants/animation/partition.render.js"
+          ]
+        },
+        "edit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "composition": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "persistence": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/CORE.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "selection-highlight": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/resources/partition-plots.test.js"
+          ]
+        },
+        "types": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/contracts/hierarchy-types.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/PARTITION.md"
+          ],
+          "tests": [
+            "test/docs/documentation.test.js",
+            "test/charts/partition-layouts/public.test.js",
+            "test/docs/executable-programs.test.js"
           ]
         }
       }
