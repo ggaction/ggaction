@@ -1,5 +1,5 @@
 {
-  "status": "source-and-installed-qualified-provenance-pending",
+  "status": "qualified",
   "date": "2026-11-01",
   "base": "5ec16aab2",
   "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit exact-owned WeakSet approval",
@@ -49,7 +49,8 @@
     "sha256": "4cb4826dd4d0a96945d79a65f8fcb32d55ecb045bab5436666add71b5d85b223",
     "entryCount": 1170,
     "size": 1669229,
-    "unpackedSize": 7558920
+    "unpackedSize": 7558920,
+    "afterMetadataSHAUnchanged": true
   },
   "packageMeasurementNode20": {
     "entries": 1170,
@@ -79,5 +80,14 @@
     "force/density large input",
     "all-item graphic limit",
     "AT82 and STEP077 incomplete"
-  ]
+  ],
+  "source": "875a8ae9b",
+  "documentation": {
+    "provenance": true,
+    "machine": true,
+    "llms": true,
+    "owningChecks": 47,
+    "publicContentChanged": false,
+    "builtBrowserReuse": "Private validation proof and source identifiers only; no public HTML/CSS/JS change."
+  }
 }
