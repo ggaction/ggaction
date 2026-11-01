@@ -1,0 +1,1282 @@
+{
+  "kind": "production-chromium-fixture-measurement",
+  "archive": "481be548bf4f77a26c3215f76e38fc9425f2a46009c8d7b9278693a960069f16",
+  "source": "3aeb5a822",
+  "seed": 0,
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-01T11:22:16.957Z",
+    "loadStart": [
+      1.41015625,
+      4.6103515625,
+      5.12939453125
+    ],
+    "browser": "153.0.8010.12",
+    "processesBefore": [
+      {
+        "pid": 230,
+        "cpuPercent": 0,
+        "memoryPercent": 1.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 359,
+        "cpuPercent": 0,
+        "memoryPercent": 0.2,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 360,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 409,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 573,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 619,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 638,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 639,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 640,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 641,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 1111,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 2573,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2576,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 2577,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2578,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 2579,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2583,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 3507,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 3544,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 3576,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "workerd"
+      },
+      {
+        "pid": 4599,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5443,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5460,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5526,
+        "cpuPercent": 0,
+        "memoryPercent": 1.2,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5531,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5533,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 5535,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 5582,
+        "cpuPercent": 0,
+        "memoryPercent": 0.7,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5738,
+        "cpuPercent": 0,
+        "memoryPercent": 1.5,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15033,
+        "cpuPercent": 0,
+        "memoryPercent": 1.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15123,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 15124,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 15126,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 15170,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 15317,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 15500,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 15965,
+        "cpuPercent": 0,
+        "memoryPercent": 0.8,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15967,
+        "cpuPercent": 0,
+        "memoryPercent": 0.8,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15981,
+        "cpuPercent": 0,
+        "memoryPercent": 0.7,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15982,
+        "cpuPercent": 0,
+        "memoryPercent": 1.6,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 16046,
+        "cpuPercent": 3.2,
+        "memoryPercent": 1.1,
+        "executable": "node"
+      },
+      {
+        "pid": 16049,
+        "cpuPercent": 4.2,
+        "memoryPercent": 0.8,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 16050,
+        "cpuPercent": 131.9,
+        "memoryPercent": 1.3,
+        "executable": "esbuild"
+      },
+      {
+        "pid": 16051,
+        "cpuPercent": 10.5,
+        "memoryPercent": 0.4,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 16052,
+        "cpuPercent": 0.2,
+        "memoryPercent": 0.2,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 16053,
+        "cpuPercent": 0,
+        "memoryPercent": 0.2,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 19062,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 32883,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 33295,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 33297,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 37467,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 37475,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 37477,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 37490,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 39241,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 39242,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 39244,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 39432,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 39434,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 44424,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 45350,
+        "cpuPercent": 5.7,
+        "memoryPercent": 1.5,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 45353,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 45399,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45400,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 45401,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45403,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45404,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 45410,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 47686,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 47687,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 50424,
+        "cpuPercent": 15,
+        "memoryPercent": 2,
+        "executable": "Google Chrome"
+      },
+      {
+        "pid": 50426,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 50430,
+        "cpuPercent": 26.2,
+        "memoryPercent": 0.6,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 50431,
+        "cpuPercent": 0,
+        "memoryPercent": 0.4,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 50432,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 51093,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 51094,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 52696,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 52697,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 65538,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 65539,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 65540,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 69023,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 69024,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 73322,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76361,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 76362,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76364,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76365,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76368,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 77558,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 77559,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 81795,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 82164,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 82166,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85051,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85052,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 85053,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 85054,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85055,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 85128,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 85898,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85900,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86106,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86107,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 86109,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86110,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 86112,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86129,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 93779,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 93780,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 93782,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 93783,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 93784,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 93787,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96582,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96583,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 96584,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 96586,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 96587,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 96590,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96872,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 97424,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 99176,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99185,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99191,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99203,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99427,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99564,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99690,
+        "cpuPercent": 0,
+        "memoryPercent": 0.6,
+        "executable": "Google Chrome Helper (Renderer)"
+      }
+    ],
+    "end": "2026-11-01T11:37:28.107Z",
+    "loadEnd": [
+      1.873046875,
+      2.533203125,
+      3.4287109375
+    ]
+  },
+  "font": "No Text, labels or guides are emitted; Canvas/SVG workload is font independent. Host status HTML is outside measured stages.",
+  "network": "Initial localhost bundle/worker-text load allowed; context offline before measurements, Blob worker contains bundled dependencies.",
+  "stages": {
+    "sourcePreparationMs": "one-time diagnostic, not P95",
+    "computeMs": "worker public computeGraphEdgeRoutes only",
+    "prepareComputeValidateMs": "public prepareGraphEdgeRoutes including startup, cloning, compute and validation",
+    "applyMs": "native prepared resource commit",
+    "bundlingMs": "prepareComputeValidateMs + applyMs",
+    "materializeMs": "native createGraphPlot; omitted with explicit stage limit when original all-item workload exceeds graphic guard",
+    "canvasRenderMs": "synchronous Canvas commands at DPR",
+    "svgSerializeDomMs": "SVG serialization and DOM insertion, not compositor paint"
+  },
+  "cases": [
+    {
+      "edgeCount": 10000,
+      "nodes": 9999,
+      "method": "hierarchical",
+      "ratio": 1,
+      "status": "measured-bundling-only",
+      "materializationLimit": {
+        "name": "RangeError",
+        "message": "Graph plot graphic count must not exceed 10000.",
+        "stages": [
+          "materializeGraphPlot",
+          "canvasRender",
+          "svgSerializeDom"
+        ],
+        "policy": "Original nodes/edges kept; no graphic guard change or item drop."
+      },
+      "sourcePreparationMs": 1067.5,
+      "warmups": 5,
+      "measured": 30,
+      "samples": [
+        {
+          "computeMs": 1248.5,
+          "prepareComputeValidateMs": 5535.299999952316,
+          "applyMs": 7001,
+          "bundlingMs": 12536.299999952316
+        },
+        {
+          "computeMs": 1248.2000000476837,
+          "prepareComputeValidateMs": 5658,
+          "applyMs": 6815.899999856949,
+          "bundlingMs": 12473.899999856949
+        },
+        {
+          "computeMs": 1247.7000000476837,
+          "prepareComputeValidateMs": 5621.700000047684,
+          "applyMs": 6798.099999904633,
+          "bundlingMs": 12419.799999952316
+        },
+        {
+          "computeMs": 1245,
+          "prepareComputeValidateMs": 5648,
+          "applyMs": 6846.200000047684,
+          "bundlingMs": 12494.200000047684
+        },
+        {
+          "computeMs": 1241.0999999046326,
+          "prepareComputeValidateMs": 5540.200000047684,
+          "applyMs": 6956.599999904633,
+          "bundlingMs": 12496.799999952316
+        },
+        {
+          "computeMs": 1242.5,
+          "prepareComputeValidateMs": 5643.900000095367,
+          "applyMs": 6854.199999809265,
+          "bundlingMs": 12498.099999904633
+        },
+        {
+          "computeMs": 1253.0999999046326,
+          "prepareComputeValidateMs": 5512.299999952316,
+          "applyMs": 6948.100000143051,
+          "bundlingMs": 12460.400000095367
+        },
+        {
+          "computeMs": 1246.1000001430511,
+          "prepareComputeValidateMs": 5498.399999856949,
+          "applyMs": 6950.900000095367,
+          "bundlingMs": 12449.299999952316
+        },
+        {
+          "computeMs": 1327.7000000476837,
+          "prepareComputeValidateMs": 5786.900000095367,
+          "applyMs": 6960.200000047684,
+          "bundlingMs": 12747.100000143051
+        },
+        {
+          "computeMs": 1253.5,
+          "prepareComputeValidateMs": 5554.299999952316,
+          "applyMs": 7095.700000047684,
+          "bundlingMs": 12650
+        },
+        {
+          "computeMs": 1252.2000000476837,
+          "prepareComputeValidateMs": 5562.800000190735,
+          "applyMs": 7041,
+          "bundlingMs": 12603.800000190735
+        },
+        {
+          "computeMs": 1254.9000000953674,
+          "prepareComputeValidateMs": 5526.299999952316,
+          "applyMs": 7009.899999856949,
+          "bundlingMs": 12536.199999809265
+        },
+        {
+          "computeMs": 1245,
+          "prepareComputeValidateMs": 5526.200000047684,
+          "applyMs": 7015.699999809265,
+          "bundlingMs": 12541.899999856949
+        },
+        {
+          "computeMs": 1253.1999998092651,
+          "prepareComputeValidateMs": 5624.400000095367,
+          "applyMs": 6861.200000047684,
+          "bundlingMs": 12485.600000143051
+        },
+        {
+          "computeMs": 1251.7999999523163,
+          "prepareComputeValidateMs": 5557,
+          "applyMs": 7175.200000047684,
+          "bundlingMs": 12732.200000047684
+        },
+        {
+          "computeMs": 1243.5999999046326,
+          "prepareComputeValidateMs": 5548.799999952316,
+          "applyMs": 7111.899999856949,
+          "bundlingMs": 12660.699999809265
+        },
+        {
+          "computeMs": 1252.4000000953674,
+          "prepareComputeValidateMs": 5531.899999856949,
+          "applyMs": 7063.300000190735,
+          "bundlingMs": 12595.200000047684
+        },
+        {
+          "computeMs": 1248.2000000476837,
+          "prepareComputeValidateMs": 5553.900000095367,
+          "applyMs": 7046.199999809265,
+          "bundlingMs": 12600.099999904633
+        },
+        {
+          "computeMs": 1248.7000000476837,
+          "prepareComputeValidateMs": 5554.899999856949,
+          "applyMs": 7025.200000047684,
+          "bundlingMs": 12580.099999904633
+        },
+        {
+          "computeMs": 1245.0999999046326,
+          "prepareComputeValidateMs": 5521.199999809265,
+          "applyMs": 7161.800000190735,
+          "bundlingMs": 12683
+        },
+        {
+          "computeMs": 1269.5,
+          "prepareComputeValidateMs": 5604.700000047684,
+          "applyMs": 7065.199999809265,
+          "bundlingMs": 12669.899999856949
+        },
+        {
+          "computeMs": 1255.3000001907349,
+          "prepareComputeValidateMs": 5537.5,
+          "applyMs": 7122.700000047684,
+          "bundlingMs": 12660.200000047684
+        },
+        {
+          "computeMs": 1249.1000001430511,
+          "prepareComputeValidateMs": 5547.299999952316,
+          "applyMs": 7080.299999952316,
+          "bundlingMs": 12627.599999904633
+        },
+        {
+          "computeMs": 1259.5,
+          "prepareComputeValidateMs": 5550.5,
+          "applyMs": 7057,
+          "bundlingMs": 12607.5
+        },
+        {
+          "computeMs": 1241.1999998092651,
+          "prepareComputeValidateMs": 5550,
+          "applyMs": 7033.799999952316,
+          "bundlingMs": 12583.799999952316
+        },
+        {
+          "computeMs": 1246.8999998569489,
+          "prepareComputeValidateMs": 5546.599999904633,
+          "applyMs": 7071.200000047684,
+          "bundlingMs": 12617.799999952316
+        },
+        {
+          "computeMs": 1268.2000000476837,
+          "prepareComputeValidateMs": 5586,
+          "applyMs": 7063.799999952316,
+          "bundlingMs": 12649.799999952316
+        },
+        {
+          "computeMs": 1349.2999999523163,
+          "prepareComputeValidateMs": 5667.700000047684,
+          "applyMs": 7032,
+          "bundlingMs": 12699.700000047684
+        },
+        {
+          "computeMs": 1250.4000000953674,
+          "prepareComputeValidateMs": 5551.300000190735,
+          "applyMs": 7075.399999856949,
+          "bundlingMs": 12626.700000047684
+        },
+        {
+          "computeMs": 1257.5999999046326,
+          "prepareComputeValidateMs": 5560.700000047684,
+          "applyMs": 6996.099999904633,
+          "bundlingMs": 12556.799999952316
+        }
+      ],
+      "p95": {
+        "computeMs": 1327.7000000476837,
+        "prepareComputeValidateMs": 5667.700000047684,
+        "applyMs": 7161.800000190735,
+        "bundlingMs": 12732.200000047684
+      },
+      "thresholdMs": 30000,
+      "successSLO": "not-complete-materialization-limited",
+      "bundlingSLO": "passed-stage-only",
+      "diagnostics": {
+        "work": 9723588,
+        "candidatePairs": 0,
+        "peakSamples": 88841
+      },
+      "counters": {
+        "workers": 0,
+        "workerListeners": 0,
+        "listeners": 0,
+        "timers": 0,
+        "captures": 0,
+        "callbacksAfterDestroy": 0
+      }
+    },
+    {
+      "edgeCount": 10000,
+      "nodes": 9999,
+      "method": "hierarchical",
+      "ratio": 2,
+      "status": "measured-bundling-only",
+      "materializationLimit": {
+        "name": "RangeError",
+        "message": "Graph plot graphic count must not exceed 10000.",
+        "stages": [
+          "materializeGraphPlot",
+          "canvasRender",
+          "svgSerializeDom"
+        ],
+        "policy": "Original nodes/edges kept; no graphic guard change or item drop."
+      },
+      "sourcePreparationMs": 1061.7000000476837,
+      "warmups": 5,
+      "measured": 30,
+      "samples": [
+        {
+          "computeMs": 1264.8000001907349,
+          "prepareComputeValidateMs": 5529,
+          "applyMs": 7047.200000047684,
+          "bundlingMs": 12576.200000047684
+        },
+        {
+          "computeMs": 1267,
+          "prepareComputeValidateMs": 5536.5,
+          "applyMs": 6970.400000095367,
+          "bundlingMs": 12506.900000095367
+        },
+        {
+          "computeMs": 1258.5,
+          "prepareComputeValidateMs": 5489.600000143051,
+          "applyMs": 6991.799999952316,
+          "bundlingMs": 12481.400000095367
+        },
+        {
+          "computeMs": 1250.5,
+          "prepareComputeValidateMs": 5508.699999809265,
+          "applyMs": 6972,
+          "bundlingMs": 12480.699999809265
+        },
+        {
+          "computeMs": 1250.7000000476837,
+          "prepareComputeValidateMs": 5564.700000047684,
+          "applyMs": 6926.5,
+          "bundlingMs": 12491.200000047684
+        },
+        {
+          "computeMs": 1296.1000001430511,
+          "prepareComputeValidateMs": 5577.300000190735,
+          "applyMs": 6986,
+          "bundlingMs": 12563.300000190735
+        },
+        {
+          "computeMs": 1244.1000001430511,
+          "prepareComputeValidateMs": 5675.400000095367,
+          "applyMs": 6893.5,
+          "bundlingMs": 12568.900000095367
+        },
+        {
+          "computeMs": 1261.4000000953674,
+          "prepareComputeValidateMs": 5563.100000143051,
+          "applyMs": 7310.700000047684,
+          "bundlingMs": 12873.800000190735
+        },
+        {
+          "computeMs": 1273.4000000953674,
+          "prepareComputeValidateMs": 5736.199999809265,
+          "applyMs": 6918.5,
+          "bundlingMs": 12654.699999809265
+        },
+        {
+          "computeMs": 1265.3999998569489,
+          "prepareComputeValidateMs": 5571.700000047684,
+          "applyMs": 7104.700000047684,
+          "bundlingMs": 12676.400000095367
+        },
+        {
+          "computeMs": 1262,
+          "prepareComputeValidateMs": 5677.099999904633,
+          "applyMs": 6964.099999904633,
+          "bundlingMs": 12641.199999809265
+        },
+        {
+          "computeMs": 1242.0999999046326,
+          "prepareComputeValidateMs": 5526,
+          "applyMs": 6912.5,
+          "bundlingMs": 12438.5
+        },
+        {
+          "computeMs": 1259.6000001430511,
+          "prepareComputeValidateMs": 5735,
+          "applyMs": 6900.700000047684,
+          "bundlingMs": 12635.700000047684
+        },
+        {
+          "computeMs": 1255.5,
+          "prepareComputeValidateMs": 5534.600000143051,
+          "applyMs": 6913.200000047684,
+          "bundlingMs": 12447.800000190735
+        },
+        {
+          "computeMs": 1264.4000000953674,
+          "prepareComputeValidateMs": 5679.599999904633,
+          "applyMs": 6978.799999952316,
+          "bundlingMs": 12658.399999856949
+        },
+        {
+          "computeMs": 1247.2000000476837,
+          "prepareComputeValidateMs": 5658.700000047684,
+          "applyMs": 6919.899999856949,
+          "bundlingMs": 12578.599999904633
+        },
+        {
+          "computeMs": 1248.8000001907349,
+          "prepareComputeValidateMs": 5631.5,
+          "applyMs": 6940.400000095367,
+          "bundlingMs": 12571.900000095367
+        },
+        {
+          "computeMs": 1258.2999999523163,
+          "prepareComputeValidateMs": 5641.899999856949,
+          "applyMs": 6877,
+          "bundlingMs": 12518.899999856949
+        },
+        {
+          "computeMs": 1254.7000000476837,
+          "prepareComputeValidateMs": 5648.299999952316,
+          "applyMs": 7099.600000143051,
+          "bundlingMs": 12747.900000095367
+        },
+        {
+          "computeMs": 1268.5999999046326,
+          "prepareComputeValidateMs": 5675.599999904633,
+          "applyMs": 6958.400000095367,
+          "bundlingMs": 12634
+        },
+        {
+          "computeMs": 1258.2999999523163,
+          "prepareComputeValidateMs": 5670.200000047684,
+          "applyMs": 7047,
+          "bundlingMs": 12717.200000047684
+        },
+        {
+          "computeMs": 1258.2999999523163,
+          "prepareComputeValidateMs": 5536.299999952316,
+          "applyMs": 6844.799999952316,
+          "bundlingMs": 12381.099999904633
+        },
+        {
+          "computeMs": 1260.8000001907349,
+          "prepareComputeValidateMs": 5685.5,
+          "applyMs": 6929.200000047684,
+          "bundlingMs": 12614.700000047684
+        },
+        {
+          "computeMs": 1242.4000000953674,
+          "prepareComputeValidateMs": 5527.700000047684,
+          "applyMs": 6909.700000047684,
+          "bundlingMs": 12437.400000095367
+        },
+        {
+          "computeMs": 1257.5999999046326,
+          "prepareComputeValidateMs": 5729,
+          "applyMs": 6853.299999952316,
+          "bundlingMs": 12582.299999952316
+        },
+        {
+          "computeMs": 1254.7000000476837,
+          "prepareComputeValidateMs": 5684.700000047684,
+          "applyMs": 6916.199999809265,
+          "bundlingMs": 12600.899999856949
+        },
+        {
+          "computeMs": 1254.8999998569489,
+          "prepareComputeValidateMs": 5669.5,
+          "applyMs": 6934.400000095367,
+          "bundlingMs": 12603.900000095367
+        },
+        {
+          "computeMs": 1248.0999999046326,
+          "prepareComputeValidateMs": 5668.5,
+          "applyMs": 6915.700000047684,
+          "bundlingMs": 12584.200000047684
+        },
+        {
+          "computeMs": 1262.9000000953674,
+          "prepareComputeValidateMs": 5556.399999856949,
+          "applyMs": 7117.799999952316,
+          "bundlingMs": 12674.199999809265
+        },
+        {
+          "computeMs": 1258.9000000953674,
+          "prepareComputeValidateMs": 5558.900000095367,
+          "applyMs": 7078.200000047684,
+          "bundlingMs": 12637.100000143051
+        }
+      ],
+      "p95": {
+        "computeMs": 1273.4000000953674,
+        "prepareComputeValidateMs": 5735,
+        "applyMs": 7117.799999952316,
+        "bundlingMs": 12747.900000095367
+      },
+      "thresholdMs": 30000,
+      "successSLO": "not-complete-materialization-limited",
+      "bundlingSLO": "passed-stage-only",
+      "diagnostics": {
+        "work": 9723588,
+        "candidatePairs": 0,
+        "peakSamples": 88841
+      },
+      "counters": {
+        "workers": 0,
+        "workerListeners": 0,
+        "listeners": 0,
+        "timers": 0,
+        "captures": 0,
+        "callbacksAfterDestroy": 0
+      }
+    }
+  ],
+  "lifecycle": [],
+  "bundles": {
+    "app.js": {
+      "bytes": 2791591,
+      "sha256": "cb0d3f3423869d04b5818dc3c0bf8ef626dd66b435c45d350a342b121f1d8cfc"
+    },
+    "worker.js": {
+      "bytes": 55540,
+      "sha256": "e18d783ff75ad0fef2e12e12a87d52b7a1fd31f7f944f34e404de140193be5d5"
+    }
+  },
+  "status": "measurement-completed"
+}

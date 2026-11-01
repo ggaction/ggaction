@@ -1,0 +1,798 @@
+{
+  "kind": "production-chromium-fixture-measurement",
+  "archive": "481be548bf4f77a26c3215f76e38fc9425f2a46009c8d7b9278693a960069f16",
+  "source": "3aeb5a822",
+  "seed": 0,
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-01T11:20:59.501Z",
+    "loadStart": [
+      2.0322265625,
+      5.609375,
+      5.49951171875
+    ],
+    "browser": "153.0.8010.12",
+    "processesBefore": [
+      {
+        "pid": 230,
+        "cpuPercent": 0,
+        "memoryPercent": 0.7,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 359,
+        "cpuPercent": 0,
+        "memoryPercent": 0.2,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 360,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 409,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 573,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 619,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 638,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 639,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 640,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 641,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 1111,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 2573,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2576,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 2577,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2578,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 2579,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 2583,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 3507,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 3544,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 3576,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "workerd"
+      },
+      {
+        "pid": 4599,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5443,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5460,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5526,
+        "cpuPercent": 0,
+        "memoryPercent": 1.2,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5531,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5533,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 5535,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 5582,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 5738,
+        "cpuPercent": 0,
+        "memoryPercent": 1.2,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15033,
+        "cpuPercent": 0,
+        "memoryPercent": 1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 15123,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 15124,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 15126,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 15170,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 15317,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 15500,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 15929,
+        "cpuPercent": 16.5,
+        "memoryPercent": 1.2,
+        "executable": "node"
+      },
+      {
+        "pid": 15931,
+        "cpuPercent": 143.2,
+        "memoryPercent": 1.2,
+        "executable": "esbuild"
+      },
+      {
+        "pid": 15932,
+        "cpuPercent": 12,
+        "memoryPercent": 0.4,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 15933,
+        "cpuPercent": 0.1,
+        "memoryPercent": 0.2,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 15934,
+        "cpuPercent": 0,
+        "memoryPercent": 0.2,
+        "executable": "chrome-headless-shell"
+      },
+      {
+        "pid": 19062,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 32883,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 33295,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 33297,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 37467,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 37475,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 37477,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 37490,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 39241,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 39242,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 39244,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 39432,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 39434,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 44424,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 45350,
+        "cpuPercent": 4.8,
+        "memoryPercent": 1.5,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 45353,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 45399,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45400,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 45401,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45403,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 45404,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 45410,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 47686,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 47687,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 50424,
+        "cpuPercent": 15.9,
+        "memoryPercent": 1.8,
+        "executable": "Google Chrome"
+      },
+      {
+        "pid": 50426,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 50430,
+        "cpuPercent": 31.3,
+        "memoryPercent": 0.6,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 50431,
+        "cpuPercent": 0,
+        "memoryPercent": 0.4,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 50432,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 51093,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 51094,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper"
+      },
+      {
+        "pid": 52696,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 52697,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 65538,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 65539,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 65540,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 69023,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 69024,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 73322,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76361,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 76362,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76364,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76365,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 76368,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 77558,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 77559,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 81795,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "chrome_crashpad_handler"
+      },
+      {
+        "pid": 82164,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 82166,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85051,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85052,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 85053,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 85054,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85055,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 85128,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 85898,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 85900,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86106,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86107,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 86109,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86110,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 86112,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 86129,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 93779,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 93780,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 93782,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 93783,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 93784,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 93787,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96582,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96583,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 96584,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "node"
+      },
+      {
+        "pid": 96586,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 96587,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 96590,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 96872,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node_repl"
+      },
+      {
+        "pid": 97424,
+        "cpuPercent": 0,
+        "memoryPercent": 0,
+        "executable": "node"
+      },
+      {
+        "pid": 99176,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99185,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99191,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99203,
+        "cpuPercent": 0,
+        "memoryPercent": 0.1,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99427,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99564,
+        "cpuPercent": 0,
+        "memoryPercent": 0.3,
+        "executable": "Google Chrome Helper (Renderer)"
+      },
+      {
+        "pid": 99690,
+        "cpuPercent": 0,
+        "memoryPercent": 0.6,
+        "executable": "Google Chrome Helper (Renderer)"
+      }
+    ]
+  },
+  "font": "No Text, labels or guides are emitted; Canvas/SVG workload is font independent. Host status HTML is outside measured stages.",
+  "network": "Initial localhost bundle/worker-text load allowed; context offline before measurements, Blob worker contains bundled dependencies.",
+  "stages": {
+    "sourcePreparationMs": "one-time diagnostic, not P95",
+    "computeMs": "worker public computeGraphEdgeRoutes only",
+    "prepareComputeValidateMs": "public prepareGraphEdgeRoutes including startup, cloning, compute and validation",
+    "applyMs": "native prepared resource commit",
+    "bundlingMs": "prepareComputeValidateMs + applyMs",
+    "materializeMs": "native createGraphPlot",
+    "canvasRenderMs": "synchronous Canvas commands at DPR",
+    "svgSerializeDomMs": "SVG serialization and DOM insertion, not compositor paint"
+  },
+  "cases": [],
+  "lifecycle": [],
+  "bundles": {
+    "app.js": {
+      "bytes": 2790823,
+      "sha256": "0263c0bbe296c8694f30e87af57f1eb69a7f0898a4e79466078614f91ec87fe0"
+    },
+    "worker.js": {
+      "bytes": 55540,
+      "sha256": "e18d783ff75ad0fef2e12e12a87d52b7a1fd31f7f944f34e404de140193be5d5"
+    }
+  },
+  "status": "harness-failed",
+  "error": "page.evaluate: Error: {\"status\":\"error\",\"elapsedMs\":12455.799999952316,\"metrics\":{\"computeMs\":1247.2000000476837,\"prepareComputeValidateMs\":5516.900000095367,\"applyMs\":6938,\"bundlingMs\":12454.900000095367},\"name\":\"RangeError\",\"message\":\"Graph plot graphic count must not exceed 10000.\"}\n    at Object.QJe [as benchmarkCase] (http://127.0.0.1:51206/app.js:10:362071)\n    at async <anonymous>:337:30\n    at /Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/measure-heb-single-span-browser.mjs:38:30"
+}

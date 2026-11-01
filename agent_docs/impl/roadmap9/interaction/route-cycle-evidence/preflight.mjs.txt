@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { normalizeObservedGraph } from "../src/grammar/graph/normalize.js";
+import { createRouteBudget } from "../src/grammar/graph/routes/budget.js";
+import { bundleEdgePathRoutes, normalizeEdgePathOptions, smoothRouteCorners } from "../src/grammar/graph/routes/edgePath.js";
+import { shortestRoutePath } from "../src/grammar/graph/routes/shortestPath.js";
+import { getErrorDetails } from "../src/core/diagnostics.js";
+
+const p = (x, y) => ({ x, y });
+const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-12, `${a} != ${b}`);
+function fixture({ points = [p(0, 0), p(1, 1), p(2, 0)], edges = [["AC", 0, 2], ["AB", 0, 1], ["BC", 1, 2]], directed = true, weight = 1 } = {}) {
+  const model = normalizeObservedGraph(points.map((_, key) => ({ key })), edges.map(([key, sourceKey, targetKey], i) => ({ key, sourceKey, targetKey, weight: weight * (i + 1) })), { directed, selfLoops: true });
+  return { model, positions: model.nodes.map((node, index) => ({ key: node.key, ...points[index] })), order: { nodes: points.map((_, index) => index), edges: edges.map(([key]) => key) } };
+}
+function search(edges, costs, source, target, skip = [], budget = createRouteBudget()) {
+  const adjacency = new Map();
+  edges.forEach(([from, to], edge) => { if (!adjacency.has(from)) adjacency.set(from, []); if (!adjacency.has(to)) adjacency.set(to, []); adjacency.get(from).push({ edge, target: to }); });
+  return shortestRoutePath(adjacency, costs, skip, source, target, budget);
+}
+
+
+const count=10000, offset=Math.floor(count/3), points=Array.from({length:count},(_,i)=>p(200+150*Math.cos(i*2*Math.PI/count),200+150*Math.sin(i*2*Math.PI/count))), edges=points.map((_,i)=>[i,i,(i+offset)%count]);const input=fixture({points,edges,directed:false});const start=performance.now();const result=bundleEdgePathRoutes(input);console.log(JSON.stringify({kind:'single-diagnostic-not-SLO',count,offset,routes:result.routes.length,diagnostics:result.diagnostics,elapsedMs:performance.now()-start}));

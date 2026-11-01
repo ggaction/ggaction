@@ -140,6 +140,16 @@ Calendar/selection 통합 afc4e34e6 이후 동일 private route source의 합산
 6,164,691 unpacked/최대1,347,343 packed bytes다. 상한939/1,348,000/6,165,000을 적용하며
 통합 main의 Full663,000/Basic371,000 gzip 상한을 유지한다.
 
+Route job의 private WeakSet proof는 `createRouteJob`의 전체 검증·해시·마지막 deep clone이
+끝난 exact immutable 객체에만 붙는다. 같은 객체의 반복 검증은 그 proof를 재사용하며
+외부 record·구조 복사·worker 입력은 매번 전체 own-data/버전/해시 검증을 거친다. WeakSet은
+job을 강하게 보유하지 않으며 공개 cache/권한 API나 저장 필드를 만들지 않는다. Abort 검사는
+proof 조회보다 먼저 실행되고 solver의 독립 budget과 결과 vector/provenance 검증은 그대로다.
+
+비동기 route preparation은 생성한 exact job을 같은 routeResource owner의 완료 구성 helper로
+명시 전달한다. 같은 native inputs를 다시 내려 두 번째 job을 만들지 않으며 완료 vector 검증과
+최종 불변 resource 구성은 동기 경로와 같은 helper가 소유한다. 새 registry나 공개 상태는 없다.
+
 Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact revision vector와
 해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
 source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
@@ -932,7 +942,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 782,500 bytes |
+| `ggaction` | 783,100 bytes |
 | `ggaction/basic` | 424,000 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |

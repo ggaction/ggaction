@@ -42,20 +42,33 @@ export function sampleClampedSpline(points, input, budget, heldSamples = 0) {
   if (!Number.isSafeInteger(heldSamples) || heldSamples < 0) throw new RangeError("Spline held samples require a nonnegative safe integer.");
   validateRoutePoints(points, budget.limits.maxSamples);
   budget.samples(heldSamples + points.length + 2);
-  budget.charge(points.length * 64);
   const degree = Math.min(3, points.length - 1), count = points.length;
-  const knots = Array.from({ length: count + degree + 1 }, (_, index) => index <= degree ? 0 : index >= count ? 1 : (index - degree) / (count - degree));
-  const derivative = points.slice(1).map((point, index) => {
-    const factor = degree / (knots[index + degree + 1] - knots[index + 1]);
-    return { x: factor * (point.x - points[index].x), y: factor * (point.y - points[index].y) };
-  });
-  const derivativeKnots = knots.slice(1, -1);
   const commands = [{ op: "M", ...points[0] }];
-  for (let index = degree; index < count; index++) {
-    const start = knots[index], end = knots[index + 1], step = (end - start) / 3;
-    const a = evaluate(points, knots, degree, start), b = evaluate(points, knots, degree, end);
-    const da = evaluate(derivative, derivativeKnots, degree - 1, start), db = evaluate(derivative, derivativeKnots, degree - 1, end);
-    commands.push({ op: "C", x1: a.x + step * da.x, y1: a.y + step * da.y, x2: b.x - step * db.x, y2: b.y - step * db.y, x: b.x, y: b.y });
+  if (count <= 4) {
+    // A single clamped span has endpoint derivatives degree * adjacent delta.
+    // Preserve the general evaluator's arithmetic order, without constructing
+    // knot/derivative arrays or searching an interval that can only be [0, 1].
+    // Eight validation/read units per point plus 32 scalar/command operations.
+    budget.charge(count * 8 + 32);
+    const a = points[0], b = points[count - 1], step = 1 / 3;
+    const da = { x: degree * (points[1].x - a.x), y: degree * (points[1].y - a.y) };
+    const db = { x: degree * (b.x - points[count - 2].x), y: degree * (b.y - points[count - 2].y) };
+    commands.push({ op: "C", x1: a.x + step * da.x, y1: a.y + step * da.y,
+      x2: b.x - step * db.x, y2: b.y - step * db.y, x: b.x, y: b.y });
+  } else {
+    budget.charge(count * 64);
+    const knots = Array.from({ length: count + degree + 1 }, (_, index) => index <= degree ? 0 : index >= count ? 1 : (index - degree) / (count - degree));
+    const derivative = points.slice(1).map((point, index) => {
+      const factor = degree / (knots[index + degree + 1] - knots[index + 1]);
+      return { x: factor * (point.x - points[index].x), y: factor * (point.y - points[index].y) };
+    });
+    const derivativeKnots = knots.slice(1, -1);
+    for (let index = degree; index < count; index++) {
+      const start = knots[index], end = knots[index + 1], step = (end - start) / 3;
+      const a = evaluate(points, knots, degree, start), b = evaluate(points, knots, degree, end);
+      const da = evaluate(derivative, derivativeKnots, degree - 1, start), db = evaluate(derivative, derivativeKnots, degree - 1, end);
+      commands.push({ op: "C", x1: a.x + step * da.x, y1: a.y + step * da.y, x2: b.x - step * db.x, y2: b.y - step * db.y, x: b.x, y: b.y });
+    }
   }
   const maxPoints = Math.min(options.maxSubdivisions + 1, budget.limits.maxSamples - heldSamples - points.length);
   const sampled = flattenPathCommands(commands, { tolerance: options.tolerance, maxPoints });

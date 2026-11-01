@@ -1,6 +1,6 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
-import { createRouteJob, computeRouteJob } from "../../grammar/graph/routes/job.js";
+import { createRouteJob, computeRouteJob, validateRouteJob } from "../../grammar/graph/routes/job.js";
 import { validateRouteResult } from "../../grammar/graph/routes/result.js";
 import { resolveRouteInput } from "./routeInput.js";
 
@@ -15,7 +15,12 @@ export function edgeRouteSourceRows(graph, hierarchy) {
 
 export function createEdgeRouteResource({ id, revision = 0, program, graph, layout, intent, hierarchy, hierarchyLayout, completion }) {
   const job = edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout);
-  const checked = validateRouteResult(job, completion ?? computeRouteJob(job));
+  return completedEdgeRouteResource({ id, revision, graph, hierarchy }, job, completion ?? computeRouteJob(job));
+}
+
+export function completedEdgeRouteResource({ id, revision = 0, graph, hierarchy }, jobInput, completion) {
+  const job = validateRouteJob(jobInput);
+  const checked = validateRouteResult(job, completion);
   const { options: _options, ...computed } = checked.result;
   return cloneAndFreeze({ kind: "edge-route", id, revision, algorithmVersion: "1", ownership: { mode: "authored" },
     inputs: job.inputs, options: job.intent,

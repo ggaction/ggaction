@@ -570,8 +570,27 @@
       "id": "AT-23",
       "expectation": "Graph and flow layouts preserve deterministic topology, lineage, width, cycles and adjacency",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/GRAPHS.md",
+          "agent_docs/contract/current/FLOWS.md",
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/ACCESSIBILITY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/graph-normalize.test.js",
+          "test/unit/grammar/graph-model.test.js",
+          "test/unit/grammar/graph-layout.test.js",
+          "test/unit/grammar/graph-force.test.js",
+          "test/unit/actions/data/observed-graph.test.js",
+          "test/unit/resources/graph-layouts.test.js",
+          "test/unit/resources/graph-hit.test.js",
+          "test/unit/flow-layouts.test.js",
+          "test/unit/resources/flow-plots.test.js",
+          "test/unit/resources/flow-consumers.test.js",
+          "test/browser/flow-layouts.browser.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
       },
       "input": "Graph, circular and force layouts plus acyclic, cyclic and boundary-case flows"
     },
@@ -619,8 +638,28 @@
       "id": "AT-27",
       "expectation": "Table and composite roles have explicit layout, hit and order semantics",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/PYRAMID.md",
+          "agent_docs/contract/current/OHLC.md",
+          "agent_docs/contract/current/WATERFALL.md",
+          "agent_docs/contract/current/TABLE.md",
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/unit/grammar/pyramid-layout.test.js",
+          "test/unit/pyramid-plot.test.js",
+          "test/unit/grammar/financial-roles.test.js",
+          "test/unit/ohlc-plot.test.js",
+          "test/unit/waterfall-plot.test.js",
+          "test/unit/grammar/table-cells.test.js",
+          "test/unit/grammar/table-data.test.js",
+          "test/unit/materialization/table-content.test.js",
+          "test/unit/table-plot.test.js",
+          "test/unit/composition-recipes.test.js",
+          "test/contracts/composition-recipes.test.js",
+          "test/contracts/native-api-policy.test.js"
+        ]
       },
       "input": "Pyramid, OHLC, waterfall, table and sparkline roles with reference-band compositions"
     },
@@ -628,8 +667,35 @@
       "id": "AT-28",
       "expectation": "Native width, area, angle, baseline and bandwidth semantics cover missing, negative and zero values",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/TRAIL.md",
+          "agent_docs/contract/current/CORE.md",
+          "agent_docs/contract/current/ENCODINGS.md",
+          "agent_docs/contract/current/COMPLETE_CHARTS.md",
+          "agent_docs/contract/current/VIOLIN_PLOTS.md"
+        ],
+        "tests": [
+          "test/unit/grammar/trail.test.js",
+          "test/unit/grammar/trail-curve.test.js",
+          "test/unit/grammar/trail-series.test.js",
+          "test/unit/trail-plot.test.js",
+          "test/unit/grammar/polar.test.js",
+          "test/unit/grammar/polar-line-series.test.js",
+          "test/unit/actions/encodings/polar-position-encodings.test.js",
+          "test/unit/actions/charts/polar-facades.test.js",
+          "test/unit/actions/charts/radar-facade.test.js",
+          "test/unit/actions/charts/radar-summary.test.js",
+          "test/unit/grammar/measured-radius.test.js",
+          "test/unit/actions/charts/radial-plots.test.js",
+          "test/unit/grammar/stream-baseline.test.js",
+          "test/unit/wiggle-area.test.js",
+          "test/unit/actions/data/density-data.test.js",
+          "test/charts/cars-density-area/reference-values.test.js",
+          "test/unit/grammar/transforms/numeric-invariants.test.js",
+          "test/unit/grammar/categorical-density.test.js",
+          "test/unit/actions/charts/violin-plot-facade.test.js"
+        ]
       },
       "input": "Trail, polar, radar, rose, streamgraph and violin variants"
     },

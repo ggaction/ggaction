@@ -62,6 +62,54 @@ test("route job digest binds revisions, options, signed-zero anchors, coordinate
   assert.throws(() => computeRouteJob(job, AbortSignal.abort()), /abort/i);
 });
 
+test("route job proof reuses only exact owned snapshots while copied jobs preserve all solver results and diagnostics", () => {
+  for (const method of methods) {
+    const input = payload(method), original = structuredClone(input), job = createRouteJob(input);
+    assert.equal(validateRouteJob(job), job);
+    assert.equal(validateRouteJob(validateRouteJob(job)), job);
+    const copied = Object.freeze(structuredClone(job)), normalized = validateRouteJob(copied);
+    assert.notEqual(normalized, copied);
+    assert.equal(validateRouteJob(normalized), normalized);
+    assert.deepEqual(normalized, job);
+    assert.ok(Object.isFrozen(job.input.positions[0]));
+    assert.ok(Object.isFrozen(job.inputs[0]));
+    assert.throws(() => { job.input.positions[0].x = 123; }, TypeError);
+    assert.throws(() => { job.inputs[0].revision++; }, TypeError);
+    input.input.positions[0].x = 123;
+    input.inputs[0].revision++;
+    assert.equal(job.input.positions[0].x, original.input.positions[0].x);
+    assert.equal(job.inputs[0].revision, original.inputs[0].revision);
+    const result = computeRouteJob(job);
+    assert.deepEqual(computeRouteJob(copied), result);
+    assert.deepEqual(computeRouteJob(job), result);
+    assert.deepEqual(validateRouteResult(job, structuredClone(result)), result);
+  }
+});
+
+test("route job proof never authenticates forged snapshots or completion and abort precedes input access", () => {
+  const job = createRouteJob(payload("edge-path"));
+  for (const mutate of [value => value.inputs[0].revision++, value => value.input.positions[0].x++,
+    value => value.inputHash = "0".repeat(64), value => value.extra = true]) {
+    const forged = structuredClone(job); mutate(forged);
+    assert.throws(() => validateRouteJob(Object.freeze(forged)));
+  }
+  let calls = 0;
+  const accessor = structuredClone(job);
+  Object.defineProperty(accessor.input.positions[0], "x", { enumerable: true, get() { calls++; return 0; } });
+  assert.throws(() => validateRouteJob(accessor), /accessor/);
+  const top = {};
+  Object.defineProperty(top, "input", { enumerable: true, get() { calls++; return job.input; } });
+  const reason = new Error("explicit cancellation");
+  assert.throws(() => computeRouteJob(top, AbortSignal.abort(reason)), error => error === reason);
+  assert.throws(() => computeRouteJob(job, AbortSignal.abort(reason)), error => error === reason);
+  assert.equal(calls, 0);
+  const result = computeRouteJob(job), forged = structuredClone(result);
+  forged.result.routes[0].commands[0].x++;
+  forged.resultHash = routeValueHash(forged.result);
+  assert.throws(() => validateRouteResult(job, forged), /exact node anchors/);
+  for (const value of [null, 0, "job", undefined]) assert.throws(() => validateRouteJob(value));
+});
+
 test("route intent and job reject ambiguous shapes, invalid keys, getters and forged work envelopes", () => {
   for (const run of [
     () => normalizeRouteIntent("constructor"), () => normalizeRouteIntent("density", {}, "map"),

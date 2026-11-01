@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 782_500, // Geographic Text integration: Node20/24 782,428 gzip bytes.
+  ggaction: 783_100, // Exact route integration: Node20/24 783,043 gzip bytes.
   "ggaction/basic": 424_000, // Shared categorical recipes: Node20/24 423,963 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
