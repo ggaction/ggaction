@@ -2639,6 +2639,16 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-layout-fallbacks.test.js"
+          ]
         }
       }
     },
@@ -2812,6 +2822,16 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/HIERARCHY.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
         }
       }
@@ -3817,6 +3837,16 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-layout-fallbacks.test.js"
+          ]
         }
       }
     },
@@ -3991,6 +4021,16 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/FLOWS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/animation/resource-layout-fallbacks.test.js"
           ]
         }
       }

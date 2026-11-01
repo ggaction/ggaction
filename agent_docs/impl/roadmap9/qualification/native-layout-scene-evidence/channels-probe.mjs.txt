@@ -1,0 +1,5 @@
+import { createTree } from '../../examples/tree-layouts/program.js';import { createTreemap } from '../../examples/treemap-layouts/program.js';import { createPartition } from '../../examples/partition-layouts/program.js';import { createGraph } from '../../examples/graph-plots/program.js';import { createFlowInspection } from '../../test/support/flow-inspection.js';
+for(const [family,p] of [['tree',createTree()],['treemap',createTreemap()],['icicle',createPartition()],['sunburst',createPartition('sunburst')],['graph',createGraph()],['dag',createFlowInspection()],['cyclic',createFlowInspection('cyclic')]]){
+ const layer=p.semanticSpec.layers.find(l=>l.mark?.type!=='text'),target=layer.id;console.log(family,target,layer.mark.type,JSON.stringify(layer.encoding));
+ for(const [method,opt] of [['encodeX',{field:'value'}],['encodeColor',{field:'value'}],['encodeSize',{field:'value'}],['createLegend',{}]])try{const q=p[method]({target,...opt});console.log(method,'ACCEPT',q!==p);}catch(e){console.log(method,e.message);}
+}
