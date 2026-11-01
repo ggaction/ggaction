@@ -55,24 +55,24 @@ function metricInput(rows, options) {
   return rows.map(row => graphFeatureVector(row, options.features));
 }
 
-function structuralInput(rows, keys, options) {
+function structuralInput(rows, keys, options, limits) {
   for (const name of ["features", "metric", "preprocess"]) if (Object.hasOwn(options, name)) throw new TypeError(`Graph ${options.rule} does not use ${name}.`);
   const fields = options.rule === "group" ? graphFields(options.options.fields, "Graph group fields")
     : graphFields(options.options.groupBy ?? [], "Graph sequence groups", { empty: true });
   const { fields: _fields, groupBy: _groupBy, orderField, ...policy } = options.options;
   if (options.rule === "group") {
     if (Object.hasOwn(options.options, "groupBy") || Object.hasOwn(options.options, "orderField")) throw new TypeError("Graph group does not use sequence fields.");
-    return inferGraphGroups(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))), { ...policy, ruleId: options.ruleId });
+    return inferGraphGroups(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))), { ...policy, ruleId: options.ruleId }, limits);
   }
   if (Object.hasOwn(options.options, "fields")) throw new TypeError("Graph sequence does not use group fields.");
   const order = graphKeyField(orderField, "Graph sequence orderField");
   if (Array.isArray(order)) throw new TypeError("Graph sequence orderField requires one field.");
   return inferGraphSequence(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))),
-    rows.map(row => graphFieldValue(row, order)), { ...policy, ruleId: options.ruleId });
+    rows.map(row => graphFieldValue(row, order)), { ...policy, ruleId: options.ruleId }, limits);
 }
 
-function candidateInput(keys, candidate) {
-  indexGraphModel(candidate);
+function candidateInput(keys, candidate, limits) {
+  indexGraphModel(candidate, limits);
   if (candidate.directed) throw new TypeError("Graph MST candidates must be undirected.");
   const indexes = new Map(keys.map((key, index) => [encodeRowKey(key), index]));
   if (candidate.nodes.some(node => !indexes.has(node.key))) throw new TypeError("Graph MST candidate nodes must belong to the source data.");
@@ -81,8 +81,9 @@ function candidateInput(keys, candidate) {
 
 // Pure field adapter: every topology is computed by its rule owner, then lowered
 // once into the common graph model. Resource identity and revision stay outside.
-export function resolveInferredGraphInput(rows, input, candidate) {
+export function resolveInferredGraphInput(rows, input, candidate, candidateLimits) {
   const options = normalizeGraphSourceOptions(input, INFERRED_GRAPH_FIELDS);
+  const limits = { maxNodes: options.maxNodes, maxEdges: options.maxEdges };
   graphSourceRows(rows, options.maxNodes, "Graph source rows");
   ownRecord(Object.hasOwn(options, "options") ? options.options : {}, "Graph inference options");
   options.options = { ...options.options };
@@ -96,14 +97,14 @@ export function resolveInferredGraphInput(rows, input, candidate) {
   if (candidate !== undefined) {
     if (options.rule !== "mst") throw new TypeError("Graph candidates require MST inference.");
     for (const field of ["metric", "features", "preprocess"]) if (Object.hasOwn(options, field)) throw new TypeError("Graph candidate MST cannot also use metric features.");
-    inferred = selectGraphSpanningForest(keys, candidateInput(keys, candidate), { ...options.options, ruleId: options.ruleId });
-  } else if (structural) inferred = structuralInput(rows, keys, options);
+    inferred = selectGraphSpanningForest(keys, candidateInput(keys, candidate, candidateLimits), { ...options.options, ruleId: options.ruleId }, limits);
+  } else if (structural) inferred = structuralInput(rows, keys, options, limits);
   else {
     const vectors = metricInput(rows, options);
     const policy = { ...options.options, ruleId: options.ruleId, metric: options.metric,
       ...(Object.hasOwn(options, "preprocess") ? { preprocess: options.preprocess } : {}) };
-    inferred = options.rule === "mst" ? inferGraphMst(keys, vectors, policy)
-      : inferGraphNeighbors(keys, vectors, { ...policy, rule: options.rule });
+    inferred = options.rule === "mst" ? inferGraphMst(keys, vectors, policy, limits)
+      : inferGraphNeighbors(keys, vectors, { ...policy, rule: options.rule }, limits);
   }
   const included = inferred.preparation?.sourceIndices ?? inferred.sourceIndices ?? rows.map((_, index) => index);
   const directed = options.rule === "sequence" || inferred.options.directed === true;

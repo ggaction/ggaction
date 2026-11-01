@@ -5,7 +5,8 @@ import { dataInputReference } from "../../selectors/resources.js";
 import { graphRowReferences } from "./resources.js";
 
 export function createInferredGraphResource({ id, revision = 0, data, candidate, definition, program }) {
-  const resolved = resolveInferredGraphInput(data.values, definition, resolveGraphCandidateModel(program, data, candidate, definition));
+  const resolved = resolveInferredGraphInput(data.values, definition, resolveGraphCandidateModel(program, data, candidate, definition),
+    candidate === undefined ? undefined : { maxNodes: candidate.options.definition.maxNodes, maxEdges: candidate.options.definition.maxEdges });
   const { edges: _edges, preparation, ...diagnostics } = resolved.inference;
   if (preparation !== undefined) {
     const { vectors: _vectors, ...retained } = preparation;

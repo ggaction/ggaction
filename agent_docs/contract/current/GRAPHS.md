@@ -119,6 +119,7 @@
 
 - Signature: `createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })`.
 - Full chart-authoring action이다. id/nodeKey/ruleId/rule은 필수이며 source key·attribute·한도·불변성은 관측 graph와 같은 owner를 사용한다. data는 explicit→current materialized→unique eligible 순서이며 ambiguity/missing은 오류다. Graphics 없이 `editSemantic` child로 graph를 저장한다.
+- `maxNodes`/`maxEdges`는 각각 기본10000이며 source rows, feature preparation, 각 rule의 생성 결과, edit/revision 및 restore까지 전달된다. MST candidate는 candidate resource 자체의 저장 한도로 검증하며 결과 graph의 더 작은 `maxEdges`와 혼동하지 않는다. 이 두 capacity는 기존 공통10M work 한도나 graphic item 한도를 변경하지 않는다. Capacity를 명시해도 작업량 한도를 넘는 계산은 원자적으로 거부된다.
 - rule은 knn/radius/similarity/mst/group/sequence다. Numeric features는1–64개 field 배열, jaccard는 field 배열 또는 `{set}`, great-circle은 `[longitudeField,latitudeField]` 또는 `{longitude,latitude}`다. Metric은 euclidean/manhattan/cosine/jaccard/great-circle이며 preprocessing은 none(default)/standardize/minmax다. Standardize는 모집단 표준편차, minmax는 열 범위를 사용하고 constant column은0이다. Overflow를 피하기 위해 scale/center/spread 통계를 저장한다. Jaccard/great-circle은 preprocess:none만 허용한다.
 - Metric options.missing은 error(default)/omit-node다. 누락은 null/undefined/NaN이며 invalid nonmissing 값은 omit-node여도 오류다. Cosine options.zeroVector는 error(default)/zero-similarity이며 다른 metric에서 금지된다. Jaccard는 typed scalar 집합으로 deduplicate하며 empty-empty1/empty-nonempty0이다. Cosine similarity 범위는[-1,1], Jaccard는[0,1]이며 distance는1−similarity다. Great-circle은 longitude wrap과 latitude[-90,90], 반경6,371,008.8m의 haversine 거리다.
 - knn: options.k 기본1, positive safe integer이며 포함 node가2개 이상이면 k<n이다. 거리→typed key 순으로 정확히k개를 선택한다. symmetrize는 directed(default)/union/mutual이다. 빈/단일 node에서는 effectiveK0, self edge는 없다. 같은 점의0 weight를 보존한다.
@@ -140,7 +141,7 @@
 ### Value coverage — `createInferredGraphData`
 
 - ✅ Covered: six rules, empty/singleton and duplicate points, typed identity, missing policies and statistics, exact and seeded approximate search, candidate MST, source-bound restore and Full boundary.
-- Evidence: `test/unit/actions/data/inferred-graph.test.js`, `test/unit/grammar/graph/input.test.js`, `test/unit/grammar/graph/neighbors.test.js`, `test/unit/grammar/graph/spanning.test.js`, `test/unit/grammar/graph/structural.test.js`, `test/unit/grammar/graph/search.test.js`, `test/unit/grammar/graph/approximate.test.js`, `test/contracts/inferred-graph-types.test.js`.
+- Evidence: `test/unit/actions/data/inferred-graph.test.js`, `test/unit/actions/data/inferred-graph-limits.test.js`, `test/unit/grammar/graph/input.test.js`, `test/unit/grammar/graph/neighbors.test.js`, `test/unit/grammar/graph/spanning.test.js`, `test/unit/grammar/graph/structural.test.js`, `test/unit/grammar/graph/search.test.js`, `test/unit/grammar/graph/approximate.test.js`, `test/contracts/inferred-graph-types.test.js`.
 
 ## `editInferredGraphData`
 

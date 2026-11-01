@@ -1,3 +1,4 @@
+import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
@@ -23,7 +24,8 @@ function columnStatistics(values, method) {
 
 // The later graph authoring owner supplies extracted vectors and source identity.
 // This kernel keeps source indexes, exclusion reasons, and reusable scaled statistics.
-export function prepareGraphMetricVectors(vectors, options) {
+export function prepareGraphMetricVectors(vectors, options, limits = {}) {
+  const { maxNodes } = graphLimits(limits);
   ownRecord(options, "Graph feature options");
   rejectUnknownProperties(options, ["metric", "zeroVector", "preprocess", "missing"], "graph feature");
   options = Object.assign(Object.create(null), options);
@@ -36,7 +38,7 @@ export function prepareGraphMetricVectors(vectors, options) {
   if (["jaccard", "great-circle"].includes(policy.metric) && preprocess !== "none") {
     throw new Error("Graph preprocessing requires a numeric vector metric.");
   }
-  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes");
+  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes", maxNodes);
   ownArray(vectors, "Graph feature vectors");
   let work = 0;
   for (const value of vectors) {

@@ -1,3 +1,4 @@
+import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
@@ -41,18 +42,19 @@ export function normalizeGraphNeighborOptions(options) {
 
 // Return selected raw-source indexes and stable typed identities. The domain
 // adapter, not this pure kernel, supplies graph nodes and row provenance.
-export function inferGraphNeighbors(keys, vectors, options) {
+export function inferGraphNeighbors(keys, vectors, options, limits = {}) {
+  limits = graphLimits(limits);
   const policy = normalizeGraphNeighborOptions(options);
-  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph neighbor nodes");
+  if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph neighbor nodes", limits.maxNodes);
   ownArray(keys, "Graph node keys");
-  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes");
+  if (Array.isArray(vectors)) validateGeneratedItemLimit(vectors.length, "Graph feature nodes", limits.maxNodes);
   ownArray(vectors, "Graph feature vectors");
   if (keys.length !== vectors.length) throw new Error("Graph keys and vectors must have equal length.");
   const tokens = keys.map(key => encodeRowKey(key));
   if (new Set(tokens).size !== tokens.length) throw new Error("Graph node keys must be unique.");
   const featureOptions = Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
     .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]]));
-  const preparation = prepareGraphMetricVectors(vectors, featureOptions);
+  const preparation = prepareGraphMetricVectors(vectors, featureOptions, limits);
   const searchInput = Object.hasOwn(options, "search") ? options.search : undefined;
   const searchPolicy = normalizeGraphSearch(searchInput, policy, preparation);
   const indexes = preparation.sourceIndices, n = indexes.length;
@@ -64,7 +66,7 @@ export function inferGraphNeighbors(keys, vectors, options) {
   const metricWork = pairCount * Math.max(1, dimension) *
     (preparation.metric === "jaccard" ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);
   if (searchPolicy.algorithm === "brute-force") validateWorkLimit(featureWork + metricWork + sortWork * (policy.rule === "knn" ? n : 1), "Graph exact neighbor work");
-  if (policy.rule === "knn" && policy.directed) validateGeneratedItemLimit(n * (n < 2 ? 0 : policy.k), "Graph neighbor edges");
+  if (policy.rule === "knn" && policy.directed) validateGeneratedItemLimit(n * (n < 2 ? 0 : policy.k), "Graph neighbor edges", limits.maxEdges);
   const rankOrder = Array.from({ length: n }, (_, i) => i).sort((a, b) => compareRowKeys(keys[indexes[a]], keys[indexes[b]]));
   const ranks = new Array(n);
   rankOrder.forEach((index, rank) => { ranks[index] = rank; });
@@ -74,7 +76,7 @@ export function inferGraphNeighbors(keys, vectors, options) {
     if (!policy.directed && ranks[a] > ranks[b]) [a, b] = [b, a];
     const pairKey = `${a}:${b}`;
     if (seen.has(pairKey)) return;
-    validateGeneratedItemLimit(edges.length + 1, "Graph neighbor edges");
+    validateGeneratedItemLimit(edges.length + 1, "Graph neighbor edges", limits.maxEdges);
     seen.add(pairKey);
     const sourceIndex = indexes[a], targetIndex = indexes[b];
     edges.push({ sourceIndex, targetIndex, ...inferredGraphEdgeIdentity({ ruleId: policy.ruleId,
@@ -86,7 +88,7 @@ export function inferGraphNeighbors(keys, vectors, options) {
   if (searchPolicy.algorithm !== "brute-force") {
     const found = searchPolicy.mode === "approximate"
       ? searchApproximateGraph(preparation, policy, ranks, searchPolicy)
-      : searchExactGraph(preparation, policy, ranks, searchPolicy);
+      : searchExactGraph(preparation, policy, ranks, searchPolicy, limits);
     searchResult = found.search;
     if (neighbors) found.rows.forEach((row, i) => { neighbors[i] = row; });
     else for (const { a, b, distance } of found.pairs) { add(a, b, distance); if (policy.directed) add(b, a, distance); }

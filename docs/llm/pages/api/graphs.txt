@@ -127,6 +127,13 @@ refresh dependent inferred graphs; layout, canvas, and paint edits preserve the
 topology. `candidateGraph: null` removes a candidate input, so provide metric
 features in the same edit when switching to a complete metric MST.
 
+`maxNodes` and `maxEdges` each default to 10,000. Explicit values apply to source
+preparation, generated relationships, revisions, and restore. An MST candidate
+uses its own stored capacity; the inferred output uses its own edge limit.
+These capacities do not increase the computation work budget or graphical item
+limits. A request that exceeds either applicable limit fails without changing
+the previous program.
+
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;
 create an explicitly filtered dataset and a separate inferred graph when you need

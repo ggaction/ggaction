@@ -146,7 +146,7 @@ function validateBindings(program, resource) {
   let included, preparation;
   if (metric) {
     preparation = prepareGraphMetricVectors(data.values.map(row => graphFeatureVector(row, definition.features)), {
-      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) });
+      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) }, { maxNodes: definition.maxNodes, maxEdges: definition.maxEdges });
     const { vectors: _vectors, ...retained } = preparation;
     equal(diagnostics.preparation, retained, "feature preparation"); included = preparation.sourceIndices;
     if (diagnostics.search) {
