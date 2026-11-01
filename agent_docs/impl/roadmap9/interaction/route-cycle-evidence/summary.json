@@ -1,0 +1,90 @@
+{
+  "status": "source-and-installed-qualified-provenance-pending",
+  "base": "4333470bd",
+  "date": "2026-11-01",
+  "authorization": "../AUTHORIZATION.json remainingApproval and parent explicit bounded cycle proof approval",
+  "change": "Only a simple undirected cycle with conservatively finite total costs can prove stretch rejection along its unique alternative path. Other graphs use existing Dijkstra.",
+  "unchanged": [
+    "typed cost/lexicographic order",
+    "lock/skip and output order",
+    "all routes and endpoints",
+    "work/sample/abort limits",
+    "cost-overflow errors",
+    "algorithm version/schema/API"
+  ],
+  "checks": {
+    "sourceEachNode": 100,
+    "nodes": [
+      20,
+      22,
+      24
+    ],
+    "coverage": {
+      "owner": "src/grammar/graph/routes/edgePath.js",
+      "lines": 99.26,
+      "branches": 99.07,
+      "functions": 100
+    },
+    "boundaryDiscoveryShardingPackage": 47,
+    "installedPerNode": 5,
+    "bundlesPerNode": 6
+  },
+  "comparison": {
+    "cases": 78,
+    "routesProvenanceOptionsDiagnosticsExceptWorkPeakSamplesIdentical": true,
+    "sha256IncludingNewline": "689aaefaaccc2d0e00ee5f141d59198c7a04676ceda48a2280e352d46ad2608e",
+    "independentOracle": "Exhaustive path enumeration; square literal, disconnected/locked components, branches/self/parallel and overflow guards."
+  },
+  "diagnosticPreflight": {
+    "kind": "single-diagnostic-not-SLO",
+    "count": 10000,
+    "offset": 3333,
+    "routes": 10000,
+    "diagnostics": {
+      "work": 7457490,
+      "candidatePairs": 0,
+      "peakSamples": 140004,
+      "processingOrder": 10000,
+      "lockedEdges": [],
+      "bundledEdges": []
+    },
+    "elapsedMs": 344.666791
+  },
+  "archive": {
+    "sha256": "58a048280eae62449c52ec7d69f67e5ebdd7c82f3301d1aed788664713bc0148",
+    "entryCount": 1170,
+    "size": 1670020,
+    "unpackedSize": 7561491
+  },
+  "caps": {
+    "entries": 1170,
+    "packedBytes": 1674000,
+    "unpackedBytes": 7561500,
+    "FullGzip": 782100
+  },
+  "firstFailures": [
+    {
+      "scope": "test fixture",
+      "message": "maxSamples100 was above actual proof/output retention and did not reject",
+      "resolution": "explicit small maxSamples32 regression; original log preserved, no runtime guard change"
+    },
+    {
+      "scope": "package",
+      "message": "packed1673979 >1673300; unpacked7561491 >7559000 also measured",
+      "resolution": "minimal rounded1674000/7561500"
+    },
+    {
+      "scope": "Node20/24 bundle",
+      "message": "Full782010 >781600 after all5runtime passed per Node",
+      "resolution": "minimal782100; rechecked same18 measurements, no reinstall"
+    }
+  ],
+  "performance": "Single Node diagnostic is not P95. Same-source Chromium and exact-job effect not measured yet.",
+  "remaining": [
+    "source pin",
+    "actual Chromium DPR1/2 P95",
+    "all-item graphic limit",
+    "force/density large workloads",
+    "AT82/STEP077 incomplete"
+  ]
+}

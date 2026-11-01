@@ -178,3 +178,33 @@ Source96개×3Node와 job owner100/100/100, boundary/sharding24·discovery/packa
 12개 normal/empty/zero completion은 진단 전체를 포함하여 이전 source와 byte-identical이다.
 최초 package 상한과 최소 packed/unpacked 교정, 상세 로그는 [증거](route-job-evidence/summary.json)에
 보존한다. 이 변경은 private proof를 재사용할 뿐 새 공개 데이터나 계산 결과를 저장하지 않는다.
+
+
+## Simple cycle의 stretch 조기 증명 — 구체 구현 선택
+
+기존 remainingApproval과 root의 exact cycle 승인으로 진행한다. Native normalized graph의
+undirected connected component가 서로 다른 두 이웃만 가진 degree2 simple cycle인지 한 번
+검증한다. Self/parallel/directed/branch/chain은 기존 Dijkstra 경로다. Component별 proof는
+호출 로컬이며 node/queue/record 실제 보관량과 traversal work를 기존 budget으로 센다.
+
+후보 edge를 뺀 cycle에는 source→target 경로가 하나뿐이다. 원래 path의 순서 그대로
+nonnegative geometric lengths를 더해 maxStretch 초과가 증명되면, 이전과 같은 stretch
+fallback을 반환할 수 있다. Cost의 exponent를 geometric stretch로 혼동하지 않는다.
+전체 component의 `maxCost <= Number.MAX_VALUE/(2*nodeCount)` 보수 조건을 요구해 원래
+Dijkstra가 냈을 cost overflow를 가리지 않는다. Nonfinite stretch bound도 기존 경로로 남긴다.
+성공 bundle은 같은 component proof를 비활성화하므로 현재 skipped topology에 대한 잘못된
+증명이 없다. Disconnected cycle은 각각 독립이고 cost order·typed ties·lock·원 route order는
+변경하지 않는다. Work/sample/abort guard와 route membership을 올리거나 줄이지 않는다.
+
+Node20/22/24 각100 source 검사를 통과했고 변경 owner99.26/99.07/100으로 기존 floor를
+유지했다. 78개 directed/undirected·크기·stretch 조합은 work/peakSamples를 제외한 모든
+결과가 원 source와 byte-identical이며 독립 경로 열거와 square literal을 함께 검증한다.
+원10k/offset3333 workload는 work7,457,490·peakSamples140,004로 10k 경로를 전부 유지한다.
+344.7ms 단일 Node 진단을 SLO로 세지 않는다. 실제 Chromium 측정은 source/archive 고정 뒤다.
+처음 maxSamples100 fixture가 실제 사용량보다 커 실패하지 않은 테스트 실수와 package
+상한 초과를 [증거](route-cycle-evidence/summary.json)에 보존한다. 한도를 바꾸지 않고 작은
+명시 sample32 경계를 검증했으며 package만 실측 최소 올림했다.
+
+Same58a04828…bc0148 tar에서 Node20/22/24 각 공개5사례가 통과했다. Node20/24 Full
+gzip782010>781600 최초 실패는 보존하고 최소782100으로 같은18개 bundle 측정을 다시
+검산했다. 나머지 상한은 그대로다. 실제 P95는 아직 수행 전이다.

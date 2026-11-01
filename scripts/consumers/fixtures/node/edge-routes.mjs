@@ -58,8 +58,8 @@ export const cases = [
     assert.equal(serializeProgram(base), saved);
   } },
   { id: "edge-routes/bounded-long-paths", run() {
-    const count = 1000, nodes = Array.from({ length: count }, (_, id) => ({ id }));
-    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + 333) % count }));
+    const count = 10000, nodes = Array.from({ length: count }, (_, id) => ({ id }));
+    const edges = nodes.map(({ id }) => ({ id, source: id, target: (id + 3333) % count }));
     const positions = nodes.map(({ id }) => ({ key: id, x: 200 + 150 * Math.cos(2 * Math.PI * id / count), y: 200 + 150 * Math.sin(2 * Math.PI * id / count) }));
     const base = chart().createData({ id: "nodes", values: nodes, keyField: "id" }).createData({ id: "edges", values: edges, keyField: "id" })
       .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", edgeKey: "id", source: "source", target: "target", directed: false })
@@ -69,7 +69,7 @@ export const cases = [
     assert.ok(result.diagnostics.work <= 10_000_000);
     assert.deepEqual(result.diagnostics.lockedEdges, []); assert.deepEqual(result.diagnostics.bundledEdges, []);
     result.routes.forEach((item, index) => {
-      const source = positions[index], target = positions[(index + 333) % count];
+      const source = positions[index], target = positions[(index + 3333) % count];
       assert.equal(item.provenance.reason, "stretch");
       assert.deepEqual(item.commands, [{ op: "M", x: source.x, y: source.y }, { op: "L", x: target.x, y: target.y }]);
     });
