@@ -1,0 +1,94 @@
+{
+  "status": "tool-verified; diagnostic-only; final-100-cycle-and-performance-qualification-pending",
+  "base": "317de21f84e17162c8b422af0bbdf2e01f420f1c",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeArchive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc.tgz",
+    "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc"
+  },
+  "productRuntimeTypesPublicContractsChanged": false,
+  "canonicalPackageInputsChanged": false,
+  "sourceFiles": {
+    "scripts/benchmark-native.js": "4be3287b0f16322e152f8a4f39a417e6dc3f29056b40ead9a6fa2a51da778c17",
+    "scripts/benchmarks/routes.browser.js": "e2364026412edca805c84a4219b8413a4089b52d6ae25df542c17176242e3843",
+    "scripts/benchmarks/lifecycle.js": "6542e8715adc2f36d5731e97268dd5114fe4a7baef1d5072cf5bf1086c9c9af3",
+    "test/contracts/native-benchmark-lifecycle.test.js": "f228a8b4e3e3f201ebd5bf843271fc78d2d2d77eb1d3022d65ce5b2fa4303693"
+  },
+  "preservation": {
+    "fixture": {
+      "sha256": "3e50134b50f811d763298d397c5533f6931706ac3aede23b6d2556295e3f8396",
+      "byteIdentical": true
+    },
+    "iteration": {
+      "sha256": "7777e29dee6db59f24d2122eb68bed2d377b177bbe0f2b5b1ecbee8c6b829d36",
+      "byteIdentical": true
+    },
+    "benchmarkCase": {
+      "sha256": "0be7d82924895fb0803165a7ae81f91a9cf57d3f1afb4c7245f1fc36a57dcf6a",
+      "byteIdentical": true
+    },
+    "scripts/benchmarks/routes.worker.js": {
+      "sha256": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+      "byteIdentical": true
+    },
+    "scripts/benchmarks/workloads.browser.js": {
+      "sha256": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d",
+      "byteIdentical": true
+    },
+    "test/contracts/native-benchmark-workloads.test.js": {
+      "sha256": "70e9a7c81f35d1346b8540743bb1adbf80eb84d1215a50de1775e0ff19fe189e",
+      "byteIdentical": true
+    }
+  },
+  "checks": {
+    "newResultOracleTests": 3,
+    "unchangedNativeWorkloadTests": 7,
+    "packageAndDiscoveryTests": 23,
+    "actualBrowserDpr": [
+      1,
+      2
+    ],
+    "cyclesPerDpr": 4,
+    "completePerDpr": 2,
+    "cancelPerDpr": 2,
+    "postBootstrapHttpRequests": 0,
+    "pageOrConsoleErrors": 0,
+    "allNineResourceCountersZero": true,
+    "allTenHarnessRetentionCountersZero": true,
+    "productionWarmupsOr100CycleExecuted": false
+  },
+  "diagnosticHeap": [
+    {
+      "ratio": 1,
+      "slopeBytesPerCycle": 1417642.8,
+      "growthBytes": 6686044,
+      "heapStatus": "not-qualified-diagnostic"
+    },
+    {
+      "ratio": 2,
+      "slopeBytesPerCycle": 1423624.8,
+      "growthBytes": 6709104,
+      "heapStatus": "not-qualified-diagnostic"
+    }
+  ],
+  "thresholds": {
+    "slopeBytesPerCycle": 10240,
+    "growthBytes": 2097152
+  },
+  "firstFailures": [
+    {
+      "report": "diagnostic-1.json.gz",
+      "reason": "Lifecycle graph was missing explicit zero origin required by native node drag; fixture now states origin [0,0]."
+    },
+    {
+      "report": "diagnostic-2.json.gz",
+      "reason": "A createImageBitmap task resolved after abort; host decoder now owns and closes this late bitmap, and awaits actual decode tasks separately from the early-aborted public stage."
+    }
+  ],
+  "heapConclusion": "Cold four-cycle values exceed the final thresholds. They are preserved observations, neither a memory pass nor an established leak diagnosis. Final warmup5 plus 100 cycles on root-owned frozen candidate remains required.",
+  "remaining": [
+    "Root-coordinated final candidate production 100 cycles (50 complete / 50 cancel) at both DPRs with five warmups.",
+    "Final coordinated P95 and all original workload support / safety obligations.",
+    "AT56/AT82 and STEP071-077 qualification remain open."
+  ]
+}
