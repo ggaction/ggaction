@@ -932,12 +932,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 782,300 bytes |
-| `ggaction/basic` | 423,800 bytes |
+| `ggaction` | 782,400 bytes |
+| `ggaction/basic` | 424,000 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
-| `ggaction/animation` | 295,500 bytes |
+| `ggaction/animation` | 299,800 bytes |
 
 
 
@@ -4840,3 +4840,19 @@ symbol은 기존 circle primitive이며 guideTracks가 geometry radius를 style 
 unpacked7,619,363bytes다. 기존 한도 실패를 보존하고1179/1,688,800/7,619,400으로만
 조정한다. 동일 archive animation gzip272,457에272,500 상한을 적용하며 Full/Basic/SVG/graph/
 interaction 한도는 유지한다. 정확 증거는 [size legend qualification](impl/roadmap9/animation/size-legend-evidence/qualification.json)에 있다.
+
+### Prepared native categorical legend geometry
+
+정적 categorical action과 animation 준비는 `materialization/guides/categoricalLegend`의 명시
+layout values와 `materialization/legends`의 ordinal appearance를 공유한다. Theme pattern 선택은
+action caller에 남기고, native recipe 정규화는 `grammar/legendSymbolRecipe` 하나가 소유한다.
+`materialization/animation/categoricalLegendState`는 typed category/recipe role, native frame,
+기호 치수와 정확 font query closure를 보존한다. Shape/rect builder와 기존 lane 배치를 재생하며
+guideTracks의 같은 validate/prepare/sample 경계를 사용한다. 공개 action 또는 renderer 경계는
+추가하지 않는다. 지원·fallback의 정확 범위는 [Animation Current](contract/current/ANIMATION.md)에 둔다.
+
+원 소유자 추출과 준비 state의 추가 package entry는3개다. Node20/24의 첫 실측
+packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
+1182/1,694,300/7,641,100으로 교정한다. 최초1179entry 한도 실패는 검증 기록에 남긴다.
+동일 설치본의 Node20 Full774,919/Basic423,184/animation276,707gzip bytes에 따라
+현재 표를775,000/423,200/276,800으로만 올린다. SVG/graph/interaction 한도는 유지한다.

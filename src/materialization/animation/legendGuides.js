@@ -1,3 +1,5 @@
+import { prepareCategoricalLegendLayout, normalizeCategoricalLegendAnimationState } from "./categoricalLegendState.js";
+import { resolveCategoricalLegendAppearance } from "../legends.js";
 import { prepareSizeLegendLayout, normalizeSizeLegendAnimationState } from "./sizeLegendState.js";
 import { legendGuideItems } from "../guides/legendItems.js";
 import { resolveEffectiveLegendBlockConfig } from "../guides/legendConfig.js";
@@ -13,22 +15,26 @@ import { GRADIENT_STRIP_COUNT } from "../guides/legendGradient.js";
 export function legendAnimationItems(program, namespaces, spend) {
   const result = [], prepared = new Map(), configs = program.guideConfigs.legend ?? {};
   for (const item of legendGuideItems(program, spend)) {
-    if (!["gradient", "strokeGradient", "size"].includes(item.kind) || item.kind !== "size" && item.component === "symbol") continue;
+    const categorical = ["series", "color", "stroke"].includes(item.kind);
+    if (!categorical && (!["gradient", "strokeGradient", "size"].includes(item.kind) || item.kind !== "size" && item.component === "symbol")) continue;
     const component = `legend-${item.component}`, config = resolveEffectiveLegendBlockConfig(program, item.kind, configs[item.kind]);
-    const value = item.component === "strip" ? [item.kind, ["segment", item.line, GRADIENT_STRIP_COUNT]] : item.value;
+    const value = item.component === "strip" ? [item.kind, ["segment", item.line, GRADIENT_STRIP_COUNT]] : categorical && item.component === "symbol" ? [item.kind, [...item.value[1], item.part]] : item.value;
     const identity = { namespaces, owner: item.ownerId, component, value, line: 0 };
     if (!prepared.has(item.kind)) {
-      const simple = config.clipHeight === undefined &&
+      const appearance = categorical ? resolveCategoricalLegendAppearance(program, config) : undefined;
+      const simple = config.clipHeight === undefined && (!categorical || (!config.overflow && config.combine === undefined && config.layout === "edge" &&
+        config.symbol.layers.every(layer => layer.outline === undefined && layer.shadow === undefined) &&
+        [...appearance.colors, ...appearance.strokes].every(value => typeof value === "string"))) &&
         (item.kind !== "size" || ["linear", "log", "sqrt", "pow"].includes(program.resolvedScales[config.scale]?.type) &&
           !["series", "color", "stroke"].some(kind => configs[kind]?.target === config.target)) &&
-        config.sampling?.mode === "values" && config.representation !== "symbols" && config.border === false &&
+        (categorical || config.sampling?.mode === "values") && config.representation !== "symbols" && config.border === false &&
         config.inferredOffset === false && localLegendPlacement(config) === undefined && legendGroup(program, config.target) === undefined &&
         program.context.facetLegendIntrinsic !== true && ["left", "right", "top", "bottom"].includes(config.position) &&
         Object.values(configs).filter(other => other.position === config.position).length === 1;
       let layout;
       if (simple) {
         const { plot, canvas } = resolveContinuousBounds(program);
-        layout = (item.kind === "size" ? prepareSizeLegendLayout : prepareGradientLegendLayout)({ config, scale: program.resolvedScales[config.scale],
+        layout = (categorical ? prepareCategoricalLegendLayout : item.kind === "size" ? prepareSizeLegendLayout : prepareGradientLegendLayout)({ config, appearance, scale: program.resolvedScales[config.scale],
           frame: { plot, canvas: { width: canvas.width, height: canvas.height } }, profile: program.materializationConfigs.textMetrics,
           stripStrokeWidth: item.kind === "strokeGradient" ? legendSampleStrokeWidth(program, config.target) : 0 });
       }
@@ -36,6 +42,7 @@ export function legendAnimationItems(program, namespaces, spend) {
     }
     const layout = prepared.get(item.kind);
     const state = layout === undefined ? normalizeGuideAnimationState({ identity, reason: "guide-layout" })
+      : categorical ? normalizeCategoricalLegendAnimationState({ identity, kind: "categorical-legend", layout })
       : item.kind === "size" ? normalizeSizeLegendAnimationState({ identity, kind: "size-legend", layout })
       : normalizeLegendAnimationState({ identity, kind: "legend", layout });
     result.push({ graphicId: item.graphicId, state });

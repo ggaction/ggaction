@@ -1,6 +1,6 @@
 {
   "status": "verified-focused-size-guide-integration; final-native-qualification-pending",
-  "sourceRevision": null,
+  "sourceRevision": "178a540ce36a13877630f98a1c372c62699a7536",
   "base": "3eccdef54",
   "incoming": "9c6ec0736",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
@@ -232,5 +232,6 @@
     "Categorical/group legends and dynamic guide obligations",
     "GeoText2 and route performance integration",
     "Whole native matrix and nine final qualification commands; no STEP077 completion claimed"
-  ]
+  ],
+  "sourcePinNote": "Runtime source identified by178a540ce. Combined generated documentation/build is superseded by the categorical integration checkpoint; no retroactive clean-source execution is claimed."
 }

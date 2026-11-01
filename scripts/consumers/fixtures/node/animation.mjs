@@ -28,6 +28,31 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/categorical-legend-offline-native',async run(){
+    for(const position of ['right','bottom']){
+      const from=chart().createCanvas({width:700,height:450,margin:{top:120,bottom:120,right:220,left:150}})
+        .createData({values:[{x:1,y:1,g:'A'},{x:2,y:2,g:'B'}]}).createPointMark({id:'points'})
+        .encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'g'})
+        .createLegend({channels:['color'],offset:20,title:'Group',position,symbol:{layers:[{type:'point',size:4}]}});
+      const to=from.editCanvas({width:800}).editLegend({symbol:{layers:[{type:'point',size:8}]}});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      const symbols=frame.decisions.flatMap((d,i)=>d.kernel==='guide-geometry'&&d.role==='guide-legend-symbol'?[frame.scene.nodes[i]]:[]);
+      assert.equal(symbols.length,2);assert.equal(symbols[0].properties.radius,6);
+      const rebased=planTransition({from:frame,to,options:{durationMs:100,easing:'linear'}});
+      assert.strictEqual(sampleTransition(rebased,0),frame);
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frames:exportAnimationFrames(deserializeAnimation(text).plan,{timesMs:[0,25,50,75,100]}),network}));
+      `],{input:serializeAnimation(rebased),encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);
+      assert.deepEqual(JSON.parse(child.stdout),{frames:JSON.parse(JSON.stringify(exportAnimationFrames(rebased,{timesMs:[0,25,50,75,100]}))),network:0});
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+      assert.match(renderToSVG(frame),/<circle/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/size-legend-offline-native',async run(){
     for(const position of ['right','bottom']){
       const from=chart().createCanvas({width:700,height:450,margin:{top:120,bottom:120,right:220,left:150}})

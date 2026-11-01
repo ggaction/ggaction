@@ -1602,6 +1602,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/categorical-legend-offline-native",
+        "statements": 1
+      },
+      {
         "id": "animation/size-legend-offline-native",
         "statements": 1
       },

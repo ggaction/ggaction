@@ -9,7 +9,7 @@ import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../../../
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../../core/vocabulary.js";
-import { normalizeRecipe } from "./recipes.js";
+import { normalizeRecipe } from "../../../../grammar/legendSymbolRecipe.js";
 import {
   nonEmptyString,
   nonNegative,

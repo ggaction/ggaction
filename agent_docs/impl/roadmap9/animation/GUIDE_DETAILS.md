@@ -210,3 +210,22 @@ size sample + native linear/log/sqrt/pow 면적 mapping + 기존 measured item l
 Guide kernel은 closed size state 추가를 나타내는 `native-guide-values@5`로 올린다. 전역
 transition/timeline version은 이 branch에서 변경하지 않는다. 범주형/그룹·자동 sample·border/
 clip/inferred clearance·동적 wrap/skip은 현재 slice의 완료로 집계하지 않으며 후속 구현한다.
+
+## 범주형 범례의 native 의미 확장
+
+같은 `remainingApproval`에 따라 범주형 독립 edge block을 다음 coherent slice로 연결한다.
+기존 정적 layout의 `resolveCategoricalLegendLayoutValues`, effective appearance mapping,
+`normalizeRecipe`를 순수 owner로 추출하고 action의 쓰기 순서·trace는 유지한다. Typed state는
+frame, resolved categorical config, raw domain, native symbol recipe/shape, 필요한 font query
+closure를 보존한다. 값과 line/point/swatch 역할이 key이며 표시 문자열이나 행 순번은 아니다.
+
+닫힌 상태 추가로 guide manifest만 `native-guide-values@6`이다. 전역 transition/timeline 버전과
+shared4는 변경하지 않는다. Recipe의 기존 block override가 만든 internal line stroke/swatch
+fill은 같은 validator에서 인정하되 새 public symbol 옵션을 만들지 않는다. 동일한 domain/순서,
+shape·문자열·font·layout policy에서 frame/offset/간격/기호 크기를 보간하고 native layout을
+다시 계산한다. Native fit 실패는 명시 fade이며 fit을 위해 값이나 크기를 임의로 줄이지 않는다.
+
+숨김·hard-break label, 네 edge, layered symbol, shape/stroke 채널, nested scope와 current-frame
+rebase/offline forward proof를 검사한다. 문자열/font/shape/policy 변경, overflow/clip/border,
+그룹 또는 여러 block의 종속 배치와 inferred clearance는 후속 범위이며 현재 typed 완료로
+세지 않는다. Canonical native layout/appearance는 source와 caller 입력을 바꾸지 않는다.

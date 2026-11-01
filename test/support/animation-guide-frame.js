@@ -1,13 +1,23 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout", "size-legend", "categorical-legend"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
     .createPointMark({ id: "m", opacity: 0 });
   let to, points;
-  if (variant === "size-legend") {
+  if (variant === "categorical-legend") {
+    from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
+      .createData({ values: [{ x: 0, y: 0, category: "A" }, { x: 10, y: 10, category: "A" }] }).createPointMark({ id: "m", opacity: 0 })
+      .encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeColor({ field: "category", scale: { range: ["red"] } })
+      .createLegend({ channels: ["color"], offset: 20, title: false,
+        symbol: { layers: [{ type: "swatch", width: 10, height: 10, stroke: "none" }] } })
+      .editLegendBlock({ target: "m", channel: "color", labelMap: [{ value: "A", label: "" }] });
+    to = from.editLegend({ symbol: { layers: [{ type: "swatch", width: 30, height: 30, stroke: "none" }] } });
+    points = [[210, 50], [240, 50]];
+  } else if (variant === "size-legend") {
     from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
       .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ id: "m", opacity: 0 })
       .encodeX({ field: "x" }).encodeY({ field: "y" })
