@@ -531,6 +531,18 @@ conditional recipes), and the geographic field renderer/installed consumers.
 - Create longitude and latitude lines. Omission uses documented inference and defaults.
 - stepDeg defaults to[10,10], extentDeg to[[-180,-80],[180,80]], precisionDeg to2.5. Steps are(0,180], precision is(0,10], corners are strictly ordered within longitude±180/latitude±90. Lines occur at integer step multiples; the duplicate180 meridian is omitted for a full world. No geometry resource is synthesized.
 
+### Paired analytical consumers
+
+`getMarkItems`의 graticule item은 원 typed `axis`/numeric `value`와 native key를 노출한다.
+이 값을 명시 dataset으로 복사한 analytical child에서 field encoding·scale·axis/legend를
+사용할 수 있다. 해당 guide와 scale은 analytical child 소유이며 graticule의 projection
+geometry에 Cartesian encoding을 추가하지 않는다. Projection edit는 원값/key를 보존하고,
+step edit는 새 원값/item을 만든다. 둘 다 기존 analytical snapshot을 자동 갱신하지 않는다.
+호스트가 새 `getMarkItems` snapshot을 명시 `reviseData`해야 하며 그 dataset row lineage는
+새 분석 dataset의 것이다. 공개 예제 `examples/geographic-marks/comparison.js`와
+`test/unit/geo/graticule-composition.test.js`, `test/browser/graticule-composition.browser.js`가
+값·격리·revision·codec와 실제 Canvas/SVG를 검증한다.
+
 ### Formal values — `createGraticule`
 
 - Implemented: `createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram`.

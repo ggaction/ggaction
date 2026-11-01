@@ -126,3 +126,39 @@ The `createGeographicMarks("grid-labels")` variant labels the existing graticule
 so only −40, 0 and 40 appear above the meridian centroids. Both variants preserve
 source feature identity through projection edits and reuse the native Text
 style, font and collision-layout actions. See [geographic label rules](../api/marks/labels.md#geographic-sources).
+
+## Compare graticule degrees in a companion chart
+
+Read each graticule item's raw `axis` and numeric `value` with `getMarkItems`.
+An explicit analytical child can map those values to positions, colors, an axis
+and a legend. These guides describe that child: they do not turn the graticule's
+projection geometry into Cartesian field encodings or scales.
+
+Copy [comparison.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/geographic-marks/comparison.js),
+[program.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/geographic-marks/program.js)
+and [fixture.js](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/geographic-marks/fixture.js)
+into a `geographic-marks` folder beside this module, using the helpers' public
+`ggaction` and `ggaction/inspection` imports.
+
+```javascript
+import { createGraticuleComparison, refreshGraticuleComparison } from './geographic-marks/comparison.js';
+import { renderToSVG } from 'ggaction/svg';
+
+const comparison = createGraticuleComparison();
+const analytical = comparison
+  .encodeColor({ target: { childPath: ['analysis'], id: 'values' }, field: 'sign' })
+  .editScale({ target: { childPath: ['analysis'] }, id: 'degrees', domain: [-80, 80] });
+const changedGrid = analytical
+  .editProjection({ target: { childPath: ['grid'], id: 'map' }, translatePx: [325, 247] })
+  .editGraticule({ target: { childPath: ['grid'], id: 'graticule' }, stepDeg: [20, 20] });
+const refreshed = refreshGraticuleComparison(changedGrid);
+const svg = renderToSVG(refreshed);
+```
+
+The initial six items contain longitudes −40, 0, 40 and latitudes −20, 0, 20.
+The step edit adds longitudes −20 and 20. Projection movement preserves these
+raw degree values and their native keys. Analytical edits leave the grid child
+unchanged; grid edits leave the analytical snapshot unchanged until the explicit
+refresh. That refresh calls `getMarkItems` again and `reviseData` on the analytical
+child. Its new dataset rows are an explicit snapshot, not an invented geographic
+source-row reference or an automatic live link.

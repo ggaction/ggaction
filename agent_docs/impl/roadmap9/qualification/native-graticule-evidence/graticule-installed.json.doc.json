@@ -1,0 +1,11 @@
+[
+  {
+    "name": "tutorials-geographic-marks--graticule-analytical-comparison",
+    "id": "graticule-analytical-comparison",
+    "file": "tutorials/geographic-marks.md",
+    "sha256": "e337e5e72efd4f1818f81be76f0acb88ae5940c2a5fcf48314e9acda3af9b847",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 781.274375
+  }
+]

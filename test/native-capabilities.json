@@ -7410,6 +7410,39 @@
           "tests": [
             "test/unit/geo/mark-consumers.test.js"
           ]
+        },
+        "encodings": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
+          ]
+        },
+        "scales": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
+          ]
+        },
+        "guides": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/COMPOSITION.md"
+          ],
+          "tests": [
+            "test/unit/geo/graticule-composition.test.js",
+            "test/browser/graticule-composition.browser.js"
+          ]
         }
       }
     },

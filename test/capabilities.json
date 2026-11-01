@@ -712,6 +712,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-geographic-camera.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graticule-composition.browser.js"
       }
     ],
     "grammar": [
