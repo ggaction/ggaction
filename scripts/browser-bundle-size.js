@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 784_300, // Explicit point capacity: Node20/24 784,297 gzip bytes.
+  ggaction: 785_500, // Integrated bounded inference: Node20 785,427 gzip bytes.
   "ggaction/basic": 424_700, // Explicit point capacity: Node20/24 424,647 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,

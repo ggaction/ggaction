@@ -1,0 +1,5 @@
+export interface GraphInferenceExecution {
+  readonly policy: "bounded-inference@1";
+  readonly maxWork: number;
+  readonly maxBytes: number;
+}

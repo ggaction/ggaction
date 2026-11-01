@@ -1,9 +1,10 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
 import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
@@ -42,7 +43,8 @@ export function normalizeGraphNeighborOptions(options) {
 
 // Return selected raw-source indexes and stable typed identities. The domain
 // adapter, not this pure kernel, supplies graph nodes and row provenance.
-export function inferGraphNeighbors(keys, vectors, options, limits = {}) {
+export function inferGraphNeighbors(keys, vectors, options, limits = {}, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   limits = graphLimits(limits);
   const policy = normalizeGraphNeighborOptions(options);
   if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph neighbor nodes", limits.maxNodes);
@@ -54,7 +56,7 @@ export function inferGraphNeighbors(keys, vectors, options, limits = {}) {
   if (new Set(tokens).size !== tokens.length) throw new Error("Graph node keys must be unique.");
   const featureOptions = Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
     .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]]));
-  const preparation = prepareGraphMetricVectors(vectors, featureOptions, limits);
+  const preparation = prepareGraphMetricVectors(vectors, featureOptions, limits, execution);
   const searchInput = Object.hasOwn(options, "search") ? options.search : undefined;
   const searchPolicy = normalizeGraphSearch(searchInput, policy, preparation);
   const indexes = preparation.sourceIndices, n = indexes.length;
@@ -87,8 +89,8 @@ export function inferGraphNeighbors(keys, vectors, options, limits = {}) {
   let searchResult;
   if (searchPolicy.algorithm !== "brute-force") {
     const found = searchPolicy.mode === "approximate"
-      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy)
-      : searchExactGraph(preparation, policy, ranks, searchPolicy, limits);
+      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy, execution)
+      : searchExactGraph(preparation, policy, ranks, searchPolicy, limits, execution);
     searchResult = found.search;
     if (neighbors) found.rows.forEach((row, i) => { neighbors[i] = row; });
     else for (const { a, b, distance } of found.pairs) { add(a, b, distance); if (policy.directed) add(b, a, distance); }

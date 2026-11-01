@@ -1,9 +1,10 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { groupingIdentity } from "../rowLineage.js";
 import { deriveSortedRows, normalizeSortTransform } from "../sort.js";
 import { normalizeTemporalValue } from "../scales/fields.js";
@@ -29,10 +30,11 @@ export function normalizeGraphStructuralOptions(input, sequence) {
   return { ruleId, missing, mode, ...(hasKey ? { hubKey: options.hubKey } : {}), ...(hasHubs ? { hubs: options.hubs } : {}) };
 }
 
-function prepare(keys, tuples, missing, limits) {
+function prepare(keys, tuples, missing, limits, execution) {
   if (Array.isArray(keys)) validateGeneratedItemLimit(keys.length, "Graph structural nodes", limits.maxNodes);
   ownArray(keys, "Graph structural keys"); ownArray(tuples, "Graph grouping tuples");
   if (keys.length !== tuples.length) throw new Error("Graph keys and grouping tuples must have equal length.");
+  const validateWorkLimit = inferenceWorkValidator(execution);
   let work = keys.length * (64 + 8 * Math.ceil(Math.log2(Math.max(2, keys.length))));
   const charge = value => {
     if (typeof value === "string") work += value.length * 8;
@@ -71,21 +73,22 @@ function finish(keys, edges, preparation, options) {
   return cloneAndFreeze({ edges, sourceIndices: preparation.sourceIndices, omitted: preparation.omitted, options });
 }
 
-function chargeValues(preparation, values) {
+function chargeValues(preparation, values, validateWorkLimit) {
   ownArray(values, "Graph structural values");
   for (const value of values) preparation.work += typeof value === "string" ? value.length * 8 : 8;
   validateWorkLimit(preparation.work, "Graph structural work");
 }
 
-function chargeKey(preparation, key) {
+function chargeKey(preparation, key, validateWorkLimit) {
   if (Array.isArray(key) && key.length > 64) throw new RangeError("Graph hub key tuple is too wide.");
-  chargeValues(preparation, Array.isArray(key) ? key : [key]);
+  chargeValues(preparation, Array.isArray(key) ? key : [key], validateWorkLimit);
 }
 
-export function resolveGraphGroupHubs(options, preparation) {
+export function resolveGraphGroupHubs(options, preparation, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const hubs = new Map(), indexes = new Map(preparation.tokens.map((key, index) => [key, index]));
   if (Object.hasOwn(options, "hubKey")) {
-    chargeKey(preparation, options.hubKey);
+    chargeKey(preparation, options.hubKey, validateWorkLimit);
     const index = indexes.get(encodeRowKey(options.hubKey));
     if (index === undefined || !preparation.sourceIndices.includes(index)) throw new Error("Graph hub must be an included node.");
     hubs.set(preparation.groupKeys[index], index);
@@ -99,8 +102,8 @@ export function resolveGraphGroupHubs(options, preparation) {
       if (!["group", "key"].every(key => Object.hasOwn(entry, key))) throw new TypeError("Graph group hubs require own group and key.");
       if (!Array.isArray(entry.group) || entry.group.length !== preparation.width) throw new Error("Graph hub grouping tuple has invalid length.");
       ownArray(entry.group, "Graph hub group");
-      chargeValues(preparation, entry.group);
-      chargeKey(preparation, entry.key);
+      chargeValues(preparation, entry.group, validateWorkLimit);
+      chargeKey(preparation, entry.key, validateWorkLimit);
       const group = groupingIdentity(entry.group), index = indexes.get(encodeRowKey(entry.key));
       if (!preparation.groups.has(group) || hubs.has(group) || !preparation.groups.get(group).includes(index)) throw new Error("Graph hubs must uniquely select a member of each named group.");
       hubs.set(group, index);
@@ -109,10 +112,11 @@ export function resolveGraphGroupHubs(options, preparation) {
   return hubs;
 }
 
-export function inferGraphGroups(keys, tuples, input, limits = {}) {
+export function inferGraphGroups(keys, tuples, input, limits = {}, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   limits = graphLimits(limits);
-  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing, limits);
-  const hubs = resolveGraphGroupHubs(options, preparation);
+  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing, limits, execution);
+  const hubs = resolveGraphGroupHubs(options, preparation, execution);
   let count = 0, identityWork = 0;
   for (const [group, members] of preparation.groups) {
     if (options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new Error("Graph star requires an explicit hub for every non-singleton group.");
@@ -133,12 +137,13 @@ export function inferGraphGroups(keys, tuples, input, limits = {}) {
   return finish(keys, edges, preparation, options);
 }
 
-export function inferGraphSequence(keys, tuples, orderValues, input, limits = {}) {
+export function inferGraphSequence(keys, tuples, orderValues, input, limits = {}, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   limits = graphLimits(limits);
-  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing, limits);
+  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing, limits, execution);
   ownArray(orderValues, "Graph sequence order");
   if (orderValues.length !== keys.length) throw new Error("Graph sequence order and keys must have equal length.");
-  chargeValues(preparation, orderValues);
+  chargeValues(preparation, orderValues, validateWorkLimit);
   const sort = normalizeSortTransform({ sortBy: [{ field: "value", ...(Object.hasOwn(options, "temporalUnit") ? { temporalUnit: options.temporalUnit } : {}) }] });
   const present = [], included = new Set(preparation.sourceIndices);
   orderValues.forEach((value, index) => {

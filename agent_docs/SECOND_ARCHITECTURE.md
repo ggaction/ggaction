@@ -284,6 +284,11 @@ graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphDat
 Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→inferred graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
 `materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference는 Full의 `actions/graphs/inference.js`가 명시적으로 호출한다. 입력 dataset과 선택 candidate graph의 typed revision을 저장하며, source 갱신은 공통 resource DAG 순서로 각 graph/layout을 한 번씩 갱신한다.
 `materialization/graph/inferredState.js`는 저장 model·source binding·진단의 정합성을 검사하며 pair search나 spanning solver를 재실행하지 않는다. Prepared resource context는 exact receiver/primitive argument에만 graph와 data-reference 교체 권한을 결박하고 작업 종료 때 제거한다.
+명시 inference 실행 정책은 `grammar/graph/inferenceBudget.js`가 닫힌 값·owner별 work validator와
+정규 값 인코딩 byte preflight를 소유한다. Inference adapter가 정책을 numeric/model/복원 검증에
+명시 전달하며, 일반 model/layout/route 호출과 전역 한도는 바꾸지 않는다. 별도 `inferenceResult.js`는
+이미 model에 들어간 간선과 source에서 복구하는 prepared vectors를 중복 저장하지 않는 정규 결과를
+소유한다. 입력/결과 byte 한도는 JS heap 보장과 다르며 비동기 worker는 후행 경계다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
@@ -981,7 +986,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 784,300 bytes |
+| `ggaction` | 785,500 bytes |
 | `ggaction/basic` | 424,700 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
@@ -4964,3 +4969,11 @@ Node20/24에서 1,787,562 packed bytes, Node22에서 1,784,332 bytes, 공통 1,2
 Node20/24 135,989 / Node22 135,493 gzip bytes로 현재 상한은 136,000이다. 실제 native
 region forward/inverse·scoped clip·category assignment 공유를 포함한 213개 browser modules이며
 나머지 다섯 entry 크기는 기준과 같다. 첫 상한 실패와 동일 저장 측정의 재검증을 구분해 보존한다.
+
+명시 inferred execution은 `grammar/graph/inferenceBudget.js`에서 기존 owner별 work 단위와
+encoded input/result byte 한도를 소유한다. 기본10M과 일반 model/layout/graphic/route 경계는 그대로다.
+`inferenceResult.js`는 기존 result/diagnostics 조립을 공유하며 새 worker나 public entry를 추가하지 않는다.
+새2owner를 포함한 canonical staging은1,241entries /1,780,068packed /8,031,328unpacked로,
+최소cap1,241/1,780,500/8,031,400을 적용한다. Full gzip Node20 실측785,207에785,300cap이며
+다른 entry는 기존 한도를 유지한다. 입력 전체 원행과100k간선을 보존한 증거 및 아직 미구현 worker는
+[inference execution 기록](impl/roadmap9/qualification/inference-execution.md)을 따른다.

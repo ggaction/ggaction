@@ -147,6 +147,21 @@ These capacities do not increase the computation work budget or graphical item
 limits. A request that exceeds either applicable limit fails without changing
 the previous program.
 
+For an explicitly larger inference workload, set
+`execution: { policy: "bounded-inference@1", maxWork: 100000000, maxBytes: 134217728 }`.
+Both limits must be positive safe integers, at most the values shown. `maxWork`
+uses the existing work units within each inference operation; it is not a count
+of CPU instructions or a time guarantee. Omitting `execution` retains the
+original 10-million-unit limit. The definition, edits, source revisions, and
+restore preserve the explicit policy. A candidate graph is validated with its
+own stored policy.
+
+`maxBytes` bounds the encoded input and normalized result separately, including
+typed values and diagnostics. It does not bound total JavaScript heap use.
+Graphical item limits and layout or route computation limits remain separate.
+Large inference results do not imply support for rendering the entire graph or
+meeting a latency target. Inference remains synchronous in this API.
+
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;
 create an explicitly filtered dataset and a separate inferred graph when you need

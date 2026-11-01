@@ -676,6 +676,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `maxNodes` | Optional / branch-dependent | `number \| undefined` |
 | `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `execution` | Optional / branch-dependent | `GraphInferenceExecution \| undefined` |
 | `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
 | `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
 | `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
@@ -686,7 +687,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,

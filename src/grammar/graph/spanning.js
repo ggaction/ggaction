@@ -1,9 +1,10 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { stableFiniteSum } from "../numeric.js";
 import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
@@ -30,7 +31,8 @@ function nodeRanks(keys, limits) {
   return { ranks, ordered };
 }
 
-function candidateWork(nodes, candidates, prior = 0) {
+function candidateWork(nodes, candidates, prior = 0, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const log = Math.ceil(Math.log2(Math.max(candidates, 2)));
   validateWorkLimit(prior + nodes * 32 + candidates * (24 + log), "Graph spanning work");
 }
@@ -72,10 +74,10 @@ function select(keys, candidates, order, configuration, limits) {
 
 // Explicit weighted candidates may contain parallel connections or self loops.
 // Kruskal selects only non-self connections; the domain adapter supplies lineage.
-export function selectGraphSpanningForest(keys, candidates, options, limits = {}) {
+export function selectGraphSpanningForest(keys, candidates, options, limits = {}, execution) {
   limits = graphLimits(limits);
   const configuration = normalizeGraphSpanningOptions(options, false), order = nodeRanks(keys, limits);
-  if (Array.isArray(candidates)) candidateWork(keys.length, candidates.length);
+  if (Array.isArray(candidates)) candidateWork(keys.length, candidates.length, 0, execution);
   ownArray(candidates, "Graph spanning candidates");
   const validated = candidates.map(input => {
     ownRecord(input, "Graph spanning candidate");
@@ -93,7 +95,7 @@ export function selectGraphSpanningForest(keys, candidates, options, limits = {}
 
 // Complete metric graphs share the feature policy with neighbor inference.
 // Source indexes are restored only after selecting included nodes.
-export function inferGraphMst(keys, vectors, input, limits = {}) {
+export function inferGraphMst(keys, vectors, input, limits = {}, execution) {
   limits = graphLimits(limits);
   const configuration = normalizeGraphSpanningOptions(input, true), { options } = configuration;
   nodeRanks(keys, limits);
@@ -101,7 +103,7 @@ export function inferGraphMst(keys, vectors, input, limits = {}) {
   ownArray(vectors, "Graph spanning vectors");
   if (keys.length !== vectors.length) throw new Error("Graph keys and vectors must have equal length.");
   const preparation = prepareGraphMetricVectors(vectors, Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
-    .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]])), limits);
+    .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]])), limits, execution);
   const indexes = preparation.sourceIndices, n = indexes.length;
   const includedKeys = indexes.map(i => keys[i]), order = nodeRanks(includedKeys, limits);
   const pairCount = n < 2 ? 0 : n * (n - 1) / 2;
@@ -109,7 +111,7 @@ export function inferGraphMst(keys, vectors, input, limits = {}) {
   const featureWork = vectors.reduce((total, vector) => total + vector.length * 8, 0);
   const metricWork = pairCount * Math.max(1, dimension) * (preparation.metric === "jaccard"
     ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);
-  candidateWork(n, pairCount, featureWork + metricWork);
+  candidateWork(n, pairCount, featureWork + metricWork, execution);
   const metricOptions = { metric: preparation.metric,
     ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
   const candidates = [];

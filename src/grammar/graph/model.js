@@ -1,6 +1,7 @@
+import { inferenceWorkValidator, validateInferenceBytes } from "./inferenceBudget.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 
 export function graphLimits(options = {}) {
   ownRecord(options, "Graph limits");
@@ -52,10 +53,11 @@ function sourceRows(value, charge) {
   }
 }
 
-function records(nodes, edges, directed, selfLoops, limits, priorWork = 0) {
+function records(nodes, edges, directed, selfLoops, limits, priorWork = 0, execution) {
   if (typeof directed !== "boolean" || typeof selfLoops !== "boolean") throw new TypeError("Graph directed and selfLoops must be explicit booleans.");
   if (!Number.isSafeInteger(priorWork) || priorWork < 0) throw new RangeError("Graph prior work must be a nonnegative safe integer.");
   let work = priorWork;
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const charge = amount => validateWorkLimit(work += amount, "Graph model work");
   for (const [values, maximum, label] of [[nodes, limits.maxNodes, "nodes"], [edges, limits.maxEdges, "edges"]]) {
     if (Array.isArray(values)) { validateGeneratedItemLimit(values.length, `Graph ${label}`, maximum); charge(values.length * 48); }
@@ -104,21 +106,24 @@ function records(nodes, edges, directed, selfLoops, limits, priorWork = 0) {
 }
 
 // This explicit token boundary is shared by observed normalization and layouts.
-// It accepts no resources, datasets, encoded-key parser or inference policy.
-export function createGraphModel(nodes, edges, options, priorWork = 0) {
+// It accepts no resources, datasets or encoded-key parser. Only the inference
+// adapter supplies an explicit execution policy; other callers retain 10M.
+export function createGraphModel(nodes, edges, options, priorWork = 0, execution) {
   ownRecord(options, "Graph model options");
   requiredFields(options, ["directed", "selfLoops"], "Graph model options");
   const { directed, selfLoops, ...limitOptions } = options;
-  const resolved = graphLimits(limitOptions), indexed = records(nodes, edges, directed, selfLoops, resolved, priorWork);
-  return cloneAndFreeze({ nodes, edges, directed, selfLoops, adjacency: indexed.adjacency });
+  const resolved = graphLimits(limitOptions), indexed = records(nodes, edges, directed, selfLoops, resolved, priorWork, execution);
+  const model = { nodes, edges, directed, selfLoops, adjacency: indexed.adjacency };
+  validateInferenceBytes(model, execution, "Graph inference model bytes");
+  return cloneAndFreeze(model);
 }
 
-export function indexGraphModel(model, options = {}) {
+export function indexGraphModel(model, options = {}, execution) {
   const limits = graphLimits(options);
   ownRecord(model, "Graph model");
   rejectUnknownProperties(model, ["nodes", "edges", "directed", "selfLoops", "adjacency"], "graph model");
   requiredFields(model, ["nodes", "edges", "directed", "selfLoops", "adjacency"], "Graph model");
-  const indexed = records(model.nodes, model.edges, model.directed, model.selfLoops, limits);
+  const indexed = records(model.nodes, model.edges, model.directed, model.selfLoops, limits, 0, execution);
   if (Array.isArray(model.adjacency)) indexed.charge(model.adjacency.length * 8);
   ownArray(model.adjacency, "Graph adjacency");
   if (model.adjacency.length !== model.nodes.length) throw new Error("Graph adjacency must match its nodes.");

@@ -1798,9 +1798,15 @@ export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?:
   { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
     readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
 export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
+export interface GraphInferenceExecution {
+  readonly policy: "bounded-inference@1";
+  readonly maxWork: number;
+  readonly maxBytes: number;
+}
 export interface InferredGraphSource {
   readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
   readonly maxNodes?: number; readonly maxEdges?: number;
+  readonly execution?: GraphInferenceExecution;
 }
 export type GraphMetricDefinition =
   { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |

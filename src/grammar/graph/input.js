@@ -1,3 +1,5 @@
+import { normalizeInferenceExecution, validateInferenceBytes } from "./inferenceBudget.js";
+import { resolvedInferenceResult } from "./inferenceResult.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
@@ -11,14 +13,15 @@ import { graphFields, graphKeyField, graphSourceRows, graphSourceKey, graphField
   graphFeatureFields, graphFeatureVector } from "./fields.js";
 
 export const OBSERVED_GRAPH_FIELDS = Object.freeze(["nodeKey", "source", "target", "edgeKey", "weight", "attributes", "directed", "selfLoops", "maxNodes", "maxEdges"]);
-export const INFERRED_GRAPH_FIELDS = Object.freeze(["nodeKey", "ruleId", "rule", "features", "metric", "preprocess", "attributes", "options", "maxNodes", "maxEdges"]);
+export const INFERRED_GRAPH_FIELDS = Object.freeze(["nodeKey", "ruleId", "rule", "features", "metric", "preprocess", "attributes", "options", "maxNodes", "maxEdges", "execution"]);
 
 export function normalizeGraphSourceOptions(input, allowed) {
   ownRecord(input, "Graph source options");
   rejectUnknownProperties(input, allowed, "graph source");
   if (Object.values(input).some(value => value === undefined)) throw new TypeError("Graph source options cannot be undefined.");
+  const execution = Object.hasOwn(input, "execution") ? { execution: normalizeInferenceExecution(input.execution) } : {};
   const limits = graphLimits(Object.fromEntries(["maxNodes", "maxEdges"].filter(key => Object.hasOwn(input, key)).map(key => [key, input[key]])));
-  return { ...input, nodeKey: graphKeyField(input.nodeKey, "Graph nodeKey"),
+  return { ...input, ...execution, nodeKey: graphKeyField(input.nodeKey, "Graph nodeKey"),
     attributes: graphFields(Object.hasOwn(input, "attributes") ? input.attributes : [], "Graph attributes", { empty: true }), ...limits };
 }
 
@@ -50,29 +53,29 @@ export function resolveObservedGraphInput(nodeRows, edgeRows, input, occurrenceK
     selfLoops: options.selfLoops, maxNodes: options.maxNodes, maxEdges: options.maxEdges }) });
 }
 
-function metricInput(rows, options) {
+function metricInput(rows, options, execution) {
   options.features = graphFeatureFields(options.features, options.metric);
-  return rows.map(row => graphFeatureVector(row, options.features));
+  return rows.map(row => graphFeatureVector(row, options.features, execution));
 }
 
-function structuralInput(rows, keys, options, limits) {
+function structuralInput(rows, keys, options, limits, execution) {
   for (const name of ["features", "metric", "preprocess"]) if (Object.hasOwn(options, name)) throw new TypeError(`Graph ${options.rule} does not use ${name}.`);
   const fields = options.rule === "group" ? graphFields(options.options.fields, "Graph group fields")
     : graphFields(options.options.groupBy ?? [], "Graph sequence groups", { empty: true });
   const { fields: _fields, groupBy: _groupBy, orderField, ...policy } = options.options;
   if (options.rule === "group") {
     if (Object.hasOwn(options.options, "groupBy") || Object.hasOwn(options.options, "orderField")) throw new TypeError("Graph group does not use sequence fields.");
-    return inferGraphGroups(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))), { ...policy, ruleId: options.ruleId }, limits);
+    return inferGraphGroups(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))), { ...policy, ruleId: options.ruleId }, limits, execution);
   }
   if (Object.hasOwn(options.options, "fields")) throw new TypeError("Graph sequence does not use group fields.");
   const order = graphKeyField(orderField, "Graph sequence orderField");
   if (Array.isArray(order)) throw new TypeError("Graph sequence orderField requires one field.");
   return inferGraphSequence(keys, rows.map(row => fields.map(field => graphFieldValue(row, field))),
-    rows.map(row => graphFieldValue(row, order)), { ...policy, ruleId: options.ruleId }, limits);
+    rows.map(row => graphFieldValue(row, order)), { ...policy, ruleId: options.ruleId }, limits, execution);
 }
 
-function candidateInput(keys, candidate, limits) {
-  indexGraphModel(candidate, limits);
+function candidateInput(keys, candidate, limits, execution) {
+  indexGraphModel(candidate, limits, execution);
   if (candidate.directed) throw new TypeError("Graph MST candidates must be undirected.");
   const indexes = new Map(keys.map((key, index) => [encodeRowKey(key), index]));
   if (candidate.nodes.some(node => !indexes.has(node.key))) throw new TypeError("Graph MST candidate nodes must belong to the source data.");
@@ -81,12 +84,13 @@ function candidateInput(keys, candidate, limits) {
 
 // Pure field adapter: every topology is computed by its rule owner, then lowered
 // once into the common graph model. Resource identity and revision stay outside.
-export function resolveInferredGraphInput(rows, input, candidate, candidateLimits) {
+export function resolveInferredGraphInput(rows, input, candidate, candidateLimits, candidateExecution) {
   const options = normalizeGraphSourceOptions(input, INFERRED_GRAPH_FIELDS);
-  const limits = { maxNodes: options.maxNodes, maxEdges: options.maxEdges };
-  graphSourceRows(rows, options.maxNodes, "Graph source rows");
+  const limits = { maxNodes: options.maxNodes, maxEdges: options.maxEdges }, execution = Object.hasOwn(options, "execution") ? options.execution : undefined;
   ownRecord(Object.hasOwn(options, "options") ? options.options : {}, "Graph inference options");
   options.options = { ...options.options };
+  validateInferenceBytes({ rows, definition: options, ...(candidate === undefined ? {} : { candidate, candidateLimits }) }, execution, "Graph inference input bytes");
+  graphSourceRows(rows, options.maxNodes, "Graph source rows", execution);
   for (const key of ["ruleId", "rule", "metric", "features", "preprocess"]) {
     if (Object.hasOwn(options.options, key)) throw new TypeError(`Graph ${key} belongs to the source definition.`);
   }
@@ -97,14 +101,14 @@ export function resolveInferredGraphInput(rows, input, candidate, candidateLimit
   if (candidate !== undefined) {
     if (options.rule !== "mst") throw new TypeError("Graph candidates require MST inference.");
     for (const field of ["metric", "features", "preprocess"]) if (Object.hasOwn(options, field)) throw new TypeError("Graph candidate MST cannot also use metric features.");
-    inferred = selectGraphSpanningForest(keys, candidateInput(keys, candidate, candidateLimits), { ...options.options, ruleId: options.ruleId }, limits);
-  } else if (structural) inferred = structuralInput(rows, keys, options, limits);
+    inferred = selectGraphSpanningForest(keys, candidateInput(keys, candidate, candidateLimits, candidateExecution), { ...options.options, ruleId: options.ruleId }, limits, execution);
+  } else if (structural) inferred = structuralInput(rows, keys, options, limits, execution);
   else {
-    const vectors = metricInput(rows, options);
+    const vectors = metricInput(rows, options, execution);
     const policy = { ...options.options, ruleId: options.ruleId, metric: options.metric,
       ...(Object.hasOwn(options, "preprocess") ? { preprocess: options.preprocess } : {}) };
-    inferred = options.rule === "mst" ? inferGraphMst(keys, vectors, policy, limits)
-      : inferGraphNeighbors(keys, vectors, { ...policy, rule: options.rule }, limits);
+    inferred = options.rule === "mst" ? inferGraphMst(keys, vectors, policy, limits, execution)
+      : inferGraphNeighbors(keys, vectors, { ...policy, rule: options.rule }, limits, execution);
   }
   const included = inferred.preparation?.sourceIndices ?? inferred.sourceIndices ?? rows.map((_, index) => index);
   const directed = options.rule === "sequence" || inferred.options.directed === true;
@@ -112,6 +116,7 @@ export function resolveInferredGraphInput(rows, input, candidate, candidateLimit
   const edges = inferred.edges.map(({ key, sourceKey, targetKey, weight, sourceIndex, targetIndex }) => ({
     key, sourceKey, targetKey, weight, directed, origin: "inferred", ruleId: options.ruleId, sourceRows: [sourceIndex, targetIndex]
   }));
-  const model = createGraphModel(nodes, edges, { directed, selfLoops: false, maxNodes: options.maxNodes, maxEdges: options.maxEdges });
+  const model = createGraphModel(nodes, edges, { directed, selfLoops: false, maxNodes: options.maxNodes, maxEdges: options.maxEdges }, 0, execution);
+  validateInferenceBytes(resolvedInferenceResult({ model, inference: inferred }), execution, "Graph inference result bytes");
   return cloneAndFreeze({ options, model, inference: inferred });
 }

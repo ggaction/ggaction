@@ -8070,6 +8070,18 @@ export interface GraphForceOptions extends GraphLayoutLimits {
 
 Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits) · [`GraphPosition`](../../../reference/types/#type-graphposition) · [`GraphPin`](../../../reference/types/#type-graphpin).
 
+### `GraphInferenceExecution` {#type-graphinferenceexecution}
+
+ Expand GraphInferenceExecution
+
+```typescript
+export interface GraphInferenceExecution {
+  readonly policy: "bounded-inference@1";
+  readonly maxWork: number;
+  readonly maxBytes: number;
+}
+```
+
 ### `GraphKeyField` {#type-graphkeyfield}
 
  Expand GraphKeyField
@@ -8782,10 +8794,11 @@ Related types: [`GraphNeighborDefinition`](../../../reference/types/#type-graphn
 export interface InferredGraphSource {
   readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
   readonly maxNodes?: number; readonly maxEdges?: number;
+  readonly execution?: GraphInferenceExecution;
 }
 ```
 
-Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield).
+Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield) · [`GraphInferenceExecution`](../../../reference/types/#type-graphinferenceexecution).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 

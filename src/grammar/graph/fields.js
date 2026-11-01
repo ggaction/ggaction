@@ -1,5 +1,6 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { rejectUnknownProperties, requireStringValue, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, requireStringValue, validateGeneratedItemLimit } from "../../core/validation.js";
 
 export function graphFields(value, label, { empty = false } = {}) {
   ownArray(value, label);
@@ -13,7 +14,8 @@ export function graphKeyField(value, label) {
   return Array.isArray(value) ? graphFields(value, label) : requireStringValue(value, label);
 }
 
-export function graphSourceRows(values, maximum, label) {
+export function graphSourceRows(values, maximum, label, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   if (Array.isArray(values)) {
     validateGeneratedItemLimit(values.length, label, maximum);
     validateWorkLimit(values.length * 64, "Graph source work");
@@ -53,7 +55,8 @@ export function graphFeatureFields(features, metric) {
   return Object.fromEntries(keys.map(key => [key, features[key]]));
 }
 
-export function graphFeatureVector(row, fields) {
+export function graphFeatureVector(row, fields, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   if (Array.isArray(fields)) return fields.map(field => graphFieldValue(row, field));
   if (Object.hasOwn(fields, "set")) {
     const values = graphFieldValue(row, fields.set);

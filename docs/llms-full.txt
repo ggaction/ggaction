@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c1e5050d3c90d73cb71ae23a2e1a0da91f27ec3db6aa9d6559ebd798466bbc3e. Status: development. Runtime source: 3d5bf8828128ddc73dab1817e9dcdb8ea5939d72. Release baseline: v0.0.13.
+Contract: sha256:9713d5dee17da79a05abb931403ae414c143c03da65a3c403d7f0c6c71bc1912. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3d5bf8828128ddc73dab1817e9dcdb8ea5939d72/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3d5bf8828128ddc73dab1817e9dcdb8ea5939d72/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -22256,6 +22256,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `maxNodes` | Optional / branch-dependent | `number \| undefined` |
 | `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `execution` | Optional / branch-dependent | `GraphInferenceExecution \| undefined` |
 | `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
 | `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
 | `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
@@ -22266,7 +22267,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
@@ -46815,6 +46816,18 @@ export interface GraphForceOptions extends GraphLayoutLimits {
 
 Related types: [`GraphLayoutLimits`](./reference/types/#type-graphlayoutlimits) · [`GraphPosition`](./reference/types/#type-graphposition) · [`GraphPin`](./reference/types/#type-graphpin).
 
+### `GraphInferenceExecution` {#type-graphinferenceexecution}
+
+ Expand GraphInferenceExecution
+
+```typescript
+export interface GraphInferenceExecution {
+  readonly policy: "bounded-inference@1";
+  readonly maxWork: number;
+  readonly maxBytes: number;
+}
+```
+
 ### `GraphKeyField` {#type-graphkeyfield}
 
  Expand GraphKeyField
@@ -47527,10 +47540,11 @@ Related types: [`GraphNeighborDefinition`](./reference/types/#type-graphneighbor
 export interface InferredGraphSource {
   readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
   readonly maxNodes?: number; readonly maxEdges?: number;
+  readonly execution?: GraphInferenceExecution;
 }
 ```
 
-Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield).
+Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield) · [`GraphInferenceExecution`](./reference/types/#type-graphinferenceexecution).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -53343,12 +53357,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3d5bf8828128ddc73dab1817e9dcdb8ea5939d72/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3d5bf8828128ddc73dab1817e9dcdb8ea5939d72/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -56475,9 +56489,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c1e5050d3c90d73cb71ae23a2e1a0da91f27ec3db6aa9d6559ebd798466bbc3e` |
+| Contract fingerprint | `sha256:9713d5dee17da79a05abb931403ae414c143c03da65a3c403d7f0c6c71bc1912` |
 | Example and dataset source | `5046dcc5e26ec9dfb5f6707951c3bb0fcd72e0cf` |
-| Runtime source commit | `3d5bf8828128ddc73dab1817e9dcdb8ea5939d72` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 379 |
 | Declared actions in that release | 234 |
@@ -57619,6 +57633,21 @@ uses its own stored capacity; the inferred output uses its own edge limit.
 These capacities do not increase the computation work budget or graphical item
 limits. A request that exceeds either applicable limit fails without changing
 the previous program.
+
+For an explicitly larger inference workload, set
+`execution: { policy: "bounded-inference@1", maxWork: 100000000, maxBytes: 134217728 }`.
+Both limits must be positive safe integers, at most the values shown. `maxWork`
+uses the existing work units within each inference operation; it is not a count
+of CPU instructions or a time guarantee. Omitting `execution` retains the
+original 10-million-unit limit. The definition, edits, source revisions, and
+restore preserve the explicit policy. A candidate graph is validated with its
+own stored policy.
+
+`maxBytes` bounds the encoded input and normalized result separately, including
+typed values and diagnostics. It does not bound total JavaScript heap use.
+Graphical item limits and layout or route computation limits remain separate.
+Large inference results do not imply support for rendering the entire graph or
+meeting a latency target. Inference remains synchronous in this API.
 
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning. Mark filtering keeps the inferred topology;

@@ -1,7 +1,8 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { maximumMagnitude, normalizedFiniteSum } from "../numeric.js";
 import { graphMetricVector, normalizeGraphMetric } from "./metricPolicy.js";
 
@@ -24,7 +25,8 @@ function columnStatistics(values, method) {
 
 // The later graph authoring owner supplies extracted vectors and source identity.
 // This kernel keeps source indexes, exclusion reasons, and reusable scaled statistics.
-export function prepareGraphMetricVectors(vectors, options, limits = {}) {
+export function prepareGraphMetricVectors(vectors, options, limits = {}, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const { maxNodes } = graphLimits(limits);
   ownRecord(options, "Graph feature options");
   rejectUnknownProperties(options, ["metric", "zeroVector", "preprocess", "missing"], "graph feature");
