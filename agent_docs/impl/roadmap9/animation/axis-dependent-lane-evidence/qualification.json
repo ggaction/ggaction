@@ -411,6 +411,75 @@
     "corrected-installed-node24.json": {
       "sha256": "609d4e6742d4000c717b880a382853c1562afdec96f73d1f255f63dd55b4ce86",
       "bytes": 2779
+    },
+    "inferred-lane-pin-build.log": {
+      "sha256": "13aed588f24f895b7066767e6ff80d8e81c483eff754fff1578d373e91685007",
+      "bytes": 420
+    },
+    "inferred-lane-pin-built.log": {
+      "sha256": "3792852b15419b5b6793670bb18fb4783fa933ad6a7c236cdc1a834bf06b2ed5",
+      "bytes": 102
+    },
+    "inferred-lane-pin-doc-browser.json": {
+      "sha256": "1a30f7304a0792a72caae29170919875f726b820afb6a310670aac4b80ae3549",
+      "bytes": 705
+    },
+    "inferred-lane-pin-doc-browser.log": {
+      "sha256": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0",
+      "bytes": 349
+    },
+    "inferred-lane-pin-docs.log": {
+      "sha256": "9b41a12fcdea9928bba1810ce772631569ce89136649f1a5edf4384955165cab",
+      "bytes": 10405
+    },
+    "inferred-lane-pin-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
     }
+  },
+  "sourceRevision": "98d5e6021f918e80b1a99197b9448c9a52944919",
+  "sourcePin": {
+    "source": "98d5e6021f918e80b1a99197b9448c9a52944919",
+    "docsTests": 50,
+    "builtPages": 186,
+    "selectiveArtifacts": 1603,
+    "browser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
+    },
+    "sourceInputDelta": [],
+    "node": "v22.23.1",
+    "ruby": "3.2.11",
+    "environmentNote": "Local Ruby meets preflight; CI pins3.2.6. No release/CI-equivalence claim."
   }
 }
