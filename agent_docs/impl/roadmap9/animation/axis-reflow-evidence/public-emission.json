@@ -97,6 +97,29 @@
       "command": "node scripts/run-tests.js docs docs/documentation-coverage.test.js docs/action-reference.test.js",
       "tests": 20,
       "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js docs docs/documentation-coverage.test.js docs/action-reference.test.js docs/documentation.test.js",
+      "tests": 49,
+      "exitCode": 0,
+      "sourcePinned": true
+    },
+    {
+      "command": "bundle exec jekyll build --source docs --destination _site --baseurl /ggaction && node scripts/check-built-docs.js _site",
+      "pages": 186,
+      "llmArtifacts": 1603,
+      "exitCode": 0
+    },
+    {
+      "command": "node .artifacts/axis-reflow/changed-docs-browser.mjs",
+      "page": "api/animation/",
+      "widths": [
+        320,
+        390,
+        768,
+        1280
+      ],
+      "exitCode": 0
     }
   ],
   "criticalOwners": {
@@ -796,6 +819,34 @@
       "pass": 20,
       "fail": 0,
       "duration_ms": 6300.101458
+    },
+    {
+      "path": ".artifacts/axis-reflow/source-input-verification.json",
+      "sha256": "fad17175a90a997517cc4b211a2c4f558154b3ae0b2c93cc5da8fce23bfb3e44"
+    },
+    {
+      "path": ".artifacts/axis-reflow/source-pin-docs.log",
+      "sha256": "0cbd2258416fc55ca2f99822d570a35d593d21f097e0c9963e3ccbc05a3a816c"
+    },
+    {
+      "path": ".artifacts/axis-reflow/built-final.log",
+      "sha256": "91fd394551e98554808fc5a46eaf7ceb32cf87cac6fa6eed92a93936e0e79ec0"
+    },
+    {
+      "path": ".artifacts/axis-reflow/built-check-final.log",
+      "sha256": "3792852b15419b5b6793670bb18fb4783fa933ad6a7c236cdc1a834bf06b2ed5"
+    },
+    {
+      "path": ".artifacts/axis-reflow/changed-docs-browser.mjs",
+      "sha256": "9052471fe82cab65598ca5a7d5a9178369a439e8430e089a3172d3ac9496e5bd"
+    },
+    {
+      "path": ".artifacts/axis-reflow/changed-docs-browser.log",
+      "sha256": "161ee7a7b6460377e41cb00f7e207544fd1b5f2b305e5905ac7daec93484f43b"
+    },
+    {
+      "path": ".artifacts/axis-reflow/changed-docs-browser-first-route.log",
+      "sha256": "7dad26e766c14cbe5854c7e5c1b650ca011c0ba57646a6e0b8350f839197188f"
     }
   ],
   "artifacts": [
@@ -826,6 +877,22 @@
     {
       "path": ".artifacts/test/png/charts/cross-feature-integration/animation/axis-label-reflow/native.svg",
       "sha256": "42f8b35545055ba2b1aa26d1d312b2b5c9aaf20dccf12c960915b483e1d92d48"
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-animation-320.png",
+      "sha256": "849fa3d5483cccfcc1230cc59dbe2f45fdd8442e000741f939c4415b222e0659"
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-animation-390.png",
+      "sha256": "ad4bd9b719701760cacd62dd54fc84b70d664ae5e2e6e127d87dc41eaf27fef6"
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-animation-768.png",
+      "sha256": "e4a51235b1d2e66c6cdaf5cbe87399989016e21f9291ec23af48861cc4a71e0d"
+    },
+    {
+      "path": ".artifacts/axis-reflow/docs-animation-1280.png",
+      "sha256": "3444100d5cfb5acea1568da2af396f7be49615a84ead6a489bf52bdc5c6caaea"
     }
   ],
   "priorFailures": [
@@ -853,11 +920,35 @@
         "public-installed20-initial-cap.log"
       ],
       "resolution": "Earlier 8bff archive passed runtime/type/doc but exceeded Full/animation caps. Minimal measured caps and read-only dependency-proof guard precede final 5412 same-archive three-Node checks."
+    },
+    {
+      "logs": [
+        "changed-docs-browser-first-route.log"
+      ],
+      "resolution": "The temporary probe used .html instead of the built pretty permalink; corrected to the actual api/animation/ route. No site or product runtime change."
     }
   ],
   "pending": [
-    "Source-pinned changed documentation build/browser evidence (separate metadata follow-up).",
     "P refs-only lane/title integration consuming current graphics/bounds/metrics.",
     "Final combined native acceptance matrix and release/AT60/077 qualification remain parent-owned."
-  ]
+  ],
+  "sourceCommit": "0811878a9500f2637e1ea60a1e4d40eb352f8370",
+  "sourcePin": {
+    "inputDelta": 0,
+    "sourceInputs": 37,
+    "docsOwningTests": 49,
+    "builtPages": 186,
+    "llmArtifacts": 1603,
+    "changedPage": "api/animation/",
+    "browserWidths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "axeViolations": 0,
+    "consoleErrors": 0,
+    "overflow": false,
+    "runtimeChanges": false
+  }
 }

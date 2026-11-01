@@ -14,7 +14,7 @@
 - [x] Schema2의 bounded 중간 query 공급 경계 확정; source owning/strict types 검증. 설치·문서 증거는 아래 후속 기록.
 - [x] Closed group 준비/중간 native emission/strict restore·rebase 연결.
 - [x] 실제 현재 hit·offline·4 backend·동일 tar3Node 검증 및 공개 문서 동기화.
-- [ ] Source pin 뒤 변경 문서 페이지 build/browser 마감.
+- [x] Source pin 뒤 변경 문서 페이지 build/browser 마감.
 - [ ] 후행 P의 동적 title/lane 실제 dependency 소비 및 최종 통합 qualification.
 
 P가 담당하는 group/lane7과 title pure owner는 별도 source로 병합한다. Reflow의 guide kernel
@@ -366,3 +366,13 @@ unpacked7,982,959bytes, packed Node22 1,768,442/Node24 1,771,737bytes이며 상�
 분리한다. Initial archive의 Node20 bundle 상한초과와 최종동일archive3Node 성공을 합치지 않는다.
 문서238중236 최초통과/생성provenance·runtime reference2 stale은 generator로 갱신 후 owning20개가
 통과했다. Source pin과 changed-page browser는 후속 metadata commit으로 별도 기록한다.
+
+
+### Source pin 마감
+
+공개 source `0811878a9500f2637e1ea60a1e4d40eb352f8370`를 원격에 고정한 뒤 동일37개
+source/test/fixture 입력을 Git blob과 검산해 delta0을 확인했다. Source-pinned 문서 owning49개,
+Jekyll186페이지/LLM1603개 링크·hash 검사 및 변경 animation page320/390/768/1280px의
+overflow0/axe0/console0가 통과했다. 최초 임시 browser probe의 `.html` 경로는 실제 pretty
+permalink `/api/animation/`로 바로잡았으며 site source 변경은 없었다. 이 metadata 후속은
+라이브러리 runtime/types 및 동일5412 archive를 바꾸지 않는다.
