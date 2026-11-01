@@ -79,6 +79,43 @@
       "documentExample": true,
       "optionalPeers": true,
       "bundleEntries": 6
+    },
+    "sourcePinnedDocs": 47,
+    "builtPages": 186,
+    "builtLlmArtifacts": 1598,
+    "changedPageBrowser": {
+      "affectedPage": "api/animation",
+      "results": [
+        {
+          "width": 1440,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "passed"
+        },
+        {
+          "width": 320,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 390,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        },
+        {
+          "width": 768,
+          "contained": true,
+          "axeViolations": 0,
+          "pageErrors": 0,
+          "search": "desktop-only"
+        }
+      ],
+      "unchangedSiteEvidence": "unchanged site behavior; changed animation page checked at four widths"
     }
   },
   "preservedFailures": [
@@ -137,6 +174,12 @@
     "group-legend-realistic-repair-1.log": "1b24b550a885f0ed8083206dda0f0dc64b406e4fd6db3e26c52a8e2ba247916e",
     "group-legend-realistic.log": "6b1809d4dfea4dfc3f2a5b5bb28008edb22407c746d17cc0d340873d31f5869d",
     "group-legend-refactor.log": "445622a1314c58bb2a49d35b66eea512ba6417c58330e10a28961635168353bb",
-    "group-legend-render-browser.log": "eac2d0285cc39fa047918566fdd5d27365e6fab4c7c039374f09f78406b4fa09"
-  }
+    "group-legend-render-browser.log": "eac2d0285cc39fa047918566fdd5d27365e6fab4c7c039374f09f78406b4fa09",
+    "group-legend-docs-pin.log": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+    "group-legend-docs-build-pinned.log": "c4047e08e3d83c4cf1f7f23f07cf8561ef88b344b07963b930a97bde076608e6",
+    "group-legend-docs-pinned.log": "47e0777b5731c8b45486eebf29b7ada162b52f4f318b1996ef18b98365268687",
+    "group-legend-built-docs-pinned.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "group-legend-doc-browser.log": "2278bb83073b61ef6ee0aae49bdffcc3a25a6c7ecfdf0875ed884c92a63764d0"
+  },
+  "sourceCommit": "ada9c46ebfbf2fea5556354283d1bfbc0e1431d9"
 }
