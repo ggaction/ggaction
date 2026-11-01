@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:b3972abc5b83d0007745afc3fd2db85f3c386b7525717446c327d941a2ee9f47. Status: development. Runtime source: 509a5e8396af9990460286c8cd37ca9965b8d403. Release baseline: v0.0.13.
+Contract: sha256:1741c2b9e937bf8e2cd6c3d00807f5a98c1ca392c3dce71c515ffc6dd0300eda. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/509a5e8396af9990460286c8cd37ca9965b8d403/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/509a5e8396af9990460286c8cd37ca9965b8d403/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11227,6 +11227,33 @@ independent edge block. Linear, log, sqrt, and pow size mappings interpolate are
 calculating the symbol radius. The native measured layout preserves multiline labels,
 hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
 and grouped or dependent legend placement currently retain an explicit layout crossfade.
+
+Categorical color, stroke, shape, and series legends retain typed category values and
+native line, point, or swatch roles. With an explicit offset in one independent edge
+block, compatible symbol dimensions, spacing, and frame changes use the same measured
+layout as the static legend. Hidden and multiline labels remain associated with their
+original values. Changed text, fonts, shapes, domain order, or layout policies fade
+explicitly; grouped, clipped, bordered, or overflow layouts remain pending typed cases.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+  .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodeColor({ field: "group" })
+  .createLegend({ channels: ["color"], offset: 20,
+    symbol: { layers: [{ type: "point", size: 4 }] } });
+const to = from.editLegend({ symbol: { layers: [{ type: "point", size: 8 }] } });
+const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 50)));
+```
 
 > **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.
 
@@ -37996,7 +38023,8 @@ export interface TransitionPlan {
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
- * single-edge gradient legends with exact raw samples and explicit offsets, and fixed
+ * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
+ * typed category/recipe roles and explicit offsets, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
@@ -52691,12 +52719,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/509a5e8396af9990460286c8cd37ca9965b8d403/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/509a5e8396af9990460286c8cd37ca9965b8d403/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55823,9 +55851,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b3972abc5b83d0007745afc3fd2db85f3c386b7525717446c327d941a2ee9f47` |
+| Contract fingerprint | `sha256:1741c2b9e937bf8e2cd6c3d00807f5a98c1ca392c3dce71c515ffc6dd0300eda` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `509a5e8396af9990460286c8cd37ca9965b8d403` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

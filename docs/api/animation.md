@@ -224,6 +224,37 @@ calculating the symbol radius. The native measured layout preserves multiline la
 hidden labels, explicit alignment, and spacing. Automatic sampling, ordinal/discrete size,
 and grouped or dependent legend placement currently retain an explicit layout crossfade.
 
+Categorical color, stroke, shape, and series legends retain typed category values and
+native line, point, or swatch roles. With an explicit offset in one independent edge
+block, compatible symbol dimensions, spacing, and frame changes use the same measured
+layout as the static legend. Hidden and multiline labels remain associated with their
+original values. Changed text, fonts, shapes, domain order, or layout policies fade
+explicitly; grouped, clipped, bordered, or overflow layouts remain pending typed cases.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+import { planTransition, sampleTransition, serializeAnimation,
+  deserializeAnimation } from "ggaction/animation";
+import { renderToSVG } from "ggaction/svg";
+
+const from = chart().createCanvas({ width: 600, height: 400, margin: 100 })
+  .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+  .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodeColor({ field: "group" })
+  .createLegend({ channels: ["color"], offset: 20,
+    symbol: { layers: [{ type: "point", size: 4 }] } });
+const to = from.editLegend({ symbol: { layers: [{ type: "point", size: 8 }] } });
+const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
+const restored = deserializeAnimation(serializeAnimation(plan));
+console.log(renderToSVG(sampleTransition(restored.plan, 50)));
+```
+
 <!-- snippet-context:start -->
 
 > **Executable complete.** Run this complete ES module with ggaction installed; both exact-value size legends and the sampled SVG output are included.

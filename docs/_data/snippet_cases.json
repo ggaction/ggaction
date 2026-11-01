@@ -742,6 +742,16 @@
     "prerequisites": "Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included."
   },
   {
+    "id": "animation-categorical-legend",
+    "file": "api/animation.md",
+    "contains": ".encodeColor({ field: \"group\" })",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; both native categorical legends and their offline midpoint are included."
+  },
+  {
     "id": "animation-size-legend",
     "file": "api/animation.md",
     "contains": ".createLegend({ channels: [\"size\"], values: [5, 10], offset: 20 })",

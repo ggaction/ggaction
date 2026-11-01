@@ -1,0 +1,136 @@
+{
+  "sourceParent": "9c6ec073636815d6a896cfd80e2be672ff8d0bf2",
+  "scope": "Native categorical edge legends; not group/reflow or whole Roadmap9 completion",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "guideKernel": "native-guide-values@6",
+  "transitionVersion": 2,
+  "shared4Changes": [],
+  "archive": {
+    "sha256": "259636d4b784f345441be770b7091ee8ecc53d7144242a664ce249141a29dd14",
+    "file": ".artifacts/animation-archives/ggaction-categorical-legend-259636d4b784f345441be770b7091ee8ecc53d7144242a664ce249141a29dd14.tgz",
+    "entryCount": 1182,
+    "packedBytes": 1691406,
+    "unpackedBytes": 7641072
+  },
+  "checks": {
+    "owning": {
+      "passed": 29,
+      "newCases": 8,
+      "categoricalState": {
+        "lines": 98.48,
+        "branches": 93.02,
+        "functions": 100
+      },
+      "nativeLayout": {
+        "lines": 100,
+        "branches": 93.94,
+        "functions": 100
+      },
+      "extractedRecipe": {
+        "lines": 92.75,
+        "branches": 79.41,
+        "functions": 100
+      }
+    },
+    "cumulative": {
+      "total": 389,
+      "passed": 387,
+      "failed": 2,
+      "resolution": "Two old guide @5 literal expectations updated to @6; owning 19/19 passes. Original cumulative run remains failed."
+    },
+    "boundaries": 16,
+    "typesCoveragePolicySharding": 12,
+    "packageBoundariesDocumentationTruth": 16,
+    "generatedDocsRepair": 47,
+    "builtPages": 186,
+    "builtLlmArtifacts": 1598,
+    "realistic": {
+      "tests": 5,
+      "recipes": 50,
+      "durationMs": 6345.288125,
+      "source": "five unchanged real cohorts; original values, units, sourceRowIndex"
+    },
+    "renderBrowser": {
+      "tests": 10,
+      "formats": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "dpr": [
+        1,
+        2
+      ]
+    },
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameFinalArchive": true,
+      "runtimeCasesEach": 5,
+      "strictTypes": true,
+      "documentExample": true,
+      "optionalPeers": true,
+      "bundleEntries": 6
+    }
+  },
+  "limits": {
+    "entries": 1182,
+    "packedBytes": 1694300,
+    "unpackedBytes": 7641100,
+    "fullGzip": 775000,
+    "basicGzip": 423200,
+    "animationGzip": 276800
+  },
+  "preservedFailures": [
+    "Initial public fixture alignment/title/overflow mistakes corrected without runtime policy weakening.",
+    "Native default point-shape probe and forward-matcher typo corrected before qualification.",
+    "Intermediate package outputs used a relative output path and failed ENOENT; absolute reruns preserved.",
+    "Three added source entries exceeded old 1179-entry ceiling. Node20/24 packed1694230 before final same-length README cap update.",
+    "Initial Node20 intermediate archive runtime/types/docs/peers passed, with only Full/Basic/animation bundle caps exceeded. New final README archive was installed anew on all three Nodes.",
+    "First docs235 tests:230 passed,5 stale generated artifact expectations failed; canonical regeneration and owning47 pass."
+  ],
+  "pending": [
+    "group/multiple-block dependent native legends",
+    "overflow/clip/border and inferred clearance",
+    "dynamic wrap/skip/rotation",
+    "inferred title dependencies",
+    "combined transition v3 qualification",
+    "whole STEP061/062/063/077"
+  ],
+  "rawLogsSha256": {
+    "categorical-legend-animation-regression.log": "4e1ec564702b0f0f8611a11f244c9fbf3bb22390746b04c26741753da701326f",
+    "categorical-legend-boundaries.log": "7cda6f7382fbbde21fc6fe756066b502755c5b54c9188cc7679cedda949acd76",
+    "categorical-legend-built-docs.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b",
+    "categorical-legend-coverage-2.log": "b84afb285c6fd1d7aeae52a916b209734ec242dae92b48a38d137e9c1ce9cfc7",
+    "categorical-legend-coverage-first.log": "199f2cd15bf5eaae8530cbe51124a9298b0166933c3f49d8765c538293696d5c",
+    "categorical-legend-doc-generation.log": "1d477303d2a5dc48bfb43f64b4a72e70cde5f208411e0b9b41fd1f1e7dadde66",
+    "categorical-legend-docs-build.log": "1791dd9cd3719a7b0ad1a9695c5ebe59398a309cf9d5e6c610dd689ec188fb2b",
+    "categorical-legend-docs-repair.log": "f057577eb5ba331484522c65d943e8d84bd3fc1b03e0d05a4d6e7ef9dec6ba96",
+    "categorical-legend-docs.log": "92108c50845995788e714122b37deec017d9ea849410cfa6161a1df66e4ab3a9",
+    "categorical-legend-final-pack.log": "0651c7667ede7df5a0cf91bc1ae9765fe9ccc6fcc35cc9458529b1d98f2e0740",
+    "categorical-legend-first-tests.log": "e13d26be982f94ba775aabd543fb0e87e8ed9ef0684843537d43ed085ff7d94f",
+    "categorical-legend-installed-node20-final.log": "e5601f282caad5d15ae1ee9e86a0805290c497b87d92bedf820b1e97410b1945",
+    "categorical-legend-installed-node20.log": "bacf8b0aabd4cf4099d8a56f62f248e5ab6cd449581f8d0003eb7852431abedf",
+    "categorical-legend-installed-node22-final.log": "55f9910492327504e6d2a764e439b8f12d3d4ad8502cc394a73f08ebb1dbf9fd",
+    "categorical-legend-installed-node24-final.log": "b1618732bf4509df0f3f7f83985a52435e41e9c406abbf332efd4aa62accba12",
+    "categorical-legend-native-small.log": "47a1bbc793ef6bbf2ede03315716e668996d5d7b2883a2cbfa18e97f192544b7",
+    "categorical-legend-package-contracts.log": "9003c2fb045680a0faf91707fce6b70fb589d24e0a3ca6be6bfa53b46c4f1ce6",
+    "categorical-legend-realistic.log": "d0ea1033fc628c6511907b79cfc11f90c9f9beaa2b2acf21e9e5901d6679b890",
+    "categorical-legend-render-browser.log": "9b765459d95ca191f7855cb4f95f2903f36816a60340836965b8261f83f17ac1",
+    "categorical-legend-tests-2.log": "4fdc7db3867f3a6c2fc2d1a8353f61a92abda3865d35e78d1fe03809d3031304",
+    "categorical-legend-tests-3.log": "ef86733a8a724af70cef6537cd7f254fea081bcbdeac5079a14aa5465da2d3d4",
+    "categorical-legend-tests-4.log": "70257238d990886ba24f0c8006714103f884b5065d113cbe43cf8790b525e195",
+    "categorical-legend-type-policy.log": "f1086087061889e9b15862755b7689a0b93c9e0c6158aa5525efe6f9f8c2d8e8",
+    "categorical-legend-version-repair.log": "b986ae46cd08cee2fbfe95c0fded50e3f3f571fd50b8647e28af8ef1dc98788a",
+    "categorical-pack20-absolute.log": "76f2731e0506a1ffedea21480832609f9f99b4cc0c55fa5c228bcac7d0667c57",
+    "categorical-pack20.log": "ca2c684233fb778e0e7f0554d64ac7408eca8691a3d144337a6c15e1529c543b",
+    "categorical-pack22-absolute.log": "c291f5749b4bda5d98c71ed011263b0839aac5c929c893ab415e928b7ffd2a30",
+    "categorical-pack22.log": "ae804ccb18cab87d2d8177a47f434481c5ee2a668382e34b848c6ab0e4874942",
+    "categorical-pack24-absolute.log": "a38536d65c055a6277c957b8d73df3f76705586be5f861f0062fa03c12992fff",
+    "categorical-pack24.log": "f4ddf9e990b54742fc6f40cffa8892d57321b1772fd7a0bb63d07745e392aa4a"
+  }
+}

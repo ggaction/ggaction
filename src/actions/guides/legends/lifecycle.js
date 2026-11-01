@@ -3,7 +3,8 @@ import {
 } from "../../../materialization/guides/resources.js";
 import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { resolveDefinition } from "./categorical/resolve.js";
-import { normalizeRecipe, resolveLegendSymbol } from "./categorical/recipes.js";
+import { resolveLegendSymbol } from "./categorical/recipes.js";
+import { normalizeRecipe } from "../../../grammar/legendSymbolRecipe.js";
 import { resolveLayout, symbolGraphic } from "./categorical/layout.js";
 import { resolveLegendGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
 

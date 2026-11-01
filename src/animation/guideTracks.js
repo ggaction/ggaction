@@ -1,3 +1,4 @@
+import { normalizeCategoricalLegendAnimationState, categoricalLegendAnimationMatchesNode, prepareCategoricalLegendInterpolation, sampleCategoricalLegendInterpolation } from "../materialization/animation/categoricalLegendState.js";
 import { normalizeSizeLegendAnimationState, sizeLegendAnimationMatchesNode, prepareSizeLegendInterpolation, sampleSizeLegendInterpolation } from "../materialization/animation/sizeLegendState.js";
 import { normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode, prepareAxisLabelInterpolation, sampleAxisLabelInterpolation } from "../materialization/animation/axisLabelState.js";
 import { normalizeLegendAnimationState, legendAnimationMatchesNode, prepareLegendInterpolation, sampleLegendInterpolation } from "../materialization/animation/legendState.js";
@@ -8,9 +9,9 @@ import { validateWorkLimit } from "../core/validation.js";
 import { guideAnimationKey, normalizeGuideAnimationState, guideAnimationMatchesNode, prepareGuideInterpolation, sampleGuideInterpolation as sampleNativeGuide } from "../grammar/animation/guideState.js";
 import { sameConcreteValue, clipInterpolationCompatible } from "./concrete.js";
 
-const normalizeState = state => state.kind === "size-legend" ? normalizeSizeLegendAnimationState(state) : state.kind === "legend" ? normalizeLegendAnimationState(state)
+const normalizeState = state => state.kind === "categorical-legend" ? normalizeCategoricalLegendAnimationState(state) : state.kind === "size-legend" ? normalizeSizeLegendAnimationState(state) : state.kind === "legend" ? normalizeLegendAnimationState(state)
   : state.kind === "label-layout" ? normalizeAxisLabelAnimationState(state) : normalizeGuideAnimationState(state);
-const matchesNode = (state, node) => (state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode
+const matchesNode = (state, node) => (state.kind === "categorical-legend" ? categoricalLegendAnimationMatchesNode : state.kind === "size-legend" ? sizeLegendAnimationMatchesNode : state.kind === "legend" ? legendAnimationMatchesNode
   : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, node);
 export const emptyAnimationGuides = endpoint => Object.freeze(endpoint.scene.nodes.map(() => null));
 export const hasAnimationGuides = states => states.some(state => state !== null);
@@ -52,10 +53,11 @@ function prepareTrack(match, from, to, a, b) {
   if (sameConcreteValue(source, target) && sameConcreteValue(a, b)) return { ...match, kind: "exact" };
   if (!clipInterpolationCompatible(source, target)) return fade("clip-topology");
   const appearance = properties => Object.fromEntries(Object.entries(properties).filter(([key]) =>
-    !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline", ...(a.kind === "legend" ? ["width", "height"] : a.kind === "size-legend" ? ["radius"] : [])].includes(key)));
+    !["x", "y", "x1", "x2", "y1", "y2", "commands", "textAlign", "textBaseline", ...(a.kind === "categorical-legend" ? ["width", "height", "radius"] : a.kind === "legend" ? ["width", "height"] : a.kind === "size-legend" ? ["radius"] : [])].includes(key)));
   const style = prepareAnimationAppearance(appearance(source.properties), appearance(target.properties));
   if (style.kind === "crossfade") return fade(style.reason);
   const guide = a.kind !== b.kind ? { kind: "crossfade", reason: "guide-policy" }
+    : a.kind === "categorical-legend" ? prepareCategoricalLegendInterpolation(a, b)
     : a.kind === "size-legend" ? prepareSizeLegendInterpolation(a, b)
     : a.kind === "legend" ? prepareLegendInterpolation(a, b)
     : a.kind === "label-layout" ? prepareAxisLabelInterpolation(a, b) : prepareGuideInterpolation(a, b);
@@ -82,6 +84,6 @@ export function prepareGuideTracks(from, to) {
 // The sampler delegates native guide meaning to its owning materializer. The
 // public sampler imports this wrapper, not a second layout implementation.
 export function sampleGuideInterpolation(plan, progress) {
-  return plan.from?.kind === "size-legend" ? sampleSizeLegendInterpolation(plan, progress) : plan.from?.kind === "legend" ? sampleLegendInterpolation(plan, progress)
+  return plan.from?.kind === "categorical-legend" ? sampleCategoricalLegendInterpolation(plan, progress) : plan.from?.kind === "size-legend" ? sampleSizeLegendInterpolation(plan, progress) : plan.from?.kind === "legend" ? sampleLegendInterpolation(plan, progress)
     : plan.from?.kind === "label-layout" ? sampleAxisLabelInterpolation(plan, progress) : sampleNativeGuide(plan, progress);
 }

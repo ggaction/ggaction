@@ -20,7 +20,8 @@ export interface TransitionPlan {
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
  * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
- * single-edge gradient and continuous-size legends with exact raw samples and explicit offsets, and fixed
+ * single-edge gradient and continuous-size legends with exact raw samples, categorical native symbols with
+ * typed category/recipe roles and explicit offsets, and fixed
  * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =

@@ -169,7 +169,7 @@ gradient 크기·offset과 scale의 의미값을 보간한 뒤 기존 native lay
 동일 raw tick도 log scale은 현재 domain으로 다시 매핑한다. Solid 색은 공통 appearance owner다.
 새 sample은 enter/exit이며 sampling/문자열/font/배치정책 변경은 정확한 identity를 보존한 fade다.
 필요한 text query closure만 저장하고 schema2의 정확 font binding/측정치가 빠지면 준비 오류다.
-중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, symbols/categorical
+중간 frame은 같은 native 의미로 재기준·오프라인 재생한다. Auto sampling, gradient symbol
 범례, border/group/multi-block/inferred axis clearance와 복잡한 label reflow는 아직 typed 범위 밖이며
 지원되는 gradient component에는 `guide-layout` reason을 보존한다.
 
@@ -178,10 +178,18 @@ linear/log/sqrt/pow size scale의 값→면적 mapping을 먼저 계산하고 �
 단순 반지름 보간은 사용하지 않는다. 같은 sample/문자열/font/배치 정책에서 frame, offset,
 itemGap, rowPadding, titlePadding과 labels.offset을 보간한 뒤 native measured layout을 재생한다.
 숨긴 label은 숨긴 채 유지하고 hard-break 줄·명시 정렬·현재 frame 재기준과 offline 복원이 같다.
-Auto sampling, ordinal/discrete size, categorical/group/clip/border와 종속 배치는 이 size slice에
+Auto sampling, ordinal/discrete size, group/clip/border와 종속 배치는 이 size slice에
 포함되지 않으며 `guide-layout`을 보존한다.
 
-Optional endpoint `guides` vector와 `native-guide-values@5` manifest를 보존한다. Strict restore는
+범주형 series/color/stroke 범례도 명시 offset의 독립 edge block을 준비한다. 같은 raw domain과
+순서·shape·문자열/font·배치정책에서 line/point/swatch의 native recipe 크기, frame/offset/간격을
+보간하고 기존 measured layout과 shape builder를 재생한다. Typed category와 symbol 역할이
+key이며 같은 표시 문자열도 합치지 않는다. 숨김과 hard-break, 네 edge·nested scope·현재 frame
+재기준 및 strict offline이 같다. Solid appearance는 공통 owner가 보간한다. Domain/shape/layout
+정책 변경, overflow/group/clip/border/inferred clearance는 명시 fade 또는 enter/exit이며 새
+배치를 임의로 추정하지 않는다. 원 native block symbol override도 같은 geometry proof를 따른다.
+
+Optional endpoint `guides` vector와 `native-guide-values@6` manifest를 보존한다. Strict restore는
 closed shape, node cardinality, 실제 mark/background identity와의 배타성, typed guide key,
 sample decision 및 native forward geometry를 검증한다. 현재 guide 의미는 flat frame proof에
 저장하여 이전 plan을 보존하지 않는다. 오프라인 복원도 동일 시각의 scene을 만든다.

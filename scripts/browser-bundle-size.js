@@ -5,11 +5,11 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 774_800, // Shared prepared guide label layout: Node20 774,703 gzip bytes.
-  "ggaction/basic": 423_000, // Native gradient layout reuse: Node20/24 422,915 gzip bytes.
+  ggaction: 775_000, // Shared categorical legend owners: Node20 774,919 gzip bytes.
+  "ggaction/basic": 423_200, // Shared categorical legend owners: Node20 423,184 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 272_500, // Native size legend area and layout: Node20 272,457 gzip bytes.
+  "ggaction/animation": 276_800, // Native categorical legend geometry: Node20 276,707 gzip bytes.
   "ggaction/interaction": 131_400 // Shared guide metadata: Node20/24 131,347 gzip bytes.
 });
 

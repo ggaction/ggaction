@@ -16,7 +16,8 @@ import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout } from "./layout.js";
 
 import { normalizeOptions } from "./options.js";
-import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
+import { resolveLegendSymbol } from "./recipes.js";
+import { normalizeRecipe } from "../../../../grammar/legendSymbolRecipe.js";
 import { validateLegendChannels } from "../target.js";
 import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols,
   resolveCategoricalLegendRevision, removeLegendKinds } from "../lifecycle.js";
