@@ -116,6 +116,36 @@
       "command": "node scripts/run-tests.js contracts contracts/package-artifact.test.js",
       "tests": 7,
       "exitCode": 0
+    },
+    {
+      "command": "node scripts/run-tests.js docs docs/documentation-coverage.test.js",
+      "tests": 18,
+      "exitCode": 0,
+      "log": "font-source-pin.log.gz"
+    },
+    {
+      "command": "PATH=/opt/homebrew/opt/ruby@3.3/bin:$PATH npm run docs:build",
+      "exitCode": 0,
+      "log": "font-docs-build-final.log.gz"
+    },
+    {
+      "command": "node scripts/check-built-docs.js _site",
+      "exitCode": 0,
+      "pages": 186,
+      "llmArtifacts": 1603,
+      "log": "font-docs-built-check.log.gz"
+    },
+    {
+      "command": "node scripts/test-built-docs.js _site",
+      "exitCode": 0,
+      "pages": 186,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearch": true,
+      "log": "font-docs-browser.log.gz"
     }
   ],
   "installed": [
@@ -315,7 +345,8 @@
     "font-package-contracts.log: new capability entry used suite instead of canonical type; repaired metadata.",
     "font-package-check-1.log and font-package-check-2.log: one source file and exact unpacked growth; cap 1220/7843200.",
     "font-installed-20.log: runtime/types passed, Full782756>782500 and Basic424051>424000; caps minimally raised to782800/424100; final README-consistent archive reran all3Nodes.",
-    "font-package-20.log and font-package-24.log: Node20/24 compression1740485 exceeded1740000; cap1740500, same source check re-run0. Runtime archive remains the same b9822bcd Node22 artifact."
+    "font-package-20.log and font-package-24.log: Node20/24 compression1740485 exceeded1740000; cap1740500, same source check re-run0. Runtime archive remains the same b9822bcd Node22 artifact.",
+    "font-docs-build.log: system Ruby2.6 lacked the locked Bundler2.4.19; font-docs-build-2.log: Ruby4.0.6 lacked existing Jekyll dependencies. No dependency/source change; configured Ruby3.3 runtime passed preflight and the complete build."
   ],
   "notClaimed": [
     "Dynamic axis-label sampling/restore/hit/cardinality integration",
@@ -323,7 +354,6 @@
     "Published package or deployed documentation"
   ],
   "pending": [
-    "Source pin and built documentation checks",
     "Closed group/empty slot/current raw-tick dynamic emission and strict rebase",
     "Same current native label bounds for dependent titles"
   ],
@@ -340,5 +370,10 @@
       "unpackedBytes": 7843200,
       "packedBytes": 1740500
     }
+  },
+  "sourceCommit": "1507df9294d71d57137f0a7c627c596914b6bb8c",
+  "metadataVerification": {
+    "runtimeAndTypeInputHashesUnchanged": true,
+    "fixedArchiveHashUnchanged": true
   }
 }

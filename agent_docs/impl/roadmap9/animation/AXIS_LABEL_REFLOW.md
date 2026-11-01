@@ -196,3 +196,5 @@ Source 새1파일과 총 unpacked7843157에 맞춘 package cap은1220/7843200이
 
 [정확 입력과 원 실패/회복 증거](axis-reflow-evidence/font-closure.json)를 보존한다. 최종 source pin과
 built 문서 결과는 metadata checkpoint에서 추가하며 전체 release/AT60/077를 대신하지 않는다.
+
+Source `1507df9294d71d57137f0a7c627c596914b6bb8c` 고정 뒤 source-pin18개, built186페이지/1603 selective LLM artifact 및 전체320·390·768px/desktop 검색 검사가 종료0으로 완료됐다. 입력14개 hash와 고정 tar hash는 그대로다. 초기 system Ruby2.6/Ruby4 환경의 build 실패를 보존하며 이미 설정된 Ruby3.3으로 preflight·build·browser를 완료했다. 이 metadata 후속은 runtime/type 변경이 없다.
