@@ -1,0 +1,75 @@
+{
+  "status": "performance-tool-integrated; actual-size-limits-open; diagnostic-not-qualification",
+  "base": "5de2bc537",
+  "incoming": "41487c00c",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesPublicContractsChanged": false,
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/integration-archives/ggaction-280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc.tgz",
+    "sha256": "280cee991109c3a3629b9d3923d683d2928776b35d82cb87a90aea073753f4dc"
+  },
+  "harnessInputs": {
+    "scripts/benchmark-native.js": "236b17f24b06575c3aea7b826fe454334a4da1e9c9c4ca5c9b143a3146982705",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d",
+    "app.js": {
+      "sha256": "c8180ef69330d4701882338a8df1965c6ea7cc27dd0c3b0be02578717c439345",
+      "bytes": 2803156
+    },
+    "worker.js": {
+      "sha256": "6ecd3cd9ced53af277a4a8dac6c2a57bc1b89b1e1ddd186418bf76fe00e6a547",
+      "bytes": 57398
+    },
+    "workloads.js": {
+      "sha256": "81a567d441ee52a3b3ccbc81e57ce5bc1c9090f5a070b9fa625063ef14441be3",
+      "bytes": 3104813
+    }
+  },
+  "checks": {
+    "contracts": 43,
+    "sizeDprCells": 24,
+    "stages": 48,
+    "measured": 26,
+    "explicit-limit": 22,
+    "unexpectedFailures": 0,
+    "profile": {
+      "seed": 0,
+      "dpr": [
+        1,
+        2
+      ],
+      "warmups": 0,
+      "measured": 1,
+      "cycles": 4
+    },
+    "network": "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required."
+  },
+  "sourceEquality": {
+    "scripts/benchmark-native.js": "236b17f24b06575c3aea7b826fe454334a4da1e9c9c4ca5c9b143a3146982705",
+    "scripts/benchmarks/workloads.browser.js": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d"
+  },
+  "reusedCompatibility": "../native-workloads-tool-evidence/qualification.json; same unmodified harness routes/memory routing; not a rerun on new combined archive",
+  "remaining": [
+    "Actual native point/animation/Geo cardinality and hit work admission policies",
+    "Final candidate production warm5/sample30 CPU-exclusive P95, combined100cycle asset/gesture/worker/resize/dispose",
+    "AT56/82 and final577consumer/79group results; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "contracts.log": {
+      "sha256": "1ed74ae9611cc1fa29b44d33bcc15333e39eb5d0a5c5e2aaecf2b6561ca773be",
+      "bytes": 8948,
+      "saved": "contracts.log.gz"
+    },
+    "diagnostic.log": {
+      "sha256": "9e555ef90363321132375e507a4b2b378060f7ac508fa80659f731d869d2742b",
+      "bytes": 7240,
+      "saved": "diagnostic.log.gz"
+    },
+    "diagnostic/report.json": {
+      "sha256": "01dc36f9f63b9e67d8e26f94002d23f0ff2a2ffe4c24a6606cfa10f8299e7c52",
+      "bytes": 61208,
+      "saved": "diagnostic-report.json.gz"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "status": "tool-verified; diagnostic-only; final-performance-qualification-pending",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "base": "587840986997c54945ba561c6aa70c98fc9b0f7e",
+  "runtimeArchive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/edge-methods-archives/ggaction-c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4.tgz",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "runtimeSourceTypesPublicContractsChanged": false,
+  "harnessInputHashes": {
+    "scripts/benchmark-native.js": "236b17f24b06575c3aea7b826fe454334a4da1e9c9c4ca5c9b143a3146982705",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d"
+  },
+  "checks": {
+    "newContractTests": 7,
+    "packageAndOwningTests": 13,
+    "discoveryTests": 16,
+    "diagnosticSizeDprCells": 24,
+    "requiredStages": 48,
+    "measuredStages": 26,
+    "explicitLimitStages": 22,
+    "unexpectedFailureStages": 0,
+    "postBootstrapNetworkRequests": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "warmups": 0,
+    "measured": 1,
+    "sameArchiveRouteCompatibilityCells": 8,
+    "sameArchiveMemoryDiagnosticCyclesPerDpr": 4
+  },
+  "originalFailures": "Small fixture preflight used unsupported point size/radius options, a zero precision, a rect expectation for intermediate partition paths, exact Geo command count despite native subdivision, and butt endpoints at zero hit slop. These harness assumptions were corrected before measurement. Initial complete browser diagnostic classified the explicit hit work RangeError as failed; final classifier records the same native limit without changing runtime. Initial report remains separate.",
+  "performancePass": false,
+  "remaining": [
+    "Final combined archive production warmup5/30 coordinated P95",
+    "Native limits and latency blockers require separate root-reviewed proposals",
+    "Graph inference performance workload and combined full lifecycle remain root follow-up; routes/memory behavior unchanged",
+    "AT56/AT60/077 and candidate results remain pending"
+  ]
+}

@@ -1,0 +1,2080 @@
+{
+  "kind": "diagnostic-not-qualification",
+  "archive": {
+    "path": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/edge-methods-archives/ggaction-c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4.tgz",
+    "sha256": "c1b9fb3bd8a9be11eeba13288072ecbfdcf00b024fd29959da20663f0b3265a4"
+  },
+  "sourceRevision": "587840986997c54945ba561c6aa70c98fc9b0f7e",
+  "sourceRevisionScope": "Checkout HEAD; executable harness bytes are pinned separately in inputs, including uncommitted changes. Runtime identity is the installed archive hash.",
+  "profile": {
+    "seed": 0,
+    "dpr": [
+      1,
+      2
+    ],
+    "warmups": 0,
+    "measured": 1,
+    "cycles": 4
+  },
+  "environment": {
+    "cpu": "Apple M4",
+    "cores": 10,
+    "ramBytes": 17179869184,
+    "os": "Darwin 27.0.0 arm64",
+    "node": "v22.23.1",
+    "start": "2026-11-01T15:33:21.553Z",
+    "loadStart": [
+      2.7666015625,
+      2.47216796875,
+      2.96630859375
+    ],
+    "browser": "153.0.8010.12",
+    "end": "2026-11-01T15:33:50.881Z",
+    "loadEnd": [
+      2.83056640625,
+      2.53271484375,
+      2.97216796875
+    ]
+  },
+  "scope": "Unchanged full native route fixtures; real DOM inspect mount, Blob route worker, alternating completion and abort. Memory fixture has no editing gesture, ResizeObserver or asset decoder; their combined heap obligation remains separate.",
+  "font": "No Text, labels or guides in measured graphics; host status text is outside measurement.",
+  "network": "Local bootstrap only, then offline; zero post-bootstrap HTTP requests required.",
+  "stages": {
+    "sourcePreparationMs": "one-time diagnostic, outside P95",
+    "computeMs": "worker public computation",
+    "prepareComputeValidateMs": "public preparation including worker startup, clone, computation and validation",
+    "applyMs": "native prepared commit",
+    "bundlingMs": "preparation plus apply",
+    "materializeMs": "native GraphPlot",
+    "canvasRenderMs": "synchronous commands",
+    "svgSerializeDomMs": "serialization and DOM insertion, excludes compositor paint"
+  },
+  "workloadScope": "Complete deterministic native point/hierarchy/Geo/data inputs at every required size. Native authoring and independent numeric preflight precede timing. Public layout includes immutable action validation; data blocking slice is the entire synchronous deserialize/revise call. Unsupported cells remain failures of support; no downsampling. Production P95 is not final qualification by itself.",
+  "inputs": {
+    "scripts/benchmark-native.js": "236b17f24b06575c3aea7b826fe454334a4da1e9c9c4ca5c9b143a3146982705",
+    "scripts/benchmarks/routes.browser.js": "3f6b14d9b09a33e51d6f0afb59b709539c14d313bf7110e09c688fcf0ca46d55",
+    "scripts/benchmarks/routes.worker.js": "d52c9b779d4db10e66faff28751b12a13408b1d57c3bbfdfa4ff4f089857c729",
+    "scripts/benchmarks/workloads.browser.js": "4e78ed78da0efc652f1e2dbe21c96e26e420496badf0ad6629b3efcfb7e5d15d",
+    "app.js": {
+      "sha256": "21e049ffec7dfe57623831c4d37a95a2b89da2b821e73828b3e696c16f32e3af",
+      "bytes": 2797084
+    },
+    "worker.js": {
+      "sha256": "fc51259225ffb13147d7a41f54333d17c3c5b44fe2f67bf312bcf09235e15770",
+      "bytes": 56868
+    },
+    "workloads.js": {
+      "sha256": "8ca3bb77b0b5598dd8c2351c0c266c14e6d4296da9a715a0b8e9c5bd4031a05a",
+      "bytes": 3076811
+    }
+  },
+  "cases": [],
+  "workloads": [
+    {
+      "kind": "points",
+      "count": 1000,
+      "ratio": 1,
+      "inputHash": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 288.30000019073486,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "hitMs": 0.09999990463256836
+            }
+          ],
+          "p50": {
+            "hitMs": 0.09999990463256836
+          },
+          "p95": {
+            "hitMs": 0.09999990463256836
+          },
+          "thresholds": {
+            "hitMs": 8
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "points"
+          },
+          "outputHash": "eea8e1eb38ea3ecb49c128f6e033ff4c43ddeca27dcae2f1f4a2c1ebbbf26ab5",
+          "witnessHash": "48d7a658553e49d157d370ab63835f97778a67fa62ecfcbae5d54ea8abfffa5a",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "full-frame",
+          "status": "measured",
+          "preparationMs": 137.89999985694885,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "fullFrameSampleMs": 29.09999990463257
+            }
+          ],
+          "p50": {
+            "fullFrameSampleMs": 29.09999990463257
+          },
+          "p95": {
+            "fullFrameSampleMs": 29.09999990463257
+          },
+          "thresholds": {
+            "fullFrameSampleMs": 16.7
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 27.272727272727273,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 78.18181818181819,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "2378917b6a41010705e9eceaac092fb3d527295d6b00ef3502354429bf5013f4",
+          "witnessHash": "cf6dcee5aeeca8487a898c709d7d8ea55b3726c0734da70081f4af778eced4a1",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 60.200000047683716,
+      "witness": {
+        "count": 1000,
+        "first": {
+          "x": 30.90909090909091,
+          "fill": "#4c78a8",
+          "y": 369.09090909090907,
+          "radius": 3
+        },
+        "last": {
+          "x": 107.27272727272728,
+          "fill": "#4c78a8",
+          "y": 30.909090909090878,
+          "radius": 3
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "points",
+      "count": 10000,
+      "ratio": 1,
+      "inputHash": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Hit index exceeds its work budget."
+          },
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "full-frame",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Animation guide endpoint size must not exceed 10000."
+          },
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 393.5,
+      "witness": {
+        "count": 10000,
+        "first": {
+          "x": 23.564356435643564,
+          "fill": "#4c78a8",
+          "y": 376.43564356435644,
+          "radius": 3
+        },
+        "last": {
+          "x": 376.43564356435644,
+          "fill": "#4c78a8",
+          "y": 23.56435643564356,
+          "radius": 3
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "points",
+      "count": 100000,
+      "ratio": 1,
+      "inputHash": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "full-frame",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 218.90000009536743,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Point mark item count must not exceed 50000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 100,
+      "ratio": 1,
+      "inputHash": "b1d25b7c54960f73f5b1582e0838ef8d0a19cfc5acafe3836cb99f49ce7d92eb",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 2.6000001430511475
+            }
+          ],
+          "p50": {
+            "kernelMs": 2.6000001430511475
+          },
+          "p95": {
+            "kernelMs": 2.6000001430511475
+          },
+          "thresholds": {
+            "kernelMs": 10
+          },
+          "witness": {
+            "count": 100,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.010101010101010102
+            ],
+            "lastLeaf": [
+              0.98989898989899,
+              1
+            ]
+          },
+          "outputHash": "451a89794457314ca88769877b00ac4680ec7e3cdfac34064b0ee640a27ad5ff",
+          "witnessHash": "9de5b43e8815ec8866d643053c034e4a2c72c7f13de8a26c764a9d49096640c3",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "measured",
+          "preparationMs": 42.40000009536743,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "gesturePreviewMs": 5.400000095367432
+            }
+          ],
+          "p50": {
+            "gesturePreviewMs": 5.400000095367432
+          },
+          "p95": {
+            "gesturePreviewMs": 5.400000095367432
+          },
+          "thresholds": {
+            "gesturePreviewMs": 33
+          },
+          "witness": {
+            "count": 100,
+            "rootWidth": 460,
+            "leafWidth": 4.646464646464646
+          },
+          "outputHash": "31965dc350b374f4056f1211e6d5e7bff0fc6fb0740f906cacd9b59bc3c740fd",
+          "witnessHash": "754d3d8dc417774fd2c1e989974f2cee8620b8491b2034406be6a77ea3cbf61c",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 10.799999952316284,
+      "witness": {
+        "count": 100,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.010101010101010102
+        ],
+        "lastLeaf": [
+          0.98989898989899,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 1000,
+      "ratio": 1,
+      "inputHash": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 20.5
+            }
+          ],
+          "p50": {
+            "kernelMs": 20.5
+          },
+          "p95": {
+            "kernelMs": 20.5
+          },
+          "thresholds": {
+            "kernelMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.001001001001001001
+            ],
+            "lastLeaf": [
+              0.998998998998999,
+              1
+            ]
+          },
+          "outputHash": "00557d4b83bc5d56f720353e76c8733f85aaf3b0fcfe08d0f7975736f6203027",
+          "witnessHash": "d214e18a73c2eae66d79c25db94b991d09466f23b7c4b744a43f871bb7ca8d03",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "measured",
+          "preparationMs": 766.2999999523163,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "gesturePreviewMs": 49.69999980926514
+            }
+          ],
+          "p50": {
+            "gesturePreviewMs": 49.69999980926514
+          },
+          "p95": {
+            "gesturePreviewMs": 49.69999980926514
+          },
+          "thresholds": {
+            "gesturePreviewMs": 33
+          },
+          "witness": {
+            "count": 1000,
+            "rootWidth": 460,
+            "leafWidth": 0.46046046046046046
+          },
+          "outputHash": "892bf7f4b16ba332f518632c4247381c29dbe03c55f37a63d31cd116d86bec19",
+          "witnessHash": "f139903a46d5541fef6c7aa735b96a7ba13a7b20f88ad6d40b9b401e66b3c42c",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 46.90000009536743,
+      "witness": {
+        "count": 1000,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.001001001001001001
+        ],
+        "lastLeaf": [
+          0.998998998998999,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 10000,
+      "ratio": 1,
+      "inputHash": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 193.30000019073486
+            }
+          ],
+          "p50": {
+            "kernelMs": 193.30000019073486
+          },
+          "p95": {
+            "kernelMs": 193.30000019073486
+          },
+          "thresholds": {
+            "kernelMs": 300
+          },
+          "witness": {
+            "count": 10000,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.00010001000100010001
+            ],
+            "lastLeaf": [
+              0.9998999899989999,
+              1
+            ]
+          },
+          "outputHash": "ecef398ad69fb387cb0d077ec4db825a1732988320e5ecbc33c8a8f4a0e81c9a",
+          "witnessHash": "deaa15c5b7eded1a4397dbdf3ec8df9a6b9630cb9b765f16a4daf6243f55a2a5",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Animation guide endpoint size must not exceed 10000."
+          },
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 357.7000000476837,
+      "witness": {
+        "count": 10000,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.00010001000100010001
+        ],
+        "lastLeaf": [
+          0.9998999899989999,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 1000,
+      "ratio": 1,
+      "inputHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 177.5,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "cameraPreviewMs": 23.5
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 23.5
+          },
+          "p95": {
+            "cameraPreviewMs": 23.5
+          },
+          "thresholds": {
+            "cameraPreviewMs": 16.7
+          },
+          "witness": {
+            "vertices": 1000,
+            "commands": 1999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "4f5c90be5a152dc232d1664e387980c6f12be47d8c29080c40c59c336a9c5cb6",
+          "witnessHash": "39657f0106ed1d1b22e550f9e2cae6741c750427c21258464a1fd70076619055",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 102.39999985694885,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "hitMs": 11
+            }
+          ],
+          "p50": {
+            "hitMs": 11
+          },
+          "p95": {
+            "hitMs": 11
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "e8a46ead262ab6c2d4cc8ab7cd49dea7cdeeb01b14d2fcd677a776fc4c96d9d3",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 77.59999990463257,
+      "witness": {
+        "vertices": 1000,
+        "commands": 1999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 10000,
+      "ratio": 1,
+      "inputHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic mark point count must not exceed 10000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic mark point count must not exceed 10000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 461.19999980926514,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Geographic mark point count must not exceed 10000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 100000,
+      "ratio": 1,
+      "inputHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic refined points must not exceed 30000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic refined points must not exceed 30000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 3868,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Geographic refined points must not exceed 30000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 1000,
+      "ratio": 1,
+      "inputHash": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "loadMs": 8.700000047683716,
+              "blockingSliceMs": 8.700000047683716
+            }
+          ],
+          "p50": {
+            "loadMs": 8.700000047683716,
+            "blockingSliceMs": 8.700000047683716
+          },
+          "p95": {
+            "loadMs": 8.700000047683716,
+            "blockingSliceMs": 8.700000047683716
+          },
+          "thresholds": {
+            "loadMs": 100,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 30.90909090909091,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 107.27272727272728,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "1ad416047233509ad7a5217a140afc8109e3c33a7e80c9fc778a92fdb0edddcb",
+          "witnessHash": "8d4b82d24940c816dd1f9d84b67f9b4825b067b237d811932abeb1e2c1e62241",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "source-revise",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "reviseMs": 29.600000143051147,
+              "blockingSliceMs": 29.600000143051147
+            }
+          ],
+          "p50": {
+            "reviseMs": 29.600000143051147,
+            "blockingSliceMs": 29.600000143051147
+          },
+          "p95": {
+            "reviseMs": 29.600000143051147,
+            "blockingSliceMs": 29.600000143051147
+          },
+          "thresholds": {
+            "reviseMs": 100,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 25.454545454545453,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 63.63636363636364,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "9c651a507b7646dd8faf77702d8fb2da85320f190f36ac37b6e41a8daee10ec0",
+          "witnessHash": "e27f56bfa1fff214602df630d1e9f3d19985ef308f6d318118239e3c7b7cd28f",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 69.60000014305115,
+      "witness": {
+        "count": 1000,
+        "first": {
+          "x": 30.90909090909091,
+          "fill": "#4c78a8",
+          "y": 369.09090909090907,
+          "radius": 3
+        },
+        "last": {
+          "x": 107.27272727272728,
+          "fill": "#4c78a8",
+          "y": 30.909090909090878,
+          "radius": 3
+        },
+        "snapshotCharacters": 730181,
+        "load": "deserializeProgram",
+        "revise": "reviseData with full dependent point rematerialization",
+        "blocking": "entire synchronous public call, no yielded slice"
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 10000,
+      "ratio": 1,
+      "inputHash": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "loadMs": 70.90000009536743,
+              "blockingSliceMs": 70.90000009536743
+            }
+          ],
+          "p50": {
+            "loadMs": 70.90000009536743,
+            "blockingSliceMs": 70.90000009536743
+          },
+          "p95": {
+            "loadMs": 70.90000009536743,
+            "blockingSliceMs": 70.90000009536743
+          },
+          "thresholds": {
+            "loadMs": 500,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 10000,
+            "first": {
+              "x": 23.564356435643564,
+              "fill": "#4c78a8",
+              "y": 376.43564356435644,
+              "radius": 3
+            },
+            "last": {
+              "x": 376.43564356435644,
+              "fill": "#4c78a8",
+              "y": 23.56435643564356,
+              "radius": 3
+            }
+          },
+          "outputHash": "aa5a3cbf865319aa1c6d759f867e22981495685cddc5a77d368a35226a9b9114",
+          "witnessHash": "9b20493c631a1c31a49a70ff934eb5c6b1968ae28674c1fd15e88d1b4788200b",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        },
+        {
+          "name": "source-revise",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "reviseMs": 298.39999985694885,
+              "blockingSliceMs": 298.39999985694885
+            }
+          ],
+          "p50": {
+            "reviseMs": 298.39999985694885,
+            "blockingSliceMs": 298.39999985694885
+          },
+          "p95": {
+            "reviseMs": 298.39999985694885,
+            "blockingSliceMs": 298.39999985694885
+          },
+          "thresholds": {
+            "reviseMs": 500,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 10000,
+            "first": {
+              "x": 21.782178217821784,
+              "fill": "#4c78a8",
+              "y": 376.43564356435644,
+              "radius": 3
+            },
+            "last": {
+              "x": 198.21782178217822,
+              "fill": "#4c78a8",
+              "y": 23.56435643564356,
+              "radius": 3
+            }
+          },
+          "outputHash": "c5c32784bbb539902663f5cd46d1ee9b3b552ee1cdd2b4fdca8180f8375574c8",
+          "witnessHash": "6ce5a640e2b9be9154850a25f481a31f75dabdae576f2793132660834de931c3",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 464.7000000476837,
+      "witness": {
+        "count": 10000,
+        "first": {
+          "x": 23.564356435643564,
+          "fill": "#4c78a8",
+          "y": 376.43564356435644,
+          "radius": 3
+        },
+        "last": {
+          "x": 376.43564356435644,
+          "fill": "#4c78a8",
+          "y": 23.56435643564356,
+          "radius": 3
+        },
+        "snapshotCharacters": 7225738,
+        "load": "deserializeProgram",
+        "revise": "reviseData with full dependent point rematerialization",
+        "blocking": "entire synchronous public call, no yielded slice"
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 100000,
+      "ratio": 1,
+      "inputHash": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "source-revise",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 217.20000004768372,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Point mark item count must not exceed 50000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "points",
+      "count": 1000,
+      "ratio": 2,
+      "inputHash": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 290.7000000476837,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "hitMs": 0
+            }
+          ],
+          "p50": {
+            "hitMs": 0
+          },
+          "p95": {
+            "hitMs": 0
+          },
+          "thresholds": {
+            "hitMs": 8
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "points"
+          },
+          "outputHash": "d9381efd3057f27b9e34a1d4eed102d3e8c254135d97586dd0c1fd0ac26a3814",
+          "witnessHash": "48d7a658553e49d157d370ab63835f97778a67fa62ecfcbae5d54ea8abfffa5a",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "full-frame",
+          "status": "measured",
+          "preparationMs": 139.70000004768372,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "fullFrameSampleMs": 30.800000190734863
+            }
+          ],
+          "p50": {
+            "fullFrameSampleMs": 30.800000190734863
+          },
+          "p95": {
+            "fullFrameSampleMs": 30.800000190734863
+          },
+          "thresholds": {
+            "fullFrameSampleMs": 16.7
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 27.272727272727273,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 78.18181818181819,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "1646c7602d11e00ca8c1e0984718df3057d53df05c80a726b7586090d2267478",
+          "witnessHash": "cf6dcee5aeeca8487a898c709d7d8ea55b3726c0734da70081f4af778eced4a1",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 58.59999990463257,
+      "witness": {
+        "count": 1000,
+        "first": {
+          "x": 30.90909090909091,
+          "fill": "#4c78a8",
+          "y": 369.09090909090907,
+          "radius": 3
+        },
+        "last": {
+          "x": 107.27272727272728,
+          "fill": "#4c78a8",
+          "y": 30.909090909090878,
+          "radius": 3
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "points",
+      "count": 10000,
+      "ratio": 2,
+      "inputHash": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Hit index exceeds its work budget."
+          },
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "full-frame",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Animation guide endpoint size must not exceed 10000."
+          },
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 392.09999990463257,
+      "witness": {
+        "count": 10000,
+        "first": {
+          "x": 23.564356435643564,
+          "fill": "#4c78a8",
+          "y": 376.43564356435644,
+          "radius": 3
+        },
+        "last": {
+          "x": 376.43564356435644,
+          "fill": "#4c78a8",
+          "y": 23.56435643564356,
+          "radius": 3
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "points",
+      "count": 100000,
+      "ratio": 2,
+      "inputHash": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "requiredStages": [
+        "css-hit",
+        "full-frame"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "full-frame",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 222,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Point mark item count must not exceed 50000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 100,
+      "ratio": 2,
+      "inputHash": "b1d25b7c54960f73f5b1582e0838ef8d0a19cfc5acafe3836cb99f49ce7d92eb",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 7.599999904632568
+            }
+          ],
+          "p50": {
+            "kernelMs": 7.599999904632568
+          },
+          "p95": {
+            "kernelMs": 7.599999904632568
+          },
+          "thresholds": {
+            "kernelMs": 10
+          },
+          "witness": {
+            "count": 100,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.010101010101010102
+            ],
+            "lastLeaf": [
+              0.98989898989899,
+              1
+            ]
+          },
+          "outputHash": "fbf167a487f106126e62ba0bdd1dee8df4b20bbd7eed213ed5eeeb86fefcdb4c",
+          "witnessHash": "9de5b43e8815ec8866d643053c034e4a2c72c7f13de8a26c764a9d49096640c3",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "measured",
+          "preparationMs": 72,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "gesturePreviewMs": 6.099999904632568
+            }
+          ],
+          "p50": {
+            "gesturePreviewMs": 6.099999904632568
+          },
+          "p95": {
+            "gesturePreviewMs": 6.099999904632568
+          },
+          "thresholds": {
+            "gesturePreviewMs": 33
+          },
+          "witness": {
+            "count": 100,
+            "rootWidth": 460,
+            "leafWidth": 4.646464646464646
+          },
+          "outputHash": "31965dc350b374f4056f1211e6d5e7bff0fc6fb0740f906cacd9b59bc3c740fd",
+          "witnessHash": "754d3d8dc417774fd2c1e989974f2cee8620b8491b2034406be6a77ea3cbf61c",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 14.200000047683716,
+      "witness": {
+        "count": 100,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.010101010101010102
+        ],
+        "lastLeaf": [
+          0.98989898989899,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 1000,
+      "ratio": 2,
+      "inputHash": "dfe300b478fb1d3b701848ef166eb05b20a1f6cbbd6d298c303fe04394e02f98",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 22.700000047683716
+            }
+          ],
+          "p50": {
+            "kernelMs": 22.700000047683716
+          },
+          "p95": {
+            "kernelMs": 22.700000047683716
+          },
+          "thresholds": {
+            "kernelMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.001001001001001001
+            ],
+            "lastLeaf": [
+              0.998998998998999,
+              1
+            ]
+          },
+          "outputHash": "0f02b41c03df0b780f42c336f0ac055781dd54cc546a7902e8cffc9e1e8a2794",
+          "witnessHash": "d214e18a73c2eae66d79c25db94b991d09466f23b7c4b744a43f871bb7ca8d03",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "measured",
+          "preparationMs": 787.5999999046326,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "gesturePreviewMs": 52.40000009536743
+            }
+          ],
+          "p50": {
+            "gesturePreviewMs": 52.40000009536743
+          },
+          "p95": {
+            "gesturePreviewMs": 52.40000009536743
+          },
+          "thresholds": {
+            "gesturePreviewMs": 33
+          },
+          "witness": {
+            "count": 1000,
+            "rootWidth": 460,
+            "leafWidth": 0.46046046046046046
+          },
+          "outputHash": "892bf7f4b16ba332f518632c4247381c29dbe03c55f37a63d31cd116d86bec19",
+          "witnessHash": "f139903a46d5541fef6c7aa735b96a7ba13a7b20f88ad6d40b9b401e66b3c42c",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 50.299999952316284,
+      "witness": {
+        "count": 1000,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.001001001001001001
+        ],
+        "lastLeaf": [
+          0.998998998998999,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "partition",
+      "count": 10000,
+      "ratio": 2,
+      "inputHash": "e204dd2c1ab81f7c75b8d32aa006841fcda7e1e140ffd6a983dc1d5b448e1a1e",
+      "requiredStages": [
+        "normalized-layout",
+        "gesture-preview"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "normalized-layout",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "kernelMs": 195.70000004768372
+            }
+          ],
+          "p50": {
+            "kernelMs": 195.70000004768372
+          },
+          "p95": {
+            "kernelMs": 195.70000004768372
+          },
+          "thresholds": {
+            "kernelMs": 300
+          },
+          "witness": {
+            "count": 10000,
+            "rootInterval": [
+              0,
+              1
+            ],
+            "firstLeaf": [
+              0,
+              0.00010001000100010001
+            ],
+            "lastLeaf": [
+              0.9998999899989999,
+              1
+            ]
+          },
+          "outputHash": "1addb4ba760a5dc17143aa2a69cb78efe50de32b27bfc91d0e7dfba6780baf62",
+          "witnessHash": "deaa15c5b7eded1a4397dbdf3ec8df9a6b9630cb9b765f16a4daf6243f55a2a5",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "gesture-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Animation guide endpoint size must not exceed 10000."
+          },
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 374.40000009536743,
+      "witness": {
+        "count": 10000,
+        "rootInterval": [
+          0,
+          1
+        ],
+        "firstLeaf": [
+          0,
+          0.00010001000100010001
+        ],
+        "lastLeaf": [
+          0.9998999899989999,
+          1
+        ]
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 1000,
+      "ratio": 2,
+      "inputHash": "8028f2da2e9bbbcd45e287854f20e66f240d98da6dd30f88cc3a9d0bc2898fe6",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "measured",
+          "preparationMs": 186.59999990463257,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "cameraPreviewMs": 23.200000047683716
+            }
+          ],
+          "p50": {
+            "cameraPreviewMs": 23.200000047683716
+          },
+          "p95": {
+            "cameraPreviewMs": 23.200000047683716
+          },
+          "thresholds": {
+            "cameraPreviewMs": 16.7
+          },
+          "witness": {
+            "vertices": 1000,
+            "commands": 1999,
+            "first": {
+              "op": "M",
+              "x": 125.95195103069393,
+              "y": 212.34134149488435
+            },
+            "last": {
+              "op": "L",
+              "x": 274.0480489693061,
+              "y": 187.65865850511565
+            }
+          },
+          "outputHash": "c0fa348a760d597e5333b3015a851211a12fa44027f9be68823e3b66809baa5e",
+          "witnessHash": "39657f0106ed1d1b22e550f9e2cae6741c750427c21258464a1fd70076619055",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        },
+        {
+          "name": "css-hit",
+          "status": "measured",
+          "preparationMs": 109.90000009536743,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "hitMs": 11.200000047683716
+            }
+          ],
+          "p50": {
+            "hitMs": 11.200000047683716
+          },
+          "p95": {
+            "hitMs": 11.200000047683716
+          },
+          "thresholds": {
+            "hitMs": 20
+          },
+          "witness": {
+            "queries": 3,
+            "cssTransform": [
+              1.5,
+              0,
+              0,
+              1.5,
+              7,
+              11
+            ],
+            "candidateCount": 1,
+            "owner": "coast"
+          },
+          "outputHash": "3d264b0611df448be65d4a01b0cd74fea9a22ef79ee5abbf150d365614c35a0c",
+          "witnessHash": "a50555d18cb8cbfe233e44c79f226b4adc1be50e62b7c0ba00a81eedda9f6fb8",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 86.20000004768372,
+      "witness": {
+        "vertices": 1000,
+        "commands": 1999,
+        "first": {
+          "op": "M",
+          "x": 147.6401224401701,
+          "y": 208.72664625997166
+        },
+        "last": {
+          "op": "L",
+          "x": 252.3598775598299,
+          "y": 191.27335374002834
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 10000,
+      "ratio": 2,
+      "inputHash": "eedbb01f96fbfa4448a4ebf9bf5398a660b990c042e05ebfea957b07b3a986cc",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic mark point count must not exceed 10000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic mark point count must not exceed 10000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 483.7999999523163,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Geographic mark point count must not exceed 10000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "geo",
+      "count": 100000,
+      "ratio": 2,
+      "inputHash": "3abb4487631f9099de7725acc9bf1fec159d3c6807f5abeba6e583ef3d5d5079",
+      "requiredStages": [
+        "camera-preview",
+        "css-hit"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "camera-preview",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic refined points must not exceed 30000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "css-hit",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Geographic refined points must not exceed 30000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 3900.5,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Geographic refined points must not exceed 30000."
+        }
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 1000,
+      "ratio": 2,
+      "inputHash": "0cb35b3589aef172e7bb808aaacf47ed1050cc7abd4fce62d2b1604f6904fcb6",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "loadMs": 8.700000047683716,
+              "blockingSliceMs": 8.700000047683716
+            }
+          ],
+          "p50": {
+            "loadMs": 8.700000047683716,
+            "blockingSliceMs": 8.700000047683716
+          },
+          "p95": {
+            "loadMs": 8.700000047683716,
+            "blockingSliceMs": 8.700000047683716
+          },
+          "thresholds": {
+            "loadMs": 100,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 30.90909090909091,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 107.27272727272728,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "97e4a301189df95360a899522489eb1e428b8ae91341329c3ec925a11a808a69",
+          "witnessHash": "8d4b82d24940c816dd1f9d84b67f9b4825b067b237d811932abeb1e2c1e62241",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        },
+        {
+          "name": "source-revise",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "reviseMs": 29.300000190734863,
+              "blockingSliceMs": 29.300000190734863
+            }
+          ],
+          "p50": {
+            "reviseMs": 29.300000190734863,
+            "blockingSliceMs": 29.300000190734863
+          },
+          "p95": {
+            "reviseMs": 29.300000190734863,
+            "blockingSliceMs": 29.300000190734863
+          },
+          "thresholds": {
+            "reviseMs": 100,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 1000,
+            "first": {
+              "x": 25.454545454545453,
+              "fill": "#4c78a8",
+              "y": 369.09090909090907,
+              "radius": 3
+            },
+            "last": {
+              "x": 63.63636363636364,
+              "fill": "#4c78a8",
+              "y": 30.909090909090878,
+              "radius": 3
+            }
+          },
+          "outputHash": "9b95624f943a0673d30ada718f02d9545ea3084859879e4f1feef604c88b89a7",
+          "witnessHash": "e27f56bfa1fff214602df630d1e9f3d19985ef308f6d318118239e3c7b7cd28f",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "passed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 69.40000009536743,
+      "witness": {
+        "count": 1000,
+        "first": {
+          "x": 30.90909090909091,
+          "fill": "#4c78a8",
+          "y": 369.09090909090907,
+          "radius": 3
+        },
+        "last": {
+          "x": 107.27272727272728,
+          "fill": "#4c78a8",
+          "y": 30.909090909090878,
+          "radius": 3
+        },
+        "snapshotCharacters": 730181,
+        "load": "deserializeProgram",
+        "revise": "reviseData with full dependent point rematerialization",
+        "blocking": "entire synchronous public call, no yielded slice"
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 10000,
+      "ratio": 2,
+      "inputHash": "679628ed88a528915e95744c49ad18a19a005fa55d515f70ee02d199e8729845",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "measured",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "loadMs": 69.89999985694885,
+              "blockingSliceMs": 69.89999985694885
+            }
+          ],
+          "p50": {
+            "loadMs": 69.89999985694885,
+            "blockingSliceMs": 69.89999985694885
+          },
+          "p95": {
+            "loadMs": 69.89999985694885,
+            "blockingSliceMs": 69.89999985694885
+          },
+          "thresholds": {
+            "loadMs": 500,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 10000,
+            "first": {
+              "x": 23.564356435643564,
+              "fill": "#4c78a8",
+              "y": 376.43564356435644,
+              "radius": 3
+            },
+            "last": {
+              "x": 376.43564356435644,
+              "fill": "#4c78a8",
+              "y": 23.56435643564356,
+              "radius": 3
+            }
+          },
+          "outputHash": "e4104510fd35d4d8c07f9398f1fbe7f7cd95252e096339e929a84d2ada144630",
+          "witnessHash": "9b20493c631a1c31a49a70ff934eb5c6b1968ae28674c1fd15e88d1b4788200b",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        },
+        {
+          "name": "source-revise",
+          "status": "measured",
+          "preparationMs": 0,
+          "warmups": 0,
+          "measured": 1,
+          "samples": [
+            {
+              "reviseMs": 294.39999985694885,
+              "blockingSliceMs": 294.39999985694885
+            }
+          ],
+          "p50": {
+            "reviseMs": 294.39999985694885,
+            "blockingSliceMs": 294.39999985694885
+          },
+          "p95": {
+            "reviseMs": 294.39999985694885,
+            "blockingSliceMs": 294.39999985694885
+          },
+          "thresholds": {
+            "reviseMs": 500,
+            "blockingSliceMs": 50
+          },
+          "witness": {
+            "count": 10000,
+            "first": {
+              "x": 21.782178217821784,
+              "fill": "#4c78a8",
+              "y": 376.43564356435644,
+              "radius": 3
+            },
+            "last": {
+              "x": 198.21782178217822,
+              "fill": "#4c78a8",
+              "y": 23.56435643564356,
+              "radius": 3
+            }
+          },
+          "outputHash": "f0514ddbe728a80e23e10bfa627a76e4b0a935066e4cf1105c9a646f81c6e5ab",
+          "witnessHash": "6ce5a640e2b9be9154850a25f481a31f75dabdae576f2793132660834de931c3",
+          "successSLO": "not-qualified-diagnostic",
+          "observedThreshold": "failed-this-fixture"
+        }
+      ],
+      "sourcePreparationMs": 461.5,
+      "witness": {
+        "count": 10000,
+        "first": {
+          "x": 23.564356435643564,
+          "fill": "#4c78a8",
+          "y": 376.43564356435644,
+          "radius": 3
+        },
+        "last": {
+          "x": 376.43564356435644,
+          "fill": "#4c78a8",
+          "y": 23.56435643564356,
+          "radius": 3
+        },
+        "snapshotCharacters": 7225738,
+        "load": "deserializeProgram",
+        "revise": "reviseData with full dependent point rematerialization",
+        "blocking": "entire synchronous public call, no yielded slice"
+      },
+      "networkRequests": 0
+    },
+    {
+      "kind": "data",
+      "count": 100000,
+      "ratio": 2,
+      "inputHash": "b68cab72c1abb6094e715d6e5caa84c54aacf18750ad4a22fb63e3b8c5b2c39f",
+      "requiredStages": [
+        "editable-load",
+        "source-revise"
+      ],
+      "status": "explicit-limit",
+      "stages": [
+        {
+          "name": "editable-load",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        },
+        {
+          "name": "source-revise",
+          "status": "explicit-limit",
+          "successSLO": "unsupported-not-success",
+          "warmups": 0,
+          "measured": 0,
+          "error": {
+            "name": "RangeError",
+            "message": "Point mark item count must not exceed 50000."
+          },
+          "blockedBy": "native-input-and-geometry-preparation",
+          "observedThreshold": "unsupported-not-success"
+        }
+      ],
+      "sourcePreparationMs": 218.20000004768372,
+      "preparationFailure": {
+        "name": "native-input-and-geometry-preparation",
+        "status": "explicit-limit",
+        "successSLO": "unsupported-not-success",
+        "warmups": 0,
+        "measured": 0,
+        "error": {
+          "name": "RangeError",
+          "message": "Point mark item count must not exceed 50000."
+        }
+      },
+      "networkRequests": 0
+    }
+  ],
+  "lifecycle": [],
+  "status": "diagnostic-completed-not-qualification"
+}

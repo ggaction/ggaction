@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 1 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 122.306292
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 2 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 57.64175
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 3 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.275333
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 4 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 10.928417
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 5 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 579.614833
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 6 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.37375
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 7 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 147.625958
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 8 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 162.777667
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 9 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 144.321958
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 10 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 1.712083
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 11 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.338791
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 12 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 3164.917041
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 13 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 30.673792
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 14 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.193625
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 15 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 1.036584
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 16 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 2.533833
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4642.927834
