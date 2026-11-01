@@ -1,0 +1,84 @@
+TAP version 13
+# Subtest: prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+ok 1 - prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+  ---
+  duration_ms: 7.81525
+  type: 'test'
+  ...
+# Subtest: public flush labels preserve raw keys, current-frame meaning and strict offline equality
+ok 2 - public flush labels preserve raw keys, current-frame meaning and strict offline equality
+  ---
+  duration_ms: 114.665917
+  type: 'test'
+  ...
+# Subtest: fixed rotations and edge-aligned frames retain native text placement on all four sides
+not ok 3 - fixed rotations and edge-aligned frames retain native text placement on all four sides
+  ---
+  duration_ms: 13.754459
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:55:1'
+  failureType: 'testCodeFailure'
+  error: '35 != 0.6108652381980153'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    near (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:17:31)
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:61:39)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: hard-break and hidden labels retain semantic line identity in scoped layouts
+ok 4 - hard-break and hidden labels retain semantic line identity in scoped layouts
+  ---
+  duration_ms: 57.931292
+  type: 'test'
+  ...
+# Subtest: layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+not ok 5 - layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+  ---
+  duration_ms: 4.719417
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:82:1'
+  failureType: 'testCodeFailure'
+  error: 'editXAxisLabels conflicts with axis ticks.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    assertTickCompatibility (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/axes/labels.js:195:90)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/actions/guides/axes/labels.js:355:5)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:71
+    applyGuidePass (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:28:16)
+    withGuideLayoutTransaction (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:89:16)
+    ChartProgram.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/materialization/guides/layout.js:112:12)
+    ChartProgram.wrappedAction [as editXAxisLabels] (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/src/core/action.js:297:89)
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/test/unit/animation/axis-label-transitions.test.js:85:49)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  ...
+# Subtest: strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+ok 6 - strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+  ---
+  duration_ms: 6.376666
+  type: 'test'
+  ...
+# Subtest: exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+ok 7 - exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+  ---
+  duration_ms: 0.875167
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 5
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 800.237167

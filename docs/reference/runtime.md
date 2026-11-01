@@ -1699,7 +1699,9 @@ export interface TransitionPlan {
   readonly easing: AnimationEasing;
 }
 /** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, guide-geometry, partition, or completed-graph.
- * Guide geometry includes explicit native titles, band boundaries, and field-keyed Parallel axes.
+ * Guide geometry includes explicit native titles, band boundaries, field-keyed Parallel axes,
+ * single-edge gradient legends with exact raw samples and explicit offsets, and fixed
+ * Cartesian label flush/rotation/edge layout with retained exact text measurements.
  * Cartesian geometry includes selected conditional values, native offsets/spans/category slots,
  * completed density samples, and compatible source-follow overlays.
  * Unsupported policies retain an explicit crossfade reason. */

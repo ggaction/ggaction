@@ -81,7 +81,7 @@ test("edited guide geometry and unsupported text layout remain explicit fallback
   const p = base().createXAxis({ ticksAndLabels: { values: [0, 5, 10] }, title: false });
   const edited = p.editGraphics({ target: "xAxisTicks", property: "y1", value: 123 });
   assert.equal(project(edited).states.filter(state => state?.reason === "guide-edited").length, 3);
-  const flush = p.editXAxisLabels({ flush: true });
+  const flush = p.editXAxisLabels({ flush: true, maxWidth: 50, wrap: "word" });
   assert.equal(project(flush).states.filter(state => state?.reason === "guide-layout").length, 3);
   const objects = structuredClone(p.graphicSpec.objects); objects.xAxisLabels.items.pop();
   assert.throws(() => project(new ChartProgram({ ...p, graphicSpec: { ...p.graphicSpec, objects } })), /stale semantic/);

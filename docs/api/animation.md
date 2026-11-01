@@ -242,7 +242,8 @@ import { renderToSVG } from 'ggaction/svg';
 const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
   .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
   .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
-  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] });
+  .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
+  .createXAxisLabels({ values: [0, 5, 10], flush: true });
 const to = from.editScale({ id: 'x', domain: [0, 20] });
 const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
 const restored = deserializeAnimation(serializeAnimation(plan));
@@ -264,9 +265,44 @@ Parallel axes match by field name, component, and raw tick value when fields mov
 appear, or disappear. Neither uses array position as identity. If native band edges
 split during a transition, that boundary crossfades explicitly.
 
-Flush, rotated, or responsive reflow labels, inferred or label-relative title clearance,
-and edited geometry retain explicit fallbacks. Legends remain outside this typed guide
-kernel and use the existing anonymous enter/exit behavior.
+Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the native
+measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
+policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
+profiles must contain every required measurement. Current layouts support interruption
+and offline replay. Width-based wrapping, responsive skip/rotation selection, inferred or
+label-relative title clearance, and edited geometry retain explicit fallbacks.
+
+Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
+use their native single-edge layout. Ticks and labels keep their raw values; the current
+scale maps them again as the domain changes. Gradient length, thickness, offset, and frame
+move through that same layout. Current legend frames can be interrupted and restored
+offline. Text or font changes crossfade; exact font profiles must contain all required
+measurements. Automatic samples, symbol legends, borders, groups, multiple blocks on one
+edge, and inferred axis clearance retain safe fallbacks.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this complete ES module with ggaction installed; both exact-value gradient legends and the sampled SVG output are included.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from 'ggaction';
+import { planTransition, sampleTransition } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 500, height: 300,
+    margin: { top: 50, bottom: 50, left: 50, right: 150 } })
+  .createData({ values: [{ x: 1, y: 1 }, { x: 100, y: 2 }] })
+  .createPointMark().encodeX({ field: 'x' }).encodeY({ field: 'y' })
+  .encodeColor({ field: 'x', fieldType: 'quantitative',
+    scale: { type: 'log', domain: [1, 100], range: ['red', 'blue'] } })
+  .createLegend({ channels: ['color'], values: [1, 10, 100], offset: 20, title: false });
+const to = from.editScale({ id: 'color', domain: [1, 10000] })
+  .editLegend({ gradient: { length: 160, thickness: 20 } });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+console.log(renderToSVG(sampleTransition(plan, 500)));
+```
 
 ## Move geographic cameras
 

@@ -34,3 +34,17 @@ export function materializedLegendUsesScale(program, id) {
     return (kind === "colorSize" ? colorSizeScaleIds(config).includes(id) : config.scale === id || config.scales?.includes(id)) || linkedScale === id;
   });
 }
+
+export function legendSampleStrokeWidth(program, target) {
+  const config = program.markConfigs[target] ?? {};
+  return config.barAppearance?.strokeWidth ?? config.strokeWidth ?? ({
+    point: 1,
+    line: 2,
+    area: 1,
+    bar: 0.5,
+    rect: 1,
+    arc: 1,
+    rule: 2,
+    tick: 2
+  }[findLayer(program, target)?.mark?.type] ?? 1);
+}

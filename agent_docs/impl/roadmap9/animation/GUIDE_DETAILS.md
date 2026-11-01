@@ -160,3 +160,37 @@ line/point/swatch 대응도 원 `legendSampleGraphicGroups`를 사용한다.
 owner로 분리한다. `guideTracks`의 validate/prepare/sample wrapper를 통해 같은 semantic-guide
 seam을 사용하며 root의 v3 sampler에는 import만 좁게 연결한다. Endpoint program이나 전체
 font profile을 저장하지 않고 필요한 측정과 semantic owner/값·배치 정책만 strict proof로 보존한다.
+
+
+## Exact gradient 범례의 typed 연결
+
+`AUTHORIZATION.json#remainingApproval`의 남은 공개 API·저장·시각 결정 승인에 따라 기존6API 안에서
+단일 edge의 color/stroke gradient를 연결한다. `legendState`는 필요한 font query closure와
+원 native config/frame/scale 의미를 닫힌 준비값으로 소유하며 `legendGuides`가 exact graphic ID에
+대응한다. Native gradient layout과 60분할 strip geometry를 기존 action과 공유한다. 값의 log
+mapping, 네 edge 배치, hard-break title, schema2 font proof, 바뀐 sample의 enter/exit, 현재 frame
+재기준과 strict offline을 검증한다. 실제 Canvas/SVG/PNG/PDF는 같은 vector frame을 소비한다.
+
+Root 승인된 shared seam 예외는 sample의 guideTracks import 한 줄과 frameEndpoint의 guide
+primitive 허용목록에 rect 하나뿐이다. 전체 transition version2는 이 branch에서 유지하며 root의
+version3 timeline은 후속 합산에서 보존한다. Guide manifest의 단일 owner는 native-guide-values@3이다.
+
+범례 item grid/categorical/size, auto sampling, border/group/multi-lane 및 axis flush·rotation·responsive
+reflow와 inferred title 의존성은 후행 의무다. 이 checkpoint를 범례 전체 또는061/062/063/077
+완료로 집계하지 않는다. 첫 rect admission 실패와 이후 통과를 evidence에서 분리한다.
+
+
+## 고정 축 label measured layout
+
+`AUTHORIZATION.json#remainingApproval`에 따라 기존 guide vector를 `native-guide-values@4`로
+확대한다. 새 공개 함수나 shared4 변경은 없으며 root timeline v3는 합산 시 유지한다.
+`axisLabelState`는 native raw values, frame/scale, 고정 회전·flush·edge 정책과 정확 metric query를
+보존한다. 공통 `guideMetrics`는 기존 gradient의 query/binding 정책을 추출한 단일 owner다.
+표시 text/hard-break/정렬/font가 같을 때 native layout을 현재 의미값으로 재생하고 strict forward
+proof, 현재 frame 재기준, 오프라인 동일 시각과 네 renderer를 검증한다. 새 format/줄 선택을
+추정하지 않으며 width wrapping/responsiveResult·inferred title은 후행 의무로 유지한다.
+
+최초 focused 실패는 잘못된 Canvas selector import, 새 지원에 대한 이전 fallback 기대,
+회전 옵션 fixture의 잘못된 단위 형식과 ticks/labels 값 불일치였다. 원 로그를 보존하고 정식 API
+입력으로 수리한다. 범례 categorical/size/group 및 동적 responsive reflow는 여전히 진행 중이며
+이번 고정 label checkpoint를 전체061/062/063/077 완료로 집계하지 않는다.

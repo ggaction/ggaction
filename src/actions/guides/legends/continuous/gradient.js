@@ -1,6 +1,6 @@
 
 
-import { resolveGradientLayout } from "../../../../materialization/guides/legendGradient.js";
+import { resolveGradientLayout, GRADIENT_STRIP_COUNT, gradientStripGeometry } from "../../../../materialization/guides/legendGradient.js";
 
 import { inferBin2DFieldTitle } from '../../../../grammar/bin2d.js';
 import { findDataset } from '../../../../selectors/datasets.js';
@@ -68,8 +68,7 @@ export function materializeGradientLegend(program, resolved, appearance) {
   if (!stroke && config.representation === "symbols") return materializeColorSymbols(program, resolved, config);
   const layout = resolveGradientLayout(program, config, scale,
     stroke ? "Stroke gradient legend" : "Gradient legend", appearance?.strokeWidth ?? 0);
-  const stripCount = 60;
-  const stripSize = layout.length / stripCount;
+  const stripCount = GRADIENT_STRIP_COUNT;
   const strips = Array.from({ length: stripCount }, (_, index) => {
     const fraction = (index + 0.5) / stripCount;
     const position = layout.vertical ? 1 - fraction : fraction;
@@ -77,10 +76,7 @@ export function materializeGradientLegend(program, resolved, appearance) {
     const value = scale.midpoint === undefined ? position : interpolateNumber(...scale.domain, position);
     const [color] = mapScaleConsumerValues([value], samplingScale, channel);
     return {
-      x: layout.x + (layout.vertical ? 0 : index * stripSize),
-      y: layout.y + (layout.vertical ? index * stripSize : 0),
-      width: layout.vertical ? layout.thickness : stripSize,
-      height: layout.vertical ? stripSize : layout.thickness,
+      ...gradientStripGeometry(layout, index),
       fill: stroke ? appearance.fill : color,
       stroke: color,
       strokeWidth: stroke ? appearance.strokeWidth : 0

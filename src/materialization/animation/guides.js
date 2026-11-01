@@ -1,3 +1,7 @@
+import { prepareAxisAnimationLayout, normalizeAxisLabelAnimationState, axisLabelAnimationMatchesNode } from "./axisLabelState.js";
+import { findCanvasGraphic } from "../graphicHierarchy.js";
+import { legendAnimationItems } from "./legendGuides.js";
+import { legendAnimationMatchesNode } from "./legendState.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateWorkLimit, validateGeneratedItemLimit } from "../../core/validation.js";
 import { cartesianPosition } from "../../grammar/animation/cartesianPosition.js";
@@ -14,7 +18,7 @@ import { guideAnchorItems } from "./guideAnchors.js";
 import { valuesFromTickConfig, mapPolarGuideValues } from "../guides/tickValues.js";
 
 function scopedGuides(program, namespaces, spend) {
-  const result = new Map(), objects = program.graphicSpec.objects;
+  const result = new Map(), labelLayouts = new Map(), objects = program.graphicSpec.objects;
   const identity = (owner, component, value, line = 0) => ({ namespaces, owner, component, value, line });
   const add = (id, state) => { spend(1 + id.length); result.set(id, normalizeGuideAnimationState(state)); };
   const mapping = (value, config) => cartesianPosition(value, program.resolvedScales[config.scale]);
@@ -28,11 +32,21 @@ function scopedGuides(program, namespaces, spend) {
     const { channel, component: kind, config } = item;
     const id = identity(item.ownerId, kind, item.rawValue, item.line);
     const cartesian = channel === "x" || channel === "y";
-    // These policies require retained ink/layout preparation beyond plain line
-    // roles. Do not infer a layout offset from final Text coordinates.
     if (kind === "labels" && cartesian && (config.flush === true || config.rotation !== 0 ||
         program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined)) {
-      add(item.graphicId, { identity: id, reason: "guide-layout" });
+      if (config.maxWidth !== undefined || config.responsive !== undefined || config.responsiveResult !== undefined) {
+        add(item.graphicId, { identity: id, reason: "guide-layout" });
+      } else {
+        if (!labelLayouts.has(config)) {
+          const frame = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, item.ownerId);
+          const { width, height } = findCanvasGraphic(program).properties;
+          labelLayouts.set(config, prepareAxisAnimationLayout({ values: valuesFromTickConfig(program, config),
+            scale: program.resolvedScales[config.scale], config, channel, frame, canvas: { width, height },
+            profile: program.materializationConfigs.textMetrics,
+            edgeAligned: program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined }));
+        }
+        result.set(item.graphicId, normalizeAxisLabelAnimationState({ identity: id, kind: "label-layout", layout: labelLayouts.get(config) }));
+      }
       continue;
     }
     const frame = cartesian ? resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, item.ownerId) : polarFrame(config);
@@ -80,6 +94,10 @@ function scopedGuides(program, namespaces, spend) {
       parallel ? { field: item.field, value: item.value } : item.value, item.line);
     add(item.graphicId, item.reason === undefined ? { identity: id, kind: "anchor", anchor: item.anchor } : { identity: id, reason: item.reason });
   }
+  for (const item of legendAnimationItems(program, namespaces, spend)) {
+    spend(1 + item.graphicId.length);
+    result.set(item.graphicId, item.state);
+  }
   return result;
 }
 
@@ -99,6 +117,6 @@ export function projectGuideAnimationState(program, endpoint) {
   return cloneAndFreeze(endpoint.sources.map((source, index) => {
     const state = states.get(source.graphicId);
     if (state === undefined || state.reason !== undefined) return state ?? null;
-    return guideAnimationMatchesNode(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
+    return (state.kind === "legend" ? legendAnimationMatchesNode : state.kind === "label-layout" ? axisLabelAnimationMatchesNode : guideAnimationMatchesNode)(state, endpoint.scene.nodes[index]) ? state : { identity: state.identity, reason: "guide-edited" };
   }));
 }

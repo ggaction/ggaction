@@ -1,0 +1,37 @@
+{
+  "archive": "ae11f21eb27ab266fd1a0e81414adfb96b6cfffcea4187198734d3bd5d5af3d3",
+  "status": "passed",
+  "reuse": "same fixed archive and unchanged runtime/types/docs; only external measured limits updated",
+  "checks": [
+    {
+      "specifier": "ggaction",
+      "measured": 774639,
+      "limit": 774800
+    },
+    {
+      "specifier": "ggaction/basic",
+      "measured": 422915,
+      "limit": 423000
+    },
+    {
+      "specifier": "ggaction/svg",
+      "measured": 24954,
+      "limit": 26000
+    },
+    {
+      "specifier": "ggaction/graph",
+      "measured": 44076,
+      "limit": 46000
+    },
+    {
+      "specifier": "ggaction/animation",
+      "measured": 269895,
+      "limit": 269900
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "measured": 123478,
+      "limit": 131400
+    }
+  ]
+}

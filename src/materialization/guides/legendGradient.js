@@ -31,6 +31,12 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
+  return resolveGradientLayoutValues({ plot, canvas, config, scale, profile: program.materializationConfigs.textMetrics, label, stripStrokeWidth });
+}
+
+// Native legend geometry also consumes explicit prepared inputs during a
+// transition. Neither path needs a mutable program or graphical action.
+export function resolveGradientLayoutValues({ plot, canvas, config, scale, profile, label = "Gradient legend", stripStrokeWidth = 0 }) {
   const vertical = config.gradientDirection === undefined
     ? ["right", "left"].includes(config.position) : config.gradientDirection === "vertical";
   const stripWidth = vertical ? config.gradient.thickness : config.gradient.length;
@@ -38,7 +44,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const length = config.gradient.length;
   const thickness = config.gradient.thickness;
   const titleText = config.titleVisible === false ? { height: 0, extraHeight: 0 }
-    : resolveLegendTitleText(config.title, config.titleStyle, program.materializationConfigs.textMetrics);
+    : resolveLegendTitleText(config.title, config.titleStyle, profile);
   const titleGap = config.blockGap ?? 12;
   let x;
   let y;
@@ -105,7 +111,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
       }));
   if (!exact && transformed) {
     const bounds = labels.map((label, index) => resolveLegendTextBounds(
-      label, texts[index], config.labels, program.materializationConfigs.textMetrics));
+      label, texts[index], config.labels, profile));
     const indices = automaticTickIndices(bounds, values, vertical);
     values = indices.map(index => values[index]);
     texts = indices.map(index => texts[index]);
@@ -136,9 +142,9 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     top: Math.min(tick.y1, tick.y2) - 0.5,
     bottom: Math.max(tick.y1, tick.y2) + 0.5
   }));
-  labels = alignLegendLabels(labels, texts, config.labels, program.materializationConfigs.textMetrics);
+  labels = alignLegendLabels(labels, texts, config.labels, profile);
   const labelBounds = labels.map((label, index) =>
-    resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
+    resolveLegendTextBounds(label, texts[index], config.labels, profile)
   );
   if (config.titlePosition === "bottom" && config.titleVisible !== false) {
     const bottom = Math.max(stripBounds.bottom + stripStrokeWidth / 2,
@@ -149,12 +155,12 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   if (config.titleVisible !== false) title = alignLegendTitle(title, config.title, config.titleStyle,
     [{ left: stripBounds.left - stripStrokeWidth / 2, right: stripBounds.right + stripStrokeWidth / 2,
       top: stripBounds.top - stripStrokeWidth / 2, bottom: stripBounds.bottom + stripStrokeWidth / 2 },
-      ...tickBounds, ...labelBounds], program.materializationConfigs.textMetrics);
+      ...tickBounds, ...labelBounds], profile);
   const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
-  , program.materializationConfigs.textMetrics, { hardBreaks: true });
+  , profile, { hardBreaks: true });
   let occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
     ...(config.titleVisible === false ? [] : [titleBounds])];
   const spacing = config.titlePadding === undefined ? undefined : resolveLegendContentSpacing(config,[{row:0,x,y,bounds:[
@@ -183,5 +189,16 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   return {
     vertical, x, y, length, thickness, values, texts, labels, ticks, title,
     background
+  };
+}
+
+export const GRADIENT_STRIP_COUNT = 60;
+export function gradientStripGeometry(layout, index) {
+  const size = layout.length / GRADIENT_STRIP_COUNT;
+  return {
+    x: layout.x + (layout.vertical ? 0 : index * size),
+    y: layout.y + (layout.vertical ? index * size : 0),
+    width: layout.vertical ? layout.thickness : size,
+    height: layout.vertical ? size : layout.thickness
   };
 }

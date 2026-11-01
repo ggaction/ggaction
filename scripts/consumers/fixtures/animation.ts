@@ -110,3 +110,14 @@ for(const endpoint of [nativeRule,nativeCaps,nativeDensity,nativeOverlay]){
  const nativeFrame=sampleTransition(deserializeAnimation(serializeAnimation(nativePlan)).plan,50);
  render(nativeFrame,context);renderToSVG(nativeFrame);renderToPNGBuffer(nativeFrame);renderToPDFBuffer(nativeFrame);
 }
+
+
+const legendFrom=guideFrom.encodeColor({field:'x',fieldType:'quantitative',scale:{type:'log',domain:[1,100],range:['red','blue']}})
+ .createLegend({channels:['color'],values:[1,10,100],offset:20,title:false});
+const legendTo=legendFrom.editScale({id:'color',domain:[1,10000]}).editLegend({gradient:{length:160,thickness:20}});
+const legendFrame=sampleTransition(planTransition({from:legendFrom,to:legendTo,options:{durationMs:100,easing:'linear'}}),50);
+render(legendFrame,context);renderToSVG(legendFrame);renderToPNGBuffer(legendFrame);renderToPDFBuffer(legendFrame);
+
+const fixedLabels=guideFrom.editXAxisLabels({flush:true});
+const fixedLabelFrame=sampleTransition(planTransition({from:fixedLabels,to:fixedLabels.editCanvas({width:680}),options:{durationMs:100}}),50);
+renderToSVG(fixedLabelFrame);

@@ -1,13 +1,29 @@
 import { chart } from "../../src/index.js";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../src/animation.js";
 
-export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel"];
+export const guideFrameVariants = ["cartesian", "polar", "title", "boundary", "parallel", "legend", "label-layout"];
 export function animationGuideFrame(variant) {
   let from = chart().createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 0, y: 0 }, { id: "b", x: 10, y: 10 }] })
     .createPointMark({ id: "m", opacity: 0 });
   let to, points;
-  if (variant === "title") {
+  if (variant === "label-layout") {
+    from = chart().createCanvas({ width: 200, height: 220, margin: { left: 20, right: 20, top: 20, bottom: 60 } })
+      .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
+      .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } }).encodeY({ field: "y" })
+      .createXAxisLabels({ values: [6], flush: true, fontSize: 40, fontWeight: "bold", color: "red", offset: 8,
+        labelMap: [{ value: 6, label: "I" }] });
+    to = from.editScale({ id: "x", domain: [0, 14] });
+    points = [[100, 185], [125, 185]];
+  } else if (variant === "legend") {
+    from = chart().createCanvas({ width: 300, height: 240, margin: { left: 20, right: 120, top: 40, bottom: 40 } })
+      .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] }).createPointMark({ opacity: 0 })
+      .encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeColor({ field: "y", fieldType: "quantitative", scale: { domain: [0, 10], range: ["red", "red"] } })
+      .createLegend({ channels: ["color"], values: [0, 10], offset: 20, title: false, gradient: { length: 100, thickness: 12 } });
+    to = from.editLegend({ offset: 40, gradient: { length: 140, thickness: 28 } });
+    points = [[220, 100], [250, 100]];
+  } else if (variant === "title") {
     from = from.encodeX({ field: "x", scale: { domain: [0, 20], nice: false } }).encodeY({ field: "y" })
       .createXAxis({ line: false, ticksAndLabels: false, title: { text: "I", at: 5, offset: -10, fontSize: 40, fontWeight: "bold", color: "red" } });
     to = from.editXAxisTitle({ at: 15 });

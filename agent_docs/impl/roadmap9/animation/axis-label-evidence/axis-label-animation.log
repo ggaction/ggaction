@@ -1,0 +1,2236 @@
+TAP version 13
+# Subtest: public solid style and geometry share a versioned current frame with exact native endpoints
+ok 1 - public solid style and geometry share a versioned current frame with exact native endpoints
+  ---
+  duration_ms: 1134.822084
+  type: 'test'
+  ...
+# Subtest: opacity and explicit stroke width interpolate with fill and stroke without mutating source programs
+ok 2 - opacity and explicit stroke width interpolate with fill and stroke without mutating source programs
+  ---
+  duration_ms: 358.11925
+  type: 'test'
+  ...
+# Subtest: current appearance rebases in both directions and composition scopes without retaining an earlier plan chain
+ok 3 - current appearance rebases in both directions and composition scopes without retaining an earlier plan chain
+  ---
+  duration_ms: 869.547958
+  type: 'test'
+  ...
+# Subtest: strict transport rejects old or missing appearance policy before creating a restored plan
+ok 4 - strict transport rejects old or missing appearance policy before creating a restored plan
+  ---
+  duration_ms: 14.746042
+  type: 'test'
+  ...
+# Subtest: a point becoming visible uses current ink for hit and keyboard selection
+ok 5 - a point becoming visible uses current ink for hit and keyboard selection
+  ---
+  duration_ms: 579.724125
+  type: 'test'
+  ...
+# Subtest: geographic native streaming interpolates solid appearance while preserving the exact feature origin
+ok 6 - geographic native streaming interpolates solid appearance while preserving the exact feature origin
+  ---
+  duration_ms: 295.0215
+  type: 'test'
+  ...
+# Subtest: solid appearance uses the versioned premultiplied linear-light color kernel
+ok 7 - solid appearance uses the versioned premultiplied linear-light color kernel
+  ---
+  duration_ms: 2.615167
+  type: 'test'
+  ...
+# Subtest: none paint gains visible chroma with alpha and opaque equal colors stay unchanged
+ok 8 - none paint gains visible chroma with alpha and opaque equal colors stay unchanged
+  ---
+  duration_ms: 1.145958
+  type: 'test'
+  ...
+# Subtest: opacity and explicit stroke width interpolate without inventing missing stroke geometry
+ok 9 - opacity and explicit stroke width interpolate without inventing missing stroke geometry
+  ---
+  duration_ms: 0.315458
+  type: 'test'
+  ...
+# Subtest: structured fills, changed effects, static policy and unresolved colors remain explicit fallbacks
+ok 10 - structured fills, changed effects, static policy and unresolved colors remain explicit fallbacks
+  ---
+  duration_ms: 0.471959
+  type: 'test'
+  ...
+# Subtest: style admission and sampling reject malformed numbers and host access without side effects
+ok 11 - style admission and sampling reject malformed numbers and host access without side effects
+  ---
+  duration_ms: 1.141458
+  type: 'test'
+  ...
+# Subtest: appearance plans and patches snapshot inputs and never retain mutable style objects
+ok 12 - appearance plans and patches snapshot inputs and never retain mutable style objects
+  ---
+  duration_ms: 0.254833
+  type: 'test'
+  ...
+# Subtest: prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+ok 13 - prepared axis flush replays raw mapping and measured widths instead of endpoint pixel interpolation
+  ---
+  duration_ms: 38.911333
+  type: 'test'
+  ...
+# Subtest: public flush labels preserve raw keys, current-frame meaning and strict offline equality
+ok 14 - public flush labels preserve raw keys, current-frame meaning and strict offline equality
+  ---
+  duration_ms: 1809.801083
+  type: 'test'
+  ...
+# Subtest: fixed rotations and edge-aligned frames retain native text placement on all four sides
+ok 15 - fixed rotations and edge-aligned frames retain native text placement on all four sides
+  ---
+  duration_ms: 1977.57975
+  type: 'test'
+  ...
+# Subtest: hard-break and hidden labels retain semantic line identity in scoped layouts
+ok 16 - hard-break and hidden labels retain semantic line identity in scoped layouts
+  ---
+  duration_ms: 864.930209
+  type: 'test'
+  ...
+# Subtest: layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+ok 17 - layout changes retain explicit fade policy while unresolved wrapping remains unsupported
+  ---
+  duration_ms: 849.65225
+  type: 'test'
+  ...
+# Subtest: strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+ok 18 - strict axis state rejects corrupted geometry, nonown policy and extra metric queries without execution
+  ---
+  duration_ms: 13.533625
+  type: 'test'
+  ...
+# Subtest: exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+ok 19 - exact font bindings remain attached to prepared layout and missing metrics cannot be guessed
+  ---
+  duration_ms: 2.571083
+  type: 'test'
+  ...
+# Subtest: axis layout policy and work boundaries reject impossible retained state before sampling
+ok 20 - axis layout policy and work boundaries reject impossible retained state before sampling
+  ---
+  duration_ms: 18.75825
+  type: 'test'
+  ...
+# Subtest: discrete ranges and decimal display policy reuse native mapping with fixed measured text
+ok 21 - discrete ranges and decimal display policy reuse native mapping with fixed measured text
+  ---
+  duration_ms: 375.147792
+  type: 'test'
+  ...
+# Subtest: axis layout normalization never caches mutable caller values
+ok 22 - axis layout normalization never caches mutable caller values
+  ---
+  duration_ms: 43.28025
+  type: 'test'
+  ...
+# Subtest: native unsupported Cartesian state remains explicit instead of inferring positions from pixels
+ok 23 - native unsupported Cartesian state remains explicit instead of inferring positions from pixels
+  ---
+  duration_ms: 1106.528458
+  type: 'test'
+  ...
+# Subtest: native Cartesian lineage must retain the exact final item membership
+ok 24 - native Cartesian lineage must retain the exact final item membership
+  ---
+  duration_ms: 24.525916
+  type: 'test'
+  ...
+# Subtest: Cartesian tracks fade on incompatible appearance, primitive, topology and clipping
+ok 25 - Cartesian tracks fade on incompatible appearance, primitive, topology and clipping
+  ---
+  duration_ms: 347.914583
+  type: 'test'
+  ...
+# Subtest: raw ranged and centered bars retain pixel width and explicit temporal interval width
+ok 26 - raw ranged and centered bars retain pixel width and explicit temporal interval width
+  ---
+  duration_ms: 578.427
+  type: 'test'
+  ...
+# Subtest: unsupported stored scale state rejects semantic interpolation and weighted cells retain all member keys
+ok 27 - unsupported stored scale state rejects semantic interpolation and weighted cells retain all member keys
+  ---
+  duration_ms: 177.960416
+  type: 'test'
+  ...
+# Subtest: Cartesian source and repeated mapping work are bounded before preparing row geometry
+ok 28 - Cartesian source and repeated mapping work are bounded before preparing row geometry
+  ---
+  duration_ms: 5.634875
+  type: 'test'
+  ...
+# Subtest: horizontal rules, bars and area ranges retain native scale meaning
+ok 29 - horizontal rules, bars and area ranges retain native scale meaning
+  ---
+  duration_ms: 2085.315375
+  type: 'test'
+  ...
+# Subtest: nested point and Cartesian plans retain typed row keys through repeated rebasing
+ok 30 - nested point and Cartesian plans retain typed row keys through repeated rebasing
+  ---
+  duration_ms: 901.711916
+  type: 'test'
+  ...
+# Subtest: strict Cartesian restore rejects forged meaning and unsupported kernel before sampling
+ok 31 - strict Cartesian restore rejects forged meaning and unsupported kernel before sampling
+  ---
+  duration_ms: 140.707875
+  type: 'test'
+  ...
+# Subtest: categorical animation preserves typed domain identity and native band geometry through resize
+ok 32 - categorical animation preserves typed domain identity and native band geometry through resize
+  ---
+  duration_ms: 4.889292
+  type: 'test'
+  ...
+# Subtest: categorical reorder, typed key change, padding policy and direction changes have exact fallbacks
+ok 33 - categorical reorder, typed key change, padding policy and direction changes have exact fallbacks
+  ---
+  duration_ms: 1.010417
+  type: 'test'
+  ...
+# Subtest: continuous Cartesian positions retain native value-space logarithmic mapping
+ok 34 - continuous Cartesian positions retain native value-space logarithmic mapping
+  ---
+  duration_ms: 1.5955
+  type: 'test'
+  ...
+# Subtest: closed discrete descriptors reject getters, invalid values and forged prepared state
+ok 35 - closed discrete descriptors reject getters, invalid values and forged prepared state
+  ---
+  duration_ms: 0.543583
+  type: 'test'
+  ...
+# Subtest: native rule, ranges, cells, bars and ordered series have exact forward semantic proofs
+ok 36 - native rule, ranges, cells, bars and ordered series have exact forward semantic proofs
+  ---
+  duration_ms: 1575.528875
+  type: 'test'
+  ...
+# Subtest: native revision samples rule, bar and series meanings without re-running a program
+ok 37 - native revision samples rule, bar and series meanings without re-running a program
+  ---
+  duration_ms: 645.287375
+  type: 'test'
+  ...
+# Subtest: geometry edits cannot be mistaken for stored meaning and reordered series fade explicitly
+ok 38 - geometry edits cannot be mistaken for stored meaning and reordered series fade explicitly
+  ---
+  duration_ms: 9.65625
+  type: 'test'
+  ...
+# Subtest: grouped and stacked bars reuse their native category and offset placement
+ok 39 - grouped and stacked bars reuse their native category and offset placement
+  ---
+  duration_ms: 574.356958
+  type: 'test'
+  ...
+# Subtest: public Cartesian plans retain meaning through offline restore and interruption
+ok 40 - public Cartesian plans retain meaning through offline restore and interruption
+  ---
+  duration_ms: 2519.276167
+  type: 'test'
+  ...
+# Subtest: histogram native count/stack/group values retain exact bins and slot geometry
+ok 41 - histogram native count/stack/group values retain exact bins and slot geometry
+  ---
+  duration_ms: 1032.576417
+  type: 'test'
+  ...
+# Subtest: native line curves and Area layout endpoints use the same sample geometry through resize
+ok 42 - native line curves and Area layout endpoints use the same sample geometry through resize
+  ---
+  duration_ms: 2385.279417
+  type: 'test'
+  ...
+# Subtest: Basic Cartesian families retain the same typed preparation and offline renderer contract
+ok 43 - Basic Cartesian families retain the same typed preparation and offline renderer contract
+  ---
+  duration_ms: 200.915083
+  type: 'test'
+  ...
+# Subtest: rule and rectangle samples map changing semantic values before computing extents
+ok 44 - rule and rectangle samples map changing semantic values before computing extents
+  ---
+  duration_ms: 11.756375
+  type: 'test'
+  ...
+# Subtest: native step and smooth geometry keeps its exact ordered sample grid
+ok 45 - native step and smooth geometry keeps its exact ordered sample grid
+  ---
+  duration_ms: 183.916542
+  type: 'test'
+  ...
+# Subtest: area endpoints preserve closure and rectangle corner policy uses the shared native geometry
+ok 46 - area endpoints preserve closure and rectangle corner policy uses the shared native geometry
+  ---
+  duration_ms: 44.619792
+  type: 'test'
+  ...
+# Subtest: Cartesian state boundaries reject malformed topology, foreign lineage and accessor payloads
+ok 47 - Cartesian state boundaries reject malformed topology, foreign lineage and accessor payloads
+  ---
+  duration_ms: 7.913834
+  type: 'test'
+  ...
+# Subtest: current weighted item sources flatten with composed weights and explicit clips
+ok 48 - current weighted item sources flatten with composed weights and explicit clips
+  ---
+  duration_ms: 110.540417
+  type: 'test'
+  ...
+# Subtest: rectangular placements interpolate while path clip topology remains explicit
+ok 49 - rectangular placements interpolate while path clip topology remains explicit
+  ---
+  duration_ms: 19.304459
+  type: 'test'
+  ...
+# Subtest: current semantic point geometry retains reordered native identities and exact entering/exiting rows
+ok 50 - current semantic point geometry retains reordered native identities and exact entering/exiting rows
+  ---
+  duration_ms: 1116.914417
+  type: 'test'
+  ...
+# Subtest: a weighted representation has one semantic hit across its two painted endpoint geometries
+ok 51 - a weighted representation has one semantic hit across its two painted endpoint geometries
+  ---
+  duration_ms: 215.118375
+  type: 'test'
+  ...
+# Subtest: nested current-frame hits retain the exact child path and scoped item key
+ok 52 - nested current-frame hits retain the exact child path and scoped item key
+  ---
+  duration_ms: 174.373833
+  type: 'test'
+  ...
+# Subtest: interrupted weighted geometry retains one hit and the current endpoint's native lineage
+ok 53 - interrupted weighted geometry retains one hit and the current endpoint's native lineage
+  ---
+  duration_ms: 223.74875
+  type: 'test'
+  ...
+# Subtest: weighted text hit uses each concrete source's own prepared measurement
+ok 54 - weighted text hit uses each concrete source's own prepared measurement
+  ---
+  duration_ms: 2.064291
+  type: 'test'
+  ...
+# Subtest: native frame admission rejects invalid counters, missing endpoint metadata and corrupt decisions atomically
+ok 55 - native frame admission rejects invalid counters, missing endpoint metadata and corrupt decisions atomically
+  ---
+  duration_ms: 169.282458
+  type: 'test'
+  ...
+# Subtest: sampled endpoint metadata cannot recurse through a cyclic private association
+ok 56 - sampled endpoint metadata cannot recurse through a cyclic private association
+  ---
+  duration_ms: 15.225417
+  type: 'test'
+  ...
+# Subtest: endpoint projection consumes graphics alone and retains the exact native concrete scene
+ok 57 - endpoint projection consumes graphics alone and retains the exact native concrete scene
+  ---
+  duration_ms: 141.227334
+  type: 'test'
+  ...
+# Subtest: keyed revisions match item meaning after reordering, insertion and deletion
+ok 58 - keyed revisions match item meaning after reordering, insertion and deletion
+  ---
+  duration_ms: 53.162834
+  type: 'test'
+  ...
+# Subtest: compound primitive roles remain distinct within one keyed observation
+ok 59 - compound primitive roles remain distinct within one keyed observation
+  ---
+  duration_ms: 175.434166
+  type: 'test'
+  ...
+# Subtest: nested compositions preserve namespaces, offsets and clips without aliases
+ok 60 - nested compositions preserve namespaces, offsets and clips without aliases
+  ---
+  duration_ms: 33.280541
+  type: 'test'
+  ...
+# Subtest: anonymous scene fallbacks never establish item correspondence
+ok 61 - anonymous scene fallbacks never establish item correspondence
+  ---
+  duration_ms: 2.110583
+  type: 'test'
+  ...
+# Subtest: graphic codec round trips preserve actual payload, typed keys and primitive topology
+ok 62 - graphic codec round trips preserve actual payload, typed keys and primitive topology
+  ---
+  duration_ms: 7.747042
+  type: 'test'
+  ...
+# Subtest: malformed and ambiguous owned identities fail before matching endpoints
+ok 63 - malformed and ambiguous owned identities fail before matching endpoints
+  ---
+  duration_ms: 5.502833
+  type: 'test'
+  ...
+# Subtest: endpoint ownership rejects accessors and shallow freezes without invoking host code
+ok 64 - endpoint ownership rejects accessors and shallow freezes without invoking host code
+  ---
+  duration_ms: 9.639042
+  type: 'test'
+  ...
+# Subtest: animation envelope reuses the tagged codec for exact numeric values, holes and embedded bytes
+ok 65 - animation envelope reuses the tagged codec for exact numeric values, holes and embedded bytes
+  ---
+  duration_ms: 171.991542
+  type: 'test'
+  ...
+# Subtest: animation envelope rejects unknown schema, extra fields, broken JSON and payload corruption
+ok 66 - animation envelope rejects unknown schema, extra fields, broken JSON and payload corruption
+  ---
+  duration_ms: 3.752666
+  type: 'test'
+  ...
+# Subtest: animation serialization rejects accessors, cyclic and executable input without invoking it
+ok 67 - animation serialization rejects accessors, cyclic and executable input without invoking it
+  ---
+  duration_ms: 0.13975
+  type: 'test'
+  ...
+# Subtest: animation envelope bounds encoded text, depth and work before recursive decoding
+ok 68 - animation envelope bounds encoded text, depth and work before recursive decoding
+  ---
+  duration_ms: 4692.204792
+  type: 'test'
+  ...
+# Subtest: UTF-8 and JSON escaping contribute to the byte budget before whole-output allocation
+ok 69 - UTF-8 and JSON escaping contribute to the byte budget before whole-output allocation
+  ---
+  duration_ms: 8111.438875
+  type: 'test'
+  ...
+# Subtest: frame export charges actual intermediate nodes before exposing a batch
+ok 70 - frame export charges actual intermediate nodes before exposing a batch
+  ---
+  duration_ms: 42.471709
+  type: 'test'
+  ...
+# Subtest: sample provenance keeps native endpoints private and preserves the exact frame
+ok 71 - sample provenance keeps native endpoints private and preserves the exact frame
+  ---
+  duration_ms: 0.986042
+  type: 'test'
+  ...
+# Subtest: provenance rejects duplicate registration, mutable frames and mismatched position order
+ok 72 - provenance rejects duplicate registration, mutable frames and mismatched position order
+  ---
+  duration_ms: 0.234833
+  type: 'test'
+  ...
+# Subtest: shared graph meaning remains private, immutable and aligned with the frame
+ok 73 - shared graph meaning remains private, immutable and aligned with the frame
+  ---
+  duration_ms: 0.132625
+  type: 'test'
+  ...
+# Subtest: all typed state vectors reject mismatched frame order before registering authority
+ok 74 - all typed state vectors reject mismatched frame order before registering authority
+  ---
+  duration_ms: 0.117583
+  type: 'test'
+  ...
+# Subtest: explicit export times preserve milliseconds and endpoint choices in an owned array
+ok 75 - explicit export times preserve milliseconds and endpoint choices in an owned array
+  ---
+  duration_ms: 3.36025
+  type: 'test'
+  ...
+# Subtest: fps export derives every time from its integer frame index without adding an off-grid endpoint
+ok 76 - fps export derives every time from its integer frame index without adding an off-grid endpoint
+  ---
+  duration_ms: 1.717042
+  type: 'test'
+  ...
+# Subtest: export validates exclusive own-data options before invoking accessors
+ok 77 - export validates exclusive own-data options before invoking accessors
+  ---
+  duration_ms: 2.810167
+  type: 'test'
+  ...
+# Subtest: export rejects empty, duplicate, unsorted, outside and invalid numeric times
+ok 78 - export rejects empty, duplicate, unsorted, outside and invalid numeric times
+  ---
+  duration_ms: 0.483084
+  type: 'test'
+  ...
+# Subtest: frame requests are bounded before allocation and retain finite numeric extremes
+ok 79 - frame requests are bounded before allocation and retain finite numeric extremes
+  ---
+  duration_ms: 138.44175
+  type: 'test'
+  ...
+# Subtest: current Geo keyboard activation retains source intent under keep-hidden
+ok 80 - current Geo keyboard activation retains source intent under keep-hidden
+  ---
+  duration_ms: 944.855375
+  type: 'test'
+  ...
+# Subtest: current Geo keyboard activation retains source intent under drop
+ok 81 - current Geo keyboard activation retains source intent under drop
+  ---
+  duration_ms: 210.849708
+  type: 'test'
+  ...
+# Subtest: mounted current Geo click commits one key despite multiple painted parts
+ok 82 - mounted current Geo click commits one key despite multiple painted parts
+  ---
+  duration_ms: 237.179417
+  type: 'test'
+  ...
+# Subtest: current source and frame source revisions are checked independently
+ok 83 - current source and frame source revisions are checked independently
+  ---
+  duration_ms: 296.764542
+  type: 'test'
+  ...
+# Subtest: a frame source key missing from the current native revision is inspectable but cannot activate
+ok 84 - a frame source key missing from the current native revision is inspectable but cannot activate
+  ---
+  duration_ms: 191.677709
+  type: 'test'
+  ...
+# Subtest: Geo source activation keeps actual child scope and never selects a sibling
+ok 85 - Geo source activation keeps actual child scope and never selects a sibling
+  ---
+  duration_ms: 341.686583
+  type: 'test'
+  ...
+# Subtest: dynamic Geo keyboard and clicks reject opacity zero and fully clipped source parts
+ok 86 - dynamic Geo keyboard and clicks reject opacity zero and fully clipped source parts
+  ---
+  duration_ms: 720.47625
+  type: 'test'
+  ...
+# Subtest: Geo projection clipping and original removal have distinct keep-hidden lifecycle
+ok 87 - Geo projection clipping and original removal have distinct keep-hidden lifecycle
+  ---
+  duration_ms: 90.638875
+  type: 'test'
+  ...
+# Subtest: Geo projection clipping and original removal have distinct drop lifecycle
+ok 88 - Geo projection clipping and original removal have distinct drop lifecycle
+  ---
+  duration_ms: 209.802459
+  type: 'test'
+  ...
+# Subtest: matching feature keys never cross a different geometry resource owner
+ok 89 - matching feature keys never cross a different geometry resource owner
+  ---
+  duration_ms: 220.576083
+  type: 'test'
+  ...
+# Subtest: Geo lifecycle preserves source predicates while concrete property predicates read actual graphics
+ok 90 - Geo lifecycle preserves source predicates while concrete property predicates read actual graphics
+  ---
+  duration_ms: 10.292667
+  type: 'test'
+  ...
+# Subtest: public Geo sampling materializes a source feature absent from both endpoint scenes
+ok 91 - public Geo sampling materializes a source feature absent from both endpoint scenes
+  ---
+  duration_ms: 359.782958
+  type: 'test'
+  ...
+# Subtest: current Geo frames rebase repeatedly with flat native provenance and exact endpoints
+ok 92 - current Geo frames rebase repeatedly with flat native provenance and exact endpoints
+  ---
+  duration_ms: 1487.57275
+  type: 'test'
+  ...
+# Subtest: Geo seam part changes and nested scopes follow actual native camera geometry
+ok 93 - Geo seam part changes and nested scopes follow actual native camera geometry
+  ---
+  duration_ms: 284.203916
+  type: 'test'
+  ...
+# Subtest: Geo offline replay retains hidden sources and current semantic camera state
+ok 94 - Geo offline replay retains hidden sources and current semantic camera state
+  ---
+  duration_ms: 284.508125
+  type: 'test'
+  ...
+# Subtest: Geo restore rejects lost meaning, fabricated indices, wrong versions and changed part geometry
+ok 95 - Geo restore rejects lost meaning, fabricated indices, wrong versions and changed part geometry
+  ---
+  duration_ms: 80.442875
+  type: 'test'
+  ...
+# Subtest: incompatible Geo camera, primitive edits and changed source geometry retain explicit crossfade
+ok 96 - incompatible Geo camera, primitive edits and changed source geometry retain explicit crossfade
+  ---
+  duration_ms: 126.604166
+  type: 'test'
+  ...
+# Subtest: filled shapes and generated graticules use current native geometry and exact target lineage
+ok 97 - filled shapes and generated graticules use current native geometry and exact target lineage
+  ---
+  duration_ms: 3231.578958
+  type: 'test'
+  ...
+# Subtest: compatible features survive source membership changes and retain typed camera on current rebase
+ok 98 - compatible features survive source membership changes and retain typed camera on current rebase
+  ---
+  duration_ms: 179.822958
+  type: 'test'
+  ...
+# Subtest: hidden endpoint geometry cannot bypass the current frame generated-part limit
+ok 99 - hidden endpoint geometry cannot bypass the current frame generated-part limit
+  ---
+  duration_ms: 15083.263708
+  type: 'test'
+  ...
+# Subtest: native prepared presentation retains hidden features and exact styled output
+ok 100 - native prepared presentation retains hidden features and exact styled output
+  ---
+  duration_ms: 231.279416
+  type: 'test'
+  ...
+# Subtest: empty endpoint collections retain explicit order and frames for intermediate visible parts
+ok 101 - empty endpoint collections retain explicit order and frames for intermediate visible parts
+  ---
+  duration_ms: 220.798625
+  type: 'test'
+  ...
+# Subtest: nested repeated owners reuse the actual collection clip offset and native order
+ok 102 - nested repeated owners reuse the actual collection clip offset and native order
+  ---
+  duration_ms: 138.884916
+  type: 'test'
+  ...
+# Subtest: primitive geometry appearance and removal edits remain explicit prepared fallback
+ok 103 - primitive geometry appearance and removal edits remain explicit prepared fallback
+  ---
+  duration_ms: 85.934416
+  type: 'test'
+  ...
+# Subtest: presentation validation rejects malformed appearance frame and accessor inputs
+ok 104 - presentation validation rejects malformed appearance frame and accessor inputs
+  ---
+  duration_ms: 55.490375
+  type: 'test'
+  ...
+# Subtest: path clipping part identity and current geometry match native intermediate materialization
+ok 105 - path clipping part identity and current geometry match native intermediate materialization
+  ---
+  duration_ms: 35.457917
+  type: 'test'
+  ...
+# Subtest: restored presentation state rejects forged roles lineage and closed proof fields
+ok 106 - restored presentation state rejects forged roles lineage and closed proof fields
+  ---
+  duration_ms: 23.416542
+  type: 'test'
+  ...
+# Subtest: generated and planar shape presentations preserve plot anchored paint with real clipping
+ok 107 - generated and planar shape presentations preserve plot anchored paint with real clipping
+  ---
+  duration_ms: 1107.113791
+  type: 'test'
+  ...
+# Subtest: prepared group order follows actual graphic order including empty collection ties
+ok 108 - prepared group order follows actual graphic order including empty collection ties
+  ---
+  duration_ms: 17.8785
+  type: 'test'
+  ...
+# Subtest: native hidden-feature origins preserve actual child IDs without invented scene indices
+ok 109 - native hidden-feature origins preserve actual child IDs without invented scene indices
+  ---
+  duration_ms: 15.44
+  type: 'test'
+  ...
+# Subtest: public native Geo middle-only frame supports keyboard selection without endpoint indices
+ok 110 - public native Geo middle-only frame supports keyboard selection without endpoint indices
+  ---
+  duration_ms: 663.646542
+  type: 'test'
+  ...
+# Subtest: public native graticule frame click keeps target hit revision and current source intent
+ok 111 - public native graticule frame click keeps target hit revision and current source intent
+  ---
+  duration_ms: 4080.47625
+  type: 'test'
+  ...
+# Subtest: animation-geo/offline-four-renderers
+ok 112 - animation-geo/offline-four-renderers
+  ---
+  duration_ms: 3821.723667
+  type: 'test'
+  ...
+# Subtest: animation-geo/current-frame-interruption
+ok 113 - animation-geo/current-frame-interruption
+  ---
+  duration_ms: 214.932458
+  type: 'test'
+  ...
+# Subtest: animation-geo/immutable-failure
+ok 114 - animation-geo/immutable-failure
+  ---
+  duration_ms: 87.250417
+  type: 'test'
+  ...
+# Subtest: a newly projected source feature has exact native resource metadata without an endpoint node
+ok 115 - a newly projected source feature has exact native resource metadata without an endpoint node
+  ---
+  duration_ms: 618.099584
+  type: 'test'
+  ...
+# Subtest: new Geo source parts retain nested actual child paths and independent scoped identities
+ok 116 - new Geo source parts retain nested actual child paths and independent scoped identities
+  ---
+  duration_ms: 434.037542
+  type: 'test'
+  ...
+# Subtest: dynamic Geo source proof rejects unknown owners, keys, revisions and source kinds atomically
+ok 117 - dynamic Geo source proof rejects unknown owners, keys, revisions and source kinds atomically
+  ---
+  duration_ms: 998.298042
+  type: 'test'
+  ...
+# Subtest: dynamic source metadata preserves current opacity and clip admission
+ok 118 - dynamic source metadata preserves current opacity and clip admission
+  ---
+  duration_ms: 229.073792
+  type: 'test'
+  ...
+# Subtest: camera tracks generate a native middle feature when both endpoints contain no part
+ok 119 - camera tracks generate a native middle feature when both endpoints contain no part
+  ---
+  duration_ms: 202.906708
+  type: 'test'
+  ...
+# Subtest: changed feature appearance does not disable the other compatible camera features
+ok 120 - changed feature appearance does not disable the other compatible camera features
+  ---
+  duration_ms: 169.853958
+  type: 'test'
+  ...
+# Subtest: seam changes emit current native part roles without borrowing missing endpoint indices
+ok 121 - seam changes emit current native part roles without borrowing missing endpoint indices
+  ---
+  duration_ms: 72.92125
+  type: 'test'
+  ...
+# Subtest: nested empty group slots preserve actual owner and feature drawing order
+ok 122 - nested empty group slots preserve actual owner and feature drawing order
+  ---
+  duration_ms: 80.915834
+  type: 'test'
+  ...
+# Subtest: incompatible camera clip and geometry edits preserve explicit fallback reasons
+ok 123 - incompatible camera clip and geometry edits preserve explicit fallback reasons
+  ---
+  duration_ms: 88.261333
+  type: 'test'
+  ...
+# Subtest: geographic dynamic decisions are closed and bind the real source feature and part
+ok 124 - geographic dynamic decisions are closed and bind the real source feature and part
+  ---
+  duration_ms: 6.7385
+  type: 'test'
+  ...
+# Subtest: partial source membership changes preserve common features and classify new keys
+ok 125 - partial source membership changes preserve common features and classify new keys
+  ---
+  duration_ms: 20.18225
+  type: 'test'
+  ...
+# Subtest: Geo prepared values reproduce native endpoints and literal log-scale quaternion movement
+ok 126 - Geo prepared values reproduce native endpoints and literal log-scale quaternion movement
+  ---
+  duration_ms: 188.26175
+  type: 'test'
+  ...
+# Subtest: current camera values rebase without previous plans and preserve stationary geometry
+ok 127 - current camera values rebase without previous plans and preserve stationary geometry
+  ---
+  duration_ms: 10.025792
+  type: 'test'
+  ...
+# Subtest: camera streaming reveals clipped features and changes seam parts using current projection
+ok 128 - camera streaming reveals clipped features and changes seam parts using current projection
+  ---
+  duration_ms: 113.926958
+  type: 'test'
+  ...
+# Subtest: polygon holes and spherical radius over ninety degrees retain native filled complement
+ok 129 - polygon holes and spherical radius over ninety degrees retain native filled complement
+  ---
+  duration_ms: 310.002625
+  type: 'test'
+  ...
+# Subtest: source keys control reorder and unsupported geometry changes stay explicit
+ok 130 - source keys control reorder and unsupported geometry changes stay explicit
+  ---
+  duration_ms: 43.3005
+  type: 'test'
+  ...
+# Subtest: normalized state rejects getters extra fields stale shapes and invalid budgets before sampling
+ok 131 - normalized state rejects getters extra fields stale shapes and invalid budgets before sampling
+  ---
+  duration_ms: 2976.503208
+  type: 'test'
+  ...
+# Subtest: native adapter requires explicit exact owner and retains repeated namespace identity
+ok 132 - native adapter requires explicit exact owner and retains repeated namespace identity
+  ---
+  duration_ms: 14.554042
+  type: 'test'
+  ...
+# Subtest: generated graticules share source keys and the native stream after camera edits
+ok 133 - generated graticules share source keys and the native stream after camera edits
+  ---
+  duration_ms: 555.096708
+  type: 'test'
+  ...
+# Subtest: null empty geometry and native mode or coordinate mismatch fail without silent repair
+ok 134 - null empty geometry and native mode or coordinate mismatch fail without silent repair
+  ---
+  duration_ms: 181.164208
+  type: 'test'
+  ...
+# Subtest: great-circle route hints and authored winding pass through unchanged
+ok 135 - great-circle route hints and authored winding pass through unchanged
+  ---
+  duration_ms: 15.054583
+  type: 'test'
+  ...
+# Subtest: native resolved size fields prepare radius from semantic mapping rather than endpoint pixels
+ok 136 - native resolved size fields prepare radius from semantic mapping rather than endpoint pixels
+  ---
+  duration_ms: 15.715667
+  type: 'test'
+  ...
+# Subtest: completed fit scale and translation are sampled without rerunning fit
+ok 137 - completed fit scale and translation are sampled without rerunning fit
+  ---
+  duration_ms: 121.675125
+  type: 'test'
+  ...
+# Subtest: graph animation preparation reads exact completed layout values and native role geometry
+ok 138 - graph animation preparation reads exact completed layout values and native role geometry
+  ---
+  duration_ms: 237.095958
+  type: 'test'
+  ...
+# Subtest: nested graph owners retain distinct scopes and a single shared prepared group per owner
+ok 139 - nested graph owners retain distinct scopes and a single shared prepared group per owner
+  ---
+  duration_ms: 66.95375
+  type: 'test'
+  ...
+# Subtest: malformed graph role and stale lineage fail without changing prior state
+ok 140 - malformed graph role and stale lineage fail without changing prior state
+  ---
+  duration_ms: 15.846625
+  type: 'test'
+  ...
+# Subtest: animation-graph/offline-four-renderers
+ok 141 - animation-graph/offline-four-renderers
+  ---
+  duration_ms: 3878.659791
+  type: 'test'
+  ...
+# Subtest: animation-graph/current-frame-interruption
+ok 142 - animation-graph/current-frame-interruption
+  ---
+  duration_ms: 249.619208
+  type: 'test'
+  ...
+# Subtest: animation-graph/topology-and-immutable-failure
+ok 143 - animation-graph/topology-and-immutable-failure
+  ---
+  duration_ms: 109.706708
+  type: 'test'
+  ...
+# Subtest: native graph hit and flat proof use the current route geometry after repeated rebases
+ok 144 - native graph hit and flat proof use the current route geometry after repeated rebases
+  ---
+  duration_ms: 441.385667
+  type: 'test'
+  ...
+# Subtest: native graph hit preserves child scopes when the same endpoint is placed twice
+ok 145 - native graph hit preserves child scopes when the same endpoint is placed twice
+  ---
+  duration_ms: 218.317375
+  type: 'test'
+  ...
+# Subtest: completed graph values drive nodes, labels, parallel edges, loops and arrows through native geometry
+ok 146 - completed graph values drive nodes, labels, parallel edges, loops and arrows through native geometry
+  ---
+  duration_ms: 198.783792
+  type: 'test'
+  ...
+# Subtest: graph samples rebase on current layout meaning in either direction and restore without a native program
+ok 147 - graph samples rebase on current layout meaning in either direction and restore without a native program
+  ---
+  duration_ms: 242.357833
+  type: 'test'
+  ...
+# Subtest: stored route samples keep current center anchors and native radius inset with arrows
+ok 148 - stored route samples keep current center anchors and native radius inset with arrows
+  ---
+  duration_ms: 221.766875
+  type: 'test'
+  ...
+# Subtest: nested graph scopes stay independent and changing edge topology never reassigns an old edge
+ok 149 - nested graph scopes stay independent and changing edge topology never reassigns an old edge
+  ---
+  duration_ms: 162.66775
+  type: 'test'
+  ...
+# Subtest: closed restored graph states reject changed geometry, unknown versions and forged anchors atomically
+ok 150 - closed restored graph states reject changed geometry, unknown versions and forged anchors atomically
+  ---
+  duration_ms: 20.647667
+  type: 'test'
+  ...
+# Subtest: node and edge enter/exit keep their own meanings through a later graph rebase
+ok 151 - node and edge enter/exit keep their own meanings through a later graph rebase
+  ---
+  duration_ms: 243.254875
+  type: 'test'
+  ...
+# Subtest: completed force and density routes use typed anchors without rerunning their solvers
+ok 152 - completed force and density routes use typed anchors without rerunning their solvers
+  ---
+  duration_ms: 4116.014125
+  type: 'test'
+  ...
+# Subtest: screen routes, paint changes, direct geometry edits and primitive changes remain explicit
+ok 153 - screen routes, paint changes, direct geometry edits and primitive changes remain explicit
+  ---
+  duration_ms: 140.329625
+  type: 'test'
+  ...
+# Subtest: native graph clipping and primitive replacement produce explicit per-item crossfades
+ok 154 - native graph clipping and primitive replacement produce explicit per-item crossfades
+  ---
+  duration_ms: 42.208208
+  type: 'test'
+  ...
+# Subtest: restored current-frame decisions require their corresponding retained typed meaning
+ok 155 - restored current-frame decisions require their corresponding retained typed meaning
+  ---
+  duration_ms: 24.20925
+  type: 'test'
+  ...
+# Subtest: current graph node and edge hit shapes follow sampled geometry rather than endpoint coordinates
+ok 156 - current graph node and edge hit shapes follow sampled geometry rather than endpoint coordinates
+  ---
+  duration_ms: 250.110833
+  type: 'test'
+  ...
+# Subtest: stationary completed routes preserve native nonuniform path geometry
+ok 157 - stationary completed routes preserve native nonuniform path geometry
+  ---
+  duration_ms: 1957.107
+  type: 'test'
+  ...
+# Subtest: stationary route centers retain native corners while origin and radius change
+ok 158 - stationary route centers retain native corners while origin and radius change
+  ---
+  duration_ms: 2111.939583
+  type: 'test'
+  ...
+# Subtest: equal graph pixels do not erase different raw layout and origin meanings
+ok 159 - equal graph pixels do not erase different raw layout and origin meanings
+  ---
+  duration_ms: 37.803167
+  type: 'test'
+  ...
+# Subtest: graph numeric tracks preserve endpoint objects, typed keys and finite current anchors
+ok 160 - graph numeric tracks preserve endpoint objects, typed keys and finite current anchors
+  ---
+  duration_ms: 4.014333
+  type: 'test'
+  ...
+# Subtest: edge identity, parallel order, route kind and coordinate space have explicit incompatibility reasons
+ok 161 - edge identity, parallel order, route kind and coordinate space have explicit incompatibility reasons
+  ---
+  duration_ms: 13.5615
+  type: 'test'
+  ...
+# Subtest: route collapse is reported while current node movement remains available
+ok 162 - route collapse is reported while current node movement remains available
+  ---
+  duration_ms: 1.087667
+  type: 'test'
+  ...
+# Subtest: graph state rejects malformed references, duplicate keys, unknown fields, nonfinite values and noncanonical anchors
+ok 163 - graph state rejects malformed references, duplicate keys, unknown fields, nonfinite values and noncanonical anchors
+  ---
+  duration_ms: 0.642167
+  type: 'test'
+  ...
+# Subtest: public titles map the interpolated semantic value through the native scale
+ok 164 - public titles map the interpolated semantic value through the native scale
+  ---
+  duration_ms: 542.789125
+  type: 'test'
+  ...
+# Subtest: title strings, font and inferred clearance preserve explicit appearance or layout fades
+ok 165 - title strings, font and inferred clearance preserve explicit appearance or layout fades
+  ---
+  duration_ms: 808.927708
+  type: 'test'
+  ...
+# Subtest: polar titles use shortest angular meaning and native inside outside placement
+ok 166 - polar titles use shortest angular meaning and native inside outside placement
+  ---
+  duration_ms: 284.478209
+  type: 'test'
+  ...
+# Subtest: band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+ok 167 - band edge membership uses typed values and supports Basic resize, subsets and nested namespaces
+  ---
+  duration_ms: 995.175542
+  type: 'test'
+  ...
+# Subtest: Parallel fields retain correspondence across reordered field slots and removed dimensions
+ok 168 - Parallel fields retain correspondence across reordered field slots and removed dimensions
+  ---
+  duration_ms: 1598.521042
+  type: 'test'
+  ...
+# Subtest: guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+ok 169 - guide anchor meaning stays flat through repeated sampled-frame rebase and labelled frame export
+  ---
+  duration_ms: 6742.600625
+  type: 'test'
+  ...
+# Subtest: guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+ok 170 - guide anchor strict restore rejects versions and forged field membership or geometry before sampling
+  ---
+  duration_ms: 906.931333
+  type: 'test'
+  ...
+# Subtest: guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+ok 171 - guide anchor identity normalization is closed, typed, descriptor-safe and canonical
+  ---
+  duration_ms: 171.573291
+  type: 'test'
+  ...
+# Subtest: title range roles and numeric scale values retain independent native coordinates
+ok 172 - title range roles and numeric scale values retain independent native coordinates
+  ---
+  duration_ms: 11.412167
+  type: 'test'
+  ...
+# Subtest: title side, alignment, numeric discrete at and shortest polar angles use native geometry
+ok 173 - title side, alignment, numeric discrete at and shortest polar angles use native geometry
+  ---
+  duration_ms: 0.8425
+  type: 'test'
+  ...
+# Subtest: band boundary identity retains all typed memberships independently of selected order
+ok 174 - band boundary identity retains all typed memberships independently of selected order
+  ---
+  duration_ms: 49.6505
+  type: 'test'
+  ...
+# Subtest: Parallel field slots remap each raw tick and retain every component's exact role
+ok 175 - Parallel field slots remap each raw tick and retain every component's exact role
+  ---
+  duration_ms: 6.618083
+  type: 'test'
+  ...
+# Subtest: guide anchor compatibility rejects policy switches instead of pixel interpolation
+ok 176 - guide anchor compatibility rejects policy switches instead of pixel interpolation
+  ---
+  duration_ms: 14.133
+  type: 'test'
+  ...
+# Subtest: closed guide anchors reject malformed shapes, hostile descriptors and nonfinite work before sampling
+ok 177 - closed guide anchors reject malformed shapes, hostile descriptors and nonfinite work before sampling
+  ---
+  duration_ms: 87.151292
+  type: 'test'
+  ...
+# Subtest: finite endpoint data cannot silently produce overflowing guide geometry
+ok 178 - finite endpoint data cannot silently produce overflowing guide geometry
+  ---
+  duration_ms: 0.298833
+  type: 'test'
+  ...
+# Subtest: native floating edge separation remains an explicit layout fallback at intermediate time
+ok 179 - native floating edge separation remains an explicit layout fallback at intermediate time
+  ---
+  duration_ms: 1.299083
+  type: 'test'
+  ...
+# Subtest: prepared flush layout keeps exact raw positions while moving measured text inside its scale span
+ok 180 - prepared flush layout keeps exact raw positions while moving measured text inside its scale span
+  ---
+  duration_ms: 6.186958
+  type: 'test'
+  ...
+# Subtest: hard-break label groups retain line order and translate as one measured group on either Y side
+ok 181 - hard-break label groups retain line order and translate as one measured group on either Y side
+  ---
+  duration_ms: 1.002333
+  type: 'test'
+  ...
+# Subtest: native rotation and edge clearance use measured bounds without changing raw anchors
+ok 182 - native rotation and edge clearance use measured bounds without changing raw anchors
+  ---
+  duration_ms: 1.849791
+  type: 'test'
+  ...
+# Subtest: settled wrapping is reused without a fresh width choice and missing exact metrics remain errors
+ok 183 - settled wrapping is reused without a fresh width choice and missing exact metrics remain errors
+  ---
+  duration_ms: 221.420459
+  type: 'test'
+  ...
+# Subtest: read-only native preparation exactly follows responsive wrap skip rotation and hidden raw values
+ok 184 - read-only native preparation exactly follows responsive wrap skip rotation and hidden raw values
+  ---
+  duration_ms: 1901.500042
+  type: 'test'
+  ...
+# Subtest: native Cartesian tick sampling preserves typed value and maps the intermediate scale
+ok 185 - native Cartesian tick sampling preserves typed value and maps the intermediate scale
+  ---
+  duration_ms: 43.739
+  type: 'test'
+  ...
+# Subtest: log guide mapping uses a geometric domain midpoint rather than a pixel tween
+ok 186 - log guide mapping uses a geometric domain midpoint rather than a pixel tween
+  ---
+  duration_ms: 40.522542
+  type: 'test'
+  ...
+# Subtest: guide keys distinguish typed values, scopes, component and multiline roles
+ok 187 - guide keys distinguish typed values, scopes, component and multiline roles
+  ---
+  duration_ms: 1.1015
+  type: 'test'
+  ...
+# Subtest: native Cartesian grid, baseline, and multiline label use shared geometry
+ok 188 - native Cartesian grid, baseline, and multiline label use shared geometry
+  ---
+  duration_ms: 1.889417
+  type: 'test'
+  ...
+# Subtest: polar guides retain native spoke, radial circle, tick and label geometry
+ok 189 - polar guides retain native spoke, radial circle, tick and label geometry
+  ---
+  duration_ms: 53.79075
+  type: 'test'
+  ...
+# Subtest: radial axis angle follows shortest seam and preserves exact endpoint meaning
+ok 190 - radial axis angle follows shortest seam and preserves exact endpoint meaning
+  ---
+  duration_ms: 0.567166
+  type: 'test'
+  ...
+# Subtest: discrete guide values use native band centers and reject domain order changes
+ok 191 - discrete guide values use native band centers and reject domain order changes
+  ---
+  duration_ms: 3.262083
+  type: 'test'
+  ...
+# Subtest: guide transport rejects accessors, extras, inconsistent typed identity and corrupt geometry
+ok 192 - guide transport rejects accessors, extras, inconsistent typed identity and corrupt geometry
+  ---
+  duration_ms: 2.156709
+  type: 'test'
+  ...
+# Subtest: guide geometry rejects overflow and closed-schema corruption before exposing partial numbers
+ok 193 - guide geometry rejects overflow and closed-schema corruption before exposing partial numbers
+  ---
+  duration_ms: 2.314958
+  type: 'test'
+  ...
+# Subtest: guide correspondence matches raw values across insertion and preserves component roles
+ok 194 - guide correspondence matches raw values across insertion and preserves component roles
+  ---
+  duration_ms: 377.420708
+  type: 'test'
+  ...
+# Subtest: same-value label text changes crossfade while unchanged native glyphs interpolate
+ok 195 - same-value label text changes crossfade while unchanged native glyphs interpolate
+  ---
+  duration_ms: 88.773
+  type: 'test'
+  ...
+# Subtest: duplicate ticks cannot be matched by an arbitrary first position
+ok 196 - duplicate ticks cannot be matched by an arbitrary first position
+  ---
+  duration_ms: 67.736084
+  type: 'test'
+  ...
+# Subtest: guide transport validates forward geometry and keeps mark identities disjoint
+ok 197 - guide transport validates forward geometry and keeps mark identities disjoint
+  ---
+  duration_ms: 213.339
+  type: 'test'
+  ...
+# Subtest: guide track policy changes preserve explicit fallback and never borrow missing guide metadata
+ok 198 - guide track policy changes preserve explicit fallback and never borrow missing guide metadata
+  ---
+  duration_ms: 104.75225
+  type: 'test'
+  ...
+# Subtest: Basic native guides use the same typed transition and offline owner
+ok 199 - Basic native guides use the same typed transition and offline owner
+  ---
+  duration_ms: 232.3805
+  type: 'test'
+  ...
+# Subtest: public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+ok 200 - public guide samples interpolate semantic scale before forward mapping and preserve endpoints
+  ---
+  duration_ms: 278.976167
+  type: 'test'
+  ...
+# Subtest: new raw tick values enter while same-value label spelling crossfades under one guide key
+ok 201 - new raw tick values enter while same-value label spelling crossfades under one guide key
+  ---
+  duration_ms: 24.78475
+  type: 'test'
+  ...
+# Subtest: duplicate raw guide values keep separate enters and exits with explicit ambiguity
+ok 202 - duplicate raw guide values keep separate enters and exits with explicit ambiguity
+  ---
+  duration_ms: 166.170959
+  type: 'test'
+  ...
+# Subtest: guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+ok 203 - guide meaning survives sampled endpoints, labelled views, repeated rebases and offline restore
+  ---
+  duration_ms: 980.443667
+  type: 'test'
+  ...
+# Subtest: scoped guides use explicit child namespaces while reordered panels retain each owner
+ok 204 - scoped guides use explicit child namespaces while reordered panels retain each owner
+  ---
+  duration_ms: 74.947292
+  type: 'test'
+  ...
+# Subtest: polar rules and circles replay native guide values across Canvas resize
+ok 205 - polar rules and circles replay native guide values across Canvas resize
+  ---
+  duration_ms: 308.57425
+  type: 'test'
+  ...
+# Subtest: unsupported label policy and edited guide geometry keep explicit fallback through restore
+ok 206 - unsupported label policy and edited guide geometry keep explicit fallback through restore
+  ---
+  duration_ms: 150.31875
+  type: 'test'
+  ...
+# Subtest: strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+ok 207 - strict guide restore rejects unknown versions, wrong cardinality and forged forward mapping
+  ---
+  duration_ms: 170.444709
+  type: 'test'
+  ...
+# Subtest: guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+ok 208 - guide color, opacity and stroke width use the shared appearance kernel alongside value mapping
+  ---
+  duration_ms: 108.047291
+  type: 'test'
+  ...
+# Subtest: sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+ok 209 - sampled guide decisions cannot impersonate anonymous canvas backgrounds or a different raw value
+  ---
+  duration_ms: 98.687459
+  type: 'test'
+  ...
+# Subtest: native exact gradient values use shared log scale meaning and single-block placement
+ok 210 - native exact gradient values use shared log scale meaning and single-block placement
+  ---
+  duration_ms: 3768.624375
+  type: 'test'
+  ...
+# Subtest: native legend forward proof retains all four edges, bottom titles and explicit text alignment
+ok 211 - native legend forward proof retains all four edges, bottom titles and explicit text alignment
+  ---
+  duration_ms: 2423.809959
+  type: 'test'
+  ...
+# Subtest: legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+ok 212 - legend colors reuse appearance interpolation and rebase retains exact prepared native meaning
+  ---
+  duration_ms: 3538.289083
+  type: 'test'
+  ...
+# Subtest: legend semantic sample insertion preserves raw correspondence and scoped owners
+ok 213 - legend semantic sample insertion preserves raw correspondence and scoped owners
+  ---
+  duration_ms: 3901.878
+  type: 'test'
+  ...
+# Subtest: unknown or dependent native layout policies preserve explicit identity and safe fades
+ok 214 - unknown or dependent native layout policies preserve explicit identity and safe fades
+  ---
+  duration_ms: 751.416666
+  type: 'test'
+  ...
+# Subtest: strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+ok 215 - strict offline legend state rejects changed proof, unknown kernels and nonown layout values
+  ---
+  duration_ms: 131.360833
+  type: 'test'
+  ...
+# Subtest: stroke gradients preserve native width bounds without reading final pixels as scale values
+ok 216 - stroke gradients preserve native width bounds without reading final pixels as scale values
+  ---
+  duration_ms: 1123.64125
+  type: 'test'
+  ...
+# Subtest: prepared legend ink retains exact font bindings and only the queries used by native layout
+ok 217 - prepared legend ink retains exact font bindings and only the queries used by native layout
+  ---
+  duration_ms: 25.430209
+  type: 'test'
+  ...
+# Subtest: prepared legend closure rejects policy forgery and out-of-domain semantic identities
+ok 218 - prepared legend closure rejects policy forgery and out-of-domain semantic identities
+  ---
+  duration_ms: 44.73025
+  type: 'test'
+  ...
+# Subtest: legend sample normalization does not cache mutable caller layout values
+ok 219 - legend sample normalization does not cache mutable caller layout values
+  ---
+  duration_ms: 24.645375
+  type: 'test'
+  ...
+# Subtest: temporal gradient legends retain exact epoch values and native formatted labels
+ok 220 - temporal gradient legends retain exact epoch values and native formatted labels
+  ---
+  duration_ms: 917.988625
+  type: 'test'
+  ...
+# Subtest: stable item keys classify reordering, insertion and deletion without positional matching
+ok 221 - stable item keys classify reordering, insertion and deletion without positional matching
+  ---
+  duration_ms: 1.478667
+  type: 'test'
+  ...
+# Subtest: primitive roles and complete child namespaces distinguish components of one semantic item
+ok 222 - primitive roles and complete child namespaces distinguish components of one semantic item
+  ---
+  duration_ms: 0.317792
+  type: 'test'
+  ...
+# Subtest: anonymous primitives always enter or exit and empty endpoints remain valid
+ok 223 - anonymous primitives always enter or exit and empty endpoints remain valid
+  ---
+  duration_ms: 0.09725
+  type: 'test'
+  ...
+# Subtest: materialized keyed points keep matching when values and row order change
+ok 224 - materialized keyed points keep matching when values and row order change
+  ---
+  duration_ms: 150.568166
+  type: 'test'
+  ...
+# Subtest: large reversals preserve a bijection and admit prototype-like keys as ordinary data
+ok 225 - large reversals preserve a bijection and admit prototype-like keys as ordinary data
+  ---
+  duration_ms: 28.282708
+  type: 'test'
+  ...
+# Subtest: matching copies identity values into immutable results without retaining caller objects
+ok 226 - matching copies identity values into immutable results without retaining caller objects
+  ---
+  duration_ms: 0.6995
+  type: 'test'
+  ...
+# Subtest: ambiguous or malformed identities fail at either endpoint without exposing keys or executing accessors
+ok 227 - ambiguous or malformed identities fail at either endpoint without exposing keys or executing accessors
+  ---
+  duration_ms: 1.02525
+  type: 'test'
+  ...
+# Subtest: native numeric and range-role titles project exact anchors through resize and scale edits
+ok 228 - native numeric and range-role titles project exact anchors through resize and scale edits
+  ---
+  duration_ms: 543.100667
+  type: 'test'
+  ...
+# Subtest: native polar titles retain exact inside outside and theta frame roles
+ok 229 - native polar titles retain exact inside outside and theta frame roles
+  ---
+  duration_ms: 131.713542
+  type: 'test'
+  ...
+# Subtest: native band boundary preparation preserves shared edge membership and subset topology
+ok 230 - native band boundary preparation preserves shared edge membership and subset topology
+  ---
+  duration_ms: 216.135917
+  type: 'test'
+  ...
+# Subtest: native Parallel anchors identify fields while order scales and visible component counts change
+ok 231 - native Parallel anchors identify fields while order scales and visible component counts change
+  ---
+  duration_ms: 196.56325
+  type: 'test'
+  ...
+# Subtest: Parallel preparation and native materialization share their established tick selection
+ok 232 - Parallel preparation and native materialization share their established tick selection
+  ---
+  duration_ms: 107.599875
+  type: 'test'
+  ...
+# Subtest: Parallel anchor preparation rejects cumulative mapping work before reading any range
+ok 233 - Parallel anchor preparation rejects cumulative mapping work before reading any range
+  ---
+  duration_ms: 3.383958
+  type: 'test'
+  ...
+# Subtest: native Cartesian guides retain exact typed value correspondence and geometry without trace writes
+ok 234 - native Cartesian guides retain exact typed value correspondence and geometry without trace writes
+  ---
+  duration_ms: 278.848166
+  type: 'test'
+  ...
+# Subtest: raw guide values match across tick insertions and label spelling does not alter identity
+ok 235 - raw guide values match across tick insertions and label spelling does not alter identity
+  ---
+  duration_ms: 85.449708
+  type: 'test'
+  ...
+# Subtest: wrapped Cartesian guide labels preserve line roles and suppressed labels stay absent
+ok 236 - wrapped Cartesian guide labels preserve line roles and suppressed labels stay absent
+  ---
+  duration_ms: 64.144667
+  type: 'test'
+  ...
+# Subtest: polar axis and grid projection reuse native circles, radius-zero omission and explicit angle
+ok 237 - polar axis and grid projection reuse native circles, radius-zero omission and explicit angle
+  ---
+  duration_ms: 154.065917
+  type: 'test'
+  ...
+# Subtest: nested composition keeps same guide values distinct in exact child namespaces
+ok 238 - nested composition keeps same guide values distinct in exact child namespaces
+  ---
+  duration_ms: 73.125
+  type: 'test'
+  ...
+# Subtest: edited guide geometry and unsupported text layout remain explicit fallbacks
+ok 239 - edited guide geometry and unsupported text layout remain explicit fallbacks
+  ---
+  duration_ms: 57.136959
+  type: 'test'
+  ...
+# Subtest: native player samples the typed plan on one injected clock and commits its exact final frame
+ok 240 - native player samples the typed plan on one injected clock and commits its exact final frame
+  ---
+  duration_ms: 190.537041
+  type: 'test'
+  ...
+# Subtest: typed interruption starts at the current semantic frame and completes a new run once
+ok 241 - typed interruption starts at the current semantic frame and completes a new run once
+  ---
+  duration_ms: 81.739541
+  type: 'test'
+  ...
+# Subtest: negative-rate and paused replacement both retain their exact captured starting frame
+ok 242 - negative-rate and paused replacement both retain their exact captured starting frame
+  ---
+  duration_ms: 91.645708
+  type: 'test'
+  ...
+# Subtest: invalid replacement requests preserve the active typed run, including render reentry
+ok 243 - invalid replacement requests preserve the active typed run, including render reentry
+  ---
+  duration_ms: 11.407083
+  type: 'test'
+  ...
+# Subtest: native reduced motion commits once without reserving a frame and rejects forged plans
+ok 244 - native reduced motion commits once without reserving a frame and rejects forged plans
+  ---
+  duration_ms: 18.535542
+  type: 'test'
+  ...
+# Subtest: fresh offline processes render actual embedded image and font bytes from the same sampled times
+ok 245 - fresh offline processes render actual embedded image and font bytes from the same sampled times
+  ---
+  duration_ms: 6821.127375
+  type: 'test'
+  ...
+# Subtest: hash-only, truncated and substituted image or font payloads cannot restore
+ok 246 - hash-only, truncated and substituted image or font payloads cannot restore
+  ---
+  duration_ms: 84.492834
+  type: 'test'
+  ...
+# Subtest: public offline plans preserve keyed meaning, canonical frames and playback defaults
+ok 247 - public offline plans preserve keyed meaning, canonical frames and playback defaults
+  ---
+  duration_ms: 360.6905
+  type: 'test'
+  ...
+# Subtest: frame export preflights the entire explicit schedule and uses the exact fps grid
+ok 248 - frame export preflights the entire explicit schedule and uses the exact fps grid
+  ---
+  duration_ms: 80.840084
+  type: 'test'
+  ...
+# Subtest: public restore rejects corruption, unknown kernels, missing payloads and executable playback
+ok 249 - public restore rejects corruption, unknown kernels, missing payloads and executable playback
+  ---
+  duration_ms: 51.30575
+  type: 'test'
+  ...
+# Subtest: exported frames retain authentic meaning across rebasing and offline restoration
+ok 250 - exported frames retain authentic meaning across rebasing and offline restoration
+  ---
+  duration_ms: 284.412833
+  type: 'test'
+  ...
+# Subtest: frame export rejects cumulative output work before materializing a first frame
+ok 251 - frame export rejects cumulative output work before materializing a first frame
+  ---
+  duration_ms: 447.533583
+  type: 'test'
+  ...
+# Subtest: the shared builder retains exact rectangular corners and bounded current curved cells
+ok 252 - the shared builder retains exact rectangular corners and bounded current curved cells
+  ---
+  duration_ms: 18.886792
+  type: 'test'
+  ...
+# Subtest: native angle normalization agrees with stored projection for very large authored angles
+ok 253 - native angle normalization agrees with stored projection for very large authored angles
+  ---
+  duration_ms: 1.076583
+  type: 'test'
+  ...
+# Subtest: invalid frames and tessellation requests fail before allocating cell paths
+ok 254 - invalid frames and tessellation requests fail before allocating cell paths
+  ---
+  duration_ms: 0.413
+  type: 'test'
+  ...
+# Subtest: native partition projection joins exact visible body and label roles to stored hierarchy intervals
+ok 255 - native partition projection joins exact visible body and label roles to stored hierarchy intervals
+  ---
+  duration_ms: 250.258625
+  type: 'test'
+  ...
+# Subtest: repeated placement of the same child preserves separate exact hierarchy namespaces
+ok 256 - repeated placement of the same child preserves separate exact hierarchy namespaces
+  ---
+  duration_ms: 167.385834
+  type: 'test'
+  ...
+# Subtest: concrete edits and foreign roles retain explicit fallback while stale and absent native grain fail
+ok 257 - concrete edits and foreign roles retain explicit fallback while stale and absent native grain fail
+  ---
+  duration_ms: 127.65025
+  type: 'test'
+  ...
+# Subtest: focus, hidden root, automatic radii and unrelated mark owners keep their exact stored grain
+ok 258 - focus, hidden root, automatic radii and unrelated mark owners keep their exact stored grain
+  ---
+  duration_ms: 118.035375
+  type: 'test'
+  ...
+# Subtest: partition bend frames preserve the selected node, current path focus, native activation and history
+ok 259 - partition bend frames preserve the selected node, current path focus, native activation and history
+  ---
+  duration_ms: 602.170375
+  type: 'test'
+  ...
+# Subtest: hierarchy focus activation during a bend uses the same native node and preserves its selection
+ok 260 - hierarchy focus activation during a bend uses the same native node and preserves its selection
+  ---
+  duration_ms: 280.938041
+  type: 'test'
+  ...
+# Subtest: reduced motion publishes the exact native sunburst once through the accepted-frame boundary
+ok 261 - reduced motion publishes the exact native sunburst once through the accepted-frame boundary
+  ---
+  duration_ms: 175.858375
+  type: 'test'
+  ...
+# Subtest: native rectangular and polar normalized states preserve fixed screen values without layout
+ok 262 - native rectangular and polar normalized states preserve fixed screen values without layout
+  ---
+  duration_ms: 76.578
+  type: 'test'
+  ...
+# Subtest: all native coordinate directions and compatible bend endpoints preserve native mapping
+ok 263 - all native coordinate directions and compatible bend endpoints preserve native mapping
+  ---
+  duration_ms: 172.779291
+  type: 'test'
+  ...
+# Subtest: current curved meaning rebases exactly while native dimensions remain explicit
+ok 264 - current curved meaning rebases exactly while native dimensions remain explicit
+  ---
+  duration_ms: 7.35625
+  type: 'test'
+  ...
+# Subtest: closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+ok 265 - closed numeric inputs reject malformed frames, unknown versions, accessors and inconsistent plans
+  ---
+  duration_ms: 8.512
+  type: 'test'
+  ...
+# Subtest: public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+ok 266 - public partition transitions retain exact native endpoints and the approved canonical intermediate geometry
+  ---
+  duration_ms: 839.407292
+  type: 'test'
+  ...
+# Subtest: native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+ok 267 - native size, radial hole and clockwise mappings interpolate within their normalized hierarchy
+  ---
+  duration_ms: 1059.538291
+  type: 'test'
+  ...
+# Subtest: interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+ok 268 - interrupted bidirectional native partition plans preserve authentic frames and offline meaning
+  ---
+  duration_ms: 1324.947375
+  type: 'test'
+  ...
+# Subtest: scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+ok 269 - scope, current path hit and bounded repeated interruptions retain exact native hierarchy identity
+  ---
+  duration_ms: 2279.528792
+  type: 'test'
+  ...
+# Subtest: visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+ok 270 - visibility, hierarchy topology, edited geometry and paint retain explicit concrete fallbacks
+  ---
+  duration_ms: 86.577959
+  type: 'test'
+  ...
+# Subtest: closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+ok 271 - closed partition transport rejects missing kernels, forged semantic state and unreferenced groups
+  ---
+  duration_ms: 150.618125
+  type: 'test'
+  ...
+# Subtest: the public plan preserves every compatible native general direction through offline replay
+ok 272 - the public plan preserves every compatible native general direction through offline replay
+  ---
+  duration_ms: 4150.629583
+  type: 'test'
+  ...
+# Subtest: incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+ok 273 - incompatible clipping and structured paint preserve their native pixels through explicit fallbacks
+  ---
+  duration_ms: 152.274167
+  type: 'test'
+  ...
+# Subtest: a gap that consumes an intermediate cell falls back with both body and label preserved
+ok 274 - a gap that consumes an intermediate cell falls back with both body and label preserved
+  ---
+  duration_ms: 16.717125
+  type: 'test'
+  ...
+# Subtest: typed partition tracks preserve exact immutable endpoints and offline numeric identity
+ok 275 - typed partition tracks preserve exact immutable endpoints and offline numeric identity
+  ---
+  duration_ms: 7.154583
+  type: 'test'
+  ...
+# Subtest: icicle to sunburst samples agree with independent bend values and reverse sampling
+ok 276 - icicle to sunburst samples agree with independent bend values and reverse sampling
+  ---
+  duration_ms: 37.621833
+  type: 'test'
+  ...
+# Subtest: canonical frames support every compatible general direction without a second coordinate formula
+ok 277 - canonical frames support every compatible general direction without a second coordinate formula
+  ---
+  duration_ms: 48.200375
+  type: 'test'
+  ...
+# Subtest: same-family size center hole and focus changes interpolate without changing hierarchy identity
+ok 278 - same-family size center hole and focus changes interpolate without changing hierarchy identity
+  ---
+  duration_ms: 0.57475
+  type: 'test'
+  ...
+# Subtest: current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+ok 279 - current-frame rebasing keeps raw boundaries and current CSS gaps exactly at the new start
+  ---
+  duration_ms: 3.785833
+  type: 'test'
+  ...
+# Subtest: topology visibility reflection and radius policy changes report distinct crossfades
+ok 280 - topology visibility reflection and radius policy changes report distinct crossfades
+  ---
+  duration_ms: 6.781291
+  type: 'test'
+  ...
+# Subtest: CSS gap at exact native boundaries agrees with rectangle and sector mapping
+ok 281 - CSS gap at exact native boundaries agrees with rectangle and sector mapping
+  ---
+  duration_ms: 5.240583
+  type: 'test'
+  ...
+# Subtest: intermediate gaps use current curved arc and radial distances including area depths
+ok 282 - intermediate gaps use current curved arc and radial distances including area depths
+  ---
+  duration_ms: 6.521166
+  type: 'test'
+  ...
+# Subtest: track restoration rejects unknown versions malformed topology and inconsistent decisions
+ok 283 - track restoration rejects unknown versions malformed topology and inconsistent decisions
+  ---
+  duration_ms: 1.66325
+  type: 'test'
+  ...
+# Subtest: descriptor checks and global work limits reject before callbacks or oversized traversal
+ok 284 - descriptor checks and global work limits reject before callbacks or oversized traversal
+  ---
+  duration_ms: 968.243583
+  type: 'test'
+  ...
+# Subtest: native keyed point sampling interpolates meaning before logarithmic mapping
+ok 285 - native keyed point sampling interpolates meaning before logarithmic mapping
+  ---
+  duration_ms: 248.496959
+  type: 'test'
+  ...
+# Subtest: equal endpoint pixels cannot erase different semantic values and domains
+ok 286 - equal endpoint pixels cannot erase different semantic values and domains
+  ---
+  duration_ms: 31.494833
+  type: 'test'
+  ...
+# Subtest: reordering, enter and exit retain typed item correspondence rather than row indices
+ok 287 - reordering, enter and exit retain typed item correspondence rather than row indices
+  ---
+  duration_ms: 101.993583
+  type: 'test'
+  ...
+# Subtest: nested namespace scopes supply their own semantic values and resolved scales
+ok 288 - nested namespace scopes supply their own semantic values and resolved scales
+  ---
+  duration_ms: 129.615083
+  type: 'test'
+  ...
+# Subtest: unsupported geometry and appearance retain explicit per-item crossfade reasons
+ok 289 - unsupported geometry and appearance retain explicit per-item crossfade reasons
+  ---
+  duration_ms: 44.034875
+  type: 'test'
+  ...
+# Subtest: closed requests and authentic frozen plans reject malformed input without invoking getters
+ok 290 - closed requests and authentic frozen plans reject malformed input without invoking getters
+  ---
+  duration_ms: 13.150459
+  type: 'test'
+  ...
+# Subtest: conditional positions and missing rows share the existing final item grain
+ok 291 - conditional positions and missing rows share the existing final item grain
+  ---
+  duration_ms: 119.714083
+  type: 'test'
+  ...
+# Subtest: named Canvas backgrounds retain one paint while the native point frame remains hit-testable
+ok 292 - named Canvas backgrounds retain one paint while the native point frame remains hit-testable
+  ---
+  duration_ms: 87.955833
+  type: 'test'
+  ...
+# Subtest: categorical, computed and primitive-edited points are not mislabeled semantic tracks
+ok 293 - categorical, computed and primitive-edited points are not mislabeled semantic tracks
+  ---
+  duration_ms: 77.51525
+  type: 'test'
+  ...
+# Subtest: bounded work and unknown topology reject or classify before mutating endpoints
+ok 294 - bounded work and unknown topology reject or classify before mutating endpoints
+  ---
+  duration_ms: 808.576333
+  type: 'test'
+  ...
+# Subtest: a finite pair whose intermediate scale collapses uses the typed fallback
+ok 295 - a finite pair whose intermediate scale collapses uses the typed fallback
+  ---
+  duration_ms: 7.9875
+  type: 'test'
+  ...
+# Subtest: playback defaults and infinite repeat have one explicit reversible storage representation
+ok 296 - playback defaults and infinite repeat have one explicit reversible storage representation
+  ---
+  duration_ms: 7.601375
+  type: 'test'
+  ...
+# Subtest: playback normalization rejects invalid, executable and inherited options without host calls
+ok 297 - playback normalization rejects invalid, executable and inherited options without host calls
+  ---
+  duration_ms: 0.34325
+  type: 'test'
+  ...
+# Subtest: playback uses only the injected clock and preserves the current time across pause, seek and rate changes
+ok 298 - playback uses only the injected clock and preserves the current time across pause, seek and rate changes
+  ---
+  duration_ms: 54.600417
+  type: 'test'
+  ...
+# Subtest: each completed or cancelled run has its own exactly-once terminal promise
+ok 299 - each completed or cancelled run has its own exactly-once terminal promise
+  ---
+  duration_ms: 0.561083
+  type: 'test'
+  ...
+# Subtest: repeat, reverse and infinite runtime playback retain exact boundaries without scheduling extra frames
+ok 300 - repeat, reverse and infinite runtime playback retain exact boundaries without scheduling extra frames
+  ---
+  duration_ms: 0.656042
+  type: 'test'
+  ...
+# Subtest: interrupt captures the actual in-between frame and never returns to an earlier endpoint
+ok 301 - interrupt captures the actual in-between frame and never returns to an earlier endpoint
+  ---
+  duration_ms: 0.67925
+  type: 'test'
+  ...
+# Subtest: paused and reversed interruptions retain the captured scene and stay paused until play
+ok 302 - paused and reversed interruptions retain the captured scene and stay paused until play
+  ---
+  duration_ms: 0.327542
+  type: 'test'
+  ...
+# Subtest: zero duration and reduced motion render and commit the final scene once with no RAF
+ok 303 - zero duration and reduced motion render and commit the final scene once with no RAF
+  ---
+  duration_ms: 0.289167
+  type: 'test'
+  ...
+# Subtest: dispose immediately cancels pending frames and stale callbacks cannot render or commit
+ok 304 - dispose immediately cancels pending frames and stale callbacks cannot render or commit
+  ---
+  duration_ms: 0.322875
+  type: 'test'
+  ...
+# Subtest: dispose inside the final render prevents a later commit and completion callback
+ok 305 - dispose inside the final render prevents a later commit and completion callback
+  ---
+  duration_ms: 0.088083
+  type: 'test'
+  ...
+# Subtest: render controls are FIFO and do not recurse into the current callback
+ok 306 - render controls are FIFO and do not recurse into the current callback
+  ---
+  duration_ms: 0.264459
+  type: 'test'
+  ...
+# Subtest: callback failures and malicious synchronous clocks leave no scheduled work or pending terminal
+ok 307 - callback failures and malicious synchronous clocks leave no scheduled work or pending terminal
+  ---
+  duration_ms: 1.905292
+  type: 'test'
+  ...
+# Subtest: closed options and invalid controls reject without invoking executable properties
+ok 308 - closed options and invalid controls reject without invoking executable properties
+  ---
+  duration_ms: 0.695625
+  type: 'test'
+  ...
+# Subtest: clock rollback and non-finite time cancel safely, while seek clamps explicit endpoints
+ok 309 - clock rollback and non-finite time cancel safely, while seek clamps explicit endpoints
+  ---
+  duration_ms: 0.774834
+  type: 'test'
+  ...
+# Subtest: a callback cannot create unbounded controls or hide a queue overflow
+ok 310 - a callback cannot create unbounded controls or hide a queue overflow
+  ---
+  duration_ms: 1.737875
+  type: 'test'
+  ...
+# Subtest: rejected interruption and repeat changes preserve the active run and its scheduled frame
+ok 311 - rejected interruption and repeat changes preserve the active run and its scheduled frame
+  ---
+  duration_ms: 0.361166
+  type: 'test'
+  ...
+# Subtest: interruption queued inside rendering uses the current frame without recursive callbacks
+ok 312 - interruption queued inside rendering uses the current frame without recursive callbacks
+  ---
+  duration_ms: 0.288
+  type: 'test'
+  ...
+# Subtest: cancelled frame callbacks remain invalid after a new run is scheduled
+ok 313 - cancelled frame callbacks remain invalid after a new run is scheduled
+  ---
+  duration_ms: 0.177167
+  type: 'test'
+  ...
+# Subtest: a queued rejected interruption preserves the previous run and its next clock callback
+ok 314 - a queued rejected interruption preserves the previous run and its next clock callback
+  ---
+  duration_ms: 0.521459
+  type: 'test'
+  ...
+# Subtest: an ordinary callback throwing a non-object value still cancels its run
+ok 315 - an ordinary callback throwing a non-object value still cancels its run
+  ---
+  duration_ms: 0.12275
+  type: 'test'
+  ...
+# Subtest: native point restrictions coexist with typed Cartesian and polar support
+ok 316 - native point restrictions coexist with typed Cartesian and polar support
+  ---
+  duration_ms: 397.090375
+  type: 'test'
+  ...
+# Subtest: unknown scale values and categorical Y stay distinct from continuous numeric input
+ok 317 - unknown scale values and categorical Y stay distinct from continuous numeric input
+  ---
+  duration_ms: 41.659
+  type: 'test'
+  ...
+# Subtest: transformed scales retain the exact resolved parameters in semantic tracks
+ok 318 - transformed scales retain the exact resolved parameters in semantic tracks
+  ---
+  duration_ms: 145.402167
+  type: 'test'
+  ...
+# Subtest: primitive-only meaning, missing bindings and foreign roles cannot masquerade as point values
+ok 319 - primitive-only meaning, missing bindings and foreign roles cannot masquerade as point values
+  ---
+  duration_ms: 26.962333
+  type: 'test'
+  ...
+# Subtest: polar angles take the shortest seam with a positive half-turn tie and exact endpoints
+ok 320 - polar angles take the shortest seam with a positive half-turn tie and exact endpoints
+  ---
+  duration_ms: 125.29425
+  type: 'test'
+  ...
+# Subtest: native polar lines preserve member order and sectors preserve full turns, padding and annular radii
+ok 321 - native polar lines preserve member order and sectors preserve full turns, padding and annular radii
+  ---
+  duration_ms: 0.980458
+  type: 'test'
+  ...
+# Subtest: polar kernels reject unknown, unsafe or inconsistent state before native geometry
+ok 322 - polar kernels reject unknown, unsafe or inconsistent state before native geometry
+  ---
+  duration_ms: 5.932
+  type: 'test'
+  ...
+# Subtest: polar sampling rejects a nonfinite interior even when both endpoint coordinates are finite
+ok 323 - polar sampling rejects a nonfinite interior even when both endpoint coordinates are finite
+  ---
+  duration_ms: 0.49475
+  type: 'test'
+  ...
+# Subtest: native polar point, ordered line, proportional and radial sectors sample and restore exact meaning
+ok 324 - native polar point, ordered line, proportional and radial sectors sample and restore exact meaning
+  ---
+  duration_ms: 850.158083
+  type: 'test'
+  ...
+# Subtest: same native polar ranges resize and nested current frames preserve unwrapped coordinates without plan retention
+ok 325 - same native polar ranges resize and nested current frames preserve unwrapped coordinates without plan retention
+  ---
+  duration_ms: 763.980375
+  type: 'test'
+  ...
+# Subtest: polar mapping, order, appearance and authored geometry changes remain explicit fallbacks
+ok 326 - polar mapping, order, appearance and authored geometry changes remain explicit fallbacks
+  ---
+  duration_ms: 44.607125
+  type: 'test'
+  ...
+# Subtest: strict polar restore rejects kernel, geometry, membership, cardinality, accessors and forged sampled decisions
+ok 327 - strict polar restore rejects kernel, geometry, membership, cardinality, accessors and forged sampled decisions
+  ---
+  duration_ms: 68.8075
+  type: 'test'
+  ...
+# Subtest: categorical polar lines and aggregate sectors retain native groups while unsupported source states stay explicit
+ok 328 - categorical polar lines and aggregate sectors retain native groups while unsupported source states stay explicit
+  ---
+  duration_ms: 36.751709
+  type: 'test'
+  ...
+# Subtest: semantic values map after interpolation with exact numeric endpoints and resolved range changes
+ok 329 - semantic values map after interpolation with exact numeric endpoints and resolved range changes
+  ---
+  duration_ms: 5.549792
+  type: 'test'
+  ...
+# Subtest: logarithmic values retain their meaning while domain endpoints morph geometrically
+ok 330 - logarithmic values retain their meaning while domain endpoints morph geometrically
+  ---
+  duration_ms: 1.951959
+  type: 'test'
+  ...
+# Subtest: all admitted continuous transforms agree with independent value-space formulas
+ok 331 - all admitted continuous transforms agree with independent value-space formulas
+  ---
+  duration_ms: 70.433958
+  type: 'test'
+  ...
+# Subtest: incompatible mapping policies yield explicit crossfade reasons
+ok 332 - incompatible mapping policies yield explicit crossfade reasons
+  ---
+  duration_ms: 0.359917
+  type: 'test'
+  ...
+# Subtest: unrepresentable intermediate mappings fade with a reason and preserve finite endpoints
+ok 333 - unrepresentable intermediate mappings fade with a reason and preserve finite endpoints
+  ---
+  duration_ms: 0.187791
+  type: 'test'
+  ...
+# Subtest: closed descriptor-safe position boundaries reject invalid state without evaluating getters
+ok 334 - closed descriptor-safe position boundaries reject invalid state without evaluating getters
+  ---
+  duration_ms: 0.55475
+  type: 'test'
+  ...
+# Subtest: current semantic values and resolved scales rebase without pixel inversion in either direction
+ok 335 - current semantic values and resolved scales rebase without pixel inversion in either direction
+  ---
+  duration_ms: 223.212667
+  type: 'test'
+  ...
+# Subtest: timed exported frames retain authenticity and exact captured endpoint views
+ok 336 - timed exported frames retain authenticity and exact captured endpoint views
+  ---
+  duration_ms: 148.257
+  type: 'test'
+  ...
+# Subtest: repeated topology interruption flattens weighted sources and preserves node identity
+ok 337 - repeated topology interruption flattens weighted sources and preserves node identity
+  ---
+  duration_ms: 1151.333542
+  type: 'test'
+  ...
+# Subtest: nested enter and exit frames retain keyed correspondence at the actual displayed state
+ok 338 - nested enter and exit frames retain keyed correspondence at the actual displayed state
+  ---
+  duration_ms: 65.555084
+  type: 'test'
+  ...
+# Subtest: sampled endpoint restoration rejects identity, view, topology and semantic corruption
+ok 339 - sampled endpoint restoration rejects identity, view, topology and semantic corruption
+  ---
+  duration_ms: 87.031542
+  type: 'test'
+  ...
+# Subtest: offline point preparation reconstructs correspondence and semantic samples from one payload
+ok 340 - offline point preparation reconstructs correspondence and semantic samples from one payload
+  ---
+  duration_ms: 347.742375
+  type: 'test'
+  ...
+# Subtest: restoration rejects unknown fields, kernels and malformed options before creating an authentic plan
+ok 341 - restoration rejects unknown fields, kernels and malformed options before creating an authentic plan
+  ---
+  duration_ms: 22.39675
+  type: 'test'
+  ...
+# Subtest: semantic values and every unmatched endpoint are validated against native concrete output
+ok 342 - semantic values and every unmatched endpoint are validated against native concrete output
+  ---
+  duration_ms: 53.5595
+  type: 'test'
+  ...
+# Subtest: restoration is descriptor safe and bounds cyclic, deep, sparse and amplified input
+ok 343 - restoration is descriptor safe and bounds cyclic, deep, sparse and amplified input
+  ---
+  duration_ms: 97.166125
+  type: 'test'
+  ...
+# Subtest: graphic corruption and ambiguous retained identity reject atomically
+ok 344 - graphic corruption and ambiguous retained identity reject atomically
+  ---
+  duration_ms: 4.74575
+  type: 'test'
+  ...
+# Subtest: 100 public interruptions retain bounded native proof and exact current geometry
+ok 345 - 100 public interruptions retain bounded native proof and exact current geometry
+  ---
+  duration_ms: 525.884541
+  type: 'test'
+  ...
+# Subtest: 1000 public interruptions retain bounded native proof and exact current geometry
+ok 346 - 1000 public interruptions retain bounded native proof and exact current geometry
+  ---
+  duration_ms: 2724.005333
+  type: 'test'
+  ...
+# Subtest: native authority contains exact displayed owners and direct endpoints without historical or cloned programs
+ok 347 - native authority contains exact displayed owners and direct endpoints without historical or cloned programs
+  ---
+  duration_ms: 30.893458
+  type: 'test'
+  ...
+# Subtest: route planning uses the shared normalized arc-length grid rather than command positions
+ok 348 - route planning uses the shared normalized arc-length grid rather than command positions
+  ---
+  duration_ms: 3.973375
+  type: 'test'
+  ...
+# Subtest: route endpoints retain exact original topology and literal coordinates
+ok 349 - route endpoints retain exact original topology and literal coordinates
+  ---
+  duration_ms: 0.994209
+  type: 'test'
+  ...
+# Subtest: each intermediate route attaches to the supplied current node anchors with a smooth correction
+ok 350 - each intermediate route attaches to the supplied current node anchors with a smooth correction
+  ---
+  duration_ms: 1.763875
+  type: 'test'
+  ...
+# Subtest: repeated samples retain arc-length correspondence without introducing artificial path commands
+ok 351 - repeated samples retain arc-length correspondence without introducing artificial path commands
+  ---
+  duration_ms: 0.244542
+  type: 'test'
+  ...
+# Subtest: edge identity, collapsed geometry and excessive stretch select an explicit safe fade
+ok 352 - edge identity, collapsed geometry and excessive stretch select an explicit safe fade
+  ---
+  duration_ms: 0.834208
+  type: 'test'
+  ...
+# Subtest: prepared route values and sampled points are isolated immutable snapshots
+ok 353 - prepared route values and sampled points are isolated immutable snapshots
+  ---
+  duration_ms: 0.845417
+  type: 'test'
+  ...
+# Subtest: extreme finite coordinates select a safe fade before arithmetic overflow can reach a graphic
+ok 354 - extreme finite coordinates select a safe fade before arithmetic overflow can reach a graphic
+  ---
+  duration_ms: 1.111292
+  type: 'test'
+  ...
+# Subtest: route admission rejects malformed keys, points, options, sample limits and anchor accessors
+ok 355 - route admission rejects malformed keys, points, options, sample limits and anchor accessors
+  ---
+  duration_ms: 2.030541
+  type: 'test'
+  ...
+# Subtest: stationary nonuniform routes preserve every native corner between exact anchors
+ok 356 - stationary nonuniform routes preserve every native corner between exact anchors
+  ---
+  duration_ms: 0.849583
+  type: 'test'
+  ...
+# Subtest: injected clock arithmetic follows literal elapsed time and rate changes
+ok 357 - injected clock arithmetic follows literal elapsed time and rate changes
+  ---
+  duration_ms: 2.255958
+  type: 'test'
+  ...
+# Subtest: exact repeat boundaries retain endpoints and large clock jumps do not run an iteration loop
+ok 358 - exact repeat boundaries retain endpoints and large clock jumps do not run an iteration loop
+  ---
+  duration_ms: 0.241
+  type: 'test'
+  ...
+# Subtest: negative rates reverse from the current time and preserve the opposite endpoint
+ok 359 - negative rates reverse from the current time and preserve the opposite endpoint
+  ---
+  duration_ms: 0.553375
+  type: 'test'
+  ...
+# Subtest: closed-form timing agrees with an independent one-tick virtual clock
+ok 360 - closed-form timing agrees with an independent one-tick virtual clock
+  ---
+  duration_ms: 16.460791
+  type: 'test'
+  ...
+# Subtest: zero duration, infinite repetition and numeric limits remain bounded
+ok 361 - zero duration, infinite repetition and numeric limits remain bounded
+  ---
+  duration_ms: 0.944208
+  type: 'test'
+  ...
+# Subtest: invalid clock state is rejected without mutating inputs or reading accessors
+ok 362 - invalid clock state is rejected without mutating inputs or reading accessors
+  ---
+  duration_ms: 1.469125
+  type: 'test'
+  ...
+# Subtest: transition time clamps and zero-duration transitions commit exactly at zero
+ok 363 - transition time clamps and zero-duration transitions commit exactly at zero
+  ---
+  duration_ms: 1.234125
+  type: 'test'
+  ...
+# Subtest: linear and cubic-in-out easing agree with independent literal anchors
+ok 364 - linear and cubic-in-out easing agree with independent literal anchors
+  ---
+  duration_ms: 0.473708
+  type: 'test'
+  ...
+# Subtest: linear interpolation preserves exact signed endpoints and bounded extreme values
+ok 365 - linear interpolation preserves exact signed endpoints and bounded extreme values
+  ---
+  duration_ms: 0.167541
+  type: 'test'
+  ...
+# Subtest: positive scale interpolation follows logarithmic distance without ratio overflow
+ok 366 - positive scale interpolation follows logarithmic distance without ratio overflow
+  ---
+  duration_ms: 0.096042
+  type: 'test'
+  ...
+# Subtest: rotation follows the short seam and selects positive direction for exact half-turns
+ok 367 - rotation follows the short seam and selects positive direction for exact half-turns
+  ---
+  duration_ms: 0.11025
+  type: 'test'
+  ...
+# Subtest: premultiplied linear-light color preserves transparent fade chroma and gamma anchors
+ok 368 - premultiplied linear-light color preserves transparent fade chroma and gamma anchors
+  ---
+  duration_ms: 0.300625
+  type: 'test'
+  ...
+# Subtest: color endpoints are exact independent immutable snapshots
+ok 369 - color endpoints are exact independent immutable snapshots
+  ---
+  duration_ms: 0.238375
+  type: 'test'
+  ...
+# Subtest: premultiplied color stays finite and normalized across opacity and transfer-function boundaries
+ok 370 - premultiplied color stays finite and normalized across opacity and transfer-function boundaries
+  ---
+  duration_ms: 206.028333
+  type: 'test'
+  ...
+# Subtest: numeric interpolation rejects malformed endpoints, progress, easing and RGBA accessors
+ok 371 - numeric interpolation rejects malformed endpoints, progress, easing and RGBA accessors
+  ---
+  duration_ms: 2.210875
+  type: 'test'
+  ...
+1..371
+# tests 371
+# suites 0
+# pass 371
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 34979.755416

@@ -1602,6 +1602,14 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/axis-label-layout-offline-native",
+        "statements": 2
+      },
+      {
+        "id": "animation/legend-offline-native",
+        "statements": 2
+      },
+      {
         "id": "animation/geographic-text-offline-native",
         "statements": 1
       },

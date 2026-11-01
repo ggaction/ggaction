@@ -926,12 +926,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 779,900 bytes |
-| `ggaction/basic` | 423,100 bytes |
+| `ggaction` | 780,300 bytes |
+| `ggaction/basic` | 423,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 129,600 bytes |
-| `ggaction/animation` | 267,100 bytes |
+| `ggaction/interaction` | 129,700 bytes |
+| `ggaction/animation` | 293,200 bytes |
 
 
 
@@ -4787,3 +4787,29 @@ normalizer를 선택한 뒤 같은 resource factory·revision closure·preflight
 Node20/24 최대packed1,704,959bytes다. 세 Node의 동일 tar gzip 최대는 Full779,857 /
 Basic423,068 / animation267,065 / interaction129,518bytes다. 최초 초과와 최종 재검증은
 [edge 통합 증거](impl/roadmap9/animation/edge-timeline-merged-evidence/qualification.json)에 둔다.
+
+### Prepared native legend transitions
+
+`materialization/animation/legendState`는 exact gradient sample·native layout policy와 필요한 text
+query closure를 소유한다. 원 native gradient layout/strip 계산은 authoring과 같은 materialization
+owner를 재사용한다. `guideTracks`는 순수 axis/anchor 계산과 native legend 계산을 분기하며 같은
+semantic-guide 출력/forward proof를 유지한다. Renderer·trace·public signature는 바뀌지 않으며
+현재 지원 및 fallback은 [Animation Current](contract/current/ANIMATION.md)가 소유한다.
+
+
+### Prepared native axis label layout
+
+`materialization/animation/axisLabelState`는 raw 값·native frame/scale·고정 label 정책을 준비하고
+기존 `axisLabelLayout`의 측정 배치를 재생한다. `guideMetrics`가 범례와 축의 필요한 정확 query
+closure 및 font binding 보존을 함께 소유한다. 최종 pixel을 의미로 역산하지 않고, 같은 native
+forward proof/guideTracks seam을 사용한다. 동적 wrapping/skip 선택의 남은 지원 범위는
+[Animation Current](contract/current/ANIMATION.md)가 소유한다.
+
+Native Cartesian@2와 gradient/fixed-label guide@4를 root timeline version3에 결합했다.
+sample은 순수 axis state와 materialization legend/label state를 guideTracks facade로 분기하고
+기존 GeoText/timeline 경로는 유지한다. Sampled endpoint의 rect/circle admission은 해당 native
+forward proof와 함께 적용하며 concrete primitive whitelist만으로 의미 권한을 만들지 않는다.
+동일a066 archive의 세 Node 최대 gzip은 Full780,241 / Basic423,358 / animation293,189 /
+interaction129,620bytes이며 package는1,206entries / unpacked7,762,829 / 최대packed1,721,725bytes다.
+[통합 검증](impl/roadmap9/animation/native-typed-merged-evidence/qualification.json)은 새 shared owner
+coverage와 source-identical upstream 재사용, 남은 native 의무를 구분한다.
