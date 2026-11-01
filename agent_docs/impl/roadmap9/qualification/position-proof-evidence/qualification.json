@@ -1,7 +1,7 @@
 {
   "status": "owned-position-preparation-reuse-verified; final-large-size-and-native-qualification-pending",
   "base": "3aa8e93c456a0fab555737c4dc3f44f481ab6407",
-  "sourceRevision": null,
+  "sourceRevision": "c80fea2d07512cd91a91bd9d7b3f395e9c59e7e8",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "archive": {
     "name": "ggaction",
@@ -461,11 +461,51 @@
     "pack24.stderr": {
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
       "bytes": 208
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs-architecture-cap-failure.log": {
+      "sha256": "de737fb5fc77c6da663843cef977309343c5e6c2d270c8cbc2563956aefe5ea0",
+      "bytes": 3281
+    },
+    "source-pin-docs.log": {
+      "sha256": "d6ed00598034bb9628a2aff4eb3c8c289ee042b9e084487f99e8362b68cfe341",
+      "bytes": 1813
+    },
+    "source-pin-pack.json": {
+      "sha256": "e0bb70ab0ff6da305cef5741584e6a438ae81f064301e54145f50f457aea1b5c",
+      "bytes": 384
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
   },
   "remaining": [
     "full original large workload support and actual P95",
     "all native577consumer/79group results and nine final commands",
     "AT60 fresh independent review and AT61 protected exact delivery; STEP077 incomplete"
-  ]
+  ],
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
+  },
+  "sourcePinRepair": "The first metadata check found the architecture budget table still333700. Synchronized the existing table to measured333800; runtime/archive inputs unchanged and the same nine checks now pass."
 }
