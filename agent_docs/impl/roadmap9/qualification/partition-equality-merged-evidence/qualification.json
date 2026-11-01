@@ -370,6 +370,42 @@
     "pack20-initial.stderr": {
       "bytes": 966,
       "sha256": "a3c15259473eae5c323671edd85cc54c1dad1b3a96b4eb289c5a223b70670c8e"
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "53694a2ced3b5f77d5ab712119d6fca1ca607ee686409d5b2b08e9a33ce5b39f",
+      "bytes": 1809
+    },
+    "source-pin-pack.json": {
+      "sha256": "e903221b7a57b53604732e43e91418346d8ad28e25b88e90be3323f797e4edcf",
+      "bytes": 395
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourceRevision": "3d5bf8828128ddc73dab1817e9dcdb8ea5939d72",
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite execution claimed."
   }
 }
