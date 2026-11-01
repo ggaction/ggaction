@@ -3,7 +3,7 @@
   "base": "4baa8b721",
   "incomingSource": "dc704e9f6",
   "upstreamPin": "5c054738f",
-  "sourceRevision": null,
+  "sourceRevision": "d165696d6ef93fa5b1c4c6e9c26b881d66567dcb",
   "approval": "../../AUTHORIZATION.json#remainingApproval",
   "archive": {
     "name": "ggaction",
@@ -352,6 +352,41 @@
     "build.log": {
       "sha256": "fadad2a55946566dc8da8c15474d2c1d7aa66a09e46b8ddc65e1576f394b8aa5",
       "bytes": 420
+    },
+    "source-pin-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "source-pin-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "source-pin-machine.log": {
+      "sha256": "932dc6fde4d2271bb2fc98afc161ee26689c1a3c4d49919e943c54197f254755",
+      "bytes": 127
+    },
+    "source-pin-docs.log": {
+      "sha256": "8dc187964b43e1190482cd62ce8fd76c8e4e87702335cdc317ca835ded7137b8",
+      "bytes": 1806
+    },
+    "source-pin-pack.json": {
+      "sha256": "e5304fd9b37c2e5074b0e2f54c2efa16e8c30c20fb0dbdb66eb38916e9d183bb",
+      "bytes": 390
+    },
+    "source-pin-pack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "sourcePin": {
+    "metadataOnly": true,
+    "archiveSHAUnchanged": true,
+    "docs": 9,
+    "generated": [
+      "provenance",
+      "machine",
+      "llms"
+    ],
+    "reuse": "Runtime/package inputs unchanged; no new whole-suite claim."
   }
 }
