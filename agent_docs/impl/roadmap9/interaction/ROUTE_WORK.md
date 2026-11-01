@@ -223,3 +223,31 @@ full SLO·large workload·AT82 완료로 세지 않는다. 최초 graphic 오류
 listener/timer/capture/callback-after-destroy0을 확인했다. 새로운 lifecycle100·retained heap
 검사는 없으며 원본24셀8성공/16한계 집계도 소급 변경하지 않는다. 환경·process snapshot·
 전체 sample·bundle hash와 실행 harness는 [이번 증거](route-cycle-evidence/summary.json)에 있다.
+
+
+## 같은 준비 작업을 완료 리소스 구성에 명시 전달 — 2026-11-01
+
+remainingApproval과 root의 명시 재사용 승인에 따라, `prepareGraphEdgeRoutes`가 생성하고
+executor에 보낸 exact immutable job을 기존 route materialization owner의
+`completedEdgeRouteResource`에 그대로 전달한다. 같은 resolved native graph/layout/hierarchy를
+다시 내려 job을 만드는 호출 하나를 제거한다. 동기 create 경로는 기존처럼 job을 만든 뒤
+같은 완료 구성 helper를 호출한다. 새 공개 API·저장 필드·cache·worker 권한은 없다.
+
+Helper는 job의 기존 authenticity/전체 검증 owner와 `validateRouteResult`를 모두 호출한다.
+외부 clone은 전체 검증 후 분리된 job이 되며 result의 endpoint·order·provenance·hash는
+재검증한다. Native action 적용 시 resource graph 검증도 유지한다. Solver 계산량과 work/
+sample/abort guard를 바꾸지 않는다. 비동기 완료 직후 signal을 다시 확인하고 receiver/token/
+action 수명도 그대로 유지한다. P95 source1e307/58a archive를 변경하지 않고 별도 source다.
+
+네 방법×world/screen의 동기·prepared 결과, 입력 참조/행 출처, 저장복원·입력 불변성을
+검증한다. External job mutation 격리·getter0·stale job/completion·hash를 다시 만든 잘못된
+endpoint 거부를 함께 검증한다. 기존 worker 취소/late completion·receiver/host 수명 검사도
+재사용한다. 새 source 성능 측정은 아직 없으며 이전 P95를 소급하지 않는다.
+
+같은c4c906ee…89d22 archive에서 Node20/22/24 각각 route5사례·optional peers·6bundle이
+통과했다. 두 변경 owner의 line/branch/function은100/100/100이며 source102개×3Node,
+기존 boundary/discovery/sharding40 및 canonical package7을 통과했다. 최초 row-reference
+fixture 오류와 package 상한 초과를 [증거](route-assembly-evidence/summary.json)에 보존한다.
+Node20 실측 packed1,674,030/unpacked7,561,755에 최소1,674,100/7,561,800만 적용했고
+Full gzip 최대782,041은 기존782,100 안이다. Source pin은 다음 metadata checkpoint에서 닫는다.
+Root와 합의하여 이 미세 변경의 새 P95는 반복하지 않고 최종 합산 후보에서 한 번 측정한다.

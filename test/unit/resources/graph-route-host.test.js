@@ -5,7 +5,9 @@ import { chart } from "../../../src/index.js";
 import { chart as basicChart } from "../../../src/basic.js";
 import { prepareGraphEdgeRoutes, createGraphRouteExecutor, computeGraphEdgeRoutes } from "../../../src/graph.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
-import { edgeRouteJob } from "../../../src/materialization/graph/routeResource.js";
+import { edgeRouteJob, completedEdgeRouteResource } from "../../../src/materialization/graph/routeResource.js";
+import { encodeRowKey } from "../../../src/core/itemIdentity.js";
+import { routeValueHash } from "../../../src/grammar/graph/routes/job.js";
 import { normalizeRouteIntent } from "../../../src/grammar/graph/routes/options.js";
 import { getErrorDetails } from "../../../src/core/diagnostics.js";
 import { withPreparedScreenRouteResults, withPreparedDataResourceResults } from "../../../src/actions/primitives/preparedResourceContext.js";
@@ -53,6 +55,64 @@ test("prepared routes match synchronous authoring and preserve exact receiver, t
   assert.equal(get(applied.editEdgeRoute({ prepared: edit, requestToken: "edit" }), "edge-route", "routes").revision, 1);
   assert.equal(serializeProgram(p), snapshot);
   await assert.rejects(prepareGraphEdgeRoutes(basicChart(), { kind: "create", ...request }, { requestToken: "one" }), /Full/);
+});
+
+test("completed route assembly preserves all methods, source rows and viewport through preparation and restore", async () => {
+  let tree = chart().createCanvas({ width: 400, height: 300 }).createData({ id: "tree", values: [
+    { key: "root", parent: null, value: 0 }, { key: "a", parent: "root", value: 1 }, { key: "b", parent: "root", value: 1 }
+  ] }).createHierarchyData({ id: "hierarchy", data: "tree", key: "key", parent: "parent", value: "value" })
+    .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [10, 10], siblingGap: 20, depthGap: 50, orientation: "vertical" } });
+  const positions = ["a", "b"].map(key => {
+    const node = get(tree, "layout", "tree-layout").result.nodes.find(node => node.key === encodeRowKey(key));
+    return { key, x: node.x, y: node.y };
+  });
+  tree = tree.createData({ id: "nodes", values: [{ key: "a" }, { key: "b" }] })
+    .createData({ id: "edges", values: [{ s: "a", t: "b" }] })
+    .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "key", source: "s", target: "t" })
+    .layoutGraph({ id: "layout", method: "fixed", options: { positions } });
+  for (const method of ["hierarchical", "force-directed", "density", "edge-path"]) {
+    const p = method === "hierarchical" ? tree : source(), snapshot = serializeProgram(p);
+    for (const coordinateSpace of ["world", "screen"]) {
+      const request = { id: "routes", graph: "graph", layout: "layout", method, coordinateSpace,
+        ...(method === "hierarchical" ? { options: { hierarchy: "hierarchy", hierarchyLayout: "tree-layout",
+          mapping: ["a", "b"].map(key => ({ nodeKey: key, hierarchyKey: key })) } } : {}) };
+      const expected = p.bundleGraphEdges(request), executor = createGraphRouteExecutor();
+      try {
+        const prepared = await prepareGraphEdgeRoutes(p, { kind: "create", ...request }, { requestToken: "same-job", executor });
+        const actual = p.bundleGraphEdges({ prepared, requestToken: "same-job" });
+        assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
+        assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+        assert.deepEqual(deserializeProgram(serializeProgram(actual)).semanticSpec, expected.semanticSpec);
+        const resource = get(actual, "edge-route", "routes");
+        assert.deepEqual([...new Set(resource.provenance.sourceRows.map(row => row.data))], method === "hierarchical" ? ["nodes", "edges", "tree"] : ["nodes", "edges"]);
+        assert.equal(resource.inputs.length, method === "hierarchical" ? 4 : 2);
+        assert.equal(resource.result.viewport === null, coordinateSpace === "world");
+        assert.ok(Object.isFrozen(resource.result.routes[0].commands));
+      } finally { executor.dispose(); }
+    }
+    assert.equal(serializeProgram(p), snapshot);
+  }
+});
+
+test("completed route assembly validates external jobs and every completion before retaining immutable output", () => {
+  const p = source(), graph = get(p, "graph", "graph"), job = jobFor(p), completion = computeGraphEdgeRoutes(job);
+  const expected = get(p.bundleGraphEdges({ id: "routes", method: "edge-path" }), "edge-route", "routes");
+  const foreign = structuredClone(job), copy = structuredClone(completion);
+  const resource = completedEdgeRouteResource({ id: "routes", graph }, foreign, copy);
+  assert.deepEqual(resource, expected);
+  foreign.inputs[0].revision = 12; copy.result.routes[0].commands[0].x = 999;
+  assert.deepEqual(resource, expected);
+  assert.throws(() => completedEdgeRouteResource({ id: "routes", graph }, foreign, completion), /stale/);
+  assert.throws(() => completedEdgeRouteResource({ id: "routes", graph }, job, computeGraphEdgeRoutes(jobFor(p, 3))), /stale/);
+  const forged = structuredClone(completion);
+  forged.result.routes[0].commands[0].x = 999;
+  forged.resultHash = routeValueHash(forged.result);
+  assert.throws(() => completedEdgeRouteResource({ id: "routes", graph }, job, forged), /endpoints/);
+  let reads = 0;
+  const hostile = { ...job };
+  Object.defineProperty(hostile, "input", { enumerable: true, get() { reads++; return job.input; } });
+  assert.throws(() => completedEdgeRouteResource({ id: "routes", graph }, hostile, completion), /accessor/);
+  assert.equal(reads, 0);
 });
 
 test("route preparation snapshots host options and rejects aborted, forged and descriptor-bearing requests", async () => {

@@ -5,7 +5,7 @@ import { ownRecord } from "../core/ownData.js";
 import { rejectUnknownProperties, validateWorkLimit } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { normalizeEdgeRouteRequest } from "../materialization/graph/routeRequest.js";
-import { edgeRouteJob, createEdgeRouteResource } from "../materialization/graph/routeResource.js";
+import { edgeRouteJob, completedEdgeRouteResource } from "../materialization/graph/routeResource.js";
 import { edgeRouteResourceHandler } from "../materialization/graph/routeState.js";
 import { getBuiltinResourceKindHandler } from "../materialization/resourceKinds.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
@@ -32,7 +32,7 @@ export async function prepareGraphEdgeRoutes(program, request, host) {
   const job = edgeRouteJob(program, graph, layout, intent, hierarchy, hierarchyLayout);
   const completion = await (executor === undefined ? computeRouteJob(job, signal) : executor.compute(job, { signal }));
   active(signal);
-  const resource = createEdgeRouteResource({ ...resolved, completion });
+  const resource = completedEdgeRouteResource(resolved, job, completion);
   const handle = cloneAndFreeze({ kind: "edge-route-preparation", request: { kind, id: resource.id }, inputHash: job.inputHash });
   prepared.set(handle, { base: program, kind, resource, requestToken, signal });
   return handle;

@@ -146,6 +146,10 @@ Route job의 private WeakSet proof는 `createRouteJob`의 전체 검증·해시�
 job을 강하게 보유하지 않으며 공개 cache/권한 API나 저장 필드를 만들지 않는다. Abort 검사는
 proof 조회보다 먼저 실행되고 solver의 독립 budget과 결과 vector/provenance 검증은 그대로다.
 
+비동기 route preparation은 생성한 exact job을 같은 routeResource owner의 완료 구성 helper로
+명시 전달한다. 같은 native inputs를 다시 내려 두 번째 job을 만들지 않으며 완료 vector 검증과
+최종 불변 resource 구성은 동기 경로와 같은 helper가 소유한다. 새 registry나 공개 상태는 없다.
+
 Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact revision vector와
 해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
 source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
