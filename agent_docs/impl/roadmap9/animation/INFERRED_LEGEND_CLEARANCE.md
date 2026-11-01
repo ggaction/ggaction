@@ -81,3 +81,34 @@ Categorical explicit offset을 size가 상속하는 경우 size 저장 flag만 �
 Dynamic label group의 최종 emitted bounds lookup, 빈 raw tick 소유자와 inferred title의 동적
 의존성은 R11과 후속 union에서 완료할 항목이다. 현재 pending은 전체 STEP077 또는 원 reflow
 요구 완료로 집계하지 않는다. 새 renderer/schema/API 또는 자동 compiler는 추가하지 않았다.
+
+## Dynamic dependency union 준비 — 아직 미구현
+
+고정 축 source98d5e6021/pin0b862fcd5 뒤 R의 안정 dynamic emission source를 병합하여
+별도 coherent checkpoint로 진행한다. 동일 remainingApproval을 재사용하며 현재 scope를
+완료로 바꾸지 않는다. Lane은 exact axis-label ownerKey를 참조하고 title도 전체 label
+layout을 복제하지 않는 같은 참조 경계를 사용한다. 숨긴 tick 또는 0줄 collection도 owner
+참조를 유지하므로 두 endpoint에 보이지 않는 중간 label을 놓치지 않는다.
+이 새 저장 의미는 예약된 guide13으로 구분한다. 기존11/12를 새 의미로 조용히 해석하지 않고
+closed-version rejection을 유지한다. 공개 API/transition3/Cartesian2/GeoText2는 그대로다.
+
+R의 read-only `timeline.axisLabelGroup(ownerKey)`는 그 프레임에 실제로 적용한 line style의
+`graphics`, native `labelBounds/requiredBounds`, exact `metrics`를 공급한다. Group의 저장
+slot/insertion은 이 lookup에 포함하지 않는다. 그 정본은 R collector의 finalization이다.
+범례는 실제 patched graphics의 stroke/offset/clip을 공통 primitive occupied bounds로
+측정하며, inferred/label-relative title은 원 native label bounds와 title 배치식을 재사용한다.
+범례 progress로 축 layout을 다시 계산하지 않고 실제 axis owner progress를 한 번 소비한다.
+동일 raw value의 line별 paint가 달라 typed group proof를 잃으면 현재 그림은 보존하면서
+종속 lane/title의 typed 의미를 fallback으로 구분해야 한다. R collector는 그 경우 lookup을
+undefined로 반환하여 실제 drawing과 typed dependency admission을 명확히 구분한다.
+
+승인된 shared 변경은 planner의 세 read-only context 전달이다. Native guide projection,
+guide-track preparation, strict guide restore에 이미 한 번 준비/검증한 `axislabels`를 넘긴다.
+별도 projection/cache나 renderer 의미 조회는 추가하지 않는다. 실제 sampler는 R의 current
+lookup을 재사용하고 fixed guide12/기존 timeline3/다른 family proof를 보존한다.
+
+필수 후속 검증은 네 방향 native midpoint, 독립 axis/lane retime, 줄 수 변화·전체 숨김·
+중간-only raw tick, current stroke/clip/중첩 offset, 정확 schema2 측정 closure, source/target-only
+그룹, manual edit 및 불완전 dependency, whole frame rebase/offline/order, work budget이다.
+Label-relative title에 현재 label이 없으면 원 native 배치가 성립하지 않으므로 명시 fallback이며,
+inferred title은 원 preferred/clamp 정책을 따른다. 새 일반 pixel animation으로 대체하지 않는다.
