@@ -379,7 +379,7 @@
     },
     "contracts/realistic-guide-transitions.test.js": {
       "record": ".artifacts/checks/suite-realistic.json",
-      "durationMs": 7632.249667,
+      "durationMs": 5007.620958,
       "environment": {
         "node": "v22.23.1",
         "platform": "darwin",
@@ -387,7 +387,7 @@
         "runner": "local"
       },
       "status": "passed",
-      "note": "Canonical focused runner; five real sources, eleven native guide recipes, unchanged source rows. Group viewport remains within the public blend pixel budget."
+      "note": "Canonical focused runner; five real sources, thirteen native guide recipes including dependent titles; source rows and units unchanged."
     },
     "contracts/realistic-geographic-transitions.test.js": {
       "record": "1793321149548-80963.json",

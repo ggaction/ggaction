@@ -1,0 +1,288 @@
+{
+  "status": "public-dependent-axis-title-integrated; dynamic-reflow-and-implicit-lane-pending",
+  "sourceRevision": null,
+  "base": "d0e615d86",
+  "incomingSource": "c58201d21",
+  "upstreamPin": "45be2234b",
+  "approval": "../../AUTHORIZATION.json#remainingApproval; ../TITLE_LAYOUT.md",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1226,
+    "packedBytes": 1749662,
+    "unpackedBytes": 7902039,
+    "file": "ggaction-9325f7d3b28345f36ed592ad3457d668f43461522e08a2b35aea2f0067041114.tgz",
+    "sha256": "9325f7d3b28345f36ed592ad3457d668f43461522e08a2b35aea2f0067041114"
+  },
+  "checks": {
+    "animation.log": 626,
+    "coverage.log": 1727,
+    "theme-coverage.log": 145,
+    "boundaries.log": 57,
+    "realistic.log": 5,
+    "render.log": 11,
+    "browser.log": 3,
+    "docs.log": 238,
+    "package.log": 7
+  },
+  "coverage": {
+    "guideTracks": [
+      100,
+      99.19,
+      100
+    ],
+    "axisLabelState": [
+      98.54,
+      95.27,
+      100
+    ],
+    "axisTitleGuides": [
+      100,
+      100,
+      100
+    ],
+    "axisTitleState": [
+      100,
+      93.83,
+      100
+    ],
+    "themeDefinitionSupplement": [
+      100,
+      100,
+      100
+    ],
+    "scope": "Four animation owners plus separate 145-test all-theme owner supplement. Initial theme partial 97.27/97.78/91.67 is not a floor pass. Floors unchanged; not global coverage."
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "runtime": 14,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "22": {
+      "node": "v22.23.1",
+      "runtime": 14,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    },
+    "24": {
+      "node": "v24.22.1",
+      "runtime": 14,
+      "animationTypes": "passed",
+      "responsiveTypes": "passed",
+      "fontTypes": "passed",
+      "doc": "passed",
+      "bundles": 6
+    }
+  },
+  "shared5Unchanged": true,
+  "sourceRuntimeIdenticalToIncoming": false,
+  "versions": {
+    "transition": 3,
+    "guide": "native-guide-values@9",
+    "cartesian": "semantic-cartesian-geometry@2",
+    "geographicText": "native-geo-text@2"
+  },
+  "themeParity": {
+    "beforeAfterEqual": false,
+    "nativeMeaningAndTraceEqual": true,
+    "identityNormalization": "test/support/identity-equivalence.js withoutAllocatedIdentity; upstream qualification preserved"
+  },
+  "realistic": {
+    "datasets": 5,
+    "recipes": 13,
+    "pairs": 65
+  },
+  "built": {
+    "pages": 186,
+    "selectiveLlm": 1603
+  },
+  "docsBrowser": {
+    "pairs": 8,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "pages": [
+      "api/animation",
+      "reference/runtime"
+    ],
+    "overflow": 0,
+    "axe": 0,
+    "errors": 0
+  },
+  "limits": {
+    "entries": 1226,
+    "packed": 1753100,
+    "unpacked": 7902100,
+    "maximumMeasuredPacked": 1753061,
+    "measuredUnpacked": 7902039,
+    "animationGzip": 311200,
+    "maximumMeasuredAnimation": 311178,
+    "otherCeilingsUnchanged": true
+  },
+  "diagnostics": [
+    "First Node20 canonical pack1753061 exceeded1748300; minimum ceiling1753100, no entry or byte exemption.",
+    "Initial narrow theme selection did not meet function floor; added existing theme palette/default tests without runtime or policy changes.",
+    "Diagnostic prepack was measured only; final canonical archive validated separately and one frozen Node22 tar installed for all nodes."
+  ],
+  "nativeManifest": {
+    "requirements": 30,
+    "groups": 79,
+    "consumerTargets": 577,
+    "requiredConsumers": 574,
+    "canonicalNotApplicable": 3,
+    "assignedAcceptanceOwners": 55,
+    "assignedConsumerOwners": 376,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577
+  },
+  "remaining": [
+    "R actual dynamic group emission/reflow, source-hit and offline integration",
+    "P implicit lane10 and axis-dependent inferred clearance",
+    "Remaining native owners and same-candidate actual receipts",
+    "Route SLO/admission and final nine commands; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "coverage.log": {
+      "sha256": "f91a835be6121656042dcf6850380140986422b4b4e13bbc449590d4518496d5",
+      "bytes": 388738
+    },
+    "docs-browser.log": {
+      "sha256": "5a3c64266d4efdb7a39b58387ad78a2a8dd19b04ff830dc2a0475375030ebc27",
+      "bytes": 610
+    },
+    "pack22.json": {
+      "sha256": "bf3d0926809f728ac7fe53ff69479bff91710342bb74d7c4749d1a4f4d176272",
+      "bytes": 393
+    },
+    "installed-24.json": {
+      "sha256": "5ed6d2b0205a37ff38cad1743afa874b5132042c9cebadc771e82d1f4f9bd501",
+      "bytes": 1416
+    },
+    "browser.log": {
+      "sha256": "b48233826506a1f2787a1baf5dd189a6542a6727b9f23fda703b1a3c4f56ea0d",
+      "bytes": 869
+    },
+    "render.log": {
+      "sha256": "53367a8f90dc4690d3b03b5d8ddd595aba1fdce322820c337c2f04ed6d45a869",
+      "bytes": 2694
+    },
+    "frozen.json": {
+      "sha256": "48fe996abadad3a816cff8848e1d3e875d916bd5c98e07300652c528de3a2742",
+      "bytes": 436
+    },
+    "installed-24.log": {
+      "sha256": "26371d710e55581864302bf8843866922999b0f9257183104eaad652d23476fe",
+      "bytes": 1122
+    },
+    "pack20-first.stderr": {
+      "sha256": "0c95a4d738dea8025ccf3505c66494b81f469da4f3a95497f54f37073fdc2c9c",
+      "bytes": 966
+    },
+    "installed-22.json": {
+      "sha256": "717174f12d8f3c3f00b955270eaac186dff2befc4c9e327e1feff649dd5930d4",
+      "bytes": 1416
+    },
+    "pack24.json": {
+      "sha256": "a95f8aff30233dfec0837e5dd2b927998525c7e12e6403510e7015a6d3777f75",
+      "bytes": 393
+    },
+    "installed-22.log": {
+      "sha256": "f0c1489ed1e308a6d0996db7dfc763d574444bb1df3534a0344199f4a30f543f",
+      "bytes": 1122
+    },
+    "pack20-first.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs.log": {
+      "sha256": "51b82b1f00ccc889881b04828cc367f82d1e4ec358718f8ec719656a5db2e1a5",
+      "bytes": 72579
+    },
+    "prepack.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "boundaries.log": {
+      "sha256": "616069861abf40b4c714c9ce2004061d9e9b882ae849862d9b39e881e8e08868",
+      "bytes": 12309
+    },
+    "installed-20.log": {
+      "sha256": "92be41e29c8d5b4eb6959f33b40e49edd995d87570353dcb07cf50a8d353e3eb",
+      "bytes": 1122
+    },
+    "animation.log": {
+      "sha256": "f6fa5f740635ca59e6ebaf04d40edcabb0cc8444f1975c6b26668d1f9a28c673",
+      "bytes": 147708
+    },
+    "installed-20.json": {
+      "sha256": "ba986951d25f38e24d18ac37820245b28501b45e269e4ef74a7228765c242e94",
+      "bytes": 1416
+    },
+    "pack20.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "premeasure20.json": {
+      "sha256": "b6a9c58cdd645e562f6b3638809a8045860177f7386ae8530ce54d42f0e1f00c",
+      "bytes": 305
+    },
+    "pack22.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "prepack.json": {
+      "sha256": "3d3f8babb114742b830f89906cac4c7ce0fbd332d06f50a16332f4b1e7ae95c6",
+      "bytes": 299
+    },
+    "pack20.json": {
+      "sha256": "9bc189aa11b6cf1156a225c50642046d97bca2a96f2d754239aeda79c8b3f6da",
+      "bytes": 393
+    },
+    "built.log": {
+      "sha256": "52552c274bf016d373a8bf4dcd752a76c79cd04e3adb9b6ba0c95f38e502f307",
+      "bytes": 179
+    },
+    "premeasure20.log": {
+      "sha256": "3c65bbfb378337e5d3174cceac617416ab00004f5f46015160beaad1e2108fe1",
+      "bytes": 253
+    },
+    "generate.log": {
+      "sha256": "a4922d3ee3d55e2a80d91f4ee4866ae18e1dc381024f636448547de6c94239a5",
+      "bytes": 13431
+    },
+    "realistic.log": {
+      "sha256": "09af68066891081ce01dc60cb6d598611c825bae73617c7759f211abbc2751ac",
+      "bytes": 1318
+    },
+    "pack24.stderr": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.log": {
+      "sha256": "2bf6be660d3fc4c77bd3bc55e22b62c9666eea68c651996fec13eb3c08ca71e7",
+      "bytes": 1717
+    },
+    "theme-coverage.log": {
+      "sha256": "d7ae446d7383f2c11ded2e5f4ff5027b3d807603ec1d200d5cea9a4dd971ce45",
+      "bytes": 33113
+    },
+    "build.log": {
+      "sha256": "478a34a691f4ce97e34dafc46b334bc811ab1e19ae0a9a1e86db3f22655ba292",
+      "bytes": 419
+    }
+  },
+  "incomingRuntimeDifference": "Only final extra blank line in src/theme/definition.js removed for git diff --check; executable contents unchanged."
+}

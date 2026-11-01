@@ -1,0 +1,20 @@
+import {preparePackageConsumer} from '../scripts/package-consumer.js';
+import {measureMinimalBrowserBundle,BROWSER_BUNDLE_GZIP_LIMITS} from '../scripts/browser-bundle-size.js';
+import {writeFile,copyFile} from 'node:fs/promises';
+import {run} from '../scripts/consumers/runtime.js';
+import {testOptionalDependencies} from '../scripts/consumers/optional-peers.js';
+const c=await preparePackageConsumer();
+const result={node:process.version,scope:'private title kernel / unchanged public fixed-label path',bundles:[]};
+try {
+ result.peers=await testOptionalDependencies(c);
+ await copyFile('scripts/consumers/fixtures/node/animation.mjs',c.directory+'/animation.mjs');
+ await writeFile(c.directory+'/run.mjs',"import {cases} from './animation.mjs';for(const c of cases.filter(c=>/guide|axis-label-layout/.test(c.id))){await c.run();console.log(c.id+' passed');}");
+ result.runtime=await run(process.execPath,['run.mjs'],c.directory);
+ for(const specifier of Object.keys(BROWSER_BUNDLE_GZIP_LIMITS)) {
+  const value=await measureMinimalBrowserBundle(c.directory,{specifier});
+  result.bundles.push({...value,limit:BROWSER_BUNDLE_GZIP_LIMITS[specifier],passed:value.gzipBytes<=BROWSER_BUNDLE_GZIP_LIMITS[specifier]});
+ }
+ console.log(JSON.stringify(result,null,2));
+ await writeFile('.artifacts/dependent-title-bundles.json',JSON.stringify(result,null,2)+'\n');
+ if(result.bundles.some(v=>!v.passed))throw Error('Browser bundle ceiling exceeded');
+}finally{await c.cleanup();}

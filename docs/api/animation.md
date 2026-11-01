@@ -239,11 +239,12 @@ import { planTransition, serializeAnimation, deserializeAnimation,
   sampleTransition } from 'ggaction/animation';
 import { renderToSVG } from 'ggaction/svg';
 
-const from = chart().createCanvas({ width: 400, height: 240, margin: 40 })
+const from = chart().createCanvas({ width: 500, height: 400, margin: 80 })
   .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
   .createPointMark().encodeX({ field: 'x', scale: { domain: [0, 10], nice: false } })
   .encodeY({ field: 'y' }).createVerticalGrid({ values: [5] })
-  .createXAxisLabels({ values: [0, 5, 10], flush: true });
+  .createXAxisLabels({ values: [0, 5, 10], flush: true })
+  .createXAxisTitle({ text: 'Amount', at: 5, offset: { from: 'labels', gap: 7 } });
 const to = from.editScale({ id: 'x', domain: [0, 20] });
 const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
 const restored = deserializeAnimation(serializeAnimation(plan));
@@ -269,8 +270,13 @@ Fixed Cartesian label rotation, flush alignment, and plot-edge alignment use the
 measured layout. Their raw values, displayed text, hard-break lines, fonts, and alignment
 policy must stay compatible. Scale, frame, and numeric offsets can change; exact font
 profiles must contain every required measurement. Current layouts support interruption
-and offline replay. Width-based wrapping, responsive skip/rotation selection, inferred or
-label-relative title clearance, and edited geometry retain explicit fallbacks.
+and offline replay. Inferred and label-relative Cartesian titles reuse those current
+measured label bounds. Native theme/default gaps, label-relative gaps, and Canvas fit
+rules remain intact as scales or frames change. A title never treats its final offset
+as the original meaning. The complete same-axis label dependency is checked during
+restoration; editing a label also makes its dependent title fade safely. Text or font
+changes, width-based wrapping, responsive skip/rotation selection, and unsafe intermediate
+placements retain explicit fallbacks.
 
 Continuous color and stroke-gradient legends with explicit `values` and numeric `offset`
 use their native single-edge layout. Ticks and labels keep their raw values; the current
