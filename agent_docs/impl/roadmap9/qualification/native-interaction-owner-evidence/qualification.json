@@ -1,0 +1,307 @@
+{
+  "status": "native-interaction-consumer-and-six-acceptance-owners-assigned; final-candidate-pending",
+  "base": "70cfebe45",
+  "approval": "../../AUTHORIZATION.json#remainingApproval",
+  "runtimeTypesPackageInputsUnchanged": true,
+  "archive": {
+    "sha256": "ebfa7ce25443b4fcf56205a5cf8cb241531e8fffe7b217a60fc5e1a5727150f0",
+    "runtimeCases": 385,
+    "node": "v22.23.1",
+    "reuse": "Same canonical archive; actual all385 installed runtime cases rerun here. No new three-Node package matrix claim."
+  },
+  "mapping": {
+    "interaction": {
+      "pointer-keyboard-touch": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-pointer-capture.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/browser/interaction-session.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "preview-commit-cancel": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-node-move.test.js",
+          "test/unit/interaction-annotation-drag.test.js",
+          "test/unit/interaction-geo-controls.test.js",
+          "test/unit/interaction-edge-presentation.test.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "undo-redo": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-selection.test.js",
+          "test/unit/interaction-viewport.test.js",
+          "test/browser/interaction-keyboard.browser.js"
+        ]
+      },
+      "linked": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-links.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-native-composition.test.js",
+          "test/unit/interaction-legend-selection.test.js",
+          "test/browser/interaction-session.browser.js"
+        ]
+      },
+      "async-dispose": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-preparation.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-resize.test.js",
+          "test/unit/interaction-pointer-capture.test.js"
+        ]
+      },
+      "restore": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/contracts/installed-native-families.test.js"
+        ]
+      },
+      "current-frame": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-animation.test.js",
+          "test/unit/animation/current-hit.test.js",
+          "test/unit/animation/route-session.test.js",
+          "test/unit/animation/graph-drag.test.js",
+          "test/unit/animation/partition-session.test.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
+      }
+    },
+    "groups": {
+      "AT-35": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-pointer-capture.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/browser/interaction-session.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "AT-38": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-links.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-native-composition.test.js",
+          "test/unit/interaction-legend-selection.test.js",
+          "test/browser/interaction-session.browser.js"
+        ]
+      },
+      "AT-39": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-node-move.test.js",
+          "test/unit/interaction-annotation-drag.test.js",
+          "test/unit/interaction-geo-controls.test.js",
+          "test/unit/interaction-edge-presentation.test.js",
+          "test/browser/interaction-region.browser.js",
+          "test/unit/interaction-history.test.js"
+        ]
+      },
+      "AT-40": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-reconciliation.test.js"
+        ]
+      },
+      "AT-41": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-preparation.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-resize.test.js",
+          "test/unit/interaction-pointer-capture.test.js"
+        ]
+      },
+      "AT-53": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md",
+          "agent_docs/contract/current/ACCESSIBILITY.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/accessibility/data.test.js",
+          "test/unit/accessibility/items.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/browser/accessible-data.browser.js",
+          "test/browser/accessible-controls.browser.js",
+          "test/browser/accessible-tooltip.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/unit/animation/native-player.test.js"
+        ]
+      }
+    }
+  },
+  "checks": {
+    "owning.log": 284,
+    "browser.log": 66,
+    "boundaries.log": 48,
+    "boundaries-final.log": 34,
+    "reduced-motion.log": 5,
+    "installed.log": 31,
+    "docs.log": 238
+  },
+  "manifest": {
+    "requirements": 30,
+    "groups": 79,
+    "targets": 577,
+    "required": 574,
+    "canonicalNotApplicable": 3,
+    "previousAssignedConsumers": 493,
+    "assignedConsumers": 500,
+    "pendingRequiredConsumers": 74,
+    "previousAssignedGroups": 55,
+    "assignedGroups": 61,
+    "pendingGroups": 18,
+    "actualPassed": 0,
+    "actualPendingGroups": 79,
+    "actualPendingConsumers": 577,
+    "otherRowsAndFieldsPreserved": true
+  },
+  "executionScope": "Actual public session native commands, real pointer/keyboard/touch and Canvas/SVG browser hosts, immutable history/linking, worker/asset supersession and100 teardown cycles, keyboard/table/tooltip accessibility. Reduced motion is tested by native player explicit option. Heap SLO is separate and not claimed.",
+  "remaining": [
+    "R dynamic labels and P actual-axis inferred clearance",
+    "74 consumer/18 acceptance owners and full same-candidate actual evidence",
+    "Fixed hardware latency/heap/route SLO; final nine commands, independent review and protected delivery; STEP077 incomplete"
+  ],
+  "evidenceFiles": {
+    "installed.log": {
+      "sha256": "02253342dadae5252260297c615e28d73a0ec54f6f90c549ab0ab0fe8cb05107",
+      "bytes": 6276
+    },
+    "browser.log": {
+      "sha256": "246b9a195db81d119569ddc6037f7f7b853c586ec26ff5bce74efebb40e20f2b",
+      "bytes": 16891
+    },
+    "owning-files.json": {
+      "sha256": "c3947a4311bc7a296b93604ae3ca8455b8f039650f9e909deec29a127ee5084e",
+      "bytes": 1320
+    },
+    "docs.log": {
+      "sha256": "54f6c7d3a932381cf46ff10884332bfdbd9831d699c4abb36dbaf4f1a72a0ba9",
+      "bytes": 72566
+    },
+    "boundaries.log": {
+      "sha256": "c7195ff6a7a6ddaa47ad8d2449769ee7a82f19a59d5f7aff7f223e9d4234183b",
+      "bytes": 10632
+    },
+    "mapping.json": {
+      "sha256": "4f6ffcca170e172bb342f9e2d463dfd6079d1fc78ac93b0d79e8b2e8732e2533",
+      "bytes": 7520
+    },
+    "installed-cases.json": {
+      "sha256": "5fcd6d3035f2192069535fb1d55c9496fb01f6625d8402040953e4e33ea16211",
+      "bytes": 44280
+    },
+    "assign.py": {
+      "sha256": "c9f64bbbce4c4a066c1607004066d7cae8164308df901b9007aa62ba770f19cd",
+      "bytes": 3119
+    },
+    "manifest-before.json": {
+      "sha256": "e9d0fac61b2b6f947806cc7c707b9db29e2a9222696d1c673dcdd7950b8eeb7e",
+      "bytes": 219964
+    },
+    "reduced-motion.log": {
+      "sha256": "ddc110e7014f55de71b9bd6cc08e87fcb64c4a3c522c9e7e3b89192a6512910c",
+      "bytes": 1327
+    },
+    "pending.json": {
+      "sha256": "261eb4954a8a87d85d5307e6cf3c1ce9539beaff5f7e3a19337c5819794e2f8b",
+      "bytes": 27658
+    },
+    "owning.log": {
+      "sha256": "96d3164eb74f32a1dfed9432f40993fca53352b3e536f07ca891e49aafa8650f",
+      "bytes": 71886
+    },
+    "boundaries-final.log": {
+      "sha256": "905868324a7c9d5f96de1fa203805f94a79c1802d90bba998395342ecbc9b5e9",
+      "bytes": 7687
+    }
+  }
+}

@@ -796,8 +796,20 @@
       "id": "AT-35",
       "expectation": "Real pointer, keyboard and touch input obey native state, event and screen contracts",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-pointer-capture.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/browser/interaction-session.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/browser/interaction-region.browser.js"
+        ]
       },
       "input": "Native interaction commands, gestures, options and reset conflicts"
     },
@@ -835,8 +847,20 @@
       "id": "AT-38",
       "expectation": "Linked views preserve scope, order and focus without loops or stale child selections",
       "owner": {
-        "status": "pending",
-        "reason": "All linked controls, reorder and context command lifecycles need the integrated interaction owner."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-links.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-native-composition.test.js",
+          "test/unit/interaction-legend-selection.test.js",
+          "test/browser/interaction-session.browser.js"
+        ]
       },
       "input": "Linked brush, filter, legend, reorder, controls and context commands"
     },
@@ -844,8 +868,22 @@
       "id": "AT-39",
       "expectation": "Preview and committed operations preserve immutable baselines and deterministic domain updates",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-node-move.test.js",
+          "test/unit/interaction-annotation-drag.test.js",
+          "test/unit/interaction-geo-controls.test.js",
+          "test/unit/interaction-edge-presentation.test.js",
+          "test/browser/interaction-region.browser.js",
+          "test/unit/interaction-history.test.js"
+        ]
       },
       "input": "Native update commands with preview, commit, cancel and reset"
     },
@@ -853,8 +891,18 @@
       "id": "AT-40",
       "expectation": "Events preserve origin, phase and revision with exact commit, cancel and async settlement",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-reconciliation.test.js"
+        ]
       },
       "input": "Native event order for programmatic and user input"
     },
@@ -862,8 +910,18 @@
       "id": "AT-41",
       "expectation": "Stale async work cannot overwrite state and repeated disposal releases all runtime resources",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-preparation.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-resize.test.js",
+          "test/unit/interaction-pointer-capture.test.js"
+        ]
       },
       "input": "Cancel, destroy and reentry during mount, update, asset preparation and resize"
     },
@@ -916,8 +974,23 @@
       "id": "AT-53",
       "expectation": "Accessible information and actionable targets reflect visibility, filtering and restored focus",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md",
+          "agent_docs/contract/current/ACCESSIBILITY.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/accessibility/data.test.js",
+          "test/unit/accessibility/items.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/browser/accessible-data.browser.js",
+          "test/browser/accessible-controls.browser.js",
+          "test/browser/accessible-tooltip.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/unit/animation/native-player.test.js"
+        ]
       },
       "input": "Keyboard focus, screen-reader tables, tooltips and reduced motion"
     },
@@ -7382,7 +7455,114 @@
       "status": "pending",
       "reason": "The complete consumer-specific current contract and test owner have not yet been assigned."
     },
-    "assignedOwners": {}
+    "assignedOwners": {
+      "pointer-keyboard-touch": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-session.test.js",
+          "test/unit/interaction-pointer-capture.test.js",
+          "test/unit/interaction-keyboard.test.js",
+          "test/unit/interaction-region-gesture.test.js",
+          "test/browser/interaction-session.browser.js",
+          "test/browser/interaction-keyboard.browser.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "preview-commit-cancel": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-region-gesture.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-node-move.test.js",
+          "test/unit/interaction-annotation-drag.test.js",
+          "test/unit/interaction-geo-controls.test.js",
+          "test/unit/interaction-edge-presentation.test.js",
+          "test/browser/interaction-region.browser.js"
+        ]
+      },
+      "undo-redo": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-selection.test.js",
+          "test/unit/interaction-viewport.test.js",
+          "test/browser/interaction-keyboard.browser.js"
+        ]
+      },
+      "linked": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-links.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/unit/interaction-direct-controls.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-native-composition.test.js",
+          "test/unit/interaction-legend-selection.test.js",
+          "test/browser/interaction-session.browser.js"
+        ]
+      },
+      "async-dispose": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-preparation.test.js",
+          "test/unit/interaction-preview-preparation.test.js",
+          "test/unit/interaction-resize.test.js",
+          "test/unit/interaction-pointer-capture.test.js"
+        ]
+      },
+      "restore": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-history.test.js",
+          "test/unit/interaction-reconciliation.test.js",
+          "test/unit/interaction-update.test.js",
+          "test/unit/interaction-linked-filter.test.js",
+          "test/contracts/installed-native-families.test.js"
+        ]
+      },
+      "current-frame": {
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/INTERACTION.md",
+          "agent_docs/contract/current/MARK_SELECTION.md",
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/interaction-animation.test.js",
+          "test/unit/animation/current-hit.test.js",
+          "test/unit/animation/route-session.test.js",
+          "test/unit/animation/graph-drag.test.js",
+          "test/unit/animation/partition-session.test.js",
+          "test/browser/interaction-animation.browser.js"
+        ]
+      }
+    }
   },
   "requiredChecks": [
     {
