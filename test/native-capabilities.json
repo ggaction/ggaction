@@ -2143,6 +2143,50 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js"
+          ]
+        },
+        "hit": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/INTERACTION.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js"
+          ]
+        },
+        "scene-animation": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md",
+            "agent_docs/contract/current/ANIMATION.md"
+          ],
+          "tests": [
+            "test/unit/resources/image-resource-lifecycle.test.js",
+            "test/unit/animation/offline-assets.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/CORE.md",
+            "agent_docs/contract/current/MARKS.md"
+          ],
+          "tests": [
+            "test/charts/image-assets/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
         }
       }
     },
@@ -6178,6 +6222,26 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
         }
       }
     },
@@ -6383,6 +6447,26 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
         }
       }
     },
@@ -6582,6 +6666,26 @@
           "tests": [
             "test/contracts/installed-native-families.test.js"
           ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
         }
       }
     },
@@ -6743,6 +6847,35 @@
           ],
           "tests": [
             "test/contracts/installed-native-families.test.js"
+          ]
+        },
+        "source-revise": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
+          ]
+        },
+        "docs": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md"
+          ],
+          "tests": [
+            "test/charts/geographic-marks/public.test.js",
+            "test/docs/executable-programs.test.js"
+          ]
+        },
+        "accessibility": {
+          "status": "assigned",
+          "contracts": [
+            "agent_docs/contract/current/GEOMETRY.md",
+            "agent_docs/contract/current/ACCESSIBILITY.md"
+          ],
+          "tests": [
+            "test/unit/geo/mark-consumers.test.js"
           ]
         }
       }
