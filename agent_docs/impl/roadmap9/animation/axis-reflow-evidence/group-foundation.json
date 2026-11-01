@@ -64,6 +64,12 @@
       "bundles": 6,
       "exitCode": 0,
       "note": "Existing explicit font-query public consumer and actual four-format/offline fixture. No dynamic sampled-group claim; no new three-Node installed sweep."
+    },
+    {
+      "command": "node scripts/doc-provenance.js && node scripts/generate-doc-machine-artifacts.js && node scripts/generate-llm-docs.js && node scripts/run-tests.js docs docs/documentation-coverage.test.js",
+      "tests": 18,
+      "exitCode": 0,
+      "note": "Source-pinned generated documentation; runtime input hashes unchanged."
     }
   ],
   "inputs": [
@@ -229,6 +235,18 @@
       "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-installed.mjs.gz",
       "sha256": "0269d9918eddbc21510121a5af91e402557b2ee16ebb3c0a2eef604c647f3a32",
       "uncompressedSha256": "b193fecfb26f7a47ebf4f0f296dea6ef50c382732c367ecd2e52a0a7f848d8c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-pin.log.gz",
+      "sha256": "03929c3b5d0bb1f791e7c1f878edf1f6315b54818003feebcec7da5cbc4febb9",
+      "uncompressedSha256": "d4c8f63ad117a53146e44c200c3ff38e6ae5953e0b3362f151464b9d9f8f1c77"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/animation/axis-reflow-evidence/groups-pin-tests.log.gz",
+      "sha256": "1bbf90884b053a44163e55fb61ae688bad6129de69c5ee3883602354003bc595",
+      "uncompressedSha256": "925d6b6f37b4b2798fc9e748553ccfa34d41d8e9efe04827d7261132a3df5dcf"
     }
-  ]
+  ],
+  "sourceCommit": "0c55cb14b",
+  "postCommitInputHashDelta": []
 }
