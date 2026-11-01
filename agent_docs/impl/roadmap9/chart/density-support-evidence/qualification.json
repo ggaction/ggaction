@@ -1,0 +1,43 @@
+{
+  "status": "집중 수치 검증 완료; AT82 성능/통합 검증 미완료",
+  "sourceBase": "0aedbe0a7a0a4ab8f35bb4d610272c9e895eafe7",
+  "sourceRevision": null,
+  "change": "원형 compact density support의 각 행에서 기여가 없는 사각 모서리 순회를 제거한다. 경계 양쪽 한 열을 보수적으로 유지하고 기존 radial kernel과 sample/cell 누적 순서를 보존한다. 실제 계산한 행과 후보 셀을 work에 반영하며 기존 한도를 유지한다.",
+  "invariants": [
+    "256×256 grid, 20 iterations, bandwidth/step/8 tangent channels 불변",
+    "원래 모든 route/weighted sample과 endpoint/lineage/command 순서 보존",
+    "새 public API 또는 저장 schema/version 없음",
+    "nonfinite weight/accumulation, abort, sample/work 한도는 반환 전에 실패"
+  ],
+  "checks": {
+    "nodes": {
+      "20": 13,
+      "22": 13,
+      "24": 13
+    },
+    "criticalOwner": {
+      "file": "src/grammar/graph/routes/densityField.js",
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "independentOracle": "dense scalar oracle + literal directed center/border/compact support + immutable input",
+    "byteComparison": {
+      "fields": 120,
+      "oldWork": 81739,
+      "newWork": 75173,
+      "fieldAggregate": "1d00d5415d634f55e8cf2f4882b9e924a11a5ea556898ce6437b0684f692ae32",
+      "fullSolverCases": 8,
+      "fullSolverHashes": [
+        "be3039d401533383139426aac7081369d8a0f661621989bc3531a11b32744769",
+        "be3039d401533383139426aac7081369d8a0f661621989bc3531a11b32744769"
+      ],
+      "comparison": "Exact ordered sparse entries and complete route outputs; only intentional work diagnostic excluded."
+    }
+  },
+  "limitations": [
+    "크기가 작은 support는 행별 검사 비용이 더 클 수 있다. 표본120개의 총 work는81739→75173이며 실행 지연시간 결과가 아니다.",
+    "100/1k/10k 전체 density admission/SLO를 통과했다고 주장하지 않는다.",
+    "정확한 최종 통합 source/archive의 package/render/browser/전체 coverage 검증은 후행 통합에서 수행한다."
+  ]
+}
