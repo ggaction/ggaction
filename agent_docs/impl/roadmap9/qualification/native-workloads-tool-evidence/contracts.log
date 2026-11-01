@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: native benchmark points performs complete public work with independent numeric witnesses
+ok 1 - native benchmark points performs complete public work with independent numeric witnesses
+  ---
+  duration_ms: 40.044167
+  type: 'test'
+  ...
+# Subtest: native benchmark partition performs complete public work with independent numeric witnesses
+ok 2 - native benchmark partition performs complete public work with independent numeric witnesses
+  ---
+  duration_ms: 18.923958
+  type: 'test'
+  ...
+# Subtest: native benchmark geo performs complete public work with independent numeric witnesses
+ok 3 - native benchmark geo performs complete public work with independent numeric witnesses
+  ---
+  duration_ms: 23.861625
+  type: 'test'
+  ...
+# Subtest: native benchmark data performs complete public work with independent numeric witnesses
+ok 4 - native benchmark data performs complete public work with independent numeric witnesses
+  ---
+  duration_ms: 18.598041
+  type: 'test'
+  ...
+# Subtest: native benchmark preserves every required size and SLO including unsupported cells
+ok 5 - native benchmark preserves every required size and SLO including unsupported cells
+  ---
+  duration_ms: 12.245375
+  type: 'test'
+  ...
+# Subtest: native benchmark rejects omitted data and distinguishes native bounds from failures
+ok 6 - native benchmark rejects omitted data and distinguishes native bounds from failures
+  ---
+  duration_ms: 0.77075
+  type: 'test'
+  ...
+# Subtest: point and geographic oracle reject altered concrete geometry
+ok 7 - point and geographic oracle reject altered concrete geometry
+  ---
+  duration_ms: 28.512459
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 630.644792
