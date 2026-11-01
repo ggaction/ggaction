@@ -759,6 +759,14 @@
       },
       {
         "type": "file",
+        "path": "unit/actions/data/inferred-graph-execution.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-limits.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/data/inferred-graph-state.test.js"
       },
       {

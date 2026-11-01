@@ -1,0 +1,54 @@
+{
+  "status": "source-verified-pin-pending",
+  "authorization": "../../AUTHORIZATION.json",
+  "decision": "32c26e969",
+  "base": "32c26e96913d579012b3acc9d78cb0e168972de1",
+  "scope": "Explicit inferred-resource execution policy; unchanged default/global work, algorithm results and graphics. Worker remains pending.",
+  "owning": {
+    "passed": 158,
+    "candidateSupplement": 17,
+    "overlap": true,
+    "criticalOwners": 16,
+    "coverage": "critical.json",
+    "command": "node --experimental-test-coverage --test-coverage-include='src/grammar/graph/*.js' --test-coverage-include='src/materialization/graph/{candidate,inferredResource,inferredState}.js' --test-coverage-include='src/actions/graphs/inference.js' --test test/unit/grammar/graph/*.test.js test/unit/actions/data/*graph*.test.js test/unit/core/graph-prepared-revisions.test.js test/unit/resources/graph-recompute.test.js test/unit/resources/graph-filter.test.js"
+  },
+  "contracts": {
+    "passed": 44,
+    "strictTypes": 1,
+    "log": "contracts-final.log.gz"
+  },
+  "archive": "4159c10d76121eae2e2a775424c15529980476c65dc6ce30b27cbe8a25437f64",
+  "installed": {
+    "versions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "eachRuntime": 3,
+    "all100000EdgesChecked": true,
+    "eachTypes": "graph-inference.ts",
+    "eachSnippet": "graph-inference",
+    "eachBrowserEntries": 6,
+    "originalNode20": "installed20.json",
+    "sameMeasurementReassessment": "installed20-reassessed.json"
+  },
+  "largeProgramCodec": {
+    "encodedBytes": 86871543,
+    "exactRoundTrip": true,
+    "diagnostic": "large-codec.log.gz",
+    "retainedHeapQualification": false
+  },
+  "firstFailures": [
+    "public-first.log.gz",
+    "owning-coverage.log.gz",
+    "contracts-first.log.gz",
+    "docs-owning-first.log.gz",
+    "installed20.json"
+  ],
+  "pending": [
+    "source pin and built documentation",
+    "public inference worker and authentic preparation lifecycle",
+    "actual final AT82 P95/heap/100 cycles"
+  ],
+  "qualification": false
+}

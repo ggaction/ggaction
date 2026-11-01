@@ -98,6 +98,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "execution",
+      "required": false,
+      "type": "GraphInferenceExecution | undefined"
+    },
+    {
       "name": "rule",
       "required": true,
       "type": "\"group\" | \"knn\" | \"mst\" | \"radius\" | \"sequence\" | \"similarity\""

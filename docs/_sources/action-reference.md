@@ -611,7 +611,7 @@ column belongs in `definition.target`. See [observed graph data](../api/data/sou
 ### `createInferredGraphData`
 
 ```javascript
-createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges?, execution? })
 ```
 
 Infer a graph using nearest neighbors, radius, similarity, a spanning tree,

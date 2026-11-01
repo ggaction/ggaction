@@ -40,7 +40,7 @@ export const editInferredGraphData = /* @__PURE__ */ closedAction(
     const candidate = args.candidateGraph === null ? undefined : args.candidateGraph === undefined
       ? previous.inputs.length === 2 ? resolveInputReference(this, previous.inputs[1]) : undefined : resolveGraphResource(this, args.candidateGraph);
     const retained = Object.hasOwn(patch, "rule") && patch.rule !== previous.options.definition.rule
-      ? Object.fromEntries(["nodeKey", "attributes", "maxNodes", "maxEdges"].map(key => [key, previous.options.definition[key]])) : previous.options.definition;
+      ? Object.fromEntries(["nodeKey", "attributes", "maxNodes", "maxEdges", "execution"].filter(key => Object.hasOwn(previous.options.definition, key)).map(key => [key, previous.options.definition[key]])) : previous.options.definition;
     const resource = createInferredGraphResource({ program: this, id: previous.id, revision: previous.revision + 1, data, candidate, definition: { ...retained, ...patch } });
     return writeGraphResource(this, resource);
   });

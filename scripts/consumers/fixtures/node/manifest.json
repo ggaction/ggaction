@@ -992,6 +992,10 @@
       {
         "id": "data/inferred-graph-explicit-capacity",
         "statements": 16
+      },
+      {
+        "id": "data/inferred-graph-bounded-execution",
+        "statements": 17
       }
     ]
   },

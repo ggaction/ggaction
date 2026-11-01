@@ -1,0 +1,14 @@
+{
+  "kind": "same-measurement-reassessment",
+  "sha256": "4159c10d76121eae2e2a775424c15529980476c65dc6ce30b27cbe8a25437f64",
+  "original": "installed20.json",
+  "limits": {
+    "ggaction": 785300,
+    "ggaction/basic": 424400,
+    "ggaction/svg": 26000,
+    "ggaction/graph": 46000,
+    "ggaction/animation": 333700,
+    "ggaction/interaction": 131400
+  },
+  "status": "passed"
+}

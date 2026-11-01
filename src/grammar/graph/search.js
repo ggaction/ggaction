@@ -1,6 +1,7 @@
+import { inferenceWorkValidator } from "./inferenceBudget.js";
 import { graphLimits } from "./model.js";
 import { ownRecord } from "../../core/ownData.js";
-import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
 import { graphMetricPair } from "./metrics.js";
 import { normalizeApproximateGraphSearch } from "./approximate.js";
 
@@ -26,7 +27,8 @@ export function normalizeGraphSearch(input, policy, preparation) {
 
 // Only normalized prepared vectors enter this owner. The neighbor rule retains
 // typed identity, symmetrization, edge ordering and graph resource ownership.
-export function searchExactGraph(preparation, policy, ranks, search, limits = {}) {
+export function searchExactGraph(preparation, policy, ranks, search, limits = {}, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const { maxEdges } = graphLimits(limits);
   const vectors = preparation.vectors, n = vectors.length, dimension = vectors[0]?.length ?? 0;
   let work = n * Math.max(dimension, 1) * (8 + Math.ceil(Math.log2(Math.max(2, n))) ** 2), distanceEvaluations = 0;

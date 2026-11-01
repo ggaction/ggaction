@@ -6,12 +6,13 @@
 - [x] 기존 capacity 전달 결함 별도 수리 `c9389b765`
 - [x] 원100/1000/10000, k10의 전체 결과·작업량 계측과 독립 oracle 검산
 - [x] 공개·저장·worker 후보를 구체화해 root 검토 자료로 기록
-- [ ] root의 구체안 정합 확인 뒤 구현
+- [x] root의 구체안 정합 확인: 기존 remainingApproval 범위로 채택, 2026-11-01
+- [ ] 채택된 execution 정책 구현·검증 checkpoint ([진행 기록](inference-execution.md))
 - [ ] 실제 worker·source revise·취소/오류/늦은 결과·3Node·Chromium 검증
 - [ ] 최종 combined archive의 원 AT82 P95/heap/100cycle qualification
 
 [전체 승인](../AUTHORIZATION.json)의 remainingApproval 범위로 검토한다. 아래 API와 실행 옵션은
-**제안이며 아직 구현되지 않았다.** 사용자 재승인 질문을 만들지 않으며 Current/types에 먼저 넣지 않는다.
+**채택된 구체안이며 전체 worker 구현은 아직 완료되지 않았다.** 사용자 재승인 질문을 만들지 않는다.
 기준 runtime은 `c48f89e9d`, 완료 증거는 `c9389b765`다. 공유 animation owner와 point capacity는 범위 밖이다.
 
 ## 현재 구현과 원 요구
@@ -163,8 +164,10 @@ caller에게 그대로 반환하지 않는다. Raw 문자열 길이 charge를 ca
    worker 호출로 바꾸되 모든 기존 workloads/원 fixture/5warm+30/DPR1/2/분모를 유지한다.
    최종 P95는 root와 CPU 슬롯 조율한 combined archive에서만 실행한다.
 
-현재 이 문서의 옵션·worker는 구현 전이다. 계측 JSON과 원제품 오류가 이를 명시하며, 이번 문서를
-공개지원 또는 STEP071/AT82 완료로 세지 않는다.
+이 문서의 최초 계측과 원제품 오류는 `c48` 당시 상태다. 실행 정책과 worker는 별도 source/evidence
+체크포인트로 검증하며 이 설계 자료를 공개지원 또는 STEP071/AT82 완료로 세지 않는다.
+Root 채택 뒤 codec 감사를 통해 editable `serializeProgram`에 전체64MiB 한도가 없음을 확인했다.
+64MiB는 animation envelope의 별도 정책이므로 존재하지 않는 program 한도를 추가하지 않는다.
 
 ## 재현과 이번 자료의 검증
 

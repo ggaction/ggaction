@@ -1,0 +1,213 @@
+{
+  "owners": [
+    {
+      "file": "actions/graphs/inference.js",
+      "actual": {
+        "lines": 100,
+        "branches": 97.3,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/approximate.js",
+      "actual": {
+        "lines": 100,
+        "branches": 97.25,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/candidateSubset.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/fields.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/inferenceBudget.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/inferenceResult.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/input.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/model.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/neighbors.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/preprocess.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/search.js",
+      "actual": {
+        "lines": 100,
+        "branches": 99.15,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/spanning.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "grammar/graph/structural.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "materialization/graph/inferredResource.js",
+      "actual": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    {
+      "file": "materialization/graph/inferredState.js",
+      "actual": {
+        "lines": 100,
+        "branches": 93.7,
+        "functions": 100
+      },
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  ],
+  "candidate": {
+    "file": "materialization/graph/candidate.js",
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "status": "passed"
+}

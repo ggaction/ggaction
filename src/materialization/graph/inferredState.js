@@ -1,10 +1,10 @@
+import { inferenceWorkValidator, validateInferenceBytes } from "../../grammar/graph/inferenceBudget.js";
 import { resolveGraphCandidateModel } from "./candidate.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey, compareRowKeys } from "../../core/itemIdentity.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateWorkLimit } from "../../core/validation.js";
 import { deriveSortedRows, normalizeSortTransform } from "../../grammar/sort.js";
 import { normalizeTemporalValue } from "../../grammar/scales/fields.js";
 import { stableFiniteSum } from "../../grammar/numeric.js";
@@ -32,7 +32,8 @@ function equal(actual, expected, label) {
 }
 const select = (object, names) => Object.fromEntries(names.filter(key => Object.hasOwn(object, key)).map(key => [key, object[key]]));
 
-function validateSearch(search, policy, preparation, options, keys, pairCount) {
+function validateSearch(search, policy, preparation, options, keys, pairCount, execution) {
+  const validateWorkLimit = inferenceWorkValidator(execution);
   const approximate = policy.mode === "approximate", indexed = policy.algorithm !== "brute-force";
   exact(search, [...Object.keys(policy), "algorithmVersion", "distanceEvaluations", ...(indexed ? ["work"] : []),
     ...(approximate ? ["candidateCount", "candidateCounts", "fallbackQueries", "holdoutCount", "holdoutSourceIndices", "measuredRecall"] : [])], "Graph search diagnostics");
@@ -110,8 +111,9 @@ function validateStored(resource) {
   const { normalized, options, metric, structural } = definitionPolicy(resource.options.definition, resource.inputs.length === 2);
   equal(normalized, resource.options.definition, "definition defaults");
   exact(resource.result, ["model", "diagnostics"], "Inferred graph result");
-  const { model, diagnostics } = resource.result;
-  indexGraphModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges });
+  const { model, diagnostics } = resource.result, execution = Object.hasOwn(normalized, "execution") ? normalized.execution : undefined;
+  indexGraphModel(model, { maxNodes: normalized.maxNodes, maxEdges: normalized.maxEdges }, execution);
+  validateInferenceBytes(resource.result, execution, "Graph inference result bytes");
   const directed = normalized.rule === "sequence" || options.directed === true;
   if (model.selfLoops || model.directed !== directed || model.edges.some(edge => edge.origin !== "inferred" || edge.ruleId !== normalized.ruleId)) throw new TypeError("Inferred graph topology disagrees with its rule.");
   const fields = structural ? ["sourceIndices", "omitted", "options"] : normalized.rule === "mst"
@@ -136,22 +138,24 @@ function validateStored(resource) {
 
 function validateBindings(program, resource) {
   const definition = resource.options.definition, data = resolveInputReference(program, resource.inputs[0]);
+  const execution = Object.hasOwn(definition, "execution") ? definition.execution : undefined;
   const candidate = resource.inputs.length === 2 ? resolveInputReference(program, resource.inputs[1]) : undefined;
   const candidateModel = resolveGraphCandidateModel(program, data, candidate, definition);
   const { metric, structural } = definitionPolicy(definition, candidate !== undefined);
-  graphSourceRows(data.values, definition.maxNodes, "Graph source rows");
+  validateInferenceBytes({ rows: data.values, definition, ...(candidateModel === undefined ? {} : { candidate: candidateModel, candidateLimits: { maxNodes: candidate.options.definition.maxNodes, maxEdges: candidate.options.definition.maxEdges } }) }, execution, "Graph inference input bytes");
+  graphSourceRows(data.values, definition.maxNodes, "Graph source rows", execution);
   const { model, diagnostics } = resource.result, keys = data.values.map(row => graphSourceKey(row, definition.nodeKey));
   const tokens = keys.map(key => encodeRowKey(key));
   if (new Set(tokens).size !== tokens.length) throw new TypeError("Graph source keys must be unique.");
   let included, preparation;
   if (metric) {
-    preparation = prepareGraphMetricVectors(data.values.map(row => graphFeatureVector(row, definition.features)), {
-      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) }, { maxNodes: definition.maxNodes, maxEdges: definition.maxEdges });
+    preparation = prepareGraphMetricVectors(data.values.map(row => graphFeatureVector(row, definition.features, execution)), {
+      ...select(definition, ["metric", "preprocess"]), ...select(definition.options, ["missing", "zeroVector"]) }, { maxNodes: definition.maxNodes, maxEdges: definition.maxEdges }, execution);
     const { vectors: _vectors, ...retained } = preparation;
     equal(diagnostics.preparation, retained, "feature preparation"); included = preparation.sourceIndices;
     if (diagnostics.search) {
       const search = normalizeGraphSearch(definition.options.search, diagnostics.options, preparation);
-      validateSearch(diagnostics.search, search, preparation, diagnostics.options, keys, diagnostics.pairCount);
+      validateSearch(diagnostics.search, search, preparation, diagnostics.options, keys, diagnostics.pairCount, execution);
     }
   } else if (structural) {
     included = diagnostics.sourceIndices; ownArray(included, "Graph included rows"); ownArray(diagnostics.omitted, "Graph omitted rows");
@@ -193,7 +197,7 @@ function validateBindings(program, resource) {
       groups.get(group).push(index);
     }
     if (definition.rule === "group") {
-      hubs = resolveGraphGroupHubs(diagnostics.options, { tokens, sourceIndices: included, groups, groupKeys, width: fields.length, work: 0 });
+      hubs = resolveGraphGroupHubs(diagnostics.options, { tokens, sourceIndices: included, groups, groupKeys, width: fields.length, work: 0 }, execution);
       let expectedEdges = 0;
       for (const [group, members] of groups) {
         if (diagnostics.options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new TypeError("Graph star requires a hub for each non-singleton group.");
