@@ -30,7 +30,6 @@ import { defaultAxisPosition, defaultAxisTitleRotation, validateAxisPosition } f
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
-  resolveTextBounds,
   textBoundsFitCanvas,
   textBoundsIntersect
 } from "../../../core/textMetrics.js";
@@ -38,21 +37,8 @@ import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { validateAxisTextStyle } from "./labels.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
-
-function titleBounds(geometry, config, text, profile) {
-  return resolveTextBounds({
-    ...geometry,
-    text,
-    lines: titleLines(text, config),
-    fontSize: config.fontSize,
-    fontFamily: config.fontFamily,
-    fontWeight: config.fontWeight,
-    textAlign: config.align ?? "center",
-    textBaseline: config.baseline ?? "middle",
-    rotation: config.rotation
-  }, profile);
-}
-
+import { axisTitleBounds as titleBounds, resolveInferredAxisTitleOffset, resolveLabelRelativeAxisTitleOffset,
+  assertLabelRelativeTitleSide } from "../../../materialization/guides/axisTitleLayout.js";
 
 function axisLabelBounds(program, channel, axisId = channel) {
   const id = axisGraphicIds(channel, axisId)[2], labels = program.graphicSpec.objects[id];
@@ -63,71 +49,28 @@ function axisLabelBounds(program, channel, axisId = channel) {
 }
 
 function inferredTitleOffset(program, channel, config, axisId = channel) {
-  const plot = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
+  const frame = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const canvas = findCanvasGraphic(program)?.properties;
   const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[2], program.materializationConfigs.textMetrics)
     : undefined;
   const preferred = axisThemeOffset(program.materializationConfigs.theme, "title") ?? (channel === "x" ? 42 : 52);
-  if (!plot || !canvas || !labels) return preferred;
-  const horizontal = channel === "x";
-  const positive = config.position === (horizontal ? "bottom" : "right");
-  const near = horizontal ? "top" : "left";
-  const far = horizontal ? "bottom" : "right";
-  const bounds = titleBounds(resolveAxisTitleGeometry({
-    bounds: plot,
-    channel,
-    position: config.position,
-    along: 0,
-    offset: preferred
-  }), config, program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
-  const needed = positive
-    ? labels[far] + 4 - bounds[near]
-    : bounds[far] - labels[near] + 4;
-  const available = positive
-    ? canvas[horizontal ? "height" : "width"] - bounds[far]
-    : bounds[near];
-  // Font ink can extend beyond the one-em layout box, especially after
-  // rotating a middle-baseline title. Keep inferred edge-clamped placement
-  // inside the Canvas; explicit offsets retain their exact geometry.
-  const inkClearance = channel === "y" &&
-    Math.abs(Math.cos(config.rotation)) < 1e-10
-    ? config.fontSize / 4 : 0;
-  if (program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined) {
-    return preferred + Math.max(0, needed);
-  }
-  const legacyAdjustment = Math.min(available, Math.max(0, needed));
-  if (inkClearance === 0) return preferred + legacyAdjustment;
-  const adjustment = Math.min(available - inkClearance, Math.max(0, needed));
-  const candidateBounds = titleBounds(resolveAxisTitleGeometry({
-    bounds: plot, channel, position: config.position,
-    along: resolveAxisTitleAlong(program.resolvedScales[config.scale], config),
-    offset: preferred + adjustment
-  }), config, program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
-  // Optional ink reserve must not introduce a label collision.
-  return preferred + (axisLabelBounds(program, channel, axisId).some(label => label && textBoundsIntersect(candidateBounds, label))
-    ? legacyAdjustment : adjustment);
+  return resolveInferredAxisTitleOffset({ channel, config, frame, canvas, labels, preferred,
+    text: program.semanticSpec.guides.axis?.[axisId]?.title ?? "", profile: program.materializationConfigs.textMetrics,
+    scale: program.resolvedScales[config.scale], labelBounds: axisLabelBounds(program, channel, axisId),
+    unclamped: program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined });
 }
 
 function labelRelativeTitleOffset(program, channel, config, axisId, frame, along) {
   const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]];
-  if (program.guideConfigs.axis?.[axisId]?.labels?.position !== config.position) {
-    throw new Error("Label-relative title offset requires labels on the same axis side.");
-  }
+  const labelPosition = program.guideConfigs.axis?.[axisId]?.labels?.position;
+  // Keep the original side error before querying any label bounds.
+  assertLabelRelativeTitleSide(config.position, labelPosition);
   const items = labels?.items ?? (labels ? [labels] : []);
-  const bounds = items.filter(item => axisLabelHasText(item.properties)).map(item =>
+  const labelBounds = items.filter(item => axisLabelHasText(item.properties)).map(item =>
     resolveConcreteGraphicBounds(program.graphicSpec, item.id, program.materializationConfigs.textMetrics));
-  if (bounds.length === 0) throw new Error("Label-relative title offset requires nonempty axis labels.");
-  const near = channel === "x" ? "top" : "left", far = channel === "x" ? "bottom" : "right";
-  const positive = config.position === (channel === "x" ? "bottom" : "right");
-  const zero = titleBounds(resolveAxisTitleGeometry({ bounds: frame, channel,
-    position: config.position, along, offset: 0 }), config,
-  program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
-  const offset = positive
-    ? Math.max(...bounds.map(bound => bound[far])) + config.offset.gap - zero[near]
-    : zero[far] - Math.min(...bounds.map(bound => bound[near])) + config.offset.gap;
-  if (!Number.isFinite(offset)) throw new RangeError("Label-relative title offset must resolve to a finite distance.");
-  return offset;
+  return resolveLabelRelativeAxisTitleOffset({ channel, config, frame, along, labelPosition, labelBounds,
+    text: program.semanticSpec.guides.axis?.[axisId]?.title ?? "", profile: program.materializationConfigs.textMetrics });
 }
 
 const CREATE_OPTIONS = ["target",

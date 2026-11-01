@@ -1,0 +1,96 @@
+{
+  "sourceParent": "d92da9de0d06dfffc214bb3c7ca8077ee74ec3fe",
+  "authorization": "../../AUTHORIZATION.json#remainingApproval",
+  "scope": "Native title clearance pure extraction; no new typed animation admission or public signature",
+  "archive": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1186,
+    "packedBytes": 1697141,
+    "unpackedBytes": 7672654,
+    "file": ".artifacts/animation-archives/ggaction-title-clearance-44e5c25834cfc77780e1abdfcaee43746c05931e1bbf7d5e207bc39dc0d8a690.tgz",
+    "sha1": "43bce49329f7f859c0b3bbef8cfaae8d972f0889",
+    "sha256": "44e5c25834cfc77780e1abdfcaee43746c05931e1bbf7d5e207bc39dc0d8a690"
+  },
+  "shared4Changes": [],
+  "newSource": "src/materialization/guides/axisTitleLayout.js",
+  "checks": {
+    "nativeAndLiteral": 76,
+    "newLiteral": 5,
+    "coverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "beforeAfter": {
+      "publicAxisCombinations": 12,
+      "compared": [
+        "guide configs",
+        "axis graphics",
+        "direct action trace"
+      ],
+      "sha256": "f9cab4419c80163e43d31c3a57ca56b6d91a75822167e014eb98b540234ee484"
+    },
+    "actualBrowser": 1,
+    "boundariesAndDocumentationTruth": 16,
+    "packageAndDocumentationTruth": 10,
+    "coveragePolicy": true,
+    "installed": {
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "sameFinalArchive": true,
+      "runtimeCasesEach": 2,
+      "FullAndBasic": true,
+      "SVGPNGPDFFromInstalled": true,
+      "strictTypes": true,
+      "groupDocumentExample": true,
+      "optionalPeers": true,
+      "bundleEntries": 6
+    }
+  },
+  "limits": {
+    "entries": 1186,
+    "packedBytes": 1697200,
+    "unpackedBytes": 7672700,
+    "fullGzip": 775100,
+    "basicGzip": 423400
+  },
+  "failuresPreserved": [
+    "Original equivalence fixture had insufficient top margin; widened only the declared empty Canvas margin before recording both references.",
+    "Initial1185entry ceiling failed for the single extracted owner; measured1186entries.",
+    "Node20 first measured Full775065/Basic423325 exceeded old775000/423200; minimum ceilings synchronized with README and architecture.",
+    "First custom installed harness looked for identity-equivalence.js beside fixtures; corrected to canonical consumers/node.js support-file copy and installed public SVG import. Same final archive was rerun successfully.",
+    "One inline Python metadata script rejected encoded prose before executing; retried with apply_patch. No runtime change arose from that command."
+  ],
+  "pending": [
+    "typed inferred/relative title integration with current native label group",
+    "inferred legend clearance and implicit lanes",
+    "root transition v3 combined checkpoint",
+    "whole STEP061/062/063/077"
+  ],
+  "sourceHashes": {
+    "src/materialization/guides/axisTitleLayout.js": "9968deb93d2daf6a94f07a7197b55c8030efa885982dae0780ce9f87eefa3f16",
+    "src/actions/guides/axes/titles.js": "71b05784383ef148ab8d9709fa844162102a7e3aa6070f8fd16f5f7c0dcfed27"
+  },
+  "rawLogsSha256": {
+    "title-clearance-boundaries-final.log": "c0e30bee527a299e0fcc49f7f87503f22a16a20b0ba682d49819b72a0e257699",
+    "title-clearance-boundaries.log": "edaca9e70577d389678f6d3bb13c3be04d21ca1dd3434d2ba1c2befc2a113c19",
+    "title-clearance-browser.log": "a738bc250e1a1cabd18903ec8ba2fca28f1bfb718e1c4a3fe8a560857815795d",
+    "title-clearance-coverage-first.log": "7e373942da8c94c53af97751e89416b5bf8726a8c4af3cfb74c0dbc64c8eb97a",
+    "title-clearance-coverage-policy.log": "976ff09ea2ce7bd487dbb1f2fac0f596919ab5e733a1bc862a742b5ee16aa3be",
+    "title-clearance-final-pack.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+    "title-clearance-installed-node20-first.log": "0c8667cfe0a476d30de1aa124ea8a750bbd3d2301ab3d9d15ba0beed1ff5e14b",
+    "title-clearance-installed-node20.log": "f972406077ea2d78a1fe8d4f1832ab8ad7620113006e4294e87d8ac323064906",
+    "title-clearance-installed-node22.log": "4f5d2a9bc7f5b25f6b4fc2adf1499b767956ac519f05fb3146d0b954eca67ed8",
+    "title-clearance-installed-node24.log": "fd46943dd632fdcd2800f2505f97357145c763f6a5aa111fd74f27049bce7215",
+    "title-clearance-measure-node20.log": "6c5f34f2851f72a5e45ebf358e1cb565b597f1b807d3d6a5721a2b5e6123e3dc",
+    "title-clearance-native-first.log": "14142c4a04f07b5ad6805f9f42170f232e3694b422b1d49e3633adbefe5c070b",
+    "title-clearance-package-contracts.log": "88307806b4323bf171d5bec4250e896eb016ec5687169af0362c032bbd8d9260",
+    "title-clearance-package-first.log": "5dec7ee6b2ab04b0109949d2e5702a0ad708064e2b9c78e0c9965d54f51ab59b",
+    "title-clearance-package-measure.log": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+  }
+}

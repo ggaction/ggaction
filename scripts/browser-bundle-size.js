@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 775_000, // Shared categorical legend owners: Node20 774,919 gzip bytes.
-  "ggaction/basic": 423_200, // Shared categorical legend owners: Node20 423,184 gzip bytes.
+  ggaction: 775_100, // Shared native title clearance: Node20 775,065 gzip bytes.
+  "ggaction/basic": 423_400, // Shared native title clearance: Node20 423,325 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 281_400, // Native grouped legend geometry: Node20 281,317 gzip bytes.

@@ -928,8 +928,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 775,000 bytes |
-| `ggaction/basic` | 423,200 bytes |
+| `ggaction` | 775,100 bytes |
+| `ggaction/basic` | 423,400 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
 | `ggaction/interaction` | 131,400 bytes |
@@ -4697,3 +4697,5 @@ packed1,694,230/unpacked7,641,072bytes와1182entries에 따라 최소한도
 현재 표를775,000/423,200/276,800으로만 올린다. SVG/graph/interaction 한도는 유지한다.
 
 명시 그룹 범례 owner 3개를 추가한 artifact는 1185 entries, packed1,696,696 및 unpacked7,669,973 bytes로 측정되어 한도를1185/1,696,700/7,670,000으로 맞췄다. Native packing을 포함한 animation entry는 Node20에서281,317 gzip bytes여서 현재한도281,400을 적용한다. 나머지entry한도와 README Basic한도는 유지한다. 첫기존상한실패와 동일archive실측은 그룹검증기록에 보존한다.
+
+Native axis title clearance is shared by `materialization/guides/axisTitleLayout.js`. Actions retain resource lookup, theme-preferred offsets, same-side preflight and wrapped writes. The pure owner consumes explicit current label bounds and title metrics, preserving the native4px gap, legacy Canvas clamp and rotated-Y ink reserve with collision fallback. It adds no stored intent or automatic compiler; typed inferred/relative title transitions remain a separate integration obligation.
