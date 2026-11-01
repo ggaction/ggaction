@@ -123,7 +123,11 @@
     "axis-clearance-installed-node20.log": "df4437835833a72d4e593a4ff4fe3da5c5adf4babe502f2eb6dbc671fcdd647d",
     "axis-clearance-after.json": "b608ecbc15543ee423277c62b30294bdbb85e1c11db55a65646ba90cb8e6b7af",
     "axis-clearance-baseline-loader.mjs": "b19405ceb3c9b10b79062b99b011452ba314af6b1d31266a14a251f506153b74",
-    "axis-clearance-before.json": "b608ecbc15543ee423277c62b30294bdbb85e1c11db55a65646ba90cb8e6b7af"
+    "axis-clearance-before.json": "b608ecbc15543ee423277c62b30294bdbb85e1c11db55a65646ba90cb8e6b7af",
+    "axis-clearance-source-pin-build.log": "845575cd9efc9a770f179e0d77352c7f41342dc76bb3c78f74b02e4c4b9050de",
+    "axis-clearance-source-pin-docs.log": "a9c847aed3cdcdeb1b687804268cdb7eae6391fc44d95c0b7c554c88aa960346",
+    "axis-clearance-source-pin-generate.log": "1fc5d7932025f3f97f961085a4340f6cee20368d9aea4d08e7e56fa4acd8d823",
+    "axis-clearance-source-pin-built-check.log": "e6ecc033b06ca7f36ace3d162c2ec6bd34bf7ee7a958cd7e78402aa20187da9b"
   },
   "firstFailuresPreserved": [
     "First package count1192 exceeded1191; measured new owner added464 unpacked bytes, with same packed ceiling1711000 and minimum unpacked ceiling7722000.",
@@ -136,5 +140,12 @@
     "Dynamic axis label/title/group union with R",
     "Public inferred legend clearance strict rebase/offline/renderers/3Node qualification",
     "Overall STEP077 completion"
-  ]
+  ],
+  "sourceCommit": "c0d82b2b9",
+  "sourcePin": {
+    "docs": 30,
+    "builtPages": 186,
+    "llmArtifacts": 1598,
+    "sourceDelta": []
+  }
 }
